@@ -1,0 +1,17 @@
+citHeader("To cite phangorn in a publication use:")
+
+citEntry(entry="Article",
+	title = "phangorn: phylogenetic analysis in R",
+        author = personList(as.person("K.P. Schliep")),
+	journal = "Bioinformatics",
+  	year = "2011",
+	volume = "27",
+	number = "4",
+        pages = "592--593",
+        textVersion = "Schliep K.P. 2011. phangorn: phylogenetic analysis in R. Bioinformatics, 27(4) 592-593")
+
+citFooter("As phangorn is evolving quickly, you may want to cite also its version number (found with 'library(help = phangorn)').")
+
+
+if(!exists("meta") || is.null(meta)) meta <- packageDescription("phangorn")
+

@@ -1,0 +1,64 @@
+useDynLib(phangorn, .registration=TRUE)
+
+importFrom(ape, as.DNAbin, as.phylo, plot.phylo)
+importFrom(Matrix, Matrix, sparseMatrix, spMatrix)
+importFrom(igraph, graph, graph.adjacency, layout.kamada.kawai, set.edge.attribute, vcount, as.igraph) 
+importFrom(stats, AIC, logLik, reorder) 
+importFrom(fastmatch, fmatch)
+
+export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UNJ, PNJ, 
+    phyDat, read.phyDat, write.phyDat, as.phyDat, as.splits, as.prop.part, as.networx,
+    dfactorial, ldfactorial, hadamard, nni, allSitePattern, allSplits, fhm, 
+    distanceHadamard, treedist, sankoff, fitch, h2st, h4st, dist.logDet, dist.hamming, 
+    dist.ml, dist.p, upgma, wpgma, write.nexus.splits, read.nexus.splits, write.splits, pmlPart, 
+    pmlCluster, pmlMix, pmlPen, read.aa, allTrees, designTree, designSplits, nnls.tree,
+    splitsNetwork, simSeq, SH.test, bootstrap.pml, bootstrap.phyDat, RF.dist, rNNI, 
+    rSPR, plotBS, Ancestors, Descendants, mrca.phylo, Children, Siblings, pace, modelTest, 
+    lento, compatible, acgt2ry, ancestral.pars, ancestral.pml, CI, RI, getClans, getSlices,
+    getClips, getDiversity, midpoint, pruneTree, acctran, getRoot, plotAnc, consensusNet, 
+    bab, random.addition, diversity, baseFreq, densiTree, superTree, coalSpeciesTree, 
+    pml.fit, pml.init, pml.free, edQt, lli, cladePar, mapping)
+
+S3method('[', splits)          
+S3method(as.character, phyDat)
+S3method(as.data.frame, phyDat)
+S3method(anova, pml)
+S3method(c, phyDat)
+S3method(c, splits)
+S3method(cbind, phyDat)
+S3method(unique, phyDat) 
+S3method(as.matrix, splits)
+S3method(as.Matrix, splits) 
+S3method(as.networx, splits)
+S3method(as.phyDat, DNAbin)
+S3method(as.phyDat, alignment)
+S3method(as.phyDat, data.frame)
+S3method(as.phyDat, matrix)
+S3method(as.DNAbin, phyDat)
+S3method(as.phylo, splits)
+S3method(as.splits, phylo)
+S3method(as.splits, multiPhylo)
+S3method(as.splits, prop.part)
+S3method(as.prop.part, splits)
+S3method(logLik, pml)
+S3method(logLik, pmlPart)
+S3method(logLik, pmlMix)
+S3method(plot, pml)
+S3method(plot, networx)
+S3method(plot, pmlCluster)
+S3method(print, phyDat)
+S3method(print, pml)
+S3method(print, pmlMix)
+S3method(print, pmlPart)
+S3method(print, splits)
+S3method(print, summary.clanistics)
+S3method(reorder, networx)
+S3method(simSeq, phylo)
+S3method(simSeq, pml)
+S3method(subset, phyDat)
+S3method(summary, clanistics)
+S3method(update, pml)
+S3method(vcov, pml)
+
+
+

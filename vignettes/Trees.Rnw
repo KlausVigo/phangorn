@@ -1,0 +1,255 @@
+%\VignetteIndexEntry{Constructing phylogenetic trees}
+%\VignetteKeywords{Documentation}
+%\VignettePackage{phangorn}
+\documentclass[12pt]{article}
+
+\usepackage{times}
+\usepackage{hyperref}
+
+
+\begin{document}
+
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\textit{#1}}}
+\newcommand{\Rmethod}[1]{{\texttt{#1}}}
+\newcommand{\Rfunarg}[1]{{\texttt{#1}}}
+\newcommand{\Rclass}[1]{{\textit{#1}}}
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\R}{\textsf{R}}
+\newcommand{\pml}{\Robject{pml}}
+\newcommand{\phangorn}{\Rpackage{phangorn}}
+\newcommand{\ape}{\Rpackage{ape}}
+\newcommand{\multicore}{\Rpackage{multicore}}
+
+\newcommand{\term}[1]{\emph{#1}}
+\newcommand{\mref}[2]{\htmladdnormallinkfoot{#2}{#1}}
+
+% leave comments in the text
+\SweaveOpts{keep.source=TRUE}
+
+
+
+% Ross Ihakas extenstion for nicer representation 
+\DefineVerbatimEnvironment{Sinput}{Verbatim} {xleftmargin=2em}
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{xleftmargin=2em}
+\DefineVerbatimEnvironment{Scode}{Verbatim}{xleftmargin=2em}
+\fvset{listparameters={\setlength{\topsep}{0pt}}}
+\renewenvironment{Schunk}{\vspace{\topsep}}{\vspace{\topsep}}
+
+<<echo=FALSE>>=
+options(width=70)
+foo <- packageDescription("phangorn")
+@
+
+
+\title{Estimating phylogenetic trees with phangorn} %$ (Version \Sexpr{foo$Version})} 
+\author{\mref{mailto:klaus.schliep@gmail.com}{Klaus P. Schliep}}
+\maketitle
+
+\nocite{Paradis2012}
+\section{Introduction}
+
+These notes should enable the user to estimate phylogenetic trees from alignment data with different methods using the \phangorn{} package \cite{Schliep2011}. Several functions of \phangorn{} are also described in more detail in \cite{Paradis2012}. For more theoretical background on all the methods see e.g. \cite{Felsenstein2004, Yang2006}. This document illustrates some of the \phangorn{} features to estimate phylogenetic trees using different reconstruction methods. Small adaptations to the scripts in section \ref{sec:Appendix} should enable the user to perform phylogenetic analyses.
+\section{Getting started}
+The first thing we have to do is to read in an alignment. Unfortunately there exists many different file formats that alignments can be stored in. The function \Rfunction{read.phyDat} is used to  read in an alignment. There are several functions to read in alignments depending on the format of the dataset (nexus, phylip, fasta) and the kind of data (amino acid or nucleotides) in the \ape{} package \cite{Paradis2004} and \phangorn{}. The function \Rfunction{read.phyDat} calls these other functions. For the specific parameter settings available look in the help files of  the function \Rfunction{read.dna} (for phylip, fasta, clustal format), \Rfunction{read.nexus.data} for nexus files. For amino acid data additional \Rfunction{read.aa} is called.  
+%When using the \Rfunction{read.dna} from \ape{} the parameter the we have to use as.character=TRUE.  
+We start our analysis loading the \phangorn{} package and then reading in an alignment.  
+<<echo=TRUE>>=
+library(phangorn)
+primates = read.phyDat("primates.dna", format="phylip", type="DNA")
+@
+%require("multicore")
+\section{Distance based methods}
+After reading in the alignment we can build a first tree with distance based methods. The function dist.dna from the ape package computes distances for many DNA substitution models. To use the function dist.dna we have to transform the data to class DNAbin. For amino acids the function dist.ml offers common substitution models ("WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa" and "mtREV24").  
+ 
+After constructing a distance matrix we reconstruct a rooted tree with UPGMA and alternatively an unrooted tree using Neighbor Joining \cite{Saitou1987,Studier1988}. 
+<<echo=TRUE>>=
+dm = dist.dna(as.DNAbin(primates))
+treeUPGMA = upgma(dm)
+treeNJ = NJ(dm)
+@
+We can plot the trees treeUPGMA and treeNJ (figure \ref{fig:NJ}) with the commands:
+<<label=plotNJ,include=FALSE>>=
+layout(matrix(c(1,2), 2, 1), height=c(1,2))
+par(mar = c(.1,.1,.1,.1))
+plot(treeUPGMA, main="UPGMA")
+plot(treeNJ, "unrooted", main="NJ")
+@
+\begin{figure}
+\begin{center}
+<<label=figNJ,fig=TRUE,echo=FALSE>>=
+<<plotNJ>>
+@
+\end{center}
+\caption{Rooted UPGMA tree and unrooted NJ tree}
+\label{fig:NJ}
+\end{figure}
+Distance based methods are very fast and we will use the UPGMA and NJ tree as starting trees for the maximum parsimony and maximum likelihood analyses. 
+
+\section{Parsimony}
+The function parsimony returns the parsimony score, that is the number of changes which are at least necessary to describe the data for a given tree. We can compare the parsimony score or the two trees we computed so far:
+<<echo=TRUE>>=
+parsimony(treeUPGMA, primates)
+parsimony(treeNJ, primates)
+@
+The function optim.parsimony performs tree rearrangements to find trees with a lower parsimony score. So far the only tree rearrangement implemented is nearest-neighbor interchanges (NNI). However is also a version of the parsimony ratchet \cite{Nixon1999} implemented, which is likely to find better trees than just doing NNI rearrangements. 
+<<echo=TRUE>>=
+treePars = optim.parsimony(treeUPGMA, primates)
+treeRatchet = pratchet(primates, trace = 0)
+parsimony(c(treePars, treeRatchet), primates)
+@
+For small datasets it is also possible to find all most parsimonious trees using a branch and bound algorithm \cite{Hendy1982}. For datasets with more than 10 taxa this can take a long time and depends strongly on how tree like the data are.  
+<<echo=TRUE, eval=FALSE>>=
+(trees <- bab(subset(primates,1:10)))
+@
+
+\section{Maximum likelihood}
+The last method we will describe in this vignette is Maximum Likelihood (ML) as introduced by Felsenstein \cite{Felsenstein1981}. 
+We can easily compute the likelihood for a tree given the data
+<<echo=TRUE>>=
+fit = pml(treeNJ, data=primates)
+fit
+@
+The function pml returns an object of class pml. This object contains the data, the tree and many different parameters of the model like the likelihood etc. There are many generic functions for the class pml available, which allow the handling of these objects.
+<<echo=TRUE>>=
+methods(class="pml")
+@ 
+The object fit just estimated the likelihood for the tree it got supplied, but the branch length are not optimized for the Jukes-Cantor model yet, which can be done with the function optim.pml. 
+<<echo=TRUE, results=hide>>=
+fitJC = optim.pml(fit, TRUE)
+logLik(fitJC)
+@
+With the default values \Rfunction{pml} will estimate a Jukes-Cantor model. The function \Rfunction{update.pml} allows to change parameters. We will change the model to the GTR + $\Gamma(4)$ + I model and then optimize all the parameters. 
+<<echo=TRUE>>=
+fitGTR = update(fit, k=4, inv=0.2) 
+fitGTR = optim.pml(fitGTR, TRUE,TRUE, TRUE, TRUE, TRUE, 
+    control = pml.control(trace = 0))
+fitGTR 
+@
+We can compare the objects for the JC and GTR + $\Gamma(4)$ + I model using likelihood ratio statistic
+<<echo=TRUE>>=
+anova(fitJC, fitGTR) 
+@
+with the AIC
+<<echo=TRUE>>=
+AIC(fitGTR) 
+AIC(fitJC)
+@
+or the Shimodaira-Hasegawa test.
+<<echo=TRUE>>=
+SH.test(fitGTR, fitJC) 
+@
+An alternative is to use the function \Rfunction{modelTest}  to compare different models the AIC or BIC, similar to popular program of \cite{Posada1998, Posada2008}.  
+<<echo=FALSE>>=
+load("Trees.RData")
+@
+<<echo=TRUE, eval=FALSE>>=
+mt = modelTest(primates)
+@
+The results of is illustrated in table \ref{tab:modelTest}
+\begin{center}
+<<echo=FALSE,results=tex>>=
+library(xtable)
+xtable(mt, caption="Summary table of modelTest", label="tab:modelTest")
+@
+\end{center}
+The thresholds for the optimisation in  \Rfunction{modelTest} are not as strict as for \Rfunction{optim.pml} and no tree rearrangements are performed. As \Rfunction{modelTest} computes and optimises a lot of models it would be a waste of computer time not to save these results. The results are saved as call together with the optimised trees in an environment and this call can be evaluated to get a "pml" object back to use for further optimisation or analysis.
+<<echo=TRUE>>=
+env <- attr(mt, "env")
+ls(envir=env)
+(fit <- eval(get("HKY+G+I", env), env))
+@
+
+At last we may want to apply bootstrap to test how well the edges of the tree are supported: %, results=hide
+<<echo=TRUE, eval=FALSE>>=
+bs = bootstrap.pml(fitJC, bs=100, optNni=TRUE, 
+    control = pml.control(trace = 0))
+@
+   
+%$
+Now we can plot the tree with the bootstrap support values on the edges
+<<label=plotBS,include=FALSE>>=
+par(mar=c(.1,.1,.1,.1))
+plotBS(fitJC$tree, bs)
+@
+%$
+\begin{figure}
+\begin{center}
+<<label=figBS,fig=TRUE,echo=FALSE>>=
+<<plotBS>>
+@
+\end{center}
+\caption{Unrooted tree with bootstrap support values}
+\label{fig:BS}
+\end{figure}
+
+Several analyses, e.g. \Rfunction{bootstrap} and  \Rfunction{modelTest}, can be computationally demanding, but as nowadays most computers have several cores one can distribute the computations using the  \multicore{} package. However it is only possible to use this approach if R is running from command line ("X11"), but not using  a GUI (for example "Aqua" on Macs) and unfortunately the \multicore{} package does not work at all under Windows. 
+\section{Appendix: Standard scripts for nucleotide or amino acid analysis}\label{sec:Appendix}
+Here we provide two standard scripts which can be adapted for the most common tasks. 
+Most likely the arguments for \Rfunction{read.phyDat} have to be adapted to accommodate your file format. Both scripts assume that the \multicore{} package, see comments above. 
+<<echo=FALSE>>=
+options(prompt=" ")
+options(continue="  ")
+@
+<<eval=FALSE>>=
+library(parallel) # supports parallel computing
+library(phangorn)
+file="myfile"
+dat = read.phyDat(file)
+dm = dist.ml(dat)
+tree = NJ(dm)
+# as alternative for a starting tree:
+tree <- pratchet(dat) 
+
+# 1. alternative: estimate an GTR model
+fitStart = pml(tree, dat, k=4, inv=.2)
+fit = optim.pml(fitStart, TRUE, TRUE, TRUE, TRUE, TRUE) 
+ 
+# 2. alternative: modelTest  
+(mt <- modelTest(dat, multicore=TRUE)) 
+mt$Model[which.min(mt$BIC)]
+# choose best model from the table, assume now GTR+G+I
+env = attr(mt, "env")
+fitStart = eval(get("GTR+G+I", env), env) 
+fitStart = eval(get(mt$Model[which.min(mt$BIC)], env), env) 
+fit = optim.pml(fitStart, optNni=TRUE, optGamma=TRUE, optInv=TRUE, 
+    model="GTR")
+bs = bootstrap.pml(fit, bs=100, optNni=TRUE, multicore=TRUE)
+@
+
+You can specify different several models build in which you can specify, e.g. "WAG", "JTT", "Dayhoff", "LG". Optimising the rate matrix for amino acids is possible, but would take a long, a very long time. So make sure to set optBf=FALSE and optQ=FALSE in the function \Rfunction{optim.pml}, which is also the default.
+<<eval=FALSE>>=
+library(parallel) # supports parallel computing
+library(phangorn)
+file="myfile"
+dat = read.phyDat(file, type = "AA")
+dm = dist.ml(dat, model="JTT")
+tree = NJ(dm)
+
+(mt <- modelTest(dat, model=c("JTT", "LG", "WAG"), multicore=TRUE)) 
+fitStart = eval(get(mt$Model[which.min(mt$BIC)], env), env) 
+
+fitNJ = pml(tree, dat, model="JTT", k=4, inv=.2)
+fit = optim.pml(fitNJ, optNni=TRUE, optInv=TRUE, optGamma=TRUE)
+fit
+bs = bootstrap.pml(fit, bs=100, optNni=TRUE, multicore=TRUE)
+@
+
+\bibliographystyle{plain}
+\bibliography{phangorn}
+
+\section{Session Information}
+The version number of \R{} and packages loaded for generating the vignette were:
+<<echo=FALSE,results=tex>>=
+toLatex(sessionInfo())
+@
+\end{document}
+

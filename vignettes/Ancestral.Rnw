@@ -1,0 +1,170 @@
+%\VignetteIndexEntry{Ancestral sequence Reconstruction}
+%\VignetteKeywords{Documentation}
+%\VignettePackage{phangorn}
+\documentclass[12pt]{article}
+
+\usepackage{times}
+\usepackage{hyperref}
+
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\textit{#1}}}
+\newcommand{\Rmethod}[1]{{\texttt{#1}}}
+\newcommand{\Rfunarg}[1]{{\texttt{#1}}}
+\newcommand{\Rclass}[1]{{\textit{#1}}}
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\R}{\textsf{R}}
+\newcommand{\pml}{\Robject{pml}}
+\newcommand{\phangorn}{\Rpackage{phangorn}}
+\newcommand{\ape}{\Rpackage{ape}}
+\newcommand{\multicore}{\Rpackage{multicore}}
+
+\newcommand{\term}[1]{\emph{#1}}
+\newcommand{\mref}[2]{\htmladdnormallinkfoot{#2}{#1}}
+
+
+
+\begin{document}
+
+% Ross Ihakas extenstion for nicer representation 
+\DefineVerbatimEnvironment{Sinput}{Verbatim} {xleftmargin=2em}
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{xleftmargin=2em}
+\DefineVerbatimEnvironment{Scode}{Verbatim}{xleftmargin=2em}
+\fvset{listparameters={\setlength{\topsep}{0pt}}}
+\renewenvironment{Schunk}{\vspace{\topsep}}{\vspace{\topsep}}
+
+<<echo=FALSE>>=
+options(width=70)
+foo <- packageDescription("phangorn")
+@
+
+
+
+\title{Ancestral sequence reconstruction with phangorn (Version \Sexpr{foo$Version})} %$
+\author{\mref{mailto:klaus.schliep@gmail.com}{Klaus P. Schliep}}
+\maketitle
+
+\nocite{Paradis2006}
+\section{Introduction}
+
+These notes describe the ancestral sequence reconstruction using the \phangorn{} package \cite{Schliep2011}. \phangorn{} provides several methods to estimate ancestral character states with either Maximum Parsimony (MP) or Maximum Likelihood (ML). %For more background on all the methods see e.g. \cite{Felsenstein2004, Yang2006}. 
+\section{Parsimony reconstructions}
+To reconstruct ancestral sequences we first load some data and reconstruct a tree:
+<<echo=TRUE>>=
+library(phangorn)
+primates = read.phyDat("primates.dna", format = "phylip", type = "DNA")
+tree = pratchet(primates, trace=0)
+tree = acctran(tree, primates) 
+parsimony(tree, primates)
+@
+
+For parsimony analysis of the edge length represent the observed number of changes. Reconstructiong ancestral states therefore defines also the edge lengths of a tree. However there can exist several equally parsimonious reconstructions or states can be ambiguous and therefore edge length can differ. %\phangorn{} brakes them equally down.
+"MPR" reconstructs the ancestral states for each (internal) node as if the tree would be rooted in that node. However the nodes are not independent of each other. If one chooses one state for a specific node, this can restrict the choice of neighboring nodes (figure \ref{fig:Pars}).  
+The funtion acctran (accelerated transformation) assigns edge length and internal nodes to the tree \cite{Swofford1987}.
+<<echo=TRUE>>=
+anc.acctran = ancestral.pars(tree, primates, "ACCTRAN")
+anc.mpr = ancestral.pars(tree, primates, "MPR")
+@
+
+All the ancestral reconstructions for parsimony are based on the fitch algorithm and so far only bifurcating trees are allowed. However trees can get pruned afterwards using the function \Rfunction{multi2di} from \ape{}.
+ 
+ 
+<<label=plotLOGO,include=FALSE>>=
+tmp <- require(seqLogo)
+if(tmp) seqLogo( t(subset(anc.mpr, getRoot(tree), 1:20)[[1]]), ic.scale=FALSE)
+@
+\begin{figure}
+\begin{center}
+<<label=figLOGO,fig=TRUE,echo=FALSE,width=6,height=4>>=
+<<plotLOGO>>
+@ 
+\caption{Representation for the reconstruction of the first 20 characters for the root node.}
+\end{center}
+\end{figure}
+
+<<echo=false>>=
+options(SweaveHooks=list(fig=function()
+par(mar=c(2.1, 4.1, 2.1, 2.1))))
+@ 
+ 
+<<label=plotMPR,include=FALSE>>= 
+par(mfrow=c(2,1))
+plotAnc(tree, anc.mpr, 17)
+title("MPR")
+plotAnc(tree, anc.acctran, 17)
+title("ACCTRAN")
+@
+\begin{figure}
+\begin{center}
+<<label=figMPR,fig=TRUE,echo=FALSE,width=6,height=9>>=
+<<plotMPR>>
+@ 
+\caption{Ancestral reconstruction for one character for the "MPR" and "ACCTRAN" reconstruction.
+When nodes contain several colors reconstruction is not unique!}\label{fig:Pars}
+\end{center}
+\end{figure}
+
+
+
+\section{Likelihood reconstructions}
+
+\phangorn{} also offers the possibility to estimate ancestral states using a ML. 
+The advantages of ML over parsimony is that the reconstruction accounts for different edge lengths.  
+So far only a marginal construction is implemented (see \cite{Yang2006}). 
+<<echo=TRUE>>=
+fit = pml(tree, primates)
+fit = optim.pml(fit, model="F81", control = pml.control(trace=0))
+@
+We can assign the ancestral states according to the highest likelihood ("ml"): 
+\[
+P(x_r = A) =  \frac{L(x_r=A)}{\sum_{k \in \{A,C,G,T\}}L(x_r=k)}
+\] 
+and the highest posterior probability ("bayes") criterion:
+\[
+P(x_r=A) =  \frac{\pi_A L(x_r=A)}{\sum_{k \in \{A,C,G,T\}}\pi_k L(x_r=k)},
+\]
+where $L(x_r)$ is the joint probability of states at the tips and the state at the root $x_r$ and $\pi_i$ are the estimated base frequencies of state $i$. 
+Both methods aggree if all states (base frequencies) have equal probablilities.
+<<echo=TRUE>>=
+anc.ml = ancestral.pml(fit, "ml")
+anc.bayes = ancestral.pml(fit, "bayes")
+@
+The differences of the two aproaches for a specific site (17) are represented in figure\ref{fig:MLB}.
+<<label=plotMLB,include=FALSE>>= 
+par(mfrow=c(2,1))
+plotAnc(tree, anc.ml, 17)
+title("ML")
+plotAnc(tree, anc.bayes, 17)
+title("Bayes")
+@
+\begin{figure}
+\begin{center}
+<<label=figMLB,fig=TRUE,echo=FALSE,width=6,height=9>>=
+<<plotMLB>>
+@ 
+\caption{Ancestral reconstruction for fig.\ref{fig:Pars} the using the maximum likelihood and (empirical) Bayesian reconstruction.}\label{fig:MLB}
+\end{center}
+\end{figure}
+
+\bibliographystyle{plain}
+\bibliography{phangorn}
+
+\section{Session Information}
+The version number of \R{} and packages loaded for generating the vignette were:
+<<echo=FALSE,results=tex>>=
+toLatex(sessionInfo())
+@
+
+\end{document}
+
+
+
+
+

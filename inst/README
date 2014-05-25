@@ -1,0 +1,22 @@
+The following persons and institutions helped in the development of
+phangorn at one stage or another.
+
+
+  Emmanuel Paradis and all the other authors of the APE package.  
+  
+  Tim White for provinding some C-code to compute the Hadamard distances. 
+  
+  Bennet McComish for providing the allTrees function. 
+  
+  Francois-Joiseph Lapointe for feedback on clans and clips. 
+  
+  Further thanks to all the user that send bug reports/fixes and have helped 
+  to improve this package. 
+
+  Financial support was provided by the Alan Wilson Centre of Molecular Ecology 
+  and Evolution and the Muséum national d'Histoire naturelle and Universidade de Vigo. 
+
+  
+  
+  
+  
