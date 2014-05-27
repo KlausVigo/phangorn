@@ -72,11 +72,11 @@ simSeq.pml <- function(x, ancestral=FALSE, ...){
     }
     n = length(w)
     res = vector("list", n)
-    x = sample(n, sum(x$weight), replace=TRUE, prob=w)
+    y = sample(n, sum(x$weight), replace=TRUE, prob=w)
     levels = attr(x$data, "levels")
     type = attr(x$data, "type")
     for(i in 1:n){
-        l = sum(x==i)
+        l = sum(y==i)
         res[[i]] = simSeq(x$tree, l, Q=x$Q, bf=x$bf, type=type, levels=levels, rate=g, ancestral=ancestral)  
     }
     x = call("c.phyDat", quote(res[[1]]))
