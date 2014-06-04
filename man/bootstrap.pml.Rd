@@ -75,12 +75,22 @@ Klaus Schliep \email{klaus.schliep@gmail.com}
 data(Laurasiatherian)
 dm <- dist.logDet(Laurasiatherian)
 tree <- NJ(dm)
-fit=pml(tree,Laurasiatherian)
-fit = optim.pml(fit,TRUE)
+fit=pml(tree,Lareo0rurasiatherian)
+fit = optim.fixpml(fit,TRUE)
 
-set.seed(1)
+set.seed(123)
 bs <- bootstrap.pml(fit, bs=100, optNni=TRUE)
 treeBS <- plotBS(fit$tree,bs)
+
+
+
+treeMP <- pratchet(Laurasiatherian)
+treeMP <- acctran(treeMP, Laurasiatherian)
+set.seed(123)
+BStrees <- bootstrap.phyDat(Laurasiatherian, pratchet, bs = 100)
+treeMP <- plotBS(treeMP, BStrees, "phylogram")
+add.scale.bar()
+
 # export tree with bootstrap values as node labels
 # write.tree(treeBS)
 }

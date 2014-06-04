@@ -8,6 +8,8 @@ NEW FEATURES
 
       example parametric bootstrap
 
+    o SOWH.test (still experimental)
+
 BUG FIXES
 
     o fixed some bugs in ancestral.pars 
@@ -27,6 +29,8 @@ OTHER CHANGES
     o some changes to keep R CMD check happy 
 
     o a development version phangorn is now available on github
+
+      KlausVigo/phangorn
 
  
 

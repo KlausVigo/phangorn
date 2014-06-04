@@ -123,12 +123,33 @@ superTree = function(tree, method="optim.parsimony", rooted=TRUE, ...){
   if(rooted) tree = lapply(tree, fun)    
   class(tree)="multiPhylo"
   res = my.supertree(tree, method=method, ...)
-  res = root(res, "ZZZ")
-  res$edge.length = rep(.1, nrow(res$edge))
-  res = drop.tip(res, "ZZZ")
-  reorder(res, "postorder")
+  if(rooted){
+    if(class(res)=="multiPhylo"){
+      res = lapply(res, root, "ZZZ")
+      res = lapply(res, drop.tip, "ZZZ")  
+      class(res) = "multiPhylo"
+    }
+    else{
+      res = root(res, "ZZZ")
+      res = drop.tip(res, "ZZZ")  
+    }
+  }
+  if(class(res)=="multiPhylo"){
+    fun = function(x){
+      x$edge.length <- rep(.1, nrow(x$edge)) 
+      x
+    }
+    res <- lapply(res, fun)
+    res <- lapply(res, reorder, "postorder")
+    class(res) = "multiPhylo"
+  }       
+  else{ 
+    res$edge.length = rep(.1, nrow(res$edge))
+    res <- reorder(res, "postorder")
+  }
   res
 }
+
 
 
 densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL, optim=FALSE, scaleX=FALSE, col=1, width=1, cex=.8, ...) {
