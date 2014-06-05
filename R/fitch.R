@@ -154,16 +154,17 @@ fitch.spr <- function(tree, data){
   root <- getRoot(tree) 
   for(i in (nTips+1L):m){
       if(i!=root){
-        tmp = dropNode(tree, i)
-        if(is.null(tmp))break()
-        edge = tmp[[1]]$edge[,2]                          
-        blub = fast.fitch(tmp[[2]], nr, TRUE)
-        score = fnodesNew5(tmp[[1]]$edge, nTips, nr)[edge] + blub
-        score <- .Call("FITCHTRIP3", as.integer(i), as.integer(nr), as.integer(edge), as.double(score), as.double(minp), PACKAGE="phangorn")    
-        if(min(score)<minp){
-            nt = which.min(score)
-            tree = addOneTree(tmp[[1]], tmp[[2]], nt, tmp[[3]])
-            minp <- min(score)
+          tmp = dropNode(tree, i)
+          if(!is.null(tmp)){
+          edge = tmp[[1]]$edge[,2]                          
+          blub = fast.fitch(tmp[[2]], nr, TRUE)
+          score = fnodesNew5(tmp[[1]]$edge, nTips, nr)[edge] + blub
+          score <- .Call("FITCHTRIP3", as.integer(i), as.integer(nr), as.integer(edge), as.double(score), as.double(minp), PACKAGE="phangorn")    
+          if(min(score)<minp){
+              nt = which.min(score)
+              tree = addOneTree(tmp[[1]], tmp[[2]], nt, tmp[[3]])
+              minp <- min(score)
+            }
         }
       }
   }
@@ -176,11 +177,19 @@ fitch.spr2 <- function(tree, data){
     nr = attr(data, "nr")
     minp = fast.fitch(tree, nr, TRUE)
     
+    changeIndex <- function(x, i, j){
+        x$edge[x$edge == i] = 0L
+        x$edge[x$edge == j] = i
+        x$edge[x$edge == 0L] = j
+        x
+    }
+    
+    
     for(i in 1:nTips){
         treetmp = dropTip(tree, i)   
         edge = treetmp$edge[,2] 
         score = fnodesNew5(treetmp$edge, nTips, nr)[edge]   
-        score <- .Call("FITCHTRIP4", as.integer(i), as.integer(nr), as.integer(edge),  as.double(score), as.double(minp), PACKAGE="phangorn")  
+        score <- .Call("FITCHTRIP3", as.integer(i), as.integer(nr), as.integer(edge),  as.double(score), as.double(minp), PACKAGE="phangorn")  
         
         if(min(score)<minp){
             nt = which.min(score)
@@ -190,20 +199,41 @@ fitch.spr2 <- function(tree, data){
         }
     }
     m=max(tree$edge)
+    
     root <- getRoot(tree) 
     for(i in (nTips+1L):m){
         if(i!=root){
             tmp = dropNode(tree, i)
-            if(is.null(tmp))break()
+            print(i)
+            if(!is.null(tmp)){
             edge = tmp[[1]]$edge[,2]                          
             blub = fast.fitch(tmp[[2]], nr, TRUE)
             score = fnodesNew5(tmp[[1]]$edge, nTips, nr)[edge] + blub
-            score <- .Call("FITCHTRIP4", as.integer(i), as.integer(nr), as.integer(edge), as.double(score), as.double(minp), PACKAGE="phangorn")    
+            score <- .Call("FITCHTRIP3", as.integer(i), as.integer(nr), as.integer(edge), as.double(score), as.double(minp), PACKAGE="phangorn")    
             if(min(score)<minp){
                 nt = which.min(score)
                 tree = addOneTree(tmp[[1]], tmp[[2]], nt, tmp[[3]])
                 minp <- min(score)
             }
+            }
+#            browser()
+#            j = Ancestors(tree, i, "parent")
+#            tree2 = reroot(tree, node=i)
+#            tree2 = unroot(tree2)
+#            tree2 = reorder(tree2, "postorder")
+#         if(j == (nTips+1L)) tree2 = changeIndex(tree2, as.integer(nTips+1L), as.integer(i))
+#            tmp = dropNode(tree2, j)
+#            if(!is.null(tmp)){
+#            edge = tmp[[1]]$edge[,2]                          
+#            blub = fast.fitch(tmp[[2]], nr, TRUE)
+#            score = fnodesNew5(tmp[[1]]$edge, nTips, nr)[edge] + blub
+#            score <- .Call("FITCHTRIP3", as.integer(j), as.integer(nr), as.integer(edge), as.double(score), as.double(minp), PACKAGE="phangorn")    
+#            if(min(score)<minp){
+#                nt = which.min(score)
+#                tree = addOneTree(tmp[[1]], tmp[[2]], nt, tmp[[3]])
+#                minp <- min(score)
+#            }
+#            }
         }
     }
     tree
