@@ -52,6 +52,20 @@ void get_two_index_integer(int *x, int *val, int *index)
 */
 
 
+void countCycle(int *M, int *l, int *m, int *res){
+    int j, i, tmp;
+    res[0]=0L;
+    for (i=0; i<*l; i++) {
+        tmp = 0;
+        if(M[i] != M[i + (*m -1) * *l])tmp++;
+        for (j=1; j<*m; j++) {
+            if(M[i + (j-1)* *l] != M[i + j * *l])tmp++;            
+        }
+        if(tmp>2L)res[0]+=tmp;
+    }
+}
+
+
 void nodeH(int *edge, int *node, double *el, int *l,  double *res){
     int ei, i;
     for (i=*l-1L; i>=0; i--) {

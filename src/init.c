@@ -1,6 +1,9 @@
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 
+
+void countCycle(int *M, int *l, int *m, int *res);
+
 /* called in fitch.R */
 void fitch_free();
 void fitch_init(int *data, int *m, int *n, double *weights, int *nr);
@@ -15,7 +18,10 @@ void fitchTripletACC4(int *root, int *dat1, int *dat2, int *dat3, int *nr, doubl
 void ACCTRAN2(int *dat, int *nr, double *pars, int *node, int *edge, int *nl, 
     double *weight, double *pvec, int *nTips);  
 void ACCTRAN3(int *dat, int *nr, double *pars, int *node, int *edge, int *nl, 
-    double *weight, double *pvec, int *nTips);      
+    double *weight, double *pvec, int *nTips); 
+void prepRooted(int *res, int *nr, int *kids);
+void C_MPR(int *res, int *nr, int *parent, int *kids, int *nl); 
+    
 
 /* from distSeq.R */    
 void distHamming(int *x, double *weight, int *nr, int *l, double *d);    
@@ -154,6 +160,8 @@ R_CallMethodDef callMethods[] = {
 //{"coph", (DL_FUNC) &coph, 7},
      
 R_CMethodDef cMethods[] = { 
+  
+{"countCycle", (DL_FUNC) &countCycle, 4},  
 {"fitch_free", (DL_FUNC) &fitch_free, 0},  
 {"fitch_init", (DL_FUNC) &fitch_init, 5}, 
 {"fnhelp", (DL_FUNC) &fnhelp, 8},
@@ -166,6 +174,10 @@ R_CMethodDef cMethods[] = {
 {"fitchTripletACC4", (DL_FUNC) &fitchTripletACC4, 11},
 {"ACCTRAN2", (DL_FUNC) &ACCTRAN2, 9},
 {"ACCTRAN3", (DL_FUNC) &ACCTRAN3, 9},
+
+{"prepRooted", (DL_FUNC) &prepRooted, 3},
+{"C_MPR", (DL_FUNC) &C_MPR, 5},
+
 {"distHamming", (DL_FUNC) &distHamming, 5},
 {"neworder_cladewise", (DL_FUNC) &neworder_cladewise, 5},
 {"C_reorder", (DL_FUNC) &reorder, 6},

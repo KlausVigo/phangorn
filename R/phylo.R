@@ -1715,7 +1715,7 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     # length(tree$edge.length)    
     if (type == "CODON") {
         df <- df + (k > 1) + (inv > 0) + 
-            length(unique(bf)) - 1
+            length(unique(bf)) - 1 + (dnds != 1) + (tstv != 1) 
     }
     else df = df + (k > 1) + (inv > 0) + 
         length(unique(bf)) - 1 + length(unique(Q)) - 1
@@ -1726,8 +1726,8 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         INV = INV, ll.0 = ll.0, tree = tree, lv = tmp$resll, 
         call = call, df = df, wMix = wMix, llMix = llMix)
     if (type == "CODON") {
-        object$dnds <- 1
-        object$tstv <- 1
+        object$dnds <- dnds
+        object$tstv <- tstv
     }
     class(object) = "pml"
 

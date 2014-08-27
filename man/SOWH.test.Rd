@@ -2,17 +2,18 @@
 \alias{SOWH.test}
 \title{Swofford-Olsen-Waddell-Hillis Test}
 \usage{
-SOWH.test(..., B = 10000, data=NULL)
+SOWH.test(x, n = 100, restricted = list(optNni=FALSE), optNni=TRUE, ...)
 }
 \arguments{
-  \item{...}{either a series of objects of class \code{"pml"}
-    separated by commas, a list containing such objects
-    or an object  of class \code{"pmlPart"}.}
-  \item{B}{the number of bootstrap replicates.}
-  \item{data}{an object of class  \code{"phyDat"}.}
+  \item{x}{an object of class  \code{"pml"}.}
+  \item{n}{the number of bootstrap replicates.}
+  \item{restricted}{list of restricted parameter settings.}
+  \item{optNni}{Logical value indicating whether toplogy gets optimized (NNI).}
+  \item{\dots}{Further arguments passed to \code{"optim.pml"}.}
 }
 \description{
   This function computes the Swofford--Olsen--Waddell--Hillis (SOWH) test, a parametric bootstrap test.
+  The function is likely to be very slow. 
 }
 \value{
   a numeric vector with the P-value associated with each tree given in

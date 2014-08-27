@@ -1,13 +1,13 @@
 useDynLib(phangorn, .registration=TRUE)
 
-importFrom(ape, as.DNAbin, as.phylo, plot.phylo)
+importFrom(ape, as.DNAbin, as.phylo, plot.phylo, as.prop.part)
 importFrom(Matrix, Matrix, sparseMatrix, spMatrix)
 importFrom(igraph, graph, graph.adjacency, layout.kamada.kawai, set.edge.attribute, vcount, as.igraph) 
 importFrom(stats, AIC, logLik, reorder) 
 importFrom(fastmatch, fmatch)
 
 export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UNJ, PNJ, 
-    phyDat, read.phyDat, write.phyDat, as.phyDat, as.splits, as.prop.part, as.networx,
+    phyDat, read.phyDat, write.phyDat, as.Matrix, as.phyDat, as.splits, as.networx,
     dfactorial, ldfactorial, hadamard, nni, allSitePattern, allSplits, fhm, 
     distanceHadamard, treedist, sankoff, fitch, h2st, h4st, dist.logDet, dist.hamming, 
     dist.ml, dist.p, upgma, wpgma, write.nexus.splits, read.nexus.splits, write.splits, pmlPart, 
@@ -53,6 +53,7 @@ S3method(print, pmlPart)
 S3method(print, splits)
 S3method(print, summary.clanistics)
 S3method(reorder, networx)
+#S3method(reorder, splits)
 S3method(simSeq, phylo)
 S3method(simSeq, pml)
 S3method(subset, phyDat)

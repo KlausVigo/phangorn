@@ -20,7 +20,7 @@ an object of class \code{multiPhylo}.
 a character string specifying the type of phylogeny, so far "cladogram" (default) or "phylogram" (the default) are supported. 
 }
 \item{alpha}{
-parameter forr semi-transparent colors. 
+parameter for semi-transparent colors. 
 }
 \item{consensus}{
 A tree which is used to define the order of the tip labels.
