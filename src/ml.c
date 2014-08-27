@@ -1,7 +1,7 @@
 /* 
  * ml.c
  *
- * (c) 2008-2013  Klaus Schliep (klaus.schliep@gmail.com)
+ * (c) 2008-2014  Klaus Schliep (klaus.schliep@gmail.com)
  * 
  * 
  * This code may be distributed under the GNU GPL
@@ -868,7 +868,7 @@ SEXP LogLik2(SEXP dlist, SEXP P, SEXP nr, SEXP nc, SEXP node, SEXP edge, SEXP nT
     return(ans);
 }
 
-
+//raus
 static R_INLINE void matprod(double *x, int nrx, int ncx, double *y, int nry, int ncy, double *z)
 {
     F77_CALL(dgemm)(transa, transb, &nrx, &ncy, &ncx, &one, x, &nrx, y, &nry, &zero, z, &nrx);
@@ -964,7 +964,7 @@ SEXP FS4(SEXP eig, SEXP nc, SEXP el, SEXP w, SEXP g, SEXP X, SEXP dad, SEXP chil
     return (RESULT);
 } 
 
-// eva statt eig uebergeben
+
 SEXP FS5(SEXP eig, SEXP nc, SEXP el, SEXP w, SEXP g, SEXP X, SEXP ld, SEXP nr, SEXP basefreq, SEXP weight, SEXP f0)
 {
     SEXP RESULT; // EL, P; 

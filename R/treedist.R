@@ -84,7 +84,7 @@ treedist <- function (tree1, tree2, check.labels=TRUE)
     if (check.labels) {
         ind <- match(tree1$tip.label, tree2$tip.label)
         if (any(is.na(ind)) | length(tree1$tip.label) !=
-                length(tree1$tip.label))
+                length(tree2$tip.label))
             stop("trees have different labels")
         tree2$tip.label <- tree2$tip.label[ind]
         ind2 <- match(1:length(ind), tree2$edge[, 2])
@@ -253,7 +253,7 @@ RF.dist <- function (tree1, tree2=NULL, check.labels = TRUE)
     if (check.labels) {
         ind <- match(tree1$tip.label, tree2$tip.label)
         if (any(is.na(ind)) | length(tree1$tip.label) !=
-                length(tree1$tip.label))
+                length(tree2$tip.label))
             stop("trees have different labels")
         tree2$tip.label <- tree2$tip.label[ind]
         #       tree2$edge[match(ind, tree2$edge[, 2]), 2] <- 1:length(ind)
@@ -284,4 +284,3 @@ RF.dist <- function (tree1, tree2=NULL, check.labels = TRUE)
 #    RF = 2 * (l-ind)
     RF
 }
-#543

@@ -381,6 +381,35 @@ void ACCTRAN3(int *dat, int *nr, double *pars, int *node, int *edge, int *nl, do
 }
 
 
+void fitchNNN(int d1, int d2){
+    int tmp;
+    tmp = d1 & d2;
+    if(tmp) d1 = tmp;
+    else d1 = d1 | d2;
+}
+// haeufig 0
+void fitchTripletNew(int *res, int *dat1, int *dat2, int *dat3, int *nr) 
+{   
+    int k, v1, v2, v3;
+
+    for(k = 0; k < (*nr); k++){
+    v1 = dat1[k];
+    fitchNNN(v1, dat2[k]);
+    fitchNNN(v1, dat3[k]);
+
+    v2 = dat1[k];
+    fitchNNN(v2, dat3[k]);
+    fitchNNN(v2, dat2[k]);
+
+    v3 = dat2[k];
+    fitchNNN(v3, dat3[k]);
+    fitchNNN(v3, dat1[k]);
+
+    res[k] = v1 & v2; // &v3[k];  
+    res[k] = res[k] & v3; 
+    }
+}
+
 void fitchN(int *dat1, int *dat2, int *nr){
     int k;
     int tmp;
@@ -399,7 +428,7 @@ void fitchN2(int *res, int *dat, int *node, int *edge, int *nr, int *nl) {
     }
 }
 
-
+// MPR reconstruction nicht immer gleiches ergebnis
 void fitchTriplet(int *res, int *dat1, int *dat2, int *dat3, int *nr) 
 {   
     int k; // ni,
@@ -424,6 +453,25 @@ void fitchTriplet(int *res, int *dat1, int *dat2, int *dat3, int *nr)
 
     for(k = 0; k < (*nr); k++)res[k] = v1[k] & v2[k]; // &v3[k];  
     for(k = 0; k < (*nr); k++)res[k] = res[k] & v3[k];  
+}
+
+
+void prepRooted(int *res, int *nr, int *kids){ //int *data1, 
+    fitchTriplet(res, &data1[*nr * (kids[0]-1L)], &data1[*nr * (kids[1]-1L)],  
+        &data1[*nr * (kids[2]-1L)], nr);
+}
+
+
+void C_MPR(int *res, int *nr, int *parent, int *kids, int *nl) { 
+    int p, k1, k2;
+    int i = *nl -1;    
+    while (i > 0L) {
+        p = parent[i] - 1L;
+        k1 = kids[i] - 1L;
+        k2 = kids[i-1L] - 1L;
+        fitchTriplet(&res[*nr * p], &data1[*nr* (k1)], &data1[*nr* (k2) ], &data2[*nr * p], nr);
+        i -= 2L;
+    }        
 }
 
 
@@ -515,6 +563,10 @@ SEXP FITCH345(SEXP nrx, SEXP node, SEXP edge, SEXP l, SEXP mx, SEXP ps){
     else return(pars); 
 }
 
+//, double *pvec
+
+
+
 
 void FN4(int *dat, int *res, int *nr, int *node, int *edge, int *nl, int *pc, double *weight, double *tmpvec, double *pvec) { 
     int i=0L, ni, le, ri;
@@ -523,12 +575,12 @@ void FN4(int *dat, int *res, int *nr, int *node, int *edge, int *nl, int *pc, do
         le = edge[i] - 1L;
         ri = edge[i+1L] - 1L;
         if(pc[i+1L]==0L){
-	    pvec[ni] = tmpvec[le] + tmpvec[ri];
-	    fitch54(&res[ni * (*nr)], &dat[(edge[i]-1L) * (*nr)], &dat[ri * (*nr)], nr, weight, &pvec[ni]);              
+	        pvec[ni] = tmpvec[le] + tmpvec[ri];
+	        fitch54(&res[ni * (*nr)], &dat[(edge[i]-1L) * (*nr)], &dat[ri * (*nr)], nr, weight, &pvec[ni]);              
         }    
         else{ 
             pvec[ni] = tmpvec[le] + pvec[ri];
-	    fitch54(&res[ni * (*nr)], &dat[le * (*nr)], &res[ri * (*nr)], nr, weight, &pvec[ni]);   
+	        fitch54(&res[ni * (*nr)], &dat[le * (*nr)], &res[ri * (*nr)], nr, weight, &pvec[ni]);   
         }
         i++;
         i++;

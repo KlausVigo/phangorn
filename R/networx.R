@@ -25,10 +25,11 @@ as.matrix.splits <- function(x, zero.print = 0L, one.print=1L, ...){
 
 
 as.Matrix.splits <- function(x, ...){
+    labels = attr(x, "labels")
     l = length(x)
     j = unlist(x)
     i = rep(1:l, sapply(x, length))
-    sparseMatrix(i,j) # ,x = rep(1L, length(i))
+    sparseMatrix(i,j, x = rep(1L, length(i)), dimnames = list(NULL, labels)) # included x und labels
 }
 
 
@@ -52,6 +53,54 @@ print.splits <- function (x, maxp = getOption("max.print"),
 }
 
 
+orderSplitLabel = function(x, order){
+    label = attr(x, "labels")
+    nTips = length(label)
+    ord = match(label, order)
+    for(i in 1:length(x))
+        x[[i]] = sort(ord[x[[i]]])
+    attr(x, "labels") = label[ord]
+    SHORTwise(x, nTips)
+}
+
+
+optCycle <- function(splits, tree){
+    tips = tree$tip.label
+    tree = reorder(tree)
+    nodes = sort(unique(tree$edge[,1]))
+    
+    M = as.matrix(splits)
+    
+    l = as.integer(nrow(M))
+    m = as.integer(ncol(M))
+
+    tmp = tree$edge[,2]
+    tmp = tmp[tmp<=m]
+
+    start <- .C("countCycle", M[, tmp], l, m, integer(1))[[4]]
+#  print(start)  
+    best = start
+    eps = 1
+    if(eps>0){
+        for(i in 1:length(nodes)){
+           tmptree = rotate(tree, nodes[i])
+           tmp = tmptree$edge[,2]
+           tmp = tmp[tmp<=m]
+           tmpC <- .C("countCycle", M[, tmp], l, m, integer(1))[[4]]
+#           print(tmpC)
+           if(tmpC < best){
+              best <- tmpC
+              tree = tmptree
+           }
+        }
+        eps = start - best
+    }
+#    print(best)
+    tree # list(best, tree)
+}
+
+
+  
 c.splits <- function (..., recursive=FALSE) 
 {
     x <- list(...)
@@ -88,15 +137,15 @@ c.splits <- function (..., recursive=FALSE)
 # computes splits from phylo
 as.splits.phylo <- function(x, ...){
     result = bip(x)
-    edge.weights = numeric(max(x$edge))
-    edge.weights[x$edge[,2]] = x$edge.length
-    attr(result, "weights") = edge.weights
+    if(!is.null(x$edge.length)){
+        edge.weights = numeric(max(x$edge))
+        edge.weights[x$edge[,2]] = x$edge.length
+        attr(result, "weights") = edge.weights
+    }
     attr(result, "labels") <- x$tip
     class(result) = c('splits', 'prop.part')
     result 
 }
-
-
 
 
 # computes splits from multiPhylo object (e.g. bootstrap, MCMC etc.)
@@ -174,12 +223,15 @@ as.phylo.splits <- function (x, result = "phylo", ...)
     dimnames(dm2) = list(labels, labels)
     tree <- di2multi(NJ(dm2), tol = 1e-08)
     attr(tree, "order") = NULL
+    tree <- reorder(tree)    
+    tree <- optCycle(x, tree)
     tree <- reorder(tree, "postorder")
     if (result == "phylo") 
         return(tree)  
 #    tree = reroot(tree, Ancestors(tree, 1, "parent")) 
     spl = as.splits(tree)
     spl = SHORTwise(spl, nTips)
+    spl <- spl[tree$edge[,2]]
     list(tree = tree, index = tree$edge[, 2], split = spl, rest = x[-ind])
 }
 
@@ -221,18 +273,13 @@ compatible2 <- function (obj1, obj2=NULL)
     labels = attr(obj1, "labels")    
     l = length(labels)
     n = length(obj1)
-# use Matrix instead
-    bp1 = matrix(0L, n, l)
-    for (i in 1:n) bp1[i, obj1[[i]]] = 1L
+    bp1 = as.matrix(obj1)
     bp1[bp1[, 1] == 0L, ] = 1L - bp1[bp1[, 1] == 0L, ] 
     if(!is.null(obj2)){
         m = length(obj2) 
-        bp2 = matrix(0L, m, l)
-        for (i in 1:m) bp2[i, obj2[[i]]] = 1L
-
+        bp2 = as.matrix(obj2)
         labels2 = attr(obj2, "labels")
         bp2 = bp2[, match(labels2, labels), drop=FALSE]
-
         bp2[bp2[, 1] == 0L, ] = 1L - bp2[bp2[, 1] == 0L, ]
     }
     else bp2 = bp1
@@ -299,65 +346,64 @@ compatible3 <- function(x, y=NULL)
 #
 # networx
 #
-addEdge <- function(network, desc, split){
-    edge = network[[1]]$edge
-    parent = edge[,1]
-    child = edge[,2]
-    
-    l = length(attr(split, "labels"))
-    if(split[[1]][1]==1) split[[1]] <- c(1:l)[-split[[1]]] # ==1
-    
-    index = network[[2]]
-    ind = which(compatible2(split, desc[index]) == 1)
-    if(is.null(ind)) return(network)
-    add = TRUE
-    
-    while(add){
-        tmp = ind
-        for(i in ind){
-            tmp2 = which(compatible2(desc[index][i], desc[index]) == 1)
-            tmp = union(tmp, tmp2)
-        }
-        if(identical(ind, tmp)){add=FALSE}
-        ind=tmp 
-    }    
-    
-    oldNodes = unique(as.vector(edge[ind,]))
-    newNodes = (max(parent)+1L) : (max(parent)+length(oldNodes))
-    
-    ind2 = index[-ind]
-    edge2 = edge[-ind,, drop=FALSE] 
-    
-    for(i in 1:length(oldNodes)){
-        ind3 = which(edge2[,1] == oldNodes[i])
-        #        ind3 = which(edge2 == oldNodes[i],arr=TRUE)[,1]
-        for(j in ind3) {
-            if(any( desc[[ ind2[j] ]] %in% split[[1]])){
-                edge2[j,edge2[j,]==oldNodes[i]] = newNodes[i]
-            }
-        } 
+addEdge <- function(network, dm, nsplit, w0, nTips, x){ # desc, split, index, dm, l){
+  edge = network$edge
+  parent = edge[,1]
+  child = edge[,2]
+  
+  index = network$split
+  uindex = unique(index)
+  #  blub = match(index, uindex)
+  
+  ind = which(dm[index, nsplit]==1)
+  if(is.null(ind)) return(network)
+  add = TRUE
+  
+  while(add){
+    tmp = ind
+    for(i in ind){
+      tmp2 = which(dm[index[i], index] == 1) 
+      tmp = union(tmp, tmp2)      
+    }
+    if(identical(ind, tmp)){add=FALSE}
+    ind=tmp 
+  }    
+  
+  oldNodes = unique(as.vector(edge[ind,]))
+  newNodes = (max(parent)+1L) : (max(parent)+length(oldNodes))
+  
+  ind2 = index[-ind]
+  edge2 = edge[-ind,, drop=FALSE] 
+  
+  for(i in 1:length(oldNodes)){
+    ind3 = which(edge2[,1] == oldNodes[i])
+    #        ind3 = which(edge2 == oldNodes[i],arr=TRUE)[,1]
+    for(j in ind3) {
+      if(any( x[[ ind2[j] ]] %in% x[[nsplit]])){
+        edge2[j,edge2[j,]==oldNodes[i]] = newNodes[i]
+      }
     } 
-    edge[-ind,] = edge2
-    
-    #alle Splits verdoppeln
-    dSpl = edge[ind,]
-    for(i in 1:length(oldNodes)) dSpl[dSpl==oldNodes[i]] = newNodes[i]
-    edge = rbind(edge, dSpl, deparse.level = 0) # experimental: no labels
-    network[[1]]$edge.length = c(network[[1]]$edge.length, network[[1]]$edge.length[ind])   
-    index = c(index, index[ind])
-    
-    #neu zu alt verbinden   
-    edge = rbind(edge, cbind(oldNodes, newNodes), deparse.level = 0) #  rbind(edge, cbind(oldNodes, newNodes), deparse.level = 0)# experimental: no labels
-    network[[1]]$edge.length = c(network[[1]]$edge.length, rep(attr(split,"weights"), length(oldNodes)))
-    index = c(index, rep(max(index)+1, length(oldNodes)) )
-    network[[2]] = index
-    
-    network[[1]]$edge = edge
-    network[[1]]$Nnode = length(unique(edge[,1]))
-    
-    network[[3]]= c(desc, split)   #[length(sp)+1] = split
-    network   
+  } 
+  edge[-ind,] = edge2
+  
+  #alle Splits verdoppeln
+  dSpl = edge[ind,]
+  for(i in 1:length(oldNodes)) dSpl[dSpl==oldNodes[i]] = newNodes[i]
+  edge = rbind(edge, dSpl, deparse.level = 0) # experimental: no labels
+  network$edge.length = c(network$edge.length, network$edge.length[ind])   
+  index = c(index, index[ind])
+  
+  #neu zu alt verbinden   
+  edge = rbind(edge, cbind(oldNodes, newNodes), deparse.level = 0) #  rbind(edge, cbind(oldNodes, newNodes), deparse.level = 0)# experimental: no labels
+  network$edge.length = c(network$edge.length, rep(w0, length(oldNodes))) # w0 = attr(split,"weights")
+  #    index = c(index, rep(max(index)+1, length(oldNodes)) )
+  index = c(index, rep(nsplit, length(oldNodes)) )
+  network$edge = edge
+  network$Nnode = length(unique(edge[,1]))
+  network$split = index
+  network   
 }
+
 
 
 as.networx <- function (x, ...) 
@@ -368,58 +414,38 @@ as.networx <- function (x, ...)
 }
 
 
-as.networx.splitsNew <- function (x, ...) 
-{
-    tmp = as.phylo(x, "all")
-    obj = tmp[1:2]
-    nTips = length(obj[[1]]$tip.label)
-#    browser()    
-    x = SHORTwise(x, nTips)
-    splitsOld = SHORTwise(tmp[[3]], nTips)
-    oldInd = match(splitsOld, x)    
-    if (length(tmp[[4]]) > 0) {
-        splitsNew = SHORTwise(tmp[[4]], nTips)
-        ord <- order(colSums(compatible2(c(splitsOld, splitsNew), 
-                                         splitsNew)))
-        splitsNew = splitsNew[ord]
-        oldInd = c(oldInd, match(splitsNew, x))
-        for (i in 1:length(splitsNew)) {
-            tmp = addEdge(obj, splitsOld, splitsNew[i])
-            splitsOld = tmp[[3]]
-            obj = tmp[1:2]
-        }
-    }
-    res = obj[[1]]
-#    res$Nnode = max(res$edge) - nTips
-    res$Nnode = length(unique(res$edge[,1]))
-    res$split = oldInd[obj[[2]]]
-    class(res) = c("networx", "phylo")
-    res
+as.networx.splits <- function(x, ...){
+  label <- attr(x, "label")
+  weight <- attr(x, "weights")
+  nTips <- length(label)
+  if(!is.null(attr(x, "cycle"))){
+    tmp <- stree(length(label), tip.label=label)
+    tmp$edge[,2] <- as.integer(attr(x, "cycle"))
+  }
+  else tmp <- as.phylo(x) 
+  
+  dm <- as.matrix(compatible2(x))
+  
+  x <- SHORTwise(x, nTips)
+  sp <- as.splits(tmp)[tmp$edge[,2]]
+  sp <- SHORTwise(sp, nTips)
+  
+  ll <- sapply(x, length)
+  ind <- match(sp, x)
+  ind2 = union(ind, which(ll==0)) # which(duplicated(x))
+  
+  tmp$split = ind
+  ord <- order(colSums(dm))
+  ord <- setdiff(ord, ind2)
+  #  browser()
+  if(length(ord)>0){    
+      for(i in 1:length(ord)){ 
+          tmp = addEdge(tmp, dm, ord[i], weight[ord[i]], nTips, x)
+      } 
+  }
+  class(tmp) = c("networx", "phylo")
+  tmp
 }
-
-
-
-as.networx.splits <- function(x, ...){   
-    tmp = as.phylo(x, "all")
-    obj = tmp[1:2]
-    splitsOld = tmp[[3]]
-    splitsNew = tmp[[4]]  
-    if(length(splitsNew)>0){  
-        ord <- order(colSums(compatible2(c(splitsOld,splitsNew), splitsNew)))
-        splitsNew = splitsNew[ord]        
-        for(i in 1:length(splitsNew)){
-            tmp = addEdge(obj, splitsOld, splitsNew[i])
-            splitsOld = tmp[[3]]
-            obj = tmp[1:2]    
-        } 
-    }
-    res = obj[[1]]    
-    nTips = length(res$tip.label)
-    res$split = obj[[2]]
-    class(res) = c("networx", "phylo")
-    res
-}
-
 
 #consensusNet <- function(obj, prob=.3, ...){
 #    l = length(obj)
@@ -567,7 +593,8 @@ edgeLabels <- function(xx,yy,zz=NULL, edge){
 }
 
 
-plot.networx = function(x, type="3D", show.tip.label=TRUE, show.edge.label=FALSE, show.nodes=FALSE, tip.color = "blue", edge.color="grey", edge.width = 3, 
+plot.networx = function(x, type="3D", show.tip.label=TRUE, show.edge.label=FALSE, show.nodes=FALSE, 
+    tip.color = "blue", edge.color="grey", edge.width = 3, 
     font = 3, cex = 1, ...){
     type = match.arg(type, c("3D", "2D")) 
     n = max(x$edge)
@@ -765,6 +792,7 @@ write.splits = function (x, file = "", zero.print = ".", one.print = "|", print.
     }
 }
  
+
 # tries to be compatible with splitstree and spectronet
 # FORMAT labels=no weights=yes confidences=no intervals=no;
 write.nexus.splits <- function (obj, file = "", weights=NULL) 
@@ -795,10 +823,8 @@ write.nexus.splits <- function (obj, file = "", weights=NULL)
 }
 
 
-
 read.nexus.splits <- function(file)
 {
-    
     X <- scan(file = file, what = "", sep = "\n", quiet = TRUE)
     semico <- grep(";", X)
     X=gsub("\\[(.*?)\\]", "", X) # get rid of comments
@@ -815,7 +841,9 @@ read.nexus.splits <- function(file)
     }
     sp <- grep("SPLITS;", X, ignore.case = TRUE)
     dims <- grep("DIMENSION", X, ignore.case = TRUE)
+    cyc <- grep("CYCLE", X, ignore.case = TRUE)
     matr <- grep("MATRIX", X, ignore.case = TRUE)
+    format <- grep("FORMAT", X, ignore.case = TRUE)
     start <- matr[matr>sp][1] + 1
     end <- semico[semico>start][1] -1 
     res <- vector("list", end - start + 1)
@@ -831,9 +859,18 @@ read.nexus.splits <- function(file)
         res[[j]] = as.numeric(na.omit(as.numeric(strsplit(tmp, " ")[[1]])))
         j=j+1
     }
+# read in cycle   
+    if(length(cyc)>0){
+        tmp = X[cyc]    
+        tmp = gsub("\\;", "", tmp)
+        tmp = gsub("CYCLE", "", tmp)
+        tmp = gsub("cycle", "", tmp)
+        tmp = sub("\\s+", "", tmp)
+        cyc = as.numeric(na.omit(as.numeric(strsplit(tmp, " ")[[1]])))
+    }
     attr(res, "labels") = x
     attr(res, "weights") = weights
-#    attr(res, "") = 
+    attr(res, "cycle") = cyc 
     class(res) = c("splits", "prop.part")
     res
 }
@@ -842,8 +879,6 @@ read.nexus.splits <- function(file)
 #
 # ancestral sequences ML
 #
-
-
 ancestral.pml <- function (object, type=c("ml", "bayes")) 
 {
     call <- match.call()

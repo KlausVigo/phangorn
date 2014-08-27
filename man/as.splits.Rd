@@ -4,6 +4,8 @@
 \alias{as.splits.phylo}
 \alias{as.splits.multiPhylo}
 \alias{as.matrix.splits}
+\alias{as.Matrix}
+\alias{as.Matrix.splits}
 \alias{print.splits}
 \alias{write.splits}
 \alias{allSplits}
