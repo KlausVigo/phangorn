@@ -1,10 +1,18 @@
 useDynLib(phangorn, .registration=TRUE)
 
-importFrom(ape, as.DNAbin, as.phylo, plot.phylo, as.prop.part)
+importFrom(ape, as.DNAbin, as.phylo, plot.phylo, as.prop.part, nj,old2new.phylo,
+    new2old.phylo, is.rooted, unroot, root, is.binary.tree, as.alignment,
+    di2multi, multi2di, .uncompressTipLabel, .compressTipLabel, prop.part, 
+    postprocess.prop.part, speciesTree, plotPhyloCoor, cladogram.plot, phylogram.plot,
+    node.depth.edgelength, drop.tip, stree, rtree, is.ultrametric, .PlotPhyloEnv,
+    nodelabels. edgelabels, BOTHlabels, read.nexus.data, write.nexus.data, 
+    read.dna, write.dna, reorder.phylo, dist.nodes, collapse.singles)
 importFrom(Matrix, Matrix, sparseMatrix, spMatrix)
 importFrom(igraph, graph, graph.adjacency, layout.kamada.kawai, set.edge.attribute, vcount, as.igraph) 
 importFrom(stats, AIC, logLik, reorder) 
 importFrom(fastmatch, fmatch)
+importFrom(rgl, open3d, segments3d, spheres3d, rgl.texts)
+importFrom(parallel, mclapply)
 
 export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UNJ, PNJ, 
     phyDat, read.phyDat, write.phyDat, as.Matrix, as.phyDat, as.splits, as.networx,

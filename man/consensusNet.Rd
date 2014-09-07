@@ -40,6 +40,7 @@ Holland B.R., Huber K.T., Moulton V., Lockhart P.J. (2004) Using consensus netwo
 \code{\link{splitsNetwork}}, \code{\link{lento}}, \code{\link{distanceHadamard}}
 }
 \examples{
+library(rgl)
 data(Laurasiatherian)
 set.seed(1)
 bs <- bootstrap.phyDat(Laurasiatherian, FUN = function(x)nj(dist.hamming(x)), 
