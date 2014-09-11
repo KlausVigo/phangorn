@@ -76,6 +76,19 @@ SHORTwise <- function (x, nTips, delete=FALSE)
 }
 
 
+ONEwise <- function (x, nTips=NULL) 
+{
+    if(is.null(nTips))nTips <- length(x[[1L]])
+    v <- 1:nTips
+    for (i in 2:length(x)) {
+        y <- x[[i]]
+        if (y[1] != 1) 
+            x[[i]] <- v[-y]
+    }
+    x
+}
+
+
 treedist <- function (tree1, tree2, check.labels=TRUE) 
 {
     tree1 = unroot(tree1)

@@ -40,7 +40,6 @@ Holland B.R., Huber K.T., Moulton V., Lockhart P.J. (2004) Using consensus netwo
 \code{\link{splitsNetwork}}, \code{\link{lento}}, \code{\link{distanceHadamard}}
 }
 \examples{
-library(rgl)
 data(Laurasiatherian)
 set.seed(1)
 bs <- bootstrap.phyDat(Laurasiatherian, FUN = function(x)nj(dist.hamming(x)), 
@@ -48,15 +47,12 @@ bs <- bootstrap.phyDat(Laurasiatherian, FUN = function(x)nj(dist.hamming(x)),
 class(bs) <- 'multiPhylo'
 cnet = consensusNet(bs, .3)
 plot(cnet, show.edge.label=TRUE)
+\dontrun{
+library(rgl)
 open3d()
 plot(cnet, show.tip.label=FALSE, show.nodes=TRUE)
-#plot(cnet, type = "2D", show.edge.label=TRUE)
-set.seed(1)
-tree1 = rtree(20, rooted=FALSE)
-sp = as.splits(rNNI(tree1, n=10))
-net = as.networx(sp)
-open3d()
-plot(net)
+plot(cnet, type = "2D", show.edge.label=TRUE)
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

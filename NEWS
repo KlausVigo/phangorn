@@ -4,10 +4,10 @@ NEW FEATURES
 
     o pmlPart got an argument rooted to handle rooted trees 
 
-    o simSeq is now a generic function simplifying for 
+    o simSeq is now a generic function. This simplifies the  
 
-      example parametric bootstrap
-
+      construcion of parametric bootstrap test
+ 
     o SOWH.test (still experimental)
 
 BUG FIXES
@@ -17,8 +17,6 @@ BUG FIXES
     o amino acid model "Blosum62" was not working
 
 OTHER CHANGES
-
-    o changed to license to GPL v3
 
     o improvements to read.nexus.splits, write.nexus.splits
 

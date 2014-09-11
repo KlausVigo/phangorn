@@ -5,7 +5,7 @@ importFrom(ape, as.DNAbin, as.phylo, plot.phylo, as.prop.part, nj,old2new.phylo,
     di2multi, multi2di, .uncompressTipLabel, .compressTipLabel, prop.part, 
     postprocess.prop.part, speciesTree, plotPhyloCoor, cladogram.plot, phylogram.plot,
     node.depth.edgelength, drop.tip, stree, rtree, is.ultrametric, .PlotPhyloEnv,
-    nodelabels. edgelabels, BOTHlabels, read.nexus.data, write.nexus.data, 
+    nodelabels, edgelabels, BOTHlabels, read.nexus.data, write.nexus.data, 
     read.dna, write.dna, reorder.phylo, dist.nodes, collapse.singles)
 importFrom(Matrix, Matrix, sparseMatrix, spMatrix)
 importFrom(igraph, graph, graph.adjacency, layout.kamada.kawai, set.edge.attribute, vcount, as.igraph) 
