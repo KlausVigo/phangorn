@@ -62,6 +62,7 @@ Nixon, K. (1999) The Parsimony Ratchet, a New Method for Rapid Parsimony Analysi
 \author{Klaus Schliep \email{klaus.schliep@gmail.com}}
 \seealso{\code{\link{bab}}, \code{\link{ancestral.pml}}, \code{\link{nni}}, \code{\link{NJ}}, \code{\link{pml}}, \code{\link{getClans}} ,\code{\link{ancestral.pars}}, \code{\link{bootstrap.pml}}}
 \examples{
+set.seed(3)
 data(Laurasiatherian)
 dm = dist.logDet(Laurasiatherian)
 tree = NJ(dm)

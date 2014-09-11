@@ -686,7 +686,8 @@ modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80",
     }
     eval.success <- FALSE
     if (!eval.success & multicore) {
-        if (!require(parallel) || .Platform$GUI != "X11") {
+# !require(parallel) ||         
+        if (.Platform$GUI != "X11") {
             warning("package 'parallel' not found or GUI is used, \n      analysis is performed in serial")
         }
         else {
@@ -3999,7 +4000,8 @@ bootstrap.pml = function (x, bs = 100, trees = TRUE, multicore=FALSE,  ...)
     }
     eval.success <- FALSE
     if (!eval.success & multicore) {
-        if (!require(parallel) || .Platform$GUI!="X11") {
+#  !require(parallel) ||      
+        if (.Platform$GUI!="X11") {
             warning("package 'parallel' not found or GUI is used, 
             bootstrapping is performed in serial")
         } else {       
@@ -4029,8 +4031,9 @@ bootstrap.phyDat <- function (x, FUN, bs = 100, multicore=FALSE, ...)
          FUN(data,...)        
     }
     eval.success <- FALSE
-    if (!eval.success & multicore) {         
-        if (!require(parallel) || .Platform$GUI!="X11") {
+    if (!eval.success & multicore) {   
+# !require(parallel) ||        
+        if (.Platform$GUI!="X11") {
             warning("package 'parallel' not found or GUI is used, 
             bootstrapping is performed in serial")
         } else { 
