@@ -465,14 +465,14 @@ allKids(tree)
 */
 
 void AllKids(int *children, int *parents, int *nTips, int *nNode, int *lp, int *kids, int *lkids, int *pkids){
-    int i, j, k, l=0L, m=nNode[0], *tab, p;   
+    int i, k, m=nNode[0], p; // l=0L, *tab , j 
     int n=lp[0]; 
     for(i=0; i<m; i++){
         pkids[i]=0L;
         lkids[i]=0L;
     }
     for(i=0; i<lp[0]; i++)kids[i]=0L;
-    j=0;
+//    j=0;
     p = 0L;
     for(i=0; i<n; i++){
         p = parents[i] - 1L - nTips[0];
@@ -877,6 +877,7 @@ SEXP C_bipart(SEXP parent, SEXP child, SEXP nTips, SEXP maxP){ //, SEXP Nnode){
 // Nnode  
    PROTECT(ans = allocVector(VECSXP, nnode)); //INTEGER(Nnode)[0]));  
    p=INTEGER(parent)[0];
+   pi=INTEGER(parent)[1];
    k=0L;
    kl[p]=0;
    lch[p]=1;
