@@ -22,6 +22,8 @@ OTHER CHANGES
 
     o splitsNetwork got an additional argument splits
 
+    o help for consensusNet, as.splits, as.networx have been reorganised
+
     o treedist is much faster for larger trees 
 
     o some changes to keep R CMD check happy 

@@ -1,13 +1,20 @@
 \name{plot.networx}
 \alias{plot.networx}
+\alias{as.networx}
+\alias{as.networx.splits}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Plot phylogenetic networks
+Phylogenetic networks
 }
 \description{
+\code{networx} hold the information for a phylogenetic network 
+and are an generalisation of \code{phylo}. 
+\code{as.networx} convert \code{splits} objects into a  \code{networx} object. 
 \code{plot.networx} plot phylogenetic network or split graphs. 
 }
 \usage{
+as.networx(x, ...)
+\method{as.networx}{splits}(x, ...)
 \method{plot}{networx}(x, type="3D", show.tip.label=TRUE, show.edge.label=FALSE, 
     show.nodes=FALSE, tip.color="blue", edge.color="grey", edge.width=3, font=3, cex=1, 
     ...)
@@ -15,7 +22,7 @@ Plot phylogenetic networks
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{
-an object of class \code{"networx"}
+an object of class \code{"splits"} (as.networx) or \code{"networx"} (plot)
 }
   \item{type}{
 "3D" to plot using rgl or "2D" in the normal device. 
@@ -49,6 +56,9 @@ a numeric value giving the factor scaling of the labels.}
 Further arguments passed to or from other methods.
 }
 }
+\note{
+The internal representation is likely to change. 
+}
 \references{
 Dress, A.W.M. and Huson, D.H. (2004) Constructicting Splits Graphs \emph{IEEE/ACM Transactions on Computational Biology and Bioinformatics (TCBB)}, \bold{1(3)}, 109--115
 }
@@ -56,7 +66,7 @@ Dress, A.W.M. and Huson, D.H. (2004) Constructicting Splits Graphs \emph{IEEE/AC
 Klaus Schliep \email{klaus.schliep@gmail.com}
 }
 \seealso{
-\code{\link{consensusNet}}, \code{\link{hadamard}}, \code{\link{distanceHadamard}}, \code{\link{layout.kamada.kawai}}
+\code{\link{consensusNet}}, \code{\link{hadamard}}, \code{\link{distanceHadamard}}, \code{\link{layout.kamada.kawai}}, \code{\link[ape]{evonet}}
 }
 \examples{
 set.seed(1)

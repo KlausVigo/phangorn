@@ -14,4 +14,4 @@ Schliep K.P. 2011. phangorn: phylogenetic analysis in R. Bioinformatics, 27(4) 5
 
 License
 -------
-phangorn is licensed under the GPLv3.
+phangorn is licensed under the GPLv2.

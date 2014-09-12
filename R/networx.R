@@ -179,6 +179,11 @@ as.splits.prop.part <- function(x, ...){
 }
 
 
+as.splits.networx(x, ...){
+    if(!is.null(attr(x, "splits")))attr(x, "splits")
+    else warning("No split object included!")    
+}
+
 # now also defined in ape
 #as.prop.part <- function (x, ...){
 #    if (class(x) == "prop.part") return(x)
@@ -414,7 +419,7 @@ as.networx <- function (x, ...)
 }
 
 
-as.networx.splits <- function(x, ...){
+as.networx.splits <- function(x, include.splits=TRUE, ...){
   label <- attr(x, "label")
   weight <- attr(x, "weights")
   nTips <- length(label)
@@ -444,6 +449,7 @@ as.networx.splits <- function(x, ...){
           tmp = addEdge(tmp, dm, ord[i], weight[ord[i]], nTips, x)
       } 
   }
+  if(include.splits)attr(tmp, "splits") = x 
   class(tmp) = c("networx", "phylo")
   tmp
 }
@@ -465,6 +471,7 @@ consensusNet <- function (obj, prob = 0.3, ...)
     ind = (w/l) > prob
     spl = spl[ind]
     edge.labels = as.character(round((w/l)[ind]*100))
+    spl$confidences = edge.labels
     edge.labels[1:length(attr(spl,"labels"))]=""
     spl = as.networx(spl)
     spl$edge.labels = as.character(spl$edge.length / l * 100)

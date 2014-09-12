@@ -3,6 +3,7 @@
 \alias{as.prop.part.splits}
 \alias{as.splits.phylo}
 \alias{as.splits.multiPhylo}
+\alias{as.splits.networx}
 \alias{as.matrix.splits}
 \alias{as.Matrix}
 \alias{as.Matrix.splits}
@@ -57,7 +58,7 @@ The internal representation is likely to change.
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link{prop.part}}, \code{\link{lento}}, \code{\link{distanceHadamard}}
+\code{\link{prop.part}}, \code{\link{lento}}, \code{\link{distanceHadamard}}, \code{\link{as.networx}}
 }
 %% as.phylo.splits
 \examples{
