@@ -179,6 +179,11 @@ as.splits.prop.part <- function(x, ...){
 }
 
 
+as.splits.networx <- function(x, ...){
+    if(!is.null(attr(x, "splits")))attr(x, "splits")
+    else warning("No split object included!")    
+}
+
 # now also defined in ape
 #as.prop.part <- function (x, ...){
 #    if (class(x) == "prop.part") return(x)
@@ -414,7 +419,7 @@ as.networx <- function (x, ...)
 }
 
 
-as.networx.splits <- function(x, ...){
+as.networx.splits <- function(x, include.splits=TRUE, ...){
   label <- attr(x, "label")
   weight <- attr(x, "weights")
   nTips <- length(label)
@@ -444,6 +449,7 @@ as.networx.splits <- function(x, ...){
           tmp = addEdge(tmp, dm, ord[i], weight[ord[i]], nTips, x)
       } 
   }
+  if(include.splits)attr(tmp, "splits") = x 
   class(tmp) = c("networx", "phylo")
   tmp
 }
@@ -465,12 +471,37 @@ consensusNet <- function (obj, prob = 0.3, ...)
     ind = (w/l) > prob
     spl = spl[ind]
     edge.labels = as.character(round((w/l)[ind]*100))
+    attr(spl, "confidences") = round((w/l)[ind]*100)
     edge.labels[1:length(attr(spl,"labels"))]=""
     spl = as.networx(spl)
     spl$edge.labels = as.character(spl$edge.length / l * 100)
     spl$edge.labels[spl$edge[,2]<=length(spl$tip.label)] = ""
     spl
 }
+
+
+# rename X to obj
+addConfidences <- function(X, phy){
+    tiplabel <- attr(X, "label")
+    ind <- match(tiplabel, phy$tip.label)
+    if (any(is.na(ind)) | length(tiplabel) != length(phy$tip.label)) 
+        stop("trees have different labels")
+    phy$tip.label <- phy$tip.label[ind]
+    ind2 <- match(1:length(ind), phy$edge[, 2])
+    phy$edge[ind2, 2] <- order(ind)
+    
+    spl <- as.splits(phy)
+    
+    nTips <- length(tiplabel)
+    spl <- phangorn:::SHORTwise(spl, nTips)
+    ind <- match(phangorn:::SHORTwise(X, nTips), spl)
+    pos <-  which(ind > nTips)
+    confidences <- numeric(length(X))
+    confidences[pos] <- phy$node.label[ind[pos] - nTips]
+    attr(X, "confidences") <- confidences
+    X  
+}
+
 
 
 reorder.networx <- function (x, order = "cladewise", ...) 

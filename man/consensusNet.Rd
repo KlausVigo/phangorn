@@ -1,18 +1,17 @@
 \name{consensusNet}
 \alias{consensusNet}
-\alias{as.networx}
-\alias{as.networx.splits}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
+Computes a conensusNetwork from a list of trees
 Computes a \code{networx} object from a collection of splits.
 }
 \description{
+Computes a consensusNetwork, i.e. an object of class \code{networx} from a list of trees,  i.e. an class of class \code{multiPhylo}.
 Computes a \code{networx} object from a collection of splits.
 }
 \usage{
 consensusNet(obj, prob=.3, ...)
-as.networx(x, ...)
-\method{as.networx}{splits}(x, ...)
+
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -22,14 +21,12 @@ as.networx(x, ...)
   \item{\dots}{Further arguments passed to or from other methods.}
 }
 \value{
-\code{as.networx} returns an object of class networx. 
+\code{consensusNet} returns an object of class networx. 
 This is just an intermediate to plot phylogenetic networks with igraph.   
 }
 \author{Klaus Schliep \email{klaus.schliep@gmail.com}}
 
-\note{
-The internal representation is likely to change. 
-}
+
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
@@ -37,7 +34,7 @@ The internal representation is likely to change.
 Holland B.R., Huber K.T., Moulton V., Lockhart P.J. (2004) Using consensus networks to visualize contradictory evidence for species phylogeny. \emph{Molecular Biology and Evolution}, \bold{21}, 1459--61
 }
 \seealso{
-\code{\link{splitsNetwork}}, \code{\link{lento}}, \code{\link{distanceHadamard}}
+\code{\link{splitsNetwork}}, \code{\link{lento}}, \code{\link{distanceHadamard}}, \code{\link{plot.networx}}
 }
 \examples{
 data(Laurasiatherian)

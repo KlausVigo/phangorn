@@ -20,8 +20,12 @@ SOWH.test(x, n = 100, restricted = list(optNni=FALSE), optNni=TRUE, ...)
   \code{...}.
 }
 \references{
-  Goldman, N., Anderson, J. P., and Rodrigo, A. G. (2000) Likelihood
-  -based tests of topologies in phylogenetics. \emph{Systematic Biology} \bold{49} 652-670.
+Goldman, N., Anderson, J. P., and Rodrigo, A. G. (2000) Likelihood
+-based tests of topologies in phylogenetics. \emph{Systematic Biology} \bold{49}    652-670.
+  
+Swofford, D.L., Olsen, G.J.,  Waddell, P.J. and Hillis, D.M. (1996) 
+Phylogenetic Inference in Hillis, D.M., Moritz, C. and Mable, B.K. (Eds.)
+\emph{Molecular Systematics} (2nd ed.) 407-514, Sunderland, MA: Sinauer
 }
 \author{Klaus Schliep \email{klaus.schliep@gmail.com}}
 \seealso{

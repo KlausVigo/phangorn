@@ -18,17 +18,23 @@ BUG FIXES
 
 OTHER CHANGES
 
-    o improvements to read.nexus.splits, write.nexus.splits
+    o improvements to read.nexus.splits, write.nexus.splits to 
+
+      be more consistant with splitstree
 
     o splitsNetwork got an additional argument splits
 
+    o help for consensusNet, as.splits, as.networx have been reorganised
+
+      and improved
+
     o treedist is much faster for larger trees 
 
-    o some changes to keep R CMD check happy 
+    o several changes to keep R CMD check happy 
 
     o a development version phangorn is now available on github
 
-      KlausVigo/phangorn
+      https://github.com/KlausVigo/phangorn.git
 
  
 

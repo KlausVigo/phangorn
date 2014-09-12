@@ -3,6 +3,7 @@
 \alias{as.prop.part.splits}
 \alias{as.splits.phylo}
 \alias{as.splits.multiPhylo}
+\alias{as.splits.networx}
 \alias{as.matrix.splits}
 \alias{as.Matrix}
 \alias{as.Matrix.splits}
@@ -12,6 +13,8 @@
 \alias{compatible}
 \alias{write.nexus.splits}
 \alias{read.nexus.splits}
+\alias{as.phylo.splits}
+\alias{addConfidences}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Splits representation of graphs and trees.
@@ -30,6 +33,7 @@ compatible(obj)
 allSplits(k, labels = NULL)
 write.nexus.splits(obj, file="", weights=NULL)
 read.nexus.splits(file)
+addConfidences(X, phy)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -43,6 +47,8 @@ read.nexus.splits(file)
   \item{labels}{names of taxa.}   
   \item{file}{ a file name.}
   \item{weights}{ Edge weights.}
+  \item{phy}{An object of class phylo or multiPhylo.}
+  \item{X}{An object of class splits.}
 }
 \value{
 \code{as.splits} returns an object of class splits, which is mainly a list of splits and some attributes.
@@ -57,7 +63,7 @@ The internal representation is likely to change.
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link{prop.part}}, \code{\link{lento}}, \code{\link{distanceHadamard}}
+\code{\link{prop.part}}, \code{\link{lento}}, \code{\link{distanceHadamard}}, \code{\link{as.networx}}
 }
 %% as.phylo.splits
 \examples{
