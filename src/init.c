@@ -3,6 +3,7 @@
 
 
 void countCycle(int *M, int *l, int *m, int *res);
+void countCycle2(int *M, int *l, int *m, int *res);
 
 /* called in fitch.R */
 void fitch_free();
@@ -161,7 +162,8 @@ R_CallMethodDef callMethods[] = {
      
 R_CMethodDef cMethods[] = { 
   
-{"countCycle", (DL_FUNC) &countCycle, 4},  
+{"countCycle", (DL_FUNC) &countCycle, 4},
+{"countCycle2", (DL_FUNC) &countCycle2, 4},
 {"fitch_free", (DL_FUNC) &fitch_free, 0},  
 {"fitch_init", (DL_FUNC) &fitch_init, 5}, 
 {"fnhelp", (DL_FUNC) &fnhelp, 8},

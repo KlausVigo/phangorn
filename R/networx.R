@@ -100,6 +100,22 @@ optCycle <- function(splits, tree){
 }
 
 
+countCycles <- function(splits, tree=NULL, ord=NULL){
+    M = as.matrix(splits)
+    l = as.integer(nrow(M))
+    m = as.integer(ncol(M))
+    if(!is.null(tree)){
+        tree = reorder(tree)
+        nodes = sort(unique(tree$edge[,1]))
+        tmp = tree$edge[,2]
+        tmp = tmp[tmp<=m]
+        ord = tmp
+    }
+    res <- .C("countCycle2", M[, ord], l, m, integer(l))[[4]]
+#    which(res<=2) weakly compatible splits with ordering 
+    res
+}
+
   
 c.splits <- function (..., recursive=FALSE) 
 {
@@ -436,10 +452,19 @@ as.networx.splits <- function(x, include.splits=TRUE, ...){
   x <- SHORTwise(x, nTips)
   sp <- as.splits(tmp)[tmp$edge[,2]]
   sp <- SHORTwise(sp, nTips)
-  
+# which splits are in circular ordering  
+  circSplits = which(countCycles(x, tmp)==2)  
+  tmp = reorder(tmp)
+  cycord = tmp$edge[,2]
+  cycord = cycord[cycord <= nTips] 
+
+
+
   ll <- sapply(x, length)
   ind <- match(sp, x)
   ind2 = union(ind, which(ll==0)) # which(duplicated(x))
+
+   
   
   tmp$split = ind
   ord <- order(colSums(dm))
@@ -448,6 +473,7 @@ as.networx.splits <- function(x, include.splits=TRUE, ...){
   if(length(ord)>0){    
       for(i in 1:length(ord)){ 
           tmp = addEdge(tmp, dm, ord[i], weight[ord[i]], nTips, x)
+          class(tmp) = c("networx", "phylo")
       } 
   }
   if(include.splits)attr(tmp, "splits") = x 
