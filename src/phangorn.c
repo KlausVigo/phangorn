@@ -66,6 +66,22 @@ void countCycle(int *M, int *l, int *m, int *res){
 }
 
 
+void countCycle2(int *M, int *l, int *m, int *res){
+    int j, i, tmp;
+//    res[0]=0L;
+    for (i=0; i<*l; i++) {
+//        res[i] = 0L;
+        tmp = 0L;
+        if(M[i] != M[i + (*m -1) * *l])tmp=1L;
+        for (j=1; j<*m; j++) {
+            if(M[i + (j-1L)* *l] != M[i + j * *l])tmp++;            
+        }
+        res[i]=tmp;
+    }
+}
+
+
+
 void nodeH(int *edge, int *node, double *el, int *l,  double *res){
     int ei, i;
     for (i=*l-1L; i>=0; i--) {
@@ -814,6 +830,7 @@ SEXP C_bip(SEXP parent, SEXP child, SEXP nTips, SEXP maxP){ //, SEXP Nnode){
    PROTECT(ans = allocVector(VECSXP, mp)); //INTEGER(Nnode)[0])); 
    for(i=0; i<nt; i++) SET_VECTOR_ELT(ans, i, ScalarInteger(i+1L)); 
    p=INTEGER(parent)[0];
+   pi = INTEGER(parent)[1];
    k=0L;
    kl[p]=0;
    lch[p]=1;

@@ -100,6 +100,22 @@ optCycle <- function(splits, tree){
 }
 
 
+countCycles <- function(splits, tree=NULL, ord=NULL){
+    M = as.matrix(splits)
+    l = as.integer(nrow(M))
+    m = as.integer(ncol(M))
+    if(!is.null(tree)){
+        tree = reorder(tree)
+        nodes = sort(unique(tree$edge[,1]))
+        tmp = tree$edge[,2]
+        tmp = tmp[tmp<=m]
+        ord = tmp
+    }
+    res <- .C("countCycle2", M[, ord], l, m, integer(l))[[4]]
+#    which(res<=2) weakly compatible splits with ordering 
+    res
+}
+
   
 c.splits <- function (..., recursive=FALSE) 
 {
