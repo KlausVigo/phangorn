@@ -184,6 +184,7 @@ as.splits.networx <- function(x, ...){
     else warning("No split object included!")    
 }
 
+
 # now also defined in ape
 #as.prop.part <- function (x, ...){
 #    if (class(x) == "prop.part") return(x)
