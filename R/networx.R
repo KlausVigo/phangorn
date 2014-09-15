@@ -447,6 +447,8 @@ as.networx.splits <- function(x, include.splits=TRUE, ...){
   }
   else tmp <- as.phylo(x) 
   
+  tmp = reorder(tmp)
+
   dm <- as.matrix(compatible2(x))
   
   x <- SHORTwise(x, nTips)
@@ -454,18 +456,14 @@ as.networx.splits <- function(x, include.splits=TRUE, ...){
   sp <- SHORTwise(sp, nTips)
 # which splits are in circular ordering  
   circSplits = which(countCycles(x, tmp)==2)  
-  tmp = reorder(tmp)
+
   cycord = tmp$edge[,2]
   cycord = cycord[cycord <= nTips] 
-
-
 
   ll <- sapply(x, length)
   ind <- match(sp, x)
   ind2 = union(ind, which(ll==0)) # which(duplicated(x))
 
-   
-  
   tmp$split = ind
   ord <- order(colSums(dm))
   ord <- setdiff(ord, ind2)
