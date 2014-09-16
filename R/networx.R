@@ -447,7 +447,7 @@ as.networx.splits <- function(x, include.splits=TRUE, ...){
   }
   else tmp <- as.phylo(x) 
   
-  tmp = reorder(tmp)
+#  tmp = reorder(tmp)
 
   dm <- as.matrix(compatible2(x))
   
@@ -518,8 +518,8 @@ addConfidences <- function(X, phy){
     spl <- as.splits(phy)
     
     nTips <- length(tiplabel)
-    spl <- phangorn:::SHORTwise(spl, nTips)
-    ind <- match(phangorn:::SHORTwise(X, nTips), spl)
+    spl <- SHORTwise(spl, nTips)
+    ind <- match(SHORTwise(X, nTips), spl)
     pos <-  which(ind > nTips)
     confidences <- numeric(length(X))
     confidences[pos] <- phy$node.label[ind[pos] - nTips]
@@ -658,8 +658,8 @@ plot.networx = function(x, type="3D", show.tip.label=TRUE, show.edge.label=FALSE
     
     x = reorder(x)
     
-    adj = spMatrix(n, n, i = x$edge[,2], j = x$edge[,1], x = rep(1, length(x$edge.length)))
-    g = graph.adjacency(adj, "undirected")
+#    adj = spMatrix(n, n, i = x$edge[,2], j = x$edge[,1], x = rep(1, length(x$edge.length)))
+#    g = graph.adjacency(adj, "undirected")
     
 #    plot.success <- FALSE
 #    if (!plot.success & type=="3D") {
