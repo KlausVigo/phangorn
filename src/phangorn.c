@@ -412,8 +412,11 @@ SEXP AllChildren(SEXP children, SEXP parent, SEXP M){
     SEXP RESULT, TMP;
     tab = (int*)R_alloc(m, sizeof(int));
     for(i=0; i<m; i++)tab[i]=0L;
-    
-    j=0;
+//  tmp = tab
+
+
+/*
+    j=0;    
     p = INTEGER(parent)[0];
     for(i=0; i<n; i++){
         if(INTEGER(parent)[i]!=p){
@@ -422,6 +425,8 @@ SEXP AllChildren(SEXP children, SEXP parent, SEXP M){
         } 
         tab[j] += 1L;
     }
+*/
+    for(i=0; i<n; i++) tab[INTEGER(parent)[i] - 1L] ++;  // 7 Zeilen weniger      
     PROTECT(RESULT = allocVector(VECSXP, m));
 
     i=0L;    
