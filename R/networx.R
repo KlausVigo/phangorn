@@ -479,6 +479,16 @@ as.networx.splits <- function(x, include.splits=TRUE, ...){
   tmp
 }
 
+
+as.igraph.networx <- function(x, directed=FALSE){
+    graph(t(x$edge), directed=directed)
+}
+
+
+#findShortestPath <- 
+#   get.all.shortest.paths(g, 39, 41) 
+
+
 #consensusNet <- function(obj, prob=.3, ...){
 #    l = length(obj)
 #    spl = as.splits(obj)
