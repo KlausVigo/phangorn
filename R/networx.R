@@ -485,9 +485,9 @@ as.igraph.networx <- function(x, directed=FALSE){
 }
 
 
-#findShortestPath <- 
+# findShortestPath <- function(g, i, j)
+#   get.shortest.paths(g, 39, 41) 
 #   get.all.shortest.paths(g, 39, 41) 
-
 
 #consensusNet <- function(obj, prob=.3, ...){
 #    l = length(obj)

@@ -76,7 +76,7 @@ SHORTwise <- function (x, nTips, delete=FALSE)
 }
 
 
-ONEwise <- function (x, nTips=NULL) 
+oneWise <- function (x, nTips=NULL) 
 {
     if(is.null(nTips))nTips <- length(x[[1L]])
     v <- 1:nTips

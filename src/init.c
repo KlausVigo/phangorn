@@ -4,6 +4,7 @@
 
 void countCycle(int *M, int *l, int *m, int *res);
 void countCycle2(int *M, int *l, int *m, int *res);
+//void neworder_networx(int *n, int *e1, int *e2, int *N, int *neworder, int *order, int *degrmax);
 
 /* called in fitch.R */
 void fitch_free();
@@ -160,8 +161,9 @@ R_CallMethodDef callMethods[] = {
 //{"FNALL", (DL_FUNC) &FNALL, 12},
 //{"coph", (DL_FUNC) &coph, 7},
      
+//{"neworder_networx", (DL_FUNC) &neworder_networx, 7},       
+     
 R_CMethodDef cMethods[] = { 
-  
 {"countCycle", (DL_FUNC) &countCycle, 4},
 {"countCycle2", (DL_FUNC) &countCycle2, 4},
 {"fitch_free", (DL_FUNC) &fitch_free, 0},  
