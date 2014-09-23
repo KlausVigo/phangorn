@@ -8,8 +8,12 @@ importFrom(ape, as.DNAbin, as.phylo, plot.phylo, as.prop.part, nj,old2new.phylo,
     nodelabels, edgelabels, BOTHlabels, read.nexus.data, write.nexus.data, 
     read.dna, write.dna, reorder.phylo, dist.nodes, collapse.singles, rotate)
 importFrom(Matrix, Matrix, sparseMatrix, spMatrix)
+<<<<<<< HEAD
 importFrom(igraph, graph, graph.adjacency, layout.kamada.kawai, 
     get.shortest.paths, set.edge.attribute, vcount) 
+=======
+importFrom(igraph, graph, graph.adjacency, layout.kamada.kawai, set.edge.attribute, vcount) 
+>>>>>>> 3d716d72e4613d55c94e27dc941c8b93fbf4fb76
 importFrom(stats, AIC, logLik, reorder) 
 importFrom(fastmatch, fmatch)
 importFrom(rgl, open3d, segments3d, spheres3d, rgl.texts)
