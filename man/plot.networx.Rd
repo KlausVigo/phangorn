@@ -7,8 +7,8 @@
 Phylogenetic networks
 }
 \description{
-\code{networx} hold the information for a phylogenetic network 
-and are an generalisation of \code{phylo}. 
+A \code{networx} object hold the information for a phylogenetic network 
+and are an generalisation of \code{phylo}. Therefore some generic function for \code{phylo} objects will also work for \code{networx} objects. 
 \code{as.networx} convert \code{splits} objects into a  \code{networx} object. 
 \code{plot.networx} plot phylogenetic network or split graphs. 
 }
@@ -66,7 +66,7 @@ Dress, A.W.M. and Huson, D.H. (2004) Constructicting Splits Graphs \emph{IEEE/AC
 Klaus Schliep \email{klaus.schliep@gmail.com}
 }
 \seealso{
-\code{\link{consensusNet}}, \code{\link{hadamard}}, \code{\link{distanceHadamard}}, \code{\link{layout.kamada.kawai}}, \code{\link[ape]{evonet}}
+\code{\link{consensusNet}}, \code{\link{hadamard}}, \code{\link{distanceHadamard}}, \code{\link{layout.kamada.kawai}}, \code{\link[ape]{evonet}}, \code{\link[ape]{as.igraph}}
 }
 \examples{
 set.seed(1)

@@ -10,6 +10,8 @@ NEW FEATURES
  
     o SOWH.test (still experimental)
 
+    o plot.networx improved considerably and plots now planar graphs nicely
+
 BUG FIXES
 
     o fixed some bugs in ancestral.pars 

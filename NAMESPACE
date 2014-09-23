@@ -8,7 +8,8 @@ importFrom(ape, as.DNAbin, as.phylo, plot.phylo, as.prop.part, nj,old2new.phylo,
     nodelabels, edgelabels, BOTHlabels, read.nexus.data, write.nexus.data, 
     read.dna, write.dna, reorder.phylo, dist.nodes, collapse.singles, rotate)
 importFrom(Matrix, Matrix, sparseMatrix, spMatrix)
-importFrom(igraph, graph, graph.adjacency, layout.kamada.kawai, set.edge.attribute, vcount, as.igraph) 
+importFrom(igraph, graph, graph.adjacency, layout.kamada.kawai, 
+    get.shortest.paths, set.edge.attribute, vcount) 
 importFrom(stats, AIC, logLik, reorder) 
 importFrom(fastmatch, fmatch)
 importFrom(rgl, open3d, segments3d, spheres3d, rgl.texts)
@@ -25,7 +26,8 @@ export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UN
     lento, compatible, acgt2ry, ancestral.pars, ancestral.pml, CI, RI, getClans, getSlices,
     getClips, getDiversity, midpoint, pruneTree, acctran, getRoot, plotAnc, consensusNet, 
     bab, random.addition, diversity, baseFreq, densiTree, superTree, coalSpeciesTree, 
-    pml.fit, pml.init, pml.free, edQt, lli, cladePar, addConfidences, countCycles)
+    pml.fit, pml.init, pml.free, edQt, lli, cladePar, addConfidences, countCycles, 
+    SOWH.test, as.networx.splits, circNetwork, addEdgem)
 
 S3method('[', splits)          
 S3method(as.character, phyDat)
@@ -38,7 +40,7 @@ S3method(unique, phyDat)
 S3method(as.matrix, splits)
 S3method(as.Matrix, splits) 
 S3method(as.networx, splits)
-S3method(as.igraph, networx)
+#S3method(as.igraph, networx)
 S3method(as.phyDat, DNAbin)
 S3method(as.phyDat, alignment)
 S3method(as.phyDat, data.frame)

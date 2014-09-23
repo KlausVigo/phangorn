@@ -12,8 +12,11 @@ SOWH.test(x, n = 100, restricted = list(optNni=FALSE), optNni=TRUE, ...)
   \item{\dots}{Further arguments passed to \code{"optim.pml"}.}
 }
 \description{
-  This function computes the Swofford--Olsen--Waddell--Hillis (SOWH) test, a parametric bootstrap test.
-  The function is likely to be very slow. 
+This function computes the Swofford--Olsen--Waddell--Hillis (SOWH) test, a parametric bootstrap test. The function is computational very demanding and likely to be very slow. 
+}
+\details{
+\code{SOWH.test} is a parametric bootstrap test tocompare two trees. 
+It makes extensive use \code{simSeq} and \{optim.pml} and can take quite long.  
 }
 \value{
   a numeric vector with the P-value associated with each tree given in
@@ -29,7 +32,7 @@ Phylogenetic Inference in Hillis, D.M., Moritz, C. and Mable, B.K. (Eds.)
 }
 \author{Klaus Schliep \email{klaus.schliep@gmail.com}}
 \seealso{
-  \code{\link{pml}}, \code{\link{pmlPart}}, \code{\link{pmlCluster}}
+  \code{\link{pml}}, \code{\link{pmlPart}}, \code{\link{pmlCluster}}, \code{\link{simSeq}}
 }
 \examples{
 # in real analysis use larger n, e.g. 100

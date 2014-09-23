@@ -39,7 +39,8 @@ In fact it is possible to generate DNA, RNA, amino acid, or binary sequences.
 }
 \author{ Klaus Schliep \email{klaus.schliep@gmail.com}}
 
-\seealso{  \code{\link[phangorn]{phyDat}}, \code{\link[phangorn]{pml}}}
+\seealso{  \code{\link{phyDat}}, \code{\link{pml}},  \code{\link{SOWH.test}}  
+}
 \examples{
 tree = rtree(5)
 plot(tree)

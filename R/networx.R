@@ -427,6 +427,113 @@ addEdge <- function(network, dm, nsplit, w0, nTips, x){ # desc, split, index, dm
 }
 
 
+circNetwork <- function(x, ord=NULL, dm){
+    if(is.null(ord))ord = attr(x, "cycle")
+    weight <- attr(x, "weights")
+    
+    nTips = length(ord)
+    tmp = which(ord == 1)
+    if(tmp!=1) ord = c(ord[tmp:nTips], ord[1:(tmp-1)])
+    res = stree(nTips, tip.label = attr(x, "labels"))
+    attr(res, "order") = NULL
+    res$edge[, 2] = ord
+    
+#    x <- SHORTwise(x, nTips)
+#    dm <- as.matrix(compatible2(x))
+    
+#    res$edge.length=NULL
+    
+    l = sapply(x, length)
+    
+    tmp <- countCycles(x, ord=ord)
+    ind = which(tmp == 2 & l>1)
+    
+    index = match(as.splits(res)[res$edge[,2]], x)
+    
+    ind = ind[order(l[ind])]
+    
+    X = as.matrix(x)[,ord]
+    X = X[ind, ]
+
+    for(k in 1: length(ind)){
+        Vstart = ord[1]
+        Vstop = ord[nTips]
+        
+        ordStart = 1
+        ordStop = nTips
+        for(j in 2:nTips){
+            
+            if(X[k,j-1] < X[k,j]){ 
+                Vstart = ord[j]
+                ordStart = j                   
+            }                       
+            if(X[k,j-1] > X[k,j]){ 
+                Vstop = ord[j-1]
+                ordStop = j-1   
+            }    
+        } 
+        fromTo <- ordStart:ordStop
+        if(ordStart>ordStop) fromTo <- c(ordStart:nTips, 1:ordStop)
+        fromTo = ord[fromTo] 
+        
+        if(min(res$edge)==0) browser()      
+        g = graph(t(res$edge), directed=FALSE)
+#        g2= as.igraph.phylo(res)
+        sp2 = NULL
+        sp0 = NULL
+        for(i in 2:length(fromTo)){
+            sptmp = get.shortest.paths(g, fromTo[i-1], fromTo[i], 
+                                       output=c("epath"))$epath[[1]]
+            sp2 = c(sp2, sptmp[-c(1, length(sptmp))])
+            sp0 = c(sp0, sptmp)
+        }
+        sp0 = unique(sp0)
+        blub = which(dm[index[sp2], ind[k]]>0)
+        sp2 = sp2[blub]
+        
+        if(length(sp2)==0){
+            edge1 = unique(as.vector(res$edge[sp0,]))
+            edge2 = as.vector(res$edge[-sp0,])
+            asdf = edge1 %in% edge2
+            sp = edge1[asdf]
+        }
+        if(length(sp2)>0)  sp <- unique(as.vector(t(res$edge[sp2,])))
+        parent <- res$edge[,1]
+        child <- res$edge[,2]
+        
+        
+#        j = ord[which(X[k,]==1)]
+#        anc = unique(parent[match(j, child)])
+        maxVert = max(parent)
+        l = length(sp)
+        
+        newVert = (maxVert+1) : (maxVert+l)
+
+        sp01 = setdiff(sp0, sp2)
+        for(i in 1:l) res$edge[sp01,][res$edge[sp01,]==sp[i]] = newVert[i]
+        
+        newindex = rep(ind[k], l)        
+        if(length(sp)>1)newindex = c(index[sp2], newindex)
+        index = c(index, newindex)        
+        # connect vertices
+        newEdge = matrix(cbind(sp, newVert), ncol=2) 
+        if(length(sp)>1){
+            # copy edges
+            qwer = match(as.vector(res$edge[sp2,]), sp)
+            newEdge = rbind(matrix(newVert[qwer], ncol=2), newEdge)
+        }
+        res$edge = rbind(res$edge, newEdge)
+        if(length(index)!= nrow(res$edge))browser()
+        tmp = numeric(maxVert+l)
+        tmp[sp] = newVert
+        res$Nnode =  max(res$edge) - nTips
+    }
+    res$split = index 
+#    res$edge.length = weight[index] 
+    class(res) = c("networx", "phylo")
+    res    
+}
+
 
 as.networx <- function (x, ...) 
 {
@@ -449,40 +556,44 @@ as.networx.splits <- function(x, include.splits=TRUE, ...){
   
 #  tmp = reorder(tmp)
 
-  dm <- as.matrix(compatible2(x))
-  
+  dm <- as.matrix(compatible2(x)) 
   x <- SHORTwise(x, nTips)
-  sp <- as.splits(tmp)[tmp$edge[,2]]
-  sp <- SHORTwise(sp, nTips)
+
+#  sp <- as.splits(tmp)[tmp$edge[,2]]
+#  sp <- SHORTwise(sp, nTips)
 # which splits are in circular ordering  
   circSplits = which(countCycles(x, tmp)==2)  
 
-  cycord = tmp$edge[,2]
-  cycord = cycord[cycord <= nTips] 
+  c.ord = reorder(tmp)$edge[,2]
+  c.ord = c.ord[c.ord <= nTips] 
+
+  tmp = circNetwork(x, c.ord, dm)    
 
   ll <- sapply(x, length)
-  ind <- match(sp, x)
+  ind <- tmp$split     # match(sp, x)
   ind2 = union(ind, which(ll==0)) # which(duplicated(x))
 
-  tmp$split = ind
+#  tmp$split = ind
   ord <- order(colSums(dm))
   ord <- setdiff(ord, ind2)
-  #  browser()
+
   if(length(ord)>0){    
       for(i in 1:length(ord)){ 
           tmp = addEdge(tmp, dm, ord[i], weight[ord[i]], nTips, x)
           class(tmp) = c("networx", "phylo")
       } 
   }
+#  tmp$split <- tmp$Index
+  tmp$edge.length = weight[tmp$split]
   if(include.splits)attr(tmp, "splits") = x 
   class(tmp) = c("networx", "phylo")
   tmp
 }
 
 
-as.igraph.networx <- function(x, directed=FALSE){
-    graph(t(x$edge), directed=directed)
-}
+#as.igraph.networx <- function(x, directed=FALSE){
+#    graph(t(x$edge), directed=directed)
+#}
 
 
 # findShortestPath <- function(g, i, j)
@@ -505,10 +616,10 @@ consensusNet <- function (obj, prob = 0.3, ...)
     w = attr(spl, "weight")
     ind = (w/l) > prob
     spl = spl[ind]
-    edge.labels = as.character(round((w/l)[ind]*100))
-    attr(spl, "confidences") = round((w/l)[ind]*100)
-    edge.labels[1:length(attr(spl,"labels"))]=""
+#    edge.labels = as.character(round((w/l)[ind]*100))
+#    edge.labels[1:length(attr(spl,"labels"))]=""
     spl = as.networx(spl)
+    attr(spl, "confidences") = round((w/l)[ind]*100)
     spl$edge.labels = as.character(spl$edge.length / l * 100)
     spl$edge.labels[spl$edge[,2]<=length(spl$tip.label)] = ""
     spl
