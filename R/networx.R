@@ -480,9 +480,9 @@ as.networx.splits <- function(x, include.splits=TRUE, ...){
 }
 
 
-as.igraph.networx <- function(x, directed=FALSE){
-    graph(t(x$edge), directed=directed)
-}
+#as.igraph.networx <- function(x, directed=FALSE){
+#    graph(t(x$edge), directed=directed)
+#}
 
 
 # findShortestPath <- function(g, i, j)
