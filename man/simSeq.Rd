@@ -29,10 +29,11 @@ default is for nucleotide sequences, only used when type = "USER".}
 \item{\dots}{Further arguments passed to or from other methods.}
 }
 \details{
-\code{simSeq} simulates sequence alignments. So far rate variation 
-is not yet implemented, but one can combine different alignments 
-having their own rate.  
-In fact it is possible to generate DNA, RNA, amino acid, or binary sequences. 
+\code{simSeq} is now a generic function to simulate sequence alignments. 
+It is quite flexible and allows to generate DNA, RNA, amino acids or binary sequences. 
+It is possible to give a \code{pml} object as input simSeq return a \code{phyDat}
+from these model. 
+There is also a more low level version, which lacks rate variation, but one can combine different alignments having their own rate (see example).  
 }
 \value{
 \code{simSeq} returns an object of class phyDat.
@@ -42,6 +43,14 @@ In fact it is possible to generate DNA, RNA, amino acid, or binary sequences.
 \seealso{  \code{\link{phyDat}}, \code{\link{pml}},  \code{\link{SOWH.test}}  
 }
 \examples{
+\dontrun{
+data(Laurasiatherian)
+tree = nj(dist.ml(Laurasiatherian))
+fit = pml(tree, Laurasiatherian, k=4)
+fit = optim.pml(fit, optNni=TRUE, model="GTR", optGamma=TRUE)
+data = simSeq(fit)
+}
+
 tree = rtree(5)
 plot(tree)
 nodelabels()

@@ -16,7 +16,7 @@ This function computes the Swofford--Olsen--Waddell--Hillis (SOWH) test, a param
 }
 \details{
 \code{SOWH.test} is a parametric bootstrap test tocompare two trees. 
-It makes extensive use \code{simSeq} and \{optim.pml} and can take quite long.  
+It makes extensive use \code{simSeq} and \code{optim.pml} and can take quite long.  
 }
 \value{
   a numeric vector with the P-value associated with each tree given in
