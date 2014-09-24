@@ -367,7 +367,94 @@ compatible3 <- function(x, y=NULL)
 
 #
 # networx
-#
+#  w0 raus??
+addEdgeNew <- function(network, dm, nsplit, nTips, x, w0){ # desc, split, index, dm, l){
+    edge = network$edge
+    parent = edge[,1]
+    child = edge[,2]
+    
+    index = network$split
+    uindex = unique(index)
+    #  blub = match(index, uindex)
+    
+    x = oneWise(x, nTips)
+    
+    ind = which(dm[index, nsplit]==1)
+    if(length(ind)==0) return(network)
+    add = TRUE
+    
+    while(add){
+        tmp = ind
+        for(i in ind){
+            tmp2 = which(dm[index[i], index] == 1) 
+            tmp = union(tmp, tmp2)      
+        }
+        if(identical(ind, tmp)){add=FALSE}
+        ind=tmp 
+    }    
+    
+    
+    
+    oldNodes = unique(as.vector(edge[ind,]))
+    newNodes = (max(parent)+1L) : (max(parent)+length(oldNodes))
+    
+##########################################################
+
+   sp2 = ind
+   sp = unique(as.vector(t(network$edge[sp2,])))
+   maxVert = max(parent)
+   l = length(sp)
+   newVert = (maxVert+1) : (maxVert+l)    
+   
+   newindex = rep(nsplit, l)
+   if(length(sp)>1)newindex = c(index[sp2], newindex)
+   index = c(index, newindex)        
+# connect new and old vertices
+   newEdge = matrix(cbind(sp, newVert), ncol=2) 
+   if(length(sp)>1){
+       # copy edges
+       qwer = match(as.vector(netwerk$edge[sp2,]), sp)
+       newEdge = rbind(matrix(newVert[qwer], ncol=2), newEdge)
+   }
+
+###########################################################    
+    
+#    ind2 = index[-ind]
+#    edge2 = edge[-ind,, drop=FALSE] 
+    
+
+#############################
+    for(i in 1:length[ind]){
+        match(oldNodes, edge[,1])
+        ind3 = which(edge2[,1] == oldNodes[i])
+        for(j in ind3) {
+            if(any( x[[ ind2[j] ]] %in% x[[nsplit]])){
+                edge2[j,edge2[j,]==oldNodes[i]] = newNodes[i]
+            }
+        } 
+    } 
+##############################
+#    edge[-ind,] = edge2
+    
+#alle Splits verdoppeln
+#    dSpl = edge[ind,]
+#    for(i in 1:length(oldNodes)) dSpl[dSpl==oldNodes[i]] = newNodes[i]
+#    edge = rbind(edge, dSpl, deparse.level = 0) # experimental: no labels
+#    network$edge.length = c(network$edge.length, network$edge.length[ind])   
+#    index = c(index, index[ind])
+    
+#neu zu alt verbinden   
+#    edge = rbind(edge, cbind(oldNodes, newNodes), deparse.level = 0) #  rbind(edge, cbind(oldNodes, newNodes), deparse.level = 0)# experimental: no labels
+    
+
+    network$edge = rbind(network$edge, newEdge)
+#    index = c(index, rep(nsplit, length(oldNodes)) )
+    network$Nnode = length(unique(network$edge[,1]))
+    network$split = index
+    network   
+}
+
+
 addEdge <- function(network, dm, nsplit, w0, nTips, x){ # desc, split, index, dm, l){
   edge = network$edge
   parent = edge[,1]
@@ -438,8 +525,8 @@ circNetwork <- function(x, ord=NULL){
     res = stree(nTips, tip.label = attr(x, "labels"))
     res$edge[, 2] = ord
     
-    x <- phangorn:::SHORTwise(x, nTips)
-    dm <- as.matrix(phangorn:::compatible2(x))
+    x <- SHORTwise(x, nTips)
+    dm <- as.matrix(compatible2(x))
     
     res$edge.length=NULL
     
@@ -530,11 +617,10 @@ circNetwork <- function(x, ord=NULL){
             newEdge = rbind(matrix(newVert[qwer], ncol=2), newEdge)
         }
         
-        
         res$edge = rbind(res$edge, newEdge)
 #        if(length(index)!= nrow(res$edge))browser()
-        tmp = numeric(maxVert+l)
-        tmp[sp] = newVert
+#        tmp = numeric(maxVert+l)
+#        tmp[sp] = newVert
         
         res$Nnode =  max(res$edge) - nTips
         
@@ -542,7 +628,7 @@ circNetwork <- function(x, ord=NULL){
 #        plot(g)     
     }
     res$split = index 
-    res$edge.length = weight[index] 
+    res$edge.length = weight[index]  # ausserhalb
     class(res) = c("networx", "phylo")
     attr(res, "order") = NULL
     res    
@@ -587,7 +673,7 @@ as.networx.splits <- function(x, include.splits=TRUE, ...){
   c.ord = c.ord[c.ord <= nTips] 
 #browser()
   tmp = circNetwork(x, c.ord)  #dm   
-
+  attr(tmp, "order") = NULL
   ll <- sapply(x, length)
   ind <- tmp$split     # match(sp, x)
   ind2 = union(ind, which(ll==0)) # which(duplicated(x))

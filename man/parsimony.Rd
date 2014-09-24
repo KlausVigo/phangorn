@@ -52,7 +52,7 @@ acctran(tree, data)
   \code{acctran} returns a tree with edge length according to the ACCTRAN criterion. 
 }
 \details{
-The "SPR" rearrangements are so far only available for the "fitch" method so for "sankoff" only "NNI" are used.      
+The "SPR" rearrangements are so far only available for the "fitch" method, "sankoff" only uses "NNI". The "fitch" algorithm only works correct for binary trees. 
 }
 \references{
 Felsenstein, J. (2004). \emph{Inferring Phylogenies}. Sinauer Associates, Sunderland.
@@ -64,7 +64,7 @@ Nixon, K. (1999) The Parsimony Ratchet, a New Method for Rapid Parsimony Analysi
 \examples{
 set.seed(3)
 data(Laurasiatherian)
-dm = dist.logDet(Laurasiatherian)
+dm = dist.hamming(Laurasiatherian)
 tree = NJ(dm)
 parsimony(tree, Laurasiatherian)
 treeRA <- random.addition(Laurasiatherian)

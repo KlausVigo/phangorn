@@ -14,7 +14,7 @@ and are an generalisation of \code{phylo}. Therefore some generic function for \
 }
 \usage{
 as.networx(x, ...)
-\method{as.networx}{splits}(x, ...)
+\method{as.networx}{splits}(x, include.splits = TRUE, ...)
 \method{plot}{networx}(x, type="3D", show.tip.label=TRUE, show.edge.label=FALSE, 
     show.nodes=FALSE, tip.color="blue", edge.color="grey", edge.width=3, font=3, cex=1, 
     ...)
@@ -24,6 +24,10 @@ as.networx(x, ...)
   \item{x}{
 an object of class \code{"splits"} (as.networx) or \code{"networx"} (plot)
 }
+  \item{include.splits}{
+logical whether to include the \code{split} object into the networx. 
+}
+
   \item{type}{
 "3D" to plot using rgl or "2D" in the normal device. 
 }

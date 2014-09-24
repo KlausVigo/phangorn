@@ -17,7 +17,6 @@ consensusNet(obj, prob=.3, ...)
 \arguments{
   \item{obj}{An object of class multiPhylo.} 
   \item{prob}{the proportion a split has to be present in all trees to be represented in the network.} 
-  \item{x}{An object of class splits.}
   \item{\dots}{Further arguments passed to or from other methods.}
 }
 \value{
