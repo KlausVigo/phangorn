@@ -476,12 +476,12 @@ circNetwork <- function(x, ord=NULL){
         if(ordStart>ordStop) fromTo <- c(ordStart:nTips, 1:ordStop)
         fromTo = ord[fromTo] 
         
-        if(min(res$edge)==0) browser()      
+#        if(min(res$edge)==0) browser()      
         g = graph(t(res$edge), directed=FALSE)
-        g2= as.igraph.phylo(res)
+ #       g2= as.igraph.phylo(res)
         
-        print(k)
-        plot(g)
+#        print(k)
+#        plot(g)
         
         sp2 = NULL
         sp0 = NULL
@@ -532,126 +532,19 @@ circNetwork <- function(x, ord=NULL){
         
         
         res$edge = rbind(res$edge, newEdge)
-        if(length(index)!= nrow(res$edge))browser()
+#        if(length(index)!= nrow(res$edge))browser()
         tmp = numeric(maxVert+l)
         tmp[sp] = newVert
         
         res$Nnode =  max(res$edge) - nTips
         
-        g = graph(t(res$edge), directed=FALSE)
-        plot(g)     
+#        g = graph(t(res$edge), directed=FALSE)
+#        plot(g)     
     }
     res$split = index 
     res$edge.length = weight[index] 
     class(res) = c("networx", "phylo")
     attr(res, "order") = NULL
-    res    
-}
-
-circNetworkOld <- function(x, ord=NULL){
-    if(is.null(ord))ord = attr(x, "cycle")
-    weight <- attr(x, "weights")
-    dm <- as.matrix(compatible2(x)) 
-    nTips = length(ord)
-    tmp = which(ord == 1)
-    if(tmp!=1) ord = c(ord[tmp:nTips], ord[1:(tmp-1)])
-    res = stree(nTips, tip.label = attr(x, "labels"))
-    attr(res, "order") = NULL
-    res$edge[, 2] = ord
-    
-#    x <- SHORTwise(x, nTips)
-#    dm <- as.matrix(compatible2(x))
-    
-#    res$edge.length=NULL
-    
-    l = sapply(x, length)
-    
-    tmp <- countCycles(x, ord=ord)
-    ind = which(tmp == 2 & l>1)
-    
-    index = match(as.splits(res)[res$edge[,2]], x)
-    
-    ind = ind[order(l[ind])]
-    
-    X = as.matrix(x)[,ord]
-    X = X[ind, ]
-
-    for(k in 1: length(ind)){
-        Vstart = ord[1]
-        Vstop = ord[nTips]
-        
-        ordStart = 1
-        ordStop = nTips
-        for(j in 2:nTips){
-            
-            if(X[k,j-1] < X[k,j]){ 
-                Vstart = ord[j]
-                ordStart = j                   
-            }                       
-            if(X[k,j-1] > X[k,j]){ 
-                Vstop = ord[j-1]
-                ordStop = j-1   
-            }    
-        } 
-        fromTo <- ordStart:ordStop
-        if(ordStart>ordStop) fromTo <- c(ordStart:nTips, 1:ordStop)
-        fromTo = ord[fromTo] 
-        
-        if(min(res$edge)==0) browser()      
-        g = graph(t(res$edge), directed=FALSE)
-#        g2= as.igraph.phylo(res)
-        sp2 = NULL
-        sp0 = NULL
-        for(i in 2:length(fromTo)){
-            sptmp = get.shortest.paths(g, fromTo[i-1], fromTo[i], 
-                                       output=c("epath"))$epath[[1]]
-            sp2 = c(sp2, sptmp[-c(1, length(sptmp))])
-            sp0 = c(sp0, sptmp)
-        }
-        sp0 = unique(sp0)
-        blub = which(dm[index[sp2], ind[k]]>0)
-        sp2 = sp2[blub]
-        
-        if(length(sp2)==0){
-            edge1 = unique(as.vector(res$edge[sp0,]))
-            edge2 = as.vector(res$edge[-sp0,])
-            asdf = edge1 %in% edge2
-            sp = edge1[asdf]
-        }
-        if(length(sp2)>0)  sp <- unique(as.vector(t(res$edge[sp2,])))
-        parent <- res$edge[,1]
-        child <- res$edge[,2]
-        
-        
-#        j = ord[which(X[k,]==1)]
-#        anc = unique(parent[match(j, child)])
-        maxVert = max(parent)
-        l = length(sp)
-        
-        newVert = (maxVert+1) : (maxVert+l)
-
-        sp01 = setdiff(sp0, sp2)
-        for(i in 1:l) res$edge[sp01,][res$edge[sp01,]==sp[i]] = newVert[i]
-        
-        newindex = rep(ind[k], l)        
-        if(length(sp)>1)newindex = c(index[sp2], newindex)
-        index = c(index, newindex)        
-        # connect vertices
-        newEdge = matrix(cbind(sp, newVert), ncol=2) 
-        if(length(sp)>1){
-            # copy edges
-            qwer = match(as.vector(res$edge[sp2,]), sp)
-            newEdge = rbind(matrix(newVert[qwer], ncol=2), newEdge)
-        }
-        res$edge = rbind(res$edge, newEdge)
-        if(length(index)!= nrow(res$edge))browser()
-        tmp = numeric(maxVert+l)
-        tmp[sp] = newVert
-        res$Nnode =  max(res$edge) - nTips
-    }
-    res$split = index 
-#    res$edge.length = weight[index] 
-    class(res) = c("networx", "phylo")
     res    
 }
 
@@ -667,6 +560,8 @@ as.networx <- function (x, ...)
 as.networx.splits <- function(x, include.splits=TRUE, ...){
   label <- attr(x, "label")
   weight <- attr(x, "weights")
+  if(is.null(weight)) weight = rep(1, length(x))
+  attr(x, "weights") <- weight
   nTips <- length(label)
   if(!is.null(attr(x, "cycle"))){
 #    tmp <- stree(length(label), tip.label=label)
@@ -690,7 +585,7 @@ as.networx.splits <- function(x, include.splits=TRUE, ...){
   c.ord = reorder(tmp)$edge[,2]
 
   c.ord = c.ord[c.ord <= nTips] 
-browser()
+#browser()
   tmp = circNetwork(x, c.ord)  #dm   
 
   ll <- sapply(x, length)
@@ -737,7 +632,7 @@ consensusNet <- function (obj, prob = 0.3, ...)
 {
     l = length(obj)
     spl = as.splits(obj)
-    w = attr(spl, "weight")
+    w = attr(spl, "weights")
     ind = (w/l) > prob
     spl = spl[ind]
 #    edge.labels = as.character(round((w/l)[ind]*100))
@@ -1066,9 +961,9 @@ write.splits = function (x, file = "", zero.print = ".", one.print = "|", print.
         vnames = format(attr(x, "names"))
     }
     nam = FALSE
-    if (!is.null(attr(x, "weight"))) {
+    if (!is.null(attr(x, "weights"))) {
         w = TRUE
-        weight = format(attr(x, "weight"))
+        weight = format(attr(x, "weights"))
     }
     d = FALSE
     if (!is.null(attr(x, "data"))) {

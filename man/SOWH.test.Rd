@@ -15,7 +15,7 @@ SOWH.test(x, n = 100, restricted = list(optNni=FALSE), optNni=TRUE, ...)
 This function computes the Swofford--Olsen--Waddell--Hillis (SOWH) test, a parametric bootstrap test. The function is computational very demanding and likely to be very slow. 
 }
 \details{
-\code{SOWH.test} is a parametric bootstrap test tocompare two trees. 
+\code{SOWH.test} performs a parametric bootstrap test to compare two trees. 
 It makes extensive use \code{simSeq} and \code{optim.pml} and can take quite long.  
 }
 \value{
@@ -24,7 +24,7 @@ It makes extensive use \code{simSeq} and \code{optim.pml} and can take quite lon
 }
 \references{
 Goldman, N., Anderson, J. P., and Rodrigo, A. G. (2000) Likelihood
--based tests of topologies in phylogenetics. \emph{Systematic Biology} \bold{49}    652-670.
+-based tests of topologies in phylogenetics. \emph{Systematic Biology} \bold{49} 652-670.
   
 Swofford, D.L., Olsen, G.J.,  Waddell, P.J. and Hillis, D.M. (1996) 
 Phylogenetic Inference in Hillis, D.M., Moritz, C. and Mable, B.K. (Eds.)
