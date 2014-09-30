@@ -78,7 +78,6 @@ optCycle <- function(splits, tree){
     tmp = tmp[tmp<=m]
 
     start <- .C("countCycle", M[, tmp], l, m, integer(1))[[4]]
-#  print(start)  
     best = start
     eps = 1
     if(eps>0){
@@ -87,7 +86,6 @@ optCycle <- function(splits, tree){
            tmp = tmptree$edge[,2]
            tmp = tmp[tmp<=m]
            tmpC <- .C("countCycle", M[, tmp], l, m, integer(1))[[4]]
-#           print(tmpC)
            if(tmpC < best){
               best <- tmpC
               tree = tmptree
@@ -95,7 +93,6 @@ optCycle <- function(splits, tree){
         }
         eps = start - best
     }
-#    print(best)
     tree # list(best, tree)
 }
 
@@ -365,154 +362,59 @@ compatible3 <- function(x, y=NULL)
 }
     
 
-#
-# networx
-#  w0 raus??
-addEdgeNew <- function(network, dm, nsplit, nTips, x, w0){ # desc, split, index, dm, l){
-    edge = network$edge
-    parent = edge[,1]
-    child = edge[,2]
-    
+addEdge <- function(network, desc, spl){     
+    edge <- network$edge
+    parent <- edge[,1]
+    child <- edge[,2]
+    nTips <- length(network$tip.label)
+
+    desc2 = SHORTwise(desc, nTips)    
+    split <- desc2[spl]
+        
     index = network$split
-    uindex = unique(index)
-    #  blub = match(index, uindex)
-    
-    x = oneWise(x, nTips)
-    
-    ind = which(dm[index, nsplit]==1)
-    if(length(ind)==0) return(network)
+    ind = which(compatible2(split, desc2[index]) == 1)
+    if(is.null(ind)) return(network)
     add = TRUE
-    
+  
+    X = as.matrix(desc2)
+    rsX = rowSums(X)
+    z = X %*% X[spl,]
+    v = which((rsX == z)[index] == TRUE) 
+
     while(add){
         tmp = ind
         for(i in ind){
-            tmp2 = which(dm[index[i], index] == 1) 
-            tmp = union(tmp, tmp2)      
+            tmp2 = which(compatible2(desc[index][i], desc[index]) == 1)
+            tmp = union(tmp, tmp2)
         }
         if(identical(ind, tmp)){add=FALSE}
         ind=tmp 
     }    
-    
-    
-    
+  
     oldNodes = unique(as.vector(edge[ind,]))
     newNodes = (max(parent)+1L) : (max(parent)+length(oldNodes))
-    
-##########################################################
 
-   sp2 = ind
-   sp = unique(as.vector(t(network$edge[sp2,])))
-   maxVert = max(parent)
-   l = length(sp)
-   newVert = (maxVert+1) : (maxVert+l)    
-   
-   newindex = rep(nsplit, l)
-   if(length(sp)>1)newindex = c(index[sp2], newindex)
-   index = c(index, newindex)        
-# connect new and old vertices
-   newEdge = matrix(cbind(sp, newVert), ncol=2) 
-   if(length(sp)>1){
-       # copy edges
-       qwer = match(as.vector(netwerk$edge[sp2,]), sp)
-       newEdge = rbind(matrix(newVert[qwer], ncol=2), newEdge)
-   }
+    edge2 = edge[v,] 
 
-###########################################################    
-    
-#    ind2 = index[-ind]
-#    edge2 = edge[-ind,, drop=FALSE] 
-    
 
-#############################
-    for(i in 1:length[ind]){
-        match(oldNodes, edge[,1])
-        ind3 = which(edge2[,1] == oldNodes[i])
-        for(j in ind3) {
-            if(any( x[[ ind2[j] ]] %in% x[[nsplit]])){
-                edge2[j,edge2[j,]==oldNodes[i]] = newNodes[i]
-            }
-        } 
+    for(i in 1:length(oldNodes)){
+        edge2[edge2 == oldNodes[i]] = newNodes[i]
     } 
-##############################
-#    edge[-ind,] = edge2
-    
-#alle Splits verdoppeln
-#    dSpl = edge[ind,]
-#    for(i in 1:length(oldNodes)) dSpl[dSpl==oldNodes[i]] = newNodes[i]
-#    edge = rbind(edge, dSpl, deparse.level = 0) # experimental: no labels
-#    network$edge.length = c(network$edge.length, network$edge.length[ind])   
-#    index = c(index, index[ind])
-    
-#neu zu alt verbinden   
-#    edge = rbind(edge, cbind(oldNodes, newNodes), deparse.level = 0) #  rbind(edge, cbind(oldNodes, newNodes), deparse.level = 0)# experimental: no labels
-    
+    edge[v,] = edge2    
 
-    network$edge = rbind(network$edge, newEdge)
-#    index = c(index, rep(nsplit, length(oldNodes)) )
-    network$Nnode = length(unique(network$edge[,1]))
+  #alle Splits verdoppeln
+    dSpl = edge[ind,]
+    for(i in 1:length(oldNodes)) dSpl[dSpl==oldNodes[i]] = newNodes[i]
+    edge = rbind(edge, dSpl, deparse.level = 0) # experimental: no labels
+    index = c(index, index[ind])
+  #neu zu alt verbinden   
+    edge = rbind(edge, cbind(oldNodes, newNodes), deparse.level = 0) 
+    index = c(index, rep(max(index)+1, length(oldNodes)) )
     network$split = index
+    network$edge = edge
+    network$Nnode = max(edge) - nTips
     network   
 }
-
-
-addEdge <- function(network, dm, nsplit, w0, nTips, x){ # desc, split, index, dm, l){
-  edge = network$edge
-  parent = edge[,1]
-  child = edge[,2]
-  
-  index = network$split
-  uindex = unique(index)
-  #  blub = match(index, uindex)
-  
-  ind = which(dm[index, nsplit]==1)
-  if(length(ind)==0) return(network)
-  add = TRUE
-  
-  while(add){
-    tmp = ind
-    for(i in ind){
-      tmp2 = which(dm[index[i], index] == 1) 
-      tmp = union(tmp, tmp2)      
-    }
-    if(identical(ind, tmp)){add=FALSE}
-    ind=tmp 
-  }    
-  
-  oldNodes = unique(as.vector(edge[ind,]))
-  newNodes = (max(parent)+1L) : (max(parent)+length(oldNodes))
-  
-  ind2 = index[-ind]
-  edge2 = edge[-ind,, drop=FALSE] 
-  
-  for(i in 1:length(oldNodes)){
-    ind3 = which(edge2[,1] == oldNodes[i])
-    #        ind3 = which(edge2 == oldNodes[i],arr=TRUE)[,1]
-    for(j in ind3) {
-      if(any( x[[ ind2[j] ]] %in% x[[nsplit]])){
-        edge2[j,edge2[j,]==oldNodes[i]] = newNodes[i]
-      }
-    } 
-  } 
-  edge[-ind,] = edge2
-  
-  #alle Splits verdoppeln
-  dSpl = edge[ind,]
-  for(i in 1:length(oldNodes)) dSpl[dSpl==oldNodes[i]] = newNodes[i]
-  edge = rbind(edge, dSpl, deparse.level = 0) # experimental: no labels
-  network$edge.length = c(network$edge.length, network$edge.length[ind])   
-  index = c(index, index[ind])
-  
-  #neu zu alt verbinden   
-  edge = rbind(edge, cbind(oldNodes, newNodes), deparse.level = 0) #  rbind(edge, cbind(oldNodes, newNodes), deparse.level = 0)# experimental: no labels
-  network$edge.length = c(network$edge.length, rep(w0, length(oldNodes))) # w0 = attr(split,"weights")
-  #    index = c(index, rep(max(index)+1, length(oldNodes)) )
-  index = c(index, rep(nsplit, length(oldNodes)) )
-  network$edge = edge
-  network$Nnode = length(unique(edge[,1]))
-  network$split = index
-  network   
-}
-
 
 
 circNetwork <- function(x, ord=NULL){
@@ -524,28 +426,25 @@ circNetwork <- function(x, ord=NULL){
     if(tmp!=1) ord = c(ord[tmp:nTips], ord[1:(tmp-1)])
     res = stree(nTips, tip.label = attr(x, "labels"))
     res$edge[, 2] = ord
+    l = sapply(oneWise(x, nTips), length)
     
     x <- SHORTwise(x, nTips)
+    l2 = sapply(x, length)
     dm <- as.matrix(compatible2(x))
-    
     res$edge.length=NULL
-    
-    l = sapply(x, length)
-    
+
     tmp <- countCycles(x, ord=ord)
-    ind = which(tmp == 2 & l>1)
-    
+    ind = which(tmp == 2 & l2>1) # & l<nTips changed with ordering
     index = match(as.splits(res)[res$edge[,2]], x)
-    
     ind = ind[order(l[ind])]
-    
     X = as.matrix(x)[,ord]
+    Y = X    
+    rsY = rowSums(Y)
     X = X[ind, ]
     
     for(k in 1: length(ind)){
         Vstart = ord[1]
-        Vstop = ord[nTips]
-        
+        Vstop = ord[nTips]    
         ordStart = 1
         ordStop = nTips
         for(j in 2:nTips){
@@ -559,19 +458,17 @@ circNetwork <- function(x, ord=NULL){
                 ordStop = j-1   
             }    
         } 
+        
         fromTo <- ordStart:ordStop
         if(ordStart>ordStop) fromTo <- c(ordStart:nTips, 1:ordStop)
         fromTo = ord[fromTo] 
-        
-#        if(min(res$edge)==0) browser()      
+  
         g = graph(t(res$edge), directed=FALSE)
- #       g2= as.igraph.phylo(res)
-        
-#        print(k)
-#        plot(g)
-        
+
+        isChild = (rsY == (Y %*% X[k,]))[index]
         sp2 = NULL
         sp0 = NULL
+
         for(i in 2:length(fromTo)){
             sptmp = get.shortest.paths(g, fromTo[i-1], fromTo[i], 
                                        output=c("epath"))$epath[[1]]
@@ -581,17 +478,16 @@ circNetwork <- function(x, ord=NULL){
         sp0 = unique(sp0)
         blub = which(dm[index[sp2], ind[k]]>0)
         sp2 = sp2[blub]
-        
+
         if(length(sp2)==0){
-            
+            isChild = (rsY == (Y %*% X[k,]))[index]  
+            sp0 = which(isChild == TRUE)
             edge1 = unique(as.vector(res$edge[sp0,]))
             edge2 = as.vector(res$edge[-sp0,])
             asdf = edge1 %in% edge2
             sp = edge1[asdf]
-            
         }
-        if(length(sp2)>0)   sp = unique(as.vector(t(res$edge[sp2,])))
-        
+        if(length(sp2)>0)   sp = unique(as.vector(t(res$edge[sp2,])))     
         parent = res$edge[,1]
         child = res$edge[,2]    
         
@@ -601,11 +497,10 @@ circNetwork <- function(x, ord=NULL){
         maxVert = max(parent)
         l = length(sp)
         
-        newVert = (maxVert+1) : (maxVert+l)
-        
+        newVert = (maxVert+1) : (maxVert+l)      
         sp01 = setdiff(sp0, sp2)
-        for(i in 1:l) res$edge[sp01,][res$edge[sp01,]==sp[i]] = newVert[i]
-        
+        for(i in 1:l) res$edge[sp01,][res$edge[sp01,]==sp[i]] = newVert[i] 
+
         newindex = rep(ind[k], l)        
         if(length(sp)>1)newindex = c(index[sp2], newindex)
         index = c(index, newindex)        
@@ -617,16 +512,11 @@ circNetwork <- function(x, ord=NULL){
             newEdge = rbind(matrix(newVert[qwer], ncol=2), newEdge)
         }
         
-        res$edge = rbind(res$edge, newEdge)
-#        if(length(index)!= nrow(res$edge))browser()
-#        tmp = numeric(maxVert+l)
-#        tmp[sp] = newVert
-        
+        res$edge = rbind(res$edge, newEdge)      
         res$Nnode =  max(res$edge) - nTips
-        
-#        g = graph(t(res$edge), directed=FALSE)
-#        plot(g)     
+ 
     }
+    res$Nnode =  max(res$edge) - nTips
     res$split = index 
     res$edge.length = weight[index]  # ausserhalb
     class(res) = c("networx", "phylo")
@@ -649,6 +539,7 @@ as.networx.splits <- function(x, include.splits=TRUE, ...){
   if(is.null(weight)) weight = rep(1, length(x))
   attr(x, "weights") <- weight
   nTips <- length(label)
+  x <- oneWise(x, nTips) 
   if(!is.null(attr(x, "cycle"))){
 #    tmp <- stree(length(label), tip.label=label)
 #    tmp$edge[,2] <- as.integer(attr(x, "cycle"))  
@@ -658,41 +549,37 @@ as.networx.splits <- function(x, include.splits=TRUE, ...){
   attr(tmp, "order") = NULL
   tmp = reorder(tmp)   
 
-#  tmp = reorder(tmp)
-
   dm <- as.matrix(compatible2(x)) 
-  x <- SHORTwise(x, nTips)
+#  x <- SHORTwise(x, nTips)
 
-#  sp <- as.splits(tmp)[tmp$edge[,2]]
-#  sp <- SHORTwise(sp, nTips)
 # which splits are in circular ordering  
-  circSplits = which(countCycles(x, tmp)==2)  
+    circSplits = which(countCycles(x, tmp)==2)  
+    c.ord = reorder(tmp)$edge[,2]
+    c.ord = c.ord[c.ord <= nTips] 
+    tmp = circNetwork(x, c.ord)  
 
-  c.ord = reorder(tmp)$edge[,2]
-
-  c.ord = c.ord[c.ord <= nTips] 
-#browser()
-  tmp = circNetwork(x, c.ord)  #dm   
-  attr(tmp, "order") = NULL
-  ll <- sapply(x, length)
-  ind <- tmp$split     # match(sp, x)
-  ind2 = union(ind, which(ll==0)) # which(duplicated(x))
+    attr(tmp, "order") = NULL
+    ll <- sapply(x, length)
+    ind <- tmp$split     # match(sp, x)
+    ind2 = union(ind, which(ll==0)) # which(duplicated(x))
 
 #  tmp$split = ind
-  ord <- order(colSums(dm))
-  ord <- setdiff(ord, ind2)
+    ord <- order(colSums(dm))
+    ord <- setdiff(ord, ind2)
 
-  if(length(ord)>0){    
-      for(i in 1:length(ord)){ 
-          tmp = addEdge(tmp, dm, ord[i], weight[ord[i]], nTips, x)
-          class(tmp) = c("networx", "phylo")
-      } 
-  }
+    if(length(ord)>0){    
+        for(i in 1:length(ord)){ 
+            tmp = addEdge(tmp, x, ord[i])
+            class(tmp) = c("networx", "phylo")
+        } 
+    }
 #  tmp$split <- tmp$Index
-  tmp$edge.length = weight[tmp$split]
-  if(include.splits)attr(tmp, "splits") = x 
-  class(tmp) = c("networx", "phylo")
-  tmp
+    tmp$Nnode = max(tmp$edge) - nTips
+    tmp$edge.length = weight[tmp$split]
+    attr(x, "cycle") <- c.ord
+    if(include.splits)attr(tmp, "splits") = x 
+    class(tmp) = c("networx", "phylo")
+    tmp
 }
 
 
@@ -721,8 +608,6 @@ consensusNet <- function (obj, prob = 0.3, ...)
     w = attr(spl, "weights")
     ind = (w/l) > prob
     spl = spl[ind]
-#    edge.labels = as.character(round((w/l)[ind]*100))
-#    edge.labels[1:length(attr(spl,"labels"))]=""
     spl = as.networx(spl)
     attr(spl, "confidences") = round((w/l)[ind]*100)
     spl$edge.labels = as.character(spl$edge.length / l * 100)
