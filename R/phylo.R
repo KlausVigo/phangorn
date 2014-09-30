@@ -4042,6 +4042,7 @@ bootstrap.phyDat <- function (x, FUN, bs = 100, multicore=FALSE, ...)
         } 
     }
     if (!eval.success) res <- lapply(BS, fitPar, x, ...) 
+    if(class(res[[1]]) == "phylo") class(res) <- "multiPhylo"
     res 
 }
 

@@ -10,7 +10,9 @@ NEW FEATURES
  
     o SOWH.test (very experimental)
 
-    o plot.networx improved considerably and plots now planar graphs nicely
+    o as.networx and plot.networx improved considerably 
+
+      (often with less edges) and plots now planar graphs nicely
 
 BUG FIXES
 
