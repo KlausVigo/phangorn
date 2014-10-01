@@ -97,7 +97,7 @@ optCycle <- function(splits, tree){
 }
 
 
-countCycles <- function(splits, tree=NULL, ord=NULL){
+countCyclesOld <- function(splits, tree=NULL, ord=NULL){
     M = as.matrix(splits)
     l = as.integer(nrow(M))
     m = as.integer(ncol(M))
@@ -112,6 +112,17 @@ countCycles <- function(splits, tree=NULL, ord=NULL){
 #    which(res<=2) weakly compatible splits with ordering 
     res
 }
+
+
+countCycles <- function(splits, tree=NULL, ord=NULL){
+  M = as.matrix(splits)
+  l = as.integer(nrow(M))
+  m = as.integer(ncol(M))
+  if(!is.null(tree))  ord  = getOrdering(tree)
+  res <- .C("countCycle2", M[, ord], l, m, integer(l))[[4]]
+  res
+}
+
 
   
 c.splits <- function (..., recursive=FALSE) 
@@ -362,7 +373,8 @@ compatible3 <- function(x, y=NULL)
 }
     
 
-addEdge <- function(network, desc, spl){     
+addEdge <- function(network, desc, spl){
+    
     edge <- network$edge
     parent <- edge[,1]
     child <- edge[,2]
@@ -380,9 +392,16 @@ addEdge <- function(network, desc, spl){
     rsX = rowSums(X)
     z = X %*% X[spl,]
     v = which((rsX == z)[index] == TRUE) 
-    
-    g1 <- graph(t(edge[ind,]))
-    if(is.connected(g1))add=FALSE
+
+if(length(ind>0)){    
+    tmpV = unique(as.vector(edge[ind,]))
+    nV = numeric(max(tmpV))
+    nV[tmpV] = 1:length(tmpV)
+    g1 = edge[ind,, drop=FALSE]
+    g1[] = nV[edge[ind,]]
+    g1 <- graph(t(g1), directed=FALSE)
+}
+    if(is.connected(g1))print("connected")
 
     while(add){
         tmp = ind
@@ -422,6 +441,7 @@ addEdge <- function(network, desc, spl){
 
 circNetwork <- function(x, ord=NULL){
     if(is.null(ord))ord = attr(x, "cycle")
+    
     weight <- attr(x, "weights")
     if(is.null(weight)) weight = rep(1, length(x))
     nTips = length(ord)
@@ -536,6 +556,17 @@ as.networx <- function (x, ...)
 }
 
 
+getOrdering <- function(x){
+    tree = as.phylo(x)
+    nTips = length(tree$tip)
+    ord = reorder(tree)$edge[,2]
+    ord = ord[ord<=nTips]
+    ind = which(ord == 1L)
+    if(ind>1) ord = c(ord[ind:nTips], ord[c(1:(ind-1L))])
+    ord  
+}
+
+
 as.networx.splits <- function(x, only.cyclic=FALSE, include.splits=TRUE, ...){
   label <- attr(x, "label")
   weight <- attr(x, "weights")
@@ -546,19 +577,21 @@ as.networx.splits <- function(x, only.cyclic=FALSE, include.splits=TRUE, ...){
   if(!is.null(attr(x, "cycle"))){
 #    tmp <- stree(length(label), tip.label=label)
 #    tmp$edge[,2] <- as.integer(attr(x, "cycle"))  
-      tmp <- as.phylo(x)
+#      tmp <- as.phylo(x)     
+      c.ord <- attr(x, "cycle") 
   }
-  else tmp <- as.phylo(x)
-  attr(tmp, "order") = NULL
-  tmp = reorder(tmp)   
+#  else tmp <- as.phylo(x)
+   else c.ord <- getOrdering(x)
+#  attr(tmp, "order") = NULL
+#  tmp = reorder(tmp)   
 
   dm <- as.matrix(compatible2(x)) 
 #  x <- SHORTwise(x, nTips)
 
 # which splits are in circular ordering  
-    circSplits = which(countCycles(x, tmp)==2)  
-    c.ord = reorder(tmp)$edge[,2]
-    c.ord = c.ord[c.ord <= nTips] 
+    circSplits = which(countCycles(x, ord=c.ord)==2)  
+#    c.ord = reorder(tmp)$edge[,2]
+#    c.ord = c.ord[c.ord <= nTips] 
     tmp = circNetwork(x, c.ord)  
 
     attr(tmp, "order") = NULL
@@ -574,13 +607,15 @@ as.networx.splits <- function(x, only.cyclic=FALSE, include.splits=TRUE, ...){
     ll <- sapply(x, length)
     ind <- tmp$split     # match(sp, x)
     ind2 = union(ind, which(ll==0)) # which(duplicated(x))
-
+    ind2 = union(ind2, which(ll==nTips))
 #  tmp$split = ind
     ord <- order(colSums(dm))
     ord <- setdiff(ord, ind2)
-
+browser()
+print(ord)
     if(length(ord)>0){    
         for(i in 1:length(ord)){ 
+            browser()
             tmp = addEdge(tmp, x, ord[i])
             class(tmp) = c("networx", "phylo")
         } 
@@ -686,14 +721,14 @@ coords <- function(obj, dim="3D"){
     ind1 = which(!duplicated(obj$split))
 
     n = max(obj$edge)
-#    adj = Matrix::spMatrix(n, n, i = obj$edge[,2], j = obj$edge[,1], x = rep(1, length(obj$edge.length)))
-#    g = graph.adjacency(adj, "undirected")
+    adj = Matrix::spMatrix(n, n, i = obj$edge[,2], j = obj$edge[,1], x = rep(1, length(obj$edge.length)))
+    g = graph.adjacency(adj, "undirected")
 
-    g2 <- graph(t(obj$edge), directed=FALSE)
-    g2 <- set.edge.attribute(g, "weight", value=obj$edge.length)
+#    g2 <- graph(t(obj$edge), directed=FALSE)
+#    g2 <- set.edge.attribute(g, "weight", value=obj$edge.length)
 
     if(dim=="3D"){
-        coord <- layout.kamada.kawai(g2, dim=3)
+        coord <- layout.kamada.kawai(g, dim=3)
         k = matrix(0, max(obj$split), 3)
         for(i in ind1){
             tmp = coord[obj$edge[i, 2],] - coord[obj$edge[i, 1],]
@@ -710,7 +745,7 @@ coords <- function(obj, dim="3D"){
         }            
     }
     else{
-        coord <- layout.kamada.kawai(g2, dim=2)
+        coord <- layout.kamada.kawai(g, dim=2)
         k = matrix(0, max(obj$split), 2)
         for(i in ind1){
             tmp = coord[obj$edge[i, 2],] - coord[obj$edge[i, 1],]
