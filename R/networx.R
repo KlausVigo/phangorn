@@ -383,6 +383,7 @@ addEdge <- function(network, desc, spl){
     
     g1 <- graph(t(edge[ind,]))
     if(is.connected(g1))add=FALSE
+
     while(add){
         tmp = ind
         for(i in ind){
@@ -559,6 +560,7 @@ as.networx.splits <- function(x, only.cyclic=FALSE, include.splits=TRUE, ...){
     c.ord = reorder(tmp)$edge[,2]
     c.ord = c.ord[c.ord <= nTips] 
     tmp = circNetwork(x, c.ord)  
+
     attr(tmp, "order") = NULL
     if(only.cyclic){
         tmp$Nnode = max(tmp$edge) - nTips
@@ -584,7 +586,6 @@ as.networx.splits <- function(x, only.cyclic=FALSE, include.splits=TRUE, ...){
         } 
     }
 #  tmp$split <- tmp$Index
-#    tmp$split = index
     tmp$Nnode = max(tmp$edge) - nTips
     tmp$edge.length = weight[tmp$split]
     attr(x, "cycle") <- c.ord
