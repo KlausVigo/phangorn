@@ -373,8 +373,7 @@ compatible3 <- function(x, y=NULL)
 }
     
 
-addEdge <- function(network, desc, spl){
-    
+addEdge <- function(network, desc, spl){   
     edge <- network$edge
     parent <- edge[,1]
     child <- edge[,2]
@@ -393,39 +392,51 @@ addEdge <- function(network, desc, spl){
     z = X %*% X[spl,]
     v = which((rsX == z)[index] == TRUE) 
 
-if(length(ind>0)){    
-    tmpV = unique(as.vector(edge[ind,]))
-    nV = numeric(max(tmpV))
-    nV[tmpV] = 1:length(tmpV)
-    g1 = edge[ind,, drop=FALSE]
-    g1[] = nV[edge[ind,]]
-    g1 <- graph(t(g1), directed=FALSE)
-}
-    if(is.connected(g1))print("connected")
-
+    if(length(ind>0)){    
+        tmpV = unique(as.vector(edge[ind,]))
+        nV = numeric(max(tmpV))
+        nV[tmpV] = 1:length(tmpV)
+        g1 = edge[ind,, drop=FALSE]
+        g1[] = nV[edge[ind,]]
+        g1 <- graph(t(g1), directed=FALSE)
+        if(is.connected(g1))print("connected")
+        else{
+            plot(g1)
+            print("not connected")
+        }    
+    }
     while(add){
         tmp = ind
-        for(i in ind){
-            tmp2 = which(compatible2(desc[index][i], desc[index]) == 1)
+        for(i in ind){          
+            tmp2 = which(compatible2(desc2[index][i], desc2[index]) == 1)
             tmp = union(tmp, tmp2)
         }
-        if(identical(ind, tmp)){add=FALSE}
-        ind=tmp 
+        if(identical(ind, tmp)){
+            ind=tmp           
+            add=FALSE
+        }
+        ind=tmp
     }    
   
+
+
+#browser()  
+
     oldNodes = unique(as.vector(edge[ind,]))
-    newNodes = (max(parent)+1L) : (max(parent)+length(oldNodes))
+    mNodes = max(network$edge)
+    newNodes = (mNodes+1L) : (mNodes+length(oldNodes))
+
+# duplicated splits
+    dSpl = edge[ind,]
 
     edge2 = edge[v,] 
-
-
     for(i in 1:length(oldNodes)){
         edge2[edge2 == oldNodes[i]] = newNodes[i]
     } 
     edge[v,] = edge2    
 
   #alle Splits verdoppeln
-    dSpl = edge[ind,]
+#    dSpl = edge[ind,]
     for(i in 1:length(oldNodes)) dSpl[dSpl==oldNodes[i]] = newNodes[i]
     edge = rbind(edge, dSpl, deparse.level = 0) # experimental: no labels
     index = c(index, index[ind])
@@ -611,12 +622,15 @@ as.networx.splits <- function(x, only.cyclic=FALSE, include.splits=TRUE, ...){
 #  tmp$split = ind
     ord <- order(colSums(dm))
     ord <- setdiff(ord, ind2)
-browser()
-print(ord)
+#browser()
+#print(ord)
     if(length(ord)>0){    
         for(i in 1:length(ord)){ 
-            browser()
+#            browser()
             tmp = addEdge(tmp, x, ord[i])
+            tmp$edge.length = weight[tmp$split]
+            tmp$Nnode = max(tmp$edge) - nTips
+            tmp$edge.length = weight[tmp$split]
             class(tmp) = c("networx", "phylo")
         } 
     }
