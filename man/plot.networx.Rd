@@ -44,7 +44,7 @@ graph (defaults to \code{TRUE}, i.e. the labels are shown).
 \item{show.edge.label}{
 a logical indicating whether to show the tip labels on the graph.
 }
-\item{show.nodes}{
+\item{show.node.label}{
 a logical indicating whether to show the node labels (see example).
 }
 \item{show.nodes}{
