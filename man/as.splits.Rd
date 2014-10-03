@@ -34,7 +34,7 @@ compatible(obj)
 allSplits(k, labels = NULL)
 write.nexus.splits(obj, file="", weights=NULL)
 read.nexus.splits(file)
-addConfidences(X, phy)
+addConfidences(obj, phy)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -49,7 +49,6 @@ addConfidences(X, phy)
   \item{file}{ a file name.}
   \item{weights}{ Edge weights.}
   \item{phy}{An object of class phylo or multiPhylo.}
-  \item{X}{An object of class splits.}
 }
 \value{
 \code{as.splits} returns an object of class splits, which is mainly a list of splits and some attributes.

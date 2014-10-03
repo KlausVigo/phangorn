@@ -10,7 +10,7 @@ Bootstrap }
 \code{bootstrap.pml} performs (non-parametric) bootstrap analysis and \code{bootstrap.phyDat} produces a list of bootstrapped data sets. \code{plotBS} plots a phylogenetic tree with the with the bootstrap values assigned to the (internal) edges.}
 \usage{
 bootstrap.pml(x, bs = 100, trees = TRUE, multicore=FALSE, ...)
-bootstrap.phyDat(x, FUN, bs = 100, multicore=FALSE, ...)
+bootstrap.phyDat(x, FUN, bs = 100, mc.cores = 1L, ...)
 plotBS(tree, BStrees, type="unrooted", bs.col="black", bs.adj=NULL, ...)
 }
 \arguments{
@@ -25,6 +25,9 @@ return trees only (default) or whole \code{pml} objects.
 }
   \item{multicore}{
 logical, if TRUE analysis is performed in parallel (see details).
+}
+  \item{mc.cores}{
+The number of cores to use during bootstrap. Only supported on UNIX-alike systems.
 }
   \item{\dots}{
 further parameters used by \code{optim.pml} or \code{plot.phylo}.
@@ -51,7 +54,7 @@ one or two numeric values specifying the horizontal and vertical justification o
 \details{
 It is possible that the bootstrap is performed in parallel, with help of the multicore package.
 Unfortunately the  multicore package does not work under windows or with GUI interfaces ("aqua" on a mac).
-However it will speed up nicely from the command line ("X11").  
+However it will speed up nicely from the command line ("X11"). 
 }
 \value{
 \code{bootstrap.pml} returns an object of class \code{multi.phylo} or a list where each 
