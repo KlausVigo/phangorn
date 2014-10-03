@@ -2461,23 +2461,6 @@ designTree <- function(tree, method="unrooted", sparse=FALSE, ...){
 }
 
 
-designUnrootedOld = function(tree,order=NULL){
-    if(is.rooted(tree))tree = unroot(tree)
-    p=bipartition(tree)
-    if(!is.null(order)) p=p[,order]
-    n = dim(p)[1]
-    m = dim(p)[2]
-    res = matrix(0,(m-1)*m/2, n)
-    k = 1
-    for(i in 1:(m-1)){
-        for(j in (i+1):m){
-            res[k,] = p[,i]!=p[,j]
-            k=k+1
-        }
-    }
-    colnames(res) = paste(tree$edge[,1],tree$edge[,2],sep="<->")
-    res
-    }
 
 # splits now work
 designUnrooted = function (tree, order = NULL) 
@@ -4017,31 +4000,19 @@ bootstrap.pml = function (x, bs = 100, trees = TRUE, multicore=FALSE,  ...)
 }
 
 
-bootstrap.phyDat <- function (x, FUN, bs = 100, multicore=FALSE, ...) 
+bootstrap.phyDat <- function (x, FUN, bs = 100, mc.cores=1L, ...) 
 {
     weight = attr(x, "weight")
     v = rep(1:length(weight), weight)
     BS = vector("list", bs)
     for(i in 1:bs)BS[[i]]=tabulate(sample(v, replace=TRUE),length(weight)) 
- 
     fitPar <- function(weights, data, ...){     
-         ind <- which(weights > 0)
-         data <- getRows(data, ind)
-         attr(data, "weight") <- weights[ind]
-         FUN(data,...)        
+        ind <- which(weights > 0)
+        data <- getRows(data, ind)
+        attr(data, "weight") <- weights[ind]
+        FUN(data,...)        
     }
-    eval.success <- FALSE
-    if (!eval.success & multicore) {   
-# !require(parallel) ||        
-        if (.Platform$GUI!="X11") {
-            warning("package 'parallel' not found or GUI is used, 
-            bootstrapping is performed in serial")
-        } else { 
-            res <- mclapply(BS, fitPar, x, ...) 
-            eval.success <- TRUE
-        } 
-    }
-    if (!eval.success) res <- lapply(BS, fitPar, x, ...) 
+    res <- mclapply(BS, fitPar, x, ..., mc.cores = mc.cores) 
     if(class(res[[1]]) == "phylo") class(res) <- "multiPhylo"
     res 
 }
@@ -4131,77 +4102,6 @@ plotBS <- function (tree, BStrees, type = "unrooted", bs.col = "black",
             bs.adj = c(0.5, 0.5)
         edgelabels(label[ind], frame = "none", col = bs.col, 
                    adj = bs.adj, ...)
-    }
-    invisible(tree)
-}
-
-
-plotBSOld <- function (tree, BStrees, type = "unrooted", bs.col = "black", 
-    bs.adj = NULL, ...) 
-{
-
-    prop.clades <- function (phy, ..., part = NULL, rooted = FALSE) 
-    {
-        if (is.null(part)) {
-            obj <- list(...)
-            if (length(obj) == 1 && class(obj[[1]]) != "phylo") 
-                obj <- unlist(obj, recursive = FALSE)
-# anders herum sicherer??
-            if(!identical(phy$tip, obj[[1]]$tip)) obj[[1]] = checkLabels(obj[[1]], phy$tip)
-            part <- prop.part(obj, check.labels = TRUE)
-        }
-        bp <- prop.part(phy)
-        if (!rooted){ 
-            bp <- postprocess.prop.part(bp)
-            part <- postprocess.prop.part(part) 
-        }
-        n <- numeric(phy$Nnode)
-        for (i in seq_along(bp)) {
-            for (j in seq_along(part)) {
-                if (identical(bp[[i]], part[[j]])) {
-                    n[i] <- attr(part, "number")[j]
-                    done <- TRUE
-                    break
-                }
-            }
-        }
-        n
-    }
-
-
-    if (type == "phylogram" | type == "cladogram") {
-        if (!is.rooted(tree)) 
-            tree2 = midpoint(tree)
-        else tree2=tree
-        plot(tree2, type = type, ...)
-    }
-    else plot(tree, type = type, ...)
-
-     
-    x = prop.clades(tree, BStrees)
-    x = round((x/length(BStrees)) * 100)
-    tree$node.label = x
-
-    label = c(rep("", length(tree$tip)), x)
-    ind <- get("last_plot.phylo", envir = .PlotPhyloEnv)$edge[, 2]
-
-    if (type == "phylogram" | type == "cladogram") {
-        root = getRoot(tree)
-        label = c(rep(0, length(tree$tip)), x)
-        label[root] = 0
-        ind2 = matchEdges(tree2, tree)
-        label = label[ind2]
-        ind = which(label > 0)
-        if (is.null(bs.adj)) 
-            bs.adj = c(1, 1)
-        nodelabels(text = label[ind], node = ind, frame = "none", 
-            col = bs.col, adj = bs.adj, ...)
-    }
-    else {
-        if (is.null(bs.adj)) 
-            bs.adj = c(0.5, 0.5)
-        edgelabels(label[ind], frame = "none", col = bs.col, 
-            adj = bs.adj, ...)
     }
     invisible(tree)
 }
@@ -4458,12 +4358,6 @@ optimRooted <- function(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll
         optimize(f=fn, interval=c(0.25,4), tree=tree, data=data, ..., maximum = TRUE,
                  tol = .00001)
     }
-    
-#    child2 = tree$edge[, 2]
-#    child = reorder(tree)$edge[, 2]
-#    parent2 = tree$edge[, 1]
-#    parent = reorder(tree)$edge[, 1]
-    
     parent = tree$edge[, 1]
     child = tree$edge[, 2]
 
@@ -4530,8 +4424,7 @@ optimRooted <- function(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll
           
         tree$edge.length = EL[tree$edge[, 2]]  
         ll2 <- pml.fit3(tree, data, bf=bf, k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g)
-# this seems fine!!        
-        
+
         for(i in 1:length(child2)){ # length(child2)
             dad = child2[i]
             if(dad>nTips ){ # kann raus
@@ -4617,7 +4510,7 @@ index.nni <- function (ch, cvector, pvector, root)
 }
 
 
-# nicer traversal auch fuer 
+# nicer traversal
 orderNNI <- function (cvector, root, nTips, nni=TRUE) 
 {
     #if(nni) l = sum(sapply(cvector, function(x, nTips) sum(x > nTips), nTips))
@@ -4880,8 +4773,7 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV,
                     nh=nodeHeight(tree)
                     EL[tree$edge[,2]] = tree$edge.length
                     ind=0
-                }
-                    
+                }   
                 else{                        
                 if(ind==1){   
                     ll2 = res1[[2]]
@@ -4912,7 +4804,6 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV,
                 
               }
             }
-# browser()
             nh=nodeHeight(tree)
             EL[tree$edge[,2]] = tree$edge.length
             loli = dad                           

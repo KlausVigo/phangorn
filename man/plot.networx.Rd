@@ -7,58 +7,79 @@
 Phylogenetic networks
 }
 \description{
-A \code{networx} object hold the information for a phylogenetic network 
-and are an generalisation of \code{phylo}. Therefore some generic function for \code{phylo} objects will also work for \code{networx} objects. 
 \code{as.networx} convert \code{splits} objects into a  \code{networx} object. 
 \code{plot.networx} plot phylogenetic network or split graphs. 
 }
 \usage{
 as.networx(x, ...)
-\method{as.networx}{splits}(x, include.splits = TRUE, ...)
-\method{plot}{networx}(x, type="3D", show.tip.label=TRUE, show.edge.label=FALSE, 
-    show.nodes=FALSE, tip.color="blue", edge.color="grey", edge.width=3, font=3, cex=1, 
-    ...)
+\method{as.networx}{splits}(x, planar = FALSE, include.splits = TRUE, ...)
+\method{plot}{networx}(x, type="3D", use.edge.length = TRUE, show.tip.label=TRUE, 
+     show.edge.label=FALSE, show.node.label=FALSE, show.nodes=FALSE, 
+     tip.color="blue", edge.color="grey", edge.width=3, edge.lty=1, 
+     font=3, cex=1, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{
+\item{x}{
 an object of class \code{"splits"} (as.networx) or \code{"networx"} (plot)
 }
-  \item{include.splits}{
+\item{include.splits}{
 logical whether to include the \code{split} object into the networx. 
 }
-
-  \item{type}{
+\item{planar}{
+logical whether to produce a planar graph from only cyclic splits 
+(may excludes splits). 
+}
+\item{type}{
 "3D" to plot using rgl or "2D" in the normal device. 
 }
-  \item{show.tip.label}{
+\item{use.edge.length}{
+a logical indicating whether to use the edge weights of the network 
+to draw the branches (the default) or not. 
+}
+\item{show.tip.label}{
 a logical indicating whether to show the tip labels on the 
 graph (defaults to \code{TRUE}, i.e. the labels are shown).
 }
-  \item{show.edge.label}{
+\item{show.edge.label}{
 a logical indicating whether to show the tip labels on the graph.
 }
-  \item{show.nodes}{
+\item{show.nodes}{
+a logical indicating whether to show the node labels (see example).
+}
+\item{show.nodes}{
 a logical indicating whether to show the nodes (see example).
 }
-  \item{tip.color}{
+\item{tip.color}{
 the colours used for the tip labels.
 }
-  \item{edge.color}{
+\item{edge.color}{
 the colours used to draw edges.
 }
-  \item{edge.width}{
+\item{edge.width}{
 the width used to draw edges.
 }
-  \item{font}{
+\item{edge.lty}{
+a vector of line types.
+}
+\item{font}{
 an integer specifying the type of font for the labels: 1 (plain text), 
 2 (bold), 3 (italic, the default), or 4 (bold italic).
 }
-  \item{cex}{
+\item{cex}{
 a numeric value giving the factor scaling of the labels.}
-  \item{\dots}{
+\item{\dots}{
 Further arguments passed to or from other methods.
 }
+}
+\details{
+A \code{networx} object hold the information for a phylogenetic network 
+and extends the \code{phylo} object. Therefore some generic function for 
+\code{phylo} objects will also work for \code{networx} objects. 
+The argumnent planar = FALSE will dreate a planar split graph based on a 
+cyclic ordering. These objects can be nicely plotted in "2D".
+So far not all parameters behave the same on the the rgl "3D"
+and basic graphic "2D" device. 
 }
 \note{
 The internal representation is likely to change. 
