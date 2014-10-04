@@ -30,7 +30,7 @@ bipi = function(tree){
 
 
 
-coph <- function(x){ #, matrix=TRUE){
+coph <- function(x){ 
     if (is.null(attr(x, "order")) || attr(x, "order") == "cladewise") 
         x <- reorder(x, "postorder")
     nTips = as.integer(length(x$tip.label))   
@@ -47,7 +47,6 @@ coph <- function(x){ #, matrix=TRUE){
     attr(dm, "Diag") <- FALSE
     attr(dm, "Upper") <- FALSE
     class(dm) <- "dist"
-#    if(matrix) return(as.matrix(dm))
     dm
 } 
 
@@ -56,8 +55,7 @@ SHORTwise <- function (x, nTips, delete=FALSE)
 {
     v <- 1:nTips
     l <- sapply(x, length)
-    lv = floor(nTips/2)
-# changed from 2 to 1    
+    lv = floor(nTips/2)  
     for (i in 1:length(x)) { 
         if(l[i]>lv){
             y <- x[[i]]
@@ -201,7 +199,7 @@ mRF2 <- function(tree, trees, check.labels = TRUE){
     xx <- lapply(xx, SHORTwise, nTips)
     xx <- lapply(xx,function(x)sapply(x, paste, collapse="_"))
     yy <- bipart(tree)  
-    yy <- SHORTwise(tree, nTips)
+    yy <- SHORTwise(yy, nTips)
     yy <- sapply(yy, paste, collapse="_")
     for (i in 1:l){   
 #        RF[i] <- 2 * sum(fmatch(xx[[i]], yy, nomatch=0L)==0L)   
@@ -253,11 +251,11 @@ mRF<-function(trees){
 }
 
 
-#, normalize=FALSE
 RF.dist <- function (tree1, tree2=NULL, check.labels = TRUE)
 {
     if(class(tree1)=="multiPhylo" && is.null(tree2))return(mRF(tree1)) 
-    if(class(tree1)=="phylo" && class(tree1)=="MultiPhylo")return(mRF2(tree1, tree2, check.labels))
+    if(class(tree1)=="phylo" && class(tree2)=="multiPhylo")return(mRF2(tree1, tree2, check.labels))
+    if(class(tree2)=="phylo" && class(tree1)=="multiPhylo")return(mRF2(tree2, tree1, check.labels))
     r1 = is.rooted(tree1)
     r2 = is.rooted(tree2)
     if(r1 != r2){
@@ -290,10 +288,5 @@ RF.dist <- function (tree1, tree2=NULL, check.labels = TRUE)
     bp2 <- SHORTwise(bp2, length(tree2$tip))    
     
     RF = sum(match(bp1, bp2, nomatch=0L)==0L) + sum(match(bp2, bp1, nomatch=0L)==0L)
-    
-#    ind <- sum(p1 %in% p2)
-#    l = length(tree1$tip)
-#    l = l - 2 + is.rooted(tree1)
-#    RF = 2 * (l-ind)
     RF
 }

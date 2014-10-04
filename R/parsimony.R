@@ -659,7 +659,9 @@ pratchet <- function (data, start=NULL, method="fitch", maxit=100, k=5, trace=1,
         k=2
         trees = trees[-1]
         while (length(trees) > 0) {
-# change RF to do this faster RF.dist(res, trees)            
+# test and replace            
+# change RF to do this faster RF.dist(res, trees) 
+            rf2 = RF.dist(res, trees, FALSE)
             rf = sapply(trees, RF.dist, res, FALSE) 
             if(any(rf==0))trees = trees[-which(rf == 0)]
             if (length(trees) > 0) {
