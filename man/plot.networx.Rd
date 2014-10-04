@@ -12,19 +12,17 @@ Phylogenetic networks
 }
 \usage{
 as.networx(x, ...)
-\method{as.networx}{splits}(x, planar = FALSE, include.splits = TRUE, ...)
+\method{as.networx}{splits}(x, planar = FALSE, ...)
 \method{plot}{networx}(x, type="3D", use.edge.length = TRUE, show.tip.label=TRUE, 
-     show.edge.label=FALSE, show.node.label=FALSE, show.nodes=FALSE, 
-     tip.color="blue", edge.color="grey", edge.width=3, edge.lty=1, 
-     font=3, cex=1, ...)
+     show.edge.label=FALSE, edge.label = NULL, show.node.label=FALSE, 
+     node.label = NULL, show.nodes=FALSE, tip.color="blue", 
+     edge.color="grey", edge.width=3, edge.lty=1, font=3, 
+     cex=1, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 \item{x}{
 an object of class \code{"splits"} (as.networx) or \code{"networx"} (plot)
-}
-\item{include.splits}{
-logical whether to include the \code{split} object into the networx. 
 }
 \item{planar}{
 logical whether to produce a planar graph from only cyclic splits 
@@ -44,8 +42,14 @@ graph (defaults to \code{TRUE}, i.e. the labels are shown).
 \item{show.edge.label}{
 a logical indicating whether to show the tip labels on the graph.
 }
+\item{edge.label}{
+an additional vector of edge labels (normally not needed).
+}
 \item{show.node.label}{
 a logical indicating whether to show the node labels (see example).
+}
+\item{node.label}{
+an additional vector of node labels (normally not needed).
 }
 \item{show.nodes}{
 a logical indicating whether to show the nodes (see example).

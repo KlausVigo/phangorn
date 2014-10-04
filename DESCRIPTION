@@ -1,7 +1,7 @@
 Package: phangorn
 Title: Phylogenetic analysis in R
 Version: 1.99-8
-Date: 2014-10-1
+Date: 2014-10-4
 Author: Klaus Schliep, Emmanuel Paradis
 Maintainer: Klaus Schliep <klaus.schliep@gmail.com>
 Description: Phylogenetic analysis in R (Estimation of phylogenetic
