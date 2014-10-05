@@ -555,7 +555,7 @@ as.networx.splits <- function(x, planar=FALSE, ...){
         attr(x, "cycle") <- c.ord
         attr(tmp, "splits") = x 
         class(tmp) = c("networx", "phylo")
-        return(tmp)
+        return(reorder(tmp))
     }
 
     ll <- sapply(x, length)
@@ -577,7 +577,7 @@ as.networx.splits <- function(x, planar=FALSE, ...){
     attr(x, "cycle") <- c.ord
     attr(tmp, "splits") = x 
     class(tmp) = c("networx", "phylo")
-    tmp
+    reorder(tmp)
 }
 
 
