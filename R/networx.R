@@ -60,7 +60,26 @@ orderSplitLabel = function(x, order){
     for(i in 1:length(x))
         x[[i]] = sort(ord[x[[i]]])
     attr(x, "labels") = label[ord]
-    SHORTwise(x, nTips)
+    x
+}
+
+
+presenceAbsence <- function(x, y){
+    X <- as.splits(x)
+    Y <- as.splits(y)
+    labels <- attr(X, "labels") 
+    if(class(x)[1] == "phylo") X <- X[x$edge[,2]]
+    if(class(y)[1] == "phylo") Y <- Y[y$edge[,2]]
+    Y <- orderSplitLabel(Y, labels)
+    nTips <- length(labels)
+    X <- oneWise(X, nTips)
+    Y <- oneWise(Y, nTips)
+    res <- match(X, Y)    
+    res <- !is.na(res)
+    if(inherits(x, "networx")){
+        res <- res[x$splitIndex]    
+    }    
+    res            
 }
 
 
@@ -555,7 +574,7 @@ as.networx.splits <- function(x, planar=FALSE, ...){
         attr(x, "cycle") <- c.ord
         attr(tmp, "splits") = x 
         class(tmp) = c("networx", "phylo")
-        return(tmp)
+        return(reorder(tmp))
     }
 
     ll <- sapply(x, length)
@@ -577,7 +596,7 @@ as.networx.splits <- function(x, planar=FALSE, ...){
     attr(x, "cycle") <- c.ord
     attr(tmp, "splits") = x 
     class(tmp) = c("networx", "phylo")
-    tmp
+    reorder(tmp)
 }
 
 
@@ -655,7 +674,7 @@ coords <- function(obj, dim="3D"){
         obj = reorder.networx(obj)
 
     l = length(obj$edge.length)
-    ind1 = which(!duplicated(obj$split))
+    ind1 = which(!duplicated(obj$splitIndex))
 
     n = max(obj$edge)
     adj = Matrix::spMatrix(n, n, i = obj$edge[,2], j = obj$edge[,1], x = rep(1, length(obj$edge.length)))
@@ -755,14 +774,10 @@ plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRU
     x = reorder(x)
     nTips = length(x$tip.label)
     conf = attr(attr(x, "splits"),"confidences") 
-#browser()
     index = x$splitIndex
     if(is.null(edge.label) & !is.null(conf))edge.label = conf[index]
     if(is.null(node.label))node.label = as.character(1:max(x$edge))
     if(show.tip.label)node.label[1:nTips] = ""
-#    if(is.null(node.label))node.label = 
-
-
     if(type=="3D") {
         coord <- coords(x, dim="3D")
         plotRGL(coord, x, show.tip.label=show.tip.label, show.edge.label=show.edge.label, 
@@ -781,7 +796,7 @@ plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRU
 
     
 plotRGL <- function(coords, net, show.tip.label=TRUE, 
-        show.edge.label=FALSE, edge.label=NULL, show.node.label=FALSE, node.labels=NULL,
+        show.edge.label=FALSE, edge.label=NULL, show.node.label=FALSE, node.label=NULL,
         show.nodes=FALSE, tip.color = "blue", edge.color="grey", 
         edge.width = 3, font = 3, cex = par("cex"), ...){
     edge = net$edge
@@ -809,12 +824,11 @@ plotRGL <- function(coords, net, show.tip.label=TRUE,
 	    rgl.texts(ec[,1], ec[,2], ec[,3], edge.label, color=tip.color, cex=cex, font=font)     
     } 
     if(show.node.label){
-        rgl.texts(x, y, z, node.labels, color=tip.color, cex=cex, font=font) 
+        rgl.texts(x, y, z, node.label, color=tip.color, cex=cex, font=font) 
     }
 }
 
-
-#    edge.label.color="green", node.label.color="red", node.label 
+ 
 plot2D <- function(coords, net, show.tip.label=TRUE,  
        show.edge.label=FALSE, edge.label=NULL, show.node.label=FALSE, node.label=NULL,
        tip.color = "blue", edge.color="grey",                   

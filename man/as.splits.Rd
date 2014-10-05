@@ -16,6 +16,7 @@
 \alias{as.phylo.splits}
 \alias{addConfidences}
 \alias{countCycles}
+\alias{presenceAbsence}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Splits representation of graphs and trees.
