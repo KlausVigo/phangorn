@@ -828,7 +828,8 @@ plotRGL <- function(coords, net, show.tip.label=TRUE,
     }
 }
 
- 
+
+#    edge.label.color="green", node.label.color="red", node.label 
 plot2D <- function(coords, net, show.tip.label=TRUE,  
        show.edge.label=FALSE, edge.label=NULL, show.node.label=FALSE, node.label=NULL,
        tip.color = "blue", edge.color="grey",                   
