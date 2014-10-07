@@ -68,9 +68,7 @@ void countCycle(int *M, int *l, int *m, int *res){
 
 void countCycle2(int *M, int *l, int *m, int *res){
     int j, i, tmp;
-//    res[0]=0L;
     for (i=0; i<*l; i++) {
-//        res[i] = 0L;
         tmp = 0L;
         if(M[i] != M[i + (*m -1) * *l])tmp=1L;
         for (j=1; j<*m; j++) {
@@ -108,7 +106,7 @@ SEXP rowMax(SEXP sdat, SEXP sn, SEXP sk){
     return(result);        
 }
     
-
+/*
 static R_INLINE void getP00(double *eva, double *ev, double *evi, int m, double el, double w, double *result){
     int i, j, h;
     double tmp, res;
@@ -124,7 +122,7 @@ static R_INLINE void getP00(double *eva, double *ev, double *evi, int m, double 
         }
     }
 }
-
+*/
 
  
 static R_INLINE void getPP(double *eva, double *ev, double *evi, int m, double el, double w, double *result){
@@ -553,15 +551,53 @@ SEXP AllDesc(SEXP child, SEXP parent, SEXP M, SEXP NODE){
     return(RESULT);
 }
 
-
-// copy from ape 3.0-5
-void neworder_cladewise(int *n, int *edge1, int *edge2,
-			int *N, int *neworder)
-/* n: nb of tips, N: nb of edges */
+/*
+void neworder_cladewiseOld(int *n, int *edge1, int *edge2,
+    		int *N, int *neworder)
+// n: nb of tips, N: nb of edges 
 {
     int i, j, k, node, *done, dn, *node_back, eb;
     done = &dn;
     node_back = &eb;
+
+//       done: indicates whether an edge has been collected
+//       node_back: the series of node from the root to `node'
+//       node: the current node 
+
+    done = (int*)R_alloc(*N, sizeof(int));
+    node_back = (int*)R_alloc(*N + 2 - *n, sizeof(int));
+    memset(done, 0, *N * sizeof(int));
+    j = k = 0;
+    node = *n + 1;
+    while (j < *N) {
+        for (i = 0; i < *N; i++) {
+  	    if (done[i] || edge1[i] != node) continue;
+	    neworder[j] = i + 1;
+	    j++;
+	    done[i] = 1;
+	    if (edge2[i] > *n) {
+	        node_back[k] = node;
+		k++;
+		node = edge2[i];
+//		   if found a new node, reset the loop 
+		i = -1;
+	    }
+	}
+//   	 if arrived at the end of `edge', go down one node 
+	k--;
+	node = node_back[k];
+    }
+}
+*/
+
+
+void neworder_cladewise(int *n, int *edge1, int *edge2,
+			int *N, int *neworder)
+/* n: nb of tips, N: nb of edges */
+{
+    int i, j, k, node, *done, *node_back; // , dn, eb
+//    done = &dn;
+//    node_back = &eb;
 
     /* done: indicates whether an edge has been collected
        node_back: the series of node from the root to `node'
@@ -569,8 +605,9 @@ void neworder_cladewise(int *n, int *edge1, int *edge2,
 
     done = (int*)R_alloc(*N, sizeof(int));
     node_back = (int*)R_alloc(*N + 2 - *n, sizeof(int));
-    memset(done, 0, *N * sizeof(int));
-
+    for (i = 0; i < *N; i++)done[i]=0;
+    for (i = 0; i < (*N + 2 - *n); i++)node_back[i]=0;
+//    memset(done, 0, *N * sizeof(int));
     j = k = 0;
     node = *n + 1;
     while (j < *N) {
@@ -593,7 +630,11 @@ void neworder_cladewise(int *n, int *edge1, int *edge2,
     }
 }
 
-
+/*
+  
+ 
+ 
+*/
 
 // combine two sorted vectors
 void crsort(double *x, double *y, int *a, int *b, double *res){

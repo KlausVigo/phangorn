@@ -15,7 +15,6 @@
 #include <R.h> 
 #include <R_ext/Lapack.h>
 #include <Rinternals.h>
-#include <omp.h>
 
 
 #define LINDEX(i, k) (i - ntips - 1L) * (nr * nc) + k * ntips * (nr * nc)
@@ -407,7 +406,9 @@ SEXP PML_NEW(SEXP EL, SEXP W, SEXP G, SEXP NR, SEXP NC, SEXP K, SEXP eig, SEXP b
     tmp=REAL(TMP);
     for(i=0; i<(k*nr); i++)tmp[i]=0.0;
     indLL = nr * nc * nTips;
-    #pragma omp parallel for private(i)
+#ifdef SUPPORT_OPENMP     
+#pragma omp parallel for private(i)
+#endif
     for(i=0; i<k; i++){                  
         lll0(XXX, eva, eve, evei, el, g[i], &nr, &nc, nodes, edges, nTips, contr, ncontr, n, &SC[nr * i], bfreq, &tmp[i*nr], &LL[indLL *i]);           
      } 

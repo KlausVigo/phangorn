@@ -154,46 +154,6 @@ void fitch54(int *res, int *dat1, int *dat2, int *nr, double *weight, double *w)
     } 
 }
 
-/*
-void fitchtri(int *dat1, int *dat2, int *dat3, int nr, double *weight, double pars0, double pars){
-    int k, tmp;
-    for(k = 0; k < nr; k++){
-        tmp = dat1[k] & dat2[k];
-        if(!tmp){
-            tmp = dat1[k] | dat2[k];
-            pars+=weight[k];            
-        }
-        tmp = tmp & dat3[k];
-        if(!tmp){
-           pars+=weight[k];                
-        }
-        if(pars>pars0)break;
-    }
-}
-
-
-SEXP FITCHTRIP3(SEXP DAT3, SEXP nrx, SEXP edge, SEXP score, SEXP PS){ 
-    R_len_t i, m = length(edge);  
-    int nr=INTEGER(nrx)[0], k, tmp, ei, *edges=INTEGER(edge);  
-    int d3=INTEGER(DAT3)[0] - 1L;
-    double *pvtmp;  
-    double ps = REAL(PS)[0];
-    SEXP pvec;
-    PROTECT(pvec = allocVector(REALSXP, m));
-    pvtmp = REAL(pvec);
-    for(i=0; i<m; i++) pvtmp[i] = REAL(score)[i];
-// #pragma omp parallel for private(i, ei) shared(edges, data1, data2, d3, nr, weight, ps, pvtmp)
-    for(i=0; i<m; i++){
-        ei = (edges[i] - 1L);
-//      pvtmp[i] = REAL(score)[ei];
-        fitchtri(&data1[ei * nr], &data2[ei * nr], &data1[d3 * nr], nr, weight, ps, pvtmp[i]);
-//        if(pvtmp[i]<ps) ps = pvtmp[i] + 1.0e-8 random.addition order
-    }
-    UNPROTECT(1);
-    return(pvec); 
-}
-*/
-
 
 SEXP FITCHTRIP3(SEXP DAT3, SEXP nrx, SEXP edge, SEXP score, SEXP PS){ 
     R_len_t i, m = length(edge);  
@@ -205,7 +165,9 @@ SEXP FITCHTRIP3(SEXP DAT3, SEXP nrx, SEXP edge, SEXP score, SEXP PS){
     PROTECT(pvec = allocVector(REALSXP, m));
     pvtmp = REAL(pvec);
     for(i=0; i<m; i++) pvtmp[i] = REAL(score)[i]; 
-    #pragma omp parallel for private(i, ei, k, tmp) shared(edges, data1, data2, d3, nr, weight, ps, pvtmp)
+#ifdef SUPPORT_OPENMP    
+#pragma omp parallel for private(i, ei, k, tmp) shared(edges, data1, data2, d3, nr, weight, ps, pvtmp)
+#endif
     for(i=0; i<m; i++){
         ei = edges[i] - 1L;
 //      pvtmp[i] = REAL(score)[ei];
