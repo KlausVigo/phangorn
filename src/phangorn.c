@@ -588,20 +588,15 @@ void neworder_cladewiseOld(int *n, int *edge1, int *edge2,
 	node = node_back[k];
     }
 }
-*/
 
 
 void neworder_cladewise(int *n, int *edge1, int *edge2,
 			int *N, int *neworder)
-/* n: nb of tips, N: nb of edges */
+// n: nb of tips, N: nb of edges 
 {
     int i, j, k, node, *done, *node_back; // , dn, eb
 //    done = &dn;
 //    node_back = &eb;
-
-    /* done: indicates whether an edge has been collected
-       node_back: the series of node from the root to `node'
-       node: the current node */
 
     done = (int*)R_alloc(*N, sizeof(int));
     node_back = (int*)R_alloc(*N + 2 - *n, sizeof(int));
@@ -620,19 +615,14 @@ void neworder_cladewise(int *n, int *edge1, int *edge2,
 	        node_back[k] = node;
 		k++;
 		node = edge2[i];
-		/* if found a new node, reset the loop */
 		i = -1;
 	    }
 	}
-	/* if arrived at the end of `edge', go down one node */
 	k--;
 	node = node_back[k];
     }
 }
 
-/*
-  
- 
  
 */
 
