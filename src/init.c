@@ -2,6 +2,7 @@
 #include <R_ext/Rdynload.h>
 
 
+void order_networx(int *ntips, int *nEdges, int *mNodes, int *e1, int *e2, int *root, int * neworder);
 void countCycle(int *M, int *l, int *m, int *res);
 void countCycle2(int *M, int *l, int *m, int *res);
 //void neworder_networx(int *n, int *e1, int *e2, int *N, int *neworder, int *order, int *degrmax);
@@ -30,7 +31,7 @@ void distHamming(int *x, double *weight, int *nr, int *l, double *d);
 void C_coph(SEXP children, SEXP tips, double *nh, int *nTips, int *lch, int *lkids, int *ltips, double *dm);    
 
 /* from networx*/
-void neworder_cladewise(int *n, int *edge1, int *edge2, int *N, int *neworder);
+//void neworder_cladewise(int *n, int *edge1, int *edge2, int *N, int *neworder);
 
 /* from parsimony*/
 void countMPR(double *res, int *dat1, int *dat2, int *nr, double *weight, int *external);
@@ -161,9 +162,10 @@ R_CallMethodDef callMethods[] = {
 //{"FNALL", (DL_FUNC) &FNALL, 12},
 //{"coph", (DL_FUNC) &coph, 7},
      
-//{"neworder_networx", (DL_FUNC) &neworder_networx, 7},       
-     
+//{"order_networx", (DL_FUNC) &order_networx, 7},       
+// {"neworder_cladewise", (DL_FUNC) &neworder_cladewise, 5},   
 R_CMethodDef cMethods[] = { 
+{"order_networx", (DL_FUNC) &order_networx, 7},
 {"countCycle", (DL_FUNC) &countCycle, 4},
 {"countCycle2", (DL_FUNC) &countCycle2, 4},
 {"fitch_free", (DL_FUNC) &fitch_free, 0},  
@@ -178,12 +180,9 @@ R_CMethodDef cMethods[] = {
 {"fitchTripletACC4", (DL_FUNC) &fitchTripletACC4, 11},
 {"ACCTRAN2", (DL_FUNC) &ACCTRAN2, 9},
 {"ACCTRAN3", (DL_FUNC) &ACCTRAN3, 9},
-
 {"prepRooted", (DL_FUNC) &prepRooted, 3},
 {"C_MPR", (DL_FUNC) &C_MPR, 5},
-
 {"distHamming", (DL_FUNC) &distHamming, 5},
-{"neworder_cladewise", (DL_FUNC) &neworder_cladewise, 5},
 {"C_reorder", (DL_FUNC) &reorder, 6},
 {"countMPR", (DL_FUNC) &countMPR, 6},
 {"ll_free", (DL_FUNC) &ll_free, 0},
