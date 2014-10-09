@@ -96,6 +96,7 @@ node2root <- function(x){
      } 
      res
 }
+    oldtree <- tree
     tree = unroot(tree)   
     nTips = length(tree$tip)
     maxD1 = node2root(tree)[1:nTips] 
@@ -137,7 +138,9 @@ node2root <- function(x){
     tree$edge=edge
     tree$Nnode  = tree$Nnode+1
     attr(tree, "order") <- NULL
-    reorder(reroot(tree, rn), "postorder")
+    tree <- reorder(reroot(tree, rn), "postorder")
+    if(!is.null(oldtree$node.label))tree <- addConfidences.phylo(tree, oldtree)
+    tree 
 }
 
 

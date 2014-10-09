@@ -4,6 +4,8 @@ BUG FIXES
 
     o bug fixes for clang environment
 
+    o midpoint takes care of node labels
+
 
 
      CHANGES in PHANGORN VERSION 1.99-8 

@@ -596,7 +596,8 @@ as.networx.splits <- function(x, planar=FALSE, ...){
     attr(x, "cycle") <- c.ord
     attr(tmp, "splits") = x 
     class(tmp) = c("networx", "phylo")
-    reorder(tmp)
+    tmp <- reorder(tmp)
+    tmp
 }
 
 
@@ -643,6 +644,14 @@ addConfidences <- function(obj, phy){
 }
 
 
+addConfidences.phylo <- function(to, from){
+    conf = attr(addConfidences(as.splits(to), from), "confidences")
+    nTips = length(to$tip.label)
+    to$node.label = conf[-c(1:nTips)]
+    to      
+} 
+
+
 reorder.networx <- function (x, order = "cladewise", ...) 
 {
     order <- match.arg(order, c("cladewise"))
@@ -656,6 +665,8 @@ reorder.networx <- function (x, order = "cladewise", ...)
     nb.edge <- dim(x$edge)[1]  
     neworder = .C("order_networx", as.integer(nb.tip),  as.integer(nb.edge), as.integer(max(x$edge)), as.integer(x$edge[, 1]),  
                   as.integer(x$edge[, 2]), as.integer(nb.tip+1),  integer(nb.edge)) [[7]] 
+print(neworder) 
+    if(sum(neworder==0))browser()
     x$edge <- x$edge[neworder, ]
     if (!is.null(x$edge.length)) 
         x$edge.length <- x$edge.length[neworder]
