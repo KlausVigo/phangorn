@@ -9,7 +9,7 @@ importFrom(ape, as.DNAbin, as.phylo, plot.phylo, as.prop.part, nj,old2new.phylo,
     read.dna, write.dna, reorder.phylo, dist.nodes, collapse.singles, rotate)
 importFrom(Matrix, Matrix, sparseMatrix, spMatrix)
 importFrom(igraph, graph, graph.adjacency, layout.kamada.kawai, plot.igraph,
-    get.shortest.paths, set.edge.attribute, vcount, graph.edgelist) 
+    get.shortest.paths, set.edge.attribute, vcount, graph.edgelist, topological.sort) 
 importFrom(stats, AIC, logLik, reorder) 
 importFrom(fastmatch, fmatch)
 importFrom(rgl, open3d, segments3d, spheres3d, rgl.texts)

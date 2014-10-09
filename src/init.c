@@ -1,11 +1,8 @@
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 
-
-void order_networx(int *ntips, int *nEdges, int *mNodes, int *e1, int *e2, int *root, int * neworder);
 void countCycle(int *M, int *l, int *m, int *res);
 void countCycle2(int *M, int *l, int *m, int *res);
-//void neworder_networx(int *n, int *e1, int *e2, int *N, int *neworder, int *order, int *degrmax);
 
 /* called in fitch.R */
 void fitch_free();
@@ -162,10 +159,8 @@ R_CallMethodDef callMethods[] = {
 //{"FNALL", (DL_FUNC) &FNALL, 12},
 //{"coph", (DL_FUNC) &coph, 7},
      
-//{"order_networx", (DL_FUNC) &order_networx, 7},       
-// {"neworder_cladewise", (DL_FUNC) &neworder_cladewise, 5},   
+
 R_CMethodDef cMethods[] = { 
-{"order_networx", (DL_FUNC) &order_networx, 7},
 {"countCycle", (DL_FUNC) &countCycle, 4},
 {"countCycle2", (DL_FUNC) &countCycle2, 4},
 {"fitch_free", (DL_FUNC) &fitch_free, 0},  
