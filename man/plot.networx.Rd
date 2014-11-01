@@ -2,6 +2,7 @@
 \alias{plot.networx}
 \alias{as.networx}
 \alias{as.networx.splits}
+%\alias{reorder.networx}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Phylogenetic networks
