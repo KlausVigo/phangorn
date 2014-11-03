@@ -1105,7 +1105,7 @@ pml.nni <- function (tree, data, w, g, eig, bf, ll.0, ll, ...)
     parent = tree$edge[,1]
     child = tree$edge[,2]
     weight = attr(data, "weight")
-    datp = rnodes3(tree, data, w, g, eig, bf)    
+    datp = rnodes(tree, data, w, g, eig, bf)    
     contrast <- attr(data, "contrast")
     contrast2 <- contrast %*% eig[[2]] 
     evi = (t(eig[[3]]) * bf)
@@ -1177,65 +1177,7 @@ pml.nni <- function (tree, data, w, g, eig, bf, ll.0, ll, ...)
 }
 
 
-rnodes <- function (fit)  
-{
-    tree = fit$tree 
-    data = getCols(fit$data, tree$tip) 
-    if (is.null(attr(tree, "order")) || attr(tree, "order") == 
-        "cladewise") 
-        tree <- reorder(tree, "postorder")
-    q = length(tree$tip.label)
-    node <- tree$edge[, 1]
-    edge <- tree$edge[, 2]
-    m = length(edge) + 1  # max(edge)
-    w = fit$w
-    g = fit$g
-    l = length(w)        
-    dat = vector(mode = "list", length = m*l)
-    dim(dat) <- c(l,m)
-    
-    tmp = length(data)
-    for(i in 1:length(w))dat[i,1:tmp]=new2old.phyDat(data) 
-    
-    eig = fit$eig
-
-    bf = fit$bf
-    el <- tree$edge.length
-    P <- getP(el, eig, g)
-    nr <- as.integer(attr(data, "nr"))
-    nc <- as.integer(attr(data, "nc"))
-    node = as.integer(node - min(node))
-    edge = as.integer(edge - 1)
-    nTips = as.integer(length(tree$tip))
-    mNodes = as.integer(max(node) + 1)
-    contrast = attr(data, "contrast")
-    nco = as.integer(dim(contrast)[1])
-    for(i in 1:l)dat[i,(q + 1):m] <- .Call("LogLik2", data, P[i,], nr, nc, node, edge, nTips, mNodes, contrast, nco)
-
-    parent <- tree$edge[, 1]
-    child <- tree$edge[, 2]
-    nTips = min(parent) - 1
-    datp = vector("list", m)   
-    dat2 = vector("list", m * l)
-
-    dim(dat2) <- c(l,m)
-
-    for(i in 1:l){     
-      datp[(nTips + 1)] = dat[i,(nTips + 1)]
-      for (j in (m - 1):1) {
-          if (child[j] > nTips){
-             tmp2 = (datp[[parent[j]]]/(dat[[i,child[j]]] %*% P[[i,j]]))
-             datp[[child[j]]] = (tmp2 %*% P[[i,j]]) * dat[[i,child[j]]]  
-             dat2[[i, child[j]]] = tmp2
-             }
-       }
-    }
-    assign(".dat", dat, envir = parent.frame(n = 1))
-    dat2
-}
-
-
-rnodes3 <- function (tree, data, w, g, eig, bf) 
+rnodes <- function (tree, data, w, g, eig, bf) 
 {
     if (is.null(attr(tree, "order")) || attr(tree, "order") == 
         "cladewise") 
@@ -3808,7 +3750,14 @@ optNNI <- function(fit, INDEX){
        .dat <- NULL
        parent = tree$edge[, 1]
        child = tree$edge[, 2]
-       datp = rnodes(fit) # raus
+             
+       data = getCols(fit$data, tree$tip)
+       datp <- rnodes(tree, data, w, g, eig, bf)       
+# nicht elegant, spaeter auch raus       
+       tmp = length(tree$tip.label)
+       for(i in 1:length(w)).dat[i,1:tmp]=new2old.phyDat(data)       
+#       datp = rnodes(fit) # raus
+       
        evector <- numeric(max(parent))
        evector[child] <- tree$edge.length
        m <- dim(INDEX)[1]

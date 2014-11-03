@@ -96,7 +96,9 @@ Dress, A.W.M. and Huson, D.H. (2004) Constructicting Splits Graphs \emph{IEEE/AC
 Klaus Schliep \email{klaus.schliep@gmail.com}
 }
 \seealso{
-\code{\link{consensusNet}}, \code{\link{hadamard}}, \code{\link{distanceHadamard}}, \code{\link{layout.kamada.kawai}}, \code{\link[ape]{evonet}}, \code{\link[ape]{as.igraph}}
+\code{\link{consensusNet}}, \code{\link{splitsNetwork}}, \code{\link{hadamard}}, 
+\code{\link{distanceHadamard}}, \code{\link{layout.kamada.kawai}}, 
+\code{\link[ape]{evonet}}, \code{\link[ape]{as.igraph}}, \code{\link{densiTree}}
 }
 \examples{
 set.seed(1)

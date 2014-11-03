@@ -39,7 +39,9 @@ Efron, Hastie, Johnstone and Tibshirani (2003) "Least Angle Regression" (with di
 K. P. Schliep (2009). Some Applications of statistical phylogenetics (PhD Thesis)
 }
 \author{Klaus Schliep \email{klaus.schliep@gmail.com}}
-\seealso{\code{\link[phangorn]{distanceHadamard}}, \code{\link[phangorn]{designTree}}}
+\seealso{\code{\link[phangorn]{distanceHadamard}}, \code{\link[phangorn]{designTree}}
+\code{\link[phangorn]{consensusNet}}, \code{\link[phangorn]{plot.networx}}  
+}
 
 \examples{
 data(yeast)
