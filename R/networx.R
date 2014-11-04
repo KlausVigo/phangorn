@@ -43,13 +43,27 @@ print.splits <- function (x, maxp = getOption("max.print"),
 }
 
 
+#"[.splits" = function(x, i){
+#   result = unclass(x)[i]
+#   if(!is.null(attr(x, "weights"))) attr(result, "weights") = attr(x, "weights")[i] 
+#   if(!is.null(attr(x, "confidences"))) attr(result, "confidences") = attr(x, "confidences")[i]
+#   if(!is.null(attr(x, "intervals"))) attr(result, "intervals") = attr(x, "intervals")[i] 
+#   if(!is.null(attr(x, "data"))) attr(result, "data") = attr(x, "data")[i,, drop=FALSE] 
+#   attr(result, "labels") = attr(x, "labels")
+#   class(result) = c("splits", "prop.part")
+#   result
+#}
+
+
 "[.splits" = function(x, i){
-   result = unclass(x)[i]
-   if(!is.null(attr(x, "weights"))) attr(result, "weights") = attr(x, "weights")[i] 
-   if(!is.null(attr(x, "data"))) attr(result, "data") = attr(x, "data")[i,, drop=FALSE] 
-   attr(result, "labels") = attr(x, "labels")
-   class(result) = c("splits", "prop.part")
-   result
+    tmp = attributes(x)
+    result = unclass(x)[i]
+    if(!is.null(tmp$weights)) tmp$weights = tmp$weights[i] 
+    if(!is.null(tmp$confidences)) tmp$confidences = tmp$confidences[i]
+    if(!is.null(tmp$intervals)) tmp$intervals = tmp$intervals[i] 
+    if(!is.null(tmp$data)) tmp$data = tmp$data[i,, drop=FALSE] 
+    attributes(result) = tmp
+    result
 }
 
 
@@ -146,17 +160,6 @@ c.splits <- function (..., recursive=FALSE)
     attr(res, "weight") = as.vector(sapply(x, attr, "weight"))
     res
 }
-
-
-# computes splits from phylo
-#as.splits.phylo <- function(x, ...){
-#    result = bip(x)[x$edge[,2]]
-#    attr(result, "weights") = x$edge.length
-#    attr(result, "labels") <- x$tip
-#    class(result) = c('splits', 'prop.part')
-#    result 
-#}
-
 
 
 # computes splits from phylo
@@ -559,13 +562,17 @@ as.networx.splits <- function(x, planar=FALSE, ...){
   attr(x, "weights") <- weight
   nTips <- length(label)
   x <- oneWise(x, nTips) 
+  l <- sapply(x, length)
+  if(any(l==nTips))x <- x[l!=nTips] # get rid of trivial splits
+  ext <- sum(l==1 | l==(nTips-1))
   if(!is.null(attr(x, "cycle"))){  
       c.ord <- attr(x, "cycle") 
   }
   else c.ord <- getOrdering(x)
   dm <- as.matrix(compatible2(x)) 
 # which splits are in circular ordering  
-    circSplits = which(countCycles(x, ord=c.ord)==2)  
+    circSplits = which(countCycles(x, ord=c.ord)==2) 
+    if(length(circSplits) == length(x)) planar=TRUE
     tmp = circNetwork(x, c.ord)  
     attr(tmp, "order") = NULL
     if(planar){
