@@ -3944,6 +3944,7 @@ bootstrap.pml = function (x, bs = 100, trees = TRUE, multicore=FALSE,  ...)
     if (!eval.success) res <- lapply(BS, pmlPar, x, trees = trees, ...)
     if (trees) {
         class(res) = "multiPhylo"
+        res = .compressTipLabel(res) # save memory
     }
     res
 }
@@ -3962,7 +3963,10 @@ bootstrap.phyDat <- function (x, FUN, bs = 100, mc.cores=1L, ...)
         FUN(data,...)        
     }
     res <- mclapply(BS, fitPar, x, ..., mc.cores = mc.cores) 
-    if(class(res[[1]]) == "phylo") class(res) <- "multiPhylo"
+    if(class(res[[1]]) == "phylo"){
+        class(res) <- "multiPhylo"   
+        res = .compressTipLabel(res) # save memory
+    }
     res 
 }
 

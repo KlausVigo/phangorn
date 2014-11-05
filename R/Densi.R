@@ -19,7 +19,7 @@ getAges <- function(x){
 
 
 # from phytools code by Liam Revell with a few changes
-my.supertree<-function(trees,method=c("pratchet","optim.parsimony"), trace=1, ...){
+my.supertree<-function(trees,method=c("pratchet","optim.parsimony"), trace=0, ...){
   # set method
   method<-method[1]
   # some minor error checking
@@ -53,7 +53,7 @@ my.supertree<-function(trees,method=c("pratchet","optim.parsimony"), trace=1, ..
     if(hasArg(start)){
       start<-list(...)$start
       if(class(start)=="phylo"){
-        supertree<-pratchet(XX,all=TRUE,...)
+        supertree<-pratchet(XX,all=TRUE, trace=0, ...)
       } else {
         if(start=="NJ") start<-NJ(dist.hamming(XX))
         else if(start=="random") start<-rtree(n=length(XX),tip.label=names(XX))
@@ -67,7 +67,7 @@ my.supertree<-function(trees,method=c("pratchet","optim.parsimony"), trace=1, ..
         args$all<-TRUE
         supertree<-do.call(pratchet,args)
       }
-    } else supertree<-pratchet(XX,all=TRUE,...)
+    } else supertree<-pratchet(XX,all=TRUE, trace=0, ...)
     if(class(supertree)=="phylo")
       if(trace>0)message(paste("The MRP supertree, optimized via pratchet(),\nhas a parsimony score of ",
                     attr(supertree,"pscore")," (minimum ",characters,")",sep=""))
@@ -78,7 +78,7 @@ my.supertree<-function(trees,method=c("pratchet","optim.parsimony"), trace=1, ..
     if(hasArg(start)){
       start<-list(...)$start
       if(class(start)=="phylo"){
-        supertree<-optim.parsimony(tree=start,data=XX,...)
+        supertree<-optim.parsimony(tree=start,data=XX, trace=0, ...)
       } else {
         if(start=="NJ") start<-NJ(dist.hamming(XX))
         else if(start=="random") start<-rtree(n=length(XX),tip.label=names(XX))
@@ -91,7 +91,7 @@ my.supertree<-function(trees,method=c("pratchet","optim.parsimony"), trace=1, ..
     } else {
       if(trace>0)message("no input starting tree or option for optim.parsimony; using random addition tree")
       start<-random.addition(XX) # rtree(n=length(XX),tip.label=names(XX))
-      supertree<-optim.parsimony(tree=start,data=XX,...)
+      supertree<-optim.parsimony(tree=start,data=XX, trace=0, ...)
     }
     if(class(supertree)=="phylo")
       if(trace>0)message(paste("The MRP supertree, optimized via optim.parsimony(),\nhas a parsimony score of ",
