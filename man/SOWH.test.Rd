@@ -36,13 +36,18 @@ Phylogenetic Inference in Hillis, D.M., Moritz, C. and Mable, B.K. (Eds.)
   \code{\link{pml}}, \code{\link{pmlPart}}, \code{\link{pmlCluster}}, \code{\link{simSeq}}, \code{\link{SH.test}}
 }
 \examples{
-# in real analysis use larger n, e.g. 100
+# in real analysis use larger n, e.g. 500 preferably more
 \dontrun{
 data(Laurasiatherian)
 dm <- dist.logDet(Laurasiatherian)
 tree <- NJ(dm)
 fit <- pml(tree, Laurasiatherian)
-res <- SOWH.test(fit, n=10)
+fit <- optim.pml(fit, TRUE)
+set.seed(6)
+tree <- rNNI(fit$tree, 1)
+fit <- update(fit, tree = tree)
+(res <- SOWH.test(fit, n=100))
+summary(res)
 }
 }
 \keyword{models}
