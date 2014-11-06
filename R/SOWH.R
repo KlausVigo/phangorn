@@ -38,37 +38,39 @@ SOWH.test <- function(x, n=100, restricted=list(optNni=FALSE), optNni=TRUE, trac
         optRate = optU$optRate, optRooted = optU$optRooted, model = optU$model, 
         pml.control(trace = trace-1L)) 
     res[i, 1] <- logLik(restrTmp)
-    res[i, 2] <- logLik(unrestrTmp)
-    
+    res[i, 2] <- logLik(unrestrTmp)  
   }
-  result <- res 
-  attr(result, "restr") <- restr
-  attr(result, "unrestr") <- unrestr 
-  class(result) = "SOWH" # list(restr, unrestr, res)
+  result = list("LL"=res, "restr" = restr, "unrestr" = unrestr)
+  class(result) = "SOWH" 
   result
 }
 
 print.SOWH <- function(x, digits = 4L, ...){
-    resLL = logLik(attr(x, "restr"))
-    unresLL = logLik(attr(x, "unrestr"))
+    resLL = logLik(x$restr)  
+    unresLL = logLik(x$unrestr) 
     diffLL = unresLL - resLL
-    pval <- sum( (x[,2] - x[,1]) > diffLL) / nrow(x)
+    pval <- sum( (x$LL[,2] - x$LL[,1]) > diffLL) / nrow(x$LL)
     res = c(resLL, unresLL, diffLL, pval)
     names(res) = c("ln L restr", "ln L unrestr", "Diff ln L", "p-value")
     print(res, digits=digits)
     invisible(x)
 }
 
-#summary.SOWH <- function(x, digits = 4L, ...){
-#    resLL = logLik(attr(x, "restr"))
-#    unresLL = logLik(attr(x, "unrestr"))
-#    diffLL = resll - unresll
-#    pval <- sum( (x[,1] - x[,2]) > diffLL) / nrow(x)
-#    res = c(resLL, unresLL, diffLL, pval)
-#    print(res, digits=digits)
-#    hist(x[,1] - x[,2])
-#    return(NULL)
-#}
+summary.SOWH <- function(x, digits = 4L, plot=TRUE, ...){
+    resLL = logLik(x$restr)  
+    unresLL = logLik(x$unrestr) 
+    diffLL = unresLL - resLL
+    pval <- sum( (x$LL[,2] - x$LL[,1]) > diffLL) / nrow(x$LL)
+    res = c(resLL, unresLL, diffLL, pval)
+    names(res) = c("ln L restr", "ln L unrestr", "Diff ln L", "p-value")
+    print(res, digits=digits)
+    if(plot){
+        d = x$LL[,2] - x$LL[,1]
+        hist( d, freq=FALSE, xlim=c(0, 1.2 * max(d, diffLL)))
+        abline(v=diffLL, col="red")
+    } 
+    invisible(x)
+}
 
 
 
