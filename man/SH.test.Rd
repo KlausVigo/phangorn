@@ -27,7 +27,7 @@ SH.test(..., B = 10000, data=NULL)
 }
 \author{Klaus Schliep \email{klaus.schliep@gmail.com}}
 \seealso{
-  \code{\link{pml}}, \code{\link{pmlPart}}, \code{\link{pmlCluster}}
+  \code{\link{pml}}, \code{\link{pmlPart}}, \code{\link{pmlCluster}}, \code{\link{SOWH.test}}
 }
 \examples{
 data(Laurasiatherian)

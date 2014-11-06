@@ -32,7 +32,7 @@ Phylogenetic Inference in Hillis, D.M., Moritz, C. and Mable, B.K. (Eds.)
 }
 \author{Klaus Schliep \email{klaus.schliep@gmail.com}}
 \seealso{
-  \code{\link{pml}}, \code{\link{pmlPart}}, \code{\link{pmlCluster}}, \code{\link{simSeq}}
+  \code{\link{pml}}, \code{\link{pmlPart}}, \code{\link{pmlCluster}}, \code{\link{simSeq}}, \code{\link{SH.test}}
 }
 \examples{
 # in real analysis use larger n, e.g. 100
