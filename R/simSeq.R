@@ -77,7 +77,7 @@ simSeq.pml <- function(x, ancestral=FALSE, ...){
     type = attr(x$data, "type")
     for(i in 1:n){
         l = sum(y==i)
-        res[[i]] = simSeq(x$tree, l, Q=x$Q, bf=x$bf, type=type, levels=levels, rate=g, ancestral=ancestral)  
+        res[[i]] = simSeq(x$tree, l, Q=x$Q, bf=x$bf, type=type, levels=levels, rate=g[i], ancestral=ancestral)  
     }
     x = call("c.phyDat", quote(res[[1]]))
     if(n>1) x <- parse(text= paste("c(", "res[[1]]", paste0(",res[[", 2:n, "]]", collapse=""), ")"))

@@ -4,6 +4,8 @@ BUG FIXES
  
     o reorder.networx may not work as expected
 
+    o Gamma model was not working properly in simSeq.pml 
+
 
 
      CHANGES in PHANGORN VERSION 1.99-9
