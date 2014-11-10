@@ -6,6 +6,7 @@
 #include <Rinternals.h>
 
 
+
 // use R_len_t stat int, e.g. nr
 double huge = 1.0e300;
 static int *data1, *data2;
@@ -165,9 +166,15 @@ SEXP FITCHTRIP3(SEXP DAT3, SEXP nrx, SEXP edge, SEXP score, SEXP PS){
     PROTECT(pvec = allocVector(REALSXP, m));
     pvtmp = REAL(pvec);
     for(i=0; i<m; i++) pvtmp[i] = REAL(score)[i]; 
+/*    
+#ifdef _OPENMP
+if(*nthreads <= 1){ *nthreads=1; }else{ *nthreads=(*nthreads < omp_get_max_threads()) ? (*nthreads) : (omp_get_max_threads()); }
+#endif
+
 #ifdef SUPPORT_OPENMP    
 #pragma omp parallel for private(i, ei, k, tmp) shared(edges, data1, data2, d3, nr, weight, ps, pvtmp)
 #endif
+*/
     for(i=0; i<m; i++){
         ei = edges[i] - 1L;
 //      pvtmp[i] = REAL(score)[ei];
