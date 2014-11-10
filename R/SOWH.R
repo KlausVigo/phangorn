@@ -14,7 +14,6 @@ SOWH.test <- function(x, n=100, restricted=list(optNni=FALSE), optNni=TRUE, trac
   optR = optU
   namR = names(restricted)   
   for(i in 1: length(namR))optR[[namR[i]]] = restricted[[i]]
-#  x <- optim.pml()
   restr <- optim.pml(x, optNni = optR$optNni, optBf = optR$optBf, optQ = optR$optQ, 
         optInv = optR$optInv, optGamma = optR$optGamma, optEdge = optR$optEdge, 
         optRate = optR$optRate, optRooted = optR$optRooted, model = optR$model, 
@@ -45,6 +44,7 @@ SOWH.test <- function(x, n=100, restricted=list(optNni=FALSE), optNni=TRUE, trac
   result
 }
 
+
 print.SOWH <- function(x, digits = 4L, ...){
     resLL = logLik(x$restr)  
     unresLL = logLik(x$unrestr) 
@@ -56,20 +56,21 @@ print.SOWH <- function(x, digits = 4L, ...){
     invisible(x)
 }
 
-summary.SOWH <- function(x, digits = 4L, plot=TRUE, ...){
-    resLL = logLik(x$restr)  
-    unresLL = logLik(x$unrestr) 
+
+summary.SOWH <- function(object, digits = 4L, plot=TRUE, ...){
+    resLL = logLik(object$restr)  
+    unresLL = logLik(object$unrestr) 
     diffLL = unresLL - resLL
-    pval <- sum( (x$LL[,2] - x$LL[,1]) > diffLL) / nrow(x$LL)
+    pval <- sum( (object$LL[,2] - object$LL[,1]) > diffLL) / nrow(object$LL)
     res = c(resLL, unresLL, diffLL, pval)
     names(res) = c("ln L restr", "ln L unrestr", "Diff ln L", "p-value")
     print(res, digits=digits)
     if(plot){
-        d = x$LL[,2] - x$LL[,1]
+        d = object$LL[,2] - object$LL[,1]
         hist( d, freq=FALSE, xlim=c(0, 1.2 * max(d, diffLL)))
         abline(v=diffLL, col="red")
     } 
-    invisible(x)
+    invisible(object)
 }
 
 
