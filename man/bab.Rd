@@ -54,7 +54,9 @@ Klaus Schliep \email{klaus.schliep@gmail.com} based on work on Liam Revell
 \examples{
 data(yeast)
 dfactorial(11)
-trees <- bab(yeast)
+# choose only the first two genes
+gene12 <- subset(yeast, , 1:3158, site.pattern=FALSE) 
+trees <- bab(gene12)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

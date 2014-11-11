@@ -7,4 +7,3 @@
 # .onLoad  <- function(libname, pkgname) {
 #    library.dynam("phangorn", pkgname, libname)
 #}
-

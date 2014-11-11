@@ -64,9 +64,7 @@ Klaus Schliep \email{klaus.schliep@gmail.com}
 data(Laurasiatherian)
 set.seed(1)
 bs <- bootstrap.phyDat(Laurasiatherian, FUN = 
-   function(x)upgma(dist.hamming(x)), bs=50)
-class(bs) <- 'multiPhylo'
-bs = .compressTipLabel(bs)
+   function(x)upgma(dist.hamming(x)), bs=25)
 # cladogram nice to show topological differences
 densiTree(bs, optim=TRUE, type="cladogram", col="blue")
 densiTree(bs, optim=TRUE, type="phylogram", col="green")
