@@ -1086,7 +1086,7 @@ read.nexus.splits <- function(file)
         if(fint)intervals[j] = as.numeric(tmp[ind[4]])
         tmp = tmp[length(tmp)]
         tmp = gsub("\\,", "", tmp)
-        res[[j]] = as.numeric(na.omit(as.numeric(strsplit(tmp, " ")[[1]])))
+        res[[j]] = as.integer(na.omit(as.numeric(strsplit(tmp, " ")[[1]])))
         j=j+1
     }
     if(length(cyc)>0){
@@ -1094,7 +1094,7 @@ read.nexus.splits <- function(file)
         tmp = gsub("\\;", "", tmp)
         tmp = gsub("CYCLE", "", tmp, ignore.case = TRUE)
         tmp = sub("\\s+", "", tmp)
-        cyc = as.numeric(na.omit(as.numeric(strsplit(tmp, " ")[[1]])))
+        cyc = as.integer(na.omit(as.numeric(strsplit(tmp, " ")[[1]])))
     }
     attr(res, "labels") = x
     attr(res, "weights") = weights
