@@ -152,12 +152,14 @@ c.splits <- function (..., recursive=FALSE)
         return(x[[1]])
 
     labels <- attr(x[[1]], "labels")
+    cycle <- attr(x[[1]], "cycle")
     for (i in 2:n) {
         match.names(labels, attr(x[[i]], "labels"))
     }
     res = structure(NextMethod("c"), class=c("splits", "prop.part"))
     attr(res, "labels") = labels
     attr(res, "weight") = as.vector(sapply(x, attr, "weight"))
+    attr(res, "cycle") = cycle
     res
 }
 
@@ -439,8 +441,7 @@ circNetwork <- function(x, ord=NULL){
     res$edge[, 2] = ord
     res$edge.length=NULL
 #    browser()    
-    x <- SHORTwise(x, nTips)
-    
+    x <- SHORTwise(x, nTips)    
     spRes <- as.splits(res)[res$edge[,2]]
     index = match(spRes, x)
     
@@ -487,7 +488,7 @@ circNetwork <- function(x, ord=NULL){
         fromTo <- ordStart:ordStop
         if(ordStart>ordStop) fromTo <- c(ordStart:nTips, 1:ordStop)
         fromTo = ord[fromTo] 
-        print(fromTo) 
+#        print(fromTo) 
         g = graph(t(res$edge), directed=FALSE)
         
         isChild = (rsY == (Y %*% X[k,]))[index]
@@ -553,6 +554,7 @@ circNetwork <- function(x, ord=NULL){
     res$Nnode =  max(res$edge) - nTips
     res$splitIndex = index 
     res$edge.length = weight[index]  # ausserhalb
+    attr(res, "splits") = x
     class(res) = c("networx", "phylo")
     attr(res, "order") = NULL
     res    
@@ -686,12 +688,49 @@ getOrdering <- function(x){
 }
 
 
+addTrivialSplits <- function(obj){
+    label <- attr(obj, "label")
+    nTips <- length(label)
+    weight <- attr(obj, "weights")
+    if(is.null(weight)) weight = rep(1, length(obj))
+    STree = stree(nTips, tip.label = attr(obj, "labels"))
+    STree$edge.length=NULL 
+    spRes <- as.splits(STree)[STree$edge[,2]]
+    tmpIndex = match(spRes, SHORTwise(obj, nTips))
+    if(any(is.na(tmpIndex))){
+        l.na = sum(is.na(tmpIndex))
+        obj <- c(obj, spRes[is.na(tmpIndex)]) 
+        weight = c(weight, rep(0, l.na))
+        attr(obj, "weights") <- weight
+    }
+    obj
+}
+
+
 as.networx.splits <- function(x, planar=FALSE, ...){
   label <- attr(x, "label")
+  
+  x = addTrivialSplits(x)
+  
+  nTips <- length(label)
   weight <- attr(x, "weights")
   if(is.null(weight)) weight = rep(1, length(x))
   attr(x, "weights") <- weight
-  nTips <- length(label)
+  
+#  STree = stree(nTips, tip.label = attr(x, "labels"))
+#  STree$edge.length=NULL 
+#  x <- SHORTwise(x, nTips)
+  
+#  spRes <- as.splits(STree)[STree$edge[,2]]
+#  tmpIndex = match(spRes, x)
+  
+#  if(any(is.na(tmpIndex))){
+#      l.na = sum(is.na(tmpIndex))
+#      x <- c(x, spRes[is.na(tmpIndex)]) 
+#      weight = c(weight, rep(0, l.na))
+#      attr(x, "weights") <- weight
+#  }
+  
   x <- oneWise(x, nTips) 
   l <- sapply(x, length)
   if(any(l==nTips))x <- x[l!=nTips] # get rid of trivial splits
@@ -700,6 +739,8 @@ as.networx.splits <- function(x, planar=FALSE, ...){
       c.ord <- attr(x, "cycle") 
   }
   else c.ord <- getOrdering(x)
+  attr(x, "cycle") = c.ord
+  
   dm <- as.matrix(compatible2(x)) 
 # which splits are in circular ordering  
     circSplits = which(countCycles(x, ord=c.ord)==2) 
@@ -707,11 +748,11 @@ as.networx.splits <- function(x, planar=FALSE, ...){
     tmp = circNetwork(x, c.ord)  
     attr(tmp, "order") = NULL
     if(planar){
-        tmp$Nnode = max(tmp$edge) - nTips
-        tmp$edge.length = weight[tmp$splitIndex]
-        attr(x, "cycle") <- c.ord
-        attr(tmp, "splits") = x 
-        class(tmp) = c("networx", "phylo")
+#        tmp$Nnode = max(tmp$edge) - nTips
+#        tmp$edge.length = weight[tmp$splitIndex]
+#        attr(x, "cycle") <- c.ord
+#        attr(tmp, "splits") = x 
+#        class(tmp) = c("networx", "phylo")
         return(reorder(tmp))
 #        tmp
     }
@@ -763,6 +804,7 @@ consensusNet <- function (obj, prob = 0.3, ...)
 
 addConfidences <- function(obj, phy){
     tiplabel <- attr(obj, "label")
+    obj = addTrivialSplits(obj) 
     ind <- match(tiplabel, phy$tip.label)
     if (any(is.na(ind)) | length(tiplabel) != length(phy$tip.label)) 
         stop("trees have different labels")
@@ -776,7 +818,7 @@ addConfidences <- function(obj, phy){
     spl <- SHORTwise(spl, nTips)
     ind <- match(SHORTwise(obj, nTips), spl)
     pos <-  which(ind > nTips)
-    confidences <- numeric(length(obj))
+    confidences <- character(length(obj))
     confidences[pos] <- phy$node.label[ind[pos] - nTips]
     attr(obj, "confidences") <- confidences
     obj  
@@ -905,6 +947,15 @@ edgeLabels <- function(xx,yy,zz=NULL, edge){
         cbind(XX, YY)  
 }
 
+.check.pkg <- function (pkg) 
+{
+    if (pkg %in% rownames(installed.packages())) {
+        require(pkg, character.only = TRUE)
+        return(TRUE)
+    }
+    else return(FALSE)
+}
+
 
 plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRUE,
     show.edge.label=FALSE, edge.label=NULL, show.node.label = FALSE, node.label=NULL,
@@ -920,6 +971,12 @@ plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRU
     if(is.null(edge.label) & !is.null(conf))edge.label = conf[index]
     if(is.null(node.label))node.label = as.character(1:max(x$edge))
     if(show.tip.label)node.label[1:nTips] = ""
+    
+    chk <- .check.pkg("rgl")
+    if(!chk && type=="3D"){
+        warning("type=\"3D\" requires the package \"rgl\"\n, plotting =\"2D\" instead!\n")
+        type="2D"
+    }
     if(type=="3D") {
         coord <- coords(x, dim="3D")
         plotRGL(coord, x, show.tip.label=show.tip.label, show.edge.label=show.edge.label, 
@@ -941,6 +998,10 @@ plotRGL <- function(coords, net, show.tip.label=TRUE,
         show.edge.label=FALSE, edge.label=NULL, show.node.label=FALSE, node.label=NULL,
         show.nodes=FALSE, tip.color = "blue", edge.color="grey", 
         edge.width = 3, font = 3, cex = par("cex"), ...){
+    
+    chk <- .check.pkg("rgl")
+    if(!chk) open3d <- segments3d <- spheres3d <- rgl.texts <- function(...)NULL
+    
     edge = net$edge
   
     x = coords[,1]
@@ -1149,7 +1210,7 @@ write.nexus.splits <- function (obj, file = "", weights=NULL)
     format = paste(format, ";\n",  sep = "")
     cat(format, file = file, append = TRUE)
     cat("\tMATRIX\n", file = file, append = TRUE)    
-    obj = phangorn:::oneWise(obj, ntaxa)
+    obj = oneWise(obj, ntaxa)
     for (i in 1:nsplits){
         slab <- ifelse(flab, attr(obj, "splitlabels")[i], i)
         scon <- ifelse(fcon, paste(attr(obj, "confidences")[i], "\t"), "")

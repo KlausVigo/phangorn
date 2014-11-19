@@ -17,6 +17,7 @@
 \alias{addConfidences}
 \alias{countCycles}
 \alias{presenceAbsence}
+\alias{addTrivialSplits}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Splits representation of graphs and trees.
@@ -36,6 +37,7 @@ allSplits(k, labels = NULL)
 write.nexus.splits(obj, file="", weights=NULL)
 read.nexus.splits(file)
 addConfidences(obj, phy)
+addTrivialSplits(obj)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

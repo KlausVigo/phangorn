@@ -397,7 +397,7 @@ splitsNetwork <- function(dm, splits=NULL, gamma=.1, lambda=1e-6, weight=NULL){
     }
     
     if(is.null(splits)){
-        X2 = designAll(k)
+        X2 = designAll(k, TRUE)
         X=X2[[1]]
     }
     else X = as.matrix(splits2design(splits))
@@ -2452,6 +2452,7 @@ designSplits <- function (x, splits = "all", ...)
 {
     if (!is.na(pmatch(splits, "all"))) 
         splits <- "all"
+    if(inherits(x, "splits")) return(designUnrooted(x))
     SPLITS <- c("all", "star") #,"caterpillar")
     splits <- pmatch(splits, SPLITS)
     if (is.na(splits)) stop("invalid splits method")
@@ -2461,8 +2462,8 @@ designSplits <- function (x, splits = "all", ...)
     return(X)
 }
 
-
-designAll <- function(n){
+# add return splits=FALSE
+designAll <- function(n, add.split=FALSE){
     Y = matrix(0L, n*(n-1)/2, n)
     k = 1
     for(i in 1:(n-1)){
@@ -2476,6 +2477,7 @@ designAll <- function(n){
     for(i in 1:m)
     X[i, ] <- rep(rep(c(0L,1L), each=2^(i-1)),2^(m-i))
     X <- X[,-1]
+    if(!add.split) return((Y%*%X)%%2)
     list(X=(Y%*%X)%%2,Splits=t(X))
 }
 
