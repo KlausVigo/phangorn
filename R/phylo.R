@@ -974,30 +974,6 @@ ll <- function(dat1, tree, bf = c(0.25, 0.25, 0.25, 0.25), g = 1,
 }
 
 
-# raus
-ll2 <- function(dat1, tree, g = 1, eig, ...) 
-{
-    q = length(tree$tip.label)
-    node <- tree$edge[, 1]
-    edge <- tree$edge[, 2]
-    m = length(edge) + 1
-    dat = vector(mode = "list", length = m)
-    el <- tree$edge.length
-    P <- getP(el, eig, g)
-    nr <- as.integer(attr(dat1, "nr"))
-    nc <- as.integer(attr(dat1, "nc"))
-    node = as.integer(node - min(node))
-    edge = as.integer(edge - 1)
-    nTips = as.integer(length(tree$tip))
-    mNodes = as.integer(max(node) + 1)
-    contrast = attr(dat1, "contrast")
-    nco = as.integer(dim(contrast)[1])
-    res <- .Call("LogLik2", dat1[tree$tip.label], P, nr, nc, 
-        node, edge, nTips, mNodes, contrast, nco)[[1]]
-    res
-}
-
-
 fn.quartet <- function(old.el, eig, bf, dat,  g=1, w=1, weight, ll.0) {
     l= length(dat[,1]) 
     ll = ll.0
@@ -1715,19 +1691,6 @@ fs <- function (old.el, eig, parent.dat, child.dat, weight, g=g,
             as.double(ll.0), as.integer(getA), as.integer(getB))
 }
 
-fs0 <- function (old.el, eig, parent.dat, child.dat, weight, g=g, 
-    w=w, bf=bf, ll.0=ll.0, evi, getA=TRUE, getB=TRUE) 
-{
-    P <- getP(old.el, eig, g)
-    nr = as.integer(length(weight))
-    nc = as.integer(length(bf))
-# dad = parent / child * P 
-    dad <- .Call("getDAD", parent.dat, child.dat, P, nr, nc) 
-# (child  * (dad %*% P))
-    dad <- .Call("getM4", child.dat, dad, P, nr, nc) 
-    list(old.el, parent.dat, dad)
-}
-
 
 fs3 <- function (old.el, eig, parent.dat, child, weight, g=g, 
     w=w, bf=bf, ll.0=ll.0, contrast, contrast2, evi, ext=TRUE, getA=TRUE, getB=TRUE) # child.dat
@@ -2329,19 +2292,6 @@ pmlPart <- function (formula, object, control=pml.control(epsilon=1e-8, maxit=10
 # Distance Matrix methods
 #
 
-#bip <- function (x) 
-#{
-#    if (is.null(attr(x, "order")) || attr(x, "order") == "cladewise") 
-#        x = reorder(x, "postorder")
-#    nTips = length(x$tip)
-#    res = vector("list", max(x$edge))
-#    res[1:nTips]=1:nTips
-#    tmp = bipart(x)
-#    res[attr(tmp, "nodes")] = tmp
-#    res
-#}
-
-
 bip <- function (obj) 
 {
     if (is.null(attr(obj, "order")) || attr(obj, "order") == 
@@ -2353,38 +2303,6 @@ bip <- function (obj)
     res
 }
 
-
-# raus
-bip2 <- function (x) 
-{
-    if(is.null(attr(x,"order")) || attr(x, "order")=="cladewise") x = reorder(x, "postorder")
-    nNode = x$Nnode
-    nTips = length(x$tip)
-    parent <- as.integer(x$edge[, 1])
-    child <- as.integer(x$edge[, 2])
-    res = vector("list", max(x$edge))
-    p = parent[1]
-    tmp = NULL
-    for(i in 1:nTips) res[[i]]=i
-    for (i in 1:length(parent)) {
-        pi = parent[i]
-        ci = child[i]
-        if (pi == p) {
-            if (ci < (nTips + 1)) 
-                tmp = cisort(tmp, ci)
-            else tmp = cisort(tmp, res[[ci]])
-        }
-        else {
-            res[[p]] = (tmp)
-            if (ci < (nTips + 1)) 
-                tmp = ci
-            else tmp = res[[ci]]
-            p = pi
-        }
-    }
-    res[[p]] = (tmp)
-    res
-}
 
 # as.Matrix, sparse = TRUE, 
 designTree <- function(tree, method="unrooted", sparse=FALSE, ...){
@@ -2401,7 +2319,6 @@ designTree <- function(tree, method="unrooted", sparse=FALSE, ...){
     if(method==2) X <- designUltra(tree, sparse=sparse,...)
     X
 }
-
 
 
 # splits now work
@@ -2568,13 +2485,6 @@ designStar = function(n){
     for(i in 1:(n-1)) res = rbind(res,cbind(matrix(0,(n-i),i-1),1,diag(n-i)))
     res
 }
-
-
-cisort <- function(x,y){
-    k = length(x)
-    l=length(y)
-    .C("C_cisort",as.integer(x),as.integer(y),k,l, integer(k+l))[[5]]
-}  
 
 
 bipart <- function(obj){

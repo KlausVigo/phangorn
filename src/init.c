@@ -7,7 +7,7 @@ void countCycle2(int *M, int *l, int *m, int *res);
 /* called in fitch.R */
 void fitch_free();
 void fitch_init(int *data, int *m, int *n, double *weights, int *nr);
-void fitch8(int *dat, int *nr, int *pars, int *node, int *edge, int *nl, double *weight, double *pvec, double *pscore);
+//void fitch8(int *dat, int *nr, int *pars, int *node, int *edge, int *nl, double *weight, double *pvec, double *pscore);
 void fitchQuartet(int *index, int *n, int *nr, double *psc1, double *psc2, double *weight, double *res);
 void fnhelp(int *node, int * edge, int *n, int *m, int *root, int *edge2, int *node2, int *pc);
 
@@ -25,7 +25,7 @@ void C_MPR(int *res, int *nr, int *parent, int *kids, int *nl);
 
 /* from distSeq.R */    
 void distHamming(int *x, double *weight, int *nr, int *l, double *d);    
-void C_coph(SEXP children, SEXP tips, double *nh, int *nTips, int *lch, int *lkids, int *ltips, double *dm);    
+//void C_coph(SEXP children, SEXP tips, double *nh, int *nTips, int *lch, int *lkids, int *ltips, double *dm);    
 
 /* from networx*/
 //void neworder_cladewise(int *n, int *edge1, int *edge2, int *N, int *neworder);
@@ -39,7 +39,7 @@ void ll_free();
 void ll_init(int *nr, int *nTips, int *nc, int *k);
 void ll_free();
 void ll_init2(int *data, double *weights, int *nr, int *nTips, int *nc, int *k);
-void cisort(int *x, int *y, int *a, int *b, int *res);
+//void cisort(int *x, int *y, int *a, int *b, int *res);
 void moveLL(double *LL, double *child, double *P, int *nr, int *nc, double *tmp);
 
 void out(double *d, double *r, int *n, int *k, int *l);
@@ -48,9 +48,8 @@ void giveIndex(int *left, int* right, int *ll, int *lr, int *n, int *res);
 
 void nodeH(int *edge, int *node, double *el, int *l,  double *res);
 void AllKids(int *children, int *parents, int *nTips, int *nNode, int *lp, int *kids, int *lkids, int *pkids);
-void C_bipHelp(int *parents, int *children, int *ntips, int *mp, int *l, int *ltips, int *ptips);
-
-void C_bip2(int *parents, int *children, int *ntips, int *mp, int *l, int *ltips, int *ptips, int *tips);
+//void C_bipHelp(int *parents, int *children, int *ntips, int *mp, int *l, int *ltips, int *ptips);
+//void C_bip2(int *parents, int *children, int *ntips, int *mp, int *l, int *ltips, int *ptips, int *tips);
 void C_cophenetic(int *children, int *parents, double *el, int *lp, int *m, int *nTips, int *nNode, double *res);
 
 
@@ -169,7 +168,6 @@ R_CMethodDef cMethods[] = {
 {"C_fhm", (DL_FUNC) &fhm, 2},
 {"out", (DL_FUNC) &out, 5},
 {"giveIndex", (DL_FUNC) &giveIndex, 6},
-{"fitch8", (DL_FUNC) &fitch8, 9},
 {"fitchQuartet", (DL_FUNC) &fitchQuartet, 7},
 {"fitchTriplet", (DL_FUNC) &fitchTriplet, 5},
 {"fitchTripletACC4", (DL_FUNC) &fitchTripletACC4, 11},
@@ -184,16 +182,18 @@ R_CMethodDef cMethods[] = {
 {"ll_init", (DL_FUNC) &ll_init, 4},
 {"ll_free2", (DL_FUNC) &ll_free, 0},
 {"ll_init2", (DL_FUNC) &ll_init2, 6},
-{"C_cisort", (DL_FUNC) &cisort, 5},
 {"moveLL", (DL_FUNC) &moveLL, 6},
 {"nodeH", (DL_FUNC) &nodeH, 5},
-{"C_coph", (DL_FUNC) &C_coph, 10},
 {"AllKids", (DL_FUNC) &AllKids, 8},
-{"C_bipHelp", (DL_FUNC) &C_bipHelp, 7},
-{"C_bip2", (DL_FUNC) &C_bip2, 8},
 {"C_cophenetic", (DL_FUNC) &C_cophenetic, 8},
 {NULL, NULL, 0}
 };
+// fitchQuartet raus eins weniger
+//{"fitch8", (DL_FUNC) &fitch8, 9},
+//{"C_coph", (DL_FUNC) &C_coph, 10},
+//{"C_bipHelp", (DL_FUNC) &C_bipHelp, 7},
+//{"C_bip2", (DL_FUNC) &C_bip2, 8},
+//{"C_cisort", (DL_FUNC) &cisort, 5},
 
 void R_init_phangorn(DllInfo *info){
     R_registerRoutines(info, cMethods, callMethods, NULL, NULL);

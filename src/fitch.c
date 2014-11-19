@@ -183,7 +183,6 @@ if(*nthreads <= 1){ *nthreads=1; }else{ *nthreads=(*nthreads < omp_get_max_threa
             if(!tmp){
                 tmp = data1[k + ei*nr] | data2[k + ei*nr];
                 pvtmp[i]+=weight[k];
-                
             }
             tmp = tmp & data1[k + d3*nr];
             if(!tmp){
@@ -637,7 +636,7 @@ SEXP FNALL_NNI(SEXP nrx, SEXP node, SEXP edge, SEXP l, SEXP mx, SEXP my, SEXP ro
     fnhelp(INTEGER(node), INTEGER(edge),  n, &m, INTEGER(root), edge2, node2, pc); 
     fitch9(data1, nr, INTEGER(node), INTEGER(edge), INTEGER(l), weight, pvtmp, &pscore); 
     FN4(data1, data2, nr, node2, edge2, INTEGER(my), pc, weight, pvtmp, pvtmp2); // pars,
-    
+//  fitchQuartet(int *index, int *n, nr, double *psc1, double *psc2, weight, double *res);  
     SET_VECTOR_ELT(res, 0, pvec1);
     SET_VECTOR_ELT(res, 1, pvec2);    
     UNPROTECT(3);

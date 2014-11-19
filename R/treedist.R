@@ -11,25 +11,6 @@ allKids <- function(phy){
 } 
 
 
-bipHelp <- function(phy){
-    nTips = as.integer(length(phy$tip))
-    lp=nrow(phy$edge)
-    nNode = phy$Nnode
-    mp = max(phy$edge)
-    .C("C_bipHelp", as.integer(phy$edge[,1]), as.integer(phy$edge[,2]), as.integer(nTips), 
-       as.integer(mp), as.integer(lp), integer(mp), integer(mp+1L))
-} 
-
-
-bipi = function(tree){ 
-    ntips= length(tree$tip)
-    edge= tree$edge
-    tmp = bipHelp(tree)
-    .C("C_bip2", edge[,1], edge[,2], as.integer(ntips), as.integer(max(tree$edge)), as.integer(nrow(edge)), ltips=tmp[[6]], ptips=tmp[[7]], integer(sum(tmp[[6]])))
-} 
-
-
-
 coph <- function(x){ 
     if (is.null(attr(x, "order")) || attr(x, "order") == "cladewise") 
         x <- reorder(x, "postorder")

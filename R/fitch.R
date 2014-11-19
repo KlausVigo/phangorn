@@ -146,14 +146,15 @@ fitch.spr <- function(tree, data){
       nt = which.min(score)
       tree = addOne(treetmp, i, nt) 
       minp=min(score)
-      #            print(paste("new",minp))
+      #   print(paste("new",minp))
     }
   }
   m=max(tree$edge)
   root <- getRoot(tree) 
+  ch = allChildren(tree)
   for(i in (nTips+1L):m){
       if(i!=root){
-          tmp = dropNode(tree, i)
+          tmp = dropNode(tree, i, all.ch=ch)
           if(!is.null(tmp)){
           edge = tmp[[1]]$edge[,2]                          
           blub = fast.fitch(tmp[[2]], nr, TRUE)
@@ -163,6 +164,7 @@ fitch.spr <- function(tree, data){
               nt = which.min(score)
               tree = addOneTree(tmp[[1]], tmp[[2]], nt, tmp[[3]])
               minp <- min(score)
+              ch = allChildren(tree)
             }
         }
       }

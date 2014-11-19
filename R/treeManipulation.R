@@ -159,9 +159,12 @@ pruneTree = function(tree, ..., FUN = ">="){
 
 # requires postorder
 # works fine with fit.fitch  
-# for internal use in fitch.spr
+# for internal use in fitch.spr  
+# pos statt i      
 dropTip <- function(x, i, check.binary=FALSE, check.root=TRUE){
     edge <- x$edge
+#    edge1 <- edge[,1]
+#    edge2 <- edge[,2]
     root <- getRoot(x)
     ch <- which(edge[,2] == i)
     pa <- edge[ch,1] 
@@ -244,14 +247,39 @@ dropTip2 <- function(x, i, check.binary=FALSE, check.root=TRUE){
 
 # like drop tip and returns two trees, 
 # to be used in fitch.spr
-dropNode <- function(x, i, check.binary=FALSE, check.root=TRUE){
+#  ch = allKids(edge, nTips)
+descAll = function (x, node, nTips, ch) 
+{
+    edge = x[,1]
+    m = max(x)
+    isInternal = logical(m)
+    isInternal[(nTips+1):m] = TRUE
+    desc = function(node, isInternal) {
+        if (!isInternal[node]) return(node)
+        res = NULL
+        while (length(node) > 0) {
+            tmp = unlist(ch[node])
+            res = c(res, tmp)
+            node = tmp[isInternal[tmp]]
+        }
+        res
+    }
+    desc(node, isInternal)
+}  
+
+
+dropNode <- function(x, i, check.binary=FALSE, check.root=TRUE, all.ch=NULL){
   edge <- x$edge
   root <- getRoot(x)
   ch <- which(edge[,2] == i)
+#  getIndexEdge(tip, edge) 
+  
   nTips <- length(x$tip.label)    
   pa <- edge[ch,1] 
   if(i>nTips){
-    kids <- Descendants(x, i, "all")
+#    kids <- Descendants(x, i, "all")
+    if(is.null(all.ch)) all.ch=allChildren(x)  
+    kids <- descAll(edge, i, nTips, all.ch)  
     ind <- match(kids,edge[,2])
     edge2 <- edge[sort(ind),]            
     edge <- edge[-c(ch, ind),]

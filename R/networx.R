@@ -437,6 +437,137 @@ circNetwork <- function(x, ord=NULL){
     if(tmp!=1) ord = c(ord[tmp:nTips], ord[1:(tmp-1)])
     res = stree(nTips, tip.label = attr(x, "labels"))
     res$edge[, 2] = ord
+    res$edge.length=NULL
+#    browser()    
+    x <- SHORTwise(x, nTips)
+    
+    spRes <- as.splits(res)[res$edge[,2]]
+    index = match(spRes, x)
+    
+    if(any(is.na(index))){
+        l.na = sum(is.na(index))
+        x <- c(x, spRes[is.na(index)])    
+        weight = c(weight, rep(0, l.na))
+        index = match(spRes, x)
+    }
+    
+    l = sapply(oneWise(x, nTips), length)
+    l2 = sapply(x, length)
+    #    dm <- as.matrix(compatible2(x))
+    
+    tmp <- countCycles(x, ord=ord)
+    ind = which(tmp == 2 & l2>1) # & l<nTips changed with ordering
+    
+    ind = ind[order(l[ind])]
+    
+    dm2 <- as.matrix(compatible2(x, x[ind]))
+    
+    X = as.matrix(x)[,ord]
+    Y = X    
+    rsY = rowSums(Y)
+    X = X[ind, ]
+    
+    for(k in 1: length(ind)){
+        Vstart = ord[1]
+        Vstop = ord[nTips]    
+        ordStart = 1
+        ordStop = nTips
+        for(j in 2:nTips){
+            
+            if(X[k,j-1] < X[k,j]){ 
+                Vstart = ord[j]
+                ordStart = j                   
+            }                       
+            if(X[k,j-1] > X[k,j]){ 
+                Vstop = ord[j-1]
+                ordStop = j-1   
+            }    
+        } 
+        
+        fromTo <- ordStart:ordStop
+        if(ordStart>ordStop) fromTo <- c(ordStart:nTips, 1:ordStop)
+        fromTo = ord[fromTo] 
+        print(fromTo) 
+        g = graph(t(res$edge), directed=FALSE)
+        
+        isChild = (rsY == (Y %*% X[k,]))[index]
+        sp2 = NULL
+        sp0 = NULL
+        
+        for(i in 2:length(fromTo)){
+            sptmp = get.shortest.paths(g, fromTo[i-1], fromTo[i], 
+                                       output=c("epath"))$epath[[1]]
+            sp2 = c(sp2, sptmp[-c(1, length(sptmp))])
+            sp0 = c(sp0, sptmp)
+        }
+        sp0 = unique(sp0)
+        
+        if(length(sp2)>0){
+            #            blub = which(dm[index[sp2], ind[k]]>0)
+            TMP = rowSums(dm2[index[sp2], 1:k, drop=FALSE])
+            blub = which(TMP>0)
+            sp2 = sp2[blub]
+        }
+        if(length(sp2)==0){
+            isChild = (rsY == (Y %*% X[k,]))[index]  
+            sp0 = which(isChild == TRUE)
+            edge1 = unique(as.vector(res$edge[sp0,]))
+            edge2 = as.vector(res$edge[-sp0,])
+            asdf = edge1 %in% edge2
+            sp = edge1[asdf]
+        }
+        if(length(sp2)>0)   sp = unique(as.vector(t(res$edge[sp2,])))     
+        parent = res$edge[,1]
+        child = res$edge[,2]    
+        
+        j = ord[which(X[k,]==1)]
+        anc = unique(parent[match(j, child)])
+        
+        maxVert = max(parent)
+        l = length(sp)
+        
+        newVert = (maxVert+1) : (maxVert+l)      
+        sp01 = setdiff(sp0, sp2)
+        for(i in 1:l) res$edge[sp01,][res$edge[sp01,]==sp[i]] = newVert[i] 
+        
+        newindex = rep(ind[k], l)        
+        if(length(sp)>1)newindex = c(index[sp2], newindex)
+        index = c(index, newindex)        
+        # connect new and old vertices
+        newEdge = matrix(cbind(sp, newVert), ncol=2) 
+        if(length(sp)>1){
+            # copy edges
+            qwer = match(as.vector(res$edge[sp2,]), sp)
+            newEdge = rbind(matrix(newVert[qwer], ncol=2), newEdge)
+        }
+        
+        res$edge = rbind(res$edge, newEdge)      
+        res$Nnode =  max(res$edge) - nTips
+        
+        res$splitIndex = index
+        res$edge.length <- rep(1, nrow(res$edge))
+        class(res) = c("networx", "phylo")
+        attr(res, "order") = NULL
+        #browser() 
+    }
+    res$Nnode =  max(res$edge) - nTips
+    res$splitIndex = index 
+    res$edge.length = weight[index]  # ausserhalb
+    class(res) = c("networx", "phylo")
+    attr(res, "order") = NULL
+    res    
+}
+
+circNetwork_Old <- function(x, ord=NULL){
+    if(is.null(ord))ord = attr(x, "cycle")
+    
+    weight <- attr(x, "weights")
+    if(is.null(weight)) weight = rep(1, length(x))
+    nTips = length(ord)
+    tmp = which(ord == 1)
+    if(tmp!=1) ord = c(ord[tmp:nTips], ord[1:(tmp-1)])
+    res = stree(nTips, tip.label = attr(x, "labels"))
+    res$edge[, 2] = ord
     l = sapply(oneWise(x, nTips), length)
     
     x <- SHORTwise(x, nTips)
@@ -1000,9 +1131,9 @@ write.nexus.splits <- function (obj, file = "", weights=NULL)
         sep = ""), file = file, append = TRUE)
     cat("\tTAXLABELS", paste(taxa.labels, sep = " "), ";\nEND;\n\n", 
         file = file, append = TRUE)
-    cat(paste("BEGIN ST_SPLITS;\n\tDIMENSIONS NSPLITS=", nsplits, 
+    cat(paste("BEGIN SPLITS;\n\tDIMENSIONS NSPLITS=", nsplits,
         ";\n", sep = ""), file = file, append = TRUE)     
-    format = "\tFORMAT labels=yes weights=yes"
+    format = "\tFORMAT labels=left weights=yes"
     fcon = fint = flab = FALSE
     if(!is.null(attr(obj, "confidences"))){ 
         format = paste(format, "confidences=yes")
@@ -1018,11 +1149,12 @@ write.nexus.splits <- function (obj, file = "", weights=NULL)
     format = paste(format, ";\n",  sep = "")
     cat(format, file = file, append = TRUE)
     cat("\tMATRIX\n", file = file, append = TRUE)    
+    obj = phangorn:::oneWise(obj, ntaxa)
     for (i in 1:nsplits){
         slab <- ifelse(flab, attr(obj, "splitlabels")[i], i)
         scon <- ifelse(fcon, paste(attr(obj, "confidences")[i], "\t"), "")
         sint <- ifelse(fint, paste(attr(obj, "intervals")[i], "\t"), "")
-        cat("\t\t", slab, "\t", weight[i], "\t", scon, sint, paste(obj[[i]]), 
+        cat("\t\t", slab, "\t", weight[i], "\t", scon, sint, paste(obj[[i]], collapse=" "), 
             ",\n", file = file, append = TRUE, sep = "")  
     }
     cat("\t;\nEND;\n", file = file, append = TRUE)
@@ -1046,12 +1178,16 @@ read.nexus.splits <- function(file)
         xntaxa <- length(x)
     }
     sp <- grep("SPLITS;", X, ignore.case = TRUE)
+    spEnd <- grep("END;", X, ignore.case = TRUE)
+    spEnd <- spEnd[spEnd>sp][1]
     dims <- grep("DIMENSION", X, ignore.case = TRUE)
     cyc <- grep("CYCLE", X, ignore.case = TRUE)
     matr <- grep("MATRIX", X, ignore.case = TRUE)
     format <- grep("FORMAT", X, ignore.case = TRUE)
     start <- matr[matr>sp][1] + 1
-    end <- semico[semico>start][1] -1 
+    end <- semico[semico>start][1] -1
+    format <- format[(format>sp) & (format<spEnd)]
+    
     res <- vector("list", end - start + 1)
     weights = numeric(end - start + 1)
     j=1
@@ -1062,7 +1198,7 @@ read.nexus.splits <- function(file)
         tmp = X[format]    
         tmp = gsub("\\;", "", tmp)
         tmp = gsub("\\s+", "", tmp)
-        flab = grepl("labels=yes", tmp, ignore.case = TRUE) 
+        flab = grepl("labels=left", tmp, ignore.case = TRUE) 
         fwei = grepl("weights=yes", tmp, ignore.case = TRUE) 
         fcon = grepl("confidences=yes", tmp, ignore.case = TRUE) 
         fint = grepl("intervals=yes", tmp, ignore.case = TRUE) 
@@ -1074,7 +1210,7 @@ read.nexus.splits <- function(file)
     if(fint)intervals = numeric(end - start + 1)
     if(fcon)confidences = numeric(end - start + 1)
     if(flab)labels = vector("character", end - start + 1)
-    
+   
     for(i in start:end){
         tmp = X[i]
         tmp = sub("\\s+", "", tmp) 
