@@ -27,7 +27,7 @@ export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UN
     getClips, getDiversity, midpoint, pruneTree, acctran, getRoot, plotAnc, consensusNet, 
     bab, random.addition, diversity, baseFreq, densiTree, superTree, coalSpeciesTree, 
     pml.fit, pml.init, pml.free, edQt, lli, cladePar, addConfidences, countCycles, 
-    SOWH.test, plot.networx, presenceAbsence, as.networx.splits)
+    SOWH.test, plot.networx, presenceAbsence, as.networx.splits, addTrivialSplits)
 
 S3method('[', splits)          
 S3method(as.character, phyDat)
