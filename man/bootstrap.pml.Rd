@@ -78,8 +78,8 @@ Klaus Schliep \email{klaus.schliep@gmail.com}
 data(Laurasiatherian)
 dm <- dist.logDet(Laurasiatherian)
 tree <- NJ(dm)
-fit=pml(tree,Lareo0rurasiatherian)
-fit = optim.fixpml(fit,TRUE)
+fit=pml(tree,Laurasiatherian)
+fit = optim.pml(fit,TRUE)
 
 set.seed(123)
 bs <- bootstrap.pml(fit, bs=100, optNni=TRUE)

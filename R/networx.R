@@ -43,18 +43,6 @@ print.splits <- function (x, maxp = getOption("max.print"),
 }
 
 
-#"[.splits" = function(x, i){
-#   result = unclass(x)[i]
-#   if(!is.null(attr(x, "weights"))) attr(result, "weights") = attr(x, "weights")[i] 
-#   if(!is.null(attr(x, "confidences"))) attr(result, "confidences") = attr(x, "confidences")[i]
-#   if(!is.null(attr(x, "intervals"))) attr(result, "intervals") = attr(x, "intervals")[i] 
-#   if(!is.null(attr(x, "data"))) attr(result, "data") = attr(x, "data")[i,, drop=FALSE] 
-#   attr(result, "labels") = attr(x, "labels")
-#   class(result) = c("splits", "prop.part")
-#   result
-#}
-
-
 "[.splits" = function(x, i){
     tmp = attributes(x)
     result = unclass(x)[i]
@@ -187,7 +175,7 @@ as.splits.multiPhylo <- function(x, ...){
     x = lapply(x, root, firstTip) # old trick  
     splits <- prop.part(x)
     class(splits)='list'
-    weights = attr(splits, 'number')
+    weights = attr(splits, 'number')    
     lab = attr(splits,'labels')
     attr(splits,'labels') <- attr(splits, 'number') <- NULL
     l = length(lab)
@@ -195,6 +183,7 @@ as.splits.multiPhylo <- function(x, ...){
     for(i in 1:l) splitTips[[i]] = i
     result = c(splitTips,splits)
     attr(result, "weights") = c(rep(lx, l), weights)
+    attr(result, "confidences") <- attr(result, "weights")
     attr(result, "labels") <- lab
     class(result) = c('splits', 'prop.part')
     result  
@@ -202,8 +191,12 @@ as.splits.multiPhylo <- function(x, ...){
 
 
 as.splits.prop.part <- function(x, ...){
-    if(is.null(attr(x, "number"))) attr(x, "weights") = rep(1, length(x)) 
-	else attr(x, "weights") = attr(x, "number")
+    if(is.null(attr(x, "number")))  
+        attr(x, "weights") = rep(1, length(x)) 
+	  else{ 
+        attr(x, "weights") = attr(x, "number")
+        attr(x, "confidences") = attr(x, "number") 
+   	}    
     class(x) = c('splits', 'prop.part')	
     x
 }
@@ -371,6 +364,123 @@ compatible3 <- function(x, y=NULL)
     return(res)
 }
     
+
+#
+# splits
+#
+splitsNetwork <- function(dm, splits=NULL, gamma=.1, lambda=1e-6, weight=NULL){
+  dm = as.matrix(dm)
+  k = dim(dm)[1]
+  
+  if(!is.null(splits)){
+    tmp = which(sapply(splits, length)==k)
+    splits = splits[-tmp]
+    lab = attr(splits, "labels")
+    dm = dm[lab, lab]
+  }
+  
+  if(is.null(splits)){
+    X2 = designAll(k, TRUE)
+    X=X2[[1]]
+  }
+  else X = as.matrix(splits2design(splits))
+  
+  y = dm[lower.tri(dm)]
+  if(is.null(splits))ind = c(2^(0:(k-2)),2^(k-1)-1)
+  else ind = which(sapply(splits, length)==1)
+  #   y2 = lm(y~X[,ind]-1)$res
+  n = dim(X)[2]
+  
+  ridge <- lambda * diag(n) 
+  ridge[ind,ind] <- 0
+  if(!is.null(weight)) Dmat <- crossprod(X * sqrt(weight)) + ridge
+  else Dmat <- crossprod(X) + ridge
+  if(!is.null(weight)) dvec <- crossprod(X * sqrt(weight),y * sqrt(weight))
+  else dvec <- crossprod(X, y)
+  
+  #    Dmat <- as.matrix(Dmat)
+  #    dvec <- as.vector(dvec) 
+  
+  ind1       <- rep(1,n)
+  ind1[ind]  <- 0 
+  
+  Amat       <- cbind(ind1,diag(n)) 
+  bvec       <- c(gamma, rep(0,n))
+  
+  solution <- quadprog::solve.QP(Dmat,dvec,Amat,bvec=bvec, meq=1)$sol   
+  
+  ind2 <- which(solution>1e-8)
+  n2 <- length(ind2)
+  
+  ind3 = which(duplicated(c(ind2, ind), fromLast = TRUE)[1:n2])
+  ridge2 <- lambda * diag(n2) 
+  ridge2[ind3,ind3] <- 0
+  
+  if(!is.null(weight)) Dmat <- crossprod(X[, ind2] * sqrt(weight)) + ridge2
+  else Dmat <- crossprod(X[, ind2]) + ridge2
+  if(!is.null(weight)) dvec <- crossprod(X[, ind2] * sqrt(weight),y * sqrt(weight))
+  else dvec <- crossprod(X[, ind2], y)
+  
+  Amat2 <- diag(n2)
+  bvec2 <- rep(0, n2)
+  solution2  <- quadprog::solve.QP(Dmat, dvec, Amat2)$sol
+  
+  RSS1 = sum((y-X[,ind2]%*%solution[ind2])^2)
+  RSS2 = sum((y-X[,ind2]%*%solution2)^2)
+  
+  if(is.null(splits)){
+    splits = vector("list", length(ind2))
+    for(i in 1:length(ind2))splits[[i]] = which(X2[[2]][ind2[i],]==1)
+  } 
+  else splits = splits[ind2]
+  attr(splits, "weights") = solution[ind2]
+  attr(splits, "unrestricted") = solution2
+  attr(splits, "stats") = c(df=n2, RSS_p = RSS1, RSS_u=RSS2)
+  attr(splits,"labels") =dimnames(dm)[[1]]
+  class(splits)='splits'
+  return(splits)           
+}
+
+
+allSplits = function(k, labels=NULL){
+  result <- lapply(1:(2^(k-1)-1),dec2Bin)
+  if(is.null(labels)) labels=(as.character(1:k))
+  attr(result, 'labels') =labels
+  class(result)='splits'
+  result
+}   
+
+
+
+getIndex = function(left, right, n){
+  if(n<max(left) | n<max(right)) stop("Error")  
+  left = as.integer(left)
+  right = as.integer(right)
+  ll = length(left)
+  lr = length(right)
+  .C("giveIndex", left, right, ll, lr, as.integer(n), integer(ll*lr))[[6]]+1
+}
+
+
+splits2design <- function(obj, weight=NULL){
+  labels= attr(obj,'labels')
+  m = length(labels)
+  n=length(obj)
+  l = 1:m 
+  sl = sapply(obj, length)
+  p0 = sl * (m-sl)
+  p = c(0,cumsum(p0))
+  i = numeric()
+  for(k in 1:n){
+    sp = obj[[k]]
+    if(p0[k]!=0) i[(p[k]+1):p[k+1]] = getIndex(sp, l[-sp], m) 
+  }
+  dims=c(m*(m-1)/2,n)
+  sparseMatrix(i=i, p=p, dims=dims) 
+}
+
+
+
 
 addEdge <- function(network, desc, spl){   
     edge <- network$edge
@@ -560,114 +670,6 @@ circNetwork <- function(x, ord=NULL){
     res    
 }
 
-circNetwork_Old <- function(x, ord=NULL){
-    if(is.null(ord))ord = attr(x, "cycle")
-    
-    weight <- attr(x, "weights")
-    if(is.null(weight)) weight = rep(1, length(x))
-    nTips = length(ord)
-    tmp = which(ord == 1)
-    if(tmp!=1) ord = c(ord[tmp:nTips], ord[1:(tmp-1)])
-    res = stree(nTips, tip.label = attr(x, "labels"))
-    res$edge[, 2] = ord
-    l = sapply(oneWise(x, nTips), length)
-    
-    x <- SHORTwise(x, nTips)
-    l2 = sapply(x, length)
-    dm <- as.matrix(compatible2(x))
-    res$edge.length=NULL
-
-    tmp <- countCycles(x, ord=ord)
-    ind = which(tmp == 2 & l2>1) # & l<nTips changed with ordering
-    index = match(as.splits(res)[res$edge[,2]], x)
-    ind = ind[order(l[ind])]
-    X = as.matrix(x)[,ord]
-    Y = X    
-    rsY = rowSums(Y)
-    X = X[ind, ]
-    
-    for(k in 1: length(ind)){
-        Vstart = ord[1]
-        Vstop = ord[nTips]    
-        ordStart = 1
-        ordStop = nTips
-        for(j in 2:nTips){
-            
-            if(X[k,j-1] < X[k,j]){ 
-                Vstart = ord[j]
-                ordStart = j                   
-            }                       
-            if(X[k,j-1] > X[k,j]){ 
-                Vstop = ord[j-1]
-                ordStop = j-1   
-            }    
-        } 
-        
-        fromTo <- ordStart:ordStop
-        if(ordStart>ordStop) fromTo <- c(ordStart:nTips, 1:ordStop)
-        fromTo = ord[fromTo] 
-  
-        g = graph(t(res$edge), directed=FALSE)
-
-        isChild = (rsY == (Y %*% X[k,]))[index]
-        sp2 = NULL
-        sp0 = NULL
-
-        for(i in 2:length(fromTo)){
-            sptmp = get.shortest.paths(g, fromTo[i-1], fromTo[i], 
-                                       output=c("epath"))$epath[[1]]
-            sp2 = c(sp2, sptmp[-c(1, length(sptmp))])
-            sp0 = c(sp0, sptmp)
-        }
-        sp0 = unique(sp0)
-        blub = which(dm[index[sp2], ind[k]]>0)
-        sp2 = sp2[blub]
-
-        if(length(sp2)==0){
-            isChild = (rsY == (Y %*% X[k,]))[index]  
-            sp0 = which(isChild == TRUE)
-            edge1 = unique(as.vector(res$edge[sp0,]))
-            edge2 = as.vector(res$edge[-sp0,])
-            asdf = edge1 %in% edge2
-            sp = edge1[asdf]
-        }
-        if(length(sp2)>0)   sp = unique(as.vector(t(res$edge[sp2,])))     
-        parent = res$edge[,1]
-        child = res$edge[,2]    
-        
-        j = ord[which(X[k,]==1)]
-        anc = unique(parent[match(j, child)])
-        
-        maxVert = max(parent)
-        l = length(sp)
-        
-        newVert = (maxVert+1) : (maxVert+l)      
-        sp01 = setdiff(sp0, sp2)
-        for(i in 1:l) res$edge[sp01,][res$edge[sp01,]==sp[i]] = newVert[i] 
-
-        newindex = rep(ind[k], l)        
-        if(length(sp)>1)newindex = c(index[sp2], newindex)
-        index = c(index, newindex)        
-        # connect new and old vertices
-        newEdge = matrix(cbind(sp, newVert), ncol=2) 
-        if(length(sp)>1){
-            # copy edges
-            qwer = match(as.vector(res$edge[sp2,]), sp)
-            newEdge = rbind(matrix(newVert[qwer], ncol=2), newEdge)
-        }
-        
-        res$edge = rbind(res$edge, newEdge)      
-        res$Nnode =  max(res$edge) - nTips
- 
-    }
-    res$Nnode =  max(res$edge) - nTips
-    res$splitIndex = index 
-    res$edge.length = weight[index]  # ausserhalb
-    class(res) = c("networx", "phylo")
-    attr(res, "order") = NULL
-    res    
-}
-
 
 as.networx <- function (x, ...) 
 {
@@ -717,20 +719,6 @@ as.networx.splits <- function(x, planar=FALSE, ...){
   if(is.null(weight)) weight = rep(1, length(x))
   attr(x, "weights") <- weight
   
-#  STree = stree(nTips, tip.label = attr(x, "labels"))
-#  STree$edge.length=NULL 
-#  x <- SHORTwise(x, nTips)
-  
-#  spRes <- as.splits(STree)[STree$edge[,2]]
-#  tmpIndex = match(spRes, x)
-  
-#  if(any(is.na(tmpIndex))){
-#      l.na = sum(is.na(tmpIndex))
-#      x <- c(x, spRes[is.na(tmpIndex)]) 
-#      weight = c(weight, rep(0, l.na))
-#      attr(x, "weights") <- weight
-#  }
-  
   x <- oneWise(x, nTips) 
   l <- sapply(x, length)
   if(any(l==nTips))x <- x[l!=nTips] # get rid of trivial splits
@@ -748,13 +736,7 @@ as.networx.splits <- function(x, planar=FALSE, ...){
     tmp = circNetwork(x, c.ord)  
     attr(tmp, "order") = NULL
     if(planar){
-#        tmp$Nnode = max(tmp$edge) - nTips
-#        tmp$edge.length = weight[tmp$splitIndex]
-#        attr(x, "cycle") <- c.ord
-#        attr(tmp, "splits") = x 
-#        class(tmp) = c("networx", "phylo")
         return(reorder(tmp))
-#        tmp
     }
 
     ll <- sapply(x, length)
@@ -1032,7 +1014,6 @@ plotRGL <- function(coords, net, show.tip.label=TRUE,
 }
 
 
-#    edge.label.color="green", node.label.color="red", node.label 
 plot2D <- function(coords, net, show.tip.label=TRUE,  
        show.edge.label=FALSE, edge.label=NULL, show.node.label=FALSE, node.label=NULL,
        tip.color = "blue", edge.color="grey",                   

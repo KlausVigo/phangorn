@@ -692,6 +692,15 @@ dn <- function (x){
 }
 
 
+# replace with dist.nodes
+dn <- function(x){
+#  if (!is.binary.tree(x) ) x <- multi2di(x, random = FALSE)
+  if(is.null(x$edge.length))x$edge.length=rep(1,nrow(x$edge))
+  else x$edge.length[] = 1
+  dist.nodes(x)
+}
+
+
 rSPR = function (tree, moves = 1, n = length(moves), k=NULL) 
 {
     if (n == 1) {

@@ -11,6 +11,7 @@ dec2Bin = function (x)
     res
 }
 
+
 # returns binary (0, 1) vector of length k
 dec2bin <- function (x, k=ceiling(log2(x))) 
 {
@@ -382,119 +383,6 @@ PNJ <- function (data)
     tree <- old2new.phylo(tree)   
     reorder(tree)    
 }
-
-
-#
-# splits
-#
-splitsNetwork <- function(dm, splits=NULL, gamma=.1, lambda=1e-6, weight=NULL){
-    dm = as.matrix(dm)
-    k = dim(dm)[1]
-    
-    if(!is.null(splits)){
-        tmp = which(sapply(splits, length)==k)
-        splits = splits[-tmp]
-    }
-    
-    if(is.null(splits)){
-        X2 = designAll(k, TRUE)
-        X=X2[[1]]
-    }
-    else X = as.matrix(splits2design(splits))
-    
-    y = dm[lower.tri(dm)]
-    if(is.null(splits))ind = c(2^(0:(k-2)),2^(k-1)-1)
-    else ind = which(sapply(splits, length)==1)
- #   y2 = lm(y~X[,ind]-1)$res
-    n = dim(X)[2]
-
-    ridge <- lambda * diag(n) 
-    ridge[ind,ind] <- 0
-    if(!is.null(weight)) Dmat <- crossprod(X * sqrt(weight)) + ridge
-    else Dmat <- crossprod(X) + ridge
-    if(!is.null(weight)) dvec <- crossprod(X * sqrt(weight),y * sqrt(weight))
-    else dvec <- crossprod(X, y)
-
-#    Dmat <- as.matrix(Dmat)
-#    dvec <- as.vector(dvec) 
-    
-    ind1       <- rep(1,n)
-    ind1[ind]  <- 0 
-
-    Amat       <- cbind(ind1,diag(n)) 
-    bvec       <- c(gamma, rep(0,n))
-
-    solution <- quadprog::solve.QP(Dmat,dvec,Amat,bvec=bvec, meq=1)$sol   
-    
-    ind2 <- which(solution>1e-8)
-    n2 <- length(ind2)
-
-    ind3 = which(duplicated(c(ind2, ind), fromLast = TRUE)[1:n2])
-    ridge2 <- lambda * diag(n2) 
-    ridge2[ind3,ind3] <- 0
-    
-    if(!is.null(weight)) Dmat <- crossprod(X[, ind2] * sqrt(weight)) + ridge2
-    else Dmat <- crossprod(X[, ind2]) + ridge2
-    if(!is.null(weight)) dvec <- crossprod(X[, ind2] * sqrt(weight),y * sqrt(weight))
-    else dvec <- crossprod(X[, ind2], y)
-    
-    Amat2 <- diag(n2)
-    bvec2 <- rep(0, n2)
-    solution2  <- quadprog::solve.QP(Dmat, dvec, Amat2)$sol
-    
-    RSS1 = sum((y-X[,ind2]%*%solution[ind2])^2)
-    RSS2 = sum((y-X[,ind2]%*%solution2)^2)
-    
-    if(is.null(splits)){
-        splits = vector("list", length(ind2))
-        for(i in 1:length(ind2))splits[[i]] = which(X2[[2]][ind2[i],]==1)
-    } 
-    else splits = splits[ind2]
-    attr(splits, "weights") = solution[ind2]
-    attr(splits, "unrestricted") = solution2
-    attr(splits, "stats") = c(df=n2, RSS_p = RSS1, RSS_u=RSS2)
-    attr(splits,"labels") =dimnames(dm)[[1]]
-    class(splits)='splits'
-    return(splits)           
-}
-
-
-allSplits = function(k, labels=NULL){
-    result <- lapply(1:(2^(k-1)-1),dec2Bin)
-    if(is.null(labels)) labels=(as.character(1:k))
-    attr(result, 'labels') =labels
-    class(result)='splits'
-    result
-    }   
-
-
-
-getIndex = function(left, right, n){
-    if(n<max(left) | n<max(right)) stop("Error")  
-    left = as.integer(left)
-    right = as.integer(right)
-    ll = length(left)
-    lr = length(right)
-    .C("giveIndex", left, right, ll, lr, as.integer(n), integer(ll*lr))[[6]]+1
-}
-
-    
-splits2design <- function(obj, weight=NULL){
-    labels= attr(obj,'labels')
-    m = length(labels)
-    n=length(obj)
-    l = 1:m 
-    sl = sapply(obj, length)
-    p0 = sl * (m-sl)
-    p = c(0,cumsum(p0))
-    i = numeric()
-    for(k in 1:n){
-        sp = obj[[k]]
-        if(p0[k]!=0) i[(p[k]+1):p[k+1]] = getIndex(sp, l[-sp], m) 
-    }
-    dims=c(m*(m-1)/2,n)
-    sparseMatrix(i=i, p=p, dims=dims) 
-    }
 
 
 
@@ -3909,6 +3797,7 @@ checkLabels <- function(tree, tip){
 plotBS <- function (tree, BStrees, type = "unrooted", bs.col = "black", 
           bs.adj = NULL, ...) 
 {
+    # prop.clades raus??
     prop.clades <- function(phy, ..., part = NULL, rooted = FALSE) {
         if (is.null(part)) {
             obj <- list(...)
@@ -3944,6 +3833,7 @@ plotBS <- function (tree, BStrees, type = "unrooted", bs.col = "black",
         plot(tree2, type = type, ...)
     }
     else plot(tree, type = type, ...)
+    BStrees <- .uncompressTipLabel(BStrees)
     x = prop.clades(tree, BStrees)
     x = round((x/length(BStrees)) * 100)
     tree$node.label = x
