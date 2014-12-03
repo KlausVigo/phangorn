@@ -1,3 +1,21 @@
+     CHANGES in PHANGORN VERSION 1.99-12
+
+BUG FIXES
+
+    o plotBS was not working correctly if bootstraped trees are in 
+
+      compressed form (bug report by Tobias Müller)
+
+OTHER CHANGES
+
+    o many splits and networx methods have been improved
+
+    o phangorn now suggests only the rgl and not depends on it 
+
+      to avoid problems on different platforms (suggestion by Matt Pennell)
+
+
+
      CHANGES in PHANGORN VERSION 1.99-10
 
 BUG FIXES

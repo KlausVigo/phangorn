@@ -2,7 +2,7 @@
 \alias{consensusNet}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Computes a conensusNetwork from a list of trees
+Computes a consensusNetwork from a list of trees
 Computes a \code{networx} object from a collection of splits.
 }
 \description{
