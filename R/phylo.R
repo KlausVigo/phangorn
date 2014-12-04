@@ -2336,6 +2336,56 @@ nnls.tree <- function(dm, tree, rooted=FALSE, trace=1){
 }
 
 
+nnls.phylo <- function(x, dm, rooted=FALSE, trace=0){
+    nnls.tree(dm, x, rooted, trace=trace)
+}
+
+
+nnls.splits <- function(x, dm, trace=0){
+    labels=attr(x, "labels")
+    dm = as.matrix(dm)
+    k = dim(dm)[1]
+    dm = dm[labels,labels]
+    y = dm[lower.tri(dm)]
+    
+    x = SHORTwise(x, k)
+    l <- sapply(x, length)
+    if(any(l==0)) x = x[-which(l==0)]
+
+    X = splits2design(x)
+    
+    if(any(is.na(y))){
+        ind = which(is.na(y))
+        X = X[-ind,,drop=FALSE]
+        y= y[-ind]
+    }
+    betahat <- as.vector(solve(crossprod(X), crossprod(X, y)))
+    
+    if(!any(betahat<0)){
+        RSS = sum((y-(X%*%betahat))^2)    
+        if(trace)print(paste("RSS:", RSS))
+        attr(x, "RSS") = RSS
+        attr(x, "weights") = betahat 
+        return(x)
+    }
+    n = dim(X)[2]
+    Dmat <- crossprod(X) # cross-product computations
+    dvec <- crossprod(X, y)
+    
+    int = sapply(x, length)
+#    int = as.numeric(int==1)# (int>1)
+    Amat = diag(n) # (int)
+    betahat <- quadprog::solve.QP(as.matrix(Dmat),as.vector(dvec),Amat)$sol # quadratic programing solving
+    RSS = sum((y-(X%*%betahat))^2)
+    ind = (betahat > 1e-14) | int==1  
+    x = x[ind]
+    attr(x, "weights") = betahat[ind]
+    if(trace)print(paste("RSS:", RSS))
+    attr(x, "RSS") = RSS
+    x
+}  
+
+
 designSplits <- function (x, splits = "all", ...) 
 {
     if (!is.na(pmatch(splits, "all"))) 

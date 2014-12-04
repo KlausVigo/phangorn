@@ -451,6 +451,34 @@ allSplits = function(k, labels=NULL){
 }   
 
 
+allCircularSplits <- function(k, labels=NULL){
+    k = as.integer(k)
+    l = (k-1L) %/% 2L
+    res <- vector("list", k*(k-1L)/2)
+    
+    res[1:k] = 1L:k
+    ind = k
+    if(k>3){
+        fun = function(x,y){
+            tmp = (1L:y)+x
+            tmp %% (k+1L) + tmp %/% (k+1L)
+        }
+        for(i in 2:l){
+            res[(ind+1):(ind+k)] <- lapply(0L:(k-1L), fun, i)
+            ind <- ind+k
+        }
+        if((k%%2L)==0){
+            m <- k%/%2
+            res[(ind+1):(ind+m)] <- lapply(0L:(m-1L), fun, m)
+        }
+        
+    }   
+    if(is.null(labels)) labels=(as.character(1:k))
+    attr(res, 'labels') =labels
+    class(res)="splits"
+    res   
+}
+
 
 getIndex = function(left, right, n){
   if(n<max(left) | n<max(right)) stop("Error")  
@@ -476,10 +504,8 @@ splits2design <- function(obj, weight=NULL){
     if(p0[k]!=0) i[(p[k]+1):p[k+1]] = getIndex(sp, l[-sp], m) 
   }
   dims=c(m*(m-1)/2,n)
-  sparseMatrix(i=i, p=p, dims=dims) 
+  sparseMatrix(i=i, p=p, x=1.0, dims=dims) 
 }
-
-
 
 
 addEdge <- function(network, desc, spl){   

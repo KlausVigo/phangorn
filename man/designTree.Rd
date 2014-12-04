@@ -2,6 +2,8 @@
 \alias{designTree}
 \alias{designSplits}
 \alias{nnls.tree}
+\alias{nnls.phylo}
+\alias{nnls.splits}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Compute a design matrix or non-negative LS }
 \description{
@@ -15,12 +17,14 @@ For larger trees a sparse design matrix can save a lot of memory.
 designTree(tree, method = "unrooted", sparse=FALSE, ...)
 designSplits(x, splits = "all", ...)
 nnls.tree(dm, tree, rooted=FALSE, trace=1)
+nnls.phylo(x, dm, rooted=FALSE, trace=0)
+nnls.splits(x, dm, trace = 0) 
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{tree}{an object of class \code{phylo} }
   \item{method}{design matrix for an "unrooted" or "rooted" ultrametric tree.}
-  \item{sparse}{retyurn a sparse design matrix.}  
+  \item{sparse}{return a sparse design matrix.}  
   \item{x}{number of taxa. }
   \item{splits}{one of "all", "star".}
   \item{dm}{a distance matrix.} 
@@ -34,7 +38,7 @@ nnls.tree(dm, tree, rooted=FALSE, trace=1)
 }
 \author{ Klaus Schliep \email{klaus.schliep@gmail.com} }
 
-\seealso{ \code{\link[ape]{fastme}}, \code{\link[phangorn]{distanceHadamard}}, \code{\link[phangorn]{upgma}} }
+\seealso{ \code{\link[ape]{fastme}}, \code{\link[phangorn]{distanceHadamard}}, \code{\link[phangorn]{splitsNetwork}}, \code{\link[phangorn]{upgma}} }
 \examples{
 example(NJ)
 dm <-  as.matrix(dm)

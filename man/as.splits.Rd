@@ -37,11 +37,13 @@ allSplits(k, labels = NULL)
 write.nexus.splits(obj, file="", weights=NULL)
 read.nexus.splits(file)
 addConfidences(obj, phy)
+presenceAbsence(x, y)
 addTrivialSplits(obj)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{An object of class phylo or multiPhylo.}
+  \item{y}{An object of class splits.}
   \item{maxp}{integer, default from \code{options(max.print)}, influences how many entries of large matrices are printed at all.} 
   \item{zero.print}{character which should be printed for zeroes.} 
   \item{one.print}{character which should be printed for ones.} 
