@@ -1206,6 +1206,11 @@ write.nexus.splits <- function (obj, file = "", weights=NULL)
     if(!is.null(attr(obj, "confidences"))){ 
         format = paste(format, "confidences=yes")
         fcon=TRUE
+        conf = attr(obj, "confidences")
+        if(storage.mode(conf) == "character"){ 
+            conf[conf==""] = "0"
+            attr(obj, "confidences") = conf
+        }                                       
     }
     else format = paste(format, "confidences=no") 
     if(!is.null(attr(obj, "intervals"))){ 
