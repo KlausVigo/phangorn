@@ -810,6 +810,19 @@ edQ <- function(Q=c(1,1,1,1,1,1), bf=c(0.25,.25,.25,.25)){
 }
 
 
+edQ2 <- function(Q){
+    res = Q
+    diag(res) = 0
+    diag(res) = -rowSums(res)
+    res2 = res * rep(bf,l)
+    diag(res2)=0 
+    res = res/sum(res2)
+    e = eigen(res, FALSE)
+    e$inv = solve.default(e$vec)
+    e
+}
+
+
 pml.free <- function(){.C("ll_free")}
 
 
@@ -2359,7 +2372,10 @@ nnls.splits <- function(x, dm, trace=0){
         X = X[-ind,,drop=FALSE]
         y= y[-ind]
     }
-    betahat <- as.vector(solve(crossprod(X), crossprod(X, y)))
+    
+    Dmat <- crossprod(X) # cross-product computations
+    dvec <- crossprod(X, y)
+    betahat <- as.vector(solve(Dmat, dvec))
     
     if(!any(betahat<0)){
         RSS = sum((y-(X%*%betahat))^2)    
@@ -2369,15 +2385,13 @@ nnls.splits <- function(x, dm, trace=0){
         return(x)
     }
     n = dim(X)[2]
-    Dmat <- crossprod(X) # cross-product computations
-    dvec <- crossprod(X, y)
     
     int = sapply(x, length)
 #    int = as.numeric(int==1)# (int>1)
     Amat = diag(n) # (int)
     betahat <- quadprog::solve.QP(as.matrix(Dmat),as.vector(dvec),Amat)$sol # quadratic programing solving
     RSS = sum((y-(X%*%betahat))^2)
-    ind = (betahat > 1e-14) | int==1  
+    ind = (betahat > 1e-13) | int==1  
     x = x[ind]
     attr(x, "weights") = betahat[ind]
     if(trace)print(paste("RSS:", RSS))

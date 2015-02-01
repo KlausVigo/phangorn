@@ -1,0 +1,63 @@
+---
+title: "Splits and Networx"
+author: "Klaus Schliep"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output: rmarkdown::html_vignette
+bibliography: phangorn.bib
+vignette: >
+  %\VignetteIndexEntry{Splits and Networx}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+
+This tutorial gives a basic introduction on constructing phylogenetic networks and to add parameter to trees or networx using the [phangorn](http://cran.r-project.org/web/packages/phangorn/) [@Schliep2011] in R. 
+Splits groaph or phylogenetic networks are a nice way to display conflict data or summarize different trees. Here we present to popular networks, consensus networks [@Holland2004]
+and neighborNet [@Bryant2004].                                  
+Often trees or networks are missing either edge weights or support values aboout the edges. We show how to add Improving tree/networx by adding support or estimating edge weights using non-negative Least-Squares (nnls).
+
+We first load the phangorn package and a few datasets we use in this vignette.
+```{r, eval=TRUE}
+library(phangorn)
+data(Laurasiatherian)
+data(yeast)
+```
+## consensusNet
+A consensusNet [@Holland2004] is a generealisation of a consensus tree. Instead only representing splits with at least 50% in a bootstrap or MCMC sample one can use a lower threshold. However of important competing splits are left out. 
+
+The input for `consensusNet` is  a list of trees i.e. an object of class `multiPhylo`.
+```{r, eval=TRUE}
+set.seed(1)
+bs <- bootstrap.phyDat(yeast, FUN = function(x)nj(dist.hamming(x)), 
+    bs=100)
+cnet = consensusNet(bs, .3)
+plot(cnet, "2D")
+```
+Often `consensusNet` will return incompatible splits, which cannot plotted as a planar graph. A nice way to  get still a good impression of the network is to plot it in 3 dimensions. 
+
+```{r, eval=FALSE}
+plot(cnet)
+# rotate 3d plot
+play3d(spin3d(axis=c(0,1,0), rpm=6), duration=10)
+# create animated gif file 
+movie3d(spin3d(axis=c(0,1,0), rpm=6), duration=10)
+```
+
+which will reult in a spinning graph similar to this
+
+![rotatingNetworx](movie.gif)
+
+
+## neighborNet
+The function `neighborNet` implements the popular method of @Bryant2004. The  neighborNet algorithm extends the Neighbor joining allowing again algorithm is computed in 2 parts, the first computes a circular ordering. The second step involves estimation of edge weights using nnls.    
+
+```{r, eval=TRUE}
+dm <- dist.hamming(yeast)
+nnet <- neighborNet(dm)
+plot(nnet, "2D")
+```
+
+The advantage of neighbor net is that it returns a circular split system which can be always displayed in a planar (2D) graph. The plots displayed in `phangorn` may not planar, but replotting may gives you a planar graph. This unwanted behaviour will be improved in future version. 
+The rendering of the networx is done using the the phantastic igraph package [@Csardi2006]. 
+
+
+# References

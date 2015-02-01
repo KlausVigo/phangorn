@@ -355,6 +355,7 @@ void fitchNNN(int d1, int d2){
     if(tmp) d1 = tmp;
     else d1 = d1 | d2;
 }
+
 // haeufig 0
 void fitchTripletNew(int *res, int *dat1, int *dat2, int *dat3, int *nr) 
 {   
@@ -441,6 +442,28 @@ void C_MPR(int *res, int *nr, int *parent, int *kids, int *nl) {
         i -= 2L;
     }        
 }
+
+
+SEXP C_MPR2(SEXP nrx, SEXP PARENT, SEXP KIDS, SEXP nlx, SEXP M) { 
+    int nr=INTEGER(nrx)[0], nl=INTEGER(nlx)[0], m=INTEGER(M)[0], *res;
+    int *parent = INTEGER(PARENT), *kids=INTEGER(KIDS);
+    int j, p, k1, k2;
+    int i = nl -1;    
+    SEXP RES;
+    PROTECT(RES = allocVector(INTSXP, nr * m)); 
+    res = INTEGER(RES);
+    for(j = 0; j < (nr * m); j++) res[j]=0;
+    while (i > 0L) {
+        p = parent[i] - 1L;
+        k1 = kids[i] - 1L;
+        k2 = kids[i-1L] - 1L;
+        fitchTripletNew(&res[nr * p], &data1[nr * k1], &data1[nr * k2], &data2[nr * p], &nr);
+        i -= 2L;
+    }     
+    UNPROTECT(1);
+    return(RES);
+}
+
 
 
 void fitchNACC2(int *root, int *dat, int *nr, double *pars, int *result, double *weight, double *pars1){
@@ -531,10 +554,6 @@ SEXP FITCH345(SEXP nrx, SEXP node, SEXP edge, SEXP l, SEXP mx, SEXP ps){
     else return(pars); 
 }
 
-//, double *pvec
-
-
-
 
 void FN4(int *dat, int *res, int *nr, int *node, int *edge, int *nl, int *pc, double *weight, double *tmpvec, double *pvec) { 
     int i=0L, ni, le, ri;
@@ -548,7 +567,7 @@ void FN4(int *dat, int *res, int *nr, int *node, int *edge, int *nl, int *pc, do
         }    
         else{ 
             pvec[ni] = tmpvec[le] + pvec[ri];
-	        fitch54(&res[ni * (*nr)], &dat[le * (*nr)], &res[ri * (*nr)], nr, weight, &pvec[ni]);   
+	          fitch54(&res[ni * (*nr)], &dat[le * (*nr)], &res[ri * (*nr)], nr, weight, &pvec[ni]);   
         }
         i++;
         i++;
@@ -643,7 +662,7 @@ SEXP FNALL_NNI(SEXP nrx, SEXP node, SEXP edge, SEXP l, SEXP mx, SEXP my, SEXP ro
     return(res); 
 }
 
-
+// mpr2 fnodesNew5
 SEXP FNALL5(SEXP nrx, SEXP node, SEXP edge, SEXP l, SEXP mx, SEXP my, SEXP root){   
     int *nr=INTEGER(nrx), m=INTEGER(mx)[0], i,  *n=INTEGER(l);  //*pars,
     double *pvtmp, *pvtmp2, pscore=0.0;  

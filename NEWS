@@ -1,5 +1,9 @@
      CHANGES in PHANGORN VERSION 1.99-12
 
+NEW FEATURES
+
+    o added neighborNet algorithm (Bryant and Moulton 2004)
+
 BUG FIXES
 
     o plotBS was not working correctly if bootstraped trees are in 

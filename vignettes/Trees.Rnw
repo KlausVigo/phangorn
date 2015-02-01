@@ -1,6 +1,7 @@
 %\VignetteIndexEntry{Constructing phylogenetic trees}
 %\VignetteKeywords{Documentation}
 %\VignettePackage{phangorn}
+%\VignetteEngine{Sweave}
 \documentclass[12pt]{article}
 
 \usepackage{times}

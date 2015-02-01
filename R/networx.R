@@ -498,7 +498,7 @@ splits2design <- function(obj, weight=NULL){
   sl = sapply(obj, length)
   p0 = sl * (m-sl)
   p = c(0,cumsum(p0))
-  i = numeric()
+  i = numeric(max(p))
   for(k in 1:n){
     sp = obj[[k]]
     if(p0[k]!=0) i[(p[k]+1):p[k+1]] = getIndex(sp, l[-sp], m) 

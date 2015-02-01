@@ -21,7 +21,7 @@ export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UN
     distanceHadamard, treedist, sankoff, fitch, h2st, h4st, dist.logDet, dist.hamming, 
     dist.ml, dist.p, upgma, wpgma, write.nexus.splits, read.nexus.splits, write.splits, pmlPart, 
     pmlCluster, pmlMix, pmlPen, read.aa, allTrees, designTree, designSplits, nnls.tree,
-    nnls.splits,
+    nnls.splits, neighborNet,
     splitsNetwork, simSeq, SH.test, bootstrap.pml, bootstrap.phyDat, RF.dist, rNNI, 
     rSPR, plotBS, Ancestors, Descendants, mrca.phylo, Children, Siblings, pace, modelTest, 
     lento, compatible, acgt2ry, ancestral.pars, ancestral.pml, CI, RI, getClans, getSlices,
