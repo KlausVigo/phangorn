@@ -810,7 +810,11 @@ consensusNet <- function (obj, prob = 0.3, ...)
 }
 
 
-addConfidences <- function(obj, phy){
+addConfidences <- function (obj, phy) UseMethod("addConfidences")
+
+
+
+addConfidences.splits <- function(obj, phy){
     tiplabel <- attr(obj, "label")
     obj = addTrivialSplits(obj) 
     ind <- match(tiplabel, phy$tip.label)
@@ -833,11 +837,11 @@ addConfidences <- function(obj, phy){
 }
 
 
-addConfidences.phylo <- function(to, from){
-    conf = attr(addConfidences(as.splits(to), from), "confidences")
-    nTips = length(to$tip.label)
-    to$node.label = conf[-c(1:nTips)]
-    to      
+addConfidences.phylo <- function(obj, phy){
+    conf = attr(addConfidences(as.splits(obj), phy), "confidences")
+    nTips = length(obj$tip.label)
+    obj$node.label = conf[-c(1:nTips)]
+    obj      
 } 
 
 
@@ -980,7 +984,8 @@ plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRU
     if(is.null(node.label))node.label = as.character(1:max(x$edge))
     if(show.tip.label)node.label[1:nTips] = ""
     
-    chk <- .check.pkg("rgl")
+    chk <- FALSE
+    if(type=="3D") chk <- .check.pkg("rgl")
     if(!chk && type=="3D"){
         warning("type=\"3D\" requires the package \"rgl\"\n, plotting =\"2D\" instead!\n")
         type="2D"

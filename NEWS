@@ -12,11 +12,15 @@ BUG FIXES
 
 OTHER CHANGES
 
-    o many splits and networx methods have been improved
+    o many splits and networx methods have been improved 
+
+      and a vignette was added
 
     o phangorn now suggests only the rgl and not depends on it 
 
       to avoid problems on different platforms (suggestion by Matt Pennell)
+
+    o new package dependencies knitr for html vignettes and Rcpp 
 
 
 
@@ -154,9 +158,9 @@ BUG FIXES
 
       write.phyDat for nexus files
 
-    o some of the recently introduced (1.7-4) amino acid models were not known by all
+    o some of the recently introduced (1.7-4) amino acid models were not known 
 
-      functions and contained NAs 
+      by all functions and contained NAs 
 
 OTHER CHANGES
 

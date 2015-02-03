@@ -1,5 +1,6 @@
 useDynLib(phangorn, .registration=TRUE)
 
+importFrom(Rcpp, evalCpp)
 importFrom(ape, as.DNAbin, as.phylo, plot.phylo, as.prop.part, nj,old2new.phylo,
     new2old.phylo, is.rooted, unroot, root, is.binary.tree, as.alignment,
     di2multi, multi2di, .uncompressTipLabel, .compressTipLabel, prop.part, 
@@ -31,6 +32,8 @@ export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UN
     SOWH.test, plot.networx, presenceAbsence, as.networx.splits, addTrivialSplits)
 
 S3method('[', splits)          
+S3method(addConfidences, phylo)
+S3method(addConfidences, splits)
 S3method(as.character, phyDat)
 S3method(as.data.frame, phyDat)
 S3method(anova, pml)
