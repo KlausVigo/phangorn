@@ -49,7 +49,7 @@ If no concensus tree is provided \code{densiTree} computes a rooted mrp.supertre
 Trees should be rooted, other wise the output may not make sense. 
 }
 \references{
-densiTree is inspired from the great DensiTree program \url{http://www.cs.auckland.ac.nz/~remco/DensiTree/} of Remco Bouckaert. 
+densiTree is inspired from the great DensiTree program \url{https://www.cs.auckland.ac.nz/~remco/DensiTree/} of Remco Bouckaert. 
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

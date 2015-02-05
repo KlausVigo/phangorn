@@ -15,5 +15,5 @@ License: GPL (>= 2)
 VignetteBuilder: utils, knitr
 URL: https://github.com/KlausVigo/phangorn
 Repository: CRAN
-Additional_repositories: http://www.bioconductor.org
+
 

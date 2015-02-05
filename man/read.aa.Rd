@@ -29,9 +29,8 @@ read.aa(file, format = "interleaved", skip = 0,
   a matrix of amino acid sequences.
 }
 \references{
-  Anonymous. FASTA format description.
-  \url{http://www.ncbi.nlm.nih.gov/BLAST/fasta.html}
-
+%  Anonymous. FASTA format description.
+%  \url{http://www.ncbi.nlm.nih.gov/BLAST/fasta.html}
   Felsenstein, J. (1993) Phylip (Phylogeny Inference Package) version
   3.5c. Department of Genetics, University of Washington.
   \url{http://evolution.genetics.washington.edu/phylip/phylip.html}
