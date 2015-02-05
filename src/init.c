@@ -73,6 +73,7 @@ SEXP C_bip(SEXP parent, SEXP child, SEXP nTips, SEXP maxP);
 
 
 SEXP sankoff3(SEXP dlist, SEXP scost, SEXP nr, SEXP nc, SEXP node, SEXP edge, SEXP mNodes, SEXP tips);
+SEXP sankoffMPR(SEXP dlist, SEXP plist, SEXP scost, SEXP nr, SEXP nc, SEXP node, SEXP edge);
 SEXP C_rowMin(SEXP sdat, SEXP sn, SEXP sk);
 SEXP pNodes(SEXP data, SEXP scost, SEXP nr, SEXP nc, SEXP node, SEXP edge);
 SEXP sankoffQuartet(SEXP dat, SEXP sn, SEXP scost, SEXP sk);
@@ -123,7 +124,8 @@ R_CallMethodDef callMethods[] = {
 {"AllChildren", (DL_FUNC) &AllChildren, 3},
 {"C_bipart", (DL_FUNC) &C_bipart, 4},
 {"C_bip", (DL_FUNC) &C_bip, 4},
-{"sankoff3", (DL_FUNC) &sankoff3, 8},    
+{"sankoff3", (DL_FUNC) &sankoff3, 8},   
+{"sankoffMPR", (DL_FUNC) &sankoffMPR, 7},  
 {"C_rowMin", (DL_FUNC) &C_rowMin, 3},
 {"pNodes", (DL_FUNC) &pNodes, 6},
 {"sankoffQuartet", (DL_FUNC) &sankoffQuartet, 4},

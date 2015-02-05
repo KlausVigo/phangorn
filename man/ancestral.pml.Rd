@@ -12,8 +12,8 @@ Marginal reconstruction of the ancestral character states.
 }
 \usage{
 ancestral.pml(object, type = c("ml", "bayes"))
-ancestral.pars(tree, data, type = c("MPR", "ACCTRAN"))
-pace(tree, data, type = c("MPR", "ACCTRAN"))
+ancestral.pars(tree, data, type = c("MPR", "ACCTRAN"), cost = NULL)
+pace(tree, data, type = c("MPR", "ACCTRAN"), cost = NULL)
 plotAnc(tree, data, i, col=NULL, cex.pie=par("cex"), pos="bottomright", ...)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -27,6 +27,7 @@ plotAnc(tree, data, i, col=NULL, cex.pie=par("cex"), pos="bottomright", ...)
   \item{col}{a vector containing the colors for all possible states.}
   \item{cex.pie}{a numeric defining the size of the pie graphs}
   \item{pos}{a character string defining the positiond of the legend}
+  \item{cost}{A cost matrix for the transitions between two states.} 
   \item{\dots}{Further arguments passed to or from other methods.}
 }
 %  \item{eps}{a small value to prevent rounding errors}

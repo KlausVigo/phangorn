@@ -810,19 +810,6 @@ edQ <- function(Q=c(1,1,1,1,1,1), bf=c(0.25,.25,.25,.25)){
 }
 
 
-edQ2 <- function(Q){
-    res = Q
-    diag(res) = 0
-    diag(res) = -rowSums(res)
-    res2 = res * rep(bf,l)
-    diag(res2)=0 
-    res = res/sum(res2)
-    e = eigen(res, FALSE)
-    e$inv = solve.default(e$vec)
-    e
-}
-
-
 pml.free <- function(){.C("ll_free")}
 
 

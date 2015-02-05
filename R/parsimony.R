@@ -23,14 +23,19 @@ parsimony <- function(tree, data, method='fitch', ...){
 }
 
 
-ancestral.pars <- function (tree, data, type = c("MPR", "ACCTRAN")) 
+ancestral.pars <- function (tree, data, type = c("MPR", "ACCTRAN"), cost=NULL) 
 {
     call <- match.call()
     type <- match.arg(type)
     if (type == "ACCTRAN") 
         res = ptree(tree, data, retData = TRUE)[[2]]
-    if (type == "MPR") 
-        res = mpr(tree, data)
+#    if (type == "MPR") 
+#        res = mpr(tree, data)
+    if (type == "MPR"){ 
+        res <- mpr(tree, data, cost=cost)
+        attr(res, "call") = call
+        return(res)
+    }
     l = length(tree$tip)
     
     x = attributes(data)
@@ -64,112 +69,66 @@ ancestral.pars <- function (tree, data, type = c("MPR", "ACCTRAN"))
 pace <- ancestral.pars
 
 
-MinMaxPars <- function(tree, data){
-    edge = tree$edge[,2]
-    node = tree$edge[,1]
-    nr = as.integer(attr(data, "nr"))
+mpr.help = function (tree, data, cost=NULL) 
+{   
+    tree<- reorder(tree, "postorder")     
+    if (class(data) != "phyDat") 
+        stop("data must be of class phyDat")    
+    levels <- attr(data, "levels")
+    l = length(levels)
+    if (is.null(cost)) {
+        cost <- matrix(1, l, l)
+        cost <- cost - diag(l)
+    }   
     weight = attr(data, "weight")
-    dat = mpr(tree, data)
-    d = length(edge)
-    ext = integer(d)
-    ext[is.na(match(edge, node))] = 1L
-    res = matrix(0L, d, 2) 
-    for(i in 1:d){
-        res[i, ] = .C(countMPR, numeric(2), dat[,edge[i]], dat[,node[i]], nr, as.double(weight), ext[i])[[1]]
-    }
-    res 
+    p = attr(data, "nr")
+    kl = TRUE
+    i = 1
+    dat <- prepareDataSankoff(data)
+    for (i in 1:length(dat)) storage.mode(dat[[i]]) = "double"    
+    tmp = fit.sankoff(tree, dat, cost, returnData='data')
+    p0 = tmp[[1]]    
+    datf = tmp[[2]]
+    datp = pnodes(tree, datf, cost) 
+
+    nr = attr(data, "nr")
+    nc = attr(data, "nc")
+    node <- tree$edge[, 1]
+    edge <- tree$edge[, 2]
+
+    node = as.integer(node - 1)      
+    edge = as.integer(edge - 1) 
+
+    res <- .Call("sankoffMPR", datf, datp, as.numeric(cost), as.integer(nr),as.integer(nc),
+                 node, edge, PACKAGE="phangorn")    
+    root = getRoot(tree)
+    res[[root]] <- datf[[root]]
+    res
 }
 
 
-mpr2 <- function (tree, data, returnData = FALSE) 
-{
-    if (!is.binary.tree(tree)) 
-        stop("tree is not binary, the current implementation only supports binary trees!")     
-    if (is.null(attr(tree, "order")) || attr(tree, "order") != "postorder") 
-        tree <- reorder(tree, "postorder")
-    storage.mode(tree$edge) <- "integer"
-    data <- subset(data, tree$tip.label)
-    data <- prepareDataFitch(data)
-    nr = as.integer(attr(data, "nr"))
-    nTips = as.integer(length(tree$tip.label))
-    storage.mode(tree$edge) <- "integer"
-    node <- tree$edge[, 1]
-    edge <- tree$edge[, 2]
-    weight = as.double(attr(data, "weight"))
-    m = as.integer(max(tree$edge)) #length(edge) + 1
-    q = length(tree$tip)    
-    root <- as.integer(node[!match(node, edge, 0)][1])
-    l = length(node)
-    m2 = 2L*l
-    root0 <- as.integer(node[l]) 
-
-    on.exit(.C(fitch_free))
-    .C(fitch_init, as.integer(data), as.integer(nTips*nr), as.integer(nr*m), as.double(weight), as.integer(nr))
-#    tmp2 = fnodesNew5(tree$edge, nTips, nr)
-    tmp2 = .Call(FNALL5, as.integer(nr), as.integer(node), as.integer(edge), as.integer(l), 
-        as.integer(m + 1L), as.integer(m2), as.integer(root0))
-    if (!is.rooted2(tree)) {
-        ind = edge[node == root0]
-        tmpRoot = .C(prepRooted,integer(nr), nr, as.integer(ind))[[1]]
-        l = l-3L
+mpr <- function(tree, data, cost=NULL){
+    data = subset(data, tree$tip.label)
+    att = attributes(data)
+    nr = att$nr
+    nc = att$nc
+    res <- mpr.help(tree,data,cost)
+    l = length(tree$tip)
+    m = length(res)
+    ntips = length(tree$tip)
+    contrast = att$contrast
+    eps=5e-6
+    rm = apply(res[[ntips+1]], 1, min)
+    RM = matrix(rm,nr, nc) + eps
+    for(i in 1:ntips) res[[i]] = contrast[data[[i]],,drop=FALSE]
+    for(i in (ntips+1):m) res[[i]][] = as.numeric(res[[i]] < RM)
+    fun = function(X){
+        rs = apply(X, 1, sum)
+        X / rs
     }
-    result = .C(C_MPR,integer(nr*m), nr, as.integer(node[1:l]), as.integer(edge[1:l]), as.integer(l))[[1]]
-    attr(result, "dim") = c(nr, m)
-    result[,1:q] = data
-    if(!is.rooted2(tree))result[, root] = tmpRoot
-#    row.names = node0
-    result
-}
-
-
-mpr <-function (tree, data, returnData = FALSE) 
-{
-    if (!is.binary.tree(tree)) 
-        stop("tree is not binary, the current implementation only supports binary trees!")
-    
-    if (is.null(attr(tree, "order")) || attr(tree, "order") != 
-            "postorder") 
-        tree <- reorder(tree, "postorder")
-    storage.mode(tree$edge) <- "integer"
-    data <- subset(data, tree$tip.label)
-    data <- prepareDataFitch(data)
-    
-    nr = as.integer(attr(data, "nr"))
-    nTips = as.integer(length(tree$tip.label))
-    storage.mode(tree$edge) <- "integer"
-    node <- tree$edge[, 1]
-    edge <- tree$edge[, 2]
-    weight = as.double(attr(data, "weight"))
-    m = as.integer(max(tree$edge)) #length(edge) + 1
-    q = length(tree$tip)
-    root <- as.integer(node[!match(node, edge, 0)][1])
-    
-    node0 = node[node != root]
-    node0 = unique(node0[length(node0):1L])
-    
-#    on.exit(.C(fitch_free))
-    .C(fitch_init, as.integer(data), as.integer(nTips*nr), as.integer(nr*m), as.double(weight), as.integer(nr))
-    tmp2 = fnodesNew5(tree$edge, nTips, nr)
-    tmp3 <- .Call(getData, as.integer(nr), m)
-    # as.integer(2L*nTips - 1L))    
-    # in C
-    if (!is.rooted2(tree)) {
-        root = getRoot(tree)
-        ind = edge[node == root]
-        rSeq = .C(fitchTriplet, integer(nr), tmp3[[1]][, ind[1]], 
-                  tmp3[[1]][, ind[2]], tmp3[[1]][, ind[3]], as.integer(nr))
-        tmp3[[1]][, root] = rSeq[[1]]
-        #        tmp3[[1]][, root] = rSeq[[1]]
-    }
-    result = tmp3[[1]]
-    for (i in node0) {
-        ind = Children(tree, i)
-        result[, i] = .C(fitchTriplet, integer(nr), tmp3[[1]][, 
-                                                              ind[1]], tmp3[[1]][, ind[2]], tmp3[[2]][, i], as.integer(nr))[[1]]
-    }
-    attr(result, "dim") = c(nr, m)
-    #    row.names = node0
-    result
+    res <- lapply(res, fun)
+    attributes(res) = att
+    res
 }
 
 
