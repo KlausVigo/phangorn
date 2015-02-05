@@ -55,7 +55,7 @@ foo <- packageDescription("phangorn")
 
 \nocite{Paradis2012}
 \section*{Introduction}
-This document illustrates some of the \phangorn{} \cite{Schliep2011} specialised features which are useful but maybe not as wellknown or just not (yet) described elsewhere. This is mainly interesting for someone who wants to explore different models or set up some simulation studies. We show how to construct data objects for different character states other than nucleotides or amino acids or how to set up different models to estimate transition rate. 
+This document illustrates some of the \phangorn{} \cite{Schliep2011} specialised features which are useful but maybe not as well-known or just not (yet) described elsewhere. This is mainly interesting for someone who wants to explore different models or set up some simulation studies. We show how to construct data objects for different character states other than nucleotides or amino acids or how to set up different models to estimate transition rate. 
 
 The vignette \emph{Trees} describes in detail how to estimate phylogenies from nucleotide or amino acids. 
 
@@ -64,9 +64,9 @@ The vignette \emph{Trees} describes in detail how to estimate phylogenies from n
 
 To better understand how to define our own data type it is useful to know a bit more about the internal representation of \Robject{phyDat} objects. The internal representation of \Robject{phyDat} object is very similar to \Robject{factor} objects. 
   
-As an example we will show here several possibilities to define nucleotide data with gaps defined as a fifth state. Ignoring gaps or coding them as ambigious sites - as ity is done in most programs, also in phangorn as default - may be misleading (see Warnow(2012)\cite{Warnow2012}). When the number of gaps is low and the gaps are missing at random coding gaps as seperate state may be not important. 
+As an example we will show here several possibilities to define nucleotide data with gaps defined as a fifth state. Ignoring gaps or coding them as ambiguous sites - as it is done in most programs, also in phangorn as default - may be misleading (see Warnow(2012)\cite{Warnow2012}). When the number of gaps is low and the gaps are missing at random coding gaps as separate state may be not important. 
  
-Let assume we have given a matrix where each row contains a character vector of a taxonomixcal unit:
+Let assume we have given a matrix where each row contains a character vector of a taxonomical unit:
 <<echo=TRUE>>=
 library(phangorn)
 data = matrix(c("r","a","y","g","g","a","c","-","c","t","c","g", 
@@ -75,19 +75,19 @@ data = matrix(c("r","a","y","g","g","a","c","-","c","t","c","g",
     dimnames = list(c("t1", "t2", "t3"),NULL), nrow=3, byrow=TRUE)
 data
 @
-Normally we would transform this matrix into an phyDat object and gaps are handled as ambiguious character like "?".  
+Normally we would transform this matrix into an phyDat object and gaps are handled as ambiguous character like "?".  
 <<>>=
 gapsdata1 = phyDat(data)
 gapsdata1
 @
-Now we will define a "USER" defined object and have to supply a vector levels of the character states for the new data, in our case the for nucleotide states and the gap. Additional we can define ambigious states which can be any of the states. 
+Now we will define a "USER" defined object and have to supply a vector levels of the character states for the new data, in our case the for nucleotide states and the gap. Additional we can define ambiguous states which can be any of the states. 
 <<echo=TRUE>>=
 gapsdata2 = phyDat(data, type="USER", levels=c("a","c","g","t","-"), 
     ambiguity = c("?", "n"))
 gapsdata2
 @
-This is not yet what we wanted as two sites of our alignment, which contain the abigious characters "r" and "y", got deleted.  
-To define ambigious characters like "r" and "y" explicitly we have to supply a contrast matrix similar to contrasts for factors. 
+This is not yet what we wanted as two sites of our alignment, which contain the ambiguous characters "r" and "y", got deleted.  
+To define ambiguous characters like "r" and "y" explicitly we have to supply a contrast matrix similar to contrasts for factors. 
 <<echo=TRUE>>=
 contrast = matrix(data = c(1,0,0,0,0,
     0,1,0,0,0,
@@ -184,20 +184,20 @@ If optQ=TRUE and neither a model or subs are supplied than a symmetric (optBf=FA
 \end{table}
 
 \section{Codon substitution models}
-A special case of the transition rates are codon models. \phangorn{} now offers the possibility to estimate the $d_N/d_S$ ratio (somtimes called ka/ks), for an overview see \cite{Yang2006}. These functions extend the option to estimates the $d_N/d_S$ ratio for pairwise sequence comparison as it is available through the function \Rfunction{kaks} in \Rpackage{seqinr}. The transition rate between between codon $i$ and $j$ is defined as follows:
+A special case of the transition rates are codon models. \phangorn{} now offers the possibility to estimate the $d_N/d_S$ ratio (sometimes called ka/ks), for an overview see \cite{Yang2006}. These functions extend the option to estimates the $d_N/d_S$ ratio for pairwise sequence comparison as it is available through the function \Rfunction{kaks} in \Rpackage{seqinr}. The transition rate between between codon $i$ and $j$ is defined as follows:
 \begin{eqnarray}
 q_{ij}=\left\{ 
     \begin{array}{l@{\quad}l}
          0 & \textrm{if i and j differ in more than one position} \\
          \pi_j & \textrm{for synonymous transversion} \\
          \pi_j\kappa & \textrm{for synonymous transition} \\
-         \pi_j\omega & \textrm{for nonsynonymous transversion} \\
-         \pi_j\omega\kappa & \textrm{for nonsynonymous transition} 
+         \pi_j\omega & \textrm{for non-synonymous transversion} \\
+         \pi_j\omega\kappa & \textrm{for non synonymous transition} 
     \end{array} 
     \right. \nonumber
 \end{eqnarray}
 where $\omega$ is the $d_N/d_S$ ratio,  $\kappa$ the transition transversion ratio and $\pi_j$ is the the equilibrium frequencies of codon $j$. 
-For $\omega\sim1$ the an amino acid change is neutral, for $\omega < 1$ purifing selection and  $\omega > 1$ positive selection.
+For $\omega\sim1$ the an amino acid change is neutral, for $\omega < 1$ purifying selection and  $\omega > 1$ positive selection.
 There are four models available: 
 "codon0", where both parameter $\kappa$ and $\omega$ are fixed to 1, "codon1" where both parameters are estimated and "codon2" or "codon3" where $\kappa$ or $\omega$ is fixed to 1. 
 
@@ -214,10 +214,10 @@ fit2 <- optim.pml(fit, model="codon2", control=pml.control(trace=0))
 fit3 <- optim.pml(fit, model="codon3", control=pml.control(trace=0))
 anova(fit0, fit2, fit3, fit1)
 @
-The models described here all assume equal frequencies for each codon (=1/61). One can optime the codon frequencies setting the option to optBf=TRUE. As the convergence of the 61 parameters the convergence is likely slow set the maximal iterations to a higher value than the default (e.g. control = pml.control(maxit=50)).  
+The models described here all assume equal frequencies for each codon (=1/61). One can optimise the codon frequencies setting the option to optBf=TRUE. As the convergence of the 61 parameters the convergence is likely slow set the maximal iterations to a higher value than the default (e.g. control = pml.control(maxit=50)).  
 
 \section{Generating trees}
-\phangorn{} has several functions to generate tree topotlogies, which may are interesting for simulation studies. \Rfunction{allTrees} computes all possible bifurcating tree topologies either rooted or unrooted for up to 10 taxa. One has to keep in mind that the number of trees is growing exponentially, use \Rfunction(howmanytrees) from \ape{} as a reminder. 
+\phangorn{} has several functions to generate tree topologies, which may are interesting for simulation studies. \Rfunction{allTrees} computes all possible bifurcating tree topologies either rooted or unrooted for up to 10 taxa. One has to keep in mind that the number of trees is growing exponentially, use \Rfunction(howmanytrees) from \ape{} as a reminder. 
 
 %<<echo=TRUE>>=
 %trees = allTrees(5)

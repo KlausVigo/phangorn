@@ -225,7 +225,7 @@ SEXP pNodes(SEXP data, SEXP scost, SEXP nr, SEXP nc, SEXP node, SEXP edge){
 SEXP sankoffMPR(SEXP dlist, SEXP plist, SEXP scost, SEXP nr, SEXP nc, SEXP node, SEXP edge){
     R_len_t i, n = length(node);
     int nrx=INTEGER(nr)[0], ncx=INTEGER(nc)[0], n0;
-    int  ni, ei, j, *nodes=INTEGER(node), *edges=INTEGER(edge), k;
+    int  ei, j, *nodes=INTEGER(node), *edges=INTEGER(edge);
     SEXP result, dlist2; //tmp, 
     double *res, *cost; // *rtmp,
     cost = REAL(scost);

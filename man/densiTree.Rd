@@ -45,11 +45,11 @@ further arguments to be passed to plot.
 }
 }
 \details{
-If no concensus tree is provided \code{densiTree} computes a rooted mrp.supertree as a backbone. This should avoid too many unnecessary crossings of edges.  
+If no consensus tree is provided \code{densiTree} computes a rooted mrp.supertree as a backbone. This should avoid too many unnecessary crossings of edges.  
 Trees should be rooted, other wise the output may not make sense. 
 }
 \references{
-densiTree is inspired from the great DensiTree program \url{https://www.cs.auckland.ac.nz/~remco/DensiTree/} of Remco Bouckaert. 
+densiTree is inspired from the great DensiTree program \url{https://www.cs.auckland.ac.nz/~remco/DensiTree} of Remco Bouckaert. 
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

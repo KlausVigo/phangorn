@@ -18,7 +18,7 @@ splitsNetwork(dm, splits=NULL, gamma=.1, lambda=1e-6, weight=NULL)
 }
 
 \details{
-\code{splitsNetwork} fits non-negeative least-squares phylogenetic networks using L1 (LASSO), L2(ridge regression) constraints.  
+\code{splitsNetwork} fits non-negative least-squares phylogenetic networks using L1 (LASSO), L2(ridge regression) constraints.  
 The function minimizes the penalized least squares
 \deqn{\beta = min \sum(dm - X\beta)^2 + \lambda \|\beta \|^2_2 }{%
 beta = sum(dm - X*beta)^2 + lambda |beta|^2_2 }

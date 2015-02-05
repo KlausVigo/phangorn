@@ -60,7 +60,7 @@ foo <- packageDescription("phangorn")
 
 These notes should enable the user to estimate phylogenetic trees from alignment data with different methods using the \phangorn{} package \cite{Schliep2011}. Several functions of \phangorn{} are also described in more detail in \cite{Paradis2012}. For more theoretical background on all the methods see e.g. \cite{Felsenstein2004, Yang2006}. This document illustrates some of the \phangorn{} features to estimate phylogenetic trees using different reconstruction methods. Small adaptations to the scripts in section \ref{sec:Appendix} should enable the user to perform phylogenetic analyses.
 \section{Getting started}
-The first thing we have to do is to read in an alignment. Unfortunately there exists many different file formats that alignments can be stored in. The function \Rfunction{read.phyDat} is used to  read in an alignment. There are several functions to read in alignments depending on the format of the dataset (nexus, phylip, fasta) and the kind of data (amino acid or nucleotides) in the \ape{} package \cite{Paradis2004} and \phangorn{}. The function \Rfunction{read.phyDat} calls these other functions. For the specific parameter settings available look in the help files of  the function \Rfunction{read.dna} (for phylip, fasta, clustal format), \Rfunction{read.nexus.data} for nexus files. For amino acid data additional \Rfunction{read.aa} is called.  
+The first thing we have to do is to read in an alignment. Unfortunately there exists many different file formats that alignments can be stored in. The function \Rfunction{read.phyDat} is used to  read in an alignment. There are several functions to read in alignments depending on the format of the data set (nexus, phylip, fasta) and the kind of data (amino acid or nucleotides) in the \ape{} package \cite{Paradis2004} and \phangorn{}. The function \Rfunction{read.phyDat} calls these other functions. For the specific parameter settings available look in the help files of  the function \Rfunction{read.dna} (for phylip, fasta, clustal format), \Rfunction{read.nexus.data} for nexus files. For amino acid data additional \Rfunction{read.aa} is called.  
 %When using the \Rfunction{read.dna} from \ape{} the parameter the we have to use as.character=TRUE.  
 We start our analysis loading the \phangorn{} package and then reading in an alignment.  
 <<echo=TRUE>>=
@@ -107,7 +107,7 @@ treePars = optim.parsimony(treeUPGMA, primates)
 treeRatchet = pratchet(primates, trace = 0)
 parsimony(c(treePars, treeRatchet), primates)
 @
-For small datasets it is also possible to find all most parsimonious trees using a branch and bound algorithm \cite{Hendy1982}. For datasets with more than 10 taxa this can take a long time and depends strongly on how tree like the data are.  
+For small data sets it is also possible to find all most parsimonious trees using a branch and bound algorithm \cite{Hendy1982}. For data sets with more than 10 taxa this can take a long time and depends strongly on how tree like the data are.  
 <<echo=TRUE, eval=FALSE>>=
 (trees <- bab(subset(primates,1:10)))
 @
@@ -162,7 +162,7 @@ library(xtable)
 xtable(mt, caption="Summary table of modelTest", label="tab:modelTest")
 @
 \end{center}
-The thresholds for the optimisation in  \Rfunction{modelTest} are not as strict as for \Rfunction{optim.pml} and no tree rearrangements are performed. As \Rfunction{modelTest} computes and optimises a lot of models it would be a waste of computer time not to save these results. The results are saved as call together with the optimised trees in an environment and this call can be evaluated to get a "pml" object back to use for further optimisation or analysis.
+The thresholds for the optimization in  \Rfunction{modelTest} are not as strict as for \Rfunction{optim.pml} and no tree rearrangements are performed. As \Rfunction{modelTest} computes and optimizes a lot of models it would be a waste of computer time not to save these results. The results are saved as call together with the optimized trees in an environment and this call can be evaluated to get a "pml" object back to use for further optimization or analysis.
 <<echo=TRUE>>=
 env <- attr(mt, "env")
 ls(envir=env)
@@ -226,7 +226,7 @@ fit = optim.pml(fitStart, optNni=TRUE, optGamma=TRUE, optInv=TRUE,
 bs = bootstrap.pml(fit, bs=100, optNni=TRUE, multicore=TRUE)
 @
 
-You can specify different several models build in which you can specify, e.g. "WAG", "JTT", "Dayhoff", "LG". Optimising the rate matrix for amino acids is possible, but would take a long, a very long time. So make sure to set optBf=FALSE and optQ=FALSE in the function \Rfunction{optim.pml}, which is also the default.
+You can specify different several models build in which you can specify, e.g. "WAG", "JTT", "Dayhoff", "LG". Optimizing the rate matrix for amino acids is possible, but would take a long, a very long time. So make sure to set optBf=FALSE and optQ=FALSE in the function \Rfunction{optim.pml}, which is also the default.
 <<eval=FALSE>>=
 library(parallel) # supports parallel computing
 library(phangorn)

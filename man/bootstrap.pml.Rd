@@ -42,7 +42,7 @@ The tree on which edges the bootstrap values are plotted.
 a list of trees (object of class "multiPhylo"). 
 }
   \item{type}{ 
-the type of tree to plot, so far "cladogram", "phylogram" and "unrooted" are supprted.
+the type of tree to plot, so far "cladogram", "phylogram" and "unrooted" are supported.
 }
   \item{bs.col}{ 
 color of bootstrap support labels.
@@ -65,7 +65,7 @@ Felsenstein J. (1985) Confidence limits on phylogenies. An approach using the bo
 
 Penny D. and Hendy M.D. (1985) Testing methods evolutionary tree construction. \emph{Cladistics} \bold{1}, 266--278
 
-Penny D. and Hendy M.D. (1986) Estimating the reliabbility of evolutionary trees. \emph{Molecular Biology and Evolution} \bold{3}, 403--417
+Penny D. and Hendy M.D. (1986) Estimating the reliability of evolutionary trees. \emph{Molecular Biology and Evolution} \bold{3}, 403--417
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

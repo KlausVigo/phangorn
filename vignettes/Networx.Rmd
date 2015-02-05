@@ -11,18 +11,18 @@ vignette: >
 
 
 This tutorial gives a basic introduction on constructing phylogenetic networks and to add parameter to trees or networx using the [phangorn](http://cran.r-project.org/web/packages/phangorn/) [@Schliep2011] in R. 
-Splits groaph or phylogenetic networks are a nice way to display conflict data or summarize different trees. Here we present to popular networks, consensus networks [@Holland2004]
+Splits graph or phylogenetic networks are a nice way to display conflict data or summarize different trees. Here we present to popular networks, consensus networks [@Holland2004]
 and neighborNet [@Bryant2004].                                  
-Often trees or networks are missing either edge weights or support values aboout the edges. We show how to add Improving tree/networx by adding support or estimating edge weights using non-negative Least-Squares (nnls).
+Often trees or networks are missing either edge weights or support values about the edges. We show how to add Improving tree/networx by adding support or estimating edge weights using non-negative Least-Squares (nnls).
 
-We first load the phangorn package and a few datasets we use in this vignette.
+We first load the phangorn package and a few data sets we use in this vignette.
 ```{r, eval=TRUE}
 library(phangorn)
 data(Laurasiatherian)
 data(yeast)
 ```
 ## consensusNet
-A consensusNet [@Holland2004] is a generealisation of a consensus tree. Instead only representing splits with at least 50% in a bootstrap or MCMC sample one can use a lower threshold. However of important competing splits are left out. 
+A consensusNet [@Holland2004] is a generalization of a consensus tree. Instead only representing splits with at least 50% in a bootstrap or MCMC sample one can use a lower threshold. However of important competing splits are left out. 
 
 The input for `consensusNet` is  a list of trees i.e. an object of class `multiPhylo`.
 ```{r, eval=TRUE}
@@ -42,7 +42,7 @@ play3d(spin3d(axis=c(0,1,0), rpm=6), duration=10)
 movie3d(spin3d(axis=c(0,1,0), rpm=6), duration=10)
 ```
 
-which will reult in a spinning graph similar to this
+which will result in a spinning graph similar to this
 
 ![rotatingNetworx](movie.gif)
 
@@ -56,8 +56,8 @@ nnet <- neighborNet(dm)
 plot(nnet, "2D")
 ```
 
-The advantage of neighbor net is that it returns a circular split system which can be always displayed in a planar (2D) graph. The plots displayed in `phangorn` may not planar, but replotting may gives you a planar graph. This unwanted behaviour will be improved in future version. 
-The rendering of the networx is done using the the phantastic igraph package [@Csardi2006]. 
+The advantage of neighbor net is that it returns a circular split system which can be always displayed in a planar (2D) graph. The plots displayed in `phangorn` may not planar, but re-plotting may gives you a planar graph. This unwanted behavior will be improved in future version. 
+The rendering of the networx is done using the the fantastic igraph package [@Csardi2006]. 
 
 
 # References
