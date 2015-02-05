@@ -62,7 +62,7 @@ addTrivialSplits(obj)
 \author{Klaus Schliep \email{klaus.schliep@gmail.com}}
 \note{
 The internal representation is likely to change. 
-\code{read.nexus.splits} reads in the splits block of a nexus file. It assumes that different covariables are tab delimited and the bipartition are separated with whitespace. Comments in square brackets are ignored. 
+\code{read.nexus.splits} reads in the splits block of a nexus file. It assumes that different co-variables are tab delimited and the bipartition are separated with white-space. Comments in square brackets are ignored. 
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~

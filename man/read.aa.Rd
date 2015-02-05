@@ -15,7 +15,7 @@ read.aa(file, format = "interleaved", skip = 0,
   \item{skip}{the number of lines of the input file to skip before
     beginning to read data.}
   \item{nlines}{the number of lines to be read (by default the file is
-    read untill its end).}
+    read until its end).}
   \item{comment.char}{a single character, the remaining of the line
     after this character is ignored.}
   \item{seq.names}{the names to give to each sequence; by default the

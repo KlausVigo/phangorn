@@ -8,7 +8,7 @@ SOWH.test(x, n = 100, restricted = list(optNni=FALSE), optNni=TRUE, trace = 1, .
   \item{x}{an object of class  \code{"pml"}.}
   \item{n}{the number of bootstrap replicates.}
   \item{restricted}{list of restricted parameter settings.}
-  \item{optNni}{Logical value indicating whether toplogy gets optimized (NNI).}
+  \item{optNni}{Logical value indicating whether topology gets optimized (NNI).}
   \item{trace}{Show output during computations.}
   \item{\dots}{Further arguments passed to \code{"optim.pml"}.}
 }

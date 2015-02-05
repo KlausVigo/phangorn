@@ -56,10 +56,10 @@ an additional vector of node labels (normally not needed).
 a logical indicating whether to show the nodes (see example).
 }
 \item{tip.color}{
-the colours used for the tip labels.
+the colors used for the tip labels.
 }
 \item{edge.color}{
-the colours used to draw edges.
+the colors used to draw edges.
 }
 \item{edge.width}{
 the width used to draw edges.
@@ -81,7 +81,7 @@ Further arguments passed to or from other methods.
 A \code{networx} object hold the information for a phylogenetic network 
 and extends the \code{phylo} object. Therefore some generic function for 
 \code{phylo} objects will also work for \code{networx} objects. 
-The argumnent planar = FALSE will dreate a planar split graph based on a 
+The argument planar = FALSE will create a planar split graph based on a 
 cyclic ordering. These objects can be nicely plotted in "2D".
 So far not all parameters behave the same on the the rgl "3D"
 and basic graphic "2D" device. 
@@ -90,13 +90,13 @@ and basic graphic "2D" device.
 The internal representation is likely to change. 
 }
 \references{
-Dress, A.W.M. and Huson, D.H. (2004) Constructicting Splits Graphs \emph{IEEE/ACM Transactions on Computational Biology and Bioinformatics (TCBB)}, \bold{1(3)}, 109--115
+Dress, A.W.M. and Huson, D.H. (2004) Constructing Splits Graphs \emph{IEEE/ACM Transactions on Computational Biology and Bioinformatics (TCBB)}, \bold{1(3)}, 109--115
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}
 }
 \seealso{
-\code{\link{consensusNet}}, \code{\link{splitsNetwork}}, \code{\link{hadamard}}, 
+\code{\link{consensusNet}}, \code{\link{neighborNet}}, \code{\link{splitsNetwork}}, \code{\link{hadamard}}, 
 \code{\link{distanceHadamard}}, \code{\link{layout.kamada.kawai}}, 
 \code{\link[ape]{evonet}}, \code{\link[ape]{as.igraph}}, \code{\link{densiTree}}
 }
