@@ -61,7 +61,7 @@ orderSplitLabel = function(x, order){
     ord = match(label, order)
     for(i in 1:length(x))
         x[[i]] = sort(ord[x[[i]]])
-    attr(x, "labels") = label[ord]
+    attr(x, "labels") = order
     x
 }
 

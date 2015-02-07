@@ -89,17 +89,26 @@ getOrderingNN <- function (x)
       lCL <- lCL - 1L
     }
     else{
-        CLtmp = c(as.list(CL[[e1]]), as.list(CL[[e2]]), CL[-c(e1,e2)])
+      CLtmp = c(as.list(CL[[e1]]), as.list(CL[[e2]]), CL[-c(e1,e2)])
       ltmp =length(CLtmp)
-      dtmp = d[CL[[e1]], CL[[e2]]]
-      rtmp = numeric(n1+n2)
-      for(ii in 1:(n1+n2)){
-          for(jj in 1:ltmp){if(ii!=jj) rtmp[ii]=rtmp[ii] + mean.default(d[CLtmp[[ii]], CLtmp[[jj]]])
-        }
-      }
+      DM2 = distC(d, CLtmp)
+      if(ltmp>2) rtmp = rowSums(DM2)/(ltmp - 2)
+      DM2 = DM2 - outer(rtmp, rtmp, "+")
+      
+      TMP = DM2[1:n1, (n1+1):(n1+n2)]
+#browser()
+#      dtmp = d[CL[[e1]], CL[[e2]]]
+#      rtmp = numeric(n1+n2)
+#      for(ii in 1:(n1+n2)){
+#          for(jj in 1:ltmp){if(ii!=jj) rtmp[ii]=rtmp[ii] + mean.default(d[CLtmp[[ii]], CLtmp[[jj]]])
+#        }
+#      }
 #browser()      
-      rtmp = rtmp/(ltmp-2)
-      TMP  = dtmp + rep(rtmp[1:n1],n2) + rep(rtmp[(n1+1):(n1+n2)], each=n1) 
+#      rtmp = rtmp/(ltmp-2)
+#      TMP2  = dtmp + rep(rtmp[1:n1],n2) + rep(rtmp[(n1+1):(n1+n2)], each=n1) 
+
+#browser()
+
       blub = which.min(TMP)
 #      print(blub)
 #print("blub")      
@@ -164,14 +173,15 @@ getOrderingNN <- function (x)
     newOrd
 } 
 
-
-neighborNet <-  function(x){
+#
+neighborNet <-  function(x, ord=NULL){
     x = as.matrix(x)
     labels <- attr(x, "Labels")[[1]]
     if (is.null(labels)) 
         labels = colnames(x)
-    l <- length(labels)
-    ord <- getOrderingNN(x)
+    l <- length(labels)    
+#browser()    
+    if(is.null(ord))ord <- getOrderingNN(x)
     spl <- cyclicSplits(l, labels[ord])
     spl <- nnls.splits(spl, x)
     attr(spl, "cycle") <- 1:l
