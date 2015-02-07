@@ -2378,7 +2378,7 @@ nnls.splits <- function(x, dm, trace=0){
     Amat = diag(n) # (int)
     betahat <- quadprog::solve.QP(as.matrix(Dmat),as.vector(dvec),Amat)$sol # quadratic programing solving
     RSS = sum((y-(X%*%betahat))^2)
-    ind = (betahat > 1e-13) | int==1  
+    ind = (betahat > 1e-8) | int==1  
     x = x[ind]
     attr(x, "weights") = betahat[ind]
     if(trace)print(paste("RSS:", RSS))
