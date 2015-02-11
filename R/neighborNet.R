@@ -45,6 +45,10 @@ reduc <- function(d, x, y, z){
   d[, x] <- u
   d[z, ] <- v
   d[, z] <- v
+  
+  d[y, ] <- 0
+  d[, y] <- 0
+  
   d[x, z] <- d[z, x] <- uv
   diag(d) <- 0
   d 
@@ -184,6 +188,7 @@ neighborNet <-  function(x, ord=NULL){
     if(is.null(ord))ord <- getOrderingNN(x)
     spl <- cyclicSplits(l, labels[ord])
     spl <- nnls.splits(spl, x)
+    # nnls.split mit nnls statt quadprog
     attr(spl, "cycle") <- 1:l
     as.networx(spl)
 } 
