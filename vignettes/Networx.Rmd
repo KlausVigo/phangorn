@@ -13,7 +13,7 @@ vignette: >
 This tutorial gives a basic introduction on constructing phylogenetic networks and to add parameter to trees or networx using [phangorn](http://cran.r-project.org/web/packages/phangorn/) [@Schliep2011] in R. 
 Splits graph or phylogenetic networks are a nice way to display conflict data or summarize different trees. Here we present to popular networks, consensus networks [@Holland2004]
 and neighborNet [@Bryant2004].                                  
-Often trees or networks are missing either edge weights or support values about the edges. We show how to add Improving tree/networx by adding support or estimating edge weights using non-negative Least-Squares (nnls).
+Often trees or networks are missing either edge weights or support values about the edges. We show how to improve a tree/networx by adding support values or estimating edge weights using non-negative Least-Squares (nnls).
 
 We first load the phangorn package and a few data sets we use in this vignette.
 ```{r, eval=TRUE}
@@ -29,8 +29,10 @@ The input for `consensusNet` is  a list of trees i.e. an object of class `multiP
 set.seed(1)
 bs <- bootstrap.phyDat(yeast, FUN = function(x)nj(dist.hamming(x)), 
     bs=100)
-cnet = consensusNet(bs, .3)
-plot(cnet, "2D")
+tree <- nj(dist.hamming(yeast))
+tree <- plotBS(tree, bs, "phylogram")
+cnet <- consensusNet(bs, .3)
+plot(cnet, "2D", show.edge.label=TRUE)
 ```
 Often `consensusNet` will return incompatible splits, which cannot plotted as a planar graph. A nice way to  get still a good impression of the network is to plot it in 3 dimensions. 
 
@@ -48,7 +50,7 @@ which will result in a spinning graph similar to this
 
 
 ## neighborNet
-The function `neighborNet` implements the popular method of @Bryant2004. The  neighborNet algorithm extends the Neighbor joining allowing again algorithm is computed in 2 parts, the first computes a circular ordering. The second step involves estimation of edge weights using nnls.    
+The function `neighborNet` implements the popular method of @Bryant2004. The  Neighbor-Net algorithm extends the Neighbor joining allowing again algorithm is computed in 2 parts, the first computes a circular ordering. The second step involves estimation of edge weights using non-negative Least-Squares (nnls).    
 
 ```{r, eval=TRUE}
 dm <- dist.hamming(yeast)
@@ -56,8 +58,32 @@ nnet <- neighborNet(dm)
 plot(nnet, "2D")
 ```
 
-The advantage of neighbor net is that it returns a circular split system which can be always displayed in a planar (2D) graph. The plots displayed in `phangorn` may not planar, but re-plotting may gives you a planar graph. This unwanted behavior will be improved in future version. 
-The rendering of the networx is done using the the fantastic igraph package [@Csardi2006]. 
+The advantage of Neighbor-Net is that it returns a circular split system which can be always displayed in a planar (2D) graph. The plots displayed in `phangorn` may not planar, but re-plotting may gives you a planar graph. This unwanted behavior will be improved in future version. 
+The rendering of the `networx` is done using the the fantastic igraph package [@Csardi2006]. 
 
 
+## Adding support values
+
+We can use the generic function `addConfidences` to add support values from a tree, i.e. an object of class `phylo` to a `networx`, `splits` or `phylo` object. The Neighbor-Net object we computed above contains no support values. We can add the support values fro  the tree we computed to the splits these two objects share. 
+```{r, eval=TRUE}
+nnet <- addConfidences(nnet, tree)
+plot(nnet, "2D", show.edge.label=TRUE)
+```    
+We can also add support values to a tree:
+```{r, eval=TRUE}
+tree2 <- rNNI(tree, 2)
+tree2 <- addConfidences(tree2, tree)
+# several support values are missing
+plot(tree2, show.node.label=TRUE)
+```   
+
+## Estimating edge weights (nnls)
+
+Consensus networks on the other hand have information about support values corresponding to a split, but are generally without edge weights. 
+Given a distance matrix we can estimate edge weights using non-negative Least-Squares. 
+```{r, eval=TRUE}
+cnet <- nnls.networx(cnet, dm)
+plot(cnet, show.edge.label=TRUE)
+```
+    
 ## References

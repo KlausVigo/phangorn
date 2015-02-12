@@ -1,6 +1,5 @@
 useDynLib(phangorn, .registration=TRUE)
 
-importFrom(Rcpp, evalCpp)
 importFrom(ape, as.DNAbin, as.phylo, plot.phylo, as.prop.part, nj,old2new.phylo,
     new2old.phylo, is.rooted, unroot, root, is.binary.tree, as.alignment,
     di2multi, multi2di, .uncompressTipLabel, .compressTipLabel, prop.part, 
