@@ -4,6 +4,7 @@
 \alias{nnls.tree}
 \alias{nnls.phylo}
 \alias{nnls.splits}
+\alias{nnls.networx}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Compute a design matrix or non-negative LS }
 \description{
@@ -19,6 +20,7 @@ designSplits(x, splits = "all", ...)
 nnls.tree(dm, tree, rooted=FALSE, trace=1)
 nnls.phylo(x, dm, rooted=FALSE, trace=0)
 nnls.splits(x, dm, trace = 0) 
+nnls.networx(x, dm) 
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

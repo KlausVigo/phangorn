@@ -8,11 +8,15 @@ Computes a neighborNet from a distance matrix
 Computes a neighborNet, i.e. an object of class \code{networx} from a distance matrix.
 }
 \usage{
-neighborNet(x)
+neighborNet(x, ord = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{a distance matrix.} 
+  \item{ord}{a circular ordering.} 
+}
+\details{
+\code{neighborNet} is still experimental. The cyclic ordering sometimes differ from the SplitsTree implementation, the \emph{ord} argument can be used to enforce a certain circular ordering.   
 }
 \value{
 \code{neighborNet} returns an object of class networx.   

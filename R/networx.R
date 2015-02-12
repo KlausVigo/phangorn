@@ -837,6 +837,14 @@ addConfidences.splits <- function(obj, phy){
 }
 
 
+addConfidences.networx <- function(obj, phy){
+    spl <- attr(obj, "splits")
+    spl <- addConfidences(spl, phy)
+    attr(obj, "splits") <- spl
+    obj    
+}
+
+
 addConfidences.phylo <- function(obj, phy){
     conf = attr(addConfidences(as.splits(obj), phy), "confidences")
     nTips = length(obj$tip.label)

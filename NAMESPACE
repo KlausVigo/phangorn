@@ -23,7 +23,7 @@ export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UN
     distanceHadamard, treedist, sankoff, fitch, h2st, h4st, dist.logDet, dist.hamming, 
     dist.ml, dist.p, upgma, wpgma, write.nexus.splits, read.nexus.splits, write.splits, pmlPart, 
     pmlCluster, pmlMix, pmlPen, read.aa, allTrees, designTree, designSplits, nnls.tree,
-    nnls.splits, neighborNet, 
+    nnls.splits, nnls.networx, neighborNet, 
     splitsNetwork, simSeq, SH.test, bootstrap.pml, bootstrap.phyDat, RF.dist, rNNI, 
     rSPR, plotBS, Ancestors, Descendants, mrca.phylo, Children, Siblings, pace, modelTest, 
     lento, compatible, acgt2ry, ancestral.pars, ancestral.pml, CI, RI, getClans, getSlices,
@@ -35,6 +35,7 @@ export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UN
 S3method('[', splits)          
 S3method(addConfidences, phylo)
 S3method(addConfidences, splits)
+S3method(addConfidences, networx)
 S3method(as.character, phyDat)
 S3method(as.data.frame, phyDat)
 S3method(anova, pml)
