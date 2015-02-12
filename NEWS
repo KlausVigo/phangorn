@@ -20,7 +20,7 @@ OTHER CHANGES
 
       to avoid problems on different platforms (suggestion by Matt Pennell)
 
-    o new package dependencies knitr for html vignettes and Rcpp 
+    o new package dependencies knitr for html vignettes, nnls and Rcpp 
 
 
 

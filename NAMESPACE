@@ -15,6 +15,7 @@ importFrom(stats, AIC, logLik, reorder)
 importFrom(fastmatch, fmatch)
 #importFrom(rgl, open3d, segments3d, spheres3d, rgl.texts)
 importFrom(parallel, mclapply)
+importFrom(nnls, nnls)
 
 export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UNJ, PNJ, 
     phyDat, read.phyDat, write.phyDat, as.Matrix, as.phyDat, as.splits, as.networx,
