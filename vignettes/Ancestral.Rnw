@@ -1,4 +1,4 @@
-%\VignetteIndexEntry{Ancestral sequence Reconstruction}
+%\VignetteIndexEntry{Ancestral Sequence Reconstruction}
 %\VignetteKeywords{Documentation}
 %\VignettePackage{phangorn}
 %\VignetteEngine{Sweave}
