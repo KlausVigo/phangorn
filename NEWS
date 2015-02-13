@@ -4,6 +4,8 @@ NEW FEATURES
 
     o added neighborNet algorithm (Bryant and Moulton 2004)
 
+      very experimental at the moment
+
 BUG FIXES
 
     o plotBS was not working correctly if bootstraped trees are in 
