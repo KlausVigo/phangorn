@@ -5,8 +5,9 @@ date: "`r format(Sys.time(), '%B %d, %Y')`"
 output: rmarkdown::html_vignette
 bibliography: phangorn.bib
 vignette: >
-  %\VignetteIndexEntry{Splits and Networx}
-  %\VignetteEngine{knitr::rmarkdown}
+   %\VignetteIndexEntry{Splits and Networx}
+   %\VignetteEngine{knitr::rmarkdown}
+   %\usepackage[utf8]{inputenc}   
 ---
 
 
