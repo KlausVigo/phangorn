@@ -1341,7 +1341,7 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     .C("ll_init", nr, nTips, nc, as.integer(k))
 
     if (optEdge) {
-         res <- optimEdge(tree, data, eig=eig, Q=Q, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, INV=INV,
+         res <- optimEdge(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, INV=INV,
               control = pml.control(epsilon = 1e-07, maxit = 5, trace=trace - 1)) 
          if(trace > 0) 
              cat("optimize edge weights: ", ll, "-->", res[[2]], "\n")  
@@ -1463,7 +1463,7 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
             ll = res[[2]]
         }
         if (optEdge) {  
-           res <- optimEdge(tree, data, eig=eig, Q=Q, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0,
+           res <- optimEdge(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0,
                  control = pml.control(epsilon = 1e-08, maxit = 5, trace=trace - 1)) 
            if (trace > 0) 
               cat("optimize edge weights: ", ll, "-->", res[[2]], "\n")
@@ -1488,7 +1488,7 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                 if(optEdge){
                     tmp <- pml.nni(tree, data, w, g, eig, bf, ll.0, ll, ...) 
                     swap = swap + tmp$swap
-                    res <- optimEdge(tmp$tree, data, eig=eig, Q=Q, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, control = pml.control(epsilon = 1e-08, maxit = 3, trace=0)) 
+                    res <- optimEdge(tmp$tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, control = pml.control(epsilon = 1e-08, maxit = 3, trace=0)) 
                     ll2 = res[[2]] 
                     tree <- res[[1]]
                 }
@@ -1665,7 +1665,7 @@ fs2 <- function (old.el, eig, parent.dat, child, weight, g=g,
 }
 
 
-optimEdge <- function (tree, data, eig=eig, Q=Q, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0,
+optimEdge <- function (tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0,
               control = pml.control(epsilon = 1e-08, maxit = 10, trace=0), ...) 
 {
     if (is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise") 
