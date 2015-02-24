@@ -135,8 +135,7 @@ dist.ml <- function (x, model = "JC69", exclude = "none", bf = NULL, Q = NULL, .
     #        tmp2 = vector("list", k)
             tmp2[[1]] <- tmp[ind, , drop = FALSE]
     # FS0 verwenden!!!        
-            res <- .Call("FS5", eig, nc, as.double(old.el), w, g, 
-                tmp2, 1L, as.integer(sum(ind)), 
+            res <- .Call("FS5", eig, nc, as.double(old.el), w, g, tmp2, 1L, as.integer(sum(ind)), 
                 bf, w0[ind], ll.0, PACKAGE = "phangorn")
             d[k] <- res[1] # res[[1]]
             v[k] <- res[2] # res[[2]]

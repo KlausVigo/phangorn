@@ -467,9 +467,8 @@ SEXP PML3(SEXP dlist, SEXP EL, SEXP W, SEXP G, SEXP NR, SEXP NC, SEXP K, SEXP ei
      } 
     logScaleEPS = log(ScaleEPS);
     for(i=0; i<(k*nr); i++) tmp[i] = logScaleEPS * SC[i] + log(tmp[i]);     
-
-     UNPROTECT(1);
-     return TMP;     
+    UNPROTECT(1);
+    return TMP;     
 }
 
 
@@ -901,6 +900,7 @@ SEXP getM3(SEXP dad, SEXP child, SEXP P, SEXP nr, SEXP nc){
     return(RESULT);    
     }
     
+     
 SEXP FS4(SEXP eig, SEXP nc, SEXP el, SEXP w, SEXP g, SEXP X, SEXP dad, SEXP child, SEXP ld, SEXP nr, 
          SEXP basefreq, SEXP weight, SEXP f0, SEXP retA, SEXP retB)
 {
@@ -993,16 +993,11 @@ SEXP FS5(SEXP eig, SEXP nc, SEXP el, SEXP w, SEXP g, SEXP X, SEXP ld, SEXP nr, S
             NR55(eva, ncx-1L, edle, ws, gs, X, INTEGER(ld)[0], nrx, f, tmp);  
             ll=0.0;  
             lll=0.0;        
-//            for(i=0; i<nrx ;i++) ll+=wgt[i]*tmp[i];
-//            for(i=0; i<nrx ;i++) lll+=wgt[i]*tmp[i]*tmp[i];  
-            
             for(i=0; i<nrx ;i++){ 
                 y = wgt[i]*tmp[i];
                 ll+=y;
                 lll+=y*tmp[i];  
-            }
-            
-            
+            }            
             delta = ((ll/lll) < 3) ? (ll/lll) : 3;
         } // end if        
         ledle = log(edle) + scalep * delta;

@@ -1,3 +1,11 @@
+     CHANGES in PHANGORN VERSION 1.99-13
+
+OTHER CHANGES
+
+    o phangorn linkes now to Rcpp and RcppArmadillo
+
+
+
      CHANGES in PHANGORN VERSION 1.99-12
 
 NEW FEATURES
