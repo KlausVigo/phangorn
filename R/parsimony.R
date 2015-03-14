@@ -115,6 +115,10 @@ mpr <- function(tree, data, cost=NULL){
     res <- mpr.help(tree,data,cost)
     l = length(tree$tip)
     m = length(res)
+    label = as.character(1:m)
+    nam = tree$tip.label
+    label[1:length(nam)] = nam
+    att[["names"]] = label
     ntips = length(tree$tip)
     contrast = att$contrast
     eps=5e-6
@@ -130,6 +134,7 @@ mpr <- function(tree, data, cost=NULL){
     attributes(res) = att
     res
 }
+
 
 
 plotAnc <- function (tree, data, i = 1, col=NULL, cex.pie=par("cex"), pos="bottomright", ...)
@@ -414,7 +419,21 @@ mmsNew0 <- function (x, Y)
 # Sankoff 
 #
 
-old2new.phyDat <- function(data){}
+#old2new.phyDat <- function(data){}
+# works only for nuckeotides
+old2new.phyDat <- function(obj){
+    att <- attributes(obj)
+    l = length(obj)
+    contrast <- attr(obj, "contrast")
+    nr <- attr(obj, "nr")
+    X = matrix(rep(rowSums(contrast), each=nr),nrow=nr)    
+    tmp = X - tcrossprod(anc.p[[1]], attr(anc.p, "contrast"))
+    res <- vector("list", l)
+    for(i in 1:l)res[[i]] = unlist(apply(tmp, 1, function(x)which(x<1e-6)[1]))
+    attributes(res) <- att
+    res
+}
+
 
 
 new2old.phyDat <- function(data){

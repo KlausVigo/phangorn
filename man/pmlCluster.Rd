@@ -41,7 +41,11 @@ pmlCluster(formula, fit, weight, p=1:5, part=NULL, nrep = 10,
   \item{trees}{a list of all trees during the optimization.} 
   \item{fits}{fits for the final partitions}
 }
-%\references{ ~put references to the literature/web site here ~ }
+\references{ 
+K. P. Schliep (2009). Some Applications of statistical phylogenetics (PhD Thesis) 
+
+Lanfear, R., Calcott, B., Ho, S.Y.W. and Guindon, S. (2012) PartitionFinder: Combined Selection of Partitioning Schemes and Substitution Models for Phylogenetic Analyses. \emph{Molecular Biology and Evolution}, \bold{29(6)}, 1695-1701
+}
 \author{Klaus Schliep \email{klaus.schliep@gmail.com}}
 \seealso{  \code{\link{pml}},\code{\link{pmlPart}},\code{\link{pmlMix}},\code{\link{SH.test}} }
 \examples{
