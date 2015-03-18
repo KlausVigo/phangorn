@@ -307,7 +307,7 @@ RI <- function (tree, data, cost=NULL)
     (g - pscore)/(g - m)
 }
 
-
+# not used
 add.one <- function (tree, tip.name, i){
     if (class(tree) != "phylo") 
         stop("tree should be an object of class 'phylo.'")
@@ -758,23 +758,23 @@ ptree <- function (tree, data, type = "ACCTRAN", retData = FALSE)
     if (!is.rooted2(tree)) {
         root = getRoot(tree)
         ind = edge[node == root]
-        rSeq = .C(fitchTriplet, integer(nr), dat[, ind[1]], 
+        rSeq = .C("fitchTriplet", integer(nr), dat[, ind[1]], 
             dat[, ind[2]], dat[, ind[3]], as.integer(nr))
         dat[, root] = rSeq[[1]]
     }
-    result <- .C(ACCTRAN2, dat, as.integer(nr), numeric(nr), 
+    result <- .C("ACCTRAN2", dat, as.integer(nr), numeric(nr), 
         as.integer(node[l:1L]), as.integer(edge[l:1L]), l, as.double(weight), 
         numeric(l), as.integer(nTips))
     el = result[[8]][l:1L]
     if (!is.rooted2(tree)) {
         ind2 = which(node[] == root)
         dat = matrix(result[[1]], nr, max(node))
-        result <- .C(ACCTRAN3, result[[1]], as.integer(nr), 
+        result <- .C("ACCTRAN3", result[[1]], as.integer(nr), 
             numeric(nr), as.integer(node[(l - 3L):1L]), as.integer(edge[(l - 
                 3L):1L]), l - 3L, as.double(weight), numeric(l), 
             as.integer(nTips))
         el = result[[8]][(l - 3L):1L]
-        pars = .C(fitchTripletACC4, dat[, root], dat[, ind[1]], 
+        pars = .C("fitchTripletACC4", dat[, root], dat[, ind[1]], 
             dat[, ind[2]], dat[, ind[3]], as.integer(nr), numeric(1), 
             numeric(1), numeric(1), as.double(weight), numeric(nr), 
             integer(nr))

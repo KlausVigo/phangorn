@@ -360,7 +360,7 @@ void tabulate(int *x, int *n, int *nbin, int *ans){
 }
 
 
-void reorder(int *from, int *to, int *n, int *sumNode,  int *neworder, int *root){ 
+void C_reorder(int *from, int *to, int *n, int *sumNode,  int *neworder, int *root){ 
     int i, j, sum=0, k, Nnode, ind, *ord, *csum, *tips, *stack, z=0;  // l, 
     double *parent;
     int m=sumNode[0];

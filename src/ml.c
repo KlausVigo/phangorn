@@ -552,6 +552,12 @@ void helpDAD2(double *dad, int *child, double *contrast, double *P, int nr, int 
     for(int j=0; j<(nc * nr); j++) res[j]=dad[j]/res[j];               
 } 
 
+void helpDAD5(double *dad, int *child, double *contrast, double *P, int nr, int nc, int nco, double *res){
+    matp(child, contrast, P, &nr, &nc, &nco, res); 
+    for(int j=0; j<(nc * nr); j++) dad[j]/=res[j];               
+} 
+
+
 SEXP getDAD2(SEXP dad, SEXP child, SEXP contrast, SEXP P, SEXP nr, SEXP nc, SEXP nco){
     R_len_t i, n=length(P);
     int ncx=INTEGER(nc)[0], nrx=INTEGER(nr)[0], nrs=INTEGER(nco)[0]; //, j
@@ -596,11 +602,11 @@ SEXP getPrep2(SEXP dad, SEXP child, SEXP contrast, SEXP evi, SEXP nr, SEXP nc, S
 
 // works
 SEXP moveDad(SEXP dlist, SEXP PA, SEXP CH, SEXP eig, SEXP EVI, SEXP EL, SEXP W, SEXP G, SEXP NR,
-    SEXP NC, SEXP NTIPS, SEXP CONTRAST, SEXP contrast2, SEXP NCO){
-    int i, k=length(W);
+    SEXP NC, SEXP NTIPS, SEXP CONTRAST, SEXP CONTRAST2, SEXP NCO){
+    int i, k=length(W), j;
     int nc=INTEGER(NC)[0], nr=INTEGER(NR)[0], ntips=INTEGER(NTIPS)[0]; //, j, blub
     int pa=INTEGER(PA)[0], ch=INTEGER(CH)[0], nco =INTEGER(NCO)[0];
-    double  *g=REAL(G), *evi=REAL(EVI), *contrast=REAL(CONTRAST); //*w=REAL(W),
+    double  *g=REAL(G), *evi=REAL(EVI), *contrast=REAL(CONTRAST), *contrast2=REAL(CONTRAST2); //*w=REAL(W),
     double el=REAL(EL)[0];
     double *eva, *eve, *evei, *tmp, *P;
     tmp = (double *) R_alloc(nr * nc, sizeof(double));
@@ -627,9 +633,9 @@ SEXP moveDad(SEXP dlist, SEXP PA, SEXP CH, SEXP eig, SEXP EVI, SEXP EL, SEXP W, 
             PROTECT(X = allocMatrix(REALSXP, nr, nc));
             getP(eva, eve, evei, nc, el, g[i], P);
 // helpDAD2(double *dad, int *child, double *contrast, double *P, int nr, int nc, int nco, double *res)            
-            helpDAD2(&LL[LINDEX(pa, i)], INTEGER(VECTOR_ELT(dlist, ch-1L)), contrast, P, nr, nc, nco, tmp); 
+            helpDAD5(&LL[LINDEX(pa, i)], INTEGER(VECTOR_ELT(dlist, ch-1L)), contrast, P, nr, nc, nco, tmp); 
 // void helpPrep2(double *dad, int *child, double *contrast, double *evi, int nr, int nc, int nrs, double *res)
-            helpPrep2(&LL[LINDEX(pa, i)], INTEGER(VECTOR_ELT(dlist, ch-1L)), contrast2, evi, nr, nc, nco, REAL(X)); 
+            helpPrep2(&LL[LINDEX(pa, i)], INTEGER(VECTOR_ELT(dlist, ch-1L)), contrast2, evi, nr, nc, nco, REAL(X)); //; 
             SET_VECTOR_ELT(RESULT, i, X);
             UNPROTECT(1);
         }
@@ -638,6 +644,52 @@ SEXP moveDad(SEXP dlist, SEXP PA, SEXP CH, SEXP eig, SEXP EVI, SEXP EL, SEXP W, 
     return(RESULT);    
 }
 
+
+// child *= (dad * P) 
+void goDown(double *dad, double *child, double *P, int nr, int nc, double *res){
+    F77_CALL(dgemm)(transa, transb, &nr, &nc, &nc, &one, dad, &nr, P, &nc, &zero, res, &nr);
+    for(int j=0; j<(nc * nr); j++) child[j]*=res[j];    
+} 
+
+// dad *= (child * P) 
+void goUp(double *dad, int *child, double *contrast, double *P, int nr, int nc, int nco, double *res){
+    matp(child, contrast, P, &nr, &nc, &nco, res); 
+    for(int j=0; j<(nc * nr); j++) dad[j]*=res[j];               
+} 
+
+
+SEXP updateLL(SEXP dlist, SEXP PA, SEXP CH, SEXP eig, SEXP EL, SEXP W, SEXP G, SEXP NR,
+    SEXP NC, SEXP NTIPS, SEXP CONTRAST, SEXP NCO){
+//    SEXP RESULTS, X;     
+    int i, k=length(W), j;
+    int nc=INTEGER(NC)[0], nr=INTEGER(NR)[0], ntips=INTEGER(NTIPS)[0]; //, j, blub
+    int pa=INTEGER(PA)[0], ch=INTEGER(CH)[0], nco =INTEGER(NCO)[0];
+    double  *g=REAL(G), *contrast=REAL(CONTRAST); //*w=REAL(W),
+    double el=REAL(EL)[0];
+    double *eva, *eve, *evei, *tmp, *P;
+    tmp = (double *) R_alloc(nr * nc, sizeof(double));
+    P = (double *) R_alloc(nc * nc, sizeof(double));    
+
+//    PROTECT(RESULT = allocVector(VECSXP, k))
+
+    eva = REAL(VECTOR_ELT(eig, 0));
+    eve = REAL(VECTOR_ELT(eig, 1));
+    evei = REAL(VECTOR_ELT(eig, 2));
+    if(ch>ntips){
+        for(i = 0; i < k; i++){
+            getP(eva, eve, evei, nc, el, g[i], P);
+            goDown(&LL[LINDEX(pa, i)], &LL[LINDEX(ch, i)], P, nr, nc, tmp);
+         }
+    }
+    else{
+        for(i = 0; i < k; i++){
+            getP(eva, eve, evei, nc, el, g[i], P);
+            goUp(&LL[LINDEX(pa, i)], INTEGER(VECTOR_ELT(dlist, ch-1L)), contrast, P, nr, nc, nco, tmp); 
+        }
+    }
+    return ScalarReal(1L);
+//    return(NULL);
+}
 
 
 SEXP extractI(SEXP CH, SEXP W, SEXP G, SEXP NR, SEXP NC, SEXP NTIPS){

@@ -467,6 +467,43 @@ as.DNAbin.phyDat <- function(x,...) {
    else stop("x must be a nucleotide sequence")
 }
 
+# quite abit faster
+as.DNAbin.phyDat2 <- function (x, ...) 
+{
+    if(attr(x, "type")=="DNA"){
+
+    nr <- attr(x, "nr")
+    ac = attr(x, "allLevels")
+    result = matrix(as.raw(0), nrow = length(x), ncol = nr)
+    # from ape ._cs_
+    cs <- c("a", "g", "c", "t", "r", "m", "w", "s", "k", "y", "v", "h", 
+      "d", "b", "n", "-", "?")
+    # from ape ._bs_
+    bs <- as.raw(c(136, 72, 40, 24, 192, 160, 144, 96, 80, 48, 224, 176, 208, 
+                   112, 240, 4, 2))
+    ord <- match(ac, cs)
+    ord[5] <- 4
+
+    for (i in 1:length(x)){
+        ind <- ord[x[[i]]]
+        result[i,] <- bs[ind]    
+    }    
+    if (is.null(attr(x, "index"))) 
+        index = rep(1:nr, attr(x, "weight"))
+    else {
+        index = attr(x, "index")
+        if (is.data.frame(index)) 
+            index <- index[, 1]
+    }
+    result = result[, index, drop = FALSE]
+    rownames(result) = names(x)
+    class(result) <- "DNAbin"
+    return(result)
+    }
+    else stop("x must be a nucleotide sequence")
+}
+
+
  
 phyDat <- function (data, type="DNA", levels=NULL, return.index = TRUE,...) 
 {
@@ -710,6 +747,12 @@ read.aa <- function (file, format = "interleaved", skip = 0, nlines = 0,
     phylip <- if (format %in% c("interleaved", "sequential")) 
         TRUE
     else FALSE
+    
+    
+    if (format == "fasta") {
+        obj <- read.FASTA.AA(file)
+        return(obj)
+    }
     X <- scan(file = file, what = character(), sep = "\n", quiet = TRUE, 
         skip = skip, nlines = nlines, comment.char = comment.char)      
            
@@ -770,6 +813,7 @@ read.aa <- function (file, format = "interleaved", skip = 0, nlines = 0,
             seq.names <- getTaxaNames(taxa)
     }
     if (format == "fasta") {
+        read.AA.FASTA
         start <- grep("^ {0,}>", X)
         taxa <- X[start]
         n <- length(taxa)

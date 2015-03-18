@@ -1,4 +1,3 @@
-
 optimEdge2 <- function (tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0,
                        control = pml.control(epsilon = 1e-08, maxit = 10, trace=0), ...) 
 {
@@ -37,9 +36,6 @@ optimEdge2 <- function (tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll
     n = length(tree$edge.length)  
     lt = length(tree$tip)
     
-#    for(i in 1:k)dat[i, 1:lt]=data    
-#    child.dat = vector("list", k)
-    
     nr = as.integer(length(weight))
     nc = as.integer(length(bf))
     nco = as.integer(nrow(contrast))
@@ -48,11 +44,6 @@ optimEdge2 <- function (tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll
     rootNode = getRoot(tree)         
 
     anc = Ancestors(tree, 1:max(tree$edge), "parent")        
-    
-#    moveLL2 <- function(P, LL, data, nr, nc, k){
-
-browser()
-
 
     while (eps > control$eps && iter < control$maxit) {
 #        LL = dat[, rootNode] # sollte root sein
@@ -65,9 +56,8 @@ browser()
 # SEXP extractScale(SEXP CH, SEXP W, SEXP G, SEXP NR, SEXP NC, SEXP NTIPS){            
 #            blub3 <- .Call("extractScale", as.integer(pa), w, g, as.integer(nr), as.integer(nc), as.integer(nTips))
              
-            
             while(loli != pa){
-                browser()
+#                browser()
                 blub <- .Call("moveloli", as.integer(loli), as.integer(anc[loli]), eig, EL[loli], w, g, as.integer(nr), as.integer(nc), as.integer(nTips))
                 
                 loli=anc[loli] 
@@ -75,22 +65,16 @@ browser()
             
             #            parent.dat = dat[, parent[j]]  # sollte LL sein 
             old.el = tree$edge.length[j] 
-            
-#            if (child[j] > nTips){ 
-                if (old.el < 1e-8) old.el <- 1e-8
+
+            if (old.el < 1e-8) old.el <- 1e-8
 # SEXP moveDad(SEXP dlist, SEXP PA, SEXP CH, SEXP eig, SEXP EVI, SEXP EL, SEXP W, SEXP G, SEXP NR,  SEXP NC, SEXP NTIPS, SEXP CONTRAST, SEXP contrast2, SEXP NCO)
-browser()
-                X <- .Call("moveDad", data, as.integer(pa), as.integer(ch), eig, evi, old.el, w, g, as.integer(nr), as.integer(nc), as.integer(nTips), as.double(contrast), as.double(contrast2), nco)
+#browser()
+            X <- .Call("moveDad", data, as.integer(pa), as.integer(ch), eig, evi, old.el, w, g, as.integer(nr), as.integer(nc), as.integer(nTips), as.double(contrast), as.double(contrast2), nco)                
+            newEL <- .Call("FS5", eig, nc, as.double(old.el), as.double(w), as.double(g), X, as.integer(length(w)), as.integer(length(weight)), as.double(bf), as.double(weight), as.double(ll.0))
                 
-                newEL <- .Call("FS5", eig, nc, as.double(old.el), as.double(w), as.double(g), X, as.integer(length(w)), as.integer(length(weight)), as.double(bf), as.double(weight), as.double(ll.0))
-                
-#                dat[, child[j]] <- dad # 
-#            }
-#else{}
 
-
-#            el[j] = newEL[[1]]
-#            EL[ch] = newEL[[1]]     
+            el[j] = newEL[[1]]
+            EL[ch] = newEL[[1]]     
             if (child[j] > nTips) {
 #                LL = newEL[[3]]
                 loli  = child[j]
@@ -99,14 +83,19 @@ browser()
 #                LL = newEL[[2]]
                 loli  = parent[j]   
             } 
+#SEXP updateLL(SEXP dlist, SEXP PA, SEXP CH, SEXP eig, SEXP EL, SEXP W, SEXP G, SEXP NR,
+#              SEXP NC, SEXP NTIPS, SEXP CONTRAST, SEXP NCO)
+
+            blub <- .Call("updateLL", data, as.integer(pa), as.integer(ch), eig, newEL[[1]], w, g,
+                as.integer(nr), as.integer(nc), as.integer(nTips), as.double(contrast), nco)
+
             tree$edge.length = el
         }
         tree$edge.length = el
         iter = iter + 1
-#        dat <- NULL
         
         treeP$edge.length = EL[treeP$edge[,2]]
-        newll <- pml.fit(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k)
+        newll <- pml.fit(treeP, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k)
         
         eps = ( old.ll - newll ) / newll
         if( eps <0 ) return(list(oldtree, old.ll))
@@ -119,3 +108,6 @@ browser()
     if(control$trace>0) cat(start.ll, " -> ", newll, "\n")
     list(tree=treeP, logLik=newll, c(eps, iter))
 }
+
+
+
