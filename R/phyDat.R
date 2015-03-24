@@ -560,6 +560,61 @@ c.phyDat <- function(...){
 }
 
 
+# new cbind.phyDat 
+cbindPD <- function(..., gaps="-"){
+    object <- as.list(substitute(list(...)))[-1]    
+    x <- list(...)
+    n <- length(x) 
+    if (n == 1) 
+        return(x[[1]])
+    type <- attr(x[[1]], "type")
+    nr = numeric(n)
+    
+    ATTR <- attributes(x[[1]])
+    
+    nr[1] <- sum(attr(x[[1]], "weight"))
+    levels <- attr(x[[1]], "levels")
+    allLevels <- attr(x[[1]], "allLevels")
+    gapsInd <- match(gaps, allLevels)
+    snames <- vector("list", n)  # names(x[[1]])
+    vec = numeric(n+1)
+    wvec = numeric(n+1)
+    objNames<-as.character(object)
+    if(any(duplicated(objNames))) objNames <- paste(objNames,1:n,sep="")
+    #    tmp <- as.character(x[[1]])
+    
+    for(i in 1:n){
+        snames[[i]] = names(x[[i]]) 
+        nr[i] <- attr(x[[i]], "nr") 
+        vec[i+1] = attr(x[[i]], "nr")
+        wvec[i+1] = sum(attr(x[[i]], "weight"))
+    }
+    vec = cumsum(vec)
+    wvec = cumsum(wvec)
+    snames = unique(unlist(snames))
+    weight <- numeric(vec[n+1])
+    
+    index <- numeric(wvec[n+1]) 
+    ATTR$names <- snames
+    ATTR$nr <- vec[n+1]
+    
+    tmp = matrix(gapsInd, vec[n+1], length(snames), dimnames = list(NULL, snames))
+    tmp <- as.data.frame(tmp)
+    
+    for(i in 1:n){
+        nam = names(x[[i]])
+        tmp[(vec[i]+1):vec[i+1], nam] <- x[[i]][nam]
+        weight[(vec[i]+1):vec[i+1]] <- attr(x[[i]], "weight")
+        index[(wvec[i]+1):wvec[i+1]] <- attr(x[[i]], "index")
+    }
+    ATTR$index <- index
+    ATTR$weight <- weight
+    attributes(tmp) <- ATTR
+    tmp
+}
+
+
+
 cbind.phyDat <- function(..., gaps="-"){
     object <- as.list(substitute(list(...)))[-1]    
     x <- list(...)
@@ -693,10 +748,10 @@ subset.phyDat <- function (x, subset, select, site.pattern = TRUE,...)
      
     if (!missing(subset)) x <- getCols(x, subset)
     if (!missing(select)){
-         if(!site.pattern){
-             if(is.data.frame(attr(x, "index"))) select <- attr(x, "index")[select,1]
-             else select <- attr(x, "index")[select]
-         }     
+#         if(!site.pattern){
+#             if(is.data.frame(attr(x, "index"))) select <- attr(x, "index")[select,1]
+#             else select <- attr(x, "index")[select]
+#         }     
          if(any(is.na(select))) return(NULL) 
          x <- getRows(x, select, site.pattern=site.pattern)
     }    
