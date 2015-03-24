@@ -420,16 +420,36 @@ mmsNew0 <- function (x, Y)
 #
 
 #old2new.phyDat <- function(data){}
-# works only for nuckeotides
+# works only for nucleotides
 old2new.phyDat <- function(obj){
     att <- attributes(obj)
     l = length(obj)
     contrast <- attr(obj, "contrast")
     nr <- attr(obj, "nr")
     X = matrix(rep(rowSums(contrast), each=nr),nrow=nr)    
-    tmp = X - tcrossprod(anc.p[[1]], attr(anc.p, "contrast"))
     res <- vector("list", l)
-    for(i in 1:l)res[[i]] = unlist(apply(tmp, 1, function(x)which(x<1e-6)[1]))
+    for(i in 1:l){
+        browser()
+        tmp = X - tcrossprod(obj[[i]], contrast)
+        res[[i]] = unlist(apply(tmp, 1, function(x)which(x<1e-6)[1]))
+    }
+    attributes(res) <- att
+    res
+}
+
+old2new.phyDat <- function(obj){
+    att <- attributes(obj)
+    l = length(obj)
+    contrast <- attr(obj, "contrast")
+    nr <- attr(obj, "nr")
+    X = matrix(rep(rowSums(contrast), each=nr),nrow=nr)   
+    for(i in 1:l)obj[[i]][obj[[i]]>0] = 1
+    res <- vector("list", l)
+    contrast[contrast==0]=1e6   
+    for(i in 1:l){
+        tmp =  tcrossprod(obj[[i]], contrast) - X
+        res[[i]] = unlist(apply(tmp, 1, function(x)which(x<1e-6)[1]))
+    }
     attributes(res) <- att
     res
 }

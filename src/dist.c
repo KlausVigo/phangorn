@@ -99,7 +99,7 @@ SEXP PWI(SEXP LEFT, SEXP RIGHT, SEXP L, SEXP N, SEXP W, SEXP LI){
 
 
 
-void fhm(double *v, int *n){
+void C_fhm(double *v, int *n){
     unsigned int level, i, j; 
     unsigned int start, step, num_splits;
     double vi, vj;
