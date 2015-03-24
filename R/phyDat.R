@@ -313,6 +313,8 @@ as.phyDat <- function (x, ...){
 as.phyDat.DNAbin <- function(x,...) phyDat.DNA(x,...)
 
 
+
+
 as.phyDat.alignment <- function (x, type="DNA",...) 
 {
     x$seq <- tolower(x$seq)
@@ -462,13 +464,13 @@ as.data.frame.phyDat <- function(x, ...){
 }
 
 
-as.DNAbin.phyDat <- function(x,...) {
-   if(attr(x, "type")=="DNA") return(as.DNAbin(as.character(x, ...)))
-   else stop("x must be a nucleotide sequence")
-}
+#as.DNAbin.phyDat <- function(x,...) {
+#   if(attr(x, "type")=="DNA") return(as.DNAbin(as.character(x, ...)))
+#   else stop("x must be a nucleotide sequence")
+#}
 
 # quite abit faster
-as.DNAbin.phyDat2 <- function (x, ...) 
+as.DNAbin.phyDat <- function (x, ...) 
 {
     if(attr(x, "type")=="DNA"){
 
@@ -783,6 +785,51 @@ write.phylip <- function(data, weight, file=""){
 }
 
 
+read.FASTA.AA <- function (file) 
+{
+    if (length(grep("^(ht|f)tp:", file))) {
+        url <- file
+        file <- tempfile()
+        download.file(url, file)
+    }
+    sz <- file.info(file)$size
+    x <- readBin(file, "raw", sz)
+    icr <- which(x == as.raw(13))
+    if (length(icr)) 
+        x <- x[-icr]
+    res <- .Call("rawStream2phyDat", x)
+    
+    aa <- c("a", "r", "n", "d", "c", "q", "e", "g", "h", "i", 
+            "l", "k", "m", "f", "p", "s", "t", "w", "y", "v")
+    aa2 <- c("a", "r", "n", "d", "c", "q", "e", "g", "h", "i", 
+             "l", "k", "m", "f", "p", "s", "t", "w", "y", "v", "b", 
+             "z", "x", "-", "?")
+    AA <- diag(20)
+    AA <- rbind(AA, matrix(0, 5, 20))
+    AA[21, 3] <- AA[21, 4] <- 1 # Aspartate or Asparagine
+    AA[22, 6] <- AA[22, 7] <- 1 #
+    AA[23:25, ] = 1
+    dimnames(AA) <- list(aa2, aa)
+    
+    ddd = fast.table(res)
+    
+    data = ddd$data
+    names(data) <- sub("^ +", "", names(data))
+    row.names(data) = NULL
+    
+    attr(data, "row.names") = NULL
+    attr(data, "weight") = ddd$weight
+    attr(data, "nr") = length(ddd$weight)
+    attr(data, "nc") = 20
+    attr(data, "index") = as.integer(ddd$index)
+    attr(data, "levels") = aa
+    attr(data, "allLevels") = aa2
+    attr(data, "type") = "AA"
+    attr(data, "contrast") = AA    
+    class(data) = "phyDat"
+    data
+}
+
 
 # throw out
 read.aa <- function (file, format = "interleaved", skip = 0, nlines = 0, 
@@ -864,20 +911,19 @@ read.aa <- function (file, format = "interleaved", skip = 0, nlines = 0,
         if (is.null(seq.names)) 
             seq.names <- getTaxaNames(taxa)
     }
-    if (format == "fasta") {
-        read.AA.FASTA
-        start <- grep("^ {0,}>", X)
-        taxa <- X[start]
-        n <- length(taxa)
-        obj <- vector("list", n)
-        if (is.null(seq.names)) {
-            taxa <- sub("^ {0,}>", "", taxa)
-            seq.names <- getTaxaNames(taxa)
-        }
-        start <- c(start, length(X) + 1)
-        for (i in 1:n) obj[[i]] <- unlist(strsplit(gsub(" ", 
-            "", X[(start[i] + 1):(start[i + 1] - 1)]), NULL))
-    }
+    if (format == "fasta") return(read.FASTA.AA(file))
+#        start <- grep("^ {0,}>", X)
+#        taxa <- X[start]
+#        n <- length(taxa)
+#        obj <- vector("list", n)
+#        if (is.null(seq.names)) {
+#            taxa <- sub("^ {0,}>", "", taxa)
+#            seq.names <- getTaxaNames(taxa)
+#        }
+#        start <- c(start, length(X) + 1)
+#        for (i in 1:n) obj[[i]] <- unlist(strsplit(gsub(" ", 
+#            "", X[(start[i] + 1):(start[i + 1] - 1)]), NULL))
+#    }
     if (phylip) {
         rownames(obj) <- seq.names
         obj <- tolower(obj)
