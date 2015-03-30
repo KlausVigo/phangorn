@@ -504,7 +504,7 @@ void moveLL5(double *LL, double *child, double *P, int *nr, int *nc, double *tmp
 SEXP moveloli(SEXP CH, SEXP PA, SEXP eig, SEXP EL, SEXP W, SEXP G, 
     SEXP NR, SEXP NC, SEXP NTIPS){
     int i, k=length(W);
-    int nc=INTEGER(NC)[0], nr=INTEGER(NR)[0], ntips=INTEGER(NTIPS)[0], j, blub;
+    int nc=INTEGER(NC)[0], nr=INTEGER(NR)[0], ntips=INTEGER(NTIPS)[0], j; //, blub
     int pa=INTEGER(PA)[0], ch=INTEGER(CH)[0];
     double  *g=REAL(G); //*w=REAL(W),
     double el=REAL(EL)[0];
@@ -512,24 +512,25 @@ SEXP moveloli(SEXP CH, SEXP PA, SEXP eig, SEXP EL, SEXP W, SEXP G,
     tmp = (double *) R_alloc(nr * nc, sizeof(double));
     P = (double *) R_alloc(nc * nc, sizeof(double));    
     
-    SEXP X, RESULT;
-    PROTECT(RESULT = allocVector(VECSXP, k));
+//    SEXP X, RESULT;
+//    PROTECT(RESULT = allocVector(VECSXP, k));
   
     eva = REAL(VECTOR_ELT(eig, 0));
     eve = REAL(VECTOR_ELT(eig, 1));
     evei = REAL(VECTOR_ELT(eig, 2));
 
     for(i = 0; i < k; i++){
-        PROTECT(X = allocMatrix(REALSXP, nr, nc));
+//        PROTECT(X = allocMatrix(REALSXP, nr, nc));
         getP(eva, eve, evei, nc, el, g[i], P);
         moveLL5(&LL[LINDEX(ch, i)], &LL[LINDEX(pa, i)], P, &nr, &nc, tmp);
-        blub = LINDEX(ch, i);
-        for(j=0; j< (nr*nc); j++) REAL(X)[j] = LL[blub+j];
-        SET_VECTOR_ELT(RESULT, i, X);
-        UNPROTECT(1);
+//        blub = LINDEX(ch, i);
+//        for(j=0; j< (nr*nc); j++) REAL(X)[j] = LL[blub+j];
+//        SET_VECTOR_ELT(RESULT, i, X);
+//        UNPROTECT(1);
     }
-    UNPROTECT(1); //RESULT    
-    return(RESULT);    
+//    UNPROTECT(1); //RESULT    
+//    return(RESULT);    
+    return ScalarReal(1L);
 }
 
 // dad / child * P 
@@ -1156,5 +1157,7 @@ SEXP FS5(SEXP eig, SEXP nc, SEXP el, SEXP w, SEXP g, SEXP X, SEXP ld, SEXP nr, S
     UNPROTECT(1);
     return (RESULT);
 } 
+
+
 
 
