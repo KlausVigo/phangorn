@@ -1420,53 +1420,8 @@ fs3 <- function (old.el, eig, parent.dat, child, weight, g=g,
 
 
 
-prep <- function(child, parent, eig, bf, evi){
-    res = vector("list", length(child))
-    for(i in 1:length(parent)){
-        res[[i]] = (child[[i]] %*% eig[[2]]) *  ( parent[[i]] %*% evi ) 
-    }
-    res 
-}
-
-prep1 <- function(child, parent, eve, bf, evi){
-    res = vector("list", length(child))
-    for(i in 1:length(parent)){
-        res[[i]] = (child[[i]] %*% eve) *  ( parent[[i]] %*% evi ) 
-    }
-    res 
-}
-
-prep2 <- function(child, parent, eig, bf, contrast2, evi){
-    res = vector("list", length(child))
-    for(i in 1:length(parent)){
-        res[[i]] = (contrast2[child, , drop=FALSE]) *  ( parent[[i]] %*% evi ) 
-    }
-    res 
-}
-
-
-fs2 <- function (old.el, eig, parent.dat, child, weight, g=g, 
-    w=w, bf=bf, ll.0=ll.0, contrast, contrast2, evi, getA=TRUE, getB=TRUE) 
-{
-    if (old.el < 1e-8) old.el <- 1e-8
-    lg = length(parent.dat)
-    P <- getP(old.el, eig, g)
-    nr = as.integer(length(weight))
-    nc = as.integer(length(bf))
-    nco = as.integer(nrow(contrast))
-    dad <- .Call("getDAD2", parent.dat, child, contrast, P, nr, nc, nco)
-    child.dat <- vector("list", lg)
-    for (i in 1:lg)child.dat[[i]] <- contrast[child, , drop=FALSE] # spaeter raus
-    X <- .Call("getPrep2", dad, child, contrast2, evi, nr, nc, nco)
-    .Call("FS4", eig, as.integer(length(bf)), as.double(old.el), 
-            as.double(w), as.double(g), X, child.dat, dad, as.integer(length(w)), 
-            as.integer(length(weight)), as.double(bf), as.double(weight), 
-            as.double(ll.0), as.integer(getA), as.integer(getB))
-}
-
-
 optimEdge <- function (tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0,
-              control = pml.control(epsilon = 1e-08, maxit = 10, trace=0), ...) 
+                        control = pml.control(epsilon = 1e-08, maxit = 10, trace=0), ...) 
 {
     if (is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise") 
         tree <- reorder(tree, "postorder") 
@@ -1474,111 +1429,83 @@ optimEdge <- function (tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.
     el <- tree$edge.length
     tree$edge.length[el < 0] <- 1e-08
     oldtree = tree
-    data = subset(data, tree$tip)
-    dat <- NULL    
-    old.ll <- pml6(tree, data, bf, eig, ll.0, w, g) # creates dat
-    start.ll = old.ll
+    k = length(w)    
+    data = subset(data, tree$tip) 
+    loglik = pml.fit(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k)
+    start.ll <- old.ll <- loglik 
     contrast <- attr(data, "contrast")
     contrast2 <- contrast %*% eig[[2]] 
     evi = (t(eig[[3]]) * bf)
     weight <- attr(data, "weight")
     eps = 1
     iter = 0
-
+    
     treeP = tree
     tree = reorder(tree)
     el <- tree$edge.length
-
+    
     child = tree$edge[, 2]
     parent = tree$edge[, 1]
     loli = parent[1]
-
+    
     pvec <- integer(max(tree$edge))
     pvec[child] <- parent
-
+    
     EL = numeric(max(child))
     EL[child] = tree$edge.length
-
+    
     nTips = min(parent) - 1
-    n = length(tree$edge.length)
-    k = length(w)  
+    n = length(tree$edge.length)  
     lt = length(tree$tip)
-    for(i in 1:k)dat[i, 1:lt]=data    
-    child.dat = vector("list", k)
-
+    
     nr = as.integer(length(weight))
     nc = as.integer(length(bf))
     nco = as.integer(nrow(contrast))
     eve = eig[[2]]
     lg = k
     rootNode = getRoot(tree)         
+    ScaleEPS = 1.0/4294967296.0
     anc = Ancestors(tree, 1:max(tree$edge), "parent")        
     
-    moveLL2 <- function(P, LL, data, nr, nc, k){
-        for(i in 1:k){
-             tmp = .C("moveLL", as.double(LL[[i]]), as.double(data[[i]]), as.double(P[[i]]), nr, nc, double(nr*nc))[[6]]
-             LL[[i]] = matrix(tmp, nr, nc)
-        }
-        LL
-    }
     while (eps > control$eps && iter < control$maxit) {
-        LL = dat[, rootNode] # sollte root sein
+        blub3 <- .Call("extractScale", as.integer(rootNode), w, g, as.integer(nr), as.integer(nc), as.integer(nTips))
+        rowM = apply(blub3, 1, min)       
+        blub3 = (blub3-rowM) 
+        blub3 = ScaleEPS ^ (blub3) 
+        
         for(j in 1:n) {       
             ch = child[j]
             pa = parent[j]
             
-
-            while(loli != pa){
-#                print(paste("MoveLL 1: ", getLL(LL, bf, weight, ll.0, k))) 
-                P <- getP(EL[loli], eig, g)
-                LL = moveLL2(P, LL, dat[, loli], nr, nc, k)
-#                print(paste("MoveLL 2: ", getLL(LL, bf, weight, ll.0, k)))
+            while(loli != pa){      
+                blub <- .Call("moveloli", as.integer(loli), as.integer(anc[loli]), eig, EL[loli], w, g, as.integer(nr), as.integer(nc), as.integer(nTips))
                 loli=anc[loli] 
             } 
-              
-#            parent.dat = dat[, parent[j]]  # sollte LL sein 
+            
             old.el = tree$edge.length[j] 
-
-            P <- getP(old.el, eig, g)
-
-            if (child[j] > nTips){ 
-               if (old.el < 1e-8) old.el <- 1e-8
- #              lg = length(parent.dat)
-               P <- getP(old.el, eig, g)
-               dad <- .Call("getDAD", LL, dat[, child[j]], P, nr, nc)
-# getDad, getPrep getDad, getPrep     
-#browser() 
-
-               X <- .Call("getPrep", dad, dat[, child[j]], eig[[2]], evi, nr, nc)
-                         
-               newEL <- .Call("FS4", eig, as.integer(length(bf)), as.double(old.el), 
-                   as.double(w), as.double(g), X, dat[, child[j]], dad, as.integer(length(w)), as.integer(length(weight)), as.double(bf), as.double(weight), 
-                   as.double(ll.0), as.integer(FALSE), as.integer(TRUE))
-        
-               dat[, child[j]] <- dad # 
-            }
-            else{
-                newEL <- fs2(old.el, eig, LL, data[[child[j] ]], weight, 
-                    g = g, w = w, bf = bf, ll.0 = ll.0, contrast, contrast2, evi, getA=TRUE, getB=FALSE)
-                }   
-            el[j] = newEL[[1]]
+            if (old.el < 1e-8) old.el <- 1e-8
+            
+            X <- .Call("moveDad", data, as.integer(pa), as.integer(ch), eig, evi, old.el, w, g, as.integer(nr), as.integer(nc), as.integer(nTips), as.double(contrast), as.double(contrast2), nco)                
+            # in moveDad, das sollte teuer sein in Kopien
+            for(i in 1:k)X[[i]] <- X[[i]] * blub3[,i]
+            
+            newEL <- .Call("FS5", eig, nc, as.double(old.el), as.double(w), as.double(g), X, as.integer(length(w)), as.integer(length(weight)), as.double(bf), as.double(weight), as.double(ll.0))         
+            
+            el[j] = newEL[[1]] # nur EL?
             EL[ch] = newEL[[1]]     
-            if (child[j] > nTips) {
-                LL = newEL[[3]]
-                loli  = child[j]
-            }
-            else{ 
-                LL = newEL[[2]]
-                loli  = parent[j]   
-            } 
+            if (child[j] > nTips) loli  = child[j]
+            else  loli  = parent[j]    
+            
+            blub <- .Call("updateLL", data, as.integer(pa), as.integer(ch), eig, newEL[[1]], w, g,
+                          as.integer(nr), as.integer(nc), as.integer(nTips), as.double(contrast), nco)
+            
             tree$edge.length = el
         }
         tree$edge.length = el
         iter = iter + 1
-        dat <- NULL
-
+        
         treeP$edge.length = EL[treeP$edge[,2]]
-        newll <- pml6(treeP, data, bf, eig, ll.0, w, g)
+        newll <- pml.fit(treeP, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k)
         
         eps = ( old.ll - newll ) / newll
         if( eps <0 ) return(list(oldtree, old.ll))
@@ -1586,11 +1513,12 @@ optimEdge <- function (tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.
         if(control$trace>1) cat(old.ll, " -> ", newll, "\n") 
         old.ll = newll
         loli = parent[1] 
-
+        
     }
     if(control$trace>0) cat(start.ll, " -> ", newll, "\n")
     list(tree=treeP, logLik=newll, c(eps, iter))
 }
+
 
 
 # bf raus C naeher

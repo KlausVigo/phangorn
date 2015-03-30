@@ -2,7 +2,9 @@
 
 OTHER CHANGES
 
-    o phangorn linkes now to Rcpp and RcppArmadillo
+    o improved importing and conversion of data
+
+    o improved stability of pml and optim.pml
 
 
 
