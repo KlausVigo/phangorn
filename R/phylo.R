@@ -1363,16 +1363,6 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
 }
 
 
-preptmp = function(child, parent, eig, bf){
-    res = vector("list", length(child))
-    tmp = (t(eig[[3]]) * bf)
-    for(i in 1:length(child)){
-        res[[i]] = (child[[i]] %*% eig[[2]]) *  ( parent[[i]] %*% tmp )
-    }
-    res 
-}
-
-
 fs <- function (old.el, eig, parent.dat, child.dat, weight, g=g, 
     w=w, bf=bf, ll.0=ll.0, evi, getA=TRUE, getB=TRUE) 
 {
@@ -1537,33 +1527,6 @@ pml.move <- function(EDGE, el, data, g, w, eig, k, nTips, bf){
     return(NULL)
 }
 
-
-# spaeter raus in optimEdge
-pml6 <- function (tree, data, bf, eig, ll.0, w, g, ...) 
-{
-    lll=ll.0
-    weight = attr(data, "weight")
-    m = 1
-    p = length(g)
-    q = length(tree$edge[, 1]) + 1
-    resll = vector("list", p)
-#    resll <- matrix(0, nr, p)
-    dat = vector("list", q * p)
-    attr(dat, "dim") = c(p, q)
-    asdf <- NULL
-    while (m <= p) {
-        resll[[m]] = ll(data, tree, bf = bf, g = g[m], eig = eig, assign.dat = TRUE, ...)
-        dat[m, ] <- asdf
-        m = m + 1
-    }
-    attr(dat, "dimnames") = list(NULL, attr(asdf, "names"))
-    for (i in 1:p) lll = lll + resll[[i]] * w[i]
-    siteLik <- lll 
-    siteLik <- log(siteLik)
-    ll0 = sum(weight * siteLik)
-    assign("dat", dat, envir = parent.frame(n = 1))
-    ll0
-}
 
 
 #
