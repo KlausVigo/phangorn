@@ -184,7 +184,7 @@ mRF2 <- function(tree, trees, check.labels = TRUE){
     yy <- sapply(yy, paste, collapse="_")
     for (i in 1:l){   
 #        RF[i] <- 2 * sum(fmatch(xx[[i]], yy, nomatch=0L)==0L)   
-        RF[i] <- sum(fmatch(xx[[i]], yy, nomatch=0L)==0L) + sum(match(yy, xx[[i]], nomatch=0L)==0L)
+        RF[i] <- sum(match(xx[[i]], yy, nomatch=0L)==0L) + sum(match(yy, xx[[i]], nomatch=0L)==0L)
     }
     if(!is.null(names(trees)))names(RF) <- names(trees)
     return(RF)

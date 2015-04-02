@@ -360,25 +360,7 @@ if(*nthreads <= 1){ *nthreads=1; }else{ *nthreads=(*nthreads < omp_get_max_threa
     UNPROTECT(1);
     return TMP;     
 }
-/*
- * aus pml.fit 
-     ind = which(ll.0>0) 
-    sca = .Call(rowMax, resll, length(weight), as.integer(k)) + 1  
-##     sca auf SC
-    
-    lll = resll - sca  
-    lll <- exp(lll)  ###  exp raus
-    lll <- (lll%*%w)
-    lll[ind] = lll[ind] + exp(log(ll.0[ind])-sca[ind])    ### log
-    siteLik <- lll 
-    siteLik <- log(siteLik) + sca                         ### log
-    # needs to change
-    if(wMix >0) siteLik <- log(exp(siteLik) * (1-wMix) + llMix )
-    loglik <- sum(weight * siteLik)
-    if(!site) return(loglik)
-    resll = exp(resll)                                    ### exp    
-    return(list(loglik=loglik, siteLik=siteLik, resll=resll))  
- */
+
 
 SEXP PML3(SEXP dlist, SEXP EL, SEXP W, SEXP G, SEXP NR, SEXP NC, SEXP K, SEXP eig, SEXP bf, SEXP node, SEXP edge, SEXP NTips, SEXP root, SEXP nco, SEXP contrast, SEXP N){
     int nr=INTEGER(NR)[0], nc=INTEGER(NC)[0], k=INTEGER(K)[0], i, indLL; 
@@ -489,18 +471,7 @@ void moveLL5(double *LL, double *child, double *P, int *nr, int *nc, double *tmp
     for(j=0; j<(*nc * *nr); j++) child[j] *= tmp[j];
 } 
 
-/*
- * 
-             while(loli != pa){
-                P <- getP(EL[loli], eig, g)
-                LL = moveLL2(P, LL, dat[, loli], nr, nc, k)
-                loli=anc[loli] 
-            } 
-           .Call("moveloli", as.integer(loli), as.integer(anc[loli]), eig, EL[loli], w, g, as.integer(nr), as.integer(nc), asinteger(ntips))   
- */
 
-
-// keine Fehlermeldung vielleicht fast ok. 
 SEXP moveloli(SEXP CH, SEXP PA, SEXP eig, SEXP EL, SEXP W, SEXP G, 
     SEXP NR, SEXP NC, SEXP NTIPS){
     int i, k=length(W);
