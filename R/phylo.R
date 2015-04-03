@@ -1421,7 +1421,7 @@ optimEdge <- function (tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.
     oldtree = tree
     k = length(w)    
     data = subset(data, tree$tip) 
-    loglik = pml.fit(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k)
+    loglik = pml.fit2(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k)
     start.ll <- old.ll <- loglik 
     contrast <- attr(data, "contrast")
     contrast2 <- contrast %*% eig[[2]] 
@@ -1495,7 +1495,7 @@ optimEdge <- function (tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.
         iter = iter + 1
         
         treeP$edge.length = EL[treeP$edge[,2]]
-        newll <- pml.fit(treeP, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k)
+        newll <- pml.fit2(treeP, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k)
         
         eps = ( old.ll - newll ) / newll
         if( eps <0 ) return(list(oldtree, old.ll))
@@ -3661,7 +3661,7 @@ plotBS <- function (tree, BStrees, type = "unrooted", bs.col = "black",
 }
 
 
-pml.fit <- function (tree, data, bf = rep(1/length(levels), length(levels)), 
+pml.fit2 <- function (tree, data, bf = rep(1/length(levels), length(levels)), 
                      shape = 1, k = 1, Q = rep(1, length(levels) * (length(levels) - 1)/2), 
                      levels = attr(data, "levels"), inv = 0, rate = 1, g = NULL, w = NULL, 
                      eig = NULL, INV = NULL, ll.0 = NULL, llMix = NULL, wMix = 0, ..., site=FALSE) 
@@ -3725,6 +3725,86 @@ pml.fit <- function (tree, data, bf = rep(1/length(levels), length(levels)),
     # sort(INV@i)+1L  
     ind = which(ll.0>0) # automatic in INV gespeichert
 
+    sca = .Call("rowMax", resll, length(weight), as.integer(k)) + 1   # nr statt length(weight)
+    lll = resll - sca 
+    lll <- exp(lll) 
+    lll <- (lll%*%w)
+    lll[ind] = lll[ind] + exp(log(ll.0[ind])-sca[ind])    
+    siteLik <- lll 
+    siteLik <- log(siteLik) + sca
+    # needs to change
+    if(wMix >0) siteLik <- log(exp(siteLik) * (1-wMix) + llMix )
+    loglik <- sum(weight * siteLik)
+    if(!site) return(loglik)
+    resll = exp(resll) 
+    return(list(loglik=loglik, siteLik=siteLik, resll=resll))         
+}
+
+
+pml.fit <- function (tree, data, bf = rep(1/length(levels), length(levels)), 
+                     shape = 1, k = 1, Q = rep(1, length(levels) * (length(levels) - 1)/2), 
+                     levels = attr(data, "levels"), inv = 0, rate = 1, g = NULL, w = NULL, 
+                     eig = NULL, INV = NULL, ll.0 = NULL, llMix = NULL, wMix = 0, ..., site=FALSE) 
+{
+    weight <- as.double(attr(data, "weight"))
+    nr <- as.integer(attr(data, "nr")) 
+    nc <- as.integer(attr(data, "nc"))
+    nTips <- as.integer(length(tree$tip.label)) 
+    k <- as.integer(k)
+    m = 1
+    if (is.null(eig)) 
+        eig = edQt(bf = bf, Q = Q)
+    if (is.null(w)) {
+        w = rep(1/k, k)
+        if (inv > 0) 
+            w <- (1 - inv) * w
+        if (wMix > 0) 
+            w <- (1 - wMix) * w           
+    }
+    if (is.null(g)) {
+        g = discrete.gamma(shape, k)
+        if (inv > 0) 
+            g <- g/(1 - inv)
+        g <- g * rate     
+    } 
+    #    inv0 <- inv
+    if(any(g<.gEps)){
+        for(i in 1:length(g)){
+            if(g[i]<.gEps){
+                inv <- inv+w[i]
+            }
+        }
+        w <- w[g>.gEps]
+        g <- g[g>.gEps]
+        #        kmax <- k
+        k <- length(w)
+    }
+    if (is.null(INV)) 
+        INV <- Matrix(lli(data, tree), sparse=TRUE)
+    if (is.null(ll.0)){ 
+        ll.0 <- numeric(attr(data,"nr"))    
+    }
+    if(inv>0)
+        ll.0 <- as.matrix(INV %*% (bf * inv))              
+    if (wMix > 0)
+        ll.0 <- ll.0 + llMix           
+    
+    node <- tree$edge[, 1]
+    edge <- tree$edge[, 2]
+    root <- as.integer(node[length(node)])     
+    el <- as.double(tree$edge.length)
+    node = as.integer(node - nTips - 1L) #    min(node))
+    edge = as.integer(edge - 1L)
+    
+    contrast = attr(data, "contrast")
+    nco = as.integer(dim(contrast)[1])    
+    # dlist=data, nr, nc, weight, k ausserhalb definieren  
+    # pmlPart einbeziehen 
+    resll <- .Call("PML0", dlist=data, el, as.double(w), as.double(g), nr, nc, k, eig, as.double(bf), node, edge, nTips, root, nco, contrast, N=as.integer(length(edge))) 
+    
+    # sort(INV@i)+1L  
+    ind = which(ll.0>0) # automatic in INV gespeichert
+    
     sca = .Call("rowMax", resll, length(weight), as.integer(k)) + 1   # nr statt length(weight)
     lll = resll - sca 
     lll <- exp(lll) 

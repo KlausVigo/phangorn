@@ -6,7 +6,7 @@
 
 
 # if g[i] is smaller .gEps inv is increased w[i]
-.gEps <- 1e-15
+.gEps <- 1e-30
 
 
 # .onLoad  <- function(libname, pkgname) {
