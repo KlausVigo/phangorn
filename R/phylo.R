@@ -1765,6 +1765,25 @@ makePart <- function(fit, weight=~index+genes){
 }
 
 
+multiphyDat2pmlPart <- function(x, rooted=FALSE, ...){
+    fun <-  function(x, ...){
+        dm <- dist.ml(x)
+        if(!rooted) tree <- NJ(dm)
+        else tree <- upgma(dm)
+        fit <- pml(tree, x, ...)
+    }
+    fits <- lapply(x@dna, fun, ...)
+    fits
+}
+
+
+pmlPart2multiPhylo <- function(obj){
+    res <- lapply(obj$fits, FUN=function(x)x$tree)
+    class(res) <- "multiPhylo"
+    res
+}
+
+
 pmlPart <- function (formula, object, control=pml.control(epsilon=1e-8, maxit=10, trace=1), model=NULL, rooted=FALSE, ...) 
 {
     call <- match.call()
@@ -1789,6 +1808,7 @@ pmlPart <- function (formula, object, control=pml.control(epsilon=1e-8, maxit=10
     if(class(object)=="pml") fits <- makePart(object, ...)   
     if(class(object)=="pmlPart") fits <- object$fits
     if(class(object)=="list") fits <- object
+    if(class(object)=="multiphyDat") fits <- multiphyDat2pmlPart(object, rooted=rooted, ...)
 
     trace = control$trace
     epsilon = control$epsilon
