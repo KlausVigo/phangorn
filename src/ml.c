@@ -475,7 +475,7 @@ void moveLL5(double *LL, double *child, double *P, int *nr, int *nc, double *tmp
 SEXP moveloli(SEXP CH, SEXP PA, SEXP eig, SEXP EL, SEXP W, SEXP G, 
     SEXP NR, SEXP NC, SEXP NTIPS){
     int i, k=length(W);
-    int nc=INTEGER(NC)[0], nr=INTEGER(NR)[0], ntips=INTEGER(NTIPS)[0], j; //, blub
+    int nc=INTEGER(NC)[0], nr=INTEGER(NR)[0], ntips=INTEGER(NTIPS)[0]; //, blub
     int pa=INTEGER(PA)[0], ch=INTEGER(CH)[0];
     double  *g=REAL(G); //*w=REAL(W),
     double el=REAL(EL)[0];
@@ -575,8 +575,8 @@ SEXP getPrep2(SEXP dad, SEXP child, SEXP contrast, SEXP evi, SEXP nr, SEXP nc, S
 // works
 SEXP moveDad(SEXP dlist, SEXP PA, SEXP CH, SEXP eig, SEXP EVI, SEXP EL, SEXP W, SEXP G, SEXP NR,
     SEXP NC, SEXP NTIPS, SEXP CONTRAST, SEXP CONTRAST2, SEXP NCO){
-    int i, k=length(W), j;
-    int nc=INTEGER(NC)[0], nr=INTEGER(NR)[0], ntips=INTEGER(NTIPS)[0]; //, j, blub
+    int i, k=length(W);
+    int nc=INTEGER(NC)[0], nr=INTEGER(NR)[0], ntips=INTEGER(NTIPS)[0]; 
     int pa=INTEGER(PA)[0], ch=INTEGER(CH)[0], nco =INTEGER(NCO)[0];
     double  *g=REAL(G), *evi=REAL(EVI), *contrast=REAL(CONTRAST), *contrast2=REAL(CONTRAST2); //*w=REAL(W),
     double el=REAL(EL)[0];
@@ -633,7 +633,7 @@ void goUp(double *dad, int *child, double *contrast, double *P, int nr, int nc, 
 SEXP updateLL(SEXP dlist, SEXP PA, SEXP CH, SEXP eig, SEXP EL, SEXP W, SEXP G, SEXP NR,
     SEXP NC, SEXP NTIPS, SEXP CONTRAST, SEXP NCO){
 //    SEXP RESULTS, X;     
-    int i, k=length(W), j;
+    int i, k=length(W);
     int nc=INTEGER(NC)[0], nr=INTEGER(NR)[0], ntips=INTEGER(NTIPS)[0]; //, j, blub
     int pa=INTEGER(PA)[0], ch=INTEGER(CH)[0], nco =INTEGER(NCO)[0];
     double  *g=REAL(G), *contrast=REAL(CONTRAST); //*w=REAL(W),
