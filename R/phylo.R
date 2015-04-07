@@ -1749,19 +1749,26 @@ optimPartEdge <- function (object, ...)
 }
 
 
-makePart <- function(fit, weight=~index+genes){
+makePart <- function(fit, rooted, weight=~index+genes){
+    if(class(fit)=="phyDat"){
+        x <- fit
+        dm <- dist.ml(x)
+        if(!rooted) tree <- NJ(dm)
+        else tree <- upgma(dm)
+        fit <- pml(tree, x, k=4)
+    }     
     dat <- fit$data 
     if(class(weight)[1]=="formula")     
         weight <- xtabs(weight, data=attr(dat, "index"))
     fits <- NULL 
     for(i in 1:dim(weight)[2]){ 
-       ind <- which(weight[,i] > 0)
-       dat2 <- getRows(dat, ind)
-       attr(dat2, "weight") <- weight[ind,i]
-       fits[[i]] <- update(fit, data = dat2)
+        ind <- which(weight[,i] > 0)
+        dat2 <- getRows(dat, ind)
+        attr(dat2, "weight") <- weight[ind,i]
+        fits[[i]] <- update(fit, data = dat2)
     }
     names(fits) = colnames(fits)
-    fits
+    fits    
 }
 
 
@@ -1777,8 +1784,8 @@ multiphyDat2pmlPart <- function(x, rooted=FALSE, ...){
 }
 
 
-pmlPart2multiPhylo <- function(obj){
-    res <- lapply(obj$fits, FUN=function(x)x$tree)
+pmlPart2multiPhylo <- function(x){
+    res <- lapply(x$fits, FUN=function(x)x$tree)
     class(res) <- "multiPhylo"
     res
 }
@@ -1805,10 +1812,15 @@ pmlPart <- function (formula, object, control=pml.control(epsilon=1e-8, maxit=10
     PartEdge <- !is.na(optPart[6])
     PartRate <- !is.na(optPart[7])
  
-    if(class(object)=="pml") fits <- makePart(object, ...)   
+    if(class(object)=="multiphyDat"){
+        if(AllNNI || AllEdge) object <- do.call(cbind.phyDat, object@dna)
+        else fits <- multiphyDat2pmlPart(object, rooted=rooted, ...)
+    } 
+    if(class(object)=="pml") fits <- makePart(object, rooted=rooted, ...) 
+    if(class(object)=="phyDat") fits <- makePart(object, rooted=rooted, ...)
     if(class(object)=="pmlPart") fits <- object$fits
     if(class(object)=="list") fits <- object
-    if(class(object)=="multiphyDat") fits <- multiphyDat2pmlPart(object, rooted=rooted, ...)
+
 
     trace = control$trace
     epsilon = control$epsilon
