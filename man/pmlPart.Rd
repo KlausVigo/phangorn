@@ -19,6 +19,7 @@ pmlPart2multiPhylo(x)
   \item{model}{A vector containing the models containing a model for each partition.} 
   \item{rooted}{Are the gene trees rooted (ultrametric) or unrooted.} 
   \item{\dots}{Further arguments passed to or from other methods. }
+  \item{x}{an object of class \code{pmlPart} }
 }
 \details{
     The \code{formula} object allows to specify which parameter get     
