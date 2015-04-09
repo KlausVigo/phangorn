@@ -1791,6 +1791,11 @@ pmlPart2multiPhylo <- function(x){
 }
 
 
+plot.pmlPart<- function(x, ...){
+    plot(pmlPart2multiPhylo(x), ...)
+}
+
+
 pmlPart <- function (formula, object, control=pml.control(epsilon=1e-8, maxit=10, trace=1), model=NULL, rooted=FALSE, ...) 
 {
     call <- match.call()
