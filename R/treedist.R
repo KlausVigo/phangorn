@@ -232,7 +232,7 @@ mRF<-function(trees){
 }
 
 
-RF.dist <- function (tree1, tree2=NULL, check.labels = TRUE)
+RF.dist <- function (tree1, tree2=NULL, check.labels = TRUE, rooted=FALSE)
 {
     if(class(tree1)=="multiPhylo" && is.null(tree2))return(mRF(tree1)) 
     if(class(tree1)=="phylo" && class(tree2)=="multiPhylo")return(mRF2(tree1, tree2, check.labels))
@@ -241,7 +241,12 @@ RF.dist <- function (tree1, tree2=NULL, check.labels = TRUE)
     r2 = is.rooted(tree2)
     if(r1 != r2){
         warning("one tree is unrooted, unrooted both")
+    }  
+    if(!rooted){
+        if(r1) tree1<-unroot(tree1)
+        if(r2) tree2<-unroot(tree2)
     }
+    
     if (check.labels) {
         ind <- match(tree1$tip.label, tree2$tip.label)
         if (any(is.na(ind)) | length(tree1$tip.label) !=
@@ -256,18 +261,15 @@ RF.dist <- function (tree1, tree2=NULL, check.labels = TRUE)
     if(!r1 | !r2){
         if(r1) tree1 = unroot(tree1)
         if(r2) tree2 = unroot(tree2)
-#        ref1 <- Ancestors(tree1, 1, "parent")
-#        tree1 <- reroot(tree1, ref1)
-#        ref2 <- Ancestors(tree2, 1, "parent")
-#        tree2 <- reroot(tree2, ref2)
     }
     if(!is.binary.tree(tree1) | !is.binary.tree(tree2))warning("Trees are not binary!")
     bp1 = bipart(tree1)
     bp2 = bipart(tree2)
-
-    bp1 <- SHORTwise(bp1, length(tree1$tip))
-    bp2 <- SHORTwise(bp2, length(tree2$tip))    
-    
+    if(!rooted){
+        bp1 <- SHORTwise(bp1, length(tree1$tip))
+        bp2 <- SHORTwise(bp2, length(tree2$tip))    
+    }
     RF = sum(match(bp1, bp2, nomatch=0L)==0L) + sum(match(bp2, bp1, nomatch=0L)==0L)
     RF
 }
+
