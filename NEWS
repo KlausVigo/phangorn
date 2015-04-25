@@ -1,3 +1,17 @@
+     CHANGES in PHANGORN VERSION 1.99-14
+
+BUG FIXES
+
+    o as.splits.networx did not wor properly for 4 taxa 
+
+      (reported by Laurélène Faye)
+
+    o RF.dist returned sometimes wrong values
+
+      (reported by Andres Dajles)
+
+
+
      CHANGES in PHANGORN VERSION 1.99-13
 
 OTHER CHANGES

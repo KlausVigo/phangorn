@@ -8,7 +8,7 @@
 }
 \usage{
 treedist(tree1, tree2, check.labels = TRUE)
-RF.dist(tree1, tree2=NULL, check.labels=TRUE)
+RF.dist(tree1, tree2=NULL, check.labels=TRUE, rooted=FALSE)
 }
 \arguments{
   \item{tree1}{ A phylogenetic tree (class \code{phylo})
