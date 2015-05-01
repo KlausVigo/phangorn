@@ -328,7 +328,20 @@ as.phyDat.alignment <- function (x, type="DNA",...)
 }
 
 
-as.alignment.phyDat <- function(x, ...) as.alignment(as.character(x))
+#as.alignment.phyDat <- function(x, ...) as.alignment(as.character(x))
+
+phyDat2alignment <-  function(x){
+    z = as.character(x)
+    nam = rownames(z)
+    type = attr(x, "type")
+    seq <- switch(type, 
+                  DNA = tolower(apply(z, 1, paste, collapse="")), 
+                  AA = toupper(apply(z, 1, paste, collapse="")))                     
+    names(seq) <- NULL
+    res <- list(nb=length(seq), nam=nam, seq=seq, com=NA)
+    class(res) = "alignment"
+    res
+}
 
 
 as.phyDat.matrix <- function (x, ...) phyDat(data=x, ...)

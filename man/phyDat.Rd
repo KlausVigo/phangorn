@@ -1,6 +1,7 @@
 \name{phyDat}
 \alias{phyDat}
 \alias{as.phyDat.DNAbin}
+\alias{as.phyDat.alignment}
 \alias{as.data.frame.phyDat}
 \alias{as.character.phyDat}
 \alias{as.DNAbin.phyDat}
@@ -13,6 +14,7 @@
 \alias{baseFreq}
 \alias{cbind.phyDat}
 \alias{c.phyDat}
+\alias{phyDat2alignment}
 \title{Conversion among Sequence Formats}
 \description{
 These functions transform several DNA formats into the \code{phyDat} format. 
@@ -23,10 +25,12 @@ phyDat(data, type = "DNA", levels = NULL, return.index=TRUE, ...)
 read.phyDat(file, format="phylip", type="DNA", ...)
 write.phyDat(x, file, format="phylip",...)
 \method{as.phyDat}{DNAbin}(x, ...)
+\method{as.phyDat}{alignment}(x, type="DNA", ...)
 \method{as.character}{phyDat}(x, allLevels = TRUE, ...)
 \method{as.data.frame}{phyDat}(x, ...)
 \method{as.DNAbin}{phyDat}(x, ...)
 \method{subset}{phyDat}(x, subset, select, site.pattern = TRUE, ...)
+phyDat2alignment(x)
 allSitePattern(n, levels=c("a","c","g","t"), names=NULL)
 acgt2ry(obj)
 baseFreq(obj, freq=FALSE, drop.unused.levels=FALSE)

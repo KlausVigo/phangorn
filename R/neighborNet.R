@@ -23,6 +23,7 @@ cyclicSplits <- function(k, labels=NULL){
     }   
     if(is.null(labels)) labels=(as.character(1:k))
     attr(res, 'labels') =labels
+    attr(res, "cycle") = 1:k
     class(res)="splits"
     res   
 }
