@@ -10,6 +10,14 @@ BUG FIXES
 
       (reported by Andres Dajles)
 
+    o plotBS did sometimes not work if the tree had no edge lengths
+
+OTHER CHANGES
+
+    o plotBS got an additional argument p to plot only support values
+
+      greater than p 
+
 
 
      CHANGES in PHANGORN VERSION 1.99-13

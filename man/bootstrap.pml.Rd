@@ -11,7 +11,7 @@ Bootstrap }
 \usage{
 bootstrap.pml(x, bs = 100, trees = TRUE, multicore=FALSE, ...)
 bootstrap.phyDat(x, FUN, bs = 100, mc.cores = 1L, ...)
-plotBS(tree, BStrees, type="unrooted", bs.col="black", bs.adj=NULL, ...)
+plotBS(tree, BStrees, type="unrooted", bs.col="black", bs.adj=NULL, p=80, ...)
 }
 \arguments{
   \item{x}{
@@ -49,6 +49,9 @@ color of bootstrap support labels.
 }
   \item{bs.adj}{ 
 one or two numeric values specifying the horizontal and vertical justification of the bootstrap labels.
+}
+  \item{p}{ 
+only plot support values higher than this percentage number (default is 80).
 }
 }
 \details{
