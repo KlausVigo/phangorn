@@ -2,7 +2,7 @@
 
 BUG FIXES
 
-    o as.splits.networx did not wor properly for 4 taxa 
+    o as.splits.networx did not work properly for 4 taxa 
 
       (reported by Laurélène Faye)
 
@@ -11,6 +11,8 @@ BUG FIXES
       (reported by Andres Dajles)
 
     o plotBS did sometimes not work if the tree had no edge lengths
+
+    o plot.networx did ignore cex argument in "2D" plots
 
 OTHER CHANGES
 

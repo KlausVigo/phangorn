@@ -1063,7 +1063,7 @@ plot2D <- function(coords, net, show.tip.label=TRUE,
    yy = coords[,2]
    nTips = length(label)
 
-   cex=1
+#   cex=1
    
    xlim <- range(xx)
    ylim <- range(yy)
