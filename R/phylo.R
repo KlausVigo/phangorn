@@ -1392,6 +1392,80 @@ optimEdge <- function (tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.
         tree <- reorder(tree, "postorder") 
     nTips <- length(tree$tip)
     el <- tree$edge.length
+    tree$edge.length[el < 1e-08] <- 1e-08
+    oldtree = tree
+    k = length(w)    
+    data = subset(data, tree$tip) 
+    loglik = pml.fit2(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k)
+    start.ll <- old.ll <- loglik 
+    contrast <- attr(data, "contrast")
+    contrast2 <- contrast %*% eig[[2]] 
+    evi = (t(eig[[3]]) * bf)
+    weight <- attr(data, "weight")
+    eps = 1
+    iter = 0
+    
+    treeP = tree
+    tree = reorder(tree)
+    
+    child = tree$edge[, 2]
+    parent = tree$edge[, 1]
+    #    loli = parent[1]
+    
+    pvec <- integer(max(tree$edge))
+    pvec[child] <- parent
+    
+    EL = numeric(max(child))
+    EL[child] = tree$edge.length
+    
+    nTips = min(parent) - 1
+    n = length(tree$edge.length)  
+    lt = length(tree$tip)
+    
+    nr = as.integer(length(weight))
+    nc = as.integer(length(bf))
+    nco = as.integer(nrow(contrast))
+    eve = eig[[2]]
+    lg = k
+    rootNode = getRoot(tree)         
+    ScaleEPS = 1.0/4294967296.0
+    anc = Ancestors(tree, 1:max(tree$edge), "parent")  
+    anc0 = as.integer(c(0L, anc))
+    
+    while (eps > control$eps && iter < control$maxit) {
+        blub3 <- .Call("extractScale", as.integer(rootNode), w, g, as.integer(nr), as.integer(nc), as.integer(nTips))
+        rowM = apply(blub3, 1, min)       
+        blub3 = (blub3-rowM) 
+        blub3 = ScaleEPS ^ (blub3) 
+        # , as.integer(loli)
+        EL <- .Call("optE", as.integer(parent), as.integer(child), 
+                    as.integer(anc0), eig, evi, EL, w, g, as.integer(nr), as.integer(nc), 
+                    as.integer(nTips), as.double(contrast), 
+                    as.double(contrast2), nco, blub3, data, as.double(weight), as.double(ll.0))       
+        iter = iter + 1
+        tree$edge.length = EL[tree$edge[,2]]
+        treeP$edge.length = EL[treeP$edge[,2]]
+        newll <- pml.fit2(treeP, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k)
+        
+        eps = ( old.ll - newll ) / newll
+        if( eps <0 ) return(list(oldtree, old.ll))
+        oldtree = tree
+        if(control$trace>1) cat(old.ll, " -> ", newll, "\n") 
+        old.ll = newll
+        #        loli = parent[1] 
+    }
+    if(control$trace>0) cat(start.ll, " -> ", newll, "\n")
+    list(tree=treeP, logLik=newll, c(eps, iter))
+}
+
+
+optimEdgeOld <- function (tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0,
+                        control = pml.control(epsilon = 1e-08, maxit = 10, trace=0), ...) 
+{
+    if (is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise") 
+        tree <- reorder(tree, "postorder") 
+    nTips <- length(tree$tip)
+    el <- tree$edge.length
     tree$edge.length[el < 0] <- 1e-08
     oldtree = tree
     k = length(w)    

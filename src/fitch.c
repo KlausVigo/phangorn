@@ -31,31 +31,6 @@ void fitch_init(int *data, int *m, int *n, double *weights, int *nr)
 }
 
 
-SEXP getData(SEXP n, SEXP k){
-    int i, m=INTEGER(n)[0], l=INTEGER(k)[0];  
-    SEXP DAT, DAT2, RESULT;
-    PROTECT(RESULT = allocVector(VECSXP, 2L));
-    PROTECT(DAT = allocMatrix(INTSXP, m, l));
-    PROTECT(DAT2 = allocMatrix(INTSXP, m, l)); 
-    for(i=0; i< m*l; i++) INTEGER(DAT)[i] = data1[i];
-    for(i=0; i< m*l; i++) INTEGER(DAT2)[i] = data2[i];
-    SET_VECTOR_ELT(RESULT, 0, DAT);
-    SET_VECTOR_ELT(RESULT, 1, DAT2);
-    UNPROTECT(3);
-    return(RESULT); 
-}
-
-
-SEXP getWeight(SEXP n){
-    int i, m=INTEGER(n)[0];  
-    SEXP RESULT;
-    PROTECT(RESULT = allocVector(REALSXP, m));
-    for(i=0; i<m; i++) REAL(RESULT)[i] = weight[i];
-    UNPROTECT(1);
-    return(RESULT); 
-}
-
-
 int bitcount(int x){ 
     int count;
     for (count=0; x != 0; x>>=1)
@@ -389,13 +364,6 @@ void fitchN(int *dat1, int *dat2, int *nr){
     } 
 }
 
-// raus
-void fitchN2(int *res, int *dat, int *node, int *edge, int *nr, int *nl) { 
-    int i;
-    for (i=0; i< *nl; i++) {
-        fitchN(&res[(node[i]-1L) * (*nr)], &dat[(edge[i]-1L) * (*nr)], nr);              
-    }
-}
 
 // MPR reconstruction nicht immer gleiches ergebnis
 void fitchTriplet(int *res, int *dat1, int *dat2, int *dat3, int *nr) 
@@ -673,13 +641,11 @@ SEXP FNALL5(SEXP nrx, SEXP node, SEXP edge, SEXP l, SEXP mx, SEXP my, SEXP root)
     edge2 = (int *) R_alloc(2L * *n, sizeof(int));
     node2 = (int *) R_alloc(2L * *n, sizeof(int));
     pc = (int *) R_alloc(2L * *n, sizeof(int));
-    
-//    pars = (int *) R_alloc(*nr, sizeof(int)); // raus     
+      
     pvtmp2 = (double *) R_alloc(m, sizeof(double));
-    
-    PROTECT(pvec = allocVector(REALSXP, m));
-    
+    PROTECT(pvec = allocVector(REALSXP, m));    
     pvtmp = REAL(pvec);
+    
     for(i=0; i<m; i++){
         pvtmp[i] = 0.0;
         pvtmp2[i] = 0.0;
@@ -717,7 +683,7 @@ void fitchquartet(int *dat1, int *dat2, int *dat3, int *dat4, int *nr, double *w
     }
 }
 
-// weight raus  double *weight,
+// weight raus 
 void fitchQuartet(int *index, int *n, int *nr, double *psc1, double *psc2, double *weight, double *res){
     int i, e1, e2, e3, e4;
     for(i=0; i<*n; i++){ 

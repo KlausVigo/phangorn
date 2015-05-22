@@ -172,7 +172,7 @@ fitch.spr <- function(tree, data){
   tree
 }
 
-# raus 
+# raus oder richten
 fitch.spr2 <- function(tree, data){
     nTips = as.integer(length(tree$tip))
     nr = attr(data, "nr")
