@@ -783,7 +783,6 @@ pml.nni <- function (tree, data, w, g, eig, bf, ll.0, ll, ...)
     INDEX <-  indexNNI(tree)
     rootEdges <- attr(INDEX,"root")
     .dat <- NULL
-
     data = getCols(data, tree$tip)
 
     parent = tree$edge[,1]
