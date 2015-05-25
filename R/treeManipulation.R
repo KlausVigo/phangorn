@@ -1040,6 +1040,7 @@ Siblings = function (x, node, include.self = FALSE)
         root <- as.integer(parents[!match(parents, child, 0)][1])
         res = vector("list", l)
         ch = allChildren(x)
+        if(include.self) return(ch[ pvector[node] ])
         k = 1
         for(i in node){
             if(i != root){
