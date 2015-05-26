@@ -7,14 +7,16 @@ importFrom(ape, as.DNAbin, as.phylo, plot.phylo, as.prop.part, nj,old2new.phylo,
     node.depth.edgelength, drop.tip, stree, rtree, is.ultrametric, .PlotPhyloEnv,
     nodelabels, edgelabels, BOTHlabels, read.nexus.data, write.nexus.data, 
     read.dna, write.dna, reorder.phylo, dist.nodes, collapse.singles, rotate)
-importFrom(Matrix, Matrix, sparseMatrix, spMatrix, crossprod, solve)
 importFrom(igraph, graph, graph.adjacency, layout.kamada.kawai, plot.igraph,
     get.shortest.paths, set.edge.attribute, vcount, graph.edgelist, topological.sort) 
-importFrom(stats, AIC, logLik, reorder) 
+importFrom(Matrix, Matrix, sparseMatrix, spMatrix, crossprod, solve)
 #importFrom(fastmatch, fmatch)
-#importFrom(rgl, open3d, segments3d, spheres3d, rgl.texts)
-importFrom(parallel, mclapply)
 importFrom(nnls, nnls)
+importFrom(parallel, mclapply)
+importFrom(quadprog, solve.QP, solve.QP.compact)
+#importFrom(rgl, open3d, segments3d, spheres3d, rgl.texts)
+#importFrom(Rcpp, evalCpp)
+importFrom(stats, AIC, logLik, reorder) 
 
 export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UNJ, PNJ, 
     phyDat, cbind.phyDat, read.phyDat, write.phyDat, as.Matrix, as.phyDat, as.splits, as.networx,
@@ -30,12 +32,13 @@ export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UN
     bab, random.addition, diversity, baseFreq, densiTree, superTree, coalSpeciesTree, 
     pml.fit, pml.init, pml.free, edQt, lli, cladePar, addConfidences, countCycles, 
     SOWH.test, plot.networx, presenceAbsence, as.networx.splits, addTrivialSplits,
-    phyDat2alignment)
+    phyDat2alignment, AICc)
 
 S3method('[', splits)          
 S3method(addConfidences, phylo)
 S3method(addConfidences, splits)
 S3method(addConfidences, networx)
+S3method(AICc, pml)
 S3method(as.character, phyDat)
 S3method(as.data.frame, phyDat)
 S3method(anova, pml)
