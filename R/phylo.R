@@ -488,13 +488,18 @@ logLik.pml <- function(object,...){
 }
 
 
-AICc.pml <- function(x){
-    n = sum(x$weight)
-    k = x$df
+AICc <- function (object, ...) 
+    UseMethod("AICc")
+
+
+AICc.pml <- function(object, ...){
+    n = sum(object$weight)
+    k = object$df
     if(k>=(n-1))return(NULL)    
-    res = AIC(x)
+    res = AIC(object)
     res + (2*k^2 + 2)/(n-k-1)    
 }
+
 
 anova.pml <- function (object, ...) 
 {
