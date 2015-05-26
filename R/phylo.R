@@ -283,7 +283,7 @@ subsChoice <- function(type=c("JC", "F81", "K80", "HKY", "TrNe", "TrN", "TPM1", 
 modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80", 
     "HKY", "SYM", "GTR"), G = TRUE, I = TRUE, k = 4, control = pml.control(epsilon = 1e-08, 
     maxit = 3, trace = 1), multicore = FALSE) 
-{	
+{    
     if (class(object) == "phyDat") 
         data = object
     if (class(object) == "pml") {
@@ -291,18 +291,17 @@ modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80",
         if (is.null(tree)) 
             tree = object$tree
     }
-
+    
     if(attr(data, "type")=="DNA") type = c("JC", "F81", "K80", "HKY", "TrNe", "TrN", "TPM1", 
-        "K81", "TPM1u", "TPM2", "TPM2u", "TPM3", "TPM3u", "TIM1e", 
-        "TIM1", "TIM2e", "TIM2", "TIM3e", "TIM3", "TVMe", "TVM", 
-        "SYM", "GTR")
-    if(attr(data, "type")=="AA") type = .aamodels
-#        type = c("WAG", "JTT", "Dayhoff", "LG", "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24")    
+            "K81", "TPM1u", "TPM2", "TPM2u", "TPM3", "TPM3u", "TIM1e", 
+            "TIM1", "TIM2e", "TIM2", "TIM3e", "TIM3", "TVMe", "TVM", 
+            "SYM", "GTR")
+    if(attr(data, "type")=="AA") type = .aamodels   
     model = match.arg(model, type, TRUE)
-
+    
     env = new.env()
     assign("data", data, envir=env)
-
+    
     if (is.null(tree)) 
         tree = NJ(dist.hamming(data))
     trace <- control$trace
@@ -314,10 +313,10 @@ modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80",
     nseq = sum(attr(data, "weight"))
     fitPar = function(model, fit, G, I, k) {
         m = 1
-        res = matrix(NA, n, 5)
+        res = matrix(NA, n, 6)
         res = as.data.frame(res)
-        colnames(res) = c("Model", "df", "logLik", "AIC", "BIC")
-        data.frame(c("Model", "df", "logLik", "AIC", "BIC"))
+        colnames(res) = c("Model", "df", "logLik", "AIC", "AICc", "BIC")
+        data.frame(c("Model", "df", "logLik", "AIC", "AICc", "BIC"))
         calls = vector("list", n)
         trees = vector("list", n)
         fittmp = optim.pml(fit, model = model, control = control)
@@ -325,20 +324,22 @@ modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80",
         res[m, 2] = fittmp$df
         res[m, 3] = fittmp$logLik
         res[m, 4] = AIC(fittmp)
-        res[m, 5] = AIC(fittmp, k = log(nseq))
+        res[m, 5] = AICc(fittmp)
+        res[m, 6] = AIC(fittmp, k = log(nseq))
         calls[[m]] = fittmp$call
-
+        
         trees[[m]] = fittmp$tree
         m = m + 1
         if (I) {
             if(trace>0)print(paste(model, "+I", sep = ""))
             fitI = optim.pml(fittmp, model = model, optInv = TRUE, 
-                control = control)
+                             control = control)
             res[m, 1] = paste(model, "+I", sep = "")
             res[m, 2] = fitI$df
             res[m, 3] = fitI$logLik
             res[m, 4] = AIC(fitI)
-            res[m, 5] = AIC(fitI, k = log(nseq))
+            res[m, 5] = AICc(fitI)
+            res[m, 6] = AIC(fitI, k = log(nseq))
             calls[[m]] = fitI$call
             trees[[m]] = fitI$tree
             m = m + 1
@@ -347,12 +348,13 @@ modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80",
             if(trace>0)print(paste(model, "+G", sep = ""))
             fitG = update(fittmp, k = k)
             fitG = optim.pml(fitG, model = model, optGamma = TRUE, 
-                control = control)
+                             control = control)
             res[m, 1] = paste(model, "+G", sep = "")
             res[m, 2] = fitG$df
             res[m, 3] = fitG$logLik
             res[m, 4] = AIC(fitG)
-            res[m, 5] = AIC(fitG, k = log(nseq))
+            res[m, 5] = AICc(fitG)
+            res[m, 6] = AIC(fitG, k = log(nseq))
             calls[[m]] = fitG$call
             trees[[m]] = fitG$tree
             m = m + 1
@@ -360,12 +362,13 @@ modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80",
         if (G & I) {
             if(trace>0)print(paste(model, "+G+I", sep = ""))
             fitGI = optim.pml(fitG, model = model, optGamma = TRUE, 
-                optInv = TRUE, control = control)
+                              optInv = TRUE, control = control)
             res[m, 1] = paste(model, "+G+I", sep = "")
             res[m, 2] = fitGI$df
             res[m, 3] = fitGI$logLik
             res[m, 4] = AIC(fitGI)
-            res[m, 5] = AIC(fitGI, k = log(nseq))
+            res[m, 5] = AICc(fitGI)
+            res[m, 6] = AIC(fitGI, k = log(nseq))
             calls[[m]] = fitGI$call
             trees[[m]] = fitGI$tree
             m = m + 1
@@ -374,7 +377,7 @@ modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80",
     }
     eval.success <- FALSE
     if (!eval.success & multicore) {
-# !require(parallel) ||         
+        # !require(parallel) ||         
         if (.Platform$GUI != "X11") {
             warning("package 'parallel' not found or GUI is used, \n      analysis is performed in serial")
         }
@@ -385,10 +388,10 @@ modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80",
     }
     if (!eval.success) 
         res <- RES <- lapply(model, fitPar, fit, G, I, k)
-
-    RESULT = matrix(NA, n * l, 5)
+    
+    RESULT = matrix(NA, n * l, 6)
     RESULT = as.data.frame(RESULT)
-    colnames(RESULT) = c("Model", "df", "logLik", "AIC", "BIC")
+    colnames(RESULT) = c("Model", "df", "logLik", "AIC", "AICc", "BIC")
     for (i in 1:l) RESULT[((i - 1) * n + 1):(n * i), ] = RES[[i]][[1]]
     for(i in 1:l){
         for(j in 1:n){
@@ -398,7 +401,7 @@ modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80",
             tmpmod["tree"] = call(tname)
             if(!is.null(tmpmod[["k"]]))tmpmod["k"] = k
             if(attr(data, "type")=="AA") tmpmod["model"] = RES[[i]][[1]][1,1]          
-    	    assign(tname, RES[[i]][[2]][[j]], envir=env)
+            assign(tname, RES[[i]][[2]][[j]], envir=env)
             assign(mo, tmpmod, envir=env) 
         }
     }
