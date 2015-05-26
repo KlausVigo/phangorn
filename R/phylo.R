@@ -500,7 +500,7 @@ AICc.pml <- function(object, ...){
     k = object$df
     if(k>=(n-1))return(NULL)    
     res = AIC(object)
-    res + (2*k^2 + 2)/(n-k-1)    
+    res +   (2*k*(k+1))/(n-k-1)    
 }
 
 

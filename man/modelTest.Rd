@@ -1,5 +1,6 @@
 \name{modelTest}
 \alias{modelTest}
+\alias{AICc}
 \title{
 ModelTest
 }
@@ -29,10 +30,12 @@ This is only possible without GUI interface and under linux.
 Only nucleotide models are tested so far.  
 }
 \value{
-A data.frame containing the log-likelihood, AIC and BIC all tested models. 
+A data.frame containing the log-likelihood, AIC, AICc and BIC all tested models. 
 The data.frame has an attributes "env" which is an environment which contains all the trees, the data and the calls to allow get the estimated models, e.g. as a starting point for further analysis (see example).
 }
 \references{
+Burnham, K. P. and Anderson, D. R (2002)  \emph{Model selection and multimodel inference: a practical information-theoretic approach}. 2nd ed. Springer, New York
+
 Posada, D. and Crandall, K.A. (1998) MODELTEST: testing the model of DNA substitution. \emph{Bioinformatics} \bold{14(9)}: 817-818
 
 Posada, D. (2008) jModelTest: Phylogenetic Model Averaging. \emph{Molecular Biology and Evolution} \bold{25}: 1253-1256
