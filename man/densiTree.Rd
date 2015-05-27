@@ -50,6 +50,9 @@ Trees should be rooted, other wise the output may not make sense.
 }
 \references{
 densiTree is inspired from the great \href{www.cs.auckland.ac.nz/~remco/DensiTree}{DensiTree} program of Remco Bouckaert. 
+
+Remco R. Bouckaert (2010) DensiTree: making sense of sets of phylogenetic trees
+\emph{Bioinformatics}, \bold{26 (10)}, 1372-1373. 
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}
