@@ -337,7 +337,6 @@ compatible3 <- function(x, y=NULL)
     ylabels = attr(y, "labels")
     if(identical(xlabels, ylabels)) labels = xlabels 
     else labels = intersect(xlabels, ylabels)
-#    if(length(labels) maybe warning
     nx = length(x)
     ny = length(y)   
     bp1 = as.matrix(x)[,labels, drop=FALSE]
@@ -1301,7 +1300,6 @@ read.nexus.splits <- function(file)
         tmp = X[i]
         tmp = sub("\\s+", "", tmp) 
         tmp = strsplit(tmp, "\t")[[1]]
-        if(length(tmp)!=(mformat+1)) warning("blub")
         if(flab)labels[j] = as.numeric(tmp[ind[1]])        
         if(fwei)weights[j] = as.numeric(tmp[ind[2]])
         if(fcon)confidences[j] = as.numeric(tmp[ind[3]])

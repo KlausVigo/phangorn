@@ -1092,7 +1092,7 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     k = object$k
     if(k==1 & optGamma){
         optGamma = FALSE
-        warning('only one rate class, ignored optGamma')
+        message('only one rate class, ignored optGamma')
     }
     shape = object$shape
     w = object$w
@@ -2074,7 +2074,7 @@ designUltra <- function (tree, sparse=FALSE)
 nnls.tree <- function(dm, tree, rooted=FALSE, trace=1){
     if(is.rooted(tree) & rooted==FALSE){
         tree = unroot(tree)
-        warning("tree was rooted, I unrooted the tree!")
+        message("tree was rooted, I unrooted the tree!")
     }
     tree = reorder(tree, "postorder")
     dm = as.matrix(dm)
@@ -3933,7 +3933,7 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
         tree <- reorder(tree, "postorder")
     if(any(tree$edge.length < 0)) {
         tree$edge.length[tree$edge.length < 0] <- 1e-08
-        warning("negative edges length changed to 0!")
+        message("negative edges length changed to 0!")
     }
     if (class(data)[1] != "phyDat") stop("data must be of class phyDat")
     if(is.null(tree$edge.length)) stop("tree must have edge weights") 
