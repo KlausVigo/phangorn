@@ -1,8 +1,11 @@
 # Sample .travis.yml for R projects from https://github.com/craigcitro/r-travis
 
 language: r
-
 sudo: required
+bioc_required: true
+
+bioc_packages:
+  - seqLogo
 
 env:
   - WARNINGS_ARE_ERRORS=false
