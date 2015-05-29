@@ -48,7 +48,7 @@ data(yeast)
 dm = dist.ml(yeast)
 fit = splitsNetwork(dm)
 net = as.networx(fit)
-plot(net)
+plot(net, "2D")
 write.nexus.splits(fit)
 }
 \keyword{ cluster }% at least one, from doc/KEYWORDS
