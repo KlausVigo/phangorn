@@ -26,11 +26,14 @@ phyDat.default <- function (data, levels = NULL, return.index = TRUE, contrast =
     if (is.matrix(data)) 
         nam = row.names(data)
     else nam = names(data)
+    if(is.null(nam))stop("data object must contain taxa names")
     if (class(data) == "DNAbin") 
         data = as.character(data)
     if (is.matrix(data)) 
         data = as.data.frame(t(data), stringsAsFactors = FALSE)
+    if (is.vector(data))data = as.data.frame(t(data), stringsAsFactors = FALSE)
     else data = as.data.frame(data, stringsAsFactors = FALSE)
+    if(length(data)==1) compress=FALSE
     if(compress){
         ddd = fast.table(data)
         data = ddd$data
@@ -38,7 +41,7 @@ phyDat.default <- function (data, levels = NULL, return.index = TRUE, contrast =
         index = ddd$index
     }
     else{
-        p = length(data[[1]])
+        p = length(data)
         weight = rep(1, p)
         index = 1:p
     }
@@ -77,8 +80,7 @@ phyDat.default <- function (data, levels = NULL, return.index = TRUE, contrast =
     index = index[is.na(aaa)] 
     index = match(index, unique(index))
     rn = as.numeric(rownames(data))
-    attr(data, "na.action") = NULL  
-        
+    attr(data, "na.action") = NULL        
     weight = weight[rn] 
     p = dim(data)[1]
     names(data) = nam
