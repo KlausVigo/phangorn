@@ -97,7 +97,7 @@ subsChoice <- function(type=c("JC", "F81", "K80", "HKY", "TrNe", "TrN", "TPM1", 
 
 modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80", 
     "HKY", "SYM", "GTR"), G = TRUE, I = TRUE, k = 4, control = pml.control(epsilon = 1e-08, 
-    maxit = 5, trace = 1), multicore = FALSE) 
+    maxit = 10, trace = 1), multicore = FALSE) 
 {    
     if (class(object) == "phyDat") 
         data = object
@@ -119,6 +119,10 @@ modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80",
     
     if (is.null(tree)) 
         tree = NJ(dist.hamming(data))
+    else{
+        tree <- nnls.phylo(tree, dist.ml(data)) 
+        # may need something faster for trees > 500 taxa  
+    }
     trace <- control$trace
     control$trace = trace - 1
     fit = pml(tree, data)

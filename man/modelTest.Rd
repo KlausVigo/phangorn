@@ -9,7 +9,7 @@ Comparison of different substition models
 }
 \usage{
 modelTest(object, tree=NULL, model = c("JC", "F81", "K80", "HKY", "SYM", "GTR"), 
-    G = TRUE, I = TRUE, k = 4, control = pml.control(epsilon = 1e-08, maxit = 5, 
+    G = TRUE, I = TRUE, k = 4, control = pml.control(epsilon = 1e-08, maxit = 10, 
     trace = 1), multicore = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
