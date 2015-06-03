@@ -119,6 +119,10 @@ modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80",
     
     if (is.null(tree)) 
         tree = NJ(dist.hamming(data))
+    else{
+        tree <- nnls.phylo(tree, dist.ml(data)) 
+        # may need something faster for trees > 500 taxa  
+    }
     trace <- control$trace
     control$trace = trace - 1
     fit = pml(tree, data)
