@@ -191,3 +191,22 @@ dist.logDet = function (x)
     return(d)
 }
 
+
+readDist <- function(file){ #, format="phylip"
+    tmp <- read.table(file, skip=1, stringsAsFactors = FALSE)
+    labels = tmp[,1]
+    dm <- as.matrix(tmp[,-1]) 
+    dimnames(dm)=list(labels, labels)    
+    as.dist(dm)
+}
+    
+    
+writeDist <- function(dm, file=""){ # , format="phylip"
+    dm <- as.matrix(dm)
+    cat(ncol(dm), "\n", file=file)
+    write.table(dm, file, append=TRUE, quote=FALSE, col.names=FALSE)
+}    
+    
+    
+
+

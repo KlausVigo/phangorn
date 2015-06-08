@@ -32,6 +32,25 @@ coph <- function(x){
 } 
 
 
+cophenetic.splits <- function(x){
+    labels <- attr(x, "labels")
+    X <- phangorn:::splits2design(x)
+    dm <- as.vector(X%*%attr(x, "weight")) 
+    attr(dm, "Size") <- length(labels)
+    attr(dm, "Labels") <- labels
+    attr(dm, "Diag") <- FALSE
+    attr(dm, "Upper") <- FALSE
+    class(dm) <- "dist"
+    dm
+}
+
+
+cophenetic.networx <- function(x){
+    spl <- attr(x, "splits")
+    cophenetic.splits(spl)
+}
+
+
 SHORTwise <- function (x, nTips, delete=FALSE) 
 {
     v <- 1:nTips

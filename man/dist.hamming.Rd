@@ -2,6 +2,8 @@
 \alias{dist.hamming}
 \alias{dist.logDet}
 \alias{dist.ml}
+\alias{readDist}
+\alias{writeDist}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Pairwise Distances from Sequences}
 \description{
@@ -13,6 +15,8 @@ for nucleotide and amino acid models.
 dist.hamming(x, ratio = TRUE, exclude="none")
 dist.logDet(x)
 dist.ml(x, model="JC69", exclude="none", bf=NULL, Q=NULL, ...)
+readDist(file)
+writeDist(dm, file="")
 }
 \arguments{
   \item{x}{An object of class \code{phyDat}}
@@ -22,6 +26,8 @@ dist.ml(x, model="JC69", exclude="none", bf=NULL, Q=NULL, ...)
   \item{bf}{A vector of base frequencies.}
   \item{Q}{A vector containing the lower triangular part of the rate matrix.} 
   \item{\dots}{Further arguments passed to or from other methods.}
+  \item{file}{A file name.}
+  \item{dm}{A \code{dist} object.}
 }
 \value{
   an object of class \code{dist}
