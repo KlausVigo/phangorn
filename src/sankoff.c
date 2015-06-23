@@ -49,7 +49,7 @@ void rowMin2(double *dat, int n,  int k, double *res){
     }
 
    
-void rowMinInt(int *dat, int n,  int k, double *res){
+void rowMinInt(int *dat, int n,  int k, int *res){
     int i, h;  
     int x;
     for(i = 0; i < n; i++){
