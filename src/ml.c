@@ -1002,7 +1002,7 @@ void fs3(double *eva, int nc, double el, double *w, double *g, double *X, int ld
    double *f0, double *res)
 {
     double *tmp, *f, edle, ledle, newedle, eps=10;  
-    double ll, lll, delta=0.0, scalep = 1.0, l1=0.0, l0=0.0; 
+    double ll=0.0, lll, delta=0.0, scalep = 1.0, l1=0.0, l0=0.0; 
     double y; 
     int i, k=0; 
     tmp = (double *) R_alloc(nr, sizeof(double));
