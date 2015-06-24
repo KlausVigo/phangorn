@@ -21,7 +21,7 @@ rearrangements or sub tree pruning and regrafting (SPR). \code{pratchet} impleme
 \usage{
 parsimony(tree, data, method="fitch", ...)
 optim.parsimony(tree, data, method="fitch", cost=NULL, trace=1, rearrangements="SPR", ...)
-pratchet(data, start=NULL, method="fitch", maxit=100, k=5, trace=1, all=FALSE, 
+pratchet(data, start=NULL, method="fitch", maxit=1000, k=10, trace=1, all=FALSE, 
     rearrangements="SPR", ...)
 fitch(tree, data, site = "pscore")
 sankoff(tree, data, cost = NULL, site = "pscore")
@@ -71,7 +71,7 @@ treeRA <- random.addition(Laurasiatherian)
 treeNNI <- optim.parsimony(tree, Laurasiatherian)
 treeRatchet <- pratchet(Laurasiatherian, start=tree)
 # assign edge length
-treeRatchet <- acctran(treeRatchet, Laurasiatherian)
+treeRatchet <- acctran(treeRatchet, Laurasiatherian, maxit=100, k=5)
 
 plot(midpoint(treeRatchet))
 add.scale.bar(0,0, length=100)

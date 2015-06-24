@@ -261,8 +261,6 @@ lowerBound <- function(x, cost=NULL){
 
     if(is.null(cost))cost <- 1 - diag(nc)
 
-
-
     if(any(ust>1)){ 
         ust = ust[ust>1]
         m <- max(ust)    
@@ -287,7 +285,7 @@ upperBound <- function(x, cost=NULL){
 
 
 CI <- function (tree, data, cost=NULL){
-    pscore = sankoff(tree, data, cost=cost)
+    pscore = sankoffNew(tree, data, cost=cost)
     weight = attr(data, "weight")
     data = subset(data, tree$tip.label) 
     m = lowerBound(data, cost=cost)    
@@ -429,7 +427,7 @@ old2new.phyDat <- function(obj){
     X = matrix(rep(rowSums(contrast), each=nr),nrow=nr)    
     res <- vector("list", l)
     for(i in 1:l){
-        browser()
+#        browser()
         tmp = X - tcrossprod(obj[[i]], contrast)
         res[[i]] = unlist(apply(tmp, 1, function(x)which(x<1e-6)[1]))
     }
@@ -643,7 +641,7 @@ optim.parsimony <- function(tree,data, method='fitch', cost=NULL, trace=1, rearr
 }
 
 
-pratchet <- function (data, start=NULL, method="fitch", maxit=100, k=5, trace=1, all=FALSE, rearrangements="SPR", ...) 
+pratchet <- function (data, start=NULL, method="fitch", maxit=1000, k=10, trace=1, all=FALSE, rearrangements="SPR", ...) 
 {
     eps = 1e-08
 #    if(method=="fitch" && (is.null(attr(data, "compressed")) || attr(data, "compressed") == FALSE)) 
@@ -762,7 +760,7 @@ ptree <- function (tree, data, type = "ACCTRAN", retData = FALSE)
         stop("data must be of class phyDat")
     if (is.null(attr(tree, "order")) || attr(tree, "order") == 
         "cladewise") 
-        tree <- reorder(tree, "pruningwise") 
+        tree <- reorder(tree, "pruningwise")  
  #   if (!is.binary.tree(tree)) 
  #       stop("Tree must be binary!")
     tmp = fitch(tree, data, site = "data")
