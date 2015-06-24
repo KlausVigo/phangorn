@@ -3,6 +3,7 @@
 \alias{edQt}
 \alias{pml.init}
 \alias{pml.free}
+\alias{discrete.gamma}
 \alias{lli}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
@@ -20,6 +21,7 @@ pml.init(data, k)
 pml.free()   
 edQt(Q = c(1, 1, 1, 1, 1, 1), bf = c(0.25, 0.25, 0.25, 0.25))
 lli(data, tree, ...)
+discrete.gamma(alpha, k)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -27,6 +29,7 @@ lli(data, tree, ...)
   \item{data}{An alignment, object of class \code{phyDat}.}
   \item{bf}{Base frequencies.}
   \item{shape}{Shape parameter of the gamma distribution.}
+  \item{alpha}{Shape parameter of the gamma distribution.}
   \item{k}{Number of intervals of the discrete gamma distribution.}
   \item{Q}{A vector containing the lower triangular part of the rate matrix.}
   \item{levels}{

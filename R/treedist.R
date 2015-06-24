@@ -34,7 +34,7 @@ coph <- function(x){
 
 cophenetic.splits <- function(x){
     labels <- attr(x, "labels")
-    X <- phangorn:::splits2design(x)
+    X <- splits2design(x)
     dm <- as.vector(X%*%attr(x, "weight")) 
     attr(dm, "Size") <- length(labels)
     attr(dm, "Labels") <- labels
