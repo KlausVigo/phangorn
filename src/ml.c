@@ -28,6 +28,7 @@ double one = 1.0, zero = 0.0;
 int ONE = 1L;
 const double ScaleEPS = 1.0/4294967296.0; 
 const double ScaleMAX = 4294967296.0;
+const double LOG_SCALE_EPS = -22.18070977791824915926;
 
 // 2^64 = 18446744073709551616
 
@@ -1137,6 +1138,81 @@ SEXP optE(SEXP PARENT, SEXP CHILD, SEXP ANC, SEXP eig, SEXP EVI, SEXP EL,
     }
     UNPROTECT(1); //RESULT    
     return(RESULT);     
+}
+
+
+
+void rowMinScale(int *dat, int n,  int k, int *res){
+    int i, h;  
+    int tmp;
+    for(i = 0; i < n; i++){
+        tmp = dat[i];
+        for(h = 1; h< k; h++) {if(dat[i + h*n] < tmp) tmp=dat[i + h*n];}
+        if(tmp>0L){for(h = 0; h< k; h++) dat[i + h*n] -= tmp;}
+        res[i] = tmp;               
+    }        
+}
+
+
+SEXP PML4(SEXP dlist, SEXP EL, SEXP W, SEXP G, SEXP NR, SEXP NC, SEXP K, SEXP eig, SEXP bf, SEXP node, SEXP edge, SEXP NTips, SEXP root, SEXP nco, SEXP contrast, SEXP N){
+    int nr=INTEGER(NR)[0], nc=INTEGER(NC)[0], k=INTEGER(K)[0], i, j, indLL; 
+    int nTips = INTEGER(NTips)[0], *SC, *sc;
+    double *g=REAL(G), *w=REAL(W), *tmp, *res; 
+    SEXP TMP;
+    double *eva, *eve, *evei;
+    eva = REAL(VECTOR_ELT(eig, 0));
+    eve = REAL(VECTOR_ELT(eig, 1));
+    evei = REAL(VECTOR_ELT(eig, 2));
+    SC = (int *) R_alloc(nr * k, sizeof(int));
+    sc = (int *) R_alloc(nr, sizeof(int));
+    tmp = (double *) R_alloc(nr * k, sizeof(double));
+    PROTECT(TMP = allocVector(REALSXP, nr)); 
+    
+    res=REAL(TMP);
+    for(i=0; i<(k*nr); i++)tmp[i]=0.0;
+    indLL = nr * nc * nTips;  
+    for(i=0; i<k; i++){                  
+        lll3(dlist, eva, eve, evei, REAL(EL), g[i], &nr, &nc, INTEGER(node), INTEGER(edge), nTips, REAL(contrast), INTEGER(nco)[0], INTEGER(N)[0],  &SC[nr * i], REAL(bf), &tmp[i*nr], &LL[indLL *i], &SCM[nr * nTips * i]);           
+    } 
+    rowMinScale(SC, nr, k, sc);
+    for(i=0; i<nr; i++){
+        res[i]=0.0;
+        for(j=0;j<k;j++)res[i] += w[j] * exp(LOG_SCALE_EPS * SC[i+j*nr]) * tmp[i+j*nr]; 
+    } 
+    for(i=0; i<nr; i++) res[i] = log(res[i]) + LOG_SCALE_EPS * sc[i];
+    UNPROTECT(1);
+    return TMP;     
+}
+
+
+
+SEXP PML5(SEXP dlist, SEXP EL, SEXP W, SEXP G, SEXP NR, SEXP NC, SEXP K, SEXP eig, SEXP bf, SEXP node, SEXP edge, SEXP NTips, SEXP root, SEXP nco, SEXP contrast, SEXP N){
+    int nr=INTEGER(NR)[0], nc=INTEGER(NC)[0], k=INTEGER(K)[0], i, j, indLL; 
+    int nTips = INTEGER(NTips)[0], *SC, *sc;
+    double *g=REAL(G), *w=REAL(W), *tmp, *res; 
+    SEXP TMP;
+    double *eva, *eve, *evei;
+    eva = REAL(VECTOR_ELT(eig, 0));
+    eve = REAL(VECTOR_ELT(eig, 1));
+    evei = REAL(VECTOR_ELT(eig, 2));
+    SC = (int *) R_alloc(nr * k, sizeof(int));
+    sc = (int *) R_alloc(nr, sizeof(int));
+    tmp = (double *) R_alloc(nr * k, sizeof(double));
+    PROTECT(TMP = allocVector(REALSXP, nr)); 
+    
+    res=REAL(TMP);
+    for(i=0; i<(k*nr); i++)tmp[i]=0.0;
+    indLL = nr * nc * nTips;  
+    for(i=0; i<k; i++){
+         lll(dlist, eva, eve, evei, REAL(EL), g[i], &nr, &nc, INTEGER(node), INTEGER(edge), nTips, REAL(contrast), INTEGER(nco)[0], INTEGER(N)[0], &SC[nr * i], REAL(bf), &tmp[i*nr], &LL[indLL *i]);
+    } 
+    rowMinScale(SC, nr, k, sc);
+    for(i=0; i<nr; i++){
+        res[i]=0.0;
+        for(j=0;j<k;j++)res[i] += w[j] * exp(LOG_SCALE_EPS * SC[i+j*nr]) * tmp[i+j*nr]; 
+    }     
+    UNPROTECT(1);
+    return TMP;     
 }
 
 
