@@ -916,8 +916,8 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
 #    on.exit(.C("ll_free"))
 #    .C("ll_init", nr, nTips, nc, as.integer(k))
 
-    on.exit(pml.free4())
-    pml.init4(data, k)    
+    on.exit(pml.free())
+    pml.init(data, k)    
     
     if (optEdge) {
          res <- optimEdge(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, INV=INV,
