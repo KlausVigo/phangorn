@@ -404,13 +404,14 @@ getP <- function(el, eig=edQt(), g=1.0){
 }
 
 
-lli <- function (data, tree, ...) 
+lli <- function (data, tree=NULL, ...) 
 {
-    contrast = attr(data, "contrast")
-    nr = attr(data, "nr")
-    nc = attr(data, "nc")
-    nco = as.integer(dim(contrast)[1])
-    .Call("invSites", data[tree$tip.label], as.integer(nr), as.integer(nc), contrast, as.integer(nco))    
+    contrast <- attr(data, "contrast")
+    nr <- attr(data, "nr")
+    nc <- attr(data, "nc")
+    nco <- as.integer(dim(contrast)[1])
+    if(!is.null(tree)) data <- subset(data, tree$tip.label)
+    .Call("invSites", data, as.integer(nr), as.integer(nc), contrast, as.integer(nco))    
 }
 
 
@@ -458,7 +459,7 @@ edQ2 <- function(Q){
 
 pml.free <- function(){
     .C("ll_free")
-    rm(.INV, .iind, envir = globalenv())
+#    rm(.INV, .iind, envir = parent.frame())
 }
 
 
@@ -467,10 +468,11 @@ pml.init <- function(data, k=1L){
     nr <- attr(data, "nr")
     nc <- attr(data, "nc")    
     .C("ll_init", as.integer(nr), as.integer(nTips), as.integer(nc), as.integer(k))
-    INV <- lli(data, tree)
-    .iind <<- which((INV %*% rep(1, nc)) > 0)
-    .INV <<- Matrix(INV, sparse=TRUE)
+    INV <- lli(data) #, tree
+    assign(".iind", which((INV %*% rep(1, nc)) > 0), envir=parent.frame())
+    assign(".INV", Matrix(INV, sparse=TRUE), envir=parent.frame())
 } 
+
 
 
 pml.free2 <- function(){.C("ll_free2")}
@@ -915,8 +917,11 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
  
 #    on.exit(.C("ll_free"))
 #    .C("ll_init", nr, nTips, nc, as.integer(k))
-
-    on.exit(pml.free())
+    .INV <- .iind <- NULL
+    on.exit({
+        pml.free()
+#        rm(.INV, .iind)
+        })
     pml.init(data, k)    
     
     if (optEdge) {
@@ -3288,7 +3293,8 @@ pml.fit4 <- function (tree, data, bf = rep(1/length(levels), length(levels)),
         #        kmax <- k
         k <- length(w)
     }
-
+#    .iind <- get(".iind", parent.frame())
+#    .INV <- get(".INV", parent.frame())
     if(inv>0)
         ll.0 <- as.matrix(.INV %*% (bf * inv)) 
     
@@ -3524,7 +3530,7 @@ optimRooted <- function(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll
     allKids <- cvector <- allChildren(tree)
     rootNode = getRoot(tree)   
     
-    child2 = orderNNI(cvector, rootNode, nTips, TRUE)
+    child2 = orderNNI(tree, nTips)   #(cvector, rootNode, nTips, TRUE)
     
     lengthList <- edgeList <- vector("list", max(tree$edge))
     for(i in tree$edge[,2]){
@@ -3635,158 +3641,6 @@ optimRooted <- function(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll
     list(tree=tree, logLik=ll, c(eps=eps, iter=iter))
 }
 
-# spaeter raus
-optimRootedOld <- function(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, INV=INV,
-                        control = pml.control(epsilon = 1e-08, maxit = 25, trace=0), ...){
-    ind0 = which(ll.0>0) 
-    contrast = attr(data, "contrast")
-    tree$edge.length[tree$edge.length < 1e-08] <- 1e-08
-    nTips = as.integer(length(tree$tip.label))   
-    k = length(w)
-    
-    weight = attr(data , "weight")
-    nr = as.integer(attr(data , "nr"))
-    nc = as.integer(attr(data , "nc"))
-    # optimising rooted triplets
-    optRoot0 <- function(t, tree, data, g, w, eig, bf, ll.0, k, INV){
-        l = length(tree$edge.length)
-        tree$edge.length[1:(l-1)] = tree$edge.length[1:(l-1)] + t   
-        tree$edge.length[l] = tree$edge.length[l] - t
-        loglik = pml.fit2(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k, INV=INV)
-        loglik
-    }      
-    # optim edges leading to the root
-    optRoot2 <- function(t, tree, data, g, w, eig, bf, ll.0, k, INV){
-        tree$edge.length = tree$edge.length + t   #c(el1+t, el2-t)
-        loglik = pml.fit2(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k, INV=INV)
-        loglik
-    }
-    
-    scaleEdges = function(t=1, trace=0, tree, data, ...){
-        fn = function(t, tree, data,...){
-            tree$edge.length = tree$edge.length*t
-            pml.fit2(tree, data, ...)
-        }
-        optimize(f=fn, interval=c(0.25,4), tree=tree, data=data, ..., maximum = TRUE,
-                 tol = .00001)
-    }
-    parent = tree$edge[, 1]
-    child = tree$edge[, 2]
-
-    anc <- Ancestors(tree, 1:max(tree$edge), "parent")        
-    sibs <- Siblings(tree, 1:max(tree$edge))        
-    allKids <- cvector <- allChildren(tree)
-    rootNode = getRoot(tree)   
-    
-    child2 = orderNNI(cvector, rootNode, nTips, TRUE)
-    
-    lengthList <- edgeList <- vector("list", max(tree$edge))
-    for(i in tree$edge[,2]){
-        pa <- anc[i]
-        kids <- sibs[[i]]
-        if(pa!=rootNode){
-            edgeList[[i]] <- cbind(pa, c(anc[pa], kids))
-            lengthList[[i]] <- c(pa, kids)
-        }
-        else{
-            edgeList[[i]] <- cbind(pa, kids)
-            lengthList[[i]] <- kids             
-        }  
-    }
-    
-    ll <- pml.fit2(tree, data, bf=bf,  k=k, eig=eig, INV=INV, ll.0=ll.0, w=w, g=g)
-    if(control$trace>2)cat("ll", ll, "\n")
-    eps=10
-    iter = 1
-
-    EL = numeric(max(tree$edge)) 
-    EL[tree$edge[, 2]] = tree$edge.length
-        
-    eps0 =1e-8
-##browser()    
-    tmp <- scaleEdges(t, trace=0, tree, data, bf = bf, k=k, ll.0=ll.0, INV=INV, eig = eig, w=w, g=g)
-    if(control$trace>2)cat("scale", tmp[[2]], "\n")
-    t = tmp[[1]]
-    tree$edge.length = tree$edge.length*t        
-    el = tree$edge.length
-    EL[tree$edge[, 2]] = tree$edge.length
-    ll2 <- pml.fit2(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g)
-    
-    tmptree = tree    
-    
-    while(eps>control$eps && iter < control$maxit){
-        ll2 <- pml.fit2(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g)
-        loli <- rootNode
-        
-        children <- allKids[[rootNode]]
-        kidsEl <- EL[children]  
-        minEl = min(kidsEl) 
-        kidsEl = kidsEl - minEl
-        
-#        EDGE = cbind(rootNode, children)
-        tmptree$edge = cbind(rootNode, children)
-        tmptree$edge.length = kidsEl 
-##browser()        
-        t <- optimize(f=optRoot2,interval=c(1e-8,3), tmptree, data=data, k=k, g=g, w=w, eig=eig, bf=bf, ll.0=ll.0, INV=INV, maximum=TRUE)
-        optRoot2(t[[1]], tmptree, data=data, k=k, g=g, w=w, eig=eig, bf=bf, ll.0=ll.0, INV=INV)  
-        
-        if(control$trace>2)cat("optRoot", t[[2]], "\n")    
-        ll3 = t[[2]]
-        EL[children] = kidsEl + t[[1]]     
-          
-        tree$edge.length = EL[tree$edge[, 2]]  
-        ll2 <- pml.fit2(tree, data, bf=bf, k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g)
-
-        for(i in 1:length(child2)){ # length(child2)
-            dad = child2[i]
-            #browser()
-            if(dad>nTips ){ # kann raus
-                pa = anc[dad]             
-                while(loli != pa){                
-                    tmpKids= cvector[[loli]]
-                    tmpEdge = cbind(loli, tmpKids)
-                    pml.move(tmpEdge, EL[tmpKids], data, g, w, eig, k, nTips, bf)
-                    loli=anc[loli] 
-                }            
-                pml.move(edgeList[[dad]], EL[lengthList[[dad]]], data, g, w, eig, k, nTips, bf)                     
-                children <- allKids[[dad]]
-                kidsEl <- EL[children]  
-                minEl = min(kidsEl) 
-                kidsEl = kidsEl - minEl
-                maxEl = minEl + EL[dad] 
-                kids=c(children, pa)          
-                EDGE = cbind(dad, kids)
-                tmptree$edge = EDGE
-                tmptree$edge.length = c(kidsEl, maxEl) 
-                
-                tmptree2 = tmptree
-                tmptree2$edge.length = c(EL[children], EL[dad])
-                
-                t0 = optRoot0(0, tmptree2, data, g, w, eig, bf, ll.0, k, INV)  
-
-                t = optimize(f=optRoot0, interval=c(0+eps0,maxEl-eps0), tmptree, data=data, g=g, w=w, eig=eig, bf=bf, ll.0=ll.0, k=k, INV=INV, maximum=TRUE)
-                
-                if(control$trace>2) cat("edge", t[[2]], "\n")
-                if(!is.nan(t[[2]]) & t[[2]] > ll3){
-                    optRoot0(t[[1]], tmptree, data=data, g=g, w=w, eig=eig, bf=bf, ll.0=ll.0, k=k, INV=INV)   
-                    EL[children] = kidsEl+t[[1]]
-                    EL[dad] = maxEl-t[[1]]
-                    ll3 = t[[2]]                   
-                }
-                else optRoot0(0, tmptree2, data, g, w, eig, bf, ll.0, k, INV)
-                loli = dad                
-                tree$edge.length = EL[tree$edge[, 2]]         
-            }
-        }      
-        ll2 <- pml.fit(tree, data, bf=bf, k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g)
-        eps = (ll - ll2) / ll2
-        
-        if(control$trace>1) cat(ll, " -> ", ll2, "\n")   
-        ll=ll2
-        iter = iter+1
-    }
-    list(tree=tree, logLik=ll, c(eps=eps, iter=iter))
-}
 
 
 # copy node likelihoods from C to R
@@ -3823,10 +3677,10 @@ index.nni <- function (ch, cvector, pvector, root)
 }
 
 
-# same traversal, 25 lines shorter than orderNNI
-orderNNI <- function (tree, nTips, nni=TRUE){
+# same traversal, 25 lines shorter than orderNNI  , nni=TRUE
+orderNNI <- function (tree, nTips){
     res = reorder(tree)$edge[,2]
-    if(nni)res = res[res>nTips]
+    res = res[res>nTips]
     res
 }
 
@@ -3908,7 +3762,7 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV,
     cvector = allChildren(tree)    
     sibs <- Siblings(tree, 1:max(tree$edge))
     
-    child2 = orderNNI(cvector, rootNode, nTips)
+    child2 = orderNNI(tree, nTips) #(cvector, rootNode, nTips)
     
     while(iter < 2){    
         ll2 <-  pml.fit(tree, data, bf=bf, k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g)
