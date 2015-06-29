@@ -341,7 +341,7 @@ compareSplits <- function(res, nam1, nam2){
 	splits = attr(res, "Perfect")
 	dat = attr(attr(res, "Perfect"), "data")
     res = matrix(NA, length(ntrees), length(nam1)*length(nam2))
-    for(m in 1:length(trees)){
+    for(m in 1:ntrees){
         k=1
         trnam=ntrees[m]
         for(i in nam1){

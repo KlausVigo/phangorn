@@ -16,7 +16,14 @@ importFrom(parallel, mclapply)
 importFrom(quadprog, solve.QP, solve.QP.compact)
 #importFrom(rgl, open3d, segments3d, spheres3d, rgl.texts)
 #importFrom(Rcpp, evalCpp)
-importFrom(stats, AIC, logLik, reorder, cophenetic) 
+importFrom(stats, AIC, logLik, reorder, cophenetic, update, optim, optimize, constrOptim, na.omit, 
+           cophenetic, hclust, as.dist, pchisq, reshape, qgamma, pgamma, model.matrix,
+           aggregate, lm.fit, xtabs, quantile) 
+importFrom(graphics, plot.new, plot.window, text, par, plot, abline, strwidth, axis, title, segments, 
+           points, image, matplot, legend, hist) 
+importFrom(utils, read.table, download.file, citation, stack) 
+importFrom(grDevices, rgb, rainbow, adjustcolor)
+importFrom(methods, hasArg)
 
 export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UNJ, PNJ, 
     phyDat, cbind.phyDat, read.phyDat, write.phyDat, as.Matrix, as.phyDat, as.splits, as.networx,
