@@ -8,8 +8,9 @@ Description: Phylogenetic analysis in R: Estimation of phylogenetic
         trees and networks using Maximum Likelihood, Maximum Parsimony,
         distance methods and Hadamard conjugation.
 Depends: R (>= 3.0.0), ape (>= 3.2)
-Imports: quadprog, igraph (>= 0.6), Matrix, parallel, nnls
+Imports: quadprog, igraph (>= 0.6), Matrix, parallel, nnls, methods
 Suggests: testthat, seqLogo, seqinr, xtable, flashClust, rgl, knitr
+ByteCompile: TRUE
 License: GPL (>= 2)
 VignetteBuilder: utils, knitr
 URL: https://github.com/KlausVigo/phangorn
