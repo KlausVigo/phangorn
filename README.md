@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/KlausVigo/phangorn.svg?branch=master)](https://travis-ci.org/KlausVigo/phangorn)
-[![CRAN Status Badge](http://www.r-pkg.org/badges/version/phangorn)](http://cran.r-project.org/web/packages/phangorn)
+[![CRAN Status Badge](http://www.r-pkg.org/badges/version/phangorn)](http://cran.r-project.org/package=phangorn)
 [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html)
-[![CRAN Downloads](http://cranlogs.r-pkg.org/badges/phangorn)](http://cran.rstudio.com/web/packages/phangorn/index.html)
+[![CRAN Downloads](http://cranlogs.r-pkg.org/badges/phangorn)](http://cran.r-project.org/package=phangorn)
 
 
 phangorn

@@ -469,6 +469,8 @@ pml.init <- function(data, k=1L){
     nc <- attr(data, "nc")    
     .C("ll_init", as.integer(nr), as.integer(nTips), as.integer(nc), as.integer(k))
     INV <- lli(data) #, tree
+    .iind <<- which((INV %*% rep(1, nc)) > 0)
+    .INV <<-  Matrix(INV, sparse=TRUE)
     assign(".iind", which((INV %*% rep(1, nc)) > 0), envir=parent.frame())
     assign(".INV", Matrix(INV, sparse=TRUE), envir=parent.frame())
 } 
@@ -1079,6 +1081,7 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                 else{ 
                     tmp <- rooted.nni(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, INV=INV, ...) 
                     swap = swap + tmp$swap
+                    res <- optimRooted(tmp$tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, INV=INV, control = pml.control(epsilon = 1e-07, maxit = 5, trace = trace-1))
                     tree <- tmp$tree
                     ll2 = tmp$logLik
                 }
@@ -3550,7 +3553,7 @@ optimRooted <- function(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll
     }
     
     ll <- pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, w=w, g=g) #, INV=INV
-    if(control$trace>2)cat("ll", ll, "\n")
+#    if(control$trace>2)cat("ll", ll, "\n")
     eps=10
     iter = 1
     
@@ -3560,7 +3563,7 @@ optimRooted <- function(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll
     eps0 =1e-8
     
     tmp <- scaleEdges(t, trace=0, tree, data, bf = bf, k=k, ll.0=ll.0, eig = eig, w=w, g=g)
-    if(control$trace>2)cat("scale", tmp[[2]], "\n")
+#    if(control$trace>2)cat("scale", tmp[[2]], "\n")
     t = tmp[[1]]
     tree$edge.length = tree$edge.length*t        
     el = tree$edge.length
@@ -3583,7 +3586,7 @@ optimRooted <- function(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll
         
         t <- optimize(f=optRoot2,interval=c(1e-8,3), tmptree, data=data, k=k, g=g, w=w, eig=eig, bf=bf, ll.0=ll.0, maximum=TRUE)
         optRoot2(t[[1]], tmptree, data=data, k=k, g=g, w=w, eig=eig, bf=bf, ll.0=ll.0)  
-        if(control$trace>2)cat("optRoot", t[[2]], "\n")    
+#        if(control$trace>2)cat("optRoot", t[[2]], "\n")    
         ll3 = t[[2]]
         EL[children] = kidsEl + t[[1]]     
         
@@ -3615,7 +3618,7 @@ optimRooted <- function(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll
             
             t = optimize(f=optRoot0, interval=c(-minEl+eps0,maxEl-eps0), tmptree, data=data, g=g, w=w, eig=eig, bf=bf, ll.0=ll.0, k=k, maximum=TRUE)
             
-            if(control$trace>2) cat("edge", t[[2]], "\n")
+#            if(control$trace>2) cat("edge", t[[2]], "\n")
             if(!is.nan(t[[2]]) & t[[2]] > ll3){
                 optRoot0(t[[1]], tmptree, data=data, g=g, w=w, eig=eig, bf=bf, ll.0=ll.0, k=k)   
                 EL[children] = kidsEl+t[[1]]
@@ -3630,7 +3633,7 @@ optimRooted <- function(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll
         ll2 <- pml.fit(tree, data, bf=bf, k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g)
         eps = (ll - ll2) / ll2
         
-        if(control$trace>1) cat(ll, " -> ", ll2, "\n")   
+        if(control$trace>1) cat("optimRooted: ", ll, " -> ", ll2, "\n")   
         ll=ll2
         iter = iter+1
     }
@@ -3715,7 +3718,8 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV,
     
     optRootU <- function(t, tree, data, bf, g, w, eig, ll.0, k, INV, nh){
         tree$edge.length = getEL1(t, nh)
-        pml.fit(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k, INV=INV)
+        pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, w=w, g=g) 
+#        pml.fit(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k, INV=INV)
     }      
 
     
@@ -3739,13 +3743,15 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV,
     
     optEdgeU <- function(t, tree, data, bf, g, w, eig, ll.0, k, INV, nh){
         tree$edge.length = getEL2(t, nh)
-        pml.fit(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k, INV=INV)
+#        pml.fit(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k, INV=INV)
+        pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, w=w, g=g) 
     }
     
      
     child = tree$edge[, 2]   
     parent = tree$edge[, 1]
-    ll <-  pml.fit(tree, data, bf=bf, k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g)
+#    ll <-  pml.fit(tree, data, bf=bf, k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g)
+    ll <-  pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, w=w, g=g) 
     llstart <- ll
     eps=.00001
     iter = 1  
@@ -3832,7 +3838,8 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV,
                 if(loli!=rootNode){
                      tree1$edge <- X1
                     tree1$edge.length = abs(nh[X1[,1]] - nh[X1[,2]])
-                    ll0 = pml.fit(tree1, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k, INV=INV)
+#                    ll0 = pml.fit(tree1, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k, INV=INV)
+                    ll0 <- pml.fit4(tree1, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, w=w, g=g) 
 #                    cat("quartet", ll0, ch, dad, "\n")
                 }                
                 
@@ -3905,7 +3912,8 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV,
                 
                 if( (ll3 - 1e-5*ll3) < ll2){
                     loli = rootNode   
-                    ll2 <- pml.fit(tree, data, bf=bf, eig=eig, ll.0=ll.0, w=w, g=g)
+#                    ll2 <- pml.fit(tree, data, bf=bf, eig=eig, ll.0=ll.0, w=w, g=g)
+                    ll2 <- pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, w=w, g=g) 
                     nh=nodeHeight(tree)
                     EL[tree$edge[,2]] = tree$edge.length
                     ind=0
@@ -3954,7 +3962,9 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV,
             }    
             
         }
-        ll2 <- pml.fit(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k, INV=INV)
+#        ll2 <- pml.fit(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k, INV=INV)
+        ll2 <- pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, w=w, g=g) 
+        
         eps = (ll - ll2) / ll2
         if(control$trace>1) cat(ll, " -> ", ll2, "\n") 
         if(control$trace>1) cat("swap:", nchanges) 

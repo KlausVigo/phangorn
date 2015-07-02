@@ -73,7 +73,7 @@ After reading in the alignment we can build a first tree with distance based met
  
 After constructing a distance matrix we reconstruct a rooted tree with UPGMA and alternatively an unrooted tree using Neighbor Joining \cite{Saitou1987,Studier1988}. 
 <<echo=TRUE>>=
-dm = dist.dna(as.DNAbin(primates))
+dm = dist.ml(primates)
 treeUPGMA = upgma(dm)
 treeNJ = NJ(dm)
 @
