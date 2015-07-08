@@ -469,8 +469,8 @@ pml.init <- function(data, k=1L){
     nc <- attr(data, "nc")    
     .C("ll_init", as.integer(nr), as.integer(nTips), as.integer(nc), as.integer(k))
     INV <- lli(data) #, tree
-    .iind <<- which((INV %*% rep(1, nc)) > 0)
-    .INV <<-  Matrix(INV, sparse=TRUE)
+#    .iind <<- which((INV %*% rep(1, nc)) > 0)
+#    .INV <<-  Matrix(INV, sparse=TRUE)
     assign(".iind", which((INV %*% rep(1, nc)) > 0), envir=parent.frame())
     assign(".INV", Matrix(INV, sparse=TRUE), envir=parent.frame())
 } 
@@ -3294,8 +3294,15 @@ pml.fit4 <- function (tree, data, bf = rep(1/length(levels), length(levels)),
     }
 #    .iind <- get(".iind", parent.frame())
 #    .INV <- get(".INV", parent.frame())
+# if(is.null(ll.0))    
+    
+    if (is.null(ll.0)){ 
+        ll.0 <- numeric(attr(data,"nr"))    
+    }
     if(inv>0)
-        ll.0 <- as.matrix(.INV %*% (bf * inv)) 
+        ll.0 <- as.matrix(INV %*% (bf * inv)) 
+#    if(inv>0)  
+#        ll.0 <- as.matrix(.INV %*% (bf * inv)) 
     
     node <- tree$edge[, 1]
     edge <- tree$edge[, 2]
@@ -3309,8 +3316,10 @@ pml.fit4 <- function (tree, data, bf = rep(1/length(levels), length(levels)),
 
     siteLik <- .Call("PML4", dlist=data, el, as.double(w), as.double(g), nr, nc, k, eig, as.double(bf), 
                      node, edge, nTips, root, nco, contrast, N=as.integer(length(edge))) 
-
-    if(!is.null(ll.0))siteLik[.iind] = log(exp(siteLik[.iind]) + ll.0[.iind]) 
+# if(inv>0) siteLik[.iind] = log(exp(siteLik[.iind]) + ll.0[.iind]) 
+    ind = which(ll.0>0)
+#    if(!is.null(ll.0)) siteLik[.iind] = log(exp(siteLik[.iind]) + ll.0[.iind]) 
+    if(!is.null(ll.0)) siteLik[ind] = log(exp(siteLik[ind]) + ll.0[ind]) 
     if(wMix >0) siteLik <- log(exp(siteLik) * (1-wMix) + llMix )
     loglik <- sum(weight * siteLik)
     if(!site) return(loglik)
@@ -3503,13 +3512,13 @@ optimRooted <- function(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll
         l = length(tree$edge.length)
         tree$edge.length[1:(l-1)] = tree$edge.length[1:(l-1)] + t   
         tree$edge.length[l] = tree$edge.length[l] - t
-        loglik = pml.fit4(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k) #, INV=INV
+        loglik = pml.fit4(tree, data, bf=bf, g=g, w=w, eig=eig, INV=INV, ll.0=ll.0, k=k) #
         loglik
     }      
     # optim edges leading to the root
     optRoot2 <- function(t, tree, data, g, w, eig, bf, ll.0, k){
         tree$edge.length = tree$edge.length + t   #c(el1+t, el2-t)
-        loglik = pml.fit4(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k) #, INV=INV
+        loglik = pml.fit4(tree, data, bf=bf, g=g, w=w, eig=eig, INV=INV, ll.0=ll.0, k=k) #, INV=INV
         loglik
     }
     # scale whole tree
@@ -3552,7 +3561,7 @@ optimRooted <- function(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll
         treeList[[i]] <- cbind(i, c(kids, pa))
     }
     
-    ll <- pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, w=w, g=g) #, INV=INV
+    ll <- pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g) #, INV=INV
 #    if(control$trace>2)cat("ll", ll, "\n")
     eps=10
     iter = 1
@@ -3568,12 +3577,12 @@ optimRooted <- function(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll
     tree$edge.length = tree$edge.length*t        
     el = tree$edge.length
     EL[tree$edge[, 2]] = tree$edge.length
-    ll2 <- pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, w=w, g=g) 
+    ll2 <- pml.fit4(tree, data, bf=bf,  k=k, eig=eig, INV=INV, ll.0=ll.0, w=w, g=g) 
     
     tmptree = tree    
     
     while(eps>control$eps && iter < control$maxit){
-        ll2 <- pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, w=w, g=g)
+        ll2 <- pml.fit4(tree, data, bf=bf,  k=k, eig=eig, INV=INV, ll.0=ll.0, w=w, g=g)
         loli <- rootNode
         
         children <- allKids[[rootNode]]
@@ -3591,7 +3600,7 @@ optimRooted <- function(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll
         EL[children] = kidsEl + t[[1]]     
         
         tree$edge.length = EL[tree$edge[, 2]]  
-        ll2 <- pml.fit4(tree, data, bf=bf, k=k, eig=eig, ll.0=ll.0, w=w, g=g)  
+        ll2 <- pml.fit4(tree, data, bf=bf, k=k, eig=eig, INV=INV, ll.0=ll.0, w=w, g=g)  
         for(i in 1:length(child2)){ 
             dad = child2[i]
             
@@ -3718,7 +3727,7 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV,
     
     optRootU <- function(t, tree, data, bf, g, w, eig, ll.0, k, INV, nh){
         tree$edge.length = getEL1(t, nh)
-        pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, w=w, g=g) 
+        pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g) 
 #        pml.fit(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k, INV=INV)
     }      
 
@@ -3744,14 +3753,14 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV,
     optEdgeU <- function(t, tree, data, bf, g, w, eig, ll.0, k, INV, nh){
         tree$edge.length = getEL2(t, nh)
 #        pml.fit(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k, INV=INV)
-        pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, w=w, g=g) 
+        pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g) 
     }
     
      
     child = tree$edge[, 2]   
     parent = tree$edge[, 1]
 #    ll <-  pml.fit(tree, data, bf=bf, k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g)
-    ll <-  pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, w=w, g=g) 
+    ll <-  pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g) 
     llstart <- ll
     eps=.00001
     iter = 1  
@@ -3839,7 +3848,7 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV,
                      tree1$edge <- X1
                     tree1$edge.length = abs(nh[X1[,1]] - nh[X1[,2]])
 #                    ll0 = pml.fit(tree1, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k, INV=INV)
-                    ll0 <- pml.fit4(tree1, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, w=w, g=g) 
+                    ll0 <- pml.fit4(tree1, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g) 
 #                    cat("quartet", ll0, ch, dad, "\n")
                 }                
                 
@@ -3913,7 +3922,7 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV,
                 if( (ll3 - 1e-5*ll3) < ll2){
                     loli = rootNode   
 #                    ll2 <- pml.fit(tree, data, bf=bf, eig=eig, ll.0=ll.0, w=w, g=g)
-                    ll2 <- pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, w=w, g=g) 
+                    ll2 <- pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g) 
                     nh=nodeHeight(tree)
                     EL[tree$edge[,2]] = tree$edge.length
                     ind=0
@@ -3963,7 +3972,7 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV,
             
         }
 #        ll2 <- pml.fit(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k, INV=INV)
-        ll2 <- pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, w=w, g=g) 
+        ll2 <- pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g) 
         
         eps = (ll - ll2) / ll2
         if(control$trace>1) cat(ll, " -> ", ll2, "\n") 

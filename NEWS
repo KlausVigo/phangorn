@@ -1,5 +1,15 @@
      CHANGES in PHANGORN VERSION 1.99-14
 
+NEW FEATURES
+
+    o phyDat2alignment to exports files to seqinr
+
+    o readDist, writeDist to import / export distance matrices
+
+    o cophenetic distance function for splits and networx
+    
+    o added unit tests
+
 BUG FIXES
 
     o as.splits.networx did not work properly for 4 taxa 
@@ -12,14 +22,25 @@ BUG FIXES
 
     o plotBS did sometimes not work if the tree had no edge lengths
 
-    o plot.networx did ignore cex argument in "2D" plots
+    o plotBS did not work propoerly if input trees were rooted
+
+      (reported by Quynh Quach)
+
+    o plot.networx ignored cex argument in "2D" plots
+
+    o Siblings ignored include.self argument if node is a vector
 
 OTHER CHANGES
 
     o plotBS got an additional argument p to plot only support values
 
-      greater than p 
+      greater than p
 
+    o pml and optim.pml now uses more C-code (and is a bit faster)
+
+    o defaults in modelTest changed 
+
+    o discrete.gamma is now exported in the NAMESPACE
 
 
      CHANGES in PHANGORN VERSION 1.99-13
