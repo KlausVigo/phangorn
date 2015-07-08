@@ -1,5 +1,5 @@
      CHANGES in PHANGORN VERSION 1.99-14
-
+ 
 NEW FEATURES
 
     o phyDat2alignment to exports files to seqinr
@@ -41,6 +41,7 @@ OTHER CHANGES
     o defaults in modelTest changed 
 
     o discrete.gamma is now exported in the NAMESPACE
+
 
 
      CHANGES in PHANGORN VERSION 1.99-13
