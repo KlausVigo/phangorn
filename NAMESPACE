@@ -21,7 +21,7 @@ importFrom(stats, AIC, logLik, reorder, update, optim, optimize, constrOptim, na
            aggregate, lm.fit, xtabs, quantile) 
 importFrom(graphics, plot.new, plot.window, text, par, plot, abline, strwidth, axis, title, segments, 
            points, image, matplot, legend, hist) 
-importFrom(utils, read.table, download.file, citation, stack) 
+importFrom(utils, read.table, download.file, citation, stack, installed.packages, write.table) 
 importFrom(grDevices, rgb, rainbow, adjustcolor)
 importFrom(methods, hasArg)
 
