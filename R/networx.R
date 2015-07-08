@@ -992,7 +992,10 @@ plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRU
     if(show.tip.label)node.label[1:nTips] = ""
     
     chk <- FALSE
-    if(type=="3D") chk <- .check.pkg("rgl")
+    
+    
+    
+    if(type=="3D") chk <- requireNamespace("rgl", quietly = TRUE) #.check.pkg("rgl")
     if(!chk && type=="3D"){
         warning("type=\"3D\" requires the package \"rgl\"\n, plotting =\"2D\" instead!\n")
         type="2D"
@@ -1019,9 +1022,14 @@ plotRGL <- function(coords, net, show.tip.label=TRUE,
         show.nodes=FALSE, tip.color = "blue", edge.color="grey", 
         edge.width = 3, font = 3, cex = par("cex"), ...){
     
-    chk <- .check.pkg("rgl")
-    if(!chk) open3d <- segments3d <- spheres3d <- rgl.texts <- function(...)NULL
-    
+#    chk <- .check.pkg("rgl")
+#    if(!chk) open3d <- segments3d <- spheres3d <- rgl.texts <- function(...)NULL
+
+    open3d <- rgl::open3d 
+    segments3d  <- rgl::segments3d
+    spheres3d <- rgl::spheres3d 
+    rgl.texts <- rgl::rgl.texts
+        
     edge = net$edge
   
     x = coords[,1]
