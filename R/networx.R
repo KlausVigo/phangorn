@@ -631,7 +631,9 @@ circNetwork <- function(x, ord=NULL){
         sp0 = NULL
         
         for(i in 2:length(fromTo)){
-            sptmp = get.shortest.paths(g, fromTo[i-1], fromTo[i], 
+#            sptmp = get.shortest.paths(g, fromTo[i-1], fromTo[i], 
+#                                       output=c("epath"))$epath[[1]]            
+            sptmp = shortest_paths(g, fromTo[i-1], fromTo[i], 
                                        output=c("epath"))$epath[[1]]
             sp2 = c(sp2, sptmp[-c(1, length(sptmp))])
             sp0 = c(sp0, sptmp)
@@ -859,8 +861,10 @@ reorder.networx <- function (x, order =  "cladewise", ...)
         if (attr(x, "order") == order) 
             return(x)    
     g <- graph(t(x$edge))
-    if(order == "cladewise") neword <- topological.sort(g, "out")
-    else neword <- topological.sort(g, "in") 
+#    if(order == "cladewise") neword <- topological.sort(g, "out")
+#    else neword <- topological.sort(g, "in") 
+    if(order == "cladewise") neword <- topo_sort(g, "out")
+    else neword <- topo_sort(g, "in") 
     neworder <- order(match(x$edge[,1], neword))
     
     x$edge <- x$edge[neworder, ]
