@@ -97,7 +97,7 @@ Klaus Schliep \email{klaus.schliep@gmail.com}
 }
 \seealso{
 \code{\link{consensusNet}}, \code{\link{neighborNet}}, \code{\link{splitsNetwork}}, \code{\link{hadamard}}, 
-\code{\link{distanceHadamard}}, \code{\link{layout.kamada.kawai}}, 
+\code{\link{distanceHadamard}}, \code{\link{layout_with_kk}}, 
 \code{\link[ape]{evonet}}, \code{\link[ape]{as.igraph}}, \code{\link{densiTree}}
 }
 \examples{

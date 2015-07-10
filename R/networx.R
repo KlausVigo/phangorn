@@ -882,14 +882,16 @@ coords <- function(obj, dim="3D"){
     ind1 = which(!duplicated(obj$splitIndex))
 
     n = max(obj$edge)
-    adj = Matrix::spMatrix(n, n, i = obj$edge[,2], j = obj$edge[,1], x = rep(1, length(obj$edge.length)))
-    g = graph.adjacency(adj, "undirected")
+    adj = spMatrix(n, n, i = obj$edge[,2], j = obj$edge[,1], x = rep(1, length(obj$edge.length))) # Matrix::
+    g = graph_from_adjacency_matrix(adj, "undirected")
+#    g = graph.adjacency(adj, "undirected")
 ##########
 #    add this 
 #    g2 <- graph(t(obj$edge), directed=FALSE)
 #    g2 <- set.edge.attribute(g, "weight", value=rep(1, nrow(obj$edge))
     if(dim=="3D"){
-        coord <- layout.kamada.kawai(g, dim=3)
+        coord <- layout_with_kk(g, dim=3)
+#        coord <- layout.kamada.kawai(g, dim=3)
         k = matrix(0, max(obj$split), 3)
         for(i in ind1){
             tmp = coord[obj$edge[i, 2],] - coord[obj$edge[i, 1],]
@@ -906,7 +908,8 @@ coords <- function(obj, dim="3D"){
         }            
     }
     else{
-        coord <- layout.kamada.kawai(g, dim=2)
+        coord <- layout_with_kk(g, dim=2)
+#        coord <- layout.kamada.kawai(g, dim=2)
         k = matrix(0, max(obj$split), 2)
         for(i in ind1){
             tmp = coord[obj$edge[i, 2],] - coord[obj$edge[i, 1],]

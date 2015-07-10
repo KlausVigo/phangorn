@@ -7,15 +7,19 @@ importFrom(ape, as.DNAbin, as.phylo, plot.phylo, as.prop.part, nj,old2new.phylo,
     node.depth.edgelength, drop.tip, stree, rtree, is.ultrametric, .PlotPhyloEnv,
     nodelabels, edgelabels, BOTHlabels, read.nexus.data, write.nexus.data, 
     read.dna, write.dna, reorder.phylo, dist.nodes, collapse.singles, rotate)
-importFrom(igraph, graph, graph.adjacency, layout.kamada.kawai, plot.igraph,
-    get.shortest.paths, set.edge.attribute, vcount, graph.edgelist, topological.sort) 
+importFrom(igraph, graph, graph.adjacency, graph_from_adjacency_matrix, layout.kamada.kawai, layout_with_kk, plot.igraph,
+    get.shortest.paths, shortest_paths, all_shortest_paths, set.edge.attribute, set_edge_attr,
+    vcount, graph.edgelist, graph_from_edgelist, topological.sort, topo_sort) 
+
+
+
+
 importFrom(Matrix, Matrix, sparseMatrix, spMatrix, crossprod, solve) #, %*%
 #importFrom(fastmatch, fmatch)
 importFrom(nnls, nnls)
 importFrom(parallel, mclapply)
 importFrom(quadprog, solve.QP, solve.QP.compact)
 #importFrom(rgl, open3d, segments3d, spheres3d, rgl.texts)
-#importFrom(Rcpp, evalCpp)
 importFrom(stats, AIC, logLik, reorder, update, optim, optimize, constrOptim, na.omit, 
            cophenetic, hclust, as.dist, pchisq, reshape, qgamma, pgamma, model.matrix,
            aggregate, lm.fit, xtabs, quantile) 
@@ -24,6 +28,7 @@ importFrom(graphics, plot.new, plot.window, text, par, plot, abline, strwidth, a
 importFrom(utils, read.table, download.file, citation, stack, installed.packages, write.table) 
 importFrom(grDevices, rgb, rainbow, adjustcolor)
 importFrom(methods, hasArg)
+importFrom(Rcpp, evalCpp)
 
 export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UNJ, PNJ, 
     phyDat, cbind.phyDat, read.phyDat, write.phyDat, as.Matrix, as.phyDat, as.splits, as.networx,
