@@ -9,23 +9,27 @@ discrete.gamma <- function (alpha, k)
 }
 
 
+# allow transition probs of zero (added o)
 optimQ <- function (tree, data, Q=rep(1,6), subs=rep(1,length(Q)), trace = 0, ...) 
 {
     m = length(Q)
     n = max(subs)
+    o = min(subs)
     ab = numeric(n)
 #    ab = log(Q[match(1:n, subs)])    
     for(i in 1:n) ab[i]=log(Q[which(subs==i)[1]])
-    fn = function(ab, tree, data, m, n, subs,...) {
+    fn = function(ab, tree, data, m, n, o, subs,...) {
         Q = numeric(m)
         for(i in 1:n)Q[subs==i] = ab[i]
+        if(o < 0)Q[subs<0] = -Inf
         pml.fit(tree, data, Q = exp(Q),...)# Q^2, ...)
     }
     res = optim(par = ab, fn = fn, gr = NULL, method = "L-BFGS-B", 
         lower = -Inf, upper = 10, control = list(fnscale = -1, 
-        maxit = 25, trace = trace), tree = tree, data = data, m=m, n=n, subs=subs,...)
+        maxit = 25, trace = trace), tree = tree, data = data, m=m, n=n, o=o, subs=subs,...)
     Q = rep(1, m)
     for(i in 1:n) Q[subs==i] = exp(res[[1]][i])
+    if(o < 0)Q[subs<0] = 0
     res[[1]] = Q
     res
 }    
