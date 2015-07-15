@@ -43,6 +43,7 @@
 
 <<echo=FALSE>>=
 options(width=70)
+options("show.signif.stars" = FALSE)
 foo <- packageDescription("phangorn")
 @
 

@@ -35,6 +35,7 @@
 
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 
 % Ross Ihakas extenstion for nicer representation 
 \DefineVerbatimEnvironment{Sinput}{Verbatim} {xleftmargin=2em}
@@ -45,6 +46,7 @@
 
 <<echo=FALSE>>=
 options(width=70)
+options("show.signif.stars" = FALSE)
 foo <- packageDescription("phangorn")
 @
 
@@ -132,8 +134,9 @@ We will now show how to estimate a rate matrix with different transition ($\alph
    \caption{Rate matrix K to optimise. }\label{gaps} 
 \end{table}
 
-
-The parameters subs accepts a vector of consecutive integers and at least one element has to be zero (these gets the reference rate of 1).
+If we want to fit a non-standard transition rate matrices, we have to tell \Rfunction{optim.pml}, which transitions in Q get the same rate. 
+The parameter vector subs accepts a vector of consecutive integers and at least one element has to be zero (these gets the reference rate of 1).
+Negative values indicate that there is no direct transition is possible and the rate is set to zero. 
 <<>>=
 tree = unroot(rtree(3))
 fit = pml(tree, gapsdata3)
