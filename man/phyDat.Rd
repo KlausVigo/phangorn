@@ -14,6 +14,8 @@
 \alias{baseFreq}
 \alias{cbind.phyDat}
 \alias{c.phyDat}
+\alias{unique.phyDat}
+\alias{removeUndeterminedSites}
 \alias{phyDat2alignment}
 \title{Conversion among Sequence Formats}
 \description{
