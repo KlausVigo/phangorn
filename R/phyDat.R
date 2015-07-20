@@ -776,6 +776,19 @@ subset.phyDat <- function (x, subset, select, site.pattern = TRUE,...)
 unique.phyDat <- function(x, incomparables=FALSE, ...) getCols(x, !duplicated(x))
 
 
+removeUndeterminedSites <- function(x, use.contrast=TRUE, undetermined=c("?", "n", "-"), ...){
+    nc <- attr(x, "nc")
+    nr <- attr(x, "nr")
+    contrast <- attr(x, "contrast")
+    if(use.contrast) ind <- which( (contrast %*% rep(1, nc)) == nc )
+    else ind <- sort(match(undetermined, attr(x, "allLevels")))
+    tmp <- x[[1]] %in% ind
+    for(i in 2:length(x)) tmp = tmp & (x[[i]] %in% ind)
+    if(any(tmp)) x <- getRows(x, (1:nr)[!tmp]) #getRows(x, -which(tmp))
+    x
+}
+
+
 allSitePattern <- function(n,levels=c("a","c","g","t"), names=NULL){
     l=length(levels)
     X=vector("list", n)
