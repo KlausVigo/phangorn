@@ -1173,6 +1173,7 @@ likelihoodRatchet <- function(obj, maxit=100, k=10,
         if(trace > 0) print(paste("Iteration ", i,", best pscore so far:",logLik(fit)))
         if(kmax == k) break()
     }  
+    fit
 }
 
 
