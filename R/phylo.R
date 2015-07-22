@@ -1159,6 +1159,8 @@ likelihoodRatchet <- function(obj, maxit=100, k=10,
         control=pml.control(epsilon = 1e-08, maxit = 10, trace = 1L)){
     tree = fit$tree
     nTips <- length(tree$tip.label)
+    trace = control$trace
+    control$trace = trace-1L
     kmax=1
     for(i in 1:maxit){
         tree<- rNNI(fit$tree, moves=nTips/3, n=1)
