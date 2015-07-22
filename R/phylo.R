@@ -1154,6 +1154,28 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
 }
 
 
+# improves trees similar to 
+likelihoodRatchet <- function(obj, maxit=100, k=10, 
+        control=pml.control(epsilon = 1e-08, maxit = 10, trace = 1L)){
+    tree = fit$tree
+    nTips <- length(tree$tip.label)
+    kmax=1
+    for(i in 1:maxit){
+        tree<- rNNI(fit$tree, moves=nTips/3, n=1)
+        #tree <- rSPR(tree, moves=10, k=3, n=1)
+        fit2 = update(fit, tree=tree)
+        fit2 <- optim.pml(fit2, TRUE, control = control)
+        if(logLik(fit2) > logLik(fit)){
+            fit <- fit2
+            kmax=1
+        } 
+        else kmax = kmax+1
+        if(trace > 0) print(paste("Iteration ", i,", best pscore so far:",logLik(fit)))
+        if(kmax == k) break()
+    }  
+}
+
+
 fs <- function (old.el, eig, parent.dat, child.dat, weight, g=g, 
     w=w, bf=bf, ll.0=ll.0, evi, getA=TRUE, getB=TRUE) 
 {
