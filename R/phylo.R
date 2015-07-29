@@ -4043,6 +4043,8 @@ addTips2Tree <- function (tree, tips, where){
     tree$edge = edge
     tree$Nnode = tree$Nnode + 1L
     tree$tip.label = c(tree$tip.label, tips)
+    attr(tree, "order") <- NULL
+    tree <- reorder(tree, "postorder")
     tree
 }    
 
@@ -4078,8 +4080,21 @@ optim.pml2 <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         }
     }
     
+    data <- object$data
+    addTaxa <- FALSE
+    
     if(optNni) {
-        
+        dup <-  duplicated(data)
+        if(any(dup)){ # && optNNI
+            orig.data <- data
+            addTaxa <- TRUE
+            labels <- names(data)
+            ldup <- labels[dup]
+            ind2 <- match(subset(data, dup), data)
+            tree2 <- drop.tip(tree, ldup)
+            tree <- reorder(tree2, "postorder")
+            mapping <- cbind(labels[dup], labels[ind2])
+        }
         if(!is.binary.tree(tree)) 
             tree = multi2di(tree)
         optEdge = TRUE     
@@ -4111,7 +4126,6 @@ optim.pml2 <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     }
     trace <- control$trace
     
-    data = object$data
     data = subset(data, tree$tip.label) 
     
     type <- attr(data, "type")
@@ -4169,6 +4183,7 @@ optim.pml2 <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
             object$dnds = dnds
             object$tstv = tstv
         }
+
         tmp <- pml.fit(tree, data, bf, shape = shape, k = k, Q = Q, 
                        levels = attr(data, "levels"), inv = inv, rate = rate, 
                        g = g, w = w, eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, 
@@ -4182,7 +4197,14 @@ optim.pml2 <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         }
         else df = df + (k > 1) + (inv > 0) + 
             length(unique(bf)) - 1 + length(unique(Q)) - 1
-        
+
+        if(addTaxa){
+#            pml.free()
+            tree <- addAllTips(tree, mapping)
+            data <- orig.data
+#            pml.init(subset(data, tree$tip.label), k) 
+        }
+                
         object = list(logLik = tmp$loglik, inv = inv, k = k, shape = shape, 
                       Q = Q, bf = bf, rate = rate, siteLik = tmp$siteLik, weight = attr(data, "weight"), 
                       g = g, w = w, eig = eig, data = data, model = model, 
@@ -4392,53 +4414,54 @@ optim.pml2 <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
             #            nTips <- length(tree$tip.label)
             #            trace = control$trace
             #            control$trace = trace-1L
-        maxR = 10
-        maxit = 100
-        kmax=1
-        i=1
-        while(i < maxit){
-            tree2<- rNNI(tree, moves=nTips/3, n=1)
-            #tree <- rSPR(tree, moves=10, k=3, n=1)
-            #                obj2 = update(obj, tree=tree)
-            #                obj2 <- optim.pml(obj2, TRUE, control = control)
-            swap = 1
-#            browser()
-            ll2 <- pml.fit(tree2, data, bf, shape = shape, k = k, Q = Q, 
-                           levels = attr(data, "levels"), inv = inv, rate = rate, 
-                           g = g, w = w, eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, 
-                           wMix = wMix, site = FALSE)
-
-            while(swap>0){
-                tmp <- pml.nni(tree2, data, w, g, eig, bf, ll.0, ll=ll2, ...) 
-                swap = tmp$swap
-                res <- optimEdge(tmp$tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, control = pml.control(epsilon = 1e-08, maxit = 3, trace=0)) 
-                ll2 = res[[2]] 
-#                print(ll2)
-#                print(swap)
-                tree2 <- res[[1]]
-            }
-
-            if(ll2 > ll){
-                tree <- tree2
-                ll <- ll2
-                kmax=1
-            } 
-            else kmax = kmax+1
-            if(trace > 0) print(paste("Ratchet iteration ", i,", best pscore so far:",ll))
-            i=i+1
-            if(kmax > maxR) i <- maxit
-        }  
-        optNni = TRUE
-        ratchet=FALSE
-        rounds = 1
+            maxR = 10
+            maxit = 100
+            kmax=1
+            i=1
+            while(i < maxit){
+                tree2<- rNNI(tree, moves=nTips/3, n=1)
+                #tree <- rSPR(tree, moves=10, k=3, n=1)
+                #                obj2 = update(obj, tree=tree)
+                #                obj2 <- optim.pml(obj2, TRUE, control = control)
+                swap = 1
+                #            browser()
+                ll2 <- pml.fit(tree2, data, bf, shape = shape, k = k, Q = Q, 
+                               levels = attr(data, "levels"), inv = inv, rate = rate, 
+                               g = g, w = w, eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, 
+                               wMix = wMix, site = FALSE)
+                
+                while(swap>0){
+                    tmp <- pml.nni(tree2, data, w, g, eig, bf, ll.0, ll=ll2, ...) 
+                    swap = tmp$swap
+                    res <- optimEdge(tmp$tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, control = pml.control(epsilon = 1e-08, maxit = 3, trace=0)) 
+                    ll2 = res[[2]] 
+                    #                print(ll2)
+                    #                print(swap)
+                    tree2 <- res[[1]]
+                }
+                
+                if(ll2 > ll){
+                    tree <- tree2
+                    ll <- ll2
+                    kmax=1
+                } 
+                else kmax = kmax+1
+                if(trace > 0) print(paste("Ratchet iteration ", i,", best pscore so far:",ll))
+                i=i+1
+                if(kmax > maxR) i <- maxit
+            }  
+            optNni = TRUE
+            ratchet=FALSE
+            rounds = 1
         }
-    rounds = rounds + 1
-    if(rounds > control$maxit) opti <- FALSE
-    if (( ll1 - ll ) / ll  < control$eps) #abs(ll1 - ll)
-        opti <- FALSE
-    ll1 = ll
+        rounds = rounds + 1
+        if(rounds > control$maxit) opti <- FALSE
+        if (( ll1 - ll ) / ll  < control$eps) #abs(ll1 - ll)
+            opti <- FALSE
+        ll1 = ll
     }  
 }
+
 
 
 
