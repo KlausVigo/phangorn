@@ -4407,6 +4407,7 @@ optim.pml2 <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
             if (swap == 0) 
                 optNni = FALSE
         }
+        epsR <- 1e-8
         if( (ratchet==TRUE) && (optNni == FALSE) ){
             #            likelihoodRatchet <- function(obj, maxit=100, k=10, 
             #                                      control=pml.control(epsilon = 1e-08, maxit = 10, trace = 1L)){
@@ -4440,7 +4441,7 @@ optim.pml2 <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                     tree2 <- res[[1]]
                 }
                 
-                if(ll2 > ll){
+                if(ll2 > (ll + epsR)){
                     tree <- tree2
                     ll <- ll2
                     kmax=1
@@ -4454,10 +4455,11 @@ optim.pml2 <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
             ratchet=FALSE
             rounds = 1
         }
-        rounds = rounds + 1
+        
         if(rounds > control$maxit) opti <- FALSE
-        if (( ll1 - ll ) / ll  < control$eps) #abs(ll1 - ll)
+        if ((( ll1 - ll ) / ll  < control$eps ) && rounds > 2 ) #abs(ll1 - ll)
             opti <- FALSE
+        rounds = rounds + 1
         ll1 = ll
     }  
 }
