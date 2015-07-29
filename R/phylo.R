@@ -4013,6 +4013,38 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV,
 }
 
 
+# maybe into treeManipulation
+addAllTips <- function(tree, mapping){
+    tree2 <- tree
+    uni <- unique(mapping[,2])
+    for(i in uni)
+        tree2 = addTips2Tree(tree2, mapping[mapping[,2]==i,1],i)
+    tree2
+}
+
+
+
+addTips2Tree <- function (tree, tips, where){
+    nTips <- length(tree$tip.label)
+    edge = tree$edge
+    
+    where <- match(where, tree$tip.label)
+    
+    ind = match(where, edge[,2])
+    nt <- as.integer(length(tips))
+    edge[edge>nTips] = edge[edge>nTips]+nt
+    m = max(edge)
+    edge[ind,2] <- m+1L    
+    
+    newEdge <- cbind(m+1L,c(where,(nTips+1L):(nTips+nt)))
+    edge <- rbind(newEdge, edge)
+    storage.mode(edge) <- "integer"
+    if(!is.null(tree$edge.length)) tree$edge.length = c(rep(0, nrow(newEdge)), tree$edge.length)
+    tree$edge = edge
+    tree$Nnode = tree$Nnode + 1L
+    tree$tip.label = c(tree$tip.label, tips)
+    tree
+}    
 
 
 
@@ -4045,7 +4077,9 @@ optim.pml2 <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
             ratchet=TRUE
         }
     }
+    
     if(optNni) {
+        
         if(!is.binary.tree(tree)) 
             tree = multi2di(tree)
         optEdge = TRUE     
