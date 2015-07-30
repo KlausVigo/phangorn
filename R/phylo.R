@@ -4054,7 +4054,7 @@ optim.pml2 <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                         optInv = FALSE, optGamma = FALSE, optEdge = TRUE, optRate = FALSE, optRooted=FALSE, 
                         optRatchet = FALSE, 
                         control = pml.control(epsilon = 1e-8, maxit = 10, trace = 1L), 
-                        model = NULL, subs = NULL, ...) 
+                        model = NULL, subs = NULL, ratchet.par = list(prop = 1/3, iter = 10L, maxit = 100L), ...) 
 {
     extras <- match.call(expand.dots = FALSE)$...
     pmla <- c("wMix", "llMix")
@@ -4415,12 +4415,12 @@ optim.pml2 <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
             #            nTips <- length(tree$tip.label)
             #            trace = control$trace
             #            control$trace = trace-1L
-            maxR = 10
-            maxit = 100
+            maxR = ratchet.par$iter
+            maxit = ratchet.par$maxit
             kmax=1
             i=1
             while(i < maxit){
-                tree2<- rNNI(tree, moves=nTips/3, n=1)
+                tree2<- rNNI(tree, moves=round(nTips * ratchet.par$prop), n=1)
                 #tree <- rSPR(tree, moves=10, k=3, n=1)
                 #                obj2 = update(obj, tree=tree)
                 #                obj2 <- optim.pml(obj2, TRUE, control = control)
