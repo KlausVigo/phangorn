@@ -60,7 +60,7 @@ data = simSeq(tree, l = 10, type="DNA", bf=c(.1,.2,.3,.4), Q=1:6)
 as.character(data)
 
 # Example to simulate discrete Gamma rate variation
-rates = phangorn:::discrete.gamma(1,4)
+rates = discrete.gamma(1,4)
 data1 = simSeq(tree, l = 100, type="AA", model="WAG", rate=rates[1])
 data2 = simSeq(tree, l = 100, type="AA", model="WAG", rate=rates[2])
 data3 = simSeq(tree, l = 100, type="AA", model="WAG", rate=rates[3])
