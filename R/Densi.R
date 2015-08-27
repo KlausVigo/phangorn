@@ -105,7 +105,7 @@ my.supertree<-function(trees,method=c("pratchet","optim.parsimony"), trace=0, ..
 
 
 # we want a rooted supertree
-superTree = function(tree, method="optim.parsimony", rooted=TRUE, ...){
+superTree = function(tree, method="pratchet", rooted=FALSE, ...){
   fun = function(x){
     x=reorder(x, "postorder")
     nTips = length(x$tip)
@@ -156,6 +156,7 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL, op
   if(class(x)!="multiPhylo")stop("x must be of class multiPhylo")
   compressed <- ifelse(is.null(attr(x, "TipLabel")), FALSE, TRUE)
   if(is.null(consensus))consensus <- superTree(x)
+  alpha <- max(alpha, .002)
   consensus = reorder(consensus, "postorder")
   e2 = reorder(consensus)$edge[,2]
   nTip = as.integer(length(consensus$tip))
