@@ -105,7 +105,7 @@ my.supertree<-function(trees,method=c("pratchet","optim.parsimony"), trace=0, ..
 
 
 # we want a rooted supertree
-superTree = function(tree, method="optim.parsimony", rooted=TRUE, ...){
+superTree = function(tree, method="pratchet", rooted=TRUE, ...){
   fun = function(x){
     x=reorder(x, "postorder")
     nTips = length(x$tip)
