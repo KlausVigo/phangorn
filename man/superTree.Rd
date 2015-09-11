@@ -8,7 +8,7 @@ Super Tree and Species Tree methods
 \description{
 These function \code{superTree} allows the estimation of a rooted supertree from a set of rooted trees using Matrix representation parsimony.  \code{coalSpeciesTree} estimates species trees and can multiple individuals per species.}
 \usage{
-superTree(tree, method = "optim.parsimony", rooted=TRUE, ...)
+superTree(tree, method = "pratchet", rooted=TRUE, ...)
 coalSpeciesTree(tree, X, sTree = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
