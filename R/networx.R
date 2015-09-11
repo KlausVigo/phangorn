@@ -507,25 +507,48 @@ splits2design <- function(obj, weight=NULL){
 }
 
 
+hC <- function(g, set){
+    intersec = NULL
+    allEdges = NULL
+    fromTo <- set
+    l = length(set)
+    sptmp = shortest_paths(g, fromTo[l], fromTo[1], output=c("epath"))$epath[[1]]
+    sptmp = as.vector(sptmp)
+    allEdges = sptmp
+    for(i in 2:length(set)){
+        sptmp = shortest_paths(g, fromTo[i-1], fromTo[i], output=c("epath"))$epath[[1]]
+        sptmp = as.vector(sptmp)
+        intersec = c(intersec, intersect(allEdges, sptmp) )
+        allEdges = c(allEdges, sptmp)
+    }
+    #    allEdges = unique(allEdges)
+    list(allEdges, unique(allEdges), intersec)
+}   
+
+
 addEdge <- function(network, desc, spl){   
     edge <- network$edge
     parent <- edge[,1]
     child <- edge[,2]
     nTips <- length(network$tip.label)
 
-    desc2 = SHORTwise(desc, nTips)    
+    desc2 <- SHORTwise(desc, nTips)    
     split <- desc2[spl]
         
-    index = network$splitIndex
-    ind = which(compatible2(split, desc2[index]) == 1)
+    index <- network$splitIndex
+    ind <- which(compatible2(split, desc2[index]) == 1)
     if(is.null(ind)) return(network)
-    add = TRUE
+    add <- TRUE
   
-    X = as.matrix(desc2)
-    rsX = rowSums(X)
-    z = X %*% X[spl,]
-    v = which((rsX == z)[index] == TRUE) 
+    X <- as.matrix(desc2)
+    rsX <- rowSums(X)
+    z <- X %*% X[spl,]
+    v <- which((rsX == z)[index] == TRUE) 
 
+    
+# intersection of shortest pathes of both partitions
+# best with similar to circNetwork with shortest_paths 
+    
     while(add){
         tmp = ind
         for(i in ind){          
@@ -538,6 +561,21 @@ addEdge <- function(network, desc, spl){
         }
         ind=tmp
     }    
+   
+
+    g = graph(t(network$edge[ind,]), directed=FALSE)
+    dec = decompose(g, min.vertices = 2)
+#    browser()
+    #    fromTo <- sort(match(split[[1]], attr(desc, "cycle")))
+    
+    #    sptmp = shortest_paths(g, fromTo[i-1], fromTo[i], 
+    #                           output=c("epath"))$epath[[1]]
+    #    sp2 = c(sp2, sptmp[-c(1, length(sptmp))])
+    #    sp0 = c(sp0, sptmp)
+    
+    
+     
+    
     oldNodes = unique(as.vector(edge[ind,]))
     mNodes = max(network$edge)
     newNodes = (mNodes+1L) : (mNodes+length(oldNodes))
@@ -814,6 +852,38 @@ consensusNet <- function (obj, prob = 0.3, ...)
 addConfidences <- function (obj, phy) UseMethod("addConfidences")
 
 
+changeOrder <- function(x, labels){
+    oldL <- attr(x, "labels")
+    ind <- match(oldL,labels)
+    for(i in 1:length(x))
+        x[[i]] <- sort(ind[x[[i]]])
+    if(!is.null(attr(x, "cycle")))
+        attr(x, "cycle") <- ind[attr(x, "cycle")]
+    attr(x, "labels") <- labels
+    x    
+}
+
+
+addConfidences.splitsNew <- function(obj, phy){
+    tiplabel <- attr(obj, "label")
+    nTips = length(tiplabel)
+    obj = addTrivialSplits(obj) 
+    if(class(phy) == "phylo"){
+        ind <- match(tiplabel, phy$tip.label)
+        if (any(is.na(ind)) | length(tiplabel) != length(phy$tip.label)) 
+            stop("trees have different labels")
+        phy$tip.label <- phy$tip.label[ind]
+        ind2 <- match(1:length(ind), phy$edge[, 2])
+        phy$edge[ind2, 2] <- order(ind)
+        
+    }
+    spl <- as.splits(phy)
+    spl <- changeOrder(spl, tiplabel)
+    spl <- SHORTwise(spl, nTips)
+    ind <- match(SHORTwise(obj, nTips), spl)
+    ind 
+}
+
 
 addConfidences.splits <- function(obj, phy){
     tiplabel <- attr(obj, "label")
@@ -1000,8 +1070,6 @@ plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRU
     
     chk <- FALSE
     
-    
-    
     if(type=="3D") chk <- requireNamespace("rgl", quietly = TRUE) #.check.pkg("rgl")
     if(!chk && type=="3D"){
         warning("type=\"3D\" requires the package \"rgl\"\n, plotting =\"2D\" instead!\n")
@@ -1044,8 +1112,8 @@ plotRGL <- function(coords, net, show.tip.label=TRUE,
     z = coords[,3]
      
     nTips = length(net$tip.label)
-    
-    segments3d(x[t(edge)],y[t(edge)],z[t(edge)], col=edge.color, lwd=edge.width) 
+  
+    segments3d(x[t(edge)],y[t(edge)],z[t(edge)], col=rep(edge.color, each=2), lwd=edge.width) 
     radius=0
     if(show.nodes){
         radius = sqrt((max(x)-min(x))^2 + (max(y)-min(y))^2 + (max(z)-min(z))^2) / 200    
@@ -1267,7 +1335,7 @@ read.nexus.splits <- function(file)
     semico <- grep(";", X)
     X=gsub("\\[(.*?)\\]", "", X) # get rid of comments
     i1 <- grep("TAXLABELS", X, ignore.case = TRUE)    
-    taxlab <- TRUE 
+    taxlab <- ifelse(length(i1)>0, TRUE, FALSE) 
     if (taxlab) {
         end <- semico[semico > i1][1]
         x <- X[(i1 + 1):end] # assumes there's a 'new line' after "TRANSLATE"
