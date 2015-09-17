@@ -14,7 +14,7 @@ for nucleotide and amino acid models.
 \usage{
 dist.hamming(x, ratio = TRUE, exclude="none")
 dist.logDet(x)
-dist.ml(x, model="JC69", exclude="none", bf=NULL, Q=NULL, ...)
+dist.ml(x, model="JC69", exclude="none", bf=NULL, Q=NULL, k = 1L, shape = 1, ...)
 readDist(file)
 writeDist(dm, file="")
 }
@@ -25,6 +25,8 @@ writeDist(dm, file="")
   \item{exclude}{One of "none", "all", "pairwise" indicating whether to delete the sites with missing data (or ambigious states). The default is handle missing data as in pml.}
   \item{bf}{A vector of base frequencies.}
   \item{Q}{A vector containing the lower triangular part of the rate matrix.} 
+  \item{k}{Number of intervals of the discrete gamma distribution.}
+  \item{shape}{Shape parameter of the gamma distribution.}
   \item{\dots}{Further arguments passed to or from other methods.}
   \item{file}{A file name.}
   \item{dm}{A \code{dist} object.}
