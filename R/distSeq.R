@@ -70,7 +70,96 @@ dist.hamming <- function (x, ratio = TRUE, exclude = "none")
 
 
 
-dist.ml <- function (x, model = "JC69", exclude = "none", bf = NULL, Q = NULL, ...) 
+dist.ml <- function (x, model = "JC69", exclude = "none", bf = NULL, Q = NULL, k=1L, shape=1, ...) 
+{
+    if (class(x) != "phyDat") 
+        stop("x has to be element of class phyDat")
+    l = length(x)
+    d = numeric((l * (l - 1))/2)
+    v = numeric((l * (l - 1))/2)
+    contrast <- attr(x, "contrast")
+    nc <- as.integer(attr(x, "nc"))
+    nr <- as.integer(attr(x, "nr"))
+    con = rowSums(contrast > 0) < 2
+    if (exclude == "all") {
+        index = con[x[[1]]]
+        for (i in 2:l) index = index & con[x[[i]]]
+        index = which(index)
+        x = subset(x, , index)
+    }
+    #    model <- match.arg(model, c("JC69", "WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24"))
+    model <- match.arg(model, c("JC69", .aamodels))
+    #    if (!is.na(match(model, c("WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24")))) 
+    if (!is.na(match(model, .aamodels))) 
+        getModelAA(model, bf = is.null(bf), Q = is.null(Q))
+    if (is.null(bf)) 
+        bf <- rep(1/nc, nc)
+    if (is.null(Q)) 
+        Q <- rep(1, (nc - 1) * nc/2L)
+    
+    bf = as.double(bf)
+    eig <- edQt(Q = Q, bf = bf)
+    pos = 1
+    k = as.integer(k)
+    w = as.double(w <- rep(1/k, k))
+    g = as.double(discrete.gamma(shape,k))
+    fun <- function(s) -(nc - 1)/nc * log(1 - nc/(nc - 1) * s)
+    eps <- (nc - 1)/nc
+    n = as.integer(dim(contrast)[1])
+    ind1 = rep(1:n, n:1)
+    ind2 = unlist(lapply(n:1, function(x) seq_len(x) + n - x))
+    li <- as.integer(length(ind1))
+    weight = as.double(attr(x, "weight"))
+    ll.0 = as.double(weight * 0)
+    if (exclude == "pairwise") {
+        index = con[ind1] & con[ind2]
+        index = which(!index)
+    }
+    tmp = (contrast %*% eig[[2]])[ind1, ] * (contrast %*% (t(eig[[3]]) * bf))[ind2, ]
+    tmp2 = vector("list", k)
+    wdiag = .Call("PWI", as.integer(1:n), as.integer(1:n), as.integer(n), 
+                  as.integer(n), rep(1, n), as.integer(li), PACKAGE = "phangorn")
+    wdiag = which(wdiag > 0)
+    
+    tmp2 = vector("list", k)
+    for (i in 1:(l - 1)) {
+        for (j in (i + 1):l) {
+            w0 = .Call("PWI", as.integer(x[[i]]), as.integer(x[[j]]), 
+                       nr, n, weight, li, PACKAGE = "phangorn")
+            if (exclude == "pairwise") 
+                w0[index] = 0.0
+            ind = w0 > 0
+            
+            old.el <- 1 - (sum(w0[wdiag])/sum(w0))
+            if (old.el > eps) 
+                old.el <- 10
+            else old.el <- fun(old.el)
+            #        sind = sum(ind)
+            #           browser()
+            
+            for(lk in 1:k) tmp2[[lk]] <- tmp[ind, , drop = FALSE]
+            # FS0 verwenden!!!        
+            res <- .Call("FS5", eig, nc, as.double(old.el), w, g, tmp2, as.integer(k), as.integer(sum(ind)), 
+                         bf, w0[ind], ll.0[ind], PACKAGE = "phangorn")
+            d[pos] <- res[1] # res[[1]]
+            v[pos] <- res[2] # res[[2]]
+            pos = pos + 1
+        }
+    }
+    attr(d, "Size") <- l
+    if (is.list(x)) 
+        attr(d, "Labels") <- names(x)
+    else attr(d, "Labels") <- colnames(x)
+    attr(d, "Diag") <- FALSE
+    attr(d, "Upper") <- FALSE
+    attr(d, "call") <- match.call()
+    attr(d, "variance") <- v
+    class(d) <- "dist"
+    return(d)
+}
+
+
+dist.mlOld <- function (x, model = "JC69", exclude = "none", bf = NULL, Q = NULL, ...) 
 {
     if (class(x) != "phyDat") 
         stop("x has to be element of class phyDat")
