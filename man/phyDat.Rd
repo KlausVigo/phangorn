@@ -45,7 +45,9 @@ baseFreq(obj, freq=FALSE, drop.unused.levels=FALSE)
   \item{levels}{Level attributes.}
   \item{return.index}{If TRUE returns a index of the site patterns.}
   \item{file}{A file name.}
-  \item{format}{File format of the sequence alignment (see details).}
+  \item{format}{File format of the sequence alignment (see details).
+  Several popular formats are supported: "phylip", "interleaved", "sequential", "clustal", "fasta" or "nexus", or any unambiguous abbreviation of these. 
+  }
   \item{n}{Number of sequences.}
   \item{names}{Names of sequences.}
   \item{subset}{a subset of taxa.}

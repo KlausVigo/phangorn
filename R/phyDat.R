@@ -684,6 +684,10 @@ write.phyDat <- function(x, file, format="phylip",...){
 
 
 read.phyDat <- function(file, format="phylip", type="DNA", ...){
+    
+    formats <- c("phylip", "nexus", "interleaved", "sequential", "fasta", "clustal")
+    format <- match.arg(tolower(format), formats)
+    
     if(format=="nexus") data=read.nexus.data(file, ...)
     else {
         if(format=="phylip")format="interleaved"  #"sequential"
