@@ -343,6 +343,17 @@ phyDat2alignment <-  function(x){
 }
 
 
+as.phyDat.MultipleAlignment <- function(x){
+    if(inherits(x, "DNAMultipleAlignment"))
+        res <- phangorn:::phyDat.DNA(as.matrix(x))
+    if(inherits(x, "RNAMultipleAlignment"))
+        res <- phangorn:::phyDat.DNA(as.matrix(x))
+    if(inherits(x, "RNAMultipleAlignment"))
+        res <- phangorn:::phyDat.AA(as.matrix(x))
+    res
+}
+
+
 as.phyDat.matrix <- function (x, ...) phyDat(data=x, ...)
 
 
