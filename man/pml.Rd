@@ -11,8 +11,9 @@ different model parameters.
 \usage{
 pml(tree, data, bf=NULL, Q=NULL, inv=0, k=1, shape=1, rate=1, model="", ...)     
 optim.pml(object, optNni=FALSE, optBf=FALSE, optQ=FALSE, optInv=FALSE, optGamma=FALSE,
-    optEdge=TRUE, optRate=FALSE, optRooted=FALSE, control = pml.control(epsilon=1e-08, 
-    maxit=10, trace=1), model = NULL, subs = NULL, ...)  
+    optEdge=TRUE, optRate=FALSE, optRooted=FALSE, optRatchet = FALSE, 
+    control = pml.control(epsilon=1e-08, maxit=10, trace=1), model = NULL, 
+    subs = NULL, ratchet.par = list(prop = 1/3, iter = 10L, maxit = 100L),...)  
 pml.control(epsilon = 1e-08, maxit = 10, trace = 1)
 }
 \arguments{
@@ -34,6 +35,8 @@ pml.control(epsilon = 1e-08, maxit = 10, trace = 1)
   \item{optEdge}{Logical value indicating the edge lengths gets optimized.}
   \item{optRate}{Logical value indicating the overall rate gets optimized.}
   \item{optRooted}{Logical value indicating if the edge lengths of a rooted tree get optimized.}
+  \item{optRatchet}{Stochastic tree search.}
+  \item{ratchet.par}{search parameter for stochastic search}
   \item{control}{A list of parameters for controlling the fitting process.}
   \item{subs}{A (integer) vector same length as Q to specify the optimization of Q}
   \item{\dots}{Further arguments passed to or from other methods.}
@@ -73,6 +76,9 @@ for the most outer loop, this affects \code{pmlCluster}, \code{pmlPart} and \cod
 heuristics which works reasonalby for small and large trees or alignments. 
 If \code{trace} is set to zero than no out put is shown, if functions are called internally 
 than the trace is decreased by one, so a higher of trace produces more feedback. 
+
+\code{optRatchet} implements a stochastic search algorithm similar to Nguyen et al. (2015). 
+This should helps often to find better tree topologies.   
 }
 \value{
 Returns a list of class \code{ll.phylo}
@@ -112,6 +118,9 @@ replacement for Arthropoda. \emph{Molecular Biology and Evolution}, \bold{24}, 1
 
 Kosiol, C, and Goldman, N (2005) Different versions of the Dayhoff rate matrix -                               
 \emph{Molecular Biology and Evolution}, \bold{22}, 193--199 
+
+L.-T. Nguyen, H.A. Schmidt, A. von Haeseler, and B.Q. Minh (2015) IQ-TREE: A fast and effective stochastic algorithm for estimating maximum likelihood phylogenies. \emph{Molecular Biology and Evolution}, \bold{32}, 268--274.
+
 }
 \author{Klaus Schliep \email{klaus.schliep@gmail.com}}
 \seealso{

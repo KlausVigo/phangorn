@@ -819,7 +819,8 @@ pml.control <- function (epsilon = 1e-08, maxit = 10, trace = 1)
 }
 
 
-optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE, 
+
+optim.pmlOld <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE, 
     optInv = FALSE, optGamma = FALSE, optEdge = TRUE, optRate = FALSE, optRooted=FALSE, 
     control = pml.control(epsilon = 1e-8, maxit = 10, trace = 1L), 
     model = NULL, subs = NULL, ...) 
@@ -1152,7 +1153,6 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     object$call = call   
     object
 }
-
 
 # improves trees similar to 
 likelihoodRatchet <- function(obj, maxit=100, k=10, 
@@ -2895,7 +2895,6 @@ optNNI <- function(fit, INDEX){
 # nicht elegant, spaeter auch raus       
        tmp = length(tree$tip.label)
        for(i in 1:length(w)).dat[i,1:tmp]=new2old.phyDat(data)       
-#       datp = rnodes(fit) # raus
        
        evector <- numeric(max(parent))
        evector[child] <- tree$edge.length
@@ -4050,7 +4049,7 @@ addTips2Tree <- function (tree, tips, where){
 
 
 
-optim.pml2 <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE, 
+optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE, 
                         optInv = FALSE, optGamma = FALSE, optEdge = TRUE, optRate = FALSE, optRooted=FALSE, 
                         optRatchet = FALSE, 
                         control = pml.control(epsilon = 1e-8, maxit = 10, trace = 1L), 
@@ -4425,7 +4424,6 @@ optim.pml2 <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                 #                obj2 = update(obj, tree=tree)
                 #                obj2 <- optim.pml(obj2, TRUE, control = control)
                 swap = 1
-                #            browser()
                 ll2 <- pml.fit(tree2, data, bf, shape = shape, k = k, Q = Q, 
                                levels = attr(data, "levels"), inv = inv, rate = rate, 
                                g = g, w = w, eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, 
@@ -4436,8 +4434,6 @@ optim.pml2 <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                     swap = tmp$swap
                     res <- optimEdge(tmp$tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, control = pml.control(epsilon = 1e-08, maxit = 3, trace=0)) 
                     ll2 = res[[2]] 
-                    #                print(ll2)
-                    #                print(swap)
                     tree2 <- res[[1]]
                 }
                 
