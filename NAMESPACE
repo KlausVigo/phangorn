@@ -6,7 +6,7 @@ importFrom(ape, as.DNAbin, as.phylo, plot.phylo, as.prop.part, nj,old2new.phylo,
     postprocess.prop.part, speciesTree, plotPhyloCoor, cladogram.plot, phylogram.plot,
     node.depth.edgelength, drop.tip, stree, rtree, is.ultrametric, .PlotPhyloEnv,
     nodelabels, edgelabels, BOTHlabels, read.nexus.data, write.nexus.data, 
-    read.dna, write.dna, reorder.phylo, dist.nodes, collapse.singles, rotate)
+    read.dna, write.dna, reorder.phylo, dist.nodes, collapse.singles, rotate, prop.clades)
 importFrom(igraph, graph, graph_from_adjacency_matrix, layout_with_kk, plot.igraph,
     shortest_paths, set.edge.attribute, set_edge_attr, decompose,
     vcount, graph.edgelist, graph_from_edgelist, topo_sort) 

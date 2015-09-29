@@ -804,6 +804,15 @@ removeUndeterminedSites <- function(x, use.contrast=TRUE, undetermined=c("?", "n
 }
 
 
+removeParsUninfoSites <- function(data){
+    nr <- attr(data, "nr")
+    pis <- parsinfo(data)
+    if (length(pis) > 0) 
+        data <- getRows(data, c(1:nr)[-pis[, 1]], TRUE)
+}
+
+
+
 allSitePattern <- function(n,levels=c("a","c","g","t"), names=NULL){
     l=length(levels)
     X=vector("list", n)

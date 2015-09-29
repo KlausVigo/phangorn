@@ -3133,6 +3133,52 @@ checkLabels <- function(tree, tip){
 
 
 plotBS <- function (tree, BStrees, type = "unrooted", bs.col = "black", 
+                    bs.adj = NULL, p=80, ...) 
+{
+    type <- match.arg(type, c("phylogram", "cladogram", "fan", 
+                              "unrooted", "radial"))
+    if (type == "phylogram" | type == "cladogram") {
+        if (!is.rooted(tree) & !is.null(tree$edge.length)) 
+            tree2 = midpoint(tree)
+        else tree2=tree
+        plot(tree2, type = type, ...)
+    }
+    else plot(tree, type = type, ...)
+    BStrees <- .uncompressTipLabel(BStrees)
+    if(any(lapply(BStrees, is.rooted))){
+        BStrees <- lapply(BStrees, unroot)   
+    }
+    x = prop.clades(tree, BStrees)
+    x = round((x/length(BStrees)) * 100)
+    tree$node.label = x
+    label = c(rep(0, length(tree$tip)), x)
+    ind <- get("last_plot.phylo", envir = .PlotPhyloEnv)$edge[, 
+                                                              2]
+    if (type == "phylogram" | type == "cladogram") {
+        root = getRoot(tree)
+        label = c(rep(0, length(tree$tip)), x)
+        label[root] = 0
+        ind2 = matchEdges(tree2, tree)
+        label = label[ind2]
+        ind = which(label > p)
+        #        browser()
+        if (is.null(bs.adj)) 
+            bs.adj = c(1, 1)
+        if(length(ind)>0)nodelabels(text = label[ind], node = ind, frame = "none", 
+                                    col = bs.col, adj = bs.adj, ...)
+    }
+    else {
+        if (is.null(bs.adj)) 
+            bs.adj = c(0.5, 0.5)
+        ind2 = which(label[ind]>p)
+        if(length(ind2>0))edgelabels(label[ind][ind2],ind2, frame = "none", col = bs.col, 
+                                     adj = bs.adj, ...)
+    }
+    invisible(tree)
+}
+
+
+plotBS.Old <- function (tree, BStrees, type = "unrooted", bs.col = "black", 
           bs.adj = NULL, p=80, ...) 
 {
     # prop.clades raus??
