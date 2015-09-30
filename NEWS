@@ -1,9 +1,22 @@
      CHANGES in PHANGORN VERSION 2.0.0
 
+NEW FEATURES    
+    
+    o as.phyDat.MultipleAlignment
+    
+    o dist.ml can compute distances using a discrete gamma model
+
+BUG FIXES
+
+    plotBS may double counted edges when rooted trees were in the sample 
+    
 OTHER CHANGES
 
+    o more unit tests
     
-    
+
+
+
 
      CHANGES in PHANGORN VERSION 1.99.14
  
