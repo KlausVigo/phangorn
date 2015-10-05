@@ -28,7 +28,7 @@ neighborNet(x, ord = NULL)
 Bryant, D. & Moulton, V. (2004) Neighbor-Net: An Agglomerative Method for the Construction of Phylogenetic Networks. \emph{Molecular Biology and Evolution}, 2004, \bold{21}, 255-265
 }
 \seealso{
-\code{\link{splitsNetwork}}, \code{\link{consensusNet}}, \code{\link{plot.networx}}, \code{\link{lento}}
+\code{\link{splitsNetwork}}, \code{\link{consensusNet}}, \code{\link{plot.networx}}, \code{\link{lento}}, \code{\link{cophenetic.networx}}
 }
 \examples{
 data(yeast)
