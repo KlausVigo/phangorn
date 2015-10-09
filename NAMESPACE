@@ -29,6 +29,10 @@ importFrom(utils, read.table, download.file, citation, stack, installed.packages
 importFrom(grDevices, rgb, rainbow, adjustcolor)
 importFrom(methods, hasArg)
 importFrom(Rcpp, evalCpp)
+importMethodsFrom(Biostrings,as.matrix)
+importFrom(Biostrings,DNAMultipleAlignment)
+importFrom(Biostrings,RNAMultipleAlignment)
+importFrom(Biostrings,AAMultipleAlignment)
 
 export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UNJ, PNJ, 
     phyDat, cbind.phyDat, read.phyDat, write.phyDat, as.Matrix, as.phyDat, as.splits, as.networx,
@@ -45,7 +49,7 @@ export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UN
     pml.fit, pml.init, pml.free, edQt, lli, cladePar, addConfidences, countCycles, 
     SOWH.test, plot.networx, presenceAbsence, as.networx.splits, addTrivialSplits,
     phyDat2alignment, AICc, readDist, writeDist, discrete.gamma,
-    removeUndeterminedSites)
+    removeUndeterminedSites, phyDat2MultipleAlignment)
 
 S3method('[', splits)          
 S3method(addConfidences, phylo)

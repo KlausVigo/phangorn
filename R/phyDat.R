@@ -354,6 +354,21 @@ as.phyDat.MultipleAlignment <- function(x, ...){
 }
 
 
+as.MultipleAlignment.phyDat <- function(x){
+    z = as.character(x)
+    nam = rownames(z)
+    type = attr(x, "type")
+    seq <- switch(type, 
+                  DNA = tolower(apply(z, 1, paste, collapse="")), 
+                  AA = toupper(apply(z, 1, paste, collapse="")))
+    if(type=="DNA") return(DNAMultipleAlignment(seq))
+    if(type=="AA") return(AAMultipleAlignment(seq))
+}
+
+
+phyDat2MultipleAlignment <- as.MultipleAlignment.phyDat
+
+
 as.phyDat.matrix <- function (x, ...) phyDat(data=x, ...)
 
 

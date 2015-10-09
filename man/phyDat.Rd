@@ -18,6 +18,7 @@
 \alias{unique.phyDat}
 \alias{removeUndeterminedSites}
 \alias{phyDat2alignment}
+\alias{phyDat2MultipleAlignment}
 \title{Conversion among Sequence Formats}
 \description{
 These functions transform several DNA formats into the \code{phyDat} format. 
