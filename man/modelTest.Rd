@@ -9,8 +9,8 @@ Comparison of different substition models
 }
 \usage{
 modelTest(object, tree=NULL, model = c("JC", "F81", "K80", "HKY", "SYM", "GTR"), 
-    G = TRUE, I = TRUE, k = 4, control = pml.control(epsilon = 1e-08, maxit = 10, 
-    trace = 1), multicore = FALSE)
+    G = TRUE, I = TRUE, FREQ = FALSE, k = 4, control = pml.control(epsilon = 1e-08, 
+    maxit = 10, trace = 1), multicore = mc.cores>1L, mc.cores = getOption("mc.cores", 2L))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -19,18 +19,19 @@ modelTest(object, tree=NULL, model = c("JC", "F81", "K80", "HKY", "SYM", "GTR"),
   \item{model}{a vector containing the substitution models to compare with each other}
   \item{G}{logical, TRUE (default) if (discrete) Gamma modelshould be tested}
   \item{I}{logical, TRUE (default) if invariant sites should be tested}
+  \item{FREQ}{logical, FALSE (default) if TRUE amino acid frequencies will be estimated.}
   \item{k}{number of rate classes}
   \item{control}{A list of parameters for controlling the fitting process.}
   \item{multicore}{logical, whether models should estimated in parallel.}
+  \item{mc.cores}{The number of cores to use, i.e. at most how many child processes will be run simultaneously. Must be at least one, and parallelization requires at least two cores.}
 }
 \details{
 \code{modelTest} estimates all the specified models for a given tree and data. 
-When the multicore package is available, the computations are done in parallel.
-This is only possible without GUI interface and under linux.  
-Only nucleotide models are tested so far.  
+When the mclapply is available, the computations are done in parallel.
+This is may not work within a GUI interface and will not work under Windows.  
 }
 \value{
-A data.frame containing the log-likelihood, AIC, AICc and BIC all tested models. 
+A data.frame containing the log-likelihood, number of estimated parameters, AIC, AICc and BIC all tested models. 
 The data.frame has an attributes "env" which is an environment which contains all the trees, the data and the calls to allow get the estimated models, e.g. as a starting point for further analysis (see example).
 }
 \references{
