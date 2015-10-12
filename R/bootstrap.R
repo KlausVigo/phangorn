@@ -1,5 +1,7 @@
-bootstrap.pml = function (x, bs = 100, trees = TRUE, multicore=FALSE,  ...) 
+bootstrap.pml = function (x, bs = 100, trees = TRUE, mc.cores = getOption("mc.cores", 2L), ...) 
 {
+#    multicore=FALSE,
+    multicore <- mc.cores > 1L
     data = x$data
     weight = attr(data, "weight")
     v = rep(1:length(weight), weight)
@@ -23,13 +25,14 @@ bootstrap.pml = function (x, bs = 100, trees = TRUE, multicore=FALSE,  ...)
     eval.success <- FALSE
     if (!eval.success & multicore) {
         #  !require(parallel) ||      
-        if (.Platform$GUI!="X11") {
-            warning("package 'parallel' not found or GUI is used, 
-                    bootstrapping is performed in serial")
-        } else {       
-            res <- mclapply(BS, pmlPar, x, trees = trees, ...)
+#        if (.Platform$GUI!="X11") {
+#            warning("package 'parallel' not found or GUI is used, 
+#                    bootstrapping is performed in serial")
+#        } 
+#        else {       
+            res <- mclapply(BS, pmlPar, x, trees = trees, ..., mc.cores = mc.cores)
             eval.success <- TRUE
-        } 
+#        } 
     }
     if (!eval.success) res <- lapply(BS, pmlPar, x, trees = trees, ...)
     if (trees) {
@@ -40,7 +43,7 @@ bootstrap.pml = function (x, bs = 100, trees = TRUE, multicore=FALSE,  ...)
 }
 
 
-bootstrap.phyDat <- function (x, FUN, bs = 100, mc.cores=1L, ...) 
+bootstrap.phyDat <- function (x, FUN, bs = 100, mc.cores=getOption("mc.cores", 2L), ...) 
 {
     weight = attr(x, "weight")
     v = rep(1:length(weight), weight)
