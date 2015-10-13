@@ -100,7 +100,7 @@ plotBS <- function (tree, BStrees, type = "unrooted", bs.col = "black",
     }
     else plot(tree, type = type, ...)
     BStrees <- .uncompressTipLabel(BStrees)
-    if(any(lapply(BStrees, is.rooted))){
+    if(any(unlist(lapply(BStrees, is.rooted)))){
         BStrees <- lapply(BStrees, unroot)   
     }
     x = prop.clades(tree, BStrees)
