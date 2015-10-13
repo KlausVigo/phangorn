@@ -42,7 +42,7 @@ Bailey, C. D., T. G. Carr, S. A. Harris, and C. E. Hughes. (2003) Characterizati
 
 Goeker, M., and G. Grimm. (2008) General functions to transform associate data to host data, and their use in phylogenetic inference from sequences with intra-individual variability. \emph{BMC Evolutionary Biology}, \bold{8}:86. 
 
-Potts, A.J., T.A. Hedderson, and G.W. Grimm. (2013) Constructing phylogenies in the presence of intra-individual site polymorphisms (2ISPs) with a focus on the nuclear ribosomal cistron. \emph{Systematic Biology}, \bold{doi 10.1093/sysbio/syt052}.
+Potts, A.J., T.A. Hedderson, and G.W. Grimm. (2014) Constructing phylogenies in the presence of intra-individual site polymorphisms (2ISPs) with a focus on the nuclear ribosomal cistron. \emph{Systematic Biology}, \bold{63}, 1--16 
 }    
 \author{Klaus Schliep and Alastair Potts}
 
