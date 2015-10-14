@@ -373,14 +373,14 @@ nnls.tree <- function(dm, tree, rooted=FALSE, trace=1){
     Dmat <- crossprod(X) # cross-product computations
     dvec <- crossprod(X, y)
     betahat <- as.vector(solve(Dmat, dvec))
-    
+    betahattmp = betahat
     bhat = numeric(max(tree$edge))
     bhat[as.integer(lab)] = betahat
     betahat = bhat[tree$edge[,1]] - bhat[tree$edge[,2]]
     
     if(!any(betahat<0)){
         if(!rooted){
-            RSS = sum((y-(X%*%betahat))^2)    
+            RSS = sum((y-(X%*%betahattmp))^2)    
             if(trace)print(paste("RSS:", RSS))
             attr(tree, "RSS") = RSS
         }
