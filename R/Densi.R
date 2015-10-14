@@ -156,6 +156,8 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL, op
   if(class(x)!="multiPhylo")stop("x must be of class multiPhylo")
   compressed <- ifelse(is.null(attr(x, "TipLabel")), FALSE, TRUE)
   if(is.null(consensus))consensus <- superTree(x)
+  if(class(consensus)=="multiPhylo") consensus = consensus[[1]]
+  type <- match.arg(type, c("phylogram", "cladogram"))
   consensus = reorder(consensus, "postorder")
   e2 = reorder(consensus)$edge[,2]
   nTip = as.integer(length(consensus$tip))
