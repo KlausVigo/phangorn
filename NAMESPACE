@@ -28,7 +28,7 @@ importFrom(graphics, plot.new, plot.window, text, par, plot, abline, strwidth, a
 importFrom(utils, read.table, download.file, citation, stack, installed.packages, write.table) 
 importFrom(grDevices, rgb, rainbow, adjustcolor)
 importFrom(methods, hasArg)
-importFrom(Rcpp, evalCpp)
+#importFrom(Rcpp, evalCpp)
 importMethodsFrom(Biostrings,as.matrix)
 importFrom(Biostrings,DNAMultipleAlignment)
 importFrom(Biostrings,RNAMultipleAlignment)
