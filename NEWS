@@ -2,9 +2,11 @@
 
 NEW FEATURES    
     
-    o as.phyDat.MultipleAlignment
+    o as.phyDat.MultipleAlignment 
     
     o dist.ml can compute distances using a discrete gamma model
+    
+      and the "F81" model.
 
 BUG FIXES
 
@@ -14,7 +16,7 @@ OTHER CHANGES
 
     o more unit tests
     
-
+    o baseFreq got additional parameter 'all' similar to base.freq in ape 
 
 
 
