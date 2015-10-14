@@ -88,10 +88,11 @@ dist.ml <- function (x, model = "JC69", exclude = "none", bf = NULL, Q = NULL, k
         x = subset(x, , index)
     }
     #    model <- match.arg(model, c("JC69", "WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24"))
-    model <- match.arg(model, c("JC69", .aamodels))
+    model <- match.arg(model, c("JC69", "F81", .aamodels))
     #    if (!is.na(match(model, c("WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24")))) 
     if (!is.na(match(model, .aamodels))) 
         getModelAA(model, bf = is.null(bf), Q = is.null(Q))
+    if(is.null(bf) && model=="F81") bf <- baseFreq(x)
     if (is.null(bf)) 
         bf <- rep(1/nc, nc)
     if (is.null(Q)) 
