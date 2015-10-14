@@ -38,7 +38,7 @@ write.phyDat(x, file, format="phylip",...)
 phyDat2alignment(x)
 allSitePattern(n, levels=c("a","c","g","t"), names=NULL)
 acgt2ry(obj)
-baseFreq(obj, freq=FALSE, drop.unused.levels=FALSE)
+baseFreq(obj, freq=FALSE, all=FALSE, drop.unused.levels=FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -59,6 +59,7 @@ baseFreq(obj, freq=FALSE, drop.unused.levels=FALSE)
   \item{allLevels}{return original data.} 
   \item{obj}{as object of class phyDat}
   \item{freq}{logical, if 'TRUE', frequencies or counts are returned otherwise proportions}
+  \item{all}{all a logical; if all = TRUE, all counts of bases, ambiguous codes, missing data, and alignment gaps are returned as defined in the contrast.}
   \item{drop.unused.levels}{logical, drop unused levels}  
   \item{...}{further arguments passed to or from other methods.}
 }
@@ -100,6 +101,7 @@ data(Laurasiatherian)
 class(Laurasiatherian)
 Laurasiatherian
 baseFreq(Laurasiatherian)
+baseFreq(Laurasiatherian, all=TRUE)
 subset(Laurasiatherian, subset=1:5)
 # transform into old ape format
 LauraChar <- as.character(Laurasiatherian)
