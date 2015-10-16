@@ -17,7 +17,8 @@ importFrom(igraph, graph, graph_from_adjacency_matrix, layout_with_kk, plot.igra
 importFrom(Matrix, Matrix, sparseMatrix, spMatrix, crossprod, solve) #, %*%
 #importFrom(fastmatch, fmatch)
 importFrom(nnls, nnls)
-importFrom(parallel, mclapply)
+#importFrom(parallel, mclapply, detectCores)
+import(parallel)
 importFrom(quadprog, solve.QP, solve.QP.compact)
 #importFrom(rgl, open3d, segments3d, spheres3d, rgl.texts)
 importFrom(stats, AIC, logLik, reorder, update, optim, optimize, constrOptim, na.omit, 

@@ -1,9 +1,12 @@
 modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80", 
     "HKY", "SYM", "GTR"), G = TRUE, I = TRUE, FREQ=FALSE, k = 4, 
     control = pml.control(epsilon = 1e-08, maxit = 10, trace = 1), 
-    multicore = mc.cores > 1L, mc.cores = getOption("mc.cores", 2L)) 
+    multicore = FALSE, mc.cores = NULL) 
 {    
 #    multicore = mc.cores > 1L
+    if(multicore && is.null(mc.cores)){
+        mc.cores <- detectCores()
+    }
     if (class(object) == "phyDat") 
         data = object
     if (class(object) == "pml") {

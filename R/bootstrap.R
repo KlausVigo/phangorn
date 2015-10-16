@@ -1,7 +1,12 @@
-bootstrap.pml = function (x, bs = 100, trees = TRUE, mc.cores = getOption("mc.cores", 2L), ...) 
+bootstrap.pml = function (x, bs = 100, trees = TRUE, multicore=FALSE, mc.cores = NULL, ...) 
 {
 #    multicore=FALSE,
-    multicore <- mc.cores > 1L
+#    multicore <- mc.cores > 1L
+    
+    if(multicore && is.null(mc.cores)){
+        mc.cores <- detectCores()
+    }
+    
     data = x$data
     weight = attr(data, "weight")
     v = rep(1:length(weight), weight)
@@ -43,8 +48,11 @@ bootstrap.pml = function (x, bs = 100, trees = TRUE, mc.cores = getOption("mc.co
 }
 
 
-bootstrap.phyDat <- function (x, FUN, bs = 100, mc.cores=getOption("mc.cores", 2L), ...) 
+bootstrap.phyDat <- function (x, FUN, bs = 100, multicore=FALSE, mc.cores = NULL, ...) 
 {
+    if(multicore && is.null(mc.cores)){
+        mc.cores <- detectCores()
+    }
     weight = attr(x, "weight")
     v = rep(1:length(weight), weight)
     BS = vector("list", bs)
@@ -55,7 +63,8 @@ bootstrap.phyDat <- function (x, FUN, bs = 100, mc.cores=getOption("mc.cores", 2
         attr(data, "weight") <- weights[ind]
         FUN(data,...)        
     }
-    res <- mclapply(BS, fitPar, x, ..., mc.cores = mc.cores) 
+    if(multicore) res <- mclapply(BS, fitPar, x, ..., mc.cores = mc.cores) 
+    else res <- lapply(BS, fitPar, x, ...)
     if(class(res[[1]]) == "phylo"){
         class(res) <- "multiPhylo"   
         res = .compressTipLabel(res) # save memory

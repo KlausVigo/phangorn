@@ -5,12 +5,12 @@
 ModelTest
 }
 \description{
-Comparison of different substition models 
+Comparison of different nucleotide or amino acid substition models 
 }
 \usage{
 modelTest(object, tree=NULL, model = c("JC", "F81", "K80", "HKY", "SYM", "GTR"), 
     G = TRUE, I = TRUE, FREQ = FALSE, k = 4, control = pml.control(epsilon = 1e-08, 
-    maxit = 10, trace = 1), multicore = mc.cores>1L, mc.cores = getOption("mc.cores", 2L))
+    maxit = 10, trace = 1), multicore = FALSE, mc.cores = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

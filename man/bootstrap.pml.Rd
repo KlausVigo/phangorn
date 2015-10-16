@@ -9,8 +9,8 @@ Bootstrap }
 \description{
 \code{bootstrap.pml} performs (non-parametric) bootstrap analysis and \code{bootstrap.phyDat} produces a list of bootstrapped data sets. \code{plotBS} plots a phylogenetic tree with the with the bootstrap values assigned to the (internal) edges.}
 \usage{
-bootstrap.pml(x, bs = 100, trees = TRUE, mc.cores = getOption("mc.cores", 2L), ...)
-bootstrap.phyDat(x, FUN, bs = 100, mc.cores = getOption("mc.cores", 2L), ...)
+bootstrap.pml(x, bs = 100, trees = TRUE, multicore=FALSE, mc.cores = NULL, ...)
+bootstrap.phyDat(x, FUN, bs = 100, multicore=FALSE, mc.cores = NULL, ...)
 plotBS(tree, BStrees, type="unrooted", bs.col="black", bs.adj=NULL, p=80, ...)
 }
 \arguments{
@@ -26,6 +26,7 @@ return trees only (default) or whole \code{pml} objects.
 %  \item{multicore}{
 %logical, if TRUE analysis is performed in parallel (see details).
 %}
+\item{multicore}{logical, whether models should estimated in parallel.}
   \item{mc.cores}{
 The number of cores to use during bootstrap. Only supported on UNIX-alike systems.
 }
