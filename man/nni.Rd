@@ -25,7 +25,7 @@ rNNI(tree, moves=1, n=length(moves))
 }
 \author{ Klaus Schliep \email{klaus.schliep@gmail.com} }
 
-% \seealso{ }
+\seealso{\code{\link{allTrees}}}
 \examples{
 tree = unroot(rtree(20))
 trees1 <- nni(tree)

@@ -38,6 +38,7 @@ For large number of trees RF.dist can use a lot of memory!
 }
 \references{Steel M. A. and Penny P. (1993) \emph{Distributions of tree comparison metrics - some new results}, Syst. Biol.,42(2), 126-141}
 \author{ Klaus P. Schliep \email{klaus.schliep@gmail.com}} 
+\seealso{\code{\link[ape]{dist.topo}}}
 \examples{
 tree1 <- rtree(100, rooted=FALSE)
 tree2 <- rSPR(tree1, 3)

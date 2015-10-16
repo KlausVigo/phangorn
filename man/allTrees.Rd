@@ -19,7 +19,7 @@ allTrees(n, rooted = FALSE, tip.label = NULL)
 }
 \author{ Klaus Schliep \email{klaus.schliep@gmail.com} }
 
-\seealso{\code{\link[ape]{rtree}}}
+\seealso{\code{\link[ape]{rtree}}, \code{\link{nni}}}
 \examples{
 trees <- allTrees(5)
 par(mfrow = c(3,5))

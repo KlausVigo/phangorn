@@ -21,7 +21,7 @@ and \code{ldfactorial(x)} is the natural logarithm of it.
 
 \author{ Klaus Schliep \email{klaus.schliep@gmail.com}  }
 
-\seealso{ \code{\link[base:Special]{factorial}} }
+\seealso{ \code{\link[base:Special]{factorial}}, \code{\link[ape]{howmanytrees}} }
 \examples{
 dfactorial(1:10)
 }
