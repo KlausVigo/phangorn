@@ -33,7 +33,7 @@ All the functions allow \code{node} to be either a scalar or vector.
 \value{
    a vector or a list containing the indices of the nodes. 
 }
-\seealso{\code{treewalk}, \code{phylo}}
+\seealso{\code{treewalk}, \code{\link[ape]{phylo}}, \code{\link[ape]{nodelabels}} }
 \examples{
 tree = rtree(10)
 plot(tree, show.tip.label = FALSE)

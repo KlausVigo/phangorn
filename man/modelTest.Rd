@@ -48,7 +48,7 @@ Darriba D., Taboada G.L., Doallo R and Posada D. (2011) ProtTest 3: fast selecti
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link{pml}}, \code{\link{anova}}
+\code{\link{pml}}, \code{\link{anova}}, \code{\link[stats]{AIC}}
 }
 \examples{
 \dontrun{    

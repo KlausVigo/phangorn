@@ -46,7 +46,7 @@ evolution. \emph{Molecular Biology and Evolution}, \bold{11}, 605--602.
 }
 \author{Klaus Schliep \email{klaus.schliep@gmail.com}}
 
-\seealso{For more distance methods for nucleotide data see \code{\link[ape]{dist.dna}} and \code{dist.p} for pairwise polymorphism p-distances}
+\seealso{For more distance methods for nucleotide data see \code{\link[ape]{dist.dna}} and \code{\link{dist.p}} for pairwise polymorphism p-distances}
 \examples{
 data(Laurasiatherian)
 dm1 <- dist.hamming(Laurasiatherian)

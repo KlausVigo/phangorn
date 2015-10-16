@@ -52,7 +52,7 @@ Yang, Z. (2006). \emph{Computational Molecular evolution}. Oxford University Pre
 }
 \author{Klaus Schliep \email{klaus.schliep@gmail.com}}
 \seealso{
-\code{pml}, \code{parsimony}, \code{ace}, \code{root}
+\code{\link{pml}}, \code{\link{parsimony}}, \code{\link[ape]{ace}}, \code{\link[ape]{root}} 
 }
 \examples{
 example(NJ)
