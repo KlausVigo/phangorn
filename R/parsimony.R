@@ -572,7 +572,44 @@ indexNNI <- function(tree){
     attr(edgeMatrix, 'root') <-cvector[[min(parent)]]  
     edgeMatrix
 }
-                   
+
+
+# function to  extract quartets
+indexNNI3 <- function(tree){
+    parent = tree$edge[, 1]
+    child = tree$edge[, 2]
+    
+    ind = which(child %in% parent)
+    Nnode = tree$Nnode
+    edgeMatrix = matrix(0,(Nnode-1),6)
+    
+    pvector <- numeric(max(parent))
+    pvector[child] <- parent
+    tips  <- !logical(max(parent))
+    tips[parent] <-  FALSE
+    #    cvector <- allCildren(tree)  
+    cvector <- vector("list",max(parent))   
+    for(i in 1:length(parent))  cvector[[parent[i]]] <- c(cvector[[parent[i]]], child[i]) 
+    k=0
+    for(i in ind){   
+        browser()
+        p1 = parent[i]
+        p2 = child[i]
+        e34 = cvector[[p2]]
+        ind1 = cvector[[p1]]
+        e12 = ind1[ind1 != p2]
+        if(pvector[p1])e12=c(p1,e12)
+        edgeMatrix[k+1, ] = c(e12,e34,p2, p1)
+        k=k+1
+    } 
+    # vielleicht raus
+    attr(edgeMatrix, 'root') <-cvector[[min(parent)]]  
+    edgeMatrix
+}
+
+
+index2tree <- function(x, tree, switch=0){}
+
         
 sankoff.nni = function (tree, data, cost, ...) 
 {   
