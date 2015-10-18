@@ -2,9 +2,9 @@
 
 NEW FEATURES    
     
-    o as.phyDat.MultipleAlignment 
+    o as.phyDat.MultipleAlignment to excange data with Biostrings
     
-    o dist.ml can compute distances using a discrete gamma model
+    o dist.ml can now compute distances using a discrete gamma model
     
       and the "F81" model.
 
@@ -17,6 +17,8 @@ OTHER CHANGES
     o more unit tests
     
     o baseFreq got additional parameter 'all' similar to base.freq in ape 
+    
+    o lots of little improvements in the manual and help
 
 
 
