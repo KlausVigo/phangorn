@@ -66,12 +66,13 @@ orderSplitLabel = function(x, order){
 }
 
 
+# returns order of x$edge
 presenceAbsence <- function(x, y){
     X <- as.splits(x)
     Y <- as.splits(y)
     labels <- attr(X, "labels") 
-    if(class(x)[1] == "phylo") X <- X[x$edge[,2]]
-    if(class(y)[1] == "phylo") Y <- Y[y$edge[,2]]
+    #    if(class(x) == "phylo") X <- X[x$edge[,2]]
+    #    if(class(y) == "phylo") Y <- Y[y$edge[,2]]
     Y <- orderSplitLabel(Y, labels)
     nTips <- length(labels)
     X <- oneWise(X, nTips)
@@ -81,8 +82,10 @@ presenceAbsence <- function(x, y){
     if(inherits(x, "networx")){
         res <- res[x$splitIndex]    
     }    
+    if(class(x)[1]=="phylo")res <- res[x$edge[,2]]
     res            
 }
+
 
 
 optCycle <- function(splits, tree){
