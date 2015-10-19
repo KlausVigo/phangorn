@@ -2765,6 +2765,10 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     llMix <- ifelse(is.na(existing[2]), 0, eval(extras[[existing[2]]], parent.frame()) )
   
     if(class(tree)!="phylo") stop("tree must be of class phylo") 
+#    if(is.null(tree$edge.length)){
+#        warning("tree has no edge length, used nnls.phylo to assign them")
+#        tree <- nnls.phylo(tree, dist.ml(data))
+#    }    
     if (is.null(attr(tree, "order")) || attr(tree, "order") == 
         "cladewise") 
         tree <- reorder(tree, "postorder")
@@ -3551,6 +3555,14 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     pml.init(data, k)    
     
     if (optEdge) {
+        
+        # check if non-negative least-squares is better for start of optimisation
+        treetmp <- nnls.phylo(tree, dist.ml(data))
+        treetmp$edge.length[treetmp$edge.length < 1e-8] <- 1e-8
+        tmplogLik <- pml.fit(treetmp, data, bf, k = k, inv = inv, g = g, w = w, 
+            eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, wMix = wMix)
+        if(tmplogLik>ll) tree <- treetmp
+        
         res <- optimEdge(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, INV=INV,
                          control = pml.control(epsilon = 1e-07, maxit = 5, trace=trace - 1)) 
         if(trace > 0) 
