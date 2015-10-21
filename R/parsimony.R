@@ -578,10 +578,15 @@ indexNNI <- function(tree){
 indexNNI3 <- function(tree){
     parent = tree$edge[, 1]
     child = tree$edge[, 2]
-    
+# needs different order    
     ind = which(child %in% parent)
     Nnode = tree$Nnode
-    edgeMatrix = matrix(0,(Nnode-1),6)
+#     a         d
+#      \       /
+#       e-----f       c is closest to root, f is root from subtree
+#      /       \  
+#     b         c     c(a,b,c,d,e,f)     
+    edgeMatrix = matrix(0,(Nnode-1), 6)
     
     pvector <- numeric(max(parent))
     pvector[child] <- parent
@@ -592,23 +597,31 @@ indexNNI3 <- function(tree){
     for(i in 1:length(parent))  cvector[[parent[i]]] <- c(cvector[[parent[i]]], child[i]) 
     k=0
     for(i in ind){   
-        browser()
-        p1 = parent[i]
-        p2 = child[i]
-        e34 = cvector[[p2]]
-        ind1 = cvector[[p1]]
-        e12 = ind1[ind1 != p2]
-        if(pvector[p1])e12=c(p1,e12)
-        edgeMatrix[k+1, ] = c(e12,e34,p2, p1)
+        f = parent[i] #f
+        e = child[i]  #e
+        ab = cvector[[e]] #a,b
+        ind1 = cvector[[f]] #c,d
+        cd = ind1[ind1 != e]
+        if(pvector[f])cd=c(pvector[f], cd) # cd  
+        edgeMatrix[k+1, 1:6] = c(ab,cd,e,f)
         k=k+1
     } 
-    # vielleicht raus
-    attr(edgeMatrix, 'root') <-cvector[[min(parent)]]  
     edgeMatrix
 }
 
 
-index2tree <- function(x, tree, switch=0){}
+index2tree <- function(x, tree, root=length(tree$tip.label)+1L){
+    EL = numeric(max(tree$edge))
+    EL[tree$edge[,2]] = tree$edge.length
+    pa = c(5L,5L,6L,6L,6L)
+    ch = c(1L,2L,3L,4L,5L)
+    elind = c(1L,2L,6L,4L,5L)
+    if(x[6L]==root) el = EL[x[ch]]
+    else   el = EL[x[elind]]  
+    structure(list(edge = structure(c(x[pa], x[ch]), .Dim = c(5L, 2L)), 
+        tip.label = tree$tip.label, edge.length = el, Nnode = 2L), 
+        .Names = c("edge", "tip.label", "edge.length", "Nnode"), class = "phylo", order = "postorder")
+}
 
         
 sankoff.nni = function (tree, data, cost, ...) 
