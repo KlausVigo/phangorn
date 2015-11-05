@@ -1,0 +1,19 @@
+{
+    "contents" : "",
+    "created" : 1446667934046.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "F1EB4B7B",
+    "lastKnownWriteTime" : 4294967295,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "contentUrl" : "content?title=Documentation+for+package+%E2%80%98phangorn%E2%80%99&file=a28fa327d55d429d92f7bc292acd2a55",
+        "title" : "Documentation for package ‘phangorn’"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "type" : "urlcontent"
+}

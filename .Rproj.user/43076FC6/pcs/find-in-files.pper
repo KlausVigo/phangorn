@@ -1,0 +1,26 @@
+{
+    "dialog-state" : {
+        "caseSensitive" : false,
+        "filePatterns" : [
+            "*.r",
+            "*.R",
+            "*.rnw",
+            "*.Rnw",
+            "*.rmd",
+            "*.Rmd",
+            "*.rmarkdown",
+            "*.Rmarkdown",
+            "*.rhtml",
+            "*.Rhtml",
+            "*.rd",
+            "*.Rd",
+            "*.h",
+            "*.hpp",
+            "*.c",
+            "*.cpp"
+        ],
+        "path" : "~/Documents/myRpackages",
+        "query" : "moveloli",
+        "regex" : false
+    }
+}

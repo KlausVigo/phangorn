@@ -1,0 +1,7 @@
+{
+    "installOptions" : {
+        "installDependencies" : true,
+        "installFromRepository" : true,
+        "libraryPath" : "/home/klaus/R/x86_64-pc-linux-gnu-library/3.2"
+    }
+}

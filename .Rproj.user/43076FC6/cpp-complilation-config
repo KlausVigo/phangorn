@@ -1,0 +1,14 @@
+{
+    "args" : [
+        "-I/usr/lib/rstudio/resources/libclang/builtin-headers/3.5",
+        "-I/usr/lib/rstudio/resources/libclang/builtin-headers/libc++/3.5",
+        "-I/usr/share/R/include",
+        "-DNDEBUG",
+        "-fpic",
+        "-fstack-protector",
+        "-D_FORTIFY_SOURCE=2"
+    ],
+    "hash" : "14466667121446666712",
+    "is_cpp" : false,
+    "pch" : ""
+}
