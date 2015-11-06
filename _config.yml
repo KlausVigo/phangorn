@@ -8,12 +8,13 @@ highlighter: pygments
 # Themes are encouraged to use these universal variables 
 # so be sure to set them if your theme uses them.
 #
-title : simple site
+title : phangorn
 author :
   name : Klaus Schliep
-  email : klasu.schliep@gmail.com
+  email : klaus.schliep@gmail.com
   github : KlausVigo
   twitter : Klaus_Schlp
+  feedburner : nil
 
 production_url : http://KlausVigo.github.io/phangorn
 

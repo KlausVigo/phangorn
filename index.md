@@ -2,7 +2,7 @@
 layout: page
 title: phangorn
 tagline: Phylogenetic analysis in R
-description: Phylogenetic analysis in R: Estimation of phylogenetic trees and networks using Maximum Likelihood, Maximum Parsimony, distance methods and Hadamard conjugation.
+description: Phylogenetic analysis in R. Estimation of phylogenetic trees and networks using Maximum Likelihood, Maximum Parsimony, distance methods and Hadamard conjugation.
 ---
 
 phangorn is an R package which allows you to    
