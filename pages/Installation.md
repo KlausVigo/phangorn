@@ -12,8 +12,8 @@ You can install the latest release version from CRAN
 
     install.packages("phangorn")
 
-Then install R/qtlcharts using the `install_github` function in the
-[devtools](https://github.com/hadley/devtools) package.  
+or install the latest development version using the `install_github` function in the
+[devtools](https://github.com/hadley/devtools) package from github.  
 
     library(devtools)
     install_github("KlausVigo/phangorn")
