@@ -13,7 +13,8 @@ pml(tree, data, bf=NULL, Q=NULL, inv=0, k=1, shape=1, rate=1, model="", ...)
 optim.pml(object, optNni=FALSE, optBf=FALSE, optQ=FALSE, optInv=FALSE, optGamma=FALSE,
     optEdge=TRUE, optRate=FALSE, optRooted=FALSE, optRatchet = FALSE, 
     control = pml.control(epsilon=1e-08, maxit=10, trace=1), model = NULL, 
-    subs = NULL, ratchet.par = list(prop = 1/3, iter = 10L, maxit = 100L),...)  
+    rearrangement = ifelse(optNni, "NNI","none"), subs = NULL, 
+    ratchet.par = list(iter = 10L, maxit = 100L, prop = 1/3),...)  
 pml.control(epsilon = 1e-08, maxit = 10, trace = 1)
 }
 \arguments{
@@ -37,6 +38,8 @@ pml.control(epsilon = 1e-08, maxit = 10, trace = 1)
   \item{optRooted}{Logical value indicating if the edge lengths of a rooted tree get optimized.}
   \item{optRatchet}{Stochastic tree search.}
   \item{ratchet.par}{search parameter for stochastic search}
+  \item{rearrangement}{type of tree tree rearrangements to perform, one of
+      "none", "NNI" or "stochastic"}
   \item{control}{A list of parameters for controlling the fitting process.}
   \item{subs}{A (integer) vector same length as Q to specify the optimization of Q}
   \item{\dots}{Further arguments passed to or from other methods.}

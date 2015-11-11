@@ -3372,11 +3372,17 @@ addTips2Tree <- function (tree, tips, where){
 
 
 optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE, 
-                        optInv = FALSE, optGamma = FALSE, optEdge = TRUE, optRate = FALSE, optRooted=FALSE, 
-                        optRatchet = FALSE, 
+                        optInv = FALSE, optGamma = FALSE, optEdge = TRUE, optRate = FALSE, optRooted=FALSE, optRatchet = FALSE,
                         control = pml.control(epsilon = 1e-8, maxit = 10, trace = 1L), 
-                        model = NULL, subs = NULL, ratchet.par = list(prop = 1/3, iter = 10L, maxit = 100L), ...) 
+                        model = NULL, rearrangement = ifelse(optNni, "NNI","none"), subs = NULL, ratchet.par = list(iter = 10L, maxit = 100L, prop = 1/3), ...) 
 {
+    if(rearrangement ==  "none"){
+        optNni = FALSE
+        optRatchet = FALSE
+    }
+    if(rearrangement ==  "NNI") optNni = TRUE
+    if(rearrangement ==  "stochastic") optRatchet = TRUE
+    
     extras <- match.call(expand.dots = FALSE)$...
     pmla <- c("wMix", "llMix")
     wMix <- object$wMix
@@ -3749,6 +3755,11 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
             kmax=1
             i=1
             while(i < maxit){
+                
+#                tree2 <- unroot(multi2di(di2multi(tree,  tol  = 0.000000011)))
+#                tree2$edge.length[tree2$edge.length < 1e-8] <- 1e-8
+#                tree2<- rNNI(tree2, moves=round(nTips * ratchet.par$prop), n=1)
+                
                 tree2<- rNNI(tree, moves=round(nTips * ratchet.par$prop), n=1)
                 #tree <- rSPR(tree, moves=10, k=3, n=1)
                 #                obj2 = update(obj, tree=tree)
