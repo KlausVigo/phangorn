@@ -8,6 +8,12 @@ NEW FEATURES
     
       and the "F81" model.
 
+    o optim.pml got a new rearrangement argument and can now 
+    
+      use a stochastic rearrangements like (Nguyen et al. 2015)
+    
+    o optim.pml uses more C code and should be more robust  
+
 BUG FIXES
 
     plotBS may double counted edges when rooted trees were in the sample 

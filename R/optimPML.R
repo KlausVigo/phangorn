@@ -122,14 +122,17 @@ optimQuartet <- function (tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=
     ancQ[child] <- parent
     ancQ <- as.integer(c(0L, ancQ))
     
-    blub3 <- .Call("extractScale", as.integer(rootNode), w, g, as.integer(nr), as.integer(nc), as.integer(nTips))
-    rowM = apply(blub3, 1, min)       
-    blub3 = (blub3-rowM) 
-    blub3 = ScaleEPS ^ (blub3) 
+
     #        blub3[]=1.0   
     
     while (eps > control$eps && iter < control$maxit) {
         
+        blub3 <- .Call("extractScale", as.integer(rootNode), w, g, as.integer(nr), as.integer(nc), as.integer(nTips))
+        rowM = apply(blub3, 1, min)       
+        blub3 = (blub3-rowM) 
+        blub3 = ScaleEPS ^ (blub3) 
+        
+        print(summary(blub3))
         print(paste("root", rootNode))
         
         
@@ -138,11 +141,6 @@ optimQuartet <- function (tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=
                     as.integer(nTips), as.double(contrast), 
                     as.double(contrast2), nco, blub3, data, as.double(weight), as.double(ll.0))       
         iter = iter + 1
-        
-#        print("edge length new")
-#        print(EL[treeP$edge[,2]])
-#        print("edge length old")
-#        print(treeP$edge.length)
         
 #browser()
 
@@ -205,6 +203,8 @@ pml.nni2 <- function (tree, data, w, g, eig, bf, ll.0, ll, ...)
             print(paste("tmp:", tmpl))
             loli = anc[loli]
         }
+        
+        print(paste("edge:", pa, " ", ch))
         
         tree0$edge.length = tree0$edge.length+.01
         tmp <- pml.fit4(tree0, data, bf=bf, g=g, w=w, eig=eig, INV=INV, ll.0=ll.0, k=k)
