@@ -27,7 +27,7 @@ phyDat.default <- function (data, levels = NULL, return.index = TRUE, contrast =
         nam = row.names(data)
     else nam = names(data)
     if(is.null(nam))stop("data object must contain taxa names")
-    if (class(data) == "DNAbin") 
+    if (inherits(data,"DNAbin")) 
         data = as.character(data)
     if (is.matrix(data)) 
         data = as.data.frame(t(data), stringsAsFactors = FALSE)
@@ -101,7 +101,7 @@ phyDat.DNA = function (data, return.index = TRUE)
     if (is.matrix(data)) 
         nam = row.names(data)
     else nam = names(data)
-    if (class(data) == "DNAbin") 
+    if (inherits(data,"DNAbin")) 
         data = as.character(data)
     if (is.matrix(data)) 
         data = as.data.frame(t(data), stringsAsFactors = FALSE)
@@ -162,7 +162,7 @@ phyDat.AA <- function (data, return.index = TRUE)
 {
     if(is.matrix(data)) nam = row.names(data)
     else nam = names(data)  
-    if (class(data) == "DNAbin") 
+    if (inherits(data,"DNAbin")) 
         data = as.character(data)
     if (is.matrix(data)) 
         data = as.data.frame(t(data), stringsAsFactors = FALSE)
@@ -229,7 +229,7 @@ phyDat.codon <- function (data, return.index = TRUE)
 {
     if(is.matrix(data)) nam = row.names(data)
     else nam = names(data)  
-    if (class(data) == "DNAbin") 
+    if (inherits(data,"DNAbin")) 
         data = as.character(data)
 
     if (is.matrix(data)) 
@@ -304,7 +304,7 @@ phyDat.codon <- function (data, return.index = TRUE)
 
 
 as.phyDat <- function (x, ...){
-    if (class(x) == "phyDat") return(x)
+    if (inherits(x,"phyDat")) return(x)
     UseMethod("as.phyDat")
 }
 
@@ -547,7 +547,7 @@ as.DNAbin.phyDat <- function (x, ...)
  
 phyDat <- function (data, type="DNA", levels=NULL, return.index = TRUE,...) 
 {
-    if (class(data) == "DNAbin") type <- "DNA"
+    if (inherits(data,"DNAbin")) type <- "DNA"
     pt <- match.arg(type, c("DNA", "AA", "CODON", "USER"))  
     if(pt=="DNA") dat <- phyDat.DNA(data, return.index=return.index,...)
     if(pt=="AA") dat <- phyDat.AA(data, return.index=return.index, ...)
@@ -728,7 +728,7 @@ read.phyDat <- function(file, format="phylip", type="DNA", ...){
 
 
 baseFreq <- function(obj, freq=FALSE, all=FALSE, drop.unused.levels = FALSE){
-    if (class(obj) != "phyDat") 
+    if (!inherits(obj,"phyDat")) 
         stop("data must be of class phyDat")
     labels <- attr(obj, "allLevels")
     weight <- attr(obj,"weight")

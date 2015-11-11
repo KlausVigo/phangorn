@@ -1,8 +1,8 @@
 getAges <- function(x){  
   fun=function(x) max(node.depth.edgelength(x))  
   height=NULL
-  if(class(x)=="phylo") height <- fun(x)
-  if(class(x)=="multiPhylo"){
+  if(inherits(x,"phylo")) height <- fun(x)
+  if(inherits(x,"multiPhylo")){
     if(!is.null(attr(x, "TipLabel"))){
       x = unclass(x)
       x = .uncompressTipLabel(x)  
@@ -23,7 +23,7 @@ my.supertree<-function(trees,method=c("pratchet","optim.parsimony"), trace=0, ..
   # set method
   method<-method[1]
   # some minor error checking
-  if(!class(trees)=="multiPhylo") stop("trees must be object of class 'multiPhylo.'")
+  if(!inherits(trees,"multiPhylo")) stop("trees must be object of class 'multiPhylo.'")
   # compute matrix representation phylogenies
   X<-list() # list of bipartitions
   characters<-0 # number of characters
@@ -52,7 +52,7 @@ my.supertree<-function(trees,method=c("pratchet","optim.parsimony"), trace=0, ..
   if(method=="pratchet"){
     if(hasArg(start)){
       start<-list(...)$start
-      if(class(start)=="phylo"){
+      if(inherits(start,"phylo")){
         supertree<-pratchet(XX,all=TRUE, trace=0, ...)
       } else {
         if(start=="NJ") start<-NJ(dist.hamming(XX))
@@ -68,16 +68,16 @@ my.supertree<-function(trees,method=c("pratchet","optim.parsimony"), trace=0, ..
         supertree<-do.call(pratchet,args)
       }
     } else supertree<-pratchet(XX,all=TRUE, trace=0, ...)
-    if(class(supertree)=="phylo")
+    if(inherits(supertree,"phylo"))
       if(trace>0)message(paste("The MRP supertree, optimized via pratchet(),\nhas a parsimony score of ",
                     attr(supertree,"pscore")," (minimum ",characters,")",sep=""))
-    else if(class(supertree)=="multiPhylo")
+    else if(inherits(supertree,"multiPhylo"))
       if(trace>0)message(paste("pratchet() found ",length(supertree)," supertrees\nwith a parsimony score of ",
                     attr(supertree[[1]],"pscore")," (minimum ",characters,")",sep=""))
   } else if(method=="optim.parsimony"){
     if(hasArg(start)){
       start<-list(...)$start
-      if(class(start)=="phylo"){
+      if(inherits(start,"phylo")){
         supertree<-optim.parsimony(tree=start,data=XX, trace=0, ...)
       } else {
         if(start=="NJ") start<-NJ(dist.hamming(XX))
@@ -93,10 +93,10 @@ my.supertree<-function(trees,method=c("pratchet","optim.parsimony"), trace=0, ..
       start<-random.addition(XX) # rtree(n=length(XX),tip.label=names(XX))
       supertree<-optim.parsimony(tree=start,data=XX, trace=0, ...)
     }
-    if(class(supertree)=="phylo")
+    if(inherits(supertree,"phylo"))
       if(trace>0)message(paste("The MRP supertree, optimized via optim.parsimony(),\nhas a parsimony score of ",
                     attr(supertree,"pscore")," (minimum ",characters,")",sep=""))
-    else if(class(supertree)=="multiPhylo")
+    else if(inherits(supertree,"multiPhylo"))
       if(trace>0)message(paste("optim.parsimony() found ",length(supertree)," supertrees\nwith a parsimony score of ",
                     attr(supertree[[1]],"pscore")," (minimum ",characters,")",sep=""))
   }
@@ -124,7 +124,7 @@ superTree = function(tree, method="pratchet", rooted=TRUE, ...){
   class(tree)="multiPhylo"
   res = my.supertree(tree, method=method, ...)
   if(rooted){
-    if(class(res)=="multiPhylo"){
+    if(inherits(res,"multiPhylo")){
       res = lapply(res, root, "ZZZ")
       res = lapply(res, drop.tip, "ZZZ")  
       class(res) = "multiPhylo"
@@ -134,7 +134,7 @@ superTree = function(tree, method="pratchet", rooted=TRUE, ...){
       res = drop.tip(res, "ZZZ")  
     }
   }
-  if(class(res)=="multiPhylo"){
+  if(inherits(res,"multiPhylo")){
     fun = function(x){
       x$edge.length <- rep(.1, nrow(x$edge)) 
       x
@@ -153,10 +153,10 @@ superTree = function(tree, method="pratchet", rooted=TRUE, ...){
 
 
 densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL, optim=FALSE, scaleX=FALSE, col=1, width=1, cex=.8, ...) {
-  if(class(x)!="multiPhylo")stop("x must be of class multiPhylo")
+  if(!inherits(x,"multiPhylo"))stop("x must be of class multiPhylo")
   compressed <- ifelse(is.null(attr(x, "TipLabel")), FALSE, TRUE)
   if(is.null(consensus))consensus <- superTree(x)
-  if(class(consensus)=="multiPhylo") consensus = consensus[[1]]
+  if(inherits(consensus,"multiPhylo")) consensus = consensus[[1]]
   type <- match.arg(type, c("phylogram", "cladogram"))
   consensus = reorder(consensus, "postorder")
   e2 = reorder(consensus)$edge[,2]

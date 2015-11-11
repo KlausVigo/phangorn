@@ -9,7 +9,7 @@ prepareDataSankoffNew <- function(data){
 
 sankoffNew <- function (tree, data, cost = NULL, site = 'pscore') 
 {
-    if (class(data) != "phyDat") 
+    if (!inherits(data,"phyDat")) 
         stop("data must be of class phyDat")
     data <- prepareDataSankoffNew(data)
     weight <- attr(data, "weight")
@@ -31,8 +31,8 @@ sankoffNew <- function (tree, data, cost = NULL, site = 'pscore')
 
 #    for (i in 1:length(data)) storage.mode(data[[i]]) = "double"
 
-    if(class(tree)=="phylo") return(fit.sankoffNew(tree, data, cost, returnData =site))
-    if(class(tree)=="multiPhylo"){
+    if(inherits(tree,"phylo")) return(fit.sankoffNew(tree, data, cost, returnData =site))
+    if(inherits(tree,"multiPhylo")){
 	    if(is.null(tree$TipLabel))tree = unclass(tree)
 	    return(sapply(tree, fit.sankoffNew, data, cost, site))
     }    

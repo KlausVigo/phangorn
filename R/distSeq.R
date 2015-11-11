@@ -3,7 +3,7 @@
 #
 dist.hamming <- function (x, ratio = TRUE, exclude = "none") 
 {
-    if (class(x) != "phyDat") 
+    if (!inherits(x,"phyDat")) 
         stop("x has to be element of class phyDat")
     l = length(x)
 
@@ -72,7 +72,7 @@ dist.hamming <- function (x, ratio = TRUE, exclude = "none")
 
 dist.ml <- function (x, model = "JC69", exclude = "none", bf = NULL, Q = NULL, k=1L, shape=1, ...) 
 {
-    if (class(x) != "phyDat") 
+    if (!inherits(x,"phyDat")) 
         stop("x has to be element of class phyDat")
     l = length(x)
     d = numeric((l * (l - 1))/2)
@@ -162,7 +162,7 @@ dist.ml <- function (x, model = "JC69", exclude = "none", bf = NULL, Q = NULL, k
 
 dist.mlOld <- function (x, model = "JC69", exclude = "none", bf = NULL, Q = NULL, ...) 
 {
-    if (class(x) != "phyDat") 
+    if (!inherits(x,"phyDat")) 
         stop("x has to be element of class phyDat")
     l = length(x)
     d = numeric((l * (l - 1))/2)
@@ -247,7 +247,7 @@ dist.mlOld <- function (x, model = "JC69", exclude = "none", bf = NULL, Q = NULL
    
 dist.logDet = function (x) 
 {
-    if (class(x) != "phyDat") 
+    if (!inherits(x,"phyDat")) 
         stop("x has to be element of class phyDat")
     weight <- attr(x, "weight")
     contrast <- attr(x, 'contrast')

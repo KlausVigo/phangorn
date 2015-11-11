@@ -8,7 +8,7 @@ as.splits <- function (x, ...){
 
 
 as.Matrix <- function (x, ...){
-    if (class(x) == "Matrix") return(x)
+    if (inherits(x,"Matrix")) return(x)
     UseMethod("as.Matrix")
 }
 
@@ -71,8 +71,8 @@ presenceAbsence <- function(x, y){
     X <- as.splits(x)
     Y <- as.splits(y)
     labels <- attr(X, "labels") 
-    #    if(class(x) == "phylo") X <- X[x$edge[,2]]
-    #    if(class(y) == "phylo") Y <- Y[y$edge[,2]]
+    #    if(inherits(x,"phylo")) X <- X[x$edge[,2]]
+    #    if(inherits(y,"phylo")) Y <- Y[y$edge[,2]]
     Y <- orderSplitLabel(Y, labels)
     nTips <- length(labels)
     X <- oneWise(X, nTips)
@@ -171,9 +171,9 @@ as.splits.phylo <- function(x, ...){
 
 # computes splits from multiPhylo object (e.g. bootstrap, MCMC etc.)
 as.splits.multiPhylo <- function(x, ...){
-    if(class(x)=="multiPhylo")x = .uncompressTipLabel(x)
+    if(inherits(x,"multiPhylo"))x = .uncompressTipLabel(x)
     lx = length(x)
-    if(class(x)=="multiPhylo")class(x)='list'  # prop.part allows not yet multiPhylo
+    if(inherits(x,"multiPhylo"))class(x)='list'  # prop.part allows not yet multiPhylo
     firstTip = x[[1]]$tip[1]
     x = lapply(x, root, firstTip) # old trick  
     splits <- prop.part(x)
@@ -871,7 +871,7 @@ addConfidences.splitsNew <- function(obj, phy){
     tiplabel <- attr(obj, "label")
     nTips = length(tiplabel)
     obj = addTrivialSplits(obj) 
-    if(class(phy) == "phylo"){
+    if(inherits(phy,"phylo")){
         ind <- match(tiplabel, phy$tip.label)
         if (any(is.na(ind)) | length(tiplabel) != length(phy$tip.label)) 
             stop("trees have different labels")
@@ -1188,9 +1188,9 @@ plot2D <- function(coords, net, show.tip.label=TRUE,
 lento <- function (obj, xlim = NULL, ylim = NULL, main = "Lento plot", 
     sub = NULL, xlab = NULL, ylab = NULL, bipart=TRUE, trivial=FALSE, ...) 
 {
-    if (class(obj) == "phylo") 
+    if (inherits(obj,"phylo")) 
         obj = as.splits(obj)
-    if (class(obj) == "multiPhylo") 
+    if (inherits(obj,"multiPhylo")) 
         obj = as.splits(obj)    
     labels = attr(obj, "labels") 
     l = length(labels)

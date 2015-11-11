@@ -72,7 +72,7 @@ pace <- ancestral.pars
 mpr.help = function (tree, data, cost=NULL) 
 {   
     tree<- reorder(tree, "postorder")     
-    if (class(data) != "phyDat") 
+    if (!inherits(data,"phyDat")) 
         stop("data must be of class phyDat")    
     levels <- attr(data, "levels")
     l = length(levels)
@@ -307,7 +307,7 @@ RI <- function (tree, data, cost=NULL)
 
 # not used
 add.one <- function (tree, tip.name, i){
-    if (class(tree) != "phylo") 
+    if (!inherits(tree,"phylo")) 
         stop("tree should be an object of class 'phylo.'")
     nTips = length(tree$tip)
     tmpedge = tree$edge
@@ -473,7 +473,7 @@ prepareDataSankoff <- function(data){
 
 sankoff <- function (tree, data, cost = NULL, site = 'pscore') 
 {
-    if (class(data) != "phyDat") 
+    if (!inherits(data,"phyDat")) 
         stop("data must be of class phyDat")
     data <- prepareDataSankoff(data)
     levels <- attr(data, "levels")
@@ -484,8 +484,8 @@ sankoff <- function (tree, data, cost = NULL, site = 'pscore')
         cost <- cost - diag(l)
     }   
     for (i in 1:length(data)) storage.mode(data[[i]]) = "double"
-    if(class(tree)=="phylo") return(fit.sankoff(tree, data, cost, returnData =site))
-    if(class(tree)=="multiPhylo"){
+    if(inherits(tree,"phylo")) return(fit.sankoff(tree, data, cost, returnData =site))
+    if(inherits(tree,"multiPhylo")){
 	    if(is.null(tree$TipLabel))tree = unclass(tree)
 	    return(sapply(tree, fit.sankoff, data, cost, site))
     }    
@@ -579,7 +579,7 @@ sankoff.nni = function (tree, data, cost, ...)
     if(is.rooted(tree))tree<- reorder(unroot(tree), "postorder")     
     INDEX <-  indexNNI(tree)
     rootEdges <- attr(INDEX,"root")
-    if (class(data) != "phyDat") 
+    if (!inherits(data,"phyDat")) 
         stop("data must be of class phyDat")
     levels <- attr(data, "levels")
     l = length(levels)
@@ -686,7 +686,7 @@ pratchet <- function (data, start=NULL, method="fitch", maxit=1000, k=10, trace=
     for (i in 1:maxit) {
         bstrees <- bootstrap.phyDat(data, FUN, tree = tree, bs = 1, trace = trace, method=method, rearrangements=rearrangements, ...)
         trees <- lapply(bstrees, optim.parsimony, data, trace = trace, method=method, rearrangements=rearrangements, ...)
-        if(class(result)=="phylo")m=1
+        if(inherits(result,"phylo"))m=1
         else m = length(result)
         if(m>0) trees[2 : (1+m)] = result[1:m]
         pscores <- sapply(trees, function(data) attr(data, "pscore"))
@@ -718,7 +718,7 @@ pratchet <- function (data, start=NULL, method="fitch", maxit=1000, k=10, trace=
 
 
 optim.sankoff <- function(tree, data, cost=NULL, trace=1, ...) {
-    if(class(tree)!="phylo") stop("tree must be of class phylo") 
+    if(!inherits(tree,"phylo")) stop("tree must be of class phylo") 
     if(is.rooted(tree))tree <- unroot(tree)
     if(is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise") tree <- reorder(tree, "postorder")
     if (class(data)[1] != "phyDat") stop("data must be of class phyDat")
@@ -756,7 +756,7 @@ optim.sankoff <- function(tree, data, cost=NULL, trace=1, ...) {
 #
 ptree <- function (tree, data, type = "ACCTRAN", retData = FALSE) 
 {
-    if (class(data) != "phyDat") 
+    if (!inherits(data,"phyDat")) 
         stop("data must be of class phyDat")
     if (is.null(attr(tree, "order")) || attr(tree, "order") == 
         "cladewise") 

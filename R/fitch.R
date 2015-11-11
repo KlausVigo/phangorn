@@ -1,9 +1,9 @@
 fitch <- function (tree, data, site="pscore") 
 { 
-    if (class(data) != "phyDat") 
+    if (!inherits(data,"phyDat")) 
         stop("data must be of class phyDat")
     levels <- attr(data, "levels")
-    if(class(tree)=="multiPhylo"){ 
+    if(inherits(tree,"multiPhylo")){ 
         TL = attr(tree,"TipLabel")
         if (!is.null(TL)){
             data <- subset(data, TL)
@@ -17,7 +17,7 @@ fitch <- function (tree, data, site="pscore")
     d = attributes(data)
     data <- as.integer(data)
     attributes(data) <- d
-    if(class(tree)=="phylo") return(fit.fitch(tree, data, site))
+    if(inherits(tree,"phylo")) return(fit.fitch(tree, data, site))
     {
         if(is.null(attr(tree,"TipLabel"))){
             tree = unclass(tree)
@@ -301,7 +301,7 @@ fitch.nni <- function (tree, data, ...)
 
 
 optim.fitch <- function(tree, data, trace=1, rearrangements = "SPR", ...) {
-    if(class(tree)!="phylo") stop("tree must be of class phylo") 
+    if(!inherits(tree,"phylo")) stop("tree must be of class phylo") 
     if(!is.binary.tree(tree)){
         tree <- multi2di(tree)
         attr(tree, "order") <- NULL  
