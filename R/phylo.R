@@ -1068,7 +1068,7 @@ optimPartEdge <- function (object, ...)
 
 
 makePart <- function(fit, rooted, weight=~index+genes){
-    if(class(fit)=="phyDat"){
+    if(inherits(fit,"phyDat")){
         x <- fit
         dm <- dist.ml(x)
         if(!rooted) tree <- NJ(dm)
@@ -1135,14 +1135,14 @@ pmlPart <- function (formula, object, control=pml.control(epsilon=1e-8, maxit=10
     PartEdge <- !is.na(optPart[6])
     PartRate <- !is.na(optPart[7])
  
-    if(class(object)=="multiphyDat"){
+    if(inherits(object,"multiphyDat")){
         if(AllNNI || AllEdge) object <- do.call(cbind.phyDat, object@dna)
         else fits <- multiphyDat2pmlPart(object, rooted=rooted, ...)
     } 
-    if(class(object)=="pml") fits <- makePart(object, rooted=rooted, ...) 
-    if(class(object)=="phyDat") fits <- makePart(object, rooted=rooted, ...)
-    if(class(object)=="pmlPart") fits <- object$fits
-    if(class(object)=="list") fits <- object
+    if(inherits(object,"pml")) fits <- makePart(object, rooted=rooted, ...) 
+    if(inherits(object,"phyDat")) fits <- makePart(object, rooted=rooted, ...)
+    if(inherits(object,"pmlPart")) fits <- object$fits
+    if(inherits(object,"list")) fits <- object
 
 
     trace = control$trace
@@ -1969,7 +1969,7 @@ pmlMix <- function (formula, fit, m = 2, omega = rep(1/m, m), control=pml.contro
     MixGamma <- !is.na(optPart[5])
     MixEdge <- !is.na(optPart[6])
     MixRate <- !is.na(optPart[7])
-    if (class(fit) == "list") 
+    if (inherits(fit,"list")) 
         fits <- fit
     else {
         fits <- vector("list", m) 
@@ -2221,8 +2221,8 @@ logLik.pmlPart <- function (object, ...)
 
 
 pmlPen <- function(object, lambda, ...){
-    if(class(object)=="pmlPart") return(pmlPartPen(object, lambda,...))
-    if(class(object)=="pmlMix") return(pmlMixPen(object, lambda,...))
+    if(inherits(object,"pmlPart")) return(pmlPartPen(object, lambda,...))
+    if(inherits(object,"pmlMix")) return(pmlMixPen(object, lambda,...))
     else stop("object has to be of class pmlPart or pmlMix")
     }
        
@@ -2764,7 +2764,7 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     wMix <- ifelse(is.na(existing[1]), 0, eval(extras[[existing[1]]], parent.frame()) )  
     llMix <- ifelse(is.na(existing[2]), 0, eval(extras[[existing[2]]], parent.frame()) )
   
-    if(class(tree)!="phylo") stop("tree must be of class phylo") 
+    if(!inherits(tree,"phylo")) stop("tree must be of class phylo") 
 #    if(is.null(tree$edge.length)){
 #        warning("tree has no edge length, used nnls.phylo to assign them")
 #        tree <- nnls.phylo(tree, dist.ml(data))

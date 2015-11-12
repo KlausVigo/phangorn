@@ -166,9 +166,9 @@ treedist <- function (tree1, tree2, check.labels=TRUE)
 
 
 mRF2 <- function(tree, trees, check.labels = TRUE){
-    if (class(trees) != "multiPhylo") 
+    if (!inherits(trees,"multiPhylo")) 
         stop("trees should be an object of class \"multiPhylo\"")
-    if (class(tree) != "phylo") 
+    if (!inherits(tree,"phylo")) 
         stop("trees should be an object of class \"phylo\"")
     trees <- .compressTipLabel(trees)
     tipLabel <- attr(trees, "TipLabel")
@@ -211,7 +211,7 @@ mRF2 <- function(tree, trees, check.labels = TRUE){
 
 
 mRF<-function(trees){
-    if (class(trees) != "multiPhylo") 
+    if (!inherits(trees,"multiPhylo")) 
         stop("trees should be an object of class \"multiPhylo\"")
     trees <- .compressTipLabel(trees)
     tipLabel <- attr(trees, "TipLabel")

@@ -75,11 +75,11 @@ split2seq = function(q){
 
 distanceHadamard <- function (dm, eps = 0.001) 
 {
-    if (class(dm) == "dist") {
+    if (inherits(dm,"dist")) {
         n <- attr(dm, "Size")
         Labels = attr(dm, "Labels")
     }
-    if (class(dm) == "matrix") {
+    if (inherits(dm,"matrix")) {
         n <- dim(dm)[1]
         Labels <- colnames(dm)
         dm <- dm[lower.tri(dm)]
@@ -112,7 +112,7 @@ distanceHadamard <- function (dm, eps = 0.001)
 h4st = function(obj, levels=c('a','c','g','t')){
     if (is.matrix(obj)) 
         obj = as.data.frame(t(obj))
-    if (class(obj) == "phyDat") 
+    if (inherits(obj,"phyDat")) 
         obj = as.data.frame(t(as.character(obj)))    
     #    if(is.matrix(obj)) obj = as.data.frame(t(obj))
     #    DNA = as.data.frame(obj)
@@ -165,7 +165,7 @@ h4st = function(obj, levels=c('a','c','g','t')){
 
 h2st <- function (obj, eps=0.001) 
 {
-    if (class(obj) != "phyDat") stop("Error") 
+    if (!inherits(obj,"phyDat")) stop("Error") 
     if (attr(obj,"nc") != 2)stop("Error")
     nr = attr(obj, "nr") #n
     p = length(obj) #p

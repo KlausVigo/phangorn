@@ -7,9 +7,9 @@ modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80",
     if(multicore && is.null(mc.cores)){
         mc.cores <- detectCores()
     }
-    if (class(object) == "phyDat") 
+    if (inherits(object,"phyDat")) 
         data = object
-    if (class(object) == "pml") {
+    if (inherits(object,"pml")) {
         data = object$data
         if (is.null(tree)) 
             tree = object$tree

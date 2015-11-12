@@ -252,13 +252,13 @@ getDiv <- function(tree, x, native=NULL){
 getDiversity <- function (tree, x, norm = TRUE, var.names = NULL, labels="new") 
 {
     k = 1
-    if(class(tree) == "multiPhylo") 
+    if(inherits(tree,"multiPhylo")) 
         k = length(tree)
     l = attr(x, "nr")
     tmp = matrix(0, k * l, 12)
 
     tnam = 1
-    if (class(tree) == "multiPhylo") {
+    if (inherits(tree,"multiPhylo")) {
         tnam = names(tree)
         if (is.null(tnam)) 
             tnam = 1:length(tree)
@@ -274,7 +274,7 @@ getDiversity <- function (tree, x, norm = TRUE, var.names = NULL, labels="new")
     o = 1
     ok= 0
     for (i in 1:k) {
-        if (class(tree) == "multiPhylo") 
+        if (inherits(tree,"multiPhylo")) 
             tmptree = tree[[i]]
         else tmptree = tree
         if (is.rooted(tmptree)) 
@@ -385,7 +385,7 @@ diversity <- function(tree, X){
 
 
     l = dim(X)[2]
-    m <- ifelse(class(tree)=="multiPhylo", length(tree), 1)
+    m <- ifelse(inherits(tree,"multiPhylo"), length(tree), 1)
     
     contr = as.list(rep("contr.dummy", l))
     names(contr) = names(X)

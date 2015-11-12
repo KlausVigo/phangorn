@@ -1,7 +1,7 @@
 
 dist.p <- function (x, cost="polymorphism", ignore.indels=TRUE) 
 {
-    if (class(x) != "phyDat") 
+    if (!inherits(x,"phyDat")) 
         stop("x has to be element of class phyDat")
 
     l = length(x)
