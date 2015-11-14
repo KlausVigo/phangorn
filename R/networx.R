@@ -82,7 +82,11 @@ presenceAbsence <- function(x, y){
     if(inherits(x, "networx")){
         res <- res[x$splitIndex]    
     }    
-    if(class(x)[1]=="phylo")res <- res[x$edge[,2]]
+    if(class(x)[1]=="phylo"){
+        # res <- res[x$edge[,2]]
+        x$node.label = res[-c(1:length(labels))]
+        return(x)
+    }
     res            
 }
 
