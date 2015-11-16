@@ -544,7 +544,7 @@ addEdge <- function(network, desc, spl){
         
     index <- network$splitIndex
     ind <- which(compatible2(split, desc2[index]) == 1)
-    if(is.null(ind)) return(network)
+    if(is.null(ind) | (length(ind)==0)) return(network)
     add <- TRUE
   
     X <- as.matrix(desc2)
