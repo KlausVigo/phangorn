@@ -1521,3 +1521,45 @@ fast.tree2  = function(tree, node){
 }
 
 
+
+################################################################################
+# delta.score
+################################################################################
+# Calculated from mathematical description given in Gray et al. (2010) Phil.
+# Trans. Roy. Soc. B. 
+# delta.score reference: Holland et al. (2002) Mol. Biol. Evol.
+################################################################################ 
+
+
+# Calculating Delta and Q-residual scores 
+# internal
+delta.quartet <-
+    function(quartet,dist.dna) {
+        m1 <- dist.dna[quartet[1],quartet[2]] + dist.dna[quartet[3],quartet[4]]
+        m2 <- dist.dna[quartet[1],quartet[3]] + dist.dna[quartet[2],quartet[4]]
+        m3 <- dist.dna[quartet[1],quartet[4]] + dist.dna[quartet[2],quartet[3]]
+        m <- sort(c(m1,m2,m3),decreasing=T)
+        if((m[1]-m[3])!=0) {
+            ret <- (m[1]-m[2])/(m[1]-m[3])
+        } else {
+            ret <- 0
+        }
+        return(ret)
+    }
+
+
+delta.score <- function(x, arg="mean", ...) {
+        # dist.dna <- as.matrix(dist.dna(dna,"raw"))   
+        # dist.dna(dna,"raw") is equivalent to dist.hamming(as.phyDat(dna), exclude="all") 
+        dist.dna <- as.matrix(dist.hamming(x, ...))
+        # Number of quartets
+        choose(names(x),4)
+        # Create all quartets
+        all.quartets <- t(combn(names(x),4))
+        delta.values <- apply(all.quartets[,],1,delta.quartet,dist.dna)
+        if (!arg%in%c("all", "mean","sd")) stop("return options are: all, mean, or sd")
+        if (arg=='all') return(delta.values)
+        if (arg=='mean') return(mean(delta.values))
+        if (arg=='sd') return(sd(delta.values))
+    }
+
