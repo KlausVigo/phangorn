@@ -1,8 +1,11 @@
 Package: phangorn
 Title: Phylogenetic Analysis in R
 Version: 2.0.0
-Date: 2015-10-09
-Author: Klaus Schliep, Emmanuel Paradis
+Date: 2015-11-19
+Authors@R: c(person("Klaus", "Schliep", email="klaus.schliep@gmail.com", role = c("aut", "cre")), 
+  person("Emmanuel", "Paradis", role = c("aut")), 
+  person("Alastair", "Potts", role = c("aut")))
+Author: Klaus Schliep, Emmanuel Paradis, Alastair Potts
 Maintainer: Klaus Schliep <klaus.schliep@gmail.com>
 Description: Phylogenetic analysis in R: Estimation of phylogenetic
         trees and networks using Maximum Likelihood, Maximum Parsimony,
