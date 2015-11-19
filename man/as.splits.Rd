@@ -57,6 +57,10 @@ addTrivialSplits(obj)
 }
 \value{
 \code{as.splits} returns an object of class splits, which is mainly a list of splits and some attributes.
+Often a \code{splits} object will contain attributes \code{confidences} for bootstrap or Bayesian support values and 
+\code{weight} storing edge weights. \code{read.nexus.splits} and \code{write.nexus.splits} allow to exchange a
+\code{splits} object with other software like Splitstree.
+
 \code{compatible} return a lower triangular matrix where an 1 indicates that two splits are incompatible.   
 }
 \author{Klaus Schliep \email{klaus.schliep@gmail.com}}

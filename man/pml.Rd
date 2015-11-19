@@ -11,7 +11,7 @@ different model parameters.
 \usage{
 pml(tree, data, bf=NULL, Q=NULL, inv=0, k=1, shape=1, rate=1, model="", ...)     
 optim.pml(object, optNni=FALSE, optBf=FALSE, optQ=FALSE, optInv=FALSE, optGamma=FALSE,
-    optEdge=TRUE, optRate=FALSE, optRooted=FALSE, optRatchet = FALSE, 
+    optEdge=TRUE, optRate=FALSE, optRooted=FALSE, 
     control = pml.control(epsilon=1e-08, maxit=10, trace=1), model = NULL, 
     rearrangement = ifelse(optNni, "NNI","none"), subs = NULL, 
     ratchet.par = list(iter = 10L, maxit = 100L, prop = 1/3),...)  
@@ -36,7 +36,7 @@ pml.control(epsilon = 1e-08, maxit = 10, trace = 1)
   \item{optEdge}{Logical value indicating the edge lengths gets optimized.}
   \item{optRate}{Logical value indicating the overall rate gets optimized.}
   \item{optRooted}{Logical value indicating if the edge lengths of a rooted tree get optimized.}
-  \item{optRatchet}{Stochastic tree search.}
+%  \item{optRatchet}{Stochastic tree search.}
   \item{ratchet.par}{search parameter for stochastic search}
   \item{rearrangement}{type of tree tree rearrangements to perform, one of
       "none", "NNI" or "stochastic"}
@@ -80,8 +80,8 @@ heuristics which works reasonalby for small and large trees or alignments.
 If \code{trace} is set to zero than no out put is shown, if functions are called internally 
 than the trace is decreased by one, so a higher of trace produces more feedback. 
 
-\code{optRatchet} implements a stochastic search algorithm similar to Nguyen et al. (2015). 
-This should helps often to find better tree topologies.   
+If \code{rearrangement} is set to \code{stochastic} a stochastic search algorithm similar to Nguyen et al. (2015). 
+This should helps often to find better tree topologies, especially for larger trees.   
 }
 \value{
 Returns a list of class \code{ll.phylo}

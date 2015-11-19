@@ -3372,15 +3372,16 @@ addTips2Tree <- function (tree, tips, where){
 
 
 optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE, 
-                        optInv = FALSE, optGamma = FALSE, optEdge = TRUE, optRate = FALSE, optRooted=FALSE, optRatchet = FALSE,
+                        optInv = FALSE, optGamma = FALSE, optEdge = TRUE, optRate = FALSE, optRooted=FALSE,
                         control = pml.control(epsilon = 1e-8, maxit = 10, trace = 1L), 
                         model = NULL, rearrangement = ifelse(optNni, "NNI","none"), subs = NULL, ratchet.par = list(iter = 10L, maxit = 100L, prop = 1/3), ...) 
 {
+    optRatchet = FALSE
     if(rearrangement ==  "none"){
         optNni = FALSE
         optRatchet = FALSE
     }
-    if(rearrangement ==  "NNI") optNni = TRUE
+    if(rearrangement ==  "NNI")optNni = TRUE
     if(rearrangement ==  "stochastic") optRatchet = TRUE
     
     extras <- match.call(expand.dots = FALSE)$...
