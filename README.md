@@ -2,6 +2,7 @@
 [![CRAN Status Badge](http://www.r-pkg.org/badges/version/phangorn)](http://cran.r-project.org/package=phangorn)
 [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html)
 [![CRAN Downloads](http://cranlogs.r-pkg.org/badges/phangorn)](http://cran.r-project.org/package=phangorn)
+[![Research software impact](http://depsy.org/api/package/cran/phangorn/badge.svg)](http://depsy.org/package/r/phangorn)
 
 
 phangorn
