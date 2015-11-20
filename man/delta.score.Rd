@@ -26,11 +26,7 @@ Specifies the retjurn value, one of "all", "mean" or "sd"
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+A vector containg the \eqn{\delta} scores. 
 }
 \references{
 BR Holland, KT Huber, A Dress, V Moulton (2002) \eqn{\delta} Plots: a tool for analyzing phylogenetic distance data
@@ -43,9 +39,9 @@ Russell D. Gray, David Bryant, Simon J. Greenhill (2010) On the shape and fabric
 \author{
 Alastair Potts and Klaus Schliep 
 }
-\note{
+%\note{
 %%  ~~further notes~~
-}
+%}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
@@ -53,7 +49,8 @@ Alastair Potts and Klaus Schliep
  \code{\link{dist.hamming}}
 }
 \examples{
-##
+data(yeast)
+hist(delta.score(yeast, "all"))
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

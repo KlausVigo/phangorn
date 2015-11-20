@@ -1553,7 +1553,7 @@ delta.score <- function(x, arg="mean", ...) {
         # dist.dna(dna,"raw") is equivalent to dist.hamming(as.phyDat(dna), exclude="all") 
         dist.dna <- as.matrix(dist.hamming(x, ...))
         # Number of quartets
-        choose(names(x),4)
+#        choose(length(names(x)),4)
         # Create all quartets
         all.quartets <- t(combn(names(x),4))
         delta.values <- apply(all.quartets[,],1,delta.quartet,dist.dna)
