@@ -22,9 +22,9 @@ Specifies the retjurn value, one of "all", "mean" or "sd"
      further arguments passed through \code{dist.hamming}
 }
 }
-\details{
+%\details{
 %%  ~~ If necessary, more details than the description above ~~
-}
+%}
 \value{
 A vector containg the \eqn{\delta} scores. 
 }
