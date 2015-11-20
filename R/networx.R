@@ -161,14 +161,17 @@ c.splits <- function (..., recursive=FALSE)
 
 # computes splits from phylo
 as.splits.phylo <- function(x, ...){
-    result = bip(x)
+    result <- bip(x)
     if(!is.null(x$edge.length)){
-        edge.weights = numeric(max(x$edge))
-        edge.weights[x$edge[,2]] = x$edge.length
-        attr(result, "weights") = edge.weights
+        edge.weights <- numeric(max(x$edge))
+        edge.weights[x$edge[,2]] <- x$edge.length
+        attr(result, "weights") <- edge.weights
     }
+    if(!is.null(x$node.label)){
+        attr(result, "confidences") <- c(rep("", length(x$tip.label)), x$node.label)
+    }    
     attr(result, "labels") <- x$tip
-    class(result) = c('splits', 'prop.part')
+    class(result) <- c('splits', 'prop.part')
     result 
 }
 
@@ -871,7 +874,8 @@ changeOrder <- function(x, labels){
 }
 
 
-addConfidences.splitsNew <- function(obj, phy){
+# phy now more general 
+addConfidences.splits <- function(obj, phy){
     tiplabel <- attr(obj, "label")
     nTips = length(tiplabel)
     obj = addTrivialSplits(obj) 
@@ -882,7 +886,6 @@ addConfidences.splitsNew <- function(obj, phy){
         phy$tip.label <- phy$tip.label[ind]
         ind2 <- match(1:length(ind), phy$edge[, 2])
         phy$edge[ind2, 2] <- order(ind)
-        
     }
     spl <- as.splits(phy)
     spl <- changeOrder(spl, tiplabel)
@@ -892,7 +895,8 @@ addConfidences.splitsNew <- function(obj, phy){
 }
 
 
-addConfidences.splits <- function(obj, phy){
+# raus?
+addConfidences.splitsOld <- function(obj, phy){
     tiplabel <- attr(obj, "label")
     obj = addTrivialSplits(obj) 
     ind <- match(tiplabel, phy$tip.label)
