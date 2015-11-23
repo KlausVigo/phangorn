@@ -575,16 +575,12 @@ addEdge <- function(network, desc, spl){
 
     g = graph(t(network$edge[ind,]), directed=FALSE)
     dec = decompose(g, min.vertices = 2)
-#    browser()
+
     #    fromTo <- sort(match(split[[1]], attr(desc, "cycle")))
-    
     #    sptmp = shortest_paths(g, fromTo[i-1], fromTo[i], 
     #                           output=c("epath"))$epath[[1]]
     #    sp2 = c(sp2, sptmp[-c(1, length(sptmp))])
     #    sp0 = c(sp0, sptmp)
-    
-    
-     
     
     oldNodes = unique(as.vector(edge[ind,]))
     mNodes = max(network$edge)
@@ -623,7 +619,6 @@ circNetwork <- function(x, ord=NULL){
     res = stree(nTips, tip.label = attr(x, "labels"))
     res$edge[, 2] = ord
     res$edge.length=NULL
-#    browser()    
     x <- SHORTwise(x, nTips)    
     spRes <- as.splits(res)[res$edge[,2]]
     index = match(spRes, x)
@@ -903,30 +898,6 @@ addConfidences.splits <- function(obj, phy){
 }
 
 
-# raus?
-addConfidences.splitsOld <- function(obj, phy){
-    tiplabel <- attr(obj, "label")
-    obj = addTrivialSplits(obj) 
-    ind <- match(tiplabel, phy$tip.label)
-    if (any(is.na(ind)) | length(tiplabel) != length(phy$tip.label)) 
-        stop("trees have different labels")
-    phy$tip.label <- phy$tip.label[ind]
-    ind2 <- match(1:length(ind), phy$edge[, 2])
-    phy$edge[ind2, 2] <- order(ind)
-    
-    spl <- as.splits(phy)
-    
-    nTips <- length(tiplabel)
-    spl <- SHORTwise(spl, nTips)
-    ind <- match(SHORTwise(obj, nTips), spl)
-    pos <-  which(ind > nTips)
-    confidences <- character(length(obj))
-    confidences[pos] <- phy$node.label[ind[pos] - nTips]
-    attr(obj, "confidences") <- confidences
-    obj  
-}
-
-
 addConfidences.networx <- function(obj, phy){
     spl <- attr(obj, "splits")
     spl <- addConfidences(spl, phy)
@@ -1060,15 +1031,6 @@ edgeLabels <- function(xx,yy,zz=NULL, edge){
 	        return(cbind(XX, YY, ZZ))
         }  
         cbind(XX, YY)  
-}
-
-.check.pkg <- function (pkg) 
-{
-    if (pkg %in% rownames(installed.packages())) {
-        require(pkg, character.only = TRUE)
-        return(TRUE)
-    }
-    else return(FALSE)
 }
 
 
@@ -1565,7 +1527,7 @@ delta.score <- function(x, arg="mean", ...) {
         # dist.dna(dna,"raw") is equivalent to dist.hamming(as.phyDat(dna), exclude="all") 
         dist.dna <- as.matrix(dist.hamming(x, ...))
         # Number of quartets
-#        choose(length(names(x)),4)
+        # choose(length(names(x)),4)
         # Create all quartets
         all.quartets <- t(combn(names(x),4))
         delta.values <- apply(all.quartets[,],1,delta.quartet,dist.dna)
