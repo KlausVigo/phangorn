@@ -890,8 +890,16 @@ addConfidences.splits <- function(obj, phy){
     spl <- as.splits(phy)
     spl <- changeOrder(spl, tiplabel)
     spl <- SHORTwise(spl, nTips)
+#    ind <- match(SHORTwise(obj, nTips), spl)
+#    ind
     ind <- match(SHORTwise(obj, nTips), spl)
-    ind 
+    #    pos <-  which(ind > nTips)
+    pos <-  which(!is.na(ind))
+    confidences <- character(length(obj))
+    confidences[pos] <- attr(spl, "confidences")[ind[pos]]
+    #        phy$node.label[ind[pos] - nTips]
+    attr(obj, "confidences") <- confidences
+    obj  
 }
 
 
