@@ -140,7 +140,23 @@ node2root <- function(x){
     attr(tree, "order") <- NULL
     tree <- reorder(reroot(tree, rn), "postorder")
     if(!is.null(oldtree$node.label))tree <- addConfidences.phylo(tree, oldtree)
-    tree 
+
+    if (!is.null(tree$node.label)) {
+        dnode <- tree$node[duplicated(tree$node)]
+        oldtip1 <- oldtree$tip.label[1]
+        tip1 <- which(tree$tip.label == oldtip1)
+        
+        old_dnode_id <- nTips + which(oldtree$node.label == dnode)
+        dnode_id <- nTips + which(tree$node.label == dnode)
+        
+        is_offspring_old <- old_dnode_id %in% Ancestors(oldtree, 1, 'all')
+        is_offspring <- dnode_id %in% Ancestors(tree, tip1, 'all')
+        
+        idx <- which(is_offspring_old != is_offspring)
+        tree$node.label[tree$node.label == dnode][idx] <- oldtree$node.label[! oldtree$node.label %in% tree$node.label]
+    }
+    
+    reorder(tree)
 }
 
 
