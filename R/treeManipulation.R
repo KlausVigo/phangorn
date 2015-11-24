@@ -153,7 +153,12 @@ node2root <- function(x){
         is_offspring <- dnode_id %in% Ancestors(tree, tip1, 'all')
         
         idx <- which(is_offspring_old != is_offspring)
-        tree$node.label[tree$node.label == dnode][idx] <- oldtree$node.label[! oldtree$node.label %in% tree$node.label]
+        missing_lab <- oldtree$node.label[! oldtree$node.label %in% tree$node.label]
+        if (length(missing_lab) == 0 ) {
+            tree$node.label[tree$node.label == dnode][idx] <- ""
+        } else {
+            tree$node.label[tree$node.label == dnode][idx] <- missing_lab
+        }
     }
     
     reorder(tree)
