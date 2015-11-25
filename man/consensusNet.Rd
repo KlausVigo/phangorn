@@ -48,6 +48,11 @@ library(rgl)
 open3d()
 plot(cnet, show.tip.label=FALSE, show.nodes=TRUE)
 plot(cnet, type = "2D", show.edge.label=TRUE)
+
+tmpfile <- normalizePath(system.file("extdata/trees/RAxML_bootstrap.woodmouse", package="phangorn"))
+trees <- read.tree(tmpfile)
+cnet_woodmouse = consensusNet(trees, .3)
+plot(cnet_woodmouse, type = "2D", show.edge.label=TRUE)
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

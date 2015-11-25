@@ -17,7 +17,7 @@ getRoot(tree)
 \arguments{
   \item{tree}{an object of class \code{phylo} }
   \item{FUN}{a function evaluated on the nodelabels, result must be logical.}
-  \item{node.label}{are nodel labels 'support' values, 'label' or  should be 'deleted'}
+  \item{node.labels}{are nodel labels 'support' values, 'label' or  should be 'deleted'}
   \item{\dots}{further arguments, passed to other methods.  }
 }
 \details{
