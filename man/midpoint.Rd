@@ -9,7 +9,7 @@
 \code{pruneTree} produces a consensus tree.
 }
 \usage{
-midpoint(tree)
+midpoint(tree, node.labels = "support")
 pruneTree(tree, ..., FUN = ">=")
 getRoot(tree)
 }
@@ -17,6 +17,7 @@ getRoot(tree)
 \arguments{
   \item{tree}{an object of class \code{phylo} }
   \item{FUN}{a function evaluated on the nodelabels, result must be logical.}
+  \item{node.label}{are nodel labels 'support' values, 'label' or  should be 'deleted'}
   \item{\dots}{further arguments, passed to other methods.  }
 }
 \details{

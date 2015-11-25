@@ -81,7 +81,7 @@ changeEdgeLength = function (tree, edge, edge.length)
 
 
 # O(n) statt O(n^2) Speicher und Geschwindigkeit
-midpoint <- function(tree){
+midpoint <- function(tree, node.labels = "support"){
 # distance from node to root
 node2root <- function(x){
     x = reorder(x, "postorder")
@@ -102,7 +102,10 @@ node2root <- function(x){
     maxD1 = node2root(tree)[1:nTips] 
     ind = which.max(maxD1)
     tmproot = Ancestors(tree, ind, "parent")
-    tree = reroot(tree, tmproot)
+#    tree = reroot(tree, tmproot)
+    nTips  = length(tree$tip.label)
+    if(tmproot>nTips) tree = root(tree, node=tmproot)
+    else  tree = root(tree, tmproot)   
     el = numeric(max(tree$edge))
     el[tree$edge[,2]]=tree$edge.length  
     maxdm = el[ind]
@@ -138,8 +141,24 @@ node2root <- function(x){
     tree$edge=edge
     tree$Nnode  = tree$Nnode+1
     attr(tree, "order") <- NULL
-    tree <- reorder(reroot(tree, rn), "postorder")
-    if(!is.null(oldtree$node.label))tree <- addConfidences.phylo(tree, oldtree)
+    tree <- reroot(tree, rn) 
+    if(!is.null(tree$node.label)){
+        node.label = tree$node.label
+        tmp = node.label[1]
+        node.label[1] = node.label[rn-nTips]
+        node.label[rn-nTips] = tmp
+        node.label[is.na(node.label)] = ""
+        tree$node.label = node.label
+    }
+    attr(tree, "order") <- NULL
+    tree <- reorder(tree, "postorder")
+#    tree <- reorder(reroot(tree, rn), "postorder")
+#    if(!is.null(oldtree$node.label))tree <- addConfidences.phylo(tree, oldtree)
+    if(!is.null(oldtree$node.label)){
+        type <- match.arg(node.labels, c("support", "label", "delete"))
+        if(type=="support") tree <- addConfidences.phylo(tree, oldtree)
+        if(type=="delete") tree$node.label <- NULL
+    }
     tree 
 }
 
