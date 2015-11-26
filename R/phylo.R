@@ -1773,8 +1773,7 @@ update.pml <- function (object, ...)
     if (type == "CODON") {
         df <- df + (k > 1) + (inv > 0) + length(unique(bf)) - 1
     }
-    else df = df + (k > 1) + (inv > 0) + 
-        length(unique(bf)) - 1 + length(unique(Q)) - 1
+    else df = df + (k > 1) + (inv > 0) + length(unique(bf)) - 1 + length(unique(Q)) - 1
     result = list(logLik = tmp$loglik, inv = inv, k = k, shape = shape, Q = Q, bf = bf, 
         rate = rate, siteLik = tmp$siteLik, weight = weight, g = g, w = w, eig = eig, 
         data = data, model = model, INV = INV, ll.0 = ll.0, tree = tree, lv = tmp$resll,
@@ -2833,10 +2832,20 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
         eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, wMix = wMix, site=TRUE) 
     
     df <- ifelse(is.ultrametric(tree), tree$Nnode, length(tree$edge.length))
-    if(type=="CODON"){ 
-        df <- df + (kmax>1) + (inv0 > 0) + length(unique(bf)) - 1 
-        }
-    else df = df + (kmax>1) + (inv0 > 0) + length(unique(bf)) - 1 + length(unique(Q)) - 1
+    
+    df <- switch(type, 
+                  DNA =  df + (kmax>1) + (inv0 > 0) + length(unique(bf)) - 1 + length(unique(Q)) - 1, 
+                  AA = df + (kmax>1) + (inv0 > 0) ,
+                  CODON = df + (kmax>1) + (inv0 > 0) + length(unique(bf)) - 1, 
+                  USER = df + (kmax>1) + (inv0 > 0) + length(unique(bf)) - 1 + length(unique(Q)) - 1)
+    
+#    if(type=="AA" & !is.null(model)){ 
+#        df <- df + (kmax>1) + (inv0 > 0) #+ length(unique(bf)) - 1 
+#    }
+#    if(type=="CODON"){ 
+#        df <- df + (kmax>1) + (inv0 > 0) + length(unique(bf)) - 1 
+#        }
+#    else df = df + (kmax>1) + (inv0 > 0) + length(unique(bf)) - 1 + length(unique(Q)) - 1
     result = list(logLik = tmp$loglik, inv = inv, k = kmax, shape = shape,
         Q = Q, bf = bf, rate = rate, siteLik = tmp$siteLik, weight = weight, 
         g = g, w = w, eig = eig, data = data, model=model, INV = INV, 
@@ -3518,13 +3527,30 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                        wMix = wMix, site = TRUE)
         
         df <- ifelse(optRooted, tree$Nnode, length(tree$edge.length))
-        # length(tree$edge.length)    
-        if (type == "CODON") {
-            df <- df + (k > 1) + (inv > 0) + 
-                length(unique(bf)) - 1 + (dnds != 1) + (tstv != 1) 
-        }
-        else df = df + (k > 1) + (inv > 0) + 
-            length(unique(bf)) - 1 + length(unique(Q)) - 1
+
+#   length(tree$edge.length)    
+#   nTips             
+#   nNodes
+#   uniqueTips
+#   uniqueNodes        
+#   kmax>1        
+#   bf
+#   Q     
+        df <- switch(type, 
+                      DNA = df + (k>1) + (inv > 0) + length(unique(bf)) - 1 + length(unique(Q)) - 1, 
+                      AA = df + (k>1) + (inv > 0) +  optBf * (length(unique(bf)) - 1),
+                      CODON = df + (k>1) + (inv > 0) + length(unique(bf)) - 1 + (dnds != 1) + (tstv != 1),  
+                      USER = df + (k>1) + (inv > 0) + length(unique(bf)) - 1 + length(unique(Q)) - 1)
+        
+#        if(type=="AA" & !is.null(model)){ 
+#            df <- df + (k>1) + (inv > 0) +  optBf * (length(unique(bf)) - 1) 
+#        }
+#        if (type == "CODON") {
+#            df <- df + (k > 1) + (inv > 0) + 
+#                length(unique(bf)) - 1 + (dnds != 1) + (tstv != 1) 
+#        }
+#        else df = df + (k > 1) + (inv > 0) + 
+#            length(unique(bf)) - 1 + length(unique(Q)) - 1
 
         if(addTaxa){
 #            pml.free()
