@@ -1744,7 +1744,10 @@ update.pml <- function (object, ...)
     levels <- attr(data, "levels")
     weight <- attr(data, "weight")
     if(updateEig)eig <- edQt(bf = bf, Q = Q)
-    else eig <- object$eig
+    else{
+        eig <- object$eig
+        model <- object$model
+    } 
     g <- discrete.gamma(shape, k)
     g <- rate * g 
     if (inv > 0) g <- g/(1 - inv)
@@ -1770,10 +1773,16 @@ update.pml <- function (object, ...)
     
     df <- ifelse(is.ultrametric(tree), tree$Nnode, length(tree$edge.length))
     
-    if (type == "CODON") {
-        df <- df + (k > 1) + (inv > 0) + length(unique(bf)) - 1
-    }
-    else df = df + (k > 1) + (inv > 0) + length(unique(bf)) - 1 + length(unique(Q)) - 1
+    df <- switch(type, 
+                 DNA = df + (k>1) + (inv > 0) + length(unique(bf)) - 1 + length(unique(Q)) - 1, 
+                 AA = df + (k>1) + (inv > 0) ,
+                 CODON = df + (k>1) + (inv > 0) + length(unique(bf)) - 1 + (dnds != 1) + (tstv != 1),  
+                 USER = df + (k>1) + (inv > 0) + length(unique(bf)) - 1 + length(unique(Q)) - 1)
+#    if (type == "CODON") {
+#        df <- df + (k > 1) + (inv > 0) + length(unique(bf)) - 1
+#    }
+#    else df = df + (k > 1) + (inv > 0) + length(unique(bf)) - 1 + length(unique(Q)) - 1
+    
     result = list(logLik = tmp$loglik, inv = inv, k = k, shape = shape, Q = Q, bf = bf, 
         rate = rate, siteLik = tmp$siteLik, weight = weight, g = g, w = w, eig = eig, 
         data = data, model = model, INV = INV, ll.0 = ll.0, tree = tree, lv = tmp$resll,
