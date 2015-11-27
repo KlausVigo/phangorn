@@ -854,7 +854,7 @@ consensusNet <- function (obj, prob = 0.3, ...)
 }
 
 
-addConfidences <- function (obj, phy) UseMethod("addConfidences")
+addConfidences <- function (x, y) UseMethod("addConfidences")
 
 
 changeOrder <- function(x, labels){
@@ -869,48 +869,48 @@ changeOrder <- function(x, labels){
 }
 
 
-# phy now more general 
-addConfidences.splits <- function(obj, phy){
-    tiplabel <- attr(obj, "label")
+# y now more general 
+addConfidences.splits <- function(x, y){
+    tiplabel <- attr(x, "label")
     nTips = length(tiplabel)
-    obj = addTrivialSplits(obj) 
-    if(inherits(phy,"phylo")){
-        ind <- match(tiplabel, phy$tip.label)
-        if (any(is.na(ind)) | length(tiplabel) != length(phy$tip.label)) 
+    x = addTrivialSplits(x) 
+    if(inherits(y,"phylo")){
+        ind <- match(tiplabel, y$tip.label)
+        if (any(is.na(ind)) | length(tiplabel) != length(y$tip.label)) 
             stop("trees have different labels")
-        phy$tip.label <- phy$tip.label[ind]
-        ind2 <- match(1:length(ind), phy$edge[, 2])
-        phy$edge[ind2, 2] <- order(ind)
+        y$tip.label <- y$tip.label[ind]
+        ind2 <- match(1:length(ind), y$edge[, 2])
+        y$edge[ind2, 2] <- order(ind)
     }
-    spl <- as.splits(phy)
+    spl <- as.splits(y)
     spl <- changeOrder(spl, tiplabel)
     spl <- SHORTwise(spl, nTips)
-#    ind <- match(SHORTwise(obj, nTips), spl)
+#    ind <- match(SHORTwise(x, nTips), spl)
 #    ind
-    ind <- match(SHORTwise(obj, nTips), spl)
+    ind <- match(SHORTwise(x, nTips), spl)
     #    pos <-  which(ind > nTips)
     pos <-  which(!is.na(ind))
-    confidences <- character(length(obj))
+    confidences <- character(length(x))
     confidences[pos] <- attr(spl, "confidences")[ind[pos]]
-    #        phy$node.label[ind[pos] - nTips]
-    attr(obj, "confidences") <- confidences
-    obj  
+    #        y$node.label[ind[pos] - nTips]
+    attr(x, "confidences") <- confidences
+    x  
 }
 
 
-addConfidences.networx <- function(obj, phy){
-    spl <- attr(obj, "splits")
-    spl <- addConfidences(spl, phy)
-    attr(obj, "splits") <- spl
-    obj    
+addConfidences.networx <- function(x, y){
+    spl <- attr(x, "splits")
+    spl <- addConfidences(spl, y)
+    attr(x, "splits") <- spl
+    x    
 }
 
 
-addConfidences.phylo <- function(obj, phy){
-    conf = attr(addConfidences(as.splits(obj), phy), "confidences")
-    nTips = length(obj$tip.label)
-    obj$node.label = conf[-c(1:nTips)]
-    obj      
+addConfidences.phylo <- function(x, y){
+    conf = attr(addConfidences(as.splits(x), y), "confidences")
+    nTips = length(x$tip.label)
+    x$node.label = conf[-c(1:nTips)]
+    x      
 } 
 
 
