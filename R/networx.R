@@ -67,7 +67,7 @@ orderSplitLabel = function(x, order){
 
 
 # returns order of x$edge
-presenceAbsence <- function(x, y){
+presenceAbsenceOld <- function(x, y){
     X <- as.splits(x)
     Y <- as.splits(y)
     labels <- attr(X, "labels") 
@@ -90,6 +90,13 @@ presenceAbsence <- function(x, y){
     res            
 }
 
+
+presenceAbsence <- function(x,y){
+    spl <- as.splits(y)
+    l <- length(spl)
+    attr(spl, "confidences") <- rep(1, l)
+    addConfidences(x, y)
+}
 
 
 optCycle <- function(splits, tree){

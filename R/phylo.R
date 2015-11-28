@@ -1665,7 +1665,7 @@ update.pmlNew <- function (object, ..., evaluate = TRUE){
     else call
 }
 
-
+# add dnds tstv
 update.pml <- function (object, ...) 
 {
     extras <- match.call(expand.dots = FALSE)$...
@@ -1772,11 +1772,11 @@ update.pml <- function (object, ...)
         wMix = wMix, site = TRUE)
     
     df <- ifelse(is.ultrametric(tree), tree$Nnode, length(tree$edge.length))
-    
+#    ifelse()
     df <- switch(type, 
                  DNA = df + (k>1) + (inv > 0) + length(unique(bf)) - 1 + length(unique(Q)) - 1, 
                  AA = df + (k>1) + (inv > 0) ,
-                 CODON = df + (k>1) + (inv > 0) + length(unique(bf)) - 1 + (dnds != 1) + (tstv != 1),  
+                 CODON = df + (k>1) + (inv > 0) + length(unique(bf)) - 1 , #+ (dnds != 1) + (tstv != 1),  
                  USER = df + (k>1) + (inv > 0) + length(unique(bf)) - 1 + length(unique(Q)) - 1)
 #    if (type == "CODON") {
 #        df <- df + (k > 1) + (inv > 0) + length(unique(bf)) - 1
