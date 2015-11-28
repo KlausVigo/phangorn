@@ -1,3 +1,9 @@
+aic.weights <- function(aic){
+    diff.aic <- aic-min(aic)
+    exp(-0.5 * diff.aic) / sum(exp(-0.5 * diff.aic))
+}
+
+
 modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80", 
     "HKY", "SYM", "GTR"), G = TRUE, I = TRUE, FREQ=FALSE, k = 4, 
     control = pml.control(epsilon = 1e-08, maxit = 10, trace = 1), 
@@ -20,6 +26,8 @@ modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80",
                                            "TIM1", "TIM2e", "TIM2", "TIM3e", "TIM3", "TVMe", "TVM", 
                                            "SYM", "GTR")
     if(attr(data, "type")=="AA") type = .aamodels   
+    
+    if(model == "all") model <- type
     model = match.arg(model, type, TRUE)
     
     env = new.env()
@@ -179,10 +187,16 @@ modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80",
     if (!eval.success) 
         RES <- lapply(model, fitPar, fit, G, I, k, FREQ)
     #   res <- RES <- lapply(model, fitPar, fit, G, I, k, freq)    
-    RESULT = matrix(NA, n * l, 6)
+#    RESULT = matrix(NA, n * l, 6)
+#    RESULT = as.data.frame(RESULT)
+#    colnames(RESULT) = c("Model", "df", "logLik", "AIC", "AICc", "BIC")
+    RESULT = matrix(NA, n * l, 8)
     RESULT = as.data.frame(RESULT)
-    colnames(RESULT) = c("Model", "df", "logLik", "AIC", "AICc", "BIC")
-    for (i in 1:l) RESULT[((i - 1) * n + 1):(n * i), ] = RES[[i]][[1]]
+    colnames(RESULT) = c("Model", "df", "logLik", "AIC", "AICw", "AICc", "AICcw", "BIC")
+    
+    for (i in 1:l) RESULT[((i - 1) * n + 1):(n * i), c(1,2,3,4,6,8)] = RES[[i]][[1]]
+    RESULT[,5] <- aic.weights(RESULT[,4])
+    RESULT[,7] <- aic.weights(RESULT[,6])
     for(i in 1:l){
         for(j in 1:n){
             mo = RES[[i]][[1]][j,1]
@@ -198,5 +212,7 @@ modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80",
     attr(RESULT, "env") = env 
     RESULT
 }
+
+
 
 
