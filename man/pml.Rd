@@ -149,7 +149,8 @@ L.-T. Nguyen, H.A. Schmidt, A. von Haeseler, and B.Q. Minh (2015) IQ-TREE: A fas
 # optimize shape parameter + proportion of invariant sites     
   fitJC_GI <- optim.pml(fitJC_GI, optGamma=TRUE, optInv=TRUE)
 # GTR + Gamma + I - model
-  fitGTR <- optim.pml(fitJC_GI, optNni=TRUE, optGamma=TRUE, optInv=TRUE, model="GTR") 
+  fitGTR <- optim.pml(fitJC_GI, rearrangement = "stochastic", 
+      optGamma=TRUE, optInv=TRUE, model="GTR") 
 }
 
 

@@ -22,7 +22,9 @@ If eps is positive an object of with all splits greater eps is returned.
 Data. \emph{Journal of Classification}, \bold{10}, 5-24.
 }
 \author{Klaus Schliep \email{klaus.schliep@gmail.com}, Tim White}
-\seealso{\code{\link{hadamard}}, \code{\link{lento}}, \code{\link{plot.networx}}}
+\seealso{
+\code{\link{hadamard}}, \code{\link{lento}}, \code{\link{plot.networx}}, \code{\link{neighborNet}}
+}
 
 \examples{
 data(yeast)
