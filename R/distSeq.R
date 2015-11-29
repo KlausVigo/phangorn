@@ -78,8 +78,6 @@ dist.ml <- function (x, model = "JC69", exclude = "none", bf = NULL, Q = NULL, k
     d = numeric((l * (l - 1))/2)
     v = numeric((l * (l - 1))/2)
     contrast <- attr(x, "contrast")
-    nc <- as.integer(attr(x, "nc"))
-    nr <- as.integer(attr(x, "nr"))
     con = rowSums(contrast > 0) < 2
     if (exclude == "all") {
         index = con[x[[1]]]
@@ -87,6 +85,8 @@ dist.ml <- function (x, model = "JC69", exclude = "none", bf = NULL, Q = NULL, k
         index = which(index)
         x = subset(x, , index)
     }
+    nc <- as.integer(attr(x, "nc"))
+    nr <- as.integer(attr(x, "nr"))
     #    model <- match.arg(model, c("JC69", "WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24"))
     model <- match.arg(model, c("JC69", "F81", .aamodels))
     #    if (!is.na(match(model, c("WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24")))) 
