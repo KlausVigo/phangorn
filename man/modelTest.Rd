@@ -16,7 +16,8 @@ modelTest(object, tree=NULL, model = c("JC", "F81", "K80", "HKY", "SYM", "GTR"),
 \arguments{
   \item{object}{an object of class phyDat or pml}
   \item{tree}{a phylogenetic tree.}
-  \item{model}{a vector containing the substitution models to compare with each other}
+  \item{model}{a vector containing the substitution models to compare with each other
+  or "all" to test all available models}
   \item{G}{logical, TRUE (default) if (discrete) Gamma modelshould be tested}
   \item{I}{logical, TRUE (default) if invariant sites should be tested}
   \item{FREQ}{logical, FALSE (default) if TRUE amino acid frequencies will be estimated.}
@@ -27,7 +28,8 @@ modelTest(object, tree=NULL, model = c("JC", "F81", "K80", "HKY", "SYM", "GTR"),
 }
 \details{
 \code{modelTest} estimates all the specified models for a given tree and data. 
-When the mclapply is available, the computations are done in parallel.
+When the mclapply is available, the computations are done in parallel. \code{modelTest} 
+runs each model in one thread. 
 This is may not work within a GUI interface and will not work under Windows.  
 }
 \value{
@@ -63,6 +65,9 @@ eval(F81, env=env)
 
 data(chloroplast)
 (mTAA <- modelTest(chloroplast, model=c("JTT", "WAG", "LG")))
+
+# test all available amino acid models
+(mTAA_all <- modelTest(chloroplast, model="all", multicore=TRUE, mc.cores=2))
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
