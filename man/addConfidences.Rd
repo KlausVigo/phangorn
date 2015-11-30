@@ -25,11 +25,7 @@ an object of class \code{splits}, \code{phylo}, \code{multiPhylo} or \code{netwo
 %%  ~~ If necessary, more details than the description above ~~
 %%}
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+The object \code{x} with added bootstrap / MCMC support values. 
 }
 \author{Klaus Schliep \email{klaus.schliep@gmail.com}}
 %%\note{
@@ -42,13 +38,20 @@ an object of class \code{splits}, \code{phylo}, \code{multiPhylo} or \code{netwo
 \code{\link{as.splits}}, \code{\link{as.networx}}, \code{\link{RF.dist}}, \code{\link{plot.phylo}}
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
+data(woodmouse)
+woodmouse <- phyDat(woodmouse)
+tmpfile <- normalizePath(system.file("extdata/trees/RAxML_bootstrap.woodmouse", package="phangorn"))
+boot_trees <- read.tree(tmpfile)
 
-## The function is currently defined as
-function (obj, phy) 
-UseMethod("addConfidences")
+dm <- dist.ml(woodmouse)
+tree <- upgma(dm)
+nnet <- neighborNet(dm)
+
+tree <- addConfidences(tree, boot_trees)
+nnet <- addConfidences(nnet, boot_trees)
+
+plot(tree, show.node.label=TRUE)
+plot(nnet, "2D", show.edge.label=TRUE)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
