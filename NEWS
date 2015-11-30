@@ -11,8 +11,6 @@ NEW FEATURES
     o optim.pml got a new rearrangement argument and can now 
     
       use a stochastic rearrangements like (Nguyen et al. 2015)
-    
-    o optim.pml uses more C code and should be more robust  
 
 BUG FIXES
 
@@ -20,11 +18,17 @@ BUG FIXES
     
 OTHER CHANGES
 
+    o optim.pml uses more C code and should be more robust  
+
     o more unit tests
     
     o baseFreq got additional parameter 'all' similar to base.freq in ape 
     
     o lots of little improvements in the manual and help files
+    
+    o modelTest now also shows AIC weights and model="all" will test
+    
+      all available models
 
 
 
