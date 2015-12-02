@@ -160,7 +160,7 @@ The results of is illustrated in table \ref{tab:modelTest}
 \begin{center}
 <<echo=FALSE,results=tex>>=
 library(xtable)
-xtable(mt, caption="Summary table of modelTest", label="tab:modelTest")
+print(xtable(mt, caption="Summary table of modelTest", label="tab:modelTest"), include.rownames=FALSE)
 @
 \end{center}
 The thresholds for the optimization in  \Rfunction{modelTest} are not as strict as for \Rfunction{optim.pml} and no tree rearrangements are performed. As \Rfunction{modelTest} computes and optimizes a lot of models it would be a waste of computer time not to save these results. The results are saved as call together with the optimized trees in an environment and this call can be evaluated to get a "pml" object back to use for further optimization or analysis.
