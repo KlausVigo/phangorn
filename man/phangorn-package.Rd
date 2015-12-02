@@ -13,14 +13,15 @@ Distance methods & Hadamard conjugation)
 The complete list of functions can be displayed with \code{library(help = phangorn)}. 
 
 
-Further information is available in two vignettes.  
+Further information is available in several vignettes. To show the available 
+vignettes in an HTML browser type \code{browseVignettes("phangorn")}. 
 \tabular{ll}{
 \code{Trees} \tab Constructing phylogenetic trees (source, pdf) \cr
 \code{phangorn-specials} \tab Advanced features (source, pdf) \cr
 \code{Ancestral} \tab Ancestral sequence reconstruction (source, pdf) \cr
+\code{Networx} \tab Splits and Networx (source, html) \cr
 }
-The first vignette (to display type \code{vignette('Trees')}) gives an introduction in phylogenetic analysis with phangorn, and 
-the second vignette covers more advanced feature like defining special character spaces. 
+The first vignette (to display type \code{vignette('Trees')}) gives an introduction in phylogenetic analysis with phangorn. The second vignette (phangorn-special) covers more advanced feature like defining special character spaces and things which fit nowhere else. 
 }
 \author{
 Klaus Schliep
