@@ -27,7 +27,7 @@ modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80",
                                            "SYM", "GTR")
     if(attr(data, "type")=="AA") type = .aamodels   
     
-    if( (length(model)==1) & model == "all") model <- type
+    if( (length(model)==1) && model == "all") model <- type
     model = match.arg(model, type, TRUE)
     
     env = new.env()
