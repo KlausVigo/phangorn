@@ -9,6 +9,7 @@
 
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 
 \newcommand{\Rfunction}[1]{{\texttt{#1}}}
 \newcommand{\Robject}[1]{{\texttt{#1}}}
@@ -136,27 +137,29 @@ fitGTR = optim.pml(fitGTR, TRUE,TRUE, TRUE, TRUE, TRUE,
     control = pml.control(trace = 0))
 fitGTR 
 @
+
+\subsection{Model selection}
 We can compare the objects for the JC and GTR + $\Gamma(4)$ + I model using likelihood ratio statistic
 <<echo=TRUE>>=
 anova(fitJC, fitGTR) 
 @
-with the AIC
+with the Shimodaira-Hasegawa test
+<<echo=TRUE>>=
+SH.test(fitGTR, fitJC) 
+@
+or with the AIC
 <<echo=TRUE>>=
 AIC(fitGTR) 
 AIC(fitJC)
 @
-or the Shimodaira-Hasegawa test.
-<<echo=TRUE>>=
-SH.test(fitGTR, fitJC) 
-@
-An alternative is to use the function \Rfunction{modelTest}  to compare different models the AIC or BIC, similar to popular program of \cite{Posada1998, Posada2008}.  
+An alternative is to use the function \Rfunction{modelTest}  to compare different models the AIC, AICc or BIC, similar to popular programs ModelTest and ProtTest \cite{Posada1998, Posada2008, Abascal2005}.  
 <<echo=FALSE>>=
 load("Trees.RData")
 @
 <<echo=TRUE, eval=FALSE>>=
 mt = modelTest(primates)
 @
-The results of is illustrated in table \ref{tab:modelTest}
+The results of \Rfunction{modelTest} is illustrated in table \ref{tab:modelTest}
 \begin{center}
 <<echo=FALSE,results=tex>>=
 library(xtable)
@@ -180,7 +183,7 @@ bs = bootstrap.pml(fitJC, bs=100, optNni=TRUE,
 Now we can plot the tree with the bootstrap support values on the edges
 <<label=plotBS,include=FALSE>>=
 par(mar=c(.1,.1,.1,.1))
-plotBS(fitJC$tree, bs)
+plotBS(fitJC$tree, bs, p = 50)
 @
 %$
 \begin{figure}
@@ -194,15 +197,16 @@ plotBS(fitJC$tree, bs)
 \end{figure}
 
 Several analyses, e.g. \Rfunction{bootstrap} and  \Rfunction{modelTest}, can be computationally demanding, but as nowadays most computers have several cores one can distribute the computations using the  \multicore{} package. However it is only possible to use this approach if R is running from command line ("X11"), but not using  a GUI (for example "Aqua" on Macs) and unfortunately the \multicore{} package does not work at all under Windows. 
+
+\newpage
 \section{Appendix: Standard scripts for nucleotide or amino acid analysis}\label{sec:Appendix}
 Here we provide two standard scripts which can be adapted for the most common tasks. 
-Most likely the arguments for \Rfunction{read.phyDat} have to be adapted to accommodate your file format. Both scripts assume that the \multicore{} package, see comments above. 
+Most likely the arguments for \Rfunction{read.phyDat} have to be adapted to accommodate your file format. Both scripts assume that the \multicore{} package works on your platform, see comments above. 
 <<echo=FALSE>>=
 options(prompt=" ")
 options(continue="  ")
 @
 <<eval=FALSE>>=
-library(parallel) # supports parallel computing
 library(phangorn)
 file="myfile"
 dat = read.phyDat(file)
@@ -216,34 +220,44 @@ fitStart = pml(tree, dat, k=4, inv=.2)
 fit = optim.pml(fitStart, TRUE, TRUE, TRUE, TRUE, TRUE) 
  
 # 2. alternative: modelTest  
-(mt <- modelTest(dat, multicore=TRUE)) 
+(mt <- modelTest(dat, tree=tree, multicore=TRUE)) 
 mt$Model[which.min(mt$BIC)]
 # choose best model from the table, assume now GTR+G+I
 env = attr(mt, "env")
 fitStart = eval(get("GTR+G+I", env), env) 
+# or let R search the table
 fitStart = eval(get(mt$Model[which.min(mt$BIC)], env), env) 
-fit = optim.pml(fitStart, optNni=TRUE, optGamma=TRUE, optInv=TRUE, 
-    model="GTR")
+fit = optim.pml(fitStart, rearrangement = "stochastic", 
+    optGamma=TRUE, optInv=TRUE, model="GTR")
 bs = bootstrap.pml(fit, bs=100, optNni=TRUE, multicore=TRUE)
 @
 
-You can specify different several models build in which you can specify, e.g. "WAG", "JTT", "Dayhoff", "LG". Optimizing the rate matrix for amino acids is possible, but would take a long, a very long time. So make sure to set optBf=FALSE and optQ=FALSE in the function \Rfunction{optim.pml}, which is also the default.
+You can specify different several models build in which you can specify, e.g. "WAG", "JTT", "Dayhoff", "LG". Optimizing the rate matrix for amino acids is possible, but would take a long, a very long time and you will need to have a large alignement to estimate all the parameters. So make sure to set optBf=FALSE and optQ=FALSE in the function \Rfunction{optim.pml}, which is also the default.
 <<eval=FALSE>>=
-library(parallel) # supports parallel computing
 library(phangorn)
 file="myfile"
 dat = read.phyDat(file, type = "AA")
 dm = dist.ml(dat, model="JTT")
 tree = NJ(dm)
 
-(mt <- modelTest(dat, model=c("JTT", "LG", "WAG"), multicore=TRUE)) 
+# parallel will only work safely from command line 
+# and not at all windows
+(mt <- modelTest(dat, model=c("JTT", "LG", "WAG"), 
+    multicore=TRUE)) 
+# run all available amino acid models
+(mt <- modelTest(dat, model="all", multicore=TRUE))
+
 fitStart = eval(get(mt$Model[which.min(mt$BIC)], env), env) 
 
 fitNJ = pml(tree, dat, model="JTT", k=4, inv=.2)
-fit = optim.pml(fitNJ, optNni=TRUE, optInv=TRUE, optGamma=TRUE)
+fit = optim.pml(fitNJ, rearrangement = "stochastic", 
+    optInv=TRUE, optGamma=TRUE)
 fit
+
 bs = bootstrap.pml(fit, bs=100, optNni=TRUE, multicore=TRUE)
 @
+
+\newpage
 
 \bibliographystyle{plain}
 \bibliography{phangorn}
