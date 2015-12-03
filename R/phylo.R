@@ -188,9 +188,15 @@ AICc <- function (object, ...)
 AICc.pml <- function(object, ...){
     n = sum(object$weight)
     k = object$df
-#    if(k>=(n-1))return(NULL)    
+    if(k >= (n-1)) return NaN
     res = AIC(object)
     res +   (2*k*(k+1))/(n-k-1)    
+}
+
+
+BIC.pml <- function(object, ...){
+    res = AIC(object, k=log(sum(object$weight)))
+    res     
 }
 
 
@@ -3386,7 +3392,6 @@ addTips2Tree <- function (tree, tips, where){
     tree <- reorder(tree, "postorder")
     tree
 }    
-
 
 
 optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE, 
