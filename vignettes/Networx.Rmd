@@ -31,7 +31,7 @@ set.seed(1)
 bs <- bootstrap.phyDat(yeast, FUN = function(x)nj(dist.hamming(x)), 
     bs=100)
 tree <- nj(dist.hamming(yeast))
-par("mar" = rep(2, 4))
+par("mar" = rep(1, 4))
 tree <- plotBS(tree, bs, "phylogram")
 cnet <- consensusNet(bs, .3)
 plot(cnet, "2D", show.edge.label=TRUE)
@@ -58,7 +58,7 @@ The function `neighborNet` implements the popular method of @Bryant2004. The  Ne
 ```{r, eval=TRUE}
 dm <- dist.hamming(yeast)
 nnet <- neighborNet(dm)
-par("mar" = rep(2, 4))
+par("mar" = rep(1, 4))
 plot(nnet, "2D")
 ```
 
@@ -71,7 +71,7 @@ The rendering of the `networx` is done using the the fantastic igraph package [@
 We can use the generic function `addConfidences` to add support values from a tree, i.e. an object of class `phylo` to a `networx`, `splits` or `phylo` object. The Neighbor-Net object we computed above contains no support values. We can add the support values fro  the tree we computed to the splits these two objects share. 
 ```{r, eval=TRUE}
 nnet <- addConfidences(nnet, tree)
-par("mar" = rep(2, 4))
+par("mar" = rep(1, 4))
 plot(nnet, "2D", show.edge.label=TRUE)
 ```    
 
@@ -80,6 +80,7 @@ We can also add support values to a tree:
 tree2 <- rNNI(tree, 2)
 tree2 <- addConfidences(tree2, tree)
 # several support values are missing
+par("mar" = rep(1, 4))
 plot(tree2, show.node.label=TRUE)
 ```   
 
@@ -89,7 +90,7 @@ Consensus networks on the other hand have information about support values corre
 Given a distance matrix we can estimate edge weights using non-negative Least-Squares. 
 ```{r, eval=TRUE}
 cnet <- nnls.networx(cnet, dm)
-par("mar" = rep(2, 4))
+par("mar" = rep(1, 4))
 plot(cnet, "2D", show.edge.label=TRUE)
 ```
     

@@ -82,13 +82,13 @@ treeNJ = NJ(dm)
 We can plot the trees treeUPGMA and treeNJ (figure \ref{fig:NJ}) with the commands:
 <<label=plotNJ,include=FALSE>>=
 layout(matrix(c(1,2), 2, 1), height=c(1,2))
-par(mar = c(.1,.1,.1,.1))
+par(mar = c(0,0,2,0)+ 0.1)
 plot(treeUPGMA, main="UPGMA")
 plot(treeNJ, "unrooted", main="NJ")
 @
 \begin{figure}
 \begin{center}
-<<label=figNJ,fig=TRUE,echo=FALSE>>=
+<<label=figNJ,fig=TRUE,echo=FALSE, height=8>>=
 <<plotNJ>>
 @
 \end{center}
@@ -143,16 +143,18 @@ We can compare the objects for the JC and GTR + $\Gamma(4)$ + I model using like
 <<echo=TRUE>>=
 anova(fitJC, fitGTR) 
 @
-with the Shimodaira-Hasegawa test
+with the Shimodaira-Hasegawa \cite{Shimodaira1999} test
 <<echo=TRUE>>=
 SH.test(fitGTR, fitJC) 
 @
 or with the AIC
 <<echo=TRUE>>=
-AIC(fitGTR) 
 AIC(fitJC)
+AIC(fitGTR) 
+AICc(fitGTR) 
+BIC(fitGTR) 
 @
-An alternative is to use the function \Rfunction{modelTest}  to compare different models the AIC, AICc or BIC, similar to popular programs ModelTest and ProtTest \cite{Posada1998, Posada2008, Abascal2005}.  
+An alternative is to use the function \Rfunction{modelTest}  to compare different nucleotide or protein models the AIC, AICc or BIC, similar to popular programs ModelTest and ProtTest \cite{Posada1998, Posada2008, Abascal2005}.  
 <<echo=FALSE>>=
 load("Trees.RData")
 @
@@ -258,6 +260,8 @@ bs = bootstrap.pml(fit, bs=100, optNni=TRUE, multicore=TRUE)
 @
 
 \newpage
+
+% \cite{Sugiura1978}
 
 \bibliographystyle{plain}
 \bibliography{phangorn}
