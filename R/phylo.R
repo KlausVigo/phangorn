@@ -188,7 +188,7 @@ AICc <- function (object, ...)
 AICc.pml <- function(object, ...){
     n = sum(object$weight)
     k = object$df
-    if(k >= (n-1)) return NaN
+    if(k >= (n-1)) return(NaN)
     res = AIC(object)
     res +   (2*k*(k+1))/(n-k-1)    
 }
