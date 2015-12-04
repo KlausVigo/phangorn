@@ -201,7 +201,7 @@ plotBS(fitJC$tree, bs, p = 50)
 Several analyses, e.g. \Rfunction{bootstrap} and  \Rfunction{modelTest}, can be computationally demanding, but as nowadays most computers have several cores one can distribute the computations using the  \multicore{} package. However it is only possible to use this approach if R is running from command line ("X11"), but not using  a GUI (for example "Aqua" on Macs) and unfortunately the \multicore{} package does not work at all under Windows. 
 
 \newpage
-\section{Appendix: Standard scripts for nucleotide or amino acid analysis}\label{sec:Appendix}
+\section{Appendix: Standard scripts for nucleotide analysis}\label{sec:Appendix2}
 Here we provide two standard scripts which can be adapted for the most common tasks. 
 Most likely the arguments for \Rfunction{read.phyDat} have to be adapted to accommodate your file format. Both scripts assume that the \multicore{} package works on your platform, see comments above. 
 <<echo=FALSE>>=
@@ -212,28 +212,36 @@ options(continue="  ")
 library(phangorn)
 file="myfile"
 dat = read.phyDat(file)
-dm = dist.ml(dat)
+dm = dist.ml(dat, "F81")
 tree = NJ(dm)
 # as alternative for a starting tree:
-tree <- pratchet(dat) 
+tree <- pratchet(dat)          # parsimony tree 
+tree <- nnls.phylo(tree, dm)   # need edge weights
 
-# 1. alternative: estimate an GTR model
-fitStart = pml(tree, dat, k=4, inv=.2)
-fit = optim.pml(fitStart, TRUE, TRUE, TRUE, TRUE, TRUE) 
+
+# 1. alternative: quick and dirty: GTR + G + NNI
+fitStart = pml(tree, dat, k=4)
+fit = optim.pml(fitStart, model="GTR", optGamma=TRUE, rearrangement="NNI") 
  
-# 2. alternative: modelTest  
-(mt <- modelTest(dat, tree=tree, multicore=TRUE)) 
-mt$Model[which.min(mt$BIC)]
-# choose best model from the table, assume now GTR+G+I
+# 2. alternative: preper with modelTest  
+mt <- modelTest(dat, tree=tree, multicore=TRUE)
+mt[order(mt$AICc),]
+# choose best model from the table according to AICc
+bestmodel <- mt$Model[which.min(mt$AICc)]
+
 env = attr(mt, "env")
 fitStart = eval(get("GTR+G+I", env), env) 
+
 # or let R search the table
-fitStart = eval(get(mt$Model[which.min(mt$BIC)], env), env) 
+fitStart = eval(get(bestmodel, env), env) 
+# equivalent to:   fitStart = eval(get("GTR+G+I", env), env) 
 fit = optim.pml(fitStart, rearrangement = "stochastic", 
     optGamma=TRUE, optInv=TRUE, model="GTR")
 bs = bootstrap.pml(fit, bs=100, optNni=TRUE, multicore=TRUE)
 @
 
+\newpage
+\section{Appendix 2: Standard scripts for amino acid analysis}\label{sec:Appendix1}
 You can specify different several models build in which you can specify, e.g. "WAG", "JTT", "Dayhoff", "LG". Optimizing the rate matrix for amino acids is possible, but would take a long, a very long time and you will need to have a large alignement to estimate all the parameters. So make sure to set optBf=FALSE and optQ=FALSE in the function \Rfunction{optim.pml}, which is also the default.
 <<eval=FALSE>>=
 library(phangorn)
