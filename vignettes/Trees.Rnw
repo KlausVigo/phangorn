@@ -60,14 +60,15 @@ options("show.signif.stars" = FALSE)
 \nocite{Paradis2012}
 \section{Introduction}
 
-These notes should enable the user to estimate phylogenetic trees from alignment data with different methods using the \phangorn{} package \cite{Schliep2011}. Several functions of \phangorn{} are also described in more detail in \cite{Paradis2012}. For more theoretical background on all the methods see e.g. \cite{Felsenstein2004, Yang2006}. This document illustrates some of the \phangorn{} features to estimate phylogenetic trees using different reconstruction methods. Small adaptations to the scripts in section \ref{sec:Appendix} should enable the user to perform phylogenetic analyses.
+These notes should enable the user to estimate phylogenetic trees from alignment data with different methods using the \phangorn{} package \cite{Schliep2011}. Several functions of \phangorn{} are also described in more detail in \cite{Paradis2012}. For more theoretical background on all the methods see e.g. \cite{Felsenstein2004, Yang2006}. This document illustrates some of the \phangorn{} features to estimate phylogenetic trees using different reconstruction methods. Small adaptations to the scripts in section \ref{sec:Appendix1,sec:Appendix1}  should enable the user to perform phylogenetic analyses.
 \section{Getting started}
 The first thing we have to do is to read in an alignment. Unfortunately there exists many different file formats that alignments can be stored in. The function \Rfunction{read.phyDat} is used to  read in an alignment. There are several functions to read in alignments depending on the format of the data set (nexus, phylip, fasta) and the kind of data (amino acid or nucleotides) in the \ape{} package \cite{Paradis2004} and \phangorn{}. The function \Rfunction{read.phyDat} calls these other functions. For the specific parameter settings available look in the help files of  the function \Rfunction{read.dna} (for phylip, fasta, clustal format), \Rfunction{read.nexus.data} for nexus files. For amino acid data additional \Rfunction{read.aa} is called.  
 %When using the \Rfunction{read.dna} from \ape{} the parameter the we have to use as.character=TRUE.  
 We start our analysis loading the \phangorn{} package and then reading in an alignment.  
 <<echo=TRUE>>=
 library(phangorn)
-primates = read.phyDat("primates.dna", format="phylip", type="DNA")
+primates = read.phyDat("primates.dna", format="phylip", 
+    type="DNA")
 @
 %require("multicore")
 \section{Distance based methods}
@@ -103,7 +104,7 @@ The function parsimony returns the parsimony score, that is the number of change
 parsimony(treeUPGMA, primates)
 parsimony(treeNJ, primates)
 @
-The function optim.parsimony performs tree rearrangements to find trees with a lower parsimony score. So far the only tree rearrangement implemented is nearest-neighbor interchanges (NNI). However is also a version of the parsimony ratchet \cite{Nixon1999} implemented, which is likely to find better trees than just doing NNI rearrangements. 
+The function optim.parsimony performs tree rearrangements to find trees with a lower parsimony score. The tree rearrangement implemented are  nearest-neighbor interchanges (NNI) and subtree pruning and regrafting (SPR). The later one only works so far with the fitch algorithm. However is also a version of the parsimony ratchet \cite{Nixon1999} implemented, which is likely to find better trees than just doing NNI / SPR rearrangements. 
 <<echo=TRUE>>=
 treePars = optim.parsimony(treeUPGMA, primates)
 treeRatchet = pratchet(primates, trace = 0)
@@ -133,13 +134,14 @@ logLik(fitJC)
 With the default values \Rfunction{pml} will estimate a Jukes-Cantor model. The function \Rfunction{update.pml} allows to change parameters. We will change the model to the GTR + $\Gamma(4)$ + I model and then optimize all the parameters. 
 <<echo=TRUE>>=
 fitGTR = update(fit, k=4, inv=0.2) 
-fitGTR = optim.pml(fitGTR, TRUE,TRUE, TRUE, TRUE, TRUE, 
-    control = pml.control(trace = 0))
+fitGTR = optim.pml(fitGTR, model="GTR", optInv=TRUE, optGamma=TRUE, 
+    rearrangement = "NNI", control = pml.control(trace = 0))
 fitGTR 
 @
+With the control parameters the threshols for the fitting process can be changed. Here we want just to supress output during the fitting process. 
 
 \subsection{Model selection}
-We can compare the objects for the JC and GTR + $\Gamma(4)$ + I model using likelihood ratio statistic
+We can compare nested models for the JC and GTR + $\Gamma(4)$ + I model using likelihood ratio statistic
 <<echo=TRUE>>=
 anova(fitJC, fitGTR) 
 @
