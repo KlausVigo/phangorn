@@ -67,7 +67,7 @@ The first thing we have to do is to read in an alignment. Unfortunately there ex
 We start our analysis loading the \phangorn{} package and then reading in an alignment.  
 <<echo=TRUE>>=
 library(phangorn)
-primates = read.phyDat("primates.dna", format="phylip", 
+primates <- read.phyDat("primates.dna", format="phylip", 
     type="DNA")
 @
 %require("multicore")
@@ -76,9 +76,9 @@ After reading in the alignment we can build a first tree with distance based met
  
 After constructing a distance matrix we reconstruct a rooted tree with UPGMA and alternatively an unrooted tree using Neighbor Joining \cite{Saitou1987,Studier1988}. 
 <<echo=TRUE>>=
-dm = dist.ml(primates)
-treeUPGMA = upgma(dm)
-treeNJ = NJ(dm)
+dm  <- dist.ml(primates)
+treeUPGMA  <- upgma(dm)
+treeNJ  <- NJ(dm)
 @
 We can plot the trees treeUPGMA and treeNJ (figure \ref{fig:NJ}) with the commands:
 <<label=plotNJ,include=FALSE>>=
@@ -106,8 +106,8 @@ parsimony(treeNJ, primates)
 @
 The function optim.parsimony performs tree rearrangements to find trees with a lower parsimony score. The tree rearrangement implemented are  nearest-neighbor interchanges (NNI) and subtree pruning and regrafting (SPR). The later one only works so far with the fitch algorithm. However is also a version of the parsimony ratchet \cite{Nixon1999} implemented, which is likely to find better trees than just doing NNI / SPR rearrangements. 
 <<echo=TRUE>>=
-treePars = optim.parsimony(treeUPGMA, primates)
-treeRatchet = pratchet(primates, trace = 0)
+treePars  <- optim.parsimony(treeUPGMA, primates)
+treeRatchet  <- pratchet(primates, trace = 0)
 parsimony(c(treePars, treeRatchet), primates)
 @
 For small data sets it is also possible to find all most parsimonious trees using a branch and bound algorithm \cite{Hendy1982}. For data sets with more than 10 taxa this can take a long time and depends strongly on how tree like the data are.  
@@ -128,18 +128,22 @@ methods(class="pml")
 @ 
 The object fit just estimated the likelihood for the tree it got supplied, but the branch length are not optimized for the Jukes-Cantor model yet, which can be done with the function optim.pml. 
 <<echo=TRUE, results=hide>>=
-fitJC = optim.pml(fit, TRUE)
+fitJC  <- optim.pml(fit, TRUE)
 logLik(fitJC)
 @
 With the default values \Rfunction{pml} will estimate a Jukes-Cantor model. The function \Rfunction{update.pml} allows to change parameters. We will change the model to the GTR + $\Gamma(4)$ + I model and then optimize all the parameters. 
 <<echo=TRUE>>=
-fitGTR = update(fit, k=4, inv=0.2) 
-fitGTR = optim.pml(fitGTR, model="GTR", optInv=TRUE, optGamma=TRUE, 
+fitGTR <- update(fit, k=4, inv=0.2) 
+fitGTR <- optim.pml(fitGTR, model="GTR", optInv=TRUE, optGamma=TRUE, 
     rearrangement = "NNI", control = pml.control(trace = 0))
 fitGTR 
 @
-With the control parameters the threshols for the fitting process can be changed. Here we want just to supress output during the fitting process. 
-
+With the control parameters the threshols for the fitting process can be changed. Here we want just to supress output during the fitting process. For larger trees the NNI rearrangements often get stuck in local maxima. We added a stochatic algortithm similar as in \cite{Nguyen2015}, which makes random NNI permuation to the tree, which than gets optimised to escape local optima.     
+<<echo=TRUE>>=
+fitGTR <- optim.pml(fitGTR, model="GTR", optInv=TRUE, optGamma=TRUE, 
+    rearrangement = "stochastic", control = pml.control(trace = 0))
+fitGTR 
+@
 \subsection{Model selection}
 We can compare nested models for the JC and GTR + $\Gamma(4)$ + I model using likelihood ratio statistic
 <<echo=TRUE>>=
