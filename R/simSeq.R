@@ -56,9 +56,9 @@ simSeq.phylo = function(x, l=1000, Q=NULL, bf=NULL, rootseq=NULL, type = "DNA", 
     label = c(x$tip, as.character((k+1):nNodes))
     colnames(res)=label 
     if(!ancestral)res = res[, x$tip, drop=FALSE]
-    if(pt=="DNA") return(phyDat.DNA(as.data.frame(res), return.index=TRUE))
-    if(pt=="AA") return(phyDat.AA(as.data.frame(res), return.index=TRUE))
-    if(pt=="USER") return(phyDat.default(as.data.frame(res), levels = levels, return.index=TRUE))
+    if(pt=="DNA") return(phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE), return.index=TRUE))
+    if(pt=="AA") return(phyDat.AA(as.data.frame(res, stringsAsFactors = FALSE), return.index=TRUE))
+    if(pt=="USER") return(phyDat.default(as.data.frame(res, stringsAsFactors = FALSE), levels = levels, return.index=TRUE))
 }        
 
 
