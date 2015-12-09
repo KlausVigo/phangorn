@@ -70,9 +70,8 @@ library(phangorn)
 primates <- read.phyDat("primates.dna", format="phylip", 
     type="DNA")
 @
-%require("multicore")
 \section{Distance based methods}
-After reading in the alignment we can build a first tree with distance based methods. The function dist.dna from the ape package computes distances for many DNA substitution models. To use the function dist.dna we have to transform the data to class DNAbin. For amino acids the function dist.ml offers common substitution models ("WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa" and "mtREV24").  
+After reading in the alignment we can build a first tree with distance based methods. The function dist.dna from the ape package computes distances for many DNA substitution models. To use the function dist.dna we have to transform the data to class DNAbin. For amino acids the function \Rfunction{dist.ml} offers common substitution models (for example "WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa" or "mtREV24").  
  
 After constructing a distance matrix we reconstruct a rooted tree with UPGMA and alternatively an unrooted tree using Neighbor Joining \cite{Saitou1987,Studier1988}. 
 <<echo=TRUE>>=
@@ -122,7 +121,7 @@ We can easily compute the likelihood for a tree given the data
 fit = pml(treeNJ, data=primates)
 fit
 @
-The function pml returns an object of class pml. This object contains the data, the tree and many different parameters of the model like the likelihood etc. There are many generic functions for the class pml available, which allow the handling of these objects.
+The function \Rfunction{pml} returns an object of class \Robject{pml}. This object contains the data, the tree and many different parameters of the model like the likelihood. There are many generic functions for the class Robject{pml} available, which allow the handling of these objects.
 <<echo=TRUE>>=
 methods(class="pml")
 @ 
@@ -138,7 +137,7 @@ fitGTR <- optim.pml(fitGTR, model="GTR", optInv=TRUE, optGamma=TRUE,
     rearrangement = "NNI", control = pml.control(trace = 0))
 fitGTR 
 @
-With the control parameters the threshols for the fitting process can be changed. Here we want just to supress output during the fitting process. For larger trees the NNI rearrangements often get stuck in local maxima. We added a stochatic algortithm similar as in \cite{Nguyen2015}, which makes random NNI permuation to the tree, which than gets optimised to escape local optima.     
+With the control parameters the threshols for the fitting process can be changed. Here we want just to supress output during the fitting process. For larger trees the NNI rearrangements often get stuck in local maxima. We added a stochatic algortithm similar as in \cite{Nguyen2015}, which makes random NNI permuation to the tree, which than gets optimised to escape local optima. While this may find better trees it will also take more time.      
 <<echo=TRUE>>=
 fitGTR <- optim.pml(fitGTR, model="GTR", optInv=TRUE, optGamma=TRUE, 
     rearrangement = "stochastic", control = pml.control(trace = 0))
@@ -180,7 +179,6 @@ env <- attr(mt, "env")
 ls(envir=env)
 (fit <- eval(get("HKY+G+I", env), env))
 @
-
 At last we may want to apply bootstrap to test how well the edges of the tree are supported: %, results=hide
 <<echo=TRUE, eval=FALSE>>=
 bs = bootstrap.pml(fitJC, bs=100, optNni=TRUE, 
