@@ -186,19 +186,24 @@ bs = bootstrap.pml(fitJC, bs=100, optNni=TRUE,
 @
    
 %$
-Now we can plot the tree with the bootstrap support values on the edges
+Now we can plot the tree with the bootstrap support values on the edges and also look at consensusNet to identify potential conflict. 
 <<label=plotBS,include=FALSE>>=
-par(mar=c(.1,.1,.1,.1))
-plotBS(fitJC$tree, bs, p = 50)
+par(mfrow=c(2,1))
+par(mar=c(1,1,3,1))
+plotBS(midpoint(fitJC$tree), bs, p = 50, type="p")
+title("a)")
+cnet <- consensusNet(bs, p=0.2, show.edge.label=TRUE, cex=.5)
+plot(cnet, "2D")
+title("b)")
 @
 %$
 \begin{figure}
 \begin{center}
-<<label=figBS,fig=TRUE,echo=FALSE>>=
+<<label=figBS,fig=TRUE,echo=FALSE, height=8>>=
 <<plotBS>>
 @
 \end{center}
-\caption{Unrooted tree with bootstrap support values}
+\caption{a) Unrooted tree (midpoint rooted) with bootstrap support values. b) ConsensusNet from the bootstrap sample}
 \label{fig:BS}
 \end{figure}
 

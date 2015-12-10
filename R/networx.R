@@ -1040,11 +1040,11 @@ edgeLabels <- function(xx,yy,zz=NULL, edge){
         cbind(XX, YY)  
 }
 
-
+# tip.color = "blue", edge.color="grey",
 plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRUE,
     show.edge.label=FALSE, edge.label=NULL, show.node.label = FALSE, node.label=NULL,
-    show.nodes=FALSE, tip.color = "blue", 
-    edge.color="grey", edge.width = 3, edge.lty = 1,
+    show.nodes=FALSE, tip.color = "black", 
+    edge.color="black", edge.width = 3, edge.lty = 1,
     font = 3, cex = 1, ...){
     type = match.arg(type, c("3D", "2D")) 
     if(use.edge.length==FALSE) x$edge.length[] = 1

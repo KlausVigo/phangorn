@@ -10,11 +10,11 @@ NEW FEATURES
 
     o optim.pml got a new rearrangement argument and can now 
     
-      use a stochastic rearrangements like (Nguyen et al. 2015)
+      use a stochastic rearrangements similar to Nguyen et al. (2015)
 
 BUG FIXES
 
-    plotBS may double counted edges when rooted trees were in the sample 
+    o plotBS may double counted edges when rooted trees were in the sample 
     
 OTHER CHANGES
 
