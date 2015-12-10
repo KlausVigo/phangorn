@@ -16,8 +16,8 @@ as.networx(x, ...)
 \method{as.networx}{splits}(x, planar = FALSE, ...)
 \method{plot}{networx}(x, type="3D", use.edge.length = TRUE, show.tip.label=TRUE, 
      show.edge.label=FALSE, edge.label = NULL, show.node.label=FALSE, 
-     node.label = NULL, show.nodes=FALSE, tip.color="blue", 
-     edge.color="grey", edge.width=3, edge.lty=1, font=3, 
+     node.label = NULL, show.nodes=FALSE, tip.color="black", 
+     edge.color="black", edge.width=3, edge.lty=1, font=3, 
      cex=1, ...)
 }
 %- maybe also 'usage' for other objects documented here.
