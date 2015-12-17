@@ -82,15 +82,19 @@ Klaus Schliep \email{klaus.schliep@gmail.com}
 data(Laurasiatherian)
 dm <- dist.logDet(Laurasiatherian)
 tree <- NJ(dm)
-fit=pml(tree,Laurasiatherian)
-fit = optim.pml(fit,TRUE)
+# NJ
+set.seed(123)
+NJtrees <- bootstrap.phyDat(Laurasiatherian, FUN=function(x)NJ(dist.logDet(x)), bs=100)
+treeNJ <- plotBS(tree, NJtrees, "phylogram")
 
+# Maximum likelihood
+fit <- pml(tree, Laurasiatherian)
+fit <- optim.pml(fit, rearrangements="NNI")
 set.seed(123)
 bs <- bootstrap.pml(fit, bs=100, optNni=TRUE)
 treeBS <- plotBS(fit$tree,bs)
 
-
-
+# Maximum parsimony
 treeMP <- pratchet(Laurasiatherian)
 treeMP <- acctran(treeMP, Laurasiatherian)
 set.seed(123)
@@ -105,4 +109,5 @@ add.scale.bar()
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 \keyword{cluster}
+
 
