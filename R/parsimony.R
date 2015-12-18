@@ -308,7 +308,7 @@ RI <- function (tree, data, cost = NULL, sitewise=FALSE)
     g = upperBound(data, cost = cost)
     if(sitewise){
         res <- (g - pscore) / (g - m)
-        res[is.nan(res)] <- 0
+#        res[is.nan(res)] <- 0
         return(res[attr(data, "index")])
     }
     m = sum(m * weight)
