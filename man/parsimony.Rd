@@ -26,8 +26,8 @@ pratchet(data, start=NULL, method="fitch", maxit=1000, k=10, trace=1, all=FALSE,
 fitch(tree, data, site = "pscore")
 sankoff(tree, data, cost = NULL, site = "pscore")
 random.addition(data, method="fitch")
-CI(tree, data, cost = NULL)
-RI(tree, data, cost = NULL)
+CI(tree, data, cost = NULL, sitewise=FALSE)
+RI(tree, data, cost = NULL, sitewise=FALSE)
 acctran(tree, data)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -44,6 +44,7 @@ acctran(tree, data)
   \item{k}{number of rounds ratchet is stopped, when there is no improvement.}
   \item{all}{return all equally good trees or just one of them.} 
   \item{...}{Further arguments passed to or from other methods (e.g. model="sankoff" and cost matrix).} 
+  \item{sitewise}{return CI/RI for alignment or sitewise}
 }  
 \value{
   \code{parsimony} returns the maximum parsimony score (pscore). 
