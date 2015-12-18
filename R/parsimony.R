@@ -284,26 +284,38 @@ upperBound <- function(x, cost=NULL){
 }
 
 
-CI <- function (tree, data, cost=NULL){
-    pscore = sankoffNew(tree, data, cost=cost)
+CI <- function (tree, data, cost = NULL, sitewise=FALSE) 
+{
+    if(sitewise) pscore = sankoffNew(tree, data, cost = cost, site="site")
+    else pscore = sankoffNew(tree, data, cost = cost)
     weight = attr(data, "weight")
-    data = subset(data, tree$tip.label) 
-    m = lowerBound(data, cost=cost)    
+    data = subset(data, tree$tip.label)
+    m = lowerBound(data, cost = cost)
+    if(sitewise){
+        return((m/pscore)[attr(data, "index")])
+    }
     sum(m * weight)/pscore
 }
 
 
-RI <- function (tree, data, cost=NULL)
+RI <- function (tree, data, cost = NULL, sitewise=FALSE) 
 {
-    pscore = sankoffNew(tree, data, cost=cost)
+    if(sitewise) pscore = sankoffNew(tree, data, cost = cost, site="site")
+    else pscore = sankoffNew(tree, data, cost = cost)
     data = subset(data, tree$tip.label)
     weight = attr(data, "weight")
-    m = lowerBound(data, cost=cost)
+    m = lowerBound(data, cost = cost)
+    g = upperBound(data, cost = cost)
+    if(sitewise){
+        res <- (g - pscore) / (g - m)
+        res[is.nan(res)] <- 0
+        return(res[attr(data, "index")])
+    }
     m = sum(m * weight)
-    g = upperBound(data, cost=cost)
     g = sum(g * weight)
     (g - pscore)/(g - m)
 }
+
 
 # not used
 add.one <- function (tree, tip.name, i){
