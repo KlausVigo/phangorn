@@ -12,7 +12,13 @@ phangorn is a package for phylogenetic reconstruction and analysis in the R lang
 
 You can install
 - the latest released version `install.packages("phangorn")`
-- the latest development version `devtools::install_github("KlausVigo/phangorn")` 
+- the latest development version `devtools::install_github("KlausVigo/phangorn")`
+
+You may need to install first the Biostrings package from bioconductor 
+```
+source("http://bioconductor.org/biocLite.R")
+biocLite("Biostrings")
+```
 
 If you use phangorn please cite:
 
