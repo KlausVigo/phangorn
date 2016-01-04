@@ -1141,6 +1141,8 @@ pmlPart <- function (formula, object, control=pml.control(epsilon=1e-8, maxit=10
     PartEdge <- !is.na(optPart[6])
     PartRate <- !is.na(optPart[7])
  
+    if(PartNni) PartEdge <- TRUE
+    
     if(inherits(object,"multiphyDat")){
         if(AllNNI || AllEdge) object <- do.call(cbind.phyDat, object@dna)
         else fits <- multiphyDat2pmlPart(object, rooted=rooted, ...)
@@ -1309,6 +1311,7 @@ pmlCluster.fit <- function (formula, fit, weight, p = 4, part = NULL, control=pm
     PartGamma <- !is.na(optPart[5])
     PartEdge <- !is.na(optPart[6])
     PartRate <- !is.na(optPart[7])
+    if(PartNni) PartEdge <- TRUE
     nrw <- dim(weight)[1]
     ncw <- dim(weight)[2]
     if (is.null(part)){ 
