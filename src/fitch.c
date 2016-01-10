@@ -77,6 +77,23 @@ SEXP AddOne(SEXP edge, SEXP tip, SEXP ind, SEXP l, SEXP m){
 }
 
 
+SEXP AddOnes(SEXP edge, SEXP tip, SEXP ind, SEXP l, SEXP m){
+    R_len_t n = length(ind);
+    SEXP result, RESULT;
+    PROTECT(RESULT = allocVector(VECSXP, n));       
+    for(int j=0; j<n; j++){
+        PROTECT(result = allocMatrix(INTSXP, INTEGER(l)[0]+2L, 2L));
+        addOne(INTEGER(edge), INTEGER(tip), &INTEGER(ind)[j], INTEGER(l), INTEGER(m), INTEGER(result));
+        SET_VECTOR_ELT(RESULT, j, result);
+        UNPROTECT(1);
+    }
+    UNPROTECT(1);
+    return(RESULT);
+}
+//PROTECT(RESULT = allocVector(VECSXP, nel*nw));
+
+
+
 void fitch43(int *dat1, int *dat2, int *nr, int *pars, double *weight, double *w){
     int k, tmp;
     for(k = 0; k < (*nr); k++){
@@ -522,7 +539,7 @@ SEXP FITCH345(SEXP nrx, SEXP node, SEXP edge, SEXP l, SEXP mx, SEXP ps){
     else return(pars); 
 }
 
-
+// node = node-1L edge=edge-1L
 void FN4(int *dat, int *res, int *nr, int *node, int *edge, int *nl, int *pc, double *weight, double *tmpvec, double *pvec) { 
     int i=0L, ni, le, ri;
     while(i< *nl) {
@@ -531,11 +548,11 @@ void FN4(int *dat, int *res, int *nr, int *node, int *edge, int *nl, int *pc, do
         ri = edge[i+1L] - 1L;
         if(pc[i+1L]==0L){
 	        pvec[ni] = tmpvec[le] + tmpvec[ri];
-	        fitch54(&res[ni * (*nr)], &dat[(edge[i]-1L) * (*nr)], &dat[ri * (*nr)], nr, weight, &pvec[ni]);              
+	        fitch54(&res[ni * (*nr)], &dat[le * (*nr)], &dat[ri * (*nr)], nr, weight, &pvec[ni]);              
         }    
         else{ 
             pvec[ni] = tmpvec[le] + pvec[ri];
-	          fitch54(&res[ni * (*nr)], &dat[le * (*nr)], &res[ri * (*nr)], nr, weight, &pvec[ni]);   
+	        fitch54(&res[ni * (*nr)], &dat[le * (*nr)], &res[ri * (*nr)], nr, weight, &pvec[ni]);   
         }
         i++;
         i++;
@@ -543,12 +560,12 @@ void FN4(int *dat, int *res, int *nr, int *node, int *edge, int *nl, int *pc, do
 }
 
 
-void sibs(int *node, int *n, int *start, int *end){
+void sibs(int *node, int n, int *start, int *end){
     int tmp, k, i;
     tmp=node[0]; 
     k=node[0];     
     start[k]=0L; 
-    for (i = 0L; i < *n; i++) {
+    for (i = 0L; i < n; i++) {
         tmp = node[i];
         if(tmp!=k){
             end[k] = i-1L;
@@ -559,12 +576,13 @@ void sibs(int *node, int *n, int *start, int *end){
     end[tmp] = i-1L;
 }
 
-
-void fnindex(int *nodes, int* edges, int *nNodes,  int *start, int *end, int *root, int *res1, int *res2, int *pc){
+//void fnindex(int *nodes, int* edges, int nNodes,  int *start, int *end, int *root, int *res1, int *res2, int *pc){
+void fnindex(int *nodes, int* edges, int nNodes,  int *start, int *end, int *res1, int *res2, int *pc){
     int i, j, p, k, ni, nj, m;
+    int root = nodes[nNodes-1L];
     k=0L;
-    for(i=0; i<*nNodes; i++){
-        m = *nNodes-(1L+i);
+    for(i=0; i<nNodes; i++){
+        m = nNodes-(1L+i);
         p = nodes[m];
         ni = edges[m];
         for(j=start[p]; j<=end[p]; j++){
@@ -576,7 +594,7 @@ void fnindex(int *nodes, int* edges, int *nNodes,  int *start, int *end, int *ro
                 k++;
             }
         } 
-        if(p!=*root){
+        if(p!=root){
             res1[k] = p;
             res2[k] = ni;
             pc[k] = 1L;                
@@ -585,8 +603,8 @@ void fnindex(int *nodes, int* edges, int *nNodes,  int *start, int *end, int *ro
     }
 }
 
-
-void fnhelp(int *node, int * edge, int *n, int *m, int *root, int *edge2, int *node2, int *pc){
+//void fnhelp(int *node, int * edge, int n, int *m, int *root, int *edge2, int *node2, int *pc){
+void fnhelp(int *node, int * edge, int n, int *m, int *edge2, int *node2, int *pc){
     int *startv, *endv, i;
     startv = (int *) R_alloc(*m, sizeof(int));
     endv = (int *) R_alloc(*m, sizeof(int));
@@ -595,19 +613,20 @@ void fnhelp(int *node, int * edge, int *n, int *m, int *root, int *edge2, int *n
         endv[i] = 0L;
     }
     sibs(node, n, startv, endv);
-    fnindex(node, edge, n, startv, endv, root, edge2, node2, pc);         
+//    fnindex(node, edge, n, startv, endv, root, edge2, node2, pc);  
+    fnindex(node, edge, n, startv, endv, edge2, node2, pc);  
 }
 
 
 SEXP FNALL_NNI(SEXP nrx, SEXP node, SEXP edge, SEXP l, SEXP mx, SEXP my, SEXP root){   
-    int *nr=INTEGER(nrx), m=INTEGER(mx)[0], i,  *n=INTEGER(l);  //*pars,
+    int *nr=INTEGER(nrx), m=INTEGER(mx)[0], i, n=INTEGER(l)[0];  //*pars,
     double *pvtmp, *pvtmp2, pscore=0.0;  
     SEXP pvec1, pvec2, res; 
     int *pc, *edge2, *node2;
 /* edge2, node2, pc ausserhalb definieren? */        
-    edge2 = (int *) R_alloc(2L * *n, sizeof(int));
-    node2 = (int *) R_alloc(2L * *n, sizeof(int));
-    pc = (int *) R_alloc(2L * *n, sizeof(int));
+    edge2 = (int *) R_alloc(2L * n, sizeof(int));
+    node2 = (int *) R_alloc(2L * n, sizeof(int));
+    pc = (int *) R_alloc(2L * n, sizeof(int));
     
 //    pvtmp2 = (double *) R_alloc(m, sizeof(double));
     PROTECT(res = allocVector(VECSXP, 2L));
@@ -620,7 +639,8 @@ SEXP FNALL_NNI(SEXP nrx, SEXP node, SEXP edge, SEXP l, SEXP mx, SEXP my, SEXP ro
         pvtmp[i] = 0.0;
         pvtmp2[i] = 0.0;
     }
-    fnhelp(INTEGER(node), INTEGER(edge),  n, &m, INTEGER(root), edge2, node2, pc); 
+//  fnhelp(INTEGER(node), INTEGER(edge),  n, &m, INTEGER(root), edge2, node2, pc);   
+    fnhelp(INTEGER(node), INTEGER(edge),  n, &m, edge2, node2, pc); 
     fitch9(data1, nr, INTEGER(node), INTEGER(edge), INTEGER(l), weight, pvtmp, &pscore); 
     FN4(data1, data2, nr, node2, edge2, INTEGER(my), pc, weight, pvtmp, pvtmp2); // pars,
 //  fitchQuartet(int *index, int *n, nr, double *psc1, double *psc2, weight, double *res);  
@@ -632,15 +652,15 @@ SEXP FNALL_NNI(SEXP nrx, SEXP node, SEXP edge, SEXP l, SEXP mx, SEXP my, SEXP ro
 
 // mpr2 fnodesNew5
 SEXP FNALL5(SEXP nrx, SEXP node, SEXP edge, SEXP l, SEXP mx, SEXP my, SEXP root){   
-    int *nr=INTEGER(nrx), m=INTEGER(mx)[0], i,  *n=INTEGER(l);  //*pars,
+    int *nr=INTEGER(nrx), m=INTEGER(mx)[0], i, n=INTEGER(l)[0];  //*pars,
     double *pvtmp, *pvtmp2, pscore=0.0;  
     SEXP pvec; 
     // fnhelp
     int *pc, *edge2, *node2;
 /* edge2, node2, pc ausserhalb definieren? */        
-    edge2 = (int *) R_alloc(2L * *n, sizeof(int));
-    node2 = (int *) R_alloc(2L * *n, sizeof(int));
-    pc = (int *) R_alloc(2L * *n, sizeof(int));
+    edge2 = (int *) R_alloc(2L * n, sizeof(int));
+    node2 = (int *) R_alloc(2L * n, sizeof(int));
+    pc = (int *) R_alloc(2L * n, sizeof(int));
       
     pvtmp2 = (double *) R_alloc(m, sizeof(double));
     PROTECT(pvec = allocVector(REALSXP, m));    
@@ -650,7 +670,8 @@ SEXP FNALL5(SEXP nrx, SEXP node, SEXP edge, SEXP l, SEXP mx, SEXP my, SEXP root)
         pvtmp[i] = 0.0;
         pvtmp2[i] = 0.0;
     }
-    fnhelp(INTEGER(node), INTEGER(edge),  n, &m, INTEGER(root), edge2, node2, pc);
+//  fnhelp(INTEGER(node), INTEGER(edge), n, &m, INTEGER(root), edge2, node2, pc);  
+    fnhelp(INTEGER(node), INTEGER(edge), n, &m, edge2, node2, pc);
 //    fitch8(data1, nr, pars, INTEGER(node), INTEGER(edge), INTEGER(l), weight, pvtmp, &pscore);  
     fitch9(data1, nr, INTEGER(node), INTEGER(edge), INTEGER(l), weight, pvtmp, &pscore); 
 //    FN3(data1, data2, nr, pars, node2, edge2, INTEGER(my), pc, weight, pvtmp, pvtmp2);
