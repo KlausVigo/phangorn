@@ -344,25 +344,37 @@ phyDat2alignment <-  function(x){
 
 
 as.phyDat.MultipleAlignment <- function(x, ...){
+    if (requireNamespace('Biostrings')){
     if(inherits(x, "DNAMultipleAlignment"))
-        res <- phyDat.DNA(as.matrix(x))
+        res <- phyDat.DNA(Biostrings::as.matrix(x))
     if(inherits(x, "RNAMultipleAlignment"))
-        res <- phyDat.DNA(as.matrix(x))
+        res <- phyDat.DNA(Biostrings::as.matrix(x))
     if(inherits(x, "RNAMultipleAlignment"))
-        res <- phyDat.AA(as.matrix(x))
-    res
+        res <- phyDat.AA(Biostrings::as.matrix(x))
+    return(res)
+    }
+    return(NULL)
+}
+
+
+as.MultipleAlignment <- function (x, ...){
+    if (inherits(x,"MultipleAlignment")) return(x)
+    UseMethod("as.MultipleAlignment")
 }
 
 
 as.MultipleAlignment.phyDat <- function(x){
+    if (requireNamespace('Biostrings')){
     z = as.character(x)
     nam = rownames(z)
     type = attr(x, "type")
     seq <- switch(type, 
                   DNA = tolower(apply(z, 1, paste, collapse="")), 
                   AA = toupper(apply(z, 1, paste, collapse="")))
-    if(type=="DNA") return(DNAMultipleAlignment(seq))
-    if(type=="AA") return(AAMultipleAlignment(seq))
+    if(type=="DNA") return(Biostrings::DNAMultipleAlignment(seq))
+    if(type=="AA") return(Biostrings::AAMultipleAlignment(seq))
+    }
+    return(NULL)
 }
 
 

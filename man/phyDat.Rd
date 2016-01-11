@@ -3,6 +3,7 @@
 \alias{as.phyDat.DNAbin}
 \alias{as.phyDat.alignment}
 \alias{as.phyDat.MultipleAlignment}
+\alias{as.MultipleAlignment.phyDat}
 \alias{as.data.frame.phyDat}
 \alias{as.character.phyDat}
 \alias{as.DNAbin.phyDat}

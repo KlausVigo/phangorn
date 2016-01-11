@@ -30,10 +30,10 @@ importFrom(utils, read.table, download.file, citation, stack, installed.packages
 importFrom(grDevices, rgb, rainbow, adjustcolor)
 importFrom(methods, hasArg)
 #importFrom(Rcpp, evalCpp)
-importMethodsFrom(Biostrings,as.matrix)
-importFrom(Biostrings,DNAMultipleAlignment)
-importFrom(Biostrings,RNAMultipleAlignment)
-importFrom(Biostrings,AAMultipleAlignment)
+#importMethodsFrom(Biostrings,as.matrix)
+#importFrom(Biostrings,DNAMultipleAlignment)
+#importFrom(Biostrings,RNAMultipleAlignment)
+#importFrom(Biostrings,AAMultipleAlignment)
 
 
 export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UNJ, PNJ, 
@@ -75,6 +75,7 @@ S3method(as.phyDat, alignment)
 S3method(as.phyDat, data.frame)
 S3method(as.phyDat, matrix)
 S3method(as.phyDat, MultipleAlignment)
+S3method(as.MultipleAlignment, phyDat)
 S3method(as.DNAbin, phyDat)
 S3method(as.phylo, splits)
 S3method(as.splits, phylo)
