@@ -77,6 +77,21 @@ SEXP AddOne(SEXP edge, SEXP tip, SEXP ind, SEXP l, SEXP m){
 }
 
 
+SEXP AddOnes(SEXP edge, SEXP tip, SEXP ind, SEXP l, SEXP m){
+    R_len_t n = length(ind); 
+    SEXP result, res;
+    PROTECT(res = allocVector(VECSXP, n));
+    for(int i=0; i<n; i++){
+        PROTECT(result = allocMatrix(INTSXP, INTEGER(l)[0]+2L, 2L));
+        addOne(INTEGER(edge), INTEGER(tip), &INTEGER(ind)[i], INTEGER(l), INTEGER(m), INTEGER(result));
+        SET_VECTOR_ELT(res, i, result);
+        UNPROTECT(1);
+    }
+    UNPROTECT(1);
+    return(res);
+}
+
+
 void fitch43(int *dat1, int *dat2, int *nr, int *pars, double *weight, double *w){
     int k, tmp;
     for(k = 0; k < (*nr); k++){
