@@ -71,15 +71,15 @@ fnodesNew2 <- function (EDGE, nTips, nr)
 
 
 # SPR und bab kompakter
-fnodesNew5 <- function (EDGE, nTips, nr) 
+fnodesNew5 <- function (EDGE, nTips, nr, m= as.integer(max(EDGE)+1L)) 
 {
     node <- EDGE[, 1]
     edge <- EDGE[, 2]
     n = length(node)
-    m= as.integer(max(EDGE)+1L)
+#    m= as.integer(max(EDGE)+1L)
     m2 = 2L*n
     root0 <- as.integer(node[n]) 
-    .Call("FNALL5", as.integer(nr), node, edge, as.integer(n), as.integer(m), as.integer(m2), as.integer(root0))
+    .Call("FNALL5", as.integer(nr), node, edge, as.integer(n), as.integer(m), as.integer(m2), as.integer(root0), PACKAGE="phangorn")
 }   
 
 
@@ -491,14 +491,14 @@ bab <- function (data, tree = NULL, trace = 1, ...)
 
         tmpTree <- trees[[a]][[b]]
         edge = tmpTree[,2]  
-        score = fnodesNew5(tmpTree, nTips, nr)[edge] + mms0[a+1L] 
-        score <- .Call("FITCHTRIP3", as.integer(inord[a+1L]), as.integer(nr), as.integer(edge), as.double(score), as.double(bound))    
+        score = fnodesNew5(tmpTree, nTips, nr, M[a])[edge] + mms0[a+1L] 
+        score <- .Call("FITCHTRIP3", as.integer(inord[a+1L]), as.integer(nr), as.integer(edge), as.double(score), as.double(bound), PACKAGE="phangorn")    
                    
         ms = min(score)
         if(ms<=bound){
             if((a+1L)<nTips){
                 ind = (1:L[a])[score<=bound]
-                for(i in 1:length(ind))trees[[a+1]][[i]] <- .Call("AddOne", tmpTree, as.integer(inord[a+1L]), as.integer(ind[i]), as.integer(L[a]), as.integer(M[a])) 
+                for(i in 1:length(ind))trees[[a+1]][[i]] <- .Call("AddOne", tmpTree, as.integer(inord[a+1L]), as.integer(ind[i]), as.integer(L[a]), as.integer(M[a]), PACKAGE="phangorn") 
                 l = length(ind)
                 os = order(score[ind], decreasing=TRUE)                 
                 PSC = rbind(PSC, cbind(rep(a+1, l), os, score[ind][os] ))
@@ -506,7 +506,7 @@ bab <- function (data, tree = NULL, trace = 1, ...)
             else{
                 ind = which(score==ms) 
                 tmp <- vector("list", length(ind)) 
-                for(i in 1:length(ind))tmp[[i]] <- .Call("AddOne", tmpTree, as.integer(inord[a+1L]), as.integer(ind[i]), as.integer(L[a]), as.integer(M[a]))
+                for(i in 1:length(ind))tmp[[i]] <- .Call("AddOne", tmpTree, as.integer(inord[a+1L]), as.integer(ind[i]), as.integer(L[a]), as.integer(M[a]), PACKAGE="phangorn")
 
                 if(ms < bound){
                      bound = ms
@@ -605,24 +605,24 @@ bab2 <- function (data, tree = NULL, trace = 1, ...)
         
         tmpTree <- trees[[a]][[b]]
         edge = tmpTree[,2]  
-        score = fnodesNew5(tmpTree, nTips, nr)[edge] + mms0[a+1L] 
-        score <- .Call("FITCHTRIP3", as.integer(inord[a+1L]), as.integer(nr), as.integer(edge), as.double(score), as.double(bound))    
+        score = fnodesNew5(tmpTree, nTips, nr, M[a])[edge] + mms0[a+1L] 
+        score <- .Call("FITCHTRIP3", as.integer(inord[a+1L]), as.integer(nr), as.integer(edge), as.double(score), as.double(bound), PACKAGE="phangorn")    
         
         ms = min(score)
         if(ms<=bound){
             if((a+1L)<nTips){
                 ind = (1:L[a])[score<=bound]
-                trees[[a+1]][1:length(ind)] <- .Call("AddOnes", tmpTree, as.integer(inord[a+1L]), as.integer(ind), as.integer(L[a]), as.integer(M[a])) 
+                trees[[a+1]][1:length(ind)] <- .Call("AddOnes", tmpTree, as.integer(inord[a+1L]), as.integer(ind), as.integer(L[a]), as.integer(M[a]), PACKAGE="phangorn") 
                 l = length(ind)
-                os = order(score[ind], decreasing=TRUE)     
-#                os = seq(l)
-#                PSC = rbind(PSC, cbind(rep(a+1, l), os, score[ind] ))
-                PSC = rbind(PSC, cbind(rep(a+1, l), os, score[ind][os] ))
+#                os = order(score[ind], decreasing=TRUE)     
+                os = seq_len(l)
+                PSC = rbind(PSC, cbind(rep(a+1, l), os, score[ind] ))
+#                PSC = rbind(PSC, cbind(rep(a+1, l), os, score[ind][os] ))
             }
             else{
                 ind = which(score==ms) 
                 tmp <- vector("list", length(ind)) 
-                tmp[1:length(ind)] <- .Call("AddOnes", tmpTree, as.integer(inord[a+1L]), as.integer(ind), as.integer(L[a]), as.integer(M[a]))
+                tmp[1:length(ind)] <- .Call("AddOnes", tmpTree, as.integer(inord[a+1L]), as.integer(ind), as.integer(L[a]), as.integer(M[a]), PACKAGE="phangorn")
                 
                 if(ms < bound){
                     bound = ms
