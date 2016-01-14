@@ -422,7 +422,7 @@ getOrder <- function (x)
 }
 
 
-bab <- function (data, tree = NULL, trace = 1, ...) 
+bab_old <- function (data, tree = NULL, trace = 1, ...) 
 {
     o = order(attr(data, "weight"), decreasing = TRUE)
     data = subset(data, , o)
@@ -530,7 +530,7 @@ bab <- function (data, tree = NULL, trace = 1, ...)
 
 
 
-bab2 <- function (data, tree = NULL, trace = 1, ...) 
+bab <- function (data, tree = NULL, trace = 1, ...) 
 {
     o = order(attr(data, "weight"), decreasing = TRUE)
     data = subset(data, , o)
