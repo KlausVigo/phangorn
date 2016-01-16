@@ -775,7 +775,7 @@ optimEdge <- function (tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.
     oldtree = tree
     k = length(w)    
     data = subset(data, tree$tip) 
-    loglik = pml.fit2(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k)
+    loglik = pml.fit2(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k) # pml.fit4 ??
     start.ll <- old.ll <- loglik 
     contrast <- attr(data, "contrast")
     contrast2 <- contrast %*% eig[[2]] 
@@ -803,20 +803,20 @@ optimEdge <- function (tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.
     nco = as.integer(nrow(contrast))
     eve = eig[[2]]
     lg = k
-    rootNode = getRoot(tree)         
+    rootNode = getRoot(tree)  # raus       
     ScaleEPS = 1.0/4294967296.0
     anc = Ancestors(tree, 1:m, "parent")  
     anc0 = as.integer(c(0L, anc))
     
     while (eps > control$eps && iter < control$maxit) {
-        blub3 <- .Call("extractScale", as.integer(rootNode), w, g, as.integer(nr), as.integer(nc), as.integer(nTips))
-        rowM = apply(blub3, 1, min)       
-        blub3 = (blub3-rowM) 
-        blub3 = ScaleEPS ^ (blub3) 
+#        blub3 <- .Call("extractScale", as.integer(rootNode), w, g, as.integer(nr), as.integer(nc), as.integer(nTips))
+#        rowM = apply(blub3, 1, min)       
+#        blub3 = (blub3-rowM) 
+#        blub3 = ScaleEPS ^ (blub3) 
         EL <- .Call("optE", as.integer(parent), as.integer(child), 
                     as.integer(anc0), eig, evi, EL, w, g, as.integer(nr), as.integer(nc), 
                     as.integer(nTips), as.double(contrast), 
-                    as.double(contrast2), nco, blub3, data, as.double(weight), as.double(ll.0))       
+                    as.double(contrast2), nco, data, as.double(weight), as.double(ll.0))       
         iter = iter + 1
 #        tree$edge.length = EL[tree$edge[,2]]
         treeP$edge.length = EL[treeP$edge[,2]]
@@ -2616,7 +2616,7 @@ pml.fit2 <- function (tree, data, bf = rep(1/length(levels), length(levels)),
     return(list(loglik=loglik, siteLik=siteLik, resll=resll))         
 }
 
-
+### this is the version we want to optimise
 pml.fit4 <- function (tree, data, bf = rep(1/length(levels), length(levels)), 
                           shape = 1, k = 1, Q = rep(1, length(levels) * (length(levels) - 1)/2), 
                           levels = attr(data, "levels"), inv = 0, rate = 1, g = NULL, w = NULL, 
@@ -2683,6 +2683,7 @@ pml.fit4 <- function (tree, data, bf = rep(1/length(levels), length(levels)),
     ind = which(ll.0>0)
 #    if(!is.null(ll.0)) siteLik[.iind] = log(exp(siteLik[.iind]) + ll.0[.iind]) 
     if(!is.null(ll.0)) siteLik[ind] = log(exp(siteLik[ind]) + ll.0[ind]) 
+#   diese 2 zeilen darueber in C, weight, nr, nc, nco, contrast in C struct definieren      
     if(wMix >0) siteLik <- log(exp(siteLik) * (1-wMix) + llMix )
     loglik <- sum(weight * siteLik)
     if(!site) return(loglik)
@@ -2772,8 +2773,10 @@ pml.fit <- function (tree, data, bf = rep(1/length(levels), length(levels)),
 
 
 pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1, 
-    rate = 1, model=NULL, ...) 
+    rate = 1, model=NULL,  ...) 
 {
+    Mkv = FALSE
+    
     call <- match.call()
     extras <- match.call(expand.dots = FALSE)$...
     pmla <- c("wMix", "llMix") 
@@ -2798,6 +2801,7 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     if(any(is.na(match(tree$tip, attr(data, "names"))))) stop("tip labels are not in data")  
     data <- subset(data, tree$tip.label) # needed
     levels <- attr(data, "levels")
+    if(Mkv)data <- cbind(data, constSitePattern(length(tree$tip.label),levels, tree$tip.label))
     weight <- attr(data, "weight")
     nr <- attr(data, "nr")
     type <- attr(data,"type")
@@ -2837,6 +2841,8 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     
     INV <- Matrix(lli(data, tree), sparse=TRUE)
     ll.0 <- as.matrix(INV %*% (bf * inv))
+    if(Mkv) ll.0 <- as.matrix(INV %*% rep(1, length(bf))) 
+    
     if(wMix>0) ll.0 <- ll.0 + llMix
 
     nr <- as.integer(attr(data, "nr")) 
@@ -2847,7 +2853,7 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     .C("ll_init", nr, nTips, nc, as.integer(k))
     tmp <- pml.fit(tree, data, bf, shape = shape, k = k, Q = Q, 
         levels = attr(data, "levels"), inv = inv, rate = rate, g = g, w = w, 
-        eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, wMix = wMix, site=TRUE) 
+        eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, wMix = wMix, site=TRUE)  #, Mkv=Mkv
     
     df <- ifelse(is.ultrametric(tree), tree$Nnode, length(tree$edge.length))
     
@@ -2867,7 +2873,7 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     result = list(logLik = tmp$loglik, inv = inv, k = kmax, shape = shape,
         Q = Q, bf = bf, rate = rate, siteLik = tmp$siteLik, weight = weight, 
         g = g, w = w, eig = eig, data = data, model=model, INV = INV, 
-        ll.0 = ll.0, tree = tree, lv = tmp$resll, call = call, df=df, wMix=wMix, llMix=llMix)
+        ll.0 = ll.0, tree = tree, lv = tmp$resll, call = call, df=df, wMix=wMix, llMix=llMix, Mkv=Mkv)
     if(type=="CODON"){
         result$dnds <- 1
         result$tstv <- 1
@@ -3414,6 +3420,8 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     pmla <- c("wMix", "llMix")
     wMix <- object$wMix
     llMix <- object$llMix
+    Mkv <- object$Mkv
+    Mkv <- FALSE
     if(is.null(llMix)) llMix=0
     if (!is.null(extras)) {
         names(extras) <- pmla[pmatch(names(extras), pmla)]
@@ -3504,6 +3512,10 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         optGamma = FALSE
         message('only one rate class, ignored optGamma')
     }
+    if(Mkv==TRUE & optInv==TRUE){ 
+        optInv = FALSE
+        message('cannot estimate invariant sites and Mkv model, ignored optInv')
+    } 
     shape = object$shape
     w = object$w
     g = object$g

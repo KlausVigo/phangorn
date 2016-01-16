@@ -21,7 +21,7 @@
 // index for LL
 #define LINDEX2(i, k) (i - *ntips - 1L) * (*nr* *nc) + k * *ntips * (*nr * *nc)
 // index for scaling matrix SCM
-#define LINDEX3(i, j) (i - *ntips - 1L) * *nr + j * *ntips * *nr
+#define LINDEX3(i, j) (i - *ntips - 1L) * *nr + j * *ntips * *nr  //nr statt *nr
 
 char *transa = "N", *transb = "N";
 double one = 1.0, zero = 0.0;
@@ -610,7 +610,7 @@ SEXP extractI(SEXP CH, SEXP W, SEXP G, SEXP NR, SEXP NC, SEXP NTIPS){
     return(RESULT);    
 }
 
-
+// in getE
 SEXP extractScale(SEXP CH, SEXP W, SEXP G, SEXP NR, SEXP NC, SEXP NTIPS){
     int i, k=length(W);
     int *nr=INTEGER(NR), *ntips=INTEGER(NTIPS), j, blub;
@@ -624,6 +624,30 @@ SEXP extractScale(SEXP CH, SEXP W, SEXP G, SEXP NR, SEXP NC, SEXP NTIPS){
     UNPROTECT(1); //RESULT    
     return(RESULT);    
 }
+
+
+void ExtractScale(int ch, int k, int *nr, int *ntips, double *res){
+    int i;
+    int j, blub, tmp;
+    for(i = 0; i < k; i++){
+        blub = LINDEX3(ch, i);
+        for(j=0; j< *nr; j++) res[j +i * *nr] = SCM[blub+j];
+    }
+    for(i = 0; i< *nr; i++){
+        tmp = res[i];
+        for(j = 1; j<k; j++){
+            if(res[i+j * *nr]<tmp)tmp = res[i+j * *nr];
+        }    
+        for(j=0; j<k; j++) res[i+j * *nr] = pow(ScaleEPS, (res[i+j * *nr] - tmp));        
+    }
+}
+/*
+ rowM = apply(blub3, 1, min)       
+ blub3 = (blub3-rowM) 
+ blub3 = ScaleEPS ^ (blub3) 
+ */
+
+
 
 
 // dad / child * P 
@@ -1055,7 +1079,7 @@ void fs3(double *eva, int nc, double el, double *w, double *g, double *X, int ld
 SEXP optE(SEXP PARENT, SEXP CHILD, SEXP ANC, SEXP eig, SEXP EVI, SEXP EL, 
                   SEXP W, SEXP G, SEXP NR, SEXP NC, SEXP NTIPS, SEXP CONTRAST, 
                   SEXP CONTRAST2, SEXP NCO, 
-                  SEXP BLUB, SEXP dlist, SEXP WEIGHT, SEXP F0){
+                  SEXP dlist, SEXP WEIGHT, SEXP F0){
     int i, k=length(W), h, j, n=length(PARENT), m, lEL=length(EL);
     int nc=INTEGER(NC)[0], nr=INTEGER(NR)[0], ntips=INTEGER(NTIPS)[0]; 
     int *parent=INTEGER(PARENT), *child=INTEGER(CHILD), *anc=INTEGER(ANC); //
@@ -1064,7 +1088,8 @@ SEXP optE(SEXP PARENT, SEXP CHILD, SEXP ANC, SEXP eig, SEXP EVI, SEXP EL,
     double *g=REAL(G), *evi=REAL(EVI), *contrast=REAL(CONTRAST), *contrast2=REAL(CONTRAST2);
     double *el; //=REAL(EL);
     double *eva, *eve, *evei, *tmp, *P;
-    double *blub=REAL(BLUB), *X;
+    double  *X; // define it *blub=REAL(BLUB), 
+    double *blub = (double *) R_alloc(nr * nc, sizeof(double));
     double oldel; //=el[ch-1L]
     int ancloli, pa, ch; //=anc[loli]
     double *res = (double *) R_alloc(3L, sizeof(double));
@@ -1072,6 +1097,8 @@ SEXP optE(SEXP PARENT, SEXP CHILD, SEXP ANC, SEXP eig, SEXP EVI, SEXP EL,
     P = (double *) R_alloc(nc * nc, sizeof(double));        
     X = (double *) R_alloc(k * nr * nc, sizeof(double));
 
+    ExtractScale(parent[0], k, &nr, &ntips, blub);
+    
     SEXP RESULT;
     PROTECT(RESULT = allocVector(REALSXP, lEL));
     el=REAL(RESULT);     
