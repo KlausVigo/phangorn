@@ -1,3 +1,13 @@
+     CHANGES in PHANGORN VERSION 2.0.2
+
+OTHER CHANGES
+
+    o phangorn now suggests only the Biostrings and not depends on it
+    
+    o bab (branch and bound) may be faster 
+    
+    
+
      CHANGES in PHANGORN VERSION 2.0.0
 
 NEW FEATURES    
