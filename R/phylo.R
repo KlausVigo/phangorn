@@ -2775,7 +2775,7 @@ pml.fit <- function (tree, data, bf = rep(1/length(levels), length(levels)),
 pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1, 
     rate = 1, model=NULL,  ...) 
 {
-    Mkv = FALSE
+#    Mkv = FALSE
     
     call <- match.call()
     extras <- match.call(expand.dots = FALSE)$...
@@ -2801,7 +2801,7 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     if(any(is.na(match(tree$tip, attr(data, "names"))))) stop("tip labels are not in data")  
     data <- subset(data, tree$tip.label) # needed
     levels <- attr(data, "levels")
-    if(Mkv)data <- cbind(data, constSitePattern(length(tree$tip.label),levels, tree$tip.label))
+#    if(Mkv)data <- cbind(data, constSitePattern(length(tree$tip.label),levels, tree$tip.label))
     weight <- attr(data, "weight")
     nr <- attr(data, "nr")
     type <- attr(data,"type")
@@ -2841,7 +2841,7 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     
     INV <- Matrix(lli(data, tree), sparse=TRUE)
     ll.0 <- as.matrix(INV %*% (bf * inv))
-    if(Mkv) ll.0 <- as.matrix(INV %*% rep(1, length(bf))) 
+#    if(Mkv) ll.0 <- as.matrix(INV %*% rep(1, length(bf))) 
     
     if(wMix>0) ll.0 <- ll.0 + llMix
 
@@ -2873,7 +2873,7 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     result = list(logLik = tmp$loglik, inv = inv, k = kmax, shape = shape,
         Q = Q, bf = bf, rate = rate, siteLik = tmp$siteLik, weight = weight, 
         g = g, w = w, eig = eig, data = data, model=model, INV = INV, 
-        ll.0 = ll.0, tree = tree, lv = tmp$resll, call = call, df=df, wMix=wMix, llMix=llMix, Mkv=Mkv)
+        ll.0 = ll.0, tree = tree, lv = tmp$resll, call = call, df=df, wMix=wMix, llMix=llMix) #, Mkv=Mkv
     if(type=="CODON"){
         result$dnds <- 1
         result$tstv <- 1
@@ -3420,8 +3420,8 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     pmla <- c("wMix", "llMix")
     wMix <- object$wMix
     llMix <- object$llMix
-    Mkv <- object$Mkv
-    Mkv <- FALSE
+#    Mkv <- object$Mkv
+#    Mkv <- FALSE
     if(is.null(llMix)) llMix=0
     if (!is.null(extras)) {
         names(extras) <- pmla[pmatch(names(extras), pmla)]
@@ -3512,10 +3512,10 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         optGamma = FALSE
         message('only one rate class, ignored optGamma')
     }
-    if(Mkv==TRUE & optInv==TRUE){ 
-        optInv = FALSE
-        message('cannot estimate invariant sites and Mkv model, ignored optInv')
-    } 
+#    if(Mkv==TRUE & optInv==TRUE){ 
+#        optInv = FALSE
+#        message('cannot estimate invariant sites and Mkv model, ignored optInv')
+#    } 
     shape = object$shape
     w = object$w
     g = object$g
