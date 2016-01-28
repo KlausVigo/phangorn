@@ -1,3 +1,21 @@
+
+edgeLengthIndex <- function(child, parent, nTips){
+    fun = function(child, parent, nTips){
+        if(child <= nTips) return(child)
+        else{
+            if(child < parent) return(parent)
+            return(child)
+        }
+    }
+    if (length(child)==1) return(fun(child, parent, nTips))
+    else {
+        res = integer(length(child))
+        for(i in 1:length(child))res[i]=fun(child[i], parent[i], nTips)
+        return(res)
+    }
+}
+
+
 #
 # Maximum likelihood estimation
 #
@@ -1103,7 +1121,7 @@ multiphyDat2pmlPart <- function(x, rooted=FALSE, ...){
         else tree <- upgma(dm)
         fit <- pml(tree, x, ...)
     }
-    fits <- lapply(x@dna, fun, ...)
+    fits <- lapply(x@seq, fun, ...)
     fits
 }
 
@@ -1144,7 +1162,7 @@ pmlPart <- function (formula, object, control=pml.control(epsilon=1e-8, maxit=10
     if(PartNni) PartEdge <- TRUE
     
     if(inherits(object,"multiphyDat")){
-        if(AllNNI || AllEdge) object <- do.call(cbind.phyDat, object@dna)
+        if(AllNNI || AllEdge) object <- do.call(cbind.phyDat, object@seq)
         else fits <- multiphyDat2pmlPart(object, rooted=rooted, ...)
     } 
     if(inherits(object,"pml")) fits <- makePart(object, rooted=rooted, ...) 
@@ -2697,6 +2715,7 @@ pml.fit <- function (tree, data, bf = rep(1/length(levels), length(levels)),
                      levels = attr(data, "levels"), inv = 0, rate = 1, g = NULL, w = NULL, 
                      eig = NULL, INV = NULL, ll.0 = NULL, llMix = NULL, wMix = 0, ..., site=FALSE) 
 {
+    Mkv=FALSE
     weight <- as.double(attr(data, "weight"))
     nr <- as.integer(attr(data, "nr")) 
     nc <- as.integer(attr(data, "nc"))
@@ -2736,7 +2755,9 @@ pml.fit <- function (tree, data, bf = rep(1/length(levels), length(levels)),
         ll.0 <- numeric(attr(data,"nr"))    
     }
     if(inv>0)
-        ll.0 <- as.matrix(INV %*% (bf * inv))              
+        ll.0 <- as.matrix(INV %*% (bf * inv))
+    if(Mkv)
+        ll.0 <- as.matrix(INV %*% bf)
     if (wMix > 0)
         ll.0 <- ll.0 + llMix           
     
@@ -2760,11 +2781,13 @@ pml.fit <- function (tree, data, bf = rep(1/length(levels), length(levels)),
     lll = resll - sca 
     lll <- exp(lll) 
     lll <- (lll%*%w)
+    if(Mkv) p0 <- sum(exp(log(lll[ind]) + sca[ind]))
     lll[ind] = lll[ind] + exp(log(ll.0[ind])-sca[ind])    
     siteLik <- lll 
     siteLik <- log(siteLik) + sca
     # needs to change
     if(wMix >0) siteLik <- log(exp(siteLik) * (1-wMix) + llMix )
+    if(Mkv)siteLik <- siteLik + log(1-p0)
     loglik <- sum(weight * siteLik)
     if(!site) return(loglik)
     resll = exp(resll) 
@@ -2773,10 +2796,9 @@ pml.fit <- function (tree, data, bf = rep(1/length(levels), length(levels)),
 
 
 pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1, 
-    rate = 1, model=NULL,  ...) 
+    rate = 1, model=NULL, ...) 
 {
     Mkv = FALSE
-    
     call <- match.call()
     extras <- match.call(expand.dots = FALSE)$...
     pmla <- c("wMix", "llMix") 
@@ -2801,8 +2823,12 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     if(any(is.na(match(tree$tip, attr(data, "names"))))) stop("tip labels are not in data")  
     data <- subset(data, tree$tip.label) # needed
     levels <- attr(data, "levels")
-    if(Mkv)data <- cbind(data, constSitePattern(length(tree$tip.label),levels, tree$tip.label))
+    if(Mkv){
+        data <- cbind(constSitePattern(length(tree$tip.label),levels, tree$tip.label), data)
+        attr(data, "weight")[1:attr(data, "nc")] <- 0.0
+    }    
     weight <- attr(data, "weight")
+    
     nr <- attr(data, "nr")
     type <- attr(data,"type")
     if(type=="AA" & !is.null(model)){
@@ -2873,7 +2899,7 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     result = list(logLik = tmp$loglik, inv = inv, k = kmax, shape = shape,
         Q = Q, bf = bf, rate = rate, siteLik = tmp$siteLik, weight = weight, 
         g = g, w = w, eig = eig, data = data, model=model, INV = INV, 
-        ll.0 = ll.0, tree = tree, lv = tmp$resll, call = call, df=df, wMix=wMix, llMix=llMix, Mkv=Mkv)
+        ll.0 = ll.0, tree = tree, lv = tmp$resll, call = call, df=df, wMix=wMix, llMix=llMix) #, Mkv=Mkv
     if(type=="CODON"){
         result$dnds <- 1
         result$tstv <- 1
@@ -3420,7 +3446,7 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     pmla <- c("wMix", "llMix")
     wMix <- object$wMix
     llMix <- object$llMix
-    Mkv <- object$Mkv
+#    Mkv <- object$Mkv
     Mkv <- FALSE
     if(is.null(llMix)) llMix=0
     if (!is.null(extras)) {
