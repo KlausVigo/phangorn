@@ -2828,7 +2828,6 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
         attr(data, "weight")[1:attr(data, "nc")] <- 0.0
     }    
     weight <- attr(data, "weight")
-    
     nr <- attr(data, "nr")
     type <- attr(data,"type")
     if(type=="AA" & !is.null(model)){
@@ -2867,7 +2866,7 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     
     INV <- Matrix(lli(data, tree), sparse=TRUE)
     ll.0 <- as.matrix(INV %*% (bf * inv))
-    if(Mkv) ll.0 <- as.matrix(INV %*% rep(1, length(bf))) 
+#    if(Mkv) ll.0 <- as.matrix(INV %*% rep(1, length(bf))) 
     
     if(wMix>0) ll.0 <- ll.0 + llMix
 
@@ -3538,10 +3537,10 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         optGamma = FALSE
         message('only one rate class, ignored optGamma')
     }
-    if(Mkv==TRUE & optInv==TRUE){ 
-        optInv = FALSE
-        message('cannot estimate invariant sites and Mkv model, ignored optInv')
-    } 
+#    if(Mkv==TRUE & optInv==TRUE){ 
+#        optInv = FALSE
+#        message('cannot estimate invariant sites and Mkv model, ignored optInv')
+#    } 
     shape = object$shape
     w = object$w
     g = object$g
