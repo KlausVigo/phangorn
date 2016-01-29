@@ -177,6 +177,7 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL, op
   tip.order = yy[1:nTip]
   for (treeindex in 1:length(x)) {
     tmp <- reorder(x[[treeindex]], "postorder")
+    if(!compressed) tip.order <- match(tmp$tip.label, consensus$tip.label)
     xy <- plotPhyloCoor(tmp, tip.order=tiporder, ...)
     xx = xy[,1]
     yy = xy[,2]
