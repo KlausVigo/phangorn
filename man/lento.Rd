@@ -9,7 +9,7 @@ The lento plot represents support and conflict of splits/bipartitions.
 }
 \usage{
 lento(obj, xlim = NULL, ylim = NULL, main = "Lento plot", sub = NULL, xlab = NULL, 
-    ylab = NULL, bipart=TRUE, trivial=FALSE,...)
+    ylab = NULL, bipart=TRUE, trivial=FALSE, col = rgb(0, 0, 0, 0.5),...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -22,6 +22,7 @@ lento(obj, xlim = NULL, ylim = NULL, main = "Lento plot", sub = NULL, xlab = NUL
   \item{ylab}{graphical parameter}
   \item{bipart}{plot bipartition information.}
   \item{trivial}{logical, whether to present trivial splits (default is FALSE).}
+  \item{col}{color for the splits / bipartition.}
   \item{\dots}{Further arguments passed to or from other methods.}
 }
 \value{
