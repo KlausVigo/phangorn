@@ -1171,7 +1171,7 @@ plot2D <- function(coords, net, show.tip.label=TRUE,
    
     
 lento <- function (obj, xlim = NULL, ylim = NULL, main = "Lento plot", 
-    sub = NULL, xlab = NULL, ylab = NULL, bipart=TRUE, trivial=FALSE, ...) 
+    sub = NULL, xlab = NULL, ylab = NULL, bipart=TRUE, trivial=FALSE, col = rgb(0,0,0,.5), ...) 
 {
     if (inherits(obj,"phylo")) 
         obj = as.splits(obj)
@@ -1219,8 +1219,9 @@ lento <- function (obj, xlim = NULL, ylim = NULL, main = "Lento plot",
         Circles = matrix(1, l, n)
         for(i in 1:n) Circles[obj[[ord[i]]],i] = 19   
 #    axis(4, labels=labels, at=at)
+        col = rep(col, each=l)
         text(x=n+.1,y=at, labels, pos=4, ...) 
-        points(X,Y,pch = as.numeric(Circles), col = rgb(0,0,0,.5), ...)
+        points(X,Y,pch = as.numeric(Circles), col = col, ...)
         }
     invisible(cbind(support, conflict))
     }
