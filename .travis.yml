@@ -7,7 +7,6 @@ bioc_required: true
 bioc_packages:
   - seqLogo
   - Biostrings
-  - msa
 
 env:
   - WARNINGS_ARE_ERRORS=false
