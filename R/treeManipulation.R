@@ -1080,6 +1080,34 @@ mrca.phylo <- function(x, node){
     res
 }
 
+
+# should be in ape
+mrca <- function(phy, full=FALSE){
+    Nnode <- phy$Nnode
+    Ntips <- length(phy$tip.label)      
+    phy <- reorder(phy)
+    nodes <- unique(phy$edge[,1])
+    if(!full){
+        res <- Descendants(phy, nodes, "tips")
+        M <- matrix(nodes[1], Ntips, Ntips)
+        for(i in 2:Nnode)M[res[[i]], res[[i]]]<-nodes[i]
+        diag(M) <- 1:Ntips
+        dimnames(M) <-  list(phy$tip.label, phy$tip.label)
+    }
+    else{
+        res <- Descendants(phy, nodes, "all")
+        M <- matrix(nodes[1], Ntips+Nnode, Ntips+Nnode)
+        for(i in 2:Nnode){
+            tmp  = c(res[[i]], nodes[i])
+            M[tmp, tmp]<-nodes[i]
+        }    
+        diag(M) <- 1:(Ntips+Nnode)
+        dimnames(M) <-  list(1:(Ntips+Nnode),1:(Ntips+Nnode))
+    }
+    M
+}
+
+
 # mrca.phylo <- getMRCA
 
 
