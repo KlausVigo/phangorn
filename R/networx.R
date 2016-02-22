@@ -1183,6 +1183,7 @@ lento <- function (obj, xlim = NULL, ylim = NULL, main = "Lento plot",
         triv = sapply(obj, length)
         ind = logical(length(obj)) 
         ind[(triv >1) & (triv < (l-1))] = TRUE
+        if(length(col)==length(obj)) col=col[ind] 
         obj = obj[ind]
         }
     CM = compatible(obj)
@@ -1202,6 +1203,7 @@ lento <- function (obj, xlim = NULL, ylim = NULL, main = "Lento plot",
     ord = order(support, decreasing = TRUE)
     support = support[ord]
     conflict = conflict[ord]
+    if(length(col)==length(obj)) col=col[ord]
     plot.new()
     plot.window(xlim, ylim)
     title(main = main, sub = sub, xlab = xlab, ylab = ylab, ...)
