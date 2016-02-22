@@ -55,6 +55,8 @@ print.splits <- function (x, maxp = getOption("max.print"),
 }
 
 
+
+
 orderSplitLabel = function(x, order){
     label = attr(x, "labels")
     nTips = length(label)
@@ -96,6 +98,15 @@ presenceAbsence <- function(x,y){
     l <- length(spl)
     attr(spl, "confidences") <- rep(1, l)
     addConfidences(x, y)
+}
+
+
+findSplits <- function(x,y){
+    tiplabel <- attr(x, "label")
+    nTips = length(tiplabel)
+    y <- changeOrder(y, tiplabel)
+    y <- SHORTwise(y, nTips)
+    match(SHORTwise(x, nTips), y)
 }
 
 
@@ -1225,7 +1236,7 @@ lento <- function (obj, xlim = NULL, ylim = NULL, main = "Lento plot",
         text(x=n+.1,y=at, labels, pos=4, ...) 
         points(X,Y,pch = as.numeric(Circles), col = col, ...)
         }
-    invisible(cbind(support, conflict))
+    invisible(list(support = cbind(support, conflict), splits=obj[ord]))
     }
 
     
