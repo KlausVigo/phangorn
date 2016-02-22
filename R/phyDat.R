@@ -556,6 +556,11 @@ as.DNAbin.phyDat <- function (x, ...)
 }
 
 
+as.AAbin.phyDat <- function(x,...) {
+   if(attr(x, "type")=="AA") return(as.AAbin(as.character(x, ...)))
+   else stop("x must be a amino acid sequence")
+}
+
  
 phyDat <- function (data, type="DNA", levels=NULL, return.index = TRUE,...) 
 {

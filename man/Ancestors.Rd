@@ -15,8 +15,8 @@ Children(x, node)
 Siblings(x, node, include.self=FALSE)
 Descendants(x, node, type=c("tips","children","all"))
 mrca.phylo(x, node)
-mrca(x, node)
 }
+%mrca(x, node)
 \arguments{
   \item{x}{a tree (a phylo object).}
   \item{node}{an integer or a vector of integers corresponding to a node ID}

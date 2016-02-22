@@ -145,7 +145,9 @@ void fitch54(int *res, int *dat1, int *dat2, int *nr, double *weight, double *w)
     } 
 }
 
-
+// FNALL5(SEXP nrx, SEXP node, SEXP edge, SEXP l, SEXP mx, SEXP my, SEXP root) 
+// nrx, edge,   score (result von FNALL5) 
+// root berechnen
 SEXP FITCHTRIP3(SEXP DAT3, SEXP nrx, SEXP edge, SEXP score, SEXP PS){ 
     R_len_t i, m = length(edge);  
     int nr=INTEGER(nrx)[0], k, tmp, ei, *edges=INTEGER(edge); 
@@ -158,7 +160,7 @@ SEXP FITCHTRIP3(SEXP DAT3, SEXP nrx, SEXP edge, SEXP score, SEXP PS){
     for(i=0; i<m; i++) pvtmp[i] = REAL(score)[i]; 
     for(i=0; i<m; i++){
         ei = edges[i] - 1L;
-//      pvtmp[i] = REAL(score)[ei];
+//      pvtmp[i] = REAL(score)[ei]; -1L
         for(k = 0; k < nr; k++){
             tmp = data1[k + ei*nr] & data2[k + ei*nr];
             if(!tmp){
