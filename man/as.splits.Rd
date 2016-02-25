@@ -33,7 +33,7 @@ as.splits(x, ...)
 \method{as.prop.part}{splits}(x, ...)    
 compatible(obj)
 allSplits(k, labels = NULL)
-write.nexus.splits(obj, file="", weights=NULL)
+write.nexus.splits(obj, file = "", weights=NULL, taxa=TRUE, append=FALSE)
 read.nexus.splits(file)
 addTrivialSplits(obj)
 }
@@ -49,6 +49,8 @@ addTrivialSplits(obj)
   \item{labels}{names of taxa.}   
   \item{file}{ a file name.}
   \item{weights}{ Edge weights.}
+  \item{taxa}{logical. If TRUE a taxa block is added}
+  \item{append}{logical. If TRUE the nexus blocks will be added to a file.}
 }
 \value{
 \code{as.splits} returns an object of class splits, which is mainly a list of splits and some attributes.

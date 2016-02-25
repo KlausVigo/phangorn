@@ -14,7 +14,7 @@ Phylogenetic networks
 }
 \usage{
 as.networx(x, ...)
-\method{as.networx}{splits}(x, planar = FALSE, ...)
+\method{as.networx}{splits}(x, planar = FALSE, coord = c("none", "2D", "3D"), ...)
 \method{plot}{networx}(x, type="3D", use.edge.length = TRUE, show.tip.label=TRUE, 
      show.edge.label=FALSE, edge.label = NULL, show.node.label=FALSE, 
      node.label = NULL, show.nodes=FALSE, tip.color="black", 
@@ -30,6 +30,7 @@ an object of class \code{"splits"} (as.networx) or \code{"networx"} (plot)
 logical whether to produce a planar graph from only cyclic splits 
 (may excludes splits). 
 }
+\item{coord}{add coordinates of the nodes, allows to reproduce the plot.}
 \item{type}{
 "3D" to plot using rgl or "2D" in the normal device. 
 }
