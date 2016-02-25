@@ -1376,6 +1376,12 @@ write.nexus.networx <- function(obj, file = "", taxa=TRUE, splits=FALSE, append=
     for(i in 1:nvertices){
         cat(i, "\t", vertices[i,1], "\t", vertices[i,2], ",\n", sep="", file = file, append = TRUE)
     }
+    if(!is.null(obj$tip.label)){
+    cat(";\nVLABELS\n", file = file, append = TRUE)
+    for(i in 1:ntaxa){
+        cat(i, "\t", obj$tip.label[i], ",\n", sep="", file = file, append = TRUE)
+    }
+    }    
 # cnet$splitIndex if splits = TRUE    
     cat(";\nEDGES\n", file = file, append = TRUE)
     for(i in 1:nedges){
