@@ -1345,7 +1345,7 @@ write.nexus.splits <- function (obj, file = "", weights=NULL, taxa=TRUE, append=
 
 write.nexus.networx <- function(obj, file = "", taxa=TRUE, splits=FALSE, append=FALSE){
     if(!append)cat("#NEXUS\n\n", file = file)
-    ntaxa <- Ntip(obj)
+    ntaxa <- length(obj$tip.label)
     # TAXON BLOCK    
     if(taxa){
         cat(paste("BEGIN TAXA;\n\tDIMENSIONS NTAX=", ntaxa, ";\n", 
@@ -1360,7 +1360,7 @@ write.nexus.networx <- function(obj, file = "", taxa=TRUE, splits=FALSE, append=
     }
     nvertices <- max(obj$edge)
     if(is.null(attr(obj, "coords")))
-    vertices <- phangorn:::coords(obj, "2D")
+    vertices <- coords(obj, "2D")
     else vertices <- attr(obj, "coords")
       
     nedges <- nrow(obj$edge)

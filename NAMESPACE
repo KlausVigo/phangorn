@@ -1,12 +1,13 @@
 useDynLib(phangorn, .registration=TRUE)
 
-importFrom(ape, as.DNAbin, as.AAbin, as.phyDat.AAbin, as.phylo, plot.phylo, as.prop.part, nj,old2new.phylo, dist.dna,
+importFrom(ape, as.DNAbin, as.phylo, plot.phylo, as.prop.part, nj,old2new.phylo, dist.dna,
     new2old.phylo, cophenetic.phylo, is.rooted, unroot, root, is.binary.tree, as.alignment,
-    di2multi, multi2di, .uncompressTipLabel, .compressTipLabel, prop.part, 
+    di2multi, multi2di, .uncompressTipLabel, .compressTipLabel, prop.part, Ntip,
     postprocess.prop.part, speciesTree, plotPhyloCoor, cladogram.plot, phylogram.plot,
     node.depth.edgelength, drop.tip, stree, rtree, is.ultrametric, .PlotPhyloEnv,
     nodelabels, edgelabels, BOTHlabels, read.nexus.data, write.nexus.data, 
     read.dna, write.dna, reorder.phylo, dist.nodes, collapse.singles, rotate, prop.clades)
+# as.AAbin, as.phyDat.AAbin
 importFrom(igraph, graph, graph_from_adjacency_matrix, layout_with_kk, plot.igraph,
     shortest_paths, set.edge.attribute, set_edge_attr, decompose,
     vcount, graph.edgelist, graph_from_edgelist, topo_sort) 
@@ -77,7 +78,7 @@ S3method(as.phyDat, data.frame)
 S3method(as.phyDat, matrix)
 S3method(as.phyDat, MultipleAlignment)
 S3method(as.MultipleAlignment, phyDat)
-S3method(as.AAbin, phyDat)
+#S3method(as.AAbin, phyDat) # momentan raus
 S3method(as.DNAbin, phyDat)
 S3method(as.phylo, splits)
 S3method(as.splits, phylo)
