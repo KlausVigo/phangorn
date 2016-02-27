@@ -1,3 +1,23 @@
+     CHANGES in PHANGORN VERSION 2.0.3
+
+NEW FEATURES 
+
+    o function write.nexus.networx to export phylogenetic networx to SplitsTree
+      
+    o function as.AAbin.phyDat to exchange data with the new AAbin class from ape   
+
+OTHER CHANGES
+    
+    o mrca overwrites mrca from ape (faster but dependencies)
+    
+    o individual splits can be colored in lento plots (suggested by France Thouzé)
+    
+    o lots of small changes to make handling and identifying splits, edges in 
+     
+      trees and networks easier
+
+
+
      CHANGES in PHANGORN VERSION 2.0.2
 
 OTHER CHANGES
