@@ -938,7 +938,7 @@ addConfidences.phylo <- function(x, y){
 } 
 
 
-reorder.networx <- function (x, order =  "cladewise", ...) 
+reorder.networx <- function (x, order =  "cladewise", index.only = FALSE, ...) 
 {
     order <- match.arg(order, c("cladewise", "postorder"))
     if (!is.null(attr(x, "order"))) 
@@ -950,7 +950,7 @@ reorder.networx <- function (x, order =  "cladewise", ...)
     if(order == "cladewise") neword <- topo_sort(g, "out")
     else neword <- topo_sort(g, "in") 
     neworder <- order(match(x$edge[,1], neword))
-    
+    if(index.only) return(neworder)
     x$edge <- x$edge[neworder, ]
     if (!is.null(x$edge.length)) 
         x$edge.length <- x$edge.length[neworder]
@@ -1391,6 +1391,66 @@ write.nexus.networx <- function(obj, file = "", taxa=TRUE, splits=FALSE, append=
     cat("END;\n", file = file, append = TRUE)
 }
 
+
+read.nexus.networx <- function(file){
+    X <- scan(file = file, what = "", sep = "\n", quiet = TRUE)
+    semico <- grep(";", X)
+    X=gsub("\\[(.*?)\\]", "", X) # get rid of comments
+    
+    netStart <- grep("BEGIN NETWORK;", X, ignore.case = TRUE)
+    netEnd <- grep("END;", X, ignore.case = TRUE)
+    netEnd <- netEnd[netEnd>netStart][1]
+    dims <- grep("DIMENSION", X, ignore.case = TRUE)
+    dims <- dims[(dims>netStart) & (dims<netEnd)]
+    
+    ntaxa = 0
+    nvertices = 0 
+    nedges = 0
+    
+    if(length(dims)>0){
+        tmp = X[dims]    
+        tmp = gsub("\\s+", "", tmp)
+        
+        ntaxa <- as.numeric(sub("(.+?)(ntax\\s*\\=\\s*)(\\d+)(.+)", 
+            "\\3", tmp, perl = TRUE, ignore.case = TRUE))
+        nvertices  <- as.numeric(sub("(.+?)(nvertices\\s*\\=\\s*)(\\d+)(.+)", 
+            "\\3", tmp, perl = TRUE, ignore.case = TRUE))
+        nedges <- as.numeric(sub("(.+?)(nedges\\s*\\=\\s*)(\\d+)(.+)", 
+            "\\3", tmp, perl = TRUE, ignore.case = TRUE))
+    }
+
+    vert <- grep("VERTICES", X, ignore.case = TRUE)
+    start <- vert[vert>max(dims, netStart)][1] + 1
+    end <- semico[semico>start][1] -1
+    VERT <- matrix(0, nvertices, 3, dimnames = list(NULL, c("id", "x", "y")))
+    j=1
+    for(i in start:end){
+        tmp <- X[i]
+#        tmp <- sub("\\s+", "", tmp) 
+        tmp <- strsplit(tmp, "[[:space:]]")[[1]]
+        VERT[j,1] <- as.numeric(tmp[1]) 
+        VERT[j,2] <- as.numeric(tmp[2])
+        VERT[j,3] <- as.numeric(tmp[3])
+        j=j+1
+    }
+    
+    edges <- grep("EDGES", X, ignore.case = TRUE)
+    start <- edges[edges>max(dims, netStart)][1] + 1
+    end <- semico[semico>start][1] -1
+    EDGE <- matrix(0, nedges, 3, dimnames = list(NULL, c("id", "vert_id_2", "vert_id_2")))
+    j=1
+    for(i in start:end){
+        tmp <- X[i]
+        #        tmp <- sub("\\s+", "", tmp) 
+        tmp <- strsplit(tmp, "[[:space:]]")[[1]]
+        EDGE[j,1] <- as.numeric(tmp[1]) 
+        EDGE[j,2] <- as.numeric(tmp[2])
+        EDGE[j,3] <- as.numeric(tmp[3])
+        j=j+1
+    }
+    
+    list(ntaxa=ntaxa, nvertices=nvertices, nedges=nedges, vertices=VERT, edges=EDGE)
+}
 
 
 read.nexus.splits <- function(file)
