@@ -1498,7 +1498,7 @@ read.nexus.networx <- function(file, splits=TRUE){
     el = sqrt(rowSums((VERT[EDGE[,2],c(2:3)] - VERT[EDGE[,3],c(2:3)])^2))
     plot <- list(vertices=VERT[2:3])        
     obj <- list(edge=EDGE[,2:3], tip.label=TRANS[,2], nNode=max(EDGE[,2:3])-ntaxa,
-        edge.length=el, splitsIndex=splitIndex, splits=spl)  
+        edge.length=el, splitIndex=splitIndex, splits=spl)  
     class(obj) <- c("networx", "phylo")
         
 #    list(ntaxa=ntaxa, nvertices=nvertices, nedges=nedges, translation=TRANS, vertices=VERT, edges=EDGE, splits=spl)

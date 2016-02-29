@@ -3,6 +3,7 @@
 \alias{as.networx}
 \alias{as.networx.splits}
 \alias{write.nexus.networx}
+\alias{read.nexus.networx}
 %\alias{reorder.networx}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
