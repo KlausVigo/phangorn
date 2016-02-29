@@ -101,9 +101,9 @@ presenceAbsence <- function(x,y){
 }
 
 
-findSplits <- function(x,y){
+matchSplits <- function(x,y){
     tiplabel <- attr(x, "label")
-    nTips = length(tiplabel)
+    nTips <- length(tiplabel)
     y <- changeOrder(y, tiplabel)
     y <- SHORTwise(y, nTips)
     match(SHORTwise(x, nTips), y)
@@ -231,7 +231,8 @@ as.splits.prop.part <- function(x, ...){
 
 
 as.splits.networx <- function(x, ...){
-    if(!is.null(attr(x, "splits")))attr(x, "splits")
+#    if(!is.null(attr(x, "splits")))attr(x, "splits")
+    if(!is.null(x$splits)) x$splits
     else warning("No split object included!")    
 }
 
@@ -750,9 +751,10 @@ circNetwork <- function(x, ord=NULL){
         #browser() 
     }
     res$Nnode =  max(res$edge) - nTips
-    res$splitIndex = index 
     res$edge.length = weight[index]  # ausserhalb
-    attr(res, "splits") = x
+    res$splitIndex = index 
+#    attr(res, "splits") = x
+    res$splits = x
     class(res) = c("networx", "phylo")
     attr(res, "order") = NULL
     res    
@@ -844,15 +846,17 @@ as.networx.splits <- function(x, planar=FALSE, coord = c("none", "2D", "3D"), ..
     tmp$Nnode = max(tmp$edge) - nTips
     tmp$edge.length = weight[tmp$splitIndex]
     attr(x, "cycle") <- c.ord
-    attr(tmp, "splits") = x 
+#    attr(tmp, "splits") = x 
+    tmp$splits <- x
     class(tmp) = c("networx", "phylo")
     tmp <- reorder(tmp)
     coord <- match.arg(coord)
-    coordinates <- switch(coord,
+    vert <- switch(coord,
            "none" = NULL,
            "2D" = coords(tmp, dim="2D"),
            "3D" = coords(tmp, dim="3D"))
-    attr(tmp, "coords") <- coordinates
+#    attr(tmp, "coords") <- coordinates
+    tmp$plot <- list(vertices=vert)
     tmp
 }
 
@@ -923,9 +927,11 @@ addConfidences.splits <- function(x, y){
 
 
 addConfidences.networx <- function(x, y){
-    spl <- attr(x, "splits")
+#    spl <- attr(x, "splits")
+    spl <- x$splits
     spl <- addConfidences(spl, y)
-    attr(x, "splits") <- spl
+#    attr(x, "splits") <- spl
+    x$splits <- spl
     x    
 }
 
@@ -980,35 +986,35 @@ coords <- function(obj, dim="3D"){
     if(dim=="3D"){
         coord <- layout_with_kk(g, dim=3)
 #        coord <- layout.kamada.kawai(g, dim=3)
-        k = matrix(0, max(obj$split), 3)
+        k = matrix(0, max(obj$splitIndex), 3)
         for(i in ind1){
             tmp = coord[obj$edge[i, 2],] - coord[obj$edge[i, 1],]
-            k[obj$split[i], ] = kart2kugel(tmp[1], tmp[2], tmp[3])
+            k[obj$splitIndex[i], ] = kart2kugel(tmp[1], tmp[2], tmp[3])
         }
-        k[obj$split[ind1],1] = obj$edge.length[ind1] 
+        k[obj$splitIndex[ind1],1] = obj$edge.length[ind1] 
 
         res = matrix(0, vcount(g), 3)
-        for(i in 1:l){# unique(obj$split)
+        for(i in 1:l){# unique(obj$splitIndex)
             j = obj$edge[i,1]
             m = obj$edge[i,2]
-            p = obj$split[i]
+            p = obj$splitIndex[i]
             res[m,] = res[j,] + kugel2kart(k[p,1], k[p,2], k[p,3])     
         }            
     }
     else{
         coord <- layout_with_kk(g, dim=2)
 #        coord <- layout.kamada.kawai(g, dim=2)
-        k = matrix(0, max(obj$split), 2)
+        k = matrix(0, max(obj$splitIndex), 2)
         for(i in ind1){
             tmp = coord[obj$edge[i, 2],] - coord[obj$edge[i, 1],]
-            k[obj$split[i], ] = kart2kreis(tmp[1], tmp[2])
+            k[obj$splitIndex[i], ] = kart2kreis(tmp[1], tmp[2])
         }
-        k[obj$split[ind1],1] = obj$edge.length[ind1] 
+        k[obj$splitIndex[ind1],1] = obj$edge.length[ind1] 
         res = matrix(0, vcount(g), 2)
-        for(i in 1:l){# unique(obj$split)
+        for(i in 1:l){# unique(obj$splitIndex)
             j = obj$edge[i,1]
             m = obj$edge[i,2]
-            p = obj$split[i]
+            p = obj$splitIndex[i]
             res[m,] = res[j,] + kreis2kart(k[p,1], k[p,2])     
         }
     }  
@@ -1057,6 +1063,8 @@ edgeLabels <- function(xx,yy,zz=NULL, edge){
         cbind(XX, YY)  
 }
 
+
+##
 # tip.color = "blue", edge.color="grey",
 plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRUE,
     show.edge.label=FALSE, edge.label=NULL, show.node.label = FALSE, node.label=NULL,
@@ -1067,7 +1075,8 @@ plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRU
     if(use.edge.length==FALSE) x$edge.length[] = 1
     x = reorder(x)
     nTips = length(x$tip.label)
-    conf = attr(attr(x, "splits"),"confidences") 
+#    conf = attr(attr(x, "splits"),"confidences") 
+    conf = attr(x$splits,"confidences")
     index = x$splitIndex
     if(is.null(edge.label) & !is.null(conf))edge.label = conf[index]
     if(is.null(node.label))node.label = as.character(1:max(x$edge))
@@ -1093,7 +1102,8 @@ plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRU
 	        edge.label = edge.label, show.node.label = show.node.label, node.label=node.label,
 	        show.nodes=show.nodes, tip.color = tip.color, edge.color=edge.color,
 	        edge.width = edge.width, edge.lty=edge.lty,font = font, cex = cex, add=FALSE)
-	}    
+    }   
+    invisible(x)
 }
 
     
@@ -1295,11 +1305,11 @@ write.nexus.splits <- function (obj, file = "", weights=NULL, taxa=TRUE, append=
     if(is.null(weights))weight <- attr(obj, "weights") 
     if (is.null(weight)) 
         weight = numeric(nsplits) + 100
-    if(!append)cat("#NEXUS\n\n", file = file)
+    if(!append){cat("#NEXUS\n\n", file = file)
     cat("[Splits block for Spectronet or Splitstree]\n", file = file, append = TRUE)
     cat("[generated by phangorn:\n", file = file, append = TRUE)
     cat(format(citation("phangorn"), "text"), "]\n\n",
-       file = file, append = TRUE)
+       file = file, append = TRUE)}
 # TAXON BLOCK    
     if(taxa){
     cat(paste("BEGIN TAXA;\n\tDIMENSIONS NTAX=", ntaxa, ";\n", 
@@ -1343,8 +1353,15 @@ write.nexus.splits <- function (obj, file = "", weights=NULL, taxa=TRUE, append=
 }
 
 
-write.nexus.networx <- function(obj, file = "", taxa=TRUE, splits=FALSE, append=FALSE){
-    if(!append)cat("#NEXUS\n\n", file = file)
+write.nexus.networx <- function(obj, file = "", taxa=TRUE, splits=TRUE, append=FALSE){
+    if(!append){
+        cat("#NEXUS\n\n", file = file)
+        cat("[Splits block for Spectronet or Splitstree]\n", file = file, append = TRUE)
+        cat("[generated by phangorn:\n", file = file, append = TRUE)
+        cat(format(citation("phangorn"), "text"), "]\n\n",
+            file = file, append = TRUE)
+        }
+    
     ntaxa <- length(obj$tip.label)
     # TAXON BLOCK    
     if(taxa){
@@ -1354,7 +1371,8 @@ write.nexus.networx <- function(obj, file = "", taxa=TRUE, splits=FALSE, append=
             file = file, append = TRUE)
     }
 # SPLITS BLOCK    
-    spl <- attr(obj, "splits")
+#    spl <- attr(obj, "splits")
+    spl <- obj$splits
     if(splits){
         write.nexus.splits(spl, file = file, weights=NULL, append = TRUE, taxa=FALSE) 
     }
@@ -1385,14 +1403,18 @@ write.nexus.networx <- function(obj, file = "", taxa=TRUE, splits=FALSE, append=
 # cnet$splitIndex if splits = TRUE    
     cat(";\nEDGES\n", file = file, append = TRUE)
     for(i in 1:nedges){
-        cat(i, "\t", obj$edge[i,1], "\t", obj$edge[i,2], ",\n", sep="", file = file, append = TRUE)
+        if(splits) cat(i, "\t", obj$edge[i,1], "\t", obj$edge[i,2], "\ts=", obj$splitIndex[i], ",\n", sep="", file = file, append = TRUE)
+        else cat(i, "\t", obj$edge[i,1], "\t", obj$edge[i,2], ",\n", sep="", file = file, append = TRUE)
     }
     cat(";\n", file = file, append = TRUE)
     cat("END;\n", file = file, append = TRUE)
 }
 
 
-read.nexus.networx <- function(file){
+read.nexus.networx <- function(file, splits=TRUE){
+    spl <- NULL
+    if(splits)spl <-read.nexus.splits(file)
+    
     X <- scan(file = file, what = "", sep = "\n", quiet = TRUE)
     semico <- grep(";", X)
     X=gsub("\\[(.*?)\\]", "", X) # get rid of comments
@@ -1418,7 +1440,20 @@ read.nexus.networx <- function(file){
         nedges <- as.numeric(sub("(.+?)(nedges\\s*\\=\\s*)(\\d+)(.+)", 
             "\\3", tmp, perl = TRUE, ignore.case = TRUE))
     }
-
+    transl <- grep("TRANSLATE", X, ignore.case = TRUE)
+    translation <- if (length(transl) == 1 && transl > netStart) TRUE
+    else FALSE
+    if (translation) {
+        end <- semico[semico > transl][1]
+        x <- X[(transl + 1):end]
+        x <- unlist(strsplit(x, "[,; \t]"))
+        x <- x[nzchar(x)]
+        TRANS <- matrix(x, ncol = 2, byrow = TRUE)
+        TRANS[, 2] <- gsub("['\"]", "", TRANS[, 2])
+#        n <- dim(TRANS)[1]
+    }
+    
+    
     vert <- grep("VERTICES", X, ignore.case = TRUE)
     start <- vert[vert>max(dims, netStart)][1] + 1
     end <- semico[semico>start][1] -1
@@ -1427,6 +1462,7 @@ read.nexus.networx <- function(file){
     for(i in start:end){
         tmp <- X[i]
 #        tmp <- sub("\\s+", "", tmp) 
+        tmp <- gsub("\\,", "", tmp)  
         tmp <- strsplit(tmp, "[[:space:]]")[[1]]
         VERT[j,1] <- as.numeric(tmp[1]) 
         VERT[j,2] <- as.numeric(tmp[2])
@@ -1437,19 +1473,36 @@ read.nexus.networx <- function(file){
     edges <- grep("EDGES", X, ignore.case = TRUE)
     start <- edges[edges>max(dims, netStart)][1] + 1
     end <- semico[semico>start][1] -1
-    EDGE <- matrix(0, nedges, 3, dimnames = list(NULL, c("id", "vert_id_2", "vert_id_2")))
+    EDGE <- NULL
+    if(splits) EDGE <- matrix(0, nedges, 4, dimnames = list(NULL, c("id", "vert_id_2", "vert_id_2", "splits_id")))
+    else EDGE <- matrix(0, nedges, 3, dimnames = list(NULL, c("id", "vert_id_2", "vert_id_2")))
     j=1
     for(i in start:end){
         tmp <- X[i]
+        tmp <- gsub("\\,", "", tmp)
         #        tmp <- sub("\\s+", "", tmp) 
         tmp <- strsplit(tmp, "[[:space:]]")[[1]]
         EDGE[j,1] <- as.numeric(tmp[1]) 
         EDGE[j,2] <- as.numeric(tmp[2])
         EDGE[j,3] <- as.numeric(tmp[3])
+        if(splits){
+            EDGE[j,4] <- as.numeric(sub("s=", "", tmp[4], ignore.case = TRUE))
+        }    
         j=j+1
     }
+    browser()
     
-    list(ntaxa=ntaxa, nvertices=nvertices, nedges=nedges, vertices=VERT, edges=EDGE)
+    splitIndex <- if(ncol(EDGE)==4) EDGE[,4]
+    else NULL
+# quick and dirty   
+    el = sqrt(rowSums((VERT[EDGE[,2],c(2:3)] - VERT[EDGE[,3],c(2:3)])^2))
+    plot <- list(vertices=VERT[2:3])        
+    obj <- list(edge=EDGE[,2:3], tip.label=TRANS[,2], nNode=max(EDGE[,2:3])-ntaxa,
+        edge.length=el, splitsIndex=splitIndex, splits=spl)  
+    class(obj) <- c("networx", "phylo")
+        
+#    list(ntaxa=ntaxa, nvertices=nvertices, nedges=nedges, translation=TRANS, vertices=VERT, edges=EDGE, splits=spl)
+    obj
 }
 
 
@@ -1461,9 +1514,9 @@ read.nexus.splits <- function(file)
     i1 <- grep("TAXLABELS", X, ignore.case = TRUE)    
     taxlab <- ifelse(length(i1)>0, TRUE, FALSE) 
     if (taxlab) {
-        end <- semico[semico > i1][1]
-        x <- X[(i1 + 1):end] # assumes there's a 'new line' after "TRANSLATE"
-        ## x <- gsub("TRANSLATE", "", x, ignore.case = TRUE)
+        end <- semico[semico >= i1][1]
+        x <- X[(i1):end] # assumes not a 'new line' after "TRANSLATE"
+        x <- gsub("TAXLABELS", "", x, ignore.case = TRUE)
         x <- unlist(strsplit(x, "[,; \t]"))   
         x <- x[nzchar(x)]
         x <- gsub("['\"]", "", x)
