@@ -1089,20 +1089,27 @@ plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRU
         warning("type=\"3D\" requires the package \"rgl\"\n, plotting =\"2D\" instead!\n")
         type="2D"
     }
+    # use precomputed vertices when available
+    coord <- NULL
+    if(!is.null(x$.plot)) coord <- x$.plot$vertices
+    
     if(type=="3D") {
-        coord <- coords(x, dim="3D")
+        if(is.null(coord) || ncol(coord)!=3)        
+            coord <- coords(x, dim="3D")
         plotRGL(coord, x, show.tip.label=show.tip.label, show.edge.label=show.edge.label, 
              edge.label = edge.label, show.node.label = show.node.label, node.label=node.label, 
              show.nodes=show.nodes, tip.color = tip.color, edge.color=edge.color, 
              edge.width = edge.width, font = font, cex = cex)
     }
     else{
-	    coord <- coords(x, dim="2D")
+        if(is.null(coord) || ncol(coord)!=2)
+     	    coord <- coords(x, dim="2D")
 	    plot2D(coord, x, show.tip.label=show.tip.label, show.edge.label=show.edge.label, 
 	        edge.label = edge.label, show.node.label = show.node.label, node.label=node.label,
 	        show.nodes=show.nodes, tip.color = tip.color, edge.color=edge.color,
 	        edge.width = edge.width, edge.lty=edge.lty,font = font, cex = cex, add=FALSE)
     }   
+    x$.plot <- list(vertices = coord, edge.color=edge.color, edge.width=edge.width, edge.lty = edge.lty)
     invisible(x)
 }
 
@@ -1490,7 +1497,6 @@ read.nexus.networx <- function(file, splits=TRUE){
         }    
         j=j+1
     }
-    browser()
     
     splitIndex <- if(ncol(EDGE)==4) EDGE[,4]
     else NULL
@@ -1499,6 +1505,7 @@ read.nexus.networx <- function(file, splits=TRUE){
     plot <- list(vertices=VERT[2:3])        
     obj <- list(edge=EDGE[,2:3], tip.label=TRANS[,2], nNode=max(EDGE[,2:3])-ntaxa,
         edge.length=el, splitIndex=splitIndex, splits=spl)  
+    obj$.plot <- list(vertices = VERT[,2:3], edge.color="black", edge.width=3, edge.lty = 1)
     class(obj) <- c("networx", "phylo")
         
 #    list(ntaxa=ntaxa, nvertices=nvertices, nedges=nedges, translation=TRANS, vertices=VERT, edges=EDGE, splits=spl)

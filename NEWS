@@ -12,6 +12,10 @@ OTHER CHANGES
     
     o individual splits can be colored in lento plots (suggested by France Thouzé)
     
+    o plot.networx now (silently) returns a networx object with some of the graphics
+    
+      parameters
+    
     o lots of small changes to make handling and identifying splits, edges in 
      
       trees and networks easier
