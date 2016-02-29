@@ -35,7 +35,7 @@ fitch <- function (tree, data, site="pscore")
 }
 
 
-fit.fitch <- function (tree, data, returnData = c("pscore", "site", "data")) 
+fit.fitch <- function (tree, data, returnData = c("pscore", "site", "data"))
 {
     if (is.null(attr(tree, "order")) || attr(tree, "order") == 
         "cladewise") 
@@ -75,12 +75,12 @@ fnodesNew5 <- function (EDGE, nTips, nr, m= as.integer(max(EDGE)+1L))
 {
     node <- EDGE[, 1]
     edge <- EDGE[, 2]
-    n = length(node)
-#    m= as.integer(max(EDGE)+1L)
-    m2 = 2L*n
-    root0 <- as.integer(node[n]) 
+    n = length(node)              # in C
+    m2 = 2L*n                     # in C
+    root0 <- as.integer(node[n])  # in C 
     .Call("FNALL5", as.integer(nr), node, edge, as.integer(n), as.integer(m), as.integer(m2), as.integer(root0), PACKAGE="phangorn")
 }   
+
 
 
 random.addition <- function(data, method="fitch") 
@@ -98,7 +98,7 @@ random.addition <- function(data, method="fitch")
     storage.mode(nr) <- "integer"
     n <- length(data) #- 1L
      
-    data <- subset(data,,order(attr(data, "weight"), decreasing=TRUE))   
+    data <- subset(data, ,order(attr(data, "weight"), decreasing=TRUE))   
     data <- prepareDataFitch(data) 
     weight <- attr(data, "weight")
 
@@ -135,11 +135,12 @@ fitch.spr <- function(tree, data){
   nTips = as.integer(length(tree$tip))
   nr = attr(data, "nr")
   minp = fast.fitch(tree, nr, TRUE)
-  
+  m=max(tree$edge)
   for(i in 1:nTips){
     treetmp = dropTip(tree, i)   
     edge = treetmp$edge[,2] 
-    score = fnodesNew5(treetmp$edge, nTips, nr)[edge]   
+#    score = fnodesNew5(treetmp$edge, nTips, nr)[edge]
+    score <- .Call("FNALL6", as.integer(nr), treetmp$edge[,1], edge, as.integer(m+1L), PACKAGE="phangorn")[edge]
     score <- .Call("FITCHTRIP3", as.integer(i), as.integer(nr), as.integer(edge),  as.double(score), as.double(minp))  
     
     if(min(score)<minp){
@@ -149,16 +150,17 @@ fitch.spr <- function(tree, data){
       #   print(paste("new",minp))
     }
   }
-  m=max(tree$edge)
   root <- getRoot(tree) 
   ch = allChildren(tree)
   for(i in (nTips+1L):m){
       if(i!=root){
           tmp = dropNode(tree, i, all.ch=ch)
           if(!is.null(tmp)){
-          edge = tmp[[1]]$edge[,2]                          
+          edge = tmp[[1]]$edge[,2] 
+          
           blub = fast.fitch(tmp[[2]], nr, TRUE)
-          score = fnodesNew5(tmp[[1]]$edge, nTips, nr)[edge] + blub
+          score <- .Call("FNALL6", as.integer(nr), tmp[[1]]$edge[,1], edge, as.integer(m+1L), PACKAGE="phangorn")[edge] + blub
+#          score = fnodesNew5(tmp[[1]]$edge, nTips, nr)[edge] + blub
           score <- .Call("FITCHTRIP3", as.integer(i), as.integer(nr), as.integer(edge), as.double(score), as.double(minp))    
           if(min(score)<minp){
               nt = which.min(score)
