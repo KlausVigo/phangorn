@@ -1384,10 +1384,13 @@ write.nexus.networx <- function(obj, file = "", taxa=TRUE, splits=TRUE, append=F
         write.nexus.splits(spl, file = file, weights=NULL, append = TRUE, taxa=FALSE) 
     }
     nvertices <- max(obj$edge)
-    if(is.null(attr(obj, "coords")))
-    vertices <- coords(obj, "2D")
-    else vertices <- attr(obj, "coords")
-      
+    
+    #    if(is.null(attr(obj, "coords")))   
+    if(is.null(obj$.plot$vertices)) vertices <- coords(obj, "2D")
+    else vertices <- obj$.plot$vertices
+    
+    if(is.null(obj$.plot)) edge.col <- obj$.plot$edge.color 
+    else edge.col=NULL 
     nedges <- nrow(obj$edge)
 # NETWORK BLOCK
     cat(paste("BEGIN NETWORK;\nDIMENSIONS ntax=", ntaxa,
