@@ -1,7 +1,7 @@
 /* 
  * dist.c
  *
- * (c) 2008-2015 Klaus Schliep (klaus.schliep@gmail.com)
+ * (c) 2008-2016 Klaus Schliep (klaus.schliep@gmail.com)
  * 
  * 
  * This code may be distributed under the GNU GPL

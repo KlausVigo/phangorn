@@ -638,7 +638,7 @@ SEXP FNALL_NNI(SEXP nrx, SEXP node, SEXP edge, SEXP l, SEXP mx, SEXP my, SEXP ro
     return(res); 
 }
 
-// mpr2 fnodesNew5
+// mpr2 fnodesNew5  , my = 2*n, n=length(node), root=node-1L
 SEXP FNALL5(SEXP nrx, SEXP node, SEXP edge, SEXP l, SEXP mx, SEXP my, SEXP root){   
     int *nr=INTEGER(nrx), m=INTEGER(mx)[0], i,  *n=INTEGER(l);  //*pars,
     double *pvtmp, *pvtmp2, pscore=0.0;  
@@ -668,6 +668,38 @@ SEXP FNALL5(SEXP nrx, SEXP node, SEXP edge, SEXP l, SEXP mx, SEXP my, SEXP root)
     UNPROTECT(1);
     return(pvec); 
 }
+
+// .Call("FNALL5", as.integer(nr), node, edge, as.integer(n), as.integer(m), 
+//      as.integer(m2), as.integer(root0), PACKAGE="phangorn")
+SEXP FNALL6(SEXP nrx, SEXP node, SEXP edge, SEXP mx){   
+    int *nr=INTEGER(nrx), m=INTEGER(mx)[0], i;  //*pars,
+    int n =length(node);
+    int root=INTEGER(node)[n-1L], my=2L*n;
+    double *pvtmp, *pvtmp2, pscore=0.0;  
+    SEXP pvec; 
+    int *pc, *edge2, *node2;
+    /* edge2, node2, pc ausserhalb definieren? */        
+    edge2 = (int *) R_alloc(2L * n, sizeof(int));
+    node2 = (int *) R_alloc(2L * n, sizeof(int));
+    pc = (int *) R_alloc(2L * n, sizeof(int));
+    
+    pvtmp2 = (double *) R_alloc(m, sizeof(double));
+    PROTECT(pvec = allocVector(REALSXP, m));    
+    pvtmp = REAL(pvec);
+    
+    for(i=0; i<m; i++){
+        pvtmp[i] = 0.0;
+        pvtmp2[i] = 0.0;
+    }
+    fnhelp(INTEGER(node), INTEGER(edge), &n, &m, &root, edge2, node2, pc);
+    fitch9(data1, nr, INTEGER(node), INTEGER(edge), &n, weight, pvtmp, &pscore); 
+    FN4(data1, data2, nr, node2, edge2, &my, pc, weight, pvtmp, pvtmp2); 
+    for(i=0; i<m; i++) pvtmp[i] += pvtmp2[i];
+    // return(pvtmp[edge])??    
+    UNPROTECT(1);
+    return(pvec); 
+}
+
 
 // inside optNNI Ziel 3* schneller  , double best
 void fitchquartet(int *dat1, int *dat2, int *dat3, int *dat4, int *nr, double *weight, double *pars){   
