@@ -46,7 +46,8 @@ cophenetic.splits <- function(x){
 
 
 cophenetic.networx <- function(x){
-    spl <- attr(x, "splits")
+#    spl <- attr(x, "splits")
+    spl <- x$splits
     cophenetic.splits(spl)
 }
 

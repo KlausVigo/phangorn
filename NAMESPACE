@@ -42,7 +42,7 @@ export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UN
     dfactorial, ldfactorial, hadamard, nni, allSitePattern, allSplits, fhm, 
     distanceHadamard, treedist, sankoff, fitch, h2st, h4st, dist.logDet, dist.hamming, 
     dist.ml, dist.p, upgma, wpgma, write.nexus.splits, read.nexus.splits,
-    write.nexus.networx, write.splits, pmlPart, 
+    read.nexus.networx, write.nexus.networx, write.splits, pmlPart, 
     pmlCluster, pmlMix, pmlPen, read.aa, allTrees, designTree, designSplits, nnls.tree,
     nnls.splits, nnls.phylo, nnls.networx, neighborNet, pmlPart2multiPhylo,
     splitsNetwork, simSeq, SH.test, bootstrap.pml, bootstrap.phyDat, RF.dist, rNNI, 
@@ -52,7 +52,7 @@ export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UN
     bab, random.addition, diversity, baseFreq, densiTree, superTree, coalSpeciesTree, 
     pml.fit, pml.init, pml.free, edQt, lli, cladePar, addConfidences, countCycles, 
     SOWH.test, plot.networx, presenceAbsence, as.networx.splits, addTrivialSplits,
-    phyDat2alignment, AICc, readDist, writeDist, discrete.gamma, findSplits,
+    phyDat2alignment, AICc, readDist, writeDist, discrete.gamma, matchSplits,
     removeUndeterminedSites, phyDat2MultipleAlignment, delta.score)
 
 S3method('[', splits)          

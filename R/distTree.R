@@ -499,13 +499,16 @@ nnls.splitsOld <- function(x, dm, trace=0){
     x
 }  
 
+
 nnls.networx <- function(x, dm){
-    spl <- attr(x, "splits")
+#    spl <- attr(x, "splits")
+    spl <- x$splits
     spl2 <- nnls.splits(spl, dm)
     weight <- attr(spl, "weight")
     weight[] <- 0
     weight[match(spl2, spl)] = attr(spl2, "weight")
-    attr(attr(x, "splits"), "weight") <- weight
+#    attr(attr(x, "splits"), "weight") <- weight
+    attr(x$splits, "weight") <- weight
     x$edge.length = weight[x$splitIndex]
     x
 }
