@@ -94,4 +94,9 @@ par("mar" = rep(1, 4))
 plot(cnet, "2D", show.edge.label=TRUE)
 ```
     
+    
+### Import and export networks 
+
+The functions `read.nexus.networx` and `write.nexus.networx` can read and write nexus files to exchange networks SplitsTree [@Huson2006]. Not all the features of the network block in the files are yet supported. 
+
 ## References
