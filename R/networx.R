@@ -1414,10 +1414,20 @@ write.nexus.networx <- function(obj, file = "", taxa=TRUE, splits=TRUE, append=F
     }    
 # cnet$splitIndex if splits = TRUE    
     cat(";\nEDGES\n", file = file, append = TRUE)
+    
+    if(is.null(obj$.plot$edge.color)) edge.col="black"
+    else edge.col <- obj$.plot$edge.color
+    if(length(edge.col)<nedges) edge.col <- rep(edge.col, length=nedges) 
+    
     for(i in 1:nedges){
-        if(splits) cat(i, "\t", obj$edge[i,1], "\t", obj$edge[i,2], "\ts=", obj$splitIndex[i], ",\n", sep="", file = file, append = TRUE)
-        else cat(i, "\t", obj$edge[i,1], "\t", obj$edge[i,2], ",\n", sep="", file = file, append = TRUE)
-    }
+        ecoli = edge.col[i]
+#browser()        
+        spInd <- ifelse(splits, paste("\ts=", obj$splitIndex[i], sep=""), "")
+        edgeCol <- ifelse(ecoli=="black", "", paste("\tfg=", paste(col2rgb(ecoli), collapse=" "), sep=""))
+#        if(splits) cat(i, "\t", obj$edge[i,1], "\t", obj$edge[i,2], "\ts=", obj$splitIndex[i], ",\n", sep="", file = file, append = TRUE)
+#              else cat(i, "\t", obj$edge[i,1], "\t", obj$edge[i,2], ",\n", sep="", file = file, append = TRUE)
+        cat(i, "\t", obj$edge[i,1], "\t", obj$edge[i,2], spInd, edgeCol, ",\n", sep="", file = file, append = TRUE)
+        }
     cat(";\n", file = file, append = TRUE)
     cat("END;\n", file = file, append = TRUE)
 }
