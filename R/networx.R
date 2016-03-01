@@ -1190,6 +1190,9 @@ plot2D <- function(coords, net, show.tip.label=TRUE,
         YY <- yy[edge[ind, 1]] - yy[edge[ind, 2]]
         pos2 <- rep(3, nTips)
         pos2[YY>0] = 1
+# needed if tiplabels are not at internal nodes        
+        XX[is.na(XX)] = 0
+        YY[is.na(YY)] = 0
         pos[abs(YY)>abs(XX)] <- pos2[abs(YY)>abs(XX)] 	
         text(xx[1:nTips], yy[1:nTips], labels=label, pos=pos, col=tip.color, cex=cex, font=font)
     }
@@ -1368,7 +1371,6 @@ write.nexus.networx <- function(obj, file = "", taxa=TRUE, splits=TRUE, append=F
         cat(format(citation("phangorn"), "text"), "]\n\n",
             file = file, append = TRUE)
         }
-    
     ntaxa <- length(obj$tip.label)
     # TAXON BLOCK    
     if(taxa){
@@ -1501,14 +1503,34 @@ read.nexus.networx <- function(file, splits=TRUE){
         j=j+1
     }
     
+    swapEdge <- function(x, old, new) {
+        x[x==new] <- -1L
+        x[x==old] <- new
+        x[x==-1L] <- old
+        x     
+    }
+    swapRow <- function(x, old, new) {
+        tmp <- x[old,]
+        x[old,] <- x[new,]
+        x[new,] <- tmp
+        x     
+    }
     splitIndex <- if(ncol(EDGE)==4) EDGE[,4]
     else NULL
 # quick and dirty   
     el = sqrt(rowSums((VERT[EDGE[,2],c(2:3)] - VERT[EDGE[,3],c(2:3)])^2))
-    plot <- list(vertices=VERT[2:3])        
-    obj <- list(edge=EDGE[,2:3], tip.label=TRANS[,2], nNode=max(EDGE[,2:3])-ntaxa,
+    edge <- EDGE[,c(2:3)]
+    vert <- VERT[,c(2:3)]
+    oldLabel <- as.integer(as.numeric(TRANS[,1]))
+    for(i in 1:nrow(TRANS)){
+        edge <- swapEdge(edge, oldLabel[i], i) 
+        vert <- swapRow(vert, oldLabel[i], i)
+    }
+    
+    plot <- list(vertices=vert)        
+    obj <- list(edge=edge, tip.label=TRANS[,2], Nnode=max(edge)-ntaxa,
         edge.length=el, splitIndex=splitIndex, splits=spl)  
-    obj$.plot <- list(vertices = VERT[,2:3], edge.color="black", edge.width=3, edge.lty = 1)
+    obj$.plot <- list(vertices = vert, edge.color="black", edge.width=3, edge.lty = 1)
     class(obj) <- c("networx", "phylo")
         
 #    list(ntaxa=ntaxa, nvertices=nvertices, nedges=nedges, translation=TRANS, vertices=VERT, edges=EDGE, splits=spl)
