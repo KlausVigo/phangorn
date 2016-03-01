@@ -901,7 +901,7 @@ changeOrder <- function(x, labels){
 addConfidences.splits <- function(x, y){
     tiplabel <- attr(x, "label")
     nTips = length(tiplabel)
-    x = addTrivialSplits(x) 
+#    x = addTrivialSplits(x) 
     if(inherits(y,"phylo")){
         ind <- match(tiplabel, y$tip.label)
         if (any(is.na(ind)) | length(tiplabel) != length(y$tip.label)) 
