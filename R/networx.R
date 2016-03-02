@@ -103,7 +103,7 @@ presenceAbsence <- function(x,y){
 
 matchSplits <- function(x,y){
     tiplabel <- attr(x, "label")
-    if(any(is.na(match(tiplabel, attr(y, "label"))))) error("x and y have different labels!")
+    if(any(is.na(match(tiplabel, attr(y, "label"))))) stop("x and y have different labels!")
     nTips <- length(tiplabel)
     y <- changeOrder(y, tiplabel)
     y <- SHORTwise(y, nTips)
