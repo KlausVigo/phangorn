@@ -1391,6 +1391,9 @@ write.nexus.networx <- function(obj, file = "", taxa=TRUE, splits=TRUE, append=F
     if(is.null(obj$.plot$vertices)) vertices <- coords(obj, "2D")
     else vertices <- obj$.plot$vertices
     
+    # y-axis differs between R and SplitsTree
+    vertices[,2] <- -vertices[,2]
+    
     if(is.null(obj$.plot)) edge.col <- obj$.plot$edge.color 
     else edge.col=NULL 
     nedges <- nrow(obj$edge)
@@ -1536,6 +1539,8 @@ read.nexus.networx <- function(file, splits=TRUE){
         edge <- swapEdge(edge, oldLabel[i], i) 
         vert <- swapRow(vert, oldLabel[i], i)
     }
+    # y-axis differs between in R and SplitsTree
+    vert[,2] <- -vert[,2]  
     
     plot <- list(vertices=vert)        
     obj <- list(edge=edge, tip.label=TRANS[,2], Nnode=max(edge)-ntaxa,
