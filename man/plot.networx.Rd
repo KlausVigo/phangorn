@@ -19,8 +19,9 @@ as.networx(x, ...)
 \method{plot}{networx}(x, type="3D", use.edge.length = TRUE, show.tip.label=TRUE, 
      show.edge.label=FALSE, edge.label = NULL, show.node.label=FALSE, 
      node.label = NULL, show.nodes=FALSE, tip.color="black", 
-     edge.color="black", edge.width=3, edge.lty=1, font=3, 
-     cex=1, ...)
+     edge.color="black", edge.width=3, edge.lty=1, 
+     split.color=NULL, split.width=NULL, split.lty=NULL,
+     font=3, cex=1, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -70,6 +71,15 @@ the width used to draw edges.
 \item{edge.lty}{
 a vector of line types.
 }
+\item{split.color}{
+the colors used to draw edges.
+}
+\item{split.width}{
+the width used to draw edges.
+}
+\item{split.lty}{
+a vector of line types.
+}
 \item{font}{
 an integer specifying the type of font for the labels: 1 (plain text), 
 2 (bold), 3 (italic, the default), or 4 (bold italic).
@@ -88,6 +98,9 @@ The argument planar = FALSE will create a planar split graph based on a
 cyclic ordering. These objects can be nicely plotted in "2D".
 So far not all parameters behave the same on the the rgl "3D"
 and basic graphic "2D" device. 
+
+Often it is easier (and safer) to supply vectors of graphial parameters for splits (e.g. splits.color). 
+These overwrite values edge.color. 
 }
 \note{
 The internal representation is likely to change. 

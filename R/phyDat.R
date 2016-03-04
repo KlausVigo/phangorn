@@ -349,7 +349,7 @@ as.phyDat.MultipleAlignment <- function(x, ...){
         res <- phyDat.DNA(Biostrings::as.matrix(x))
     if(inherits(x, "RNAMultipleAlignment"))
         res <- phyDat.DNA(Biostrings::as.matrix(x))
-    if(inherits(x, "RNAMultipleAlignment"))
+    if(inherits(x, "AAMultipleAlignment"))
         res <- phyDat.AA(Biostrings::as.matrix(x))
     return(res)
     }
