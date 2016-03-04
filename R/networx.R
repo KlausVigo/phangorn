@@ -1071,6 +1071,7 @@ plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRU
     show.edge.label=FALSE, edge.label=NULL, show.node.label = FALSE, node.label=NULL,
     show.nodes=FALSE, tip.color = "black", 
     edge.color="black", edge.width = 3, edge.lty = 1,
+    split.color=NULL, split.width = NULL, split.lty = NULL,
     font = 3, cex = 1, ...){
     type = match.arg(type, c("3D", "2D")) 
     if(use.edge.length==FALSE) x$edge.length[] = 1
@@ -1082,6 +1083,20 @@ plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRU
     if(is.null(edge.label) & !is.null(conf))edge.label = conf[index]
     if(is.null(node.label))node.label = as.character(1:max(x$edge))
     if(show.tip.label)node.label[1:nTips] = ""
+    
+    lspl <- max(x$splitIndex)
+    if(!is.null(split.color)){
+        if(length(split.color)!=lspl) stop("split.color must be same length as splits")
+        else edge.color <- split.color[x$splitIndex]
+    } 
+    if(!is.null(split.width)){
+        if(length(split.width)!=lspl) stop("split.color must be same length as splits")
+        else edge.width <- split.width[x$splitIndex]
+    } 
+    if(!is.null(split.lty)){
+        if(length(split.lty)!=lspl) stop("split.color must be same length as splits")
+        else edge.lty <- split.lty[x$splitIndex]
+    } 
     
     chk <- FALSE
     
@@ -1543,9 +1558,8 @@ read.nexus.networx <- function(file, splits=TRUE){
         edge.length=el, splitIndex=splitIndex, splits=spl)  
     obj$.plot <- list(vertices = vert, edge.color="black", edge.width=3, edge.lty = 1)
     class(obj) <- c("networx", "phylo")
-        
 #    list(ntaxa=ntaxa, nvertices=nvertices, nedges=nedges, translation=TRANS, vertices=VERT, edges=EDGE, splits=spl)
-    obj
+    reorder(obj)
 }
 
 
