@@ -3434,13 +3434,15 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                         model = NULL, rearrangement = ifelse(optNni, "NNI","none"), subs = NULL, ratchet.par = list(iter = 10L, maxit = 100L, prop = 1/3), ...) 
 {
     optRatchet = FALSE
+    optRatchet2 = FALSE
     if(rearrangement ==  "none"){
         optNni = FALSE
         optRatchet = FALSE
+        optRatchet2 = FALSE
     }
     if(rearrangement ==  "NNI")optNni = TRUE
     if(rearrangement ==  "stochastic") optRatchet = TRUE
-    
+    if(rearrangement ==  "ratchet") optRatchet2 = TRUE
     extras <- match.call(expand.dots = FALSE)$...
     pmla <- c("wMix", "llMix")
     wMix <- object$wMix
@@ -3459,12 +3461,18 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     tree = object$tree
     call = object$call
     ratchet=FALSE
+    ratchet2=FALSE
     if(optRatchet == TRUE){
         if(optRooted==FALSE){
             optNni=TRUE
             optEdge=TRUE
             ratchet=TRUE
         }
+    }
+    if(optRatchet2 == TRUE){
+        optNni=TRUE
+        optEdge=TRUE
+        ratchet2=TRUE
     }
     
     data <- object$data
@@ -3871,6 +3879,54 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
             }  
             optNni = TRUE
             ratchet=FALSE
+            rounds = 1
+        }
+        
+        if( (ratchet2==TRUE) && (optNni == FALSE) ){
+            if(optRooted){
+                FUN <- function(x, bf, Q, k, shape){
+                dm <- dist.ml(x, bf=bf, Q=Q, k=k, shape=shape)
+                tr <- wpgma(dm)
+#                nnls.phylo(tr, dm, TRUE)
+                }
+            }
+            else{
+                FUN <- function(x, bf, Q, k, shape){
+                dm <- dist.ml(x, bf=bf, Q=Q, k=k, shape=shape)
+                tr <- fastme.bal(dm, TRUE, TRUE, FALSE)
+#                nnls.phylo(tr, dm)
+                }
+            }
+            maxR = ratchet.par$iter
+            maxit = ratchet.par$maxit
+            kmax=1
+            i=1
+            while(i < maxit){
+                tree2 <- bootstrap.phyDat(data, FUN, bs = 1, bf=bf, Q=Q, k=k, shape=shape)[[1]]
+                swap = 1
+                ll2 <- pml.fit(tree2, data, bf, shape = shape, k = k, Q = Q, 
+                               levels = attr(data, "levels"), inv = inv, rate = rate, 
+                               g = g, w = w, eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, 
+                               wMix = wMix, site = FALSE)
+                while(swap>0){
+                    tmp <- pml.nni(tree2, data, w, g, eig, bf, ll.0, ll=ll2, ...) 
+                    swap = tmp$swap
+                    res <- optimEdge(tmp$tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, control = pml.control(epsilon = 1e-08, maxit = 3, trace=0)) 
+                    ll2 = res[[2]] 
+                    tree2 <- res[[1]]
+                }
+                if(ll2 > (ll + epsR)){
+                    tree <- tree2
+                    ll <- ll2
+                    kmax=1
+                } 
+                else kmax = kmax+1
+                if(trace > 0) print(paste("Ratchet iteration ", i,", best pscore so far:",ll))
+                i=i+1
+                if(kmax > maxR) i <- maxit
+            }  
+            optNni = TRUE
+            ratchet2=FALSE
             rounds = 1
         }
         

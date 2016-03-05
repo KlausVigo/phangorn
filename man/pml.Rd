@@ -39,7 +39,7 @@ pml.control(epsilon = 1e-08, maxit = 10, trace = 1)
 %  \item{optRatchet}{Stochastic tree search.}
   \item{ratchet.par}{search parameter for stochastic search}
   \item{rearrangement}{type of tree tree rearrangements to perform, one of
-      "none", "NNI" or "stochastic"}
+      "none", "NNI", "stochastic" or "ratchet"}
   \item{control}{A list of parameters for controlling the fitting process.}
   \item{subs}{A (integer) vector same length as Q to specify the optimization of Q}
   \item{\dots}{Further arguments passed to or from other methods.}
@@ -80,7 +80,8 @@ heuristics which works reasonalby for small and large trees or alignments.
 If \code{trace} is set to zero than no out put is shown, if functions are called internally 
 than the trace is decreased by one, so a higher of trace produces more feedback. 
 
-If \code{rearrangement} is set to \code{stochastic} a stochastic search algorithm similar to Nguyen et al. (2015). 
+If \code{rearrangement} is set to \code{stochastic} a stochastic search algorithm similar to Nguyen et al. (2015).
+and for \code{ratchet} the likelihood ratchet as in Vos (2003). 
 This should helps often to find better tree topologies, especially for larger trees.   
 }
 \value{
@@ -124,6 +125,8 @@ Kosiol, C, and Goldman, N (2005) Different versions of the Dayhoff rate matrix -
 
 L.-T. Nguyen, H.A. Schmidt, A. von Haeseler, and B.Q. Minh (2015) IQ-TREE: A fast and effective stochastic algorithm for estimating maximum likelihood phylogenies. \emph{Molecular Biology and Evolution}, \bold{32}, 268--274.
 
+Vos, R. A. (2003) Accelerated Likelihood Surface Exploration: The Likelihood Ratchet. \emph{Systematic Biology}, 
+\bold{52(3)}, 368--373
 }
 \author{Klaus Schliep \email{klaus.schliep@gmail.com}}
 \seealso{
