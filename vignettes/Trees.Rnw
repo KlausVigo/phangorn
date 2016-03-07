@@ -137,7 +137,9 @@ fitGTR <- optim.pml(fitGTR, model="GTR", optInv=TRUE, optGamma=TRUE,
     rearrangement = "NNI", control = pml.control(trace = 0))
 fitGTR 
 @
-With the control parameters the threshols for the fitting process can be changed. Here we want just to supress output during the fitting process. For larger trees the NNI rearrangements often get stuck in local maxima. We added a stochatic algortithm similar as in \cite{Nguyen2015}, which makes random NNI permuation to the tree, which than gets optimised to escape local optima. While this may find better trees it will also take more time.      
+With the control parameters the threshols for the fitting process can be changed. Here we want just to supress output during the fitting process. For larger trees the NNI rearrangements often get stuck in local maxima. We added two stochatic algorithm to improve topology search. The first (set rearrangement="stochastic") performs stochastic rearrangements similar as in \cite{Nguyen2015}, which makes random NNI permuation to the tree, which than gets optimised to escape local optima. The second option (rearrangement="ratchet") perform the likelihood ratchet \cite{Vos2003}. 
+
+While these algorithms may find better trees they will also take more time.      
 <<echo=TRUE>>=
 fitGTR <- optim.pml(fitGTR, model="GTR", optInv=TRUE, optGamma=TRUE, 
     rearrangement = "stochastic", control = pml.control(trace = 0))
