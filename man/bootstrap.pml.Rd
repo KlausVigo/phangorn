@@ -11,7 +11,7 @@ Bootstrap }
 \usage{
 bootstrap.pml(x, bs = 100, trees = TRUE, multicore=FALSE, mc.cores = NULL, ...)
 bootstrap.phyDat(x, FUN, bs = 100, multicore=FALSE, mc.cores = NULL, ...)
-plotBS(tree, BStrees, type="unrooted", bs.col="black", bs.adj=NULL, p=80, ...)
+plotBS(tree, BStrees, type="unrooted", bs.col="black", bs.adj=NULL, p=50, frame=none, ...)
 }
 \arguments{
   \item{x}{
@@ -54,6 +54,9 @@ one or two numeric values specifying the horizontal and vertical justification o
   \item{p}{ 
 only plot support values higher than this percentage number (default is 80).
 }
+  \item{frame}{
+     a character string specifying the kind of frame to be printed around the bootstrap values. This must be one of "none" (the default), "rect" or "circle".
+  }
 }
 \details{
 It is possible that the bootstrap is performed in parallel, with help of the multicore package.
@@ -62,7 +65,7 @@ However it will speed up nicely from the command line ("X11").
 }
 \value{
 \code{bootstrap.pml} returns an object of class \code{multi.phylo} or a list where each 
-element is an object of class \code{pml}. \code{plotBS} returns silently a tree, i.e. an object of class \code{multi.phylo} with the bootstrap values as node labels.
+element is an object of class \code{pml}. \code{plotBS} returns silently a tree, i.e. an object of class \code{phylo} with the bootstrap values as node labels. The argument \code{BStrees} is optional and if not supplied the tree with labels supplied in the \code{node.label} slot. 
 }
 \references{
 Felsenstein J. (1985) Confidence limits on phylogenies. An approach using the bootstrap. \emph{Evolution} \bold{39}, 783--791
@@ -75,7 +78,7 @@ Penny D. and Hendy M.D. (1986) Estimating the reliability of evolutionary trees.
 Klaus Schliep \email{klaus.schliep@gmail.com}
 }
 \seealso{
-\code{\link{optim.pml}}, \code{\link{pml}}, \code{\link{plot.phylo}}, \code{\link{consensusNet}}
+\code{\link{optim.pml}}, \code{\link{pml}}, \code{\link{plot.phylo}}, \code{\link{nodelabels}},\code{\link{consensusNet}}
 }
 \examples{
 \dontrun{

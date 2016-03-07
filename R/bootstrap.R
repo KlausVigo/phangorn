@@ -97,7 +97,7 @@ checkLabels <- function(tree, tip){
 
 
 plotBS <- function (tree, BStrees, type = "unrooted", bs.col = "black", 
-                    bs.adj = NULL, p=80, ...) 
+                    bs.adj = NULL, p=50, frame="none",...) 
 {
     type <- match.arg(type, c("phylogram", "cladogram", "fan", 
                               "unrooted", "radial"))
@@ -108,13 +108,22 @@ plotBS <- function (tree, BStrees, type = "unrooted", bs.col = "black",
         plot(tree2, type = type, ...)
     }
     else plot(tree, type = type, ...)
-    BStrees <- .uncompressTipLabel(BStrees)
-    if(any(unlist(lapply(BStrees, is.rooted)))){
-        BStrees <- lapply(BStrees, unroot)   
+    
+    if(hasArg(BStrees)){
+        BStrees <- .uncompressTipLabel(BStrees)
+        if(any(unlist(lapply(BStrees, is.rooted)))){
+            BStrees <- lapply(BStrees, unroot)   
+        }
+        x = prop.clades(tree, BStrees)
+        x = round((x/length(BStrees)) * 100)
+        tree$node.label = x
     }
-    x = prop.clades(tree, BStrees)
-    x = round((x/length(BStrees)) * 100)
-    tree$node.label = x
+    else{
+        if(is.null(tree$node.label))stop("You need to supply BStrees or tree needs 
+        needs BS-values as node.label")
+        x <- tree$node.label
+    }
+    
     label = c(rep(0, length(tree$tip)), x)
     ind <- get("last_plot.phylo", envir = .PlotPhyloEnv)$edge[, 
                                                               2]
@@ -128,18 +137,19 @@ plotBS <- function (tree, BStrees, type = "unrooted", bs.col = "black",
         #        browser()
         if (is.null(bs.adj)) 
             bs.adj = c(1, 1)
-        if(length(ind)>0)nodelabels(text = label[ind], node = ind, frame = "none", 
+        if(length(ind)>0)nodelabels(text = label[ind], node = ind, frame = frame, 
                                     col = bs.col, adj = bs.adj, ...)
     }
     else {
         if (is.null(bs.adj)) 
             bs.adj = c(0.5, 0.5)
         ind2 = which(label[ind]>p)
-        if(length(ind2>0))edgelabels(label[ind][ind2],ind2, frame = "none", col = bs.col, 
+        if(length(ind2>0))edgelabels(label[ind][ind2],ind2, frame = frame, col = bs.col, 
                                      adj = bs.adj, ...)
     }
     invisible(tree)
 }
+
 
 
 plotBS.Old <- function (tree, BStrees, type = "unrooted", bs.col = "black", 
