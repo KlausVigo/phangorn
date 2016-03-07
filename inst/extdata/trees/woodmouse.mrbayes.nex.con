@@ -1,0 +1,9 @@
+#NEXUS
+
+[ID: 2542150086]
+begin trees;
+   [Note: This tree contains information on the topology, 
+          branch lengths (if present), and the probability
+          of the partition indicated by the branch.]
+   tree con_50_majrule = (No305,No1114S,((((No304,No0913S)0.98,No306)0.90,(No0906S,(No0910S,No1202S)0.92)0.54,No0908S,No1206S)0.80,((No0909S,No1007S,No1208S)1.00,(No0912S,No1103S)0.50)0.94)0.80);
+end;
