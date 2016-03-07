@@ -5,6 +5,8 @@ NEW FEATURES
     o function write.nexus.networx to export phylogenetic networx to SplitsTree
       
     o function as.AAbin.phyDat to exchange data with the new AAbin class from ape   
+    
+    o likelihood ratchet (Vos 2003) topology optimisation in optim.pml 
 
 OTHER CHANGES
     
@@ -20,6 +22,7 @@ OTHER CHANGES
      
       trees and networks easier
 
+    o plotBS has a new argument frame and argumenty BStrees can be empty
 
 
      CHANGES in PHANGORN VERSION 2.0.2
