@@ -1438,10 +1438,12 @@ write.nexus.networx <- function(obj, file = "", taxa=TRUE, splits=TRUE, append=F
     else edge.col <- obj$.plot$edge.color
     if(length(edge.col)<nedges) edge.col <- rep(edge.col, length=nedges) 
     
+    splI <- TRUE
+    if(is.null(obj$splitIndex))splI <- FALSE
     for(i in 1:nedges){
         ecoli = edge.col[i]
 #browser()        
-        spInd <- ifelse(splits, paste("\ts=", obj$splitIndex[i], sep=""), "")
+        spInd <- ifelse(splI, paste("\ts=", obj$splitIndex[i], sep=""), "")
         edgeCol <- ifelse(ecoli=="black", "", paste("\tfg=", paste(col2rgb(ecoli), collapse=" "), sep=""))
 #        if(splits) cat(i, "\t", obj$edge[i,1], "\t", obj$edge[i,2], "\ts=", obj$splitIndex[i], ",\n", sep="", file = file, append = TRUE)
 #              else cat(i, "\t", obj$edge[i,1], "\t", obj$edge[i,2], ",\n", sep="", file = file, append = TRUE)
