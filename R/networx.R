@@ -101,12 +101,13 @@ presenceAbsence <- function(x,y){
 }
 
 
-matchSplits <- function(x,y){
+matchSplits <- function(x, y, as.in=TRUE){
     tiplabel <- attr(x, "label")
     if(any(is.na(match(tiplabel, attr(y, "label"))))) stop("x and y have different labels!")
     nTips <- length(tiplabel)
     y <- changeOrder(y, tiplabel)
     y <- SHORTwise(y, nTips)
+    if(as.in) return(match(SHORTwise(x, nTips), y, nomatch = 0L) > 0L)
     match(SHORTwise(x, nTips), y)
 }
 
@@ -1215,6 +1216,21 @@ plot2D <- function(coords, net, show.tip.label=TRUE,
     if(show.edge.label){
 	    ec = edgeLabels(xx,yy, edge=edge)
 	    if(is.null(edge.label))edge.label = net$splitIndex
+	    
+	    # show only one edge label
+	    em <- apply(ec, 1, function(x)max(abs(x)))
+	    si <- net$splitIndex
+	    for(i in unique(si)){
+	        tmp <- si==i
+	        if(sum(tmp)>1){
+	            w <- which(tmp)
+	            wm <- which.max(em[w])
+	            edge.label[w[-wm]] <- ""
+	        }
+	    }
+	    
+	    
+	    
 	    text(ec[,1], ec[,2], labels=edge.label, col=tip.color, cex=cex, font=font)     
 	    } 
     if(show.node.label){
