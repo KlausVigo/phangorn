@@ -1076,9 +1076,10 @@ plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRU
     show.nodes=FALSE, tip.color = "black", 
     edge.color="black", edge.width = 3, edge.lty = 1,
     split.color=NULL, split.width = NULL, split.lty = NULL,
-#    cex.node.label=par("cex"), cex.tip.label=par("cex"), cex.edge.label=par("cex"),
-#    col.node.label = "black", col.edge.label = "black", 
-    font = 3, cex = 1, ...){
+    font = 3, cex = par("cex"), 
+    cex.node.label=cex, cex.edge.label=cex,
+    col.node.label = tip.color, col.edge.label = tip.color, 
+    ...){
     type = match.arg(type, c("3D", "2D")) 
     if(use.edge.length==FALSE) x$edge.length[] = 1
     x = reorder(x)
@@ -1129,7 +1130,10 @@ plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRU
 	    plot2D(coord, x, show.tip.label=show.tip.label, show.edge.label=show.edge.label, 
 	        edge.label = edge.label, show.node.label = show.node.label, node.label=node.label,
 	        show.nodes=show.nodes, tip.color = tip.color, edge.color=edge.color,
-	        edge.width = edge.width, edge.lty=edge.lty,font = font, cex = cex, add=FALSE)
+	        edge.width = edge.width, edge.lty=edge.lty,font = font, cex = cex, 
+	        cex.node.label=cex.node.label, cex.edge.label=cex.edge.label,
+	        col.node.label = col.node.label, col.edge.label = col.edge.label,
+	        add=FALSE)
     }   
     x$.plot <- list(vertices = coord, edge.color=edge.color, edge.width=edge.width, edge.lty = edge.lty)
     invisible(x)
@@ -1183,10 +1187,10 @@ plot2D <- function(coords, net, show.tip.label=TRUE,
        show.edge.label=FALSE, edge.label=NULL, show.node.label=FALSE, node.label=NULL,
        tip.color = "blue", edge.color="grey",                   
        edge.width = 3, edge.lty=1, 
-       cex.node.label=par("cex"), cex.tip.label=par("cex"), cex.edge.label=par("cex"),
-       col.node.label="black", col.tip.label="black", col.edge.label="grey50",
-       font.node.label=1, font.tip.label=3, font.edge.label=1,
        font = 3, cex = par("cex"), 
+       cex.node.label=cex,  cex.edge.label=cex,
+       col.node.label=tip.color, col.edge.label=tip.color,
+       font.node.label=font, font.edge.label=font,
        add=FALSE, ...){
    edge = net$edge
    label = net$tip.label
@@ -1200,9 +1204,9 @@ plot2D <- function(coords, net, show.tip.label=TRUE,
    ylim <- range(yy)
      
    if(show.tip.label){
-       offset <- max(nchar(label)) * 0.018 * cex.tip.label * diff(xlim)
+       offset <- max(nchar(label)) * 0.018 * cex * diff(xlim)
        xlim = c(xlim[1]-offset, xlim[2]+offset)
-       ylim = c(ylim[1]-0.03 * cex * diff(ylim), ylim[2]+0.03 * cex.tip.label * diff(ylim))
+       ylim = c(ylim[1]-0.03 * cex * diff(ylim), ylim[2]+0.03 * cex * diff(ylim))
    }
    if(!add){ 
        plot.new() 
@@ -1221,7 +1225,7 @@ plot2D <- function(coords, net, show.tip.label=TRUE,
         XX[is.na(XX)] = 0
         YY[is.na(YY)] = 0
         pos[abs(YY)>abs(XX)] <- pos2[abs(YY)>abs(XX)] 	
-        text(xx[1:nTips], yy[1:nTips], labels=label, pos=pos, col=tip.color, cex=cex.tip.label, font=font)
+        text(xx[1:nTips], yy[1:nTips], labels=label, pos=pos, col=tip.color, cex=cex, font=font)
     }
     if(show.edge.label){
 	    ec = edgeLabels(xx,yy, edge=edge)
@@ -1242,7 +1246,7 @@ plot2D <- function(coords, net, show.tip.label=TRUE,
 	    text(ec[,1], ec[,2], labels=edge.label, col=col.edge.label, cex=cex.edge.label, font=font.edge.label)     
 	} 
     if(show.node.label){
-         text(xx, yy, labels=node.label, col=col.node.label, cex=cex.node.label, font=font.node.labe)    
+         text(xx, yy, labels=node.label, col=col.node.label, cex=cex.node.label, font=font.node.label)    
     }   
 }   
    

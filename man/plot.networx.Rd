@@ -21,7 +21,10 @@ as.networx(x, ...)
      node.label = NULL, show.nodes=FALSE, tip.color="black", 
      edge.color="black", edge.width=3, edge.lty=1, 
      split.color=NULL, split.width=NULL, split.lty=NULL,
-     font=3, cex=1, ...)
+     font = 3, cex = par("cex"), 
+     cex.node.label=cex, cex.edge.label=cex,
+     col.node.label = tip.color, col.edge.label = tip.color, 
+     ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -86,6 +89,17 @@ an integer specifying the type of font for the labels: 1 (plain text),
 }
 \item{cex}{
 a numeric value giving the factor scaling of the labels.}
+\item{cex.node.label}{
+a numeric value giving the factor scaling of the node labels.}
+\item{cex.edge.label}{
+a numeric value giving the factor scaling of the edge labels.}
+\item{col.node.label}{
+the colors used for the node labels.
+}
+\item{col.edge.label}{
+the colors used for the edge labels.
+}
+
 \item{\dots}{
 Further arguments passed to or from other methods.
 }
