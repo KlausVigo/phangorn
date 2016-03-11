@@ -197,12 +197,15 @@ as.splits.phylo <- function(x, ...){
 
 
 # computes splits from multiPhylo object (e.g. bootstrap, MCMC etc.)
+# unrooted trees
 as.splits.multiPhylo <- function(x, ...){
-    if(inherits(x,"multiPhylo"))x = .uncompressTipLabel(x)
-    lx = length(x)
-    if(inherits(x,"multiPhylo"))class(x)='list'  # prop.part allows not yet multiPhylo
-    firstTip = x[[1]]$tip[1]
-    x = lapply(x, root, firstTip) # old trick  
+#    if(inherits(x,"multiPhylo"))x = .uncompressTipLabel(x)
+#    if(inherits(x,"multiPhylo"))class(x)='list'  # prop.part allows not yet multiPhylo
+#    firstTip = x[[1]]$tip[1]
+#    x = lapply(x, root, firstTip) # old trick 
+    lx <-  length(x)
+    x <- lapply(x, unroot)
+    class(x) <- "multiPhylo"
     splits <- prop.part(x)
     class(splits)='list'
     weights = attr(splits, 'number')    
@@ -213,7 +216,8 @@ as.splits.multiPhylo <- function(x, ...){
     for(i in 1:l) splitTips[[i]] = i
     result = c(splitTips,splits)
     attr(result, "weights") = c(rep(lx, l), weights)
-    attr(result, "confidences") <- attr(result, "weights")
+    attr(result, "confidences") <- attr(result, "weights") / l
+    attr(result, "summary") <- list(confidences="ratio", ntrees=l, clades=FALSE) 
     attr(result, "labels") <- lab
     class(result) = c('splits', 'prop.part')
     result  
@@ -860,6 +864,12 @@ as.networx.splits <- function(x, planar=FALSE, coord = c("none", "2D", "3D"), ..
 #    attr(tmp, "coords") <- coordinates
     tmp$plot <- list(vertices=vert)
     tmp
+}
+
+
+as.networx.phylo <- function(x, ...){
+    spl <- as.splits(x)
+    as.networx(x, ...)
 }
 
 

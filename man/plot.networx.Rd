@@ -2,6 +2,7 @@
 \alias{plot.networx}
 \alias{as.networx}
 \alias{as.networx.splits}
+\alias{as.networx.phylo}
 \alias{write.nexus.networx}
 \alias{read.nexus.networx}
 %\alias{reorder.networx}
