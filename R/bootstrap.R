@@ -220,3 +220,23 @@ plotBS.Old <- function (tree, BStrees, type = "unrooted", bs.col = "black",
     }
     invisible(tree)
 }
+
+
+max_clade_cred <- function(trees, pp=NULL){
+    if(is.null(pp))pp <- prop.part(trees)
+    l <-  length(trees)
+    trees <- .uncompressTipLabel(trees)
+    class(trees) <- NULL
+    nb <- log( attr(pp, "number") / l )
+    res <- numeric(l)
+    for(i in 1:l){
+        ppi <- prop.part(trees[[i]])
+        indi <- fmatch(ppi, pp)
+        res[i] <- sum(nb[indi])
+    }
+    k <- which.max(res)
+    #    return(trees[[k]])
+    res
+}
+
+
