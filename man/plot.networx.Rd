@@ -25,6 +25,7 @@ as.networx(x, ...)
      font = 3, cex = par("cex"), 
      cex.node.label=cex, cex.edge.label=cex,
      col.node.label = tip.color, col.edge.label = tip.color, 
+     font.node.label = font, font.edge.label = font,
      ...)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -100,7 +101,12 @@ the colors used for the node labels.
 \item{col.edge.label}{
 the colors used for the edge labels.
 }
-
+\item{font.node.label}{
+the font used for the node labels.
+}
+\item{font.edge.label}{
+the font used for the edge labels.
+}
 \item{\dots}{
 Further arguments passed to or from other methods.
 }

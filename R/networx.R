@@ -1089,6 +1089,7 @@ plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRU
     font = 3, cex = par("cex"), 
     cex.node.label=cex, cex.edge.label=cex,
     col.node.label = tip.color, col.edge.label = tip.color, 
+    font.node.label = font, font.edge.label = font,
     ...){
     type = match.arg(type, c("3D", "2D")) 
     if(use.edge.length==FALSE) x$edge.length[] = 1
@@ -1132,7 +1133,10 @@ plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRU
         plotRGL(coord, x, show.tip.label=show.tip.label, show.edge.label=show.edge.label, 
              edge.label = edge.label, show.node.label = show.node.label, node.label=node.label, 
              show.nodes=show.nodes, tip.color = tip.color, edge.color=edge.color, 
-             edge.width = edge.width, font = font, cex = cex)
+             edge.width = edge.width, font = font, cex = cex, 
+             cex.node.label=cex.node.label, cex.edge.label=cex.edge.label,
+             col.node.label = col.node.label, col.edge.label = col.edge.label,
+             font.node.label = font.node.label, font.edge.label = font.edge.label)
     }
     else{
         if(is.null(coord) || ncol(coord)!=2)
@@ -1143,6 +1147,7 @@ plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRU
 	        edge.width = edge.width, edge.lty=edge.lty,font = font, cex = cex, 
 	        cex.node.label=cex.node.label, cex.edge.label=cex.edge.label,
 	        col.node.label = col.node.label, col.edge.label = col.edge.label,
+	        font.node.label = font.node.label, font.edge.label = font.edge.label,
 	        add=FALSE)
     }   
     x$.plot <- list(vertices = coord, edge.color=edge.color, edge.width=edge.width, edge.lty = edge.lty)
@@ -1153,7 +1158,11 @@ plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRU
 plotRGL <- function(coords, net, show.tip.label=TRUE, 
         show.edge.label=FALSE, edge.label=NULL, show.node.label=FALSE, node.label=NULL,
         show.nodes=FALSE, tip.color = "blue", edge.color="grey", 
-        edge.width = 3, font = 3, cex = par("cex"), ...){
+        edge.width = 3, font = 3, cex = par("cex"), 
+        cex.node.label=cex,  cex.edge.label=cex,
+        col.node.label=tip.color, col.edge.label=tip.color,
+        font.node.label=font, font.edge.label=font,        
+        ...){
     
 #    chk <- .check.pkg("rgl")
 #    if(!chk) open3d <- segments3d <- spheres3d <- rgl.texts <- function(...)NULL
@@ -1185,10 +1194,10 @@ plotRGL <- function(coords, net, show.tip.label=TRUE,
 	    ec = edgeLabels(x, y, z, edge)
       if(is.null(edge.label)) edge.label = net$splitIndex
         #else edge.label = net$splitIndex    
-	    rgl.texts(ec[,1], ec[,2], ec[,3], edge.label, color=tip.color, cex=cex, font=font)     
+	    rgl.texts(ec[,1], ec[,2], ec[,3], edge.label, color=col.edge.label, cex=cex.edge.label, font=font.edge.label)     
     } 
     if(show.node.label){
-        rgl.texts(x, y, z, node.label, color=tip.color, cex=cex, font=font) 
+        rgl.texts(x, y, z, node.label, color=col.node.label, cex=cex.node.label, font=font.node.label) 
     }
 }
 
