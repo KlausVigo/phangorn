@@ -1446,6 +1446,7 @@ write.nexus.networx <- function(obj, file = "", taxa=TRUE, splits=TRUE, append=F
 #    spl <- attr(obj, "splits")
     spl <- obj$splits
     if(splits){
+        spl <- orderSplitLabel(spl, obj$tip.label)
         write.nexus.splits(spl, file = file, weights=NULL, append = TRUE, taxa=FALSE) 
     }
     nvertices <- max(obj$edge)
