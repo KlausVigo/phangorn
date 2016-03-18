@@ -1,8 +1,14 @@
 # Sample .travis.yml for R projects from https://github.com/craigcitro/r-travis
 
 language: r
+r:
+  - release
+  - devel
 
 sudo: required
+cran: http://cran.at.r-project.org
+
+cache: packages
 
 bioc_required: true
 
@@ -13,9 +19,19 @@ bioc_packages:
   - seqLogo
   - Biostrings
 
-env:
-  - WARNINGS_ARE_ERRORS=false
-  - NOT_CRAN=true
-
 after_success:
   - Rscript -e 'library(covr);codecov()'
+  
+  
+notifications:
+  email:
+    on_success: change
+    on_failure: always
+
+env:
+  global:
+    - NOT_CRAN: true
+    - R_CHECK_ARGS="--as-cran --timings"
+    - R_CHECK_TIME="TRUE"
+    - R_CHECK_TESTS="TRUE"
+    - _R_CHECK_TIMINGS_="0"  
