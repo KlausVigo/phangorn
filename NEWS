@@ -2,7 +2,9 @@
 
 NEW FEATURES 
 
-    o function write.nexus.networx to export phylogenetic networx to SplitsTree
+    o function read.nexus.networx and write.nexus.networx to import / export 
+    
+      phylogenetic networx to SplitsTree
       
     o function as.AAbin.phyDat to exchange data with the new AAbin class from ape   
     
@@ -16,13 +18,13 @@ OTHER CHANGES
     
     o plot.networx now (silently) returns a networx object with some of the graphics
     
-      parameters
+      parameters, more plot options
     
     o lots of small changes to make handling and identifying splits, edges in 
      
       trees and networks easier
 
-    o plotBS has a new argument frame and argumenty BStrees can be empty
+    o plotBS has a new argument frame and arguments BStrees can be empty
 
 
      CHANGES in PHANGORN VERSION 2.0.2
