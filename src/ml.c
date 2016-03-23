@@ -1303,14 +1303,14 @@ SEXP optE(SEXP PARENT, SEXP CHILD, SEXP ANC, SEXP eig, SEXP EVI, SEXP EL,
 }
 
 
-
-SEXP optQrtt(SEXP PARENT, SEXP CHILD, SEXP ANC, SEXP eig, SEXP EVI, SEXP EL, 
+//, SEXP ANC
+SEXP optQrtt(SEXP PARENT, SEXP CHILD, SEXP eig, SEXP EVI, SEXP EL, 
           SEXP W, SEXP G, SEXP NR, SEXP NC, SEXP NTIPS, SEXP CONTRAST, 
           SEXP CONTRAST2, SEXP NCO, 
           SEXP dlist, SEXP WEIGHT, SEXP F0){
     int i, k=length(W), h, j, n=length(PARENT), m, lEL=length(EL);
     int nc=INTEGER(NC)[0], nr=INTEGER(NR)[0], ntips=INTEGER(NTIPS)[0]; 
-    int *parent=INTEGER(PARENT), *child=INTEGER(CHILD), *anc=INTEGER(ANC); //
+    int *parent=INTEGER(PARENT), *child=INTEGER(CHILD); //, *anc=INTEGER(ANC)
     int loli, nco =INTEGER(NCO)[0]; //=INTEGER(LOLI)[0]
     double *weight=REAL(WEIGHT), *f0=REAL(F0), *w=REAL(W);    
     double *g=REAL(G), *evi=REAL(EVI), *contrast=REAL(CONTRAST), *contrast2=REAL(CONTRAST2);
@@ -1319,7 +1319,7 @@ SEXP optQrtt(SEXP PARENT, SEXP CHILD, SEXP ANC, SEXP eig, SEXP EVI, SEXP EL,
     double  *X; // define it *blub=REAL(BLUB), 
     double *blub = (double *) R_alloc(nr * nc, sizeof(double));
     double oldel; //=el[ch-1L]
-    int ancloli, pa, ch; //=anc[loli]
+    int  pa, ch; //=anc[loli] ancloli,
     double *res = (double *) R_alloc(3L, sizeof(double));
     tmp = (double *) R_alloc(nr * nc, sizeof(double));
     P = (double *) R_alloc(nc * nc, sizeof(double));        
@@ -1337,7 +1337,7 @@ SEXP optQrtt(SEXP PARENT, SEXP CHILD, SEXP ANC, SEXP eig, SEXP EVI, SEXP EL,
     
     loli = parent[0];
     
-    for(m = 0; m < 5L; m++){
+    for(m = 4L; m > -1L; m--){
         pa = parent[m]; 
         ch = child[m];
         oldel=el[m]; //edgeLengthIndex
@@ -1381,13 +1381,12 @@ SEXP optQrtt(SEXP PARENT, SEXP CHILD, SEXP ANC, SEXP eig, SEXP EVI, SEXP EL,
 // go up
 // if i=2 go down 
         
-        if(i==2)updateLLQ(dlist, pa, ch, eva, eve, evei, res[0], w, g, nr,
+        if(m==2)updateLLQ(dlist, ch, pa, eva, eve, evei, res[0], w, g, nr,
                   nc, ntips, contrast, nco, k, tmp, P);
         else updateLLQ(dlist, pa, ch, eva, eve, evei, res[0], w, g, nr,
                   nc, ntips, contrast, nco, k, tmp, P);
         el[m] = res[0];        //edgeLengthIndex
-        if (ch > ntips) loli  = ch;
-        else loli = pa;
+        loli = pa;
     }
     UNPROTECT(1); //RESULT    
     return(RESULT);     
