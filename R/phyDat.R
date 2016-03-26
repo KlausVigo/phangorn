@@ -717,7 +717,7 @@ cbind.phyDat <- function(..., gaps="-"){
 
 
 write.phyDat <- function(x, file, format="phylip",...){
-    if(format=="fasta") write.dna(as.character(x), file, format="fasta", ...)
+    if(format=="fasta") write.dna(as.character(x), file, format="fasta", colsep = "", nbcol=-1, ...)
     if(format=="phylip") write.dna(as.character(x), file, format="sequential", ...)    
     if(format=="nexus"){   
          type = attr(x, "type")
