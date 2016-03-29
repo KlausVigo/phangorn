@@ -11,6 +11,8 @@ NEW FEATURES
     o likelihood ratchet (Vos 2003) topology optimisation in optim.pml 
 
 OTHER CHANGES
+
+    o experimental tree rearrangements work for larger trees (hundreds of taxa)
     
     o mrca overwrites mrca from ape (faster but dependencies)
     
