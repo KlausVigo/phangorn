@@ -4161,7 +4161,6 @@ pml.nni2 <- function (tree, data, w, g, eig, bf, ll.0, ll, INV=INV, ...)
     k = length(w)
     INDEX <-  indexNNI3(tree)
     tmpl <- pml.fit2(tree, data, bf=bf, g=g, w=w, eig=eig, INV=INV, ll.0=ll.0, k=k)
-   
     nr <- attr(data, "nr")
     nc <- attr(data, "nc")
     parent = tree$edge[,1]
@@ -4185,7 +4184,6 @@ pml.nni2 <- function (tree, data, w, g, eig, bf, ll.0, ll, INV=INV, ...)
     ind2 <- c(4,2,3,1,5) #  
  
     for(i in 1:m){
-#        cat("i", i)
         ei = INDEX[i,]
         #        el0 = evector[INDEX[i,]]
         tree0 = index2tree(INDEX[i, ], tree, nTips+1L)
@@ -4221,22 +4219,17 @@ pml.nni2 <- function (tree, data, w, g, eig, bf, ll.0, ll, INV=INV, ...)
         
         # godown or recompute           
         if(any (INDEX[i, c(1,2)]>nTips )) {
-#        print(INDEX[i, c(1,2)])
-        
             tree00 <- index2tree2(INDEX[i, ], tree, nTips+1L)     
 #        tmp3 <- pml.fit2(tree00, data, bf=bf, g=g, w=w, eig=eig, INV=INV, ll.0=ll.0, k=k)
             tmp3 <- pml.quartet(tree00, data, bf=bf, g=g, w=w, eig=eig, INV=INV, ll.0=ll.0, k=k, nTips=nTips)
             loli <- getRoot(tree00)
         }   
         else tmp3 <- pml.quartet(tree0, data, bf=bf, g=g, w=w, eig=eig, INV=INV,  ll.0=ll.0, k=k, nTips=nTips)             
-            
         
     }
-    #    
     swap <- 0
     eps0 <- 1e-6
     candidates <- loglik > ll + eps0
-#    browser()
     while(any(candidates)){     
         ind = which.max(loglik)
         loglik[ind]=-Inf
@@ -4246,8 +4239,8 @@ pml.nni2 <- function (tree, data, w, g, eig, bf, ll.0, ll, INV=INV, ...)
         IND <- index2edge(INDEX[(ind+1) %/% 2,])
         treeT <- changeEdge(tree, IND[swap.edge], IND, edgeMatrix[ind,]) 
         test <- pml.fit2(treeT, data, bf = bf, k=k, g=g, w=w, eig=eig, ll.0=ll.0, INV=INV, ...) 
-        
-        #        if(test <= ll + eps0) candidates[ind] = FALSE
+
+        if(test <= ll + eps0) candidates[ind] = FALSE
         if(test > ll + eps0) {
             ll = test 
             swap=swap+1
@@ -4256,7 +4249,7 @@ pml.nni2 <- function (tree, data, w, g, eig, bf, ll.0, ll, INV=INV, ...)
             candidates[indi] <- FALSE
             loglik[indi] <- -Inf
         }
-        
+    }    
         #    trees <- vector("list", 2*m)
         #    for(i in 1:length(loglik)){     
         #        ind = i
@@ -4269,7 +4262,6 @@ pml.nni2 <- function (tree, data, w, g, eig, bf, ll.0, ll, INV=INV, ...)
         #    class(trees) <- "multiPhylo"
         #    trees <- .compressTipLabel(trees) 
         # , all=loglik
-    }
     list(tree=tree, loglik=ll, swap=swap)
 }
 
