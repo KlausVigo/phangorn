@@ -19,6 +19,7 @@ If you use phangorn please cite:
 ---
 
 - [Installation](pages/Installation.html)
+- [Using binary or discrete data with phangorn](pages/Binary2phyDat.html)
 
 ---
 
