@@ -478,7 +478,7 @@ optim.quartet2 <- function (old.el, eig, bf, dat1, dat2, dat3, dat4, g = 1, w = 
 }
 
 
-pml.nni <- function (tree, data, w, g, eig, bf, ll.0, ll, ...) 
+pml.nni.old <- function (tree, data, w, g, eig, bf, ll.0, ll, ...) 
 {        
     k = length(w)
     INDEX <-  indexNNI(tree)
@@ -3724,8 +3724,8 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
             iter = 1
             while (iter < 4) {
                 if(optEdge){
-                    tmp <- pml.nni(tree, data, w, g, eig, bf, ll.0, ll, ...) 
-#                    tmp <- pml.nni2(tree, data, w=w, g=g, eig=eig, bf=bf, ll.0=ll.0, ll=ll, INV=INV, ...)
+#                    tmp <- pml.nni.old(tree, data, w, g, eig, bf, ll.0, ll, ...) 
+                    tmp <- pml.nni(tree, data, w=w, g=g, eig=eig, bf=bf, ll.0=ll.0, ll=ll, INV=INV, ...)
                     swap = swap + tmp$swap
                     res <- optimEdge(tmp$tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, control = pml.control(epsilon = 1e-08, maxit = 3, trace=0)) 
                     ll2 = res[[2]] 
@@ -3782,7 +3782,8 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                                wMix = wMix, site = FALSE)
                 
                 while(swap>0){
-                    tmp <- pml.nni(tree2, data, w, g, eig, bf, ll.0, ll=ll2, ...) 
+#                    tmp <- pml.nni(tree2, data, w, g, eig, bf, ll.0, ll=ll2, ...) 
+                    tmp <- pml.nni(tree2, data, w=w, g=g, eig=eig, bf=bf, ll.0=ll.0, ll=ll, INV=INV, ...)
                     swap = tmp$swap
                     res <- optimEdge(tmp$tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, control = pml.control(epsilon = 1e-08, maxit = 3, trace=0)) 
                     ll2 = res[[2]] 
@@ -3831,7 +3832,8 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                                g = g, w = w, eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, 
                                wMix = wMix, site = FALSE)
                 while(swap>0){
-                    tmp <- pml.nni(tree2, data, w, g, eig, bf, ll.0, ll=ll2, ...) 
+#                    tmp <- pml.nni(tree2, data, w, g, eig, bf, ll.0, ll=ll2, ...) 
+                    tmp <- pml.nni(tree2, data, w=w, g=g, eig=eig, bf=bf, ll.0=ll.0, ll=ll, INV=INV, ...)
                     swap = tmp$swap
                     res <- optimEdge(tmp$tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, control = pml.control(epsilon = 1e-08, maxit = 3, trace=0)) 
                     ll2 = res[[2]] 
@@ -4067,7 +4069,7 @@ index2edge <- function(x, root=length(tree$tip.label)+1L){
 }
 
 
-pml.nni2 <- function (tree, data, w, g, eig, bf, ll.0, ll, INV=INV, ...) 
+pml.nni <- function (tree, data, w, g, eig, bf, ll.0, ll, INV=INV, ...) 
 {        
     k = length(w)
     INDEX <-  indexNNI3(tree)
