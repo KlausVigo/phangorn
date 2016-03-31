@@ -3400,7 +3400,8 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     addTaxa <- FALSE
     
     if(optNni) {
-        dup <-  duplicated(data)
+        # test this more 
+        dup <-  duplicated_phyDat(data)
         if(any(dup)){ # && optNNI
             orig.data <- data
             addTaxa <- TRUE

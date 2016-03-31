@@ -822,8 +822,22 @@ subset.phyDat <- function (x, subset, select, site.pattern = TRUE,...)
 }
 
 
-unique.phyDat <- function(x, incomparables=FALSE, ...) getCols(x, !duplicated(x))
+duplicated_phyDat <- function(x, ...){
+    dm <- as.matrix(dist.hamming(x))
+    diag(dm) <- 1
+    res <- logical(nrow(dm))
+    if(all(dm>0)) return(res)
+    tmp <- which(dm==0, arr.ind = TRUE, useNames = FALSE)
+    tmp <- tmp[tmp[,1] < tmp[,2],2]
+    res[unique(tmp)]=TRUE
+    res
+}
 
+
+unique.phyDat <- function(x, incomparables=FALSE, identical=TRUE, ...){
+    if(identical) return(getCols(x, !duplicated(x)))
+    getCols(x, !duplicated_phyDat(x))
+} 
 
 removeUndeterminedSites <- function(x, use.contrast=TRUE, undetermined=c("?", "n", "-"), ...){
     nc <- attr(x, "nc")
