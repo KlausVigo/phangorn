@@ -4066,7 +4066,7 @@ pml.quartet <- function (tree, data, bf = rep(.25, 4), k = 1, rate = 1, g, w,
 
 
 
-index2edge <- function(x, root=length(tree$tip.label)+1L){
+index2edge <- function(x, root){
     ch = c(1L,2L,5L,4L,3L)
     elind = c(1L,2L,5L,4L,6L)                
     if(x[6L]==root) el = x[ch]        
@@ -4080,7 +4080,7 @@ pml.nni <- function (tree, data, w, g, eig, bf, ll.0, ll, INV=INV, ...)
     k = length(w)
     INDEX <-  indexNNI3(tree)
 
-    tmpl <- pml.fit4(tree, data, bf=bf, g=g, w=w, eig=eig, INV=INV, ll.0=ll.0, k=k)
+    tmpl <- pml.fit4(tree, data, bf=bf, g=g, w=w, eig=eig, INV=INV, ll.0=ll.0, k=k, ...)
 
 #    parent = tree$edge[,1]
 #    child = tree$edge[,2]
@@ -4133,10 +4133,10 @@ pml.nni <- function (tree, data, w, g, eig, bf, ll.0, ll, INV=INV, ...)
         tree2$edge[,2] <- tree2$edge[ind2,2]
         tree2$edge.length <- tree2$edge.length[ind2]
         
-        new1 <- optimQuartet(tree1, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, nTips=nTips, 
-            weight=weight, nr=nr, nc=nc, contrast=contrast, nco=nco, llcomp = ll+1e-8) # new0$logLik+1e-8)
-        new2 <- optimQuartet(tree2, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, nTips=nTips, 
-            weight=weight, nr=nr, nc=nc, contrast=contrast, nco=nco, llcomp = ll+1e-8) #new0$logLik+1e-8)
+        new1 <- optimQuartet(tree1, data, eig=eig, w=w, g=g, bf=bf, ll.0=ll.0, nTips=nTips, 
+            weight=weight, nr=nr, nc=nc, contrast=contrast, nco=nco, llcomp = ll+1e-8, ...) # new0$logLik+1e-8)
+        new2 <- optimQuartet(tree2, data, eig=eig, w=w, g=g, bf=bf, ll.0=ll.0, nTips=nTips, 
+            weight=weight, nr=nr, nc=nc, contrast=contrast, nco=nco, llcomp = ll+1e-8, ...) #new0$logLik+1e-8)
         loglik[(2*i)-1]=new1$logLik
         loglik[(2*i)]=new2$logLik 
         edgeMatrix[(2*i)-1,]=new1$tree$edge.length

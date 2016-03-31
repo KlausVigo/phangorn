@@ -10,7 +10,7 @@ Description: Phylogenetic analysis in R: Estimation of phylogenetic
         trees and networks using Maximum Likelihood, Maximum Parsimony,
         distance methods and Hadamard conjugation.
 Depends: R (>= 3.0.0), ape (>= 3.4)
-Imports: quadprog, igraph (>= 1.0), Matrix, parallel, nnls, methods, utils, stats, graphics, grDevices
+Imports: quadprog, igraph (>= 1.0), Matrix, parallel, nnls, methods, utils, stats, graphics, grDevices, fastmatch
 Suggests: testthat, seqLogo, seqinr, xtable, flashClust, rgl, knitr, rmarkdown, Biostrings, fastmatch
 ByteCompile: TRUE
 License: GPL (>= 2)
