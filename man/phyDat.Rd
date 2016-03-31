@@ -38,6 +38,7 @@ write.phyDat(x, file, format="phylip",...)
 \method{as.data.frame}{phyDat}(x, ...)
 \method{as.DNAbin}{phyDat}(x, ...)
 \method{subset}{phyDat}(x, subset, select, site.pattern = TRUE, ...)
+\method{unique}{phyDat}(x, incomparables = FALSE, identical = TRUE, ...)
 phyDat2alignment(x)
 allSitePattern(n, levels=c("a","c","g","t"), names=NULL)
 acgt2ry(obj)
@@ -64,6 +65,9 @@ baseFreq(obj, freq=FALSE, all=FALSE, drop.unused.levels=FALSE)
   \item{freq}{logical, if 'TRUE', frequencies or counts are returned otherwise proportions}
   \item{all}{all a logical; if all = TRUE, all counts of bases, ambiguous codes, missing data, and alignment gaps are returned as defined in the contrast.}
   \item{drop.unused.levels}{logical, drop unused levels}  
+  \item{incomparables}{for compatability with unique.}
+  \item{identical}{if TRUE (default) sequences have to be identical, if FALSE sequences are considered 
+  duplicates if distance between sequences is zero (happens frequently with ambiguous sites).}
   \item{...}{further arguments passed to or from other methods.}
 }
 \details{
