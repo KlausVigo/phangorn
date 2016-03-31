@@ -3810,14 +3810,16 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                 FUN <- function(x, bf, Q, k, shape){
                 dm <- dist.ml(x, bf=bf, Q=Q, k=k, shape=shape)
                 tr <- wpgma(dm)
-#                nnls.phylo(tr, dm, TRUE)
+                #                nnls.phylo(tr, dm, TRUE)
+                tr
                 }
             }
             else{
                 FUN <- function(x, bf, Q, k, shape){
                 dm <- dist.ml(x, bf=bf, Q=Q, k=k, shape=shape)
-                tr <- fastme.bal(dm, TRUE, TRUE, FALSE)
-#                nnls.phylo(tr, dm)
+                tr <- fastme.bal(dm, TRUE, FALSE, FALSE)
+                tr$edge.length[tr$edge.length < 1e-8] = 1e-8
+                tr #nnls.phylo(tr, dm)
                 }
             }
             maxR = ratchet.par$iter
@@ -3826,6 +3828,9 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
             i=1
             while(i < maxit){
                 tree2 <- bootstrap.phyDat(data, FUN, bs = 1, bf=bf, Q=Q, k=k, shape=shape)[[1]]
+                tree2 <- checkLabels(tree2, tree$tip.label)
+                tree2 <- reorder(tree2, "postorder")
+
                 swap = 1
                 ll2 <- pml.fit(tree2, data, bf, shape = shape, k = k, Q = Q, 
                                levels = attr(data, "levels"), inv = inv, rate = rate, 
