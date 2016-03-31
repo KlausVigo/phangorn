@@ -8,6 +8,7 @@
 # if g[i] is smaller .gEps inv is increased w[i]
 .gEps <- 1e-30
 
+fmatch <- ifelse(requireNamespace("fastmatch", quietly = TRUE), fastmatch::fmatch, match) 
 
 # .onLoad  <- function(libname, pkgname) {
 #    library.dynam("phangorn", pkgname, libname)
