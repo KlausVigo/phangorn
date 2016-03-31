@@ -834,10 +834,49 @@ duplicated_phyDat <- function(x, ...){
 }
 
 
+##################################
+duplicated_map2 <- function(x, ...){
+    dm <- dist.hamming(x)
+    if(all(dm>0)) return(null)
+    dm <- as.matrix(dm)
+    tmp <- which(dm==0, arr.ind = TRUE, useNames = FALSE)
+    tmp <- tmp[tmp[,1] < tmp[,2],] 
+    tmp[] = names(x)[tmp]
+    g <- graph_from_edgelist(tmp, directed = FALSE)
+    clu <- components(g)
+    gr <- groups(clu)
+    mapping <- matrix(NA, 1,2)
+    for(i in 1:length(gr)){
+        if(length(gr[[i]])==2)mapping <- rbind(mapping, gr[[i]])
+        else{
+            tmplab = gr[[i]]
+            sg <- sum(dm[tmplab, tmplab])
+            if(sg==0)mapping <- rbind(mapping, cbind(tmplab[1], tmplab[-1]))
+        }
+    }
+    mapping[-1,c(2,1)]
+}
+
+
+duplicated_map <- function(x, ...){
+# exact matches    
+   dup <-  duplicated(x)
+   mapping <- NULL
+   if(any(dup)){ # && optNNI
+       labels <- names(x)
+       ind <- match(subset(x, dup), x)
+       mapping <- cbind(labels[dup], labels[ind])
+   }
+   mapping
+}   
+###################################
+
+
 unique.phyDat <- function(x, incomparables=FALSE, identical=TRUE, ...){
     if(identical) return(getCols(x, !duplicated(x)))
     getCols(x, !duplicated_phyDat(x))
 } 
+
 
 removeUndeterminedSites <- function(x, use.contrast=TRUE, undetermined=c("?", "n", "-"), ...){
     nc <- attr(x, "nc")
