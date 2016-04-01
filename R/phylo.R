@@ -3401,7 +3401,7 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     
     if(optNni) {
         # test this more 
-        dup <-  duplicated_phyDat(data)
+        dup <-  duplicated(data) # duplicated_phyDat(data)
         if(any(dup)){ # && optNNI
             orig.data <- data
             addTaxa <- TRUE
@@ -3504,7 +3504,12 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
             object$dnds = dnds
             object$tstv = tstv
         }
-
+        
+        if(addTaxa){
+            tree <- addAllTips(tree, mapping)
+            data <- orig.data
+        }
+        
         tmp <- pml.fit(tree, data, bf, shape = shape, k = k, Q = Q, 
                        levels = attr(data, "levels"), inv = inv, rate = rate, 
                        g = g, w = w, eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, 
@@ -3526,23 +3531,6 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                       CODON = df + (k>1) + (inv > 0) + length(unique(bf)) - 1 + (dnds != 1) + (tstv != 1),  
                       USER = df + (k>1) + (inv > 0) + length(unique(bf)) - 1 + length(unique(Q)) - 1)
         
-#        if(type=="AA" & !is.null(model)){ 
-#            df <- df + (k>1) + (inv > 0) +  optBf * (length(unique(bf)) - 1) 
-#        }
-#        if (type == "CODON") {
-#            df <- df + (k > 1) + (inv > 0) + 
-#                length(unique(bf)) - 1 + (dnds != 1) + (tstv != 1) 
-#        }
-#        else df = df + (k > 1) + (inv > 0) + 
-#            length(unique(bf)) - 1 + length(unique(Q)) - 1
-
-        if(addTaxa){
-#            pml.free()
-            tree <- addAllTips(tree, mapping)
-            data <- orig.data
-#            pml.init(subset(data, tree$tip.label), k) 
-        }
-                
         object = list(logLik = tmp$loglik, inv = inv, k = k, shape = shape, 
                       Q = Q, bf = bf, rate = rate, siteLik = tmp$siteLik, weight = attr(data, "weight"), 
                       g = g, w = w, eig = eig, data = data, model = model, 
@@ -3784,9 +3772,11 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                 
                 while(swap>0){
 #                    tmp <- pml.nni(tree2, data, w, g, eig, bf, ll.0, ll=ll2, ...) 
-                    tmp <- pml.nni(tree2, data, w=w, g=g, eig=eig, bf=bf, ll.0=ll.0, ll=ll, INV=INV, ...)
+                    tmp <- pml.nni(tree2, data, w=w, g=g, eig=eig, bf=bf, ll.0=ll.0, ll=ll2, INV=INV, ...)
                     swap = tmp$swap
-                    res <- optimEdge(tmp$tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, control = pml.control(epsilon = 1e-08, maxit = 3, trace=0)) 
+                    res <- optimEdge(tmp$tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, control = pml.control(epsilon = 1e-08, maxit = 3, trace=0))
+                    if (trace > 1) 
+                        cat("optimize topology: ", ll2, "-->", res[[2]], "\n", "swaps:", tmp$swap, "\n")
                     ll2 = res[[2]] 
                     tree2 <- res[[1]]
                 }
@@ -3839,9 +3829,11 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                                wMix = wMix, site = FALSE)
                 while(swap>0){
 #                    tmp <- pml.nni(tree2, data, w, g, eig, bf, ll.0, ll=ll2, ...) 
-                    tmp <- pml.nni(tree2, data, w=w, g=g, eig=eig, bf=bf, ll.0=ll.0, ll=ll, INV=INV, ...)
+                    tmp <- pml.nni(tree2, data, w=w, g=g, eig=eig, bf=bf, ll.0=ll.0, ll=ll2, INV=INV, ...)
                     swap = tmp$swap
                     res <- optimEdge(tmp$tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, control = pml.control(epsilon = 1e-08, maxit = 3, trace=0)) 
+                    if (trace > 1) 
+                        cat("optimize topology: ", ll2, "-->", res[[2]], "\n", "swaps:", tmp$swap, "\n")
                     ll2 = res[[2]] 
                     tree2 <- res[[1]]
                 }

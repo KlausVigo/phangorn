@@ -834,7 +834,6 @@ duplicated_phyDat <- function(x, ...){
 }
 
 
-##################################
 duplicated_map2 <- function(x, ...){
     dm <- dist.hamming(x)
     if(all(dm>0)) return(null)
@@ -851,6 +850,7 @@ duplicated_map2 <- function(x, ...){
         else{
             tmplab = gr[[i]]
             sg <- sum(dm[tmplab, tmplab])
+#            browser()
             if(sg==0)mapping <- rbind(mapping, cbind(tmplab[1], tmplab[-1]))
         }
     }
@@ -869,7 +869,6 @@ duplicated_map <- function(x, ...){
    }
    mapping
 }   
-###################################
 
 
 unique.phyDat <- function(x, incomparables=FALSE, identical=TRUE, ...){
