@@ -3500,23 +3500,15 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     #    .C("ll_init", nr, nTips, nc, as.integer(k))
     .INV <- .iind <- NULL
     on.exit({
-        if(type=="CODON"){
-            object$dnds = dnds
-            object$tstv = tstv
-        }
-        
-        if(addTaxa){
-            tree <- addAllTips(tree, mapping)
-            data <- orig.data
-        }
+
+
         
         tmp <- pml.fit(tree, data, bf, shape = shape, k = k, Q = Q, 
                        levels = attr(data, "levels"), inv = inv, rate = rate, 
                        g = g, w = w, eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, 
                        wMix = wMix, site = TRUE)
         
-        df <- ifelse(optRooted, tree$Nnode, length(tree$edge.length))
-
+#   df <- ifelse(optRooted, tree$Nnode, length(tree$edge.length))
 #   length(tree$edge.length)    
 #   nTips             
 #   nNodes
@@ -3525,6 +3517,11 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
 #   kmax>1        
 #   bf
 #   Q     
+        if(addTaxa){
+            tree <- addAllTips(tree, mapping)
+            data <- orig.data
+        }
+        df <- ifelse(optRooted, tree$Nnode, length(tree$edge.length))
         df <- switch(type, 
                       DNA = df + (k>1) + (inv > 0) + length(unique(bf)) - 1 + length(unique(Q)) - 1, 
                       AA = df + (k>1) + (inv > 0) +  optBf * (length(unique(bf)) - 1),
@@ -3744,26 +3741,14 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         }
         epsR <- 1e-8
         if( (ratchet==TRUE) && (optNni == FALSE) ){
-            #            likelihoodRatchet <- function(obj, maxit=100, k=10, 
-            #                                      control=pml.control(epsilon = 1e-08, maxit = 10, trace = 1L)){
-            #            tree = obj$tree
-            #            nTips <- length(tree$tip.label)
-            #            trace = control$trace
-            #            control$trace = trace-1L
             maxR = ratchet.par$iter
             maxit = ratchet.par$maxit
             kmax=1
             i=1
             while(i < maxit){
                 
-#                tree2 <- unroot(multi2di(di2multi(tree,  tol  = 0.000000011)))
-#                tree2$edge.length[tree2$edge.length < 1e-8] <- 1e-8
-#                tree2<- rNNI(tree2, moves=round(nTips * ratchet.par$prop), n=1)
-                
                 tree2<- rNNI(tree, moves=round(nTips * ratchet.par$prop), n=1)
                 #tree <- rSPR(tree, moves=10, k=3, n=1)
-                #                obj2 = update(obj, tree=tree)
-                #                obj2 <- optim.pml(obj2, TRUE, control = control)
                 swap = 1
                 ll2 <- pml.fit(tree2, data, bf, shape = shape, k = k, Q = Q, 
                                levels = attr(data, "levels"), inv = inv, rate = rate, 
@@ -3823,10 +3808,16 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                 tree2 <- reorder(tree2, "postorder")
 
                 swap = 1
+                ll2 <- pml.fit(tree, data, bf, shape = shape, k = k, Q = Q, 
+                               levels = attr(data, "levels"), inv = inv, rate = rate, 
+                               g = g, w = w, eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, 
+                               wMix = wMix, site = FALSE)
+print(ll2)                
                 ll2 <- pml.fit(tree2, data, bf, shape = shape, k = k, Q = Q, 
                                levels = attr(data, "levels"), inv = inv, rate = rate, 
                                g = g, w = w, eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, 
                                wMix = wMix, site = FALSE)
+print(ll2)                 
                 while(swap>0){
 #                    tmp <- pml.nni(tree2, data, w, g, eig, bf, ll.0, ll=ll2, ...) 
                     tmp <- pml.nni(tree2, data, w=w, g=g, eig=eig, bf=bf, ll.0=ll.0, ll=ll2, INV=INV, ...)
