@@ -31,8 +31,12 @@ phyDat.default <- function (data, levels = NULL, return.index = TRUE, contrast =
         data = as.character(data)
     if (is.matrix(data)) 
         data = as.data.frame(t(data), stringsAsFactors = FALSE)
-    if (is.vector(data))data = as.data.frame(t(data), stringsAsFactors = FALSE)
+# new 4.4.2016 bug fix (reported by Eli Levy Karin)     
+#    if (is.vector(data))data = as.data.frame(t(data), stringsAsFactors = FALSE)
     else data = as.data.frame(data, stringsAsFactors = FALSE)
+#    data = data.frame(as.matrix(data), stringsAsFactors = FALSE)    
+    
+    
     if(length(data[[1]])==1) compress=FALSE 
     if(compress){
         ddd = fast.table(data)
