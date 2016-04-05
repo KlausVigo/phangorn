@@ -202,9 +202,13 @@ mRF2 <- function(tree, trees, check.labels = TRUE){
     yy <- bipart(tree)  
     yy <- SHORTwise(yy, nTips)
     yy <- sapply(yy, paste, collapse="_")
+    
+    NnodeT <- Nnode(tree)
+    Nnodes <- sapply(trees, Nnode)
+    
     for (i in 1:l){   
-#        RF[i] <- 2 * sum(fmatch(xx[[i]], yy, nomatch=0L)==0L)   
-        RF[i] <- sum(match(xx[[i]], yy, nomatch=0L)==0L) + sum(match(yy, xx[[i]], nomatch=0L)==0L)
+        RF[i] <- Nnodes[i] + NnodeT - 2 * sum(fmatch(xx[[i]], yy, nomatch=0L)>0L)
+#        RF[i] <- sum(match(xx[[i]], yy, nomatch=0L)==0L) + sum(match(yy, xx[[i]], nomatch=0L)==0L)
     }
     if(!is.null(names(trees)))names(RF) <- names(trees)
     return(RF)
@@ -234,12 +238,13 @@ mRF<-function(trees){
     xx <- lapply(xx, SHORTwise, nTips)
     xx <- lapply(xx,function(x)sapply(x, paste, collapse="_")) 
     # returns list of character vectors
+    Nnodes <- sapply(trees, Nnode)
     k=1
     for (i in 1:(l - 1)){
         tmp = xx[[i]]        
         for (j in (i + 1):l){
-#            RF[k] <- 2 * sum(fmatch(xx[[j]], tmp, nomatch=0L)==0L)
-            RF[k] <- sum(match(xx[[j]], tmp, nomatch=0L)==0L) + sum(match(tmp, xx[[j]], nomatch=0L)==0L)
+            RF[k] <- Nnodes[i] + Nnodes[j] - 2 * sum(fmatch(xx[[j]], tmp, nomatch=0L)>0L)
+#            RF[k] <- sum(match(xx[[j]], tmp, nomatch=0L)==0L) + sum(match(tmp, xx[[j]], nomatch=0L)==0L)
             k=k+1
         }   
     }
