@@ -29,7 +29,7 @@ importFrom(stats, AIC, BIC, logLik, reorder, update, optim, optimize, constrOpti
 importFrom(graphics, plot.new, plot.window, text, par, plot, abline, strwidth, axis, title, segments, 
            points, image, matplot, legend, hist) 
 importFrom(utils, read.table, download.file, citation, stack, installed.packages, write.table, combn) 
-importFrom(grDevices, rgb, rainbow, adjustcolor)
+importFrom(grDevices, rgb, rainbow, adjustcolor, col2rgb)
 importFrom(methods, hasArg)
 #importFrom(Rcpp, evalCpp)
 #importMethodsFrom(Biostrings,as.matrix)

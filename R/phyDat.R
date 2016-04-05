@@ -840,7 +840,7 @@ duplicated_phyDat <- function(x, ...){
 
 duplicated_map2 <- function(x, ...){
     dm <- dist.hamming(x)
-    if(all(dm>0)) return(null)
+    if(all(dm>0)) return(NULL)
     dm <- as.matrix(dm)
     tmp <- which(dm==0, arr.ind = TRUE, useNames = FALSE)
     tmp <- tmp[tmp[,1] < tmp[,2],] 
@@ -854,7 +854,6 @@ duplicated_map2 <- function(x, ...){
         else{
             tmplab = gr[[i]]
             sg <- sum(dm[tmplab, tmplab])
-#            browser()
             if(sg==0)mapping <- rbind(mapping, cbind(tmplab[1], tmplab[-1]))
         }
     }
