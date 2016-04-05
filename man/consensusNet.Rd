@@ -33,7 +33,7 @@ This is just an intermediate to plot phylogenetic networks with igraph.
 Holland B.R., Huber K.T., Moulton V., Lockhart P.J. (2004) Using consensus networks to visualize contradictory evidence for species phylogeny. \emph{Molecular Biology and Evolution}, \bold{21}, 1459--61
 }
 \seealso{
-\code{\link{splitsNetwork}}, \code{\link{neighborNet}}, \code{\link{lento}}, \code{\link{distanceHadamard}}, \code{\link{plot.networx}}
+\code{\link{splitsNetwork}}, \code{\link{neighborNet}}, \code{\link{lento}}, \code{\link{distanceHadamard}}, \code{\link{plot.networx}}, \code{\link{maxCladeCred}}
 }
 \examples{
 data(Laurasiatherian)

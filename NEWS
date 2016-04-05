@@ -2,6 +2,10 @@
 
 NEW FEATURES 
 
+    o new function maxCladeCred computing the maximum clade credibility tree
+     
+      from a sample of trees
+
     o function read.nexus.networx and write.nexus.networx to import / export 
     
       phylogenetic networx to SplitsTree
