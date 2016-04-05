@@ -8,7 +8,7 @@ Maximum clade credibility tree
 \code{maxCladeCred} computes the maximum clade credibility tree from a sample of trees. 
 }
 \usage{
-maxCladeCred(trees, tree = TRUE)
+maxCladeCred(trees, tree = TRUE, rooted=TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -18,6 +18,9 @@ maxCladeCred(trees, tree = TRUE)
   \item{tree}{
 logical indicating whether return the tree with the clade credibility (default) or 
 the clade credibility score for all trees.
+}
+  \item{rooted}{
+logical, if FALSE the tree with highest maximum bipertition credibility is returned.
 }
 }
 \details{

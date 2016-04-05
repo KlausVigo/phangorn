@@ -222,8 +222,14 @@ plotBS.Old <- function (tree, BStrees, type = "unrooted", bs.col = "black",
 }
 
 
-maxCladeCred <- function(trees, tree=TRUE){
+maxCladeCred <- function(trees, tree=TRUE, rooted=TRUE){
+    if(!rooted){
+        trees <- lapply(trees, unroot) 
+        class(trees) <- "multiPhylo"
+        trees <- .compressTipLabel(trees)
+    }    
     pp <- prop.part(trees)
+    if(!rooted)pp <- ONEwise(pp)
     l <-  length(trees)
     trees <- .uncompressTipLabel(trees)
     class(trees) <- NULL
@@ -231,6 +237,7 @@ maxCladeCred <- function(trees, tree=TRUE){
     res <- numeric(l)
     for(i in 1:l){
         ppi <- prop.part(trees[[i]])
+        if(!rooted)ppi <- ONEwise(ppi)
         indi <- fmatch(ppi, pp)
         res[i] <- sum(nb[indi])
     }
