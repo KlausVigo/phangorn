@@ -37,7 +37,13 @@ For large number of trees RF.dist can use a lot of memory!
 % distance is therefore increasing!! This may be different to other implementations!
 
 }
-\references{Steel M. A. and Penny P. (1993) \emph{Distributions of tree comparison metrics - some new results}, Syst. Biol.,42(2), 126-141}
+\references{
+Steel M. A. and Penny P. (1993) \emph{Distributions of tree comparison metrics - some new results}, Syst. Biol., \bold{42(2)}, 126--141
+
+Kuhner, M. K. and Felsenstein, J. (1994) \emph{A simulation comparison of phylogeny algorithms under equal and unequal evolutionary rates}, Molecular Biology and Evolution, \bold{11(3)}, 459--468
+
+D.F. Robinson and L.R. Foulds (1981) \emph{Comparison of phylogenetic trees}, Mathematical Biosciences, \bold{53(1)}, 131--147
+}
 \author{ Klaus P. Schliep \email{klaus.schliep@gmail.com}} 
 \seealso{\code{\link[ape]{dist.topo}}}
 \examples{
