@@ -1,6 +1,7 @@
 \name{treedist}
 \alias{treedist}
 \alias{RF.dist}
+\alias{path.dist}
 %\alias{print.treedist}
 \title{ Distances between trees }
 \description{

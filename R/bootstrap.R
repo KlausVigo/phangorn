@@ -89,6 +89,8 @@ matchEdges = function(tree1, tree2){
 
 checkLabels <- function(tree, tip){
     ind <- match(tip, tree$tip.label)
+    if (any(is.na(ind)) | length(tree$tip.label) != length(tip))
+        stop("tree has different labels")
     tree$tip.label <- tree$tip.label[ind]
     ind2 <- match(1:length(ind), tree$edge[, 2])
     tree$edge[ind2, 2] <- order(ind)
@@ -229,7 +231,7 @@ maxCladeCred <- function(trees, tree=TRUE, rooted=TRUE){
         trees <- .compressTipLabel(trees)
     }    
     pp <- prop.part(trees)
-    if(!rooted)pp <- ONEwise(pp)
+    if(!rooted)pp <- oneWise(pp)
     l <-  length(trees)
     trees <- .uncompressTipLabel(trees)
     class(trees) <- NULL

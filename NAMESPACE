@@ -7,7 +7,7 @@ importFrom(ape, as.DNAbin, as.phylo, plot.phylo, as.prop.part, nj,old2new.phylo,
     node.depth.edgelength, drop.tip, stree, rtree, is.ultrametric, .PlotPhyloEnv,
     nodelabels, edgelabels, BOTHlabels, read.nexus.data, write.nexus.data, 
     read.dna, write.dna, reorder.phylo, dist.nodes, collapse.singles, rotate, prop.clades,
-    fastme.bal, fastme.ols)
+    fastme.bal, fastme.ols, Nnode)
 # as.AAbin, as.phyDat.AAbin
 importFrom(igraph, graph, graph_from_adjacency_matrix, layout_with_kk, plot.igraph,
     shortest_paths, set.edge.attribute, set_edge_attr, decompose, components, groups,
@@ -46,7 +46,7 @@ export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UN
     read.nexus.networx, write.nexus.networx, write.splits, pmlPart, 
     pmlCluster, pmlMix, pmlPen, read.aa, allTrees, designTree, designSplits, nnls.tree,
     nnls.splits, nnls.phylo, nnls.networx, neighborNet, pmlPart2multiPhylo,
-    splitsNetwork, simSeq, SH.test, bootstrap.pml, bootstrap.phyDat, RF.dist, rNNI, 
+    splitsNetwork, simSeq, SH.test, bootstrap.pml, bootstrap.phyDat, RF.dist, path.dist, rNNI, 
     rSPR, plotBS, Ancestors, Descendants, mrca, mrca.phylo, Children, Siblings, pace, modelTest, 
     lento, compatible, acgt2ry, ancestral.pars, ancestral.pml, CI, RI, getClans, getSlices,
     getClips, getDiversity, midpoint, pruneTree, acctran, getRoot, plotAnc, consensusNet, 

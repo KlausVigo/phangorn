@@ -11,7 +11,7 @@ allKids <- function(phy){
 } 
 
 
-coph <- function(x){ 
+coph <- function(x, path=FALSE){ 
     if (is.null(attr(x, "order")) || attr(x, "order") == "cladewise") 
         x <- reorder(x, "postorder")
     nTips = as.integer(length(x$tip.label))   
@@ -21,7 +21,8 @@ coph <- function(x){
     nNode = as.integer(x$Nnode)
     m = as.integer(max(x$edge))
     el = double(m)
-    el[kids] = x$edge.length
+    if(path) el <- rep(1.0, m)
+    else el[kids] = x$edge.length
     dm <- .C("C_cophenetic", kids, parents, as.double(el), lp, m, nTips, nNode, double(nTips*(nTips-1L)/2L))[[8]]
     attr(dm, "Size") <- nTips
     attr(dm, "Labels") <- x$tip.label
@@ -257,7 +258,7 @@ mRF<-function(trees){
 }
 
 
-RF.dist <- function (tree1, tree2=NULL, check.labels = TRUE, rooted=FALSE)
+RF.dist <- function(tree1, tree2=NULL, check.labels = TRUE, rooted=FALSE)
 {
     if(class(tree1)=="multiPhylo" && is.null(tree2))return(mRF(tree1)) 
     if(class(tree1)=="phylo" && class(tree2)=="multiPhylo")return(mRF2(tree1, tree2, check.labels))
@@ -298,3 +299,39 @@ RF.dist <- function (tree1, tree2=NULL, check.labels = TRUE, rooted=FALSE)
     RF
 }
 
+
+path.dist <- function(tree1, tree2=NULL, check.labels = TRUE){
+    if(inherits(tree1, "phylo") && inherits(tree2, "phylo"))
+         return(pd1(tree1, tree2, check.labels))
+    if(inherits(tree1, "phylo") && inherits(tree2, "multiPhylo"))
+         return(pd2(tree1, tree2, check.labels))
+    if(inherits(tree2, "phylo") && inherits(tree1, "multiPhylo"))
+        return(pd2(tree2, tree1, check.labels))
+}
+
+
+pd1 <- function(tree1, tree2, check.labels=TRUE){
+    if(check.labels)tree2 <- checkLabels(tree2, tree1$tip.label)
+    n <- nrow(tree1$edge)
+#    tree1$edge.length <- tree2$edge.length <- rep(1, n)
+    dt1 = coph(tree1, TRUE)
+    dt2 = coph(tree2, TRUE)  
+    sqrt(sum((dt1 - dt2)^2))
+}
+
+pd2 <- function(tree, trees, check.labels=TRUE){
+    if(check.labels){
+        trees <- .compressTipLabel(trees)
+        tree <- checkLabels(tree, attr(trees, "TipLabel"))
+    }    
+    trees <- .uncompressTipLabel(trees)
+    unclass(trees) 
+    l <- length(trees)
+    dt <- coph(tree, TRUE)
+    res <- numeric(l)
+    for(i in 1:l){
+        dt2 <- coph(trees[[i]], TRUE)  
+        res[i] <- sqrt(sum((dt - dt2)^2))        
+    }
+    res
+}
