@@ -867,9 +867,19 @@ as.networx.splits <- function(x, planar=FALSE, coord = c("none", "2D", "3D"), ..
 }
 
 
+#as.networx.phylo <- function(x, ...){
+#    spl <- as.splits(x)
+#    as.networx(x, ...)
+#}
+
+
 as.networx.phylo <- function(x, ...){
     spl <- as.splits(x)
-    as.networx(x, ...)
+    spl <- spl[x$tree[,2]]
+    x$splitIndex <- 1:nrow(x$edge)
+    attr(x, "splits") = spl
+    class(x) <- c("networx", "phylo")
+    x
 }
 
 
