@@ -300,6 +300,101 @@ RF.dist <- function(tree1, tree2=NULL, check.labels = TRUE, rooted=FALSE)
 }
 
 
+kf0 <- function(tree1, tree2, check.labels = TRUE){    
+    if(check.labels)tree2 <- checkLabels(tree2, tree1$tip.label)
+    if(is.rooted(tree1)) tree1 <- unroot(tree1)
+    if(is.rooted(tree2)) tree2 <- unroot(tree2)
+    bp1 = bip(tree1)
+    bp2 = bip(tree2)
+    
+    bp1 <- SHORTwise(bp1, length(tree1$tip))
+    bp2 <- SHORTwise(bp2, length(tree2$tip))
+    bp1 <- sapply(bp1, paste, collapse = "_")
+    bp2 <- sapply(bp2, paste, collapse = "_")
+    
+    w1 <- numeric(max(tree1$edge))
+    w2 <- numeric(max(tree2$edge))
+    w1[tree1$edge[,2]] <- tree1$edge.length
+    w2[tree2$edge[,2]] <- tree2$edge.length
+        
+    ind3 = match(bp1, bp2, nomatch=0L)
+    ind4 = ind3[ind3>0]
+    ind3 = which(ind3>0)
+        
+    s1 = sum((w1[ind3] - w2[ind4])^2)
+    s2 = sum(w1[-ind3]^2)
+    s3 = sum(w2[-ind4]^2)
+    branch.score.difference = sqrt(s1 + s2 + s3)
+    branch.score.difference
+}
+
+
+kf1 <- function(tree, trees, check.labels = TRUE){    
+    if(check.labels){
+        trees <- .compressTipLabel(trees)
+        tree <- checkLabels(tree, attr(trees, "TipLabel"))
+    }    
+    trees <- .uncompressTipLabel(trees)
+    unclass(trees) 
+    
+    if (any(sapply(trees, is.rooted))) {
+        trees <- lapply(trees, unroot)
+    }
+    
+    nTips <- length(tree$tip.label)
+    
+    fun1 <- function(x){
+        w <- numeric(max(x$edge))
+        w[x$edge[,2]] <- x$edge.length
+        w
+    }
+    W <- lapply(trees, fun1)
+    
+    fun2 <- function(x, nTips){
+        bp <- bip(x)
+        bp <- SHORTwise(bp, nTips)
+        bp <- sapply(bp, paste, collapse = "_")
+        bp
+    }
+    BP <- lapply(trees, fun2, nTips)
+    
+    
+    if(is.rooted(tree)) tree <- unroot(tree)
+    bp = bip(tree)
+    
+    bp <- SHORTwise(bp, nTips)
+    bp <- sapply(bp, paste, collapse = "_")
+
+    w <- numeric(max(tree$edge))
+    w[tree$edge[,2]] <- tree$edge.length
+
+    l <- length(trees)
+    branch.score.difference <- numeric(l)
+    
+    for(i in 1:l){
+        ind3 = fmatch(BP[[i]], bp, nomatch=0L)
+        ind4 = ind3[ind3>0]
+        ind3 = which(ind3>0)
+    
+        s1 = sum((W[[i]][ind3] - w[ind4])^2)
+        s2 = sum(W[[i]][-ind3]^2)
+        s3 = sum(w[-ind4]^2)
+        branch.score.difference[i] = sqrt(s1 + s2 + s3)
+    }
+    branch.score.difference
+}
+
+
+# TODO distance matrices
+KF.dist <- function(tree1, tree2=NULL, check.labels = TRUE, rooted=FALSE){
+#    if(inherits(tree1, "multiPhylo") && is.null(tree2))return(mRF(tree1)) 
+    if(inherits(tree1, "phylo") && inherits(tree2, "phylo"))return(kf0(tree1, tree2, check.labels))
+    if(inherits(tree1, "phylo") && inherits(tree2, "multiPhylo"))return(kf1(tree1, tree2, check.labels))
+    if(inherits(tree2, "phylo") && inherits(tree1, "multiPhylo"))return(kf1(tree2, tree1,check.labels))
+    return(NULL)
+}
+
+
 path.dist <- function(tree1, tree2=NULL, check.labels = TRUE){
     if(inherits(tree1, "phylo") && inherits(tree2, "phylo"))
          return(pd1(tree1, tree2, check.labels))

@@ -10,6 +10,7 @@
 \usage{
 treedist(tree1, tree2, check.labels = TRUE)
 RF.dist(tree1, tree2=NULL, check.labels=TRUE, rooted=FALSE)
+KF.dist(tree1, tree2=NULL, check.labels=TRUE, rooted=FALSE)
 }
 \arguments{
   \item{tree1}{ A phylogenetic tree (class \code{phylo})
@@ -27,10 +28,10 @@ RF.dist(tree1, tree2=NULL, check.labels=TRUE, rooted=FALSE)
 }
 \details{
 The Robinson-Foulds distance is well defined only for bifurcating trees. 
+RF.dist returns the Robinson-Foulds distance (Robinson & Foulds 1981) between either 2 trees or computes a matrix of all pairwise distances if a \code{multiPhylo} object is given. 
+\code{KF.dist} return the branch score distance (Kuhner & Felsenstein 1994). 
+For large number of trees the distance functions will use a lot of memory!
 
-RF.dist returns the Robinson-Foulds distance between either 2 trees or computes 
-a matrix of all pairwise distances if a \code{multiPhylo} object is given. 
-For large number of trees RF.dist can use a lot of memory!
 
 % The function used internally is 2 * (nt - m) where nt is the number of tips and 
 % m is the number of shared bipartitions. When there are multifurcations the 
