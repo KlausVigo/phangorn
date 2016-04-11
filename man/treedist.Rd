@@ -1,6 +1,7 @@
 \name{treedist}
 \alias{treedist}
 \alias{RF.dist}
+\alias{KF.dist}
 \alias{path.dist}
 %\alias{print.treedist}
 \title{ Distances between trees }
@@ -30,6 +31,7 @@ KF.dist(tree1, tree2=NULL, check.labels=TRUE, rooted=FALSE)
 The Robinson-Foulds distance is well defined only for bifurcating trees. 
 RF.dist returns the Robinson-Foulds distance (Robinson & Foulds 1981) between either 2 trees or computes a matrix of all pairwise distances if a \code{multiPhylo} object is given. 
 \code{KF.dist} return the branch score distance (Kuhner & Felsenstein 1994). 
+
 For large number of trees the distance functions will use a lot of memory!
 
 

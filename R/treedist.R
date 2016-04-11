@@ -385,9 +385,57 @@ kf1 <- function(tree, trees, check.labels = TRUE){
 }
 
 
+kf2 <- function(trees, check.labels = TRUE){
+    if(check.labels) trees <- .compressTipLabel(trees)
+    trees <- .uncompressTipLabel(trees)
+    unclass(trees)     
+    
+    nTips <- length(trees[[1]]$tip.label)
+    if (any(sapply(trees, is.rooted))) {
+        trees <- lapply(trees, unroot)
+    }
+    fun1 <- function(x){
+        w <- numeric(max(x$edge))
+        w[x$edge[,2]] <- x$edge.length
+        w
+    }
+    W <- lapply(trees, fun1)
+    fun2 <- function(x, nTips){
+        bp <- bip(x)
+        bp <- SHORTwise(bp, nTips)
+        bp <- sapply(bp, paste, collapse = "_")
+        bp
+    }
+    BP <- lapply(trees, fun2, nTips)
+    k <- 1
+    l <- length(trees)
+    KF <- numeric((l * (l - 1))/2)
+    for (i in 1:(l - 1)){
+        bp <- BP[[i]]
+        w <- W[[i]]
+        for (j in (i + 1):l){
+            ind3 = fmatch(BP[[j]], bp, nomatch=0L)
+            ind4 = ind3[ind3>0]
+            ind3 = which(ind3>0)
+            s1 = sum((W[[j]][ind3] - w[ind4])^2)
+            s2 = sum(W[[j]][-ind3]^2)
+            s3 = sum(w[-ind4]^2)
+            KF[k] <- sqrt(s1 + s2 + s3)
+            k=k+1
+        }
+    }
+    attr(KF, "Size") <- l
+    if(!is.null(names(trees)))attr(KF, "Labels") <- names(trees)
+    attr(KF, "Diag") <- FALSE
+    attr(KF, "Upper") <- FALSE
+    class(KF) <- "dist"
+    return(KF)
+}
+
+
 # TODO distance matrices
 KF.dist <- function(tree1, tree2=NULL, check.labels = TRUE, rooted=FALSE){
-#    if(inherits(tree1, "multiPhylo") && is.null(tree2))return(mRF(tree1)) 
+    if(inherits(tree1, "multiPhylo") && is.null(tree2))return(kf2(tree1)) 
     if(inherits(tree1, "phylo") && inherits(tree2, "phylo"))return(kf0(tree1, tree2, check.labels))
     if(inherits(tree1, "phylo") && inherits(tree2, "multiPhylo"))return(kf1(tree1, tree2, check.labels))
     if(inherits(tree2, "phylo") && inherits(tree1, "multiPhylo"))return(kf1(tree2, tree1,check.labels))
