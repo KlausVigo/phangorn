@@ -8,23 +8,26 @@ Maximum clade credibility tree
 \code{maxCladeCred} computes the maximum clade credibility tree from a sample of trees. 
 }
 \usage{
-maxCladeCred(trees, tree = TRUE, rooted=TRUE)
+maxCladeCred(x, tree = TRUE, part = NULL, rooted = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{trees}{
- \code{trees} is an object of class \code{multiPhylo} or a list of trees
+  \item{x}{
+  \code{x} is an object of class \code{multiPhylo} or \code{phylo}
 }
   \item{tree}{
 logical indicating whether return the tree with the clade credibility (default) or 
 the clade credibility score for all trees.
 }
   \item{rooted}{
-logical, if FALSE the tree with highest maximum bipertition credibility is returned.
+logical, if FALSE the tree with highest maximum bipartition credibility is returned.
 }
+  \item{part}{a list of partitions as returned by \code{prop.part}}
 }
 \details{
 So far just the best tree is returned. No annotations or transformations of edge length are performed. 
+
+If a list of partition is provided then the clade credibity is computed for the trees in x.
 }
 \value{
 a tree (an object of class \code{phylo}) or a vector of clade credibilities for each tree.
@@ -39,7 +42,7 @@ Klaus Schliep \email{klaus.schliep@gmail.com}
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link{consensus}}, \code{\link{consensusNet}}
+\code{\link{consensus}}, \code{\link{consensusNet}}, \code{\link{prop.part}}
 }
 \examples{
 

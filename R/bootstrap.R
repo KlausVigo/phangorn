@@ -224,28 +224,39 @@ plotBS.Old <- function (tree, BStrees, type = "unrooted", bs.col = "black",
 }
 
 
-maxCladeCred <- function(trees, tree=TRUE, rooted=TRUE){
+maxCladeCred <- function(x, tree=TRUE, part=NULL, rooted=TRUE){
+    if(inherits(x, "phylo")) x <- c(x)
     if(!rooted){
-        trees <- lapply(trees, unroot) 
-        class(trees) <- "multiPhylo"
-        trees <- .compressTipLabel(trees)
+        x <- lapply(x, unroot) 
+        class(x) <- "multiPhylo"
+        x <- .compressTipLabel(x)
     }    
-    pp <- prop.part(trees)
+    if(is.null(part))pp <- prop.part(x)
+    else pp <- part
+    pplabel <- attr(pp, "labels")
     if(!rooted)pp <- oneWise(pp)
-    l <-  length(trees)
-    trees <- .uncompressTipLabel(trees)
-    class(trees) <- NULL
-    nb <- log( attr(pp, "number") / l )
+    x <- .uncompressTipLabel(x)
+    class(x) <- NULL
+    m <- max(attr(pp, "number"))
+    nb <- log( attr(pp, "number") / m )
+    l <-  length(x)
     res <- numeric(l)
     for(i in 1:l){
-        ppi <- prop.part(trees[[i]])
+        tmp <- checkLabels(x[[i]], pplabel)
+        ppi <- prop.part(tmp)  # trees[[i]]
         if(!rooted)ppi <- ONEwise(ppi)
         indi <- fmatch(ppi, pp)
-        res[i] <- sum(nb[indi])
+        if(any(is.na(indi))) res[i] <- -Inf
+        else res[i] <- sum(nb[indi])
     }
-    k <- which.max(res)
-    if(tree) return(trees[[k]])
+    if(tree) {
+        k <- which.max(res)
+        tr <- x[[k]]
+        attr(tr, "clade.credibility") <- res[k]
+        return(tr)
+    }    
     res
 }
 
 
+mcc <- maxCladeCred
