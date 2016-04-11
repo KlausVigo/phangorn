@@ -30,7 +30,7 @@ So far just the best tree is returned. No annotations or transformations of edge
 If a list of partition is provided then the clade credibity is computed for the trees in x.
 }
 \value{
-a tree (an object of class \code{phylo}) or a vector of clade credibilities for each tree.
+a tree (an object of class \code{phylo}) with the highest clade credibility or a numeric vector of clade credibilities for each tree.
 }
 %%\references{
 %% ~put references to the literature/web site here ~
@@ -59,6 +59,12 @@ par(mfrow = c(1,3), mar = c(1,4,1,1))
 plot(strict_consensus, main="Strict consensus tree")
 plot(majority_consensus, main="Majority consensus tree")
 plot(max_clade_cred, main="Maximum clade credibility tree")
+
+# compute clade credibility for trees given a prop.part object
+pp <- prop.part(bs)
+tree <- rNNI(bs[[1]], 20)
+maxCladeCred(c(tree, bs[[1]]), tree=FALSE, part = pp)
+# first value likely be -Inf
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
