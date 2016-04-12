@@ -445,24 +445,41 @@ KF.dist <- function(tree1, tree2=NULL, check.labels = TRUE, rooted=FALSE){
 
 path.dist <- function(tree1, tree2=NULL, check.labels = TRUE){
     if(inherits(tree1, "phylo") && inherits(tree2, "phylo"))
-         return(pd1(tree1, tree2, check.labels))
+         return(pd0(tree1, tree2, check.labels))
     if(inherits(tree1, "phylo") && inherits(tree2, "multiPhylo"))
-         return(pd2(tree1, tree2, check.labels))
+         return(pd1(tree1, tree2, check.labels))
     if(inherits(tree2, "phylo") && inherits(tree1, "multiPhylo"))
-        return(pd2(tree2, tree1, check.labels))
+        return(pd1(tree2, tree1, check.labels))
+    if(inherits(tree1, "multiPhylo") && is.null(tree2))
+        return(pd2(tree1, check.labels))
+    else return(NULL)
 }
 
 
-pd1 <- function(tree1, tree2, check.labels=TRUE){
+wPath.dist <- function(tree1, tree2=NULL, check.labels = TRUE){
+    if(inherits(tree1, "phylo") && inherits(tree2, "phylo"))
+        return(pd0(tree1, tree2, check.labels, FALSE))
+    if(inherits(tree1, "phylo") && inherits(tree2, "multiPhylo"))
+        return(pd1(tree1, tree2, check.labels, FALSE))
+    if(inherits(tree2, "phylo") && inherits(tree1, "multiPhylo"))
+        return(pd1(tree2, tree1, check.labels, FALSE))
+    if(inherits(tree1, "multiPhylo") && is.null(tree2))
+        return(pd2(tree1, check.labels, FALSE))
+    else return(NULL)
+}
+
+
+pd0 <- function(tree1, tree2, check.labels=TRUE, path=TRUE){
     if(check.labels)tree2 <- checkLabels(tree2, tree1$tip.label)
     n <- nrow(tree1$edge)
 #    tree1$edge.length <- tree2$edge.length <- rep(1, n)
-    dt1 = coph(tree1, TRUE)
-    dt2 = coph(tree2, TRUE)  
+    dt1 = coph(tree1, path)
+    dt2 = coph(tree2, path)  
     sqrt(sum((dt1 - dt2)^2))
 }
 
-pd2 <- function(tree, trees, check.labels=TRUE){
+
+pd1 <- function(tree, trees, check.labels=TRUE, path=TRUE){
     if(check.labels){
         trees <- .compressTipLabel(trees)
         tree <- checkLabels(tree, attr(trees, "TipLabel"))
@@ -470,11 +487,36 @@ pd2 <- function(tree, trees, check.labels=TRUE){
     trees <- .uncompressTipLabel(trees)
     unclass(trees) 
     l <- length(trees)
-    dt <- coph(tree, TRUE)
+    dt <- coph(tree, path)
     res <- numeric(l)
     for(i in 1:l){
-        dt2 <- coph(trees[[i]], TRUE)  
+        dt2 <- coph(trees[[i]], path)  
         res[i] <- sqrt(sum((dt - dt2)^2))        
     }
     res
 }
+
+
+pd2 <- function(trees, check.labels=TRUE, path=TRUE){
+    if(check.labels) trees <- .compressTipLabel(trees)
+    trees <- .uncompressTipLabel(trees)
+    unclass(trees) 
+    l <- length(trees)
+    CM <- lapply(trees, coph, path)
+    res <- numeric(l)
+    k <- 1 
+    PD <- numeric((l * (l - 1))/2)
+    for (i in 1:(l - 1)){
+        for (j in (i + 1):l){
+            PD[k] <- sqrt(sum((CM[[i]] - CM[[j]])^2))    
+            k=k+1
+        }
+    }
+    attr(PD, "Size") <- l
+    if(!is.null(names(trees)))attr(PD, "Labels") <- names(trees)
+    attr(PD, "Diag") <- FALSE
+    attr(PD, "Upper") <- FALSE
+    class(PD) <- "dist"
+    return(PD)
+}
+
