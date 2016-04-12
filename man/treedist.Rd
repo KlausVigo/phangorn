@@ -6,12 +6,13 @@
 %\alias{print.treedist}
 \title{ Distances between trees }
 \description{
-  \code{treedist} computes different tree distance methods and \code{RF.dist} the Robinson-Foulds or symmetric distance.
+  \code{treedist} computes different tree distance methods and \code{RF.dist} the Robinson-Foulds or symmetric distance. 
 }
 \usage{
 treedist(tree1, tree2, check.labels = TRUE)
 RF.dist(tree1, tree2=NULL, check.labels=TRUE, rooted=FALSE)
 KF.dist(tree1, tree2=NULL, check.labels=TRUE, rooted=FALSE)
+path.dist(tree1, tree2=NULL, check.labels=TRUE, use.weight=FALSE)
 }
 \arguments{
   \item{tree1}{ A phylogenetic tree (class \code{phylo})
@@ -19,6 +20,7 @@ KF.dist(tree1, tree2=NULL, check.labels=TRUE, rooted=FALSE)
   \item{tree2}{ A phylogenetic tree. }
   \item{check.labels}{compares labels of the trees.}
   \item{rooted}{take bipartitions for rooted trees into account, default is unrooting the trees.}
+  \item{use.weight}{use edge.length argument or just count number of edges on the path (default)}
 }
 \value{
   \code{treedist} returns a vector containing the following tree distance methods
@@ -31,6 +33,7 @@ KF.dist(tree1, tree2=NULL, check.labels=TRUE, rooted=FALSE)
 The Robinson-Foulds distance is well defined only for bifurcating trees. 
 RF.dist returns the Robinson-Foulds distance (Robinson & Foulds 1981) between either 2 trees or computes a matrix of all pairwise distances if a \code{multiPhylo} object is given. 
 \code{KF.dist} return the branch score distance (Kuhner & Felsenstein 1994). 
+\code{path.dist} computes the path difference metric as described in Steel and Penny 1993).
 
 For large number of trees the distance functions will use a lot of memory!
 

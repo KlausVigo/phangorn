@@ -443,30 +443,30 @@ KF.dist <- function(tree1, tree2=NULL, check.labels = TRUE, rooted=FALSE){
 }
 
 
-path.dist <- function(tree1, tree2=NULL, check.labels = TRUE){
+path.dist <- function(tree1, tree2=NULL, check.labels = TRUE, use.weight=FALSE){
     if(inherits(tree1, "phylo") && inherits(tree2, "phylo"))
-         return(pd0(tree1, tree2, check.labels))
+         return(pd0(tree1, tree2, check.labels, use.weight))
     if(inherits(tree1, "phylo") && inherits(tree2, "multiPhylo"))
-         return(pd1(tree1, tree2, check.labels))
+         return(pd1(tree1, tree2, check.labels, use.weight))
     if(inherits(tree2, "phylo") && inherits(tree1, "multiPhylo"))
-        return(pd1(tree2, tree1, check.labels))
+        return(pd1(tree2, tree1, check.labels, use.weight))
     if(inherits(tree1, "multiPhylo") && is.null(tree2))
-        return(pd2(tree1, check.labels))
+        return(pd2(tree1, check.labels, use.weight))
     else return(NULL)
 }
 
 
-wPath.dist <- function(tree1, tree2=NULL, check.labels = TRUE){
-    if(inherits(tree1, "phylo") && inherits(tree2, "phylo"))
-        return(pd0(tree1, tree2, check.labels, FALSE))
-    if(inherits(tree1, "phylo") && inherits(tree2, "multiPhylo"))
-        return(pd1(tree1, tree2, check.labels, FALSE))
-    if(inherits(tree2, "phylo") && inherits(tree1, "multiPhylo"))
-        return(pd1(tree2, tree1, check.labels, FALSE))
-    if(inherits(tree1, "multiPhylo") && is.null(tree2))
-        return(pd2(tree1, check.labels, FALSE))
-    else return(NULL)
-}
+#wPath.dist <- function(tree1, tree2=NULL, check.labels = TRUE){
+#    if(inherits(tree1, "phylo") && inherits(tree2, "phylo"))
+#        return(pd0(tree1, tree2, check.labels, FALSE))
+#    if(inherits(tree1, "phylo") && inherits(tree2, "multiPhylo"))
+#        return(pd1(tree1, tree2, check.labels, FALSE))
+#    if(inherits(tree2, "phylo") && inherits(tree1, "multiPhylo"))
+#        return(pd1(tree2, tree1, check.labels, FALSE))
+#    if(inherits(tree1, "multiPhylo") && is.null(tree2))
+#        return(pd2(tree1, check.labels, FALSE))
+#    else return(NULL)
+#}
 
 
 pd0 <- function(tree1, tree2, check.labels=TRUE, path=TRUE){
