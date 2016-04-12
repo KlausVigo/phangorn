@@ -301,9 +301,9 @@ void lll3(SEXP dlist, double *eva, double *eve, double *evei, double *el, double
 // ersetzt fn.quartet , int *node, int n, 
 void lll_quartet(SEXP dlist, double *eva, double *eve, double *evei, double *el, double g, int *nr, int *nc, int *edge, 
         int nTips, double *contrast, int nco, int *scaleTmp, double *bf, double *TMP, double *ans, int *SC, double *res){
-    int  ni, ei, j, i, rc; //    R_len_t i, n = length(node);
+    int  ei, j, rc; //    R_len_t i, n = length(node), i , ni;
     double *rtmp, *P;
-    ni = -1L;
+//    ni = -1L;
     rc = *nr * *nc;
     rtmp = (double *) R_alloc(*nr * *nc, sizeof(double));
     P = (double *) R_alloc(*nc * *nc, sizeof(double));
@@ -518,7 +518,7 @@ SEXP moveloli(SEXP CH, SEXP PA, SEXP eig, SEXP EL, SEXP W, SEXP G,
     int i, k=length(W);
     int nc=INTEGER(NC)[0], nr=INTEGER(NR)[0], ntips=INTEGER(NTIPS)[0]; //, blub
     int pa=INTEGER(PA)[0], ch=INTEGER(CH)[0];
-    double  *g=REAL(G); //*w=REAL(W),
+    double  *g=REAL(G); // *w=REAL(W),
     double el=REAL(EL)[0];
     double *eva, *eve, *evei, *tmp, *P;
     tmp = (double *) R_alloc(nr * nc, sizeof(double));
@@ -667,7 +667,7 @@ SEXP updateLL(SEXP dlist, SEXP PA, SEXP CH, SEXP eig, SEXP EL, SEXP W, SEXP G, S
     int i, k=length(W);
     int nc=INTEGER(NC)[0], nr=INTEGER(NR)[0], ntips=INTEGER(NTIPS)[0]; //, j, blub
     int pa=INTEGER(PA)[0], ch=INTEGER(CH)[0], nco =INTEGER(NCO)[0];
-    double  *g=REAL(G), *contrast=REAL(CONTRAST); //*w=REAL(W),
+    double  *g=REAL(G), *contrast=REAL(CONTRAST); // *w=REAL(W),
     double el=REAL(EL)[0];
     double *eva, *eve, *evei, *tmp, *P;
     tmp = (double *) R_alloc(nr * nc, sizeof(double));
@@ -1308,7 +1308,7 @@ SEXP optQrtt(SEXP PARENT, SEXP CHILD, SEXP eig, SEXP EVI, SEXP EL,
           SEXP W, SEXP G, SEXP NR, SEXP NC, SEXP NTIPS, SEXP CONTRAST, 
           SEXP CONTRAST2, SEXP NCO, 
           SEXP dlist, SEXP WEIGHT, SEXP F0){
-    int i, k=length(W), h, j, n=length(PARENT), m, lEL=length(EL);
+    int i, k=length(W), h, j, m, lEL=length(EL); // n=length(PARENT), 
     int nc=INTEGER(NC)[0], nr=INTEGER(NR)[0], ntips=INTEGER(NTIPS)[0]; 
     int *parent=INTEGER(PARENT), *child=INTEGER(CHILD); //, *anc=INTEGER(ANC)
     int loli, nco =INTEGER(NCO)[0]; //=INTEGER(LOLI)[0]
@@ -1335,7 +1335,7 @@ SEXP optQrtt(SEXP PARENT, SEXP CHILD, SEXP eig, SEXP EVI, SEXP EL,
     eve = REAL(VECTOR_ELT(eig, 1));
     evei = REAL(VECTOR_ELT(eig, 2));
     
-    loli = parent[0];
+//    loli = parent[0];
     
     for(m = 4L; m > -1L; m--){
         pa = parent[m]; 
@@ -1386,7 +1386,7 @@ SEXP optQrtt(SEXP PARENT, SEXP CHILD, SEXP eig, SEXP EVI, SEXP EL,
         else updateLLQ(dlist, pa, ch, eva, eve, evei, res[0], w, g, nr,
                   nc, ntips, contrast, nco, k, tmp, P);
         el[m] = res[0];        //edgeLengthIndex
-        loli = pa;
+//        loli = pa;
     }
     UNPROTECT(1); //RESULT    
     return(RESULT);     

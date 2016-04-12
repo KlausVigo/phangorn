@@ -4,7 +4,7 @@
 \alias{Descendants}
 \alias{Siblings}
 \alias{mrca.phylo}
-\alias{mrca}
+%\alias{mrca}
 \title{tree utility function}
 \description{
 Functions for describing relationships among phylogenetic nodes.
@@ -14,9 +14,9 @@ Ancestors(x, node, type=c("all","parent"))
 Children(x, node)
 Siblings(x, node, include.self=FALSE)
 Descendants(x, node, type=c("tips","children","all"))
-mrca.phylo(x, node)
+mrca.phylo(x, node=NULL)
 }
-%mrca(x, node)
+%mrca(x)
 \arguments{
   \item{x}{a tree (a phylo object).}
   \item{node}{an integer or a vector of integers corresponding to a node ID}
@@ -48,5 +48,7 @@ Descendants(tree, 11, "tips")
 Siblings(tree, 3)
 mrca.phylo(tree, 1:3)
 mrca.phylo(tree, match(c("t1", "t2", "t3"), tree$tip))
+mrca.phylo(tree)
+# same as mrca(tree), but faster for large trees
 }
 \keyword{misc}

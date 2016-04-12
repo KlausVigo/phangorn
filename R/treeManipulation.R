@@ -1074,7 +1074,8 @@ Siblings = function (x, node, include.self = FALSE)
 
 
 
-mrca.phylo <- function(x, node){
+mrca.phylo <- function(x, node=NULL){
+    if(is.null(node)) return(mrca2(x))
     anc <- Ancestors(x, node, type = "all")
     res <- Reduce(intersect, anc)[1]
     res
@@ -1082,7 +1083,7 @@ mrca.phylo <- function(x, node){
 
 
 # should be in ape
-mrca <- function(phy, full=FALSE){
+mrca2 <- function(phy, full=FALSE){
     Nnode <- phy$Nnode
     Ntips <- length(phy$tip.label)      
     phy <- reorder(phy)

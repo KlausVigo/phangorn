@@ -244,7 +244,7 @@ maxCladeCred <- function(x, tree=TRUE, part=NULL, rooted=TRUE){
     for(i in 1:l){
         tmp <- checkLabels(x[[i]], pplabel)
         ppi <- prop.part(tmp)  # trees[[i]]
-        if(!rooted)ppi <- ONEwise(ppi)
+        if(!rooted)ppi <- oneWise(ppi)
         indi <- fmatch(ppi, pp)
         if(any(is.na(indi))) res[i] <- -Inf
         else res[i] <- sum(nb[indi])

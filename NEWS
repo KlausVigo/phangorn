@@ -13,12 +13,18 @@ NEW FEATURES
     o function as.AAbin.phyDat to exchange data with the new AAbin class from ape   
     
     o likelihood ratchet (Vos 2003) topology optimisation in optim.pml 
+    
+    o with KF.dist (Kuhner & Felsenstein) and path.dist can be used like RF.dist  
+
+BUG FIXES
+
+    o optim.pml can now handle much more taxa, proper scaling also for rearrangements 
+    
+      should avoid numerical problems (still a bit experimantal)
 
 OTHER CHANGES
-
-    o experimental tree rearrangements work for larger trees (hundreds of taxa)
     
-    o mrca overwrites mrca from ape (faster but dependencies)
+    o mrca.phylo can be used like mrca from ape (faster for large trees)
     
     o individual splits can be colored in lento plots (suggested by France Thouzé)
     
@@ -31,7 +37,8 @@ OTHER CHANGES
       trees and networks easier
 
     o plotBS has a new argument frame and arguments BStrees can be empty
-
+      
+      
 
      CHANGES in PHANGORN VERSION 2.0.2
 
