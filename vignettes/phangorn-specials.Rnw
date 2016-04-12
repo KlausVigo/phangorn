@@ -8,6 +8,7 @@
 % tools::texi2dvi("phangorn-specials.tex", pdf=TRUE)
 \usepackage{times}
 \usepackage{hyperref}
+\usepackage{amsmath}
 
 \newcommand{\Rfunction}[1]{{\texttt{#1}}}
 \newcommand{\Robject}[1]{{\texttt{#1}}}
@@ -112,6 +113,30 @@ Here we defined "n" as a state which can be any nucleotide but not a gap "-" and
 These data can be used in all functions available in \phangorn{} to compute distance matrices or perform parsimony and maximum likelihood analysis.  
 
 
+\section{Markov models of character evolution}
+To model nucleotide substitutions across the edges of a tree T we can assign a transition matrix. In the case of nucleotides, with four character states, each 4 $\times$ 4 transition matrix has, at most, 12 free parameters.
+
+Time-reversible Markov models are used to describe how characters change over time, and use fewer parameters. Time-reversible means that these models need not be directed in time, and the Markov property states that these models depend only on the current state. These models are used in analysis of phylogenies using maximum likelihood and MCMC, computing pairwise distances, as well in simulating sequence evolution.
+
+We will now describe the General Time-Reversible (GTR) model \cite{Tavare1986}. The parameters
+of the GTR model are the equilibrium frequencies $\pi = (\pi_A ,\pi_C ,\pi_G ,\pi_T)$ and a rate
+matrix $Q$ which has the form
+\begin{equation}\label{eq:GTR}
+Q = 
+\begin{pmatrix}
+\ast  & \alpha\pi_C & \beta\pi_G & \gamma\pi_T \\
+\alpha\pi_A & \ast & \delta\pi_G & \epsilon\pi_T \\
+\beta\pi_A & \delta\pi_C & \ast & \eta\pi_T \\
+\gamma\pi_A &  \epsilon\pi_C & \eta\pi_G & \ast \\
+\end{pmatrix}
+\end{equation}
+where we need to assign 6 paramters $\alpha, \dots, \eta$. The elements on the diagonal are chosen so that the rows sum to zero. The Jukes-Cantor (JC) \cite{Jukes1969} model can be derived as special case from the GTR model, for equal equilibrium frequencies $\pi_A = \pi_C = \pi_G = \pi_T = 0.25$ and equal rates set to $\alpha = \beta = \gamma = \delta = \eta$. Table \ref{models} lists all built-in nucleotide models in \phangorn. 
+The transition probabilities which describe the probabilities of change from character $i$ to $j$ in time $t$, are given by the corresponding entries of the matrix exponential
+\[
+P(t) = (p_{ij}(t)) = e^{Qt}, \qquad \sum_j p_{ij}=1
+\]
+where $P(t)$ is the transition matrix spanning a period of time $t$.
+
 \section{Estimation of non-standard transition rate matrices}
 In the last section \ref{sec:USER} we described how to set up user defined data formats. Now we describe how to estimate transition matrices with pml. 
 
@@ -183,7 +208,7 @@ If optQ=TRUE and neither a model or subs are supplied than a symmetric (optBf=FA
          GTR & TRUE & TRUE & $c(1, 2, 3, 4, 5, 0)$ & 8 \\
          \hline
    \end{tabular}
-   \caption{DNA models available in phangorn, how they are defined and number of parameters to estimate. }\label{models} 
+   \caption{DNA models available in phangorn, how they are defined and number of parameters to estimate. The elements of the vector subs correspond to $\alpha, \dots, \eta$ in equation (\ref{eq:GTR})}\label{models} 
 \end{table}
 
 \section{Codon substitution models}
