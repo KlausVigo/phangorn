@@ -7,9 +7,9 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Pairwise Distances from Sequences}
 \description{
-\code{dist.hamming} and \code{dist.logDet} compute pairwise distances 
-for an object of class \code{phyDat}. \code{dist.ml} fits distances
-for nucleotide and amino acid models.
+\code{dist.hamming}, \code{dist.ml} and \code{dist.logDet} compute pairwise distances 
+for an object of class \code{phyDat}. 
+\code{dist.ml} uses DNA / AA sequences to compute distances under different substitution models. 
 }
 \usage{
 dist.hamming(x, ratio = TRUE, exclude="none")
@@ -43,6 +43,8 @@ The "F81" model uses empirical base frequencies, the "JC69" equal base frequenci
 Lockhart, P. J., Steel, M. A., Hendy, M. D. and Penny, D. (1994)
 Recovering evolutionary trees under a more realistic model of sequence
 evolution. \emph{Molecular Biology and Evolution}, \bold{11}, 605--602.
+
+Jukes TH and Cantor CR (1969). \emph{Evolution of Protein Molecules}. New York: Academic Press. 21--132.
 }
 \author{Klaus Schliep \email{klaus.schliep@gmail.com}}
 
