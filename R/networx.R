@@ -1423,6 +1423,10 @@ write.nexus.splits <- function (obj, file = "", weights=NULL, taxa=TRUE, append=
     if(!is.null(attr(obj, "splitlabels"))) flab=TRUE
     format = paste(format, ";\n",  sep = "")
     cat(format, file = file, append = TRUE)
+    if(!is.null(attr(obj, "cycle"))){
+        cycle <- paste(attr(obj, "cycle"), collapse = " ")
+        cat("\tCYCLE\t", cycle, ";\n", sep="", file = file, append = TRUE)
+    }
     cat("\tMATRIX\n", file = file, append = TRUE)    
     
     for (i in 1:nsplits){
