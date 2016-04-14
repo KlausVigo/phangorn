@@ -189,7 +189,7 @@ c.splits <- function (..., recursive=FALSE)
 
 
 # computes splits from phylo
-as.splits.phylo <- function(x, scale=100, ...){
+as.splits.phylo <- function(x, ...){
     result <- bip(x)
     if(!is.null(x$edge.length)){
         edge.weights <- numeric(max(x$edge))
@@ -199,9 +199,9 @@ as.splits.phylo <- function(x, scale=100, ...){
     if(!is.null(x$node.label)){
         conf <- x$node.label
         if(is.character(conf)) conf <- as.numeric(conf)
-        if(!is.null(scale)) conf <- conf / scale
-#        else ()
-        attr(result, "confidences") <- c(rep(1, length(x$tip.label)), x$node.label)
+        if(max(conf) > (1 + 1e-8))conf <- conf / 100
+        #if(!is.null(scale)) conf <- conf / scale
+        attr(result, "confidences") <- c(rep(1, length(x$tip.label)), conf)
 #        attr(result, "confidences") <- c(rep("", length(x$tip.label)), x$node.label)
     }    
     attr(result, "labels") <- x$tip
@@ -922,7 +922,7 @@ addConfidences <- function (x, y, ...) UseMethod("addConfidences")
 
 
 # y now more general 
-addConfidences.splits <- function(x, y){
+addConfidences.splits <- function(x, y, ...){
     tiplabel <- attr(x, "label")
     nTips = length(tiplabel)
 #    x = addTrivialSplits(x) 
@@ -950,18 +950,20 @@ addConfidences.splits <- function(x, y){
 }
 
 
-addConfidences.networx <- function(x, y){
+addConfidences.networx <- function(x, y, ...){
     spl <- x$splits
-    spl <- addConfidences(spl, y)
+    spl <- addConfidences(spl, y, ...)
     x$splits <- spl
     x    
 }
 
 
-addConfidences.phylo <- function(x, y, scale=100){
+addConfidences.phylo <- function(x, y, ...){
+#    call <- x$call
     conf = attr(addConfidences(as.splits(x), y), "confidences")
+    if(is.character(conf)) conf <- as.numeric(conf)
     nTips = length(x$tip.label)
-    x$node.label = conf[-c(1:nTips)] * scale
+    x$node.label = conf[-c(1:nTips)]  * 100
     x      
 } 
 

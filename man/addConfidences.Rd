@@ -9,7 +9,7 @@ Compare splits and add support values to an object
 Add support values to a \code{splits}, \code{phylo} or \code{networx} object. 
 }
 \usage{
-addConfidences(x, y)
+addConfidences(x, y, ...)
 presenceAbsence(x, y)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -20,6 +20,9 @@ an object of class \code{splits}, \code{phylo} or \code{networx}
   \item{y}{
 an object of class \code{splits}, \code{phylo}, \code{multiPhylo} or \code{networx}
 }
+  \item{...}{
+  Further arguments passed to or from other methods.
+  }
 }
 %%\details{
 %%  ~~ If necessary, more details than the description above ~~
