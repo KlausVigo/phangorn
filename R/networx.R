@@ -189,7 +189,7 @@ c.splits <- function (..., recursive=FALSE)
 
 
 # computes splits from phylo
-as.splits.phylo <- function(x, ...){
+as.splits.phylo <- function(x, scale=100, ...){
     result <- bip(x)
     if(!is.null(x$edge.length)){
         edge.weights <- numeric(max(x$edge))
@@ -197,7 +197,12 @@ as.splits.phylo <- function(x, ...){
         attr(result, "weights") <- edge.weights
     }
     if(!is.null(x$node.label)){
-        attr(result, "confidences") <- c(rep("", length(x$tip.label)), x$node.label)
+        conf <- x$node.label
+        if(is.character(conf)) conf <- as.numeric(conf)
+        if(!is.null(scale)) conf <- conf / scale
+#        else ()
+        attr(result, "confidences") <- c(rep(1, length(x$tip.label)), x$node.label)
+#        attr(result, "confidences") <- c(rep("", length(x$tip.label)), x$node.label)
     }    
     attr(result, "labels") <- x$tip
     class(result) <- c('splits', 'prop.part')
@@ -236,9 +241,9 @@ as.splits.multiPhylo <- function(x, ...){
 as.splits.prop.part <- function(x, ...){
     if(is.null(attr(x, "number")))  
         attr(x, "weights") = rep(1, length(x)) 
-	  else{ 
+	 else{ 
         attr(x, "weights") = attr(x, "number")
-        attr(x, "confidences") = attr(x, "number") 
+        attr(x, "confidences") = attr(x, "number") / attr(x, "number")[1] 
    	}    
     class(x) = c('splits', 'prop.part')	
     x
@@ -913,7 +918,7 @@ consensusNet <- function (obj, prob = 0.3, ...)
 }
 
 
-addConfidences <- function (x, y) UseMethod("addConfidences")
+addConfidences <- function (x, y, ...) UseMethod("addConfidences")
 
 
 # y now more general 
@@ -937,7 +942,7 @@ addConfidences.splits <- function(x, y){
     ind <- match(SHORTwise(x, nTips), spl)
     #    pos <-  which(ind > nTips)
     pos <-  which(!is.na(ind))
-    confidences <- character(length(x))
+    confidences <- numeric(length(x))  #character 
     confidences[pos] <- attr(spl, "confidences")[ind[pos]]
     #        y$node.label[ind[pos] - nTips]
     attr(x, "confidences") <- confidences
@@ -946,19 +951,17 @@ addConfidences.splits <- function(x, y){
 
 
 addConfidences.networx <- function(x, y){
-#    spl <- attr(x, "splits")
     spl <- x$splits
     spl <- addConfidences(spl, y)
-#    attr(x, "splits") <- spl
     x$splits <- spl
     x    
 }
 
 
-addConfidences.phylo <- function(x, y){
+addConfidences.phylo <- function(x, y, scale=100){
     conf = attr(addConfidences(as.splits(x), y), "confidences")
     nTips = length(x$tip.label)
-    x$node.label = conf[-c(1:nTips)]
+    x$node.label = conf[-c(1:nTips)] * scale
     x      
 } 
 
