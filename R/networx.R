@@ -225,7 +225,7 @@ as.splits.multiPhylo <- function(x, ...){
     for(i in 1:l) splitTips[[i]] = i
     result = c(splitTips,splits)
     attr(result, "weights") = c(rep(lx, l), weights)
-    attr(result, "confidences") <- attr(result, "weights") / l
+    attr(result, "confidences") <- attr(result, "weights") / lx
     attr(result, "summary") <- list(confidences="ratio", ntrees=l, clades=FALSE) 
     attr(result, "labels") <- lab
     class(result) = c('splits', 'prop.part')
@@ -1392,13 +1392,13 @@ write.nexus.splits <- function (obj, file = "", weights=NULL, taxa=TRUE, append=
        file = file, append = TRUE)}
 # TAXON BLOCK    
     if(taxa){
-    cat(paste("BEGIN TAXA;\n\tDIMENSIONS NTAX=", ntaxa, ";\n", 
+    cat(paste("BEGIN TAXA;\n\tDIMENSIONS ntax=", ntaxa, ";\n", 
         sep = ""), file = file, append = TRUE)
     cat("\tTAXLABELS", paste(taxa.labels, sep = " "), ";\nEND;\n\n", 
         file = file, append = TRUE)
     }
 # SPLITS BLOCK      
-    cat(paste("BEGIN SPLITS;\n\tDIMENSIONS NSPLITS=", nsplits,
+    cat(paste("BEGIN SPLITS;\n\tDIMENSIONS ntax=", ntaxa, " nsplits=", nsplits,
         ";\n", sep = ""), file = file, append = TRUE)     
     format = "\tFORMAT labels=left weights=yes"
     fcon = fint = flab = FALSE
@@ -1450,7 +1450,9 @@ write.nexus.networx <- function(obj, file = "", taxa=TRUE, splits=TRUE, append=F
     if(taxa){
         cat(paste("BEGIN TAXA;\n\tDIMENSIONS NTAX=", ntaxa, ";\n", 
             sep = ""), file = file, append = TRUE)
-        cat("\tTAXLABELS", paste(obj$tip.label, sep = " "), ";\nEND;\n\n", 
+        if(splits)taxalabel <- attr(obj$splits, "labels")
+        else taxalabel <- obj$tip.label
+        cat("\tTAXLABELS", paste(taxalabel, sep = " "), ";\nEND;\n\n", 
             file = file, append = TRUE)
     }
 # SPLITS BLOCK    
@@ -1517,12 +1519,12 @@ write.nexus.networx <- function(obj, file = "", taxa=TRUE, splits=TRUE, append=F
         ecoli = edge.col[i]
         spInd <- ifelse(splI, paste("\ts=", obj$splitIndex[i], sep=""), "")
         edgeCol <- ifelse(ecoli=="black", "", paste("\tfg=", paste(col2rgb(ecoli), collapse=" "), sep=""))
-#        if(splits) cat(i, "\t", obj$edge[i,1], "\t", obj$edge[i,2], "\ts=", obj$splitIndex[i], ",\n", sep="", file = file, append = TRUE)
-#              else cat(i, "\t", obj$edge[i,1], "\t", obj$edge[i,2], ",\n", sep="", file = file, append = TRUE)
         cat(i, "\t", obj$edge[i,1], "\t", obj$edge[i,2], spInd, edgeCol, ",\n", sep="", file = file, append = TRUE)
         }
     cat(";\n", file = file, append = TRUE)
     cat("END;\n", file = file, append = TRUE)
+# force SplitsTree to accept the file    
+    cat("\nBEGIN st_Assumptions;\n    uptodate;\nEND; [st_Assumptions]\n", file = file, append = TRUE)
 }
 
 
@@ -1631,14 +1633,15 @@ read.nexus.networx <- function(file, splits=TRUE){
     }
     # y-axis differs between in R and SplitsTree
     vert[,2] <- -vert[,2]  
-    
+    translate=data.frame(as.numeric(TRANS[,1]), TRANS[,2], stringsAsFactors=FALSE)
     plot <- list(vertices=vert)        
     obj <- list(edge=edge, tip.label=TRANS[,2], Nnode=max(edge)-ntaxa,
-        edge.length=el, splitIndex=splitIndex, splits=spl, translate=TRANS)  
+        edge.length=el, splitIndex=splitIndex, splits=spl ) 
     obj$.plot <- list(vertices = vert, edge.color="black", edge.width=3, edge.lty = 1)
     class(obj) <- c("networx", "phylo")
 #    list(ntaxa=ntaxa, nvertices=nvertices, nedges=nedges, translate=TRANS, vertices=VERT, edges=EDGE, splits=spl)
     reorder(obj)
+    obj
 }
 
 
