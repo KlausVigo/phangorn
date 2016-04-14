@@ -909,7 +909,7 @@ consensusNet <- function (obj, prob = 0.3, ...)
     w = attr(spl, "weights")
     ind = (w/l) > prob
     spl = spl[ind]
-    attr(spl, "confidences") = round((w/l)[ind])
+    attr(spl, "confidences") = (w/l)[ind]
 #    attr(spl, "weights") = w[ind]
     res = as.networx(spl)  
     res$edge.labels = as.character(res$edge.length / l * 100)
@@ -1108,7 +1108,7 @@ plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRU
     x = reorder(x)
     nTips = length(x$tip.label)
 #    conf = attr(attr(x, "splits"),"confidences") 
-    conf = attr(x$splits,"confidences")
+    conf = attr(x$splits,"confidences") * 100
     index = x$splitIndex
     if(is.null(edge.label) & !is.null(conf))edge.label = conf[index]
     if(is.null(node.label))node.label = as.character(1:max(x$edge))
