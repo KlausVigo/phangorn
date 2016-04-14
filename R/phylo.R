@@ -363,17 +363,15 @@ pml.init <- function(data, k=1L){
     nr <- attr(data, "nr")
     nc <- attr(data, "nc")    
     .C("ll_init", as.integer(nr), as.integer(nTips), as.integer(nc), as.integer(k))
-    INV <- lli(data) #, tree
+#    INV <- lli(data) #, tree
 #    .iind <<- which((INV %*% rep(1, nc)) > 0)
 #    .INV <<-  Matrix(INV, sparse=TRUE)
-    assign(".iind", which((INV %*% rep(1, nc)) > 0), envir=parent.frame())
-    assign(".INV", Matrix(INV, sparse=TRUE), envir=parent.frame())
+#    assign(".iind", which((INV %*% rep(1, nc)) > 0), envir=parent.frame())
+#    assign(".INV", Matrix(INV, sparse=TRUE), envir=parent.frame())
 } 
 
 
-
 pml.free2 <- function(){.C("ll_free2")}
-
 pml.init2 <- function(data, k=1L){
     nTips <- length(data)
     nr <- attr(data, "nr")
@@ -3498,7 +3496,7 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     
     #    on.exit(.C("ll_free"))
     #    .C("ll_init", nr, nTips, nc, as.integer(k))
-    .INV <- .iind <- NULL
+    #    .INV <- .iind <- NULL
     on.exit({
 
 
@@ -3552,7 +3550,6 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         
         pml.free()
         return(object)
-        #        rm(.INV, .iind)
     })
     pml.init(data, k)    
     
@@ -4047,7 +4044,6 @@ pml.quartet <- function (tree, data, bf = rep(.25, 4), k = 1, rate = 1, g, w,
 }
 
 
-
 index2edge <- function(x, root){
     ch = c(1L,2L,5L,4L,3L)
     elind = c(1L,2L,5L,4L,6L)                
@@ -4155,7 +4151,7 @@ pml.nni <- function (tree, data, w, g, eig, bf, ll.0, ll, INV=INV, ...)
             ll = test 
             swap=swap+1
             tree <- treeT
-            indi <- which(rep(colSums(apply(INDEX2,1,match,INDEX2[(ind+1)%/%2,],nomatch=0))>0,each=2))
+            indi <- which(rep(colSums(apply(INDEX,1,match,INDEX[(ind+1)%/%2,],nomatch=0))>0,each=2))
             candidates[indi] <- FALSE
             loglik[indi] <- -Inf
         }

@@ -1,8 +1,5 @@
 bootstrap.pml = function (x, bs = 100, trees = TRUE, multicore=FALSE, mc.cores = NULL, ...) 
 {
-#    multicore=FALSE,
-#    multicore <- mc.cores > 1L
-    
     if(multicore && is.null(mc.cores)){
         mc.cores <- detectCores()
     }
@@ -29,15 +26,8 @@ bootstrap.pml = function (x, bs = 100, trees = TRUE, multicore=FALSE, mc.cores =
     }
     eval.success <- FALSE
     if (!eval.success & multicore) {
-        #  !require(parallel) ||      
-#        if (.Platform$GUI!="X11") {
-#            warning("package 'parallel' not found or GUI is used, 
-#                    bootstrapping is performed in serial")
-#        } 
-#        else {       
-            res <- mclapply(BS, pmlPar, x, trees = trees, ..., mc.cores = mc.cores)
-            eval.success <- TRUE
-#        } 
+        res <- mclapply(BS, pmlPar, x, trees = trees, ..., mc.cores = mc.cores)
+        eval.success <- TRUE
     }
     if (!eval.success) res <- lapply(BS, pmlPar, x, trees = trees, ...)
     if (trees) {
@@ -151,7 +141,6 @@ plotBS <- function (tree, BStrees, type = "unrooted", bs.col = "black",
     }
     invisible(tree)
 }
-
 
 
 plotBS.Old <- function (tree, BStrees, type = "unrooted", bs.col = "black", 

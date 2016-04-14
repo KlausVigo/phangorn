@@ -1088,11 +1088,6 @@ edgeLabels <- function(xx,yy,zz=NULL, edge){
 }
 
 
-##
-# add all combinations
-# cex.node.label, cex.tip, cex.edge.label
-# col.node.label, col.tip, col.edge.label
-# font.node.label, font.tip, font.edge.label
 plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRUE,
     show.edge.label=FALSE, edge.label=NULL, show.node.label = FALSE, node.label=NULL,
     show.nodes=FALSE, tip.color = "black", 
@@ -1107,7 +1102,6 @@ plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRU
     if(use.edge.length==FALSE) x$edge.length[] = 1
     x = reorder(x)
     nTips = length(x$tip.label)
-#    conf = attr(attr(x, "splits"),"confidences") 
     conf = attr(x$splits,"confidences") * 100
     index = x$splitIndex
     if(is.null(edge.label) & !is.null(conf))edge.label = conf[index]
