@@ -199,7 +199,7 @@ as.splits.phylo <- function(x, ...){
     if(!is.null(x$node.label)){
         conf <- x$node.label
         if(is.character(conf)) conf <- as.numeric(conf)
-        if(max(conf) > (1 + 1e-8))conf <- conf / 100
+        if(max(na.omit(conf)) > (1 + 1e-8))conf <- conf / 100
         #if(!is.null(scale)) conf <- conf / scale
         attr(result, "confidences") <- c(rep(1, length(x$tip.label)), conf)
 #        attr(result, "confidences") <- c(rep("", length(x$tip.label)), x$node.label)
@@ -909,7 +909,7 @@ consensusNet <- function (obj, prob = 0.3, ...)
     w = attr(spl, "weights")
     ind = (w/l) > prob
     spl = spl[ind]
-    attr(spl, "confidences") = round((w/l)[ind]*100)
+    attr(spl, "confidences") = round((w/l)[ind])
 #    attr(spl, "weights") = w[ind]
     res = as.networx(spl)  
     res$edge.labels = as.character(res$edge.length / l * 100)
