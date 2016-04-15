@@ -919,7 +919,7 @@ consensusNet <- function (obj, prob = 0.3, ...)
 }
 
 
-createLabels <- function(x, y, label_y, type="edge"){
+createLabel <- function(x, y, label_y, type="edge", nomatch=NA){
     spl_x <- as.splits(x)
     if(inherits(x, "phylo", TRUE)==1) spl_x <- spl_x[x$edge[,2]]
     spl_y <- as.splits(y)
@@ -928,13 +928,15 @@ createLabels <- function(x, y, label_y, type="edge"){
     tiplabel <- attr(spl_x, "label")
     nTips <- length(tiplabel)
     
-    spl_y <- phangorn:::changeOrder(spl_y, tiplabel)
-    spl_y <- phangorn:::SHORTwise(spl_y, nTips)
+    spl_y <- changeOrder(spl_y, tiplabel)
+    spl_y <- SHORTwise(spl_y, nTips)
     
-    ind <- match(phangorn:::SHORTwise(spl_x, nTips), spl_y)
+    ind <- match(SHORTwise(spl_x, nTips), spl_y)
     pos <-  which(!is.na(ind))
+
+    res <- rep(nomatch, length(spl_x))
     
-    res <- rep(NA, length(x))     
+    if(length(label_y)==1L) label_y <- rep(label_y, length(spl_y))
     res[pos] <- label_y[ind[pos]]
     if(type=="edge" && inherits(x, "networx")){
         return(res[x$splitIndex])
@@ -1125,7 +1127,8 @@ plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRU
     ...){
     type = match.arg(type, c("3D", "2D")) 
     if(use.edge.length==FALSE) x$edge.length[] = 1
-    x = reorder(x)
+# test    
+#    x = reorder(x)
     nTips = length(x$tip.label)
     conf = attr(x$splits,"confidences") * 100
     index = x$splitIndex

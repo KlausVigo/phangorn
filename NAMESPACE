@@ -52,7 +52,8 @@ export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UN
     lento, compatible, acgt2ry, ancestral.pars, ancestral.pml, CI, RI, getClans, getSlices,
     getClips, getDiversity, midpoint, pruneTree, acctran, getRoot, plotAnc, consensusNet, 
     bab, random.addition, diversity, baseFreq, densiTree, superTree, coalSpeciesTree, 
-    pml.fit, pml.init, pml.free, edQt, lli, cladePar, addConfidences, countCycles, 
+    pml.fit, pml.init, pml.free, edQt, lli, cladePar, addConfidences, createLabel,
+    countCycles, 
     SOWH.test, plot.networx, presenceAbsence, as.networx.splits, addTrivialSplits,
     phyDat2alignment, AICc, readDist, writeDist, discrete.gamma, matchSplits,
     removeUndeterminedSites, phyDat2MultipleAlignment, delta.score, maxCladeCred)
