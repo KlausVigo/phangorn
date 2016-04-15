@@ -188,6 +188,7 @@ c.splits <- function (..., recursive=FALSE)
 }
 
 
+## as.splits.phylo
 # computes splits from phylo
 as.splits.phylo <- function(x, ...){
     result <- bip(x)
@@ -264,7 +265,7 @@ as.prop.part.splits <- function(x, ...){
     x
 }
 
-
+## as.splits.phylo
 as.phylo.splits <- function (x, result = "phylo", ...) 
 {
     result <- match.arg(result, c("phylo", "all"))
@@ -646,7 +647,7 @@ addEdge <- function(network, desc, spl){
     network   
 }
 
-
+## as.splits.phylo
 circNetwork <- function(x, ord=NULL){
     if(is.null(ord))ord = attr(x, "cycle")
     
@@ -799,7 +800,7 @@ getOrdering <- function(x){
     ord  
 }
 
-
+## as.splits.phylo
 addTrivialSplits <- function(obj){
     label <- attr(obj, "label")
     nTips <- length(label)
@@ -886,7 +887,7 @@ as.networx.splits <- function(x, planar=FALSE, coord = c("none", "2D", "3D"), ..
 #    as.networx(x, ...)
 #}
 
-
+## as.splits.phylo
 as.networx.phylo <- function(x, ...){
     spl <- as.splits(x)
     spl <- spl[x$tree[,2]]
@@ -915,6 +916,30 @@ consensusNet <- function (obj, prob = 0.3, ...)
     res$edge.labels = as.character(res$edge.length / l * 100)
     res$edge.labels[res$edge[,2]<=length(res$tip.label)] = ""
     reorder(res)
+}
+
+
+createLabels <- function(x, y, label_y, type="edge"){
+    spl_x <- as.splits(x)
+    if(inherits(x, "phylo", TRUE)==1) spl_x <- spl_x[x$edge[,2]]
+    spl_y <- as.splits(y)
+    if(inherits(y, "phylo", TRUE)==1) spl_y <- spl_y[y$edge[,2]]
+    
+    tiplabel <- attr(spl_x, "label")
+    nTips <- length(tiplabel)
+    
+    spl_y <- phangorn:::changeOrder(spl_y, tiplabel)
+    spl_y <- phangorn:::SHORTwise(spl_y, nTips)
+    
+    ind <- match(phangorn:::SHORTwise(spl_x, nTips), spl_y)
+    pos <-  which(!is.na(ind))
+    
+    res <- rep(NA, length(x))     
+    res[pos] <- label_y[ind[pos]]
+    if(type=="edge" && inherits(x, "networx")){
+        return(res[x$splitIndex])
+    }
+    res  
 }
 
 
@@ -957,7 +982,7 @@ addConfidences.networx <- function(x, y, ...){
     x    
 }
 
-
+## as.splits.phylo
 addConfidences.phylo <- function(x, y, ...){
 #    call <- x$call
     conf = attr(addConfidences(as.splits(x), y), "confidences")
@@ -1275,12 +1300,14 @@ plot2D <- function(coords, net, show.tip.label=TRUE,
     }   
 }   
    
-    
+## as.splits.phylo    
 lento <- function (obj, xlim = NULL, ylim = NULL, main = "Lento plot", 
     sub = NULL, xlab = NULL, ylab = NULL, bipart=TRUE, trivial=FALSE, col = rgb(0,0,0,.5), ...) 
 {
-    if (inherits(obj,"phylo")) 
-        obj = as.splits(obj)
+    if (inherits(obj,"phylo")){ 
+        if(inherits(obj,"phylo",TRUE)==1)  obj <- as.splits(obj)[obj$edge[,2]]
+        obj <- as.splits(obj)
+    }
     if (inherits(obj,"multiPhylo")) 
         obj = as.splits(obj)    
     labels = attr(obj, "labels") 
