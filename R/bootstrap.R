@@ -249,3 +249,38 @@ maxCladeCred <- function(x, tree=TRUE, part=NULL, rooted=TRUE){
 
 
 mcc <- maxCladeCred
+
+
+cladeFreq <- function(x, rooted=FALSE){
+    if(!rooted){
+        x <- .uncompressTipLabel(x)
+        x <- lapply(x, unroot) 
+        class(x) <- "multiPhylo"
+        x <- .compressTipLabel(x)
+    }    
+    pp <- prop.part(x)
+    pplabel <- attr(pp, "labels")
+    if(!rooted)pp <- oneWise(pp)
+    x <- .uncompressTipLabel(x)
+    class(x) <- NULL
+    nnodes <- sapply(x, Nnode)
+    l <-  length(x)
+    from <- cumsum(c(1, nnodes[-l]))
+    to <- cumsum(nnodes)
+    
+    ivec <- integer(to[l])
+    pvec <- c(0,to)
+    
+    res <- vector("list", l)
+    k=1
+    for(i in 1:l){
+        ppi <- prop.part(x[[i]])  
+        if(!rooted)ppi <- oneWise(ppi)
+        indi <- sort(fmatch(ppi, pp))
+        ivec[from[i]:to[i]] = indi
+    }
+    X <- sparseMatrix(i=ivec, p=pvec, dims=c(length(pp),l))
+    list(X=X, prop.part=pp)
+}
+
+# sliding window (width, by)
