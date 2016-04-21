@@ -14,7 +14,7 @@ optim.pml(object, optNni=FALSE, optBf=FALSE, optQ=FALSE, optInv=FALSE, optGamma=
     optEdge=TRUE, optRate=FALSE, optRooted=FALSE, 
     control = pml.control(epsilon=1e-08, maxit=10, trace=1), model = NULL, 
     rearrangement = ifelse(optNni, "NNI","none"), subs = NULL, 
-    ratchet.par = list(iter = 10L, maxit = 100L, prop = 1/3),...)  
+    ratchet.par = list(iter = 20L, maxit = 100L, prop = 1/3),...)  
 pml.control(epsilon = 1e-08, maxit = 10, trace = 1)
 }
 \arguments{
