@@ -251,7 +251,7 @@ maxCladeCred <- function(x, tree=TRUE, part=NULL, rooted=TRUE){
 mcc <- maxCladeCred
 
 
-cladeFreq <- function(x, rooted=FALSE){
+cladeMatrix <- function(x, rooted=FALSE){
     if(!rooted){
         x <- .uncompressTipLabel(x)
         x <- lapply(x, unroot) 
@@ -283,4 +283,8 @@ cladeFreq <- function(x, rooted=FALSE){
     list(X=X, prop.part=pp)
 }
 
-# sliding window (width, by)
+
+moving_average <- function(x, window=50){
+     cx <- c(0, cumsum(x))
+     (cx[(window+1):length(cx)] - cx[1:(length(cx)-window)])/(window)
+}

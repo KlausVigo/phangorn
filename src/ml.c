@@ -353,8 +353,7 @@ void lll_quartet(SEXP dlist, double *eva, double *eve, double *evei, double *el,
         F77_CALL(dgemv)(transa, nr, nc, &one, &res[rc], nr, bf, &ONE, &zero, TMP, &ONE);
 }
 
-// scaling ausserhalb?
-//, SEXP node  SEXP root, , SEXP N
+// TODO: scaling ausserhalb!!!
 SEXP PML_quartet(SEXP dlist, SEXP EL, SEXP W, SEXP G, SEXP NR, SEXP NC, SEXP K, SEXP eig, SEXP bf, SEXP edge, SEXP NTips, SEXP nco, SEXP contrast){
     int nr=INTEGER(NR)[0], nc=INTEGER(NC)[0], k=INTEGER(K)[0], i, j, indLL; 
     int nTips = INTEGER(NTips)[0], *SC, *sc;
@@ -377,11 +376,6 @@ SEXP PML_quartet(SEXP dlist, SEXP EL, SEXP W, SEXP G, SEXP NR, SEXP NC, SEXP K, 
     }    
     indLL = nr * nc * nTips;  
     for(i=0; i<k; i++){  
-// P ausserhalb definieren?? X statt dlist         
-//  void lll_quartet(SEXP dlist, double *eva, double *eve, double *evei, double *el, double g, int *nr, int *nc, int *node, int *edge, 
-// int nTips, double *contrast, int nco, int *scaleTmp, double *bf, double *TMP, double *ans, int *SC, double *res){     
-// , INTEGER(node), INTEGER(N)[0]
-// 
         lll_quartet(dlist, eva, eve, evei, REAL(EL), g[i], &nr, &nc, INTEGER(edge), nTips, REAL(contrast), 
                     INTEGER(nco)[0],  &SC[nr * i], REAL(bf), &tmp[i*nr], &LL[indLL *i], &SCM[nr * nTips * i], &anc[2L*nr*nc*i]);           
     } 

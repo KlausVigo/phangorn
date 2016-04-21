@@ -3350,7 +3350,7 @@ addTips2Tree <- function (tree, tips, where){
 optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE, 
                         optInv = FALSE, optGamma = FALSE, optEdge = TRUE, optRate = FALSE, optRooted=FALSE,
                         control = pml.control(epsilon = 1e-8, maxit = 10, trace = 1L), 
-                        model = NULL, rearrangement = ifelse(optNni, "NNI","none"), subs = NULL, ratchet.par = list(iter = 10L, maxit = 100L, prop = 1/3), ...) 
+                        model = NULL, rearrangement = ifelse(optNni, "NNI","none"), subs = NULL, ratchet.par = list(iter = 20L, maxit = 100L, prop = 1/3), ...) 
 {
     optRatchet = FALSE
     optRatchet2 = FALSE
@@ -3995,24 +3995,23 @@ pml.quartet <- function (tree, data, bf = rep(.25, 4), k = 1, rate = 1, g, w,
     eig, ll.0 = NULL, llMix = NULL, wMix = 0, nTips, 
     weight, nr, nc, contrast, nco, ..., site=FALSE) 
 {
-#    weight <- as.double(attr(data, "weight"))
-#    nr <- as.integer(attr(data, "nr")) 
-#    nc <- as.integer(attr(data, "nc"))
     k <- as.integer(k)
     m = 1
-    #    inv0 <- inv
-    if(any(g<.gEps)){
-        for(i in 1:length(g)){
-            if(g[i]<.gEps){
-                inv <- inv+w[i]
-            }
-        }
-        w <- w[g>.gEps]
-        g <- g[g>.gEps]
-        k <- length(w)
-    }
+
+#    if(any(g<.gEps)){
+#        for(i in 1:length(g)){
+#            if(g[i]<.gEps){
+#                inv <- inv+w[i]
+#            }
+#        }
+#        w <- w[g>.gEps]
+#        g <- g[g>.gEps]
+#        k <- length(w)
+#    }
 #    if (is.null(INV)) 
 #        INV <- Matrix(lli(data, tree), sparse=TRUE)
+    
+# in C    
     if (is.null(ll.0)){ 
         ll.0 <- numeric(nr)    
     }
@@ -4034,6 +4033,8 @@ pml.quartet <- function (tree, data, bf = rep(.25, 4), k = 1, rate = 1, g, w,
     # pmlPart einbeziehen 
     siteLik <- .Call("PML4", dlist=data, as.double(tree$edge.length), as.double(w), as.double(g), nr, nc, k, eig, as.double(bf), 
                      node, edge, nTips, nco, contrast, N=as.integer(length(edge))) 
+    
+# in C    
     if(!is.null(ll.0)){
         ind = which(ll.0>0)
         siteLik[ind] = log(exp(siteLik[ind]) + ll.0[ind]) 
