@@ -445,13 +445,13 @@ KF.dist <- function(tree1, tree2=NULL, check.labels = TRUE, rooted=FALSE){
 
 path.dist <- function(tree1, tree2=NULL, check.labels = TRUE, use.weight=FALSE){
     if(inherits(tree1, "phylo") && inherits(tree2, "phylo"))
-         return(pd0(tree1, tree2, check.labels, use.weight))
+         return(pd0(tree1, tree2, check.labels, !use.weight))
     if(inherits(tree1, "phylo") && inherits(tree2, "multiPhylo"))
-         return(pd1(tree1, tree2, check.labels, use.weight))
+         return(pd1(tree1, tree2, check.labels, !use.weight))
     if(inherits(tree2, "phylo") && inherits(tree1, "multiPhylo"))
-        return(pd1(tree2, tree1, check.labels, use.weight))
+        return(pd1(tree2, tree1, check.labels, !use.weight))
     if(inherits(tree1, "multiPhylo") && is.null(tree2))
-        return(pd2(tree1, check.labels, use.weight))
+        return(pd2(tree1, check.labels, !use.weight))
     else return(NULL)
 }
 
@@ -471,7 +471,11 @@ path.dist <- function(tree1, tree2=NULL, check.labels = TRUE, use.weight=FALSE){
 
 pd0 <- function(tree1, tree2, check.labels=TRUE, path=TRUE){
     if(check.labels)tree2 <- checkLabels(tree2, tree1$tip.label)
-    n <- nrow(tree1$edge)
+    if(path){
+        tree1 <- unroot(tree1)
+        tree2 <- unroot(tree2)
+    }    
+#    n <- nrow(tree1$edge)
 #    tree1$edge.length <- tree2$edge.length <- rep(1, n)
     dt1 = coph(tree1, path)
     dt2 = coph(tree2, path)  
@@ -485,7 +489,9 @@ pd1 <- function(tree, trees, check.labels=TRUE, path=TRUE){
         tree <- checkLabels(tree, attr(trees, "TipLabel"))
     }    
     trees <- .uncompressTipLabel(trees)
-    unclass(trees) 
+    unclass(trees)
+    if(path)trees <- lapply(trees, unroot)
+    trees <- lapply(trees, reorder, "postorder")
     l <- length(trees)
     dt <- coph(tree, path)
     res <- numeric(l)
@@ -494,13 +500,14 @@ pd1 <- function(tree, trees, check.labels=TRUE, path=TRUE){
         res[i] <- sqrt(sum((dt - dt2)^2))        
     }
     res
-}
-
+} 
 
 pd2 <- function(trees, check.labels=TRUE, path=TRUE){
     if(check.labels) trees <- .compressTipLabel(trees)
     trees <- .uncompressTipLabel(trees)
     unclass(trees) 
+    if(path)trees <- lapply(trees, unroot)
+    trees <- lapply(trees, reorder, "postorder")
     l <- length(trees)
     CM <- lapply(trees, coph, path)
     res <- numeric(l)
