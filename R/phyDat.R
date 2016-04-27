@@ -1089,3 +1089,11 @@ genlight2phyDat <- function(x, ambiguity=NA){
     lev <- na.omit(unique(as.vector(tmp)))
     phyDat(tmp, "USER", levels=lev, ambiguity=ambiguity)
 }
+
+
+image.phyDat <- function(x, ...){
+    if(attr(x, "type")=="AA")image.AAbin(as.AAbin.phyDat(x), ...)
+    if(attr(x, "type")=="DNA")image.DNAbin(as.DNAbin.phyDat(x), ...)
+    else return(NULL)
+}
+

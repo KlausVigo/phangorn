@@ -21,6 +21,7 @@
 \alias{removeUndeterminedSites}
 \alias{phyDat2alignment}
 \alias{phyDat2MultipleAlignment}
+\alias{image.phyDat}
 \title{Conversion among Sequence Formats}
 \description{
 These functions transform several DNA formats into the \code{phyDat} format. 

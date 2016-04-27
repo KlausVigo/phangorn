@@ -7,7 +7,7 @@ importFrom(ape, as.DNAbin, as.phylo, plot.phylo, as.prop.part, nj,old2new.phylo,
     node.depth.edgelength, drop.tip, stree, rtree, is.ultrametric, .PlotPhyloEnv,
     nodelabels, edgelabels, BOTHlabels, read.nexus.data, write.nexus.data, 
     read.dna, write.dna, reorder.phylo, dist.nodes, collapse.singles, rotate, prop.clades,
-    fastme.bal, fastme.ols, Nnode)
+    fastme.bal, fastme.ols, Nnode, image.AAbin, image.DNAbin, ONEwise)
 # as.AAbin, as.phyDat.AAbin
 importFrom(igraph, graph, graph_from_adjacency_matrix, layout_with_kk, plot.igraph,
     shortest_paths, set.edge.attribute, set_edge_attr, decompose, components, groups,
@@ -53,8 +53,7 @@ export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UN
     getClips, getDiversity, midpoint, pruneTree, acctran, getRoot, plotAnc, consensusNet, 
     bab, random.addition, diversity, baseFreq, densiTree, superTree, coalSpeciesTree, 
     pml.fit, pml.init, pml.free, edQt, lli, cladePar, addConfidences, createLabel,
-    countCycles, 
-    SOWH.test, plot.networx, presenceAbsence, as.networx.splits, addTrivialSplits,
+    countCycles, SOWH.test, plot.networx, presenceAbsence, as.networx.splits, addTrivialSplits,
     phyDat2alignment, AICc, readDist, writeDist, discrete.gamma, matchSplits,
     removeUndeterminedSites, phyDat2MultipleAlignment, delta.score, maxCladeCred)
 
@@ -92,6 +91,7 @@ S3method(as.splits, networx)
 S3method(as.prop.part, splits)
 S3method(cophenetic, networx)
 S3method(cophenetic, splits)
+S3method(image, phyDat)
 S3method(logLik, pml)
 S3method(logLik, pmlPart)
 S3method(logLik, pmlMix)
