@@ -1,14 +1,19 @@
 ---
 title: 'Intertwining phylogenetic trees and networks: R Example Script'
 author: "Klaus Schliep, Alastair Potts, David Morrison and Guido Grimm"
-date: "April 27, 2016"
-output: html_document
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output: rmarkdown::html_vignette
+vignette: >
+   %\VignetteIndexEntry{Intertwining trees and networx}
+   %\VignetteEngine{knitr::rmarkdown}
+   %\usepackage[utf8]{inputenc}
 ---
 
 
 ```{r setup, echo=FALSE}
 # set global chunk options: images will be bigger
-knitr::opts_chunk$set(fig.width=10, fig.height=7) #10
+knitr::opts_chunk$set(fig.width=7, fig.height=7) #10
+par(mar = c(0,0,0,0))
 options(digits = 4)
 ```
 
@@ -111,7 +116,7 @@ edge.lab <- createLabel(Nnet, raxml.tree, raxml.tree$edge[,2], "edge")
 # could be also 1:27 instead of raxml.tree$edge[,2]
 
 # Show the correspondingly labelled tree and network in R
-par(mfrow=c(1,2), mar=c(2,2,2,2))
+par(mfrow=c(1,2), mar=c(1,1,1,1))
 #plotBS(raxml.tree, rotate.tree = 180) 
 plot(raxml.tree, "u", rotate.tree = 180) 
 edgelabels(raxml.tree$edge[,2],col="blue", frame="none")
