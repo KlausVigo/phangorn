@@ -230,9 +230,9 @@ tree <- pratchet(dat)          # parsimony tree
 tree <- nnls.phylo(tree, dm)   # need edge weights
 
 
-# 1. alternative: quick and dirty: GTR + G + NNI
+# 1. alternative: quick and dirty: GTR + G 
 fitStart = pml(tree, dat, k=4)
-fit = optim.pml(fitStart, model="GTR", optGamma=TRUE, rearrangement="NNI") 
+fit = optim.pml(fitStart, model="GTR", optGamma=TRUE, rearrangement="stochastic") 
  
 # 2. alternative: preper with modelTest  
 mt <- modelTest(dat, tree=tree, multicore=TRUE)
