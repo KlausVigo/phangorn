@@ -1092,8 +1092,8 @@ genlight2phyDat <- function(x, ambiguity=NA){
 
 
 image.phyDat <- function(x, ...){
-    if(attr(x, "type")=="AA")image.AAbin(as.AAbin.phyDat(x), ...)
-    if(attr(x, "type")=="DNA")image.DNAbin(as.DNAbin.phyDat(x), ...)
+    if(attr(x, "type")=="AA")image.AAbin(as.AAbin(x), ...)
+    if(attr(x, "type")=="DNA")image.DNAbin(as.DNAbin(x), ...)
     else return(NULL)
 }
 
