@@ -1091,9 +1091,10 @@ genlight2phyDat <- function(x, ambiguity=NA){
 }
 
 
+if (getRversion() >= "2.15.1") utils::globalVariables("image.AAbin")
 image.phyDat <- function(x, ...){
-    if(attr(x, "type")=="AA")image.AAbin(as.AAbin(x), ...)
-    if(attr(x, "type")=="DNA")image.DNAbin(as.DNAbin(x), ...)
+    if(attr(x, "type")=="AA")image(as.AAbin(x), ...)
+    if(attr(x, "type")=="DNA")image(as.DNAbin(x), ...)
     else return(NULL)
 }
 
