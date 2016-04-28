@@ -18,9 +18,9 @@ NEW FEATURES
 
 BUG FIXES
 
-    o optim.pml can now handle much more taxa, proper scaling also for rearrangements 
+    o improvements to optim.pml to avoid numerical problems, 
     
-      should avoid numerical problems (still a bit experimantal)
+      can now handle much more taxa (still experimantal)
 
 OTHER CHANGES
     
@@ -37,6 +37,8 @@ OTHER CHANGES
       trees and networks easier
 
     o plotBS has a new argument frame and arguments BStrees can be empty
+    
+    o new vignette IntertwiningTreesAndNetworks
       
       
 
