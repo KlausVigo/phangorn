@@ -24,8 +24,9 @@ fitch <- function (tree, data, site="pscore")
             return(sapply(tree, fit.fitch, data, site))
         }    
         else{
+            tree = .uncompressTipLabel(tree)
             tree = unclass(tree)
-#            tree = lapply(tree, reorder, "postorder")
+            tree = lapply(tree, reorder, "postorder")
             site = ifelse(site == "pscore", 1L, 0L) 
             on.exit(.C("fitch_free"))
             .C("fitch_init", as.integer(data), as.integer(nTips*nr), as.integer(m), as.double(weight), as.integer(nr)) 
