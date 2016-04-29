@@ -12,8 +12,8 @@ vignette: >
 
 
 This tutorial gives a basic introduction for constructing phylogenetic networks and adding parameters to trees or networx objects using [phangorn](http://cran.r-project.org/package=phangorn) [@Schliep2011] in R. 
-Splits graphs or phylogenetic networks are a nice way to display conflicting data or to summarize different trees. Here, we present two popular networks, consensus networks [@Holland2004]
-and neighborNet [@Bryant2004].                                  
+Splits graphs or phylogenetic networks are a useful way to display conflicting data or to summarize different trees. Here, we present two popular networks, consensus networks [@Holland2004]
+and Neighbor-Net [@Bryant2004].                                  
 Trees or networks are often missing either edge weights or edge support values. We show how to improve a tree/networx object by adding support values or estimating edge weights using non-negative Least-Squares (nnls).
 
 We first load the phangorn package and a few data sets we use in this vignette.
@@ -23,7 +23,7 @@ data(Laurasiatherian)
 data(yeast)
 ```
 ## consensusNet
-A consensusNet [@Holland2004] is a generalization of a consensus tree. Instead of only representing splits (taxon bipartitions) occurring in at least 50% of the trees in a bootstrap or MCMC sample one can use a lower threshold and explore competing splits. Note that, in its basic implementation used here, the consensusNet edge lengths are proportional of observing the splits in the provided list of trees. 
+A consensusNet [@Holland2004] is a generalization of a consensus tree. Instead of only representing splits (taxon bipartitions) occurring in at least 50% of the trees in a bootstrap or MCMC sample one can use a lower threshold and explore competing splits. Note that, in its basic implementation used here, the consensusNet edge lengths are proportional to the frequence of the corresponding splits in the provided list of trees. 
 
 The input for `consensusNet` is a list of trees i.e. an object of class `multiPhylo`.
 ```{r, eval=TRUE}
@@ -87,7 +87,7 @@ plot(tree2, show.node.label=TRUE)
 ## Estimating edge weights (nnls)
 
 Consensus networks, on the other hand, provide primarily information about support values corresponding to a split, but no information about the actual difference between the taxon bipartitions defined by that split. For example, one may be interested how the alternative support values correspond with the actual genetic distance between the involved taxa.
-Given a distance matrix, we can estimate edge weights using non-negative Least-Squares (nnls), and plot them onto the consensusNet splits graph. 
+Given a distance matrix, we can estimate edge weights using non-negative Least-Squares, and plot them onto the consensusNet splits graph. 
 ```{r, eval=TRUE}
 cnet <- nnls.networx(cnet, dm)
 par("mar" = rep(1, 4))
