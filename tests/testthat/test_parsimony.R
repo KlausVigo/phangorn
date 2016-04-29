@@ -8,7 +8,7 @@ dat <- phyDat(c(t1="a", t2="a",t3="t",t4="t"), type="USER", levels=c("a","c","g"
 #tr_ratchet = pratchet(dat, trace=0)
 #bab(dat)
 test_that("parsimony works properly", {
-    skip_on_cran()
+##    skip_on_cran()
     expect_that(fitch(tree1, dat), equals(1))
     expect_that(fitch(tree2, dat), equals(2))
     expect_that(fitch(trees, dat), equals(c(1,2)))
