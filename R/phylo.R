@@ -779,7 +779,6 @@ fs3 <- function (old.el, eig, parent.dat, child, weight, g=g,
 }
 
 
-
 optimEdge <- function (tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0,
                         control = pml.control(epsilon = 1e-08, maxit = 10, trace=0), ...) 
 {
@@ -825,16 +824,11 @@ optimEdge <- function (tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.
     anc0 = as.integer(c(0L, anc))
     
     while (eps > control$eps && iter < control$maxit) {
-#        blub3 <- .Call("extractScale", as.integer(rootNode), w, g, as.integer(nr), as.integer(nc), as.integer(nTips))
-#        rowM = apply(blub3, 1, min)       
-#        blub3 = (blub3-rowM) 
-#        blub3 = ScaleEPS ^ (blub3) 
         EL <- .Call("optE", as.integer(parent), as.integer(child), 
                     as.integer(anc0), eig, evi, EL, w, g, as.integer(nr), as.integer(nc), 
                     as.integer(nTips), as.double(contrast), 
                     as.double(contrast2), nco, data, as.double(weight), as.double(ll.0))       
         iter = iter + 1
-#        tree$edge.length = EL[tree$edge[,2]]
         treeP$edge.length = EL[treeP$edge[,2]]
         newll <- pml.fit4(treeP, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k)
         
@@ -843,20 +837,15 @@ optimEdge <- function (tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.
         oldtree = treeP
         if(control$trace>1) cat(old.ll, " -> ", newll, "\n") 
         old.ll = newll
-        #        loli = parent[1] 
     }
     if(control$trace>0) cat(start.ll, " -> ", newll, "\n")
     list(tree=treeP, logLik=newll, c(eps, iter))
 }
 
 
-# bf raus C naeher
-# data=data, k=k, g=g, w=w, eig=eig, bf=bf, ll.0=ll.0, INV=INV)
 pml.move <- function(EDGE, el, data, g, w, eig, k, nTips, bf){
     node <- EDGE[, 1]
     edge <- EDGE[, 2]
-#    root <- as.integer(node[length(node)])     
-#    el <- as.double(tree$edge.length)
     nr = as.integer(attr(data, "nr"))
     nc = as.integer(attr(data, "nc"))    
     node = as.integer(node - nTips - 1L)  
@@ -2977,24 +2966,6 @@ optimRooted <- function(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll
 }
 
 
-
-# copy node likelihoods from C to R
-getNodeLogLik = function(data, i, j=1L){
-    nr = attr(data, "nr")
-    nc = attr(data, "nc")
-    ntips = length(data)
-    .Call("getLL", as.integer(i), as.integer(j-1L), as.integer(nr), as.integer(nc), as.integer(ntips))
-}
-
-
-# copy scaling parameters from C to R
-getSC = function(data, k=1L){
-    nr = attr(data, "nr")
-    ntips = length(data)
-    .Call("getSCM", as.integer(k),  as.integer(nr), as.integer(ntips))
-}
-
-
 index.nni <- function (ch, cvector, pvector, root) 
 {
     p1 = pvector[ch]
@@ -3924,8 +3895,7 @@ index2tree2 <- function(x, tree, root=length(tree$tip.label)+1L){
 # weight, nr, nc, contrast, nco (Reihenfolge beibehalten)      
 # INV raus
 optimQuartet <- function (tree, data, eig, w, g, bf, rate, ll.0=ll.0, nTips,
-        weight, nr, nc, contrast, nco, 
-        llcomp =-Inf,                  
+        weight, nr, nc, contrast, nco, llcomp =-Inf,                  
         control = pml.control(epsilon = 1e-08, maxit = 5, trace=0), ...) 
 {
 #    if (is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise") {
@@ -3956,6 +3926,8 @@ optimQuartet <- function (tree, data, eig, w, g, bf, rate, ll.0=ll.0, nTips,
     EL = tree$edge.length  
     n = length(tree$edge.length)  
     
+    ind.inv <- which(ll.0>0)
+
 #    nr = as.integer(length(weight))
 #    nc = as.integer(length(bf))
 #    nco = as.integer(nrow(contrast))
@@ -3992,11 +3964,11 @@ optimQuartet <- function (tree, data, eig, w, g, bf, rate, ll.0=ll.0, nTips,
 # weight, nr, nc, contrast, nco rein
 # inv, INV raus
 pml.quartet <- function (tree, data, bf = rep(.25, 4), k = 1, rate = 1, g, w, 
-    eig, ll.0 = NULL, llMix = NULL, wMix = 0, nTips, 
+    eig, ll.0 = NULL, ind.ll0=NULL, llMix = NULL, wMix = 0, nTips, 
     weight, nr, nc, contrast, nco, ..., site=FALSE) 
 {
-    k <- as.integer(k)
-    m = 1
+#    k <- as.integer(k)
+#    m = 1
 
 #    if(any(g<.gEps)){
 #        for(i in 1:length(g)){
@@ -4015,32 +3987,37 @@ pml.quartet <- function (tree, data, bf = rep(.25, 4), k = 1, rate = 1, g, w,
     if (is.null(ll.0)){ 
         ll.0 <- numeric(nr)    
     }
+    if(is.null(ind.ll0)){
+        ind = which(ll.0>0)  
+    }
+    else ind = ind.ll0
 #    if(inv>0)
 #        ll.0 <- as.matrix(INV %*% (bf * inv))              
 #    if (wMix > 0)
 #        ll.0 <- ll.0 + llMix           
     
-    node <- tree$edge[, 1]
-    edge <- tree$edge[, 2]
-    #    root <- as.integer(node[length(node)])     
+#    node <- tree$edge[, 1]
+#    edge <- tree$edge[, 2]
+#    root <- as.integer(node[length(node)])     
 #    el <- as.double(tree$edge.length)
-    node = as.integer(node - nTips - 1L) #    min(node))
-    edge = as.integer(edge - 1L)
+    node = as.integer(tree$edge[, 1] - nTips - 1L) #    min(node))
+    edge = as.integer(tree$edge[, 2] - 1L)
     
 #    contrast = attr(data, "contrast")
 #    nco = as.integer(dim(contrast)[1])    
-    # dlist=data, nr, nc, weight, k ausserhalb definieren  
-    # pmlPart einbeziehen 
-    siteLik <- .Call("PML4", dlist=data, as.double(tree$edge.length), as.double(w), as.double(g), nr, nc, k, eig, as.double(bf), 
+#    dlist=data, nr, nc, weight, k ausserhalb definieren  
+#    pmlPart einbeziehen 
+    siteLik <- .Call("PML4", dlist=data, as.double(tree$edge.length), as.double(w), 
+                     as.double(g), nr, nc, as.integer(k), eig, as.double(bf), 
                      node, edge, nTips, nco, contrast, N=as.integer(length(edge))) 
     
 # in C    
     if(!is.null(ll.0)){
-        ind = which(ll.0>0)
-        siteLik[ind] = log(exp(siteLik[ind]) + ll.0[ind]) 
+#        ind = which(ll.0>0)                                    
+        siteLik[ind] = log(exp(siteLik[ind]) + ll.0[ind])       
     }    
-    if(wMix >0) siteLik <- log(exp(siteLik) * (1-wMix) + llMix )
-    loglik <- sum(weight * siteLik)
+    if(wMix >0) siteLik <- log(exp(siteLik) * (1-wMix) + llMix ) 
+    loglik <- sum(weight * siteLik)                              
     return(loglik)
 }
 
