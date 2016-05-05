@@ -3775,16 +3775,16 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                 tree2 <- checkLabels(tree2, tree$tip.label)
                 tree2 <- reorder(tree2, "postorder")
                 swap = 1
-                ll2 <- pml.fit(tree, data, bf, shape = shape, k = k, Q = Q, 
-                               levels = attr(data, "levels"), inv = inv, rate = rate, 
-                               g = g, w = w, eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, 
-                               wMix = wMix, site = FALSE)
-print(ll2)                
+#                ll2 <- pml.fit(tree, data, bf, shape = shape, k = k, Q = Q, 
+#                               levels = attr(data, "levels"), inv = inv, rate = rate, 
+#                               g = g, w = w, eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, 
+#                               wMix = wMix, site = FALSE)
+#print(ll2)                
                 ll2 <- pml.fit(tree2, data, bf, shape = shape, k = k, Q = Q, 
                                levels = attr(data, "levels"), inv = inv, rate = rate, 
                                g = g, w = w, eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, 
                                wMix = wMix, site = FALSE)
-print(ll2)                 
+#print(ll2)                 
                 while(swap>0){
 #                    tmp <- pml.nni(tree2, data, w, g, eig, bf, ll.0, ll=ll2, ...) 
                     tmp <- pml.nni(tree2, data, w=w, g=g, eig=eig, bf=bf, ll.0=ll.0, ll=ll2, INV=INV, ...)
