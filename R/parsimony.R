@@ -220,12 +220,6 @@ compressSites <- function(data){
 }
 
 
-
-is.rooted2 = function(tree){
-    length(tree$edge[, 1][!match(tree$edge[, 1], tree$edge[, 2], 0)]) < 3
-}
-
-
 #
 # Branch and bound 
 #
@@ -342,7 +336,7 @@ add.one <- function (tree, tip.name, i){
     tmp
 }
 
-
+# in bab oder raus
 mmsNew0 <- function (x, Y) 
 {
     w <- attr(x, "weight")
@@ -785,7 +779,7 @@ ptree <- function (tree, data, type = "ACCTRAN", retData = FALSE)
     l = as.integer(length(edge))
     nTips = length(tree$tip)
     dat = tmp[[2]]
-    if (!is.rooted2(tree)) {
+    if (!is.rooted(tree)) {
         root = getRoot(tree)
         ind = edge[node == root]
         rSeq = .C("fitchTriplet", integer(nr), dat[, ind[1]], 
@@ -796,7 +790,7 @@ ptree <- function (tree, data, type = "ACCTRAN", retData = FALSE)
         as.integer(node[l:1L]), as.integer(edge[l:1L]), l, as.double(weight), 
         numeric(l), as.integer(nTips))
     el = result[[8]][l:1L]
-    if (!is.rooted2(tree)) {
+    if (!is.rooted(tree)) {
         ind2 = which(node[] == root)
         dat = matrix(result[[1]], nr, max(node))
         result <- .C("ACCTRAN3", result[[1]], as.integer(nr), 
