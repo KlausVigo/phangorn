@@ -509,80 +509,14 @@ SEXP AllDesc(SEXP child, SEXP parent, SEXP M, SEXP NODE){
 }
 
 
-// combine two sorted vectors
-void crsort(double *x, double *y, int *a, int *b, double *res){
-   double xi, yi;
+// std::merge
+void cisort(int *x, int *y, int a, int b, int *res){
    int i, j, k;    
    i=0;
    j=0;
    k=0;
-   xi=x[0];
-   yi=y[0];  
-   while(k<((*a)+(*b))){
-      if(i<(*a)){
-          if( (xi<yi) | (j==((*b))) ){  //-1L
-              res[k]=xi;      
-              i++;
-              if(i<(*a))xi=x[i];   
-              k++;     
-          }
-          else{
-              j++;
-              res[k]=yi;
-              if(j<(*b))yi=y[j];  
-              k++;
-          }
-        }
-        else{
-              j++;
-              res[k]=yi;
-              if(j<(*b))yi=y[j];  
-              k++;
-          }
-    }  
-}    
-
-
-void cisort(int *x, int *y, int *a, int *b, int *res){
-   int xi, yi;
-   int i, j, k;    
-   i=0;
-   j=0;
-   k=0;
-   xi=x[0];
-   yi=y[0];  
-   while(k<((*a)+(*b))){
-      if(i<(*a)){
-          if( (xi<yi) | (j==((*b))) ){  //-1L
-              res[k]=xi;      
-              i++;
-              if(i<(*a))xi=x[i];   
-              k++;     
-          }
-          else{
-              j++;
-              res[k]=yi;
-              if(j<(*b))yi=y[j];  
-              k++;
-          }
-        }
-        else{
-              j++;
-              res[k]=yi;
-              if(j<(*b))yi=y[j];  
-              k++;
-          }
-    }
-}    
-
-void cisort2(int *x, int *y, int a, int b, int *res){
-   int xi, yi;
-   int i, j, k;    
-   i=0;
-   j=0;
-   k=0;
-   xi=x[0];
-   yi=y[0];  
+   int xi=x[0];
+   int yi=y[0];  
    while(k<((a)+(b))){
       if(i<(a)){
           if( (xi<yi) | (j==b) ){  //-1L
@@ -605,10 +539,10 @@ void cisort2(int *x, int *y, int a, int b, int *res){
               k++;
           }
     }
-}    
+}  
+
 
 // faster cophenetic 
-
 void C_bipHelp(int *parents, int *children, int *ntips, int *mp, int *l, int *ltips, int *ptips){
    int p, k, i;
    for(i=0; i<*ntips; i++)ltips[i]=1L;
@@ -639,12 +573,12 @@ void C_bip2(int *parents, int *children, int *ntips, int *mp, int *l, int *ltips
         ci = children[i];
         if(pi==p){
              if(ci < (*ntips+1L)){
-                 cisort(&ci, tmp, &eins, &ltmp, tmp2);            
+                 cisort(&ci, tmp, eins, ltmp, tmp2);            
                  ltmp += 1L;
                  for(j=0; j<ltmp; j++) tmp[j] = tmp2[j];
              }
              else{
-                 cisort(&tips[ptips[ci-1L]], tmp, &(ltips[ci-1L]), &ltmp, tmp2);                       
+                 cisort(&tips[ptips[ci-1L]], tmp, (ltips[ci-1L]), ltmp, tmp2);                       
                  ltmp += ltips[ci-1L]; //  lch[ci]; 
 //               ltmp +=   lch[ci];
                  for(j=0; j<ltmp; j++) tmp[j] = tmp2[j];                                
@@ -760,12 +694,12 @@ SEXP C_bip(SEXP parent, SEXP child, SEXP nTips, SEXP maxP){ //, SEXP Nnode){
         ci = INTEGER(child)[i];
         if(pi==p){
              if(ci < (nt+1L)){
-                 cisort(&ci, tmp, &eins, &ltmp, tmp2);            
+                 cisort(&ci, tmp, eins, ltmp, tmp2);            
                  ltmp += 1L;
                  for(j=0; j<ltmp; j++) tmp[j] = tmp2[j];
              }
              else{
-                 cisort(INTEGER(VECTOR_ELT(ans, ci-1L)), tmp, &(lch[ci]), &ltmp, tmp2);                       
+                 cisort(INTEGER(VECTOR_ELT(ans, ci-1L)), tmp, (lch[ci]), ltmp, tmp2);                       
                  ltmp += lch[ci]; 
                  for(j=0; j<ltmp; j++) tmp[j] = tmp2[j];                                
              }
@@ -824,12 +758,12 @@ SEXP C_bipart(SEXP parent, SEXP child, SEXP nTips, SEXP maxP){ //, SEXP Nnode){
         ci = INTEGER(child)[i];
         if(pi==p){
              if(ci < (nt+1L)){
-                 cisort(&ci, tmp, &eins, &ltmp, tmp2);            
+                 cisort(&ci, tmp, eins, ltmp, tmp2);            
                  ltmp += 1L;
                  for(j=0; j<ltmp; j++) tmp[j] = tmp2[j];
              }
              else{
-                 cisort(INTEGER(VECTOR_ELT(ans, kl[ci])), tmp, &(lch[ci]), &ltmp, tmp2);                       
+                 cisort(INTEGER(VECTOR_ELT(ans, kl[ci])), tmp, lch[ci], ltmp, tmp2);                       
                  ltmp += lch[ci]; 
                  for(j=0; j<ltmp; j++) tmp[j] = tmp2[j];                                
              }
