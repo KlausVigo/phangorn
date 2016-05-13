@@ -1594,8 +1594,11 @@ read.nexus.networx <- function(file, splits=TRUE){
         x <- X[(transl + 1):end]
         x <- unlist(strsplit(x, "[,; \t]"))
         x <- x[nzchar(x)]
+        if(length(x) == 2*ntaxa){
         TRANS <- matrix(x, ncol = 2, byrow = TRUE)
         TRANS[, 2] <- gsub("['\"]", "", TRANS[, 2])
+        }
+        else TRANS = NULL
 #        n <- dim(TRANS)[1]
     }
     
@@ -1655,14 +1658,17 @@ read.nexus.networx <- function(file, splits=TRUE){
     el = sqrt(rowSums((VERT[EDGE[,2],c(2:3)] - VERT[EDGE[,3],c(2:3)])^2))
     edge <- EDGE[,c(2:3)]
     vert <- VERT[,c(2:3)]
-    oldLabel <- as.integer(as.numeric(TRANS[,1]))
-    for(i in 1:nrow(TRANS)){
-        edge <- swapEdge(edge, oldLabel[i], i) 
-        vert <- swapRow(vert, oldLabel[i], i)
+    
+    if(!is.null(TRANS)){
+        oldLabel <- as.integer(as.numeric(TRANS[,1]))
+        for(i in 1:nrow(TRANS)){
+            edge <- swapEdge(edge, oldLabel[i], i) 
+            vert <- swapRow(vert, oldLabel[i], i)
+        }
     }
     # y-axis differs between in R and SplitsTree
     vert[,2] <- -vert[,2]  
-    translate=data.frame(as.numeric(TRANS[,1]), TRANS[,2], stringsAsFactors=FALSE)
+#    translate=data.frame(as.numeric(TRANS[,1]), TRANS[,2], stringsAsFactors=FALSE)
     plot <- list(vertices=vert)        
     obj <- list(edge=edge, tip.label=TRANS[,2], Nnode=max(edge)-ntaxa,
         edge.length=el, splitIndex=splitIndex, splits=spl ) 
