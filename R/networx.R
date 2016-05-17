@@ -769,7 +769,6 @@ circNetwork <- function(x, ord=NULL){
         res$edge.length <- rep(1, nrow(res$edge))
         class(res) = c("networx", "phylo")
         attr(res, "order") = NULL
-        #browser() 
     }
     res$Nnode =  max(res$edge) - nTips
     res$edge.length = weight[index]  # ausserhalb
@@ -1222,7 +1221,10 @@ plotRGL <- function(coords, net, show.tip.label=TRUE,
         spheres3d(x[-c(1:nTips)], y[-c(1:nTips)],z[-c(1:nTips)], radius=radius, color="magenta")
     }
     if(show.tip.label){
-      rgl.texts(x[1:nTips]+2.05*radius,y[1:nTips],z[1:nTips],net$tip.label, color=tip.color, cex=cex, font=font)
+        if(is.null(net$translate))   
+        rgl.texts(x[1:nTips]+2.05*radius,y[1:nTips],z[1:nTips],net$tip.label, color=tip.color, cex=cex, font=font)
+        else
+        rgl.texts(x[net$translate$node]+2.05*radius,y[net$translate$node],z[net$translate$node],net$tip.label, color=tip.color, cex=cex, font=font)    
     }
     if(show.edge.label){
 	    ec = edgeLabels(x, y, z, edge)
@@ -1267,7 +1269,8 @@ plot2D <- function(coords, net, show.tip.label=TRUE,
    }
    cladogram.plot(edge, xx, yy, edge.color, edge.width, edge.lty)
    if(show.tip.label){
-        ind=match(1:nTips, edge[,2])
+        if(is.null(net$translate)) ind=match(1:nTips, edge[,2])
+        else ind=match(net$translate$node, edge[,2])
         pos = rep(4, nTips)
         XX <- xx[edge[ind, 1]] - xx[edge[ind, 2]]
         pos[XX>0] = 2
@@ -1278,7 +1281,8 @@ plot2D <- function(coords, net, show.tip.label=TRUE,
         XX[is.na(XX)] = 0
         YY[is.na(YY)] = 0
         pos[abs(YY)>abs(XX)] <- pos2[abs(YY)>abs(XX)] 	
-        text(xx[1:nTips], yy[1:nTips], labels=label, pos=pos, col=tip.color, cex=cex, font=font)
+        if(is.null(net$translate)) text(xx[1:nTips], yy[1:nTips], labels=label, pos=pos, col=tip.color, cex=cex, font=font)
+        else text(xx[net$translate$node], yy[net$translate$node], labels=label, pos=pos, col=tip.color, cex=cex, font=font)
     }
     if(show.edge.label){
 	    ec = edgeLabels(xx,yy, edge=edge)
@@ -1515,7 +1519,7 @@ write.nexus.networx <- function(obj, file = "", taxa=TRUE, splits=TRUE, append=F
     else {
         translate <- obj$translate
         for(i in 1:nrow(translate)){
-            cat(translate[i,1], " ", translate[i,2], ",\n", sep="", file = file, append = TRUE)
+            cat(translate$node[i], " ", translate$label[i], ",\n", sep="", file = file, append = TRUE)
         }        
     }
     cat(";\nVERTICES\n", file = file, append = TRUE)
@@ -1589,16 +1593,37 @@ read.nexus.networx <- function(file, splits=TRUE){
     transl <- grep("TRANSLATE", X, ignore.case = TRUE)
     translation <- if (length(transl) == 1 && transl > netStart) TRUE
     else FALSE
+    translate.nodes <- FALSE
     if (translation) {
         end <- semico[semico > transl][1]
         x <- X[(transl + 1):end]
         x <- unlist(strsplit(x, "[,; \t]"))
         x <- x[nzchar(x)]
+        x <- gsub("['\']", "", x)
         if(length(x) == 2*ntaxa){
-        TRANS <- matrix(x, ncol = 2, byrow = TRUE)
-        TRANS[, 2] <- gsub("['\"]", "", TRANS[, 2])
+            TRANS <- matrix(x, ncol = 2, byrow = TRUE)
+            TRANS[, 2] <- gsub("['\"]", "", TRANS[, 2])
+            TRANS <- list(node=as.numeric(TRANS[,1]), label=TRANS[,2])
+#            translate.nodes <- TRUE
         }
-        else TRANS = NULL
+        else{
+#            TRANS <- matrix(NA, nrow = ntaxa, ncol = 2)
+            y <- as.numeric(x)
+            node <- numeric(ntaxa)
+            label <- character(ntaxa)
+            k=1
+            for(i in 1:length(x)){
+                if(!is.na(y[i])) tmp <- y[i]
+                else{
+                    node[k] <- tmp
+                    label[k] <- x[i]
+#                    TRANS[k, ] <- c(tmp, x[i])
+                    k=k+1
+                }
+                
+            }
+            TRANS <- list(node=node, label=label)
+        }    
 #        n <- dim(TRANS)[1]
     }
     
@@ -1659,22 +1684,24 @@ read.nexus.networx <- function(file, splits=TRUE){
     edge <- EDGE[,c(2:3)]
     vert <- VERT[,c(2:3)]
     
-    if(!is.null(TRANS)){
-        oldLabel <- as.integer(as.numeric(TRANS[,1]))
-        for(i in 1:nrow(TRANS)){
+    
+    if(translate.nodes){
+#        oldLabel <- as.integer(as.numeric(TRANS[,1]))
+        oldLabel <- as.integer(TRANS$node)
+        for(i in 1:ntaxa){
             edge <- swapEdge(edge, oldLabel[i], i) 
             vert <- swapRow(vert, oldLabel[i], i)
         }
     }
+    
     # y-axis differs between in R and SplitsTree
     vert[,2] <- -vert[,2]  
 #    translate=data.frame(as.numeric(TRANS[,1]), TRANS[,2], stringsAsFactors=FALSE)
     plot <- list(vertices=vert)        
-    obj <- list(edge=edge, tip.label=TRANS[,2], Nnode=max(edge)-ntaxa,
-        edge.length=el, splitIndex=splitIndex, splits=spl ) 
+    obj <- list(edge=edge, tip.label=TRANS$label, Nnode=max(edge)-ntaxa,
+        edge.length=el, splitIndex=splitIndex, splits=spl, translate=TRANS) 
     obj$.plot <- list(vertices = vert, edge.color="black", edge.width=3, edge.lty = 1)
     class(obj) <- c("networx", "phylo")
-#    list(ntaxa=ntaxa, nvertices=nvertices, nedges=nedges, translate=TRANS, vertices=VERT, edges=EDGE, splits=spl)
     reorder(obj)
     obj
 }
