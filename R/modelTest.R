@@ -69,10 +69,10 @@ modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80",
         trees[[m]] = fittmp$tree
         m = m + 1
         if (I) {
-            if(trace>0)print(paste(model, "+I", sep = ""))
+            if(trace>0)print(paste0(model, "+I"))
             fitI = optim.pml(fittmp, model = model, optInv = TRUE, 
                              control = control)
-            res[m, 1] = paste(model, "+I", sep = "")
+            res[m, 1] = paste0(model, "+I")
             res[m, 2] = fitI$df
             res[m, 3] = fitI$logLik
             res[m, 4] = AIC(fitI)
@@ -83,11 +83,11 @@ modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80",
             m = m + 1
         }
         if (G) {
-            if(trace>0)print(paste(model, "+G", sep = ""))
+            if(trace>0)print(paste0(model, "+G"))
             fitG = update(fittmp, k = k)
             fitG = optim.pml(fitG, model = model, optGamma = TRUE, 
                              control = control)
-            res[m, 1] = paste(model, "+G", sep = "")
+            res[m, 1] = paste0(model, "+G")
             res[m, 2] = fitG$df
             res[m, 3] = fitG$logLik
             res[m, 4] = AIC(fitG)
@@ -98,11 +98,11 @@ modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80",
             m = m + 1
         }
         if (G & I) {
-            if(trace>0)print(paste(model, "+G+I", sep = ""))
+            if(trace>0)print(paste0(model, "+G+I"))
             fitGI = update(fitI, k = k)
             fitGI = optim.pml(fitGI, model = model, optGamma = TRUE, 
                               optInv = TRUE, control = control)
-            res[m, 1] = paste(model, "+G+I", sep = "")
+            res[m, 1] = paste0(model, "+G+I")
             res[m, 2] = fitGI$df
             res[m, 3] = fitGI$logLik
             res[m, 4] = AIC(fitGI)
@@ -113,10 +113,10 @@ modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80",
             m = m + 1
         }
         if (FREQ) {
-            if(trace>0)print(paste(model, "+F", sep = ""))
+            if(trace>0)print(paste0(model, "+F"))
             fitF = optim.pml(fittmp, model = model, optBf = TRUE, 
                              control = control)
-            res[m, 1] = paste(model, "+F", sep = "")
+            res[m, 1] = paste0(model, "+F")
             res[m, 2] = fitF$df
             res[m, 3] = fitF$logLik
             res[m, 4] = AIC(fitF)
@@ -127,11 +127,11 @@ modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80",
             m = m + 1
         }
         if (FREQ & I) {
-            if(trace>0)print(paste(model, "+I+F", sep = ""))
+            if(trace>0)print(paste0(model, "+I+F"))
             fitIF <- update(fitF, inv = fitI$inv)
             fitIF = optim.pml(fitIF, model = model, optBf = TRUE, optInv = TRUE,
                               control = control)
-            res[m, 1] = paste(model, "+I+F", sep = "")
+            res[m, 1] = paste0(model, "+I+F")
             res[m, 2] = fitIF$df
             res[m, 3] = fitIF$logLik
             res[m, 4] = AIC(fitIF)
@@ -142,11 +142,11 @@ modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80",
             m = m + 1
         }
         if (FREQ & G) {
-            if(trace>0)print(paste(model, "+G+F", sep = ""))
+            if(trace>0)print(paste0(model, "+G+F"))
             fitGF <- update(fitF, k=k, shape=fitG$shape)
             fitGF = optim.pml(fitGF, model = model, optBf = TRUE, optGamma = TRUE, 
                               control = control)
-            res[m, 1] = paste(model, "+G+F", sep = "")
+            res[m, 1] = paste0(model, "+G+F")
             res[m, 2] = fitGF$df
             res[m, 3] = fitGF$logLik
             res[m, 4] = AIC(fitGF)
@@ -157,11 +157,11 @@ modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80",
             m = m + 1
         }
         if (FREQ & G & I) {
-            if(trace>0)print(paste(model, "+G+I+F", sep = ""))
+            if(trace>0)print(paste0(model, "+G+I+F"))
             fitGIF <- update(fitIF, k=k)
             fitGIF = optim.pml(fitGIF, model = model, optBf = TRUE, optInv = TRUE, optGamma = TRUE, 
                                control = control)
-            res[m, 1] = paste(model, "+G+I+F", sep = "")
+            res[m, 1] = paste0(model, "+G+I+F")
             res[m, 2] = fitGIF$df
             res[m, 3] = fitGIF$logLik
             res[m, 4] = AIC(fitGIF)
@@ -200,7 +200,7 @@ modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80",
     for(i in 1:l){
         for(j in 1:n){
             mo = RES[[i]][[1]][j,1]
-            tname = paste("tree_", mo, sep = "")
+            tname = paste0("tree_", mo)
             tmpmod = RES[[i]][[3]][[j]]
             tmpmod["tree"] = call(tname)
             if(!is.null(tmpmod[["k"]]))tmpmod["k"] = k

@@ -601,7 +601,7 @@ c.phyDat <- function(...){
     levels <- attr(x[[1]], "levels")
     snames <- names(x[[1]])
     objNames<-as.character(object)
-    if(any(duplicated(objNames))) objNames <- paste(objNames,1:n,sep="")
+    if(any(duplicated(objNames))) objNames <- paste0(objNames, 1:n)
     tmp <- as.character(x[[1]])
     for(i in 2:n){
         match.names(snames,names(x[[i]]))
@@ -642,7 +642,7 @@ cbindPD <- function(..., gaps="-"){
     vec = numeric(n+1)
     wvec = numeric(n+1)
     objNames<-as.character(object)
-    if(any(duplicated(objNames))) objNames <- paste(objNames,1:n,sep="")
+    if(any(duplicated(objNames))) objNames <- paste0(objNames, 1:n)
     #    tmp <- as.character(x[[1]])
     
     for(i in 1:n){
@@ -690,7 +690,7 @@ cbind.phyDat <- function(..., gaps="-"){
     snames <- vector("list", n)  # names(x[[1]])
     vec = numeric(n+1)
     objNames<-as.character(object)
-    if(any(duplicated(objNames))) objNames <- paste(objNames,1:n,sep="")
+    if(any(duplicated(objNames))) objNames <- paste0(objNames, 1:n)
     tmp <- as.character(x[[1]])
     for(i in 1:n){
         snames[[i]] = names(x[[i]]) #match.names(snames,names(x[[i]]))
@@ -905,7 +905,7 @@ removeParsUninfoSites <- function(data){
 allSitePattern <- function(n,levels=c("a","c","g","t"), names=NULL){
     l=length(levels)
     X=vector("list", n)
-    if(is.null(names))names(X) = paste("t",1:n, sep="") 
+    if(is.null(names))names(X) = paste0("t", 1:n) 
     else names(X)=names
     for(i in 1:n)
         X[[i]] = rep(rep(levels, each=l^(i-1)),l^(n-i)) 
@@ -918,7 +918,7 @@ constSitePattern <- function(n,levels=c("a","c","g","t"), names=NULL){
     l=length(levels)
     X=matrix(0, l,n)
     X = matrix(rep(levels, each=n), n, l)
-    if(is.null(names))rownames(X) = paste("t",1:n, sep="")
+    if(is.null(names))rownames(X) = paste0("t", 1:n)
     else rownames(X)=names
     phyDat.default(X, levels)
 } 
@@ -1051,7 +1051,7 @@ read.aa <- function (file, format = "interleaved", skip = 0, nlines = 0,
             sequ <- gsub(" ", "", sequ)
             j <- j + 1
             while (nchar(sequ) < s) {
-                sequ <- paste(sequ, gsub(" ", "", X[j]), sep = "")
+                sequ <- paste0(sequ, gsub(" ", "", X[j]))
                 j <- j + 1
             }
             obj[i, ] <- unlist(strsplit(sequ, NULL))
