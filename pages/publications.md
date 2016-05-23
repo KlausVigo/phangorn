@@ -1,0 +1,33 @@
+---
+layout: page
+title: publications
+description: Klaus Schliep's publications
+---
+
+### preprints 
+
+**Klaus Schliep**, Alastair Alastair Potts, David A Morrison, Guido W Grimm (2016) Intertwining phylogenetic trees and networks [PeerJPreprint](https://peerj.com/preprints/2054/) 
+
+
+### journal articles
+
+Legendre F., D'Haese C.A., Deleporte P., Pellens R., Whiting M.F., **Schliep K.**, Grandcolas P. (2014) The evolution of social behaviour in Blaberid cockroaches with diverse habitats and social systems: phylogenetic analysis of behavioural sequences. Biological Journal of the Linnean Society, 111(1) 59--77 
+
+**Schliep K.P.** (2011) phangorn: Phylogenetic analysis in R. Bioinformatics, 27(4) 592--593 [![R](icons/Rlogo_32.png)](https://cran.r-project.org/package=phangorn)
+
+**Schliep K.P.**, Lopez, P., Lapointe F.-J. and Bapteste E. (2011). Harvesting Evolutionary Signals in a Forest of Prokaryotic Gene Trees, Molecular Biology and Evolution, 28(4), 1393--1405  
+
+Boucher, Y., Cordero, O., Takemura, A., Hunt, D., **Schliep, K.P.**, Bapteste, E., Lopez, P.,  Tarr, C. and Polz, M. (2011) Local Mobile Gene Pools Rapidly Cross Species Boundaries to Create Endemicity Within Global V. cholerae Populations. mBio, 2:2 e00335-10
+
+Leigh, J.W., **Schliep, K.P.**, Lopez P. and Bapteste E. (2011) Let Them Fall Where They May: Congruence Analysis in Massive Phylogenetically Messy Datasets. Molecular Biology and Evolution, 28 (10), 2773--2785
+
+Beauregard-Racine J., Bicep C., **Schliep K.**, Lopez P., Lapointe F.-J., Babteste E. (2011) Of Woods and Webs: Possible alternatives to the tree of life to study genomic fluidity in E. coli. Biology Direct 20, 6:39. 
+
+### technical reports
+
+Hechenbichler K., **Schliep K.** (2004) Weighted k-Nearest-Neighbor Techniques and Ordinal Classification, Sonderforschungsbereich 386, paper 399  [![R](icons/Rlogo_32.png)](https://cran.r-project.org/package=kknn) 
+ 
+
+### dissertation
+
+Klaus Schliep (2009) Some applications of statistical phylogenetics : a thesis presented in partial fulfilment of the requirements for the degree of Doctor of Philosophy in Biomathematics at Massey University [url](http://hdl.handle.net/10179/931)
