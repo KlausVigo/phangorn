@@ -2,17 +2,6 @@
 # tree manipulation
 # 
 
-# from coalescenMCMC
-getIndexEdge <- function(tip, edge)
-    ## 'integer(1)' mustn't be substituted by '0L' except if 'DUP = TRUE':
-    .C("get_single_index_integer", as.integer(edge[, 2L]),
-       as.integer(tip), integer(1L), PACKAGE = "phangorn",
-       NAOK = TRUE)[[3L]]
-
-getIndexEdge2 <- function(node, edge)
-    .C("get_two_index_integer", as.integer(edge[, 1L]),
-       as.integer(node), integer(2L), PACKAGE = "phangorn",
-       NAOK = TRUE)[[3L]]
 
 # no checks for postorder
 getRoot <- function (tree) 
@@ -102,7 +91,6 @@ node2root <- function(x){
     maxD1 = node2root(tree)[1:nTips] 
     ind = which.max(maxD1)
     tmproot = Ancestors(tree, ind, "parent")
-#    tree = reroot(tree, tmproot)
     nTips  = length(tree$tip.label)
     if(tmproot>nTips) tree = root(tree, node=tmproot)
     else  tree = root(tree, tmproot)   
@@ -182,8 +170,6 @@ pruneTree = function(tree, ..., FUN = ">="){
 # pos statt i      
 dropTip <- function(x, i, check.binary=FALSE, check.root=TRUE){
     edge <- x$edge
-#    edge1 <- edge[,1]
-#    edge2 <- edge[,2]
     root <- getRoot(x)
     ch <- which(edge[,2] == i)
     pa <- edge[ch,1] 
@@ -222,46 +208,6 @@ dropTip <- function(x, i, check.binary=FALSE, check.root=TRUE){
     x
 }
 
-# kind of works well too
-dropTip2 <- function(x, i, check.binary=FALSE, check.root=TRUE){
-  edge <- x$edge
-  root <- getRoot(x)
-  ch <- which(edge[,2] == i)
-  pa <- edge[ch,1] 
-  edge = edge[-ch,]
-  ind <- which(edge[,1] == pa) 
-  if(root == pa){
-    if(length(ind)==1){
-      edge = edge[-ind,]
-      x$Nnode=x$Nnode-1L
-    }
-    if(length(ind)==2){
-      n = dim(edge)[1]
-      newroot = edge[n-2L,1]
-      newedge = edge[ind,2] 
-      if(newedge[1]==newroot)edge[n-1,] <- newedge
-      else edge[n-1,] <- newedge[2:1]
-      edge = edge[-n,]   
-      x$Nnode=x$Nnode-1L
-      edge[edge==newroot] = root
-      pa <- newroot
-    }
-    # todo handle unrooted trees  
-  }
-  else{
-    nind <- which(edge[,2] == pa)         
-    # normal binary case
-    if(length(ind)==1){
-      edge[nind,2] = edge[ind,2]
-      edge <- edge[-ind,]
-      x$Nnode <- x$Nnode-1L           
-    }  
-  }
-  #
-#  edge[edge>pa]  = edge[edge>pa] -1L 
-  x$edge <- edge
-  x
-}
 
 
 # like drop tip and returns two trees, 
@@ -340,114 +286,6 @@ dropNode <- function(x, i, check.binary=FALSE, check.root=TRUE, all.ch=NULL){
   y$edge <- edge2
   y$Nnode <- length(unique(edge2[,1]))
   list(x, y, pa)
-}
-
-
-
-dropNodeNew <- function(edge, i, nTips, check.binary=FALSE, check.root=TRUE){
-    root <- edge[nrow(edge),2]
-    ch <- which(edge[,2] == i)
-    pa <- edge[ch,1]
-    edge2=NULL
-    
-    # einfachere allChildren Variante 2*schneller
-    allKids = function (edge, nTips) 
-    {
-        parent = edge[, 1]
-        children = edge[, 2]
-        .Call("AllChildren", as.integer(children), as.integer(parent), as.integer(max(edge)), PACKAGE = "phangorn")
-    }
-    
-    descAll = function (edge, node, nTips) 
-    {
-        ch = allKids(edge, nTips)
-        isInternal = logical(max(edge))
-        isInternal[unique(edge[, 1])] = TRUE
-        desc = function(node, isInternal) {
-            if (!isInternal[node]) return(node)
-            res = NULL
-            while (length(node) > 0) {
-                tmp = unlist(ch[node])
-                res = c(res, tmp)
-                node = tmp[isInternal[tmp]]
-            }
-            res
-        }
-        desc(node, isInternal)
-    }    
-    
-    if(i>nTips){
-        kids <- descAll(edge, i, nTips)
-        ind <- match(kids,edge[,2])
-        edge2 <- edge[sort(ind),]            
-        edge <- edge[-c(ch, ind),]
-    }    
-    else edge = edge[-ch,]
-    if(nrow(edge)<3)return(NULL)  
-    ind <- which(edge[,1] == pa) 
-    if(root == pa){
-        if(length(ind)==1){
-            edge = edge[-ind,]
-        }
-        if(length(ind)==2){
-            n = dim(edge)[1]
-            newroot = edge[n-2L,1]
-            newedge = edge[ind,2] 
-            if(newedge[1]==newroot)edge[n-1,] <- newedge
-            else edge[n-1,] <- newedge[2:1]
-            edge = edge[-n,]   
-            edge[edge==newroot] = root
-            pa <- newroot
-        }
-        # todo handle unrooted trees  
-    }
-    else{
-        nind <- which(edge[,2] == pa)         
-        # normal binary case
-        if(length(ind)==1){
-            edge[nind,2] = edge[ind,2]
-            edge <- edge[-ind,]          
-        }  
-    }
-    #
-    #  edge[edge>pa]  = edge[edge>pa] -1L 
-    list(edge, edge2, pa)
-}
-
-
-dropTipNew <- function(edge, i, nTips, check.binary=FALSE, check.root=TRUE){
-    root <- edge[nrow(edge),2]
-    ch <- which(edge[,2] == i)
-    pa <- edge[ch,1] 
-    edge = edge[-ch,]
-    ind <- which(edge[,1] == pa) 
-    if(root == pa){
-        if(length(ind)==1){
-            edge = edge[-ind,]
-        }
-        if(length(ind)==2){
-            n = dim(edge)[1]
-            newroot = edge[n-2L,1]
-            newedge = edge[ind,2] 
-            if(newedge[1]==newroot)edge[n-1,] <- newedge
-            else edge[n-1,] <- newedge[2:1]
-            edge = edge[-n,]   
-            edge[edge==newroot] = root
-            pa <- newroot
-        }
-        # todo handle unrooted trees  
-    }
-    else{
-        nind <- which(edge[,2] == pa)         
-        # normal binary case
-        if(length(ind)==1){
-            edge[nind,2] = edge[ind,2]
-            edge <- edge[-ind,]       
-        }  
-    }
-    #
-    edge[edge>pa]  = edge[edge>pa] -1L 
-    edge
 }
 
 
@@ -670,44 +508,6 @@ allTrees <- function (n, rooted = FALSE, tip.label = NULL)
     else tip.label
     class(trees) <- "multiPhylo"
     trees
-}
-
-
-
-dn <- function (x){
-    if (!is.binary.tree(x) ) 
-        x <- multi2di(x, random = FALSE)  
-    x = reroot2(x, 1)       
-    n <- length(x$tip.label)
-    n.node <- x$Nnode
-    N <- n + n.node
-    x <- reorderPruning(x)
-    res <- matrix(NA, N, N)
-    res[cbind(1:N, 1:N)] <- 0
-    res[x$edge] <- res[x$edge[, 2:1]] <- 1
-    for (i in seq(from = 1, by = 2, length.out = n.node)) {
-        j <- i + 1
-        anc <- x$edge[i, 1]
-        des1 <- x$edge[i, 2]
-        des2 <- x$edge[j, 2]
-        if (des1 > n) 
-            des1 <- which(!is.na(res[des1, ]))
-        if (des2 > n) 
-            des2 <- which(!is.na(res[des2, ]))
-        for (y in des1) res[y, des2] <- res[des2, y] <- res[anc, 
-            y] + res[anc, des2]
-        if (anc != 1) {
-            ind <- which(x$edge[, 2] == anc)
-            nod <- x$edge[ind, 1]
-            l <- length(ind)
-            res[des2, nod] <- res[nod, des2] <- res[anc, des2] + 
-                l
-            res[des1, nod] <- res[nod, des1] <- res[anc, des1] + 
-                l
-        }
-    }
-    dimnames(res)[1:2] <- list(1:N)
-    res
 }
 
 
@@ -1112,26 +912,6 @@ mrca2 <- function(phy, full=FALSE){
 # mrca.phylo <- getMRCA
 
 
-# 1090
-rNNI_Old <- function(tree, moves=1, n=1){   
-    k = length(na.omit(match(tree$edge[,2], tree$edge[,1])))   
-    if(n==1){
-        trees = tree
-        for(i in 1:moves) trees = nnin(trees,sample(k,1))[[sample(2,1)]] 
-        trees$tip.label <- tree$tip.label
-    }  
-    else{
-        trees = vector("list", n)
-        for(j in 1:n){
-            tmp = tree 
-            for(i in 1:moves) tmp = nnin(tmp, sample(k,1))[[sample(2,1)]]
-            tmp$tip.label=NULL
-            trees[[j]] = tmp
-        }
-        attr(trees, "TipLabel") <- tree$tip.label
-        class(trees) <- "multiPhylo"   
-    }
-    trees
-}
+
 
 
