@@ -2742,7 +2742,9 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
         model <- match.arg(model, .aamodels)
         getModelAA(model, bf=is.null(bf), Q=is.null(Q)) 
     }  
-    if(type=="CODON") Q <- as.numeric(.syn > 0)
+    if(type=="CODON"){ 
+        Q <- as.numeric(.syn > 0)
+    }
     if (is.null(bf)) 
         bf <- rep(1/length(levels), length(levels))
     if (is.null(Q)) 
@@ -3419,11 +3421,14 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         object = update(object, model=model)  
     }     
     if (type == "CODON") {
+        if(is.null(model)) model <- "codon1"
+        model <- match.arg(model, c("codon0", "codon1", "codon2", "codon3", "YN98"))
         dnds <- object$dnds 
         tstv <- object$tstv
         if(!is.null(model)){
             if(model == "codon0") optQ = FALSE
             else  optQ = TRUE
+            if(model == "YN98") optBf = TRUE
         }
     }       
     Q = object$Q
@@ -3570,10 +3575,13 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         }
         if (optQ) {
             if(type=="CODON"){
-                if(is.null(model)) model <- "codon1"
-                model <- match.arg(model, c("codon0", "codon1", "codon2", "codon3"))
+#                if(is.null(model)) model <- "codon1"
+#                model <- match.arg(model, c("codon0", "codon1", "codon2", "codon3", "YN98"))
                 ab <- c(tstv, dnds)
                 res <- switch(model, 
+                              YN98 = optimCodon(tree,data, Q=rep(1,1830), subs=.sub, syn=.syn, 
+                                                  bf = bf, w = w, g = g, inv = inv, INV = INV, ll.0 = ll.0, rate = rate, k = k, ab=log(ab),
+                                                  optK=TRUE, optW = TRUE),                              
                               codon1 = optimCodon(tree,data, Q=rep(1,1830), subs=.sub, syn=.syn, 
                                                   bf = bf, w = w, g = g, inv = inv, INV = INV, ll.0 = ll.0, rate = rate, k = k, ab=log(ab),
                                                   optK=TRUE, optW = TRUE),  

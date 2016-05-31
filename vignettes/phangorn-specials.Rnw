@@ -212,7 +212,7 @@ If optQ=TRUE and neither a model or subs are supplied than a symmetric (optBf=FA
 \end{table}
 
 \section{Codon substitution models}
-A special case of the transition rates are codon models. \phangorn{} now offers the possibility to estimate the $d_N/d_S$ ratio (sometimes called ka/ks), for an overview see \cite{Yang2006}. These functions extend the option to estimates the $d_N/d_S$ ratio for pairwise sequence comparison as it is available through the function \Rfunction{kaks} in \Rpackage{seqinr}. The transition rate between between codon $i$ and $j$ is defined as follows:
+A special case of the transition rates are codon models. \phangorn{} now offers the possibility to estimate the $d_N/d_S$ ratio (sometimes called ka/ks), for an overview see \cite{Yang2014}. These functions extend the option to estimates the $d_N/d_S$ ratio for pairwise sequence comparison as it is available through the function \Rfunction{kaks} in \Rpackage{seqinr}. The transition rate between between codon $i$ and $j$ is defined as follows:
 \begin{eqnarray}
 q_{ij}=\left\{ 
     \begin{array}{l@{\quad}l}
@@ -243,6 +243,7 @@ fit3 <- optim.pml(fit, model="codon3", control=pml.control(trace=0))
 anova(fit0, fit2, fit3, fit1)
 @
 The models described here all assume equal frequencies for each codon (=1/61). One can optimise the codon frequencies setting the option to optBf=TRUE. As the convergence of the 61 parameters the convergence is likely slow set the maximal iterations to a higher value than the default (e.g. control = pml.control(maxit=50)).  
+The "YN98" model \cite{Yang98} is similar to the "codon1", but addional optimises the codon frequencies.   
 
 \section{Generating trees}
 \phangorn{} has several functions to generate tree topologies, which may are interesting for simulation studies. \Rfunction{allTrees} computes all possible bifurcating tree topologies either rooted or unrooted for up to 10 taxa. One has to keep in mind that the number of trees is growing exponentially, use \Rfunction(howmanytrees) from \ape{} as a reminder. 

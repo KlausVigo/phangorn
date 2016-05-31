@@ -70,6 +70,8 @@ These models are specified as in Posada (2008).
 
 So far 17 amino acid models are supported ("WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24", "VT","RtREV", "HIVw", "HIVb", "FLU", "Blossum62", "Dayhoff_DCMut" and "JTT_DCMut") and additionally rate matrices and amino acid frequences can be supplied. 
 
+It is also possible to estimate codon models (e.g. YN98), for details see also the chapter in vignette("phangorn-specials"). 
+
 If the option 'optRooted' is set to TRUE than the edge lengths of rooted tree are optimized.
 The tree has to be rooted and by now ultrametric! Optimising rooted trees is generally much slower.
   
@@ -125,8 +127,9 @@ Kosiol, C, and Goldman, N (2005) Different versions of the Dayhoff rate matrix -
 
 L.-T. Nguyen, H.A. Schmidt, A. von Haeseler, and B.Q. Minh (2015) IQ-TREE: A fast and effective stochastic algorithm for estimating maximum likelihood phylogenies. \emph{Molecular Biology and Evolution}, \bold{32}, 268--274.
 
-Vos, R. A. (2003) Accelerated Likelihood Surface Exploration: The Likelihood Ratchet. \emph{Systematic Biology}, 
-\bold{52(3)}, 368--373
+Vos, R. A. (2003) Accelerated Likelihood Surface Exploration: The Likelihood Ratchet. \emph{Systematic Biology}, \bold{52(3)}, 368--373
+
+Yang, Z., and R. Nielsen (1998) Synonymous and nonsynonymous rate variation in nuclear genes of mammals. \emph{Journal of Molecular Evolution}, \bold{46}, 409-418.
 }
 \author{Klaus Schliep \email{klaus.schliep@gmail.com}}
 \seealso{
