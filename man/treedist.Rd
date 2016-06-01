@@ -1,6 +1,7 @@
 \name{treedist}
 \alias{treedist}
 \alias{RF.dist}
+\alias{wRF.dist}
 \alias{KF.dist}
 \alias{path.dist}
 %\alias{print.treedist}
@@ -11,6 +12,7 @@
 \usage{
 treedist(tree1, tree2, check.labels = TRUE)
 RF.dist(tree1, tree2=NULL, check.labels=TRUE, rooted=FALSE)
+wRF.dist(tree1, tree2=NULL, check.labels=TRUE, rooted=FALSE)
 KF.dist(tree1, tree2=NULL, check.labels=TRUE, rooted=FALSE)
 path.dist(tree1, tree2=NULL, check.labels=TRUE, use.weight=FALSE)
 }

@@ -2,11 +2,17 @@
      
 NEW FEATURES
 
+    o new weighted Robinson-Foulds distance, suggested by Michelle Kendall
+
 BUG FIXES
 
 OTHER CHANGES
 
-
+    o codon model "YN98" can be called directly, improved documentation
+    
+    o more unit tests
+    
+    
 
      CHANGES in PHANGORN VERSION 2.0.3
 
