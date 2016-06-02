@@ -33,11 +33,11 @@ path.dist(tree1, tree2=NULL, check.labels=TRUE, use.weight=FALSE)
 }
 \details{
 The Robinson-Foulds distance is well defined only for bifurcating trees. 
-RF.dist returns the Robinson-Foulds distance (Robinson & Foulds 1981) between either 2 trees or computes a matrix of all pairwise distances if a \code{multiPhylo} object is given. 
-\code{KF.dist} return the branch score distance (Kuhner & Felsenstein 1994). 
+\code{RF.dist} returns the Robinson-Foulds distance (Robinson & Foulds 1981) between either 2 trees or computes a matrix of all pairwise distances if a \code{multiPhylo} object is given. The Robinson-Foulds distance only depends on the toplogy of the trees. 
+If edge weights should be considered \code{wRF.dist} calculates the weighted RF distance (Robinson & Foulds 1981). and \code{KF.dist} calculates the branch score distance (Kuhner & Felsenstein 1994). 
 \code{path.dist} computes the path difference metric as described in Steel and Penny 1993).
 
-For large number of trees the distance functions will use a lot of memory!
+For large number of trees the distance functions can use a lot of memory!
 
 
 % The function used internally is 2 * (nt - m) where nt is the number of tips and 
@@ -51,6 +51,8 @@ Steel M. A. and Penny P. (1993) \emph{Distributions of tree comparison metrics -
 Kuhner, M. K. and Felsenstein, J. (1994) \emph{A simulation comparison of phylogeny algorithms under equal and unequal evolutionary rates}, Molecular Biology and Evolution, \bold{11(3)}, 459--468
 
 D.F. Robinson and L.R. Foulds (1981) \emph{Comparison of phylogenetic trees}, Mathematical Biosciences, \bold{53(1)}, 131--147
+
+D.F. Robinson and L.R. Foulds (1979) Comparison of weighted labelled trees. In Horadam, A. F. and Wallis, W. D. (Eds.), \emph{Combinatorial Mathematics VI: Proceedings of the Sixth Australian Conference on Combinatorial Mathematics, Armidale, Australia}, 119--126
 }
 \author{ Klaus P. Schliep \email{klaus.schliep@gmail.com}} 
 \seealso{\code{\link[ape]{dist.topo}}}
