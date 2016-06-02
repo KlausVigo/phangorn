@@ -1,20 +1,15 @@
 context("treeManipulation")
 
-
 set.seed(42)
 tree <- rtree(100)
-trees_6 <- allTrees(6) 
-trees_nni <- nni(tree)
 
 #Ancestors(x, node, type=c("all","parent"))
 #Children(x, node)
 #Siblings(x, node, include.self=FALSE)
 #Descendants(x, node, type=c("tips","children","all"))
-#Ancestors(tree, 1:3, "all")
-#Children(tree, 11)
-#Descendants(tree, 11, "tips")
 #Siblings(tree, 3)
 #mrca.phylo(tree, 1:3)
+#midpoint
 
 
 desc_108 <- Descendants(tree, 108)[[1]]
@@ -27,11 +22,11 @@ test_that("ancestor, mrca, descendants", {
 
 test_that("allTrees, nni", {
     ## allTrees
-    expect_is(trees_6, "multiPhylo")
-    expect_true(all(RF.dist(trees_6)>0))
+    expect_is(allTrees(6), "multiPhylo")
+    expect_true(all(RF.dist(allTrees(6))>0))
     ## nni
-    expect_is(trees_nni, "multiPhylo")
-    expect_true(all(RF.dist(trees_nni, tree)>0))
+    expect_is(nni(tree), "multiPhylo")
+    expect_true(all(RF.dist(nni(tree), tree)>0))
 })
 
 
