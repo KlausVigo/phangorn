@@ -45,13 +45,13 @@ pml.control(epsilon = 1e-08, maxit = 10, trace = 1)
   \item{\dots}{Further arguments passed to or from other methods.}
   \item{epsilon}{Stop criterion for optimisation (see details).} 
   \item{maxit}{Maximum number of iterations (see details).}  
-  \item{trace}{Show output during otimization (see details).}    
+  \item{trace}{Show output during optimization (see details).}    
 }
 \details{
 The topology search uses a nearest neighbor interchange (NNI) 
 and the implementation is similar to phyML. 
 The option model in pml is only used for amino acid models. 
-The option model defines the nucleotide model which is getting optmised, 
+The option model defines the nucleotide model which is getting optimised, 
 all models which are included in modeltest can be chosen. Setting this option 
 (e.g. "K81" or "GTR") overrules options optBf and optQ.  
 Here is a overview how to estimate different phylogenetic models 
@@ -68,7 +68,7 @@ JC, F81, K80, HKY, TrNe, TrN, TPM1, K81, TPM1u, TPM2, TPM2u, TPM3, TPM3u,
 TIM1e, TIM1, TIM2e, TIM2, TIM3e, TIM3, TVMe, TVM, SYM and GTR. 
 These models are specified as in Posada (2008).
 
-So far 17 amino acid models are supported ("WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24", "VT","RtREV", "HIVw", "HIVb", "FLU", "Blossum62", "Dayhoff_DCMut" and "JTT_DCMut") and additionally rate matrices and amino acid frequences can be supplied. 
+So far 17 amino acid models are supported ("WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24", "VT","RtREV", "HIVw", "HIVb", "FLU", "Blossum62", "Dayhoff_DCMut" and "JTT_DCMut") and additionally rate matrices and amino acid frequencies can be supplied. 
 
 It is also possible to estimate codon models (e.g. YN98), for details see also the chapter in vignette("phangorn-specials"). 
 
@@ -78,7 +78,7 @@ The tree has to be rooted and by now ultrametric! Optimising rooted trees is gen
 \code{pml.control} controls the fitting process. \code{epsilon} and \code{maxit} are only defined 
 for the most outer loop, this affects \code{pmlCluster}, \code{pmlPart} and \code{pmlMix}. 
 \code{epsilon} is defined as (logLik(k)-logLik(k+1))/logLik(k+1), this seems to be a good 
-heuristics which works reasonalby for small and large trees or alignments. 
+heuristics which works reasonably for small and large trees or alignments. 
 If \code{trace} is set to zero than no out put is shown, if functions are called internally 
 than the trace is decreased by one, so a higher of trace produces more feedback. 
 
@@ -87,14 +87,15 @@ and for \code{ratchet} the likelihood ratchet as in Vos (2003).
 This should helps often to find better tree topologies, especially for larger trees.   
 }
 \value{
-Returns a list of class \code{ll.phylo}
-  \item{logLik}{Log likelihood of the tree.}
-  \item{siteLik}{Site log likelihoods.}
-  \item{root}{likelihood in the root node.}
+\code{pml} or \code{optim.pml} return a list of class \code{pml}, some are useful for further computations like 
+  \item{tree}{the phylogenetic tree.}
+  \item{data}{the alignment.}
+  \item{logLik}{Log-likelihood of the tree.}
+  \item{siteLik}{Site log-likelihoods.}
   \item{weight}{Weight of the site patterns.}
 }
 \references{ 
-Felsenstein, J. (1981) Evolutionary trees from DNA sequences: a maxumum
+Felsenstein, J. (1981) Evolutionary trees from DNA sequences: a maximum
 likelihood approach. \emph{Journal of Molecular Evolution}, \bold{17}, 368--376. 
 
 Felsenstein, J. (2004). \emph{Inferring Phylogenies}. Sinauer Associates, Sunderland.

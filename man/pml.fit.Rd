@@ -10,7 +10,7 @@
 Internal maximum likelihood functions.   
 }
 \description{
-These functions are internally used for the liklihood computations in \code{pml} or \code{optim.pml}. 
+These functions are internally used for the likelihood computations in \code{pml} or \code{optim.pml}. 
 }
 \usage{
 pml.fit(tree, data, bf=rep(1/length(levels), length(levels)), shape=1, k=1,
@@ -61,13 +61,13 @@ discrete.gamma(alpha, k)
 }
 }
 \details{
-These functions are exported to be used in different packages so far only in the package coalescentMCMC, but are not intended for end user. Most of the functions call C code. 
+These functions are exported to be used in different packages so far only in the package coalescentMCMC, but are not intended for end user. Most of the functions call C code and are far less forgiving if the import is not what they expect than \code{pml}. 
 }
 \value{
-\code{pml.fit} returns the logliklihood. 
+\code{pml.fit} returns the log-likelihood. 
 }
 \references{
-Felsenstein, J. (1981) Evolutionary trees from DNA sequences: a maxumum
+Felsenstein, J. (1981) Evolutionary trees from DNA sequences: a maximum
 likelihood approach. \emph{Journal of Molecular Evolution}, \bold{17}, 368--376. 
 }
 \author{
