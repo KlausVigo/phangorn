@@ -327,7 +327,7 @@ wRF1 <- function(trees, check.labels = TRUE){
 
 
 
-mRF2 <- function(tree, trees, check.labels = TRUE){
+mRF2 <- function(tree, trees, normalize=FALSE, check.labels = TRUE){
     if (!inherits(trees,"multiPhylo")) 
         stop("trees should be an object of class \"multiPhylo\"")
     if (!inherits(tree,"phylo")) 
@@ -372,11 +372,15 @@ mRF2 <- function(tree, trees, check.labels = TRUE){
 #        RF[i] <- sum(match(xx[[i]], yy, nomatch=0L)==0L) + sum(match(yy, xx[[i]], nomatch=0L)==0L)
     }
     if(!is.null(names(trees)))names(RF) <- names(trees)
-    return(RF)
+    if(!normalize)return(RF)
+    else{
+        sc <- sapply(trees, Nnode) + Nnode(tree) - 2
+        return(RF/sc)
+    }
 }
 
 
-mRF<-function(trees){
+mRF<-function(trees, normalize=FALSE){
     if (!inherits(trees,"multiPhylo")) 
         stop("trees should be an object of class \"multiPhylo\"")
     trees <- .compressTipLabel(trees)
@@ -406,6 +410,7 @@ mRF<-function(trees){
         for (j in (i + 1):l){
             RF[k] <- Nnodes[i] + Nnodes[j] - 2 * sum(fmatch(xx[[j]], tmp, nomatch=0L)>0L)
 #            RF[k] <- sum(match(xx[[j]], tmp, nomatch=0L)==0L) + sum(match(tmp, xx[[j]], nomatch=0L)==0L)
+            if(normalize) RF[k] <- RF[k] / ( Nnodes[i] + Nnodes[j] - 2)
             k=k+1
         }   
     }
@@ -418,7 +423,7 @@ mRF<-function(trees){
 }
 
 
-RF0 <- function(tree1, tree2=NULL, check.labels = TRUE, rooted=FALSE){   
+RF0 <- function(tree1, tree2=NULL, normalize=FALSE, check.labels = TRUE, rooted=FALSE){   
     r1 = is.rooted(tree1)
     r2 = is.rooted(tree2)
     if(r1 != r2){
@@ -452,16 +457,17 @@ RF0 <- function(tree1, tree2=NULL, check.labels = TRUE, rooted=FALSE){
         bp2 <- SHORTwise(bp2, length(tree2$tip))    
     }
     RF = sum(match(bp1, bp2, nomatch=0L)==0L) + sum(match(bp2, bp1, nomatch=0L)==0L)
+    if(normalize) RF <- RF / (Nnode(tree1) + Nnode(tree2) - 2)
     RF
 }
 
 
-RF.dist <- function(tree1, tree2=NULL, check.labels = TRUE, rooted=FALSE)
+RF.dist <- function(tree1, tree2=NULL, normalize=FALSE, check.labels = TRUE, rooted=FALSE)
 {
-    if(class(tree1)=="phylo" && class(tree2)=="phylo")return(RF0(tree1, tree2, check.labels, rooted))
-    if(class(tree1)=="multiPhylo" && is.null(tree2))return(mRF(tree1)) 
-    if(class(tree1)=="phylo" && class(tree2)=="multiPhylo")return(mRF2(tree1, tree2, check.labels))
-    if(class(tree2)=="phylo" && class(tree1)=="multiPhylo")return(mRF2(tree2, tree1, check.labels))
+    if(class(tree1)=="phylo" && class(tree2)=="phylo")return(RF0(tree1, tree2, normalize, check.labels, rooted))
+    if(class(tree1)=="multiPhylo" && is.null(tree2))return(mRF(tree1, normalize)) 
+    if(class(tree1)=="phylo" && class(tree2)=="multiPhylo")return(mRF2(tree1, tree2, normalize, check.labels))
+    if(class(tree2)=="phylo" && class(tree1)=="multiPhylo")return(mRF2(tree2, tree1, normalize, check.labels))
     else return(NULL)
 }
 
