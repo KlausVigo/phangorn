@@ -15,7 +15,7 @@ allTrees(n, rooted = FALSE, tip.label = NULL)
   \item{tip.label}{Tip labels.}
 }
 \value{
-   an object of class multiPhylo. 
+   an object of class \code{multiPhylo}. 
 }
 \author{ Klaus Schliep \email{klaus.schliep@gmail.com} }
 

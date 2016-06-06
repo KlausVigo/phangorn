@@ -78,7 +78,7 @@ Penny D. and Hendy M.D. (1986) Estimating the reliability of evolutionary trees.
 Klaus Schliep \email{klaus.schliep@gmail.com}
 }
 \seealso{
-\code{\link{optim.pml}}, \code{\link{pml}}, \code{\link{plot.phylo}}, \code{\link{nodelabels}},\code{\link{consensusNet}}
+\code{\link{optim.pml}}, \code{\link{pml}}, \code{\link{plot.phylo}}, \code{\link{nodelabels}},\code{\link{consensusNet}} and \code{\link{SOWH.test}} for parametric bootstrap
 }
 \examples{
 \dontrun{

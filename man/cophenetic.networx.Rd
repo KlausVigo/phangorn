@@ -14,8 +14,8 @@
   pairs of tips from a phylogenetic network using its branch lengths.
 }
 \value{
-  an object of class dist names set to the names of the
-  tips (as given by the element \code{tip.label} of the argument \code{x}).
+  an object of class \code{dist}, names are set according to the 
+  tip labels (as given by the element \code{tip.label} of the argument \code{x}).
 }
 \author{Klaus Schliep}
 \seealso{

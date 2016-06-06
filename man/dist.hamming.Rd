@@ -22,7 +22,7 @@ writeDist(dm, file="")
   \item{x}{An object of class \code{phyDat}}
   \item{ratio}{Compute uncorrected ('p') distance or character difference.}
   \item{model}{One of "JC69", "F81" or one of 17 amino acid models see details.}
-  \item{exclude}{One of "none", "all", "pairwise" indicating whether to delete the sites with missing data (or ambigious states). The default is handle missing data as in pml.}
+  \item{exclude}{One of "none", "all", "pairwise" indicating whether to delete the sites with missing data (or ambiguous states). The default is handle missing data as in pml.}
   \item{bf}{A vector of base frequencies.}
   \item{Q}{A vector containing the lower triangular part of the rate matrix.} 
   \item{k}{Number of intervals of the discrete gamma distribution.}
@@ -35,7 +35,7 @@ writeDist(dm, file="")
   an object of class \code{dist}
 }
 \details{
-So far 17 amino acid models are supported ("WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24", "VT","RtREV", "HIVw", "HIVb", "FLU", "Blossum62", "Dayhoff_DCMut" and "JTT_DCMut") and additional rate matrices and frequences can be supplied. 
+So far 17 amino acid models are supported ("WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24", "VT","RtREV", "HIVw", "HIVb", "FLU", "Blossum62", "Dayhoff_DCMut" and "JTT_DCMut") and additional rate matrices and frequencies can be supplied. 
 
 The "F81" model uses empirical base frequencies, the "JC69" equal base frequencies. This is even the case if the data are not nucleotides. 
 }

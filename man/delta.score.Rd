@@ -16,7 +16,7 @@ delta.score(x, arg = "mean", ...)
 an object of class \code{phyDat}
 }
   \item{arg}{
-Specifies the retjurn value, one of "all", "mean" or "sd"
+Specifies the return value, one of "all", "mean" or "sd"
 }
   \item{...}{
      further arguments passed through \code{dist.hamming}
@@ -26,7 +26,7 @@ Specifies the retjurn value, one of "all", "mean" or "sd"
 %%  ~~ If necessary, more details than the description above ~~
 %}
 \value{
-A vector containg the \eqn{\delta} scores. 
+A vector containing the \eqn{\delta} scores. 
 }
 \references{
 BR Holland, KT Huber, A Dress, V Moulton (2002) \eqn{\delta} Plots: a tool for analyzing phylogenetic distance data

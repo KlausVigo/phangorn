@@ -26,7 +26,7 @@ plotAnc(tree, data, i, col=NULL, cex.pie=par("cex"), pos="bottomright", ...)
   \item{i}{plots the i-th character of the \code{data}.}
   \item{col}{a vector containing the colors for all possible states.}
   \item{cex.pie}{a numeric defining the size of the pie graphs}
-  \item{pos}{a character string defining the positiond of the legend}
+  \item{pos}{a character string defining the position of the legend}
   \item{cost}{A cost matrix for the transitions between two states.} 
   \item{\dots}{Further arguments passed to or from other methods.}
 }

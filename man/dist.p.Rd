@@ -12,7 +12,7 @@ dist.p(x, cost="polymorphism", ignore.indels=TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{a matrix cotaining DNA sequences; this must be of class
+  \item{x}{a matrix containing DNA sequences; this must be of class
  "phyDat" (use as.phyDat to convert from DNAbin objects).}
  \item{cost}{A cost matrix or "polymorphism" for a pre defined one.} 
  \item{ignore.indels}{a logical indicating whether gaps are treated
@@ -21,7 +21,7 @@ characters, so an an indel that spans a number of base positions
 would be treated as multiple character states.}
 }
 \details{
-The polymorphism p-distances (Potts et al. in press) have been 
+The polymorphism p-distances (Potts et al. 2014) have been 
 developed to analyse intra-individual variant polymorphism. For 
 example, the widely used ribosomal internal transcribed spacer (ITS) 
 region  (e.g. Alvarez and Wendel, 2003) consists of 100's to 1000's 
