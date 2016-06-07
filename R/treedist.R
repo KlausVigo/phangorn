@@ -167,7 +167,7 @@ treedist <- function (tree1, tree2, check.labels=TRUE)
 }
 
 
-wRF0 <- function(tree1, tree2, check.labels=TRUE, rooted = FALSE){    
+wRF0 <- function(tree1, tree2, normalize=FALSE, check.labels=TRUE, rooted = FALSE){    
     r1 = is.rooted(tree1)
     r2 = is.rooted(tree2)
     if (r1 != r2) {
@@ -209,20 +209,21 @@ wRF0 <- function(tree1, tree2, check.labels=TRUE, rooted = FALSE){
     w1[tree1$edge[,2]] <- tree1$edge.length
     w2[tree2$edge[,2]] <- tree2$edge.length
     
-    ind3 = match(bp1, bp2, nomatch=0L)
-    ind4 = ind3[ind3>0]
-    ind3 = which(ind3>0)
+    ind3 <- match(bp1, bp2, nomatch=0L)
+    ind4 <- ind3[ind3>0]
+    ind3 <- which(ind3>0)
     
-    s1 = sum(abs(w1[ind3] - w2[ind4]))
-    s2 = sum(w1[-ind3])
-    s3 = sum(w2[-ind4])
+    s1 <- sum(abs(w1[ind3] - w2[ind4]))
+    s2 <- sum(w1[-ind3])
+    s3 <- sum(w2[-ind4])
     
-    wRF = s1 + s2 + s3
+    wRF <- s1 + s2 + s3
+    if(normalize) wRF <- wRF / (sum(tree1$edge.length) + sum(tree2$edge.length))
     return(wRF)
 }
 
 
-wRF2 <- function(tree, trees, check.labels = TRUE){    
+wRF2 <- function(tree, trees, normalize=FALSE, check.labels = TRUE){    
     if(check.labels){
         trees <- .compressTipLabel(trees)
         tree <- checkLabels(tree, attr(trees, "TipLabel"))
@@ -273,11 +274,15 @@ wRF2 <- function(tree, trees, check.labels = TRUE){
         s3 = sum(w[-ind4])
         wRF[i] = (s1 + s2 + s3)
     }
+    if(normalize){
+        sc <- sapply(trees, function(x)sum(x$edge.length)) + sum(tree$edge.length)
+        wRF <- wRF / sc
+    }
     wRF
 }
 
 
-wRF1 <- function(trees, check.labels = TRUE){
+wRF1 <- function(trees, normalize=FALSE, check.labels = TRUE){
     if(check.labels) trees <- .compressTipLabel(trees)
     trees <- .uncompressTipLabel(trees)
     unclass(trees)     
@@ -298,6 +303,7 @@ wRF1 <- function(trees, check.labels = TRUE){
         bp <- sapply(bp, paste, collapse = "_")
         bp
     }
+    if(normalize) sc <- sapply(trees, function(x)sum(x$edge.length)) 
     BP <- lapply(trees, fun2, nTips)
     k <- 1
     l <- length(trees)
@@ -313,6 +319,7 @@ wRF1 <- function(trees, check.labels = TRUE){
             s2 = sum(W[[j]][-ind3])
             s3 = sum(w[-ind4])
             wRF[k] <- (s1 + s2 + s3)
+            if(normalize) wRF[k] <- wRF[k] / (sc[i] + sc[j])
             k=k+1
         }
     }
@@ -472,12 +479,12 @@ RF.dist <- function(tree1, tree2=NULL, normalize=FALSE, check.labels = TRUE, roo
 }
 
 
-wRF.dist <- function(tree1, tree2=NULL, check.labels = TRUE, rooted=FALSE){
-    if(class(tree1)=="phylo" && class(tree2)=="phylo")return(wRF0(tree1, tree2, check.labels, rooted))
-    if(class(tree1)=="multiPhylo" && is.null(tree2))return(wRF1(tree1, check.labels))
+wRF.dist <- function(tree1, tree2=NULL, normalize=FALSE, check.labels = TRUE, rooted=FALSE){
+    if(class(tree1)=="phylo" && class(tree2)=="phylo")return(wRF0(tree1, tree2, normalize, check.labels, rooted))
+    if(class(tree1)=="multiPhylo" && is.null(tree2))return(wRF1(tree1, normalize, check.labels))
     
-    if(class(tree1)=="phylo" && class(tree2)=="multiPhylo")return(wRF2(tree1, tree2, check.labels))
-    if(class(tree2)=="phylo" && class(tree1)=="multiPhylo")return(wRF2(tree2, tree1, check.labels))
+    if(class(tree1)=="phylo" && class(tree2)=="multiPhylo")return(wRF2(tree1, tree2, normalize, check.labels))
+    if(class(tree2)=="phylo" && class(tree1)=="multiPhylo")return(wRF2(tree2, tree1, normalize, check.labels))
     else return(NULL)        
 }
 

@@ -12,7 +12,7 @@
 \usage{
 treedist(tree1, tree2, check.labels = TRUE)
 RF.dist(tree1, tree2=NULL, normalize=FALSE, check.labels=TRUE, rooted=FALSE)
-wRF.dist(tree1, tree2=NULL, check.labels=TRUE, rooted=FALSE)
+wRF.dist(tree1, tree2=NULL, normalize=FALSE, check.labels=TRUE, rooted=FALSE)
 KF.dist(tree1, tree2=NULL, check.labels=TRUE, rooted=FALSE)
 path.dist(tree1, tree2=NULL, check.labels=TRUE, use.weight=FALSE)
 }
@@ -37,8 +37,10 @@ The Robinson-Foulds distance between two trees \eqn{T_1} and \eqn{T_2} with \eqn
 \deqn{d(T_1, T_2) = i(T_1) + i(T_2) - 2v_s(T_1, T_2)}
 where \eqn{i(T_1)} denotes the number of internal edges and \eqn{v_s(T_1, T_2)} denotes the number of internal splits shared by the two trees. The normalized Robinson-Foulds distance is derived by dividing \eqn{d(T_1, T_2)} by the maximal possible distance \eqn{i(T_1) + i(T_2)}. If both trees are unrooted and binary this value is \eqn{2n-6}. 
 
-%The weighted Robinson-Foulds distance makes use of edge weights.  \eqn{E = E_1\cup E_2}
-%\deqn{d(T_1, T_2) = \sum_{e \in E \setminus E_1}w(e) + \sum_{e \in E_1\cap E_2}w(e) + \sum_{e \in E\setminus E_2}w(e) }
+% The weighted Robinson-Foulds distance makes use of edge weights. Let \eqn{E_1} and \eqn{E_2} the set of edges of \eqn{d(T_1, T_2)} and \eqn{w(e), e \in E_1} the weight of an edge in \eqn{E_1}
+%\deqn{d(T_1, T_2) = \sum_{e \in E \setminus E_1}w(e) + \sum_{e \in E_1\cap E_2}|w(e_1) - w(e_2) + \sum_{e \in E\setminus E_2}w(e) }
+% where \eqn{E = E_1\cup E_2}
+
 %The Kuhner-Felsenstein difference (Kuhner & Felsenstein 1994) is closely related with the weighted Robinson-Foulds distance. 
 
 %Instead of the absolute values between edges are squared 
