@@ -2,14 +2,16 @@
      
 NEW FEATURES
 
-    o new weighted Robinson-Foulds distance, suggested by Michelle Kendall
+    o new weighted Robinson-Foulds (1979) distance wRF, suggested by Michelle Kendall
+    
+      and normalized Robinson-Foulds suggested by Sereina Rutschmann
 
+    o codon model "YN98" can be called directly, improved documentation
+    
 BUG FIXES
 
 OTHER CHANGES
 
-    o codon model "YN98" can be called directly, improved documentation
-    
     o more unit tests
     
     
