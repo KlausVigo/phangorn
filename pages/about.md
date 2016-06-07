@@ -9,11 +9,7 @@ Klaus Schliep
 
 Postdoctoral Research Fellow
 
-<div id="hide_email">
-  Work Email: <code>klaus</code><b>I</b><code>.</code><b>don't</b><code>schliep</code><b>want</b><code>@</code><b>spam!
-  </b><code>u</code><b>So</b><code>m</code><b>please</b><code>b</code><b>leave
-  </b><code>.</code><b>me</b><code>e</code><b>alone</b><code>d</code><b>!</b><code>u</code><br/>
-</div>
+Work Email: klaus dot schliep at umb dot edu
 
 [Revell lab](http://faculty.www.umb.edu/liam.revell/)
 
