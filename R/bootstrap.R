@@ -38,7 +38,7 @@ bootstrap.pml = function (x, bs = 100, trees = TRUE, multicore=FALSE, mc.cores =
 }
 
 
-bootstrap.phyDat <- function (x, FUN, bs = 100, multicore=FALSE, mc.cores = NULL, ...) 
+bootstrap.phyDat <- function (x, FUN, bs = 100, multicore=FALSE, mc.cores = NULL, jumble=TRUE, ...) 
 {
     if(multicore && is.null(mc.cores)){
         mc.cores <- detectCores()
@@ -47,14 +47,32 @@ bootstrap.phyDat <- function (x, FUN, bs = 100, multicore=FALSE, mc.cores = NULL
     v = rep(1:length(weight), weight)
     BS = vector("list", bs)
     for(i in 1:bs)BS[[i]]=tabulate(sample(v, replace=TRUE),length(weight)) 
+    if(jumble){
+        J = vector("list", bs)
+        l = length(x)
+        for(i in 1:bs) J[[i]] = list(BS[[i]], sample(l))
+    }
     fitPar <- function(weights, data, ...){     
         ind <- which(weights > 0)
         data <- getRows(data, ind)
         attr(data, "weight") <- weights[ind]
         FUN(data,...)        
     }
-    if(multicore) res <- mclapply(BS, fitPar, x, ..., mc.cores = mc.cores) 
-    else res <- lapply(BS, fitPar, x, ...)
+    fitParJumble <- function(J, data, ...){     
+        ind <- which(J[[1]] > 0)
+        data <- getRows(data, ind)
+        attr(data, "weight") <- J[[1]][ind]
+        data <- subset(data, J[[2]])
+        FUN(data,...)        
+    }
+    if(multicore){
+        if(jumble) res <- mclapply(J, fitPar, x, ..., mc.cores = mc.cores) 
+        else res <- mclapply(BS, fitPar, x, ..., mc.cores = mc.cores) 
+    }        
+    else{
+        if(jumble) res <- lapply(J, fitParJumble, x, ...) 
+        else res <- lapply(BS, fitPar, x, ...)
+    } 
     if(class(res[[1]]) == "phylo"){
         class(res) <- "multiPhylo"   
         res = .compressTipLabel(res) # save memory
