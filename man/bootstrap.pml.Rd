@@ -10,7 +10,7 @@ Bootstrap }
 \code{bootstrap.pml} performs (non-parametric) bootstrap analysis and \code{bootstrap.phyDat} produces a list of bootstrapped data sets. \code{plotBS} plots a phylogenetic tree with the with the bootstrap values assigned to the (internal) edges.}
 \usage{
 bootstrap.pml(x, bs = 100, trees = TRUE, multicore=FALSE, mc.cores = NULL, ...)
-bootstrap.phyDat(x, FUN, bs = 100, multicore=FALSE, mc.cores = NULL, ...)
+bootstrap.phyDat(x, FUN, bs = 100, multicore=FALSE, mc.cores = NULL, jumble = TRUE, ...)
 plotBS(tree, BStrees, type="unrooted", bs.col="black", bs.adj=NULL, p=50, frame=none, ...)
 }
 \arguments{
@@ -30,6 +30,7 @@ return trees only (default) or whole \code{pml} objects.
   \item{mc.cores}{
 The number of cores to use during bootstrap. Only supported on UNIX-alike systems.
 }
+\item{jumble}{logical, jumble the order of the sequences.}
   \item{\dots}{
 further parameters used by \code{optim.pml} or \code{plot.phylo}.
 }
