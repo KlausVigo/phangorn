@@ -1,4 +1,4 @@
-     CHANGES in PHANGORN VERSION 2.0.4
+    CHANGES in PHANGORN VERSION 2.0.4
      
 NEW FEATURES
 
@@ -7,6 +7,10 @@ NEW FEATURES
       and normalized Robinson-Foulds suggested by Sereina Rutschmann
 
     o codon model "YN98" can be called directly, improved documentation
+
+    o bootstrap.phyDat got an new argument jumble, 
+    
+      which randomizes also changes input order of sequences
     
 BUG FIXES
 

@@ -22,6 +22,7 @@ vignettes in an HTML browser type \code{browseVignettes("phangorn")}.
 \code{Networx} \tab Splits and Networx (source, html) \cr
 }
 The first vignette (to display type \code{vignette('Trees')}) gives an introduction in phylogenetic analysis with phangorn. The second vignette (phangorn-special) covers more advanced feature like defining special character spaces and things which fit nowhere else. 
+More information on \bold{phangorn} can be found on \url{http://www.phangorn.org}. 
 }
 \author{
 Klaus Schliep
