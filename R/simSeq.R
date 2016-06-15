@@ -52,10 +52,10 @@ simSeq.phylo = function(x, l=1000, Q=NULL, bf=NULL, rootseq=NULL, type = "DNA", 
             res[ind,to] = sample(levels, sum(ind), replace=TRUE, prob=P[,j])
         }
     }
-    k = length(x$tip)
-    label = c(x$tip, as.character((k+1):nNodes))
+    k = length(x$tip.label)
+    label = c(x$tip.label, as.character((k+1):nNodes))
     colnames(res)=label 
-    if(!ancestral)res = res[, x$tip, drop=FALSE]
+    if(!ancestral)res = res[, x$tip.label, drop=FALSE]
     if(pt=="DNA") return(phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE), return.index=TRUE))
     if(pt=="AA") return(phyDat.AA(as.data.frame(res, stringsAsFactors = FALSE), return.index=TRUE))
     if(pt=="USER") return(phyDat.default(as.data.frame(res, stringsAsFactors = FALSE), levels = levels, return.index=TRUE))

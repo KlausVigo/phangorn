@@ -3,7 +3,7 @@
 #
 
 allKids <- function(phy){
-    nTips = as.integer(length(phy$tip))
+    nTips = as.integer(length(phy$tip.label))
     lp=nrow(phy$edge)
     nNode = phy$Nnode
     .C("AllKids", as.integer(phy$edge[,2]), as.integer(phy$edge[,1]), as.integer(nTips), 
@@ -115,8 +115,8 @@ treedist <- function (tree1, tree2, check.labels=TRUE)
     
     bp1 = bip(tree1)
     bp2 = bip(tree2)
-    bp1 <- SHORTwise(bp1, length(tree1$tip))
-    bp2 <- SHORTwise(bp2, length(tree2$tip))
+    bp1 <- SHORTwise(bp1, length(tree1$tip.label))
+    bp2 <- SHORTwise(bp2, length(tree2$tip.label))
     bp1 <- sapply(bp1, paste, collapse = "_")
     bp2 <- sapply(bp2, paste, collapse = "_")
     
@@ -198,8 +198,8 @@ wRF0 <- function(tree1, tree2, normalize=FALSE, check.labels=TRUE, rooted = FALS
     bp1 = bip(tree1)
     bp2 = bip(tree2)
     if (!rooted) {
-        bp1 <- SHORTwise(bp1, length(tree1$tip))
-        bp2 <- SHORTwise(bp2, length(tree2$tip))
+        bp1 <- SHORTwise(bp1, length(tree1$tip.label))
+        bp2 <- SHORTwise(bp2, length(tree2$tip.label))
     }
     bp1 <- sapply(bp1, paste, collapse = "_")
     bp2 <- sapply(bp2, paste, collapse = "_")
@@ -460,8 +460,8 @@ RF0 <- function(tree1, tree2=NULL, normalize=FALSE, check.labels = TRUE, rooted=
     bp1 = bipart(tree1)
     bp2 = bipart(tree2)
     if(!rooted){
-        bp1 <- SHORTwise(bp1, length(tree1$tip))
-        bp2 <- SHORTwise(bp2, length(tree2$tip))    
+        bp1 <- SHORTwise(bp1, length(tree1$tip.label))
+        bp2 <- SHORTwise(bp2, length(tree2$tip.label))    
     }
     RF = sum(match(bp1, bp2, nomatch=0L)==0L) + sum(match(bp2, bp1, nomatch=0L)==0L)
     if(normalize) RF <- RF / (Nnode(tree1) + Nnode(tree2) - 2)
@@ -496,8 +496,8 @@ kf0 <- function(tree1, tree2, check.labels = TRUE){
     bp1 = bip(tree1)
     bp2 = bip(tree2)
     
-    bp1 <- SHORTwise(bp1, length(tree1$tip))
-    bp2 <- SHORTwise(bp2, length(tree2$tip))
+    bp1 <- SHORTwise(bp1, length(tree1$tip.label))
+    bp2 <- SHORTwise(bp2, length(tree2$tip.label))
     bp1 <- sapply(bp1, paste, collapse = "_")
     bp2 <- sapply(bp2, paste, collapse = "_")
     

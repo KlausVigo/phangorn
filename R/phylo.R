@@ -482,7 +482,7 @@ pml.nni.old <- function (tree, data, w, g, eig, bf, ll.0, ll, ...)
     INDEX <-  indexNNI(tree)
     rootEdges <- attr(INDEX,"root")
     .dat <- NULL
-    data = getCols(data, tree$tip)
+    data = getCols(data, tree$tip.label)
 
     parent = tree$edge[,1]
     child = tree$edge[,2]
@@ -564,7 +564,7 @@ rnodes <- function (tree, data, w, g, eig, bf)
     if (is.null(attr(tree, "order")) || attr(tree, "order") == 
         "cladewise") 
         tree <- reorder(tree, "postorder")
-    data = getCols(data, tree$tip) 
+    data = getCols(data, tree$tip.label) 
     q = length(tree$tip.label)
     node <- tree$edge[, 1]
     edge <- tree$edge[, 2]
@@ -581,7 +581,7 @@ rnodes <- function (tree, data, w, g, eig, bf)
     nc <- as.integer(attr(data, "nc"))
     node = as.integer(node - min(node))
     edge = as.integer(edge - 1)
-    nTips = as.integer(length(tree$tip))
+    nTips = as.integer(length(tree$tip.label))
     mNodes = as.integer(max(node) + 1)
     contrast = attr(data, "contrast")
     nco = as.integer(dim(contrast)[1])
@@ -784,12 +784,12 @@ optimEdge <- function (tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.
 {
     if (is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise") 
         tree <- reorder(tree, "postorder") 
-    nTips <- length(tree$tip)
+    nTips <- length(tree$tip.label)
     el <- tree$edge.length
     tree$edge.length[el < 1e-08] <- 1e-08
     oldtree = tree
     k = length(w)    
-    data = subset(data, tree$tip) 
+    data = subset(data, tree$tip.label) 
     loglik = pml.fit4(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k) 
     start.ll <- old.ll <- loglik 
     contrast <- attr(data, "contrast")
@@ -962,7 +962,7 @@ optimPartGamma <- function (object, shape = 1, ...)
 dltmp <- function (fit, i=1, transform=transform) # i = weights
 {
     tree = fit$tree 
-    data = getCols(fit$data, tree$tip) 
+    data = getCols(fit$data, tree$tip.label) 
     if (is.null(attr(tree, "order")) || attr(tree, "order") == 
         "cladewise") 
         tree <- reorder(tree, "postorder")
@@ -981,7 +981,7 @@ dltmp <- function (fit, i=1, transform=transform) # i = weights
     nc <- as.integer(attr(data, "nc"))
     node = as.integer(node - min(node))
     edge = as.integer(edge - 1)
-    nTips = as.integer(length(tree$tip))
+    nTips = as.integer(length(tree$tip.label))
     mNodes = as.integer(max(node) + 1)
     contrast = attr(data, "contrast")
     nco = as.integer(dim(contrast)[1])
@@ -1255,7 +1255,7 @@ bip <- function (obj)
             "cladewise") 
         obj <- reorder(obj, "postorder")
     maxP = max(obj$edge)
-    nTips = length(obj$tip)
+    nTips = length(obj$tip.label)
     res <- .Call("C_bip", as.integer(obj$edge[, 1]), as.integer(obj$edge[, 2]), as.integer(nTips), as.integer(maxP))
     res
 }
@@ -1265,7 +1265,7 @@ bipart <- function(obj){
     if (is.null(attr(obj, "order")) || attr(obj, "order") == "cladewise") 
         obj <- reorder(obj, "postorder")
     maxP  = max(obj$edge)
-    nTips = length(obj$tip)
+    nTips = length(obj$tip.label)
     res <- .Call("C_bipart", as.integer(obj$edge[,1]) , as.integer(obj$edge[,2]), as.integer(nTips), as.integer(maxP))  #, as.integer(obj$Nnode))
 #    attr(res, "nodes") = unique(obj$edge[,1])
     res    
@@ -1277,7 +1277,7 @@ bipartition <- function (tree)
     if(is.rooted(tree))tree <- unroot(tree)
     if(is.null(attr(tree,"order")) || attr(tree, "order")=="cladewise") tree <- reorder(tree, "postorder")
     bp <- bipart(tree)
-    nTips = length(tree$tip)
+    nTips = length(tree$tip.label)
     l = length(bp)
     m = length(bp[[l]])
     k = length(tree$edge[, 1])
@@ -2444,7 +2444,7 @@ optNNI <- function(fit, INDEX){
        parent = tree$edge[, 1]
        child = tree$edge[, 2]
              
-       data = getCols(fit$data, tree$tip)
+       data = getCols(fit$data, tree$tip.label)
        datp <- rnodes(tree, data, w, g, eig, bf)       
 # nicht elegant, spaeter auch raus       
        tmp = length(tree$tip.label)
@@ -2728,7 +2728,7 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     }
     if (class(data)[1] != "phyDat") stop("data must be of class phyDat")
     if(is.null(tree$edge.length)) stop("tree must have edge weights") 
-    if(any(is.na(match(tree$tip, attr(data, "names"))))) stop("tip labels are not in data")  
+    if(any(is.na(match(tree$tip.label, attr(data, "names"))))) stop("tip labels are not in data")  
     data <- subset(data, tree$tip.label) # needed
     levels <- attr(data, "levels")
     if(Mkv){
@@ -3910,7 +3910,7 @@ optimQuartet <- function (tree, data, eig, w, g, bf, rate, ll.0=ll.0, nTips,
 #        tree <- reorder(tree, "postorder") 
 #     print("reorder")   
 #    }    
-#    nTips <- length(tree$tip)
+#    nTips <- length(tree$tip.label)
     el <- tree$edge.length
     tree$edge.length[el < 1e-08] <- 1e-08
     oldtree = tree

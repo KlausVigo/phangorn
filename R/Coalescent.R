@@ -22,7 +22,7 @@ ancstat = function(phy, x){
   nTips=length(phy$tip.label)
   pa=phy$edge[,1]
   ch=phy$edge[,2]
-  res[1:nTips, ] = contrast[as.numeric(x)[match(phy$tip, names(x))],, drop=FALSE]
+  res[1:nTips, ] = contrast[as.numeric(x)[match(phy$tip.label, names(x))],, drop=FALSE]
   for(i in 1:length(pa)){
     res[pa[i],] = res[pa[i],] | res[ch[i],]    
   }

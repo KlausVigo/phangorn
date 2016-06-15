@@ -6,7 +6,7 @@ getClans = function (tree)
 	if (is.rooted(tree)) 
         tree = unroot(tree)
     bp = bip(tree)
-    nTips = length(tree$tip)
+    nTips = length(tree$tip.label)
     root = nTips + 1
     bp[root] = NULL
     X = matrix(0, length(bp) - nTips, nTips)
@@ -23,7 +23,7 @@ getClans = function (tree)
         }
     }
     res <- rbind(diag(nTips), 1 - diag(nTips), X, 1 - X)
-    colnames(res) <- tree$tip
+    colnames(res) <- tree$tip.label
     if (!is.null(nl)) 
         rownames(res) = nl
     res
@@ -31,7 +31,7 @@ getClans = function (tree)
 
 
 getSlices <- function(tree){
-    nTips = length(tree$tip)
+    nTips = length(tree$tip.label)
     clans = getClans(tree)
     m = dim(clans)[1]
     X = tcrossprod(clans)
@@ -61,7 +61,7 @@ getSlices <- function(tree){
         }
     }
     if(k<nSlices) result = result[1:(k-1),] 
-    colnames(result) <- tree$tip
+    colnames(result) <- tree$tip.label
     result   
 }
 
@@ -71,7 +71,7 @@ getClips = function (tree, all = TRUE)
     if (any(is.na(tree$edge.length))) 
         return(NULL)
     dm = cophenetic(tree)
-    tips = tree$tip
+    tips = tree$tip.label
     nTips = length(tips)
     res = numeric(nTips)
     result = NULL
@@ -403,10 +403,10 @@ diversity <- function(tree, X){
     dimnames(fd) = list(colnames(tmp), tnames)
     res = stack(data.frame(fd))
 
-    if(m>1)nt = rep(sapply(tree, function(x)length(x$tip)), each=dim(fd)[1])    
-    else nt = rep(length(tree$tip), each=dim(fd)[1]) 
-    if(m>1)res2 = as.vector(sapply(tree, function(x,y)colSums(y[x$tip,,drop=FALSE]) , y=tmp))
-    else res2 = colSums(tmp[tree$tip,,drop=FALSE])
+    if(m>1)nt = rep(sapply(tree, function(x)length(x$tip.label)), each=dim(fd)[1])    
+    else nt = rep(length(tree$tip.label), each=dim(fd)[1]) 
+    if(m>1)res2 = as.vector(sapply(tree, function(x,y)colSums(y[x$tip.label,,drop=FALSE]) , y=tmp))
+    else res2 = colSums(tmp[tree$tip.label,,drop=FALSE])
     result <- data.frame(tree = res[,2], variable=rep(colnames(tmp),m), pscore=res[,1], ntips=nt, natives=res2)
     result
 }

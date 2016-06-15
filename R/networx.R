@@ -205,7 +205,7 @@ as.splits.phylo <- function(x, ...){
         attr(result, "confidences") <- c(rep(1, length(x$tip.label)), conf)
 #        attr(result, "confidences") <- c(rep("", length(x$tip.label)), x$node.label)
     }    
-    attr(result, "labels") <- x$tip
+    attr(result, "labels") <- x$tip.label
     class(result) <- c('splits', 'prop.part')
     result 
 }
@@ -791,7 +791,7 @@ as.networx <- function (x, ...)
 
 getOrdering <- function(x){
     tree = as.phylo(x)
-    nTips = length(tree$tip)
+    nTips = length(tree$tip.label)
     ord = reorder(tree)$edge[,2]
     ord = ord[ord<=nTips]
     ind = which(ord == 1L)

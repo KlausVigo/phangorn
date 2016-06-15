@@ -36,7 +36,7 @@ ancestral.pars <- function (tree, data, type = c("MPR", "ACCTRAN"), cost=NULL)
         attr(res, "call") = call
         return(res)
     }
-    l = length(tree$tip)
+    l = length(tree$tip.label)
     
     x = attributes(data)
     m = dim(res)[2]
@@ -113,13 +113,13 @@ mpr <- function(tree, data, cost=NULL){
     nr = att$nr
     nc = att$nc
     res <- mpr.help(tree,data,cost)
-    l = length(tree$tip)
+    l = length(tree$tip.label)
     m = length(res)
     label = as.character(1:m)
     nam = tree$tip.label
     label[1:length(nam)] = nam
     att[["names"]] = label
-    ntips = length(tree$tip)
+    ntips = length(tree$tip.label)
     contrast = att$contrast
     eps=5e-6
     rm = apply(res[[ntips+1]], 1, min)
@@ -315,7 +315,7 @@ RI <- function (tree, data, cost = NULL, sitewise=FALSE)
 add.one <- function (tree, tip.name, i){
     if (!inherits(tree,"phylo")) 
         stop("tree should be an object of class 'phylo.'")
-    nTips = length(tree$tip)
+    nTips = length(tree$tip.label)
     tmpedge = tree$edge
     m = max(tmpedge)
     l = nrow(tmpedge)
@@ -515,9 +515,9 @@ fit.sankoff <- function (tree, data, cost, returnData = c("pscore", "site", "dat
     dat[1:q] = data[tree$tip.label]
     node = as.integer(node - 1)
     edge = as.integer(edge - 1)
-    nTips = as.integer(length(tree$tip))
+    nTips = as.integer(length(tree$tip.label))
     mNodes = as.integer(max(node) + 1)
-    tips = as.integer((1:length(tree$tip))-1)
+    tips = as.integer((1:length(tree$tip.label))-1)
     res <- .Call("sankoff3", dat, as.numeric(cost), as.integer(nr),as.integer(nc),
          node, edge, mNodes, tips, PACKAGE="phangorn")  
     root <- getRoot(tree) 
@@ -775,9 +775,9 @@ ptree <- function (tree, data, type = "ACCTRAN", retData = FALSE)
     edge <- tree$edge[, 2]
     weight = attr(data, "weight")
     m = length(edge) + 1
-    q = length(tree$tip)
+    q = length(tree$tip.label)
     l = as.integer(length(edge))
-    nTips = length(tree$tip)
+    nTips = length(tree$tip.label)
     dat = tmp[[2]]
     if (!is.rooted(tree)) {
         root = getRoot(tree)

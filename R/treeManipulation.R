@@ -87,7 +87,7 @@ node2root <- function(x){
 }
     oldtree <- tree
     tree = unroot(tree)   
-    nTips = length(tree$tip)
+    nTips = length(tree$tip.label)
     maxD1 = node2root(tree)[1:nTips] 
     ind = which.max(maxD1)
     tmproot = Ancestors(tree, ind, "parent")
@@ -155,7 +155,7 @@ pruneTree = function(tree, ..., FUN = ">="){
      if(is.null(tree$node)) stop("no node labels")
      if(is.rooted(tree)) tree = unroot(tree)
      m = max(tree$edge)
-     nTips = length(tree$tip)
+     nTips = length(tree$tip.label)
      bs = rep(TRUE, m)
      bs[ (nTips+1) : m] = sapply(as.numeric(as.character(tree$node)), FUN,...)    
      tree$edge.length[!bs[tree$edge[,2]]] = 0
@@ -323,7 +323,7 @@ addOneTree <- function (tree, subtree, i, node){
   tree$edge = edge 
   tree$Nnode = tree$Nnode + subtree$Nnode + 1L
   attr(tree, "order") = NULL
-  tips1 = as.integer(length(tree$tip) + 1L)
+  tips1 = as.integer(length(tree$tip.label) + 1L)
   tmproot = getRoot(tree)
   if(tmproot!=tips1){
       tree$edge[tree$edge==tmproot] = 0L
@@ -639,7 +639,7 @@ sprMove <- function(tree, m){
 
     edge = tree$edge    
     k = max(edge)
-    nTips = length(tree$tip)
+    nTips = length(tree$tip.label)
     nEdges = 2*nTips-3 
     if(m > nEdges) stop("m to big")
 
@@ -795,7 +795,7 @@ Ancestors <- function (x, node, type = c("all", "parent"))
 
 
 allChildren <- function(x){
-   l = length(x$tip) 
+   l = length(x$tip.label) 
    if(l<20){
        parent = x$edge[,1]
        children = x$edge[,2]

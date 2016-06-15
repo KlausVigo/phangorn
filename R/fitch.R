@@ -47,7 +47,7 @@ fit.fitch <- function (tree, data, returnData = c("pscore", "site", "data"))
     edge <- tree$edge[, 2]
     weight = attr(data, "weight")
     m = max(tree$edge) 
-    q = length(tree$tip)
+    q = length(tree$tip.label)
     result <- .Call("FITCH", data[, tree$tip.label], as.integer(nr), as.integer(node), as.integer(edge), as.integer(length(edge)), as.double(weight), as.integer(m), as.integer(q))
     if (returnData == "site") return(result[[2]])
     pscore <- result[[1]]
@@ -133,7 +133,7 @@ fast.fitch <- function (tree,  nr, ps = TRUE)
 
 
 fitch.spr <- function(tree, data){
-  nTips = as.integer(length(tree$tip))
+  nTips = as.integer(length(tree$tip.label))
   nr = attr(data, "nr")
   minp = fast.fitch(tree, nr, TRUE)
   m=max(tree$edge)
@@ -177,7 +177,7 @@ fitch.spr <- function(tree, data){
 
 # raus oder richten
 fitch.spr2 <- function(tree, data){
-    nTips = as.integer(length(tree$tip))
+    nTips = as.integer(length(tree$tip.label))
     nr = attr(data, "nr")
     minp = fast.fitch(tree, nr, TRUE)
     
@@ -273,7 +273,7 @@ indexNNI2 <- function(tree){
 # weniger Speicher 2 Zeilen weinger 
 fitch.nni <- function (tree, data, ...) 
 {
-    nTips = as.integer(length(tree$tip)) # auskommentieren?
+    nTips = as.integer(length(tree$tip.label)) # auskommentieren?
     INDEX <- indexNNI2(tree)    
     nr = attr(data, "nr")
     weight <- attr(data, "weight")
@@ -317,7 +317,7 @@ optim.fitch <- function(tree, data, trace=1, rearrangements = "SPR", ...) {
     if (class(data)[1] != "phyDat") stop("data must be of class phyDat")
 
     rt = FALSE
-    nTips = as.integer(length(tree$tip))
+    nTips = as.integer(length(tree$tip.label))
 
     nr = attr(data, "nr")    
     pis <- parsinfo(data)
@@ -327,7 +327,7 @@ optim.fitch <- function(tree, data, trace=1, rearrangements = "SPR", ...) {
     
     nr = attr(data, "nr")
    
-    data <- subset(data,tree$tip,order(attr(data, "weight"), decreasing=TRUE))   
+    data <- subset(data,tree$tip.label,order(attr(data, "weight"), decreasing=TRUE))   
     dat <- prepareDataFitch(data) 
     weight <- attr(data, "weight")
 

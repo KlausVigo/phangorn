@@ -84,7 +84,7 @@ bootstrap.phyDat <- function (x, FUN, bs = 100, multicore=FALSE, mc.cores = NULL
 matchEdges = function(tree1, tree2){
     bp1 = bip(tree1)
     bp2 = bip(tree2)
-    l = length(tree1$tip)
+    l = length(tree1$tip.label)
     fn = function(x, y){
         if(x[1]==1)return(x)
         else return(y[-x])
@@ -134,12 +134,12 @@ plotBS <- function (tree, BStrees, type = "unrooted", bs.col = "black",
         x <- tree$node.label
     }
     
-    label = c(rep(0, length(tree$tip)), x)
+    label = c(rep(0, length(tree$tip.label)), x)
     ind <- get("last_plot.phylo", envir = .PlotPhyloEnv)$edge[, 
                                                               2]
     if (type == "phylogram" | type == "cladogram") {
         root = getRoot(tree)
-        label = c(rep(0, length(tree$tip)), x)
+        label = c(rep(0, length(tree$tip.label)), x)
         label[root] = 0
         ind2 = matchEdges(tree2, tree)
         label = label[ind2]

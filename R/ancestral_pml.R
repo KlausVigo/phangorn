@@ -11,7 +11,7 @@ ancestral.pml <- function (object, type=c("ml", "bayes"))
     INV <- object$INV
     inv <- object$inv
     
-    data = getCols(object$data, tree$tip) 
+    data = getCols(object$data, tree$tip.label) 
     if (is.null(attr(tree, "order")) || attr(tree, "order") == 
         "cladewise") 
         tree <- reorder(tree, "postorder")
@@ -46,7 +46,7 @@ ancestral.pml <- function (object, type=c("ml", "bayes"))
     nc <- as.integer(attr(data, "nc"))
     node = as.integer(node - min(node))
     edge = as.integer(edge - 1)
-    nTips = as.integer(length(tree$tip))
+    nTips = as.integer(length(tree$tip.label))
     mNodes = as.integer(max(node) + 1)
     contrast = attr(data, "contrast")
     nco = as.integer(dim(contrast)[1])

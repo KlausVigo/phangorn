@@ -39,7 +39,7 @@ my.supertree<-function(trees,method=c("pratchet","optim.parsimony"), trace=0, ..
     ind <- which(!is.na(pos))  
     temp<-prop.part(trees[ind]) # find all bipartitions
     # create matrix representation of trees[[i]] in X[[i]]
-    X[[i]]<-matrix(0,nrow=length(trees[[ind[1]]]$tip),ncol=length(temp)-1)
+    X[[i]]<-matrix(0,nrow=length(trees[[ind[1]]]$tip.label),ncol=length(temp)-1)
     for(j in 1:ncol(X[[i]])) X[[i]][c(temp[[j+1]]),j]<-1
     rownames(X[[i]])<-attr(temp,"labels") # label rows
 #    if(i==1) species<-trees[[ind[1]]]$tip.label
@@ -127,7 +127,7 @@ my.supertree.Old<-function(trees,method=c("pratchet","optim.parsimony"), trace=0
     for(i in 1:length(trees)){
         temp<-prop.part(trees[[i]]) # find all bipartitions
         # create matrix representation of trees[[i]] in X[[i]]
-        X[[i]]<-matrix(0,nrow=length(trees[[i]]$tip),ncol=length(temp)-1)
+        X[[i]]<-matrix(0,nrow=length(trees[[i]]$tip.label),ncol=length(temp)-1)
         for(j in 1:ncol(X[[i]])) X[[i]][c(temp[[j+1]]),j]<-1
         rownames(X[[i]])<-attr(temp,"labels") # label rows
         if(i==1) species<-trees[[i]]$tip.label
@@ -205,7 +205,7 @@ my.supertree.Old<-function(trees,method=c("pratchet","optim.parsimony"), trace=0
 superTree = function(tree, method="pratchet", rooted=TRUE, ...){
   fun = function(x){
     x=reorder(x, "postorder")
-    nTips = length(x$tip)
+    nTips = length(x$tip.label)
     x$edge[x$edge>nTips] = x$edge[x$edge>nTips] + 2L
     l=nrow(x$edge)
     oldroot = x$edge[l,1L]
@@ -257,7 +257,7 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL, op
   type <- match.arg(type, c("phylogram", "cladogram"))
   consensus = reorder(consensus, "postorder")
   e2 = reorder(consensus)$edge[,2]
-  nTip = as.integer(length(consensus$tip))
+  nTip = as.integer(length(consensus$tip.label))
   tiporder = e2[e2<=nTip]   
   maxBT = max(getAges(x))
   if(scaleX) maxBT=1.0

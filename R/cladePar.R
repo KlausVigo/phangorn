@@ -1,7 +1,7 @@
 cladePar = function(tree, node, edge.color="red", tip.color=edge.color, edge.width = 1, edge.lty = 1, x=NULL, plot=FALSE, ...){
     if(is.null(x)){
         m = max(tree$edge)
-        x=list(edge=data.frame(color=rep("black",m), width = rep(1, m), lty =  rep(1, m), stringsAsFactors = FALSE),tip=rep("black", length(tree$tip)))         
+        x=list(edge=data.frame(color=rep("black",m), width = rep(1, m), lty =  rep(1, m), stringsAsFactors = FALSE),tip=rep("black", length(tree$tip.label)))         
     }
     ind = Descendants(tree,node,"all")
     x$edge$color[ind] = edge.color
