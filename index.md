@@ -6,7 +6,7 @@ description: Phylogenetic analysis in R. Estimation of phylogenetic trees and ne
 ---
 
 ### NEWS
-[Nantucket phylogeny develope![R](pages/icons/Rlogo_32.png) bootcamp](pages/Nantucket.html)
+[Nantucket phylogeny develope![R](pages/icons/Rlogo_24.png) bootcamp](pages/Nantucket.html)
 
 ---
 
