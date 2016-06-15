@@ -4,7 +4,8 @@ Version: 2.0.4
 Date: 2016-05-24
 Authors@R: c(person("Klaus", "Schliep", email="klaus.schliep@gmail.com", role = c("aut", "cre")), 
   person("Emmanuel", "Paradis", role = c("aut")), 
-  person("Alastair", "Potts", role = c("aut")))
+  person("Alastair", "Potts", role = c("aut")), 
+  person("Michelle", "Kendall", email="m.kendall@imperial.ac.uk", role = c("ctb")))
 Maintainer: Klaus Schliep <klaus.schliep@gmail.com>
 Description: Phylogenetic analysis in R: Estimation of phylogenetic
         trees and networks using Maximum Likelihood, Maximum Parsimony,
