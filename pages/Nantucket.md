@@ -1,9 +1,8 @@
 ---
 layout: page
-title: Nantucket phylogeny develope![R](icons/Rlogo_32.png) bootcamp
 description: Nantucket phylogeny developeR bootcamp
 ---
-# Nantucket phylogeny develope![R](icons/Rlogo_32.png) bootcamp
+## Nantucket phylogeny develope![R](icons/Rlogo_32.png) bootcamp
 We are happy to announce a new graduate-level workshop on phylogenetic method development R. The course will be five days in length and will take place at the University of Massachusetts Boston’s Nantucket Field Station from the 22nd to the 26th of August, 2016. This workshop is primarily intended for evolutionary biologists with some prior experience in computer programming who have an interest in participating more fully in the community of method developers for the R statistical computing environment in phylogenetics.
  
 On the first 1.5 days of the workshop, course leaders Drs. April Wright and Klaus Schliep (with Dr. Liam Revell participating remotely) will provide an introduction to the primary data structures and methods of common phylogenetic R packages, the basics of computational algorithms for phylogenies, and an overview of package development in R, along with other essential topics that will depend on the prior experience of the bootcamp participants. Over subsequent workshop days participants will work in groups to develop small R packages on their chosen topics. These projects will focus on adding new functionality to existing R software in phylogenetics, and might range from tree manipulation, to phylogenetic inference, to comparative methods, to phylogenetic simulations, to the visualization of phylogenies or macroevolutionary data on trees. 
