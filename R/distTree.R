@@ -19,6 +19,81 @@
 }
 
 
+upgma.edge.length <- function(x, dm, method="average"){
+    METHODS <- c("average", "single", "complete") # , "mcquitty"
+    i.meth <- match.arg(method, METHODS)
+    X <- designTree(x, "rooted", TRUE)
+    labels <- x$tip
+    dm <- as.matrix(dm)[labels,labels]
+    dm <- dm[lower.tri(dm)]
+    ind <- X@i+1
+    node <- X@p 
+    X@x[] <- 1
+    nh <- numeric(max(x$edge))
+    Y = X*dm
+    for(i in 1:(length(node)-1)){
+        pos = ind[(node[i]+1):node[i+1]]
+        tmp <- switch(i.meth,
+                      average = mean(Y[pos, i]),
+                      single = min(Y[pos, i]),
+                      complete = max(Y[pos, i]))
+        nh[X@nodes[i]] = tmp
+    }
+    x$edge.length <- (nh[x$edge[,1]] - nh[x$edge[,2]]) /2
+    x
+}
+
+
+upgma_nni <- function(d, method="average", opt="min", mc.cores=2L)
+{
+    METHODS <- c("average", "single", "complete") # , "mcquitty"
+    method <- match.arg(method, METHODS)
+    OPT <- c("min", "ls")
+    opt <- match.arg(opt, OPT)
+    tree <- upgma(d, method=method)
+    labels <- tree$tip
+    nTips <- length(labels)
+    y <- as.matrix(dm)[labels,labels]
+    y <- y[lower.tri(y)]
+    best.tree <- tree
+    bestLS <- sum((coph(best.tree)-y)^2)
+    bestME <- sum(best.tree$edge.length)
+    run.nni = TRUE
+    count_nni = 0
+    print(count_nni)
+    while (run.nni) {
+        trees <- nni(best.tree)
+        trees <- .uncompressTipLabel(trees)
+        trees <- unclass(trees)
+        nni.trees <- lapply(trees, upgma.edge.length, dm, method=method)
+        ind <- which(sapply(nni.trees, function(x)!any(x$edge.length<0)))
+        if (length(ind)==0)return(best.tree)
+        nni.trees <- nni.trees[ind]
+        if(opt == "min"){
+            ME <- sapply(nni.trees, function(x)sum(x$edge.length))
+            if (any(ME < bestME)){
+                bestME <- min(ME)
+                count_nni = count_nni + 1
+                best.tree <- nni.trees[[which.min(ME)]]
+                print(bestME)
+            }
+            else run.nni = FALSE
+        }
+        else{
+            LS <- sapply(nni.trees, function(x) sum((coph(x)-y)^2))
+            if (any(LS < bestLS)){
+                bestLS <- min(LS)
+                count_nni = count_nni + 1
+                best.tree <- nni.trees[[which.min(LS)]]
+                print(bestLS)
+            }
+            else run.nni = FALSE
+        }
+    }
+    best.tree
+}
+
+
 NJ_old <- function(x) 
 {
     x = as.matrix(x)
