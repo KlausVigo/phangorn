@@ -51,9 +51,9 @@ upgma_nni <- function(d, method="average", opt="min", mc.cores=2L)
     OPT <- c("min", "ls")
     opt <- match.arg(opt, OPT)
     tree <- upgma(d, method=method)
-    labels <- tree$tip
+    labels <- tree$tip.label
     nTips <- length(labels)
-    y <- as.matrix(dm)[labels,labels]
+    y <- as.matrix(d)[labels,labels]
     y <- y[lower.tri(y)]
     best.tree <- tree
     bestLS <- sum((coph(best.tree)-y)^2)
@@ -65,7 +65,7 @@ upgma_nni <- function(d, method="average", opt="min", mc.cores=2L)
         trees <- nni(best.tree)
         trees <- .uncompressTipLabel(trees)
         trees <- unclass(trees)
-        nni.trees <- lapply(trees, upgma.edge.length, dm, method=method)
+        nni.trees <- lapply(trees, upgma.edge.length, y, method=method)
         ind <- which(sapply(nni.trees, function(x)!any(x$edge.length<0)))
         if (length(ind)==0)return(best.tree)
         nni.trees <- nni.trees[ind]
