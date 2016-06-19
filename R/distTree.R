@@ -24,8 +24,10 @@ upgma.edge.length <- function(x, dm, method="average"){
     i.meth <- match.arg(method, METHODS)
     X <- designTree(x, "rooted", TRUE)
     labels <- x$tip
-    dm <- as.matrix(dm)[labels,labels]
-    dm <- dm[lower.tri(dm)]
+    if(is.matrix(dm) || inherits(dm, "dist")){
+        dm <- as.matrix(dm)[labels,labels]
+        dm <- dm[lower.tri(dm)]
+    }
     ind <- X@i+1
     node <- X@p 
     X@x[] <- 1
@@ -44,7 +46,7 @@ upgma.edge.length <- function(x, dm, method="average"){
 }
 
 
-upgma_nni <- function(d, method="average", opt="min", mc.cores=2L)
+upgma_nni <- function(d, method="average", opt="min", trace=0, mc.cores=2L)
 {
     METHODS <- c("average", "single", "complete") # , "mcquitty"
     method <- match.arg(method, METHODS)
