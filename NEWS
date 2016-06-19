@@ -10,10 +10,8 @@ NEW FEATURES
 
     o bootstrap.phyDat got an new argument jumble, 
     
-      which randomizes also changes input order of sequences
+      which randomizes input order of sequences
     
-BUG FIXES
-
 OTHER CHANGES
 
     o more unit tests
