@@ -324,7 +324,7 @@ wRF1 <- function(trees, normalize=FALSE, check.labels = TRUE){
         }
     }
     attr(wRF, "Size") <- l
-    if(!is.null(names(trees)))attr(KF, "Labels") <- names(trees)
+    if(!is.null(names(trees)))attr(wRF, "Labels") <- names(trees)
     attr(wRF, "Diag") <- FALSE
     attr(wRF, "Upper") <- FALSE
     class(wRF) <- "dist"
