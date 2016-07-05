@@ -2707,6 +2707,7 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     rate = 1, model=NULL, ...) 
 {
     Mkv = FALSE
+    if(model=="Mkv")Mkv = TRUE
     call <- match.call()
     extras <- match.call(expand.dots = FALSE)$...
     pmla <- c("wMix", "llMix") 

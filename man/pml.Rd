@@ -131,6 +131,8 @@ L.-T. Nguyen, H.A. Schmidt, A. von Haeseler, and B.Q. Minh (2015) IQ-TREE: A fas
 Vos, R. A. (2003) Accelerated Likelihood Surface Exploration: The Likelihood Ratchet. \emph{Systematic Biology}, \bold{52(3)}, 368--373
 
 Yang, Z., and R. Nielsen (1998) Synonymous and nonsynonymous rate variation in nuclear genes of mammals. \emph{Journal of Molecular Evolution}, \bold{46}, 409-418.
+
+Lewis, P.O. (2001) A likelihood approach to estimating phylogeny from discrete morphological character data. \emph{Systematic Biology} \bold{50}, 913--925. 
 }
 \author{Klaus Schliep \email{klaus.schliep@gmail.com}}
 \seealso{
