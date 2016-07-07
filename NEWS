@@ -2,11 +2,15 @@
 
 NEW FEATURES 
 
+    o improved cbind.phyDat, faster and more flexible
+
 BUG FIXES
 
     o fixed bug in KF.dist  
 
 OTHER CHANGES
+
+    o more unit tests
 
 
 

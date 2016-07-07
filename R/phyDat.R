@@ -586,97 +586,7 @@ print.phyDat = function (x, ...)
 }
 
 
-c.phyDat <- function(...){
-    object <- as.list(substitute(list(...)))[-1]    
-    x <- list(...)
-    n <- length(x) 
-    match.names <- function(a,b){
-        if(any(!(a %in% b)))stop("names do not match previous names") 
-        }
-    if (n == 1) 
-        return(x[[1]])
-    type <- attr(x[[1]], "type")
-    nr = numeric(n)
-    nr[1] <- sum(attr(x[[1]], "weight"))
-    levels <- attr(x[[1]], "levels")
-    snames <- names(x[[1]])
-    objNames<-as.character(object)
-    if(any(duplicated(objNames))) objNames <- paste0(objNames, 1:n)
-    tmp <- as.character(x[[1]])
-    for(i in 2:n){
-        match.names(snames,names(x[[i]]))
-        x[[i]] <- getCols(x[[i]],snames)
-        nr[i] <- sum(attr(x[[i]], "weight"))
-        tmp <- cbind(tmp, as.character(x[[i]]))
-    }
-    if (type == "DNA") 
-        dat <- phyDat.DNA(tmp, return.index = TRUE)
-    if (type == "AA") 
-        dat <- phyDat.AA(tmp, return.index = TRUE)
-    if (type == "USER") 
-        dat <- phyDat.default(tmp, levels = levels, return.index = TRUE)
-     if (type == "CODON") 
-        dat <- phyDat.codon(tmp, return.index = TRUE)       
-    attr(dat,"index") <- data.frame(index=attr(dat,"index"), genes=rep(objNames, nr))   
-    dat
-}
-
-
-# new cbind.phyDat 
-cbindPD <- function(..., gaps="-"){
-    object <- as.list(substitute(list(...)))[-1]    
-    x <- list(...)
-    n <- length(x) 
-    if (n == 1) 
-        return(x[[1]])
-    type <- attr(x[[1]], "type")
-    nr = numeric(n)
-    
-    ATTR <- attributes(x[[1]])
-    
-    nr[1] <- sum(attr(x[[1]], "weight"))
-    levels <- attr(x[[1]], "levels")
-    allLevels <- attr(x[[1]], "allLevels")
-    gapsInd <- match(gaps, allLevels)
-    snames <- vector("list", n)  # names(x[[1]])
-    vec = numeric(n+1)
-    wvec = numeric(n+1)
-    objNames<-as.character(object)
-    if(any(duplicated(objNames))) objNames <- paste0(objNames, 1:n)
-    #    tmp <- as.character(x[[1]])
-    
-    for(i in 1:n){
-        snames[[i]] = names(x[[i]]) 
-        nr[i] <- attr(x[[i]], "nr") 
-        vec[i+1] = attr(x[[i]], "nr")
-        wvec[i+1] = sum(attr(x[[i]], "weight"))
-    }
-    vec = cumsum(vec)
-    wvec = cumsum(wvec)
-    snames = unique(unlist(snames))
-    weight <- numeric(vec[n+1])
-    
-    index <- numeric(wvec[n+1]) 
-    ATTR$names <- snames
-    ATTR$nr <- vec[n+1]
-    
-    tmp = matrix(gapsInd, vec[n+1], length(snames), dimnames = list(NULL, snames))
-    tmp <- as.data.frame(tmp)
-    
-    for(i in 1:n){
-        nam = names(x[[i]])
-        tmp[(vec[i]+1):vec[i+1], nam] <- x[[i]][nam]
-        weight[(vec[i]+1):vec[i+1]] <- attr(x[[i]], "weight")
-        index[(wvec[i]+1):wvec[i+1]] <- attr(x[[i]], "index")
-    }
-    ATTR$index <- index
-    ATTR$weight <- weight
-    attributes(tmp) <- ATTR
-    tmp
-}
-
-
-
+# in C++ to replace aggregate or use of distinct from dplyr / data.table
 aggr <- function(weight, ind){
     res <- numeric(max(ind))
     for(i in seq_along(weight))
@@ -685,7 +595,7 @@ aggr <- function(weight, ind){
 }
 
 
-# data has to be a data.frame
+# data has to be a data.frame in cbind.phyDat
 fast.table2 <- function (data)                                                            
 {                                                                                 
     if(!is.data.frame(data)) 
@@ -703,16 +613,15 @@ fast.table2 <- function (data)
 }                                                                                        
 
 
-
 # new cbind.phyDat 
-cbindPD2 <- function(..., gaps="-", compress=TRUE){
+cbind.phyDat <- function(..., gaps="-", compress=TRUE){
     object <- as.list(substitute(list(...)))[-1]    
     x <- list(...)
     n <- length(x) 
     if (n == 1) 
         return(x[[1]])
     type <- attr(x[[1]], "type")
-    nr = numeric(n)
+    nr <- numeric(n)
     
     ATTR <- attributes(x[[1]])
     
@@ -721,42 +630,50 @@ cbindPD2 <- function(..., gaps="-", compress=TRUE){
     allLevels <- attr(x[[1]], "allLevels")
     gapsInd <- match(gaps, allLevels)
     snames <- vector("list", n)  # names(x[[1]])
-    vec = numeric(n+1)
-    wvec = numeric(n+1)
-    objNames<-as.character(object)
+    vec <- numeric(n+1)
+    wvec <- numeric(n+1)
+    objNames <- as.character(object)
     if(any(duplicated(objNames))) objNames <- paste0(objNames, 1:n)
     #    tmp <- as.character(x[[1]])
     
     for(i in 1:n){
-        snames[[i]] = names(x[[i]]) 
-        nr[i] <- attr(x[[i]], "nr") 
-        vec[i+1] = attr(x[[i]], "nr")
-        wvec[i+1] = sum(attr(x[[i]], "weight"))
+        snames[[i]] <- names(x[[i]]) 
+        nr[i] <- sum(attr(x[[i]], "weight")) 
+        vec[i+1] <- attr(x[[i]], "nr")
+        wvec[i+1] <- sum(attr(x[[i]], "weight"))
     }
-    vec = cumsum(vec)
-    wvec = cumsum(wvec)
-    snames = unique(unlist(snames))
+    vec <- cumsum(vec)
+    wvec <- cumsum(wvec)
+    snames <- unique(unlist(snames))
     weight <- numeric(vec[n+1])
+    
+    index <- numeric(wvec[n+1])
     
     ATTR$names <- snames
     ATTR$nr <- vec[n+1]
     
-    tmp = matrix(gapsInd, vec[n+1], length(snames), dimnames = list(NULL, snames))
+    tmp <- matrix(gapsInd, vec[n+1], length(snames), dimnames = list(NULL, snames))
     tmp <- as.data.frame(tmp)
-    
+    add.index <- TRUE
     for(i in 1:n){
-        nam = names(x[[i]])
+        nam <- names(x[[i]])
         tmp[(vec[i]+1):vec[i+1], nam] <- x[[i]][nam]
         weight[(vec[i]+1):vec[i+1]] <- attr(x[[i]], "weight")
-        #        index[(wvec[i]+1):wvec[i+1]] <- attr(x[[i]], "index")
     }
-    #    ATTR$index <- index
-    ATTR$index <- NULL
     if(compress){
         ddd <- fast.table2(tmp)
-        tmp <- tmp[ddd$pos, ]
+        tmp <- tmp[ddd$pos,]
         weight <- aggregate(weight, by=list(ddd$index), FUN=sum)$x
     }
+    for(i in 1:n){
+        tmp2 <- attr(x[[i]], "index")
+        if(!is.null(tmp2)){
+            if(is.data.frame(tmp2))index[(wvec[i]+1):wvec[i+1]] <- ddd$index[(vec[i]+1):vec[i+1]][tmp2[,1]]
+            else index[(wvec[i]+1):wvec[i+1]] <- ddd$index[(vec[i]+1):vec[i+1]][tmp2]           
+        }
+        else add.index <- FALSE
+    }
+    if(add.index)ATTR$index <- data.frame(index = index, genes=rep(objNames, nr))
     ATTR$weight <- weight
     ATTR$nr <- length(weight)
     attributes(tmp) <- ATTR
@@ -764,47 +681,7 @@ cbindPD2 <- function(..., gaps="-", compress=TRUE){
 }
 
 
-cbind.phyDat <- function(..., gaps="-"){
-    object <- as.list(substitute(list(...)))[-1]    
-    x <- list(...)
-    n <- length(x) 
-    if (n == 1) 
-        return(x[[1]])
-    type <- attr(x[[1]], "type")
-    nr = numeric(n)
-    nr[1] <- sum(attr(x[[1]], "weight"))
-    levels <- attr(x[[1]], "levels")
-    snames <- vector("list", n)  # names(x[[1]])
-    vec = numeric(n+1)
-    objNames<-as.character(object)
-    if(any(duplicated(objNames))) objNames <- paste0(objNames, 1:n)
-    tmp <- as.character(x[[1]])
-    for(i in 1:n){
-        snames[[i]] = names(x[[i]]) #match.names(snames,names(x[[i]]))
-        nr[i] <- sum(attr(x[[i]], "weight")) 
-        vec[i+1] = sum(attr(x[[i]], "weight"))
-    }
-    vec = cumsum(vec)
-    snames = unique(unlist(snames))
-
-    tmp = matrix(gaps, length(snames), vec[n+1], dimnames = list(snames, NULL))
-
-    for(i in 1:n){
-        nam = names(x[[i]])
-        tmp[nam,(vec[i]+1):vec[i+1] ] <- as.character(x[[i]])
-    }
-    if (type == "DNA") 
-        dat <- phyDat.DNA(tmp, return.index = TRUE)
-    if (type == "AA") 
-        dat <- phyDat.AA(tmp, return.index = TRUE)
-    if (type == "USER") 
-        dat <- phyDat.default(tmp, levels = levels, 
-            return.index = TRUE)
-    if (type == "CODON") 
-        dat <- phyDat.codon(tmp, return.index = TRUE)            
-    attr(dat,"index") <- data.frame(index=attr(dat,"index"), genes=rep(objNames, nr))   
-    dat
-}
+c.phyDat <- cbind.phyDat
 
 
 write.phyDat <- function(x, file, format="phylip",...){
