@@ -477,27 +477,6 @@ as.character.phyDat2 <- function (x, ...)
 }
 
 
-#as.data.frame.phyDat <- function(x, ...){
-#   data.frame(t(as.character(x, ...)), stringsAsFactors=FALSE)
-#}
-
-# much faster
-# TODO as stringsAsFactors=FALSE
-# result[[i]] <- x[[i]] + factor levels setzen
-# 
-as.data.frame.phyDatOld <- function(x, ...){
-    nr <- attr(x, "nr")
-    nc <- attr(x, "nc")
-    labels <- attr(x, "allLevels")
-    result <- vector("list", length(x))
-    for (i in 1:length(x)) result[[i]] <- labels[x[[i]]]
-    attr(result, "names") <- names(x)
-    attr(result, "row.names") <- 1:nr
-    attr(result, "class") <- "data.frame"
-    result
-}
-
-
 as.data.frame.phyDat <- function(x, ...){
   nr <- attr(x, "nr")
   nc <- attr(x, "nc")
@@ -684,15 +663,19 @@ cbind.phyDat <- function(..., gaps="-", compress=TRUE){
 c.phyDat <- cbind.phyDat
 
 
-write.phyDat <- function(x, file, format="phylip",...){
-    if(format=="fasta") write.dna(as.character(x), file, format="fasta", colsep = "", nbcol=-1, ...)
-    if(format=="phylip") write.dna(as.character(x), file, format="sequential", ...)    
+write.phyDat <- function(x, file, format="phylip", colsep = "", nbcol=-1, ...){
+    formats <- c("phylip", "nexus", "interleaved", "sequential", "fasta")
+    format <- match.arg(tolower(format), formats)
     if(format=="nexus"){   
-         type = attr(x, "type")
-         if(type=="DNA") write.nexus.data(as.list(as.data.frame(x)), file, format = "dna",...)
-         else write.nexus.data(as.list(as.data.frame(x)), file, format = "protein", ...)
-         }
+        type = attr(x, "type")
+        if(type=="DNA") write.nexus.data(as.list(as.data.frame(x)), file, format = "dna",...)
+        else write.nexus.data(as.list(as.data.frame(x)), file, format = "protein", ...)
     }
+    else{
+        if(format=="phylip") format = "interleaved" 
+        write.dna(as.character(x), file, format=format, colsep = colsep, nbcol=nbcol, ...)
+    }    
+}
 
 
 read.phyDat <- function(file, format="phylip", type="DNA", ...){
@@ -1055,7 +1038,6 @@ genlight2phyDat <- function(x, ambiguity=NA){
 }
 
 
-if (getRversion() >= "2.15.1") utils::globalVariables("image.AAbin")
 image.phyDat <- function(x, ...){
     if(attr(x, "type")=="AA")image(as.AAbin(x), ...)
     if(attr(x, "type")=="DNA")image(as.DNAbin(x), ...)

@@ -30,7 +30,7 @@ These functions transform several DNA formats into the \code{phyDat} format.
 \usage{
 phyDat(data, type = "DNA", levels = NULL, return.index=TRUE, ...) 
 read.phyDat(file, format="phylip", type="DNA", ...)
-write.phyDat(x, file, format="phylip",...)
+write.phyDat(x, file, format="phylip", colsep = "", nbcol=-1, ...)
 \method{as.phyDat}{DNAbin}(x, ...)
 \method{as.phyDat}{alignment}(x, type="DNA", ...)
 \method{as.phyDat}{MultipleAlignment}(x, ...)
@@ -56,6 +56,8 @@ baseFreq(obj, freq=FALSE, all=FALSE, drop.unused.levels=FALSE)
   \item{format}{File format of the sequence alignment (see details).
   Several popular formats are supported: "phylip", "interleaved", "sequential", "clustal", "fasta" or "nexus", or any unambiguous abbreviation of these. 
   }
+  \item{colsep}{a character used to separate the columns (a single space by default).}
+  \item{nbcol}{a numeric specifying the number of columns per row (-1 by default); may be negative implying that the nucleotides are printed on a single line.}
   \item{n}{Number of sequences.}
   \item{names}{Names of sequences.}
   \item{subset}{a subset of taxa.}
