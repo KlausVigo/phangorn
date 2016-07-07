@@ -16,6 +16,8 @@ dat = allSitePattern(5)
 weights = as.vector(1000 * exp(pml(treeR1, dat)$siteLik))
 attr(dat, "weight") = weights
 
+dat_Mk <- subset(dat, select = -c(1,342,683, 1024))
+
 bf = c(.1,.2,.3,.4)
 Q = c(6:1)
 
@@ -59,3 +61,10 @@ test_that("NNI optimisation works properly", {
     expect_equal(pmlU3.fitted$tree, pmlU1$tree, tolerance=1e-6)
 #    expect_equal(pmlR3.fitted$tree, pmlR1$tree, tolerance=5e-6)
 })
+
+
+test_that("Mkv model works properly", {
+    skip_on_cran()
+    expect_equal(logLik(pmlU2.fitted), logLik(pmlU1))
+})
+

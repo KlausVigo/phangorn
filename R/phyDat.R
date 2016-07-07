@@ -677,6 +677,94 @@ cbindPD <- function(..., gaps="-"){
 
 
 
+aggr <- function(weight, ind){
+    res <- numeric(max(ind))
+    for(i in seq_along(weight))
+        res[ind[i]] = res[ind[i]] + weight[i]
+    res
+}
+
+
+# data has to be a data.frame
+fast.table2 <- function (data)                                                            
+{                                                                                 
+    if(!is.data.frame(data)) 
+        data <- as.data.frame(data, stringsAsFactors = FALSE)                    
+    da <- do.call("paste", data)                                             
+    ind <- !duplicated(da)                                                                  
+    levels <- da[ind]                                                                       
+    cat <- factor(da,levels = levels)                                                      
+    nl <- length(levels)                                                       
+    bin <- (as.integer(cat) - 1L)                                                           
+    bin <- bin[!is.na(bin)]                                                                
+    if (length(bin)) bin <- bin + 1L                                                        
+    result=list(index = bin, pos = ind)                                                                    
+    result                                                                                 
+}                                                                                        
+
+
+
+# new cbind.phyDat 
+cbindPD2 <- function(..., gaps="-", compress=TRUE){
+    object <- as.list(substitute(list(...)))[-1]    
+    x <- list(...)
+    n <- length(x) 
+    if (n == 1) 
+        return(x[[1]])
+    type <- attr(x[[1]], "type")
+    nr = numeric(n)
+    
+    ATTR <- attributes(x[[1]])
+    
+    nr[1] <- sum(attr(x[[1]], "weight"))
+    levels <- attr(x[[1]], "levels")
+    allLevels <- attr(x[[1]], "allLevels")
+    gapsInd <- match(gaps, allLevels)
+    snames <- vector("list", n)  # names(x[[1]])
+    vec = numeric(n+1)
+    wvec = numeric(n+1)
+    objNames<-as.character(object)
+    if(any(duplicated(objNames))) objNames <- paste0(objNames, 1:n)
+    #    tmp <- as.character(x[[1]])
+    
+    for(i in 1:n){
+        snames[[i]] = names(x[[i]]) 
+        nr[i] <- attr(x[[i]], "nr") 
+        vec[i+1] = attr(x[[i]], "nr")
+        wvec[i+1] = sum(attr(x[[i]], "weight"))
+    }
+    vec = cumsum(vec)
+    wvec = cumsum(wvec)
+    snames = unique(unlist(snames))
+    weight <- numeric(vec[n+1])
+    
+    ATTR$names <- snames
+    ATTR$nr <- vec[n+1]
+    
+    tmp = matrix(gapsInd, vec[n+1], length(snames), dimnames = list(NULL, snames))
+    tmp <- as.data.frame(tmp)
+    
+    for(i in 1:n){
+        nam = names(x[[i]])
+        tmp[(vec[i]+1):vec[i+1], nam] <- x[[i]][nam]
+        weight[(vec[i]+1):vec[i+1]] <- attr(x[[i]], "weight")
+        #        index[(wvec[i]+1):wvec[i+1]] <- attr(x[[i]], "index")
+    }
+    #    ATTR$index <- index
+    
+    ATTR$index <- NULL
+    if(compress){
+        ddd <- fast.table2(tmp)
+        tmp <- tmp[ddd$pos, ]
+        weight <- aggregate(weight, by=list(ddd$index), FUN=sum)$x
+    }
+    ATTR$weight <- weight
+    ATTR$nr <- length(weight)
+    attributes(tmp) <- ATTR
+    tmp
+}
+
+
 cbind.phyDat <- function(..., gaps="-"){
     object <- as.list(substitute(list(...)))[-1]    
     x <- list(...)
