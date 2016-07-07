@@ -1,6 +1,7 @@
 context("conversion_and_subsetting")
 
 data(Laurasiatherian)
+data(chloroplast)
 phy_matrix <- as.character(Laurasiatherian)
 phy_df <- as.data.frame(Laurasiatherian)
 phy_dnabin <- as.DNAbin(Laurasiatherian)
@@ -32,5 +33,19 @@ test_that("subsetting and combining work as expected", {
     expect_is(subset_4 <- subset(Laurasiatherian, select = 101:1605), "phyDat")
     expect_is(lauraCbind2 <- cbind(subset_3, subset_4), "phyDat")
     expect_equal(baseFreq(lauraCbind2), baseFreq(Laurasiatherian))
+})
+
+
+test_that("read and write work as expected", {
+    skip_on_cran()
+    
+    write.phyDat(Laurasiatherian, "tmp1.txt")
+    expect_is(laura <- read.phyDat("tmp1.txt"), "phyDat")
+    expect_equal(laura, Laurasiatherian)
+    unlink("tmp1.txt")
+    write.phyDat(chloroplast, "tmp2.txt")
+    expect_is(chloro <- read.phyDat("tmp2.txt", type="AA"), "phyDat")
+    expect_equal(chloro, chloroplast)
+    unlink("tmp2.txt")
 })
 
