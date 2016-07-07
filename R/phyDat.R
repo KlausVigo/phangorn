@@ -751,7 +751,6 @@ cbindPD2 <- function(..., gaps="-", compress=TRUE){
         #        index[(wvec[i]+1):wvec[i+1]] <- attr(x[[i]], "index")
     }
     #    ATTR$index <- index
-    
     ATTR$index <- NULL
     if(compress){
         ddd <- fast.table2(tmp)

@@ -17,3 +17,18 @@ test_that("conversion work as expected", {
     expect_that(as.phyDat(phy_dnabin), is_a("phyDat"))
     expect_that(as.phyDat(phy_align), is_a("phyDat"))
 })
+
+
+
+test_that("subsetting and combining work as expected", {
+    skip_on_cran()
+    subset_1 <- subset(Laurasiatherian, select = 1:1000, site.pattern = FALSE)
+    subset_2 <- subset(Laurasiatherian, select = 1001:3179, site.pattern = FALSE)
+    lauraCbind1 <- cbind(subset_1, subset_2)
+    
+    subset_3 <- subset(Laurasiatherian, select = 1:100)
+    subset_4 <- subset(Laurasiatherian, select = 101:1605)
+    lauraCbind2 <- cbind(subset_3, subset_4)
+    
+})
+
