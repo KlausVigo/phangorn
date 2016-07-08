@@ -179,7 +179,10 @@ c.splits <- function (..., recursive=FALSE)
     cycle <- attr(x[[1]], "cycle")
     for (i in 2:n) {
         match.names(labels, attr(x[[i]], "labels"))
+        x[[i]] <- changeOrder(x[[i]], labels)
     }
+# MPR    
+# match    
     res = structure(NextMethod("c"), class=c("splits", "prop.part"))
     attr(res, "labels") = labels
     attr(res, "weight") = as.vector(sapply(x, attr, "weight"))
