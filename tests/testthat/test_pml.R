@@ -35,17 +35,6 @@ pmlR3 = pml(treeR3, dat)
 pmlR3.fitted = optim.pml(pmlR3, TRUE, optRooted = TRUE,  control = pml.control(epsilon=1e-10, trace=0))
 
 
-
-# optim.pml:
-# bf F81
-# Q  Sym
-# Gamma
-# Inv
-
-
-#tr_acctran = acctran(tree1, dat)
-#tr_ratchet = pratchet(dat, trace=0)
-#bab(dat)
 test_that("edge length optimisation works properly", {
     skip_on_cran()
     expect_equal(logLik(pmlU2.fitted), logLik(pmlU1))
