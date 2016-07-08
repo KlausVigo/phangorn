@@ -7,6 +7,7 @@
 \alias{as.matrix.splits}
 \alias{as.Matrix}
 \alias{as.Matrix.splits}
+\alias{c.splits}
 \alias{distinct.splits}
 \alias{print.splits}
 \alias{write.splits}

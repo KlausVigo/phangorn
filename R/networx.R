@@ -167,6 +167,7 @@ countCycles <- function(splits, tree=NULL, ord=NULL){
 c.splits <- function (..., recursive=FALSE) 
 {
     x <- list(...)
+    if (length(x) == 1 && !inherits(x[[1]], "splits")) x <- x[[1]]
     n <- length(x)
     match.names <- function(a, b) {
         if (any(!(a %in% b))) 
