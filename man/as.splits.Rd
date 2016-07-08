@@ -7,6 +7,7 @@
 \alias{as.matrix.splits}
 \alias{as.Matrix}
 \alias{as.Matrix.splits}
+\alias{distinct.splits}
 \alias{print.splits}
 \alias{write.splits}
 \alias{allSplits}
@@ -36,6 +37,7 @@ allSplits(k, labels = NULL)
 write.nexus.splits(obj, file = "", weights=NULL, taxa=TRUE, append=FALSE)
 read.nexus.splits(file)
 addTrivialSplits(obj)
+distinct.splits(...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
