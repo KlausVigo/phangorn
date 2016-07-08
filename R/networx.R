@@ -181,13 +181,22 @@ c.splits <- function (..., recursive=FALSE)
         match.names(labels, attr(x[[i]], "labels"))
         x[[i]] <- changeOrder(x[[i]], labels)
     }
-    w <- as.vector(sapply(x, attr, "weight"))
+    w <- as.vector(sapply(x, attr, "weights"))
     x <- lapply(x, unclass)
     res <- structure(do.call("c", x), class=c("splits", "prop.part"))
 #        res <- structure(NextMethod("c"), class=c("splits", "prop.part"))
     attr(res, "labels") <- labels
-    attr(res, "weight") <- w
+    attr(res, "weights") <- w
     attr(res, "cycle") <- cycle
+    res
+}
+
+
+distinct.splits <- function(...){
+    tmp <- c(...)
+    res <- unique(tmp)
+    attributes(res) <-  attributes(tmp)
+    attr(res, "weights") <- tabulate(match(tmp, res))
     res
 }
 
