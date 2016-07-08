@@ -15,7 +15,7 @@ importFrom(igraph, graph, graph_from_adjacency_matrix, layout_with_kk, plot.igra
 #layout.kamada.kawai, graph.adjacency, get.shortest.paths, topological.sort,
 
 
-
+importFrom(magrittr,"%>%")
 importFrom(Matrix, Matrix, sparseMatrix, spMatrix, crossprod, solve) #, %*%
 importFrom(fastmatch, fmatch)
 importFrom(nnls, nnls)
