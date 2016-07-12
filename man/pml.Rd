@@ -136,7 +136,7 @@ Lewis, P.O. (2001) A likelihood approach to estimating phylogeny from discrete m
 }
 \author{Klaus Schliep \email{klaus.schliep@gmail.com}}
 \seealso{
-\code{\link{bootstrap.pml}}, \code{\link{modelTest}}, \code{\link{pmlPart}}, \code{\link{pmlMix}}, \code{\link{plot.phylo}}, \code{\link{SH.test}}
+\code{\link{bootstrap.pml}}, \code{\link{modelTest}}, \code{\link{pmlPart}}, \code{\link{pmlMix}}, \code{\link{plot.phylo}}, \code{\link{SH.test}}, \code{\link{ancestral.pml}} 
 }
 % \note{For small trees the likelihood seems to be very similar to Paup* or PhyML.}
 \examples{
