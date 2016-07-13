@@ -185,6 +185,7 @@ c.splits <- function (..., recursive=FALSE)
     w <- as.vector(sapply(x, attr, "weights"))
     x <- lapply(x, unclass)
     res <- structure(do.call("c", x), class=c("splits", "prop.part"))
+    names(res) <- NULL
 #        res <- structure(NextMethod("c"), class=c("splits", "prop.part"))
     attr(res, "labels") <- labels
     attr(res, "weights") <- w
