@@ -246,10 +246,16 @@ lowerBound <- function(x, cost=NULL){
  
     y <- as.character(x)
     states <- apply(y, 2, unique.default)
+
 # duplicated function(x)x[duplicated(x)]="?" avoids looping
     if(nr==1) nst <- length(states)   
-    else nst <- sapply(states, length)
-
+    else{
+        if(is.matrix(states)){
+            states = as.data.frame(states, stringsAsFactors=FALSE)
+            class(states) = "list"
+        }
+        nst <- sapply(states, length)
+    }
     res = numeric(nr)
     ust = sort(unique(nst))
 
