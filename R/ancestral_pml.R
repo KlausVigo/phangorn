@@ -1,11 +1,11 @@
 #
 # ancestral sequences ML
 #
-ancestral.pml <- function (object, type=c("ml", "bayes")) 
+ancestral.pml <- function (object, type=c("marginal", "ml", "bayes")) 
 {
     call <- match.call()
     type <- match.arg(type)
-    pt <- match.arg(type, c("ml", "bayes"))   
+    pt <- match.arg(type, c("marginal", "joint", "ml", "bayes"))   
     tree = object$tree 
     
     INV <- object$INV
@@ -15,7 +15,7 @@ ancestral.pml <- function (object, type=c("ml", "bayes"))
     if (is.null(attr(tree, "order")) || attr(tree, "order") == 
         "cladewise") 
         tree <- reorder(tree, "postorder")
-    q = length(tree$tip.label)
+    nTips = length(tree$tip.label)
     node <- tree$edge[, 1]
     edge <- tree$edge[, 2]
     m = length(edge) + 1  # max(edge)
@@ -50,7 +50,7 @@ ancestral.pml <- function (object, type=c("ml", "bayes"))
     mNodes = as.integer(max(node) + 1)
     contrast = attr(data, "contrast")
     nco = as.integer(dim(contrast)[1])
-    for(i in 1:l)dat[i,(q + 1):m] <- .Call("LogLik2", data, P[i,], nr, nc, node, edge, nTips, mNodes, contrast, nco, PACKAGE = "phangorn")
+    for(i in 1:l)dat[i,(nTips + 1):m] <- .Call("LogLik2", data, P[i,], nr, nc, node, edge, nTips, mNodes, contrast, nco, PACKAGE = "phangorn")
     
     parent <- tree$edge[, 1]
     child <- tree$edge[, 2]
@@ -70,13 +70,31 @@ ancestral.pml <- function (object, type=c("ml", "bayes"))
         for(i in 1:l){  
             tmp = tmp + w[i] * dat[[i, j]]                                 
         }
-        if (pt == "bayes") tmp = tmp * rep(bf, each=nr)
+        if ( (pt == "bayes") || (pt == "marginal")) tmp = tmp * rep(bf, each=nr)
         tmp = tmp / rowSums(tmp)
         result[[j]] = tmp
     } 
     attributes(result) = x
     attr(result, "call") <- call
     result 
+}
+
+
+#joint_reconstruction <- function(object){
+#
+#}
+    
+
+ancestral2phyDat <- function(x) {
+    contr <- attr(x, "contrast")
+    # a bit too complicated    
+    ind1 <- which( apply(contr, 1, function(x)sum(x > 0.00001)) == 1L)
+    ind2 <- which( contr[ind1, ] > 0.00001, arr.ind = TRUE)
+    pos <- ind2[match(as.integer(1L:ncol(contr)),  ind2[,2]),1]
+    # only first hit    
+    res <- lapply(x, function(x, pos) pos[apply(x, 1, which.max)], pos)
+    attributes(res) <- attributes(x)
+    return(res)
 }
 
 
