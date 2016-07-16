@@ -11,7 +11,7 @@ Ancestral character reconstruction.
 Marginal reconstruction of the ancestral character states.
 }
 \usage{
-ancestral.pml(object, type = c("ml", "bayes"))
+ancestral.pml(object, type = c("marginal", "ml", "bayes"))
 ancestral.pars(tree, data, type = c("MPR", "ACCTRAN"), cost = NULL)
 pace(tree, data, type = c("MPR", "ACCTRAN"), cost = NULL)
 plotAnc(tree, data, i, col=NULL, cex.pie=par("cex"), pos="bottomright", ...)
