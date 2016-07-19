@@ -73,5 +73,13 @@ test_that("When each tree has unit branch lengths, RF = wRF", {
                 max(abs(RF.dist(trees) - wRF.dist(trees))) # find maximum abs difference between RF and wRF distance (expect 0)
             })), # find max of all these
         0) # expect equal to 0
+    # now the same for comparison of one tree with many
+    expect_equal(
+        max(
+            sapply(sample(10:500,50), function(x) { # test some random numbers of tips between 10 and 500
+                trees <- rmtree(20, x, rooted=FALSE, br=1) # generate 20 unrooted trees with the given number of tips and unit branch lengths
+                max(abs(RF.dist(trees[[1]], trees) - wRF.dist(trees[[1]], trees))) # find maximum abs difference between RF and wRF distance (expect 0)
+            })), # find max of all these
+        0) # expect equal to 0
 })
 
