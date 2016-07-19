@@ -33,6 +33,8 @@ test_that("Kuhner-Felsenstein distance (branch score difference)", {
     expect_that(treedist(tree1, tree1)[2], is_equivalent_to(0))
     expect_that(treedist(tree1, tree2)[2], is_equivalent_to(sqrt(2)))
     expect_that(treedist(tree1, tree3)[2], is_equivalent_to(1))
+    
+    expect_equal(KF.dist(tree1, c(tree1, tree2, tree3)), c(0, sqrt(2), 1))
 })
 
 test_that("path distance", {
