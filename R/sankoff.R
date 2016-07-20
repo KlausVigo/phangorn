@@ -27,8 +27,6 @@ sankoffNew <- function (tree, data, cost = NULL, site = 'pscore')
  
 #    on.exit(.C("sankoff_free"))
 #    .C("sankoff_init", as.integer())
-
-
 #    for (i in 1:length(data)) storage.mode(data[[i]]) = "double"
 
     if(inherits(tree,"phylo")) return(fit.sankoffNew(tree, data, cost, returnData =site))

@@ -232,7 +232,11 @@ cladeMatrix <- function(x, rooted=FALSE){
 }
 
 
-moving_average <- function(x, window=50){
-     cx <- c(0, cumsum(x))
-     (cx[(window+1):length(cx)] - cx[1:(length(cx)-window)])/(window)
+moving_average <- function(obj, window=50){
+    fun <- function(x){
+        cx <- c(0, cumsum(x))
+        (cx[(window+1):length(cx)] - cx[1:(length(cx)-window)])/(window)
+    }
+    res <- apply(obj$X, 1, fun)
+    rownames(res) <- c()
 }
