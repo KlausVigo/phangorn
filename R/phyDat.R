@@ -307,6 +307,18 @@ phyDat.codon <- function (data, return.index = TRUE)
 }
 
 
+dna2codon <- function(obj){
+    if(!inherits(obj, "phyDat"))stop("obj needs to be of class phyDat!")
+    phyDat.codon(as.character(obj))
+}
+
+
+codon2dna <- function(obj){
+    if(!inherits(obj, "phyDat"))stop("obj needs to be of class phyDat!")
+    phyDat.DNA(as.character(obj))
+}
+
+
 as.phyDat <- function (x, ...){
     if (inherits(x,"phyDat")) return(x)
     UseMethod("as.phyDat")
@@ -413,7 +425,7 @@ acgt2ry <- function(obj){
 }
 
 
-as.character.phyDat <- function (x, allLevels=TRUE, ...) 
+as.character.phyDat_Old <- function (x, allLevels=TRUE, ...) 
 {
     nr <- attr(x, "nr")
     nc <- attr(x, "nc")
@@ -455,23 +467,43 @@ as.character.phyDat <- function (x, allLevels=TRUE, ...)
 }
 
 
-# replace as.character.phyDat 20 Zeilen weniger
-as.character.phyDat2 <- function (x, ...) 
+# replace as.character.phyDat 20 Zeilen weniger, works also for codons
+as.character.phyDat <- function (x, allLevels=TRUE, ...) 
 {
     nr <- attr(x, "nr")
     nc <- attr(x, "nc")
     type <- attr(x, "type")
     labels = attr(x, "allLevels")
-    result = matrix(NA, nrow = length(x), ncol = nr)
-    for (i in 1:length(x)) result[i, ] <- labels[x[[i]]]
-    if (is.null(attr(x, "index"))) 
-        index = rep(1:nr, attr(x, "weight"))
-    else {
+    
+    if (!is.null(attr(x, "index"))) {
         index = attr(x, "index")
         if (is.data.frame(index)) 
             index <- index[, 1]
+    } 
+    else index = rep(1:nr, attr(x, "weight"))
+    if (type == "USER") {
+        #levels in acgt2ry
+        if(!allLevels){
+            tmp = attr(x, "levels")
+            contrast = attr(x, "contrast") # contrast=AC
+            contrast[contrast>0] = 1
+            ind = which(rowSums(contrast)==1)
+            contrast[rowSums(contrast)>1,] = 0 
+            labels = rep(NA, length(attr(x, "allLevels")))
+            labels[ind] = tmp[contrast%*%c(1:length(tmp))]
+        }
     }
-    result = result[, index, drop = FALSE]
+    if(type == "CODON"){
+        nr <- length(index)
+        result = matrix(NA, nrow = length(x), ncol = 3L*nr)
+        labels = strsplit(labels, "")
+        for (i in 1:length(x)) result[i, ] <- unlist(labels[ x[[i]][index] ])
+    }
+    else {
+        result = matrix(NA, nrow = length(x), ncol = nr)
+        for (i in 1:length(x)) result[i, ] <- labels[x[[i]]]
+        result = result[, index, drop = FALSE]
+    }
     rownames(result) = names(x)
     result
 }
@@ -539,7 +571,7 @@ as.DNAbin.phyDat <- function (x, ...)
 }
 
 
-if (getRversion() >= "2.15.1") utils::globalVariables("as.AAbin")
+#if (getRversion() >= "2.15.1") utils::globalVariables("as.AAbin")
 as.AAbin.phyDat <- function(x,...) {
    if(attr(x, "type")=="AA") return(as.AAbin(as.character(x, ...)))
    else stop("x must be a amino acid sequence")
