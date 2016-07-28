@@ -514,7 +514,7 @@ as.data.frame.phyDat <- function(x, ...){
   nr <- attr(x, "nr")
   nc <- attr(x, "nc")
   labels <- attr(x, "allLevels")
-  if(type == "AA") labels <- toupper(labels)
+  if(attr(x, "type") == "AA") labels <- toupper(labels)
   result <- vector("list", length(x))
   if (is.null(attr(x, "index"))) 
     index = rep(1:nr, attr(x, "weight"))
