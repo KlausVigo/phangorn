@@ -4,6 +4,7 @@
 \alias{as.phyDat.DNAbin}
 \alias{as.phyDat.alignment}
 \alias{as.phyDat.MultipleAlignment}
+\alias{as.MultipleAlignment}
 \alias{as.MultipleAlignment.phyDat}
 \alias{as.data.frame.phyDat}
 \alias{as.character.phyDat}
@@ -22,6 +23,8 @@
 \alias{phyDat2alignment}
 \alias{phyDat2MultipleAlignment}
 \alias{image.phyDat}
+\alias{dna2codon}
+\alias{codon2dna}
 \title{Conversion among Sequence Formats}
 \description{
 These functions transform several DNA formats into the \code{phyDat} format. 
@@ -44,6 +47,8 @@ phyDat2alignment(x)
 allSitePattern(n, levels=c("a","c","g","t"), names=NULL)
 acgt2ry(obj)
 baseFreq(obj, freq=FALSE, all=FALSE, drop.unused.levels=FALSE)
+dna2codon(x)
+codon2dna(x)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
