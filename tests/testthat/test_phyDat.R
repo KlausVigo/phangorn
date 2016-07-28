@@ -1,7 +1,11 @@
 context("conversion_and_subsetting")
-
+# to test: phyDat.codon, 
 data(Laurasiatherian)
 data(chloroplast)
+set.seed(42)
+tree <- rtree(10)
+codon_align <- simSeq(tree, l=100, type = "CODON")
+
 phy_matrix <- as.character(Laurasiatherian)
 phy_df <- as.data.frame(Laurasiatherian)
 phy_dnabin <- as.DNAbin(Laurasiatherian)
@@ -17,6 +21,12 @@ test_that("conversion work as expected", {
     expect_that(as.phyDat(phy_df), is_a("phyDat"))
     expect_that(as.phyDat(phy_dnabin), is_a("phyDat"))
     expect_that(as.phyDat(phy_align), is_a("phyDat"))
+    expect_is(MA_AA <- as.MultipleAlignment(chloroplast), "AAMultipleAlignment")
+    expect_equal(as.phyDat(MA_AA), chloroplast)
+    expect_is(MA_DNA <- as.MultipleAlignment(Laurasiatherian), "DNAMultipleAlignment")
+    expect_equal(as.phyDat(MA_DNA), Laurasiatherian)
+    expect_is(c2d <- codon2dna(codon_align), "phyDat")
+    expect_equal(dna2codon(c2d), codon_align) 
 })
 
 
