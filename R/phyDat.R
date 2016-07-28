@@ -493,6 +493,7 @@ as.character.phyDat <- function (x, allLevels=TRUE, ...)
             labels[ind] = tmp[contrast%*%c(1:length(tmp))]
         }
     }
+    if(type == "AA") labels <- toupper(labels)
     if(type == "CODON"){
         nr <- length(index)
         result = matrix(NA, nrow = length(x), ncol = 3L*nr)
@@ -513,6 +514,7 @@ as.data.frame.phyDat <- function(x, ...){
   nr <- attr(x, "nr")
   nc <- attr(x, "nc")
   labels <- attr(x, "allLevels")
+  if(type == "AA") labels <- toupper(labels)
   result <- vector("list", length(x))
   if (is.null(attr(x, "index"))) 
     index = rep(1:nr, attr(x, "weight"))
