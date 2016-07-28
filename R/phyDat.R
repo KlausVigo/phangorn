@@ -307,15 +307,15 @@ phyDat.codon <- function (data, return.index = TRUE)
 }
 
 
-dna2codon <- function(obj){
-    if(!inherits(obj, "phyDat"))stop("obj needs to be of class phyDat!")
-    phyDat.codon(as.character(obj))
+dna2codon <- function(x){
+    if(!inherits(x, "phyDat"))stop("x needs to be of class phyDat!")
+    phyDat.codon(as.character(x))
 }
 
 
-codon2dna <- function(obj){
-    if(!inherits(obj, "phyDat"))stop("obj needs to be of class phyDat!")
-    phyDat.DNA(as.character(obj))
+codon2dna <- function(x){
+    if(!inherits(x, "phyDat"))stop("x needs to be of class phyDat!")
+    phyDat.DNA(as.character(x))
 }
 
 
@@ -379,7 +379,7 @@ as.MultipleAlignment <- function (x, ...){
 }
 
 
-as.MultipleAlignment.phyDat <- function(x){
+as.MultipleAlignment.phyDat <- function(x, ...){
     if (requireNamespace('Biostrings')){
     z = as.character(x)
     nam = rownames(z)
@@ -425,49 +425,7 @@ acgt2ry <- function(obj){
 }
 
 
-as.character.phyDat_Old <- function (x, allLevels=TRUE, ...) 
-{
-    nr <- attr(x, "nr")
-    nc <- attr(x, "nc")
-    type <- attr(x, "type")
-    if (type == "DNA") {
-        labels <- c("a", "c", "g", "t", "u", "m", "r", "w", "s", 
-            "y", "k", "v", "h", "d", "b", "n", "?", "-")
-    }
-    if (type == "AA") {
-        labels <- c("a", "r", "n", "d", "c", "q", "e", "g", "h", 
-            "i", "l", "k", "m", "f", "p", "s", "t", "w", "y", 
-            "v", "b", "z", "x", "-", "?")
-    }
-    if (type == "USER") {
-        #levels
-        if(allLevels)labels = attr(x, "allLevels")
-        else{
-            tmp = attr(x, "levels")
-            contrast = attr(x, "contrast") # contrast=AC
-            contrast[contrast>0] = 1
-            ind = which(rowSums(contrast)==1)
-            contrast[rowSums(contrast)>1,] = 0 
-            labels = rep(NA, length(attr(x, "allLevels")))
-            labels[ind] = tmp[contrast%*%c(1:length(tmp))]
-            }
-    }
-    result = matrix(NA, nrow = length(x), ncol = nr)
-    for (i in 1:length(x)) result[i, ] <- labels[x[[i]]]
-    if (is.null(attr(x, "index"))) 
-        index = rep(1:nr, attr(x, "weight"))
-    else {
-        index = attr(x, "index")
-        if (is.data.frame(index)) 
-            index <- index[, 1]
-    }
-    result = result[, index, drop = FALSE]
-    rownames(result) = names(x)
-    result
-}
-
-
-# replace as.character.phyDat 20 Zeilen weniger, works also for codons
+# replace as.character.phyDat weniger Zeilen, works also for codons
 as.character.phyDat <- function (x, allLevels=TRUE, ...) 
 {
     nr <- attr(x, "nr")
