@@ -55,8 +55,8 @@ export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UN
     pml.fit, pml.init, pml.free, edQt, lli, cladePar, addConfidences, createLabel,
     countCycles, SOWH.test, plot.networx, presenceAbsence, as.networx.splits, addTrivialSplits,
     phyDat2alignment, AICc, readDist, writeDist, discrete.gamma, matchSplits, 
-    distinct.splits, c.splits, 
-    removeUndeterminedSites, phyDat2MultipleAlignment, delta.score, maxCladeCred)
+    distinct.splits, c.splits, dna2codon, codon2dna,
+    removeUndeterminedSites, phyDat2MultipleAlignment, delta.score, maxCladeCred, as.MultipleAlignment)
 
 S3method('[', splits)          
 S3method(addConfidences, phylo)
