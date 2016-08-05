@@ -15,6 +15,8 @@ Paradis, E., Gosselin, T., Goudet, J., Jombart, T., and **Schliep, K.** (2017) L
 
 Jombart, T., Archer, F., **Schliep, K.**, Kamvar, Z., Harris, R., Paradis, E., and Goudet, J. and Lapp, H. (2017) apex: phylogenetics with multiple genes. Molecular Ecology Resources (accepted) [dx.doi.org/10.1111/1755-0998.12567](http://dx.doi.org/10.1111/1755-0998.12567) [![R](icons/Rlogo_32.png)](https://cran.r-project.org/package=apex) [![github](icons/GitHub-Mark-32px.png)](https://github.com/thibautjombart/apex)
 
+Douglas C. Woodhams, Sara C. Bell, Laurent Bigler, Richard M. Caprioli, Pierre Chaurand, Brianna A. Lam, Laura K. Reinert, Urs Stalder, Victoria M. Vazquez, **Klaus Schliep**, Andreas Hertz, and Louise A. Rollins-Smith (2016) Life history linked to immune investment in developing amphibians. Conservation Physiology (accepted) [dx.doi.org/10.1093/conphys/cow025](http://dx.doi.org/10.1093/conphys/cow025)
+
 Legendre F., D'Haese C.A., Deleporte P., Pellens R., Whiting M.F., **Schliep K.**, Grandcolas P. (2014) The evolution of social behaviour in Blaberid cockroaches with diverse habitats and social systems: phylogenetic analysis of behavioural sequences. Biological Journal of the Linnean Society, 111(1) 59--77 
 
 **Schliep K.P.** (2011) phangorn: Phylogenetic analysis in R. Bioinformatics, 27(4) 592--593 [![R](icons/Rlogo_32.png)](https://cran.r-project.org/package=phangorn) [![github](icons/GitHub-Mark-32px.png)](https://github.com/KlausVigo/phangorn)
