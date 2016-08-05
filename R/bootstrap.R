@@ -1,4 +1,4 @@
-bootstrap.pml = function (x, bs = 100, trees = TRUE, multicore=FALSE, mc.cores = NULL, ...) 
+bootstrap.pml <- function (x, bs = 100, trees = TRUE, multicore=FALSE, mc.cores = NULL, ...) 
 {
     if(multicore && is.null(mc.cores)){
         mc.cores <- detectCores()
@@ -81,11 +81,11 @@ bootstrap.phyDat <- function (x, FUN, bs = 100, multicore=FALSE, mc.cores = NULL
 }
 
 
-matchEdges = function(tree1, tree2){
-    bp1 = bip(tree1)
-    bp2 = bip(tree2)
-    l = length(tree1$tip.label)
-    fn = function(x, y){
+matchEdges <- function(tree1, tree2){
+    bp1 <- bip(tree1)
+    bp2 <- bip(tree2)
+    l <- length(tree1$tip.label)
+    fn <- function(x, y){
         if(x[1]==1)return(x)
         else return(y[-x])
     } 
