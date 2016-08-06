@@ -656,9 +656,9 @@ addEdge <- function(network, desc, spl){
   #neu zu alt verbinden   
     edge = rbind(edge, cbind(oldNodes, newNodes), deparse.level = 0) 
     index = c(index, rep(spl, length(oldNodes)) )
-    network$splitIndex = index
     network$edge = edge
     network$Nnode = max(edge) - nTips
+    network$splitIndex = index
     network   
 }
 
@@ -785,8 +785,8 @@ circNetwork <- function(x, ord=NULL){
         class(res) = c("networx", "phylo")
         attr(res, "order") = NULL
     }
-    res$Nnode =  max(res$edge) - nTips
     res$edge.length = weight[index]  # ausserhalb
+    res$Nnode =  max(res$edge) - nTips
     res$splitIndex = index 
 #    attr(res, "splits") = x
     res$splits = x
@@ -878,8 +878,8 @@ as.networx.splits <- function(x, planar=FALSE, coord = c("none", "2D", "3D"), ..
             class(tmp) = c("networx", "phylo")
         } 
     }
-    tmp$Nnode = max(tmp$edge) - nTips
     tmp$edge.length = weight[tmp$splitIndex]
+    tmp$Nnode = max(tmp$edge) - nTips
     attr(x, "cycle") <- c.ord
 #    attr(tmp, "splits") = x 
     tmp$splits <- x
@@ -906,7 +906,8 @@ as.networx.phylo <- function(x, ...){
     spl <- as.splits(x)
     spl <- spl[x$tree[,2]]
     x$splitIndex <- 1:nrow(x$edge)
-    attr(x, "splits") = spl
+#    attr(x, "splits") = spl
+    x$splits <- spl
     class(x) <- c("networx", "phylo")
     x
 }
@@ -1713,8 +1714,8 @@ read.nexus.networx <- function(file, splits=TRUE){
     vert[,2] <- -vert[,2]  
 #    translate=data.frame(as.numeric(TRANS[,1]), TRANS[,2], stringsAsFactors=FALSE)
     plot <- list(vertices=vert)        
-    obj <- list(edge=edge, tip.label=TRANS$label, Nnode=max(edge)-ntaxa,
-        edge.length=el, splitIndex=splitIndex, splits=spl, translate=TRANS) 
+    obj <- list(edge=edge, tip.label=TRANS$label, edge.length=el, Nnode=max(edge)-ntaxa,
+        splitIndex=splitIndex, splits=spl, translate=TRANS) 
     obj$.plot <- list(vertices = vert, edge.color="black", edge.width=3, edge.lty = 1)
     class(obj) <- c("networx", "phylo")
     reorder(obj)
