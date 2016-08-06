@@ -50,24 +50,22 @@ LogDet transforms, and maximum likelihood. \emph{PhD thesis}.
 \seealso{\code{\link{distanceHadamard}}, \code{\link{lento}}, \code{\link{plot.networx}}}
 
 \examples{
-H = hadamard(3)
-v = 1:8
+H <- hadamard(3)
+v <- 1:8
 H%*%v
 fhm(v)
 
 data(yeast)
-dat = as.character(yeast)
+
 # RY-coding
-dat2 = dat
-dat2[dat=="a" | dat=="g"] = "r"
-dat2[dat=="c" | dat=="t"] = "y"
-dat2 = phyDat(dat2, type="USER", levels=c("r","y"), ambiguity=NULL)
-fit2 = h2st(dat2)
+dat_ry <- acgt2ry(yeast)
+fit2 <- h2st(dat_ry)
 lento(fit2)
 
 # write.nexus.splits(fit2, file = "test.nxs")
 # read this file into Spectronet or Splitstree to show the network
 \dontrun{
+dat = as.character(yeast)
 dat4 = phyDat(dat, type="USER", levels=c("a","c", "g", "t"), ambiguity=NULL)
 fit4 = h4st(dat4)
 
