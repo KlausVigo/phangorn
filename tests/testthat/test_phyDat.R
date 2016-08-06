@@ -57,5 +57,9 @@ test_that("read and write work as expected", {
     expect_is(chloro <- read.phyDat("tmp2.txt", type="AA"), "phyDat")
     expect_equal(chloro, chloroplast)
     unlink("tmp2.txt")
+    write.phyDat(chloroplast, "tmp.fas", format="fasta")
+    expect_is(chloro_fas <- read.phyDat("tmp.fas", type="AA", format = "fasta"), "phyDat")
+    expect_equal(chloro_fas, chloroplast)
+    unlink("tmp.fas")
 })
 
