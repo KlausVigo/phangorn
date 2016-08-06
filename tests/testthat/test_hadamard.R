@@ -2,7 +2,7 @@ context("Hadamard conjugation")
 
 v <- 1:8
 data(yeast)
-dm <- dist.hamming(dm)
+dm <- dist.hamming(yeast)
 # RY-coding
 yeast_ry <- acgt2ry(yeast)
 # delete ambiguous states
