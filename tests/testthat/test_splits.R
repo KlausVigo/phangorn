@@ -8,13 +8,14 @@ spl2tree <- as.phylo(tree2spl)
 dm <- cophenetic(tree2spl)
 mat <- as.matrix(tree2spl)
 Mat <- as.Matrix(tree2spl)
-
+trees <- nni(tree)
 
 test_that("splits ", {
     ## skip on CRAN
     skip_on_cran()
     
     ## check classes
+    expect_is(as.splits(trees), "splits")
     expect_is(tree2spl, "splits")
     expect_is(spl2tree,"phylo")
     expect_is(dm,"dist")
@@ -32,9 +33,20 @@ test_that("networx ", {
      # delete some additional attributes
      net2$.plot <- net2$translate <- NULL
      attr(net1, "order") = NULL
+     
+     expect_is(net1, "networx")
+     expect_is(net2, "networx")
+     expect_is(net3, "networx")
      expect_equal(net1, net2, tolerance=1e-6)
      expect_equal(net3, net2, tolerance=1e-6)
      expect_equal(net1, net3)
      unlink("tmp.nex")
+     cnet <- consensusNet(as.splits(trees))
+     expect_is(cnet, "networx") 
+     
+     net1$edge.length <- cnet$edge.length <- cnet$edge.labels <- NULL
+     attr(cnet, "order") = NULL
+     expect_equal(cnet, net1)
 })
+
 
