@@ -83,7 +83,10 @@ oneWise <- function (x, nTips=NULL)
     for (i in 2:length(x)) {
         y <- x[[i]]
         if (y[1] != 1) 
-            x[[i]] <- v[-y]
+            y <- v[-y]
+        if (y[1] != 1) 
+            y <- v[-y]
+        x[[i]] <- y      
     }
     x
 }
