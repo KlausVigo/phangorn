@@ -77,7 +77,10 @@ D.F. Robinson and L.R. Foulds (1981) \emph{Comparison of phylogenetic trees}, Ma
 
 D.F. Robinson and L.R. Foulds (1979) Comparison of weighted labelled trees. In Horadam, A. F. and Wallis, W. D. (Eds.), \emph{Combinatorial Mathematics VI: Proceedings of the Sixth Australian Conference on Combinatorial Mathematics, Armidale, Australia}, 119--126
 }
-\author{ Klaus P. Schliep \email{klaus.schliep@gmail.com}} 
+\author{ Klaus P. Schliep \email{klaus.schliep@gmail.com}, 
+
+Leonardo de Oliveira Martins
+} 
 \seealso{\code{\link[ape]{dist.topo}}}
 \examples{
 tree1 <- rtree(100, rooted=FALSE)
