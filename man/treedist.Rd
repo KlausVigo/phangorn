@@ -4,6 +4,8 @@
 \alias{wRF.dist}
 \alias{KF.dist}
 \alias{path.dist}
+\alias{sprdist}
+%\alias{SPR.dist}
 %\alias{print.treedist}
 \title{ Distances between trees }
 \description{
@@ -14,6 +16,7 @@ treedist(tree1, tree2, check.labels = TRUE)
 RF.dist(tree1, tree2=NULL, normalize=FALSE, check.labels=TRUE, rooted=FALSE)
 wRF.dist(tree1, tree2=NULL, normalize=FALSE, check.labels=TRUE, rooted=FALSE)
 KF.dist(tree1, tree2=NULL, check.labels=TRUE, rooted=FALSE)
+sprdist(tree1, tree2)
 path.dist(tree1, tree2=NULL, check.labels=TRUE, use.weight=FALSE)
 }
 \arguments{
@@ -52,6 +55,8 @@ where \eqn{i(T_1)} denotes the number of internal edges and \eqn{v_s(T_1, T_2)} 
 If edge weights should be considered \code{wRF.dist} calculates the weighted RF distance (Robinson & Foulds 1981). and \code{KF.dist} calculates the branch score distance (Kuhner & Felsenstein 1994). 
 \code{path.dist} computes the path difference metric as described in Steel and Penny 1993).
 
+\code{sprdist} computes the approximate SPR distance (Oliveira Martins et al. 2008, de Oliveira Martins 2016).
+
 For large number of trees the distance functions can use a lot of memory!
 
 % The function used internally is 2 * (nt - m) where nt is the number of tips and 
@@ -60,6 +65,10 @@ For large number of trees the distance functions can use a lot of memory!
 
 }
 \references{
+de Oliveira Martins L., Leal E., Kishino H. (2008) \emph{Phylogenetic Detection of Recombination with a Bayesian Prior on the Distance between Trees}. PLoS ONE \bold{3(7)}. e2651. doi: 10.1371/journal.pone.0002651 
+
+de Oliveira Martins L., Mallo D., Posada D. (2016) \emph{A Bayesian Supertree Model for Genome-Wide Species Tree Reconstruction}. Syst. Biol.  \bold{65(3)}: 397-416, doi:10.1093/sysbio/syu082 
+
 Steel M. A. and Penny P. (1993) \emph{Distributions of tree comparison metrics - some new results}, Syst. Biol., \bold{42(2)}, 126--141
 
 Kuhner, M. K. and Felsenstein, J. (1994) \emph{A simulation comparison of phylogeny algorithms under equal and unequal evolutionary rates}, Molecular Biology and Evolution, \bold{11(3)}, 459--468
@@ -75,5 +84,6 @@ tree1 <- rtree(100, rooted=FALSE)
 tree2 <- rSPR(tree1, 3)
 RF.dist(tree1, tree2)
 treedist(tree1, tree2)
+sprdist(tree1, tree2)
 }
 \keyword{ classif }% at least one, from doc/KEYWORDS

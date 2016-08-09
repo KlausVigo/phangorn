@@ -92,6 +92,38 @@ oneWise <- function (x, nTips=NULL)
 }
 
 
+# leomrtns addition
+sprdist <- function (tree1, tree2) 
+{
+    tree1 = unroot(tree1)
+    tree2 = unroot(tree2)
+    lt1 = length(tree1$tip.label)
+    lt2 = length(tree2$tip.label)
+    # checking labels is obligatory for spr (user should prune one of them beforehand?)         
+    ind <- match(tree1$tip.label, tree2$tip.label)
+    if (any(is.na(ind)) | lt1 != lt2 )  stop("trees have different labels")
+    tree2$tip.label <- tree2$tip.label[ind]
+    ind2 <- match(1:length(ind), tree2$edge[, 2])
+    tree2$edge[ind2, 2] <- order(ind)
+    # same as in original treedist (will create list of strings with shorter side of splits)
+    tree1 = reorder(tree1, "postorder")
+    tree2 = reorder(tree2, "postorder")
+    if(!is.binary.tree(tree1) | !is.binary.tree(tree2))message("Trees are not binary!")
+    # possibly replace bip with bipart    
+    bp1 = bip(tree1); bp1 <- SHORTwise(bp1, lt1)
+    bp2 = bip(tree2); bp2 <- SHORTwise(bp2, lt2)
+    
+    bp1 <- bp1[ lengths(bp1)>1 ] # only internal nodes 
+    bp2 <- bp2[ lengths(bp2)>1 ] 
+    if (length(bp1) != length(bp2)) stop ("number of bipartitions given to C_sprdist are not the same")
+    # OBS: SPR distance works w/ incompatible splits only, but it needs common cherries (to replace by single leaf)
+    spr <- .Call("C_sprdist", bp1, bp2, lt1);
+    names(spr) <- c("spr", "spr_extra", "rf", "hdist")
+#    list("spr" = spr[1], "spr_extra" = spr[2], "rf" = spr[3], "hdist"= spr[4]);
+    spr
+}
+
+
 treedist <- function (tree1, tree2, check.labels=TRUE) 
 {
     tree1 = unroot(tree1)
