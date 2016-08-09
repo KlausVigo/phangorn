@@ -101,7 +101,8 @@ ancestral2phyDat <- function(x) {
 fast.tree  = function(tree, node){
     parent = c(node, Ancestors(tree, node))
     children = Descendants(tree, parent, 'children')
-    l = sapply(children, length)
+    l = lengths(children)
+#    l = sapply(children, length)
     edge = cbind(rep(parent, l), unlist(children))
     obj = list(edge=edge, Nnode=sum(l>0), tip.label=as.character(edge[is.na(match(edge[,2], edge[,1])),2]))
     class(obj) = 'phylo'

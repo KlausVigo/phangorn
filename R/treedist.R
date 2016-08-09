@@ -56,7 +56,8 @@ cophenetic.networx <- function(x){
 SHORTwise <- function (x, nTips, delete=FALSE) 
 {
     v <- 1:nTips
-    l <- sapply(x, length)
+#    l <- sapply(x, length)
+    l <- lengths(x)
     lv = floor(nTips/2)  
     for (i in 1:length(x)) { 
         if(l[i]>lv){

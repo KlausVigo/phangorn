@@ -506,7 +506,8 @@ nnls.splits <- function(x, dm, trace=0){
     y = dm[lower.tri(dm)]
     
     x = SHORTwise(x, k)
-    l <- sapply(x, length)
+#    l <- sapply(x, length)
+    l <- lengths(x)
     if(any(l==0)) x = x[-which(l==0)]
     
     X = splits2design(x)
@@ -518,7 +519,8 @@ nnls.splits <- function(x, dm, trace=0){
     }
     X = as.matrix(X)
     n = dim(X)[2]
-    int = sapply(x, length)
+#    int = sapply(x, length)
+    int <- lengths(x)
     Amat = diag(n) # (int)
     betahat <- nnls(X, y)  
     ind = (betahat$x > 1e-8) | int==1  
@@ -539,7 +541,8 @@ nnls.splitsOld <- function(x, dm, trace=0){
     y = dm[lower.tri(dm)]
     
     x = SHORTwise(x, k)
-    l <- sapply(x, length)
+#    l <- sapply(x, length)
+    l <- lengths(x)
     if(any(l==0)) x = x[-which(l==0)]
     
     X = splits2design(x)
@@ -562,8 +565,8 @@ nnls.splitsOld <- function(x, dm, trace=0){
         return(x)
     }
     n = dim(X)[2]
-    
-    int = sapply(x, length)
+    int <- lengths(x)
+#    int = sapply(x, length)
     #    int = as.numeric(int==1)# (int>1)
     Amat = diag(n) # (int)
     betahat <- quadprog::solve.QP(as.matrix(Dmat),as.vector(dvec),Amat)$sol # quadratic programing solving

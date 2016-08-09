@@ -28,7 +28,8 @@ as.Matrix.splits <- function(x, ...){
     labels = attr(x, "labels")
     l = length(x)
     j = unlist(x)
-    i = rep(1:l, sapply(x, length))
+#    i = rep(1:l, sapply(x, length))
+    i = rep(1:l, lengths(x))
     sparseMatrix(i,j, x = rep(1L, length(i)), dimnames = list(NULL, labels)) # included x und labels
 }
 
@@ -437,7 +438,8 @@ splitsNetwork <- function(dm, splits=NULL, gamma=.1, lambda=1e-6, weight=NULL){
   k = dim(dm)[1]
   
   if(!is.null(splits)){
-    tmp = which(sapply(splits, length)==k)
+#    tmp = which(sapply(splits, length)==k)
+    tmp = which(lengths(splits)==k)
     splits = splits[-tmp]
     lab = attr(splits, "labels")
     dm = dm[lab, lab]
@@ -451,7 +453,8 @@ splitsNetwork <- function(dm, splits=NULL, gamma=.1, lambda=1e-6, weight=NULL){
   
   y = dm[lower.tri(dm)]
   if(is.null(splits))ind = c(2^(0:(k-2)),2^(k-1)-1)
-  else ind = which(sapply(splits, length)==1)
+  else ind = which(lengths(splits)==1)
+#  else ind = which(sapply(splits, length)==1)  
   #   y2 = lm(y~X[,ind]-1)$res
   n = dim(X)[2]
   
@@ -560,7 +563,8 @@ splits2design <- function(obj, weight=NULL){
   m = length(labels)
   n=length(obj)
   l = 1:m 
-  sl = sapply(obj, length)
+  sl = lengths(obj)
+#  sl = sapply(obj, length)
   p0 = sl * (m-sl)
   p = c(0,cumsum(p0))
   i = numeric(max(p))
@@ -686,8 +690,11 @@ circNetwork <- function(x, ord=NULL){
         index = match(spRes, x)
     }
     
-    l = sapply(oneWise(x, nTips), length)
-    l2 = sapply(x, length)
+    l = lengths(oneWise(x, nTips))
+    l2 = lengths(x)
+#    l = sapply(oneWise(x, nTips), length)
+#    l2 = sapply(x, length)
+
     #    dm <- as.matrix(compatible2(x))
     
     tmp <- countCycles(x, ord=ord)
@@ -846,7 +853,8 @@ as.networx.splits <- function(x, planar=FALSE, coord = c("none", "2D", "3D"), ..
   attr(x, "weights") <- weight
   
   x <- oneWise(x, nTips) 
-  l <- sapply(x, length)
+  l <- lengths(x)
+#  l <- sapply(x, length)
   if(any(l==nTips))x <- x[l!=nTips] # get rid of trivial splits
   ext <- sum(l==1 | l==(nTips-1))
   if(!is.null(attr(x, "cycle"))){  
@@ -865,7 +873,8 @@ as.networx.splits <- function(x, planar=FALSE, coord = c("none", "2D", "3D"), ..
         return(reorder(tmp))
     }
 
-    ll <- sapply(x, length)
+    ll <- lengths(x)
+#    ll <- sapply(x, length)    
     ind <- tmp$splitIndex     # match(sp, x)
     ind2 = union(ind, which(ll==0)) # which(duplicated(x))
     ind2 = union(ind2, which(ll==nTips))
@@ -1337,7 +1346,8 @@ lento <- function (obj, xlim = NULL, ylim = NULL, main = "Lento plot",
     labels = attr(obj, "labels") 
     l = length(labels)
     if(!trivial){
-        triv = sapply(obj, length)
+        triv = lengths(obj)
+#        triv = sapply(obj, length)
         ind = logical(length(obj)) 
         ind[(triv >1) & (triv < (l-1))] = TRUE
         if(length(col)==length(obj)) col=col[ind] 
@@ -1429,7 +1439,8 @@ write.nexus.splits <- function (obj, file = "", weights=NULL, taxa=TRUE, append=
     taxa.labels <- attr(obj, "labels")
     ntaxa <- length(taxa.labels)
     obj <- oneWise(obj, ntaxa)
-    ind <- which(sapply(obj, length)==ntaxa)
+    ind <- which(lengths(obj)==ntaxa)
+#    ind <- which(sapply(obj, length)==ntaxa)
     if(length(ind))obj <- obj[-ind] 
     nsplits <- length(obj)    
     if(is.null(weights))weight <- attr(obj, "weights") 
