@@ -85,3 +85,16 @@ test_that("When each tree has unit branch lengths, RF = wRF", {
         0) # expect equal to 0
 })
 
+#############################
+# test sprdist from leomrtns 
+#############################
+test_that("path distance", {
+    ## check path dist
+    set.seed(42)
+    tree1 <- rtree(100)
+    tree2 <- rSPR(tree1, 1)
+    expect_equal(sprdist(tree1, tree2)[[1]], 1)
+    expect_equal(sprdist(tree1, tree2)[[3]], RF.dist(tree1, tree2))
+})
+
+
