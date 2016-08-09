@@ -1,10 +1,11 @@
 Package: phangorn
 Title: Phylogenetic Analysis in R
 Version: 2.0.5
-Date: 2016-07-28
+Date: 2016-08-09
 Authors@R: c(person("Klaus", "Schliep", email="klaus.schliep@gmail.com", role = c("aut", "cre")), 
   person("Emmanuel", "Paradis", role = c("aut")), 
   person("Alastair", "Potts", role = c("aut")), 
+  person("Leonardo", "de Oliveira Martins", role = c("aut")), 
   person("Michelle", "Kendall", email="m.kendall@imperial.ac.uk", role = c("ctb")))
 Maintainer: Klaus Schliep <klaus.schliep@gmail.com>
 Description: Phylogenetic analysis in R: Estimation of phylogenetic
