@@ -2,7 +2,7 @@
 
 NEW FEATURES 
 
-    o 
+    o new function sprdist contributed by Leonardo de Oliveira Martins
 
 BUG FIXES
 
@@ -19,8 +19,6 @@ OTHER CHANGES
     o improved cbind.phyDat, faster and more flexible
 
     
-
-
 
     CHANGES in PHANGORN VERSION 2.0.4
      
