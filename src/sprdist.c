@@ -14,7 +14,7 @@
 #include <math.h>
 #include <R.h> 
 #include <Rinternals.h>
-#include <stdint.h>     /* standard integer types (int32_t typedef etc.) [C99]*/
+//#include <stdint.h>     /* standard integer types (int32_t typedef etc.) [C99]*/
 
 
 #define true  1U /*!< Boolean TRUE  */
@@ -48,7 +48,7 @@ struct hungarian_struct
 /*! \brief Bit-string representation of splits. */
 struct bipartition_struct 
 {
-  uint64_t *bs;  /*! \brief Representation of a bipartition by a vector of integers (bitstrings). */
+  unsigned long long *bs;  /*! \brief Representation of a bipartition by a vector of integers (bitstrings). */
   int n_ones;  /*! \brief Counter (number of "one"s) */
   bipsize n;  /*! \brief number of bits (leaves), vector size and mask */
   int ref_counter;  /*! \brief How many times this struct is being referenced */
@@ -56,7 +56,7 @@ struct bipartition_struct
 
 struct bipsize_struct
 {
-  uint64_t mask;/*! \brief mask to make sure we consider only active positions (of last bitstring) */
+  unsigned long long mask;/*! \brief mask to make sure we consider only active positions (of last bitstring) */
   int ints, bits, original_size;  /*! \brief Vector size and total number of elements (n_ints = n_bits/(8*sizeof(long long)) +1). */
   int ref_counter;  /*! \brief How many times this struct is being referenced */
 };
@@ -494,7 +494,7 @@ split_swap_position (bipartition *b, int i1, int i2)
  **
  ** Parts of the used code was originally provided by the "Stanford GraphGase", but I made changes to this code.
  ** As asked by  the copyright node of the "Stanford GraphGase", I hereby proclaim that this file are *NOT* part of the
- ** "Stanford GraphGase" distribution! */
+ ** "Stanford GraphGase" distrubition! */
 
 void
 hungarian_reset (hungarian p)
@@ -688,7 +688,7 @@ done:
 }
  /* BELOW are the bipartition functions (memory-efficient storage of bipartitions on 64 bits */
 
-int BitStringSize = 8 * sizeof (uint64_t);
+int BitStringSize = 8 * sizeof (unsigned long long);
 
 bipartition
 new_bipartition (int size)
@@ -701,7 +701,7 @@ new_bipartition (int size)
   bip->n_ones = 0;
   bip->ref_counter = 1;
 
-  bip->bs = (uint64_t*) malloc (bip->n->ints * sizeof (uint64_t));
+  bip->bs = (unsigned long long*) malloc (bip->n->ints * sizeof (unsigned long long));
   for (i=0; i < bip->n->ints; i++) bip->bs[i] = 0LL;
 
   return bip;
@@ -734,7 +734,7 @@ new_bipartition_copy_from (const bipartition from)
   bip->n_ones = from->n_ones;
   bip->ref_counter = 1;
 
-  bip->bs = (uint64_t*) malloc (bip->n->ints * sizeof (uint64_t));
+  bip->bs = (unsigned long long*) malloc (bip->n->ints * sizeof (unsigned long long));
   for (i=0; i < bip->n->ints; i++) bip->bs[i] = from->bs[i];
 
   return bip;
@@ -752,7 +752,7 @@ new_bipartition_from_bipsize (bipsize n)
   bip->n_ones = 0;
   bip->ref_counter = 1;
 
-  bip->bs = (uint64_t*) malloc (bip->n->ints * sizeof (uint64_t));
+  bip->bs = (unsigned long long*) malloc (bip->n->ints * sizeof (unsigned long long));
   for (i=0; i < bip->n->ints; i++) bip->bs[i] = 0LL;
 
   return bip;
@@ -907,7 +907,7 @@ void
 bipartition_count_n_ones (const bipartition bip)
 {
   int i;
-  uint64_t j;
+  unsigned long long j;
   bip->n_ones = 0;
 /* // Naive approach 
   for (i=0; i < bip->n_ints - 1; i++) for (j=0; j < BitStringSize; j++) bip->n_ones += ((bip->bs[i] >> j) & 1LL);
