@@ -90,11 +90,14 @@ test_that("When each tree has unit branch lengths, RF = wRF", {
 #############################
 test_that("path distance", {
     ## check path dist
-    set.seed(42)
+    set.seed(123)
     tree1 <- rtree(100)
     tree2 <- rSPR(tree1, 1)
+    trees <- rSPR(tree1, 1:5)
     expect_equal(sprdist(tree1, tree2)[[1]], 1)
     expect_equal(sprdist(tree1, tree2)[[3]], RF.dist(tree1, tree2))
+    expect_equal(SPR.dist(tree1, trees), 1:5)
+    expect_is(SPR.dist(trees), "dist")
 })
 
 
