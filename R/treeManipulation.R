@@ -551,7 +551,8 @@ kSPR = function(tree, k=NULL){
     distN = dn(tree)[-c(1:l), -c(1:l)]
     distN[upper.tri(distN)]=Inf
     dN = distN[lower.tri(distN)]
-    tab = table(dN) 
+    tab = tabulate(dN) # should be much faster
+#    tab = table(dN) 
     tab[1] = tab[1] * 2 
     tab[-1] = tab[-1] * 8   
     if(is.null(k)) k = 1:length(tab)
