@@ -5,7 +5,7 @@
 \alias{KF.dist}
 \alias{path.dist}
 \alias{sprdist}
-%\alias{SPR.dist}
+\alias{SPR.dist}
 %\alias{print.treedist}
 \title{ Distances between trees }
 \description{
@@ -13,10 +13,11 @@
 }
 \usage{
 treedist(tree1, tree2, check.labels = TRUE)
+sprdist(tree1, tree2)
 RF.dist(tree1, tree2=NULL, normalize=FALSE, check.labels=TRUE, rooted=FALSE)
 wRF.dist(tree1, tree2=NULL, normalize=FALSE, check.labels=TRUE, rooted=FALSE)
 KF.dist(tree1, tree2=NULL, check.labels=TRUE, rooted=FALSE)
-sprdist(tree1, tree2)
+SPR.dist(tree1, tree2=NULL)
 path.dist(tree1, tree2=NULL, check.labels=TRUE, use.weight=FALSE)
 }
 \arguments{
@@ -88,5 +89,7 @@ tree2 <- rSPR(tree1, 3)
 RF.dist(tree1, tree2)
 treedist(tree1, tree2)
 sprdist(tree1, tree2)
+trees <- rSPR(tree1, 1:5)
+SPR.dist(tree1, trees)
 }
 \keyword{ classif }% at least one, from doc/KEYWORDS
