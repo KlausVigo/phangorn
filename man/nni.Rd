@@ -25,7 +25,7 @@ rNNI(tree, moves=1, n=length(moves))
 }
 \author{ Klaus Schliep \email{klaus.schliep@gmail.com} }
 
-\seealso{\code{\link{allTrees}}}
+\seealso{\code{\link{allTrees}}, \code{\link{SPR.dist}}}
 \examples{
 tree = unroot(rtree(20))
 trees1 <- nni(tree)
