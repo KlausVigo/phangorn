@@ -125,6 +125,80 @@ sprdist <- function (tree1, tree2)
 }
 
 
+SPR1 <- function(trees){
+    trees <- .compressTipLabel(trees)
+    trees <- .uncompressTipLabel(trees)
+    trees <- lapply(trees, unroot)
+    trees <- lapply(trees, reorder, "postorder")
+    
+    nTips <- length(trees[[1]]$tip.label)
+    
+    fun <- function(x, nTips){
+        bp <- bipart(x)
+        bp <- SHORTwise(bp, nTips)
+        bp <- bp[ lengths(bp)>1 ] 
+        bp
+    }    
+    
+    BP <- lapply(trees, fun, nTips)
+    k <- 1
+    l <- length(trees)
+    SPR <- numeric((l * (l - 1))/2)
+    for (i in 1:(l - 1)){
+        bp <- BP[[i]]
+        for (j in (i + 1):l){
+            SPR[k] <-  .Call("C_sprdist", bp, BP[[j]], nTips)[1]
+            k=k+1
+        }
+    }
+    attr(SPR, "Size") <- l
+    if(!is.null(names(trees)))attr(SPR, "Labels") <- names(trees)
+    attr(SPR, "Diag") <- FALSE
+    attr(SPR, "Upper") <- FALSE
+    class(SPR) <- "dist"
+    return(SPR)
+}
+
+
+SPR2 <- function(tree, trees){
+    trees <- .compressTipLabel(trees)
+    tree <- checkLabels(tree, attr(trees, "TipLabel"))
+    trees <- .uncompressTipLabel(trees)
+    if (any(sapply(trees, is.rooted))) {
+        trees <- lapply(trees, unroot)
+    }
+    trees <- lapply(trees, reorder, "postorder")
+    tree <- unroot(tree)                
+    nTips <- length(tree$tip.label)
+    
+    fun <- function(x, nTips){
+        bp <- bipart(x)
+        bp <- SHORTwise(bp, nTips)
+        bp <- bp[ lengths(bp)>1 ] 
+        bp
+    }    
+    
+    bp <-  fun(tree, nTips)
+    k <- 1
+    l <- length(trees)
+    SPR <- numeric(l)
+    for (i in 1:l){
+            SPR[i] <- .Call("C_sprdist", bp, fun(trees[[i]], nTips), nTips)[1]
+    }
+    if(!is.null(names(trees)))names(SPR) <- names(trees)
+    return(SPR)
+}
+
+
+SPR.dist <- function(tree1, tree2=NULL){
+    if(inherits(tree1, "multiPhylo") && is.null(tree2))return(SPR1(tree1)) 
+    if(inherits(tree1, "phylo") && inherits(tree2, "phylo"))return(sprdist(tree1, tree2)[1])
+    if(inherits(tree1, "phylo") && inherits(tree2, "multiPhylo"))return(SPR2(tree1, tree2))
+    if(inherits(tree2, "phylo") && inherits(tree1, "multiPhylo"))return(SPR2(tree2, tree1))
+    return(NULL)
+}
+
+
 treedist <- function (tree1, tree2, check.labels=TRUE) 
 {
     tree1 = unroot(tree1)
@@ -360,7 +434,7 @@ wRF1 <- function(trees, normalize=FALSE, check.labels = TRUE){
         }
     }
     attr(wRF, "Size") <- l
-    if(!is.null(names(trees)))attr(KF, "Labels") <- names(trees)
+    if(!is.null(names(trees)))attr(wRF, "Labels") <- names(trees)
     attr(wRF, "Diag") <- FALSE
     attr(wRF, "Upper") <- FALSE
     class(wRF) <- "dist"
