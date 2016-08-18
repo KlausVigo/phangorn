@@ -1722,7 +1722,7 @@ read.nexus.networx <- function(file, splits=TRUE){
             vert <- swapRow(vert, oldLabel[i], i)
         }
     }
-    
+    dimnames(edge) <- NULL
     # y-axis differs between in R and SplitsTree
     vert[,2] <- -vert[,2]  
 #    translate=data.frame(as.numeric(TRANS[,1]), TRANS[,2], stringsAsFactors=FALSE)
