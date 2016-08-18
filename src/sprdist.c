@@ -122,7 +122,7 @@ bool bipartition_is_larger (const bipartition b1, const bipartition b2);
 void bipartition_flip_to_smaller_set (bipartition bip);
 bool bipartition_is_bit_set (const bipartition bip, int position);
 bool bipartition_contains_bits (const bipartition b1, const bipartition b2);
-void bipartition_print_to_stdout (const bipartition b1);
+// void bipartition_print_to_stdout (const bipartition b1);
 void bipartition_replace_bit_in_vector (bipartition *bvec, int n_b, int to, int from, bool reduce);
 void bipartition_resize_vector (bipartition *bvec, int n_b);
 
@@ -671,7 +671,7 @@ breakthru:
   }
 done:
   // Begin doublecheck the solution 23
-  for (k = 0; k < nrows; k++) for (l=0;l<ncols;l++) if (p->cost[k][l] < p->row_dec[k] - p->col_inc[l]) { p->final_cost = -1; printf ("\n**\n"); return;}
+  for (k = 0; k < nrows; k++) for (l=0;l<ncols;l++) if (p->cost[k][l] < p->row_dec[k] - p->col_inc[l]) { p->final_cost = -1;  return;} //printf ("\n**\n");
   for (k = 0; k < nrows; k++) {
     l=p->col_mate[k];
     if ((l < 0) || (p->cost[k][l] != p->row_dec[k] - p->col_inc[l])) { p->final_cost = -1; return; }
@@ -996,6 +996,7 @@ bipartition_to_int_vector (const bipartition b, int *id, int vecsize)
   for (i=0; i < b->n->ints; i++) for (j=0; (j < BitStringSize) && (k < vecsize); j++) if ( ((b->bs[i] >> j) & 1LL) ) id[k++] = i * BitStringSize + j;
 }
 
+/*
 void
 bipartition_print_to_stdout (const bipartition b1)
 {
@@ -1007,7 +1008,8 @@ bipartition_print_to_stdout (const bipartition b1)
   for (j = 0; j < b1->n->bits%BitStringSize; j++) printf ("%d", (int)((b1->bs[i] >> j) & 1LL));
   printf ("[%d] ", b1->n_ones);
 }
-
+*/
+ 
 void
 bipartition_replace_bit_in_vector (bipartition *bvec, int n_b, int to, int from, bool reduce)
 { /* copy info from position "from" to position "to" */
