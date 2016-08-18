@@ -700,7 +700,8 @@ circNetwork <- function(x, ord=NULL){
     tmp <- countCycles(x, ord=ord)
     ind = which(tmp == 2 & l2>1) # & l<nTips changed with ordering
     
-    ind = ind[order(l[ind])]
+#    ind = ind[order(l[ind])]
+    ind = ind[order(l2[ind], decreasing = TRUE)]
     
     dm2 <- as.matrix(compatible2(x, x[ind]))
     
