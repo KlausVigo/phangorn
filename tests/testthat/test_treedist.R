@@ -40,6 +40,7 @@ test_that("Kuhner-Felsenstein distance (branch score difference)", {
 test_that("path distance", {
     ## check path dist
     expect_that(path.dist(tree1, tree1), is_equivalent_to(0))
+    expect_equal(path.dist(trees)[1:13] , path.dist(trees[[1]], trees[2:14]))
     expect_is(path.dist(trees),"dist")
 })
 
@@ -88,8 +89,8 @@ test_that("When each tree has unit branch lengths, RF = wRF", {
 #############################
 # test sprdist from leomrtns 
 #############################
-test_that("path distance", {
-    ## check path dist
+test_that("SPR distance", {
+    ## check spr dist
     set.seed(123)
     tree1 <- rtree(100)
     tree2 <- rSPR(tree1, 1)

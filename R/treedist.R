@@ -789,7 +789,10 @@ pd1 <- function(tree, trees, check.labels=TRUE, path=TRUE){
     }    
     trees <- .uncompressTipLabel(trees)
     unclass(trees)
-    if(path)trees <- lapply(trees, unroot)
+    if(path){
+        trees <- lapply(trees, unroot)
+        tree <- unroot(tree)
+    }    
     trees <- lapply(trees, reorder, "postorder")
     l <- length(trees)
     dt <- coph(tree, path)
