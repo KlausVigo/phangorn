@@ -10,6 +10,10 @@ BUG FIXES
 
 OTHER CHANGES
 
+    o improvements to as.networx. It often now produces networx with less edges 
+   
+      resulting in much nicer plots 
+
     o as.data.frame.phyDat and as.character.phyDat return amino acids 
     
       now in upper cases
