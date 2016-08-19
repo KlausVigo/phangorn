@@ -12,6 +12,7 @@
 \alias{print.splits}
 \alias{write.splits}
 \alias{allSplits}
+\alias{allCircularSplits}
 \alias{compatible}
 \alias{write.nexus.splits}
 \alias{read.nexus.splits}
@@ -35,6 +36,7 @@ as.splits(x, ...)
 \method{as.prop.part}{splits}(x, ...)    
 compatible(obj)
 allSplits(k, labels = NULL)
+allCircularSplits(k, labels = NULL)
 write.nexus.splits(obj, file = "", weights=NULL, taxa=TRUE, append=FALSE)
 read.nexus.splits(file)
 addTrivialSplits(obj)
@@ -78,6 +80,8 @@ The internal representation is likely to change.
 \examples{
 (sp <- as.splits(rtree(5)))
 write.nexus.splits(sp)
+spl <- allCircularSplits(5)
+plot(as.networx(spl), "2D")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

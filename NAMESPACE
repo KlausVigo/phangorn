@@ -40,7 +40,7 @@ importFrom(methods, hasArg)
 
 export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UNJ, PNJ, 
     phyDat, cbind.phyDat, read.phyDat, write.phyDat, as.Matrix, as.phyDat, as.splits, as.networx,
-    dfactorial, ldfactorial, hadamard, nni, allSitePattern, allSplits, fhm, 
+    dfactorial, ldfactorial, hadamard, nni, allSitePattern, allSplits, allCircularSplits, fhm, 
     distanceHadamard, treedist, sankoff, fitch, h2st, h4st, dist.logDet, dist.hamming, 
     dist.ml, dist.p, upgma, wpgma, write.nexus.splits, read.nexus.splits,
     read.nexus.networx, write.nexus.networx, write.splits, pmlPart, 
