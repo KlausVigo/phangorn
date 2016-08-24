@@ -2,7 +2,9 @@
 
 NEW FEATURES 
 
-    o new function sprdist contributed by Leonardo de Oliveira Martins
+    o new functions to compute the (approximate) SPR distance (sprdist, SPR.dist)
+    
+    contributed by Leonardo de Oliveira Martins.
 
 BUG FIXES
 
