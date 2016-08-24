@@ -15,7 +15,7 @@ fast.table <- function (data)
     bin <- bin[!is.na(bin)]                                                                
     if (length(bin)) bin <- bin + 1                                                        
     y <- tabulate(bin, pd)                                                                 
-    result=list(index = bin, weights = y, data = data[ind,])                                                                                  
+    result=list(index = bin, weights = y, data = data[ind,])                                         
     result                                                                                 
 }                                                                                        
 
@@ -27,6 +27,7 @@ phyDat.default <- function (data, levels = NULL, return.index = TRUE, contrast =
         nam = row.names(data)
     else nam = names(data)
     if(is.null(nam))stop("data object must contain taxa names")
+    if(inherits(data, "character")) data <- as.matrix(data)
     if (inherits(data,"DNAbin")) 
         data = as.character(data)
     if (is.matrix(data)) 
@@ -107,6 +108,7 @@ phyDat.DNA = function (data, return.index = TRUE)
     else nam = names(data)
     if (inherits(data,"DNAbin")) 
         data = as.character(data)
+    if(inherits(data, "character")) data <- as.matrix(data)
     if (is.matrix(data)) 
         data = as.data.frame(t(data), stringsAsFactors = FALSE)
     else data = as.data.frame(data, stringsAsFactors = FALSE)
@@ -168,6 +170,7 @@ phyDat.AA <- function (data, return.index = TRUE)
     else nam = names(data)  
     if (inherits(data,"DNAbin")) 
         data = as.character(data)
+    if(inherits(data, "character")) data <- as.matrix(data)
     if (is.matrix(data)) 
         data = as.data.frame(t(data), stringsAsFactors = FALSE)
     else data = as.data.frame(data, stringsAsFactors = FALSE)
@@ -235,7 +238,7 @@ phyDat.codon <- function (data, return.index = TRUE)
     else nam = names(data)  
     if (inherits(data,"DNAbin")) 
         data = as.character(data)
-
+    if(inherits(data, "character")) data <- as.matrix(data)
     if (is.matrix(data)) 
         data = as.data.frame(t(data), stringsAsFactors = FALSE)
     else data = as.data.frame(data, stringsAsFactors = FALSE)
@@ -328,8 +331,6 @@ as.phyDat <- function (x, ...){
 as.phyDat.DNAbin <- function(x,...) phyDat.DNA(x,...)
 
 
-
-
 as.phyDat.alignment <- function (x, type="DNA",...) 
 {
     x$seq <- tolower(x$seq)
@@ -399,6 +400,8 @@ phyDat2MultipleAlignment <- as.MultipleAlignment.phyDat
 
 as.phyDat.matrix <- function (x, ...) phyDat(data=x, ...)
 
+
+as.phyDat.character <- function (x, ...) phyDat(data=x, ...)
 
 as.phyDat.data.frame <- function (x, ...) phyDat(data=x, ...)
  

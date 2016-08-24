@@ -6,8 +6,10 @@ set.seed(42)
 tree <- rtree(10)
 codon_align <- simSeq(tree, l=100, type = "CODON")
 
+
 phy_matrix <- as.character(Laurasiatherian)
 phy_df <- as.data.frame(Laurasiatherian)
+phy_vec <- phy_matrix[,1]
 phy_dnabin <- as.DNAbin(Laurasiatherian)
 phy_align <- phyDat2alignment(Laurasiatherian)
 
@@ -19,6 +21,7 @@ test_that("conversion work as expected", {
     expect_that(phy_align, is_a("alignment"))
     expect_that(as.phyDat(phy_matrix), is_a("phyDat"))
     expect_that(as.phyDat(phy_df), is_a("phyDat"))
+    expect_that(as.phyDat(phy_vec), is_a("phyDat"))
     expect_that(as.phyDat(phy_dnabin), is_a("phyDat"))
     expect_that(as.phyDat(phy_align), is_a("phyDat"))
     expect_is(MA_AA <- as.MultipleAlignment(chloroplast), "AAMultipleAlignment")
