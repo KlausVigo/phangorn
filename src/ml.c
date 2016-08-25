@@ -150,7 +150,9 @@ void rowMinScale(int *dat, int n,  int k, int *res){
 
 static R_INLINE void getP(double *eva, double *ev, double *evi, int m, double el, double w, double *result){
     int i, j, h;
-    double tmp[m], res;
+    double res; //tmp[m],
+    double *tmp;
+    tmp = malloc(m * sizeof(double));
     for(i = 0; i < m; i++) tmp[i] = exp(eva[i] * w * el);
     for(i = 0; i < m; i++){    
         for(j = 0; j < m; j++){
@@ -159,6 +161,7 @@ static R_INLINE void getP(double *eva, double *ev, double *evi, int m, double el
             result[i+j*m] = res;    
         }
     }
+    free(tmp);
 }
 
 

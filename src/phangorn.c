@@ -108,7 +108,9 @@ static R_INLINE void getP00(double *eva, double *ev, double *evi, int m, double 
  
 static R_INLINE void getPP(double *eva, double *ev, double *evi, int m, double el, double w, double *result){
     int i, j, h;
-    double tmp[m];
+//    double tmp[m];
+    double *tmp;
+    tmp = malloc(m * sizeof(double));
     for(i = 0; i < m; i++) tmp[i] = exp(eva[i] * w * el);
     for(i = 0; i < m; i++){    
         for(j = 0; j < m; j++){
@@ -116,12 +118,15 @@ static R_INLINE void getPP(double *eva, double *ev, double *evi, int m, double e
             for(h = 0; h < m; h++) result[i+j*m] += ev[i + h*m] * tmp[h] * evi[h + j*m];                
         }
     }
+    free(tmp);
 }
 
 
 void getdP(double *eva, double *ev, double *evi, int m, double el, double w, double *result){
     int i, j, h;
-    double tmp[m], res;
+    double  res; //tmp[m],
+    double *tmp;
+    tmp = malloc(m * sizeof(double));
     for(i = 0; i < m; i++) tmp[i] = (eva[i] * w  * el) * exp(eva[i] * w * el);
     for(i = 0; i < m; i++){    
         for(j = 0; j < m; j++){
@@ -130,12 +135,15 @@ void getdP(double *eva, double *ev, double *evi, int m, double el, double w, dou
             result[i+j*m] = res;    
         }
     }
+    free(tmp);
 }
 
 
 void getdP2(double *eva, double *ev, double *evi, int m, double el, double w, double *result){
     int i, j, h;
-    double tmp[m], res;
+    double  res; //tmp[m],
+    double *tmp;
+    tmp = malloc(m * sizeof(double));
     for(i = 0; i < m; i++) tmp[i] = (eva[i] * w) * exp(eva[i] * w * el);
     for(i = 0; i < m; i++){    
         for(j = 0; j < m; j++){
@@ -144,12 +152,15 @@ void getdP2(double *eva, double *ev, double *evi, int m, double el, double w, do
             result[i+j*m] = res;    
         }
     }
+    free(tmp);
 }
 
 
 void getd2P(double *eva, double *ev, double *evi, int m, double el, double w, double *result){
     int i, j, h;
-    double tmp[m], res;
+    double res; //tmp[m], 
+    double *tmp;
+    tmp = malloc(m * sizeof(double));
     for(i = 0; i < m; i++) tmp[i] = (eva[i] * w * el) * (eva[i] * w * el) * exp(eva[i] * w * el);
     for(i = 0; i < m; i++){    
         for(j = 0; j < m; j++){
@@ -158,12 +169,15 @@ void getd2P(double *eva, double *ev, double *evi, int m, double el, double w, do
             result[i+j*m] = res;    
         }
     }
+    free(tmp);
 }
 
 
 void getd2P2(double *eva, double *ev, double *evi, int m, double el, double w, double *result){
     int i, j, h;
-    double tmp[m], res;
+    double  res; //tmp[m],
+    double *tmp;
+    tmp = malloc(m * sizeof(double));
     for(i = 0; i < m; i++) tmp[i] = (eva[i] * w) * (eva[i] * w) * exp(eva[i] * w * el);
     for(i = 0; i < m; i++){    
         for(j = 0; j < m; j++){
@@ -172,6 +186,7 @@ void getd2P2(double *eva, double *ev, double *evi, int m, double el, double w, d
             result[i+j*m] = res;    
         }
     }
+    free(tmp);
 }
 
 
