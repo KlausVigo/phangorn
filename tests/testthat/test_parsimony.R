@@ -20,11 +20,12 @@ test_that("parsimony works properly", {
     expect_that(parsimony(tree1, dat), equals(1))
 })
 
-test_that("bab works properly", {    
+test_that("bab works properly", {  
+    skip_on_cran()
     all_trees <- allTrees(8, tip.label = names(yeast))
     all_pars <- fitch(all_trees, yeast)
     bab_tree <- bab(yeast)
-    expect_equal(min(all_pars), fit(bab, yeast))
+    expect_equal(min(all_pars), fitch(bab_tree, yeast))
 })
 
 
