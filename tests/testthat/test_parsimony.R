@@ -1,5 +1,8 @@
 context("parsimony")
 
+data(yeast)
+all_trees <- allTrees(8, tip.label = names(yeast))
+
 tree1 = read.tree(text = "((t1,t2),t3,t4);")
 tree2 = read.tree(text = "((t1,t3),t2,t4);")
 trees = .compressTipLabel(c(tree1, tree2))
@@ -14,8 +17,14 @@ test_that("parsimony works properly", {
     expect_that(fitch(trees, dat), equals(c(1,2)))
     expect_that(sankoff(tree1, dat), equals(1))
     expect_that(sankoff(tree2, dat), equals(2))
-    
     expect_that(parsimony(tree1, dat), equals(1))
+})
+
+test_that("bab works properly", {    
+    all_trees <- allTrees(8, tip.label = names(yeast))
+    all_pars <- fitch(all_trees, yeast)
+    bab_tree <- bab(yeast)
+    expect_equal(min(all_pars), fit(bab, yeast))
 })
 
 
