@@ -22,6 +22,14 @@ test_that("splits ", {
     expect_is(mat, "matrix")
     expect_is(Mat, "Matrix")
     expect_equal(spl2tree , tree)
+    
+    spl <- allCircularSplits(6)
+    spl <- phangorn:::oneWise(spl, 6)
+    write.nexus.splits(spl, "tmp.nex")
+    spl2 <- read.nexus.splits("tmp.nex")
+    attr(spl2, "splitlabels") = NULL
+    expect_equal(spl2 , spl)
+    unlink("tmp.nex")
 })
 
 
