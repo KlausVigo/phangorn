@@ -21,7 +21,7 @@ fast.table <- function (data)
 
 
 phyDat.default <- function (data, levels = NULL, return.index = TRUE, contrast = NULL, 
-    ambiguity = "?", compress=TRUE, ...) 
+                            ambiguity = "?", compress=TRUE, ...) 
 {
     if (is.matrix(data)) 
         nam = row.names(data)
@@ -32,10 +32,10 @@ phyDat.default <- function (data, levels = NULL, return.index = TRUE, contrast =
         data = as.character(data)
     if (is.matrix(data)) 
         data = as.data.frame(t(data), stringsAsFactors = FALSE)
-# new 4.4.2016 bug fix (reported by Eli Levy Karin)     
-    if (is.vector(data) && !is.list(data))data = as.data.frame(t(data), stringsAsFactors = FALSE)
+    # new 4.4.2016 bug fix (reported by Eli Levy Karin)     
+    #    if (is.vector(data) && !is.list(data))data = as.data.frame(data, stringsAsFactors = FALSE)
     else data = as.data.frame(data, stringsAsFactors = FALSE)
-#    data = data.frame(as.matrix(data), stringsAsFactors = FALSE)    
+    #    data = data.frame(as.matrix(data), stringsAsFactors = FALSE)    
     
     
     if(length(data[[1]])==1) compress=FALSE 
@@ -71,9 +71,22 @@ phyDat.default <- function (data, levels = NULL, return.index = TRUE, contrast =
                 contrast = rbind(contrast, matrix(1, k, l))
         }
     }
+    
+    
+    row.names(data) = as.character(1:p)
+    data = na.omit(data)
+    rn = as.numeric(rownames(data))
+    
+    d = dim(data)
     att = attributes(data) 
-    data = lapply(data, match, all.levels) # avoid unlist   
+    data = match(unlist(data), all.levels)
+    attr(data, "dim") = d
+    data = as.data.frame(data, stringsAsFactors=FALSE)
     attributes(data) = att
+    
+    #    att = attributes(data) 
+    #    data = lapply(data, match, all.levels) # avoid unlist   
+    #    attributes(data) = att
     
     row.names(data) = as.character(1:p)
     data = na.omit(data)
@@ -101,6 +114,7 @@ phyDat.default <- function (data, levels = NULL, return.index = TRUE, contrast =
 }
 
 
+
 phyDat.DNA = function (data, return.index = TRUE) 
 {
     if (is.matrix(data)) 
@@ -124,9 +138,22 @@ phyDat.DNA = function (data, return.index = TRUE)
         0, 1, 1, 1, 1, 1, 1)), 18, 4, dimnames = list(NULL, c("a", 
         "c", "g", "t")))
     
-    ddd = fast.table(data)
-    data = ddd$data
-    index = ddd$index
+#    ddd = fast.table(data)
+    compress=TRUE
+    if(length(data[[1]])==1) compress=FALSE 
+    if(compress){
+        ddd = fast.table(data)
+        data = ddd$data
+        weight = ddd$weight
+        index = ddd$index
+    }
+    else{
+        p = length(data[[1]])
+        weight = rep(1, p)
+        index = 1:p
+    }
+#    data = ddd$data
+#    index = ddd$index
     q = length(data)
     p = length(data[[1]])
     d = dim(data)
@@ -146,7 +173,8 @@ phyDat.DNA = function (data, return.index = TRUE)
     rn = as.numeric(rownames(data))
     attr(data, "na.action") = NULL
     
-    weight = ddd$weight[rn]
+    weight = weight[rn]
+#    weight = ddd$weight[rn]
     p = dim(data)[1]
     names(data) = nam
     attr(data, "row.names") = NULL 
@@ -189,9 +217,22 @@ phyDat.AA <- function (data, return.index = TRUE)
     AA[23:25, ] = 1
     dimnames(AA) <- list(aa2, aa)
     
-    ddd = fast.table(data)
-    data = ddd$data
-    index = ddd$index
+#    ddd = fast.table(data)
+#    data = ddd$data
+#    index = ddd$index
+    compress=TRUE
+    if(length(data[[1]])==1) compress=FALSE 
+    if(compress){
+        ddd = fast.table(data)
+        data = ddd$data
+        weight = ddd$weight
+        index = ddd$index
+        }
+    else{
+        p = length(data[[1]])
+        weight = rep(1, p)
+        index = 1:p
+    }
     q = length(data)
     p = length(data[[1]])
     tmp <- vector("list", q)
@@ -212,8 +253,9 @@ phyDat.AA <- function (data, return.index = TRUE)
     index = match(index, unique(index))
     rn = as.numeric(rownames(data))
     attr(data, "na.action") = NULL
-        
-    weight = ddd$weight[rn]
+  
+#    weight = ddd$weight[rn]
+    weight = weight[rn]  
     p = dim(data)[1]
     names(data) = nam
     attr(data, "row.names") = NULL
@@ -255,7 +297,20 @@ phyDat.codon <- function (data, return.index = TRUE)
  
     data = sapply(data, splseq)
     
-    ddd = fast.table(data)
+#    ddd = fast.table(data)
+    compress=TRUE
+    if(length(data[[1]])==1) compress=FALSE 
+    if(compress){
+            ddd = fast.table(data)
+            data = ddd$data
+            weight = ddd$weight
+            index = ddd$index
+        }
+    else{
+        p = length(data[[1]])
+        weight = rep(1, p)
+        index = 1:p
+    }
     codon = c("aaa", "aac", "aag", "aat", "aca", "acc", "acg", "act", 
       "aga", "agc", "agg", "agt", "ata", "atc", "atg", "att", 
       "caa", "cac", "cag", "cat", "cca", "ccc", "ccg", "cct", "cga", 
@@ -269,8 +324,8 @@ phyDat.codon <- function (data, return.index = TRUE)
     CODON <- diag(61)
     dimnames(CODON) <- list(codon, codon)
 
-    data = ddd$data
-    index = ddd$index
+#    data = ddd$data
+#    index = ddd$index
     q = length(data)
     p = length(data[[1]])
     tmp <- vector("list", q)
@@ -292,7 +347,8 @@ phyDat.codon <- function (data, return.index = TRUE)
     rn = as.numeric(rownames(data))
     attr(data, "na.action") = NULL
         
-    weight = ddd$weight[rn]
+#    weight = ddd$weight[rn]
+    weight = weight[rn]
     p = dim(data)[1]
     names(data) = nam
     attr(data, "row.names") = NULL
@@ -402,6 +458,7 @@ as.phyDat.matrix <- function (x, ...) phyDat(data=x, ...)
 
 
 as.phyDat.character <- function (x, ...) phyDat(data=x, ...)
+
 
 as.phyDat.data.frame <- function (x, ...) phyDat(data=x, ...)
  

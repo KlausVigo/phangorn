@@ -3,6 +3,7 @@
 \alias{as.AAbin.phyDat}
 \alias{as.phyDat.DNAbin}
 \alias{as.phyDat.alignment}
+\alias{as.phyDat.character}
 \alias{as.phyDat.MultipleAlignment}
 \alias{as.MultipleAlignment}
 \alias{as.MultipleAlignment.phyDat}
@@ -36,6 +37,7 @@ read.phyDat(file, format="phylip", type="DNA", ...)
 write.phyDat(x, file, format="phylip", colsep = "", nbcol=-1, ...)
 \method{as.phyDat}{DNAbin}(x, ...)
 \method{as.phyDat}{alignment}(x, type="DNA", ...)
+\method{as.phyDat}{character}(x, ...)
 \method{as.phyDat}{MultipleAlignment}(x, ...)
 %\method{as.AAbin}{phyDat}(x, ...)
 \method{as.character}{phyDat}(x, allLevels = TRUE, ...)
