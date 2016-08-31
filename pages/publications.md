@@ -27,7 +27,7 @@ Boucher, Y., Cordero, O., Takemura, A., Hunt, D., **Schliep, K.P.**, Bapteste, E
 
 Leigh, J.W., **Schliep, K.P.**, Lopez P. and Bapteste E. (2011) Let Them Fall Where They May: Congruence Analysis in Massive Phylogenetically Messy Datasets. Molecular Biology and Evolution, 28 (10), 2773--2785 [dx.doi.org/10.1093/molbev/msr110](http://dx.doi.org/10.1093/molbev/msr110)
 
-Beauregard-Racine J., Bicep C., **Schliep K.**, Lopez P., Lapointe F.-J., Babteste E. (2011) Of Woods and Webs: Possible alternatives to the tree of life to study genomic fluidity in E. coli. Biology Direct 20, 6:39.  [dx.doi.org/10.1186/1745-6150-6-39(http://dx.doi.org/10.1186/1745-6150-6-39)
+Beauregard-Racine J., Bicep C., **Schliep K.**, Lopez P., Lapointe F.-J., Babteste E. (2011) Of Woods and Webs: Possible alternatives to the tree of life to study genomic fluidity in E. coli. Biology Direct 20, 6:39.  [dx.doi.org/10.1186/1745-6150-6-39](http://dx.doi.org/10.1186/1745-6150-6-39)
 
 ### technical reports
 
