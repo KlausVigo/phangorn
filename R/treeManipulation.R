@@ -775,7 +775,7 @@ Ancestors <- function (x, node, type = c("all", "parent"))
 {
     parents <- x$edge[, 1]
     child <- x$edge[, 2]
-    pvector <- numeric(max(x$edge)) # parents
+    pvector <- integer(max(x$edge)) # parents
     pvector[child] <- parents    
     type <- match.arg(type)
     if (type == "parent") 
