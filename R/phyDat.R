@@ -295,11 +295,10 @@ phyDat.codon <- function (data, return.index = TRUE)
         sapply(starts, function(x) paste(seq[x:(x + 2L)], collapse=""))
     } 
  
-    data = sapply(data, splseq)
-    
+    data = data.frame(lapply(data, splseq))
 #    ddd = fast.table(data)
     compress=TRUE
-    if(length(data[[1]])==1) compress=FALSE 
+    if(nrow(data)==1) compress=FALSE 
     if(compress){
             ddd = fast.table(data)
             data = ddd$data
