@@ -73,12 +73,15 @@ phyDat.default <- function (data, levels = NULL, return.index = TRUE, contrast =
     }
     
     
-    row.names(data) = as.character(1:p)
-    data = na.omit(data)
-    rn = as.numeric(rownames(data))
+#    row.names(data) = as.character(1:p)
+#    data = na.omit(data)
+#    rn = as.numeric(rownames(data))
     
     d = dim(data)
     att = attributes(data) 
+    
+#    print(system.time(match(unlist(data), all.levels)))
+    
     data = match(unlist(data), all.levels)
     attr(data, "dim") = d
     data = as.data.frame(data, stringsAsFactors=FALSE)
