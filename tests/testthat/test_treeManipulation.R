@@ -34,7 +34,7 @@ test_that("allTrees, nni", {
 
 test_that("midpoint", {
     # topology stays the same
-    expect_equal( max( sapply(trees, function(x)RF.dist(tree,midpoint(tree)))), 0) 
+    expect_equal( max( sapply(trees, function(x)RF.dist(x,midpoint(x)))), 0) 
     # 2 * max(height) == max(cophenetic) 
     expect_equal( max( node.depth.edgelength(midpoint(tree)) *2) ,  max(cophenetic(tree)))              
 })    
