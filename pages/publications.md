@@ -31,7 +31,7 @@ Beauregard-Racine J., Bicep C., **Schliep K.**, Lopez P., Lapointe F.-J., Babtes
 
 ### technical reports
 
-Hechenbichler K., **Schliep K.** (2004) Weighted k-Nearest-Neighbor Techniques and Ordinal Classification, Sonderforschungsbereich 386, paper 399  [![R](icons/Rlogo_32.png)](https://cran.r-project.org/package=kknn) [![github](icons/GitHub-Mark-32px.png)](https://github.com/KlausVigo/kknn)
+Hechenbichler K., **Schliep K.** (2004) Weighted k-Nearest-Neighbor Techniques and Ordinal Classification, Sonderforschungsbereich 386, paper 399 [url](https://epub.ub.uni-muenchen.de/1769/) [![R](icons/Rlogo_32.png)](https://cran.r-project.org/package=kknn) [![github](icons/GitHub-Mark-32px.png)](https://github.com/KlausVigo/kknn)
  
 
 ### dissertation
