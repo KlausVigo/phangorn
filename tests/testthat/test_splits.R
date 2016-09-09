@@ -27,7 +27,9 @@ test_that("splits ", {
     spl <- phangorn:::oneWise(spl, 6)
     write.nexus.splits(spl, "tmp.nex")
     spl2 <- read.nexus.splits("tmp.nex")
-    attr(spl2, "splitlabels") = NULL
+    attr(spl2, "splitlabels") <- NULL
+    attr(spl2, "weights") <- NULL
+    class(spl2) <- "splits"
     expect_equal(spl2 , spl)
     unlink("tmp.nex")
 })
