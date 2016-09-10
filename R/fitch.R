@@ -503,7 +503,7 @@ bab_old <- function (data, tree = NULL, trace = 1, ...)
                 ind = (1:L[a])[score<=bound]
                 for(i in 1:length(ind))trees[[a+1]][[i]] <- .Call("AddOne", tmpTree, as.integer(inord[a+1L]), as.integer(ind[i]), as.integer(L[a]), as.integer(M[a]), PACKAGE="phangorn") 
                 l = length(ind)
-                os = order(score[ind], decreasing=TRUE)                 
+                os = order(score[ind], decreasing=TRUE)
                 PSC = rbind(PSC, cbind(rep(a+1, l), os, score[ind][os] ))
             }
             else{
@@ -535,6 +535,7 @@ bab_old <- function (data, tree = NULL, trace = 1, ...)
 
 bab <- function (data, tree = NULL, trace = 1, ...) 
 {
+    if(!is.null(tree)) data <- subset(data, tree$tip.label) 
     o = order(attr(data, "weight"), decreasing = TRUE)
     data = subset(data, , o)
     nr <- attr(data, "nr")
