@@ -386,6 +386,14 @@ as.phyDat <- function (x, ...){
 }
 
 
+as.phyDat.factor <- function(x, ...){
+    nam <- names(x)
+    lev <- levels(x)
+    x <- as.character(x)
+    names(x) <- nam
+    phyDat(x, type="USER", levels = lev, ...)
+}
+
 as.phyDat.DNAbin <- function(x,...) phyDat.DNA(x,...)
 
 
