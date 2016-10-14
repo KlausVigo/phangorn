@@ -1,10 +1,12 @@
      CHANGES in PHANGORN VERSION 2.0.5
 
-NEW FEATURES 
+NEW FEATURES
 
     o new functions to compute the (approximate) SPR distance (sprdist, SPR.dist)
     
-    contributed by Leonardo de Oliveira Martins.
+      contributed by Leonardo de Oliveira Martins.
+
+    o super tree methods based on NNI and SPR distances
 
 BUG FIXES
 
@@ -15,6 +17,8 @@ OTHER CHANGES
     o improvements to as.networx. It often now produces networx with less edges 
    
       resulting in much nicer plots 
+
+    o plot.networx does take a different layout algorithm 
 
     o as.data.frame.phyDat and as.character.phyDat return amino acids 
     
