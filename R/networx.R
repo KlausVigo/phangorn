@@ -1063,7 +1063,8 @@ coords <- function(obj, dim="3D"){
 #    g2 <- graph(t(obj$edge), directed=FALSE)
 #    g2 <- set.edge.attribute(g, "weight", value=rep(1, nrow(obj$edge))
     if(dim=="3D"){
-        coord <- layout_with_kk(g, dim=3)
+        coord <- layout_nicely(g, dim=3)
+#        coord <- layout_with_kk(g, dim=3)
 #        coord <- layout.kamada.kawai(g, dim=3)
         k = matrix(0, max(obj$splitIndex), 3)
         for(i in ind1){
@@ -1081,7 +1082,8 @@ coords <- function(obj, dim="3D"){
         }            
     }
     else{
-        coord <- layout_with_kk(g, dim=2)
+        coord <- layout_nicely(g, dim=2)
+#        coord <- layout_with_kk(g, dim=2)
 #        coord <- layout.kamada.kawai(g, dim=2)
         k = matrix(0, max(obj$splitIndex), 2)
         for(i in ind1){
