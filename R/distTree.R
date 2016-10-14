@@ -456,11 +456,11 @@ nnls.tree <- function(dm, tree, rooted=FALSE, trace=1){
     betahat = bhat[tree$edge[,1]] - bhat[tree$edge[,2]]
     
     if(!any(betahat<0)){
-        if(!rooted){
+#        if(!rooted){
             RSS = sum((y-(X%*%betahattmp))^2)    
             if(trace)print(paste("RSS:", RSS))
             attr(tree, "RSS") = RSS
-        }
+#        }
         tree$edge.length = betahat 
         return(tree)
     }
@@ -480,11 +480,11 @@ nnls.tree <- function(dm, tree, rooted=FALSE, trace=1){
     betahat <- quadprog::solve.QP(as.matrix(Dmat),as.vector(dvec),Amat)$sol 
     
     # quadratic programing solving
-    if(!rooted){
+#    if(!rooted){
         RSS = sum((y-(X%*%betahat))^2) 
         if(trace)print(paste("RSS:", RSS))
         attr(tree, "RSS") = RSS
-    }
+#    }
     bhat = numeric(max(tree$edge))
     bhat[as.integer(lab)] = betahat
     betahat = bhat[tree$edge[,1]] - bhat[tree$edge[,2]]
