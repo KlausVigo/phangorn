@@ -22,12 +22,22 @@ test_that("parsimony works properly", {
 
 test_that("bab works properly", {  
     skip_on_cran()
-    all_trees <- allTrees(8, tip.label = names(yeast))
+#    all_trees <- allTrees(8, tip.label = names(yeast))
     all_pars <- fitch(all_trees, yeast)
     bab_tree <- bab(yeast)
     expect_equal(min(all_pars), fitch(bab_tree, yeast))
 })
 
+test_that("rearrangements works properly", {  
+    skip_on_cran()
+    tree <- all_trees[[1]]
+    start <- fitch(tree, yeast)
+    bab_tree <- bab(yeast)
+    best <- fitch(bab_tree, yeast)
+    best_fitch <- optim.parsimony(tree, yeast, rearrangements = "NNI")
+    best_sankoff <- optim.parsimony(tree, yeast, method="sankoff", rearrangements = "NNI")
+    expect_equal(attr(best_fitch, "pscore"), attr(best_sankoff, "pscore"))
+})
 
 
 
