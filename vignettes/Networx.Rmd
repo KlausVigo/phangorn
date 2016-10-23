@@ -11,7 +11,7 @@ vignette: >
 ---
 
 
-This tutorial gives a basic introduction for constructing phylogenetic networks and adding parameters to trees or networx objects using [phangorn](http://cran.r-project.org/package=phangorn) [@Schliep2011] in R. 
+This tutorial gives a basic introduction for constructing phylogenetic networks and adding parameters to trees or networx objects using [phangorn](https://cran.r-project.org/package=phangorn) [@Schliep2011] in R. 
 Splits graphs or phylogenetic networks are a useful way to display conflicting data or to summarize different trees. Here, we present two popular networks, consensus networks [@Holland2004]
 and Neighbor-Net [@Bryant2004].                                  
 Trees or networks are often missing either edge weights or edge support values. We show how to improve a tree/networx object by adding support values or estimating edge weights using non-negative Least-Squares (nnls).
