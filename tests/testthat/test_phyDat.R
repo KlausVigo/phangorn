@@ -28,14 +28,19 @@ test_that("conversion work as expected", {
     expect_is(phyDat(phy_vec_user, type="USER", levels = c("0","1")), "phyDat")
     expect_is(as.phyDat(phy_dnabin), "phyDat")
     expect_is(as.phyDat(phy_align), "phyDat")
-    expect_is(MA_AA <- as.MultipleAlignment(chloroplast), "AAMultipleAlignment")
-    expect_equal(as.phyDat(MA_AA), chloroplast)
-    expect_is(MA_DNA <- as.MultipleAlignment(Laurasiatherian), "DNAMultipleAlignment")
-    expect_equal(as.phyDat(MA_DNA), Laurasiatherian)
     expect_is(c2d <- codon2dna(codon_align), "phyDat")
     expect_equal(dna2codon(c2d), codon_align) 
 })
 
+
+test_that("conversion with Biostrings work as expected", {
+    skip_on_cran()
+    library(Biostrings)
+    expect_is(MA_AA <- as.MultipleAlignment(chloroplast), "AAMultipleAlignment")
+    expect_equal(as.phyDat(MA_AA), chloroplast)
+    expect_is(MA_DNA <- as.MultipleAlignment(Laurasiatherian), "DNAMultipleAlignment")
+    expect_equal(as.phyDat(MA_DNA), Laurasiatherian)
+})
 
 
 test_that("subsetting and combining work as expected", {
