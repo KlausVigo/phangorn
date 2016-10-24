@@ -653,7 +653,8 @@ optim.parsimony <- function(tree,data, method='fitch', cost=NULL, trace=1, rearr
 }
 
 
-pratchet <- function (data, start=NULL, method="fitch", maxit=1000, k=10, trace=1, all=FALSE, rearrangements="SPR", ...) 
+# perturbation="ratchet", "stochastic"
+pratchet <- function (data, start=NULL, method="fitch", maxit=1000, k=10, trace=1, all=FALSE, rearrangements="SPR", perturbation="ratchet", ...) 
 {
     eps = 1e-08
 #    if(method=="fitch" && (is.null(attr(data, "compressed")) || attr(data, "compressed") == FALSE)) 
@@ -695,9 +696,18 @@ pratchet <- function (data, start=NULL, method="fitch", maxit=1000, k=10, trace=
     result = list()
     result[[1]] = tree
     kmax = 1
+    nTips = length(tree$tip.label)
     for (i in 1:maxit) {
-        bstrees <- bootstrap.phyDat(data, FUN, tree = tree, bs = 1, trace = trace, method=method, rearrangements=rearrangements, ...)
-        trees <- lapply(bstrees, optim.parsimony, data, trace = trace, method=method, rearrangements=rearrangements, ...)
+        if(perturbation=="ratchet"){
+            bstrees <- bootstrap.phyDat(data, FUN, tree = tree, bs = 1, trace = trace, method=method, rearrangements=rearrangements, ...)
+            trees <- lapply(bstrees, optim.parsimony, data, trace = trace, method=method, rearrangements=rearrangements, ...)
+        }
+        if(perturbation=="stochastic"){
+            treeNNI <- rNNI(tree, floor(nTips/2))
+            trees <- optim.parsimony(treeNNI, data, trace = trace, 
+                 method = method, rearrangements = rearrangements, ...)
+            trees <- list(trees)
+        }
         if(inherits(result,"phylo"))m=1
         else m = length(result)
         if(m>0) trees[2 : (1+m)] = result[1:m]
