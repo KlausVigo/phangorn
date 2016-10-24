@@ -59,7 +59,7 @@ Emmanuel Paradies
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link[phytools]{mrp.supertree}},  \code{\link{speciesTree}}, \code{\link{densiTree}}, \code{\link{RF.dist}}, \code{\link{SPR.dist}}
+\code{mrp.supertree},  \code{\link{speciesTree}}, \code{\link{densiTree}}, \code{\link{RF.dist}}, \code{\link{SPR.dist}}
 }
 \examples{
 data(Laurasiatherian)
