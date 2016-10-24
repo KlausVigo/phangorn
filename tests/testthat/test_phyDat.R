@@ -33,14 +33,14 @@ test_that("conversion work as expected", {
 })
 
 
-test_that("conversion with Biostrings work as expected", {
-    skip_on_cran()
-    library(Biostrings)
-    expect_is(MA_AA <- as.MultipleAlignment(chloroplast), "AAMultipleAlignment")
-    expect_equal(as.phyDat(MA_AA), chloroplast)
-    expect_is(MA_DNA <- as.MultipleAlignment(Laurasiatherian), "DNAMultipleAlignment")
-    expect_equal(as.phyDat(MA_DNA), Laurasiatherian)
-})
+#test_that("conversion with Biostrings work as expected", {
+#    skip_on_cran()
+#    library(Biostrings)
+#    expect_is(MA_AA <- as.MultipleAlignment(chloroplast), "AAMultipleAlignment")
+#    expect_equal(as.phyDat(MA_AA), chloroplast)
+#    expect_is(MA_DNA <- as.MultipleAlignment(Laurasiatherian), "DNAMultipleAlignment")
+#    expect_equal(as.phyDat(MA_DNA), Laurasiatherian)
+#})
 
 
 test_that("subsetting and combining work as expected", {
