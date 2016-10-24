@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/KlausVigo/phangorn.svg?branch=master)](https://travis-ci.org/KlausVigo/phangorn)
-[![CRAN Status Badge](http://www.r-pkg.org/badges/version/phangorn)](http://cran.r-project.org/package=phangorn)
+[![CRAN Status Badge](http://www.r-pkg.org/badges/version/phangorn)](https://cran.r-project.org/package=phangorn)
 [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html)
-[![CRAN Downloads](http://cranlogs.r-pkg.org/badges/phangorn)](http://cran.r-project.org/package=phangorn)
+[![CRAN Downloads](http://cranlogs.r-pkg.org/badges/phangorn)](https://cran.r-project.org/package=phangorn)
 [![Research software impact](http://depsy.org/api/package/cran/phangorn/badge.svg)](http://depsy.org/package/r/phangorn)
 [![codecov.io](https://codecov.io/github/KlausVigo/phangorn/coverage.svg?branch=master)](https://codecov.io/github/KlausVigo/phangorn?branch=master)
 
@@ -17,7 +17,7 @@ You can install
 
 You may need to install first the Biostrings package from bioconductor 
 ```
-source("http://bioconductor.org/biocLite.R")
+source("https://bioconductor.org/biocLite.R")
 biocLite("Biostrings")
 ```
 
