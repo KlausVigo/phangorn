@@ -14,7 +14,7 @@ dist.p(x, cost="polymorphism", ignore.indels=TRUE)
 \arguments{
   \item{x}{a matrix containing DNA sequences; this must be of class
  "phyDat" (use as.phyDat to convert from DNAbin objects).}
- \item{cost}{A cost matrix or "polymorphism" for a pre defined one.} 
+ \item{cost}{A cost matrix or "polymorphism" for a predefined one.} 
  \item{ignore.indels}{a logical indicating whether gaps are treated
 as fifth state or not. Warning, each gap site is treated as a 
 characters, so an an indel that spans a number of base positions 

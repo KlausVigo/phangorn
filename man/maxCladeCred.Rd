@@ -27,7 +27,7 @@ logical, if FALSE the tree with highest maximum bipartition credibility is retur
 \details{
 So far just the best tree is returned. No annotations or transformations of edge length are performed. 
 
-If a list of partition is provided then the clade credibity is computed for the trees in x.
+If a list of partition is provided then the clade credibility is computed for the trees in x.
 }
 \value{
 a tree (an object of class \code{phylo}) with the highest clade credibility or a numeric vector of clade credibilities for each tree.

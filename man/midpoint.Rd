@@ -22,7 +22,7 @@ getRoot(tree)
 }
 \details{
 \code{pruneTree} prunes back a tree and produces a consensus tree, for trees already containing nodelabels. 
-It assumes that nodelabels are numerical or character genereated from numericals, it uses as.numeric(as.character(tree$node.labels)) 
+It assumes that nodelabels are numerical or character that allows conversion to numerical, it uses as.numeric(as.character(tree$node.labels)) 
 to convert them. 
 \code{midpoint} so far does not transform node.labels properly.   
 }

@@ -21,7 +21,7 @@ It makes extensive use \code{simSeq} and \code{optim.pml} and can take quite lon
 }
 \value{
   an object of class SOWH. That is a list with three elements, one is a matrix
-  containing for each bootstrap replicate the (log-) likelihood of the restricted and   unrestricted estimate and two pml objetcs of the restricted and unrestricted model. 
+  containing for each bootstrap replicate the (log-) likelihood of the restricted and   unrestricted estimate and two pml objects of the restricted and unrestricted model. 
 }
 \references{
 Goldman, N., Anderson, J. P., and Rodrigo, A. G. (2000) Likelihood

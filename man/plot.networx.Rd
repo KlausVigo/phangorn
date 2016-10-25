@@ -120,7 +120,7 @@ cyclic ordering. These objects can be nicely plotted in "2D".
 So far not all parameters behave the same on the the rgl "3D"
 and basic graphic "2D" device. 
 
-Often it is easier (and safer) to supply vectors of graphial parameters for splits (e.g. splits.color). 
+Often it is easier (and safer) to supply vectors of graphical parameters for splits (e.g. splits.color). 
 These overwrite values edge.color. 
 }
 \note{

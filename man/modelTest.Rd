@@ -5,7 +5,7 @@
 ModelTest
 }
 \description{
-Comparison of different nucleotide or amino acid substition models 
+Comparison of different nucleotide or amino acid substitution models 
 }
 \usage{
 modelTest(object, tree=NULL, model = c("JC", "F81", "K80", "HKY", "SYM", "GTR"), 
@@ -18,7 +18,7 @@ modelTest(object, tree=NULL, model = c("JC", "F81", "K80", "HKY", "SYM", "GTR"),
   \item{tree}{a phylogenetic tree.}
   \item{model}{a vector containing the substitution models to compare with each other
   or "all" to test all available models}
-  \item{G}{logical, TRUE (default) if (discrete) Gamma modelshould be tested}
+  \item{G}{logical, TRUE (default) if (discrete) Gamma model should be tested}
   \item{I}{logical, TRUE (default) if invariant sites should be tested}
   \item{FREQ}{logical, FALSE (default) if TRUE amino acid frequencies will be estimated.}
   \item{k}{number of rate classes}

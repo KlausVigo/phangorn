@@ -14,7 +14,7 @@
 
 \code{parsimony} returns the parsimony score of a tree using either the sankoff or the fitch algorithm.
 \code{optim.parsimony} tries to find the maximum parsimony tree using either Nearest Neighbor Interchange (NNI) 
-rearrangements or sub tree pruning and regrafting (SPR). \code{pratchet} implements the parsimony ratchet (Nixon, 1999) and is the prefered way to search for the best tree. 
+rearrangements or sub tree pruning and regrafting (SPR). \code{pratchet} implements the parsimony ratchet (Nixon, 1999) and is the preferred way to search for the best tree. 
 \code{random.addition} can be used to produce starting trees. 
 \code{CI} and \code{RI} computes the consistency and retention index.  
 }

@@ -46,7 +46,7 @@ distinct.splits(...)
 \arguments{
   \item{x}{An object of class phylo or multiPhylo.}
   \item{maxp}{integer, default from \code{options(max.print)}, influences how many entries of large matrices are printed at all.} 
-  \item{zero.print}{character which should be printed for zeroes.} 
+  \item{zero.print}{character which should be printed for zeros.} 
   \item{one.print}{character which should be printed for ones.} 
   \item{\dots}{Further arguments passed to or from other methods.}
   \item{obj}{an object of class splits.} 
