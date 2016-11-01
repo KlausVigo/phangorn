@@ -86,10 +86,11 @@ ancestral.pml <- function (object, type=c("marginal", "ml", "bayes"))
     
 
 ancestral2phyDat <- function(x) {
+    eps <- 1.0e-5
     contr <- attr(x, "contrast")
     # a bit too complicated    
-    ind1 <- which( apply(contr, 1, function(x)sum(x > 0.00001)) == 1L)
-    ind2 <- which( contr[ind1, ] > 0.00001, arr.ind = TRUE)
+    ind1 <- which( apply(contr, 1, function(x)sum(x > eps)) == 1L)
+    ind2 <- which( contr[ind1, ] > eps, arr.ind = TRUE)
     pos <- ind2[match(as.integer(1L:ncol(contr)),  ind2[,2]),1]
     # only first hit    
     res <- lapply(x, function(x, pos) pos[apply(x, 1, which.max)], pos)
