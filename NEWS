@@ -14,7 +14,7 @@ BUG FIXES
 
 OTHER CHANGES
 
-    o improvements to as.networx. It often now produces networx with less edges 
+    o improvements to as.networx. It often now produces networks with less edges 
    
       resulting in much nicer plots 
 
