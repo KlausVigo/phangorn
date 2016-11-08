@@ -468,16 +468,38 @@ nnls.tree <- function(dm, tree, rooted=FALSE, trace=1){
     # non-negative LS
     n = dim(X)[2]
     l = nrow(tree$edge)
-    Amat = matrix(0, n, l)
+    
     
     lab = attr(X, "nodes")
     # vielleicht solve.QP.compact
     ind1 = match(tree$edge[,1], lab)
-    Amat[cbind(ind1, 1:l)] = 1
     ind2 = match(tree$edge[,2], lab)
-    Amat[cbind(ind2, 1:l)] = -1  
     
-    betahat <- quadprog::solve.QP(as.matrix(Dmat),as.vector(dvec),Amat)$sol 
+#    Amat = matrix(0, n, l)
+#    Amat[cbind(ind1, 1:l)] = 1
+#    Amat[cbind(ind2, 1:l)] = -1  
+#    betahat <- quadprog::solve.QP(as.matrix(Dmat),as.vector(dvec),Amat)$sol 
+    
+    Amat <- matrix(0, 2, l)
+    Amat[1,] <- 1
+    Amat[2,] <- -1
+    
+    Aind <- matrix(0L, 3, l)
+    Aind[1,] <- 2L
+    Aind[2,] <- as.integer(ind1)
+    Aind[3,] <- as.integer(ind2)
+    
+    if(any(is.na(Aind))){
+        na_ind <- which(is.na(Aind), arr.ind = TRUE)
+        Aind[is.na(Aind)] <- 0L
+        for(i in 1:nrow(na_ind)) Aind[1, na_ind[i, 2]] <- Aind[1, na_ind[i, 2]] - 1L
+    }
+    
+    betahat <- quadprog::solve.QP.compact(as.matrix(Dmat),as.vector(dvec),Amat, Aind)$sol
+    
+    
+    
+
     
     # quadratic programing solving
 #    if(!rooted){
