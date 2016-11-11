@@ -496,9 +496,6 @@ nnls.tree <- function(dm, tree, rooted=FALSE, trace=1){
     }
     
     betahat <- quadprog::solve.QP.compact(as.matrix(Dmat),as.vector(dvec),Amat, Aind)$sol
-    
-    
-    
 
     
     # quadratic programing solving
@@ -592,6 +589,15 @@ nnls.splitsOld <- function(x, dm, trace=0){
     #    int = as.numeric(int==1)# (int>1)
     Amat = diag(n) # (int)
     betahat <- quadprog::solve.QP(as.matrix(Dmat),as.vector(dvec),Amat)$sol # quadratic programing solving
+    
+    Amat2 <- matrix(1, 1, n)
+    Aind <- matrix(0L, 2L, n)
+    Aind[1,] <- 1L
+    Aind[2,] <- as.integer(1L:n)
+    betahat2 <- quadprog::solve.QP.compact(as.matrix(Dmat),as.vector(dvec),Amat2, Aind)$sol
+    
+#browser()    
+    
     RSS = sum((y-(X%*%betahat))^2)
     ind = (betahat > 1e-8) | int==1  
     x = x[ind]
