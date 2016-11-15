@@ -1,4 +1,4 @@
-     CHANGES in PHANGORN VERSION 2.0.5
+     CHANGES in PHANGORN VERSION 2.1.0
 
 NEW FEATURES
 
@@ -27,7 +27,11 @@ OTHER CHANGES
     o more unit tests
 
     o improved cbind.phyDat, faster and more flexible
-
+    
+    o phangorn now requires ape 4.0
+    
+    o phangorn now imports Rcpp, but not nnls any more 
+    
     
 
     CHANGES in PHANGORN VERSION 2.0.4
