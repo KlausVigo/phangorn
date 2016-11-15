@@ -525,42 +525,6 @@ nnls.splits <- function(x, dm, trace=0){
     y = dm[lower.tri(dm)]
     
     x = SHORTwise(x, k)
-#    l <- sapply(x, length)
-    l <- lengths(x)
-    if(any(l==0)) x = x[-which(l==0)]
-    
-    X = splits2design(x)
-    
-    if(any(is.na(y))){
-        ind = which(is.na(y))
-        X = X[-ind,,drop=FALSE]
-        y= y[-ind]
-    }
-    X = as.matrix(X)
-    n = dim(X)[2]
-#    int = sapply(x, length)
-    int <- lengths(x)
-    Amat = diag(n) # (int)
-    betahat <- nnls(X, y)  
-    ind = (betahat$x > 1e-8) | int==1  
-    x = x[ind]
-    RSS <- betahat$deviance
-    attr(x, "weights") = betahat$x[ind]
-    if(trace)print(paste("RSS:", RSS))
-    attr(x, "RSS") = RSS
-    x
-}    
-
-
-nnls.splitsOld <- function(x, dm, trace=0){
-    labels=attr(x, "labels")
-    dm = as.matrix(dm)
-    k = dim(dm)[1]
-    dm = dm[labels,labels]
-    y = dm[lower.tri(dm)]
-    
-    x = SHORTwise(x, k)
-#    l <- sapply(x, length)
     l <- lengths(x)
     if(any(l==0)) x = x[-which(l==0)]
     
@@ -585,18 +549,15 @@ nnls.splitsOld <- function(x, dm, trace=0){
     }
     n = dim(X)[2]
     int <- lengths(x)
-#    int = sapply(x, length)
-    #    int = as.numeric(int==1)# (int>1)
-    Amat = diag(n) # (int)
-    betahat <- quadprog::solve.QP(as.matrix(Dmat),as.vector(dvec),Amat)$sol # quadratic programing solving
-    
-    Amat2 <- matrix(1, 1, n)
+
+#    Amat = diag(n) # (int)
+#    betahat <- quadprog::solve.QP(as.matrix(Dmat),as.vector(dvec),Amat)$sol # quadratic programing solving
+# faster version        
+    Amat <- matrix(1, 1, n)
     Aind <- matrix(0L, 2L, n)
     Aind[1,] <- 1L
     Aind[2,] <- as.integer(1L:n)
-    betahat2 <- quadprog::solve.QP.compact(as.matrix(Dmat),as.vector(dvec),Amat2, Aind)$sol
-    
-#browser()    
+    betahat <- quadprog::solve.QP.compact(as.matrix(Dmat),as.vector(dvec),Amat, Aind)$sol
     
     RSS = sum((y-(X%*%betahat))^2)
     ind = (betahat > 1e-8) | int==1  
