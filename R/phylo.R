@@ -3903,7 +3903,8 @@ index2tree2 <- function(x, tree, root=length(tree$tip.label)+1L){
 
 # weight, nr, nc, contrast, nco (Reihenfolge beibehalten)      
 # INV raus
-optimQuartet <- function (tree, data, eig, w, g, bf, rate, ll.0=ll.0, nTips,
+# evi, eve, contrast2 ausserhalb definieren
+optimQuartet <- function (tree, data, eig, w, g, bf, rate, ll.0, nTips,
         weight, nr, nc, contrast, nco, llcomp =-Inf,                  
         control = pml.control(epsilon = 1e-08, maxit = 5, trace=0), ...) 
 {
@@ -3926,7 +3927,7 @@ optimQuartet <- function (tree, data, eig, w, g, bf, rate, ll.0=ll.0, nTips,
     eps = 1
     iter = 0
     
-    treeP = tree
+#    treeP = tree  
     
     child = tree$edge[, 2]
     parent = tree$edge[, 1]
@@ -3954,24 +3955,25 @@ optimQuartet <- function (tree, data, eig, w, g, bf, rate, ll.0=ll.0, nTips,
                     as.double(contrast2), nco, data, as.double(weight), as.double(ll.0))       
         iter = iter + 1
         #        tree$edge.length = EL[tree$edge[,2]]
-        treeP$edge.length = EL  # [treeP$edge[,2]]
-        newll <- pml.quartet(treeP, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k, nTips=nTips,
-            weight=weight, nr=nr, nc=nc, contrast=contrast, nco=nco)
+        tree$edge.length = EL  # [treeP$edge[,2]] # vormals treeP
+        newll <- pml.quartet(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k, nTips=nTips,
+            weight=weight, nr=nr, nc=nc, contrast=contrast, nco=nco) # vormals treeP
         eps = ( old.ll - newll ) / newll
         if( (eps<0) || (newll < llcomp) ) return(list(tree=oldtree, logLik=old.ll, c(eps, iter)))
         
-        oldtree = treeP
+        oldtree = tree # vormals treeP
         if(control$trace>1) cat(old.ll, " -> ", newll, "\n") 
         old.ll = newll
         #        loli = parent[1] 
     }
     if(control$trace>0) cat(start.ll, " -> ", newll, "\n")
-    list(tree=treeP, logLik=newll, c(eps, iter))
+    list(tree=tree, logLik=newll, c(eps, iter)) # vormals treeP
 }
 
 
 # weight, nr, nc, contrast, nco rein
-# inv, INV raus
+# inv, INV, site, ... raus 
+# wMix, rate last
 pml.quartet <- function (tree, data, bf = rep(.25, 4), k = 1, rate = 1, g, w, 
     eig, ll.0 = NULL, ind.ll0=NULL, llMix = NULL, wMix = 0, nTips, 
     weight, nr, nc, contrast, nco, ..., site=FALSE) 
