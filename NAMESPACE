@@ -1,7 +1,7 @@
 useDynLib(phangorn, .registration=TRUE)
 
 importFrom(ape, as.DNAbin, as.phylo, plot.phylo, as.prop.part, nj,old2new.phylo, dist.dna,
-    new2old.phylo, cophenetic.phylo, is.rooted, unroot, root, is.binary.tree, as.alignment,
+    new2old.phylo, cophenetic.phylo, is.rooted, unroot, root, is.binary, is.binary.tree, as.alignment,
     di2multi, multi2di, .uncompressTipLabel, .compressTipLabel, prop.part, Ntip,
     postprocess.prop.part, speciesTree, plotPhyloCoor, cladogram.plot, phylogram.plot,
     node.depth.edgelength, drop.tip, stree, rtree, is.ultrametric, .PlotPhyloEnv,
@@ -85,7 +85,7 @@ S3method(as.phyDat, factor)
 S3method(as.phyDat, matrix)
 S3method(as.phyDat, MultipleAlignment)
 S3method(as.MultipleAlignment, phyDat)
-S3method(as.AAbin, phyDat) # requires 3.5
+S3method(as.AAbin, phyDat) 
 S3method(as.DNAbin, phyDat)
 S3method(as.phylo, splits)
 S3method(as.splits, phylo)
