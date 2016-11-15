@@ -795,28 +795,28 @@ Ancestors <- function (x, node, type = c("all", "parent"))
 }
 
 
-allChildren <- function(x){
-   l = length(x$tip.label) 
-   if(l<20){
-       parent = x$edge[,1]
-       children = x$edge[,2]
-       res = vector("list", max(x$edge))
-       for(i in 1:length(parent)) res[[parent[i]]] = c(res[[parent[i]]], children[i])
-       return(res)
-   }
-   else{
-       if (is.null(attr(x, "order")) || attr(x, "order") == "cladewise") 
-           x <- reorder(x, "postorder")
-       parent = x$edge[,1]
-       children = x$edge[,2]
-       res <- .Call("AllChildren", as.integer(children), as.integer(parent), as.integer(max(x$edge))) # , PACKAGE="phangorn"
-       return(res)
-   }
-}
+#allChildren <- function(x){
+#   l = length(x$tip.label) 
+#   if(l<20){
+#       parent = x$edge[,1]
+#       children = x$edge[,2]
+#       res = vector("list", max(x$edge))
+#       for(i in 1:length(parent)) res[[parent[i]]] = c(res[[parent[i]]], children[i])
+#       return(res)
+#   }
+#   else{
+#       if (is.null(attr(x, "order")) || attr(x, "order") == "cladewise") 
+#           x <- reorder(x, "postorder")
+#       parent = x$edge[,1]
+#       children = x$edge[,2]
+#       res <- .Call("AllChildren", as.integer(children), as.integer(parent), as.integer(max(x$edge))) # , PACKAGE="phangorn"
+#       return(res)
+#   }
+#}
 
 
 # alternative version using Rcpp
-allChildrenRCPP <- function(x){
+allChildren <- function(x){
     l = length(x$tip.label) 
     if(l<20){
         parent = x$edge[,1]
@@ -851,7 +851,8 @@ Descendants = function(x, node, type=c("tips","children","all")){
   type <- match.arg(type)
   if(type=="children") return(Children(x, node))
   if(type=="tips") return(bip(x)[node])
-  # return(allDescendants(x)[node])
+  # new version using Rcpp
+  if(length(node)>10) return(allDescendants(x)[node])
   ch = allChildren(x) # out of the loop
   isInternal = logical(max(x$edge))
   isInternal[ unique(x$edge[,1]) ] =TRUE  
