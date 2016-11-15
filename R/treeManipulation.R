@@ -815,6 +815,32 @@ allChildren <- function(x){
 }
 
 
+# alternative version using Rcpp
+allChildrenRCPP <- function(x){
+    l = length(x$tip.label) 
+    if(l<20){
+        parent = x$edge[,1]
+        children = x$edge[,2]
+        res = vector("list", max(x$edge))
+        for(i in 1:length(parent)) res[[parent[i]]] = c(res[[parent[i]]], children[i])
+        return(res)
+    }
+    else{
+        if (is.null(attr(x, "order")) || attr(x, "order") == "cladewise") 
+            x <- reorder(x, "postorder")
+        allChildrenCPP(x$edge)
+    }
+}
+
+
+allDescendants <- function(x){
+    if (is.null(attr(x, "order")) || attr(x, "order") == "cladewise") 
+        x <- reorder(x, "postorder")
+    nTips <- as.integer(length(x$tip.label))
+    allDescCPP(x$edge, nTips)
+}
+
+
 Children <- function(x, node){
    if(length(node)==1)return(x$edge[x$edge[,1]==node,2])
    allChildren(x)[node]
@@ -825,6 +851,7 @@ Descendants = function(x, node, type=c("tips","children","all")){
   type <- match.arg(type)
   if(type=="children") return(Children(x, node))
   if(type=="tips") return(bip(x)[node])
+  # return(allDescendants(x)[node])
   ch = allChildren(x) # out of the loop
   isInternal = logical(max(x$edge))
   isInternal[ unique(x$edge[,1]) ] =TRUE  
