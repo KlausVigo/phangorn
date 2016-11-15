@@ -474,6 +474,7 @@ splitsNetwork <- function(dm, splits=NULL, gamma=.1, lambda=1e-6, weight=NULL){
   Amat       <- cbind(ind1,diag(n)) 
   bvec       <- c(gamma, rep(0,n))
   
+# needs quadprog::solve.QP.compact  
   solution <- quadprog::solve.QP(Dmat,dvec,Amat,bvec=bvec, meq=1)$sol   
   
   ind2 <- which(solution>1e-8)
@@ -490,6 +491,8 @@ splitsNetwork <- function(dm, splits=NULL, gamma=.1, lambda=1e-6, weight=NULL){
   
   Amat2 <- diag(n2)
   bvec2 <- rep(0, n2)
+ # needs quadprog::solve.QP.compact 
+ # bvec2 not used
   solution2  <- quadprog::solve.QP(Dmat, dvec, Amat2)$sol
   
   RSS1 = sum((y-X[,ind2]%*%solution[ind2])^2)

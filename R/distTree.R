@@ -593,7 +593,7 @@ designSplits <- function (x, splits = "all", ...)
     if (is.na(splits)) stop("invalid splits method")
     if (splits == -1) stop("ambiguous splits method")  
     if(splits==1) X <-  designAll(x)
-    if(splits==2) X <-  designStar(x)
+    if(splits==2) X <-  designStar(x, ...)
     return(X)
 }
 
@@ -617,9 +617,12 @@ designAll <- function(n, add.split=FALSE){
 }
 
 
-designStar = function(n){
-    res=NULL
-    for(i in 1:(n-1)) res = rbind(res,cbind(matrix(0,(n-i),i-1),1,diag(n-i)))
+# faster sparse version
+designStar = function(n, sparse=TRUE){
+#    res=NULL
+#    for(i in 1:(n-1)) res = rbind(res,cbind(matrix(0,(n-i),i-1),1,diag(n-i)))
+    res <- stree(n) %>% as.splits %>% splits2design
+    if(!sparse) return(as.matrix(res))
     res
 }
 
