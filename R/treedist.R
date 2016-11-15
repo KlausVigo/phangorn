@@ -469,6 +469,7 @@ mRF2 <- function(tree, trees, normalize=FALSE, check.labels = TRUE){
         message("Some trees are rooted. Unrooting all trees.\n")
         trees <- lapply(trees, unroot)
     }
+    if(is.rooted(tree)) tree <- unroot(tree)
     if (any(sapply(trees, function(x) !is.binary.tree(x)))) {
         message("Some trees are not binary. Result may not what you expect!")
     }
