@@ -1,7 +1,7 @@
 Package: phangorn
 Title: Phylogenetic Analysis in R
 Version: 2.1.0
-Date: 2016-11-10
+Date: 2016-11-15
 Authors@R: c(person("Klaus", "Schliep", email="klaus.schliep@gmail.com", role = c("aut", "cre")), 
   person("Emmanuel", "Paradis", role = c("aut")), 
   person("Leonardo", "de Oliveira Martins", role = c("aut")), 
@@ -14,7 +14,7 @@ Description: Phylogenetic analysis in R: Estimation of phylogenetic
         trees and networks using Maximum Likelihood, Maximum Parsimony,
         distance methods and Hadamard conjugation.
 Depends: R (>= 3.0.0), ape (>= 3.5)
-Imports: quadprog, igraph (>= 1.0), Matrix, parallel, nnls, methods, utils, stats, graphics, grDevices, fastmatch, magrittr, Rcpp (>= 0.11.0)
+Imports: quadprog, igraph (>= 1.0), Matrix, parallel, methods, utils, stats, graphics, grDevices, fastmatch, magrittr, Rcpp (>= 0.11.0)
 LinkingTo: Rcpp
 Suggests: testthat, seqLogo, seqinr, xtable, flashClust, rgl, knitr, rmarkdown, Biostrings
 ByteCompile: TRUE

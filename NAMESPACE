@@ -19,7 +19,7 @@ importFrom(Rcpp,sourceCpp)
 importFrom(magrittr,"%>%")
 importFrom(Matrix, Matrix, sparseMatrix, spMatrix, crossprod, solve) #, %*%
 importFrom(fastmatch, fmatch)
-importFrom(nnls, nnls)
+#importFrom(nnls, nnls)
 #importFrom(parallel, mclapply, detectCores)
 import(parallel)
 importFrom(quadprog, solve.QP, solve.QP.compact)
