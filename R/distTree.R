@@ -185,7 +185,7 @@ UNJ <- function(x)
     result = list(edge = rbind(c(nam[2], nam[1]), edge), 
                   edge.length=edge.length, tip.label = labels, Nnode=m)
     class(result) <- "phylo"
-    reorder(result)  
+    reorder(result, "postorder")  
 }
 
 
@@ -352,7 +352,7 @@ designUltra <- function (tree, sparse=TRUE)
 
 designUnrooted2 <- function (tree, sparse=TRUE) 
 {
-    if (is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise") 
+    if (is.null(attr(tree, "order")) || attr(tree, "order") != "postorder") 
         tree = reorder(tree, "postorder")
     leri = allChildren(tree)
     bp = bip(tree)
@@ -368,8 +368,7 @@ designUnrooted2 <- function (tree, sparse=TRUE)
     p=1L
     m = 1L
     for (i in 1:length(leri)) {
-        if (!is.null(leri[[i]])) {
-            
+        if (length(leri[[i]]) > 1) {
             if(length(leri[[i]])==2){
                 ind =  getIndex(bp[[leri[[i]][1] ]], bp[[leri[[i]][2] ]], n) 
                 ytmp = rep(bp[[leri[[i]][1] ]], each = length(bp[[leri[[i]][2] ]]))

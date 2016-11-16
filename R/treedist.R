@@ -544,14 +544,24 @@ mRF<-function(trees, normalize=FALSE){
 RF0 <- function(tree1, tree2=NULL, normalize=FALSE, check.labels = TRUE, rooted=FALSE){   
     r1 = is.rooted(tree1)
     r2 = is.rooted(tree2)
-    if(r1 != r2){
-        message("one tree is unrooted, unrooted both")
-    }  
     if(!rooted){
-        if(r1) tree1<-unroot(tree1)
-        if(r2) tree2<-unroot(tree2)
+        if(r1) {
+            tree1<-unroot(tree1)
+            r1 <- FALSE
+            }
+        if(r2) {
+            tree2<-unroot(tree2)
+            r2 <- FALSE
+            }
     }
-    
+    else{
+        if(r1 != r2) {
+            message("one tree is unrooted, unrooted both")
+            tree1<-unroot(tree1)
+            tree2<-unroot(tree2)
+            r1 <- r2 <- FALSE
+        }
+    }  
     if (check.labels) {
         ind <- match(tree1$tip.label, tree2$tip.label)
         if (any(is.na(ind)) | length(tree1$tip.label) !=
@@ -562,17 +572,13 @@ RF0 <- function(tree1, tree2=NULL, normalize=FALSE, check.labels = TRUE, rooted=
         ind2 <- match(1:length(ind), tree2$edge[, 2])
         tree2$edge[ind2, 2] <- order(ind)
     }
-    
-    if(!r1 | !r2){
-        if(r1) tree1 = unroot(tree1)
-        if(r2) tree2 = unroot(tree2)
-    }
     if(!is.binary.tree(tree1) | !is.binary.tree(tree2))message("Trees are not binary!")
     bp1 = bipart(tree1)
     bp2 = bipart(tree2)
+    nTips <- length(tree1$tip.label)
     if(!rooted){
-        bp1 <- SHORTwise(bp1, length(tree1$tip.label))
-        bp2 <- SHORTwise(bp2, length(tree2$tip.label))    
+        bp1 <- SHORTwise(bp1, nTips)
+        bp2 <- SHORTwise(bp2, nTips)    
     }
     RF = sum(match(bp1, bp2, nomatch=0L)==0L) + sum(match(bp2, bp1, nomatch=0L)==0L)
     if(normalize) RF <- RF / (Nnode(tree1) + Nnode(tree2) - 2)
