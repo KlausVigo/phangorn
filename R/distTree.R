@@ -323,7 +323,7 @@ designUltra <- function (tree, sparse=TRUE)
     v=numeric( n * (n - 1)/2)
     m = 1L
     for (i in 1:length(leri)) {
-        if (!is.null(leri[[i]])) {
+        if (length(leri[[i]])>1) {
             if(length(leri[[i]])==2)ind = getIndex(bp[[leri[[i]][1] ]], bp[[leri[[i]][2] ]], n) 
             else {
                 ind=NULL
