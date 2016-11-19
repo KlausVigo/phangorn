@@ -2720,6 +2720,7 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
 #        warning("tree has no edge length, used nnls.phylo to assign them")
 #        tree <- nnls.phylo(tree, dist.ml(data))
 #    }    
+    if(any(duplicated(tree$tip.label))) stop("tree must have unique labels!")
     if (is.null(attr(tree, "order")) || attr(tree, "order") == 
         "cladewise") 
         tree <- reorder(tree, "postorder")
