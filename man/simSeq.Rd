@@ -24,7 +24,8 @@ other root sequence is randomly generated.}
 \item{model}{Amino acid models: one of "WAG", "JTT", "Dayhoff" or "LG"}
 \item{levels}{ \code{levels} takes a character vector of the different bases,
 default is for nucleotide sequences, only used when type = "USER".}
-\item{rate}{rate. }
+\item{rate}{mutation rate or scaler for the edge length, 
+a numerical value greater than zero. }
 \item{ancestral}{Return ancestral sequences?}
 \item{\dots}{Further arguments passed to or from other methods.}
 }
@@ -33,7 +34,7 @@ default is for nucleotide sequences, only used when type = "USER".}
 It is quite flexible and allows to generate DNA, RNA, amino acids or binary sequences. 
 It is possible to give a \code{pml} object as input simSeq return a \code{phyDat}
 from these model. 
-There is also a more low level version, which lacks rate variation, but one can combine different alignments having their own rate (see example).  
+There is also a more low level version, which lacks rate variation, but one can combine different alignments having their own rate (see example). The rate parameter acts like a scaler for the edge lengths.  
 }
 \value{
 \code{simSeq} returns an object of class phyDat.
