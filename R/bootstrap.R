@@ -120,10 +120,11 @@ plotBS <- function (tree, BStrees, type = "unrooted", bs.col = "black",
     else plot(tree, type = type, ...)
     
     if(hasArg(BStrees)){
-        BStrees <- .uncompressTipLabel(BStrees)
-        if(any(unlist(lapply(BStrees, is.rooted)))){
-            BStrees <- lapply(BStrees, unroot)   
-        }
+        BStrees <- .uncompressTipLabel(BStrees) # check if needed
+        if(any(is.rooted(BStrees)))BStrees <- unroot(BStrees)
+#        if(any(unlist(lapply(BStrees, is.rooted)))){
+#            BStrees <- lapply(BStrees, unroot)   
+#        }
         x = prop.clades(tree, BStrees)
         x = round((x/length(BStrees)) * 100)
         tree$node.label = x
@@ -164,8 +165,9 @@ plotBS <- function (tree, BStrees, type = "unrooted", bs.col = "black",
 maxCladeCred <- function(x, tree=TRUE, part=NULL, rooted=TRUE){
     if(inherits(x, "phylo")) x <- c(x)
     if(!rooted){
-        x <- lapply(x, unroot) 
-        class(x) <- "multiPhylo"
+        x <- unroot(x)
+#        x <- lapply(x, unroot) 
+#        class(x) <- "multiPhylo"
         x <- .compressTipLabel(x)
     }    
     if(is.null(part))pp <- prop.part(x)

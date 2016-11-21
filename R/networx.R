@@ -235,8 +235,9 @@ as.splits.multiPhylo <- function(x, ...){
 #    firstTip = x[[1]]$tip[1]
 #    x = lapply(x, root, firstTip) # old trick 
     lx <-  length(x)
-    x <- lapply(x, unroot)
-    class(x) <- "multiPhylo"
+    x <- unroot(x)  
+#    lapply(x, unroot)
+#    class(x) <- "multiPhylo"
     splits <- prop.part(x)
     class(splits)='list'
     weights = attr(splits, 'number')    
