@@ -290,6 +290,7 @@ void fitchT3(int *dat1, int *dat2, int *nr, double *pars, double *weight, double
 
 // return lower and upper bound for the number of changes 
 // upper bound very conservative 
+/*
 void countMPR(double *res, int *dat1, int *dat2, int *nr, double *weight, int *external){
     int k;
     int tmp;
@@ -310,7 +311,7 @@ void countMPR(double *res, int *dat1, int *dat2, int *nr, double *weight, int *e
         }
     } 
 }
-
+*/
 
 void ACCTRAN2(int *dat, int *nr, double *pars, int *node, int *edge, int *nl, double *weight, double *pvec, int *nTips) 
 {   

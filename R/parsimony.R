@@ -782,9 +782,9 @@ ptree <- function (tree, data, type = "ACCTRAN", retData = FALSE)
         stop("data must be of class phyDat")
     if (is.null(attr(tree, "order")) || attr(tree, "order") == 
         "cladewise") 
-        tree <- reorder(tree, "pruningwise")  
- #   if (!is.binary.tree(tree)) 
- #       stop("Tree must be binary!")
+        tree <- reorder(tree, "postorder")  
+    if (!is.binary.tree(tree)) 
+        stop("Tree must be binary!")
     tmp = fitch(tree, data, site = "data")
     nr = attr(data, "nr")
     node <- tree$edge[, 1]
