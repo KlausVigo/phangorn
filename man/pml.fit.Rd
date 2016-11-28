@@ -44,6 +44,7 @@ discrete.gamma(alpha, k)
   \item{wMix}{default is NULL}
   \item{\dots}{Further arguments passed to or from other methods.}
   \item{site}{return the log-likelihood or vector of sitewise likelihood values}
+}  
 \details{
 These functions are exported to be used in different packages so far only in the package coalescentMCMC, but are not intended for end user. Most of the functions call C code and are far less forgiving if the import is not what they expect than \code{pml}. 
 }
