@@ -1,8 +1,8 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-
-// Descendants(x, 1:max(x$edge), "all")
+// import: edge matrix, number of tips
+// export: Descendants(x, 1:max(x$edge), "all")
 // [[Rcpp::export]]
 List allDescCPP(IntegerMatrix orig, int nTips) {
     IntegerVector parent = orig( _, 0);
@@ -28,6 +28,8 @@ List allDescCPP(IntegerMatrix orig, int nTips) {
 
 
 // shorter and easier to understand replacement of C function 
+// import: edge matrix
+// export: list of children 
 // [[Rcpp::export]]
 List allChildrenCPP(IntegerMatrix orig) {
     IntegerVector parent = orig( _, 0);
@@ -40,5 +42,7 @@ List allChildrenCPP(IntegerMatrix orig) {
     }
     return wrap(out);
 }
+
+
 
 
