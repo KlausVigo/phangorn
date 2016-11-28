@@ -32,34 +32,18 @@ discrete.gamma(alpha, k)
   \item{alpha}{Shape parameter of the gamma distribution.}
   \item{k}{Number of intervals of the discrete gamma distribution.}
   \item{Q}{A vector containing the lower triangular part of the rate matrix.}
-  \item{levels}{
-%%     ~~Describe \code{levels} here~~
-}
+  \item{levels}{The alphabet used e.g. c("a", "c", "g", "t") for DNA}
   \item{inv}{Proportion of invariable sites.}
   \item{rate}{Rate.}
-  \item{g}{
-%%     ~~Describe \code{g} here~~
-}
-  \item{w}{
-%%     ~~Describe \code{w} here~~
-}
+  \item{g}{vector of quantiles (default is NULL)}
+  \item{w}{vector of probabilities (default is NULL)}
   \item{eig}{Eigenvalue decomposition of Q}
   \item{INV}{Sparse representation of invariant sites}
-  \item{ll.0}{
-%%     ~~Describe \code{ll.0} here~~  
-  }
-  \item{llMix}{
-%%     ~~Describe \code{llMix} here~~  
-  }
-  \item{wMix}{
-%%     ~~Describe \code{wMix} here~~  
-  
-  }
+  \item{ll.0}{default is NULL}
+  \item{llMix}{default is NULL}
+  \item{wMix}{default is NULL}
   \item{\dots}{Further arguments passed to or from other methods.}
-  \item{site}{
-%%     ~~Describe \code{site} here~~
-}
-}
+  \item{site}{return the log-likelihood or vector of sitewise likelihood values}
 \details{
 These functions are exported to be used in different packages so far only in the package coalescentMCMC, but are not intended for end user. Most of the functions call C code and are far less forgiving if the import is not what they expect than \code{pml}. 
 }

@@ -1,6 +1,5 @@
 \name{densiTree}
 \alias{densiTree}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Plots a densiTree. 
 }
@@ -11,7 +10,6 @@ An R function to plot trees similar to those produced by DensiTree.
 densiTree(x, type = "cladogram", alpha = 1/length(x), consensus = NULL, optim = FALSE, 
     scaleX = FALSE, col = 1, width = 1, cex = 0.8, ...)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
 \item{x}{
 an object of class \code{multiPhylo}.
@@ -58,10 +56,9 @@ Remco R. Bouckaert (2010) DensiTree: making sense of sets of phylogenetic trees
 Klaus Schliep \email{klaus.schliep@gmail.com}
 }
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link{plot.phylo}}, \code{\link{plot.networx}} 
+\code{\link{plot.phylo}}, \code{\link{plot.networx}}
 }
 \examples{  
 data(Laurasiatherian)
@@ -72,7 +69,7 @@ bs <- bootstrap.phyDat(Laurasiatherian, FUN =
 densiTree(bs, optim=TRUE, type="cladogram", col="blue")
 densiTree(bs, optim=TRUE, type="phylogram", col="green")
 \dontrun{
-# phylogram are nice to show different age estimates
+# phylograms are nice to show different age estimates
 require(PhyloOrchard)
 data(BinindaEmondsEtAl2007)
 BinindaEmondsEtAl2007 <- .compressTipLabel(BinindaEmondsEtAl2007) 
