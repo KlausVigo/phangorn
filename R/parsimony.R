@@ -802,9 +802,10 @@ ptree <- function (tree, data, type = "ACCTRAN", retData = FALSE)
             dat[, ind[2]], dat[, ind[3]], as.integer(nr))
         dat[, root] = rSeq[[1]]
     }
-    result <- .C("ACCTRAN2", dat, as.integer(nr), numeric(nr), 
-        as.integer(node[l:1L]), as.integer(edge[l:1L]), l, as.double(weight), numeric(l), as.integer(nTips))
-    #  
+#    result <- .C("ACCTRAN2", dat, as.integer(nr), numeric(nr), 
+#        as.integer(node[l:1L]), as.integer(edge[l:1L]), l, as.double(weight), numeric(l), as.integer(nTips))
+    result <- .C("ACCTRAN2", dat, as.integer(nr), 
+        as.integer(node[l:1L]), as.integer(edge[l:1L]), l, as.integer(nTips))
     el = result[[8]][l:1L]
     if (!is.rooted(tree)) {
         ind2 = which(node[] == root)

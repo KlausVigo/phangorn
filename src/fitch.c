@@ -315,7 +315,8 @@ void countMPR(double *res, int *dat1, int *dat2, int *nr, double *weight, int *e
 }
 */
 
-void ACCTRAN2(int *dat, int *nr, double *pars, int *node, int *edge, int *nl, double *weight, double *pvec, int *nTips) 
+//void ACCTRAN2(int *dat, int *nr, double *pars, int *node, int *edge, int *nl, double *weight, double *pvec, int *nTips) 
+void ACCTRAN2(int *dat, int *nr, int *node, int *edge, int *nl, int *nTips)
 {   
     int i;
     for (i=0; i< *nl; i++) { 
