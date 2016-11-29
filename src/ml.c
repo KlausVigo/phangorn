@@ -544,9 +544,9 @@ void goUp(double *dad, int *child, double *contrast, double *P, int nr, int nc, 
     for(int j=0; j<(nc * nr); j++) dad[j]*=res[j];               
 } 
 
-
+// , double *w
 void updateLLQ(SEXP dlist, int pa, int ch, double *eva, double *eve, double*evei,
-               double el, double *w, double *g, int nr,
+               double el, double *g, int nr,
                int nc, int ntips, double *contrast, int nco, int k,
                double *tmp, double *P){
     int i; 
@@ -565,9 +565,9 @@ void updateLLQ(SEXP dlist, int pa, int ch, double *eva, double *eve, double*evei
 }
 
 
-
+// double *w,
 void updateLL2(SEXP dlist, int pa, int ch, double *eva, double *eve, double*evei,
-    double el, double *w, double *g, int nr,
+    double el,  double *g, int nr,
     int nc, int ntips, double *contrast, int nco, int k,
     double *tmp, double *P){
     int i; 
@@ -1054,7 +1054,7 @@ SEXP optE(SEXP PARENT, SEXP CHILD, SEXP ANC, SEXP eig, SEXP EVI, SEXP EL,
         }
     }
     fs3(eva, nc, oldel, w, g, X, k, nr, weight, f0, res);    
-    updateLL2(dlist, pa, ch, eva, eve, evei, res[0], w, g, nr,
+    updateLL2(dlist, pa, ch, eva, eve, evei, res[0], g, nr,
         nc, ntips, contrast, nco, k, tmp, P);
         el[ch-1L] = res[0]; //edgeLengthIndex
         if (ch > ntips) loli  = ch;
@@ -1127,9 +1127,9 @@ SEXP optQrtt(SEXP PARENT, SEXP CHILD, SEXP eig, SEXP EVI, SEXP EL,
 // go up
 // if i=2 go down 
         
-        if(m==2)updateLLQ(dlist, ch, pa, eva, eve, evei, res[0], w, g, nr,
+        if(m==2)updateLLQ(dlist, ch, pa, eva, eve, evei, res[0], g, nr,
                   nc, ntips, contrast, nco, k, tmp, P);
-        else updateLLQ(dlist, pa, ch, eva, eve, evei, res[0], w, g, nr,
+        else updateLLQ(dlist, pa, ch, eva, eve, evei, res[0], g, nr,
                   nc, ntips, contrast, nco, k, tmp, P);
         el[m] = res[0];     
     }
