@@ -803,16 +803,15 @@ ptree <- function (tree, data, type = "ACCTRAN", retData = FALSE)
         dat[, root] = rSeq[[1]]
     }
     result <- .C("ACCTRAN2", dat, as.integer(nr), numeric(nr), 
-        as.integer(node[l:1L]), as.integer(edge[l:1L]), l, as.double(weight), 
-        numeric(l), as.integer(nTips))
+        as.integer(node[l:1L]), as.integer(edge[l:1L]), l, as.double(weight), numeric(l), as.integer(nTips))
+    #  
     el = result[[8]][l:1L]
     if (!is.rooted(tree)) {
         ind2 = which(node[] == root)
         dat = matrix(result[[1]], nr, max(node))
         result <- .C("ACCTRAN3", result[[1]], as.integer(nr), 
             numeric(nr), as.integer(node[(l - 3L):1L]), as.integer(edge[(l - 
-                3L):1L]), l - 3L, as.double(weight), numeric(l), 
-            as.integer(nTips))
+                3L):1L]), l - 3L, as.double(weight), numeric(l)) # , as.integer(nTips)
         el = result[[8]][(l - 3L):1L]
         pars = .C("fitchTripletACC4", dat[, root], dat[, ind[1]], 
             dat[, ind[2]], dat[, ind[3]], as.integer(nr), numeric(1), 
@@ -825,7 +824,7 @@ ptree <- function (tree, data, type = "ACCTRAN", retData = FALSE)
     else {
         result <- .C("ACCTRAN3", result[[1]], as.integer(nr), 
             numeric(nr), as.integer(node[l:1L]), as.integer(edge[l:1L]), 
-            l, as.double(weight), numeric(l), as.integer(nTips))
+            l, as.double(weight), numeric(l)) # , as.integer(nTips)
         el = result[[8]][l:1L]
     }
     tree$edge.length = el

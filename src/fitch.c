@@ -325,7 +325,8 @@ void ACCTRAN2(int *dat, int *nr, double *pars, int *node, int *edge, int *nl, do
 }
 
 
-void ACCTRAN3(int *dat, int *nr, double *pars, int *node, int *edge, int *nl, double *weight, double *pvec, int *nTips) 
+// , int *nTips
+void ACCTRAN3(int *dat, int *nr, double *pars, int *node, int *edge, int *nl, double *weight, double *pvec) 
 {   
     int i;
     for (i=0; i< *nr; i++)pars[i]=0.0;
