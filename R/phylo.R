@@ -732,7 +732,7 @@ likelihoodRatchet <- function(obj, maxit=100, k=10,
     obj
 }
 
-
+ 
 fs <- function (old.el, eig, parent.dat, child.dat, weight, g=g, 
     w=w, bf=bf, ll.0=ll.0, evi, getA=TRUE, getB=TRUE) 
 {
@@ -746,8 +746,8 @@ fs <- function (old.el, eig, parent.dat, child.dat, weight, g=g,
     X <- .Call("getPrep", dad, child.dat, eig[[2]], evi, nr, nc) 
     .Call("FS4", eig, as.integer(length(bf)), as.double(old.el), 
             as.double(w), as.double(g), X, child.dat, dad, as.integer(length(w)), 
-            as.integer(length(weight)), as.double(bf), as.double(weight), 
-            as.double(ll.0), as.integer(getA), as.integer(getB))
+            as.integer(length(weight)), as.double(weight), 
+            as.double(ll.0), as.integer(getA), as.integer(getB))  # as.double(bf),
 }
 
 
@@ -774,8 +774,8 @@ fs3 <- function (old.el, eig, parent.dat, child, weight, g=g,
     }
     .Call("FS4", eig, as.integer(length(bf)), as.double(old.el), 
             as.double(w), as.double(g), X, child.dat, dad, as.integer(length(w)), 
-            as.integer(length(weight)), as.double(bf), as.double(weight), 
-            as.double(ll.0), as.integer(getA), as.integer(getB))
+            as.integer(length(weight)), as.double(weight),  
+            as.double(ll.0), as.integer(getA), as.integer(getB)) # as.double(bf), 
 }
 
 

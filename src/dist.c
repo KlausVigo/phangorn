@@ -102,10 +102,11 @@ SEXP PWI(SEXP LEFT, SEXP RIGHT, SEXP L, SEXP N, SEXP W, SEXP LI){
 void C_fhm(double *v, int *n){
     unsigned int level, i, j; 
     unsigned int start, step, num_splits;
+    unsigned int max_n = (unsigned int)*n;
     double vi, vj;
     num_splits = (1 << (*n));
     step = 1;
-    for(level = 0; level < (*n); level++){
+    for(level = 0; level < max_n; level++){
         start = 0;
         while(start < (num_splits-1)){
             for(i = start; i < (start + step); i++){
@@ -157,8 +158,8 @@ void distance_hadamard(double *d, int n) {
         d[0] = 0.0;
     }
     
-
-void pairwise_distances(double *dm, int n, int num_splits, double *d) {
+// int num_splits raus  
+void pairwise_distances(double *dm, int n, double *d) {
     int k=0;
     unsigned int offset;
         for (int i = 0; i < (n-1); ++i) {
@@ -182,7 +183,7 @@ SEXP dist2spectra(SEXP dm, SEXP nx, SEXP ns) {
     SEXP result;
     PROTECT(result = allocVector(REALSXP, nsp));
     res = REAL(result);
-    pairwise_distances(REAL(dm), n, nsp, res);
+    pairwise_distances(REAL(dm), n, res); //nsp, 
     distance_hadamard(res, n);
     UNPROTECT(1);
     return(result);

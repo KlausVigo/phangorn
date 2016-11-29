@@ -32,7 +32,7 @@ const double LOG_SCALE_EPS = -22.18070977791824915926;
 
 // 2^64 = 18446744073709551616
 
-static double *LL; 
+static double *LL, *WEIGHTS; 
 static int *SCM, *XXX;
 
 void ll_free(){
@@ -71,10 +71,12 @@ void ll_init2(int *data, int *weights, int *nr, int *nTips, int *nc, int *k)
 {   
     int i;
     LL = (double *) calloc(*nr * *nc * *k * *nTips, sizeof(double));
+    WEIGHTS = (double *) calloc(*nr, sizeof(double));
     XXX = (int *) calloc(*nr * *nTips, sizeof(int));
     SCM = (int *) calloc(*nr * *k * *nTips, sizeof(int));  // * 2L
     for(i =0; i < (*nr * *k * *nTips); i++) SCM[i] = 0L;
     for(i =0; i < (*nr * *nTips); i++) XXX[i] = data[i];
+    for(i =0; i < *nr; i++) WEIGHTS[i] = weights[i];
 }
 
 
@@ -301,7 +303,7 @@ void lll3(SEXP dlist, double *eva, double *eve, double *evei, double *el, double
     F77_CALL(dgemv)(transa, nr, nc, &one, &ans[ni * rc], nr, bf, &ONE, &zero, TMP, &ONE);
 }
 
-
+/*
 SEXP PML_NEW2(SEXP EL, SEXP W, SEXP G, SEXP NR, SEXP NC, SEXP K, SEXP eig, SEXP bf, SEXP node, SEXP edge, SEXP NTips, SEXP nco, SEXP contrast, SEXP N){
     int nr=INTEGER(NR)[0], nc=INTEGER(NC)[0], k=INTEGER(K)[0], i, indLL; 
     int nTips = INTEGER(NTips)[0], *SC;
@@ -330,6 +332,7 @@ SEXP PML_NEW2(SEXP EL, SEXP W, SEXP G, SEXP NR, SEXP NC, SEXP K, SEXP eig, SEXP 
     return TMP;     
 }
 
+ 
 // TODO: parallelize
 SEXP PML_NEW(SEXP EL, SEXP W, SEXP G, SEXP NR, SEXP NC, SEXP K, SEXP eig, SEXP bf, SEXP node, SEXP edge, SEXP NTips, SEXP nco, SEXP contrast, SEXP N){
     int nr=INTEGER(NR)[0], nc=INTEGER(NC)[0], k=INTEGER(K)[0], i, indLL, n=INTEGER(N)[0], ncontr=INTEGER(nco)[0]; 
@@ -356,7 +359,8 @@ SEXP PML_NEW(SEXP EL, SEXP W, SEXP G, SEXP NR, SEXP NC, SEXP K, SEXP eig, SEXP b
     UNPROTECT(1);
     return TMP;     
 }
-
+ */
+ 
 // in pml.move inside optimRooted
 SEXP PML3(SEXP dlist, SEXP EL, SEXP W, SEXP G, SEXP NR, SEXP NC, SEXP K, SEXP eig, SEXP bf, SEXP node, SEXP edge, SEXP NTips, SEXP nco, SEXP contrast, SEXP N){
     int nr=INTEGER(NR)[0], nc=INTEGER(NC)[0], k=INTEGER(K)[0], i, indLL; 
@@ -778,9 +782,9 @@ SEXP getM3(SEXP dad, SEXP child, SEXP P, SEXP nr, SEXP nc){
     return(RESULT);    
     }
     
-     
+// SEXP basefreq,     
 SEXP FS4(SEXP eig, SEXP nc, SEXP el, SEXP w, SEXP g, SEXP X, SEXP dad, SEXP child, SEXP ld, SEXP nr, 
-         SEXP basefreq, SEXP weight, SEXP f0, SEXP retA, SEXP retB)
+         SEXP weight, SEXP f0, SEXP retA, SEXP retB)
 {
     SEXP RESULT, EL, P; 
     double *tmp, *f, *wgt=REAL(weight), edle, ledle, newedle, eps=10, *eva=REAL(VECTOR_ELT(eig,0)); 
@@ -846,8 +850,8 @@ SEXP FS4(SEXP eig, SEXP nc, SEXP el, SEXP w, SEXP g, SEXP X, SEXP dad, SEXP chil
     return (RESULT);
 } 
 
-
-SEXP FS5(SEXP eig, SEXP nc, SEXP el, SEXP w, SEXP g, SEXP X, SEXP ld, SEXP nr, SEXP basefreq, SEXP weight, SEXP f0)
+//, SEXP basefreq
+SEXP FS5(SEXP eig, SEXP nc, SEXP el, SEXP w, SEXP g, SEXP X, SEXP ld, SEXP nr, SEXP weight, SEXP f0)
 {
     SEXP RESULT; // EL, P; 
     double *tmp, *f, *wgt=REAL(weight), edle, ledle, newedle, eps=10, *eva=REAL(VECTOR_ELT(eig,0)); 
