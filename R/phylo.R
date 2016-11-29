@@ -2681,7 +2681,8 @@ pml.fit <- function (tree, data, bf = rep(1/length(levels), length(levels)),
     nco = as.integer(dim(contrast)[1])    
     # dlist=data, nr, nc, weight, k ausserhalb definieren  
     # pmlPart einbeziehen 
-    resll <- .Call("PML0", dlist=data, el, as.double(w), as.double(g), nr, nc, k, eig, as.double(bf), node, edge, nTips, nco, contrast, N=as.integer(length(edge))) 
+    # as.double(w),
+    resll <- .Call("PML0", dlist=data, el, as.double(g), nr, nc, k, eig, as.double(bf), node, edge, nTips, nco, contrast, N=as.integer(length(edge))) 
     
     # sort(INV@i)+1L  
     ind = which(ll.0>0) # automatic in INV gespeichert
