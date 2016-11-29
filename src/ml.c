@@ -362,7 +362,8 @@ SEXP PML_NEW(SEXP EL, SEXP W, SEXP G, SEXP NR, SEXP NC, SEXP K, SEXP eig, SEXP b
  */
  
 // in pml.move inside optimRooted
-SEXP PML3(SEXP dlist, SEXP EL, SEXP W, SEXP G, SEXP NR, SEXP NC, SEXP K, SEXP eig, SEXP bf, SEXP node, SEXP edge, SEXP NTips, SEXP nco, SEXP contrast, SEXP N){
+// , SEXP W
+SEXP PML3(SEXP dlist, SEXP EL, SEXP G, SEXP NR, SEXP NC, SEXP K, SEXP eig, SEXP bf, SEXP node, SEXP edge, SEXP NTips, SEXP nco, SEXP contrast, SEXP N){
     int nr=INTEGER(NR)[0], nc=INTEGER(NC)[0], k=INTEGER(K)[0], i, indLL; 
     int nTips = INTEGER(NTips)[0], *SC;
     double *g=REAL(G), *tmp, logScaleEPS;

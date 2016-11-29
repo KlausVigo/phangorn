@@ -852,7 +852,8 @@ pml.move <- function(EDGE, el, data, g, w, eig, k, nTips, bf){
     edge = as.integer(edge - 1L)
     contrast = attr(data, "contrast")
     nco = as.integer(dim(contrast)[1])    
-    tmp <- .Call("PML3", dlist=data, as.double(el), as.double(w), as.double(g), nr, nc, k, eig, as.double(bf), node, edge, nTips, nco, contrast, N=as.integer(length(edge))) 
+    tmp <- .Call("PML3", dlist=data, as.double(el), as.double(g), nr, nc, k, eig, as.double(bf), node, edge, nTips, nco, contrast, N=as.integer(length(edge))) 
+# as.double(w),
     return(NULL)
 }
 
