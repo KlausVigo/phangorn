@@ -14,19 +14,19 @@ fun <- function(s) - 3/4 * log(1 - 4/3 * s)
 
 
 test_that("dist.ml works properly", {
-    skip_on_cran()
+#    skip_on_cran()
     expect_that(dist.logDet(X), is_a("dist"))
     expect_that(dist.hamming(X), is_a("dist"))
     expect_that(dist.ml(X), is_a("dist"))
-    all.equal(as.matrix(dist.ml(X, k=4, shape=.5)), dm)
-    all.equal(dist.ml(Y), fun(dist.hamming(Y)))
+    expect_equal(as.matrix(dist.ml(X, k=4, shape=.5)), dm)
+    expect_equal(as.matrix(dist.ml(Y)), as.matrix(fun(dist.hamming(Y))))
 })
 
 
 test_that("read/write of distances works", {
     skip_on_cran()
     writeDist(dm, "dm.txt")
-    all.equal(as.dist(dm), readDist("dm.txt"))
+    expect_equal(as.dist(dm), readDist("dm.txt"))
     unlink("dm.txt")
 })
 
