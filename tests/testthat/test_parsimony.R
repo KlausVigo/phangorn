@@ -40,5 +40,17 @@ test_that("rearrangements works properly", {
 })
 
 
+test_that("tree length works properly", {  
+    skip_on_cran()
+    tree <- nj(dist.hamming(yeast))
+    pscore <- fitch(tree, yeast)
+    tree1 <- acctran(tree, yeast)
+    expect_equal(sum(tree1$edge.length), pscore)
+    tree2 <- rtree(100)
+    dat <- simSeq(tree2)
+    tree2 <- acctran(tree2, dat)
+    expect_equal(sum(tree2$edge.length), fitch(tree2,dat))
+})
+
 
 
