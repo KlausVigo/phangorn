@@ -806,7 +806,7 @@ ptree <- function (tree, data, type = "ACCTRAN", retData = FALSE)
 #        as.integer(node[l:1L]), as.integer(edge[l:1L]), l, as.double(weight), numeric(l), as.integer(nTips))
     result <- .C("ACCTRAN2", dat, as.integer(nr), 
         as.integer(node[l:1L]), as.integer(edge[l:1L]), l, as.integer(nTips))
-    el = result[[8]][l:1L]
+    el = result[[5]][l:1L]
     if (!is.rooted(tree)) {
         ind2 = which(node[] == root)
         dat = matrix(result[[1]], nr, max(node))
