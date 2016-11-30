@@ -118,9 +118,11 @@ dist.ml <- function (x, model = "JC69", exclude = "none", bf = NULL, Q = NULL, k
     }
     tmp = (contrast %*% eig[[2]])[ind1, ] * (contrast %*% (t(eig[[3]]) * bf))[ind2, ]
     tmp2 = vector("list", k)
-    wdiag = .Call("PWI", as.integer(1:n), as.integer(1:n), as.integer(n), 
-                  as.integer(n), rep(1, n), as.integer(li), PACKAGE = "phangorn")
-    wdiag = which(wdiag > 0)
+#    wdiag = .Call("PWI", as.integer(1:n), as.integer(1:n), as.integer(n), 
+#                  as.integer(n), rep(1, n), as.integer(li), PACKAGE = "phangorn")
+#    wdiag = which(wdiag > 0)
+    
+    wshared <- which(rowSums(contrast[ind1, ] * contrast[ind2, ]) > 0)
     
     tmp2 = vector("list", k)
     for (i in 1:(l - 1)) {
@@ -131,7 +133,7 @@ dist.ml <- function (x, model = "JC69", exclude = "none", bf = NULL, Q = NULL, k
                 w0[index] = 0.0
             ind = w0 > 0
             
-            old.el <- 1 - (sum(w0[wdiag])/sum(w0))
+            old.el <- 1 - (sum(w0[wshared])/sum(w0))
             if (old.el > eps) 
                 old.el <- 10
             else old.el <- fun(old.el)
