@@ -82,7 +82,7 @@ D.F. Robinson and L.R. Foulds (1979) Comparison of weighted labelled trees. In H
 
 Leonardo de Oliveira Martins
 } 
-\seealso{\code{\link[ape]{dist.topo}}, \code{\link{nni}}}
+\seealso{\code{\link[ape]{dist.topo}}, \code{\link{nni}}, \code{\link{superTree}}}
 \examples{
 tree1 <- rtree(100, rooted=FALSE)
 tree2 <- rSPR(tree1, 3)
