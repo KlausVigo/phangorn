@@ -230,7 +230,7 @@ void lll(SEXP dlist, double *eva, double *eve, double *evei, double *el, double 
     F77_CALL(dgemv)(transa, nr, nc, &one, &ans[ni * rc], nr, bf, &ONE, &zero, TMP, &ONE);
 }
 
- 
+/* 
 // neue Version: keine SEXP (dlist) 
 void lll0(int *X, double *eva, double *eve, double *evei, double *el, double g, int *nr, int *nc, int *node, int *edge, int nTips, double *contrast, int nco, int n, int *scaleTmp, double *bf, double *TMP, double *ans){
     int  ni, ei, j, i, rc; //    R_len_t i, n = length(node);
@@ -262,7 +262,8 @@ void lll0(int *X, double *eva, double *eve, double *evei, double *el, double g, 
     scaleMatrix(&ans[ni * rc], nr, nc, scaleTmp);
     F77_CALL(dgemv)(transa, nr, nc, &one, &ans[ni * rc], nr, bf, &ONE, &zero, TMP, &ONE);
 }
-
+*/
+ 
 // this seems to work perfectly 
 void lll3(SEXP dlist, double *eva, double *eve, double *evei, double *el, double g, int *nr, int *nc, int *node, int *edge, 
     int nTips, double *contrast, int nco, int n, int *scaleTmp, double *bf, double *TMP, double *ans, int *SC){
@@ -361,8 +362,8 @@ SEXP PML_NEW(SEXP EL, SEXP W, SEXP G, SEXP NR, SEXP NC, SEXP K, SEXP eig, SEXP b
 }
  */
  
-// in pml.move inside optimRooted
-// , SEXP W
+// in pml.move inside optimRooted  mit SCM
+// , SEXP W  
 SEXP PML3(SEXP dlist, SEXP EL, SEXP G, SEXP NR, SEXP NC, SEXP K, SEXP eig, SEXP bf, SEXP node, SEXP edge, SEXP NTips, SEXP nco, SEXP contrast, SEXP N){
     int nr=INTEGER(NR)[0], nc=INTEGER(NC)[0], k=INTEGER(K)[0], i, indLL; 
     int nTips = INTEGER(NTips)[0], *SC;

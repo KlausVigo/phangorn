@@ -48,7 +48,9 @@ void rowMin2(double *dat, int n,  int k, double *res){
         }        
     }
 
-   
+/*
+ * never used
+  
 void rowMinInt(int *dat, int n,  int k, int *res){
     int i, h;  
     int x;
@@ -58,7 +60,7 @@ void rowMinInt(int *dat, int n,  int k, int *res){
         res[i] = x;               
         }        
     }
-
+ */ 
 
 void sankoff4(double *dat, int n, double *cost, int k, double *result){
     int i, j, h; 
