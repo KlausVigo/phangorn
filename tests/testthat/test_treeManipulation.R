@@ -52,3 +52,9 @@ test_that("midpoint", {
     
 
 
+test_that("maxCladeCred", {
+  tree <- rcoal(100)
+  trees <- nni(tree)
+  expect_equal(maxCladeCred(c(tree, trees)), tree)
+})
+
