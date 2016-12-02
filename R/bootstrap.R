@@ -164,13 +164,10 @@ plotBS <- function (tree, BStrees, type = "unrooted", bs.col = "black",
 
 maxCladeCred <- function(x, tree=TRUE, part=NULL, rooted=TRUE){
     if(inherits(x, "phylo")) x <- c(x)
-    if(!rooted){
-        x <- unroot(x)
-#        x <- lapply(x, unroot) 
-#        class(x) <- "multiPhylo"
-        x <- .compressTipLabel(x)
-    }    
-    if(is.null(part))pp <- prop.part(x)
+    if (is.null(part)){ 
+        if (!rooted) pp <- unroot(x) %>% prop.part
+        else pp <- prop.part(x)
+    }
     else pp <- part
     pplabel <- attr(pp, "labels")
     if(!rooted)pp <- oneWise(pp)
@@ -182,6 +179,7 @@ maxCladeCred <- function(x, tree=TRUE, part=NULL, rooted=TRUE){
     res <- numeric(l)
     for(i in 1:l){
         tmp <- checkLabels(x[[i]], pplabel)
+        if(!rooted)tmp <- unroot(tmp)
         ppi <- prop.part(tmp)  # trees[[i]]
         if(!rooted)ppi <- oneWise(ppi)
         indi <- fmatch(ppi, pp)
