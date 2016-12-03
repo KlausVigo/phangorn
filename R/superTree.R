@@ -123,9 +123,11 @@ superTree = function(tree, method="MRP", rooted=FALSE, trace=0, ...){
     }
     if(method=="MRP") return(res)
     
-    tree <- lapply(tree, unroot)
-    tree <- lapply(tree, reorder, "postorder")
-    class(tree) = "multiPhylo"
+    tree <- unroot(tree)
+    tree <- reorder(tree, "postorder")
+#    tree <- lapply(tree, unroot)
+#    tree <- lapply(tree, reorder, "postorder")
+#    class(tree) = "multiPhylo"
     
     if(method=="RF") res <- dist.superTree(tree, trace=trace, fun.rf, start=res)
     if(method=="SPR") res <- dist.superTree(tree, trace=trace, fun.spr, start=res)   
