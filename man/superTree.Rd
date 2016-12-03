@@ -3,13 +3,12 @@
 \alias{coalSpeciesTree}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Super Tree and Species Tree methods
+Super Tree methods
 }
 \description{
-These function \code{superTree} allows the estimation of a supertree from a set of trees using either Matrix representation parsimony, Robinson-Foulds or SPR as criterion.  \code{coalSpeciesTree} estimates species trees and can multiple individuals per species.}
+These function \code{superTree} allows the estimation of a supertree from a set of trees using either Matrix representation parsimony, Robinson-Foulds or SPR as criterion. }
 \usage{
 superTree(tree, method = "MRP", rooted=FALSE, trace=0, ...)
-coalSpeciesTree(tree, X, sTree = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -23,15 +22,9 @@ Possible are "MRP", "NNI", and "SPR".
 \item{rooted}{
 should the resulting supertrees be rooted.
 }
-\item{X}{
-A \code{phyDat} object to define which individual belongs to which species. 
-} 
 \item{trace}{
 defines how much information is printed during optimization.
 }
-\item{sTree}{
-A species tree which forces the topology. 
-} 
 \item{\dots}{
 further arguments passed to or from other methods.
 }
@@ -40,26 +33,23 @@ further arguments passed to or from other methods.
 The function \code{superTree} extends the function mrp.supertree from Liam Revells, 
 with artificial adding an outgroup on the root of the trees. 
 This allows to root the supertree afterwards. The functions is internally used in DensiTree. The implementation for the RF- and SPR-supertree are very basic so far and assume that all trees share the same set of taxa.  
-
-\code{coalSpeciesTree} estimates a single linkage tree as suggested by Liu et al. (2010) from the element wise minima of the cophenetic matrices of the gene trees. It extends \code{speciesTree} in ape as it allows that have several individuals per gene tree.  
 }
 \value{
 The function returns an object of class \code{phylo}. 
 }
 \references{
-Liu, L., Yu, L. and Pearl, D. K. (2010) Maximum tree: a consistent estimator of the species tree. \emph{Journal of Mathematical Biology}, \bold{60}, 95--106.
+Baum, B. R., (1992) Combining trees as a way of combining data sets for phylogenetic inference, and the desirability of combining gene trees. \emph{Taxon}, \bold{41}, 3-10.
 
-
+Ragan, M. A. (1992) Phylogenetic inference based on matrix representation of trees. \emph{Molecular Phylogenetics and Evolution}, \bold{1}, 53-58.
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}
 Liam Revell 
-Emmanuel Paradies
 }
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{mrp.supertree},  \code{\link{speciesTree}}, \code{\link{densiTree}}, \code{\link{RF.dist}}, \code{\link{SPR.dist}}
+\code{mrp.supertree}, \code{\link{densiTree}}, \code{\link{RF.dist}}, \code{\link{SPR.dist}}
 }
 \examples{
 data(Laurasiatherian)
