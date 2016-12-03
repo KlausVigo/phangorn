@@ -1,6 +1,5 @@
 \name{superTree}
 \alias{superTree}
-\alias{coalSpeciesTree}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Super Tree methods
