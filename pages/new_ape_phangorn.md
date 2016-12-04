@@ -1,5 +1,8 @@
-New versions of phangorn and ape
---------------------------------
+---
+layout: page
+title: New versions of phangorn and ape
+description: Description of some of the new features.
+---
 
 As you may have seen a version of *ape* and *phangorn* have been released. *ape* jumped to version 4.0 and some of the nicest features are that many useful functions transforming `phylo` objects have been made generic and so work also `multiPhylo` objects.
 
