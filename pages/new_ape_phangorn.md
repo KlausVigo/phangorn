@@ -9,6 +9,7 @@ Some of the nicest new features are that many useful functions for transforming 
 
 In practice this means that instead of typing
 
+    trees <- .uncompressTipLabel(trees)
     trees <- lapply(trees, "unroot")
     class(trees) <- "multiPhylo"
 
