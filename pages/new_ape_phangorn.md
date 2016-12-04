@@ -47,7 +47,7 @@ trees %>% unroot %>% RF.dist %>% cmdscale %>% plot(asp=1)
 
 ![](pics/cmd-1.png)
 
-I also added some first lines of C++ to *phangorn*. I really should have made the transition much earlier to Rcpp. The source code is so much cleaner and shorter.
+And now to some of the new features in *phangorn*. I added some first lines of C++ to *phangorn*. I really should have made the transition much earlier to Rcpp. The source code is so much cleaner and shorter.
 
 My good friend [Leo](http://www.leomartins.org/) joined the authors of phangorn and has contributed the function `SPR.dist`, which is a nice addition to the other tree distances already available. As the name suggests it computes the (approximate) SPR distance (see de Oliveira Martins et al. (2008, 2016)).
 
@@ -64,7 +64,7 @@ abline(a=0, b=1)
 
 The minimal number of SPR steps between 2 trees may actually be less than we used to construct, so the results are even better. It is also reasonable fast and there are not so many programs around which compute it.
 
-The plotting of phylogenetic networks is looking much nicer and it got easier to import and export networks from and to *Splitstree*, but more will be in another post soon.
+Additionally the plotting of phylogenetic networks is looking much nicer and it got easier to import and export networks from and to *Splitstree*, but more will be in another post soon.
 
 ### References
 
