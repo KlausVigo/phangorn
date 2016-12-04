@@ -6,7 +6,7 @@ description: Phylogenetic analysis in R. Estimation of phylogenetic trees and ne
 ---
 
 ### NEWS
-[Nantucket phylogeny develope![R](pages/icons/Rlogo_32.png) bootcamp](pages/Nantucket.html)
+[New versions of phangorn and ape](pages/new_ape_phangorn.html)
 
 ---
 
@@ -25,6 +25,7 @@ If you use phangorn please cite:
 
 - [Installation](pages/Installation.html)
 - [Using binary or discrete data with phangorn](pages/Binary2phyDat.html)
+- [New versions of phangorn and ape](pages/new_ape_phangorn.html)
 
 ---
 
