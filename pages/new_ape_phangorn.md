@@ -4,7 +4,8 @@ title: New versions of phangorn and ape
 description: Description of some of the new features.
 ---
 
-As you may have seen a version of *ape* and *phangorn* have been released. *ape* jumped to version 4.0 and some of the nicest features are that many useful functions transforming `phylo` objects have been made generic and so work also `multiPhylo` objects.
+As you may have seen a version of *ape* and *phangorn* have been released. *ape* jumped to version 4.0 and you can see the changes [here](http://ape-package.ird.fr/NEWS).
+Some of the nicest new features are that many useful functions for transforming `phylo` objects have been made generic. This includes functions like `is.rooted`, `unroot`, `reorder` `is.binary`, `is.ultrametric` or `di2multi` and these now work also on `multiPhylo` objects. 
 
 In practice this means that instead of typing
 
