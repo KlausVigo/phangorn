@@ -84,6 +84,7 @@ sankoff.quartet <- function (dat, cost, p, l, weight)
 #' 
 #' parsimony(c(tree,treeNNI, treeRatchet), Laurasiatherian)
 #' 
+#' rdname parsimony
 #' @export parsimony
 parsimony <- function(tree, data, method='fitch', ...){
     if (class(data)[1] != "phyDat") stop("data must be of class phyDat")
@@ -354,6 +355,9 @@ upperBound <- function(x, cost=NULL){
 }
 
 
+##' @rdname parsimony
+##' @aliases CI
+##' @export
 CI <- function (tree, data, cost = NULL, sitewise=FALSE) 
 {
     if(sitewise) pscore = sankoffNew(tree, data, cost = cost, site="site")
@@ -368,6 +372,9 @@ CI <- function (tree, data, cost = NULL, sitewise=FALSE)
 }
 
 
+##' @rdname parsimony
+##' @aliases RI
+##' @export
 RI <- function (tree, data, cost = NULL, sitewise=FALSE) 
 {
     if(sitewise) pscore = sankoffNew(tree, data, cost = cost, site="site")
@@ -552,7 +559,9 @@ prepareDataSankoff <- function(data){
 }
 
 
-
+##' @rdname parsimony
+##' @aliases sankoff
+##' @export
 sankoff <- function (tree, data, cost = NULL, site = 'pscore') 
 {
     if (!inherits(data,"phyDat")) 
@@ -716,6 +725,9 @@ sankoff.nni = function (tree, data, cost, ...)
 }
 
 
+##' @rdname parsimony
+##' @aliases optim.parsimony
+##' @export
 optim.parsimony <- function(tree,data, method='fitch', cost=NULL, trace=1, rearrangements="SPR", ...){
     if(method=='fitch') result <- optim.fitch(tree=tree, data=data, trace=trace, rearrangements=rearrangements, ...) 
     if(method=='sankoff') result <- optim.sankoff(tree=tree, data=data, cost=cost, trace=trace, ...)
@@ -723,6 +735,9 @@ optim.parsimony <- function(tree,data, method='fitch', cost=NULL, trace=1, rearr
 }
 
 
+##' @rdname parsimony
+##' @aliases pratchet
+##' @export
 # perturbation="ratchet", "stochastic"
 pratchet <- function (data, start=NULL, method="fitch", maxit=1000, k=10, trace=1, all=FALSE, rearrangements="SPR", perturbation="ratchet", ...) 
 {
@@ -905,6 +920,9 @@ ptree <- function (tree, data, type = "ACCTRAN", retData = FALSE)
 }
 
 
+##' @rdname parsimony
+##' @aliases acctran
+##' @export
 acctran <- function(tree, data) ptree(tree, data, type="ACCTRAN", retData=FALSE)
 
 
