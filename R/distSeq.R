@@ -62,6 +62,7 @@
 #' treedist(tree1,tree4)
 #' treedist(tree3,tree4)
 #' 
+#' @rdname dist.hamming 
 #' @export dist.hamming
 dist.hamming <- function (x, ratio = TRUE, exclude = "none") 
 {
@@ -131,7 +132,9 @@ dist.hamming <- function (x, ratio = TRUE, exclude = "none")
 }
 
 
-
+##' @rdname dist.hamming
+##' @aliases dist.ml
+##' @export
 dist.ml <- function (x, model = "JC69", exclude = "none", bf = NULL, Q = NULL, k=1L, shape=1, ...) 
 {
     if (!inherits(x,"phyDat")) 
@@ -223,7 +226,10 @@ dist.ml <- function (x, model = "JC69", exclude = "none", bf = NULL, Q = NULL, k
     return(d)
 }
 
-   
+
+##' @rdname dist.hamming
+##' @aliases dist.logDet
+##' @export   
 dist.logDet = function (x) 
 {
     if (!inherits(x,"phyDat")) 
@@ -261,6 +267,9 @@ dist.logDet = function (x)
 }
 
 
+##' @rdname dist.hamming
+##' @aliases readDist
+##' @export  
 readDist <- function(file){ #, format="phylip"
     tmp <- read.table(file, skip=1, stringsAsFactors = FALSE)
     labels = tmp[,1]
@@ -269,7 +278,10 @@ readDist <- function(file){ #, format="phylip"
     as.dist(dm)
 }
     
-    
+
+##' @rdname dist.hamming
+##' @aliases writeDist
+##' @export      
 writeDist <- function(dm, file=""){ # , format="phylip"
     dm <- as.matrix(dm)
     cat(ncol(dm), "\n", file=file)
