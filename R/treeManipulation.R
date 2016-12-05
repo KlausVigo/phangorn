@@ -899,6 +899,7 @@ allAncestors <- function(x){
 #' # same as mrca(tree), but faster for large trees
 #' 
 #' @export Ancestors
+#' @rdname Ancestors
 Ancestors <- function (x, node, type = c("all", "parent")) 
 {
     parents <- x$edge[, 1]
@@ -969,12 +970,18 @@ allDescendants <- function(x){
 }
 
 
+##' @rdname Ancestors
+##' @aliases Children
+##' @export
 Children <- function(x, node){
    if(length(node)==1)return(x$edge[x$edge[,1]==node,2])
    allChildren(x)[node]
 }
 
 
+##' @rdname Ancestors
+##' @aliases Descendants
+##' @export
 Descendants = function(x, node, type=c("tips","children","all")){
   type <- match.arg(type)
   if(type=="children") return(Children(x, node))
@@ -999,6 +1006,9 @@ Descendants = function(x, node, type=c("tips","children","all")){
 }
 
 
+##' @rdname Ancestors
+##' @aliases Siblings
+##' @export
 Siblings = function (x, node, include.self = FALSE) 
 {
     l = length(node)
@@ -1030,7 +1040,9 @@ Siblings = function (x, node, include.self = FALSE)
 }
 
 
-
+##' @rdname Ancestors
+##' @aliases mrca.phylo
+##' @export
 mrca.phylo <- function(x, node=NULL){
     if(is.null(node)) return(mrca2(x))
     anc <- Ancestors(x, node, type = "all")
