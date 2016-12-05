@@ -1,6 +1,33 @@
 #
 # UPGMA, NJ, UNJ, nnls
 #
+
+
+#' UPGMA and WPGMA
+#' 
+#' UPGMA and WPGMA clustering. Just a wrapper function around
+#' \code{\link[stats]{hclust}}.
+#' 
+#' 
+#' @aliases upgma wpgma
+#' @param D A distance matrix.
+#' @param method The agglomeration method to be used. This should be (an
+#' unambiguous abbreviation of) one of "ward", "single", "complete", "average",
+#' "mcquitty", "median" or "centroid". The default is "average".
+#' @param \dots Further arguments passed to or from other methods.
+#' @return A phylogenetic tree of class \code{phylo}.
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso \code{\link{hclust}}, \code{\link{dist.hamming}}, \code{\link{NJ}},
+#' \code{\link{as.phylo}}, \code{\link{fastme}}, \code{\link{nnls.tree}}
+#' @keywords cluster
+#' @examples
+#' 
+#' data(Laurasiatherian)
+#' dm = dist.ml(Laurasiatherian)
+#' tree = upgma(dm)
+#' plot(tree)
+#' 
+#' @export upgma
 "upgma" <- function(D,method="average",...){
     DD=as.dist(D)
     hc = hclust(DD,method=method,...)
@@ -139,6 +166,41 @@ NJ_old <- function(x)
 }
 
 
+
+
+#' Neighbor-Joining
+#' 
+#' This function performs the neighbor-joining tree estimation of Saitou and
+#' Nei (1987). UNJ is the unweighted version from Gascuel (1997).
+#' 
+#' 
+#' @aliases NJ UNJ
+#' @param x A distance matrix.
+#' @return an object of class \code{"phylo"}.
+#' @author Klaus P. Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso \code{\link[ape]{nj}}, \code{\link[ape]{dist.dna}},
+#' \code{\link[phangorn]{dist.hamming}}, \code{\link[phangorn]{upgma}},
+#' \code{\link[ape]{fastme}}
+#' @references Saitou, N. and Nei, M. (1987) The neighbor-joining method: a new
+#' method for reconstructing phylogenetic trees. \emph{Molecular Biology and
+#' Evolution}, \bold{4}, 406--425.
+#' 
+#' Studier, J. A and Keppler, K. J. (1988) A Note on the Neighbor-Joining
+#' Algorithm of Saitou and Nei. \emph{Molecular Biology and Evolution},
+#' \bold{6}, 729--731.
+#' 
+#' Gascuel, O. (1997) Concerning the NJ algorithm and its unweighted version,
+#' UNJ. in Birkin et. al. \emph{Mathematical Hierarchies and Biology},
+#' 149--170.
+#' @keywords cluster
+#' @examples
+#' 
+#' data(Laurasiatherian)
+#' dm <- dist.ml(Laurasiatherian)
+#' tree <- NJ(dm)
+#' plot(tree)
+#' 
+#' @export NJ
 NJ <- function(x) reorder(nj(x), "postorder")
 
 
@@ -264,6 +326,48 @@ PNJ <- function (data)
 #
 
 # as.Matrix, sparse = TRUE, 
+
+
+#' Compute a design matrix or non-negative LS
+#' 
+#' \code{nnls.tree} estimates the branch length using non-negative least
+#' squares given a tree and a distance matrix.  \code{designTree} and
+#' \code{designSplits} compute design matrices for the estimation of edge
+#' length of (phylogenetic) trees using linear models.  For larger trees a
+#' sparse design matrix can save a lot of memory. %\code{designTree} also
+#' computes a contrast matrix if the method is "rooted".
+#' 
+#' 
+#' @aliases designTree designSplits nnls.tree nnls.phylo nnls.splits
+#' nnls.networx
+#' @param tree an object of class \code{phylo}
+#' @param method design matrix for an "unrooted" or "rooted" ultrametric tree.
+#' @param sparse return a sparse design matrix.
+#' @param x number of taxa.
+#' @param splits one of "all", "star".
+#' @param dm a distance matrix.
+#' @param rooted compute a "rooted" or "unrooted" tree.
+#' @param trace defines how much information is printed during optimisation.
+#' @param \dots further arguments, passed to other methods.
+#' @return \code{nnls.tree} return a tree, i.e. an object of class
+#' \code{phylo}.  \code{designTree} and \code{designSplits} a matrix, possibly
+#' sparse.
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso \code{\link[ape]{fastme}},
+#' \code{\link[phangorn]{distanceHadamard}},
+#' \code{\link[phangorn]{splitsNetwork}}, \code{\link[phangorn]{upgma}}
+#' @keywords cluster
+#' @examples
+#' 
+#' example(NJ)
+#' dm <-  as.matrix(dm)
+#' y <- dm[lower.tri(dm)]
+#' X <- designTree(tree)
+#' lm(y~X-1)
+#' # avoids negative edge weights 
+#' tree2 = nnls.tree(dm, tree)
+#' 
+#' @export designTree
 designTree <- function(tree, method="unrooted", sparse=FALSE, ...){
     if (!is.na(pmatch(method, "all"))) 
         method <- "unrooted"

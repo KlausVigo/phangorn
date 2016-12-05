@@ -4,6 +4,73 @@ aic.weights <- function(aic){
 }
 
 
+
+
+#' ModelTest
+#' 
+#' Comparison of different nucleotide or amino acid substitution models
+#' 
+#' \code{modelTest} estimates all the specified models for a given tree and
+#' data.  When the mclapply is available, the computations are done in
+#' parallel. \code{modelTest} runs each model in one thread.  This is may not
+#' work within a GUI interface and will not work under Windows.
+#' 
+#' @aliases modelTest AICc
+#' @param object an object of class phyDat or pml
+#' @param tree a phylogenetic tree.
+#' @param model a vector containing the substitution models to compare with
+#' each other or "all" to test all available models
+#' @param G logical, TRUE (default) if (discrete) Gamma model should be tested
+#' @param I logical, TRUE (default) if invariant sites should be tested
+#' @param FREQ logical, FALSE (default) if TRUE amino acid frequencies will be
+#' estimated.
+#' @param k number of rate classes
+#' @param control A list of parameters for controlling the fitting process.
+#' @param multicore logical, whether models should estimated in parallel.
+#' @param mc.cores The number of cores to use, i.e. at most how many child
+#' processes will be run simultaneously. Must be at least one, and
+#' parallelization requires at least two cores.
+#' @return A data.frame containing the log-likelihood, number of estimated
+#' parameters, AIC, AICc and BIC all tested models.  The data.frame has an
+#' attributes "env" which is an environment which contains all the trees, the
+#' data and the calls to allow get the estimated models, e.g. as a starting
+#' point for further analysis (see example).
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso \code{\link{pml}}, \code{\link{anova}}, \code{\link[stats]{AIC}}
+#' @references Burnham, K. P. and Anderson, D. R (2002) \emph{Model selection
+#' and multimodel inference: a practical information-theoretic approach}. 2nd
+#' ed. Springer, New York
+#' 
+#' Posada, D. and Crandall, K.A. (1998) MODELTEST: testing the model of DNA
+#' substitution. \emph{Bioinformatics} \bold{14(9)}: 817-818
+#' 
+#' Posada, D. (2008) jModelTest: Phylogenetic Model Averaging. \emph{Molecular
+#' Biology and Evolution} \bold{25}: 1253-1256
+#' 
+#' Darriba D., Taboada G.L., Doallo R and Posada D. (2011) ProtTest 3: fast
+#' selection of best-fit models of protein evolution. . \emph{Bioinformatics}
+#' \bold{27}: 1164-1165
+#' @keywords cluster
+#' @examples
+#' 
+#' \dontrun{    
+#' example(NJ)
+#' (mT <- modelTest(Laurasiatherian, tree))
+#' 
+#' # some R magic
+#' env = attr(mT, "env")
+#' ls(env=env)
+#' (F81 <- get("F81+G", env)) # a call  
+#' eval(F81, env=env)
+#' 
+#' data(chloroplast)
+#' (mTAA <- modelTest(chloroplast, model=c("JTT", "WAG", "LG")))
+#' 
+#' # test all available amino acid models
+#' (mTAA_all <- modelTest(chloroplast, model="all", multicore=TRUE, mc.cores=2))
+#' }
+#' 
+#' @export modelTest
 modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80", 
     "HKY", "SYM", "GTR"), G = TRUE, I = TRUE, FREQ=FALSE, k = 4, 
     control = pml.control(epsilon = 1e-08, maxit = 10, trace = 1), 

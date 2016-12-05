@@ -533,6 +533,52 @@ bab_old <- function (data, tree = NULL, trace = 1, ...)
 
 
 
+
+
+#' Branch and bound for finding all most parsimonious trees
+#' 
+#' \code{bab} finds all most parsimonious trees.
+#' 
+#' This implementation is very slow and depending on the data may take very
+#' long time. In the worst case all (2n-5)!! possible trees have to be
+#' examined. For 10 species there are already 2027025 tip-labelled unrooted
+#' trees. It only uses some basic strategies to find a lower and upper bounds
+#' similar to penny from phylip. It uses a very basic heuristic approach of
+#' MinMax Squeeze (Holland et al. 2005) to improve the lower bound.  On the
+#' positive side \code{bab} is not like many other implementations restricted
+#' to binary or nucleotide data.
+#' 
+#' @aliases bab BranchAndBound
+#' @param data an object of class phyDat.
+#' @param tree a phylogenetic tree an object of class phylo, otherwise a
+#' pratchet search is performed.
+#' @param trace defines how much information is printed during optimisation.
+#' @param \dots Further arguments passed to or from other methods
+#' @return \code{bab} returns all most parsimonious trees in an object of class
+#' \code{multiPhylo}.
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com} based on work on Liam
+#' Revell
+#' @seealso \code{\link{pratchet}}, \code{\link{dfactorial}}
+#' @references Hendy, M.D. and Penny D. (1982) Branch and bound algorithms to
+#' determine minimal evolutionary trees.  \emph{Math. Biosc.} \bold{59},
+#' 277-290
+#' 
+#' Holland, B.R., Huber, K.T. Penny, D. and Moulton, V. (2005) The MinMax
+#' Squeeze: Guaranteeing a Minimal Tree for Population Data, \emph{Molecular
+#' Biology and Evolution}, \bold{22}, 235--242
+#' 
+#' White, W.T. and Holland, B.R. (2011) Faster exact maximum parsimony search
+#' with XMP. \emph{Bioinformatics}, \bold{27(10)},1359--1367
+#' @keywords cluster ~kwd2
+#' @examples
+#' 
+#' data(yeast)
+#' dfactorial(11)
+#' # choose only the first two genes
+#' gene12 <- subset(yeast, , 1:3158, site.pattern=FALSE) 
+#' trees <- bab(gene12)
+#' 
+#' @export bab
 bab <- function (data, tree = NULL, trace = 1, ...) 
 {
     if(!is.null(tree)) data <- subset(data, tree$tip.label) 

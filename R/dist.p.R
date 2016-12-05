@@ -1,4 +1,71 @@
-
+#' Pairwise Polymorphism P-Distances from DNA Sequences
+#' 
+#' This function computes a matrix of pairwise uncorrected polymorphism
+#' p-distances. Polymorphism p-distances include intra-individual site
+#' polymorphisms (2ISPs; e.g. "R") when calculating genetic distances.
+#' 
+#' The polymorphism p-distances (Potts et al. 2014) have been developed to
+#' analyse intra-individual variant polymorphism. For example, the widely used
+#' ribosomal internal transcribed spacer (ITS) region (e.g. Alvarez and Wendel,
+#' 2003) consists of 100's to 1000's of units within array across potentially
+#' multiple nucleolus organising regions (Bailey et al., 2003; Goeker and
+#' Grimm, 2008). This can give rise to intra-individual site polymorphisms
+#' (2ISPs) that can be detected from direct-PCR sequencing or cloning . Clone
+#' consensus sequences (see Goeker and Grimm, 2008) can be analysed with this
+#' function.
+#' 
+#' @param x a matrix containing DNA sequences; this must be of class "phyDat"
+#' (use as.phyDat to convert from DNAbin objects).
+#' @param cost A cost matrix or "polymorphism" for a predefined one.
+#' @param ignore.indels a logical indicating whether gaps are treated as fifth
+#' state or not. Warning, each gap site is treated as a characters, so an an
+#' indel that spans a number of base positions would be treated as multiple
+#' character states.
+#' @return an object of class \code{dist}.
+#' @author Klaus Schliep and Alastair Potts
+#' @seealso \code{\link[ape]{dist.dna}}, \code{\link[phangorn]{dist.hamming}}
+#' @references Alvarez, I., and J. F. Wendel. (2003) Ribosomal ITS sequences
+#' and plant phylogenetic inference. \emph{ Molecular Phylogenetics and
+#' Evolution}, \bold{29}, 417--434.
+#' 
+#' Bailey, C. D., T. G. Carr, S. A. Harris, and C. E. Hughes. (2003)
+#' Characterization of angiosperm nrDNA polymorphism, paralogy, and
+#' pseudogenes. \emph{Molecular Phylogenetics and Evolution} \bold{29},
+#' 435--455.
+#' 
+#' Goeker, M., and G. Grimm. (2008) General functions to transform associate
+#' data to host data, and their use in phylogenetic inference from sequences
+#' with intra-individual variability. \emph{BMC Evolutionary Biology},
+#' \bold{8}:86.
+#' 
+#' Potts, A.J., T.A. Hedderson, and G.W. Grimm. (2014) Constructing phylogenies
+#' in the presence of intra-individual site polymorphisms (2ISPs) with a focus
+#' on the nuclear ribosomal cistron. \emph{Systematic Biology}, \bold{63},
+#' 1--16
+#' @keywords cluster
+#' @examples
+#' 
+#' data(Laurasiatherian)
+#' laura = as.DNAbin(Laurasiatherian)
+#' 
+#' dm <- dist.p(Laurasiatherian, "polymorphism")
+#' 
+#' ########################################################
+#' # Dealing with indel 2ISPs
+#' # These can be coded using an "x" in the alignment. Note
+#' # that as.character usage in the read.dna() function.
+#' #########################################################
+#' cat("3 5",
+#'     "No305     ATRA-",
+#'     "No304     ATAYX",
+#'     "No306     ATAGA",
+#'     file = "exdna.txt", sep = "\n")
+#' (ex.dna <- read.dna("exdna.txt", format = "sequential", as.character=TRUE))
+#' dat= phyDat(ex.dna, "USER", levels=unique(as.vector(ex.dna)))
+#' dist.p(dat)
+#' 
+#' 
+#' @export dist.p
 dist.p <- function (x, cost="polymorphism", ignore.indels=TRUE) 
 {
     if (!inherits(x,"phyDat")) 

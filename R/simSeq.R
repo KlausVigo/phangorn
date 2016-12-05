@@ -1,7 +1,70 @@
-
 #
 # add codon models, change to phyDat statt 3* 
 #
+
+
+#' Simulate sequences.
+#' 
+#' Simulate sequences for a given evolutionary tree.
+#' 
+#' \code{simSeq} is now a generic function to simulate sequence alignments.  It
+#' is quite flexible and allows to generate DNA, RNA, amino acids or binary
+#' sequences.  It is possible to give a \code{pml} object as input simSeq
+#' return a \code{phyDat} from these model.  There is also a more low level
+#' version, which lacks rate variation, but one can combine different
+#' alignments having their own rate (see example). The rate parameter acts like
+#' a scaler for the edge lengths.
+#' 
+#' @aliases simSeq simSeq.phylo simSeq.pml
+#' @param x a phylogenetic tree \code{tree}, i.e. an object of class
+#' \code{phylo} or and object of class \code{pml}.
+#' @param l length of the sequence to simulate.
+#' @param Q the rate matrix.
+#' @param bf base frequencies.
+#' @param rootseq a vector of length l containing the root sequence, other root
+#' sequence is randomly generated.
+#' @param type Type of sequences ("DNA", "AA" or "USER").
+#' @param model Amino acid models: one of "WAG", "JTT", "Dayhoff" or "LG"
+#' @param levels \code{levels} takes a character vector of the different bases,
+#' default is for nucleotide sequences, only used when type = "USER".
+#' @param rate mutation rate or scaler for the edge length, a numerical value
+#' greater than zero.
+#' @param ancestral Return ancestral sequences?
+#' @param \dots Further arguments passed to or from other methods.
+#' @return \code{simSeq} returns an object of class phyDat.
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso \code{\link{phyDat}}, \code{\link{pml}}, \code{\link{SOWH.test}}
+#' @keywords cluster
+#' @examples
+#' 
+#' \dontrun{
+#' data(Laurasiatherian)
+#' tree = nj(dist.ml(Laurasiatherian))
+#' fit = pml(tree, Laurasiatherian, k=4)
+#' fit = optim.pml(fit, optNni=TRUE, model="GTR", optGamma=TRUE)
+#' data = simSeq(fit)
+#' }
+#' 
+#' tree = rtree(5)
+#' plot(tree)
+#' nodelabels()
+#' 
+#' # Example for simple DNA alignment
+#' data = simSeq(tree, l = 10, type="DNA", bf=c(.1,.2,.3,.4), Q=1:6)
+#' as.character(data)
+#' 
+#' # Example to simulate discrete Gamma rate variation
+#' rates = discrete.gamma(1,4)
+#' data1 = simSeq(tree, l = 100, type="AA", model="WAG", rate=rates[1])
+#' data2 = simSeq(tree, l = 100, type="AA", model="WAG", rate=rates[2])
+#' data3 = simSeq(tree, l = 100, type="AA", model="WAG", rate=rates[3])
+#' data4 = simSeq(tree, l = 100, type="AA", model="WAG", rate=rates[4])
+#' data <- c(data1,data2, data3, data4)
+#' 
+#' write.phyDat(data, file="temp.dat", format="sequential",nbcol = -1, colsep = "")
+#' unlink("temp.dat") 
+#' 
+#' @export simSeq
 simSeq <- function (x, ...) 
     UseMethod("simSeq")
 

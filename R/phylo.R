@@ -1437,6 +1437,47 @@ pml.fit4 <- function (tree, data, bf = rep(1/length(levels), length(levels)),
 
 
 
+
+
+#' Internal maximum likelihood functions.
+#' 
+#' These functions are internally used for the likelihood computations in
+#' \code{pml} or \code{optim.pml}.
+#' 
+#' These functions are exported to be used in different packages so far only in
+#' the package coalescentMCMC, but are not intended for end user. Most of the
+#' functions call C code and are far less forgiving if the import is not what
+#' they expect than \code{pml}.
+#' 
+#' @aliases pml.fit edQt pml.init pml.free discrete.gamma lli
+#' @param tree A phylogenetic \code{tree}, object of class \code{phylo}.
+#' @param data An alignment, object of class \code{phyDat}.
+#' @param bf Base frequencies.
+#' @param shape Shape parameter of the gamma distribution.
+#' @param alpha Shape parameter of the gamma distribution.
+#' @param k Number of intervals of the discrete gamma distribution.
+#' @param Q A vector containing the lower triangular part of the rate matrix.
+#' @param levels The alphabet used e.g. c("a", "c", "g", "t") for DNA
+#' @param inv Proportion of invariable sites.
+#' @param rate Rate.
+#' @param g vector of quantiles (default is NULL)
+#' @param w vector of probabilities (default is NULL)
+#' @param eig Eigenvalue decomposition of Q
+#' @param INV Sparse representation of invariant sites
+#' @param ll.0 default is NULL
+#' @param llMix default is NULL
+#' @param wMix default is NULL
+#' @param \dots Further arguments passed to or from other methods.
+#' @param site return the log-likelihood or vector of sitewise likelihood
+#' values
+#' @return \code{pml.fit} returns the log-likelihood.
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso \code{\link{pml}, \link{pmlPart}, \link{pmlMix}}
+#' @references Felsenstein, J. (1981) Evolutionary trees from DNA sequences: a
+#' maximum likelihood approach. \emph{Journal of Molecular Evolution},
+#' \bold{17}, 368--376.
+#' @keywords cluster
+#' @export pml.fit
 pml.fit <- function (tree, data, bf = rep(1/length(levels), length(levels)), 
                      shape = 1, k = 1, Q = rep(1, length(levels) * (length(levels) - 1)/2), 
                      levels = attr(data, "levels"), inv = 0, rate = 1, g = NULL, w = NULL, 
@@ -1523,6 +1564,182 @@ pml.fit <- function (tree, data, bf = rep(1/length(levels), length(levels)),
 }
 
 
+
+
+#' Likelihood of a tree.
+#' 
+#' \code{pml} computes the likelihood of a phylogenetic tree given a sequence
+#' alignment and a model. \code{optim.pml} optimizes the different model
+#' parameters.
+#' 
+#' The topology search uses a nearest neighbor interchange (NNI) and the
+#' implementation is similar to phyML.  The option model in pml is only used
+#' for amino acid models.  The option model defines the nucleotide model which
+#' is getting optimised, all models which are included in modeltest can be
+#' chosen. Setting this option (e.g. "K81" or "GTR") overrules options optBf
+#' and optQ.  Here is a overview how to estimate different phylogenetic models
+#' with \code{pml}: \tabular{lll}{ model \tab optBf \tab optQ \cr Jukes-Cantor
+#' \tab FALSE \tab FALSE \cr F81 \tab TRUE \tab FALSE \cr symmetric \tab FALSE
+#' \tab TRUE \cr GTR \tab TRUE \tab TRUE } Via model in optim.pml the following
+#' nucleotide models can be specified: JC, F81, K80, HKY, TrNe, TrN, TPM1, K81,
+#' TPM1u, TPM2, TPM2u, TPM3, TPM3u, TIM1e, TIM1, TIM2e, TIM2, TIM3e, TIM3,
+#' TVMe, TVM, SYM and GTR.  These models are specified as in Posada (2008).
+#' 
+#' So far 17 amino acid models are supported ("WAG", "JTT", "LG", "Dayhoff",
+#' "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24", "VT","RtREV", "HIVw", "HIVb",
+#' "FLU", "Blossum62", "Dayhoff_DCMut" and "JTT_DCMut") and additionally rate
+#' matrices and amino acid frequencies can be supplied.
+#' 
+#' It is also possible to estimate codon models (e.g. YN98), for details see
+#' also the chapter in vignette("phangorn-specials").
+#' 
+#' If the option 'optRooted' is set to TRUE than the edge lengths of rooted
+#' tree are optimized. The tree has to be rooted and by now ultrametric!
+#' Optimising rooted trees is generally much slower.
+#' 
+#' \code{pml.control} controls the fitting process. \code{epsilon} and
+#' \code{maxit} are only defined for the most outer loop, this affects
+#' \code{pmlCluster}, \code{pmlPart} and \code{pmlMix}.  \code{epsilon} is
+#' defined as (logLik(k)-logLik(k+1))/logLik(k+1), this seems to be a good
+#' heuristics which works reasonably for small and large trees or alignments.
+#' If \code{trace} is set to zero than no out put is shown, if functions are
+#' called internally than the trace is decreased by one, so a higher of trace
+#' produces more feedback.
+#' 
+#' If \code{rearrangement} is set to \code{stochastic} a stochastic search
+#' algorithm similar to Nguyen et al. (2015). and for \code{ratchet} the
+#' likelihood ratchet as in Vos (2003).  This should helps often to find better
+#' tree topologies, especially for larger trees.
+#' 
+#' @aliases pml optim.pml pml.control
+#' @param tree A phylogenetic \code{tree}, object of class \code{phylo}.
+#' @param data An alignment, object of class \code{phyDat}.
+#' @param bf Base frequencies.
+#' @param Q A vector containing the lower triangular part of the rate matrix.
+#' @param inv Proportion of invariable sites.
+#' @param k Number of intervals of the discrete gamma distribution.
+#' @param shape Shape parameter of the gamma distribution.
+#' @param rate Rate.
+#' @param model allows to choose an amino acid models or nucleotide model, see
+#' details.
+#' @param object An object of class \code{pml}.
+#' @param optNni Logical value indicating whether toplogy gets optimized (NNI).
+#' @param optBf Logical value indicating whether base frequencies gets
+#' optimized.
+#' @param optQ Logical value indicating whether rate matrix gets optimized.
+#' @param optInv Logical value indicating whether proportion of variable size
+#' gets optimized.
+#' @param optGamma Logical value indicating whether gamma rate parameter gets
+#' optimized.
+#' @param optEdge Logical value indicating the edge lengths gets optimized.
+#' @param optRate Logical value indicating the overall rate gets optimized.
+#' @param optRooted Logical value indicating if the edge lengths of a rooted
+#' tree get optimized.
+#' @param ratchet.par search parameter for stochastic search
+#' @param rearrangement type of tree tree rearrangements to perform, one of
+#' "none", "NNI", "stochastic" or "ratchet"
+#' @param control A list of parameters for controlling the fitting process.
+#' @param subs A (integer) vector same length as Q to specify the optimization
+#' of Q
+#' @param \dots Further arguments passed to or from other methods.
+#' @param epsilon Stop criterion for optimisation (see details).
+#' @param maxit Maximum number of iterations (see details).
+#' @param trace Show output during optimization (see details).
+#' @return \code{pml} or \code{optim.pml} return a list of class \code{pml},
+#' some are useful for further computations like \item{tree}{the phylogenetic
+#' tree.} \item{data}{the alignment.} \item{logLik}{Log-likelihood of the
+#' tree.} \item{siteLik}{Site log-likelihoods.} \item{weight}{Weight of the
+#' site patterns.}
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso \code{\link{bootstrap.pml}}, \code{\link{modelTest}},
+#' \code{\link{pmlPart}}, \code{\link{pmlMix}}, \code{\link{plot.phylo}},
+#' \code{\link{SH.test}}, \code{\link{ancestral.pml}}
+#' @references Felsenstein, J. (1981) Evolutionary trees from DNA sequences: a
+#' maximum likelihood approach. \emph{Journal of Molecular Evolution},
+#' \bold{17}, 368--376.
+#' 
+#' Felsenstein, J. (2004). \emph{Inferring Phylogenies}. Sinauer Associates,
+#' Sunderland.
+#' 
+#' Yang, Z. (2006). \emph{Computational Molecular evolution}. Oxford University
+#' Press, Oxford.
+#' 
+#' Adachi, J., P. J. Waddell, W. Martin, and M. Hasegawa (2000) Plastid genome
+#' phylogeny and a model of amino acid substitution for proteins encoded by
+#' chloroplast DNA.  \emph{Journal of Molecular Evolution}, \bold{50}, 348--358
+#' 
+#' Rota-Stabelli, O., Z. Yang, and M. Telford. (2009) MtZoa: a general
+#' mitochondrial amino acid substitutions model for animal evolutionary
+#' studies. \emph{Mol. Phyl. Evol}, \bold{52(1)}, 268--72
+#' 
+#' Whelan, S. and Goldman, N. (2001) A general empirical model of protein
+#' evolution derived from multiple protein families using a maximum-likelihood
+#' approach. \emph{Molecular Biology and Evolution}, \bold{18}, 691--699
+#' 
+#' Le, S.Q. and Gascuel, O. (2008) LG: An Improved, General Amino-Acid
+#' Replacement Matrix \emph{Molecular Biology and Evolution}, \bold{25(7)},
+#' 1307--1320
+#' 
+#' Yang, Z., R. Nielsen, and M. Hasegawa (1998) Models of amino acid
+#' substitution and applications to Mitochondrial protein evolution.
+#' \emph{Molecular Biology and Evolution}, \bold{15}, 1600--1611
+#' 
+#' Abascal, F., D. Posada, and R. Zardoya (2007) MtArt: A new Model of amino
+#' acid replacement for Arthropoda. \emph{Molecular Biology and Evolution},
+#' \bold{24}, 1--5
+#' 
+#' Kosiol, C, and Goldman, N (2005) Different versions of the Dayhoff rate
+#' matrix - \emph{Molecular Biology and Evolution}, \bold{22}, 193--199
+#' 
+#' L.-T. Nguyen, H.A. Schmidt, A. von Haeseler, and B.Q. Minh (2015) IQ-TREE: A
+#' fast and effective stochastic algorithm for estimating maximum likelihood
+#' phylogenies. \emph{Molecular Biology and Evolution}, \bold{32}, 268--274.
+#' 
+#' Vos, R. A. (2003) Accelerated Likelihood Surface Exploration: The Likelihood
+#' Ratchet. \emph{Systematic Biology}, \bold{52(3)}, 368--373
+#' 
+#' Yang, Z., and R. Nielsen (1998) Synonymous and nonsynonymous rate variation
+#' in nuclear genes of mammals. \emph{Journal of Molecular Evolution},
+#' \bold{46}, 409-418.
+#' 
+#' Lewis, P.O. (2001) A likelihood approach to estimating phylogeny from
+#' discrete morphological character data. \emph{Systematic Biology} \bold{50},
+#' 913--925.
+#' @keywords cluster
+#' @examples
+#' 
+#'   example(NJ)
+#' # Jukes-Cantor (starting tree from NJ)  
+#'   fitJC <- pml(tree, Laurasiatherian)  
+#' # optimize edge length parameter     
+#'   fitJC <- optim.pml(fitJC)
+#'   fitJC 
+#'   
+#' \dontrun{    
+#' # search for a better tree using NNI rearrangements     
+#'   fitJC <- optim.pml(fitJC, optNni=TRUE)
+#'   fitJC   
+#'   plot(fitJC$tree)
+#' 
+#' # JC + Gamma + I - model
+#'   fitJC_GI <- update(fitJC, k=4, inv=.2)
+#' # optimize shape parameter + proportion of invariant sites     
+#'   fitJC_GI <- optim.pml(fitJC_GI, optGamma=TRUE, optInv=TRUE)
+#' # GTR + Gamma + I - model
+#'   fitGTR <- optim.pml(fitJC_GI, rearrangement = "stochastic", 
+#'       optGamma=TRUE, optInv=TRUE, model="GTR") 
+#' }
+#' 
+#' 
+#' # 2-state data (RY-coded)  
+#'   dat <- acgt2ry(Laurasiatherian) 
+#'   fit2ST <- pml(tree, dat) 
+#'   fit2ST <- optim.pml(fit2ST,optNni=TRUE) 
+#'   fit2ST
+#' # show some of the methods available for class pml
+#'   methods(class="pml")  
+#' 
+#' @export pml
 pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1, 
     rate = 1, model=NULL, ...) 
 {

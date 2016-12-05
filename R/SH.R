@@ -1,3 +1,40 @@
+#' Shimodaira-Hasegawa Test
+#' 
+#' This function computes the Shimodaira--Hasegawa test for a set of trees.
+#' 
+#' 
+#' @param ... either a series of objects of class \code{"pml"} separated by
+#' commas, a list containing such objects or an object of class
+#' \code{"pmlPart"}.
+#' @param B the number of bootstrap replicates.
+#' @param data an object of class \code{"phyDat"}.
+#' @return a numeric vector with the P-value associated with each tree given in
+#' \code{...}.
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso \code{\link{pml}}, \code{\link{pmlPart}}, \code{\link{pmlCluster}},
+#' \code{\link{SOWH.test}}
+#' @references Shimodaira, H. and Hasegawa, M. (1999) Multiple comparisons of
+#' log-likelihoods with applications to phylogenetic inference. \emph{Molecular
+#' Biology and Evolution}, \bold{16}, 1114--1116.
+#' @keywords models
+#' @examples
+#' 
+#' data(Laurasiatherian)
+#' dm <- dist.logDet(Laurasiatherian)
+#' tree1 <- NJ(dm)
+#' tree2 <- unroot(upgma(dm))
+#' fit1 <- pml(tree1, Laurasiatherian)
+#' fit2 <- pml(tree2, Laurasiatherian)
+#' fit1 <- optim.pml(fit1) # optimize edge weights
+#' fit2 <- optim.pml(fit2)
+#' SH.test(fit1, fit2, B=500)
+#' # in real analysis use larger B, e.g. 10000
+#' \dontrun{
+#' example(pmlPart)
+#' SH.test(sp, B=1000)
+#' }
+#' 
+#' @export SH.test
 SH.test <- function (..., B = 10000, data = NULL)
 {
     fits <- list(...)

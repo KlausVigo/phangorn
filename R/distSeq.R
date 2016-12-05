@@ -1,6 +1,68 @@
 #
 # dist
 #
+
+
+#' Pairwise Distances from Sequences
+#' 
+#' \code{dist.hamming}, \code{dist.ml} and \code{dist.logDet} compute pairwise
+#' distances for an object of class \code{phyDat}.  \code{dist.ml} uses DNA /
+#' AA sequences to compute distances under different substitution models.
+#' 
+#' So far 17 amino acid models are supported ("WAG", "JTT", "LG", "Dayhoff",
+#' "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24", "VT","RtREV", "HIVw", "HIVb",
+#' "FLU", "Blossum62", "Dayhoff_DCMut" and "JTT_DCMut") and additional rate
+#' matrices and frequencies can be supplied.
+#' 
+#' The "F81" model uses empirical base frequencies, the "JC69" equal base
+#' frequencies. This is even the case if the data are not nucleotides.
+#' 
+#' @aliases dist.hamming dist.logDet dist.ml readDist writeDist
+#' @param x An object of class \code{phyDat}
+#' @param ratio Compute uncorrected ('p') distance or character difference.
+#' @param model One of "JC69", "F81" or one of 17 amino acid models see
+#' details.
+#' @param exclude One of "none", "all", "pairwise" indicating whether to delete
+#' the sites with missing data (or ambiguous states). The default is handle
+#' missing data as in pml.
+#' @param bf A vector of base frequencies.
+#' @param Q A vector containing the lower triangular part of the rate matrix.
+#' @param k Number of intervals of the discrete gamma distribution.
+#' @param shape Shape parameter of the gamma distribution.
+#' @param \dots Further arguments passed to or from other methods.
+#' @param file A file name.
+#' @param dm A \code{dist} object.
+#' @return an object of class \code{dist}
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso For more distance methods for nucleotide data see
+#' \code{\link[ape]{dist.dna}} and \code{\link{dist.p}} for pairwise
+#' polymorphism p-distances
+#' @references Lockhart, P. J., Steel, M. A., Hendy, M. D. and Penny, D. (1994)
+#' Recovering evolutionary trees under a more realistic model of sequence
+#' evolution. \emph{Molecular Biology and Evolution}, \bold{11}, 605--602.
+#' 
+#' Jukes TH and Cantor CR (1969). \emph{Evolution of Protein Molecules}. New
+#' York: Academic Press. 21--132.
+#' @keywords cluster
+#' @examples
+#' 
+#' data(Laurasiatherian)
+#' dm1 <- dist.hamming(Laurasiatherian)
+#' tree1 <- NJ(dm1)
+#' dm2 <- dist.logDet(Laurasiatherian)
+#' tree2 <- NJ(dm2)
+#' treedist(tree1,tree2)
+#' # JC model
+#' dm3 <- dist.ml(Laurasiatherian)
+#' tree3 <- NJ(dm3)
+#' treedist(tree1,tree3)
+#' # F81 + Gamma
+#' dm4 <- dist.ml(Laurasiatherian, model="F81", k=4, shape=.4)
+#' tree4 <- NJ(dm4)
+#' treedist(tree1,tree4)
+#' treedist(tree3,tree4)
+#' 
+#' @export dist.hamming
 dist.hamming <- function (x, ratio = TRUE, exclude = "none") 
 {
     if (!inherits(x,"phyDat")) 

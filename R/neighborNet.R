@@ -181,6 +181,36 @@ getOrderingNN <- function (x)
 } 
 
 #
+
+
+#' Computes a neighborNet from a distance matrix
+#' 
+#' Computes a neighborNet, i.e. an object of class \code{networx} from a
+#' distance matrix.
+#' 
+#' \code{neighborNet} is still experimental. The cyclic ordering sometimes
+#' differ from the SplitsTree implementation, the \emph{ord} argument can be
+#' used to enforce a certain circular ordering.
+#' 
+#' @param x a distance matrix.
+#' @param ord a circular ordering.
+#' @return \code{neighborNet} returns an object of class networx.
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso \code{\link{splitsNetwork}}, \code{\link{consensusNet}},
+#' \code{\link{plot.networx}}, \code{\link{lento}},
+#' \code{\link{cophenetic.networx}}, \code{\link{distanceHadamard}}
+#' @references Bryant, D. & Moulton, V. (2004) Neighbor-Net: An Agglomerative
+#' Method for the Construction of Phylogenetic Networks. \emph{Molecular
+#' Biology and Evolution}, 2004, \bold{21}, 255-265
+#' @keywords hplot
+#' @examples
+#' 
+#' data(yeast)
+#' dm <- dist.ml(yeast)
+#' nnet <- neighborNet(dm)
+#' plot(nnet, "2D")
+#' 
+#' @export neighborNet
 neighborNet <-  function(x, ord=NULL){
     x = as.matrix(x)
     labels <- attr(x, "Labels")[[1]]

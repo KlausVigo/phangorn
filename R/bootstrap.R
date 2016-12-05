@@ -1,3 +1,88 @@
+#' Bootstrap
+#' 
+#' \code{bootstrap.pml} performs (non-parametric) bootstrap analysis and
+#' \code{bootstrap.phyDat} produces a list of bootstrapped data sets.
+#' \code{plotBS} plots a phylogenetic tree with the with the bootstrap values
+#' assigned to the (internal) edges.
+#' 
+#' It is possible that the bootstrap is performed in parallel, with help of the
+#' multicore package. Unfortunately the multicore package does not work under
+#' windows or with GUI interfaces ("aqua" on a mac). However it will speed up
+#' nicely from the command line ("X11").
+#' 
+#' @aliases bootstrap.pml bootstrap.phyDat plotBS
+#' @param x an object of class \code{pml} or \code{phyDat}.
+#' @param bs number of bootstrap samples.
+#' @param trees return trees only (default) or whole \code{pml} objects.
+#' @param multicore logical, whether models should estimated in parallel.
+#' @param mc.cores The number of cores to use during bootstrap. Only supported
+#' on UNIX-alike systems.
+#' @param jumble logical, jumble the order of the sequences.
+#' @param \dots further parameters used by \code{optim.pml} or
+#' \code{plot.phylo}.
+#' @param FUN the function to estimate the trees.
+#' @param tree The tree on which edges the bootstrap values are plotted.
+#' @param BStrees a list of trees (object of class "multiPhylo").
+#' @param type the type of tree to plot, so far "cladogram", "phylogram" and
+#' "unrooted" are supported.
+#' @param bs.col color of bootstrap support labels.
+#' @param bs.adj one or two numeric values specifying the horizontal and
+#' vertical justification of the bootstrap labels.
+#' @param p only plot support values higher than this percentage number
+#' (default is 80).
+#' @param frame a character string specifying the kind of frame to be printed
+#' around the bootstrap values. This must be one of "none" (the default),
+#' "rect" or "circle".
+#' @return \code{bootstrap.pml} returns an object of class \code{multi.phylo}
+#' or a list where each element is an object of class \code{pml}. \code{plotBS}
+#' returns silently a tree, i.e. an object of class \code{phylo} with the
+#' bootstrap values as node labels. The argument \code{BStrees} is optional and
+#' if not supplied the tree with labels supplied in the \code{node.label} slot.
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso \code{\link{optim.pml}}, \code{\link{pml}},
+#' \code{\link{plot.phylo}},
+#' \code{\link{nodelabels}},\code{\link{consensusNet}} and
+#' \code{\link{SOWH.test}} for parametric bootstrap
+#' @references Felsenstein J. (1985) Confidence limits on phylogenies. An
+#' approach using the bootstrap. \emph{Evolution} \bold{39}, 783--791
+#' 
+#' Penny D. and Hendy M.D. (1985) Testing methods evolutionary tree
+#' construction. \emph{Cladistics} \bold{1}, 266--278
+#' 
+#' Penny D. and Hendy M.D. (1986) Estimating the reliability of evolutionary
+#' trees. \emph{Molecular Biology and Evolution} \bold{3}, 403--417
+#' @keywords cluster
+#' @examples
+#' 
+#' \dontrun{
+#' data(Laurasiatherian)
+#' dm <- dist.logDet(Laurasiatherian)
+#' tree <- NJ(dm)
+#' # NJ
+#' set.seed(123)
+#' NJtrees <- bootstrap.phyDat(Laurasiatherian, FUN=function(x)NJ(dist.logDet(x)), bs=100)
+#' treeNJ <- plotBS(tree, NJtrees, "phylogram")
+#' 
+#' # Maximum likelihood
+#' fit <- pml(tree, Laurasiatherian)
+#' fit <- optim.pml(fit, rearrangements="NNI")
+#' set.seed(123)
+#' bs <- bootstrap.pml(fit, bs=100, optNni=TRUE)
+#' treeBS <- plotBS(fit$tree,bs)
+#' 
+#' # Maximum parsimony
+#' treeMP <- pratchet(Laurasiatherian)
+#' treeMP <- acctran(treeMP, Laurasiatherian)
+#' set.seed(123)
+#' BStrees <- bootstrap.phyDat(Laurasiatherian, pratchet, bs = 100)
+#' treeMP <- plotBS(treeMP, BStrees, "phylogram")
+#' add.scale.bar()
+#' 
+#' # export tree with bootstrap values as node labels
+#' # write.tree(treeBS)
+#' }
+#' 
+#' @export bootstrap.pml
 bootstrap.pml <- function (x, bs = 100, trees = TRUE, multicore=FALSE, mc.cores = NULL, ...) 
 {
     if(multicore && is.null(mc.cores)){
@@ -162,6 +247,55 @@ plotBS <- function (tree, BStrees, type = "unrooted", bs.col = "black",
 }
 
 
+
+
+#' Maximum clade credibility tree
+#' 
+#' \code{maxCladeCred} computes the maximum clade credibility tree from a
+#' sample of trees.
+#' 
+#' So far just the best tree is returned. No annotations or transformations of
+#' edge length are performed.
+#' 
+#' If a list of partition is provided then the clade credibility is computed
+#' for the trees in x.
+#' 
+#' @param x \code{x} is an object of class \code{multiPhylo} or \code{phylo}
+#' @param tree logical indicating whether return the tree with the clade
+#' credibility (default) or the clade credibility score for all trees.
+#' @param rooted logical, if FALSE the tree with highest maximum bipartition
+#' credibility is returned.
+#' @param part a list of partitions as returned by \code{prop.part}
+#' @return a tree (an object of class \code{phylo}) with the highest clade
+#' credibility or a numeric vector of clade credibilities for each tree.
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso \code{\link{consensus}}, \code{\link{consensusNet}},
+#' \code{\link{prop.part}}
+#' @keywords cluster
+#' @examples
+#' 
+#' 
+#' data(Laurasiatherian)
+#' set.seed(42)
+#' bs <- bootstrap.phyDat(Laurasiatherian, FUN = function(x)upgma(dist.hamming(x)), 
+#'     bs=100)
+#' class(bs) <- 'multiPhylo'
+#' 
+#' strict_consensus <- consensus(bs)
+#' majority_consensus <- consensus(bs, p=.5)
+#' max_clade_cred <- maxCladeCred(bs)
+#' par(mfrow = c(1,3), mar = c(1,4,1,1))
+#' plot(strict_consensus, main="Strict consensus tree")
+#' plot(majority_consensus, main="Majority consensus tree")
+#' plot(max_clade_cred, main="Maximum clade credibility tree")
+#' 
+#' # compute clade credibility for trees given a prop.part object
+#' pp <- prop.part(bs)
+#' tree <- rNNI(bs[[1]], 20)
+#' maxCladeCred(c(tree, bs[[1]]), tree=FALSE, part = pp)
+#' # first value likely be -Inf
+#' 
+#' @export maxCladeCred
 maxCladeCred <- function(x, tree=TRUE, part=NULL, rooted=TRUE){
     if(inherits(x, "phylo")) x <- c(x)
     if (is.null(part)){ 

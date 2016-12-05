@@ -79,6 +79,52 @@ dist.superTree <- function(tree, trace=0, fun, start=NULL, multicore=FALSE, mc.c
 
 
 # we want a rooted supertree
+
+
+#' Super Tree methods
+#' 
+#' These function \code{superTree} allows the estimation of a supertree from a
+#' set of trees using either Matrix representation parsimony, Robinson-Foulds
+#' or SPR as criterion.
+#' 
+#' The function \code{superTree} extends the function mrp.supertree from Liam
+#' Revells, with artificial adding an outgroup on the root of the trees.  This
+#' allows to root the supertree afterwards. The functions is internally used in
+#' DensiTree. The implementation for the RF- and SPR-supertree are very basic
+#' so far and assume that all trees share the same set of taxa.
+#' 
+#' @param tree an object of class \code{multiPhylo}
+#' @param method An argument defining which algorithm is used to optimize the
+#' tree.  Possible are "MRP", "NNI", and "SPR".
+#' @param rooted should the resulting supertrees be rooted.
+#' @param trace defines how much information is printed during optimization.
+#' @param \dots further arguments passed to or from other methods.
+#' @return The function returns an object of class \code{phylo}.
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com} Liam Revell
+#' @seealso \code{mrp.supertree}, \code{\link{densiTree}},
+#' \code{\link{RF.dist}}, \code{\link{SPR.dist}}
+#' @references Baum, B. R., (1992) Combining trees as a way of combining data
+#' sets for phylogenetic inference, and the desirability of combining gene
+#' trees. \emph{Taxon}, \bold{41}, 3-10.
+#' 
+#' Ragan, M. A. (1992) Phylogenetic inference based on matrix representation of
+#' trees. \emph{Molecular Phylogenetics and Evolution}, \bold{1}, 53-58.
+#' @keywords cluster
+#' @examples
+#' 
+#' data(Laurasiatherian)
+#' set.seed(1)
+#' bs <- bootstrap.phyDat(Laurasiatherian, FUN = function(x)upgma(dist.hamming(x)), bs=50)
+#' class(bs) <- 'multiPhylo'
+#' 
+#' mrp_st <- superTree(bs, rooted=TRUE)
+#' plot(superTree(mrp_st))
+#' \dontrun{
+#' rf_st <- superTree(bs, method = "RF")
+#' spr_st <- superTree(bs, method = "SPR")
+#' }
+#' 
+#' @export superTree
 superTree = function(tree, method="MRP", rooted=FALSE, trace=0, ...){
     fun = function(x){
         x=reorder(x, "postorder")

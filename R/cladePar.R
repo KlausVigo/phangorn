@@ -1,3 +1,30 @@
+#' Utility function to plot.phylo
+#' 
+#' cladePar can help you coloring (choosing edge width/type) of clades.
+#' 
+#' 
+#' @param tree an object of class phylo.
+#' @param node the node which is the common ancestor of the clade.
+#' @param edge.color see plot.phylo.
+#' @param tip.color see plot.phylo.
+#' @param edge.width see plot.phylo.
+#' @param edge.lty see plot.phylo.
+#' @param x the result of a previous call to cladeInfo.
+#' @param plot logical, if TRUE the tree is plotted.
+#' @param \dots Further arguments passed to or from other methods.
+#' @return A list containing the information about the edges and tips.
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso \code{\link{plot.phylo}}
+#' @keywords plot
+#' @examples
+#' 
+#' tree = rtree(10)
+#' plot(tree)
+#' nodelabels()
+#' x = cladePar(tree, 12)
+#' cladePar(tree, 18, "blue", "blue", x=x, plot=TRUE)
+#' 
+#' @export cladePar
 cladePar = function(tree, node, edge.color="red", tip.color=edge.color, edge.width = 1, edge.lty = 1, x=NULL, plot=FALSE, ...){
     if(is.null(x)){
         m = max(tree$edge)

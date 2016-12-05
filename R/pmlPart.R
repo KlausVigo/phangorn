@@ -265,6 +265,68 @@ plot.pmlPart<- function(x, ...){
 }
 
 
+
+
+#' Partition model.
+#' 
+#' Model to estimate phylogenies for partitioned data.
+#' 
+#' The \code{formula} object allows to specify which parameter get optimized.
+#' The formula is generally of the form \code{edge + bf + Q ~ rate + shape +
+#' \dots{}}, on the left side are the parameters which get optimized over all
+#' partitions, on the right the parameter which are optimized specific to each
+#' partition. The parameters available are \code{"nni", "bf", "Q", "inv",
+#' "shape", "edge", "rate"}.  Each parameters can be used only once in the
+#' formula.  \code{"rate"} and \code{"nni"} are only available for the right
+#' side of the formula.
+#' 
+#' For partitions with different edge weights, but same topology, \code{pmlPen}
+#' can try to find more parsimonious models (see example).
+#' 
+#' \code{pmlPart2multiPhylo} is a convenience function to extract the trees out
+#' of a \code{pmlPart} object.
+#' 
+#' @aliases pmlPart pmlPart2multiPhylo
+#' @param formula a formula object (see details).
+#' @param object an object of class \code{pml} or a list of objects of class
+#' \code{pml} .
+#' @param control A list of parameters for controlling the fitting process.
+#' @param model A vector containing the models containing a model for each
+#' partition.
+#' @param rooted Are the gene trees rooted (ultrametric) or unrooted.
+#' @param \dots Further arguments passed to or from other methods.
+#' @param x an object of class \code{pmlPart}
+#' @return \code{kcluster} returns a list with elements
+#' \item{logLik}{log-likelihood of the fit} \item{trees}{a list of all trees
+#' during the optimization.} \item{object}{an object of class \code{"pml"} or
+#' \code{"pmlPart"}}
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso
+#' \code{\link{pml}},\code{\link{pmlCluster}},\code{\link{pmlMix}},\code{\link{SH.test}}
+#' @keywords cluster
+#' @examples
+#' 
+#' data(yeast)
+#' dm <- dist.logDet(yeast)
+#' tree <- NJ(dm)
+#' fit <- pml(tree,yeast)
+#' fits <- optim.pml(fit)
+#' 
+#' weight=xtabs(~ index+genes,attr(yeast, "index"))[,1:10]
+#' 
+#' sp <- pmlPart(edge ~ rate + inv, fits, weight=weight)
+#' sp
+#' 
+#' \dontrun{
+#' sp2 <- pmlPart(~ edge + inv, fits, weight=weight)
+#' sp2
+#' AIC(sp2)
+#' 
+#' sp3 <- pmlPen(sp2, lambda = 2) 
+#' AIC(sp3)
+#' }
+#' 
+#' @export pmlPart
 pmlPart <- function (formula, object, control=pml.control(epsilon=1e-8, maxit=10, trace=1), model=NULL, rooted=FALSE, ...) 
 {
     call <- match.call()
@@ -571,6 +633,65 @@ pmlCluster.fit <- function (formula, fit, weight, p = 4, part = NULL, control=pm
 }
 
 
+
+
+#' Stochastic Partitioning
+#' 
+#' Stochastic Partitioning of genes into p cluster.
+#' 
+#' The \code{formula} object allows to specify which parameter get optimized.
+#' The formula is generally of the form \code{edge + bf + Q ~ rate + shape +
+#' \dots{}}, on the left side are the parameters which get optimized over all
+#' cluster, on the right the parameter which are optimized specific to each
+#' cluster. The parameters available are \code{"nni", "bf", "Q", "inv",
+#' "shape", "edge", "rate"}.  Each parameter can be used only once in the
+#' formula.  There are also some restriction on the combinations how parameters
+#' can get used. \code{"rate"} is only available for the right side.  When
+#' \code{"rate"} is specified on the left hand side \code{"edge"} has to be
+#' specified (on either side), if \code{"rate"} is specified on the right hand
+#' side it follows directly that \code{edge} is too.
+#' 
+#' @param formula a formula object (see details).
+#' @param fit an object of class \code{pml}.
+#' @param weight \code{weight} is matrix of frequency of site patterns for all
+#' genes.
+#' @param p number of clusters.
+#' @param part starting partition, otherwise a random partition is generated.
+#' @param nrep number of replicates for each p.
+#' @param control A list of parameters for controlling the fitting process.
+#' @param \dots Further arguments passed to or from other methods.
+#' @return \code{pmlCluster} returns a list with elements
+#' \item{logLik}{log-likelihood of the fit} \item{trees}{a list of all trees
+#' during the optimization.} \item{fits}{fits for the final partitions}
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso
+#' \code{\link{pml}},\code{\link{pmlPart}},\code{\link{pmlMix}},\code{\link{SH.test}}
+#' @references K. P. Schliep (2009). Some Applications of statistical
+#' phylogenetics (PhD Thesis)
+#' 
+#' Lanfear, R., Calcott, B., Ho, S.Y.W. and Guindon, S. (2012) PartitionFinder:
+#' Combined Selection of Partitioning Schemes and Substitution Models for
+#' Phylogenetic Analyses. \emph{Molecular Biology and Evolution}, \bold{29(6)},
+#' 1695-1701
+#' @keywords cluster
+#' @examples
+#' 
+#' \dontrun{
+#' data(yeast)
+#' dm <- dist.logDet(yeast)
+#' tree <- NJ(dm)
+#' fit=pml(tree,yeast)
+#' fit = optim.pml(fit)
+#' 
+#' weight=xtabs(~ index+genes,attr(yeast, "index"))
+#' set.seed(1)
+#' 
+#' sp <- pmlCluster(edge~rate, fit, weight, p=1:4)
+#' sp
+#' SH.test(sp)
+#' }
+#' 
+#' @export pmlCluster
 pmlCluster <- function (formula, fit, weight, p = 1:5, part = NULL, nrep = 10, control = pml.control(epsilon = 1e-08,
                                                                                                      maxit = 10, trace = 1), ...)
 {

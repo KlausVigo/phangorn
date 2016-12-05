@@ -1,6 +1,56 @@
 #
 # splits format, networx, Matrix, lento plot 
 #
+
+
+#' Splits representation of graphs and trees.
+#' 
+#' \code{as.splits} produces a list of splits or bipartitions.
+#' 
+#' 
+#' @aliases as.splits as.prop.part.splits as.splits.phylo as.splits.multiPhylo
+#' as.splits.networx as.matrix.splits as.Matrix as.Matrix.splits c.splits
+#' distinct.splits print.splits write.splits allSplits allCircularSplits
+#' compatible write.nexus.splits read.nexus.splits as.phylo.splits countCycles
+#' addTrivialSplits matchSplits
+#' @param x An object of class phylo or multiPhylo.
+#' @param maxp integer, default from \code{options(max.print)}, influences how
+#' many entries of large matrices are printed at all.
+#' @param zero.print character which should be printed for zeros.
+#' @param one.print character which should be printed for ones.
+#' @param \dots Further arguments passed to or from other methods.
+#' @param obj an object of class splits.
+#' @param k number of taxa.
+#' @param labels names of taxa.
+#' @param file a file name.
+#' @param weights Edge weights.
+#' @param taxa logical. If TRUE a taxa block is added
+#' @param append logical. If TRUE the nexus blocks will be added to a file.
+#' @return \code{as.splits} returns an object of class splits, which is mainly
+#' a list of splits and some attributes. Often a \code{splits} object will
+#' contain attributes \code{confidences} for bootstrap or Bayesian support
+#' values and \code{weight} storing edge weights. \code{read.nexus.splits} and
+#' \code{write.nexus.splits} allow to exchange a \code{splits} object with
+#' other software like Splitstree.
+#' 
+#' \code{compatible} return a lower triangular matrix where an 1 indicates that
+#' two splits are incompatible.
+#' @note The internal representation is likely to change.
+#' \code{read.nexus.splits} reads in the splits block of a nexus file. It
+#' assumes that different co-variables are tab delimited and the bipartition
+#' are separated with white-space. Comments in square brackets are ignored.
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso \code{\link{prop.part}}, \code{\link{lento}},
+#' \code{\link{distanceHadamard}}, \code{\link{as.networx}}
+#' @keywords cluster
+#' @examples
+#' 
+#' (sp <- as.splits(rtree(5)))
+#' write.nexus.splits(sp)
+#' spl <- allCircularSplits(5)
+#' plot(as.networx(spl), "2D")
+#' 
+#' @export as.splits
 as.splits <- function (x, ...){
     if(inherits(x, "splits")) return(x)
     UseMethod("as.splits")
@@ -434,6 +484,51 @@ compatible3 <- function(x, y=NULL)
 #
 # splits
 #
+
+
+#' Phylogenetic Network
+#' 
+#' \code{splitsNetwork} estimates weights for a splits graph from a distance
+#' matrix.
+#' 
+#' \code{splitsNetwork} fits non-negative least-squares phylogenetic networks
+#' using L1 (LASSO), L2(ridge regression) constraints.  The function minimizes
+#' the penalized least squares \deqn{\beta = min \sum(dm - X\beta)^2 + \lambda
+#' \|\beta \|^2_2 }{% beta = sum(dm - X*beta)^2 + lambda |beta|^2_2 } with
+#' respect to \deqn{\|\beta \|_1 <= \gamma, \beta >= 0}{% |beta|_1 = gamma,
+#' beta >= 0} where X is a design matrix constructed with \code{designSplits}.
+#' External edges are fitted without L1 or L2 constraints.
+#' 
+#' @param dm A distance matrix.
+#' @param splits a splits object, containing all splits to consider, otherwise
+#' all possible splits are used
+#' @param gamma penalty value for the L1 constraint.
+#' @param lambda penalty value for the L2 constraint.
+#' @param weight a vector of weights.
+#' @return \code{splitsNetwork} returns a splits object with a matrix added.
+#' The first column contains the indices of the splits, the second column an
+#' unconstrained fit without penalty terms and the third column the constrained
+#' fit.
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso \code{\link[phangorn]{distanceHadamard}},
+#' \code{\link[phangorn]{designTree}} \code{\link[phangorn]{consensusNet}},
+#' \code{\link[phangorn]{plot.networx}}
+#' @references Efron, Hastie, Johnstone and Tibshirani (2003) "Least Angle
+#' Regression" (with discussion) Annals of Statistics
+#' 
+#' K. P. Schliep (2009). Some Applications of statistical phylogenetics (PhD
+#' Thesis)
+#' @keywords cluster
+#' @examples
+#' 
+#' data(yeast)
+#' dm = dist.ml(yeast)
+#' fit = splitsNetwork(dm)
+#' net = as.networx(fit)
+#' plot(net, "2D")
+#' write.nexus.splits(fit)
+#' 
+#' @export splitsNetwork
 splitsNetwork <- function(dm, splits=NULL, gamma=.1, lambda=1e-6, weight=NULL){
   dm = as.matrix(dm)
   k = dim(dm)[1]
@@ -935,6 +1030,52 @@ as.networx.phylo <- function(x, ...){
 #}
 
 
+
+
+#' Computes a consensusNetwork from a list of trees Computes a \code{networx}
+#' object from a collection of splits.
+#' 
+#' Computes a consensusNetwork, i.e. an object of class \code{networx} from a
+#' list of trees, i.e. an class of class \code{multiPhylo}. Computes a
+#' \code{networx} object from a collection of splits.
+#' 
+#' 
+#' @param obj An object of class multiPhylo.
+#' @param prob the proportion a split has to be present in all trees to be
+#' represented in the network.
+#' @param \dots Further arguments passed to or from other methods.
+#' @return \code{consensusNet} returns an object of class networx.  This is
+#' just an intermediate to plot phylogenetic networks with igraph.
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso \code{\link{splitsNetwork}}, \code{\link{neighborNet}},
+#' \code{\link{lento}}, \code{\link{distanceHadamard}},
+#' \code{\link{plot.networx}}, \code{\link{maxCladeCred}}
+#' @references Holland B.R., Huber K.T., Moulton V., Lockhart P.J. (2004) Using
+#' consensus networks to visualize contradictory evidence for species
+#' phylogeny. \emph{Molecular Biology and Evolution}, \bold{21}, 1459--61
+#' @keywords hplot
+#' @examples
+#' 
+#' data(Laurasiatherian)
+#' set.seed(1)
+#' bs <- bootstrap.phyDat(Laurasiatherian, FUN = function(x)nj(dist.hamming(x)), 
+#'     bs=50)
+#' class(bs) <- 'multiPhylo'
+#' cnet = consensusNet(bs, .3)
+#' plot(cnet, "2D")
+#' \dontrun{
+#' library(rgl)
+#' open3d()
+#' plot(cnet, show.tip.label=FALSE, show.nodes=TRUE)
+#' plot(cnet, type = "2D", show.edge.label=TRUE)
+#' 
+#' tmpfile <- normalizePath(system.file("extdata/trees/RAxML_bootstrap.woodmouse", package="phangorn"))
+#' trees <- read.tree(tmpfile)
+#' cnet_woodmouse = consensusNet(trees, .3)
+#' plot(cnet_woodmouse, type = "2D", show.edge.label=TRUE)
+#' }
+#' 
+#' @export consensusNet
 consensusNet <- function (obj, prob = 0.3, ...) 
 {
     l = length(obj)
@@ -977,6 +1118,46 @@ createLabel <- function(x, y, label_y, type="edge", nomatch=NA){
 }
 
 
+
+
+#' Compare splits and add support values to an object
+#' 
+#' Add support values to a \code{splits}, \code{phylo} or \code{networx}
+#' object.
+#' 
+#' 
+#' @aliases addConfidences presenceAbsence createLabel
+#' @param x an object of class \code{splits}, \code{phylo} or \code{networx}
+#' @param y an object of class \code{splits}, \code{phylo}, \code{multiPhylo}
+#' or \code{networx}
+#' @param ...  Further arguments passed to or from other methods.
+#' @param label_y label of y matched on x. Will be usually of
+#' length(as.splits(x)).
+#' @param type should labels returned for edges (in \code{networx}) or splits.
+#' @param nomatch default value if no match between x and y is found.
+#' @return The object \code{x} with added bootstrap / MCMC support values.
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso \code{\link{as.splits}}, \code{\link{as.networx}},
+#' \code{\link{RF.dist}}, \code{\link{plot.phylo}}
+#' @keywords cluster
+#' @examples
+#' 
+#' data(woodmouse)
+#' woodmouse <- phyDat(woodmouse)
+#' tmpfile <- normalizePath(system.file("extdata/trees/RAxML_bootstrap.woodmouse", package="phangorn"))
+#' boot_trees <- read.tree(tmpfile)
+#' 
+#' dm <- dist.ml(woodmouse)
+#' tree <- upgma(dm)
+#' nnet <- neighborNet(dm)
+#' 
+#' tree <- addConfidences(tree, boot_trees)
+#' nnet <- addConfidences(nnet, boot_trees)
+#' 
+#' plot(tree, show.node.label=TRUE)
+#' plot(nnet, "2D", show.edge.label=TRUE)
+#' 
+#' @export addConfidences
 addConfidences <- function (x, y, ...) UseMethod("addConfidences")
 
 
@@ -1149,6 +1330,87 @@ edgeLabels <- function(xx,yy,zz=NULL, edge){
 }
 
 
+
+
+#' Phylogenetic networks
+#' 
+#' \code{as.networx} convert \code{splits} objects into a \code{networx}
+#' object.  \code{plot.networx} plot phylogenetic network or split graphs.
+#' 
+#' A \code{networx} object hold the information for a phylogenetic network and
+#' extends the \code{phylo} object. Therefore some generic function for
+#' \code{phylo} objects will also work for \code{networx} objects.  The
+#' argument planar = FALSE will create a planar split graph based on a cyclic
+#' ordering. These objects can be nicely plotted in "2D". So far not all
+#' parameters behave the same on the the rgl "3D" and basic graphic "2D"
+#' device.
+#' 
+#' Often it is easier (and safer) to supply vectors of graphical parameters for
+#' splits (e.g. splits.color).  These overwrite values edge.color.
+#' 
+#' @aliases plot.networx as.networx as.networx.splits as.networx.phylo
+#' write.nexus.networx read.nexus.networx
+#' @param x an object of class \code{"splits"} (as.networx) or \code{"networx"}
+#' (plot)
+#' @param planar logical whether to produce a planar graph from only cyclic
+#' splits (may excludes splits).
+#' @param coord add coordinates of the nodes, allows to reproduce the plot.
+#' @param type "3D" to plot using rgl or "2D" in the normal device.
+#' @param use.edge.length a logical indicating whether to use the edge weights
+#' of the network to draw the branches (the default) or not.
+#' @param show.tip.label a logical indicating whether to show the tip labels on
+#' the graph (defaults to \code{TRUE}, i.e. the labels are shown).
+#' @param show.edge.label a logical indicating whether to show the tip labels
+#' on the graph.
+#' @param edge.label an additional vector of edge labels (normally not needed).
+#' @param show.node.label a logical indicating whether to show the node labels
+#' (see example).
+#' @param node.label an additional vector of node labels (normally not needed).
+#' @param show.nodes a logical indicating whether to show the nodes (see
+#' example).
+#' @param tip.color the colors used for the tip labels.
+#' @param edge.color the colors used to draw edges.
+#' @param edge.width the width used to draw edges.
+#' @param edge.lty a vector of line types.
+#' @param split.color the colors used to draw edges.
+#' @param split.width the width used to draw edges.
+#' @param split.lty a vector of line types.
+#' @param font an integer specifying the type of font for the labels: 1 (plain
+#' text), 2 (bold), 3 (italic, the default), or 4 (bold italic).
+#' @param cex a numeric value giving the factor scaling of the labels.
+#' @param cex.node.label a numeric value giving the factor scaling of the node
+#' labels.
+#' @param cex.edge.label a numeric value giving the factor scaling of the edge
+#' labels.
+#' @param col.node.label the colors used for the node labels.
+#' @param col.edge.label the colors used for the edge labels.
+#' @param font.node.label the font used for the node labels.
+#' @param font.edge.label the font used for the edge labels.
+#' @param \dots Further arguments passed to or from other methods.
+#' @note The internal representation is likely to change.
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso \code{\link{consensusNet}}, \code{\link{neighborNet}},
+#' \code{\link{splitsNetwork}}, \code{\link{hadamard}},
+#' \code{\link{distanceHadamard}}, \code{\link{layout_with_kk}},
+#' \code{\link[ape]{evonet}}, \code{\link[ape]{as.igraph}},
+#' \code{\link{densiTree}}
+#' @references Dress, A.W.M. and Huson, D.H. (2004) Constructing Splits Graphs
+#' \emph{IEEE/ACM Transactions on Computational Biology and Bioinformatics
+#' (TCBB)}, \bold{1(3)}, 109--115
+#' @keywords plot
+#' @examples
+#' 
+#' set.seed(1)
+#' tree1 = rtree(20, rooted=FALSE)
+#' sp = as.splits(rNNI(tree1, n=10))
+#' net = as.networx(sp)
+#' plot(net, "2D")
+#' \dontrun{
+#' # also see example in consensusNet 
+#' example(consensusNet)
+#' }
+#' 
+#' @export plot.networx
 plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRUE,
     show.edge.label=FALSE, edge.label=NULL, show.node.label = FALSE, node.label=NULL,
     show.nodes=FALSE, tip.color = "black", 
@@ -1343,6 +1605,40 @@ plot2D <- function(coords, net, show.tip.label=TRUE,
 }   
    
 ## as.splits.phylo    
+
+
+#' Lento plot
+#' 
+#' The lento plot represents support and conflict of splits/bipartitions.
+#' 
+#' 
+#' @param obj an object of class phylo, multiPhylo or splits
+#' @param xlim graphical parameter
+#' @param ylim graphical parameter
+#' @param main graphical parameter
+#' @param sub graphical parameter
+#' @param xlab graphical parameter
+#' @param ylab graphical parameter
+#' @param bipart plot bipartition information.
+#' @param trivial logical, whether to present trivial splits (default is
+#' FALSE).
+#' @param col color for the splits / bipartition.
+#' @param \dots Further arguments passed to or from other methods.
+#' @return lento returns a plot.
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso \code{\link{as.splits}, \link{hadamard}}
+#' @references Lento, G.M., Hickson, R.E., Chambers G.K., and Penny, D. (1995)
+#' Use of spectral analysis to test hypotheses on the origin of pinninpeds.
+#' \emph{Molecular Biology and Evolution}, \bold{12}, 28-52.
+#' @keywords cluster plot
+#' @examples
+#' 
+#' data(yeast)
+#' yeast.ry = acgt2ry(yeast)
+#' splits.h = h2st(yeast.ry)
+#' lento(splits.h, trivial=TRUE) 
+#' 
+#' @export lento
 lento <- function (obj, xlim = NULL, ylim = NULL, main = "Lento plot", 
     sub = NULL, xlab = NULL, ylab = NULL, bipart=TRUE, trivial=FALSE, col = rgb(0,0,0,.5), ...) 
 {
@@ -1859,6 +2155,34 @@ delta.quartet <-
     }
 
 
+
+
+#' Computes the \eqn{\delta} score
+#' 
+#' Computes the treelikeness
+#' 
+#' 
+#' @param x an object of class \code{phyDat}
+#' @param arg Specifies the return value, one of "all", "mean" or "sd"
+#' @param ...  further arguments passed through \code{dist.hamming}
+#' @return A vector containing the \eqn{\delta} scores.
+#' @author Alastair Potts and Klaus Schliep
+#' @seealso \code{\link{dist.hamming}}
+#' @references BR Holland, KT Huber, A Dress, V Moulton (2002) \eqn{\delta}
+#' Plots: a tool for analyzing phylogenetic distance data Russell D. Gray,
+#' David Bryant, Simon J. Greenhill (2010) On the shape and fabric of human
+#' history \emph{Molecular Biology and Evolution}, \bold{19(12)} 2051--2059
+#' 
+#' Russell D. Gray, David Bryant, Simon J. Greenhill (2010) On the shape and
+#' fabric of human history \emph{Phil. Trans. R. Soc. B}, \bold{365}
+#' 3923--3933; DOI: 10.1098/rstb.2010.0162
+#' @keywords cluster
+#' @examples
+#' 
+#' data(yeast)
+#' hist(delta.score(yeast, "all"))
+#' 
+#' @export delta.score
 delta.score <- function(x, arg="mean", ...) {
         # dist.dna <- as.matrix(dist.dna(dna,"raw"))   
         # dist.dna(dna,"raw") is equivalent to dist.hamming(as.phyDat(dna), exclude="all") 
