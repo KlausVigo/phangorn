@@ -43,7 +43,7 @@ getAges <- function(x){
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{plot.phylo}}, \code{\link{plot.networx}}
 #' @references densiTree is inspired from the great
-#' \href{www.cs.auckland.ac.nz/~remco/DensiTreeDensiTree} program of Remco
+#' \href{https://www.cs.auckland.ac.nz/~remco/DensiTree}{DensiTree} program of Remco
 #' Bouckaert.
 #' 
 #' Remco R. Bouckaert (2010) DensiTree: making sense of sets of phylogenetic

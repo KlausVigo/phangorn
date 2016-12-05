@@ -1109,7 +1109,7 @@ read.FASTA.AA <- function (file)
 #' @seealso \code{\link[ape]{read.dna}}, \code{\link[ape]{read.GenBank}},
 #' \code{\link[phangorn]{phyDat}}, \code{\link[seqinr]{read.alignment}}
 #' @references % Anonymous. FASTA format description. %
-#' \url{http://www.ncbi.nlm.nih.gov/BLAST/fasta.html} Felsenstein, J. (1993)
+#' \url{https://www.ncbi.nlm.nih.gov/blast/fasta.shtml} Felsenstein, J. (1993)
 #' Phylip (Phylogeny Inference Package) version 3.5c. Department of Genetics,
 #' University of Washington.
 #' \url{http://evolution.genetics.washington.edu/phylip/phylip.html}
