@@ -109,113 +109,6 @@ oneWise <- function (x, nTips=NULL)
 }
 
 
-# leomrtns addition
-sprdist <- function (tree1, tree2) 
-{
-    tree1 = unroot(tree1)
-    tree2 = unroot(tree2)
-    lt1 = length(tree1$tip.label)
-    lt2 = length(tree2$tip.label)
-    # checking labels is obligatory for spr (user should prune one of them beforehand?)         
-    ind <- match(tree1$tip.label, tree2$tip.label)
-    if (any(is.na(ind)) | lt1 != lt2 )  stop("trees have different labels")
-    tree2$tip.label <- tree2$tip.label[ind]
-    ind2 <- match(1:length(ind), tree2$edge[, 2])
-    tree2$edge[ind2, 2] <- order(ind)
-    # same as in original treedist (will create list of strings with shorter side of splits)
-    tree1 = reorder(tree1, "postorder")
-    tree2 = reorder(tree2, "postorder")
-    if(!is.binary.tree(tree1) | !is.binary.tree(tree2))message("Trees are not binary!")
-    # possibly replace bip with bipart    
-    bp1 = bip(tree1); bp1 <- SHORTwise(bp1, lt1)
-    bp2 = bip(tree2); bp2 <- SHORTwise(bp2, lt2)
-    
-    bp1 <- bp1[ lengths(bp1)>1 ] # only internal nodes 
-    bp2 <- bp2[ lengths(bp2)>1 ] 
-    if (length(bp1) != length(bp2)) stop ("number of bipartitions given to C_sprdist are not the same")
-    # OBS: SPR distance works w/ incompatible splits only, but it needs common cherries (to replace by single leaf)
-    spr <- .Call("C_sprdist", bp1, bp2, lt1);
-    names(spr) <- c("spr", "spr_extra", "rf", "hdist")
-#    list("spr" = spr[1], "spr_extra" = spr[2], "rf" = spr[3], "hdist"= spr[4]);
-    spr
-}
-
-
-SPR1 <- function(trees){
-    trees <- .compressTipLabel(trees)
-    trees <- .uncompressTipLabel(trees)
-    trees <- lapply(trees, unroot)
-    trees <- lapply(trees, reorder, "postorder")
-    
-    nTips <- length(trees[[1]]$tip.label)
-    
-    fun <- function(x, nTips){
-        bp <- bipart(x)
-        bp <- SHORTwise(bp, nTips)
-        bp <- bp[ lengths(bp)>1 ] 
-        bp
-    }    
-    
-    BP <- lapply(trees, fun, nTips)
-    k <- 1
-    l <- length(trees)
-    SPR <- numeric((l * (l - 1))/2)
-    for (i in 1:(l - 1)){
-        bp <- BP[[i]]
-        for (j in (i + 1):l){
-            SPR[k] <-  .Call("C_sprdist", bp, BP[[j]], nTips)[1]
-            k=k+1
-        }
-    }
-    attr(SPR, "Size") <- l
-    if(!is.null(names(trees)))attr(SPR, "Labels") <- names(trees)
-    attr(SPR, "Diag") <- FALSE
-    attr(SPR, "Upper") <- FALSE
-    class(SPR) <- "dist"
-    return(SPR)
-}
-
-
-SPR2 <- function(tree, trees){
-    trees <- .compressTipLabel(trees)
-    tree <- checkLabels(tree, attr(trees, "TipLabel"))
-    trees <- .uncompressTipLabel(trees)
-    if (any(sapply(trees, is.rooted))) {
-        trees <- lapply(trees, unroot)
-    }
-    trees <- lapply(trees, reorder, "postorder")
-    tree <- unroot(tree)                
-    nTips <- length(tree$tip.label)
-    
-    fun <- function(x, nTips){
-        bp <- bipart(x)
-        bp <- SHORTwise(bp, nTips)
-        bp <- bp[ lengths(bp)>1 ] 
-        bp
-    }    
-    
-    bp <-  fun(tree, nTips)
-    k <- 1
-    l <- length(trees)
-    SPR <- numeric(l)
-    for (i in 1:l){
-            SPR[i] <- .Call("C_sprdist", bp, fun(trees[[i]], nTips), nTips)[1]
-    }
-    if(!is.null(names(trees)))names(SPR) <- names(trees)
-    return(SPR)
-}
-
-
-SPR.dist <- function(tree1, tree2=NULL){
-    if(inherits(tree1, "multiPhylo") && is.null(tree2))return(SPR1(tree1)) 
-    if(inherits(tree1, "phylo") && inherits(tree2, "phylo"))return(sprdist(tree1, tree2)[1])
-    if(inherits(tree1, "phylo") && inherits(tree2, "multiPhylo"))return(SPR2(tree1, tree2))
-    if(inherits(tree2, "phylo") && inherits(tree1, "multiPhylo"))return(SPR2(tree2, tree1))
-    return(NULL)
-}
-
-
-
 
 #' Distances between trees
 #' 
@@ -317,6 +210,7 @@ SPR.dist <- function(tree1, tree2=NULL){
 #' trees <- rSPR(tree1, 1:5)
 #' SPR.dist(tree1, trees)
 #' 
+#' @rdname treedist
 #' @export treedist
 treedist <- function (tree1, tree2, check.labels=TRUE) 
 {
@@ -326,7 +220,7 @@ treedist <- function (tree1, tree2, check.labels=TRUE)
     if (check.labels) {
         ind <- match(tree1$tip.label, tree2$tip.label)
         if (any(is.na(ind)) | length(tree1$tip.label) !=
-                length(tree2$tip.label))
+            length(tree2$tip.label))
             stop("trees have different labels")
         tree2$tip.label <- tree2$tip.label[ind]
         ind2 <- match(1:length(ind), tree2$edge[, 2])
@@ -350,16 +244,16 @@ treedist <- function (tree1, tree2, check.labels=TRUE)
     bp2 <- sapply(bp2, paste, collapse = "_")
     
     l = length(tree1$tip.label)
-
+    
     if (!is.null(tree1$edge.length) & !is.null(tree2$edge.length)) {      
         dv1 = coph(tree1)
         dv2 = coph(tree2)
         quadratic.path.difference = sqrt(sum((dv1 - dv2)^2))
         
     }
-   
+    
     RF = sum(match(bp1, bp2, nomatch=0L)==0L) + sum(match(bp2, bp1, nomatch=0L)==0L)
-
+    
     symmetric.difference = RF #2 * (p - sum(r1))
     if (!is.null(tree1$edge.length) & !is.null(tree2$edge.length)) {
         w1 = numeric(max(tree1$edge))
@@ -369,13 +263,13 @@ treedist <- function (tree1, tree2, check.labels=TRUE)
         
         v1 = tree1$edge.length
         v2 = tree2$edge.length
-     
+        
         ind3 = match(bp1, bp2, nomatch=0L)
         ind4 = ind3[ind3>0]
         ind3 = which(ind3>0)
-
+        
         s1 = sum((w1[ind3] - w2[ind4])^2)
-
+        
         s2 = sum(w1[-ind3]^2)
         s3 = sum(w2[-ind4]^2)
         branch.score.difference = sqrt(s1 + s2 + s3)
@@ -383,7 +277,7 @@ treedist <- function (tree1, tree2, check.labels=TRUE)
     
     tree1$edge.length = rep(1, nrow(tree1$edge))
     tree2$edge.length = rep(1, nrow(tree2$edge))
-
+    
     dt1 = coph(tree1)
     dt2 = coph(tree2)  
     path.difference = sqrt(sum((dt1 - dt2)^2))
@@ -393,6 +287,117 @@ treedist <- function (tree1, tree2, check.labels=TRUE)
                path.difference = path.difference, 
                quadratic.path.difference = quadratic.path.difference)
     result              
+}
+
+
+
+
+# leomrtns addition
+sprdist <- function (tree1, tree2) 
+{
+    tree1 = unroot(tree1)
+    tree2 = unroot(tree2)
+    lt1 = length(tree1$tip.label)
+    lt2 = length(tree2$tip.label)
+    # checking labels is obligatory for spr (user should prune one of them beforehand?)         
+    ind <- match(tree1$tip.label, tree2$tip.label)
+    if (any(is.na(ind)) | lt1 != lt2 )  stop("trees have different labels")
+    tree2$tip.label <- tree2$tip.label[ind]
+    ind2 <- match(1:length(ind), tree2$edge[, 2])
+    tree2$edge[ind2, 2] <- order(ind)
+    # same as in original treedist (will create list of strings with shorter side of splits)
+    tree1 = reorder(tree1, "postorder")
+    tree2 = reorder(tree2, "postorder")
+    if(!is.binary.tree(tree1) | !is.binary.tree(tree2))message("Trees are not binary!")
+    # possibly replace bip with bipart    
+    bp1 = bip(tree1); bp1 <- SHORTwise(bp1, lt1)
+    bp2 = bip(tree2); bp2 <- SHORTwise(bp2, lt2)
+    
+    bp1 <- bp1[ lengths(bp1)>1 ] # only internal nodes 
+    bp2 <- bp2[ lengths(bp2)>1 ] 
+    if (length(bp1) != length(bp2)) stop ("number of bipartitions given to C_sprdist are not the same")
+    # OBS: SPR distance works w/ incompatible splits only, but it needs common cherries (to replace by single leaf)
+    spr <- .Call("C_sprdist", bp1, bp2, lt1);
+    names(spr) <- c("spr", "spr_extra", "rf", "hdist")
+#    list("spr" = spr[1], "spr_extra" = spr[2], "rf" = spr[3], "hdist"= spr[4]);
+    spr
+}
+
+
+SPR1 <- function(trees){
+    trees <- .compressTipLabel(trees)
+    trees <- .uncompressTipLabel(trees)
+    trees <- lapply(trees, unroot)
+    trees <- lapply(trees, reorder, "postorder")
+    
+    nTips <- length(trees[[1]]$tip.label)
+    
+    fun <- function(x, nTips){
+        bp <- bipart(x)
+        bp <- SHORTwise(bp, nTips)
+        bp <- bp[ lengths(bp)>1 ] 
+        bp
+    }    
+    
+    BP <- lapply(trees, fun, nTips)
+    k <- 1
+    l <- length(trees)
+    SPR <- numeric((l * (l - 1))/2)
+    for (i in 1:(l - 1)){
+        bp <- BP[[i]]
+        for (j in (i + 1):l){
+            SPR[k] <-  .Call("C_sprdist", bp, BP[[j]], nTips)[1]
+            k=k+1
+        }
+    }
+    attr(SPR, "Size") <- l
+    if(!is.null(names(trees)))attr(SPR, "Labels") <- names(trees)
+    attr(SPR, "Diag") <- FALSE
+    attr(SPR, "Upper") <- FALSE
+    class(SPR) <- "dist"
+    return(SPR)
+}
+
+
+SPR2 <- function(tree, trees){
+    trees <- .compressTipLabel(trees)
+    tree <- checkLabels(tree, attr(trees, "TipLabel"))
+    trees <- .uncompressTipLabel(trees)
+    if (any(sapply(trees, is.rooted))) {
+        trees <- lapply(trees, unroot)
+    }
+    trees <- lapply(trees, reorder, "postorder")
+    tree <- unroot(tree)                
+    nTips <- length(tree$tip.label)
+    
+    fun <- function(x, nTips){
+        bp <- bipart(x)
+        bp <- SHORTwise(bp, nTips)
+        bp <- bp[ lengths(bp)>1 ] 
+        bp
+    }    
+    
+    bp <-  fun(tree, nTips)
+    k <- 1
+    l <- length(trees)
+    SPR <- numeric(l)
+    for (i in 1:l){
+            SPR[i] <- .Call("C_sprdist", bp, fun(trees[[i]], nTips), nTips)[1]
+    }
+    if(!is.null(names(trees)))names(SPR) <- names(trees)
+    return(SPR)
+}
+
+
+##' @rdname treedist
+##' @aliases SPR.dist
+##' @export
+SPR.dist <- function(tree1, tree2=NULL){
+    if(inherits(tree1, "multiPhylo") && is.null(tree2))return(SPR1(tree1)) 
+    if(inherits(tree1, "phylo") && inherits(tree2, "phylo"))return(sprdist(tree1, tree2)[1])
+    if(inherits(tree1, "phylo") && inherits(tree2, "multiPhylo"))return(SPR2(tree1, tree2))
+    if(inherits(tree2, "phylo") && inherits(tree1, "multiPhylo"))return(SPR2(tree2, tree1))
+    return(NULL)
 }
 
 
@@ -705,6 +710,9 @@ RF0 <- function(tree1, tree2=NULL, normalize=FALSE, check.labels = TRUE, rooted=
 }
 
 
+##' @rdname treedist
+##' @aliases RF.dist
+##' @export
 RF.dist <- function(tree1, tree2=NULL, normalize=FALSE, check.labels = TRUE, rooted=FALSE)
 {
     if(class(tree1)=="phylo" && class(tree2)=="phylo")return(RF0(tree1, tree2, normalize, check.labels, rooted))
@@ -715,6 +723,9 @@ RF.dist <- function(tree1, tree2=NULL, normalize=FALSE, check.labels = TRUE, roo
 }
 
 
+##' @rdname treedist
+##' @aliases wRF.dist
+##' @export
 wRF.dist <- function(tree1, tree2=NULL, normalize=FALSE, check.labels = TRUE, rooted=FALSE){
     if(class(tree1)=="phylo" && class(tree2)=="phylo")return(wRF0(tree1, tree2, normalize, check.labels, rooted))
     if(class(tree1)=="multiPhylo" && is.null(tree2))return(wRF1(tree1, normalize, check.labels))
@@ -858,7 +869,9 @@ kf2 <- function(trees, check.labels = TRUE){
 }
 
 
-# TODO distance matrices
+##' @rdname treedist
+##' @aliases KF.dist
+##' @export
 KF.dist <- function(tree1, tree2=NULL, check.labels = TRUE, rooted=FALSE){
     if(inherits(tree1, "multiPhylo") && is.null(tree2))return(kf2(tree1)) 
     if(inherits(tree1, "phylo") && inherits(tree2, "phylo"))return(kf0(tree1, tree2, check.labels))
@@ -868,6 +881,9 @@ KF.dist <- function(tree1, tree2=NULL, check.labels = TRUE, rooted=FALSE){
 }
 
 
+##' @rdname treedist
+##' @aliases path.dist
+##' @export
 path.dist <- function(tree1, tree2=NULL, check.labels = TRUE, use.weight=FALSE){
     if(inherits(tree1, "phylo") && inherits(tree2, "phylo"))
          return(pd0(tree1, tree2, check.labels, !use.weight))
