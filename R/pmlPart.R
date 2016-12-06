@@ -253,6 +253,9 @@ multiphyDat2pmlPart <- function(x, rooted=FALSE, ...){
 }
 
 
+##' @rdname pmlPart
+##' @aliases pmlPart2multiPhylo
+##' @export
 pmlPart2multiPhylo <- function(x){
     res <- lapply(x$fits, FUN=function(x)x$tree)
     class(res) <- "multiPhylo"
@@ -326,6 +329,7 @@ plot.pmlPart<- function(x, ...){
 #' AIC(sp3)
 #' }
 #' 
+#' @rdname pmlPart
 #' @export pmlPart
 pmlPart <- function (formula, object, control=pml.control(epsilon=1e-8, maxit=10, trace=1), model=NULL, rooted=FALSE, ...) 
 {
