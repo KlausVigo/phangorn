@@ -88,7 +88,7 @@ as.Matrix.splits <- function(x, ...){
 ##' @rdname as.splits
 ##' @aliases print.splits
 ##' @export
-print.splits <- function (x, maxp = getOption("max.print"), 
+print.splits <- function(x, maxp = getOption("max.print"), 
     zero.print = ".", one.print="|", ...)
 {
     x.orig <- x
@@ -956,9 +956,86 @@ circNetwork <- function(x, ord=NULL){
 }
 
 
-##' @rdname plot.networx
-##' @aliases as.networx
-##' @export
+#' Phylogenetic networks
+#' 
+#' \code{as.networx} convert \code{splits} objects into a \code{networx}
+#' object. And most important there exists a (generic) \code{plot} function to plot phylogenetic network or split graphs.
+#' 
+#' A \code{networx} object hold the information for a phylogenetic network and
+#' extends the \code{phylo} object. Therefore some generic function for
+#' \code{phylo} objects will also work for \code{networx} objects.  The
+#' argument planar = FALSE will create a planar split graph based on a cyclic
+#' ordering. These objects can be nicely plotted in "2D". So far not all
+#' parameters behave the same on the the rgl "3D" and basic graphic "2D"
+#' device.
+#' 
+#' Often it is easier (and safer) to supply vectors of graphical parameters for
+#' splits (e.g. splits.color).  These overwrite values edge.color.
+#' 
+#' @aliases as.networx plot.networx as.networx.splits as.networx.phylo
+#' write.nexus.networx read.nexus.networx
+#' @param x an object of class \code{"splits"} (as.networx) or \code{"networx"}
+#' (plot)
+#' @param planar logical whether to produce a planar graph from only cyclic
+#' splits (may excludes splits).
+#' @param coord add coordinates of the nodes, allows to reproduce the plot.
+#' @param type "3D" to plot using rgl or "2D" in the normal device.
+#' @param use.edge.length a logical indicating whether to use the edge weights
+#' of the network to draw the branches (the default) or not.
+#' @param show.tip.label a logical indicating whether to show the tip labels on
+#' the graph (defaults to \code{TRUE}, i.e. the labels are shown).
+#' @param show.edge.label a logical indicating whether to show the tip labels
+#' on the graph.
+#' @param edge.label an additional vector of edge labels (normally not needed).
+#' @param show.node.label a logical indicating whether to show the node labels
+#' (see example).
+#' @param node.label an additional vector of node labels (normally not needed).
+#' @param show.nodes a logical indicating whether to show the nodes (see
+#' example).
+#' @param tip.color the colors used for the tip labels.
+#' @param edge.color the colors used to draw edges.
+#' @param edge.width the width used to draw edges.
+#' @param edge.lty a vector of line types.
+#' @param split.color the colors used to draw edges.
+#' @param split.width the width used to draw edges.
+#' @param split.lty a vector of line types.
+#' @param font an integer specifying the type of font for the labels: 1 (plain
+#' text), 2 (bold), 3 (italic, the default), or 4 (bold italic).
+#' @param cex a numeric value giving the factor scaling of the labels.
+#' @param cex.node.label a numeric value giving the factor scaling of the node
+#' labels.
+#' @param cex.edge.label a numeric value giving the factor scaling of the edge
+#' labels.
+#' @param col.node.label the colors used for the node labels.
+#' @param col.edge.label the colors used for the edge labels.
+#' @param font.node.label the font used for the node labels.
+#' @param font.edge.label the font used for the edge labels.
+#' @param \dots Further arguments passed to or from other methods.
+#' @note The internal representation is likely to change.
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso \code{\link{consensusNet}}, \code{\link{neighborNet}},
+#' \code{\link{splitsNetwork}}, \code{\link{hadamard}},
+#' \code{\link{distanceHadamard}}, \code{\link{layout_with_kk}},
+#' \code{\link[ape]{evonet}}, \code{\link[ape]{as.igraph}},
+#' \code{\link{densiTree}}
+#' @references Dress, A.W.M. and Huson, D.H. (2004) Constructing Splits Graphs
+#' \emph{IEEE/ACM Transactions on Computational Biology and Bioinformatics
+#' (TCBB)}, \bold{1(3)}, 109--115
+#' @keywords plot
+#' @examples
+#' 
+#' set.seed(1)
+#' tree1 = rtree(20, rooted=FALSE)
+#' sp = as.splits(rNNI(tree1, n=10))
+#' net = as.networx(sp)
+#' plot(net, "2D")
+#' \dontrun{
+#' # also see example in consensusNet 
+#' example(consensusNet)
+#' }
+#' 
+#' @rdname as.networx
+#' @export as.networx
 as.networx <- function (x, ...) 
 {
     if (inherits(x, "networx")) 
@@ -997,7 +1074,7 @@ addTrivialSplits <- function(obj){
 }
 
 
-##' @rdname plot.networx
+##' @rdname as.networx
 ##' @aliases as.networx.splits
 ##' @export
 as.networx.splits <- function(x, planar=FALSE, coord = c("none", "2D", "3D"), ...){
@@ -1070,7 +1147,7 @@ as.networx.splits <- function(x, planar=FALSE, coord = c("none", "2D", "3D"), ..
 #}
 
 
-##' @rdname plot.networx
+##' @rdname as.networx
 ##' @aliases as.networx.phylo
 ##' @export
 as.networx.phylo <- function(x, ...){
@@ -1391,87 +1468,9 @@ edgeLabels <- function(xx,yy,zz=NULL, edge){
 
 
 
-
-#' Phylogenetic networks
-#' 
-#' \code{as.networx} convert \code{splits} objects into a \code{networx}
-#' object.  \code{plot.networx} plot phylogenetic network or split graphs.
-#' 
-#' A \code{networx} object hold the information for a phylogenetic network and
-#' extends the \code{phylo} object. Therefore some generic function for
-#' \code{phylo} objects will also work for \code{networx} objects.  The
-#' argument planar = FALSE will create a planar split graph based on a cyclic
-#' ordering. These objects can be nicely plotted in "2D". So far not all
-#' parameters behave the same on the the rgl "3D" and basic graphic "2D"
-#' device.
-#' 
-#' Often it is easier (and safer) to supply vectors of graphical parameters for
-#' splits (e.g. splits.color).  These overwrite values edge.color.
-#' 
-#' @aliases plot.networx as.networx as.networx.splits as.networx.phylo
-#' write.nexus.networx read.nexus.networx
-#' @param x an object of class \code{"splits"} (as.networx) or \code{"networx"}
-#' (plot)
-#' @param planar logical whether to produce a planar graph from only cyclic
-#' splits (may excludes splits).
-#' @param coord add coordinates of the nodes, allows to reproduce the plot.
-#' @param type "3D" to plot using rgl or "2D" in the normal device.
-#' @param use.edge.length a logical indicating whether to use the edge weights
-#' of the network to draw the branches (the default) or not.
-#' @param show.tip.label a logical indicating whether to show the tip labels on
-#' the graph (defaults to \code{TRUE}, i.e. the labels are shown).
-#' @param show.edge.label a logical indicating whether to show the tip labels
-#' on the graph.
-#' @param edge.label an additional vector of edge labels (normally not needed).
-#' @param show.node.label a logical indicating whether to show the node labels
-#' (see example).
-#' @param node.label an additional vector of node labels (normally not needed).
-#' @param show.nodes a logical indicating whether to show the nodes (see
-#' example).
-#' @param tip.color the colors used for the tip labels.
-#' @param edge.color the colors used to draw edges.
-#' @param edge.width the width used to draw edges.
-#' @param edge.lty a vector of line types.
-#' @param split.color the colors used to draw edges.
-#' @param split.width the width used to draw edges.
-#' @param split.lty a vector of line types.
-#' @param font an integer specifying the type of font for the labels: 1 (plain
-#' text), 2 (bold), 3 (italic, the default), or 4 (bold italic).
-#' @param cex a numeric value giving the factor scaling of the labels.
-#' @param cex.node.label a numeric value giving the factor scaling of the node
-#' labels.
-#' @param cex.edge.label a numeric value giving the factor scaling of the edge
-#' labels.
-#' @param col.node.label the colors used for the node labels.
-#' @param col.edge.label the colors used for the edge labels.
-#' @param font.node.label the font used for the node labels.
-#' @param font.edge.label the font used for the edge labels.
-#' @param \dots Further arguments passed to or from other methods.
-#' @note The internal representation is likely to change.
-#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{consensusNet}}, \code{\link{neighborNet}},
-#' \code{\link{splitsNetwork}}, \code{\link{hadamard}},
-#' \code{\link{distanceHadamard}}, \code{\link{layout_with_kk}},
-#' \code{\link[ape]{evonet}}, \code{\link[ape]{as.igraph}},
-#' \code{\link{densiTree}}
-#' @references Dress, A.W.M. and Huson, D.H. (2004) Constructing Splits Graphs
-#' \emph{IEEE/ACM Transactions on Computational Biology and Bioinformatics
-#' (TCBB)}, \bold{1(3)}, 109--115
-#' @keywords plot
-#' @examples
-#' 
-#' set.seed(1)
-#' tree1 = rtree(20, rooted=FALSE)
-#' sp = as.splits(rNNI(tree1, n=10))
-#' net = as.networx(sp)
-#' plot(net, "2D")
-#' \dontrun{
-#' # also see example in consensusNet 
-#' example(consensusNet)
-#' }
-#' 
-#' @rdname plot.networx
-#' @export plot.networx
+##' @rdname as.networx
+##' @aliases plot.networx
+##' @export
 plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRUE,
     show.edge.label=FALSE, edge.label=NULL, show.node.label = FALSE, node.label=NULL,
     show.nodes=FALSE, tip.color = "black", 

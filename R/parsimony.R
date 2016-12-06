@@ -94,6 +94,9 @@ parsimony <- function(tree, data, method='fitch', ...){
 }
 
 
+##' @rdname ancestral.pml
+##' @aliases ancestral.pars
+##' @export
 ancestral.pars <- function (tree, data, type = c("MPR", "ACCTRAN"), cost=NULL) 
 {
     call <- match.call()
@@ -207,7 +210,9 @@ mpr <- function(tree, data, cost=NULL){
 }
 
 
-
+##' @rdname ancestral.pml
+##' @aliases plotAnc
+##' @export
 plotAnc <- function (tree, data, i = 1, col=NULL, cex.pie=par("cex"), pos="bottomright", ...)
 {
    y = subset(data, , i)

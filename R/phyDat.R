@@ -368,6 +368,111 @@ phyDat.codon <- function (data, return.index = TRUE)
 }
 
 
+#' Conversion among Sequence Formats
+#' 
+#' These functions transform several DNA formats into the \code{phyDat} format.
+#' \code{allSitePattern} generates an alignment of all possible site patterns.
+#' 
+#' If \code{type} "USER" a vector has to be give to \code{levels}. For example
+#' c("a", "c", "g", "t", "-") would create a data object that can be used in
+#' phylogenetic analysis with gaps as fifth state.  There is a more detailed
+#' example for specifying "USER" defined data formats in the vignette
+#' "phangorn-specials".
+#' 
+#' \code{allSitePattern} returns all possible site patterns and can be useful
+#' in simulation studies. For further details see the vignette
+#' phangorn-specials.
+#' 
+#' \code{write.phyDat} calls the function write.dna or write.nexus.data and
+#' \code{read.phyDat} calls the function \code{read.dna}, \code{read.aa} or
+#' \code{read.nexus.data} see for more details over there.
+#' 
+#' You may import data directly with \code{\link[ape]{read.dna}} or
+#' \code{\link[ape]{read.nexus.data}} and convert the data to class phyDat.
+#' 
+#' The generic function \code{c} can be used to to combine sequences and
+#' \code{unique} to get all unique sequences or unique haplotypes.
+#' 
+#' \code{acgt2ry} converts a \code{phyDat} object of nucleotides into an binary
+#' ry-coded dataset.
+#' 
+#' @aliases phyDat as.phyDat as.AAbin.phyDat as.phyDat.DNAbin as.phyDat.alignment
+#' as.phyDat.character as.phyDat.data.frame as.phyDat.factor as.phyDat.matrix
+#' as.phyDat.MultipleAlignment as.MultipleAlignment as.MultipleAlignment.phyDat
+#' as.data.frame.phyDat as.character.phyDat as.DNAbin.phyDat read.phyDat
+#' write.phyDat subset.phyDat cbind.phyDat c.phyDat unique.phyDat image.phyDat
+#' acgt2ry baseFreq allSitePattern removeUndeterminedSites
+#' phyDat2alignment phyDat2MultipleAlignment dna2codon codon2dna
+#' @param data An object containing sequences.
+#' @param x An object containing sequences.
+#' @param type Type of sequences ("DNA", "AA", "CODON" or "USER").
+#' @param levels Level attributes.
+#' @param return.index If TRUE returns a index of the site patterns.
+#' @param file A file name.
+#' @param format File format of the sequence alignment (see details).  Several
+#' popular formats are supported: "phylip", "interleaved", "sequential",
+#' "clustal", "fasta" or "nexus", or any unambiguous abbreviation of these.
+#' @param colsep a character used to separate the columns (a single space by
+#' default).
+#' @param nbcol a numeric specifying the number of columns per row (-1 by
+#' default); may be negative implying that the nucleotides are printed on a
+#' single line.
+#' @param n Number of sequences.
+#' @param names Names of sequences.
+#' @param subset a subset of taxa.
+#' @param select a subset of characters.
+#' @param site.pattern select site pattern or sites.
+#' @param allLevels return original data.
+#' @param obj as object of class phyDat
+#' @param freq logical, if 'TRUE', frequencies or counts are returned otherwise
+#' proportions
+#' @param all all a logical; if all = TRUE, all counts of bases, ambiguous
+#' codes, missing data, and alignment gaps are returned as defined in the
+#' contrast.
+#' @param drop.unused.levels logical, drop unused levels
+#' @param incomparables for compatibility with unique.
+#' @param identical if TRUE (default) sequences have to be identical, if FALSE
+#' sequences are considered duplicates if distance between sequences is zero
+#' (happens frequently with ambiguous sites).
+#' @param ambiguity character for ambiguous character and no contrast is provided.
+#' @param ... further arguments passed to or from other methods.
+#' @return The functions return an object of class \code{phyDat}.
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso \code{\link{DNAbin}}, \code{\link{as.DNAbin}},
+#' \code{\link{read.dna}}, \code{\link{read.aa}}, \code{\link{read.nexus.data}}
+#' and the chapter 1 in the \code{vignette("phangorn-specials",
+#' package="phangorn")} and the example of \code{\link{pmlMix}} for the use of
+#' \code{allSitePattern}
+#' @keywords cluster
+#' @examples
+#' 
+#' data(Laurasiatherian)
+#' class(Laurasiatherian)
+#' Laurasiatherian
+#' baseFreq(Laurasiatherian)
+#' baseFreq(Laurasiatherian, all=TRUE)
+#' subset(Laurasiatherian, subset=1:5)
+#' # transform into old ape format
+#' LauraChar <- as.character(Laurasiatherian)
+#' # and back 
+#' Laura <- phyDat(LauraChar, return.index=TRUE)
+#' all.equal(Laurasiatherian, Laura)
+#' allSitePattern(5)
+#' 
+#' @rdname phyDat
+#' @export phyDat
+phyDat <- function (data, type="DNA", levels=NULL, return.index = TRUE,...) 
+{
+    if (inherits(data,"DNAbin")) type <- "DNA"
+    pt <- match.arg(type, c("DNA", "AA", "CODON", "USER"))  
+    if(pt=="DNA") dat <- phyDat.DNA(data, return.index=return.index,...)
+    if(pt=="AA") dat <- phyDat.AA(data, return.index=return.index, ...)
+    if(pt=="CODON") dat <- phyDat.codon(data, return.index=return.index, ...)
+    if(pt=="USER") dat <- phyDat.default(data, levels = levels, return.index=return.index, ...)
+    dat
+}
+
+
 ##' @rdname phyDat
 ##' @aliases dna2codon
 ##' @export
@@ -640,112 +745,6 @@ as.DNAbin.phyDat <- function (x, ...)
 as.AAbin.phyDat <- function(x,...) {
    if(attr(x, "type")=="AA") return(as.AAbin(as.character(x, ...)))
    else stop("x must be a amino acid sequence")
-}
-
- 
-
-
-#' Conversion among Sequence Formats
-#' 
-#' These functions transform several DNA formats into the \code{phyDat} format.
-#' \code{allSitePattern} generates an alignment of all possible site patterns.
-#' 
-#' If \code{type} "USER" a vector has to be give to \code{levels}. For example
-#' c("a", "c", "g", "t", "-") would create a data object that can be used in
-#' phylogenetic analysis with gaps as fifth state.  There is a more detailed
-#' example for specifying "USER" defined data formats in the vignette
-#' "phangorn-specials".
-#' 
-#' \code{allSitePattern} returns all possible site patterns and can be useful
-#' in simulation studies. For further details see the vignette
-#' phangorn-specials.
-#' 
-#' \code{write.phyDat} calls the function write.dna or write.nexus.data and
-#' \code{read.phyDat} calls the function \code{read.dna}, \code{read.aa} or
-#' \code{read.nexus.data} see for more details over there.
-#' 
-#' You may import data directly with \code{\link[ape]{read.dna}} or
-#' \code{\link[ape]{read.nexus.data}} and convert the data to class phyDat.
-#' 
-#' The generic function \code{c} can be used to to combine sequences and
-#' \code{unique} to get all unique sequences or unique haplotypes.
-#' 
-#' \code{acgt2ry} converts a \code{phyDat} object of nucleotides into an binary
-#' ry-coded dataset.
-#' 
-#' @aliases phyDat as.AAbin.phyDat as.phyDat.DNAbin as.phyDat.alignment
-#' as.phyDat.character as.phyDat.data.frame as.phyDat.factor as.phyDat.matrix
-#' as.phyDat.MultipleAlignment as.MultipleAlignment as.MultipleAlignment.phyDat
-#' as.data.frame.phyDat as.character.phyDat as.DNAbin.phyDat read.phyDat
-#' write.phyDat allSitePattern as.phyDat subset.phyDat acgt2ry baseFreq
-#' cbind.phyDat c.phyDat unique.phyDat removeUndeterminedSites phyDat2alignment
-#' phyDat2MultipleAlignment image.phyDat dna2codon codon2dna
-#' @param data An object containing sequences.
-#' @param x An object containing sequences.
-#' @param type Type of sequences ("DNA", "AA", "CODON" or "USER").
-#' @param levels Level attributes.
-#' @param return.index If TRUE returns a index of the site patterns.
-#' @param file A file name.
-#' @param format File format of the sequence alignment (see details).  Several
-#' popular formats are supported: "phylip", "interleaved", "sequential",
-#' "clustal", "fasta" or "nexus", or any unambiguous abbreviation of these.
-#' @param colsep a character used to separate the columns (a single space by
-#' default).
-#' @param nbcol a numeric specifying the number of columns per row (-1 by
-#' default); may be negative implying that the nucleotides are printed on a
-#' single line.
-#' @param n Number of sequences.
-#' @param names Names of sequences.
-#' @param subset a subset of taxa.
-#' @param select a subset of characters.
-#' @param site.pattern select site pattern or sites.
-#' @param allLevels return original data.
-#' @param obj as object of class phyDat
-#' @param freq logical, if 'TRUE', frequencies or counts are returned otherwise
-#' proportions
-#' @param all all a logical; if all = TRUE, all counts of bases, ambiguous
-#' codes, missing data, and alignment gaps are returned as defined in the
-#' contrast.
-#' @param drop.unused.levels logical, drop unused levels
-#' @param incomparables for compatibility with unique.
-#' @param identical if TRUE (default) sequences have to be identical, if FALSE
-#' sequences are considered duplicates if distance between sequences is zero
-#' (happens frequently with ambiguous sites).
-#' @param ... further arguments passed to or from other methods.
-#' @return The functions return an object of class \code{phyDat}.
-#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{DNAbin}}, \code{\link{as.DNAbin}},
-#' \code{\link{read.dna}}, \code{\link{read.aa}}, \code{\link{read.nexus.data}}
-#' and the chapter 1 in the \code{vignette("phangorn-specials",
-#' package="phangorn")} and the example of \code{\link{pmlMix}} for the use of
-#' \code{allSitePattern}
-#' @keywords cluster
-#' @examples
-#' 
-#' data(Laurasiatherian)
-#' class(Laurasiatherian)
-#' Laurasiatherian
-#' baseFreq(Laurasiatherian)
-#' baseFreq(Laurasiatherian, all=TRUE)
-#' subset(Laurasiatherian, subset=1:5)
-#' # transform into old ape format
-#' LauraChar <- as.character(Laurasiatherian)
-#' # and back 
-#' Laura <- phyDat(LauraChar, return.index=TRUE)
-#' all.equal(Laurasiatherian, Laura)
-#' allSitePattern(5)
-#' 
-#' @rdname phyDat
-#' @export phyDat
-phyDat <- function (data, type="DNA", levels=NULL, return.index = TRUE,...) 
-{
-    if (inherits(data,"DNAbin")) type <- "DNA"
-    pt <- match.arg(type, c("DNA", "AA", "CODON", "USER"))  
-    if(pt=="DNA") dat <- phyDat.DNA(data, return.index=return.index,...)
-    if(pt=="AA") dat <- phyDat.AA(data, return.index=return.index, ...)
-    if(pt=="CODON") dat <- phyDat.codon(data, return.index=return.index, ...)
-    if(pt=="USER") dat <- phyDat.default(data, levels = levels, return.index=return.index, ...)
-    dat
 }
 
 
