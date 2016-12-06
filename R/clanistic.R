@@ -121,6 +121,7 @@
 #' (divTab <- getDiversity(trees, x, var.names=colnames(X)))
 #' summary(divTab)
 #' 
+#' @rdname getClans
 #' @export getClans
 getClans = function (tree) 
 {
@@ -151,6 +152,9 @@ getClans = function (tree)
 }
 
 
+##' @rdname getClans
+##' @aliases getSlices
+##' @export
 getSlices <- function(tree){
     nTips = length(tree$tip.label)
     clans = getClans(tree)
@@ -187,6 +191,9 @@ getSlices <- function(tree){
 }
 
 
+##' @rdname getClans
+##' @aliases getClips
+##' @export
 getClips = function (tree, all = TRUE) 
 {
     if (any(is.na(tree$edge.length))) 
@@ -370,6 +377,9 @@ getDiv <- function(tree, x, native=NULL){
 }
 
 
+##' @rdname getClans
+##' @aliases getDiversity
+##' @export
 getDiversity <- function (tree, x, norm = TRUE, var.names = NULL, labels="new") 
 {
     k = 1
@@ -488,6 +498,9 @@ compareSplits <- function(res, nam1, nam2){
 }
 
 
+##' @rdname getClans
+##' @aliases diversity
+##' @export
 diversity <- function(tree, X){  
 # from kknn
     contr.dummy <- function (n, contrasts = TRUE) 

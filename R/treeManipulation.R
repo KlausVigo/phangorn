@@ -4,6 +4,9 @@
 
 
 # no checks for postorder
+##' @rdname midpoint
+##' @aliases getRoot
+##' @export
 getRoot <- function (tree) 
 {
     if(!is.null(attr(tree, "order")) && attr(tree, "order") == 
@@ -108,6 +111,7 @@ changeEdgeLength = function (tree, edge, edge.length)
 #' plot(tree2, show.node.label=TRUE)
 #' plot(tree3, show.node.label=TRUE)
 #' 
+#' @rdname midpoint
 #' @export midpoint
 midpoint <- function(tree, node.labels = "support"){
 # distance from node to root
@@ -190,6 +194,9 @@ node2root <- function(x){
 }
 
 
+##' @rdname midpoint
+##' @aliases pruneTree
+##' @export
 pruneTree = function(tree, ..., FUN = ">="){
      if(is.null(tree$node)) stop("no node labels")
      if(is.rooted(tree)) tree = unroot(tree)
