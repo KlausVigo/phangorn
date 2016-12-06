@@ -1,3 +1,14 @@
+     CHANGES in PHANGORN VERSION 2.1.2
+
+NEW FEATURES
+
+    o as.bitsplits.splits 
+     
+OTHER CHANGES
+
+    o added roxygen2 documentation
+
+
      CHANGES in PHANGORN VERSION 2.1.0
 
 NEW FEATURES
