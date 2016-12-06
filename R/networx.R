@@ -375,6 +375,33 @@ as.phylo.splits <- function (x, result = "phylo", ...)
 }
 
 
+as.bitsplits.splits <- function (x){
+    foo <- function(vect, RAWVECT) {
+        res <- RAWVECT
+        for (y in vect) {
+            i <- ceiling(y/8)
+            res[i] <- res[i] | as.raw(2^(8 - ((y - 1)%%8) - 1))
+        }
+        res
+    }
+    N <- length(x)
+    n <- length(attr(x, "labels")) 
+    nr <- ceiling(n/8)
+    mat <- raw(N * nr)
+    dim(mat) <- c(nr, N)
+    RAWVECT <- raw(nr)
+    for (i in 1:N) mat[, i] <- foo(x[[i]], RAWVECT)
+#    mat.bis <- raw(n * nr)
+#    dim(mat.bis) <- c(nr, n)
+#    for (i in 1:n) mat.bis[, i] <- foo(i, RAWVECT)
+#    mat <- cbind(mat.bis, mat[, -1, drop = FALSE])
+    freq <- attr(x, "weights")
+#    freq <- c(rep(freq[1L], n), freq[-1L])
+#    N <- N + n - 1L
+    structure(list(matsplit = mat, labels = attr(x, "labels"), 
+                   freq = freq), class = "bitsplits")
+}
+
 # computes compatible splits
 compatible <- function(obj){
     labels = attr(obj, "labels")
