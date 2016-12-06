@@ -472,6 +472,7 @@ nnin <- function (tree, n)
 #' trees1 <- nni(tree)
 #' trees2 <- rSPR(tree, 2, 10)
 #' 
+#' @rdname nni
 #' @export nni
 nni <- function (tree) 
 {
@@ -609,6 +610,9 @@ dn <- function(x){
 }
 
 
+##' @rdname nni
+##' @aliases rSPR
+##' @export
 rSPR = function (tree, moves = 1, n = length(moves), k=NULL) 
 {
     if (n == 1) {
@@ -815,6 +819,9 @@ sprMove <- function(tree, m){
 }
  
 
+##' @rdname nni
+##' @aliases rNNI
+##' @export
 rNNI <- function (tree, moves = 1, n = length(moves)) 
 {
     k = length(na.omit(match(tree$edge[, 2], tree$edge[, 1])))
