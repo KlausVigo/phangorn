@@ -87,6 +87,7 @@ as.Matrix.splits <- function(x, ...){
 
 ##' @rdname as.splits
 ##' @aliases print.splits
+##' @method print splits
 ##' @export
 print.splits <- function(x, maxp = getOption("max.print"), 
     zero.print = ".", one.print="|", ...)
@@ -158,6 +159,9 @@ presenceAbsenceOld <- function(x, y){
 }
 
 
+##' @rdname addConfidences
+##' @aliases presenceAbsence
+##' @export
 presenceAbsence <- function(x,y){
     spl <- as.splits(y)
     l <- length(spl)
@@ -1228,6 +1232,9 @@ consensusNet <- function (obj, prob = 0.3, ...)
 }
 
 
+##' @rdname addConfidences
+##' @aliases createLabel
+##' @export
 createLabel <- function(x, y, label_y, type="edge", nomatch=NA){
     spl_x <- as.splits(x)
     if(inherits(x, "phylo", TRUE)==1) spl_x <- spl_x[x$edge[,2]]
@@ -1470,6 +1477,7 @@ edgeLabels <- function(xx,yy,zz=NULL, edge){
 
 ##' @rdname as.networx
 ##' @aliases plot.networx
+##' @method plot networx
 ##' @export
 plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRUE,
     show.edge.label=FALSE, edge.label=NULL, show.node.label = FALSE, node.label=NULL,

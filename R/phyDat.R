@@ -958,6 +958,7 @@ getRows <- function (data, rows, site.pattern = TRUE)
 
 ##' @rdname phyDat
 ##' @aliases subset.phyDat
+##' @method subset phyDat
 ##' @export
 subset.phyDat <- function (x, subset, select, site.pattern = TRUE,...) 
 {  
@@ -1283,6 +1284,7 @@ genlight2phyDat <- function(x, ambiguity=NA){
 
 ##' @rdname phyDat
 ##' @aliases image.phyDat
+##' @method image phyDat
 ##' @export
 image.phyDat <- function(x, ...){
     if(attr(x, "type")=="AA")image(as.AAbin(x), ...)

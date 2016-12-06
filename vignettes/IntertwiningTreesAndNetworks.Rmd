@@ -101,7 +101,7 @@ nodelabels(mrbayes.tree$node.label, adj = c(1, 0), frame = "none")
 
 par(mfrow=c(1,1)) # Setting plot parameters
 # NeighbourNet
-plot.networx(Nnet,"2D")
+plot(Nnet,"2D")
 ## alternatively,
 # plot(Nnet,"2D")
 
@@ -128,7 +128,7 @@ edge.col[ is.na(edge.lab) ] <- "red"
 # or a simpler alternative...
 edge.col <- createLabel(Nnet, raxml.tree, "black", nomatch="red")
 
-x <- plot.networx(Nnet, edge.label = edge.lab, show.edge.label = T, "2D", edge.color = edge.col,
+x <- plot(Nnet, edge.label = edge.lab, show.edge.label = T, "2D", edge.color = edge.col,
                   col.edge.label = "blue")
 # the above plot function returns an invisible networx object and this object also  
 # contains the colors for the edges.
@@ -149,7 +149,7 @@ split.col2 <- createLabel(x, raxml.tree, label="black", "split", nomatch="red")
 
 # Plotting in R
 par(mfrow=c(1,1))
-out.x <- plot.networx(x,"2D",show.edge.label=TRUE, split.color=split.col, col.edge.label = "blue")
+out.x <- plot(x,"2D",show.edge.label=TRUE, split.color=split.col, col.edge.label = "blue")
 ```
 Again we can write to SplitsTree for viewing...
 ```{r}
@@ -177,13 +177,13 @@ We can also compare the neighborNet with a consensusNet (Holland BR, Huber KT, M
 ```{r}
 cnet <- consensusNet(raxml.bootstrap,prob=0.10)
 edge.col <- createLabel(cnet, Nnet, label="black", "edge", nomatch="grey")
-cnet <- plot.networx(cnet, "2D", show.edge.label = TRUE, edge.color=edge.col)
+cnet <- plot(cnet, "2D", show.edge.label = TRUE, edge.color=edge.col)
 
 edge.col <- createLabel(Nnet, cnet, label="black", "edge", nomatch="grey")
-z <- plot.networx(Nnet, "2D", show.edge.label = TRUE, edge.color=edge.col)
+z <- plot(Nnet, "2D", show.edge.label = TRUE, edge.color=edge.col)
 
 obj <- addConfidences(Nnet,cnet)
-plot.networx(obj,"2D",show.edge.label=T, edge.color=edge.col, col.edge.label = "blue")
+plot(obj,"2D",show.edge.label=T, edge.color=edge.col, col.edge.label = "blue")
 
 ## Write to SplitsTree for viewing
 # write.nexus.networx(obj,"Nnet.with.ML.Cnet.Bootstrap.nxs")
