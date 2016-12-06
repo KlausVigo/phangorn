@@ -713,6 +713,9 @@ phangornParseFormula <- function(model){
 }
 
 
+##' @rdname pml
+##' @aliases pml.control
+##' @export
 pml.control <- function (epsilon = 1e-08, maxit = 10, trace = 1) 
 {
     if (!is.numeric(epsilon) || epsilon <= 0) 
@@ -1756,6 +1759,7 @@ pml.fit <- function (tree, data, bf = rep(1/length(levels), length(levels)),
 #' # show some of the methods available for class pml
 #'   methods(class="pml")  
 #' 
+#' @rdname pml
 #' @export pml
 pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1, 
     rate = 1, model=NULL, ...) 
@@ -2376,6 +2380,9 @@ addTips2Tree <- function (tree, tips, where){
 }    
 
 
+##' @rdname pml
+##' @aliases optim.pml
+##' @export
 optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE, 
                         optInv = FALSE, optGamma = FALSE, optEdge = TRUE, optRate = FALSE, optRooted=FALSE,
                         control = pml.control(epsilon = 1e-8, maxit = 10, trace = 1L), 

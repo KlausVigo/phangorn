@@ -956,6 +956,9 @@ circNetwork <- function(x, ord=NULL){
 }
 
 
+##' @rdname plot.networx
+##' @aliases as.networx
+##' @export
 as.networx <- function (x, ...) 
 {
     if (inherits(x, "networx")) 
@@ -994,6 +997,9 @@ addTrivialSplits <- function(obj){
 }
 
 
+##' @rdname plot.networx
+##' @aliases as.networx.splits
+##' @export
 as.networx.splits <- function(x, planar=FALSE, coord = c("none", "2D", "3D"), ...){
   label <- attr(x, "label")
   
@@ -1063,7 +1069,10 @@ as.networx.splits <- function(x, planar=FALSE, coord = c("none", "2D", "3D"), ..
 #    as.networx(x, ...)
 #}
 
-## as.splits.phylo
+
+##' @rdname plot.networx
+##' @aliases as.networx.phylo
+##' @export
 as.networx.phylo <- function(x, ...){
     spl <- as.splits(x)
     spl <- spl[x$tree[,2]]
@@ -1461,6 +1470,7 @@ edgeLabels <- function(xx,yy,zz=NULL, edge){
 #' example(consensusNet)
 #' }
 #' 
+#' @rdname plot.networx
 #' @export plot.networx
 plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRUE,
     show.edge.label=FALSE, edge.label=NULL, show.node.label = FALSE, node.label=NULL,
