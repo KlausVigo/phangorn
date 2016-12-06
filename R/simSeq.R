@@ -64,11 +64,15 @@
 #' write.phyDat(data, file="temp.dat", format="sequential",nbcol = -1, colsep = "")
 #' unlink("temp.dat") 
 #' 
+#' @rdname simSeq
 #' @export simSeq
 simSeq <- function (x, ...) 
     UseMethod("simSeq")
 
 
+##' @rdname simSeq
+##' @aliases simSeq.phylo
+##' @export
 simSeq.phylo = function(x, l=1000, Q=NULL, bf=NULL, rootseq=NULL, type = "DNA", model="USER",
                   levels = NULL, rate=1, ancestral=FALSE, ...){
     
@@ -140,7 +144,9 @@ simSeq.phylo = function(x, l=1000, Q=NULL, bf=NULL, rootseq=NULL, type = "DNA", 
 }        
 
 
-
+##' @rdname simSeq
+##' @aliases simSeq.pml
+##' @export
 simSeq.pml <- function(x, ancestral=FALSE, ...){
     g = x$g
     w = x$w
