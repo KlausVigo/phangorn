@@ -82,6 +82,7 @@
 #' # write.tree(treeBS)
 #' }
 #' 
+#' @rdname bootstrap.pml
 #' @export bootstrap.pml
 bootstrap.pml <- function (x, bs = 100, trees = TRUE, multicore=FALSE, mc.cores = NULL, ...) 
 {
@@ -123,6 +124,9 @@ bootstrap.pml <- function (x, bs = 100, trees = TRUE, multicore=FALSE, mc.cores 
 }
 
 
+##' @rdname bootstrap.pml
+##' @aliases bootstrap.phyDat
+##' @export
 bootstrap.phyDat <- function (x, FUN, bs = 100, multicore=FALSE, mc.cores = NULL, jumble=TRUE, ...) 
 {
     if(multicore && is.null(mc.cores)){
@@ -191,6 +195,9 @@ checkLabels <- function(tree, tip){
 }
 
 
+##' @rdname bootstrap.pml
+##' @aliases plotBS
+##' @export
 plotBS <- function (tree, BStrees, type = "unrooted", bs.col = "black", 
                     bs.adj = NULL, p=50, frame="none",...) 
 {

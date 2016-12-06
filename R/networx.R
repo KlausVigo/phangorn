@@ -12,7 +12,7 @@
 #' as.splits.networx as.matrix.splits as.Matrix as.Matrix.splits c.splits
 #' distinct.splits print.splits write.splits allSplits allCircularSplits
 #' compatible write.nexus.splits read.nexus.splits as.phylo.splits countCycles
-#' addTrivialSplits matchSplits
+#' addTrivialSplits matchSplits as.bitsplits.splits
 #' @param x An object of class phylo or multiPhylo.
 #' @param maxp integer, default from \code{options(max.print)}, influences how
 #' many entries of large matrices are printed at all.
@@ -50,6 +50,7 @@
 #' spl <- allCircularSplits(5)
 #' plot(as.networx(spl), "2D")
 #' 
+#' @rdname as.splits
 #' @export as.splits
 as.splits <- function (x, ...){
     if(inherits(x, "splits")) return(x)
@@ -84,6 +85,9 @@ as.Matrix.splits <- function(x, ...){
 }
 
 
+##' @rdname as.splits
+##' @aliases print.splits
+##' @export
 print.splits <- function (x, maxp = getOption("max.print"), 
     zero.print = ".", one.print="|", ...)
 {
@@ -104,6 +108,7 @@ print.splits <- function (x, maxp = getOption("max.print"),
     attributes(result) = tmp
     result
 }
+
 
 changeOrder <- function(x, labels){
     oldL <- attr(x, "labels")
@@ -254,8 +259,11 @@ distinct.splits <- function(...){
 }
 
 
-## as.splits.phylo
+
 # computes splits from phylo
+##' @rdname as.splits
+##' @aliases as.splits.phylo
+##' @export
 as.splits.phylo <- function(x, ...){
     result <- bip(x)
     if(!is.null(x$edge.length)){
@@ -278,7 +286,9 @@ as.splits.phylo <- function(x, ...){
 
 
 # computes splits from multiPhylo object (e.g. bootstrap, MCMC etc.)
-# unrooted trees
+##' @rdname as.splits
+##' @aliases as.splits.multiPhylo
+##' @export
 as.splits.multiPhylo <- function(x, ...){
 #    if(inherits(x,"multiPhylo"))x = .uncompressTipLabel(x)
 #    if(inherits(x,"multiPhylo"))class(x)='list'  # prop.part allows not yet multiPhylo
@@ -325,6 +335,9 @@ as.splits.networx <- function(x, ...){
 }
 
 
+##' @rdname as.splits
+##' @aliases as.prop.part.splits
+##' @export
 as.prop.part.splits <- function(x, ...){
     attr(x, "number") = attr(x, "weights")
     attr(x, "weights") = NULL
@@ -402,7 +415,11 @@ as.bitsplits.splits <- function (x){
                    freq = freq), class = "bitsplits")
 }
 
+
 # computes compatible splits
+##' @rdname as.splits
+##' @aliases compatible
+##' @export
 compatible <- function(obj){
     labels = attr(obj, "labels")
     if(!inherits(obj, "splits"))stop("obj needs to be of class splits")
@@ -635,6 +652,9 @@ splitsNetwork <- function(dm, splits=NULL, gamma=.1, lambda=1e-6, weight=NULL){
 }
 
 
+##' @rdname as.splits
+##' @aliases allSplits
+##' @export
 allSplits = function(k, labels=NULL){
   result <- lapply(1:(2^(k-1)-1),dec2Bin)
   if(is.null(labels)) labels=(as.character(1:k))
@@ -644,6 +664,9 @@ allSplits = function(k, labels=NULL){
 }   
 
 
+##' @rdname as.splits
+##' @aliases allCircularSplits
+##' @export
 allCircularSplits <- function(k, labels=NULL){
     k = as.integer(k)
     l = (k-1L) %/% 2L
@@ -1184,6 +1207,7 @@ createLabel <- function(x, y, label_y, type="edge", nomatch=NA){
 #' plot(tree, show.node.label=TRUE)
 #' plot(nnet, "2D", show.edge.label=TRUE)
 #' 
+#' @rdname addConfidences
 #' @export addConfidences
 addConfidences <- function (x, y, ...) UseMethod("addConfidences")
 
@@ -1766,6 +1790,9 @@ write.splits = function (x, file = "", zero.print = ".", one.print = "|", print.
 }
  
 
+##' @rdname as.splits
+##' @aliases write.nexus.splits
+##' @export
 write.nexus.splits <- function (obj, file = "", weights=NULL, taxa=TRUE, append=FALSE) 
 {
     taxa.labels <- attr(obj, "labels")
@@ -2074,6 +2101,9 @@ read.nexus.networx <- function(file, splits=TRUE){
 }
 
 
+##' @rdname as.splits
+##' @aliases read.nexus.splits
+##' @export
 read.nexus.splits <- function(file)
 {
     X <- scan(file = file, what = "", sep = "\n", quiet = TRUE)
