@@ -84,7 +84,7 @@ sankoff.quartet <- function (dat, cost, p, l, weight)
 #' 
 #' parsimony(c(tree,treeNNI, treeRatchet), Laurasiatherian)
 #' 
-#' rdname parsimony
+#' @rdname parsimony
 #' @export parsimony
 parsimony <- function(tree, data, method='fitch', ...){
     if (class(data)[1] != "phyDat") stop("data must be of class phyDat")

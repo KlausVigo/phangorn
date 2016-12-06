@@ -19,6 +19,9 @@ edgeLengthIndex <- function(child, parent, nTips){
 #
 # Maximum likelihood estimation
 #
+##' @rdname pml.fit
+##' @aliases discrete.gamma
+##' @export
 discrete.gamma <- function (alpha, k) 
 {
     if (k == 1) return(1)
@@ -299,6 +302,9 @@ getP <- function(el, eig=edQt(), g=1.0){
 }
 
 
+##' @rdname pml.fit
+##' @aliases lli
+##' @export
 lli <- function (data, tree=NULL, ...) 
 {
     contrast <- attr(data, "contrast")
@@ -310,6 +316,9 @@ lli <- function (data, tree=NULL, ...)
 }
 
 
+##' @rdname pml.fit
+##' @aliases edQt
+##' @export
 edQt <- function (Q = c(1, 1, 1, 1, 1, 1), bf = c(0.25, 0.25, 0.25, 0.25)) 
 {
     l = length(bf)
@@ -352,12 +361,18 @@ edQ2 <- function(Q){
 }
 
 
+##' @rdname pml.fit
+##' @aliases pml.free
+##' @export
 pml.free <- function(){
     .C("ll_free")
 #    rm(.INV, .iind, envir = parent.frame())
 }
 
 
+##' @rdname pml.fit
+##' @aliases pml.init
+##' @export
 pml.init <- function(data, k=1L){
     nTips <- length(data)
     nr <- attr(data, "nr")
@@ -1477,6 +1492,8 @@ pml.fit4 <- function (tree, data, bf = rep(1/length(levels), length(levels)),
 #' maximum likelihood approach. \emph{Journal of Molecular Evolution},
 #' \bold{17}, 368--376.
 #' @keywords cluster
+#' 
+#' @rdname pml.fit
 #' @export pml.fit
 pml.fit <- function (tree, data, bf = rep(1/length(levels), length(levels)), 
                      shape = 1, k = 1, Q = rep(1, length(levels) * (length(levels) - 1)/2), 

@@ -367,6 +367,7 @@ PNJ <- function (data)
 #' # avoids negative edge weights 
 #' tree2 = nnls.tree(dm, tree)
 #' 
+#' @rdname designTree
 #' @export designTree
 designTree <- function(tree, method="unrooted", sparse=FALSE, ...){
     if (!is.na(pmatch(method, "all"))) 
@@ -526,6 +527,9 @@ designUnrooted2 <- function (tree, sparse=TRUE)
 }
 
 
+##' @rdname designTree
+##' @aliases nnls.tree
+##' @export
 nnls.tree <- function(dm, tree, rooted=FALSE, trace=1){
     if(is.rooted(tree) & rooted==FALSE){
         tree = unroot(tree)
@@ -615,11 +619,17 @@ nnls.tree <- function(dm, tree, rooted=FALSE, trace=1){
 }
 
 
+##' @rdname designTree
+##' @aliases nnls.phylo
+##' @export
 nnls.phylo <- function(x, dm, rooted=FALSE, trace=0){
     nnls.tree(dm, x, rooted, trace=trace)
 }
 
 
+##' @rdname designTree
+##' @aliases nnls.splits
+##' @export
 nnls.splits <- function(x, dm, trace=0){
     labels=attr(x, "labels")
     dm = as.matrix(dm)
@@ -672,6 +682,9 @@ nnls.splits <- function(x, dm, trace=0){
 }  
 
 
+##' @rdname designTree
+##' @aliases nnls.tree
+##' @export
 nnls.networx <- function(x, dm){
 #    spl <- attr(x, "splits")
     spl <- x$splits
