@@ -188,3 +188,14 @@ plot(obj,"2D",show.edge.label=T, edge.color=edge.col, col.edge.label = "blue")
 ## Write to SplitsTree for viewing
 # write.nexus.networx(obj,"Nnet.with.ML.Cnet.Bootstrap.nxs")
 ```
+
+
+### 
+```{r}
+tab <- read.table(file.path(fdir, "Splits.txt"), header=TRUE, sep="\t", stringsAsFactors = FALSE) 
+plot(tab$SplitWeight, tab$Bootstrap, log="x", col=tab$Color, 
+     xlab="Split weight (log scale)", ylab="Bootstrap (%)")
+legend(2e-5, 95,c("Splits well-supported by","bootstrap analysis but not", "shown in the splits graph"))
+legend(5e-3, 80,c("Splits supported by the", "bootstrap analysis and", "appear in the splits graph"))
+legend(5e-3, 15,c("Well-supported splits but", "with no bootstrap support"))
+```

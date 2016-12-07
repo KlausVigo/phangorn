@@ -1,4 +1,4 @@
-SplitWeight	Bootstrap_percentage	Color_code
+SplitWeight	Bootstrap	Color
 0.07060404	100	Blue
 0.04792795	100	Blue
 0.042704593	100	Blue
