@@ -2,6 +2,7 @@
 title: 'Intertwining phylogenetic trees and networks: R Example Script'
 author: "Klaus Schliep, Alastair Potts, David Morrison and Guido Grimm"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
+bibliography: phangorn.bib
 output: rmarkdown::html_vignette
 vignette: >
    %\VignetteIndexEntry{IntertwiningTreesAndNetworks}
@@ -191,6 +192,7 @@ plot(obj,"2D",show.edge.label=T, edge.color=edge.col, col.edge.label = "blue")
 
 
 ### 
+Plot from @Wang2012
 ```{r}
 tab <- read.table(file.path(fdir, "Splits.txt"), header=TRUE, sep="\t", stringsAsFactors = FALSE) 
 plot(tab$SplitWeight, tab$Bootstrap, log="x", col=tab$Color, 
