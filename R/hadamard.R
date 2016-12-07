@@ -109,7 +109,7 @@ ldfactorial <- function(x){
 #' 
 #' H <- hadamard(3)
 #' v <- 1:8
-#' H%*%v
+#' H %*% v
 #' fhm(v)
 #' 
 #' data(yeast)

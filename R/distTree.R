@@ -27,6 +27,7 @@
 #' tree = upgma(dm)
 #' plot(tree)
 #' 
+#' @rdname upgma
 #' @export upgma
 "upgma" <- function(D,method="average",...){
     DD=as.dist(D)
@@ -37,6 +38,9 @@
 }
 
 
+##' @rdname upgma
+##' @aliases wpgma
+##' @export
 "wpgma" <- function(D,method="mcquitty",...){
     DD=as.dist(D)
     hc = hclust(DD,method=method,...)
@@ -200,10 +204,14 @@ NJ_old <- function(x)
 #' tree <- NJ(dm)
 #' plot(tree)
 #' 
+#' @rdname NJ
 #' @export NJ
 NJ <- function(x) reorder(nj(x), "postorder")
 
 
+##' @rdname NJ
+##' @aliases UNJ
+##' @export
 UNJ <- function(x) 
 {
     x = as.matrix(x)

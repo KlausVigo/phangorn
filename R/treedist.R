@@ -293,6 +293,9 @@ treedist <- function (tree1, tree2, check.labels=TRUE)
 
 
 # leomrtns addition
+##' @rdname treedist
+##' @aliases sprdist
+##' @export
 sprdist <- function (tree1, tree2) 
 {
     tree1 = unroot(tree1)
