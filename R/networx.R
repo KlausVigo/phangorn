@@ -269,6 +269,9 @@ distinct.splits <- function(...){
 ##' @aliases as.splits.phylo
 ##' @export
 as.splits.phylo <- function(x, ...){
+    if (hasArg(as.is)) 
+        as.is <- list(...)$as.is
+    else as.is <- TRUE
     result <- bip(x)
     if(!is.null(x$edge.length)){
         edge.weights <- numeric(max(x$edge))
@@ -278,7 +281,7 @@ as.splits.phylo <- function(x, ...){
     if(!is.null(x$node.label)){
         conf <- x$node.label
         if(is.character(conf)) conf <- as.numeric(conf)
-        if(max(na.omit(conf)) > (1 + 1e-8))conf <- conf / 100
+        if(!as.is) if(max(na.omit(conf)) > (1 + 1e-8))conf <- conf / 100
         #if(!is.null(scale)) conf <- conf / scale
         attr(result, "confidences") <- c(rep(1, length(x$tip.label)), conf)
 #        attr(result, "confidences") <- c(rep("", length(x$tip.label)), x$node.label)
@@ -1307,6 +1310,10 @@ addConfidences <- function (x, y, ...) UseMethod("addConfidences")
 
 # y now more general 
 addConfidences.splits <- function(x, y, ...){
+    if (hasArg(add)) 
+        add <- list(...)$add
+    else add <- FALSE
+    
     tiplabel <- attr(x, "label")
     nTips = length(tiplabel)
 #    x = addTrivialSplits(x) 
@@ -1328,6 +1335,7 @@ addConfidences.splits <- function(x, y, ...){
     pos <-  which(!is.na(ind))
     confidences <- numeric(length(x))  #character 
     confidences[pos] <- attr(spl, "confidences")[ind[pos]]
+    if(add==TRUE) confidences <- paste(prettyNum(attr(x, "confidences")) , prettyNum(confidences), sep="/")
     #        y$node.label[ind[pos] - nTips]
     attr(x, "confidences") <- confidences
     x  
@@ -1344,10 +1352,14 @@ addConfidences.networx <- function(x, y, ...){
 ## as.splits.phylo
 addConfidences.phylo <- function(x, y, ...){
 #    call <- x$call
+    if (hasArg(as.is)) 
+        as.is <- list(...)$as.is
+    else as.is <- TRUE
     conf = attr(addConfidences(as.splits(x), y), "confidences")
     if(is.character(conf)) conf <- as.numeric(conf)
     nTips = length(x$tip.label)
-    x$node.label = conf[-c(1:nTips)]  * 100
+    if(!as.is) conf <- conf * 100
+    x$node.label = conf[-c(1:nTips)]
     x      
 } 
 
@@ -1479,7 +1491,7 @@ edgeLabels <- function(xx,yy,zz=NULL, edge){
 ##' @aliases plot.networx
 ##' @method plot networx
 ##' @export
-plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRUE,
+plot.networx <- function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRUE,
     show.edge.label=FALSE, edge.label=NULL, show.node.label = FALSE, node.label=NULL,
     show.nodes=FALSE, tip.color = "black", 
     edge.color="black", edge.width = 3, edge.lty = 1,
@@ -1494,9 +1506,14 @@ plot.networx = function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRU
 # test    
 #    x = reorder(x)
     nTips = length(x$tip.label)
-    conf = attr(x$splits,"confidences") * 100
+    conf = attr(x$splits,"confidences") 
     index = x$splitIndex
-    if(is.null(edge.label) & !is.null(conf))edge.label = conf[index]
+    if(is.null(edge.label) & !is.null(conf)){
+        conf = conf[index]
+        if(!is.null(x$translate)) conf[match(x$translate$node, x$edge[,2])] = ""
+        else conf[x$edge[,2] <= nTips] = ""    
+        edge.label = conf
+    }
     if(is.null(node.label))node.label = as.character(1:max(x$edge))
     if(show.tip.label)node.label[1:nTips] = ""
     
