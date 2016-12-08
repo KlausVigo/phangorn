@@ -227,7 +227,7 @@ library(phytools)
 par(mfrow=c(2,1))
 obj <- cophylo(YCh, mtG) 
 plot(obj, mar=c(.1,.1,2,.1),scale.bar=c(.005,.05), ylim=c(-.2,1))  
-title("A. YCH                                    B. mtG")
+title("A. YCh                                    B. mtG")
 obj <-  cophylo(ncAI, all_data)
 plot(obj, mar=c(.1,.1,2,.1),scale.bar=c(.005,.05), ylim=c(-.2,1))
 title("C. ncAI                              D. All data")
@@ -236,9 +236,12 @@ title("C. ncAI                              D. All data")
 
 
 ```{r}
-
+par(mfrow=c(2,2))
+YCh <- plotBS(YCh, YCh_boot, "phylogram", p=0)
+mtG <- plotBS(mtG, mtG_boot, "phylogram", p=0)
+ncAI <- plotBS(ncAI, ncAI_boot, "phylogram", p=0)
+all_data <- plotBS(all_data, all_data_boot, "phylogram", p=0)
 ```
-YCh <- plotBS()
 
 ```{r}
 par(mfrow=c(1,1), mar=c(3,3,3,3))
