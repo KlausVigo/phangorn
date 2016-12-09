@@ -206,22 +206,23 @@ text(1e-2, 10,c("Well-supported splits but \nwith no bootstrap support"))
 
 ### PLot 3
 
-```r 
+```{r} 
 library(magrittr)
 YCh <- read.tree(file.path(fdir, "RAxML_bestTree.YCh")) 
 mtG <- read.tree(file.path(fdir, "RAxML_bestTree.mtG")) 
 ncAI <- read.tree(file.path(fdir, "RAxML_bestTree.AIs")) 
 all_data <- read.tree(file.path(fdir, "RAxML_bestTree.3moles")) 
-
 YCh_boot <- read.tree(file.path(fdir, "RAxML_bootstrap.YCh")) 
 mtG_boot <- read.tree(file.path(fdir, "RAxML_bootstrap.mtG")) 
 ncAI_boot <- read.tree(file.path(fdir, "RAxML_bootstrap.AIs")) 
 all_data_boot <- read.tree(file.path(fdir, "RAxML_bootstrap.3moles")) 
 ```
+
 There are several option plotting a co-phylogeny. In the following we use the 
 `cophylo` function of the `phytools` package. 
 
 [comment]: # ({r cophylo, fig.width=7, fig.height=7})
+
 ```
 library(phytools)
 par(mfrow=c(2,1))
@@ -237,10 +238,10 @@ title("C. ncAI                              D. All data")
 
 ```{r}
 par(mfrow=c(2,2))
-YCh <- plotBS(YCh, YCh_boot, "phylogram", p=0)
-mtG <- plotBS(mtG, mtG_boot, "phylogram", p=0)
-ncAI <- plotBS(ncAI, ncAI_boot, "phylogram", p=0)
-all_data <- plotBS(all_data, all_data_boot, "phylogram", p=0)
+YCh <- plotBS(midpoint(YCh), YCh_boot, "phylogram", p=0)
+mtG <- plotBS(midpoint(mtG), mtG_boot, "phylogram", p=0)
+ncAI <- plotBS(midpoint(ncAI), ncAI_boot, "phylogram", p=0)
+all_data <- plotBS(midpoint(all_data), all_data_boot, "phylogram", p=0)
 ```
 
 ```{r}
