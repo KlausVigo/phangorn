@@ -40,6 +40,19 @@ distC <- function(d, CL){
 }
 
 
+distC2 <- function(d, CL, i, j){
+    le <- lengths(CL)
+    alpha <- le[i] / (le[i] + le[j])
+    beta <- le[j] / (le[i] + le[j])
+    tmp <- alpha * d[i, ] + beta *d[j,]
+    d[i, ] <- tmp
+    d[, i] <- tmp
+    d[i,i] <- 0
+    d[-j, -j]
+}
+
+
+
 reduc <- function(d, x, y, z){
   u <- 2/3* d[x, ] + d[y,]/3
   v <- 2/3* d[z, ] + d[y,]/3
@@ -76,6 +89,7 @@ getOrderingNN <- function (x)
     j = 0
  #   browser()
     DM = distC(d, CL)
+    
     l = nrow(DM)
     if(l>2){
     r = rowSums(DM)/(l - 2)
@@ -101,23 +115,9 @@ getOrderingNN <- function (x)
       DM2 = distC(d, CLtmp)
       if(ltmp>2) rtmp = rowSums(DM2)/(ltmp - 2)
       DM2 = DM2 - outer(rtmp, rtmp, "+")
-      
       TMP = DM2[1:n1, (n1+1):(n1+n2)]
-#browser()
-#      dtmp = d[CL[[e1]], CL[[e2]]]
-#      rtmp = numeric(n1+n2)
-#      for(ii in 1:(n1+n2)){
-#          for(jj in 1:ltmp){if(ii!=jj) rtmp[ii]=rtmp[ii] + mean.default(d[CLtmp[[ii]], CLtmp[[jj]]])
-#        }
-#      }
-#browser()      
-#      rtmp = rtmp/(ltmp-2)
-#      TMP2  = dtmp + rep(rtmp[1:n1],n2) + rep(rtmp[(n1+1):(n1+n2)], each=n1) 
-
-#browser()
 
       blub = which.min(TMP)
-#      print(blub)
 #print("blub")      
       if(n1==2 & n2==1){
         if(blub == 2){
