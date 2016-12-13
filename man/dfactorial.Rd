@@ -1,28 +1,34 @@
-\name{dfactorial}
+% Please edit documentation in R/hadamard.R
+\name{ldfactorial}
 \alias{dfactorial}
 \alias{ldfactorial}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{ Arithmetic Operators }
-\description{
-  double factorial function
-}
+\title{Arithmetic Operators}
 \usage{
-dfactorial(x)
 ldfactorial(x)
+
+dfactorial(x)
 }
 \arguments{
-  \item{x}{ a numeric scalar or vector }
+\item{x}{a numeric scalar or vector}
 }
-
 \value{
-\code{dfactorial(x)} returns the double factorial, that is \eqn{x\!\! = 1 *  3 * 5 *  \ldots * x } 
-and \code{ldfactorial(x)} is the natural logarithm of it. 
+\code{dfactorial(x)} returns the double factorial, that is
+\eqn{x\!\! = 1 * 3 * 5 * \ldots * x } and \code{ldfactorial(x)} is the
+natural logarithm of it.
 }
-
-\author{ Klaus Schliep \email{klaus.schliep@gmail.com}  }
-
-\seealso{ \code{\link[base:Special]{factorial}}, \code{\link[ape]{howmanytrees}} }
+\description{
+double factorial function
+}
 \examples{
+
 dfactorial(1:10)
+
 }
-\keyword{ classif }% at least one, from doc/KEYWORDS
+\author{
+Klaus Schliep \email{klaus.schliep@gmail.com}
+}
+\seealso{
+\code{\link[base:Special]{factorial}},
+\code{\link[ape]{howmanytrees}}
+}
+\keyword{classif}
