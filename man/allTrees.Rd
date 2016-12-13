@@ -1,30 +1,35 @@
+% Please edit documentation in R/treeManipulation.R
 \name{allTrees}
 \alias{allTrees}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{ Compute all trees topologies.}
-\description{
-\code{allTrees} computes all tree topologies for rooted or unrooted trees with up to 10 tips. \code{allTrees}  returns bifurcating trees.
-}
+\title{Compute all trees topologies.}
 \usage{
 allTrees(n, rooted = FALSE, tip.label = NULL)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{n}{Number of tips (<=10).}
-  \item{rooted}{Rooted or unrooted trees (default: rooted).  }
-  \item{tip.label}{Tip labels.}
+\item{n}{Number of tips (<=10).}
+
+\item{rooted}{Rooted or unrooted trees (default: rooted).}
+
+\item{tip.label}{Tip labels.}
 }
 \value{
-   an object of class \code{multiPhylo}. 
+an object of class \code{multiPhylo}.
 }
-\author{ Klaus Schliep \email{klaus.schliep@gmail.com} }
-
-\seealso{\code{\link[ape]{rtree}}, \code{\link{nni}}}
+\description{
+\code{allTrees} computes all tree topologies for rooted or unrooted trees
+with up to 10 tips. \code{allTrees} returns bifurcating trees.
+}
 \examples{
+
 trees <- allTrees(5)
-par(mfrow = c(3,5))
-for(i in 1:15)plot(trees[[i]])
+par(mfrow = c(3, 5))
+for (i in 1:15) plot(trees[[i]])
+
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ cluster }
+\author{
+Klaus Schliep \email{klaus.schliep@gmail.com}
+}
+\seealso{
+\code{\link[ape]{rtree}}, \code{\link{nni}}
+}
+\keyword{cluster}
