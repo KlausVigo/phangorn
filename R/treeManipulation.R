@@ -72,8 +72,6 @@ changeEdgeLength = function (tree, edge, edge.length)
 }
 
 
-# O(n) statt O(n^2) Speicher und Geschwindigkeit
-
 
 #' Tree manipulation
 #' 

@@ -1,7 +1,7 @@
 Package: phangorn
 Title: Phylogenetic Analysis in R
 Version: 2.1.2
-Date: 2016-12-04
+Date: 2016-12-13
 Authors@R: c(person("Klaus", "Schliep", email="klaus.schliep@gmail.com", role = c("aut", "cre")), 
   person("Emmanuel", "Paradis", role = c("aut")), 
   person("Leonardo", "de Oliveira Martins", role = c("aut")), 
@@ -11,17 +11,38 @@ Authors@R: c(person("Klaus", "Schliep", email="klaus.schliep@gmail.com", role = 
   person("Michelle", "Kendall", email="m.kendall@imperial.ac.uk", role = c("ctb")))
 Maintainer: Klaus Schliep <klaus.schliep@gmail.com>
 Description: Phylogenetic analysis in R: Estimation of phylogenetic
-        trees and networks using Maximum Likelihood, Maximum Parsimony,
-        distance methods and Hadamard conjugation.
-Depends: R (>= 3.2.0), ape (>= 4.0)
-Imports: quadprog, igraph (>= 1.0), Matrix, parallel, methods, utils, stats, graphics, grDevices, fastmatch, magrittr, Rcpp (>= 0.12.0)
+    trees and networks using Maximum Likelihood, Maximum Parsimony,
+    distance methods and Hadamard conjugation.
+Depends:
+    R (>= 3.2.0),
+    ape (>= 4.0)
+Imports:
+    quadprog,
+    igraph (>= 1.0),
+    Matrix,
+    parallel,
+    methods,
+    utils,
+    stats,
+    graphics,
+    grDevices,
+    fastmatch,
+    magrittr,
+    Rcpp (>= 0.12.0)
 LinkingTo: Rcpp
-Suggests: testthat, seqLogo, seqinr, xtable, flashClust, rgl, knitr, rmarkdown, Biostrings
+Suggests:
+    testthat,
+    seqLogo,
+    seqinr,
+    xtable,
+    flashClust,
+    rgl,
+    knitr,
+    rmarkdown,
+    Biostrings
 ByteCompile: TRUE
 License: GPL (>= 2)
 VignetteBuilder: utils, knitr
 URL: https://github.com/KlausVigo/phangorn
 Repository: CRAN
-
-
-
+RoxygenNote: 5.0.1
