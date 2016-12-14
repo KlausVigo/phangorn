@@ -192,17 +192,34 @@ plot(obj,"2D",show.edge.label=T, edge.color=edge.col, col.edge.label = "blue")
 
 
 ### 
-Next we show relationship between splits weights, from a NeighborNet splits graph, and the bootstrap percentage from a Neighbor Joining tree of the same dataset. The data are from @Wang2012, with 28 species of birds and 25,700 aligned nucleotides. 
+
+Next we show relationship between splits weights, from a NeighborNet splits graph, and the bootstrap percentage. 
+
 ```{r, fig.width=7, fig.height=6} 
-tab <- read.table(file.path(fdir, "Splits.txt"), header=TRUE, sep="\t", stringsAsFactors = FALSE) 
-plot(tab$SplitWeight, tab$Bootstrap, log="x", col=tab$Color, pch=20,  
+bs_splits <- as.splits(raxml.bootstrap)
+# we get rid of a trivial splits
+bs_splits <- bs_splits[-which(lengths(bs_splits)==15)]
+net_weights <- attr(Nnet$splits, "weights")
+
+# some
+splits_in_BS <- matchSplits(Nnet$splits, bs_splits, FALSE)
+in_BS <- which(!is.na(splits_in_BS))
+
+#Next we construct a table with two columns, the first one holding the edge weights (or 1e-6) and the second one the bootstrap support.  
+tab <- cbind(SplitWeight = 1e-6, Bootstrap=attr(bs_splits, "weights"))
+tab[splits_in_BS[in_BS], "SplitWeight"] <- net_weights[in_BS]
+tab <- rbind(tab, cbind(net_weights[-in_BS], 0))
+tab[,"Bootstrap"] <- tab[,"Bootstrap"] / 10
+summary(tab)
+
+col = rep("blue", nrow(tab))
+col[tab[,1]==1e-6] <- "green"
+col[tab[,2]==0] <- "red"
+
+plot(tab[,"SplitWeight"], tab[,"Bootstrap"], log="x", col=col, pch=20,  
      xlab="Split weight (log scale)", ylab="Bootstrap (%)")
-text(7e-5, 90,c("Splits well-supported by    \nbootstrap analysis but not \nshown in the splits graph  "))
-text(1e-2, 80,c("Splits supported by the    \nbootstrap analysis and    \nappear in the splits graph"))
-text(1e-2, 10,c("Well-supported splits but \nwith no bootstrap support"))
+legend(2e-6, 100, c("Splits supported by bootstrap analysis \nbut not shown in the splits graph\n", "Splits supported by the bootstrap analysis \nand appear in the splits graph\n", "Well-supported splits \nbut no bootstrap support\n"), pch=20, col=c("green", "blue", "red"), bty="n")
 ```
-
-
 
 ### PLot 3
 
@@ -234,7 +251,6 @@ plot(obj, mar=c(.1,.1,2,.1),scale.bar=c(.005,.05), ylim=c(-.2,1))
 title("C. ncAI                              D. All data")
 ```
 ![](cophylo.png)
-
 
 ```{r}
 par(mfrow=c(2,2))
