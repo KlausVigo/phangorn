@@ -59,7 +59,6 @@
 ancestral.pml <- function (object, type=c("marginal", "ml", "bayes")) 
 {
     call <- match.call()
-    type <- match.arg(type)
     pt <- match.arg(type, c("marginal", "joint", "ml", "bayes"))   
     tree = object$tree 
     
