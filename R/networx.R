@@ -12,7 +12,7 @@
 #' as.splits.networx as.matrix.splits as.Matrix as.Matrix.splits c.splits
 #' distinct.splits print.splits write.splits allSplits allCircularSplits
 #' compatible write.nexus.splits read.nexus.splits as.phylo.splits countCycles
-#' addTrivialSplits matchSplits as.bitsplits.splits
+#' addTrivialSplits matchSplits as.bitsplits.splits unique.splits
 #' @param x An object of class phylo or multiPhylo.
 #' @param maxp integer, default from \code{options(max.print)}, influences how
 #' many entries of large matrices are printed at all.
@@ -217,6 +217,12 @@ c.splits <- function (..., recursive=FALSE)
     res
 }
 
+
+unique.splits <- function(x, incomparables = FALSE, unrooted=TRUE, ...){
+    nTips <- length(attr(x, "labels"))
+    x <- SHORTwise(x, nTips)
+    x[!duplicated(x)]
+}
 
 distinct.splits <- function(...){
     tmp <- c(...)
