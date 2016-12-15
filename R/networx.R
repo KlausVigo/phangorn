@@ -206,7 +206,7 @@ c.splits <- function (..., recursive=FALSE)
         match.names(labels, attr(x[[i]], "labels"))
         x[[i]] <- changeOrder(x[[i]], labels)
     }
-    w <- as.vector(sapply(x, attr, "weights"))
+    w <- as.vector(unlist(lapply(x, attr, "weights")))
     x <- lapply(x, unclass)
     res <- structure(do.call("c", x), class=c("splits", "prop.part"))
     names(res) <- NULL
