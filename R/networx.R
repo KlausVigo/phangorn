@@ -1297,13 +1297,13 @@ addConfidences.splits <- function(x, y, ...){
     }
     spl <- as.splits(y)
     spl <- changeOrder(spl, tiplabel)
-    spl <- SHORTwise(spl, nTips)
+    spl <- oneWise(spl, nTips)
 #    ind <- match(SHORTwise(x, nTips), spl)
 #    ind
-    ind <- match(SHORTwise(x, nTips), spl)
+    ind <- match(oneWise(x, nTips), spl)
     #    pos <-  which(ind > nTips)
     pos <-  which(!is.na(ind))
-    confidences <- numeric(length(x))  #character 
+    confidences <- rep(NA_real_, length(x)) #numeric(length(x))  #character 
     confidences[pos] <- attr(spl, "confidences")[ind[pos]]
     if(add==TRUE) confidences <- paste(prettyNum(attr(x, "confidences")) , prettyNum(confidences), sep="/")
     #        y$node.label[ind[pos] - nTips]
@@ -1325,8 +1325,13 @@ addConfidences.phylo <- function(x, y, ...){
     if (hasArg(as.is)) 
         as.is <- list(...)$as.is
     else as.is <- TRUE
-    conf = attr(addConfidences(as.splits(x), y), "confidences")
+    nTips <- length(x$tip.label)
+    spl <- as.splits(x) %>% oneWise(nTips=nTips)
+    conf = attr(addConfidences(spl, y), "confidences")
+    l <- lengths(spl)
     if(is.character(conf)) conf <- as.numeric(conf)
+    ind <- (l==1L) | (l==(nTips-1L)) | (l==nTips)
+    conf[ind==TRUE] <- NA_real_
     nTips = length(x$tip.label)
     if(!as.is) conf <- conf * 100
     x$node.label = conf[-c(1:nTips)]
