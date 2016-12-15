@@ -21,6 +21,7 @@
 \alias{matchSplits}
 \alias{print.splits}
 \alias{read.nexus.splits}
+\alias{unique.splits}
 \alias{write.nexus.splits}
 \alias{write.splits}
 \title{Splits representation of graphs and trees.}
