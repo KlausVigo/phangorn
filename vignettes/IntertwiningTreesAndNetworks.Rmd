@@ -200,8 +200,8 @@ Next we show relationship between splits weights, from a NeighborNet splits grap
 bs_splits <- as.splits(raxml.bootstrap)
 # we get rid of trivial splits
 bs_splits <- bs_splits[-which(lengths(bs_splits)==15)]
-# set the weights (edge weights) to 1e-6 (almost zero)
-# these contain bootstrap values in the beginning
+# we overwrite bootstrap values and set the weights 
+# to 1e-6 (almost zero), as we plot them on a log scale later on
 attr(bs_splits, "weights")[] <- 1e-6
 # combine the splits from the bootstrap and neighbor net
 # and delete duplicates and add the confidence values
