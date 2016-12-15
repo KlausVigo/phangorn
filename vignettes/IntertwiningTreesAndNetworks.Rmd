@@ -46,6 +46,7 @@ install_github("KlausVigo/phangorn")
 ### Getting started                                                  
 ```{r}
 library(phangorn)    # load the phangorn library
+library(magrittr)  
 ```
 
 ### Set the working directory
@@ -197,24 +198,27 @@ Next we show relationship between splits weights, from a NeighborNet splits grap
 
 ```{r, fig.width=7, fig.height=6} 
 bs_splits <- as.splits(raxml.bootstrap)
-# we get rid of a trivial splits
+# we get rid of trivial splits
 bs_splits <- bs_splits[-which(lengths(bs_splits)==15)]
-net_weights <- attr(Nnet$splits, "weights")
+# set the weights (edge weights) to 1e-6 (almost zero)
+# these contain bootstrap values in the beginning
+attr(bs_splits, "weights")[] <- 1e-6
+# combine the splits from the bootstrap and neighbor net
+# and delete duplicates and add the confidence values
+all_splits <- c(Nnet$splits, bs_splits) %>% unique %>% addConfidences(as.splits(raxml.bootstrap))
 
-# some
-splits_in_BS <- matchSplits(Nnet$splits, bs_splits, FALSE)
-in_BS <- which(!is.na(splits_in_BS))
+# For easier plotting we create a matrix with the confidences and 
+# weights as columns
+tab <- cbind(SplitWeight = attr(all_splits, "weights"), Bootstrap=attr(all_splits, "confidences"))
 
-#Next we construct a table with two columns, the first one holding the edge weights (or 1e-6) and the second one the bootstrap support.  
-tab <- cbind(SplitWeight = 1e-6, Bootstrap=attr(bs_splits, "weights"))
-tab[splits_in_BS[in_BS], "SplitWeight"] <- net_weights[in_BS]
-tab <- rbind(tab, cbind(net_weights[-in_BS], 0))
-tab[,"Bootstrap"] <- tab[,"Bootstrap"] / 10
+# We scle the confidences to Percentages 
+tab[,"Bootstrap"] <- round(tab[,"Bootstrap"] * 100)
+
 summary(tab)
 
 col = rep("blue", nrow(tab))
-col[tab[,1]==1e-6] <- "green"
 col[tab[,2]==0] <- "red"
+col[tab[,1]==1e-6] <- "green"
 
 plot(tab[,"SplitWeight"], tab[,"Bootstrap"], log="x", col=col, pch=20,  
      xlab="Split weight (log scale)", ylab="Bootstrap (%)")
@@ -224,7 +228,6 @@ legend(2e-6, 100, c("Splits supported by bootstrap analysis \nbut not shown in t
 ### PLot 3
 
 ```{r} 
-library(magrittr)
 YCh <- read.tree(file.path(fdir, "RAxML_bestTree.YCh")) 
 mtG <- read.tree(file.path(fdir, "RAxML_bestTree.mtG")) 
 ncAI <- read.tree(file.path(fdir, "RAxML_bestTree.AIs")) 
