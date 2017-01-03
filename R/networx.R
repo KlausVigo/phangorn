@@ -2108,7 +2108,10 @@ read.nexus.splits <- function(file)
         tmp = X[i]
         tmp = sub("\\s+", "", tmp) 
         tmp = strsplit(tmp, "\t")[[1]]
-        if(flab)labels[j] = as.numeric(tmp[ind[1]])        
+        if(flab){
+            labels[j] <- gsub("'", "", tmp[ind[1]]) %>% as.numeric
+#            labels[j] = as.numeric(tmp[ind[1]])
+        }    
         if(fwei)weights[j] = as.numeric(tmp[ind[2]])
         if(fcon)confidences[j] = as.numeric(tmp[ind[3]])
         if(fint)intervals[j] = as.numeric(tmp[ind[4]])
