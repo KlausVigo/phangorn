@@ -1090,16 +1090,29 @@ write.phylip <- function(data, weight, file=""){
 
 read.FASTA.AA <- function (file) 
 {
-    if (length(grep("^(ht|f)tp:", file))) {
+    if (length(grep("^(ht|f)tp(s|):", file))) {
         url <- file
         file <- tempfile()
         download.file(url, file)
     }
-    sz <- file.info(file)$size
-    x <- readBin(file, "raw", sz)
-    icr <- which(x == as.raw(13))
-    if (length(icr)) 
-        x <- x[-icr]
+    if (is(file, "connection")) {
+        if (!isOpen(file, "rt")) {
+            open(file, "rt")
+            on.exit(close(file))
+        }
+        x <- scan(file, what = character(), sep = "\n", quiet = TRUE)
+        x <- charToRaw(paste(x, collapse = "\n"))
+        sz <- length(x)
+    } else {
+        sz <- file.size(file)
+        x <- readBin(file, "raw", sz)
+    }
+    ## if the file is larger than 1 Gb we assume that it is
+    ## UNIX-encoded and skip the search-replace of carriage returns
+    if (sz < 1e9) {
+        icr <- which(x == as.raw(0x0d)) # CR
+        if (length(icr)) x <- x[-icr]
+    }
     res <- .Call("rawStream2phyDat", x)
     
     aa <- c("a", "r", "n", "d", "c", "q", "e", "g", "h", "i", 
