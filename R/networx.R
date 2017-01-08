@@ -381,13 +381,8 @@ as.bitsplits.splits <- function (x){
     dim(mat) <- c(nr, N)
     RAWVECT <- raw(nr)
     for (i in 1:N) mat[, i] <- foo(x[[i]], RAWVECT)
-#    mat.bis <- raw(n * nr)
-#    dim(mat.bis) <- c(nr, n)
-#    for (i in 1:n) mat.bis[, i] <- foo(i, RAWVECT)
-#    mat <- cbind(mat.bis, mat[, -1, drop = FALSE])
     freq <- attr(x, "weights")
-#    freq <- c(rep(freq[1L], n), freq[-1L])
-#    N <- N + n - 1L
+    if(is.null(freq)) freq <- rep(1, N)
     structure(list(matsplit = mat, labels = attr(x, "labels"), 
                    freq = freq), class = "bitsplits")
 }
