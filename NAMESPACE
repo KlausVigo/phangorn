@@ -32,7 +32,7 @@ importFrom(graphics, plot, plot.default, plot.new, plot.window, text, par, ablin
            points, image, matplot, legend, hist) 
 importFrom(utils, read.table, download.file, citation, stack, installed.packages, write.table, combn) 
 importFrom(grDevices, rgb, rainbow, adjustcolor, col2rgb)
-importFrom(methods, hasArg)
+importFrom(methods, hasArg, is)
 #importFrom(Rcpp, evalCpp)
 #importMethodsFrom(Biostrings,as.matrix)
 #importFrom(Biostrings,DNAMultipleAlignment)
