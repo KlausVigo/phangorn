@@ -1038,7 +1038,7 @@ addTrivialSplits <- function(obj){
 removeTrivialSplits <- function(obj){
     nTips <- length(attr(obj, "label"))
     l <- lengths(obj)
-    ind <- which((l == 1L) | (l == nTips) | (l == (nTips-1L)))
+    ind <- which((l == 0L) | (l == 1L) | (l == nTips) | (l == (nTips-1L)))
     obj[-ind]
 }
 
