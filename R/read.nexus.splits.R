@@ -37,6 +37,7 @@
 #' write.nexus.splits(sp)
 #' spl <- allCircularSplits(5)
 #' plot(as.networx(spl), "2D")
+#' write.splits(spl, print.labels = FALSE)
 #' 
 #' @rdname read.nexus.splits
 #' @aliases read.nexus.splits
@@ -251,7 +252,7 @@ write.nexus.networx <- function(obj, file = "", taxa=TRUE, splits=TRUE, append=F
     }
     else {
         translate <- obj$translate
-        for(i in 1:nrow(translate)){
+        for(i in 1:length(translate$label)){
             cat(translate$node[i], " ", translate$label[i], ",\n", sep="", file = file, append = TRUE)
         }        
     }
@@ -267,8 +268,8 @@ write.nexus.networx <- function(obj, file = "", taxa=TRUE, splits=TRUE, append=F
             }
         }
         else{
-            for(i in 1:nrow(translate)){
-                cat(translate[i,1], " ", translate[i,2], ",\n", sep="", file = file, append = TRUE)
+            for(i in 1:length(translate$node)){
+                cat(translate$node[i], " ", translate$label[i], ",\n", sep="", file = file, append = TRUE)
             }           
         }     
     }    
