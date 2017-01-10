@@ -167,7 +167,7 @@ write.nexus.splits <- function (obj, file = "", weights=NULL, taxa=TRUE, append=
         format = paste(format, "confidences=yes")
         fcon=TRUE
         conf = attr(obj, "confidences")
-        if(any(is.na(x))){ 
+        if(any(is.na(conf))){ 
             conf[is.na(conf)] = 0
             attr(obj, "confidences") = conf
         }
