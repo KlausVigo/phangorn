@@ -399,7 +399,7 @@ void C_reorder(int *from, int *to, int *n, int *sumNode,  int *neworder, int *ro
 }
 
 
-
+/*
 SEXP AllChildren(SEXP children, SEXP parent, SEXP M){
     int i, j, k, l=0L, m=INTEGER(M)[0], *tab, p;   
     R_len_t n=length(parent); 
@@ -434,7 +434,7 @@ SEXP AllChildren(SEXP children, SEXP parent, SEXP M){
     UNPROTECT(1);
     return(RESULT);
 }
-
+*/
 
 void AllKids(int *children, int *parents, int *nTips, int *nNode, int *lp, int *kids, int *lkids, int *pkids){
     int i, k, m=nNode[0], p; // l=0L, *tab , j 
@@ -479,7 +479,7 @@ allDesc = function(x, node){
 }
 
 allDesc(tree, 14)
- */
+ 
  
 SEXP AllDesc(SEXP child, SEXP parent, SEXP M, SEXP NODE){
     int i, m=INTEGER(M)[0]+1, *tab, *res, p, node=INTEGER(NODE)[0];   
@@ -503,7 +503,7 @@ SEXP AllDesc(SEXP child, SEXP parent, SEXP M, SEXP NODE){
     UNPROTECT(1);
     return(RESULT);
 }
-
+ */
 
 // std::merge
 void cisort(int *x, int *y, int a, int b, int *res){
