@@ -20,8 +20,8 @@
 \alias{distinct.splits}
 \alias{matchSplits}
 \alias{print.splits}
+\alias{removeTrivialSplits}
 \alias{unique.splits}
-\alias{write.splits}
 \title{Splits representation of graphs and trees.}
 \usage{
 as.splits(x, ...)
