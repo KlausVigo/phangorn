@@ -74,7 +74,7 @@ addConfidences_MultiPhylo <- function(spl, trees){
         #        print(zaehler)
     }
     confidences <- zaehler / nenner
-    attr(splits, "confidences") <- confidences
-    net
+    attr(spl, "confidences") <- confidences
+    spl
 }            
 

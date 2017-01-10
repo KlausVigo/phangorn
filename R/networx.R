@@ -12,7 +12,7 @@
 #' as.splits.networx as.matrix.splits as.Matrix as.Matrix.splits c.splits
 #' distinct.splits print.splits allSplits allCircularSplits
 #' compatible as.phylo.splits countCycles
-#' addTrivialSplits matchSplits as.bitsplits.splits unique.splits
+#' addTrivialSplits removeTrivialSplits matchSplits as.bitsplits.splits unique.splits
 #' @param x An object of class phylo or multiPhylo.
 #' @param maxp integer, default from \code{options(max.print)}, influences how
 #' many entries of large matrices are printed at all.
@@ -1032,6 +1032,14 @@ addTrivialSplits <- function(obj){
         attr(obj, "weights") <- weight
     }
     obj
+}
+
+
+removeTrivialSplits <- function(obj){
+    nTips <- length(attr(obj, "label"))
+    l <- lengths(obj)
+    ind <- which((l == 1L) | (l == nTips) | (l == (nTips-1L)))
+    obj[-ind]
 }
 
 
