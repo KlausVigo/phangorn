@@ -5,8 +5,6 @@
 \alias{as.networx.phylo}
 \alias{as.networx.splits}
 \alias{plot.networx}
-\alias{read.nexus.networx}
-\alias{write.nexus.networx}
 \title{Phylogenetic networks}
 \usage{
 as.networx(x, ...)
