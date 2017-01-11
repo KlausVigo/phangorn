@@ -1271,7 +1271,7 @@ addConfidences <- function (x, y, ...) UseMethod("addConfidences")
 
 
 # y now more general 
-addConfidences.splits <- function(x, y, ...){
+addConfidences.splits <- function(x, y, scaler=1, ...){
     if (hasArg(add)) 
         add <- list(...)$add
     else add <- FALSE
@@ -1296,7 +1296,7 @@ addConfidences.splits <- function(x, y, ...){
     #    pos <-  which(ind > nTips)
     pos <-  which(!is.na(ind))
     confidences <- rep(NA_real_, length(x)) #numeric(length(x))  #character 
-    confidences[pos] <- attr(spl, "confidences")[ind[pos]]
+    confidences[pos] <- attr(spl, "confidences")[ind[pos]] * scaler
     if(add==TRUE) confidences <- paste(prettyNum(attr(x, "confidences")) , prettyNum(confidences), sep="/")
     #        y$node.label[ind[pos] - nTips]
     attr(x, "confidences") <- confidences
@@ -1304,9 +1304,9 @@ addConfidences.splits <- function(x, y, ...){
 }
 
 
-addConfidences.networx <- function(x, y, ...){
+addConfidences.networx <- function(x, y, scaler=1, ...){
     spl <- x$splits
-    spl <- addConfidences(spl, y, ...)
+    spl <- addConfidences(spl, y, scaler=scaler, ...)
     x$splits <- spl
     x    
 }
