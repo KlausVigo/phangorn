@@ -97,7 +97,7 @@ oneWise <- function (x, nTips=NULL)
 {
     if(is.null(nTips))nTips <- length(x[[1L]])
     v <- 1:nTips
-    for (i in 2:length(x)) {
+    for (i in 1:length(x)) {
         y <- x[[i]]
         if (y[1] != 1) 
             y <- v[-y]
