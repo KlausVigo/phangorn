@@ -141,7 +141,7 @@ x <- plot(Nnet, edge.label = edge.lab, show.edge.label = T, "2D", edge.color = e
 ### 1B: 
 Bootstrap support for all branches (branch labels) in the ML tree mapped on the corresponding edge bundles of the NN network. The edges in the network which are not found as ML tree branches are highlighted in red.
 ```{r}   
-x <- addConfidences(Nnet,raxml.tree)
+x <- addConfidences(Nnet,raxml.tree, scaler = .01)
 # find splits that are in the network but not in the tree
 split.col <- rep("black", length(x$splits))
 split.col[ !matchSplits(as.splits(x), as.splits(raxml.tree)) ] <- "red"
