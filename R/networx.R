@@ -1297,7 +1297,7 @@ addConfidences.splits <- function(x, y, scaler=1, ...){
     pos <-  which(!is.na(ind))
     confidences <- rep(NA_real_, length(x)) #numeric(length(x))  #character 
     confidences[pos] <- attr(spl, "confidences")[ind[pos]] * scaler
-    if(add==TRUE) confidences <- paste(prettyNum(attr(x, "confidences")) , prettyNum(confidences), sep="/")
+    if(add==TRUE) confidences <- paste(prettyNum(attr(x, "confidences")) , prettyNum(confidences * scaler), sep="/")
     #        y$node.label[ind[pos] - nTips]
     attr(x, "confidences") <- confidences
     x  
