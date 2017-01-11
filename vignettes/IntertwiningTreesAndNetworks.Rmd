@@ -196,30 +196,35 @@ plot(obj,"2D",show.edge.label=T, edge.color=edge.col, col.edge.label = "blue")
 
 Next we show relationship between splits weights, from a NeighborNet splits graph, and the bootstrap percentage. 
 
-```{r, fig.width=7, fig.height=6} 
+```{r, fig.width=7, fig.height=6}
+Nnet <- read.nexus.networx(file.path(fdir,"RAxML_distances.Wang.nxs"))
+raxml.tree <- read.tree(file.path(fdir,"RAxML_bestTree.Wang.out")) %>% unroot
+raxml.bootstrap <- read.tree(file.path(fdir,"RAxML_bootstrap.Wang.out"))
+
 bs_splits <- as.splits(raxml.bootstrap)
-# we get rid of trivial splits
-bs_splits <- bs_splits[-which(lengths(bs_splits)==15)]
-bs_splits <- bs_splits[-which(lengths(bs_splits)==1)]
+tree_splits <- as.splits(raxml.tree) %>% unique %>% removeTrivialSplits
+
 # we overwrite bootstrap values and set the weights 
 # to 1e-6 (almost zero), as we plot them on a log scale later on
 attr(bs_splits, "weights")[] <- 1e-6
 # combine the splits from the bootstrap and neighbor net
 # and delete duplicates and add the confidence values
-all_splits <- c(Nnet$splits, bs_splits) %>% unique %>% addConfidences(as.splits(raxml.bootstrap))
+# we get rid of trivial splits
+all_splits <- c(Nnet$splits, bs_splits) %>% unique %>% removeTrivialSplits %>% addConfidences(bs_splits)
 
 # For easier plotting we create a matrix with the confidences and 
 # weights as columns
-tab <- cbind(SplitWeight = attr(all_splits, "weights"), Bootstrap=attr(all_splits, "confidences"))
+tab <- data.frame(SplitWeight = attr(all_splits, "weights"), Bootstrap=attr(all_splits, "confidences"), Tree=FALSE)
+tab$Tree[matchSplits(tree_splits, all_splits, FALSE)] = TRUE
 
-# We scle the confidences to Percentages 
+# We scale the confidences to Percentages 
+tab[is.na(tab[,"Bootstrap"]),"Bootstrap"] <- 0
 tab[,"Bootstrap"] <- round(tab[,"Bootstrap"] * 100)
+rownames(tab) <- apply(as.matrix(all_splits, zero.print = ".", one.print = "|"), 1, paste0, collapse="")
 
-summary(tab)
-
-col = rep("blue", nrow(tab))
-col[tab[,2]==0] <- "red"
-col[tab[,1]==1e-6] <- "green"
+col <- rep("blue", nrow(tab))
+col[tab[,"Bootstrap"]==0] <- "red"
+col[tab[,"SplitWeight"]==1e-6] <- "green"
 
 plot(tab[,"SplitWeight"], tab[,"Bootstrap"], log="x", col=col, pch=20,  
      xlab="Split weight (log scale)", ylab="Bootstrap (%)")
