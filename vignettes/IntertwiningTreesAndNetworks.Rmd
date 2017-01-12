@@ -52,7 +52,7 @@ library(magrittr)
 ### Set the working directory
 This is often a major stumbling block for new R users. You need to specify where in your folder structure you wish to work. i.e, where are the files stored that you wish to input?
 
-This is done using the setwd() function, e.g. setwd("C:/TreesNetworks/Example Files").
+This is done using the `setwd()` function, e.g. `setwd("C:/TreesNetworks/Example Files")`.
 
 We now set it to the folder of the phangorn package, which contains the files we want to load for this example.
 
@@ -141,6 +141,8 @@ x <- plot(Nnet, edge.label = edge.lab, show.edge.label = T, "2D", edge.color = e
 ### 1B: 
 Bootstrap support for all branches (branch labels) in the ML tree mapped on the corresponding edge bundles of the NN network. The edges in the network which are not found as ML tree branches are highlighted in red.
 ```{r}   
+# the scaler argument multiplies the confidence values. This is useful to switch
+# confidences values between total, percentage or ratios.   
 x <- addConfidences(Nnet,raxml.tree, scaler = .01)
 # find splits that are in the network but not in the tree
 split.col <- rep("black", length(x$splits))
@@ -193,9 +195,11 @@ plot(obj,"2D",show.edge.label=T, edge.color=edge.col, col.edge.label = "blue")
 
 
 ### 
+There are four possible data patterns in phylogenetic reconstruction: (1) patterns that are well supported in the network and appear in the bootstapped trees; (2) patterns that are well supported by (part of) the data/network but do not appear in the optimised trees, i.e. they are incompatible with the tree; (3) patterns that are weakly supported by the network but appear in the optimised trees anyway, i.e. they are compatible with the tree. 
 
-Next we show relationship between splits weights, from a NeighborNet splits graph, and the bootstrap percentage. 
+Here we demonstrate these patterns by showing the relationships between splits weights, from a NeighborNet splits graph, bootstrap bipartitions support and bootstrap percentages plotted on the optimised tree for a dataset of @Wang2012. 
 
+(An advanced user figure...)
 ```{r, fig.width=7, fig.height=6}
 Nnet <- read.nexus.networx(file.path(fdir,"RAxML_distances.Wang.nxs"))
 raxml.tree <- read.tree(file.path(fdir,"RAxML_bestTree.Wang.out")) %>% unroot
@@ -203,35 +207,39 @@ raxml.bootstrap <- read.tree(file.path(fdir,"RAxML_bootstrap.Wang.out"))
 
 bs_splits <- as.splits(raxml.bootstrap)
 tree_splits <- as.splits(raxml.tree) %>% unique %>% removeTrivialSplits
-
 # we overwrite bootstrap values and set the weights 
 # to 1e-6 (almost zero), as we plot them on a log scale later on
 attr(bs_splits, "weights")[] <- 1e-6
 # combine the splits from the bootstrap and neighbor net
 # and delete duplicates and add the confidence values
 # we get rid of trivial splits
-all_splits <- c(Nnet$splits, bs_splits) %>% unique %>% removeTrivialSplits %>% addConfidences(bs_splits)
+all_splits <- c(Nnet$splits, bs_splits) %>% unique %>% removeTrivialSplits %>% addConfidences(bs_splits, scaler=100)
 
 # For easier plotting we create a matrix with the confidences and 
 # weights as columns
 tab <- data.frame(SplitWeight = attr(all_splits, "weights"), Bootstrap=attr(all_splits, "confidences"), Tree=FALSE)
+# we add a logical variable pto indicate which splits are in the RAxML tree
 tab$Tree[matchSplits(tree_splits, all_splits, FALSE)] = TRUE
 
-# We scale the confidences to Percentages 
 tab[is.na(tab[,"Bootstrap"]),"Bootstrap"] <- 0
-tab[,"Bootstrap"] <- round(tab[,"Bootstrap"] * 100)
+tab[,"Bootstrap"] <- round(tab[,"Bootstrap"])
 rownames(tab) <- apply(as.matrix(all_splits, zero.print = ".", one.print = "|"), 1, paste0, collapse="")
+tab[1:10,]
 
 col <- rep("blue", nrow(tab))
-col[tab[,"Bootstrap"]==0] <- "red"
-col[tab[,"SplitWeight"]==1e-6] <- "green"
+col[tab[,"Bootstrap"]==0] <- "green"
+col[tab[,"SplitWeight"]==1e-6] <- "red"
 
-plot(tab[,"SplitWeight"], tab[,"Bootstrap"], log="x", col=col, pch=20,  
+pch = rep(19, nrow(tab))
+pch[tab$Tree] <- 17
+
+par(mar=c(5.1, 4.1, 4.1, 8.1), xpd=TRUE)
+plot(tab[,"SplitWeight"], tab[,"Bootstrap"], log="x", col=col, pch=pch,  
      xlab="Split weight (log scale)", ylab="Bootstrap (%)")
-legend(2e-6, 100, c("Splits supported by bootstrap analysis \nbut not shown in the splits graph\n", "Splits supported by the bootstrap analysis \nand appear in the splits graph\n", "Well-supported splits \nbut no bootstrap support\n"), pch=20, col=c("green", "blue", "red"), bty="n")
+legend("topright", inset=c(-0.35,0), c("Pattern 1", "Pattern 2", "Pattern 3", "Pattern in the\nbest tree"), pch=c(19,19,19,17), col=c("blue", "green", "red", "black"), bty="n")
 ```
 
-### PLot 3
+### Figure 4
 
 ```{r} 
 YCh <- read.tree(file.path(fdir, "RAxML_bestTree.YCh")) 
