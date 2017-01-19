@@ -19,8 +19,6 @@
 #' @param print.labels logical. If TRUE labels are printed.
 #' @param \dots Further arguments passed to or from other methods.
 #' @param labels names of taxa.
-
-
 #' @return \code{write.nexus.splits} and \code{write.nexus.networx} write out the  \code{splits} and \code{networx} object to read with
 #' other software like Splitstree.
 #' \code{read.nexus.splits} and \code{read.nexus.networx} return an \code{splits} and \code{networx} object. 
