@@ -702,7 +702,7 @@ new_bipartition (int size)
   bip->ref_counter = 1;
 
   bip->bs = (unsigned long long*) malloc (bip->n->ints * sizeof (unsigned long long));
-  for (i=0; i < bip->n->ints; i++) bip->bs[i] = 0LL;
+  for (i=0; i < bip->n->ints; i++) bip->bs[i] = 0ULL;
 
   return bip;
 }
@@ -717,8 +717,8 @@ new_bipsize (int size)
   n->bits = n->original_size = size;
   n->ref_counter = 1;
   n->ints = size/BitStringSize + 1;
-  n->mask = 0LL;
-  for (i=0; i < n->bits%BitStringSize; i++) n->mask |= (1LL << i); /* disregard other bits */
+  n->mask = 0ULL;
+  for (i=0; i < n->bits%BitStringSize; i++) n->mask |= (1ULL << i); /* disregard other bits */
 
   return n;
 }
@@ -753,7 +753,7 @@ new_bipartition_from_bipsize (bipsize n)
   bip->ref_counter = 1;
 
   bip->bs = (unsigned long long*) malloc (bip->n->ints * sizeof (unsigned long long));
-  for (i=0; i < bip->n->ints; i++) bip->bs[i] = 0LL;
+  for (i=0; i < bip->n->ints; i++) bip->bs[i] = 0ULL;
 
   return bip;
 }
@@ -784,19 +784,19 @@ bipsize_resize (bipsize n, int nbits)
   int i;
   n->bits = nbits;
   n->ints = nbits/BitStringSize + 1; // might be smaller than original bs size 
-  n->mask = 0LL;
-  for (i=0; i < nbits%BitStringSize; i++) n->mask |= (1LL << i); /* disregard other bits */
+  n->mask = 0ULL;
+  for (i=0; i < nbits%BitStringSize; i++) n->mask |= (1ULL << i); /* disregard other bits */
 }
 
 void
 bipartition_initialize (bipartition bip, int position)
 {
   int i, j;
-  for (i=0; i < bip->n->ints; i++) bip->bs[i] = 0LL;
+  for (i=0; i < bip->n->ints; i++) bip->bs[i] = 0ULL;
   j = position%BitStringSize; 
   i = position/BitStringSize;
 
-  bip->bs[i] = (1LL << j);
+  bip->bs[i] = (1ULL << j);
   bip->n_ones = 1;
 }
 
@@ -804,7 +804,7 @@ void
 bipartition_zero (bipartition bip)
 {
   int i;
-  for (i=0; i < bip->n->ints; i++) bip->bs[i] = 0LL;
+  for (i=0; i < bip->n->ints; i++) bip->bs[i] = 0ULL;
   bip->n_ones = 0;
 }
 
@@ -817,8 +817,8 @@ bipartition_set (bipartition bip, int position)
 void
 bipartition_set_lowlevel (bipartition bip, int i, int j)
 {
-  if (bip->bs[i] & (1LL << j)) return; // bit already set
-  bip->bs[i] |= (1LL << j);
+  if (bip->bs[i] & (1ULL << j)) return; // bit already set
+  bip->bs[i] |= (1ULL << j);
   bip->n_ones++; /* doesn't work if we reduce space later (check replace_int_in_vector() ) */
 }
 
@@ -831,8 +831,8 @@ bipartition_unset (bipartition bip, int position)
 void
 bipartition_unset_lowlevel (bipartition bip, int i, int j)
 {
-  if (!(bip->bs[i] & (1LL << j))) return; // bit already unset
-  bip->bs[i] &= ~(1LL << j);
+  if (!(bip->bs[i] & (1ULL << j))) return; // bit already unset
+  bip->bs[i] &= ~(1ULL << j);
   bip->n_ones--;
 }
 
@@ -910,11 +910,11 @@ bipartition_count_n_ones (const bipartition bip)
   unsigned long long j;
   bip->n_ones = 0;
 /* // Naive approach 
-  for (i=0; i < bip->n_ints - 1; i++) for (j=0; j < BitStringSize; j++) bip->n_ones += ((bip->bs[i] >> j) & 1LL);
-  for (j=0; j < bip->n_bits%BitStringSize; j++) bip->n_ones += ((bip->bs[i] >> j) & 1LL);
+  for (i=0; i < bip->n_ints - 1; i++) for (j=0; j < BitStringSize; j++) bip->n_ones += ((bip->bs[i] >> j) & 1ULL);
+  for (j=0; j < bip->n_bits%BitStringSize; j++) bip->n_ones += ((bip->bs[i] >> j) & 1ULL);
  */
   // clear the least significant bit set per iteration (Peter Wegner in CACM 3 (1960), 322, mentioned in K&R)
-  for (i=0; i < bip->n->ints; i++) for (j = bip->bs[i]; j; bip->n_ones++) j &= j - 1LL;
+  for (i=0; i < bip->n->ints; i++) for (j = bip->bs[i]; j; bip->n_ones++) j &= j - 1ULL;
 }
 
 bool
@@ -965,7 +965,7 @@ bipartition_flip_to_smaller_set (bipartition bip)
   /* OLD always x is different from ~x, so we just look at last element ("largest digits of number") */
   // if (((2 * bip->n_ones) == bip->n->bits) && (bip->bs[i] < (bip->n->mask & ~bip->bs[i]))) return;
   /* NEW: resolve ties by always showing the same "side" of bipartition, that is, the one having an arbitrary leaf (first one, in our case) */
-  if (((2 * bip->n_ones) == bip->n->bits) && (bip->bs[0] & 1LL)) return;
+  if (((2 * bip->n_ones) == bip->n->bits) && (bip->bs[0] & 1ULL)) return;
 
   for (i=0; i < bip->n->ints; i++) bip->bs[i] = ~bip->bs[i]; /* like bipartition_NOT() */
   bip->bs[i-1] &= bip->n->mask; /* do not invert last bits (do not belong to bipartition) */
@@ -976,7 +976,7 @@ bipartition_flip_to_smaller_set (bipartition bip)
 bool
 bipartition_is_bit_set (const bipartition bip, int position)
 {
-  if (bip->bs[(int)(position/BitStringSize)] & (1LL << (int)(position%BitStringSize))) return true; 
+  if (bip->bs[(int)(position/BitStringSize)] & (1ULL << (int)(position%BitStringSize))) return true; 
   return false;
 }
 
@@ -993,7 +993,7 @@ void
 bipartition_to_int_vector (const bipartition b, int *id, int vecsize)
 {
   int i, j, k = 0;
-  for (i=0; i < b->n->ints; i++) for (j=0; (j < BitStringSize) && (k < vecsize); j++) if ( ((b->bs[i] >> j) & 1LL) ) id[k++] = i * BitStringSize + j;
+  for (i=0; i < b->n->ints; i++) for (j=0; (j < BitStringSize) && (k < vecsize); j++) if ( ((b->bs[i] >> j) & 1ULL) ) id[k++] = i * BitStringSize + j;
 }
 
 /*
@@ -1002,10 +1002,10 @@ bipartition_print_to_stdout (const bipartition b1)
 {
   int i, j;
   for (i = 0; i < b1->n->ints - 1; i++) {
-    for (j = 0; j < BitStringSize; j++) printf ("%d", (int)((b1->bs[i] >> j) & 1LL));
+    for (j = 0; j < BitStringSize; j++) printf ("%d", (int)((b1->bs[i] >> j) & 1ULL));
     printf (".");
   }
-  for (j = 0; j < b1->n->bits%BitStringSize; j++) printf ("%d", (int)((b1->bs[i] >> j) & 1LL));
+  for (j = 0; j < b1->n->bits%BitStringSize; j++) printf ("%d", (int)((b1->bs[i] >> j) & 1ULL));
   printf ("[%d] ", b1->n_ones);
 }
 */
@@ -1025,14 +1025,14 @@ bipartition_replace_bit_in_vector (bipartition *bvec, int n_b, int to, int from,
    * 1    -> 1  |     0               | -1  (in fact one of the two "1"s dissapeared after reducing the bitstring 
    * (the above description is outdated since I rewrote by hand the bit functions -- observe how we must erase 1 values from "from") */
   if (reduce) for (k = 0; k < n_b; k++) { // copy 0 or 1 values, erasing "from" values to avoid problems after reducing space (hanging 1s out of range)
-    if      ( ((bvec[k]->bs[i] >> j) & 1LL) && ((bvec[k]->bs[i2] >> j2) & 1LL) )  { bvec[k]->n_ones--; bvec[k]->bs[i] &= ~(1LL << j); }
-    else if ( ((bvec[k]->bs[i] >> j) & 1LL) && !((bvec[k]->bs[i2] >> j2) & 1LL) ) { bvec[k]->bs[i2] |=  (1LL << j2); bvec[k]->bs[i] &= ~(1LL << j); }
-    else if ( !((bvec[k]->bs[i] >> j) & 1LL) && ((bvec[k]->bs[i2] >> j2) & 1LL) ) { bvec[k]->bs[i2] &= ~(1LL << j2); bvec[k]->n_ones--; }
+    if      ( ((bvec[k]->bs[i] >> j) & 1ULL) && ((bvec[k]->bs[i2] >> j2) & 1ULL) )  { bvec[k]->n_ones--; bvec[k]->bs[i] &= ~(1ULL << j); }
+    else if ( ((bvec[k]->bs[i] >> j) & 1ULL) && !((bvec[k]->bs[i2] >> j2) & 1ULL) ) { bvec[k]->bs[i2] |=  (1ULL << j2); bvec[k]->bs[i] &= ~(1ULL << j); }
+    else if ( !((bvec[k]->bs[i] >> j) & 1ULL) && ((bvec[k]->bs[i2] >> j2) & 1ULL) ) { bvec[k]->bs[i2] &= ~(1ULL << j2); bvec[k]->n_ones--; }
     /* else do nothing (from zero to zero) */
   }
 
   else for (k = 0; k < n_b; k++) { // copy 0 or 1 values 
-    if ( ((bvec[k]->bs[i] >> j) & 1LL) ) bipartition_set_lowlevel   (bvec[k], i2, j2); // will check if n_ones change or not 
+    if ( ((bvec[k]->bs[i] >> j) & 1ULL) ) bipartition_set_lowlevel   (bvec[k], i2, j2); // will check if n_ones change or not 
     else                                 bipartition_unset_lowlevel (bvec[k], i2, j2);
   }
 }
