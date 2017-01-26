@@ -289,5 +289,30 @@ writeDist <- function(dm, file=""){ # , format="phylip"
 }    
     
     
+write.nexus.dist <- function(dm, file="", append=FALSE, upper=FALSE, diag=TRUE, digits = getOption("digits")){
 
+    m <- as.matrix(dm)
+    cf <- format(m, digits = digits, justify = "none")    
+    l <-  length(attr(dm, "Labels"))
+    if (!upper) cf[row(cf) < col(cf)] <- ""
+    if (!diag) cf[row(cf) == col(cf)] <- ""    
+        
+    cf2 <- apply(cf, 1, "paste0", collapse=" ")
+    cf2 <- paste(attr(dm, "Labels"), cf2)
+    cf2 <- trimws(cf2, "right")
+
+#    cf2 <- paste0("\t", cf2, "\n")
+#    cf2[l] <- paste0(cf2[l], ";")
+    if(!append)cat("#NEXUS\n", file = file)  
+    cat("BEGIN DISTANCES; \n", file = file, append = TRUE)
+#    trimws()
+#    if(FORMAT TRIANGLE = BOTH;)
+    cat("  Matrix \n", file = file, append = TRUE)
+    
+    for(i in 1:(l-1)) cat("\t", cf2[i], "\n", sep="", file = file, append = TRUE)
+    cat("\t", cf2[l], ";\n", file = file, sep="", append = TRUE)
+#    attr(dm, "Labels")
+    
+    cat("END; \n", file = file, append = TRUE)
+}
 
