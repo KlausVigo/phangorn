@@ -323,6 +323,7 @@ write.nexus.dist <- function(x, file="", append=FALSE, upper=FALSE, diag=TRUE, d
     m <- as.matrix(x)
     cf <- format(m, digits = digits, justify = "none")    
     l <-  length(attr(x, "Labels"))
+    if(upper) diag <- TRUE
     if (!upper) cf[row(cf) < col(cf)] <- ""
     if (!diag) cf[row(cf) == col(cf)] <- ""    
         
@@ -332,7 +333,9 @@ write.nexus.dist <- function(x, file="", append=FALSE, upper=FALSE, diag=TRUE, d
 
     if(!append)cat("#NEXUS\n", file = file)  
     cat("BEGIN DISTANCES; \n", file = file, append = TRUE)
-    cat("  Matrix \n", file = file, append = TRUE)
+    if(upper) cat("\tFORMAT TRIANGLE = BOTH;\n", file = file, append = TRUE)
+    if(!diag) cat("\tFORMAT NODIAGONAL;\n", file = file, append = TRUE)
+    cat("\tMatrix \n", file = file, append = TRUE)
     for(i in 1:(l-1)) cat("\t", cf2[i], "\n", sep="", file = file, append = TRUE)
     cat("\t", cf2[l], ";\n", file = file, sep="", append = TRUE)
     cat("END; \n", file = file, append = TRUE)
