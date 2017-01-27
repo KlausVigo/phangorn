@@ -29,6 +29,15 @@ fit.
 \code{splitsNetwork} estimates weights for a splits graph from a distance
 matrix.
 }
+\details{
+\code{splitsNetwork} fits non-negative least-squares phylogenetic networks
+using L1 (LASSO), L2(ridge regression) constraints.  The function minimizes
+the penalized least squares 
+\deqn{\beta = min \sum(dm - X\beta)^2 + \lambda \|\beta \|^2_2 }{ beta = sum(dm - X*beta)^2 + lambda |beta|^2_2 } 
+with respect to \deqn{\|\beta \|_1 <= \gamma, \beta >= 0}{ |beta|_1 = gamma, beta >= 0} 
+where \eqn{X} is a design matrix constructed with \code{designSplits}.
+External edges are fitted without L1 or L2 constraints.
+}
 \examples{
 
 data(yeast)
@@ -43,8 +52,8 @@ write.nexus.splits(fit)
 Klaus Schliep \email{klaus.schliep@gmail.com}
 }
 \references{
-Efron, Hastie, Johnstone and Tibshirani (2003) "Least Angle
-Regression" (with discussion) Annals of Statistics
+Efron, Hastie, Johnstone and Tibshirani (2004) Least Angle
+Regression (with discussion) \emph{Annals of Statistics} \bold{32(2)}, 407--499
 
 K. P. Schliep (2009). Some Applications of statistical phylogenetics (PhD
 Thesis)

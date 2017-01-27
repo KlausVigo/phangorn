@@ -130,9 +130,11 @@ oneWise <- function (x, nTips=NULL)
 #' Robinson-Foulds distance is derived by dividing \eqn{d(T_1, T_2)} by the
 #' maximal possible distance \eqn{i(T_1) + i(T_2)}. If both trees are unrooted
 #' and binary this value is \eqn{2n-6}.
-#' \code{RF.dist} returns the Robinson-Foulds distance (Robinson and Foulds 1981)
+#' 
+#' Functions like \code{RF.dist} returns the Robinson-Foulds distance (Robinson and Foulds 1981)
 #' between either 2 trees or computes a matrix of all pairwise distances if a
 #' \code{multiPhylo} object is given. 
+#' 
 #' For large number of trees the distance functions can use a lot of memory!
 #' 
 #' @aliases treedist RF.dist wRF.dist KF.dist path.dist sprdist SPR.dist

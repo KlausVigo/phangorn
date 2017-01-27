@@ -91,19 +91,20 @@ labels.}
 }
 \description{
 \code{as.networx} convert \code{splits} objects into a \code{networx}
-object. And most important there exists a (generic) \code{plot} function to plot phylogenetic network or split graphs.
+object. And most important there exists a generic \code{plot} function to plot 
+phylogenetic network or split graphs.
 }
 \details{
 A \code{networx} object hold the information for a phylogenetic network and
 extends the \code{phylo} object. Therefore some generic function for
 \code{phylo} objects will also work for \code{networx} objects.  The
-argument planar = FALSE will create a planar split graph based on a cyclic
-ordering. These objects can be nicely plotted in "2D". So far not all
-parameters behave the same on the the rgl "3D" and basic graphic "2D"
+argument \code{planar = TRUE} will create a planar split graph based on a cyclic
+ordering. These objects can be nicely plotted in \code{"2D"}. So far not all
+parameters behave the same on the the \code{rgl} \code{"3D"} and basic graphic \code{"2D"}
 device.
 
-Often it is easier (and safer) to supply vectors of graphical parameters for
-splits (e.g. splits.color).  These overwrite values edge.color.
+Often it is easier and safer to supply vectors of graphical parameters for
+splits (e.g. splits.color) than for edges. These overwrite values edge.color.
 }
 \note{
 The internal representation is likely to change.
