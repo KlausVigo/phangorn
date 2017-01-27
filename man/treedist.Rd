@@ -52,7 +52,28 @@ Robinson-Foulds distance}
 }
 \description{
 \code{treedist} computes different tree distance methods and \code{RF.dist}
-the Robinson-Foulds or symmetric distance.
+the Robinson-Foulds or symmetric distance. The Robinson-Foulds distance only 
+depends on the toplogy of the trees. If edge weights should be considered
+\code{wRF.dist} calculates the weighted RF distance (Robinson & Foulds
+1981). and \code{KF.dist} calculates the branch score distance (Kuhner &
+Felsenstein 1994).  \code{path.dist} computes the path difference metric as
+described in Steel and Penny 1993).
+\code{sprdist} computes the approximate SPR distance (Oliveira Martins et
+al. 2008, de Oliveira Martins 2016).
+}
+\details{
+The Robinson-Foulds distance between two trees \eqn{T_1} and \eqn{T_2} with
+\eqn{n} tips is defined as (following the notation Steel and Penny 1993):
+\deqn{d(T_1, T_2) = i(T_1) + i(T_2) - 2v_s(T_1, T_2)} where \eqn{i(T_1)}
+denotes the number of internal edges and \eqn{v_s(T_1, T_2)} denotes the
+number of internal splits shared by the two trees. The normalized
+Robinson-Foulds distance is derived by dividing \eqn{d(T_1, T_2)} by the
+maximal possible distance \eqn{i(T_1) + i(T_2)}. If both trees are unrooted
+and binary this value is \eqn{2n-6}.
+\code{RF.dist} returns the Robinson-Foulds distance (Robinson and Foulds 1981)
+between either 2 trees or computes a matrix of all pairwise distances if a
+\code{multiPhylo} object is given. 
+For large number of trees the distance functions can use a lot of memory!
 }
 \examples{
 

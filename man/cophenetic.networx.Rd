@@ -8,7 +8,7 @@
 \method{cophenetic}{networx}(x)
 }
 \arguments{
-\item{x}{an object of class \code{"networx"}.}
+\item{x}{an object of class \code{networx}.}
 }
 \value{
 an object of class \code{dist}, names are set according to the tip
