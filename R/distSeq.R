@@ -17,7 +17,7 @@
 #' The "F81" model uses empirical base frequencies, the "JC69" equal base
 #' frequencies. This is even the case if the data are not nucleotides.
 #' 
-#' @aliases dist.hamming dist.logDet dist.ml readDist writeDist
+#' @aliases dist.hamming dist.logDet dist.ml 
 #' @param x An object of class \code{phyDat}
 #' @param ratio Compute uncorrected ('p') distance or character difference.
 #' @param model One of "JC69", "F81" or one of 17 amino acid models see
@@ -30,13 +30,11 @@
 #' @param k Number of intervals of the discrete gamma distribution.
 #' @param shape Shape parameter of the gamma distribution.
 #' @param \dots Further arguments passed to or from other methods.
-#' @param file A file name.
-#' @param dm A \code{dist} object.
 #' @return an object of class \code{dist}
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso For more distance methods for nucleotide data see
 #' \code{\link[ape]{dist.dna}} and \code{\link{dist.p}} for pairwise
-#' polymorphism p-distances
+#' polymorphism p-distances. \code{\link{writeDist}} for export and import distances.
 #' @references Lockhart, P. J., Steel, M. A., Hendy, M. D. and Penny, D. (1994)
 #' Recovering evolutionary trees under a more realistic model of sequence
 #' evolution. \emph{Molecular Biology and Evolution}, \bold{11}, 605--602.
@@ -267,7 +265,81 @@ dist.logDet = function (x)
 }
 
 
-##' @rdname dist.hamming
+
+
+#' Writing and reading distances in phylip and nexus format
+#' 
+#' \code{readDist}, \code{writeDist} and \code{write.nexus.dist} are useful to 
+#' exchange distance matrices with other phylogenetic programs.  
+#' 
+#' 
+#' @aliases writeDist readDist write.nexus.dist
+#' @param x A \code{dist} object.
+#' @param file A file name.
+#' @param format file format, default is "phylip", only other option so far is "nexus". 
+#' @param \dots Further arguments passed to or from other methods. 
+#' @param upper	logical value indicating whether the upper triangle of the distance 
+#' matrix should be printed.
+#' @param diag	logical value indicating whether the diagonal of the distance matrix 
+#' should be printed.
+#' @param digits passed to format inside of \code{write.nexus.dist}.
+#' @param append logical. If TRUE the nexus blocks will be added to a file.
+#' @return an object of class \code{dist}
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso To compute distance matrices see \code{\link{dist.ml}}
+#' \code{\link[ape]{dist.dna}} and \code{\link{dist.p}} for pairwise
+#' polymorphism p-distances
+#' @references Maddison, D. R., Swofford, D. L. and Maddison, W. P. (1997) 
+#' NEXUS: an extensible file format for systematic information. 
+#' \emph{Systematic Biology}, \bold{46}, 590--621.
+#' 
+#' @keywords cluster
+#' @examples
+#' 
+#' data(yeast)
+#' dm <- dist.ml(yeast)
+#' writeDist(dm)
+#' write.nexus.dist(dm)
+#' 
+#' @rdname writeDist 
+#' @export writeDist
+writeDist <- function(x, file="", format="phylip", ...){ 
+    format <- match.arg(format, c("phylip", "nexus"))
+    if(format=="phylip"){
+        x <- as.matrix(x)
+#        x <- format(x, digits = digits, justify = "none")
+        cat(ncol(x), "\n", file=file)
+        write.table(x, file, append=TRUE, quote=FALSE, col.names=FALSE)
+    }
+    else write.nexus.dist(x, file=file, ...)
+}    
+    
+
+##' @rdname writeDist
+##' @aliases write.nexus.dist
+##' @export      
+write.nexus.dist <- function(x, file="", append=FALSE, upper=FALSE, diag=TRUE, digits = getOption("digits")){
+
+    m <- as.matrix(x)
+    cf <- format(m, digits = digits, justify = "none")    
+    l <-  length(attr(x, "Labels"))
+    if (!upper) cf[row(cf) < col(cf)] <- ""
+    if (!diag) cf[row(cf) == col(cf)] <- ""    
+        
+    cf2 <- apply(cf, 1, "paste0", collapse=" ")
+    cf2 <- paste(attr(x, "Labels"), cf2)
+    cf2 <- trimws(cf2, "right")
+
+    if(!append)cat("#NEXUS\n", file = file)  
+    cat("BEGIN DISTANCES; \n", file = file, append = TRUE)
+    cat("  Matrix \n", file = file, append = TRUE)
+    for(i in 1:(l-1)) cat("\t", cf2[i], "\n", sep="", file = file, append = TRUE)
+    cat("\t", cf2[l], ";\n", file = file, sep="", append = TRUE)
+    cat("END; \n", file = file, append = TRUE)
+}
+
+
+##' @rdname writeDist
 ##' @aliases readDist
 ##' @export  
 readDist <- function(file){ #, format="phylip"
@@ -277,42 +349,3 @@ readDist <- function(file){ #, format="phylip"
     dimnames(dm)=list(labels, labels)    
     as.dist(dm)
 }
-    
-
-##' @rdname dist.hamming
-##' @aliases writeDist
-##' @export      
-writeDist <- function(dm, file=""){ # , format="phylip"
-    dm <- as.matrix(dm)
-    cat(ncol(dm), "\n", file=file)
-    write.table(dm, file, append=TRUE, quote=FALSE, col.names=FALSE)
-}    
-    
-    
-write.nexus.dist <- function(dm, file="", append=FALSE, upper=FALSE, diag=TRUE, digits = getOption("digits")){
-
-    m <- as.matrix(dm)
-    cf <- format(m, digits = digits, justify = "none")    
-    l <-  length(attr(dm, "Labels"))
-    if (!upper) cf[row(cf) < col(cf)] <- ""
-    if (!diag) cf[row(cf) == col(cf)] <- ""    
-        
-    cf2 <- apply(cf, 1, "paste0", collapse=" ")
-    cf2 <- paste(attr(dm, "Labels"), cf2)
-    cf2 <- trimws(cf2, "right")
-
-#    cf2 <- paste0("\t", cf2, "\n")
-#    cf2[l] <- paste0(cf2[l], ";")
-    if(!append)cat("#NEXUS\n", file = file)  
-    cat("BEGIN DISTANCES; \n", file = file, append = TRUE)
-#    trimws()
-#    if(FORMAT TRIANGLE = BOTH;)
-    cat("  Matrix \n", file = file, append = TRUE)
-    
-    for(i in 1:(l-1)) cat("\t", cf2[i], "\n", sep="", file = file, append = TRUE)
-    cat("\t", cf2[l], ";\n", file = file, sep="", append = TRUE)
-#    attr(dm, "Labels")
-    
-    cat("END; \n", file = file, append = TRUE)
-}
-

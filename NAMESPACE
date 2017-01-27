@@ -45,7 +45,7 @@ export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UN
     dfactorial, ldfactorial, hadamard, nni, allSitePattern, allSplits, allCircularSplits, fhm, 
     distanceHadamard, treedist, sankoff, fitch, h2st, h4st, dist.logDet, dist.hamming, 
     dist.ml, dist.p, upgma, wpgma, write.nexus.splits, read.nexus.splits,
-    read.nexus.networx, write.nexus.networx, write.splits, pmlPart, 
+    read.nexus.networx, write.nexus.networx, write.splits, write.nexus.dist, pmlPart, 
     pmlCluster, pmlMix, pmlPen, read.aa, allTrees, designTree, designSplits, nnls.tree,
     nnls.splits, nnls.phylo, nnls.networx, neighborNet, pmlPart2multiPhylo,
     splitsNetwork, simSeq, SH.test, bootstrap.pml, bootstrap.phyDat, RF.dist, wRF.dist, 

@@ -4,8 +4,6 @@
 \alias{dist.hamming}
 \alias{dist.logDet}
 \alias{dist.ml}
-\alias{readDist}
-\alias{writeDist}
 \title{Pairwise Distances from Sequences}
 \usage{
 dist.hamming(x, ratio = TRUE, exclude = "none")
@@ -14,10 +12,6 @@ dist.ml(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
   k = 1L, shape = 1, ...)
 
 dist.logDet(x)
-
-readDist(file)
-
-writeDist(dm, file = "")
 }
 \arguments{
 \item{x}{An object of class \code{phyDat}}
@@ -38,10 +32,6 @@ details.}
 \item{k}{Number of intervals of the discrete gamma distribution.}
 
 \item{shape}{Shape parameter of the gamma distribution.}
-
-\item{file}{A file name.}
-
-\item{dm}{A \code{dist} object.}
 
 \item{\dots}{Further arguments passed to or from other methods.}
 }
@@ -95,7 +85,7 @@ York: Academic Press. 21--132.
 \seealso{
 For more distance methods for nucleotide data see
 \code{\link[ape]{dist.dna}} and \code{\link{dist.p}} for pairwise
-polymorphism p-distances
+polymorphism p-distances. \code{\link{writeDist}} for export and import distances.
 }
 \keyword{cluster}
 
