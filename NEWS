@@ -6,7 +6,9 @@ NEW FEATURES
      
 OTHER CHANGES
 
-    o added roxygen2 documentation
+    o neighborNet has been rewritten (result may differ slightly)
+
+    o added roxygen2 documentation, reorganisation of some documentation 
 
 
      CHANGES in PHANGORN VERSION 2.1.0
