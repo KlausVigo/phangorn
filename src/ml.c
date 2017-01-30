@@ -126,7 +126,9 @@ void scaleMatrix(double *X, int *nr, int *nc, int *result){
 }
 
 
-// contrast to full
+// contrast to full dense matrix 
+// double *tmp und malloc rausziehen
+// zwei Versionen *= und new
 void matp(int *x, double *contrast, double *P, int *nr, int *nc, int *nrs, double *result){
     int i, j;
     double *tmp; 
@@ -149,13 +151,15 @@ void rowMinScale(int *dat, int n,  int k, int *res){
     }        
 }
 
-
+// Ziel etwas schneller
 static R_INLINE void getP(double *eva, double *ev, double *evi, int m, double el, double w, double *result){
     int i, j, h;
     double res; //tmp[m],
     double *tmp;
     tmp = malloc(m * sizeof(double));
+// el = 0 return identity    
     for(i = 0; i < m; i++) tmp[i] = exp(eva[i] * w * el);
+// eva *= tmp???
     for(i = 0; i < m; i++){    
         for(j = 0; j < m; j++){
             res = 0.0;    
@@ -163,8 +167,29 @@ static R_INLINE void getP(double *eva, double *ev, double *evi, int m, double el
             result[i+j*m] = res;    
         }
     }
-    free(tmp);
+    free(tmp);  // ausserhalb
 }
+
+
+
+static R_INLINE void getP00(double *eva, double *ev, double *evi, int m, double el, double w, 
+  double *tmp_kxk, double *result){
+    unsigned int  i, j, h;
+    double tmp; // ,res, tmp2
+    for(i = 0; i < m; i++){
+        tmp = exp(eva[i] * w * el);
+        for(j=0; j<m; j++)  tmp_kxk[i + j*m] = evi[i + j*m] * tmp; // evi[i + j*m] *= tmp; 
+    }    
+    for(i = 0; i < m; i++){    
+        for(j = 0; j < m; j++){
+        result[i+j*m] = 0.0; // res = 0.0;    
+        for(h = 0; h < m; h++) result[i+j*m] += ev[i + h*m] * tmp_kxk[h + j*m]; // evi[h + j*m];
+//        result[i+j*m] = res;
+        }
+    }
+}
+
+
 
 
 SEXP getPM(SEXP eig, SEXP nc, SEXP el, SEXP w){
@@ -275,9 +300,13 @@ void lll3(SEXP dlist, double *eva, double *eve, double *evei, double *el, double
     P = (double *) R_alloc(*nc * *nc, sizeof(double));
     for(j=0; j < *nr; j++) scaleTmp[j] = 0L;
     for(i = 0; i < n; i++) {
+// entweder P matrix erstellen, openMP ??
+// temp Vectoren vermeiden 
         getP(eva, eve, evei, *nc, el[i], g, P); 
         ei = edge[i]; 
         if(ni != node[i]){
+// test for node[i+1]     
+// temp Vectoren vermeiden 
             if(ni>0)scaleMatrix(&ans[ni * rc], nr, nc, &SC[ni * *nr]); // (ni-nTips)
             ni = node[i];
             for(j=0; j < *nr; j++) SC[j + ni * *nr] = 0L;
