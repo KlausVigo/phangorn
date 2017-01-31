@@ -24,7 +24,7 @@
 #' @param rootseq a vector of length l containing the root sequence, other root
 #' sequence is randomly generated.
 #' @param type Type of sequences ("DNA", "AA" or "USER").
-#' @param model Amino acid models: one of "WAG", "JTT", "Dayhoff" or "LG"
+#' @param model Amino acid models: e.g. "WAG", "JTT", "Dayhoff" or "LG"
 #' @param levels \code{levels} takes a character vector of the different bases,
 #' default is for nucleotide sequences, only used when type = "USER".
 #' @param rate mutation rate or scaler for the edge length, a numerical value
@@ -73,9 +73,17 @@ simSeq <- function (x, ...)
 ##' @rdname simSeq
 ##' @aliases simSeq.phylo
 ##' @export
-simSeq.phylo = function(x, l=1000, Q=NULL, bf=NULL, rootseq=NULL, type = "DNA", model="USER",
+simSeq.phylo = function(x, l=1000, Q=NULL, bf=NULL, rootseq=NULL, type = "DNA", model=NULL,
                   levels = NULL, rate=1, ancestral=FALSE, ...){
+   
     
+    if (!is.null(model)) {
+        #        model <- match.arg(model, c("USER", "WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24"))
+        model <- match.arg(model, .aamodels) #match.arg(model, c("USER", .aamodels)) 
+        getModelAA(model, bf=is.null(bf), Q=is.null(Q))
+        type = "AA"
+    }
+     
     pt <- match.arg(type, c("DNA", "AA", "USER", "CODON"))
     if (pt == "DNA") 
         levels <- c("a", "c", "g", "t")
@@ -98,11 +106,7 @@ simSeq.phylo = function(x, l=1000, Q=NULL, bf=NULL, rootseq=NULL, type = "DNA", 
     
     lbf = length(levels)
     
-    if (type == "AA" & !is.null(model)) {
-        #        model <- match.arg(model, c("USER", "WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24"))
-        model <- match.arg(model, c("USER", .aamodels))
-        if(model!="USER")getModelAA(model, bf=is.null(bf), Q=is.null(Q))
-    }
+
     
     if(is.null(bf)) bf = rep(1/lbf,lbf)
     if(is.null(Q)) Q = rep(1,lbf*(lbf-1)/2)
