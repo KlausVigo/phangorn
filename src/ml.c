@@ -260,6 +260,80 @@ SEXP getPM00(SEXP eig, SEXP nc, SEXP el, SEXP w){
 
 
 
+
+SEXP getPM001(SEXP eig, SEXP nc, SEXP el, SEXP w){
+    R_len_t i, j, nel, nw, k;
+    int m=INTEGER(nc)[0], l=0;
+    double *ws=REAL(w);
+    double *edgelen=REAL(el);
+    double *eva, *eve, *evei;
+    double *tmp_kxk, *P;
+//    SEXP P, RESULT;
+    tmp_kxk = (double *) R_alloc(m*m, sizeof(double));
+    P = (double *) R_alloc(m*m, sizeof(double));
+    nel = length(el);
+    nw = length(w);
+    if(!isNewList(eig)) error("'eig' must be a list");    
+    eva = REAL(VECTOR_ELT(eig, 0));
+    eve = REAL(VECTOR_ELT(eig, 1));
+    evei = REAL(VECTOR_ELT(eig, 2));
+//    PROTECT(RESULT = allocVector(VECSXP, nel*nw));       
+    for(j=0; j<nel; j++){ 
+        for(i=0; i<nw; i++){
+//            PROTECT(P = allocMatrix(REALSXP, m, m));
+            if(edgelen[j]==0.0 || ws[i]==0.0){
+                for(k=0; k<(m*m);k++)REAL(P)[k]=0.0;
+                for(k=0; k<m; k++)REAL(P)[k+k*m]=1.0;
+            }
+            else getP00(eva, eve, evei, m, edgelen[j], ws[i], tmp_kxk, P);
+//            SET_VECTOR_ELT(RESULT, l, P);
+//            UNPROTECT(1); 
+            l++;
+        }
+    }
+    //    free(tmp_kxk);
+//    UNPROTECT(1);//RESULT
+    return(ScalarReal(1.0));
+} 
+
+
+SEXP getPM002(SEXP eig, SEXP nc, SEXP el, SEXP w){
+    R_len_t i, j, nel, nw, k;
+    int m=INTEGER(nc)[0], l=0;
+    double *ws=REAL(w);
+    double *edgelen=REAL(el);
+    double *eva, *eve, *evei;
+    double  *P;
+    //    SEXP P, RESULT; *tmp_kxk,
+//    tmp_kxk = (double *) R_alloc(m*m, sizeof(double));
+    P = (double *) R_alloc(m*m, sizeof(double));
+    nel = length(el);
+    nw = length(w);
+    if(!isNewList(eig)) error("'eig' must be a list");    
+    eva = REAL(VECTOR_ELT(eig, 0));
+    eve = REAL(VECTOR_ELT(eig, 1));
+    evei = REAL(VECTOR_ELT(eig, 2));
+    //    PROTECT(RESULT = allocVector(VECSXP, nel*nw));       
+    for(j=0; j<nel; j++){ 
+        for(i=0; i<nw; i++){
+            //            PROTECT(P = allocMatrix(REALSXP, m, m));
+            if(edgelen[j]==0.0 || ws[i]==0.0){
+                for(k=0; k<(m*m);k++)REAL(P)[k]=0.0;
+                for(k=0; k<m; k++)REAL(P)[k+k*m]=1.0;
+            }
+            else getP(eva, eve, evei, m, edgelen[j], ws[i], P);
+            //            SET_VECTOR_ELT(RESULT, l, P);
+            //            UNPROTECT(1); 
+            l++;
+        }
+    }
+    //    free(tmp_kxk);
+    //    UNPROTECT(1);//RESULT
+    return(ScalarReal(1.0));
+} 
+
+
+
 void lll(SEXP dlist, double *eva, double *eve, double *evei, double *el, double g, int *nr, int *nc, int *node, int *edge, int nTips, double *contrast, int nco, int n, int *scaleTmp, double *bf, double *TMP, double *ans){
     int  ni, ei, j, i, rc; //    R_len_t i, n = length(node);
     double *rtmp, *P;
