@@ -152,7 +152,7 @@ void rowMinScale(int *dat, int n,  int k, int *res){
 }
 
 // Ziel etwas schneller
-static R_INLINE void getP(double *eva, double *ev, double *evi, int m, double el, double w, double *result){
+void getP(double *eva, double *ev, double *evi, int m, double el, double w, double *result){
     int i, j, h;
     double res; //tmp[m],
     double *tmp;
@@ -171,20 +171,19 @@ static R_INLINE void getP(double *eva, double *ev, double *evi, int m, double el
 }
 
 
-
-static R_INLINE void getP00(double *eva, double *ev, double *evi, int m, double el, double w, 
+void getP00(double *eva, double *ev, double *evi, int m, double el, double w, 
   double *tmp_kxk, double *result){
-    unsigned int  i, j, h;
-    double tmp; // ,res, tmp2
+    signed int  i, j, h;
+    double tmp, res; // ,res, tmp2
     for(i = 0; i < m; i++){
         tmp = exp(eva[i] * w * el);
         for(j=0; j<m; j++)  tmp_kxk[i + j*m] = evi[i + j*m] * tmp; // evi[i + j*m] *= tmp; 
     }    
     for(i = 0; i < m; i++){    
         for(j = 0; j < m; j++){
-        result[i+j*m] = 0.0; // res = 0.0;    
-        for(h = 0; h < m; h++) result[i+j*m] += ev[i + h*m] * tmp_kxk[h + j*m]; // evi[h + j*m];
-//        result[i+j*m] = res;
+        res = 0.0; 
+        for(h = 0; h < m; h++) res += ev[i + h*m] * tmp_kxk[h + j*m]; // evi[h + j*m];
+        result[i+j*m] = res;
         }
     }
 }
@@ -222,6 +221,43 @@ SEXP getPM(SEXP eig, SEXP nc, SEXP el, SEXP w){
     UNPROTECT(1);//RESULT
     return(RESULT);
 } 
+
+
+
+SEXP getPM00(SEXP eig, SEXP nc, SEXP el, SEXP w){
+    R_len_t i, j, nel, nw, k;
+    int m=INTEGER(nc)[0], l=0;
+    double *ws=REAL(w);
+    double *edgelen=REAL(el);
+    double *eva, *eve, *evei;
+    double *tmp_kxk;
+    SEXP P, RESULT;
+    tmp_kxk = (double *) R_alloc(m*m, sizeof(double));
+    nel = length(el);
+    nw = length(w);
+    if(!isNewList(eig)) error("'eig' must be a list");    
+    eva = REAL(VECTOR_ELT(eig, 0));
+    eve = REAL(VECTOR_ELT(eig, 1));
+    evei = REAL(VECTOR_ELT(eig, 2));
+    PROTECT(RESULT = allocVector(VECSXP, nel*nw));       
+    for(j=0; j<nel; j++){ 
+        for(i=0; i<nw; i++){
+            PROTECT(P = allocMatrix(REALSXP, m, m));
+            if(edgelen[j]==0.0 || ws[i]==0.0){
+                for(k=0; k<(m*m);k++)REAL(P)[k]=0.0;
+                for(k=0; k<m; k++)REAL(P)[k+k*m]=1.0;
+            }
+            else getP00(eva, eve, evei, m, edgelen[j], ws[i], tmp_kxk, REAL(P));
+            SET_VECTOR_ELT(RESULT, l, P);
+            UNPROTECT(1); 
+            l++;
+        }
+    }
+//    free(tmp_kxk);
+    UNPROTECT(1);//RESULT
+    return(RESULT);
+} 
+
 
 
 void lll(SEXP dlist, double *eva, double *eve, double *evei, double *el, double g, int *nr, int *nc, int *node, int *edge, int nTips, double *contrast, int nco, int n, int *scaleTmp, double *bf, double *TMP, double *ans){
@@ -788,7 +824,7 @@ SEXP LogLik2(SEXP dlist, SEXP P, SEXP nr, SEXP nc, SEXP node, SEXP edge, SEXP nT
 }
 
 
-static R_INLINE void matprod(double *x, int nrx, int ncx, double *y, int nry, int ncy, double *z)
+void matprod(double *x, int nrx, int ncx, double *y, int nry, int ncy, double *z)
 {
     F77_CALL(dgemm)(transa, transb, &nrx, &ncy, &ncx, &one, x, &nrx, y, &nry, &zero, z, &nrx);
 }
