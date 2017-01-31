@@ -9,7 +9,7 @@
 simSeq(x, ...)
 
 \method{simSeq}{phylo}(x, l = 1000, Q = NULL, bf = NULL, rootseq = NULL,
-  type = "DNA", model = "USER", levels = NULL, rate = 1,
+  type = "DNA", model = NULL, levels = NULL, rate = 1,
   ancestral = FALSE, ...)
 
 \method{simSeq}{pml}(x, ancestral = FALSE, ...)
@@ -29,7 +29,7 @@ sequence is randomly generated.}
 
 \item{type}{Type of sequences ("DNA", "AA" or "USER").}
 
-\item{model}{Amino acid models: one of "WAG", "JTT", "Dayhoff" or "LG"}
+\item{model}{Amino acid models: e.g. "WAG", "JTT", "Dayhoff" or "LG"}
 
 \item{levels}{\code{levels} takes a character vector of the different bases,
 default is for nucleotide sequences, only used when type = "USER".}
