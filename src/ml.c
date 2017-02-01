@@ -171,7 +171,7 @@ void getP(double *eva, double *ev, double *evi, int m, double el, double w, doub
 }
 
 
-void getP00(double *eva, double *ev, double *evi, int m, double el, double w, 
+void getP00(const double *eva, const double *ev, const double *evi, int m, double el, double w, 
   double *tmp_kxk, double *result){
     signed int  i, j, h;
     double tmp, res; // ,res, tmp2
@@ -260,7 +260,7 @@ SEXP getPM00(SEXP eig, SEXP nc, SEXP el, SEXP w){
 
 
 
-
+// some testing code: getP00 may be slightly faster than getP (5-10%)
 SEXP getPM001(SEXP eig, SEXP nc, SEXP el, SEXP w){
     R_len_t i, j, nel, nw, k;
     int m=INTEGER(nc)[0], l=0;
