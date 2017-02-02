@@ -34,7 +34,7 @@ sankoff.quartet <- function (dat, cost, p, l, weight)
 #' binary trees.
 #' 
 #' @aliases parsimony 
-#' @aliases optim.parsimony sankoff fitch PNJ CI RI pratchet
+#' @aliases optim.parsimony sankoff fitch CI RI pratchet
 #' random.addition acctran
 #' @param data A object of class phyDat containing sequences.
 #' @param tree tree to start the nni search from.

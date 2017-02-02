@@ -1,3 +1,5 @@
+#' @rdname parsimony
+#' @export
 fitch <- function (tree, data, site="pscore") 
 { 
     if (!inherits(data,"phyDat")) 
@@ -83,7 +85,8 @@ fnodesNew5 <- function (EDGE, nTips, nr, m= as.integer(max(EDGE)+1L))
 }   
 
 
-
+#' @rdname parsimony
+#' @export
 random.addition <- function(data, method="fitch") 
 {
     label <- names(data)
