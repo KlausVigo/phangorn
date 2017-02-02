@@ -253,9 +253,8 @@ multiphyDat2pmlPart <- function(x, rooted=FALSE, ...){
 }
 
 
-##' @rdname pmlPart
-##' @aliases pmlPart2multiPhylo
-##' @export
+#' @rdname pmlPart
+#' @export
 pmlPart2multiPhylo <- function(x){
     res <- lapply(x$fits, FUN=function(x)x$tree)
     class(res) <- "multiPhylo"

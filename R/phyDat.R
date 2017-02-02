@@ -473,36 +473,32 @@ phyDat <- function (data, type="DNA", levels=NULL, return.index = TRUE,...)
 }
 
 
-##' @rdname phyDat
-##' @aliases dna2codon
-##' @export
+#' @rdname phyDat
+#' @export
 dna2codon <- function(x){
     if(!inherits(x, "phyDat"))stop("x needs to be of class phyDat!")
     phyDat.codon(as.character(x))
 }
 
 
-##' @rdname phyDat
-##' @aliases codon2dna
-##' @export
+#' @rdname phyDat
+#' @export
 codon2dna <- function(x){
     if(!inherits(x, "phyDat"))stop("x needs to be of class phyDat!")
     phyDat.DNA(as.character(x))
 }
 
 
-##' @rdname phyDat
-##' @aliases as.phyDat
-##' @export
+#' @rdname phyDat
+#' @export
 as.phyDat <- function (x, ...){
     if (inherits(x,"phyDat")) return(x)
     UseMethod("as.phyDat")
 }
 
 
-##' @rdname phyDat
-##' @aliases as.phyDat.factor
-##' @export
+#' @rdname phyDat
+#' @export
 as.phyDat.factor <- function(x, ...){
     nam <- names(x)
     lev <- levels(x)
@@ -512,15 +508,13 @@ as.phyDat.factor <- function(x, ...){
 }
 
 
-##' @rdname phyDat
-##' @aliases as.phyDat.DNAbin
-##' @export
+#' @rdname phyDat
+#' @export
 as.phyDat.DNAbin <- function(x,...) phyDat.DNA(x,...)
 
 
-##' @rdname phyDat
-##' @aliases as.phyDat.alignment
-##' @export
+#' @rdname phyDat
+#' @export
 as.phyDat.alignment <- function (x, type="DNA",...) 
 {
     x$seq <- tolower(x$seq)
@@ -535,9 +529,8 @@ as.phyDat.alignment <- function (x, type="DNA",...)
 
 
 #as.alignment.phyDat <- function(x, ...) as.alignment(as.character(x))
-##' @rdname phyDat
-##' @aliases phyDat2alignment
-##' @export
+#' @rdname phyDat
+#' @export
 phyDat2alignment <-  function(x){
     z = as.character(x)
     nam = rownames(z)
@@ -552,9 +545,8 @@ phyDat2alignment <-  function(x){
 }
 
 
-##' @rdname phyDat
-##' @aliases as.phyDat.MultipleAlignment
-##' @export
+#' @rdname phyDat
+#' @export
 as.phyDat.MultipleAlignment <- function(x, ...){
     if (requireNamespace('Biostrings')){
     if(inherits(x, "DNAMultipleAlignment"))
@@ -624,9 +616,8 @@ acgt2ry <- function(obj){
 }
 
 
-##' @rdname phyDat
-##' @aliases as.character.phyDat
-##' @export
+#' @rdname phyDat
+#' @export
 # replace as.character.phyDat weniger Zeilen, works also for codons
 as.character.phyDat <- function (x, allLevels=TRUE, ...) 
 {
@@ -670,9 +661,8 @@ as.character.phyDat <- function (x, allLevels=TRUE, ...)
 }
 
 
-##' @rdname phyDat
-##' @aliases as.data.frame.phyDat
-##' @export
+#' @rdname phyDat
+#' @export
 as.data.frame.phyDat <- function(x, ...){
   nr <- attr(x, "nr")
   nc <- attr(x, "nc")
@@ -700,9 +690,8 @@ as.data.frame.phyDat <- function(x, ...){
 #}
 
 # quite abit faster
-##' @rdname phyDat
-##' @aliases as.DNAbin.phyDat
-##' @export
+#' @rdname phyDat
+#' @export
 as.DNAbin.phyDat <- function (x, ...) 
 {
     if(attr(x, "type")=="DNA"){
@@ -739,9 +728,8 @@ as.DNAbin.phyDat <- function (x, ...)
 }
 
 
-##' @rdname phyDat
-##' @aliases as.AAbin.phyDat
-##' @export
+#' @rdname phyDat
+#' @export
 as.AAbin.phyDat <- function(x,...) {
    if(attr(x, "type")=="AA") return(as.AAbin(as.character(x, ...)))
    else stop("x must be a amino acid sequence")
@@ -853,9 +841,8 @@ cbind.phyDat <- function(..., gaps="-", compress=TRUE){
 c.phyDat <- cbind.phyDat
 
 
-##' @rdname phyDat
-##' @aliases write.phyDat
-##' @export
+#' @rdname phyDat
+#' @export
 write.phyDat <- function(x, file, format="phylip", colsep = "", nbcol=-1, ...){
     formats <- c("phylip", "nexus", "interleaved", "sequential", "fasta")
     format <- match.arg(tolower(format), formats)
@@ -871,9 +858,8 @@ write.phyDat <- function(x, file, format="phylip", colsep = "", nbcol=-1, ...){
 }
 
 
-##' @rdname phyDat
-##' @aliases read.phyDat
-##' @export
+#' @rdname phyDat
+#' @export
 read.phyDat <- function(file, format="phylip", type="DNA", ...){
     
     formats <- c("phylip", "nexus", "interleaved", "sequential", "fasta", "clustal")
@@ -892,9 +878,8 @@ read.phyDat <- function(file, format="phylip", type="DNA", ...){
 }
 
 
-##' @rdname phyDat
-##' @aliases baseFreq
-##' @export
+#' @rdname phyDat
+#' @export
 baseFreq <- function(obj, freq=FALSE, all=FALSE, drop.unused.levels = FALSE){
     if (!inherits(obj,"phyDat")) 
         stop("data must be of class phyDat")
@@ -956,10 +941,9 @@ getRows <- function (data, rows, site.pattern = TRUE)
 }
 
 
-##' @rdname phyDat
-##' @aliases subset.phyDat
-##' @method subset phyDat
-##' @export
+#' @rdname phyDat
+#' @method subset phyDat
+#' @export
 subset.phyDat <- function (x, subset, select, site.pattern = TRUE,...) 
 {  
      
@@ -1024,9 +1008,8 @@ duplicated_map <- function(x, ...){
 }   
 
 
-##' @rdname phyDat
-##' @aliases unique.phyDat
-##' @export
+#' @rdname phyDat
+#' @export
 unique.phyDat <- function(x, incomparables=FALSE, identical=TRUE, ...){
     if(identical) return(getCols(x, !duplicated(x)))
     getCols(x, !duplicated_phyDat(x))
@@ -1054,9 +1037,8 @@ removeParsUninfoSites <- function(data){
 }
 
 
-##' @rdname phyDat
-##' @aliases allSitePattern
-##' @export
+#' @rdname phyDat
+#' @export
 allSitePattern <- function(n,levels=c("a","c","g","t"), names=NULL){
     l=length(levels)
     X=vector("list", n)
@@ -1285,9 +1267,8 @@ read.aa <- function (file, format = "interleaved", skip = 0, nlines = 0,
 }
 
 
-##' @rdname phyDat
-##' @aliases genlight2phyDat
-##' @export
+#' @rdname phyDat
+#' @export
 genlight2phyDat <- function(x, ambiguity=NA){
     tmp <- as.matrix(x)
     lev <- na.omit(unique(as.vector(tmp)))
@@ -1295,10 +1276,9 @@ genlight2phyDat <- function(x, ambiguity=NA){
 }
 
 
-##' @rdname phyDat
-##' @aliases image.phyDat
-##' @method image phyDat
-##' @export
+#' @rdname phyDat
+#' @method image phyDat
+#' @export
 image.phyDat <- function(x, ...){
     if(attr(x, "type")=="AA")image(as.AAbin(x), ...)
     if(attr(x, "type")=="DNA")image(as.DNAbin(x), ...)

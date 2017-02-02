@@ -38,7 +38,6 @@
 #' write.splits(spl, print.labels = FALSE)
 #' 
 #' @rdname read.nexus.splits
-#' @aliases read.nexus.splits
 #' @export
 read.nexus.splits <- function(file)
 {
@@ -125,9 +124,8 @@ read.nexus.splits <- function(file)
 
 
 
-##' @rdname read.nexus.splits
-##' @aliases write.nexus.splits
-##' @export
+#' @rdname read.nexus.splits
+#' @export
 write.nexus.splits <- function (obj, file = "", weights=NULL, taxa=TRUE, append=FALSE) 
 {
     taxa.labels <- attr(obj, "labels")
@@ -203,9 +201,8 @@ write.nexus.splits <- function (obj, file = "", weights=NULL, taxa=TRUE, append=
 }
 
 
-##' @rdname read.nexus.splits
-##' @aliases write.nexus.networx
-##' @export
+#' @rdname read.nexus.splits
+#' @export
 write.nexus.networx <- function(obj, file = "", taxa=TRUE, splits=TRUE, append=FALSE){
     if(!append){
         cat("#NEXUS\n\n", file = file)
@@ -297,9 +294,8 @@ write.nexus.networx <- function(obj, file = "", taxa=TRUE, splits=TRUE, append=F
 }
 
 
-##' @rdname read.nexus.splits
-##' @aliases read.nexus.networx
-##' @export
+#' @rdname read.nexus.splits
+#' @export
 read.nexus.networx <- function(file, splits=TRUE){
     spl <- NULL
     if(splits)spl <-read.nexus.splits(file)
@@ -446,9 +442,8 @@ read.nexus.networx <- function(file, splits=TRUE){
 }
 
 
-##' @rdname read.nexus.splits
-##' @aliases write.splits
-##' @export
+#' @rdname read.nexus.splits
+#' @export
 write.splits = function (x, file = "", zero.print = ".", one.print = "|", print.labels = TRUE, ...) 
 {
     labels = attr(x, "labels")

@@ -28,7 +28,7 @@
 #' plot(tree)
 #' 
 #' @rdname upgma
-#' @export upgma
+#' @export 
 "upgma" <- function(D,method="average",...){
     DD=as.dist(D)
     hc = hclust(DD,method=method,...)
@@ -38,9 +38,8 @@
 }
 
 
-##' @rdname upgma
-##' @aliases wpgma
-##' @export
+#' @rdname upgma
+#' @export
 "wpgma" <- function(D,method="mcquitty",...){
     DD=as.dist(D)
     hc = hclust(DD,method=method,...)
@@ -205,13 +204,12 @@ NJ_old <- function(x)
 #' plot(tree)
 #' 
 #' @rdname NJ
-#' @export NJ
+#' @export 
 NJ <- function(x) reorder(nj(x), "postorder")
 
 
-##' @rdname NJ
-##' @aliases UNJ
-##' @export
+#' @rdname NJ
+#' @export
 UNJ <- function(x) 
 {
     x = as.matrix(x)
@@ -376,7 +374,7 @@ PNJ <- function (data)
 #' tree2 = nnls.tree(dm, tree)
 #' 
 #' @rdname designTree
-#' @export designTree
+#' @export 
 designTree <- function(tree, method="unrooted", sparse=FALSE, ...){
     if (!is.na(pmatch(method, "all"))) 
         method <- "unrooted"
@@ -535,9 +533,8 @@ designUnrooted2 <- function (tree, sparse=TRUE)
 }
 
 
-##' @rdname designTree
-##' @aliases nnls.tree
-##' @export
+#' @rdname designTree
+#' @export
 nnls.tree <- function(dm, tree, rooted=FALSE, trace=1){
     if(is.rooted(tree) & rooted==FALSE){
         tree = unroot(tree)
@@ -627,17 +624,15 @@ nnls.tree <- function(dm, tree, rooted=FALSE, trace=1){
 }
 
 
-##' @rdname designTree
-##' @aliases nnls.phylo
-##' @export
+#' @rdname designTree
+#' @export
 nnls.phylo <- function(x, dm, rooted=FALSE, trace=0){
     nnls.tree(dm, x, rooted, trace=trace)
 }
 
 
-##' @rdname designTree
-##' @aliases nnls.splits
-##' @export
+#' @rdname designTree
+#' @export
 nnls.splits <- function(x, dm, trace=0){
     labels=attr(x, "labels")
     dm = as.matrix(dm)
@@ -690,9 +685,8 @@ nnls.splits <- function(x, dm, trace=0){
 }  
 
 
-##' @rdname designTree
-##' @aliases nnls.tree
-##' @export
+#' @rdname designTree
+#' @export
 nnls.networx <- function(x, dm){
 #    spl <- attr(x, "splits")
     spl <- x$splits

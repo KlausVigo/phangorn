@@ -70,9 +70,8 @@ simSeq <- function (x, ...)
     UseMethod("simSeq")
 
 
-##' @rdname simSeq
-##' @aliases simSeq.phylo
-##' @export
+#' @rdname simSeq
+#' @export
 simSeq.phylo = function(x, l=1000, Q=NULL, bf=NULL, rootseq=NULL, type = "DNA", model=NULL,
                   levels = NULL, rate=1, ancestral=FALSE, ...){
    
@@ -148,9 +147,8 @@ simSeq.phylo = function(x, l=1000, Q=NULL, bf=NULL, rootseq=NULL, type = "DNA", 
 }        
 
 
-##' @rdname simSeq
-##' @aliases simSeq.pml
-##' @export
+#' @rdname simSeq
+#' @export
 simSeq.pml <- function(x, ancestral=FALSE, ...){
     g = x$g
     w = x$w

@@ -19,9 +19,8 @@ edgeLengthIndex <- function(child, parent, nTips){
 #
 # Maximum likelihood estimation
 #
-##' @rdname pml.fit
-##' @aliases discrete.gamma
-##' @export
+#' @rdname pml.fit
+#' @export
 discrete.gamma <- function (alpha, k) 
 {
     if (k == 1) return(1)
@@ -302,9 +301,8 @@ getP <- function(el, eig=edQt(), g=1.0){
 }
 
 
-##' @rdname pml.fit
-##' @aliases lli
-##' @export
+#' @rdname pml.fit
+#' @export
 lli <- function (data, tree=NULL, ...) 
 {
     contrast <- attr(data, "contrast")
@@ -316,9 +314,8 @@ lli <- function (data, tree=NULL, ...)
 }
 
 
-##' @rdname pml.fit
-##' @aliases edQt
-##' @export
+#' @rdname pml.fit
+#' @export
 edQt <- function (Q = c(1, 1, 1, 1, 1, 1), bf = c(0.25, 0.25, 0.25, 0.25)) 
 {
     l = length(bf)
@@ -361,18 +358,16 @@ edQ2 <- function(Q){
 }
 
 
-##' @rdname pml.fit
-##' @aliases pml.free
-##' @export
+#' @rdname pml.fit
+#' @export
 pml.free <- function(){
     .C("ll_free")
 #    rm(.INV, .iind, envir = parent.frame())
 }
 
 
-##' @rdname pml.fit
-##' @aliases pml.init
-##' @export
+#' @rdname pml.fit
+#' @export
 pml.init <- function(data, k=1L){
     nTips <- length(data)
     nr <- attr(data, "nr")
@@ -713,9 +708,8 @@ phangornParseFormula <- function(model){
 }
 
 
-##' @rdname pml
-##' @aliases pml.control
-##' @export
+#' @rdname pml
+#' @export
 pml.control <- function (epsilon = 1e-08, maxit = 10, trace = 1) 
 {
     if (!is.numeric(epsilon) || epsilon <= 0) 
@@ -2380,9 +2374,9 @@ addTips2Tree <- function (tree, tips, where){
 }    
 
 
-##' @rdname pml
-##' @aliases optim.pml
-##' @export
+#' @rdname pml
+#' @aliases optim.pml
+#' @export
 optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE, 
                         optInv = FALSE, optGamma = FALSE, optEdge = TRUE, optRate = FALSE, optRooted=FALSE,
                         control = pml.control(epsilon = 1e-8, maxit = 10, trace = 1L), 

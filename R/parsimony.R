@@ -33,7 +33,8 @@ sankoff.quartet <- function (dat, cost, p, l, weight)
 #' "sankoff" only uses "NNI". The "fitch" algorithm only works correct for
 #' binary trees.
 #' 
-#' @aliases parsimony optim.parsimony sankoff fitch PNJ CI RI pratchet
+#' @aliases parsimony 
+#' @aliases optim.parsimony sankoff fitch PNJ CI RI pratchet
 #' random.addition acctran
 #' @param data A object of class phyDat containing sequences.
 #' @param tree tree to start the nni search from.
@@ -85,7 +86,7 @@ sankoff.quartet <- function (dat, cost, p, l, weight)
 #' parsimony(c(tree,treeNNI, treeRatchet), Laurasiatherian)
 #' 
 #' @rdname parsimony
-#' @export parsimony
+#' @export
 parsimony <- function(tree, data, method='fitch', ...){
     if (class(data)[1] != "phyDat") stop("data must be of class phyDat")
     if(method=='sankoff') result <- sankoff(tree, data, ...)
@@ -94,9 +95,8 @@ parsimony <- function(tree, data, method='fitch', ...){
 }
 
 
-##' @rdname ancestral.pml
-##' @aliases ancestral.pars
-##' @export
+#' @rdname ancestral.pml
+#' @export
 ancestral.pars <- function (tree, data, type = c("MPR", "ACCTRAN"), cost=NULL) 
 {
     call <- match.call()
@@ -210,9 +210,8 @@ mpr <- function(tree, data, cost=NULL){
 }
 
 
-##' @rdname ancestral.pml
-##' @aliases plotAnc
-##' @export
+#' @rdname ancestral.pml
+#' @export
 plotAnc <- function (tree, data, i = 1, col=NULL, cex.pie=par("cex"), pos="bottomright", ...)
 {
    y = subset(data, , i)
@@ -360,9 +359,8 @@ upperBound <- function(x, cost=NULL){
 }
 
 
-##' @rdname parsimony
-##' @aliases CI
-##' @export
+#' @rdname parsimony
+#' @export
 CI <- function (tree, data, cost = NULL, sitewise=FALSE) 
 {
     if(sitewise) pscore = sankoffNew(tree, data, cost = cost, site="site")
@@ -377,9 +375,8 @@ CI <- function (tree, data, cost = NULL, sitewise=FALSE)
 }
 
 
-##' @rdname parsimony
-##' @aliases RI
-##' @export
+#' @rdname parsimony
+#' @export
 RI <- function (tree, data, cost = NULL, sitewise=FALSE) 
 {
     if(sitewise) pscore = sankoffNew(tree, data, cost = cost, site="site")
@@ -564,9 +561,8 @@ prepareDataSankoff <- function(data){
 }
 
 
-##' @rdname parsimony
-##' @aliases sankoff
-##' @export
+#' @rdname parsimony
+#' @export
 sankoff <- function (tree, data, cost = NULL, site = 'pscore') 
 {
     if (!inherits(data,"phyDat")) 
@@ -730,9 +726,8 @@ sankoff.nni = function (tree, data, cost, ...)
 }
 
 
-##' @rdname parsimony
-##' @aliases optim.parsimony
-##' @export
+#' @rdname parsimony
+#' @export
 optim.parsimony <- function(tree,data, method='fitch', cost=NULL, trace=1, rearrangements="SPR", ...){
     if(method=='fitch') result <- optim.fitch(tree=tree, data=data, trace=trace, rearrangements=rearrangements, ...) 
     if(method=='sankoff') result <- optim.sankoff(tree=tree, data=data, cost=cost, trace=trace, ...)
@@ -740,9 +735,8 @@ optim.parsimony <- function(tree,data, method='fitch', cost=NULL, trace=1, rearr
 }
 
 
-##' @rdname parsimony
-##' @aliases pratchet
-##' @export
+#' @rdname parsimony
+#' @export
 # perturbation="ratchet", "stochastic"
 pratchet <- function (data, start=NULL, method="fitch", maxit=1000, k=10, trace=1, all=FALSE, rearrangements="SPR", perturbation="ratchet", ...) 
 {
@@ -925,9 +919,8 @@ ptree <- function (tree, data, type = "ACCTRAN", retData = FALSE)
 }
 
 
-##' @rdname parsimony
-##' @aliases acctran
-##' @export
+#' @rdname parsimony
+#' @export
 acctran <- function(tree, data) ptree(tree, data, type="ACCTRAN", retData=FALSE)
 
 

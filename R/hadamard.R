@@ -27,9 +27,8 @@ dec2bin <- function (x, k=ceiling(log2(x)))
 }
 
 # double factorial: log version
-##' @rdname dfactorial
-##' @aliases ldfactorial
-##' @export
+#' @rdname dfactorial
+#' @export
 ldfactorial <- function(x){
     x = (x+1)/2
     res = lgamma(2*x)-(lgamma(x)+(x-1)*log(2))
@@ -144,9 +143,8 @@ hadamard <- function(x){
 }
 
 
-##' @rdname hadamard
-##' @aliases fhm
-##' @export
+#' @rdname hadamard
+#' @export
 fhm <- function(v){
     n = length(v)
     n = log2(n)
@@ -233,9 +231,8 @@ distanceHadamard <- function (dm, eps = 0.001)
 }
 
 
-##' @rdname hadamard
-##' @aliases h4st
-##' @export
+#' @rdname hadamard
+#' @export
 h4st = function(obj, levels=c('a','c','g','t')){
     if (is.matrix(obj)) 
         obj = as.data.frame(t(obj))
@@ -290,9 +287,8 @@ h4st = function(obj, levels=c('a','c','g','t')){
 }
 
 
-##' @rdname hadamard
-##' @aliases h2st
-##' @export
+#' @rdname hadamard
+#' @export
 h2st <- function (obj, eps=0.001) 
 {
     if (!inherits(obj,"phyDat")) stop("Error") 
