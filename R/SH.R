@@ -34,7 +34,6 @@
 #' SH.test(sp, B=1000)
 #' }
 #' 
-#' @export SH.test
 SH.test <- function (..., B = 10000, data = NULL)
 {
     fits <- list(...)
