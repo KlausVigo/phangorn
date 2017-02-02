@@ -55,7 +55,7 @@
 #' plotAnc(tree, anc.ml, 1)
 #' 
 #' @rdname ancestral.pml
-#' @export ancestral.pml
+#' @export 
 ancestral.pml <- function (object, type=c("marginal", "ml", "bayes")) 
 {
     call <- match.call()

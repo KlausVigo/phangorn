@@ -61,7 +61,7 @@
 #' treedist(tree3,tree4)
 #' 
 #' @rdname dist.hamming 
-#' @export dist.hamming
+#' @export 
 dist.hamming <- function (x, ratio = TRUE, exclude = "none") 
 {
     if (!inherits(x,"phyDat")) 
@@ -130,9 +130,8 @@ dist.hamming <- function (x, ratio = TRUE, exclude = "none")
 }
 
 
-##' @rdname dist.hamming
-##' @aliases dist.ml
-##' @export
+#' @rdname dist.hamming
+#' @export
 dist.ml <- function (x, model = "JC69", exclude = "none", bf = NULL, Q = NULL, k=1L, shape=1, ...) 
 {
     if (!inherits(x,"phyDat")) 
@@ -225,9 +224,8 @@ dist.ml <- function (x, model = "JC69", exclude = "none", bf = NULL, Q = NULL, k
 }
 
 
-##' @rdname dist.hamming
-##' @aliases dist.logDet
-##' @export   
+#' @rdname dist.hamming
+#' @export   
 dist.logDet = function (x) 
 {
     if (!inherits(x,"phyDat")) 
@@ -315,9 +313,8 @@ writeDist <- function(x, file="", format="phylip", ...){
 }    
     
 
-##' @rdname writeDist
-##' @aliases write.nexus.dist
-##' @export      
+#' @rdname writeDist
+#' @export      
 write.nexus.dist <- function(x, file="", append=FALSE, upper=FALSE, diag=TRUE, digits = getOption("digits")){
 
     m <- as.matrix(x)
@@ -342,9 +339,8 @@ write.nexus.dist <- function(x, file="", append=FALSE, upper=FALSE, diag=TRUE, d
 }
 
 
-##' @rdname writeDist
-##' @aliases readDist
-##' @export  
+#' @rdname writeDist
+#' @export  
 readDist <- function(file){ #, format="phylip"
     tmp <- read.table(file, skip=1, stringsAsFactors = FALSE)
     labels = tmp[,1]

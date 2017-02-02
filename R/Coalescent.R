@@ -66,6 +66,8 @@ comp2 <- function(x, y){
 #' gene trees. It extends \code{speciesTree} in ape as it allows that have
 #' several individuals per gene tree.
 #' 
+#' @export
+#' 
 #' @param tree an object of class \code{multiPhylo}
 #' @param X A \code{phyDat} object to define which individual belongs to which
 #' species.
@@ -77,7 +79,7 @@ comp2 <- function(x, y){
 #' consistent estimator of the species tree. \emph{Journal of Mathematical
 #' Biology}, \bold{60}, 95--106.
 #' @keywords cluster
-#' @export coalSpeciesTree
+#' 
 coalSpeciesTree <- function(tree, X, sTree=NULL){
   
   if(is.null(X))return(speciesTree(tree))  
