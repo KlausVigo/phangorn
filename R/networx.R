@@ -120,9 +120,8 @@ splitsNetwork <- function(dm, splits=NULL, gamma=.1, lambda=1e-6, weight=NULL){
 }
 
 
-##' @rdname as.splits
-##' @aliases allSplits
-##' @export
+#' @rdname as.splits
+#' @export
 allSplits = function(k, labels=NULL){
   result <- lapply(1:(2^(k-1)-1),dec2Bin)
   if(is.null(labels)) labels=(as.character(1:k))
@@ -132,9 +131,8 @@ allSplits = function(k, labels=NULL){
 }   
 
 
-##' @rdname as.splits
-##' @aliases allCircularSplits
-##' @export
+#' @rdname as.splits
+#' @export
 allCircularSplits <- function(k, labels=NULL){
     k = as.integer(k)
     l = (k-1L) %/% 2L
@@ -550,9 +548,8 @@ removeTrivialSplits <- function(obj){
 }
 
 
-##' @rdname as.networx
-##' @aliases as.networx.splits
-##' @export
+#' @rdname as.networx
+#' @export
 as.networx.splits <- function(x, planar=FALSE, coord = c("none", "2D", "3D"), ...){
   label <- attr(x, "label")
   
@@ -623,9 +620,8 @@ as.networx.splits <- function(x, planar=FALSE, coord = c("none", "2D", "3D"), ..
 #}
 
 
-##' @rdname as.networx
-##' @aliases as.networx.phylo
-##' @export
+#' @rdname as.networx
+#' @export
 as.networx.phylo <- function(x, ...){
     spl <- as.splits(x)
     spl <- spl[x$tree[,2]]
@@ -704,9 +700,8 @@ consensusNet <- function (obj, prob = 0.3, ...)
 }
 
 
-##' @rdname addConfidences
-##' @aliases createLabel
-##' @export
+#' @rdname addConfidences
+#' @export
 createLabel <- function(x, y, label_y, type="edge", nomatch=NA){
     spl_x <- as.splits(x)
     if(inherits(x, "phylo", TRUE)==1) spl_x <- spl_x[x$edge[,2]]
@@ -740,7 +735,6 @@ createLabel <- function(x, y, label_y, type="edge", nomatch=NA){
 #' Add support values to a \code{splits}, \code{phylo} or \code{networx}
 #' object.
 #' 
-#' @aliases addConfidences presenceAbsence createLabel
 #' @param x an object of class \code{splits}, \code{phylo} or \code{networx}
 #' @param y an object of class \code{splits}, \code{phylo}, \code{multiPhylo}
 #' or \code{networx}
@@ -772,7 +766,7 @@ createLabel <- function(x, y, label_y, type="edge", nomatch=NA){
 #' plot(nnet, "2D", show.edge.label=TRUE)
 #' 
 #' @rdname addConfidences
-#' @export addConfidences
+#' @export 
 addConfidences <- function (x, y, ...) UseMethod("addConfidences")
 
 
@@ -952,9 +946,8 @@ presenceAbsenceOld <- function(x, y){
 }
 
 
-##' @rdname addConfidences
-##' @aliases presenceAbsence
-##' @export
+#' @rdname addConfidences
+#' @export
 presenceAbsence <- function(x,y){
     spl <- as.splits(y)
     l <- length(spl)
@@ -1086,10 +1079,9 @@ edgeLabels <- function(xx,yy,zz=NULL, edge){
 
 
 
-##' @rdname as.networx
-##' @aliases plot.networx
-##' @method plot networx
-##' @export
+#' @rdname as.networx
+#' @method plot networx
+#' @export
 plot.networx <- function(x, type="3D", use.edge.length = TRUE, show.tip.label=TRUE,
     show.edge.label=FALSE, edge.label=NULL, show.node.label = FALSE, node.label=NULL,
     show.nodes=FALSE, tip.color = "black", 
