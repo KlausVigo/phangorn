@@ -70,10 +70,9 @@ as.splits <- function (x, ...){
 
 
 
-##' @rdname as.splits
-##' @aliases print.splits
-##' @method print splits
-##' @export
+#' @rdname as.splits
+#' @method print splits
+#' @export
 print.splits <- function(x, maxp = getOption("max.print"), 
                          zero.print = ".", one.print="|", ...)
 {
@@ -220,9 +219,9 @@ distinct.splits <- function(...){
 
 
 # computes splits from phylo
-##' @rdname as.splits
-##' @aliases as.splits.phylo
-##' @export
+#' @rdname as.splits
+#' @method as.splits phylo
+#' @export
 as.splits.phylo <- function(x, ...){
     if (hasArg(as.is)) 
         as.is <- list(...)$as.is
@@ -248,9 +247,8 @@ as.splits.phylo <- function(x, ...){
 
 
 # computes splits from multiPhylo object (e.g. bootstrap, MCMC etc.)
-##' @rdname as.splits
-##' @aliases as.splits.multiPhylo
-##' @export
+#' @rdname as.splits
+#' @export
 as.splits.multiPhylo <- function(x, ...){
     #    if(inherits(x,"multiPhylo"))x = .uncompressTipLabel(x)
     #    if(inherits(x,"multiPhylo"))class(x)='list'  # prop.part allows not yet multiPhylo
@@ -297,9 +295,8 @@ as.splits.networx <- function(x, ...){
 }
 
 
-##' @rdname as.splits
-##' @aliases as.prop.part.splits
-##' @export
+#' @rdname as.splits
+#' @export
 as.prop.part.splits <- function(x, ...){
     attr(x, "number") = attr(x, "weights")
     attr(x, "weights") = NULL
@@ -374,9 +371,8 @@ as.bitsplits.splits <- function (x){
 
 
 # computes compatible splits
-##' @rdname as.splits
-##' @aliases compatible
-##' @export
+#' @rdname as.splits
+#' @export
 compatible <- function(obj){
     labels = attr(obj, "labels")
     if(!inherits(obj, "splits"))stop("obj needs to be of class splits")

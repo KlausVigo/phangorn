@@ -4,9 +4,8 @@
 
 
 # no checks for postorder
-##' @rdname midpoint
-##' @aliases getRoot
-##' @export
+#' @rdname midpoint
+#' @export
 getRoot <- function (tree) 
 {
     if(!is.null(attr(tree, "order")) && attr(tree, "order") == 
@@ -72,7 +71,7 @@ changeEdgeLength = function (tree, edge, edge.length)
 }
 
 
-
+## @aliases midpoint pruneTree getRoot
 #' Tree manipulation
 #' 
 #' \code{midpoint} performs midpoint rooting of a tree.  \code{pruneTree}
@@ -84,7 +83,7 @@ changeEdgeLength = function (tree, edge, edge.length)
 #' as.numeric(as.character(tree$node.labels)) to convert them.  \code{midpoint}
 #' so far does not transform node.labels properly.
 #' 
-#' @aliases midpoint pruneTree getRoot
+
 #' @param tree an object of class \code{phylo}
 #' @param FUN a function evaluated on the nodelabels, result must be logical.
 #' @param node.labels are nodel labels 'support' values, 'label' or should be
@@ -192,9 +191,8 @@ node2root <- function(x){
 }
 
 
-##' @rdname midpoint
-##' @aliases pruneTree
-##' @export
+#' @rdname midpoint
+#' @export
 pruneTree = function(tree, ..., FUN = ">="){
      if(is.null(tree$node)) stop("no node labels")
      if(is.rooted(tree)) tree = unroot(tree)
@@ -451,7 +449,7 @@ nnin <- function (tree, n)
 
 
 
-
+## @aliases nni rNNI rSPR
 #' Tree rearrangements.
 #' 
 #' \code{nni} returns a list of all trees which are one nearest neighbor
@@ -461,7 +459,6 @@ nnin <- function (tree, n)
 #' methods may be useful in simulation studies.
 #' 
 #' 
-#' @aliases nni rNNI rSPR
 #' @param tree A phylogenetic \code{tree}, object of class \code{phylo}.
 #' @param moves Number of tree rearrangements to be transformed on a tree.  Can
 #' be a vector
@@ -615,9 +612,8 @@ dn <- function(x){
 }
 
 
-##' @rdname nni
-##' @aliases rSPR
-##' @export
+#' @rdname nni
+#' @export
 rSPR = function (tree, moves = 1, n = length(moves), k=NULL) 
 {
     if (n == 1) {
@@ -824,9 +820,8 @@ sprMove <- function(tree, m){
 }
  
 
-##' @rdname nni
-##' @aliases rNNI
-##' @export
+#' @rdname nni
+#' @export
 rNNI <- function (tree, moves = 1, n = length(moves)) 
 {
     k = length(na.omit(match(tree$edge[, 2], tree$edge[, 1])))
@@ -873,7 +868,7 @@ allAncestors <- function(x){
 
 
 
-
+## @aliases Ancestors Children Descendants Siblings mrca.phylo
 #' tree utility function
 #' 
 #' Functions for describing relationships among phylogenetic nodes.
@@ -886,7 +881,6 @@ allAncestors <- function(x){
 #' a scalar or vector.  \code{mrca} is a faster version of the mrca in ape, in
 #' phangorn only because of dependencies.
 #' 
-#' @aliases Ancestors Children Descendants Siblings mrca.phylo
 #' @param x a tree (a phylo object).
 #' @param node an integer or a vector of integers corresponding to a node ID
 #' @param type specify whether to return just direct children / parents or all
@@ -910,7 +904,7 @@ allAncestors <- function(x){
 #' mrca.phylo(tree)
 #' # same as mrca(tree), but faster for large trees
 #' 
-#' @export Ancestors
+#' @export 
 #' @rdname Ancestors
 Ancestors <- function (x, node, type = c("all", "parent")) 
 {
@@ -982,18 +976,16 @@ allDescendants <- function(x){
 }
 
 
-##' @rdname Ancestors
-##' @aliases Children
-##' @export
+#' @rdname Ancestors
+#' @export
 Children <- function(x, node){
    if(length(node)==1)return(x$edge[x$edge[,1]==node,2])
    allChildren(x)[node]
 }
 
 
-##' @rdname Ancestors
-##' @aliases Descendants
-##' @export
+#' @rdname Ancestors
+#' @export
 Descendants = function(x, node, type=c("tips","children","all")){
   type <- match.arg(type)
   if(type=="children") return(Children(x, node))
@@ -1018,9 +1010,8 @@ Descendants = function(x, node, type=c("tips","children","all")){
 }
 
 
-##' @rdname Ancestors
-##' @aliases Siblings
-##' @export
+#' @rdname Ancestors
+#' @export
 Siblings = function (x, node, include.self = FALSE) 
 {
     l = length(node)
@@ -1052,9 +1043,8 @@ Siblings = function (x, node, include.self = FALSE)
 }
 
 
-##' @rdname Ancestors
-##' @aliases mrca.phylo
-##' @export
+#' @rdname Ancestors
+#' @export
 mrca.phylo <- function(x, node=NULL){
     if(is.null(node)) return(mrca2(x))
     anc <- Ancestors(x, node, type = "all")

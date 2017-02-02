@@ -154,7 +154,6 @@ oneWise <- function (x, nTips=NULL)
 #' \item{path.difference}{path.difference}
 #' \item{weighted.path.difference}{weighted.path.difference}
 #' @author Klaus P. Schliep \email{klaus.schliep@@gmail.com},
-#' 
 #' Leonardo de Oliveira Martins
 #' @seealso \code{\link[ape]{dist.topo}}, \code{\link{nni}},
 #' \code{\link{superTree}}
@@ -275,9 +274,8 @@ treedist <- function (tree1, tree2, check.labels=TRUE)
 
 
 # leomrtns addition
-##' @rdname treedist
-##' @aliases sprdist
-##' @export
+#' @rdname treedist
+#' @export
 sprdist <- function (tree1, tree2) 
 {
     tree1 = unroot(tree1)
@@ -374,9 +372,8 @@ SPR2 <- function(tree, trees){
 }
 
 
-##' @rdname treedist
-##' @aliases SPR.dist
-##' @export
+#' @rdname treedist
+#' @export
 SPR.dist <- function(tree1, tree2=NULL){
     if(inherits(tree1, "multiPhylo") && is.null(tree2))return(SPR1(tree1)) 
     if(inherits(tree1, "phylo") && inherits(tree2, "phylo"))return(sprdist(tree1, tree2)[1])
@@ -695,9 +692,8 @@ RF0 <- function(tree1, tree2=NULL, normalize=FALSE, check.labels = TRUE, rooted=
 }
 
 
-##' @rdname treedist
-##' @aliases RF.dist
-##' @export
+#' @rdname treedist
+#' @export
 RF.dist <- function(tree1, tree2=NULL, normalize=FALSE, check.labels = TRUE, rooted=FALSE)
 {
     if(class(tree1)=="phylo" && class(tree2)=="phylo")return(RF0(tree1, tree2, normalize, check.labels, rooted))
@@ -708,9 +704,8 @@ RF.dist <- function(tree1, tree2=NULL, normalize=FALSE, check.labels = TRUE, roo
 }
 
 
-##' @rdname treedist
-##' @aliases wRF.dist
-##' @export
+#' @rdname treedist
+#' @export
 wRF.dist <- function(tree1, tree2=NULL, normalize=FALSE, check.labels = TRUE, rooted=FALSE){
     if(class(tree1)=="phylo" && class(tree2)=="phylo")return(wRF0(tree1, tree2, normalize, check.labels, rooted))
     if(class(tree1)=="multiPhylo" && is.null(tree2))return(wRF1(tree1, normalize, check.labels))
@@ -854,9 +849,8 @@ kf2 <- function(trees, check.labels = TRUE){
 }
 
 
-##' @rdname treedist
-##' @aliases KF.dist
-##' @export
+#' @rdname treedist
+#' @export
 KF.dist <- function(tree1, tree2=NULL, check.labels = TRUE, rooted=FALSE){
     if(inherits(tree1, "multiPhylo") && is.null(tree2))return(kf2(tree1)) 
     if(inherits(tree1, "phylo") && inherits(tree2, "phylo"))return(kf0(tree1, tree2, check.labels))
@@ -866,9 +860,8 @@ KF.dist <- function(tree1, tree2=NULL, check.labels = TRUE, rooted=FALSE){
 }
 
 
-##' @rdname treedist
-##' @aliases path.dist
-##' @export
+#' @rdname treedist
+#' @export
 path.dist <- function(tree1, tree2=NULL, check.labels = TRUE, use.weight=FALSE){
     if(inherits(tree1, "phylo") && inherits(tree2, "phylo"))
          return(pd0(tree1, tree2, check.labels, !use.weight))
