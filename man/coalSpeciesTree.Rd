@@ -27,9 +27,6 @@ et al. (2010) from the element wise minima of the cophenetic matrices of the
 gene trees. It extends \code{speciesTree} in ape as it allows that have
 several individuals per gene tree.
 }
-\author{
-Klaus Schliep \email{klaus.schliep@gmail.com} Emmanuel Paradies
-}
 \references{
 Liu, L., Yu, L. and Pearl, D. K. (2010) Maximum tree: a
 consistent estimator of the species tree. \emph{Journal of Mathematical
@@ -38,5 +35,7 @@ Biology}, \bold{60}, 95--106.
 \seealso{
 \code{\link{speciesTree}}
 }
+\author{
+Klaus Schliep \email{klaus.schliep@gmail.com} Emmanuel Paradies
+}
 \keyword{cluster}
-

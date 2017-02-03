@@ -57,9 +57,6 @@ densiTree(BinindaEmondsEtAl2007, type="phylogram", col="red")
 
 
 }
-\author{
-Klaus Schliep \email{klaus.schliep@gmail.com}
-}
 \references{
 densiTree is inspired from the great
 \href{https://www.cs.auckland.ac.nz/~remco/DensiTree}{DensiTree} program of Remco
@@ -71,5 +68,7 @@ trees \emph{Bioinformatics}, \bold{26 (10)}, 1372-1373.
 \seealso{
 \code{\link{plot.phylo}}, \code{\link{plot.networx}}
 }
+\author{
+Klaus Schliep \email{klaus.schliep@gmail.com}
+}
 \keyword{plot}
-

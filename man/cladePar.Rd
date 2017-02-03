@@ -41,11 +41,10 @@ x = cladePar(tree, 12)
 cladePar(tree, 18, "blue", "blue", x=x, plot=TRUE)
 
 }
-\author{
-Klaus Schliep \email{klaus.schliep@gmail.com}
-}
 \seealso{
 \code{\link{plot.phylo}}
 }
+\author{
+Klaus Schliep \email{klaus.schliep@gmail.com}
+}
 \keyword{plot}
-

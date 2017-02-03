@@ -46,9 +46,6 @@ plot(cnet_woodmouse, type = "2D", show.edge.label=TRUE)
 }
 
 }
-\author{
-Klaus Schliep \email{klaus.schliep@gmail.com}
-}
 \references{
 Holland B.R., Huber K.T., Moulton V., Lockhart P.J. (2004) Using
 consensus networks to visualize contradictory evidence for species
@@ -59,5 +56,7 @@ phylogeny. \emph{Molecular Biology and Evolution}, \bold{21}, 1459--61
 \code{\link{lento}}, \code{\link{distanceHadamard}},
 \code{\link{plot.networx}}, \code{\link{maxCladeCred}}
 }
+\author{
+Klaus Schliep \email{klaus.schliep@gmail.com}
+}
 \keyword{hplot}
-

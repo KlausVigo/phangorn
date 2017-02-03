@@ -18,12 +18,11 @@ labels (as given by the element \code{tip.label} of the argument \code{x}).
 \code{cophenetic.networx} computes the pairwise distances between the pairs
 of tips from a phylogenetic network using its branch lengths.
 }
-\author{
-Klaus Schliep
-}
 \seealso{
 \code{\link[stats]{cophenetic}} for the generic function,
 \code{neighborNet} to construct a network from a distance matrix
 }
+\author{
+Klaus Schliep
+}
 \keyword{manip}
-

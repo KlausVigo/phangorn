@@ -25,9 +25,6 @@ data(yeast)
 hist(delta.score(yeast, "all"))
 
 }
-\author{
-Alastair Potts and Klaus Schliep
-}
 \references{
 BR Holland, KT Huber, A Dress, V Moulton (2002) \eqn{\delta}
 Plots: a tool for analyzing phylogenetic distance data Russell D. Gray,
@@ -41,5 +38,7 @@ fabric of human history \emph{Phil. Trans. R. Soc. B}, \bold{365}
 \seealso{
 \code{\link{dist.hamming}}
 }
+\author{
+Alastair Potts and Klaus Schliep
+}
 \keyword{cluster}
-

@@ -10,7 +10,6 @@
 #' windows or with GUI interfaces ("aqua" on a mac). However it will speed up
 #' nicely from the command line ("X11").
 #' 
-#' @aliases bootstrap.pml bootstrap.phyDat plotBS
 #' @param x an object of class \code{pml} or \code{phyDat}.
 #' @param bs number of bootstrap samples.
 #' @param trees return trees only (default) or whole \code{pml} objects.
