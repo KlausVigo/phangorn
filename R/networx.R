@@ -770,40 +770,6 @@ createLabel <- function(x, y, label_y, type="edge", nomatch=NA){
 addConfidences <- function (x, y, ...) UseMethod("addConfidences")
 
 
-compatible_2 <- function(obj1, obj2) 
-{
-    ntaxa <- length(obj1$labels)
-    msk <- !as.raw(2^(8 - (ntaxa%%8)) - 1)
-    r0 <- as.raw(0)
-    arecompatible2 <- function (x, y, msk, r0) {
-        foo <- function(v) {
-            lv <- length(v)
-            v[lv] <- v[lv] & msk
-            as.integer(all(v == r0))
-        }
-        nE <- foo(x & y) + foo(x & !y) + foo(!x & y) + foo(!x & !y)
-        if (nE > 0) TRUE
-        else FALSE
-    }  
-    m1 <- obj1$matsplit
-    m2 <- obj2$matsplit
-    n1 <- ncol(m1)
-    n2 <- ncol(m2)
-    res <- rep(TRUE, n1)
-    for (i in 1:n1){
-        j=1
-        while(j <= n2){
-            if (!arecompatible2(m1[, i], m2[, j], msk, r0)){
-                res[i]=FALSE
-                break()
-            }
-            j=j+1L
-        } 
-    }    
-    res
-}          
-
-
 # some function to add confidences on splits if trees have different taxa
 #
 addConfidencesMultiPhylo <- function(spl, trees){
