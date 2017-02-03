@@ -439,7 +439,7 @@ circNetwork <- function(x, ord=NULL){
 #' Often it is easier and safer to supply vectors of graphical parameters for
 #' splits (e.g. splits.color) than for edges. These overwrite values edge.color.
 #' 
-#' @aliases as.networx plot.networx as.networx.splits as.networx.phylo
+#' @aliases networx 
 #' @param x an object of class \code{"splits"} (as.networx) or \code{"networx"}
 #' (plot)
 #' @param planar logical whether to produce a planar graph from only cyclic
@@ -549,6 +549,7 @@ removeTrivialSplits <- function(obj){
 
 
 #' @rdname as.networx
+#' @method as.networx splits
 #' @export
 as.networx.splits <- function(x, planar=FALSE, coord = c("none", "2D", "3D"), ...){
   label <- attr(x, "label")
@@ -621,6 +622,7 @@ as.networx.splits <- function(x, planar=FALSE, coord = c("none", "2D", "3D"), ..
 
 
 #' @rdname as.networx
+#' @method as.networx phylo
 #' @export
 as.networx.phylo <- function(x, ...){
     spl <- as.splits(x)

@@ -2,8 +2,9 @@
 % Please edit documentation in R/networx.R
 \name{as.networx}
 \alias{as.networx}
-\alias{as.networx.phylo}
+\alias{networx}
 \alias{as.networx.splits}
+\alias{as.networx.phylo}
 \alias{plot.networx}
 \title{Phylogenetic networks}
 \usage{
@@ -27,6 +28,8 @@ as.networx(x, ...)
 \arguments{
 \item{x}{an object of class \code{"splits"} (as.networx) or \code{"networx"}
 (plot)}
+
+\item{\dots}{Further arguments passed to or from other methods.}
 
 \item{planar}{logical whether to produce a planar graph from only cyclic
 splits (may excludes splits).}
@@ -86,8 +89,6 @@ labels.}
 \item{font.node.label}{the font used for the node labels.}
 
 \item{font.edge.label}{the font used for the edge labels.}
-
-\item{\dots}{Further arguments passed to or from other methods.}
 }
 \description{
 \code{as.networx} convert \code{splits} objects into a \code{networx}
@@ -122,9 +123,6 @@ example(consensusNet)
 }
 
 }
-\author{
-Klaus Schliep \email{klaus.schliep@gmail.com}
-}
 \references{
 Dress, A.W.M. and Huson, D.H. (2004) Constructing Splits Graphs
 \emph{IEEE/ACM Transactions on Computational Biology and Bioinformatics
@@ -137,5 +135,7 @@ Dress, A.W.M. and Huson, D.H. (2004) Constructing Splits Graphs
 \code{\link[ape]{evonet}}, \code{\link[ape]{as.igraph}},
 \code{\link{densiTree}}
 }
+\author{
+Klaus Schliep \email{klaus.schliep@gmail.com}
+}
 \keyword{plot}
-

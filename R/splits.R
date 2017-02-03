@@ -1,39 +1,9 @@
-as.Matrix <- function (x, ...){
-    if (inherits(x,"Matrix")) return(x)
-    UseMethod("as.Matrix")
-}
-
-
-as.matrix.splits <- function(x, zero.print = 0L, one.print=1L, ...){
-    m = length(x)
-    labels = attr(x, "labels")
-    n = length(labels)    
-    res = matrix(zero.print, m, n)
-    for(i in 1:m)res[i,x[[i]]]=one.print
-    dimnames(res) = list(names(x), labels)
-    res
-}
-
-
-as.Matrix.splits <- function(x, ...){
-    labels = attr(x, "labels")
-    l = length(x)
-    j = unlist(x)
-    #    i = rep(1:l, sapply(x, length))
-    i = rep(1:l, lengths(x))
-    sparseMatrix(i,j, x = rep(1L, length(i)), dimnames = list(NULL, labels)) # included x und labels
-}
-
-
 #' Splits representation of graphs and trees.
 #' 
 #' \code{as.splits} produces a list of splits or bipartitions.
 #' 
-#' @aliases as.splits as.prop.part.splits as.splits.phylo as.splits.multiPhylo
-#' as.splits.networx as.matrix.splits as.Matrix as.Matrix.splits c.splits
-#' distinct.splits print.splits allSplits allCircularSplits
-#' compatible as.phylo.splits countCycles
-#' addTrivialSplits removeTrivialSplits matchSplits as.bitsplits.splits unique.splits
+#' @aliases splits as.Matrix distinct.splits 
+#' addTrivialSplits removeTrivialSplits 
 #' @param x An object of class phylo or multiPhylo.
 #' @param maxp integer, default from \code{options(max.print)}, influences how
 #' many entries of large matrices are printed at all.
@@ -62,12 +32,44 @@ as.Matrix.splits <- function(x, ...){
 #' plot(as.networx(spl), "2D")
 #' 
 #' @rdname as.splits
-#' @export as.splits
+#' @export
 as.splits <- function (x, ...){
     if(inherits(x, "splits")) return(x)
     UseMethod("as.splits")
 }
 
+
+as.Matrix <- function (x, ...){
+    if (inherits(x,"Matrix")) return(x)
+    UseMethod("as.Matrix")
+}
+
+
+#' @rdname as.splits
+#' @method as.matrix splits
+#' @export
+as.matrix.splits <- function(x, zero.print = 0L, one.print=1L, ...){
+    m = length(x)
+    labels = attr(x, "labels")
+    n = length(labels)    
+    res = matrix(zero.print, m, n)
+    for(i in 1:m)res[i,x[[i]]]=one.print
+    dimnames(res) = list(names(x), labels)
+    res
+}
+
+
+#' @rdname as.splits
+#' @method as.Matrix splits
+#' @export
+as.Matrix.splits <- function(x, ...){
+    labels = attr(x, "labels")
+    l = length(x)
+    j = unlist(x)
+    #    i = rep(1:l, sapply(x, length))
+    i = rep(1:l, lengths(x))
+    sparseMatrix(i,j, x = rep(1L, length(i)), dimnames = list(NULL, labels)) # included x und labels
+}
 
 
 #' @rdname as.splits
@@ -118,6 +120,9 @@ changeOrder <- function(x, labels){
 #}
 
 
+
+#' @rdname as.splits
+#' @export
 matchSplits <- function(x, y, as.in=TRUE){
     tiplabel <- attr(x, "label")
     if(any(is.na(match(tiplabel, attr(y, "label"))))) stop("x and y have different labels!")
@@ -172,6 +177,7 @@ countCycles <- function(splits, tree=NULL, ord=NULL){
 }
 
 
+c
 c.splits <- function (..., recursive=FALSE) 
 {
     x <- list(...)
@@ -202,11 +208,15 @@ c.splits <- function (..., recursive=FALSE)
 }
 
 
+#' @rdname as.splits
+#' @method unique splits
+#' @export
 unique.splits <- function(x, incomparables = FALSE, unrooted=TRUE, ...){
     nTips <- length(attr(x, "labels"))
     x <- SHORTwise(x, nTips)
     x[!duplicated(x)]
 }
+
 
 distinct.splits <- function(...){
     tmp <- c(...)
@@ -248,6 +258,7 @@ as.splits.phylo <- function(x, ...){
 
 # computes splits from multiPhylo object (e.g. bootstrap, MCMC etc.)
 #' @rdname as.splits
+#' @method as.splits multiPhylo
 #' @export
 as.splits.multiPhylo <- function(x, ...){
     #    if(inherits(x,"multiPhylo"))x = .uncompressTipLabel(x)
@@ -288,6 +299,9 @@ as.splits.prop.part <- function(x, ...){
 }
 
 
+#' @rdname as.splits
+#' @method as.splits networx
+#' @export
 as.splits.networx <- function(x, ...){
     #    if(!is.null(attr(x, "splits")))attr(x, "splits")
     if(!is.null(x$splits)) x$splits
@@ -296,6 +310,7 @@ as.splits.networx <- function(x, ...){
 
 
 #' @rdname as.splits
+#' @method as.prop.part splits
 #' @export
 as.prop.part.splits <- function(x, ...){
     attr(x, "number") = attr(x, "weights")
@@ -305,6 +320,9 @@ as.prop.part.splits <- function(x, ...){
 }
 
 ## as.splits.phylo
+#' @rdname as.splits
+#' @method as.phylo splits
+#' @export
 as.phylo.splits <- function (x, result = "phylo", ...) 
 {
     result <- match.arg(result, c("phylo", "all"))
@@ -347,6 +365,9 @@ as.phylo.splits <- function (x, result = "phylo", ...)
 }
 
 
+#' @rdname as.splits
+#' @method as.bitsplits splits
+#' @export
 as.bitsplits.splits <- function (x){
     foo <- function(vect, RAWVECT) {
         res <- RAWVECT
