@@ -27,11 +27,10 @@ par(mfrow = c(3,5))
 for(i in 1:15)plot(trees[[i]])
 
 }
-\author{
-Klaus Schliep \email{klaus.schliep@gmail.com}
-}
 \seealso{
 \code{\link[ape]{rtree}}, \code{\link{nni}}
 }
+\author{
+Klaus Schliep \email{klaus.schliep@gmail.com}
+}
 \keyword{cluster}
-

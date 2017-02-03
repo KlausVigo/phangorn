@@ -16,7 +16,6 @@
 #' 
 #' For further details see vignette("Ancestral").
 #' 
-#' @aliases ancestral.pml ancestral.pars pace plotAnc
 #' @param object an object of class pml
 #' @param tree a tree, i.e. an object of class pml
 #' @param data an object of class phyDat
