@@ -177,7 +177,6 @@ NJ_old <- function(x)
 #' Nei (1987). UNJ is the unweighted version from Gascuel (1997).
 #' 
 #' 
-#' @aliases NJ UNJ
 #' @param x A distance matrix.
 #' @return an object of class \code{"phylo"}.
 #' @author Klaus P. Schliep \email{klaus.schliep@@gmail.com}

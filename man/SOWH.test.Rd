@@ -54,9 +54,6 @@ summary(res)
 }
 
 }
-\author{
-Klaus Schliep \email{klaus.schliep@gmail.com}
-}
 \references{
 Goldman, N., Anderson, J. P., and Rodrigo, A. G. (2000)
 Likelihood -based tests of topologies in phylogenetics. \emph{Systematic
@@ -70,5 +67,7 @@ Phylogenetic Inference in Hillis, D.M., Moritz, C. and Mable, B.K. (Eds.)
 \code{\link{pml}}, \code{\link{pmlPart}}, \code{\link{pmlCluster}},
 \code{\link{simSeq}}, \code{\link{SH.test}}
 }
+\author{
+Klaus Schliep \email{klaus.schliep@gmail.com}
+}
 \keyword{models}
-

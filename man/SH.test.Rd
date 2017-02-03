@@ -40,9 +40,6 @@ SH.test(sp, B=1000)
 }
 
 }
-\author{
-Klaus Schliep \email{klaus.schliep@gmail.com}
-}
 \references{
 Shimodaira, H. and Hasegawa, M. (1999) Multiple comparisons of
 log-likelihoods with applications to phylogenetic inference. \emph{Molecular
@@ -52,5 +49,7 @@ Biology and Evolution}, \bold{16}, 1114--1116.
 \code{\link{pml}}, \code{\link{pmlPart}}, \code{\link{pmlCluster}},
 \code{\link{SOWH.test}}
 }
+\author{
+Klaus Schliep \email{klaus.schliep@gmail.com}
+}
 \keyword{models}
-

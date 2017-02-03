@@ -63,4 +63,3 @@ mrca.phylo(tree)
 \code{\link[ape]{nodelabels}}
 }
 \keyword{misc}
-

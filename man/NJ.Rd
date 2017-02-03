@@ -27,9 +27,6 @@ tree <- NJ(dm)
 plot(tree)
 
 }
-\author{
-Klaus P. Schliep \email{klaus.schliep@gmail.com}
-}
 \references{
 Saitou, N. and Nei, M. (1987) The neighbor-joining method: a new
 method for reconstructing phylogenetic trees. \emph{Molecular Biology and
@@ -48,5 +45,7 @@ UNJ. in Birkin et. al. \emph{Mathematical Hierarchies and Biology},
 \code{\link[phangorn]{dist.hamming}}, \code{\link[phangorn]{upgma}},
 \code{\link[ape]{fastme}}
 }
+\author{
+Klaus P. Schliep \email{klaus.schliep@gmail.com}
+}
 \keyword{cluster}
-

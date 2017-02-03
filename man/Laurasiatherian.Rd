@@ -18,4 +18,3 @@ str(Laurasiatherian)
 
 }
 \keyword{datasets}
-
