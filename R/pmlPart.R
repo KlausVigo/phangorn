@@ -288,7 +288,7 @@ plot.pmlPart<- function(x, ...){
 #' \code{pmlPart2multiPhylo} is a convenience function to extract the trees out
 #' of a \code{pmlPart} object.
 #' 
-#' @aliases pmlPart pmlPart2multiPhylo
+#' @aliases pmlPart 
 #' @param formula a formula object (see details).
 #' @param object an object of class \code{pml} or a list of objects of class
 #' \code{pml} .

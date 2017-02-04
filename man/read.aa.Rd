@@ -35,9 +35,6 @@ This function reads amino acid sequences in a file, and returns a matrix
 list of DNA sequences with the names of the taxa read in the file as row
 names.
 }
-\author{
-Klaus Schliep \email{klaus.schliep@gmail.com}
-}
 \references{
 % Anonymous. FASTA format description. %
 \url{https://www.ncbi.nlm.nih.gov/blast/fasta.shtml} Felsenstein, J. (1993)
@@ -49,5 +46,7 @@ University of Washington.
 \code{\link[ape]{read.dna}}, \code{\link[ape]{read.GenBank}},
 \code{\link[phangorn]{phyDat}}, \code{\link[seqinr]{read.alignment}}
 }
+\author{
+Klaus Schliep \email{klaus.schliep@gmail.com}
+}
 \keyword{IO}
-

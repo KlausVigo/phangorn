@@ -1,3 +1,6 @@
+## @aliases read.nexus.splits write.nexus.splits write.splits
+## read.nexus.networx write.nexus.networx
+
 #' Function to import and export splits and networks
 #' 
 #' \code{read.nexus.splits}, \code{write.nexus.splits}, \code{read.nexus.networx}, \code{write.nexus.networx} 
@@ -5,8 +8,6 @@
 #' and allow to exchange these object with other software like Splitstree. 
 #' \code{write.splits} returns a human readable output. 
 #' 
-#' @aliases read.nexus.splits write.nexus.splits write.splits
-#' read.nexus.networx write.nexus.networx
 #' @param file a file name.
 #' @param obj An object of class splits.
 #' @param weights Edge weights.

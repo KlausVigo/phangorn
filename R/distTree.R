@@ -9,7 +9,6 @@
 #' \code{\link[stats]{hclust}}.
 #' 
 #' 
-#' @aliases upgma wpgma
 #' @param D A distance matrix.
 #' @param method The agglomeration method to be used. This should be (an
 #' unambiguous abbreviation of) one of "ward", "single", "complete", "average",

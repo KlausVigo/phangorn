@@ -19,4 +19,3 @@ Genome-scale approaches to resolving incongruence in molecular phylogenies.
 \emph{Nature}, \bold{425}(6960): 798--804
 }
 \keyword{datasets}
-

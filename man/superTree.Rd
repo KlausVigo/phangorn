@@ -48,9 +48,6 @@ spr_st <- superTree(bs, method = "SPR")
 }
 
 }
-\author{
-Klaus Schliep \email{klaus.schliep@gmail.com} Liam Revell
-}
 \references{
 Baum, B. R., (1992) Combining trees as a way of combining data
 sets for phylogenetic inference, and the desirability of combining gene
@@ -63,5 +60,7 @@ trees. \emph{Molecular Phylogenetics and Evolution}, \bold{1}, 53-58.
 \code{mrp.supertree}, \code{\link{densiTree}},
 \code{\link{RF.dist}}, \code{\link{SPR.dist}}
 }
+\author{
+Klaus Schliep \email{klaus.schliep@gmail.com} Liam Revell
+}
 \keyword{cluster}
-

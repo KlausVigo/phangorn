@@ -18,6 +18,8 @@ simSeq(x, ...)
 \item{x}{a phylogenetic tree \code{tree}, i.e. an object of class
 \code{phylo} or and object of class \code{pml}.}
 
+\item{\dots}{Further arguments passed to or from other methods.}
+
 \item{l}{length of the sequence to simulate.}
 
 \item{Q}{the rate matrix.}
@@ -38,8 +40,6 @@ default is for nucleotide sequences, only used when type = "USER".}
 greater than zero.}
 
 \item{ancestral}{Return ancestral sequences?}
-
-\item{\dots}{Further arguments passed to or from other methods.}
 }
 \value{
 \code{simSeq} returns an object of class phyDat.
@@ -86,11 +86,10 @@ write.phyDat(data, file="temp.dat", format="sequential",nbcol = -1, colsep = "")
 unlink("temp.dat") 
 
 }
-\author{
-Klaus Schliep \email{klaus.schliep@gmail.com}
-}
 \seealso{
 \code{\link{phyDat}}, \code{\link{pml}}, \code{\link{SOWH.test}}
 }
+\author{
+Klaus Schliep \email{klaus.schliep@gmail.com}
+}
 \keyword{cluster}
-

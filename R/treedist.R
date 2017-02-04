@@ -109,6 +109,7 @@ oneWise <- function (x, nTips=NULL)
 }
 
 
+## @aliases treedist RF.dist wRF.dist KF.dist path.dist sprdist SPR.dist
 
 #' Distances between trees
 #' 
@@ -137,7 +138,6 @@ oneWise <- function (x, nTips=NULL)
 #' 
 #' For large number of trees the distance functions can use a lot of memory!
 #' 
-#' @aliases treedist RF.dist wRF.dist KF.dist path.dist sprdist SPR.dist
 #' @param tree1 A phylogenetic tree (class \code{phylo}) or vector of trees (an
 #' object of class \code{multiPhylo}). See details
 #' @param tree2 A phylogenetic tree.

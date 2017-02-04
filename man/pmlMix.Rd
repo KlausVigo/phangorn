@@ -100,11 +100,10 @@ AIC(fit.p, k=log(3000))
 }
 
 }
-\author{
-Klaus Schliep \email{klaus.schliep@gmail.com}
-}
 \seealso{
 \code{\link{pml}},\code{\link{pmlPart}},\code{\link{pmlCluster}}
 }
+\author{
+Klaus Schliep \email{klaus.schliep@gmail.com}
+}
 \keyword{cluster}
-

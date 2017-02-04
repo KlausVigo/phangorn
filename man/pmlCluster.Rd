@@ -64,9 +64,6 @@ SH.test(sp)
 }
 
 }
-\author{
-Klaus Schliep \email{klaus.schliep@gmail.com}
-}
 \references{
 K. P. Schliep (2009). Some Applications of statistical
 phylogenetics (PhD Thesis)
@@ -79,5 +76,7 @@ Phylogenetic Analyses. \emph{Molecular Biology and Evolution}, \bold{29(6)},
 \seealso{
 \code{\link{pml}},\code{\link{pmlPart}},\code{\link{pmlMix}},\code{\link{SH.test}}
 }
+\author{
+Klaus Schliep \email{klaus.schliep@gmail.com}
+}
 \keyword{cluster}
-

@@ -33,12 +33,11 @@ tree = upgma(dm)
 plot(tree)
 
 }
-\author{
-Klaus Schliep \email{klaus.schliep@gmail.com}
-}
 \seealso{
 \code{\link{hclust}}, \code{\link{dist.hamming}}, \code{\link{NJ}},
 \code{\link{as.phylo}}, \code{\link{fastme}}, \code{\link{nnls.tree}}
 }
+\author{
+Klaus Schliep \email{klaus.schliep@gmail.com}
+}
 \keyword{cluster}
-

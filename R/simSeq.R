@@ -15,7 +15,6 @@
 #' alignments having their own rate (see example). The rate parameter acts like
 #' a scaler for the edge lengths.
 #' 
-#' @aliases simSeq simSeq.phylo simSeq.pml
 #' @param x a phylogenetic tree \code{tree}, i.e. an object of class
 #' \code{phylo} or and object of class \code{pml}.
 #' @param l length of the sequence to simulate.
@@ -71,6 +70,7 @@ simSeq <- function (x, ...)
 
 
 #' @rdname simSeq
+#' @method simSeq phylo
 #' @export
 simSeq.phylo = function(x, l=1000, Q=NULL, bf=NULL, rootseq=NULL, type = "DNA", model=NULL,
                   levels = NULL, rate=1, ancestral=FALSE, ...){
@@ -148,6 +148,7 @@ simSeq.phylo = function(x, l=1000, Q=NULL, bf=NULL, rootseq=NULL, type = "DNA", 
 
 
 #' @rdname simSeq
+#' @method simSeq pml
 #' @export
 simSeq.pml <- function(x, ancestral=FALSE, ...){
     g = x$g

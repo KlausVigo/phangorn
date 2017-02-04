@@ -48,9 +48,6 @@ plot(net, "2D")
 write.nexus.splits(fit)
 
 }
-\author{
-Klaus Schliep \email{klaus.schliep@gmail.com}
-}
 \references{
 Efron, Hastie, Johnstone and Tibshirani (2004) Least Angle
 Regression (with discussion) \emph{Annals of Statistics} \bold{32(2)}, 407--499
@@ -63,5 +60,7 @@ Thesis)
 \code{\link[phangorn]{designTree}} \code{\link[phangorn]{consensusNet}},
 \code{\link[phangorn]{plot.networx}}
 }
+\author{
+Klaus Schliep \email{klaus.schliep@gmail.com}
+}
 \keyword{cluster}
-
