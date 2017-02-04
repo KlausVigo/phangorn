@@ -2,8 +2,8 @@
 % Please edit documentation in R/distSeq.R
 \name{dist.hamming}
 \alias{dist.hamming}
-\alias{dist.logDet}
 \alias{dist.ml}
+\alias{dist.logDet}
 \title{Pairwise Distances from Sequences}
 \usage{
 dist.hamming(x, ratio = TRUE, exclude = "none")
@@ -71,9 +71,6 @@ treedist(tree1,tree4)
 treedist(tree3,tree4)
 
 }
-\author{
-Klaus Schliep \email{klaus.schliep@gmail.com}
-}
 \references{
 Lockhart, P. J., Steel, M. A., Hendy, M. D. and Penny, D. (1994)
 Recovering evolutionary trees under a more realistic model of sequence
@@ -87,5 +84,7 @@ For more distance methods for nucleotide data see
 \code{\link[ape]{dist.dna}} and \code{\link{dist.p}} for pairwise
 polymorphism p-distances. \code{\link{writeDist}} for export and import distances.
 }
+\author{
+Klaus Schliep \email{klaus.schliep@gmail.com}
+}
 \keyword{cluster}
-

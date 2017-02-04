@@ -59,9 +59,6 @@ dist.p(dat)
 
 
 }
-\author{
-Klaus Schliep and Alastair Potts
-}
 \references{
 Alvarez, I., and J. F. Wendel. (2003) Ribosomal ITS sequences
 and plant phylogenetic inference. \emph{ Molecular Phylogenetics and
@@ -85,5 +82,7 @@ on the nuclear ribosomal cistron. \emph{Systematic Biology}, \bold{63},
 \seealso{
 \code{\link[ape]{dist.dna}}, \code{\link[phangorn]{dist.hamming}}
 }
+\author{
+Klaus Schliep and Alastair Potts
+}
 \keyword{cluster}
-

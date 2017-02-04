@@ -46,9 +46,6 @@ splits.h = h2st(yeast.ry)
 lento(splits.h, trivial=TRUE) 
 
 }
-\author{
-Klaus Schliep \email{klaus.schliep@gmail.com}
-}
 \references{
 Lento, G.M., Hickson, R.E., Chambers G.K., and Penny, D. (1995)
 Use of spectral analysis to test hypotheses on the origin of pinninpeds.
@@ -57,6 +54,8 @@ Use of spectral analysis to test hypotheses on the origin of pinninpeds.
 \seealso{
 \code{\link{as.splits}, \link{hadamard}}
 }
+\author{
+Klaus Schliep \email{klaus.schliep@gmail.com}
+}
 \keyword{cluster}
 \keyword{plot}
-

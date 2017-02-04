@@ -17,7 +17,6 @@
 #' The "F81" model uses empirical base frequencies, the "JC69" equal base
 #' frequencies. This is even the case if the data are not nucleotides.
 #' 
-#' @aliases dist.hamming dist.logDet dist.ml 
 #' @param x An object of class \code{phyDat}
 #' @param ratio Compute uncorrected ('p') distance or character difference.
 #' @param model One of "JC69", "F81" or one of 17 amino acid models see

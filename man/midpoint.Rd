@@ -18,9 +18,9 @@ pruneTree(tree, ..., FUN = ">=")
 \item{node.labels}{are nodel labels 'support' values, 'label' or should be
 'deleted'}
 
-\item{FUN}{a function evaluated on the nodelabels, result must be logical.}
-
 \item{\dots}{further arguments, passed to other methods.}
+
+\item{FUN}{a function evaluated on the nodelabels, result must be logical.}
 }
 \value{
 \code{pruneTree} and \code{midpoint} a tree. \code{getRoot} returns
@@ -51,12 +51,11 @@ plot(tree2, show.node.label=TRUE)
 plot(tree3, show.node.label=TRUE)
 
 }
-\author{
-Klaus Schliep \email{klaus.schliep@gmail.com}
-}
 \seealso{
 \code{\link[ape]{consensus}}, \code{\link[ape]{root}},
 \code{\link[ape]{di2multi}}
 }
+\author{
+Klaus Schliep \email{klaus.schliep@gmail.com}
+}
 \keyword{cluster}
-

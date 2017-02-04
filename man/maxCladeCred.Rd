@@ -56,12 +56,11 @@ maxCladeCred(c(tree, bs[[1]]), tree=FALSE, part = pp)
 # first value likely be -Inf
 
 }
-\author{
-Klaus Schliep \email{klaus.schliep@gmail.com}
-}
 \seealso{
 \code{\link{consensus}}, \code{\link{consensusNet}},
 \code{\link{prop.part}}
 }
+\author{
+Klaus Schliep \email{klaus.schliep@gmail.com}
+}
 \keyword{cluster}
-

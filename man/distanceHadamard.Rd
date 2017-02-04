@@ -29,9 +29,6 @@ lento(fit)
 plot(as.networx(fit), "2D")
 
 }
-\author{
-Klaus Schliep \email{klaus.schliep@gmail.com}, Tim White
-}
 \references{
 Hendy, M. D. and Penny, D. (1993). Spectral Analysis of
 Phylogenetic Data. \emph{Journal of Classification}, \bold{10}, 5-24.
@@ -40,5 +37,7 @@ Phylogenetic Data. \emph{Journal of Classification}, \bold{10}, 5-24.
 \code{\link{hadamard}}, \code{\link{lento}},
 \code{\link{plot.networx}}, \code{\link{neighborNet}}
 }
+\author{
+Klaus Schliep \email{klaus.schliep@gmail.com}, Tim White
+}
 \keyword{cluster}
-

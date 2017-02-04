@@ -31,9 +31,6 @@ nnet <- neighborNet(dm)
 plot(nnet, "2D")
 
 }
-\author{
-Klaus Schliep \email{klaus.schliep@gmail.com}
-}
 \references{
 Bryant, D. & Moulton, V. (2004) Neighbor-Net: An Agglomerative
 Method for the Construction of Phylogenetic Networks. \emph{Molecular
@@ -44,5 +41,7 @@ Biology and Evolution}, 2004, \bold{21}, 255-265
 \code{\link{plot.networx}}, \code{\link{lento}},
 \code{\link{cophenetic.networx}}, \code{\link{distanceHadamard}}
 }
+\author{
+Klaus Schliep \email{klaus.schliep@gmail.com}
+}
 \keyword{hplot}
-

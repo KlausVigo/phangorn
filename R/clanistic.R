@@ -69,7 +69,6 @@
 #' 
 #' %TODO See also vignette("Clanistic").
 #' 
-#' @aliases getClans getClips getSlices getDiversity diversity
 #' @param tree An object of class phylo or multiPhylo (getDiversity).
 #' @param all A logical, return all or just the largest clip.
 #' @param x An object of class phyDat.
@@ -122,7 +121,7 @@
 #' summary(divTab)
 #' 
 #' @rdname getClans
-#' @export getClans
+#' @export 
 getClans = function (tree) 
 {
 	if (is.rooted(tree)) 

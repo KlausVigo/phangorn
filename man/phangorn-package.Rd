@@ -2,8 +2,8 @@
 % Please edit documentation in R/phangorn-package.R
 \docType{package}
 \name{phangorn-package}
-\alias{phangorn}
 \alias{phangorn-package}
+\alias{phangorn}
 \title{Phylogenetic analysis in R}
 \description{
 Phylogenetic analysis in R (Estimation of phylogenetic trees and networks
@@ -26,14 +26,13 @@ covers more advanced feature like defining special character spaces and
 things which fit nowhere else.  More information on \bold{phangorn} can be
 found on \url{http://www.phangorn.org}.
 }
+\references{
+Schliep K.P. (2011) phangorn: Phylogenetic analysis in R.
+\emph{Bioinformatics}, 27(4) 592-593
+}
 \author{
 Klaus Schliep
 
 Maintainer: Klaus Schliep <klaus.schliep@gmail.com>
 }
-\references{
-Schliep K.P. (2011) phangorn: Phylogenetic analysis in R.
-\emph{Bioinformatics}, 27(4) 592-593
-}
 \keyword{package}
-

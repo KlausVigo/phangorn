@@ -1,3 +1,4 @@
+
 useDynLib(phangorn, .registration=TRUE)
 
 importFrom(ape, as.DNAbin, as.phylo, plot.phylo, as.prop.part, nj,old2new.phylo, dist.dna,
@@ -55,11 +56,11 @@ export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UN
     getClips, getDiversity, midpoint, pruneTree, acctran, getRoot, plotAnc, consensusNet, 
     bab, random.addition, diversity, baseFreq, densiTree, superTree, coalSpeciesTree, 
     pml.fit, pml.init, pml.free, edQt, lli, cladePar, addConfidences, createLabel,
-    countCycles, SOWH.test, presenceAbsence, as.networx.splits, addTrivialSplits, removeTrivialSplits,
+    SOWH.test, presenceAbsence, as.networx.splits, addTrivialSplits, removeTrivialSplits,
     phyDat2alignment, AICc, readDist, writeDist, discrete.gamma, matchSplits, 
     distinct.splits, c.splits, dna2codon, codon2dna, genlight2phyDat,
     removeUndeterminedSites, phyDat2MultipleAlignment, delta.score, maxCladeCred, as.MultipleAlignment)
-# plot.networx, 
+# plot.networx, countCycles, 
 
 S3method('[', splits)          
 S3method(addConfidences, phylo)

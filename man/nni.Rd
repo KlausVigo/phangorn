@@ -2,8 +2,8 @@
 % Please edit documentation in R/treeManipulation.R
 \name{nni}
 \alias{nni}
-\alias{rNNI}
 \alias{rSPR}
+\alias{rNNI}
 \title{Tree rearrangements.}
 \usage{
 nni(tree)
@@ -39,11 +39,10 @@ trees1 <- nni(tree)
 trees2 <- rSPR(tree, 2, 10)
 
 }
-\author{
-Klaus Schliep \email{klaus.schliep@gmail.com}
-}
 \seealso{
 \code{\link{allTrees}}, \code{\link{SPR.dist}}
 }
+\author{
+Klaus Schliep \email{klaus.schliep@gmail.com}
+}
 \keyword{cluster}
-

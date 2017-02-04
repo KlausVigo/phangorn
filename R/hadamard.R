@@ -43,7 +43,6 @@ ldfactorial <- function(x){
 #' double factorial function
 #' 
 #' 
-#' @aliases dfactorial ldfactorial
 #' @param x a numeric scalar or vector
 #' @return \code{dfactorial(x)} returns the double factorial, that is
 #' \eqn{x\!\! = 1 * 3 * 5 * \ldots * x } and \code{ldfactorial(x)} is the
@@ -66,6 +65,7 @@ ldfactorial <- function(x){
 #
 
 
+### @aliases hadamard fhm h4st h2st
 
 #' Hadamard Matrices and Fast Hadamard Multiplication
 #' 
@@ -78,7 +78,6 @@ ldfactorial <- function(x){
 #' \code{\link[phangorn]{distanceHadamard}} to a nexus file, which can be
 #' processed by Spectronet or Splitstree.
 #' 
-#' @aliases hadamard fhm h4st h2st
 #' @param x a vector of length \eqn{2^n}, where n is an integer.
 #' @param v a vector of length \eqn{2^n}, where n is an integer.
 #' @param obj a data.frame or character matrix, typical a sequence alignment.
