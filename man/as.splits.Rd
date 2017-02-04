@@ -7,18 +7,18 @@
 \alias{splits}
 \alias{as.Matrix}
 \alias{distinct.splits}
+\alias{as.phylo.splits}
 \alias{addTrivialSplits}
 \alias{removeTrivialSplits}
 \alias{as.matrix.splits}
 \alias{as.Matrix.splits}
 \alias{print.splits}
-\alias{matchSplits}
+\alias{c.splits}
 \alias{unique.splits}
 \alias{as.splits.phylo}
 \alias{as.splits.multiPhylo}
 \alias{as.splits.networx}
 \alias{as.prop.part.splits}
-\alias{as.phylo.splits}
 \alias{as.bitsplits.splits}
 \alias{compatible}
 \title{Splits representation of graphs and trees.}
@@ -36,7 +36,7 @@ as.splits(x, ...)
 \method{print}{splits}(x, maxp = getOption("max.print"), zero.print = ".",
   one.print = "|", ...)
 
-matchSplits(x, y, as.in = TRUE)
+\method{c}{splits}(..., recursive = FALSE)
 
 \method{unique}{splits}(x, incomparables = FALSE, unrooted = TRUE, ...)
 
@@ -47,8 +47,6 @@ matchSplits(x, y, as.in = TRUE)
 \method{as.splits}{networx}(x, ...)
 
 \method{as.prop.part}{splits}(x, ...)
-
-\method{as.phylo}{splits}(x, result = "phylo", ...)
 
 \method{as.bitsplits}{splits}(x)
 
@@ -69,6 +67,13 @@ compatible(obj)
 
 \item{maxp}{integer, default from \code{options(max.print)}, influences how
 many entries of large matrices are printed at all.}
+
+\item{recursive}{logical. If recursive = TRUE, the function recursively descends 
+through lists (and pairlists) combining all their elements into a vector.}
+
+\item{incomparables}{only for compatibility so far.}
+
+\item{unrooted}{todo.}
 
 \item{obj}{an object of class splits.}
 }

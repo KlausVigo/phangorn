@@ -2,6 +2,7 @@
 % Please edit documentation in R/distTree.R
 \name{NJ}
 \alias{NJ}
+\alias{PNJ}
 \alias{UNJ}
 \title{Neighbor-Joining}
 \usage{

@@ -4,8 +4,6 @@
 \alias{bootstrap.pml}
 \alias{bootstrap.phyDat}
 \alias{plotBS}
-\alias{bootstrap.phyDat}
-\alias{plotBS}
 \title{Bootstrap}
 \usage{
 bootstrap.pml(x, bs = 100, trees = TRUE, multicore = FALSE,

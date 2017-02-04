@@ -3,12 +3,15 @@
 \name{ancestral.pml}
 \alias{ancestral.pml}
 \alias{ancestral.pars}
+\alias{pace}
 \alias{plotAnc}
 \title{Ancestral character reconstruction.}
 \usage{
 ancestral.pml(object, type = c("marginal", "ml", "bayes"))
 
 ancestral.pars(tree, data, type = c("MPR", "ACCTRAN"), cost = NULL)
+
+pace(tree, data, type = c("MPR", "ACCTRAN"), cost = NULL)
 
 plotAnc(tree, data, i = 1, col = NULL, cex.pie = par("cex"),
   pos = "bottomright", ...)
