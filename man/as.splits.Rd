@@ -10,6 +10,7 @@
 \alias{as.phylo.splits}
 \alias{addTrivialSplits}
 \alias{removeTrivialSplits}
+\alias{matchSplits}
 \alias{as.matrix.splits}
 \alias{as.Matrix.splits}
 \alias{print.splits}
