@@ -270,7 +270,6 @@ dist.logDet = function (x)
 #' exchange distance matrices with other phylogenetic programs.  
 #' 
 #' 
-#' @aliases writeDist readDist write.nexus.dist
 #' @param x A \code{dist} object.
 #' @param file A file name.
 #' @param format file format, default is "phylip", only other option so far is "nexus". 
