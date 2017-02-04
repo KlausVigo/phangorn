@@ -2,14 +2,18 @@
 #' 
 #' \code{as.splits} produces a list of splits or bipartitions.
 #' 
-#' @aliases splits as.Matrix distinct.splits 
+#' @aliases splits as.Matrix distinct.splits as.phylo.splits
 #' addTrivialSplits removeTrivialSplits 
 #' @param x An object of class phylo or multiPhylo.
 #' @param maxp integer, default from \code{options(max.print)}, influences how
 #' many entries of large matrices are printed at all.
 #' @param zero.print character which should be printed for zeros.
 #' @param one.print character which should be printed for ones.
+#' @param incomparables	only for compatibility so far.
+#' @param unrooted todo.
 #' @param \dots Further arguments passed to or from other methods.
+#' @param recursive	logical. If recursive = TRUE, the function recursively descends 
+#' through lists (and pairlists) combining all their elements into a vector.
 #' @param obj an object of class splits.
 #' @param k number of taxa.
 #' @param labels names of taxa.
@@ -121,8 +125,8 @@ changeOrder <- function(x, labels){
 
 
 
-#' @rdname as.splits
-#' @export
+## @rdname as.splits
+## @export
 matchSplits <- function(x, y, as.in=TRUE){
     tiplabel <- attr(x, "label")
     if(any(is.na(match(tiplabel, attr(y, "label"))))) stop("x and y have different labels!")
@@ -177,7 +181,9 @@ countCycles <- function(splits, tree=NULL, ord=NULL){
 }
 
 
-c
+#' @rdname as.splits
+#' @method c splits
+#' @export
 c.splits <- function (..., recursive=FALSE) 
 {
     x <- list(...)
@@ -320,9 +326,9 @@ as.prop.part.splits <- function(x, ...){
 }
 
 ## as.splits.phylo
-#' @rdname as.splits
-#' @method as.phylo splits
-#' @export
+## @rdname as.splits
+## @method as.phylo splits
+## @export
 as.phylo.splits <- function (x, result = "phylo", ...) 
 {
     result <- match.arg(result, c("phylo", "all"))

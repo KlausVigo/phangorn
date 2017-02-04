@@ -176,6 +176,7 @@ NJ_old <- function(x)
 #' This function performs the neighbor-joining tree estimation of Saitou and
 #' Nei (1987). UNJ is the unweighted version from Gascuel (1997).
 #' 
+#' @aliases PNJ
 #' 
 #' @param x A distance matrix.
 #' @return an object of class \code{"phylo"}.
@@ -342,9 +343,6 @@ PNJ <- function (data)
 #' sparse design matrix can save a lot of memory. %\code{designTree} also
 #' computes a contrast matrix if the method is "rooted".
 #' 
-#' 
-#' @aliases designTree designSplits nnls.tree nnls.phylo nnls.splits
-#' nnls.networx
 #' @param tree an object of class \code{phylo}
 #' @param method design matrix for an "unrooted" or "rooted" ultrametric tree.
 #' @param sparse return a sparse design matrix.
@@ -700,6 +698,8 @@ nnls.networx <- function(x, dm){
 }
 
 
+#' @rdname designTree
+#' @export
 designSplits <- function (x, splits = "all", ...) 
 {
     if (!is.na(pmatch(splits, "all"))) 

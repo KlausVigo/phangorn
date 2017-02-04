@@ -140,6 +140,8 @@ ancestral.pars <- function (tree, data, type = c("MPR", "ACCTRAN"), cost=NULL)
 }
 
 
+#' @rdname ancestral.pml
+#' @export
 pace <- ancestral.pars
 
 
