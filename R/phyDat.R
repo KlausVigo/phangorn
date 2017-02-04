@@ -396,13 +396,10 @@ phyDat.codon <- function (data, return.index = TRUE)
 #' \code{acgt2ry} converts a \code{phyDat} object of nucleotides into an binary
 #' ry-coded dataset.
 #' 
-#' @aliases phyDat as.phyDat as.AAbin.phyDat as.phyDat.DNAbin as.phyDat.alignment
-#' as.phyDat.character as.phyDat.data.frame as.phyDat.factor as.phyDat.matrix
-#' as.phyDat.MultipleAlignment as.MultipleAlignment as.MultipleAlignment.phyDat
-#' as.data.frame.phyDat as.character.phyDat as.DNAbin.phyDat read.phyDat
-#' write.phyDat subset.phyDat cbind.phyDat c.phyDat unique.phyDat image.phyDat
-#' acgt2ry baseFreq allSitePattern removeUndeterminedSites
-#' phyDat2alignment phyDat2MultipleAlignment dna2codon codon2dna
+#' @aliases 
+#' as.phyDat.character as.phyDat.data.frame as.phyDat.matrix
+#' as.MultipleAlignment as.MultipleAlignment.phyDat cbind.phyDat c.phyDat 
+#' acgt2ry removeUndeterminedSites phyDat2MultipleAlignment 
 #' @param data An object containing sequences.
 #' @param x An object containing sequences.
 #' @param type Type of sequences ("DNA", "AA", "CODON" or "USER").
@@ -460,7 +457,7 @@ phyDat.codon <- function (data, return.index = TRUE)
 #' allSitePattern(5)
 #' 
 #' @rdname phyDat
-#' @export phyDat
+#' @export 
 phyDat <- function (data, type="DNA", levels=NULL, return.index = TRUE,...) 
 {
     if (inherits(data,"DNAbin")) type <- "DNA"
@@ -498,6 +495,7 @@ as.phyDat <- function (x, ...){
 
 
 #' @rdname phyDat
+#' @method as.phyDat factor
 #' @export
 as.phyDat.factor <- function(x, ...){
     nam <- names(x)
@@ -509,11 +507,13 @@ as.phyDat.factor <- function(x, ...){
 
 
 #' @rdname phyDat
+#' @method as.phyDat DNAbin
 #' @export
 as.phyDat.DNAbin <- function(x,...) phyDat.DNA(x,...)
 
 
 #' @rdname phyDat
+#' @method as.phyDat alignment
 #' @export
 as.phyDat.alignment <- function (x, type="DNA",...) 
 {
@@ -546,6 +546,7 @@ phyDat2alignment <-  function(x){
 
 
 #' @rdname phyDat
+#' @method as.phyDat MultipleAlignment
 #' @export
 as.phyDat.MultipleAlignment <- function(x, ...){
     if (requireNamespace('Biostrings')){
@@ -1009,6 +1010,7 @@ duplicated_map <- function(x, ...){
 
 
 #' @rdname phyDat
+#' @method unique phyDat
 #' @export
 unique.phyDat <- function(x, incomparables=FALSE, identical=TRUE, ...){
     if(identical) return(getCols(x, !duplicated(x)))

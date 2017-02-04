@@ -1461,7 +1461,6 @@ pml.fit4 <- function (tree, data, bf = rep(1/length(levels), length(levels)),
 #' functions call C code and are far less forgiving if the import is not what
 #' they expect than \code{pml}.
 #' 
-#' @aliases pml.fit edQt pml.init pml.free discrete.gamma lli
 #' @param tree A phylogenetic \code{tree}, object of class \code{phylo}.
 #' @param data An alignment, object of class \code{phyDat}.
 #' @param bf Base frequencies.
@@ -1625,7 +1624,7 @@ pml.fit <- function (tree, data, bf = rep(1/length(levels), length(levels)),
 #' likelihood ratchet as in Vos (2003).  This should helps often to find better
 #' tree topologies, especially for larger trees.
 #' 
-#' @aliases pml optim.pml pml.control
+#' @aliases pml 
 #' @param tree A phylogenetic \code{tree}, object of class \code{phylo}.
 #' @param data An alignment, object of class \code{phyDat}.
 #' @param bf Base frequencies.

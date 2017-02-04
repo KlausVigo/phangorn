@@ -2,11 +2,11 @@
 % Please edit documentation in R/phylo.R
 \name{discrete.gamma}
 \alias{discrete.gamma}
-\alias{edQt}
 \alias{lli}
-\alias{pml.fit}
+\alias{edQt}
 \alias{pml.free}
 \alias{pml.init}
+\alias{pml.fit}
 \title{Internal maximum likelihood functions.}
 \usage{
 discrete.gamma(alpha, k)
@@ -33,6 +33,8 @@ pml.fit(tree, data, bf = rep(1/length(levels), length(levels)), shape = 1,
 \item{data}{An alignment, object of class \code{phyDat}.}
 
 \item{tree}{A phylogenetic \code{tree}, object of class \code{phylo}.}
+
+\item{\dots}{Further arguments passed to or from other methods.}
 
 \item{Q}{A vector containing the lower triangular part of the rate matrix.}
 
@@ -62,8 +64,6 @@ pml.fit(tree, data, bf = rep(1/length(levels), length(levels)), shape = 1,
 
 \item{site}{return the log-likelihood or vector of sitewise likelihood
 values}
-
-\item{\dots}{Further arguments passed to or from other methods.}
 }
 \value{
 \code{pml.fit} returns the log-likelihood.
@@ -78,9 +78,6 @@ the package coalescentMCMC, but are not intended for end user. Most of the
 functions call C code and are far less forgiving if the import is not what
 they expect than \code{pml}.
 }
-\author{
-Klaus Schliep \email{klaus.schliep@gmail.com}
-}
 \references{
 Felsenstein, J. (1981) Evolutionary trees from DNA sequences: a
 maximum likelihood approach. \emph{Journal of Molecular Evolution},
@@ -89,5 +86,7 @@ maximum likelihood approach. \emph{Journal of Molecular Evolution},
 \seealso{
 \code{\link{pml}, \link{pmlPart}, \link{pmlMix}}
 }
+\author{
+Klaus Schliep \email{klaus.schliep@gmail.com}
+}
 \keyword{cluster}
-
