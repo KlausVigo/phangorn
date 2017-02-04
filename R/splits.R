@@ -3,7 +3,7 @@
 #' \code{as.splits} produces a list of splits or bipartitions.
 #' 
 #' @aliases splits as.Matrix distinct.splits as.phylo.splits
-#' addTrivialSplits removeTrivialSplits 
+#' addTrivialSplits removeTrivialSplits matchSplits
 #' @param x An object of class phylo or multiPhylo.
 #' @param maxp integer, default from \code{options(max.print)}, influences how
 #' many entries of large matrices are printed at all.
