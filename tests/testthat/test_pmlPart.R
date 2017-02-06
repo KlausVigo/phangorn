@@ -27,6 +27,37 @@ test_that("rate optimisation works properly", {
 # nni
 
 # bf + Q
+test_that("transition rate optimisation works properly", {
+    skip_on_cran()
+
+    Q <- c(6:1)
+    
+    fit0 <- pml(tree, X, k=4)
+    fit1 <- pml(tree, X, k=4, Q=Q)
+    weights1 <- 1000*exp(fit1$site) 
+    Y <- X 
+    attr(Y, "weight") <- weights1
+    fit1 <- pml(tree, Y, k=4, Q=Q)
+    
+    weights0 <- weights1
+    weights2 <- weights1
+
+    W = cbind(weights0, weights1, weights2) 
+    colnames(W) = c("g1", "g2", "g3")
+    
+    # linked parameter
+    
+    sp <- pmlPart(edge + Q ~ ., fit0, weight=W)    
+    expect_equal(logLik(sp), logLik(fit1)*3, tolerance=5e-4 )
+    expect_equal(Q, sp$fits[[1]]$Q, tolerance=5e-4)
+    
+    # unlinked parameter
+    # TODO more complicated models
+    # weights0 <- 1000*exp(fit0$site)
+    sp <- pmlPart( ~ Q, fit0, weight=W)   
+    expect_equal(logLik(sp), logLik(fit1)*3, tolerance=5e-4 )
+    expect_equal(Q, sp$fits[[1]]$Q, tolerance=5e-4)
+})
 
 # model
 

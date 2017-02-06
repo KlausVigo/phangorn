@@ -20,7 +20,7 @@ desc_108 <- Descendants(tree, 108)[[1]]
 node_108 <- mrca.phylo(tree, node=desc_108)
 
 test_that("ancestor, mrca, descendants", {
-    ## check RF.dist and tree dist
+    ## ancestor, mrca, descendants
     expect_equal(mrca.phylo(tree, node=desc_108), 108L)
     kids_108 <- Descendants(tree, 108, "children")
     expect_equal(length(Descendants(tree, 101L, "all")), 197L)
