@@ -279,6 +279,7 @@ dist.logDet = function (x)
 #' @param diag	logical value indicating whether the diagonal of the distance matrix 
 #' should be printed.
 #' @param digits passed to format inside of \code{write.nexus.dist}.
+#' @param taxa logical. If TRUE a taxa block is added.
 #' @param append logical. If TRUE the nexus blocks will be added to a file.
 #' @return an object of class \code{dist}
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
@@ -312,29 +313,58 @@ writeDist <- function(x, file="", format="phylip", ...){
     
 
 #' @rdname writeDist
-#' @export      
-write.nexus.dist <- function(x, file="", append=FALSE, upper=FALSE, diag=TRUE, digits = getOption("digits")){
-
+#' @export 
+write.nexus.dist <- function(x, file="", append=FALSE, upper=FALSE, diag=TRUE, digits = getOption("digits"), taxa=!append){
+    
+    taxa.labels <- attr(x, "Labels")
+    ntaxa <- length(taxa.labels)
+    
     m <- as.matrix(x)
     cf <- format(m, digits = digits, justify = "none")    
     l <-  length(attr(x, "Labels"))
     if(upper) diag <- TRUE
     if (!upper) cf[row(cf) < col(cf)] <- ""
     if (!diag) cf[row(cf) == col(cf)] <- ""    
-        
+    
     cf2 <- apply(cf, 1, "paste0", collapse=" ")
     cf2 <- paste(attr(x, "Labels"), cf2)
     cf2 <- trimws(cf2, "right")
-
-    if(!append)cat("#NEXUS\n", file = file)  
+    
+    if(!append)cat("#NEXUS\n\n", file = file)  
+    
+    if(taxa){
+        cat(paste("BEGIN TAXA;\n\tDIMENSIONS ntax=", ntaxa, ";\n", 
+                  sep = ""), file = file, append = TRUE)
+        cat("\tTAXLABELS", paste(taxa.labels, sep = " "), ";\nEND;\n\n", 
+            file = file, append = TRUE)
+    }
+    
     cat("BEGIN DISTANCES; \n", file = file, append = TRUE)
     if(upper) cat("\tFORMAT TRIANGLE = BOTH;\n", file = file, append = TRUE)
+    else cat("\tFORMAT TRIANGLE = LOWER;\n", file = file, append = TRUE)
     if(!diag) cat("\tFORMAT NODIAGONAL;\n", file = file, append = TRUE)
     cat("\tMatrix \n", file = file, append = TRUE)
-    for(i in 1:(l-1)) cat("\t", cf2[i], "\n", sep="", file = file, append = TRUE)
-    cat("\t", cf2[l], ";\n", file = file, sep="", append = TRUE)
-    cat("END; \n", file = file, append = TRUE)
+    #    for(i in 1:(l-1)) cat("\t", cf2[i], "\n", sep="", file = file, append = TRUE)
+    for(i in 1:l) cat("\t", cf2[i], "\n", sep="", file = file, append = TRUE)
+    #    cat("\t", cf2[l], ";\n", file = file, sep="", append = TRUE)
+    #    cat("END; \n", file = file, append = TRUE)
+    cat("\t;\nEND; \n", file = file, append = TRUE)
 }
+
+
+
+RSS <- function(x, dm, trace=0){
+    labels=attr(x, "labels")
+    dm = as.matrix(dm)
+    k = dim(dm)[1]
+    dm = dm[labels,labels]
+    y = dm[lower.tri(dm)]
+    betahat <- attr(x, "weights")
+    X = splits2design(x)
+    RSS = sum((y-(X%*%betahat))^2)
+    RSS
+}    
+
 
 
 #' @rdname writeDist
