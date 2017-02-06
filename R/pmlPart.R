@@ -1,26 +1,6 @@
 #
 # pmlPart + pmlCluster
 #
-optimPartQ <- function (object, Q = c(1, 1, 1, 1, 1, 1), ...) 
-{
-    l = length(Q)
-    Q = Q[-l]
-    Q = sqrt(Q)
-    fn = function(Q, object, ...) {
-        result <- 0
-        Q = c(Q^2, 1)
-        n <- length(object)
-        for (i in 1:n) result <- result + update(object[[i]], Q = Q, ...)$logLik
-        result
-    }
-    res = optim(par = Q, fn = fn, gr = NULL, method = "L-BFGS-B", 
-                lower = 0, upper = Inf, control = list(fnscale = -1, 
-                                                       maxit = 25), object = object, ...)
-    res[[1]] = c(res[[1]]^2, 1)
-    res
-}
-
-
 optimPartQGeneral <- function (object, Q = c(1, 1, 1, 1, 1, 1), subs=rep(1,length(Q)), ...) 
 {
     m = length(Q)
