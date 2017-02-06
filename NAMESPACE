@@ -48,7 +48,7 @@ export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UN
     dist.ml, dist.p, upgma, wpgma, write.nexus.splits, read.nexus.splits,
     read.nexus.networx, write.nexus.networx, write.splits, write.nexus.dist, pmlPart, 
     pmlCluster, pmlMix, pmlPen, read.aa, allTrees, designTree, designSplits, nnls.tree,
-    nnls.splits, nnls.phylo, nnls.networx, neighborNet, pmlPart2multiPhylo,
+    nnls.splits, nnls.phylo, nnls.networx, neighborNet, pmlPart2multiPhylo, multiphyDat2pmlPart,
     splitsNetwork, simSeq, SH.test, bootstrap.pml, bootstrap.phyDat, RF.dist, wRF.dist, 
     KF.dist, path.dist, sprdist, SPR.dist, rNNI, 
     rSPR, plotBS, Ancestors, Descendants, mrca.phylo, Children, Siblings, pace, modelTest, 

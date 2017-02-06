@@ -9,7 +9,7 @@
 writeDist(x, file = "", format = "phylip", ...)
 
 write.nexus.dist(x, file = "", append = FALSE, upper = FALSE,
-  diag = TRUE, digits = getOption("digits"))
+  diag = TRUE, digits = getOption("digits"), taxa = !append)
 
 readDist(file)
 }
@@ -31,6 +31,8 @@ matrix should be printed.}
 should be printed.}
 
 \item{digits}{passed to format inside of \code{write.nexus.dist}.}
+
+\item{taxa}{logical. If TRUE a taxa block is added.}
 }
 \value{
 an object of class \code{dist}
