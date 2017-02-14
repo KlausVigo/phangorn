@@ -45,4 +45,4 @@ License: GPL (>= 2)
 VignetteBuilder: utils, knitr
 URL: https://github.com/KlausVigo/phangorn
 Repository: CRAN
-RoxygenNote: 6.0.0.9000
+RoxygenNote: 6.0.1
