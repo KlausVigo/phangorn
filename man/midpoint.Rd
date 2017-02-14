@@ -3,12 +3,18 @@
 \name{getRoot}
 \alias{getRoot}
 \alias{midpoint}
+\alias{midpoint.phylo}
+\alias{midpoint.multiPhylo}
 \alias{pruneTree}
 \title{Tree manipulation}
 \usage{
 getRoot(tree)
 
-midpoint(tree, node.labels = "support")
+midpoint(tree, node.labels = "support", ...)
+
+\method{midpoint}{phylo}(tree, node.labels = "support", ...)
+
+\method{midpoint}{multiPhylo}(tree, node.labels = "support", ...)
 
 pruneTree(tree, ..., FUN = ">=")
 }

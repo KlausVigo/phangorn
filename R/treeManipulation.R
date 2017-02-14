@@ -110,7 +110,14 @@ changeEdgeLength = function (tree, edge, edge.length)
 #' 
 #' @rdname midpoint
 #' @export midpoint
-midpoint <- function(tree, node.labels = "support"){
+midpoint <- function(tree, node.labels = "support", ...)
+    UseMethod("midpoint")
+
+
+#' @rdname midpoint
+#' @method midpoint phylo
+#' @export
+midpoint.phylo <- function(tree, node.labels = "support", ...){
 # distance from node to root
 node2root <- function(x){
     x = reorder(x, "postorder")
@@ -191,6 +198,19 @@ node2root <- function(x){
 }
 
 
+#' @rdname midpoint
+#' @method midpoint multiPhylo
+#' @export
+midpoint.multiPhylo <- function(tree, node.labels = "support", ...){
+    if(!is.null(attr(tree, "TipLabel"))) compress <- TRUE
+    else compress <- FALSE
+    tree <- lapply(tree, midpoint.phylo, node.labels = node.labels)
+    class(tree) <- "multiPhylo"
+    if(compress) tree <- .compressTipLabel(tree)
+    tree
+}
+        
+    
 #' @rdname midpoint
 #' @export
 pruneTree = function(tree, ..., FUN = ">="){
