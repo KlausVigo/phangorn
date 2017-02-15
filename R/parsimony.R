@@ -310,7 +310,8 @@ parsinfo <- function (x)
 }
 
 
-lowerBound <- function(x, cost=NULL){
+# had problems with ambiguous states
+lowerBound_old <- function(x, cost=NULL){
     tip <- names(x)
     att = attributes(x)
     nc = attr(x, "nc")
@@ -331,7 +332,8 @@ lowerBound <- function(x, cost=NULL){
             states = as.data.frame(states, stringsAsFactors=FALSE)
             class(states) = "list"
         }
-        nst <- sapply(states, length)
+        nst <- lengths(states)
+#        nst <- sapply(states, length)
     }
     res = numeric(nr)
     ust = sort(unique(nst))
@@ -350,6 +352,49 @@ lowerBound <- function(x, cost=NULL){
             res[nst==i] = sankoffNew(tree, dat, cost=cost, site="site")[attr(dat, "index")]
         }
     }
+    res
+}
+
+
+# greedy algorithm of Maximum Set Packing (MSP) problem (should work in most instances)
+lowerBound <- function(x, cost=NULL){
+    tip <- names(x)
+    att = attributes(x)
+    nc = attr(x, "nc")
+    nr = attr(x, "nr")
+    contrast = attr(x, "contrast")
+    rownames(contrast) = attr(x, "allLevels")
+    colnames(contrast) = attr(x, "levels")
+    attr(x, "weight") = rep(1, nr)
+    attr(x, "index") = NULL
+    
+    y <- as.character(x)
+    states <- apply(y, 2, unique.default)
+    
+    singles <- which(rowSums(contrast) == 1) # 
+    noinfo <- which(rowSums(contrast) == nc) # 
+    ambiguous <- which( (rowSums(contrast) > 1) & (rowSums(contrast) < nc) )  # 
+    singles <- names(singles)
+    noinfo <- names(noinfo)
+    ambiguous <- names(ambiguous)
+    
+    fun <- function(states, contrast, singles, noinfo, ambiguous){
+        if(length(states)==1) return(0)
+        states <- setdiff(states, noinfo) # get rid of "-", "?" in DNA 
+        if( (length(states)==0) | (length(states)==1) ) return(0)
+        if( any(states %in% ambiguous)) {
+            n <- 0
+            contrast <- contrast[states, , drop=FALSE]
+            while(nrow(contrast) > 0){
+                m <- which.max(colSums(contrast))
+                contrast <- contrast[contrast[, m]==0 , , drop=FALSE]
+                n <- n+1
+            }
+            return(n-1)
+        }
+        else return(length(states)-1)
+    }
+    res <- sapply(states, fun, contrast, singles, noinfo, ambiguous)    
     res
 }
 
