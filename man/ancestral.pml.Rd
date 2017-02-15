@@ -7,7 +7,7 @@
 \alias{plotAnc}
 \title{Ancestral character reconstruction.}
 \usage{
-ancestral.pml(object, type = c("marginal", "ml", "bayes"))
+ancestral.pml(object, type = c("marginal", "ml", "bayes"), return = "prob")
 
 ancestral.pars(tree, data, type = c("MPR", "ACCTRAN"), cost = NULL)
 

@@ -4,8 +4,6 @@
 \alias{fitch}
 \alias{random.addition}
 \alias{parsimony}
-\alias{CI}
-\alias{RI}
 \alias{sankoff}
 \alias{optim.parsimony}
 \alias{pratchet}
@@ -17,10 +15,6 @@ fitch(tree, data, site = "pscore")
 random.addition(data, method = "fitch")
 
 parsimony(tree, data, method = "fitch", ...)
-
-CI(tree, data, cost = NULL, sitewise = FALSE)
-
-RI(tree, data, cost = NULL, sitewise = FALSE)
 
 sankoff(tree, data, cost = NULL, site = "pscore")
 
@@ -47,8 +41,6 @@ model="sankoff" and cost matrix).}
 
 \item{cost}{A cost matrix for the transitions between two states.}
 
-\item{sitewise}{return CI/RI for alignment or sitewise}
-
 \item{trace}{defines how much information is printed during optimisation.}
 
 \item{rearrangements}{SPR or NNI rearrangements.}
@@ -63,6 +55,8 @@ model="sankoff" and cost matrix).}
 
 \item{perturbation}{whether using a ratchet or stochastic (nni) for
 shuffling the tree.}
+
+\item{sitewise}{return CI/RI for alignment or sitewise}
 }
 \value{
 \code{parsimony} returns the maximum parsimony score (pscore).
@@ -78,8 +72,7 @@ maximum parsimony tree using either Nearest Neighbor Interchange (NNI)
 rearrangements or sub tree pruning and regrafting (SPR). \code{pratchet}
 implements the parsimony ratchet (Nixon, 1999) and is the preferred way to
 search for the best tree.  \code{random.addition} can be used to produce
-starting trees.  \code{CI} and \code{RI} computes the consistency and
-retention index.
+starting trees.
 }
 \details{
 The "SPR" rearrangements are so far only available for the "fitch" method,

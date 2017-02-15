@@ -26,8 +26,7 @@ sankoff.quartet <- function (dat, cost, p, l, weight)
 #' rearrangements or sub tree pruning and regrafting (SPR). \code{pratchet}
 #' implements the parsimony ratchet (Nixon, 1999) and is the preferred way to
 #' search for the best tree.  \code{random.addition} can be used to produce
-#' starting trees.  \code{CI} and \code{RI} computes the consistency and
-#' retention index.
+#' starting trees. 
 #' 
 #' The "SPR" rearrangements are so far only available for the "fitch" method,
 #' "sankoff" only uses "NNI". The "fitch" algorithm only works correct for
@@ -406,7 +405,24 @@ upperBound <- function(x, cost=NULL){
 }
 
 
-#' @rdname parsimony
+
+#' Consistency Index and Retention Index
+#' 
+#' \code{CI} and \code{RI} compute the Consistency Index (CI) and Retention Index (RI).
+#' 
+#' @details The Consistency Index is defined as minimum number of changes divided by the 
+#' number of changes required on the tree (parsimony score). The Consistency 
+#' Index is equal to one if there is no homoplasy.
+#' And the Retention Index is defined as
+#' \deqn{RI = \frac{MaxSteps − ObsSteps}{MaxSteps − MinSteps}}{RI = (MaxSteps − ObsSteps) / (MaxSteps − MinSteps)}
+#' 
+#' @param data A object of class phyDat containing sequences.
+#' @param tree tree to start the nni search from.
+#' @param cost A cost matrix for the transitions between two states.
+#' @param sitewise return CI/RI for alignment or sitewise
+#' 
+#' 
+#' @rdname CI
 #' @export
 CI <- function (tree, data, cost = NULL, sitewise=FALSE) 
 {
@@ -422,7 +438,7 @@ CI <- function (tree, data, cost = NULL, sitewise=FALSE)
 }
 
 
-#' @rdname parsimony
+#' @rdname CI
 #' @export
 RI <- function (tree, data, cost = NULL, sitewise=FALSE) 
 {
