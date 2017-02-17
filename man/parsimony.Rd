@@ -55,8 +55,6 @@ model="sankoff" and cost matrix).}
 
 \item{perturbation}{whether using a ratchet or stochastic (nni) for
 shuffling the tree.}
-
-\item{sitewise}{return CI/RI for alignment or sitewise}
 }
 \value{
 \code{parsimony} returns the maximum parsimony score (pscore).

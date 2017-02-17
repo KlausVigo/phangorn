@@ -25,8 +25,9 @@
 #' @param cex.pie a numeric defining the size of the pie graphs
 #' @param pos a character string defining the position of the legend
 #' @param cost A cost matrix for the transitions between two states.
+#' @param return return a \code{phyDat} object or matrix of probabilities. 
 #' @param \dots Further arguments passed to or from other methods.
-#' @return %A matrix containing the the estimates character states.  An object
+#' @return %A matrix containing the the estimates character states. An object
 #' of class "phyDat", containing the ancestral states of all nodes.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{pml}}, \code{\link{parsimony}}, \code{\link[ape]{ace}},
@@ -55,7 +56,7 @@
 #' 
 #' @rdname ancestral.pml
 #' @export 
-ancestral.pml <- function (object, type=c("marginal", "ml", "bayes")) 
+ancestral.pml <- function (object, type=c("marginal", "ml", "bayes"), return="prob") 
 {
     call <- match.call()
     pt <- match.arg(type, c("marginal", "joint", "ml", "bayes"))   
@@ -89,7 +90,9 @@ ancestral.pml <- function (object, type=c("marginal", "ml", "bayes"))
     
     
     tmp = length(data)
-    result = new2old.phyDat(data) 
+    
+    if(return!="phyDat")result = new2old.phyDat(data) 
+    else result[1:nTips] = data
     eig = object$eig
     
     bf = object$bf
@@ -102,13 +105,19 @@ ancestral.pml <- function (object, type=c("marginal", "ml", "bayes"))
     nTips = as.integer(length(tree$tip.label))
     mNodes = as.integer(max(node) + 1)
     contrast = attr(data, "contrast")
+# proper format    
+    eps <- 1.0e-5
+    ind1 <- which( apply(contrast, 1, function(x)sum(x > eps)) == 1L)
+    ind2 <- which( contrast[ind1, ] > eps, arr.ind = TRUE)
+    pos <- ind2[match(as.integer(1L:ncol(contrast)),  ind2[,2]),1]
+    
     nco = as.integer(dim(contrast)[1])
     for(i in 1:l)dat[i,(nTips + 1):m] <- .Call("LogLik2", data, P[i,], nr, nc, node, edge, nTips, mNodes, contrast, nco, PACKAGE = "phangorn")
     
     parent <- tree$edge[, 1]
     child <- tree$edge[, 2]
     nTips = min(parent) - 1
-    
+# in C with scaling    
     for(i in 1:l){     
         for (j in (m - 1):1) {
             if (child[j] > nTips){
@@ -121,10 +130,14 @@ ancestral.pml <- function (object, type=c("marginal", "ml", "bayes"))
         tmp <- matrix(0, nr, nc)
         if(inv>0) tmp = as.matrix(INV) * inv
         for(i in 1:l){  
+# scaling!!!            
             tmp = tmp + w[i] * dat[[i, j]]                                 
         }
         if ( (pt == "bayes") || (pt == "marginal")) tmp = tmp * rep(bf, each=nr)
         tmp = tmp / rowSums(tmp)
+        
+        if(return=="phyDat") tmp <- pos[apply(tmp, 1, which.max)]
+        
         result[[j]] = tmp
     } 
     attributes(result) = x
@@ -138,6 +151,7 @@ ancestral.pml <- function (object, type=c("marginal", "ml", "bayes"))
 #}
     
 
+# in ancestral.pml
 ancestral2phyDat <- function(x) {
     eps <- 1.0e-5
     contr <- attr(x, "contrast")
@@ -152,6 +166,11 @@ ancestral2phyDat <- function(x) {
 }
 
 
+# in ancestral.pml
+# variante fuer parsimony und ambiguous DNA 
+
+
+# raus ??
 fast.tree  = function(tree, node){
     parent = c(node, Ancestors(tree, node))
     children = Descendants(tree, parent, 'children')

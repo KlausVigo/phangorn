@@ -21,6 +21,8 @@ plotAnc(tree, data, i = 1, col = NULL, cex.pie = par("cex"),
 
 \item{type}{method used to assign characters to internal nodes, see details.}
 
+\item{return}{return a \code{phyDat} object or matrix of probabilities.}
+
 \item{tree}{a tree, i.e. an object of class pml}
 
 \item{data}{an object of class phyDat}
@@ -38,7 +40,7 @@ plotAnc(tree, data, i = 1, col = NULL, cex.pie = par("cex"),
 \item{\dots}{Further arguments passed to or from other methods.}
 }
 \value{
-%A matrix containing the the estimates character states.  An object
+%A matrix containing the the estimates character states. An object
 of class "phyDat", containing the ancestral states of all nodes.
 }
 \description{
