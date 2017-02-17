@@ -50,7 +50,6 @@ sankoff.quartet <- function (dat, cost, p, l, weight)
 #' shuffling the tree.
 #' @param ... Further arguments passed to or from other methods (e.g.
 #' model="sankoff" and cost matrix).
-#' @param sitewise return CI/RI for alignment or sitewise
 #' @return \code{parsimony} returns the maximum parsimony score (pscore).
 #' \code{optim.parsimony} returns a tree after NNI rearrangements.
 #' \code{pratchet} returns a tree or list of trees containing the best tree(s)
@@ -414,7 +413,7 @@ upperBound <- function(x, cost=NULL){
 #' number of changes required on the tree (parsimony score). The Consistency 
 #' Index is equal to one if there is no homoplasy.
 #' And the Retention Index is defined as
-#' \deqn{RI = \frac{MaxSteps − ObsSteps}{MaxSteps − MinSteps}}{RI = (MaxSteps − ObsSteps) / (MaxSteps − MinSteps)}
+#' \deqn{RI = \frac{MaxChanges - ObsChanges}{MaxChanges - MinChanges}}{RI = (MaxChanges - ObsChanges) / (MaxChanges - MinChanges)}
 #' 
 #' @param data A object of class phyDat containing sequences.
 #' @param tree tree to start the nni search from.

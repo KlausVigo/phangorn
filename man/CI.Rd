@@ -26,5 +26,5 @@ The Consistency Index is defined as minimum number of changes divided by the
 number of changes required on the tree (parsimony score). The Consistency 
 Index is equal to one if there is no homoplasy.
 And the Retention Index is defined as
-\deqn{RI = \frac{MaxSteps − ObsSteps}{MaxSteps − MinSteps}}{RI = (MaxSteps − ObsSteps) / (MaxSteps − MinSteps)}
+\deqn{RI = \frac{MaxChanges - ObsChanges}{MaxChanges - MinChanges}}{RI = (MaxChanges - ObsChanges) / (MaxChanges - MinChanges)}
 }
