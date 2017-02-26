@@ -56,14 +56,15 @@ foo <- packageDescription("phangorn")
 \nocite{Paradis2006}
 \section{Introduction}
 
-These notes describe the ancestral sequence reconstruction using the \phangorn{} package \cite{Schliep2011}. \phangorn{} provides several methods to estimate ancestral character states with either Maximum Parsimony (MP) or Maximum Likelihood (ML). %For more background on all the methods see e.g. \cite{Felsenstein2004, Yang2006}. 
+These notes describe the ancestral sequence reconstruction using the \phangorn{} package \cite{Schliep2011}. \phangorn{} provides several methods to estimatea ancestral character states with either Maximum Parsimony (MP) or Maximum Likelihood (ML). %For more background on all the methods see e.g. \cite{Felsenstein2004, Yang2006}. 
 \section{Parsimony reconstructions}
 To reconstruct ancestral sequences we first load some data and reconstruct a tree:
 <<echo=TRUE>>=
 library(phangorn)
-primates = read.phyDat("primates.dna", format = "phylip", type = "DNA")
-tree = pratchet(primates, trace=0)
-tree = acctran(tree, primates) 
+library(magrittr)
+fdir <- system.file("extdata/trees", package = "phangorn")
+primates <- read.phyDat(file.path(fdir, "primates.dna"), format = "phylip", type = "DNA")
+tree <- pratchet(primates, trace=0) %>% acctran(primates) 
 parsimony(tree, primates)
 @
 

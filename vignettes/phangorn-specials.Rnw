@@ -232,7 +232,8 @@ There are four models available:
 We compute the $d_N/d_S$ for some sequences given a tree using the ML functions \Rfunction{pml} and \Rfunction{optim.pml}. First we have to transform the the nucleotide sequences into codons (so far the algorithms always takes triplets). 
 <<echo=TRUE>>=
 library(phangorn)
-primates = read.phyDat("primates.dna", format="phylip", type="DNA")
+fdir <- system.file("extdata/trees", package = "phangorn")
+primates <- read.phyDat(file.path(fdir, "primates.dna"), format = "phylip", type = "DNA")
 tree <- NJ(dist.ml(primates))
 dat <- phyDat(as.character(primates), "CODON")
 fit <- pml(tree, dat)

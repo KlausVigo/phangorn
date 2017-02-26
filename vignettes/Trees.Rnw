@@ -67,8 +67,8 @@ The first thing we have to do is to read in an alignment. Unfortunately there ex
 We start our analysis loading the \phangorn{} package and then reading in an alignment.  
 <<echo=TRUE>>=
 library(phangorn)
-primates <- read.phyDat("primates.dna", format="phylip", 
-    type="DNA")
+fdir <- system.file("extdata/trees", package = "phangorn")
+primates <- read.phyDat(file.path(fdir, "primates.dna"), format = "phylip")
 @
 \section{Distance based methods}
 After reading in the alignment we can build a first tree with distance based methods. The function dist.dna from the ape package computes distances for many DNA substitution models. To use the function dist.dna we have to transform the data to class DNAbin. For amino acids the function \Rfunction{dist.ml} offers common substitution models (for example "WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa" or "mtREV24").  
