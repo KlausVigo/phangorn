@@ -18,7 +18,7 @@ importFrom(igraph, graph, graph_from_adjacency_matrix, layout_with_kk, plot.igra
 
 
 importFrom(Rcpp,sourceCpp)
-importFrom(magrittr,"%>%")
+importFrom(magrittr,"%>%", "%<>%")
 importFrom(Matrix, Matrix, sparseMatrix, spMatrix, crossprod, solve) #, %*%
 importFrom(fastmatch, fmatch)
 #importFrom(nnls, nnls)
