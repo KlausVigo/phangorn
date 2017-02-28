@@ -1,7 +1,7 @@
 /* 
  * ml.c
  *
- * (c) 2008-2016  Klaus Schliep (klaus.schliep@gmail.com)
+ * (c) 2008-2017  Klaus Schliep (klaus.schliep@gmail.com)
  * 
  * 
  * This code may be distributed under the GNU GPL
@@ -744,13 +744,14 @@ void ExtractScale(int ch, int k, int *nr, int *ntips, double *res){
 }
 
 
-// dad / child * P 
+// in getDad 
+// dad / child * P  
 void helpDAD(double *dad, double *child, double *P, int nr, int nc, double *res){
     F77_CALL(dgemm)(transa, transb, &nr, &nc, &nc, &one, child, &nr, P, &nc, &zero, res, &nr);
     for(int j=0; j<(nc * nr); j++) res[j]=dad[j]/res[j];               
 } 
 
-
+// 
 SEXP getDAD(SEXP dad, SEXP child, SEXP P, SEXP nr, SEXP nc){
     R_len_t i, n=length(P);
     int ncx=INTEGER(nc)[0], nrx=INTEGER(nr)[0]; //, j
@@ -813,7 +814,7 @@ void NR555(double *eva, int nc, double el, double *w, double *g, SEXP X, int ld,
     for(i=0; i<nr ;i++) res[i]/=f[i];                
 } 
 
- 
+// tmp ausserhalb 
 void NR66(double *eva, int nc, double el, double *w, double *g, SEXP X, int ld, int nr, double *res){
     int i, j;   
     double *tmp; //*res,  *dF,
@@ -827,7 +828,7 @@ void NR66(double *eva, int nc, double el, double *w, double *g, SEXP X, int ld, 
     }               
 } 
 
-
+// ohne dgemv probieren
 void NR77(double *eva, int nc, double el, double *w, double *g, double *X, int ld, int nr, double *f, double *res){
     int i, j, k; 
     double *tmp;  
@@ -839,10 +840,10 @@ void NR77(double *eva, int nc, double el, double *w, double *g, double *X, int l
         F77_CALL(dgemv)(transa, &nr, &nc, &w[j], &X[j*nrc], &nr, tmp, &ONE, &one, res, &ONE); 
         }
     for(i=0; i<nr ;i++) res[i]/=f[i];  
-    
 } 
 
 
+// tmp ausserhalb?
 void NR88(double *eva, int nc, double el, double *w, double *g, double *X, int ld, int nr, double *res){
     int i, j;   
     double *tmp; //*res,  *dF,
@@ -897,7 +898,7 @@ SEXP LogLik2(SEXP dlist, SEXP P, SEXP nr, SEXP nc, SEXP node, SEXP edge, SEXP nT
     return(ans);
 }
 
-
+// raus
 void matprod(double *x, int nrx, int ncx, double *y, int nry, int ncy, double *z)
 {
     F77_CALL(dgemm)(transa, transb, &nrx, &ncy, &ncx, &one, x, &nrx, y, &nry, &zero, z, &nrx);
@@ -1112,13 +1113,14 @@ void fs3(double *eva, int nc, double el, double *w, double *g, double *X, int ld
         l0 = l1; 
         k ++;
     }   
-// variance 
- //   NR555(eva, ncx-1L, edle, ws, gs, X, INTEGER(ld)[0], nrx, f, tmp);  
- //   lll=0.0;        
- //   for(i=0; i<nrx ;i++) lll+=wgt[i]*tmp[i]*tmp[i]; 
+// variance n
+//   NR555(eva, ncx-1L, edle, ws, gs, X, INTEGER(ld)[0], nrx, f, tmp);  
+//   lll=0.0;        
+//   for(i=0; i<nrx ;i++) lll+=wgt[i]*tmp[i]*tmp[i]; 
     res[0] = edle;
     res[1] = ll; 
     res[2] = l0; //l0
+// return res[3] = 1 or 0 for success     
 }
 
 

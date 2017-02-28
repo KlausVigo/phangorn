@@ -2,13 +2,21 @@
 
 NEW FEATURES
 
+    o midpoint in now generic and works for multiPhylo objects
+
     o as.bitsplits.splits to better interact with ape
-     
+
+BUG FIXES
+
+    o bug fix in RI and CI for ambiguous data  
+
 OTHER CHANGES
 
-    o neighborNet has been rewritten (result may differ slightly)
-
-    o added roxygen2 documentation, reorganisation of some documentation 
+    o added roxygen2 documentation, so R code is now much better documented,
+    
+      reorganisation of some documentation
+    
+    o many more unit tests
 
 
      CHANGES in PHANGORN VERSION 2.1.0

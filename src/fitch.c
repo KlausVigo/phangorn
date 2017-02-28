@@ -160,7 +160,7 @@ SEXP FITCHTRIP3(SEXP DAT3, SEXP nrx, SEXP edge, SEXP score, SEXP PS){
     for(i=0; i<m; i++) pvtmp[i] = REAL(score)[i]; 
     for(i=0; i<m; i++){
         ei = edges[i] - 1L;
-//      pvtmp[i] = REAL(score)[ei]; -1L
+//      pvtmp[i] = REAL(score)[ei]; ???
         for(k = 0; k < nr; k++){
             tmp = data1[k + ei*nr] & data2[k + ei*nr];
             if(!tmp){

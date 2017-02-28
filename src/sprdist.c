@@ -1,7 +1,7 @@
 /* 
  * sprdist.c
  *
- * (c) 2016 Leonardo de Oliveira Martins (leomrtns@gmail.com) 
+ * (c) 2016-2017 Leonardo de Oliveira Martins (leomrtns@gmail.com) 
  * 
  * 
  * This code may be distributed under the GNU GPL
