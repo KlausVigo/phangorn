@@ -33,7 +33,7 @@ sankoff.quartet <- function (dat, cost, p, l, weight)
 #' binary trees.
 #' 
 #' @aliases parsimony 
-#' @aliases optim.parsimony sankoff fitch CI RI pratchet
+#' @aliases optim.parsimony sankoff fitch pratchet
 #' random.addition acctran
 #' @param data A object of class phyDat containing sequences.
 #' @param tree tree to start the nni search from.
@@ -56,8 +56,8 @@ sankoff.quartet <- function (dat, cost, p, l, weight)
 #' found during the search.  \code{acctran} returns a tree with edge length
 #' according to the ACCTRAN criterion.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{bab}}, \code{\link{ancestral.pml}}, \code{\link{nni}},
-#' \code{\link{NJ}}, \code{\link{pml}}, \code{\link{getClans}}
+#' @seealso \code{\link{bab}}, \code{\link{CI}}, \code{\link{RI}}, \code{\link{ancestral.pml}}, 
+#' \code{\link{nni}}, \code{\link{NJ}}, \code{\link{pml}}, \code{\link{getClans}}
 #' ,\code{\link{ancestral.pars}}, \code{\link{bootstrap.pml}}
 #' @references Felsenstein, J. (2004). \emph{Inferring Phylogenies}. Sinauer
 #' Associates, Sunderland.
@@ -420,6 +420,8 @@ upperBound <- function(x, cost=NULL){
 #' @param cost A cost matrix for the transitions between two states.
 #' @param sitewise return CI/RI for alignment or sitewise
 #' 
+#' @seealso \code{\link{parsimony}}, \code{\link{pratchet}}, \code{\link{fitch}}, 
+#' \code{\link{sankoff}}, \code{\link{bab}}, \code{\link{ancestral.pars}}
 #' 
 #' @rdname CI
 #' @export
