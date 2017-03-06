@@ -15,10 +15,10 @@ You can install
 - the latest released version `install.packages("phangorn")`
 - the latest development version `devtools::install_github("KlausVigo/phangorn")`
 
-You may need to install first the Biostrings package from bioconductor 
+To install the development version you may need to install the Biostrings and seqLogo package from bioconductor first:
 ```
 source("https://bioconductor.org/biocLite.R")
-biocLite("Biostrings")
+biocLite("Biostrings", "seqLogo")
 ```
 
 If you use phangorn please cite:
