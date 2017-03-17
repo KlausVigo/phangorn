@@ -2,7 +2,7 @@ context("treeManipulation")
 
 set.seed(42)
 tree <- rtree(100, rooted=FALSE)
-
+tree2 <- root(tree, 1, resolve.root = TRUE)
 
 
 trees <- lapply(sample(10:500,50), function(x)tree <- rtree(x, rooted=FALSE) )
@@ -24,6 +24,7 @@ test_that("ancestor, mrca, descendants", {
     expect_equal(mrca.phylo(tree, node=desc_108), 108L)
     kids_108 <- Descendants(tree, 108, "children")
     expect_equal(length(Descendants(tree, 101L, "all")), 197L)
+    expect_equal(lengths(Descendants(tree2, 101L:199, "all")), 2 * lengths(prop.part(tree2)) - 2L)
     expect_equal(Ancestors(tree, kids_108, "parent"), rep(108L, length(kids_108)))
     expect_equal(Siblings(tree, kids_108[1], include.self=TRUE), kids_108)
 })
