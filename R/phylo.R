@@ -870,7 +870,6 @@ pml.move <- function(EDGE, el, data, g, w, eig, k, nTips, bf){
 }
 
 
-
 bip <- function (obj) 
 {
     if (is.null(attr(obj, "order")) || attr(obj, "order") == 
@@ -891,6 +890,22 @@ bipart <- function(obj){
     res <- .Call("C_bipart", as.integer(obj$edge[,1]) , as.integer(obj$edge[,2]), as.integer(nTips), as.integer(maxP))  #, as.integer(obj$Nnode))
 #    attr(res, "nodes") = unique(obj$edge[,1])
     res    
+}
+
+
+bip2 <- function(x) 
+{
+    x <- reorder(x, "postorder")
+    nTips <- as.integer(length(x$tip.label))
+    .Call('phangorn_bipCPP', PACKAGE = 'phangorn', x$edge, nTips)
+}
+
+
+bipart2 <- function(x) 
+{
+    x <- reorder(x, "postorder")
+    nTips <- as.integer(length(x$tip.label))
+    .Call('phangorn_bipartCPP', PACKAGE = 'phangorn', x$edge, nTips)
 }
 
 

@@ -17,6 +17,30 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// bipartCPP
+List bipartCPP(IntegerMatrix orig, int nTips);
+RcppExport SEXP phangorn_bipartCPP(SEXP origSEXP, SEXP nTipsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerMatrix >::type orig(origSEXP);
+    Rcpp::traits::input_parameter< int >::type nTips(nTipsSEXP);
+    rcpp_result_gen = Rcpp::wrap(bipartCPP(orig, nTips));
+    return rcpp_result_gen;
+END_RCPP
+}
+// bipCPP
+List bipCPP(IntegerMatrix orig, int nTips);
+RcppExport SEXP phangorn_bipCPP(SEXP origSEXP, SEXP nTipsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerMatrix >::type orig(origSEXP);
+    Rcpp::traits::input_parameter< int >::type nTips(nTipsSEXP);
+    rcpp_result_gen = Rcpp::wrap(bipCPP(orig, nTips));
+    return rcpp_result_gen;
+END_RCPP
+}
 // allChildrenCPP
 List allChildrenCPP(IntegerMatrix orig);
 RcppExport SEXP phangorn_allChildrenCPP(SEXP origSEXP) {

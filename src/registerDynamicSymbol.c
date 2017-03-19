@@ -61,6 +61,8 @@ extern SEXP optE(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEX
 extern SEXP optQrtt(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP phangorn_allChildrenCPP(SEXP);
 extern SEXP phangorn_allDescCPP(SEXP, SEXP);
+extern SEXP phangorn_bipartCPP(SEXP, SEXP);
+extern SEXP phangorn_bipCPP(SEXP, SEXP);
 extern SEXP PML0(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP PML3(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP PML4(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
@@ -129,6 +131,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"optQrtt",                 (DL_FUNC) &optQrtt,                 16},
     {"phangorn_allChildrenCPP", (DL_FUNC) &phangorn_allChildrenCPP,  1},
     {"phangorn_allDescCPP",     (DL_FUNC) &phangorn_allDescCPP,      2},
+    {"phangorn_bipCPP",         (DL_FUNC) &phangorn_bipCPP,          2},
+    {"phangorn_bipartCPP",      (DL_FUNC) &phangorn_bipartCPP,       2},    
     {"PML0",                    (DL_FUNC) &PML0,                    14},
     {"PML3",                    (DL_FUNC) &PML3,                    14},
     {"PML4",                    (DL_FUNC) &PML4,                    15},

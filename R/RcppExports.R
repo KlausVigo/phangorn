@@ -5,6 +5,14 @@ allDescCPP <- function(orig, nTips) {
     .Call('phangorn_allDescCPP', PACKAGE = 'phangorn', orig, nTips)
 }
 
+bipartCPP <- function(orig, nTips) {
+    .Call('phangorn_bipartCPP', PACKAGE = 'phangorn', orig, nTips)
+}
+
+bipCPP <- function(orig, nTips) {
+    .Call('phangorn_bipCPP', PACKAGE = 'phangorn', orig, nTips)
+}
+
 allChildrenCPP <- function(orig) {
     .Call('phangorn_allChildrenCPP', PACKAGE = 'phangorn', orig)
 }
