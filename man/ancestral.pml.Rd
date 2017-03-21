@@ -29,7 +29,7 @@ plotAnc(tree, data, i = 1, col = NULL, cex.pie = par("cex"),
 
 \item{cost}{A cost matrix for the transitions between two states.}
 
-\item{i}{plots the i-th character of the \code{data}.}
+\item{i}{plots the i-th site pattern of the \code{data}.}
 
 \item{col}{a vector containing the colors for all possible states.}
 
@@ -67,7 +67,10 @@ require(seqLogo)
 seqLogo( t(subset(anc.ml, 48, 1:20)[[1]]), ic.scale=FALSE)
 seqLogo( t(subset(anc.p, 48, 1:20)[[1]]), ic.scale=FALSE)
 }
+# plot the first site pattern
 plotAnc(tree, anc.ml, 1)
+# plot the third character 
+plotAnc(tree, anc.ml, attr(anc.ml, "index")[3])
 
 }
 \references{

@@ -20,7 +20,7 @@
 #' @param tree a tree, i.e. an object of class pml
 #' @param data an object of class phyDat
 #' @param type method used to assign characters to internal nodes, see details.
-#' @param i plots the i-th character of the \code{data}.
+#' @param i plots the i-th site pattern of the \code{data}.
 #' @param col a vector containing the colors for all possible states.
 #' @param cex.pie a numeric defining the size of the pie graphs
 #' @param pos a character string defining the position of the legend
@@ -52,7 +52,10 @@
 #' seqLogo( t(subset(anc.ml, 48, 1:20)[[1]]), ic.scale=FALSE)
 #' seqLogo( t(subset(anc.p, 48, 1:20)[[1]]), ic.scale=FALSE)
 #' }
+#' # plot the first site pattern
 #' plotAnc(tree, anc.ml, 1)
+#' # plot the third character 
+#' plotAnc(tree, anc.ml, attr(anc.ml, "index")[3])
 #' 
 #' @rdname ancestral.pml
 #' @export 
