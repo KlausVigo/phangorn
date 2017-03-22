@@ -2453,16 +2453,16 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
             tree2 <- drop.tip(tree, ldup)
             tree <- reorder(tree2, "postorder")
             mapping <- cbind(labels[dup], labels[ind2])
-            if(length(tree$tip.label) < 4){
-                optNni <- FALSE
-                ratchet <- FALSE
-                ratchet2 <- FALSE
-            } 
         }
         if(!is.binary.tree(tree)) 
             tree = multi2di(tree)
         optEdge = TRUE     
     }
+    if(length(tree$tip.label) < 4){
+        optNni <- FALSE
+        ratchet <- FALSE
+        ratchet2 <- FALSE
+    } 
     if(is.rooted(tree)) {
         if(optRooted==FALSE && optEdge==TRUE){
             tree = unroot(tree)
