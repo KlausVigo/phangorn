@@ -496,7 +496,6 @@ bab <- function (data, tree = NULL, trace = 1, ...)
     TMP <- matrix(0, m, nr)
     for (i in 4:m) {
         TMP[i, ] = lowerBound(subset(data, inord[1:i]))
-        TMP2[i, ] = lowerBound(subset(data, inord[1:i]))
     }
     
     weight <- as.double(attr(data, "weight"))
@@ -572,7 +571,7 @@ bab <- function (data, tree = NULL, trace = 1, ...)
                 
                 if(ms < bound){
                     bound = ms
-                    if(trace)cat("upper bound:", bound, "\n") 
+                    if(trace)cat("upper bound:", bound + p0, "\n") 
                     result = tmp    
                     PSC = PSC[PSC[,3]<(bound+1e-8),]  
 #                    npsc = nrow(PSC)
@@ -705,7 +704,7 @@ if(pBound)    mms0 = pBound(dat_used, UB)
                 
                 if(ms < bound){
                     bound = ms
-                    if(trace)cat("upper bound:", bound, "\n") 
+                    if(trace)cat("upper bound:", bound + p0, "\n") 
                     result = tmp    
                     PSC = PSC[PSC[,3]<(bound+1e-8),]  
                     npsc = nrow(PSC)
