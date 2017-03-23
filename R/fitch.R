@@ -428,116 +428,6 @@ getOrder <- function (x)
 }
 
 
-bab_old <- function (data, tree = NULL, trace = 1, ...) 
-{
-    o = order(attr(data, "weight"), decreasing = TRUE)
-    data = subset(data, , o)
-    nr <- attr(data, "nr")
-    pis <- parsinfo(data)
-    p0 <- sum(attr(data, "weight")[pis[, 1]] * pis[, 2])
-    if (length(pis) > 0) 
-        data <- getRows(data, c(1:nr)[-pis[, 1]], TRUE)
-    tree <- pratchet(data, start = tree, trace = trace - 1, ...)
-    data <- subset(data, tree$tip.label) 
-    nr <- as.integer(attr(data, "nr"))
-    inord <- getOrder(data)
-    lb <- lowerBound(data)
-    nTips <- m <- length(data)
-    
-    nr <- as.integer(attr(data, "nr"))
-    TMP <- matrix(0, m, nr)
-    for (i in 4:m) {
-        TMP[i, ] = lowerBound(subset(data, inord[1:i]))
-    }
-
-    weight <- as.double(attr(data, "weight"))
-    data <- prepareDataFitch(data)
-    m = nr*(2L*nTips - 2L)
-    on.exit(.C("fitch_free"))
-    .C("fitch_init", as.integer(data), as.integer(nTips*nr), as.integer(m), as.double(weight), as.integer(nr))
-    mmsAmb = 0
-    mmsAmb = TMP %*% weight  
-    mmsAmb = mmsAmb[nTips] - mmsAmb
-    mms0 = 0 
-    mms0 = mms0 + mmsAmb
-
-    minPars = mms0[1]
-    kPars = 0
-
-    if (trace) 
-        print(paste("lower bound:", p0 + mms0[1]))
-    bound <- fast.fitch(tree, nr)
-    if (trace) 
-        print(paste("upper bound:", bound + p0))
-
-    startTree <- structure(list(edge = structure(c(rep(nTips+1L, 3), as.integer(inord)[1:3]), .Dim = c(3L, 2L)), 
-        tip.label = tree$tip.label, Nnode = 1L), .Names = c("edge", "tip.label", "Nnode"), class = "phylo", order = "postorder")
-
-    trees <- vector("list", nTips)
-    trees[[3]] <- list(startTree$edge)
-    for(i in 4:nTips) trees[[i]] <- vector("list", (2L*i) - 5L) # new
-
-# index M[i] is neues node fuer edge i+1
-# index L[i] is length(node) tree mit i+1 
-    L = as.integer( 2L*(1L:nTips) -3L ) 
-    M = as.integer( 1L:nTips + nTips - 1L )    
-
-    PSC <- matrix(c(3,1,0), 1, 3)
-    PSC[1,3] <- fast.fitch(startTree, nr)
-
-    k = 4L
-    Nnode = 1L
-    npsc = 1
-
-    result <- list() 
-    while (npsc > 0) {
-        a = PSC[npsc,1]
-        b = PSC[npsc,2]
-        PSC = PSC[-npsc,, drop=FALSE]  
-
-        tmpTree <- trees[[a]][[b]]
-        edge = tmpTree[,2]  
-        score = fnodesNew5(tmpTree, nTips, nr, M[a])[edge] + mms0[a+1L] 
-        score <- .Call("FITCHTRIP3", as.integer(inord[a+1L]), as.integer(nr), as.integer(edge), as.double(score), as.double(bound), PACKAGE="phangorn")    
-                   
-        ms = min(score)
-        if(ms<=bound){
-            if((a+1L)<nTips){
-                ind = (1:L[a])[score<=bound]
-                for(i in 1:length(ind))trees[[a+1]][[i]] <- .Call("AddOne", tmpTree, as.integer(inord[a+1L]), as.integer(ind[i]), as.integer(L[a]), as.integer(M[a]), PACKAGE="phangorn") 
-                l = length(ind)
-                os = order(score[ind], decreasing=TRUE)
-                PSC = rbind(PSC, cbind(rep(a+1, l), os, score[ind][os] ))
-            }
-            else{
-                ind = which(score==ms) 
-                tmp <- vector("list", length(ind)) 
-                for(i in 1:length(ind))tmp[[i]] <- .Call("AddOne", tmpTree, as.integer(inord[a+1L]), as.integer(ind[i]), as.integer(L[a]), as.integer(M[a]), PACKAGE="phangorn")
-
-                if(ms < bound){
-                     bound = ms
-                     if(trace)cat("upper bound:", bound, "\n") 
-                     result = tmp    
-                     PSC = PSC[PSC[,3]<(bound+1e-8),]  
-
-                }
-                else result = c(result, tmp)  
-            }
-        }    
-        npsc = nrow(PSC)
-    }
-    for(i in 1:length(result)){
-        result[[i]] = structure(list(edge = result[[i]], Nnode = nTips-2L), .Names = c("edge", "Nnode"), class = "phylo", order = "postorder")
-    }
-    attr(result, "TipLabel") = tree$tip.label
-    class(result) <- "multiPhylo"
-    return(result)
-}
-
-
-
-
-
 #' Branch and bound for finding all most parsimonious trees
 #' 
 #' \code{bab} finds all most parsimonious trees.
@@ -606,6 +496,7 @@ bab <- function (data, tree = NULL, trace = 1, ...)
     TMP <- matrix(0, m, nr)
     for (i in 4:m) {
         TMP[i, ] = lowerBound(subset(data, inord[1:i]))
+        TMP2[i, ] = lowerBound(subset(data, inord[1:i]))
     }
     
     weight <- as.double(attr(data, "weight"))
@@ -655,7 +546,7 @@ bab <- function (data, tree = NULL, trace = 1, ...)
         a = PSC[npsc,1]
         b = PSC[npsc,2]
         PSC = PSC[-npsc,, drop=FALSE]  
-        
+#        npsc <- npsc - 1L        
         tmpTree <- trees[[a]][[b]]
         edge = tmpTree[,2]  
         score = fnodesNew5(tmpTree, nTips, nr, M[a])[edge] + mms0[a+1L] 
@@ -669,7 +560,9 @@ bab <- function (data, tree = NULL, trace = 1, ...)
                 l = length(ind)
 #                os = order(score[ind], decreasing=TRUE)     
                 os = seq_len(l)
+# in C pushback                
                 PSC = rbind(PSC, cbind(rep(a+1, l), os, score[ind] ))
+#                npsc <- npsc + l
 #                PSC = rbind(PSC, cbind(rep(a+1, l), os, score[ind][os] ))
             }
             else{
@@ -682,11 +575,12 @@ bab <- function (data, tree = NULL, trace = 1, ...)
                     if(trace)cat("upper bound:", bound, "\n") 
                     result = tmp    
                     PSC = PSC[PSC[,3]<(bound+1e-8),]  
-                    
+#                    npsc = nrow(PSC)
                 }
                 else result = c(result, tmp)  
             }
         }    
+# not needed here        
         npsc = nrow(PSC)
     }
     for(i in 1:length(result)){
@@ -696,3 +590,210 @@ bab <- function (data, tree = NULL, trace = 1, ...)
     class(result) <- "multiPhylo"
     return(result)
 }
+
+
+# die neue version
+bab2 <- function (data, tree = NULL, trace = 1, pBound=TRUE, ...) 
+{
+    if(!is.null(tree)) data <- subset(data, tree$tip.label) 
+    o = order(attr(data, "weight"), decreasing = TRUE)
+    data = subset(data, , o)
+    nr <- attr(data, "nr")
+    pis <- parsinfo(data)
+    p0 <- sum(attr(data, "weight")[pis[, 1]] * pis[, 2])
+    if (length(pis) > 0) 
+        data <- getRows(data, c(1:nr)[-pis[, 1]], TRUE)
+    # recursively 
+    # dat <- unique(data) (if difference)
+    # 
+    #
+    # if 
+    # added compressSites
+    data <- compressSites(data)
+    
+    tree <- pratchet(data, start = tree, trace = trace - 1, ...)
+    data <- subset(data, tree$tip.label) 
+    nr <- as.integer(attr(data, "nr"))
+    inord <- getOrder(data)
+    lb <- lowerBound(data)
+    nTips <- m <- length(data)
+    
+    nr <- as.integer(attr(data, "nr"))
+    TMP <- UB <- matrix(0, m, nr)
+    for (i in 4:m) {
+        TMP[i, ] = lowerBound(subset(data, inord[1:i]))
+        UB[i, ] = upperBound(subset(data, inord[1:i]))
+    }
+    
+    dat_used <- subset(data, inord)
+    
+    weight <- as.double(attr(data, "weight"))
+    data <- prepareDataFitch(data)
+    m = nr*(2L*nTips - 2L)
+    on.exit(.C("fitch_free"))
+    .C("fitch_init", as.integer(data), as.integer(nTips*nr), as.integer(m), as.double(weight), as.integer(nr))
+    mmsAmb = 0
+    mmsAmb = TMP %*% weight  
+    mmsAmb = mmsAmb[nTips] - mmsAmb
+    mms0 = 0
+if(pBound)    mms0 = pBound(dat_used, UB) 
+    mms0 = mms0 + mmsAmb
+    
+    
+    minPars = mms0[1]
+    kPars = 0
+    
+    if (trace) 
+        print(paste("lower bound:", p0 + mms0[1]))
+    bound <- fast.fitch(tree, nr)
+    if (trace) 
+        print(paste("upper bound:", bound + p0))
+    
+    startTree <- structure(list(edge = structure(c(rep(nTips+1L, 3), as.integer(inord)[1:3]), .Dim = c(3L, 2L)), 
+                                tip.label = tree$tip.label, Nnode = 1L), .Names = c("edge", "tip.label", "Nnode"), class = "phylo", order = "postorder")
+    
+    trees <- vector("list", nTips)
+    trees[[3]] <- list(startTree$edge)
+    for(i in 4:nTips) trees[[i]] <- vector("list", (2L*i) - 5L) # new
+    
+    # index M[i] is neues node fuer edge i+1
+    # index L[i] is length(node) tree mit i+1 
+    L = as.integer( 2L*(1L:nTips) -3L ) 
+    M = as.integer( 1L:nTips + nTips - 1L )    
+    
+    #   PSC = matrix(0, sum(sapply(trees, length)), 3)    
+    #   PSC[1,] = c(3,1,0)  
+    
+    PSC <- matrix(c(3,1,0), 1, 3)
+    PSC[1,3] <- fast.fitch(startTree, nr)
+    
+    k = 4L
+    Nnode = 1L
+    npsc = 1
+    
+    blub = numeric(nTips)
+    
+    result <- list() 
+    while (npsc > 0) {
+        a = PSC[npsc,1]
+        b = PSC[npsc,2]
+        PSC = PSC[-npsc,, drop=FALSE]  
+        npsc <- npsc - 1L        
+        tmpTree <- trees[[a]][[b]]
+        edge = tmpTree[,2]  
+        score = fnodesNew5(tmpTree, nTips, nr, M[a])[edge] + mms0[a+1L] 
+        score <- .Call("FITCHTRIP3", as.integer(inord[a+1L]), as.integer(nr), as.integer(edge), as.double(score), as.double(bound), PACKAGE="phangorn")    
+        
+        ms = min(score)
+        if(ms<=bound){
+            if((a+1L)<nTips){
+                ind = (1:L[a])[score<=bound]
+                trees[[a+1]][1:length(ind)] <- .Call("AddOnes", tmpTree, as.integer(inord[a+1L]), as.integer(ind), as.integer(L[a]), as.integer(M[a]), PACKAGE="phangorn") 
+                l = length(ind)
+                #                os = order(score[ind], decreasing=TRUE)     
+                os = seq_len(l)
+                # in C pushback                
+                PSC = rbind(PSC, cbind(rep(a+1, l), os, score[ind] ))
+                npsc <- npsc + l
+                blub[a] = blub[a] + l
+                #                PSC = rbind(PSC, cbind(rep(a+1, l), os, score[ind][os] ))
+            }
+            else{
+                ind = which(score==ms) 
+                tmp <- vector("list", length(ind)) 
+                tmp[1:length(ind)] <- .Call("AddOnes", tmpTree, as.integer(inord[a+1L]), as.integer(ind), as.integer(L[a]), as.integer(M[a]), PACKAGE="phangorn")
+                
+                if(ms < bound){
+                    bound = ms
+                    if(trace)cat("upper bound:", bound, "\n") 
+                    result = tmp    
+                    PSC = PSC[PSC[,3]<(bound+1e-8),]  
+                    npsc = nrow(PSC)
+                }
+                else result = c(result, tmp)  
+            }
+        }    
+        # not needed here        
+#        npsc = nrow(PSC)
+    }
+    for(i in 1:length(result)){
+        result[[i]] = structure(list(edge = result[[i]], Nnode = nTips-2L), .Names = c("edge", "Nnode"), class = "phylo", order = "postorder")
+    }
+    attr(result, "TipLabel") = tree$tip.label
+    attr(result, "visited") = blub
+    class(result) <- "multiPhylo"
+    return(result)
+}
+
+
+
+
+pBound <- function(x, UB){
+    tip <- names(x)
+    att = attributes(x)
+    nc = attr(x, "nc")
+    nr = attr(x, "nr")
+    contrast = attr(x, "contrast")
+    rownames(contrast) = attr(x, "allLevels")
+    colnames(contrast) = attr(x, "levels")
+    weight0 <- attr(x, "weight")
+    attr(x, "weight") = rep(1, nr)
+    attr(x, "index") = NULL
+    
+    y <- as.character(x)
+    #    states <- apply(y, 2, unique.default)
+    #    singles <- match(attr(x, "levels"), attr(x, "allLevels"))
+    singles <- attr(x, "levels")
+    fun2 <- function(x, singles)all(x %in% singles)
+    
+    fun1 <- function(x){cumsum(!duplicated(x))-1L}
+    #    pmax 
+    #    ntips > pmax
+    
+    tmp <- apply(y, 2, fun2, singles)
+    ind <- which(tmp)
+    if(length(ind)<2) return(numeric(nTips))
+    
+    y <- y[, ind, drop=FALSE]
+    weight0 <- weight0[ind]
+    
+    UB <- UB[, ind, drop=FALSE]    
+    single_dis <- apply(y, 2, fun1)
+    # single_dis <- lowerBound
+    
+    nTips <- nrow(y) 
+    l <- length(weight0)
+    
+    res <- numeric(nTips)
+    
+    for(i in 1:(l-1)){
+        for(j in (i+1):l){
+            #            cat(i, j, "\n")
+            if( (weight0[i] > 0) & (weight0[j] > 0) ){
+                z <- paste(y[,i], y[,j], sep="_")
+                dis2 <- single_dis[,i] + single_dis[,j]
+                #                D1 <- (dis2[nTips] - dis2) 
+                dis <- fun1(z)
+                #                dis <- pmax(dis, dis2)
+                #                D2 <- dis[nTips] - (UB[, i] + UB[, j])
+                if(dis[nTips] > dis2[nTips]){
+                    
+                    ub <- UB[,i] + UB[,j]
+                    dis <- dis[nTips] - ub
+                    d2 <- dis2[nTips] - dis2
+                    dis <- pmax(dis, d2) - d2
+                    
+                    if(sum(dis[4:nTips])>0){
+                        wmin <- min(weight0[i], weight0[j])
+                        weight0[i] <- weight0[i] - wmin
+                        weight0[j] <- weight0[j] - wmin
+                        res <- res + dis * wmin
+                    }
+                }
+            }    
+            if( weight0[i] < 1e-6 )  break()
+        }
+    }
+    res
+}
+
