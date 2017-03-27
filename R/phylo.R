@@ -2458,10 +2458,13 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
             tree = multi2di(tree)
         optEdge = TRUE     
     }
-    if(length(tree$tip.label) < 4){
+    if(length(tree$tip.label) < (3 + !optRooted) ){
         optNni <- FALSE
         ratchet <- FALSE
         ratchet2 <- FALSE
+    } 
+    if(length(tree$tip.label) < (2 + !optRooted) ){
+        stop("rooted / unrooted tree needs at least 2 / 3 tips")
     } 
     if(is.rooted(tree)) {
         if(optRooted==FALSE && optEdge==TRUE){
