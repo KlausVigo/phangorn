@@ -93,8 +93,11 @@ phyDat.default <- function (data, levels = NULL, return.index = TRUE, contrast =
     
     row.names(data) = as.character(1:p)
     data = na.omit(data)
-    
     aaa = match(index, attr(data, "na.action"))
+    
+
+    if(!is.null(attr(data, "na.action"))) warning("Found unknown characters (not supplied in levels). Deleted sites with with unknown states.")
+    
     index = index[is.na(aaa)] 
     index = match(index, unique(index))
     rn = as.numeric(rownames(data))
@@ -169,7 +172,9 @@ phyDat.DNA = function (data, return.index = TRUE)
     row.names(data) = as.character(1:p)
     data = na.omit(data)
     rn = as.numeric(rownames(data))
-
+    
+    if(!is.null(attr(data, "na.action"))) warning("Found unknown characters. Deleted sites with with unknown states.")
+    
     aaa = match(index, attr(data, "na.action"))
     index = index[is.na(aaa)] 
     index = match(index, unique(index))
@@ -251,6 +256,8 @@ phyDat.AA <- function (data, return.index = TRUE)
     data = na.omit(data)
     rn = as.numeric(rownames(data))
 
+    if(!is.null(attr(data, "na.action"))) warning("Found unknown characters. Deleted sites with with unknown states.")
+    
     aaa = match(index, attr(data, "na.action"))
     index = index[is.na(aaa)] 
     index = match(index, unique(index))
@@ -342,7 +349,9 @@ phyDat.codon <- function (data, return.index = TRUE)
     row.names(data) = as.character(1:p)
     data = na.omit(data)
     rn = as.numeric(rownames(data))
-
+    
+    if(!is.null(attr(data, "na.action"))) warning("Found unknown characters. Deleted sites with with unknown states.")
+    
     aaa = match(index, attr(data, "na.action"))
     index = index[is.na(aaa)] 
     index = match(index, unique(index))
