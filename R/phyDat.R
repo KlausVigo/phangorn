@@ -882,6 +882,13 @@ read.phyDat <- function(file, format="phylip", type="DNA", ...){
             data = read.dna(file, format, as.character = TRUE, ...)
         }
         if (type == "AA") data = read.aa(file, format=format, ...)
+        if (type == "USER"){
+            data = read.dna(file, format, as.character = TRUE)
+            extras <- match.call(expand.dots = FALSE)$...
+            extras <- lapply(extras, eval)
+            return(phyDat(data, type, levels=extras$levels, ambiguity = extras$ambiguity, 
+                contrast = extras$contrast))
+        }
         # raus
     }
     phyDat(data, type, return.index = TRUE)
