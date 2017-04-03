@@ -14,7 +14,7 @@
 #include <math.h>
 #include <R.h> 
 #include <Rinternals.h>
-//#include <stdint.h>     /* standard integer types (int32_t typedef etc.) [C99]*/
+#include <stdint.h>     /* standard integer types (int32_t typedef etc.) [C99]*/
 
 
 #define true  1U /*!< Boolean TRUE  */
