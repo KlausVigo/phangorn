@@ -7,7 +7,7 @@ description: Klaus Schliep's publications
 
 ### journal articles
 
-**Klaus Schliep**, Alastair Alastair Potts, David A Morrison, Guido W Grimm (2017) Intertwining phylogenetic trees and networks (accepted in Methods in Ecology and Evolution) [PeerJPreprint](https://peerj.com/preprints/2054/) 
+**Klaus Schliep**, Alastair Alastair Potts, David A Morrison, Guido W Grimm (2017) Intertwining phylogenetic trees and networks (accepted in Methods in Ecology and Evolution) [dx.doi.org/10.1111/2041-210X.12760](https://dx.doi.org/10.1111/2041-210X.12760) 
 
 Paradis, E., Gosselin, T., Goudet, J., Jombart, T., and **Schliep, K.** (2017) Linking genomics and population genetics with R. Molecular Ecology Resources 17(1) 54--66 [dx.doi.org/10.1111/1755-0998.12577](http://dx.doi.org/10.1111/1755-0998.12577)
 
