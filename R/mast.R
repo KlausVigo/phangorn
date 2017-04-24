@@ -3,7 +3,7 @@
 #' \code{mast} computes the maximum agreement subtree (MAST). 
 #' 
 #' The code is derived from exames in Valverde (2009), for the original code see 
-#' \url(http://www.cs.upc.edu/~valiente/comput-biol/). 
+#' \url{http://www.cs.upc.edu/~valiente/comput-biol/}. 
 #' 
 #' @param x a tree, i.e. an object of class \code{phylo}.
 #' @param y a tree, i.e. an object of class \code{phylo}.
@@ -42,13 +42,9 @@ mast <- function (x, y, tree=TRUE) {
     x <- reorder(x, "postorder")
     y <- reorder(y, "postorder")
     
-#    po1 <- postorder(x)
-#    po2 <- postorder(y)
- 
     po1 <- c(x$edge[,2], x$edge[nrow(x$edge),1])
     po2 <- c(y$edge[,2], y$edge[nrow(y$edge),1])
     
-       
     nTips <- length(x$tip.label)
     
     p_vec_1 <- Ancestors(x, 1L:max(x$edge))
