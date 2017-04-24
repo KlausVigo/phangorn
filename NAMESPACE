@@ -16,11 +16,11 @@ importFrom(igraph, graph, graph_from_adjacency_matrix, layout_with_kk, plot.igra
     vcount, graph.edgelist, graph_from_edgelist, topo_sort, layout_nicely) 
 #layout.kamada.kawai, graph.adjacency, get.shortest.paths, topological.sort,
 
-
-importFrom(Rcpp,sourceCpp)
+import(methods, Rcpp)
+#importFrom(Rcpp,sourceCpp)
 importFrom(magrittr,"%>%", "%<>%")
 importFrom(Matrix, Matrix, sparseMatrix, spMatrix, crossprod, solve) #, %*%
-importFrom(fastmatch, fmatch)
+importFrom(fastmatch, fmatch, "%fin%")
 #importFrom(nnls, nnls)
 #importFrom(parallel, mclapply, detectCores)
 import(parallel)
@@ -33,7 +33,7 @@ importFrom(graphics, plot, plot.default, plot.new, plot.window, text, par, ablin
            points, image, matplot, legend, hist) 
 importFrom(utils, read.table, download.file, citation, stack, installed.packages, write.table, combn) 
 importFrom(grDevices, rgb, rainbow, adjustcolor, col2rgb)
-importFrom(methods, hasArg, is)
+#importFrom(methods, hasArg, is)
 #importFrom(Rcpp, evalCpp)
 #importMethodsFrom(Biostrings,as.matrix)
 #importFrom(Biostrings,DNAMultipleAlignment)
@@ -50,7 +50,7 @@ export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UN
     pmlCluster, pmlMix, pmlPen, read.aa, allTrees, designTree, designSplits, nnls.tree,
     nnls.splits, nnls.phylo, nnls.networx, neighborNet, pmlPart2multiPhylo, multiphyDat2pmlPart,
     splitsNetwork, simSeq, SH.test, bootstrap.pml, bootstrap.phyDat, RF.dist, wRF.dist, 
-    KF.dist, path.dist, sprdist, SPR.dist, rNNI, 
+    KF.dist, path.dist, sprdist, SPR.dist, mast, rNNI, 
     rSPR, plotBS, Ancestors, Descendants, mrca.phylo, Children, Siblings, pace, modelTest, 
     lento, compatible, acgt2ry, ancestral.pars, ancestral.pml, CI, RI, getClans, getSlices,
     getClips, getDiversity, midpoint, pruneTree, acctran, getRoot, plotAnc, consensusNet, 
