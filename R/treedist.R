@@ -716,15 +716,31 @@ wRF.dist <- function(tree1, tree2=NULL, normalize=FALSE, check.labels = TRUE, ro
 }
 
 
-kf0 <- function(tree1, tree2, check.labels = TRUE){    
+kf0 <- function(tree1, tree2, check.labels = TRUE, rooted=FALSE){    
     if(check.labels)tree2 <- checkLabels(tree2, tree1$tip.label)
-    if(is.rooted(tree1)) tree1 <- unroot(tree1)
-    if(is.rooted(tree2)) tree2 <- unroot(tree2)
+    
+    r1 <- is.rooted(tree1)
+    r2 <- is.rooted(tree2)
+    if(!rooted){
+        if(r1) tree1<-unroot(tree1)
+        if(r2) tree2<-unroot(tree2)
+    }
+    else{
+        if(r1 != r2) {
+            message("one tree is unrooted, unrooted both")
+            tree1 <- unroot(tree1)
+            tree2 <- unroot(tree2)
+            r1 <- r2 <- FALSE
+        }
+    }
+    
     bp1 = bip(tree1)
     bp2 = bip(tree2)
     
-    bp1 <- SHORTwise(bp1, length(tree1$tip.label))
-    bp2 <- SHORTwise(bp2, length(tree2$tip.label))
+    if(!rooted){
+        bp1 <- SHORTwise(bp1, length(tree1$tip.label))
+        bp2 <- SHORTwise(bp2, length(tree2$tip.label))
+    }
     bp1 <- sapply(bp1, paste, collapse = "_")
     bp2 <- sapply(bp2, paste, collapse = "_")
     
@@ -853,7 +869,7 @@ kf2 <- function(trees, check.labels = TRUE){
 #' @export
 KF.dist <- function(tree1, tree2=NULL, check.labels = TRUE, rooted=FALSE){
     if(inherits(tree1, "multiPhylo") && is.null(tree2))return(kf2(tree1)) 
-    if(inherits(tree1, "phylo") && inherits(tree2, "phylo"))return(kf0(tree1, tree2, check.labels))
+    if(inherits(tree1, "phylo") && inherits(tree2, "phylo"))return(kf0(tree1, tree2, check.labels, rooted))
     if(inherits(tree1, "phylo") && inherits(tree2, "multiPhylo"))return(kf1(tree1, tree2, check.labels))
     if(inherits(tree2, "phylo") && inherits(tree1, "multiPhylo"))return(kf1(tree2, tree1,check.labels))
     return(NULL)
