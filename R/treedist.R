@@ -156,7 +156,7 @@ oneWise <- function (x, nTips=NULL)
 #' @author Klaus P. Schliep \email{klaus.schliep@@gmail.com},
 #' Leonardo de Oliveira Martins
 #' @seealso \code{\link[ape]{dist.topo}}, \code{\link{nni}},
-#' \code{\link{superTree}}
+#' \code{\link{superTree}}, \code{\link{mast}}
 #' @references de Oliveira Martins L., Leal E., Kishino H. (2008)
 #' \emph{Phylogenetic Detection of Recombination with a Bayesian Prior on the
 #' Distance between Trees}. PLoS ONE \bold{3(7)}. e2651. doi:
@@ -439,17 +439,26 @@ wRF0 <- function(tree1, tree2, normalize=FALSE, check.labels=TRUE, rooted = FALS
 }
 
 
-wRF2 <- function(tree, trees, normalize=FALSE, check.labels = TRUE){    
+wRF2 <- function(tree, trees, normalize=FALSE, check.labels = TRUE, rooted=FALSE){    
     if(check.labels){
         trees <- .compressTipLabel(trees)
         tree <- checkLabels(tree, attr(trees, "TipLabel"))
     }    
     trees <- .uncompressTipLabel(trees)
-    unclass(trees) 
     
-    if (any(sapply(trees, is.rooted))) {
-        trees <- lapply(trees, unroot)
+    if (rooted & any(!is.rooted(trees))){
+        warning("Some trees are unrooted, unrooted all")
+        rooted <- FALSE
     }
+
+    if(!rooted){
+        if (any(is.rooted(trees))) {
+        #if (any(sapply(trees, is.rooted))) {
+            trees <- unroot(trees) #lapply(trees, unroot)
+        }
+    }
+    
+    unclass(trees) 
     
     nTips <- length(tree$tip.label)
     
@@ -466,12 +475,19 @@ wRF2 <- function(tree, trees, normalize=FALSE, check.labels = TRUE){
         bp <- sapply(bp, paste, collapse = "_")
         bp
     }
-    BP <- lapply(trees, fun2, nTips)
+    fun3 <- function(x, nTips){
+        bp <- bip(x)
+        bp <- sapply(bp, paste, collapse = "_")
+        bp
+    }
+    if(rooted) BP <- lapply(trees, fun3, nTips)
+    else BP <- lapply(trees, fun2, nTips)
     
-    if(is.rooted(tree)) tree <- unroot(tree)
+    if(!rooted & is.rooted(tree)) tree <- unroot(tree)
+        
     bp = bip(tree)
     
-    bp <- SHORTwise(bp, nTips)
+    if(!rooted) bp <- SHORTwise(bp, nTips)
     bp <- sapply(bp, paste, collapse = "_")
     
     w <- numeric(max(tree$edge))
@@ -550,7 +566,7 @@ wRF1 <- function(trees, normalize=FALSE, check.labels = TRUE){
 
 
 
-mRF2 <- function(tree, trees, normalize=FALSE, check.labels = TRUE){
+mRF2 <- function(tree, trees, normalize=FALSE, check.labels = TRUE, rooted=TRUE){
     if (!inherits(trees,"multiPhylo")) 
         stop("trees should be an object of class \"multiPhylo\"")
     if (!inherits(tree,"phylo")) 
@@ -710,8 +726,8 @@ wRF.dist <- function(tree1, tree2=NULL, normalize=FALSE, check.labels = TRUE, ro
     if(class(tree1)=="phylo" && class(tree2)=="phylo")return(wRF0(tree1, tree2, normalize, check.labels, rooted))
     if(class(tree1)=="multiPhylo" && is.null(tree2))return(wRF1(tree1, normalize, check.labels))
     
-    if(class(tree1)=="phylo" && class(tree2)=="multiPhylo")return(wRF2(tree1, tree2, normalize, check.labels))
-    if(class(tree2)=="phylo" && class(tree1)=="multiPhylo")return(wRF2(tree2, tree1, normalize, check.labels))
+    if(class(tree1)=="phylo" && class(tree2)=="multiPhylo")return(wRF2(tree1, tree2, normalize, check.labels, rooted))
+    if(class(tree2)=="phylo" && class(tree1)=="multiPhylo")return(wRF2(tree2, tree1, normalize, check.labels, rooted))
     else return(NULL)        
 }
 
@@ -761,17 +777,28 @@ kf0 <- function(tree1, tree2, check.labels = TRUE, rooted=FALSE){
 }
 
 
-kf1 <- function(tree, trees, check.labels = TRUE){    
+kf1 <- function(tree, trees, check.labels = TRUE, rooted=FALSE){    
     if(check.labels){
         trees <- .compressTipLabel(trees)
         tree <- checkLabels(tree, attr(trees, "TipLabel"))
     }    
     trees <- .uncompressTipLabel(trees)
+    
+    if (rooted & any(!is.rooted(trees))){
+        warning("Some trees are unrooted, unrooted all")
+        rooted <- FALSE
+    }
+    if(!rooted){
+        if (any(is.rooted(trees))) {
+            trees <- unroot(trees) 
+        }
+    }
+    
     unclass(trees) 
     
-    if (any(sapply(trees, is.rooted))) {
-        trees <- lapply(trees, unroot)
-    }
+#    if (any(sapply(trees, is.rooted))) {
+#        trees <- lapply(trees, unroot)
+#    }
     
     nTips <- length(tree$tip.label)
     
@@ -788,13 +815,17 @@ kf1 <- function(tree, trees, check.labels = TRUE){
         bp <- sapply(bp, paste, collapse = "_")
         bp
     }
-    BP <- lapply(trees, fun2, nTips)
+    fun3 <- function(x, nTips){
+        bp <- bip(x)
+        bp <- sapply(bp, paste, collapse = "_")
+        bp
+    }
+    if(rooted) BP <- lapply(trees, fun3, nTips)
+    else BP <- lapply(trees, fun2, nTips)
     
-    
-    if(is.rooted(tree)) tree <- unroot(tree)
-    bp = bip(tree)
-    
-    bp <- SHORTwise(bp, nTips)
+    if(!rooted & is.rooted(tree)) tree <- unroot(tree)
+    bp <- bip(tree)
+    if(!rooted) bp <- SHORTwise(bp, nTips)
     bp <- sapply(bp, paste, collapse = "_")
 
     w <- numeric(max(tree$edge))
