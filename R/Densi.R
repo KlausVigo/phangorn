@@ -39,6 +39,8 @@ getAges <- function(x){
 #' @param col edge color.
 #' @param width edge width.
 #' @param cex a numeric value giving the factor scaling of the tip labels.
+#' @param an integer specifying the type of font for the labels: 1 (plain text),
+#'  2 (bold), 3 (italic, the default), or 4 (bold italic).
 #' @param \dots further arguments to be passed to plot.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{plot.phylo}}, \code{\link{plot.networx}}
@@ -68,7 +70,7 @@ getAges <- function(x){
 #' 
 #' 
 #' @export densiTree
-densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL, optim=FALSE, scaleX=FALSE, col=1, width=1, cex=.8, ...) {
+densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL, optim=FALSE, scaleX=FALSE, col=1, width=1, cex=.8, font=3, ...) {
   if(!inherits(x,"multiPhylo"))stop("x must be of class multiPhylo")
   compressed <- ifelse(is.null(attr(x, "TipLabel")), FALSE, TRUE)
   if(is.null(consensus))consensus <- superTree(x)
@@ -89,7 +91,7 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL, op
   sw <- strwidth(consensus$tip.label[tl],cex=cex) * 1.1
   plot.window(xlim=c(0, 1.0+sw), ylim=c(0, nTip+1))
   axis(side=1,at=seq(0,1.0, length.out=length(label)), labels=label)
-  text(x=rep(1.0,Ntip(consensus)),y=yy[1:nTip],labels=consensus$tip.label,pos=4,cex=cex)  
+  text(x=rep(1.0,Ntip(consensus)),y=yy[1:nTip],labels=consensus$tip.label,pos=4,cex=cex, font=font)  
   tip.order = yy[1:nTip]
   for (treeindex in 1:length(x)) {
     tmp <- reorder(x[[treeindex]], "postorder")
