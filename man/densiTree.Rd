@@ -19,6 +19,10 @@ densiTree(x, type = "cladogram", alpha = 1/length(x), consensus = NULL,
 
 \item{consensus}{A tree which is used to define the order of the tip labels.}
 
+\item{direction}{a character string specifying the direction of the tree. 
+Four values are possible: "rightwards" (the default), "leftwards", "upwards", 
+and "downwards".}
+
 \item{optim}{not yet used.}
 
 \item{scaleX}{scale trees to have identical heights.}
@@ -29,15 +33,17 @@ densiTree(x, type = "cladogram", alpha = 1/length(x), consensus = NULL,
 
 \item{cex}{a numeric value giving the factor scaling of the tip labels.}
 
+\item{font}{an integer specifying the type of font for the labels: 1 (plain text),
+2 (bold), 3 (italic, the default), or 4 (bold italic).}
+
+\item{tip.color}{color of the tip labels.}
+
 \item{adj}{a numeric specifying the justification of the text strings of the 
 labels: 0 (left-justification), 0.5 (centering), or 1 (right-justification).}
 
 \item{srt}{a numeric giving how much the labels are rotated in degrees}
 
 \item{\dots}{further arguments to be passed to plot.}
-
-\item{an}{integer specifying the type of font for the labels: 1 (plain text),
-2 (bold), 3 (italic, the default), or 4 (bold italic).}
 }
 \description{
 An R function to plot trees similar to those produced by DensiTree.

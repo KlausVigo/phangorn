@@ -67,13 +67,17 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt=0, cex, col){
 #' "cladogram" (default) or "phylogram" (the default) are supported.
 #' @param alpha parameter for semi-transparent colors.
 #' @param consensus A tree which is used to define the order of the tip labels.
+#' @param direction a character string specifying the direction of the tree. 
+#' Four values are possible: "rightwards" (the default), "leftwards", "upwards", 
+#' and "downwards".
 #' @param optim not yet used.
 #' @param scaleX scale trees to have identical heights.
 #' @param col edge color.
 #' @param width edge width.
 #' @param cex a numeric value giving the factor scaling of the tip labels.
-#' @param an integer specifying the type of font for the labels: 1 (plain text),
+#' @param font an integer specifying the type of font for the labels: 1 (plain text),
 #'  2 (bold), 3 (italic, the default), or 4 (bold italic).
+#' @param tip.color color of the tip labels. 
 #' @param adj a numeric specifying the justification of the text strings of the 
 #' labels: 0 (left-justification), 0.5 (centering), or 1 (right-justification). 
 #' @param srt a numeric giving how much the labels are rotated in degrees  
