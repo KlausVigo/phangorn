@@ -4,7 +4,6 @@ getAges <- function(x){
   if(inherits(x,"phylo")) height <- fun(x)
   if(inherits(x,"multiPhylo")){
     if(!is.null(attr(x, "TipLabel"))){
-      x = unclass(x)
       x = .uncompressTipLabel(x)  
       x = unclass(x)  
       height = sapply(x, fun)
@@ -18,6 +17,40 @@ getAges <- function(x){
 }
 
 
+add_tiplabels <- function(xy, tip.label, direction, adj, font, srt=0, cex, col){
+    direction <- match.arg(direction, c("rightwards", "leftwards",  "upwards", 
+                                        "downwards"))
+    horizontal <- direction %in% c("rightwards", "leftwards")
+    nTips <- length(tip.label)
+    xx <- rep(1, nrow(xy))
+    yy <- xy[,2 ]
+    if(direction == "leftwards" | direction == "downwards") xx = xx*0
+    if (!horizontal) {
+        tmp <- yy
+        yy <- xx
+        xx <- xy[,1]
+    }
+    
+    label.offset=0
+    
+    MAXSTRING <- max(strwidth(tip.label, cex = cex))
+    loy <- 0
+    if(direction == "rightwards") lox <- label.offset + MAXSTRING * 1.05 * adj
+    if(direction == "leftwards") lox <- -label.offset - MAXSTRING * 1.05 * (1 - adj)
+    if (!horizontal) {
+        psr <- par("usr")
+        MAXSTRING <- MAXSTRING * 1.09 * (psr[4] - psr[3])/(psr[2] - psr[1])
+        loy <- label.offset + MAXSTRING * 1.05 * adj
+        lox <- 0
+        srt <- 90 + srt
+        if (direction == "downwards") {
+            loy <- -loy
+            srt <- 180 + srt
+        }
+    }
+    text(xx[1:nTips] + lox, yy[1:nTips] + loy, tip.label, adj = adj, 
+         font = font, srt = srt, cex = cex, col = col)
+}
 
 
 #' Plots a densiTree.
@@ -41,6 +74,9 @@ getAges <- function(x){
 #' @param cex a numeric value giving the factor scaling of the tip labels.
 #' @param an integer specifying the type of font for the labels: 1 (plain text),
 #'  2 (bold), 3 (italic, the default), or 4 (bold italic).
+#' @param adj a numeric specifying the justification of the text strings of the 
+#' labels: 0 (left-justification), 0.5 (centering), or 1 (right-justification). 
+#' @param srt a numeric giving how much the labels are rotated in degrees  
 #' @param \dots further arguments to be passed to plot.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{plot.phylo}}, \code{\link{plot.networx}}
@@ -70,12 +106,17 @@ getAges <- function(x){
 #' 
 #' 
 #' @export densiTree
-densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL, optim=FALSE, scaleX=FALSE, col=1, width=1, cex=.8, font=3, ...) {
+densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL, 
+    direction="rightwards", optim=FALSE, scaleX=FALSE, col=1, width=1, cex=.8, 
+    font=3, tip.color=1, adj=0, srt=0, ...) {
   if(!inherits(x,"multiPhylo"))stop("x must be of class multiPhylo")
   compressed <- ifelse(is.null(attr(x, "TipLabel")), FALSE, TRUE)
   if(is.null(consensus))consensus <- superTree(x)
   if(inherits(consensus,"multiPhylo")) consensus = consensus[[1]]
   type <- match.arg(type, c("phylogram", "cladogram"))
+  direction <- match.arg(direction, c("rightwards", "leftwards",  "upwards", 
+    "downwards"))
+  horizontal <- direction %in% c("rightwards", "leftwards")
   consensus = reorder(consensus, "postorder")
   e2 = reorder(consensus)$edge[,2]
   nTip = as.integer(length(consensus$tip.label))
@@ -84,26 +125,54 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL, op
   if(scaleX) maxBT=1.0
   label = rev(pretty(c(maxBT,0)))
   maxBT = max(label)
-  xy = plotPhyloCoor(consensus, ...)
+  xy = plotPhyloCoor(consensus, direction=direction, ...)
   yy = xy[,2]
   plot.new() 
   tl = which.max(nchar(consensus$tip.label))
   sw <- strwidth(consensus$tip.label[tl],cex=cex) * 1.1
-  plot.window(xlim=c(0, 1.0+sw), ylim=c(0, nTip+1))
-  axis(side=1,at=seq(0,1.0, length.out=length(label)), labels=label)
-  text(x=rep(1.0,Ntip(consensus)),y=yy[1:nTip],labels=consensus$tip.label,pos=4,cex=cex, font=font)  
+   
+  if(direction=="rightwards"){
+    plot.window(xlim=c(0, 1.0+sw), ylim=c(0, nTip+1))
+    axis(side=1,at=seq(0,1.0, length.out=length(label)), labels=label)
+    #text(x=rep(1.0,Ntip(consensus)),y=xy[1:nTip, 2],labels=consensus$tip.label,pos=4,cex=cex, font=font)  
+  }
+  if(direction=="leftwards"){
+      plot.window(xlim=c(0-sw, 1.0), ylim=c(0, nTip+1))
+      axis(side=1,at=seq(0,1.0, length.out=length(label)), labels=rev(label))
+      #text(x=rep(0,Ntip(consensus)),y=xy[1:nTip, 2],labels=consensus$tip.label,pos=2,cex=cex, font=font)  
+  }
+  if(direction=="downwards"){
+      plot.window(xlim=c(0, nTip+1), ylim=c(0-sw, 1.0))
+      axis(side=2,at=seq(0,1.0, length.out=length(label)), labels=rev(label))
+      #text(x=xy[1:nTip,1],y=rep(0,Ntip(consensus)),labels=consensus$tip.label,pos=1,cex=cex, font=font, srt=90, adj=1)  
+  }
+  if(direction=="upwards"){
+      plot.window(xlim=c(0, nTip+1), ylim=c(0, 1.0+sw))
+      axis(side=2,at=seq(0,1.0, length.out=length(label)), labels=label)
+      #text(x=xy[1:nTip,1],y=rep(1.0,Ntip(consensus)),labels=consensus$tip.label,pos=3,cex=cex, font=font, srt=90)  
+  }
+  add_tiplabels(xy, consensus$tip.label, direction, adj=adj, font=font, srt=srt, 
+                cex=cex, col=tip.color)
+  
   tip.order = yy[1:nTip]
   for (treeindex in 1:length(x)) {
     tmp <- reorder(x[[treeindex]], "postorder")
     if(!compressed) tip.order <- match(tmp$tip.label, consensus$tip.label)
-    xy <- plotPhyloCoor(tmp, tip.order=tiporder, ...)
+    xy <- plotPhyloCoor(tmp, tip.order=tiporder, direction=direction, ...)
     xx = xy[,1]
     yy = xy[,2]
-    if(scaleX) xx <- xx/max(xx)
-    else xx <- xx/maxBT 
-    xx <- xx + (1.0 - max(xx))
-    e1=tmp$edge[,1]
-    e2=tmp$edge[,2]
+    
+    if(horizontal){  
+      if(scaleX) xx <- xx/max(xx)
+      else xx <- xx/maxBT 
+      if(direction=="rightwards") xx <- xx + (1.0 - max(xx))
+    }
+    else{
+      if(scaleX) yy <- yy/max(yy)
+      else yy <- yy/maxBT 
+      if(direction=="upwards")yy <- yy + (1.0 - max(yy))
+    }
+    e1 <- tmp$edge[,1]
     if(type=="cladogram") cladogram.plot(tmp$edge, xx, yy, edge.color=adjustcolor(col, alpha.f=alpha), edge.width=width, edge.lty=1)
     if(type=="phylogram"){
       Ntip <- min(e1)-1L 
