@@ -20,7 +20,7 @@
 #'
 #' @keywords cluster
 #' @examples
-#' tree1 <- rtree(100, rooted=FALSE)
+#' tree1 <- rtree(100)
 #' tree2 <- rSPR(tree1, 5)
 #' tips <- mast(tree1, tree2)
 #' 

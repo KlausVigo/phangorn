@@ -28,7 +28,7 @@ for the original code see \url{http://www.cs.upc.edu/~valiente/comput-biol/}.
 The version for the unrooted trees is much slower.
 }
 \examples{
-tree1 <- rtree(100, rooted=FALSE)
+tree1 <- rtree(100)
 tree2 <- rSPR(tree1, 5)
 tips <- mast(tree1, tree2)
 
