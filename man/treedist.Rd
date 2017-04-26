@@ -115,7 +115,7 @@ Mathematics, Armidale, Australia}, 119--126
 }
 \seealso{
 \code{\link[ape]{dist.topo}}, \code{\link{nni}},
-\code{\link{superTree}}
+\code{\link{superTree}}, \code{\link{mast}}
 }
 \author{
 Klaus P. Schliep \email{klaus.schliep@gmail.com},

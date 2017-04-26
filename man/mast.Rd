@@ -4,15 +4,17 @@
 \alias{mast}
 \title{Maximum agreement subtree}
 \usage{
-mast(x, y, tree = TRUE)
+mast(x, y, tree = TRUE, rooted = TRUE)
 }
 \arguments{
 \item{x}{a tree, i.e. an object of class \code{phylo}.}
 
 \item{y}{a tree, i.e. an object of class \code{phylo}.}
 
-\item{tree}{a logicical ,if TRUE returns a tree other wise the tip labels 
+\item{tree}{a logicical, if TRUE returns a tree other wise the tip labels 
 of the the maximum agreement subtree.}
+
+\item{rooted}{logical if TRUE treats trees as rooted otherwise unrooted.}
 }
 \value{
 \code{mast} returns a vector of the tip labels in the MAST.
@@ -21,8 +23,9 @@ of the the maximum agreement subtree.}
 \code{mast} computes the maximum agreement subtree (MAST).
 }
 \details{
-The code is derived from exames in Valverde (2009), for the original code see 
-\url{http://www.cs.upc.edu/~valiente/comput-biol/}.
+The code is derived from the code example in Valverde (2009), 
+for the original code see \url{http://www.cs.upc.edu/~valiente/comput-biol/}. 
+The version for the unrooted trees is much slower.
 }
 \examples{
 tree1 <- rtree(100, rooted=FALSE)
