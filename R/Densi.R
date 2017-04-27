@@ -72,7 +72,10 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt=0, cex, col){
 #' and "downwards".
 #' @param optim not yet used.
 #' @param scaleX scale trees to have identical heights.
-#' @param col edge color.
+#' @param col a skalar or vector giving the colours used to draw the edges for 
+#' each plotted phylogeny. These are taken to be in the same order than input 
+#' trees x. If fewer colours are given than the number of trees, then the 
+#' colours are recycled.
 #' @param width edge width.
 #' @param cex a numeric value giving the factor scaling of the tip labels.
 #' @param font an integer specifying the type of font for the labels: 1 (plain text),
@@ -167,6 +170,8 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL,
   add_tiplabels(xy, consensus$tip.label, direction, adj=adj, font=font, srt=srt, 
                 cex=cex, col=tip.color)
   
+  col <- rep(col, length.out = length(x))
+  
   tip.order = yy[1:nTip]
   for (treeindex in 1:length(x)) {
     tmp <- reorder(x[[treeindex]], "postorder")
@@ -186,11 +191,11 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL,
       if(direction=="upwards")yy <- yy + (1.0 - max(yy))
     }
     e1 <- tmp$edge[,1]
-    if(type=="cladogram") cladogram.plot(tmp$edge, xx, yy, edge.color=adjustcolor(col, alpha.f=alpha), edge.width=width, edge.lty=1)
+    if(type=="cladogram") cladogram.plot(tmp$edge, xx, yy, edge.color=adjustcolor(col[treeindex], alpha.f=alpha), edge.width=width, edge.lty=1)
     if(type=="phylogram"){
       Ntip <- min(e1)-1L 
       Nnode <- tmp$Nnode 
-      phylogram.plot(tmp$edge, Ntip, Nnode, xx, yy, TRUE, edge.color=adjustcolor(col, alpha.f=alpha), edge.width=width, 1) 
+      phylogram.plot(tmp$edge, Ntip, Nnode, xx, yy, TRUE, edge.color=adjustcolor(col[treeindex], alpha.f=alpha), edge.width=width, 1) 
     }
   }  
 }
