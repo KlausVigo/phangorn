@@ -49,20 +49,21 @@ labels: 0 (left-justification), 0.5 (centering), or 1 (right-justification).}
 An R function to plot trees similar to those produced by DensiTree.
 }
 \details{
-If no consensus tree is provided \code{densiTree} computes a rooted
-mrp.supertree as a backbone. This should avoid too many unnecessary
-crossings of edges.  Trees should be rooted, other wise the output may not
-make sense.
+If no consensus tree is provided \code{densiTree} computes a consensus tree, 
+and if the input trees have different labels a mrp.supertree as a backbone. 
+This should avoid too many unnecessary crossings of edges.  
+Trees should be rooted, other wise the output may not be visually pleasing.
 }
 \examples{
   
 data(Laurasiatherian)
 set.seed(1)
 bs <- bootstrap.phyDat(Laurasiatherian, FUN = 
-   function(x)upgma(dist.hamming(x)), bs=25)
+   function(x) upgma(dist.hamming(x)), bs=25)
 # cladogram nice to show topological differences
 densiTree(bs, optim=TRUE, type="cladogram", col="blue")
-densiTree(bs, optim=TRUE, type="phylogram", col="green")
+densiTree(bs, optim=TRUE, type="phylogram", col="green", direction=
+  "downwards")
 \dontrun{
 # phylograms are nice to show different age estimates
 require(PhyloOrchard)

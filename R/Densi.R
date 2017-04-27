@@ -57,10 +57,10 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt=0, cex, col){
 #' 
 #' An R function to plot trees similar to those produced by DensiTree.
 #' 
-#' If no consensus tree is provided \code{densiTree} computes a rooted
-#' mrp.supertree as a backbone. This should avoid too many unnecessary
-#' crossings of edges.  Trees should be rooted, other wise the output may not
-#' make sense.
+#' If no consensus tree is provided \code{densiTree} computes a consensus tree, 
+#' and if the input trees have different labels a mrp.supertree as a backbone. 
+#' This should avoid too many unnecessary crossings of edges.  
+#' Trees should be rooted, other wise the output may not be visually pleasing.
 #' 
 #' @param x an object of class \code{multiPhylo}.
 #' @param type a character string specifying the type of phylogeny, so far
@@ -96,10 +96,11 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt=0, cex, col){
 #' data(Laurasiatherian)
 #' set.seed(1)
 #' bs <- bootstrap.phyDat(Laurasiatherian, FUN = 
-#'    function(x)upgma(dist.hamming(x)), bs=25)
+#'    function(x) upgma(dist.hamming(x)), bs=25)
 #' # cladogram nice to show topological differences
 #' densiTree(bs, optim=TRUE, type="cladogram", col="blue")
-#' densiTree(bs, optim=TRUE, type="phylogram", col="green")
+#' densiTree(bs, optim=TRUE, type="phylogram", col="green", direction=
+#'   "downwards")
 #' \dontrun{
 #' # phylograms are nice to show different age estimates
 #' require(PhyloOrchard)
@@ -115,7 +116,9 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL,
     font=3, tip.color=1, adj=0, srt=0, ...) {
   if(!inherits(x,"multiPhylo"))stop("x must be of class multiPhylo")
   compressed <- ifelse(is.null(attr(x, "TipLabel")), FALSE, TRUE)
-  if(is.null(consensus))consensus <- superTree(x)
+  if(is.null(consensus)){
+      consensus <- tryCatch(consensus(x, p=.5), error = function(e)superTree(x))   
+  }      
   if(inherits(consensus,"multiPhylo")) consensus = consensus[[1]]
   type <- match.arg(type, c("phylogram", "cladogram"))
   direction <- match.arg(direction, c("rightwards", "leftwards",  "upwards", 
