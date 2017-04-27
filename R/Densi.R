@@ -80,7 +80,9 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt=0, cex, col){
 #' @param tip.color color of the tip labels. 
 #' @param adj a numeric specifying the justification of the text strings of the 
 #' labels: 0 (left-justification), 0.5 (centering), or 1 (right-justification). 
-#' @param srt a numeric giving how much the labels are rotated in degrees  
+#' @param srt a numeric giving how much the labels are rotated in degrees.
+#' @param underscore a logical specifying whether the underscores in tip labels 
+#' should be written as spaces (the default) or left as are (if TRUE).  
 #' @param \dots further arguments to be passed to plot.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{plot.phylo}}, \code{\link{plot.networx}}
@@ -113,7 +115,7 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt=0, cex, col){
 #' @export densiTree
 densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL, 
     direction="rightwards", optim=FALSE, scaleX=FALSE, col=1, width=1, cex=.8, 
-    font=3, tip.color=1, adj=0, srt=0, ...) {
+    font=3, tip.color=1, adj=0, srt=0, underscore = FALSE, ...) {
   if(!inherits(x,"multiPhylo"))stop("x must be of class multiPhylo")
   compressed <- ifelse(is.null(attr(x, "TipLabel")), FALSE, TRUE)
   if(is.null(consensus)){
@@ -158,6 +160,10 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL,
       axis(side=2,at=seq(0,1.0, length.out=length(label)), labels=label)
       #text(x=xy[1:nTip,1],y=rep(1.0,Ntip(consensus)),labels=consensus$tip.label,pos=3,cex=cex, font=font, srt=90)  
   }
+  if (is.expression(consensus$tip.label)) 
+      underscore <- TRUE
+  if (!underscore) 
+      consensus$tip.label <- gsub("_", " ", consensus$tip.label)
   add_tiplabels(xy, consensus$tip.label, direction, adj=adj, font=font, srt=srt, 
                 cex=cex, col=tip.color)
   

@@ -7,7 +7,7 @@
 densiTree(x, type = "cladogram", alpha = 1/length(x), consensus = NULL,
   direction = "rightwards", optim = FALSE, scaleX = FALSE, col = 1,
   width = 1, cex = 0.8, font = 3, tip.color = 1, adj = 0, srt = 0,
-  ...)
+  underscore = FALSE, ...)
 }
 \arguments{
 \item{x}{an object of class \code{multiPhylo}.}
@@ -41,7 +41,10 @@ and "downwards".}
 \item{adj}{a numeric specifying the justification of the text strings of the 
 labels: 0 (left-justification), 0.5 (centering), or 1 (right-justification).}
 
-\item{srt}{a numeric giving how much the labels are rotated in degrees}
+\item{srt}{a numeric giving how much the labels are rotated in degrees.}
+
+\item{underscore}{a logical specifying whether the underscores in tip labels 
+should be written as spaces (the default) or left as are (if TRUE).}
 
 \item{\dots}{further arguments to be passed to plot.}
 }
