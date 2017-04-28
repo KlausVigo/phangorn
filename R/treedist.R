@@ -665,7 +665,7 @@ mRF<-function(trees, normalize=FALSE, rooted=FALSE){
     if (any(!is.binary.tree(trees))) {
         message("Some trees are not binary. Result may not what you expect!")
     }
-    trees <- reorder(trees, "postorder")
+#    trees <- reorder(trees, "postorder")
 #    trees <- lapply(trees, reorder, "postorder")
     trees <- .uncompressTipLabel(trees)    
     trees <- unclass(trees)
