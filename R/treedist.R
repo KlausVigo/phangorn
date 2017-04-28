@@ -587,21 +587,21 @@ mRF2 <- function(tree, trees, normalize=FALSE, check.labels = TRUE, rooted=TRUE)
     trees <- .uncompressTipLabel(trees)
     #    n <- length(attr(trees, "TipLabel"))
     trees <- unclass(trees)
-    if (any(sapply(trees, is.rooted))) {
+    if(!rooted & any(sapply(trees, is.rooted))) {
         message("Some trees are rooted. Unrooting all trees.\n")
         trees <- lapply(trees, unroot)
     }
-    if(is.rooted(tree)) tree <- unroot(tree)
+    if(!rooted & is.rooted(tree))tree <- unroot(tree)
     if (any(sapply(trees, function(x) !is.binary.tree(x)))) {
         message("Some trees are not binary. Result may not what you expect!")
     }
     tree <- reorder(tree, "postorder")
     trees <- lapply(trees, reorder, "postorder")
     xx <- lapply(trees, bipart)  
-    xx <- lapply(xx, SHORTwise, nTips)
+    if(!rooted)xx <- lapply(xx, SHORTwise, nTips)
     xx <- lapply(xx,function(x)sapply(x, paste, collapse="_"))
     yy <- bipart(tree)  
-    yy <- SHORTwise(yy, nTips)
+    if(!rooted)yy <- SHORTwise(yy, nTips)
     yy <- sapply(yy, paste, collapse="_")
     
     NnodeT <- Nnode(tree)
