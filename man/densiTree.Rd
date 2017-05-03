@@ -6,8 +6,8 @@
 \usage{
 densiTree(x, type = "cladogram", alpha = 1/length(x), consensus = NULL,
   direction = "rightwards", optim = FALSE, scaleX = FALSE, col = 1,
-  width = 1, cex = 0.8, font = 3, tip.color = 1, adj = 0, srt = 0,
-  underscore = FALSE, ...)
+  width = 1, lty = 1, cex = 0.8, font = 3, tip.color = 1, adj = 0,
+  srt = 0, underscore = FALSE, ...)
 }
 \arguments{
 \item{x}{an object of class \code{multiPhylo}.}
@@ -17,7 +17,8 @@ densiTree(x, type = "cladogram", alpha = 1/length(x), consensus = NULL,
 
 \item{alpha}{parameter for semi-transparent colors.}
 
-\item{consensus}{A tree which is used to define the order of the tip labels.}
+\item{consensus}{A tree or character vector which is used to define the order 
+of the tip labels.}
 
 \item{direction}{a character string specifying the direction of the tree. 
 Four values are possible: "rightwards" (the default), "leftwards", "upwards", 
@@ -33,6 +34,8 @@ trees x. If fewer colours are given than the number of trees, then the
 colours are recycled.}
 
 \item{width}{edge width.}
+
+\item{lty}{line type.}
 
 \item{cex}{a numeric value giving the factor scaling of the tip labels.}
 
@@ -67,9 +70,8 @@ set.seed(1)
 bs <- bootstrap.phyDat(Laurasiatherian, FUN = 
    function(x) upgma(dist.hamming(x)), bs=25)
 # cladogram nice to show topological differences
-densiTree(bs, optim=TRUE, type="cladogram", col="blue")
-densiTree(bs, optim=TRUE, type="phylogram", col="green", direction=
-  "downwards")
+densiTree(bs, type="cladogram", col="blue")
+densiTree(bs, type="phylogram", col="green", direction="downwards", width=2)
 \dontrun{
 # phylograms are nice to show different age estimates
 require(PhyloOrchard)

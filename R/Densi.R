@@ -66,7 +66,8 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt=0, cex, col){
 #' @param type a character string specifying the type of phylogeny, so far
 #' "cladogram" (default) or "phylogram" (the default) are supported.
 #' @param alpha parameter for semi-transparent colors.
-#' @param consensus A tree which is used to define the order of the tip labels.
+#' @param consensus A tree or character vector which is used to define the order 
+#' of the tip labels.
 #' @param direction a character string specifying the direction of the tree. 
 #' Four values are possible: "rightwards" (the default), "leftwards", "upwards", 
 #' and "downwards".
@@ -121,6 +122,10 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL,
     cex=.8, font=3, tip.color=1, adj=0, srt=0, underscore = FALSE, ...) {
   if(!inherits(x,"multiPhylo"))stop("x must be of class multiPhylo")
   compressed <- ifelse(is.null(attr(x, "TipLabel")), FALSE, TRUE)
+  if(is.character(consensus)){ 
+      consensus <- stree(length(consensus), tip.label = consensus)
+      consensus$edge.length <- rep(1.0, nrow(consensus$edge))
+  }      
   if(is.null(consensus)){
       consensus <- tryCatch(consensus(x, p=.5), error = function(e)superTree(x))   
   }      
@@ -129,10 +134,16 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL,
   direction <- match.arg(direction, c("rightwards", "leftwards",  "upwards", 
     "downwards"))
   horizontal <- direction %in% c("rightwards", "leftwards")
-  consensus = reorder(consensus, "postorder")
-  e2 = reorder(consensus)$edge[,2]
+  
+  consensus = reorder(consensus)
   nTip = as.integer(length(consensus$tip.label))
-  tiporder = e2[e2<=nTip]   
+#  ie <- match(1:nTip, consensus$edge[, 2])
+  e2 <- consensus$edge[,2]
+#  tiporder = e2[e2<=nTip]  
+  consensus$tip.label <- consensus$tip.label[e2[e2<=nTip]]
+  consensus$edge[e2<=nTip,2] <- as.integer(1L:nTip)
+  consensus = reorder(consensus, "postorder")
+  
   maxBT = max(getAges(x))
   if(scaleX) maxBT=1.0
   label = rev(pretty(c(maxBT,0)))
@@ -171,11 +182,12 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL,
                 cex=cex, col=tip.color)
   
   col <- rep(col, length.out = length(x))
-  
-  tip.order = yy[1:nTip]
+
+  if(compressed) tiporder <- match(attr(x, "TipLabel"), consensus$tip.label)
+#  tip.order = yy[1:nTip]
   for (treeindex in 1:length(x)) {
     tmp <- reorder(x[[treeindex]], "postorder")
-    if(!compressed) tip.order <- match(tmp$tip.label, consensus$tip.label)
+    if(!compressed) tiporder <- match(tmp$tip.label, consensus$tip.label)
     xy <- plotPhyloCoor(tmp, tip.order=tiporder, direction=direction, ...)
     xx = xy[,1]
     yy = xy[,2]
