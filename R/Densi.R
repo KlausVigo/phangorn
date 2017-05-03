@@ -77,6 +77,7 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt=0, cex, col){
 #' trees x. If fewer colours are given than the number of trees, then the 
 #' colours are recycled.
 #' @param width edge width.
+#' @param lty line type.
 #' @param cex a numeric value giving the factor scaling of the tip labels.
 #' @param font an integer specifying the type of font for the labels: 1 (plain text),
 #'  2 (bold), 3 (italic, the default), or 4 (bold italic).
@@ -103,9 +104,8 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt=0, cex, col){
 #' bs <- bootstrap.phyDat(Laurasiatherian, FUN = 
 #'    function(x) upgma(dist.hamming(x)), bs=25)
 #' # cladogram nice to show topological differences
-#' densiTree(bs, optim=TRUE, type="cladogram", col="blue")
-#' densiTree(bs, optim=TRUE, type="phylogram", col="green", direction=
-#'   "downwards")
+#' densiTree(bs, type="cladogram", col="blue")
+#' densiTree(bs, type="phylogram", col="green", direction="downwards", width=2)
 #' \dontrun{
 #' # phylograms are nice to show different age estimates
 #' require(PhyloOrchard)
@@ -117,8 +117,8 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt=0, cex, col){
 #' 
 #' @export densiTree
 densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL, 
-    direction="rightwards", optim=FALSE, scaleX=FALSE, col=1, width=1, cex=.8, 
-    font=3, tip.color=1, adj=0, srt=0, underscore = FALSE, ...) {
+    direction="rightwards", optim=FALSE, scaleX=FALSE, col=1, width=1, lty=1,
+    cex=.8, font=3, tip.color=1, adj=0, srt=0, underscore = FALSE, ...) {
   if(!inherits(x,"multiPhylo"))stop("x must be of class multiPhylo")
   compressed <- ifelse(is.null(attr(x, "TipLabel")), FALSE, TRUE)
   if(is.null(consensus)){
@@ -191,11 +191,13 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL,
       if(direction=="upwards")yy <- yy + (1.0 - max(yy))
     }
     e1 <- tmp$edge[,1]
-    if(type=="cladogram") cladogram.plot(tmp$edge, xx, yy, edge.color=adjustcolor(col[treeindex], alpha.f=alpha), edge.width=width, edge.lty=1)
+    if(type=="cladogram") cladogram.plot(tmp$edge, xx, yy, edge.color=
+      adjustcolor(col[treeindex], alpha.f=alpha), edge.width=width, edge.lty=lty)
     if(type=="phylogram"){
       Ntip <- min(e1)-1L 
       Nnode <- tmp$Nnode 
-      phylogram.plot(tmp$edge, Ntip, Nnode, xx, yy, TRUE, edge.color=adjustcolor(col[treeindex], alpha.f=alpha), edge.width=width, 1) 
+      phylogram.plot(tmp$edge, Ntip, Nnode, xx, yy, horizontal, edge.color=
+        adjustcolor(col[treeindex], alpha.f=alpha), edge.width=width, edge.lty=lty) 
     }
   }  
 }
