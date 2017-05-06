@@ -40,6 +40,7 @@ my.supertree<-function(trees, trace=0, ...){
     attr(XX, "weight") <- weights 
     # estimate supertree
     supertree<-pratchet(XX,all=TRUE, trace=trace, ...)
+    supertree <- acctran(supertree, XX)
     return(supertree)
 }
 
