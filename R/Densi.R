@@ -17,9 +17,10 @@ getAges <- function(x){
 }
 
 
-add_tiplabels <- function(xy, tip.label, direction, adj, font, srt=0, cex, col){
+add_tiplabels <- function(xy, tip.label, direction, adj, font, srt=0, cex=1, 
+        col=1, label.offset=0){
     direction <- match.arg(direction, c("rightwards", "leftwards",  "upwards", 
-                                        "downwards"))
+        "downwards"))
     horizontal <- direction %in% c("rightwards", "leftwards")
     nTips <- length(tip.label)
     xx <- rep(1, nrow(xy))
@@ -30,9 +31,6 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt=0, cex, col){
         yy <- xx
         xx <- xy[,1]
     }
-    
-    label.offset=0
-    
     MAXSTRING <- max(strwidth(tip.label, cex = cex))
     loy <- 0
     if(direction == "rightwards") lox <- label.offset + MAXSTRING * 1.05 * adj
@@ -51,6 +49,136 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt=0, cex, col){
     text(xx[1:nTips] + lox, yy[1:nTips] + loy, tip.label, adj = adj, 
          font = font, srt = srt, cex = cex, col = col)
 }
+
+
+plotPhyloCoor_tmp <-
+    function (x, type = "phylogram", use.edge.length = TRUE, node.pos = NULL,
+              direction = "rightwards", tip.height = NULL, ...)
+{
+    Ntip <- length(x$tip.label)
+    if (Ntip == 1)
+        stop("found only one tip in the tree!")
+    Nedge <- dim(x$edge)[1]
+    if (any(tabulate(x$edge[, 1]) == 1))
+        stop("there are single (non-splitting) nodes in your tree; you may need to use collapse.singles().")
+    Nnode <- x$Nnode
+    if (is.null(x$edge.length)) use.edge.length <- FALSE
+    phyloORclado <- type %in% c("phylogram", "cladogram")
+    horizontal <- direction %in% c("rightwards", "leftwards")
+    if (phyloORclado) {
+        ## changed by KS:
+        yy <- numeric(Ntip + Nnode)
+        x <- reorder(x)
+        TIPS <- x$edge[x$edge[, 2] <= Ntip, 2]
+        if (!is.null(tip.height)) {
+            yy[TIPS] <- tip.height
+        } 
+        else yy[TIPS] <- 1:Ntip
+    }
+    
+    xe <- x$edge
+    ## first reorder the tree in cladewise order to avoid cophyloplot() hanging:
+    ## x <- reorder(reorder(x), order = "pruningwise") ... maybe not needed anymore (EP)
+    x <- reorder(x, order = "postorder")
+    ereorder <- match(x$edge[, 2], xe[, 2])
+    
+    if (phyloORclado) {
+        if (is.null(node.pos)) {
+            node.pos <- 1
+            if (type == "cladogram" && !use.edge.length)
+                node.pos <- 2
+    }
+        if (node.pos == 1)
+            yy <- .C("node_height", as.integer(Ntip), as.integer(Nnode),
+                     as.integer(x$edge[, 1]), as.integer(x$edge[,
+                                                            2]), as.integer(Nedge), as.double(yy),
+                     PACKAGE = "ape")[[6]]
+        else {
+            ans <- .C("node_height_clado", as.integer(Ntip),
+                      as.integer(Nnode), as.integer(x$edge[, 1]), as.integer(x$edge[,
+                                                                                    2]), as.integer(Nedge), double(Ntip + Nnode),
+                      as.double(yy), PACKAGE = "ape")
+            xx <- ans[[6]] - 1
+            yy <- ans[[7]]
+        }
+        if (!use.edge.length) {
+            if (node.pos != 2)
+                xx <- .C("node_depth", as.integer(Ntip), as.integer(Nnode),
+                         as.integer(x$edge[, 1]), as.integer(x$edge[, 2]),
+                         as.integer(Nedge), double(Ntip + Nnode), 1L,
+                         PACKAGE = "ape")[[6]] - 1
+            xx <- max(xx) - xx
+        } else {
+            xx <- .C("node_depth_edgelength", as.integer(Ntip),
+                     as.integer(Nnode), as.integer(x$edge[, 1]), as.integer(x$edge[,
+                                                                                   2]), as.integer(Nedge), as.double(x$edge.length),
+                     double(Ntip + Nnode), PACKAGE = "ape")[[7]]
+        }
+    }
+    ##if (type == "fan") {
+    ##    TIPS <- xe[which(xe[, 2] <= Ntip), 2]
+    ##    xx <- seq(0, 2 * pi * (1 - 1/Ntip), 2 * pi/Ntip)
+    ##    theta <- double(Ntip)
+    ##    theta[TIPS] <- xx
+    ##    theta <- c(theta, numeric(Nnode))
+    ##    theta <- .C("node_height", as.integer(Ntip), as.integer(Nnode),
+    ##        as.integer(x$edge[, 1]), as.integer(x$edge[, 2]),
+    ##        as.integer(Nedge), theta, DUP = FALSE, PACKAGE = "ape")[[6]]
+    ##    if (use.edge.length) {
+    ##        r <- .C("node_depth_edgelength", as.integer(Ntip),
+    ##            as.integer(Nnode), as.integer(x$edge[, 1]), as.integer(x$edge[,
+    ##              2]), as.integer(Nedge), as.double(x$edge.length),
+    ##            double(Ntip + Nnode), DUP = FALSE, PACKAGE = "ape")[[7]]
+    ##    }
+    ##    else {
+    ##        r <- .C("node_depth", as.integer(Ntip), as.integer(Nnode),
+    ##            as.integer(x$edge[, 1]), as.integer(x$edge[,
+    ##              2]), as.integer(Nedge), double(Ntip + Nnode),
+    ##            DUP = FALSE, PACKAGE = "ape")[[6]]
+    ##        r <- 1/r
+    ##    }
+    ##    xx <- r * cos(theta)
+    ##    yy <- r * sin(theta)
+    ##}
+    ##if (type == "unrooted") {
+    ##    XY <- if (use.edge.length)
+    ##        unrooted.xy(Ntip, Nnode, x$edge, x$edge.length)
+    ##    else unrooted.xy(Ntip, Nnode, x$edge, rep(1, Nedge))
+    ##    xx <- XY$M[, 1] - min(XY$M[, 1])
+    ##    yy <- XY$M[, 2] - min(XY$M[, 2])
+    ##}
+    ##if (type == "radial") {
+    ##    X <- .C("node_depth", as.integer(Ntip), as.integer(Nnode),
+    ##        as.integer(x$edge[, 1]), as.integer(x$edge[, 2]),
+    ##        as.integer(Nedge), double(Ntip + Nnode), DUP = FALSE,
+    ##        PACKAGE = "ape")[[6]]
+    ##    X[X == 1] <- 0
+    ##    X <- 1 - X/Ntip
+    ##    yy <- c((1:Ntip) * 2 * pi/Ntip, rep(0, Nnode))
+    ##    Y <- .C("node_height", as.integer(Ntip), as.integer(Nnode),
+    ##        as.integer(x$edge[, 1]), as.integer(x$edge[, 2]),
+    ##        as.integer(Nedge), as.double(yy), DUP = FALSE, PACKAGE = "ape")[[6]]
+    ##    xx <- X * cos(Y)
+    ##    yy <- X * sin(Y)
+    ##}
+    if (phyloORclado && direction != "rightwards") {
+        if (direction == "leftwards") {
+            xx <- -xx
+            xx <- xx - min(xx)
+        }
+        if (!horizontal) {
+            tmp <- yy
+            yy <- xx
+            xx <- tmp - min(tmp) + 1
+            if (direction == "downwards") {
+                yy <- -yy
+                yy <- yy - min(yy)
+            }
+        }
+    }
+    cbind(xx, yy)
+}
+
 
 
 #' Plots a densiTree.
@@ -88,6 +216,8 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt=0, cex, col){
 #' @param srt a numeric giving how much the labels are rotated in degrees.
 #' @param underscore a logical specifying whether the underscores in tip labels 
 #' should be written as spaces (the default) or left as are (if TRUE).  
+#' @param label.offset a numeric giving the space between the nodes and the tips of the
+#' phylogeny and their corresponding labels.
 #' @param \dots further arguments to be passed to plot.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{plot.phylo}}, \code{\link{plot.networx}}
@@ -119,17 +249,21 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt=0, cex, col){
 #' @export densiTree
 densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL, 
     direction="rightwards", optim=FALSE, scaleX=FALSE, col=1, width=1, lty=1,
-    cex=.8, font=3, tip.color=1, adj=0, srt=0, underscore = FALSE, ...) {
+    cex=.8, font=3, tip.color=1, adj=0, srt=0, underscore = FALSE, 
+    label.offset=0, ...) {
   if(!inherits(x,"multiPhylo"))stop("x must be of class multiPhylo")
-  compressed <- ifelse(is.null(attr(x, "TipLabel")), FALSE, TRUE)
+
   if(is.character(consensus)){ 
       consensus <- stree(length(consensus), tip.label = consensus)
       consensus$edge.length <- rep(1.0, nrow(consensus$edge))
   }      
   if(is.null(consensus)){
-      consensus <- tryCatch(consensus(x, p=.5), error = function(e)superTree(x))   
+      # unroot(midpoint(superTree(x)))
+      consensus <- tryCatch(consensus(x, p=.5), error = function(e)unroot(midpoint(superTree(x))))   
   }      
   if(inherits(consensus,"multiPhylo")) consensus = consensus[[1]]
+
+
   type <- match.arg(type, c("phylogram", "cladogram"))
   direction <- match.arg(direction, c("rightwards", "leftwards",  "upwards", 
     "downwards"))
@@ -144,12 +278,20 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL,
   consensus$edge[e2<=nTip,2] <- as.integer(1L:nTip)
   consensus = reorder(consensus, "postorder")
   
+#  ctmp <- consensus$edge[,2]
+#  clabels <- consensus$tip.label[ ctmp[ctmp<cNtip] ] 
+
+        
+  x <- tryCatch(.compressTipLabel(x, ref = consensus$tip.label), error = function(e)x) #
+  compressed <- ifelse(is.null(attr(x, "TipLabel")), FALSE, TRUE)
+  
   maxBT = max(getAges(x))
   if(scaleX) maxBT=1.0
   label = rev(pretty(c(maxBT,0)))
   maxBT = max(label)
-  xy = plotPhyloCoor(consensus, direction=direction, ...)
+  xy = plotPhyloCoor_tmp(consensus, direction=direction, ...)
   yy = xy[,2]
+  
   plot.new() 
   tl = which.max(nchar(consensus$tip.label))
   sw <- strwidth(consensus$tip.label[tl],cex=cex) * 1.1
@@ -178,17 +320,18 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL,
       underscore <- TRUE
   if (!underscore) 
       consensus$tip.label <- gsub("_", " ", consensus$tip.label)
+ 
   add_tiplabels(xy, consensus$tip.label, direction, adj=adj, font=font, srt=srt, 
-                cex=cex, col=tip.color)
+                cex=cex, col=tip.color, label.offset=label.offset)
   
   col <- rep(col, length.out = length(x))
-
-  if(compressed) tiporder <- match(attr(x, "TipLabel"), consensus$tip.label)
+  tiporder <- NULL 
+#  if(compressed) tiporder <- match(attr(x, "TipLabel"), consensus$tip.label)
 #  tip.order = yy[1:nTip]
   for (treeindex in 1:length(x)) {
     tmp <- reorder(x[[treeindex]], "postorder")
     if(!compressed) tiporder <- match(tmp$tip.label, consensus$tip.label)
-    xy <- plotPhyloCoor(tmp, tip.order=tiporder, direction=direction, ...)
+    xy <- plotPhyloCoor_tmp(tmp, tip.height=tiporder, direction=direction, ...)
     xx = xy[,1]
     yy = xy[,2]
     
@@ -213,9 +356,6 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL,
     }
   }  
 }
-
-
-
 
 
 
