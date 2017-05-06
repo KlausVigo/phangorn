@@ -280,7 +280,6 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL,
   
 #  ctmp <- consensus$edge[,2]
 #  clabels <- consensus$tip.label[ ctmp[ctmp<cNtip] ] 
-
         
   x <- tryCatch(.compressTipLabel(x, ref = consensus$tip.label), error = function(e)x) #
   compressed <- ifelse(is.null(attr(x, "TipLabel")), FALSE, TRUE)
@@ -326,7 +325,7 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL,
   
   col <- rep(col, length.out = length(x))
   tiporder <- NULL 
-#  if(compressed) tiporder <- match(attr(x, "TipLabel"), consensus$tip.label)
+  if(compressed) tiporder <- match(attr(x, "TipLabel"), consensus$tip.label)
 #  tip.order = yy[1:nTip]
   for (treeindex in 1:length(x)) {
     tmp <- reorder(x[[treeindex]], "postorder")

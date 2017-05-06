@@ -7,7 +7,7 @@
 densiTree(x, type = "cladogram", alpha = 1/length(x), consensus = NULL,
   direction = "rightwards", optim = FALSE, scaleX = FALSE, col = 1,
   width = 1, lty = 1, cex = 0.8, font = 3, tip.color = 1, adj = 0,
-  srt = 0, underscore = FALSE, ...)
+  srt = 0, underscore = FALSE, label.offset = 0, ...)
 }
 \arguments{
 \item{x}{an object of class \code{multiPhylo}.}
@@ -51,6 +51,9 @@ labels: 0 (left-justification), 0.5 (centering), or 1 (right-justification).}
 
 \item{underscore}{a logical specifying whether the underscores in tip labels 
 should be written as spaces (the default) or left as are (if TRUE).}
+
+\item{label.offset}{a numeric giving the space between the nodes and the tips of the
+phylogeny and their corresponding labels.}
 
 \item{\dots}{further arguments to be passed to plot.}
 }
