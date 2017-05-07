@@ -985,8 +985,17 @@ ptree <- function (tree, data, type = "ACCTRAN", retData = FALSE)
 
 #' @rdname parsimony
 #' @export
-acctran <- function(tree, data) ptree(tree, data, type="ACCTRAN", retData=FALSE)
-
+acctran <- function(tree, data){
+    if(inherits(tree, "multiPhylo")){
+        compress = FALSE
+        if(!is.null(attr(tree, "TipLabel"))) compress=TRUE
+        res <- lapply(tree, ptree, data, type="ACCTRAN", retData=FALSE)
+        class(res) <- "multiPhylo"
+        if(compress) res <- .compressTipLabel(res)
+        return(res)
+    }
+    ptree(tree, data, type="ACCTRAN", retData=FALSE)
+}
 
 parsimony.plot <- function(tree, ...){
    x = numeric(max(tree$edge))
