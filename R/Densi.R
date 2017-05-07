@@ -71,6 +71,7 @@ plotPhyloCoor_tmp <-
         x <- reorder(x)
         TIPS <- x$edge[x$edge[, 2] <= Ntip, 2]
         if (!is.null(tip.height)) {
+            if(!is.null(names(tip.height))) tip.height = tip.height[x$tip.label]
             yy[TIPS] <- tip.height
         } 
         else yy[TIPS] <- 1:Ntip
