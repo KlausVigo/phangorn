@@ -7,13 +7,14 @@
 densiTree(x, type = "cladogram", alpha = 1/length(x), consensus = NULL,
   direction = "rightwards", optim = FALSE, scaleX = FALSE, col = 1,
   width = 1, lty = 1, cex = 0.8, font = 3, tip.color = 1, adj = 0,
-  srt = 0, underscore = FALSE, label.offset = 0, ...)
+  srt = 0, underscore = FALSE, label.offset = 0, jitter = list(amount =
+  0, random = TRUE), ...)
 }
 \arguments{
 \item{x}{an object of class \code{multiPhylo}.}
 
 \item{type}{a character string specifying the type of phylogeny, so far
-"cladogram" (default) or "phylogram" (the default) are supported.}
+"cladogram" (default) or "phylogram" are supported.}
 
 \item{alpha}{parameter for semi-transparent colors.}
 
@@ -55,6 +56,9 @@ should be written as spaces (the default) or left as are (if TRUE).}
 \item{label.offset}{a numeric giving the space between the nodes and the tips of the
 phylogeny and their corresponding labels.}
 
+\item{jitter}{allows to shift treees. a list with two arguments: the amount of 
+jitter and random or equally spaced (see details below)}
+
 \item{\dots}{further arguments to be passed to plot.}
 }
 \description{
@@ -65,6 +69,9 @@ If no consensus tree is provided \code{densiTree} computes a consensus tree,
 and if the input trees have different labels a mrp.supertree as a backbone. 
 This should avoid too many unnecessary crossings of edges.  
 Trees should be rooted, other wise the output may not be visually pleasing.
+\code{jitter} shifts trees a bit so that they are not exactly on top of each other. 
+If \code{amount == 0}, it is ignored. If \code{random=TRUE} the result of the perputation is
+\code{runif(n, -amount, amount)}, otherwise \code{seq(-amount, amount, length=n)}, where \code{n <- length(x)}.
 }
 \examples{
   
@@ -75,6 +82,8 @@ bs <- bootstrap.phyDat(Laurasiatherian, FUN =
 # cladogram nice to show topological differences
 densiTree(bs, type="cladogram", col="blue")
 densiTree(bs, type="phylogram", col="green", direction="downwards", width=2)
+densiTree(bs[1:5], type="phylogram", col=1:5, width=2, jitter=
+    list(amount=.3, random=FALSE))
 \dontrun{
 # phylograms are nice to show different age estimates
 require(PhyloOrchard)
@@ -94,7 +103,7 @@ Remco R. Bouckaert (2010) DensiTree: making sense of sets of phylogenetic
 trees \emph{Bioinformatics}, \bold{26 (10)}, 1372-1373.
 }
 \seealso{
-\code{\link{plot.phylo}}, \code{\link{plot.networx}}
+\code{\link{plot.phylo}}, \code{\link{plot.networx}}, \code{\link{jitter}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

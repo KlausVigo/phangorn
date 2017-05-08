@@ -190,10 +190,12 @@ plotPhyloCoor_tmp <-
 #' and if the input trees have different labels a mrp.supertree as a backbone. 
 #' This should avoid too many unnecessary crossings of edges.  
 #' Trees should be rooted, other wise the output may not be visually pleasing.
-#' 
+#' \code{jitter} shifts trees a bit so that they are not exactly on top of each other. 
+#' If \code{amount == 0}, it is ignored. If \code{random=TRUE} the result of the perputation is
+#' \code{runif(n, -amount, amount)}, otherwise \code{seq(-amount, amount, length=n)}, where \code{n <- length(x)}. 
 #' @param x an object of class \code{multiPhylo}.
 #' @param type a character string specifying the type of phylogeny, so far
-#' "cladogram" (default) or "phylogram" (the default) are supported.
+#' "cladogram" (default) or "phylogram" are supported.
 #' @param alpha parameter for semi-transparent colors.
 #' @param consensus A tree or character vector which is used to define the order 
 #' of the tip labels.
@@ -219,9 +221,11 @@ plotPhyloCoor_tmp <-
 #' should be written as spaces (the default) or left as are (if TRUE).  
 #' @param label.offset a numeric giving the space between the nodes and the tips of the
 #' phylogeny and their corresponding labels.
+#' @param jitter allows to shift treees. a list with two arguments: the amount of 
+#' jitter and random or equally spaced (see details below)
 #' @param \dots further arguments to be passed to plot.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{plot.phylo}}, \code{\link{plot.networx}}
+#' @seealso \code{\link{plot.phylo}}, \code{\link{plot.networx}}, \code{\link{jitter}}
 #' @references densiTree is inspired from the great
 #' \href{https://www.cs.auckland.ac.nz/~remco/DensiTree}{DensiTree} program of Remco
 #' Bouckaert.
@@ -238,6 +242,8 @@ plotPhyloCoor_tmp <-
 #' # cladogram nice to show topological differences
 #' densiTree(bs, type="cladogram", col="blue")
 #' densiTree(bs, type="phylogram", col="green", direction="downwards", width=2)
+#' densiTree(bs[1:5], type="phylogram", col=1:5, width=2, jitter=
+#'     list(amount=.3, random=FALSE))
 #' \dontrun{
 #' # phylograms are nice to show different age estimates
 #' require(PhyloOrchard)
@@ -251,7 +257,7 @@ plotPhyloCoor_tmp <-
 densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL, 
     direction="rightwards", optim=FALSE, scaleX=FALSE, col=1, width=1, lty=1,
     cex=.8, font=3, tip.color=1, adj=0, srt=0, underscore = FALSE, 
-    label.offset=0, ...) {
+    label.offset=0, jitter=list(amount=0, random=TRUE), ...) {
   if(!inherits(x,"multiPhylo"))stop("x must be of class multiPhylo")
 
   if(is.character(consensus)){ 
@@ -328,6 +334,12 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL,
   tiporder <- NULL 
   if(compressed) tiporder <- match(attr(x, "TipLabel"), consensus$tip.label)
 #  tip.order = yy[1:nTip]
+  
+  if(jitter$amount>0){
+      if(jitter$random) jit <- runif(length(x), -jitter$amount, jitter$amount)
+      else jit <- seq(-jitter$amount, jitter$amount, length=length(x))
+  }
+  
   for (treeindex in 1:length(x)) {
     tmp <- reorder(x[[treeindex]], "postorder")
     if(!compressed) tiporder <- match(tmp$tip.label, consensus$tip.label)
@@ -339,11 +351,13 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL,
       if(scaleX) xx <- xx/max(xx)
       else xx <- xx/maxBT 
       if(direction=="rightwards") xx <- xx + (1.0 - max(xx))
+      if(jitter$amount>0) yy <- yy + jit[treeindex]
     }
     else{
       if(scaleX) yy <- yy/max(yy)
       else yy <- yy/maxBT 
       if(direction=="upwards")yy <- yy + (1.0 - max(yy))
+      if(jitter$amount>0) xx <- xx + jit[treeindex]
     }
     e1 <- tmp$edge[,1]
     if(type=="cladogram") cladogram.plot(tmp$edge, xx, yy, edge.color=
