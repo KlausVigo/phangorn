@@ -285,12 +285,6 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL,
   consensus$edge[e2<=nTip,2] <- as.integer(1L:nTip)
   consensus = reorder(consensus, "postorder")
   
-#  ctmp <- consensus$edge[,2]
-#  clabels <- consensus$tip.label[ ctmp[ctmp<cNtip] ] 
-        
-  x <- tryCatch(.compressTipLabel(x, ref = consensus$tip.label), error = function(e)x) #
-  compressed <- ifelse(is.null(attr(x, "TipLabel")), FALSE, TRUE)
-  
   maxBT = max(getAges(x))
   if(scaleX) maxBT=1.0
   label = rev(pretty(c(maxBT,0)))
@@ -331,9 +325,9 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL,
                 cex=cex, col=tip.color, label.offset=label.offset)
   
   col <- rep(col, length.out = length(x))
-  tiporder <- NULL 
-  if(compressed) tiporder <- match(attr(x, "TipLabel"), consensus$tip.label)
-#  tip.order = yy[1:nTip]
+
+  tiporder <-  1:nTip
+  names(tiporder) <- consensus$tip.label
   
   if(jitter$amount>0){
       if(jitter$random) jit <- runif(length(x), -jitter$amount, jitter$amount)
@@ -341,8 +335,8 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL,
   }
   
   for (treeindex in 1:length(x)) {
-    tmp <- reorder(x[[treeindex]], "postorder")
-    if(!compressed) tiporder <- match(tmp$tip.label, consensus$tip.label)
+    tmp <- reorder(x[[treeindex]])
+#    if(!compressed) tiporder <- match(tmp$tip.label, consensus$tip.label)
     xy <- plotPhyloCoor_tmp(tmp, tip.height=tiporder, direction=direction, ...)
     xx = xy[,1]
     yy = xy[,2]
