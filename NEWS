@@ -5,6 +5,16 @@ NEW FEATURES
     o new function mast to compute the maximum agreement subtree
 
     o densiTree got more attributes
+    
+BUG FIXES
+
+    o densiTree may if the consensus tree had different ordering 
+    
+      of labels
+ 
+OTHER CHANGES
+
+    o acctran allows multiPhylo objects as input
 
 
      CHANGES in PHANGORN VERSION 2.2.0
