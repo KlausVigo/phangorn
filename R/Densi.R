@@ -271,6 +271,15 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL,
   if(inherits(consensus,"multiPhylo")) consensus = consensus[[1]]
 
 
+  sort_tips <- function(x){
+      x <- reorder(x)
+      nTip <- as.integer(length(x$tip.label))
+      e2 <- x$edge[,2]
+      x$tip.label <- x$tip.label[e2[e2<=nTip]]
+      x$edge[e2<=nTip,2] <- as.integer(1L:nTip)
+      x
+  }
+  
   type <- match.arg(type, c("phylogram", "cladogram"))
   direction <- match.arg(direction, c("rightwards", "leftwards",  "upwards", 
     "downwards"))
@@ -278,11 +287,10 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL,
   
   consensus = reorder(consensus)
   nTip = as.integer(length(consensus$tip.label))
-#  ie <- match(1:nTip, consensus$edge[, 2])
-  e2 <- consensus$edge[,2]
-#  tiporder = e2[e2<=nTip]  
-  consensus$tip.label <- consensus$tip.label[e2[e2<=nTip]]
-  consensus$edge[e2<=nTip,2] <- as.integer(1L:nTip)
+#  e2 <- consensus$edge[,2]
+  consensus <- sort_tips(consensus)
+#  consensus$tip.label <- consensus$tip.label[e2[e2<=nTip]]
+#  consensus$edge[e2<=nTip,2] <- as.integer(1L:nTip)
   consensus = reorder(consensus, "postorder")
   
   maxBT = max(getAges(x))
@@ -336,6 +344,9 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL,
   
   for (treeindex in 1:length(x)) {
     tmp <- reorder(x[[treeindex]])
+    
+    tmp <- sort_tips(tmp)
+    
 #    if(!compressed) tiporder <- match(tmp$tip.label, consensus$tip.label)
     xy <- plotPhyloCoor_tmp(tmp, tip.height=tiporder, direction=direction, ...)
     xx = xy[,1]
