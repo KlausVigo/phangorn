@@ -82,8 +82,9 @@ bs <- bootstrap.phyDat(Laurasiatherian, FUN =
 # cladogram nice to show topological differences
 densiTree(bs, type="cladogram", col="blue")
 densiTree(bs, type="phylogram", col="green", direction="downwards", width=2)
+# plot five trees slightly shifted, no transparent color 
 densiTree(bs[1:5], type="phylogram", col=1:5, width=2, jitter=
-    list(amount=.3, random=FALSE))
+    list(amount=.3, random=FALSE), alpha=1)
 \dontrun{
 # phylograms are nice to show different age estimates
 require(PhyloOrchard)
