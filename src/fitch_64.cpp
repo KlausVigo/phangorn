@@ -11,7 +11,7 @@ const int bits = 64;
 // Counting bits set, Brian Kernighan's wa
 // from Bit Twiddling Hacks by Sean Eron Anderson seander@cs.stanford.edu
 // count the number of bits set in v
-unsigned int bitCount(unsigned int v){
+uint64_t bitCount(uint64_t v){
   unsigned int c; // c accumulates the total bits set in v
   for (c = 0; v; c++)
   {
@@ -25,20 +25,12 @@ unsigned int bitCount(unsigned int v){
  implementation on machines with fast multiplication.
  It uses 12 arithmetic operations, one of which is a multiply.""" */
 
-static inline int popcount_wikipedia_3(uint64_t *buf, int n) {
-    int cnt=0;
-    uint64_t x;
-    do {
-        x = *buf;
-        x -= (x >> 1) & 0x5555555555555555;            
-        x = (x & 0x3333333333333333) + ((x >> 2) & 0x3333333333333333); 
-        x = (x + (x >> 4)) & 0x0f0f0f0f0f0f0f0f;       
-        cnt += (x * 0x0101010101010101)>>56;  
-        buf++;
-    } while (--n);
-    return cnt;
+//inline ?
+uint64_t bitcount64(uint64_t i) {
+    i = i - ((i >> 1) & 0x5555555555555555);                                                                                                  
+    i = (i & 0x3333333333333333) + ((i >> 2) & 0x3333333333333333);                                                                           
+    return (((i + (i >> 4)) & 0xF0F0F0F0F0F0F0F) * 0x101010101010101) >> 56;                                                                  
 }
-   
 
 // set first state is ambiguous  
 std::vector<uint64_t> contrast2uint(NumericMatrix xx) {
@@ -48,13 +40,13 @@ std::vector<uint64_t> contrast2uint(NumericMatrix xx) {
     // create vector for results
     std::vector<uint64_t> out;
     // add ambiguous state at 0 position
-    for(int j=0; j<nc; ++j) tmp = tmp + (1U << j);
+    for(int j=0; j<nc; ++j) tmp = tmp + (1 << j);
     out.push_back(tmp);
     for(int i=0; i<nr; ++i){
         tmp = 0L;
         for(int j=0; j<nc; ++j){
             if(xx(i,j) > eps){
-                tmp = tmp + (1U << j);  //1U
+                tmp = tmp + (1 << j);  
             }
         }
         out.push_back(tmp);
@@ -162,10 +154,10 @@ public:
       weight = obj.attr("weight");
       nr = obj.attr("nr");
       NIBBLE = obj.attr("nc");
-      NIBBLE_M1 = NIBBLE - 1L;
+      NIBBLE_M1 = NIBBLE - 1;
       word = bits / NIBBLE; 
       rest = nr % word;
-      n_words = (rest) ? ((nr / word) + 1L) : (nr / word);
+      n_words = (rest) ? ((nr / word) + 1) : (nr / word);
       EIGHTS = getEights(NIBBLE, bits);
       SEVENS = getSevens(NIBBLE, bits);
       ONES = getOnes(NIBBLE, bits);
@@ -181,9 +173,9 @@ public:
       uint64_t x, y, u; //, z;
       int j=0, pi=0, rc, lc, nl=parent.size();//max(parent);
       
-      int unrooted = nl % 2L;
-      if(unrooted == 1L){
-        nl = nl-1L;
+      int unrooted = nl % 2;
+      if(unrooted == 1){
+        nl = nl-1;
       }
       //    std::vector<double> pvec(nl); 
       //  NumericVector pvec(nl);       
@@ -192,9 +184,9 @@ public:
         j=0;
 //        z = 0U;
         while(j < nl){ // (nl - 1L)){
-          pi = parent[j] - 1L; 
-          lc = child[j] - 1L;
-          rc = child[j+1L] - 1L; 
+          pi = parent[j] - 1; 
+          lc = child[j] - 1;
+          rc = child[j+1] - 1; 
           //      pvec[pi] = pvec[lc] + pvec[rc];
           x = X[lc][i];
           y = X[rc][i];
@@ -213,7 +205,7 @@ public:
         }
         // unrooted case    
         if(unrooted){
-          lc = child[nl] - 1L;
+          lc = child[nl] - 1;
           x = X[lc][i];
           y = X[pi][i];
           u = ((((x & y & SEVENS) + SEVENS) | (x & y)) & EIGHTS) >> NIBBLE_M1;
@@ -238,18 +230,18 @@ public:
         uint64_t x, y, u;
         int j=0, pi=0, rc, lc, nl=parent.size();//max(parent);
         
-        int unrooted = nl % 2L;
-        if(unrooted == 1L){
-            nl = nl-1L;
+        int unrooted = nl % 2;
+        if(unrooted == 1){
+            nl = nl-1;
         }
         //    std::vector<double> pvec(nl); 
         //  NumericVector pvec(nl);       
         double tmp=0.0, pars=0.0;
         j=0;
         while(j < nl){ // (nl - 1L)){
-            pi = parent[j] - 1L; 
-            lc = child[j] - 1L;
-            rc = child[j+1L] - 1L; 
+            pi = parent[j] - 1; 
+            lc = child[j] - 1;
+            rc = child[j+1] - 1; 
             for(int i=0; i<n_words; ++i){    
             
                 //      pvec[pi] = pvec[lc] + pvec[rc];
@@ -266,7 +258,7 @@ public:
         }
         // unrooted case    
         if(unrooted){
-            lc = child[nl] - 1L;
+            lc = child[nl] - 1;
             for(int i=0; i<n_words; ++i){
                 x = X[lc][i];
                 y = X[pi][i];
