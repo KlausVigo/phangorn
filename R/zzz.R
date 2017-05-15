@@ -14,6 +14,10 @@
 .gEps <- 1e-30
 
 
+loadModule("phangorn", TRUE)
+
+
+
 # .onLoad  <- function(libname, pkgname) {
 #    library.dynam("phangorn", pkgname, libname)
 #}
