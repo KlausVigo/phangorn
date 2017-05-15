@@ -14,7 +14,7 @@
 .gEps <- 1e-30
 
 
-loadModule("phangorn", TRUE)
+loadModule("Fitch_mod", TRUE)
 
 
 

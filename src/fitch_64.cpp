@@ -20,10 +20,27 @@ unsigned int bitCount(unsigned int v){
   return c;
 }
 
+
+/* """This uses fewer arithmetic operations than any other known  
+ implementation on machines with fast multiplication.
+ It uses 12 arithmetic operations, one of which is a multiply.""" */
+
+static inline int popcount_wikipedia_3(uint64_t *buf, int n) {
+    int cnt=0;
+    uint64_t x;
+    do {
+        x = *buf;
+        x -= (x >> 1) & 0x5555555555555555;            
+        x = (x & 0x3333333333333333) + ((x >> 2) & 0x3333333333333333); 
+        x = (x + (x >> 4)) & 0x0f0f0f0f0f0f0f0f;       
+        cnt += (x * 0x0101010101010101)>>56;  
+        buf++;
+    } while (--n);
+    return cnt;
+}
    
 
 // set first state is ambiguous  
-// [[Rcpp::export]]
 std::vector<uint64_t> contrast2uint(NumericMatrix xx) {
     int nr = xx.nrow(), nc = xx.ncol();
     double eps=1e-5;
@@ -49,7 +66,6 @@ std::vector<uint64_t> contrast2uint(NumericMatrix xx) {
  * needed as nibble can differ from 4 (nucleotides)
  * 0x77777777, 0x88888888 in White et al.
  */
-// [[Rcpp::export]]
 uint64_t getEights(int nibble, int bits) {
     int l = bits / nibble;
     uint64_t tmp = (1 << (nibble - 1));
@@ -60,7 +76,7 @@ uint64_t getEights(int nibble, int bits) {
     return res;
 }
  
-// [[Rcpp::export]]
+ 
 uint64_t getSevens(int nibble, int bits) {
   int l = bits / nibble;
   uint64_t tmp = (1 << (nibble - 1)) - 1;
@@ -72,7 +88,6 @@ uint64_t getSevens(int nibble, int bits) {
 }
 
 
-// [[Rcpp::export]]
 uint64_t getOnes(int nibble, int bits) {
     int l = bits / nibble;
     uint64_t res = 0;
@@ -83,7 +98,6 @@ uint64_t getOnes(int nibble, int bits) {
 }
 
 
-// [[Rcpp::export]]
 uint64_t getFifteen(int nibble, int bits) {
     uint64_t res = 0;
     for(int i=0; i<nibble; ++i){
@@ -93,7 +107,6 @@ uint64_t getFifteen(int nibble, int bits) {
 }
 
 
-// [[Rcpp::export]]
 std::vector< std::vector<uint64_t> > readFitch(RObject x, std::vector<uint64_t> contr, int nr, int bits, int nibble){
     // std::vector< std::vector<int> > statt List
     Rcpp::List xlist(x);
@@ -313,7 +326,7 @@ private:
 };
 
 
-RCPP_MODULE(phangorn) {
+RCPP_MODULE(Fitch_mod) {
     using namespace Rcpp;
     class_<Fitch>("Fitch")
         .constructor<RObject>("Default constructor")

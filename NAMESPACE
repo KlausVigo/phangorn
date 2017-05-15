@@ -28,7 +28,7 @@ importFrom(quadprog, solve.QP, solve.QP.compact)
 #importFrom(rgl, open3d, segments3d, spheres3d, rgl.texts)
 importFrom(stats, AIC, BIC, logLik, reorder, update, optim, optimize, constrOptim, na.omit, 
            cophenetic, hclust, as.dist, pchisq, reshape, qgamma, pgamma, model.matrix,
-           aggregate, lm.fit, xtabs, quantile, sd) 
+           aggregate, lm.fit, xtabs, quantile, sd, runif) 
 importFrom(graphics, plot, plot.default, plot.new, plot.window, text, par, abline, strwidth, axis, title, segments, 
            points, image, matplot, legend, hist) 
 importFrom(utils, read.table, download.file, citation, stack, installed.packages, write.table, combn) 
@@ -59,7 +59,8 @@ export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UN
     SOWH.test, presenceAbsence, as.networx.splits, addTrivialSplits, removeTrivialSplits,
     phyDat2alignment, AICc, readDist, writeDist, discrete.gamma, matchSplits, 
     distinct.splits, c.splits, dna2codon, codon2dna, genlight2phyDat,
-    removeUndeterminedSites, phyDat2MultipleAlignment, delta.score, maxCladeCred, as.MultipleAlignment)
+    removeUndeterminedSites, phyDat2MultipleAlignment, delta.score, maxCladeCred, as.MultipleAlignment, 
+    Fitch)
 # plot.networx, countCycles, 
 
 S3method('[', splits)          
