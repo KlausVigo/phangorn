@@ -221,6 +221,7 @@ plotPhyloCoor_tmp <-
 #' should be written as spaces (the default) or left as are (if TRUE).  
 #' @param label.offset a numeric giving the space between the nodes and the tips of the
 #' phylogeny and their corresponding labels.
+#' @param scale.bar a logical specifying whether add scale.bar to the plot. 
 #' @param jitter allows to shift treees. a list with two arguments: the amount of 
 #' jitter and random or equally spaced (see details below)
 #' @param \dots further arguments to be passed to plot.
@@ -258,7 +259,7 @@ plotPhyloCoor_tmp <-
 densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL, 
     direction="rightwards", optim=FALSE, scaleX=FALSE, col=1, width=1, lty=1,
     cex=.8, font=3, tip.color=1, adj=0, srt=0, underscore = FALSE, 
-    label.offset=0, jitter=list(amount=0, random=TRUE), ...) {
+    label.offset=0, scale.bar=TRUE, jitter=list(amount=0, random=TRUE), ...) {
   if(!inherits(x,"multiPhylo"))stop("x must be of class multiPhylo")
 
   if(is.character(consensus)){ 
@@ -307,22 +308,22 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL,
    
   if(direction=="rightwards"){
     plot.window(xlim=c(0, 1.0+sw), ylim=c(0, nTip+1))
-    axis(side=1,at=seq(0,1.0, length.out=length(label)), labels=label)
+    if(scale.bar) axis(side=1,at=seq(0,1.0, length.out=length(label)), labels=label)
     #text(x=rep(1.0,Ntip(consensus)),y=xy[1:nTip, 2],labels=consensus$tip.label,pos=4,cex=cex, font=font)  
   }
   if(direction=="leftwards"){
       plot.window(xlim=c(0-sw, 1.0), ylim=c(0, nTip+1))
-      axis(side=1,at=seq(0,1.0, length.out=length(label)), labels=rev(label))
+      if(scale.bar) axis(side=1,at=seq(0,1.0, length.out=length(label)), labels=rev(label))
       #text(x=rep(0,Ntip(consensus)),y=xy[1:nTip, 2],labels=consensus$tip.label,pos=2,cex=cex, font=font)  
   }
   if(direction=="downwards"){
       plot.window(xlim=c(0, nTip+1), ylim=c(0-sw, 1.0))
-      axis(side=2,at=seq(0,1.0, length.out=length(label)), labels=rev(label))
+      if(scale.bar) axis(side=2,at=seq(0,1.0, length.out=length(label)), labels=rev(label))
       #text(x=xy[1:nTip,1],y=rep(0,Ntip(consensus)),labels=consensus$tip.label,pos=1,cex=cex, font=font, srt=90, adj=1)  
   }
   if(direction=="upwards"){
       plot.window(xlim=c(0, nTip+1), ylim=c(0, 1.0+sw))
-      axis(side=2,at=seq(0,1.0, length.out=length(label)), labels=label)
+      if(scale.bar) axis(side=2,at=seq(0,1.0, length.out=length(label)), labels=label)
       #text(x=xy[1:nTip,1],y=rep(1.0,Ntip(consensus)),labels=consensus$tip.label,pos=3,cex=cex, font=font, srt=90)  
   }
   if (is.expression(consensus$tip.label)) 
