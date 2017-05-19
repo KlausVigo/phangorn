@@ -79,8 +79,7 @@ NULL
 #' Internal \pkg{phangorn} functions.
 #' 
 #' @name phangorn-internal
-#' @aliases phangorn-internal
-#' @Fitch
+#' @aliases phangorn-internal Fitch
 #' @keywords internal
 NULL
 

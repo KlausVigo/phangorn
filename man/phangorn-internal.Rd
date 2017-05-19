@@ -2,6 +2,7 @@
 % Please edit documentation in R/phangorn-package.R
 \name{phangorn-internal}
 \alias{phangorn-internal}
+\alias{Fitch}
 \title{Internal phangorn Functions}
 \description{
 Internal \pkg{phangorn} functions.
