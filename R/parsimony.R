@@ -706,7 +706,7 @@ indexNNI <- function(tree){
     Nnode = tree$Nnode
     edgeMatrix = matrix(0,(Nnode-1),5)
 
-    pvector <- numeric(max(parent))
+    pvector <- integer(max(parent))
     pvector[child] <- parent
     tips  <- !logical(max(parent))
     tips[parent] <-  FALSE
