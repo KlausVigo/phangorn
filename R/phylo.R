@@ -870,30 +870,29 @@ pml.move <- function(EDGE, el, data, g, w, eig, k, nTips, bf){
 }
 
 
-bip <- function (obj) 
-{
-    if (is.null(attr(obj, "order")) || attr(obj, "order") == 
-            "cladewise") 
-        obj <- reorder(obj, "postorder")
-    maxP = max(obj$edge)
-    nTips = length(obj$tip.label)
-    res <- .Call("C_bip", as.integer(obj$edge[, 1]), as.integer(obj$edge[, 2]), as.integer(nTips), as.integer(maxP))
-    res
-}
+# bip_old <- function (obj) 
+#{
+#    if (is.null(attr(obj, "order")) || attr(obj, "order") == 
+#            "cladewise") 
+#        obj <- reorder(obj, "postorder")
+#    maxP = max(obj$edge)
+#    nTips = length(obj$tip.label)
+#    res <- .Call("C_bip", as.integer(obj$edge[, 1]), as.integer(obj$edge[, 2]), as.integer(nTips), as.integer(maxP))
+#    res
+#}
 
 
-bipart <- function(obj){
-    if (is.null(attr(obj, "order")) || attr(obj, "order") == "cladewise") 
-        obj <- reorder(obj, "postorder")
-    maxP  = max(obj$edge)
-    nTips = length(obj$tip.label)
-    res <- .Call("C_bipart", as.integer(obj$edge[,1]) , as.integer(obj$edge[,2]), as.integer(nTips), as.integer(maxP))  #, as.integer(obj$Nnode))
-#    attr(res, "nodes") = unique(obj$edge[,1])
-    res    
-}
+#bipart_old <- function(obj){
+#    if (is.null(attr(obj, "order")) || attr(obj, "order") == "cladewise") 
+#        obj <- reorder(obj, "postorder")
+#    maxP  = max(obj$edge)
+#    nTips = length(obj$tip.label)
+#    res <- .Call("C_bipart", as.integer(obj$edge[,1]) , as.integer(obj$edge[,2]), as.integer(nTips), as.integer(maxP))  #, as.integer(obj$Nnode))
+#    res    
+#}
 
 
-bip2 <- function(x) 
+bip <- function(x) 
 {
     x <- reorder(x, "postorder")
     nTips <- as.integer(length(x$tip.label))
@@ -901,7 +900,7 @@ bip2 <- function(x)
 }
 
 
-bipart2 <- function(x) 
+bipart <- function(x) 
 {
     x <- reorder(x, "postorder")
     nTips <- as.integer(length(x$tip.label))
