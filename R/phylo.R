@@ -16,6 +16,18 @@ edgeLengthIndex <- function(child, parent, nTips){
 }
 
 
+has.singles <- function(tree)
+{
+    fun <- function(x){
+        e1 <- x$edge[, 1]
+        tab <- tabulate(e1)
+        if (all(tab != 1L)) return(FALSE) 
+        TRUE
+    }
+    if(inherits(tree, "phylo")) return(fun(tree))
+    if(inherits(tree, "multiPhylo")) return(sapply(tree, fun))
+}
+
 #
 # Maximum likelihood estimation
 #
@@ -915,7 +927,7 @@ bipartition <- function (tree)
     bp <- bipart(tree)
     nTips = length(tree$tip.label)
     l = length(bp)
-    m = length(bp[[l]])
+    m = max(lengths(bp))
     k = length(tree$edge[, 1])
     result = matrix(0L, l, m)
     res = matrix(0L, k, m)
