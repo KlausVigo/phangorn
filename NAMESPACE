@@ -1,4 +1,3 @@
-
 useDynLib(phangorn, .registration=TRUE)
 
 importFrom(ape, as.DNAbin, as.phylo, plot.phylo, as.prop.part, nj,old2new.phylo, dist.dna,
