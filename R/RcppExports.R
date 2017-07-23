@@ -2,18 +2,18 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 allDescCPP <- function(orig, nTips) {
-    .Call(phangorn_allDescCPP, orig, nTips)
+    .Call(`_phangorn_allDescCPP`, orig, nTips)
 }
 
 bipartCPP <- function(orig, nTips) {
-    .Call(phangorn_bipartCPP, orig, nTips)
+    .Call(`_phangorn_bipartCPP`, orig, nTips)
 }
 
 bipCPP <- function(orig, nTips) {
-    .Call(phangorn_bipCPP, orig, nTips)
+    .Call(`_phangorn_bipCPP`, orig, nTips)
 }
 
 allChildrenCPP <- function(orig) {
-    .Call(phangorn_allChildrenCPP, orig)
+    .Call(`_phangorn_allChildrenCPP`, orig)
 }
 

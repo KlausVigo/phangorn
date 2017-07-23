@@ -908,7 +908,7 @@ bip <- function(x)
 {
     x <- reorder(x, "postorder")
     nTips <- as.integer(length(x$tip.label))
-    .Call('phangorn_bipCPP', PACKAGE = 'phangorn', x$edge, nTips)
+    .Call('_phangorn_bipCPP', PACKAGE = 'phangorn', x$edge, nTips)
 }
 
 
@@ -916,7 +916,7 @@ bipart <- function(x)
 {
     x <- reorder(x, "postorder")
     nTips <- as.integer(length(x$tip.label))
-    .Call('phangorn_bipartCPP', PACKAGE = 'phangorn', x$edge, nTips)
+    .Call('_phangorn_bipartCPP', PACKAGE = 'phangorn', x$edge, nTips)
 }
 
 

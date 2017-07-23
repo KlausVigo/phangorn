@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // allDescCPP
 List allDescCPP(IntegerMatrix orig, int nTips);
-RcppExport SEXP phangorn_allDescCPP(SEXP origSEXP, SEXP nTipsSEXP) {
+RcppExport SEXP _phangorn_allDescCPP(SEXP origSEXP, SEXP nTipsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -19,7 +19,7 @@ END_RCPP
 }
 // bipartCPP
 List bipartCPP(IntegerMatrix orig, int nTips);
-RcppExport SEXP phangorn_bipartCPP(SEXP origSEXP, SEXP nTipsSEXP) {
+RcppExport SEXP _phangorn_bipartCPP(SEXP origSEXP, SEXP nTipsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -31,7 +31,7 @@ END_RCPP
 }
 // bipCPP
 List bipCPP(IntegerMatrix orig, int nTips);
-RcppExport SEXP phangorn_bipCPP(SEXP origSEXP, SEXP nTipsSEXP) {
+RcppExport SEXP _phangorn_bipCPP(SEXP origSEXP, SEXP nTipsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -43,7 +43,7 @@ END_RCPP
 }
 // allChildrenCPP
 List allChildrenCPP(IntegerMatrix orig);
-RcppExport SEXP phangorn_allChildrenCPP(SEXP origSEXP) {
+RcppExport SEXP _phangorn_allChildrenCPP(SEXP origSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
