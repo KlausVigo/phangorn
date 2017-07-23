@@ -67,8 +67,8 @@ extern SEXP invSites(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP LogLik2(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP optE(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP optQrtt(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP phangorn_bipartCPP(SEXP, SEXP);
-extern SEXP phangorn_bipCPP(SEXP, SEXP);
+extern SEXP _phangorn_bipartCPP(SEXP, SEXP);
+extern SEXP _phangorn_bipCPP(SEXP, SEXP);
 extern SEXP PML0(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP PML3(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP PML4(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
@@ -80,8 +80,8 @@ extern SEXP sankoff3(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP sankoff3B(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP sankoffMPR(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP sankoffQuartet(SEXP, SEXP, SEXP, SEXP);
-extern SEXP phangorn_allDescCPP(SEXP, SEXP);
-extern SEXP phangorn_allChildrenCPP(SEXP);
+extern SEXP _phangorn_allDescCPP(SEXP, SEXP);
+extern SEXP _phangorn_allChildrenCPP(SEXP);
 
 static const R_CMethodDef CEntries[] = {
     {"ACCTRAN2",         (DL_FUNC) &ACCTRAN2,          6},
@@ -134,8 +134,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"LogLik2",            (DL_FUNC) &LogLik2,            10},
     {"optE",               (DL_FUNC) &optE,               17},
     {"optQrtt",            (DL_FUNC) &optQrtt,            16},
-    {"phangorn_bipartCPP", (DL_FUNC) &phangorn_bipartCPP,  2},
-    {"phangorn_bipCPP",    (DL_FUNC) &phangorn_bipCPP,     2},
+    {"_phangorn_bipartCPP", (DL_FUNC) &_phangorn_bipartCPP,  2},
+    {"_phangorn_bipCPP",    (DL_FUNC) &_phangorn_bipCPP,     2},
     {"PML0",               (DL_FUNC) &PML0,               14},
     {"PML3",               (DL_FUNC) &PML3,               14},
     {"PML4",               (DL_FUNC) &PML4,               15},
@@ -147,8 +147,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"sankoff3B",          (DL_FUNC) &sankoff3B,          10},
     {"sankoffMPR",         (DL_FUNC) &sankoffMPR,          7},
     {"sankoffQuartet",     (DL_FUNC) &sankoffQuartet,      4},
-    {"phangorn_allDescCPP",       (DL_FUNC) &phangorn_allDescCPP,        2},
-    {"phangorn_allChildrenCPP",   (DL_FUNC) &phangorn_allChildrenCPP,    1},
+    {"_phangorn_allDescCPP",       (DL_FUNC) &_phangorn_allDescCPP,        2},
+    {"_phangorn_allChildrenCPP",   (DL_FUNC) &_phangorn_allChildrenCPP,    1},
     {NULL, NULL, 0}
 };
 

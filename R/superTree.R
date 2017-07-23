@@ -140,6 +140,7 @@ superTree = function(tree, method="MRP", rooted=FALSE, trace=0, ...){
         x
     }
     if(!is.null(attr(tree, "TipLabel")))tree = .uncompressTipLabel(tree)
+    if(!rooted) tree <- unroot(tree)
     tree = unclass(tree)
     if(rooted) tree = lapply(tree, fun)    
     class(tree)="multiPhylo"
