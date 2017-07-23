@@ -4,7 +4,8 @@
 \alias{superTree}
 \title{Super Tree methods}
 \usage{
-superTree(tree, method = "MRP", rooted = FALSE, trace = 0, ...)
+superTree(tree, method = "MRP", rooted = FALSE, trace = 0, start = NULL,
+  multicore = FALSE, mc.cores = NULL, ...)
 }
 \arguments{
 \item{tree}{an object of class \code{multiPhylo}}
@@ -15,6 +16,12 @@ tree.  Possible are "MRP", "NNI", and "SPR".}
 \item{rooted}{should the resulting supertrees be rooted.}
 
 \item{trace}{defines how much information is printed during optimization.}
+
+\item{start}{a starting tree can be supplied.}
+
+\item{multicore}{logical, whether models should estimated in parallel.}
+
+\item{mc.cores}{The number of cores to use, i.e. at most how many child processes will be run simultaneously.}
 
 \item{\dots}{further arguments passed to or from other methods.}
 }

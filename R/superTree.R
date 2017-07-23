@@ -99,6 +99,9 @@ dist.superTree <- function(tree, trace=0, fun, start=NULL, multicore=FALSE, mc.c
 #' tree.  Possible are "MRP", "NNI", and "SPR".
 #' @param rooted should the resulting supertrees be rooted.
 #' @param trace defines how much information is printed during optimization.
+#' @param start a starting tree can be supplied.
+#' @param multicore logical, whether models should estimated in parallel.
+#' @param mc.cores The number of cores to use, i.e. at most how many child processes will be run simultaneously.
 #' @param \dots further arguments passed to or from other methods.
 #' @return The function returns an object of class \code{phylo}.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com} Liam Revell
@@ -126,7 +129,8 @@ dist.superTree <- function(tree, trace=0, fun, start=NULL, multicore=FALSE, mc.c
 #' }
 #' 
 #' @export superTree
-superTree = function(tree, method="MRP", rooted=FALSE, trace=0, ...){
+superTree = function(tree, method="MRP", rooted=FALSE, trace=0, 
+    start=NULL, multicore=FALSE, mc.cores=NULL, ...){
     fun = function(x){
         x=reorder(x, "postorder")
         nTips = length(x$tip.label)
@@ -139,45 +143,49 @@ superTree = function(tree, method="MRP", rooted=FALSE, trace=0, ...){
         x$Nnode=x$Nnode+1L
         x
     }
-    if(!is.null(attr(tree, "TipLabel")))tree = .uncompressTipLabel(tree)
+    if(method != "MRP") rooted=FALSE
     if(!rooted) tree <- unroot(tree)
-    tree = unclass(tree)
-    if(rooted) tree = lapply(tree, fun)    
-    class(tree)="multiPhylo"
-    res = my.supertree(tree, trace=trace, ...)
-    if(rooted){
+    if(method=="MRP" | is.null(start)){
+        if(rooted){
+            if(!is.null(attr(tree, "TipLabel")))tree = .uncompressTipLabel(tree)
+            tree = unclass(tree)
+            if(rooted) tree = lapply(tree, fun)    
+            class(tree)="multiPhylo"
+        }    
+        res = my.supertree(tree, trace=trace, ...)
+        if(rooted){
+            if(inherits(res,"multiPhylo")){
+                res = lapply(res, root, "ZZZ")
+                res = lapply(res, drop.tip, "ZZZ")  
+                class(res) = "multiPhylo"
+            }
+            else{
+                res = root(res, "ZZZ")
+                res = drop.tip(res, "ZZZ")  
+            }
+        }
         if(inherits(res,"multiPhylo")){
-            res = lapply(res, root, "ZZZ")
-            res = lapply(res, drop.tip, "ZZZ")  
+            fun = function(x){
+                x$edge.length <- rep(.1, nrow(x$edge)) 
+                x
+            }
+            res <- lapply(res, fun)
+            res <- lapply(res, reorder, "postorder")
             class(res) = "multiPhylo"
+        }       
+        else{ 
+            res$edge.length = rep(.1, nrow(res$edge))
+            res <- reorder(res, "postorder")
         }
-        else{
-            res = root(res, "ZZZ")
-            res = drop.tip(res, "ZZZ")  
-        }
-    }
-    if(inherits(res,"multiPhylo")){
-        fun = function(x){
-            x$edge.length <- rep(.1, nrow(x$edge)) 
-            x
-        }
-        res <- lapply(res, fun)
-        res <- lapply(res, reorder, "postorder")
-        class(res) = "multiPhylo"
-    }       
-    else{ 
-        res$edge.length = rep(.1, nrow(res$edge))
-        res <- reorder(res, "postorder")
-    }
+    }    
     if(method=="MRP") return(res)
-    
+    if(is.null(start)) start <- res
     tree <- unroot(tree)
     tree <- reorder(tree, "postorder")
-#    tree <- lapply(tree, unroot)
-#    tree <- lapply(tree, reorder, "postorder")
-#    class(tree) = "multiPhylo"
-    
-    if(method=="RF") res <- dist.superTree(tree, trace=trace, fun.rf, start=res)
-    if(method=="SPR") res <- dist.superTree(tree, trace=trace, fun.spr, start=res)   
+
+    if(method=="RF") res <- dist.superTree(tree, trace=trace, fun.rf, start=start, 
+        multicore=multicore, mc.cores = mc.cores)
+    if(method=="SPR") res <- dist.superTree(tree, trace=trace, fun.spr, start=start, 
+        multicore=multicore, mc.cores = mc.cores)   
     res
 }
