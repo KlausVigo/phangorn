@@ -254,7 +254,7 @@ indexNNI2 <- function(tree){
     Nnode = tree$Nnode
     edgeMatrix = matrix(0L, 6, length(ind))
 
-    pvector <- numeric(max(parent))
+    pvector <- integer(max(parent))
     pvector[child] <- parent
     cvector <- allChildren(tree)  
 

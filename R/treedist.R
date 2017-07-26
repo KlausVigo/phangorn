@@ -195,6 +195,9 @@ oneWise <- function (x, nTips=NULL)
 #' @export treedist
 treedist <- function (tree1, tree2, check.labels=TRUE) 
 {
+    if(has.singles(tree1)) tree1 <- collapse.singles(tree1)
+    if(has.singles(tree2)) tree2 <- collapse.singles(tree2)
+    
     tree1 = unroot(tree1)
     tree2 = unroot(tree2)
     
@@ -278,6 +281,8 @@ treedist <- function (tree1, tree2, check.labels=TRUE)
 #' @export
 sprdist <- function (tree1, tree2) 
 {
+    if(has.singles(tree1)) tree1 <- collapse.singles(tree1)
+    if(has.singles(tree2)) tree2 <- collapse.singles(tree2)
     tree1 = unroot(tree1)
     tree2 = unroot(tree2)
     lt1 = length(tree1$tip.label)
@@ -311,6 +316,7 @@ SPR1 <- function(trees){
     trees <- .compressTipLabel(trees)
     trees <- .uncompressTipLabel(trees)
     trees <- lapply(trees, unroot)
+    if(any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
     trees <- lapply(trees, reorder, "postorder")
     
     nTips <- length(trees[[1]]$tip.label)
@@ -349,8 +355,10 @@ SPR2 <- function(tree, trees){
     if (any(sapply(trees, is.rooted))) {
         trees <- lapply(trees, unroot)
     }
+    if(any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
     trees <- lapply(trees, reorder, "postorder")
-    tree <- unroot(tree)                
+    tree <- unroot(tree)      
+    if(has.singles(tree)) tree <- collapse.singles(tree)
     nTips <- length(tree$tip.label)
     
     fun <- function(x, nTips){
@@ -411,6 +419,8 @@ wRF0 <- function(tree1, tree2, normalize=FALSE, check.labels=TRUE, rooted = FALS
         ind2 <- match(1:length(ind), tree2$edge[, 2])
         tree2$edge[ind2, 2] <- order(ind)
     }
+    if(has.singles(tree1)) tree1 <- collapse.singles(tree1)
+    if(has.singles(tree2)) tree2 <- collapse.singles(tree2)
     bp1 = bip(tree1)
     bp2 = bip(tree2)
     if (!rooted) {
@@ -457,6 +467,9 @@ wRF2 <- function(tree, trees, normalize=FALSE, check.labels = TRUE, rooted=FALSE
             trees <- unroot(trees) #lapply(trees, unroot)
         }
     }
+    
+    if(any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
+    if(has.singles(tree)) tree <- collapse.singles(tree)
     
     unclass(trees) 
     
@@ -527,6 +540,7 @@ wRF1 <- function(trees, normalize=FALSE, check.labels = TRUE, rooted=FALSE){
             trees <- unroot(trees) 
         }
     }
+    if(any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
     unclass(trees) 
     
     nTips <- length(trees[[1]]$tip.label)
@@ -601,6 +615,9 @@ mRF2 <- function(tree, trees, normalize=FALSE, check.labels = TRUE, rooted=FALSE
     l <- length(trees)
     RF <- numeric(l)
     trees <- .uncompressTipLabel(trees)
+    if(any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
+    if(has.singles(tree)) tree <- collapse.singles(tree)
+    
     #    n <- length(attr(trees, "TipLabel"))
     trees <- unclass(trees)
     if(!rooted & any(sapply(trees, is.rooted))) {
@@ -655,6 +672,7 @@ mRF<-function(trees, normalize=FALSE, rooted=FALSE){
         }
     }
     
+    if(any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
 
     #    n <- length(attr(trees, "TipLabel"))
 
@@ -695,6 +713,8 @@ mRF<-function(trees, normalize=FALSE, rooted=FALSE){
 
 
 RF0 <- function(tree1, tree2=NULL, normalize=FALSE, check.labels = TRUE, rooted=FALSE){   
+    if(has.singles(tree1)) tree1 <- collapse.singles(tree1)
+    if(has.singles(tree2)) tree2 <- collapse.singles(tree2)
     r1 = is.rooted(tree1)
     r2 = is.rooted(tree2)
     if(!rooted){
@@ -764,7 +784,8 @@ wRF.dist <- function(tree1, tree2=NULL, normalize=FALSE, check.labels = TRUE, ro
 
 kf0 <- function(tree1, tree2, check.labels = TRUE, rooted=FALSE){    
     if(check.labels)tree2 <- checkLabels(tree2, tree1$tip.label)
-    
+    if(has.singles(tree1)) tree1 <- collapse.singles(tree1)
+    if(has.singles(tree2)) tree2 <- collapse.singles(tree2)
     r1 <- is.rooted(tree1)
     r2 <- is.rooted(tree2)
     if(!rooted){
@@ -813,6 +834,8 @@ kf1 <- function(tree, trees, check.labels = TRUE, rooted=FALSE){
         tree <- checkLabels(tree, attr(trees, "TipLabel"))
     }    
     trees <- .uncompressTipLabel(trees)
+    if(any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
+    if(has.singles(tree)) tree <- collapse.singles(tree)
     
     if (rooted & any(!is.rooted(trees))){
         warning("Some trees are unrooted, unrooted all")
@@ -883,6 +906,8 @@ kf2 <- function(trees, check.labels = TRUE, rooted=FALSE){
     trees <- .uncompressTipLabel(trees)
 #    unclass(trees)     
     
+    if(any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
+
     nTips <- length(trees[[1]]$tip.label)
 #    if (any(sapply(trees, is.rooted))) {
 #        trees <- lapply(trees, unroot)

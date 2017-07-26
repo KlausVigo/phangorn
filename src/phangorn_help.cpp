@@ -64,6 +64,9 @@ List bipCPP(IntegerMatrix orig, int nTips) {
     // create list for results
     std::vector< std::vector<int> > out(m) ;
     std::vector<int> y;
+    for(int i = 0; i<nTips; i++){
+        out[i].push_back(i + 1L);
+    }
     for(int i = 0; i<parent.size(); i++){
         j = parent[i] - 1L;
         if(children[i] > nTips){ 

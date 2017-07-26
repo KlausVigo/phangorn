@@ -8,9 +8,7 @@ NEW FEATURES
     
 BUG FIXES
 
-    o densiTree may if the consensus tree had different ordering 
-    
-      of labels
+    o densiTree may if the consensus tree had different ordering of labels
  
 OTHER CHANGES
 

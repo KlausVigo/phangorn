@@ -16,6 +16,18 @@ edgeLengthIndex <- function(child, parent, nTips){
 }
 
 
+has.singles <- function(tree)
+{
+    fun <- function(x){
+        e1 <- x$edge[, 1]
+        tab <- tabulate(e1)
+        if (all(tab != 1L)) return(FALSE) 
+        TRUE
+    }
+    if(inherits(tree, "phylo")) return(fun(tree))
+    if(inherits(tree, "multiPhylo")) return(sapply(tree, fun))
+}
+
 #
 # Maximum likelihood estimation
 #
@@ -870,42 +882,41 @@ pml.move <- function(EDGE, el, data, g, w, eig, k, nTips, bf){
 }
 
 
-bip <- function (obj) 
-{
-    if (is.null(attr(obj, "order")) || attr(obj, "order") == 
-            "cladewise") 
-        obj <- reorder(obj, "postorder")
-    maxP = max(obj$edge)
-    nTips = length(obj$tip.label)
-    res <- .Call("C_bip", as.integer(obj$edge[, 1]), as.integer(obj$edge[, 2]), as.integer(nTips), as.integer(maxP))
-    res
-}
+# bip_old <- function (obj) 
+#{
+#    if (is.null(attr(obj, "order")) || attr(obj, "order") == 
+#            "cladewise") 
+#        obj <- reorder(obj, "postorder")
+#    maxP = max(obj$edge)
+#    nTips = length(obj$tip.label)
+#    res <- .Call("C_bip", as.integer(obj$edge[, 1]), as.integer(obj$edge[, 2]), as.integer(nTips), as.integer(maxP))
+#    res
+#}
 
 
-bipart <- function(obj){
-    if (is.null(attr(obj, "order")) || attr(obj, "order") == "cladewise") 
-        obj <- reorder(obj, "postorder")
-    maxP  = max(obj$edge)
-    nTips = length(obj$tip.label)
-    res <- .Call("C_bipart", as.integer(obj$edge[,1]) , as.integer(obj$edge[,2]), as.integer(nTips), as.integer(maxP))  #, as.integer(obj$Nnode))
-#    attr(res, "nodes") = unique(obj$edge[,1])
-    res    
-}
+#bipart_old <- function(obj){
+#    if (is.null(attr(obj, "order")) || attr(obj, "order") == "cladewise") 
+#        obj <- reorder(obj, "postorder")
+#    maxP  = max(obj$edge)
+#    nTips = length(obj$tip.label)
+#    res <- .Call("C_bipart", as.integer(obj$edge[,1]) , as.integer(obj$edge[,2]), as.integer(nTips), as.integer(maxP))  #, as.integer(obj$Nnode))
+#    res    
+#}
 
 
-bip2 <- function(x) 
-{
-    x <- reorder(x, "postorder")
-    nTips <- as.integer(length(x$tip.label))
-    .Call('phangorn_bipCPP', PACKAGE = 'phangorn', x$edge, nTips)
-}
-
-
-bipart2 <- function(x) 
+bip <- function(x) 
 {
     x <- reorder(x, "postorder")
     nTips <- as.integer(length(x$tip.label))
-    .Call('phangorn_bipartCPP', PACKAGE = 'phangorn', x$edge, nTips)
+    .Call('_phangorn_bipCPP', PACKAGE = 'phangorn', x$edge, nTips)
+}
+
+
+bipart <- function(x) 
+{
+    x <- reorder(x, "postorder")
+    nTips <- as.integer(length(x$tip.label))
+    .Call('_phangorn_bipartCPP', PACKAGE = 'phangorn', x$edge, nTips)
 }
 
 
@@ -916,7 +927,7 @@ bipartition <- function (tree)
     bp <- bipart(tree)
     nTips = length(tree$tip.label)
     l = length(bp)
-    m = length(bp[[l]])
+    m = max(lengths(bp))
     k = length(tree$edge[, 1])
     result = matrix(0L, l, m)
     res = matrix(0L, k, m)

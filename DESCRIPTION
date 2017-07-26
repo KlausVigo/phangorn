@@ -1,7 +1,7 @@
 Package: phangorn
 Title: Phylogenetic Analysis in R
 Version: 2.2.1
-Date: 2017-4-3
+Date: 2017-6-4
 Authors@R: c(person("Klaus", "Schliep", email="klaus.schliep@gmail.com", role = c("aut", "cre")), 
   person("Emmanuel", "Paradis", role = c("aut")), 
   person("Leonardo", "de Oliveira Martins", role = c("aut")), 
@@ -44,5 +44,6 @@ ByteCompile: TRUE
 License: GPL (>= 2)
 VignetteBuilder: utils, knitr
 URL: https://github.com/KlausVigo/phangorn
+BugReports: https://github.com/KlausVigo/phangorn/issues
 Repository: CRAN
 RoxygenNote: 6.0.1
