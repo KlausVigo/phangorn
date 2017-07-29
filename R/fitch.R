@@ -1,9 +1,9 @@
 #' @useDynLib phangorn FITCH
 #' @keywords internal
 #' @export
-C_FITCH <- function (data, nr, node, edge, weight, m, q) {
+C_FITCH <- function (data, nr=length(data)/2, node, edge, nedge=length(edge), weight, m, q) {
   .Call("FITCH", as.integer(data), as.integer(nr), as.integer(node), as.integer(edge), 
-        as.integer(length(edge)), as.double(weight), as.integer(m), as.integer(q))
+        as.integer(nedge), as.double(weight), as.integer(m), as.integer(q))
 }
 
 #' @rdname parsimony
@@ -58,7 +58,7 @@ fit.fitch <- function (tree, data, returnData = c("pscore", "site", "data"))
     weight = attr(data, "weight")
     m = max(tree$edge) 
     q = length(tree$tip.label)
-    result <- C_FITCH(data[, tree$tip.label], nr, node, edge, weight, m, q)
+    result <- C_FITCH(data[, tree$tip.label], nr, node, edge, length(edge), weight, m, q)
     if (returnData == "site") return(result[[2]])
     pscore <- result[[1]]
     res = pscore
