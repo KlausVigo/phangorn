@@ -58,7 +58,8 @@ export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, UN
     SOWH.test, presenceAbsence, as.networx.splits, addTrivialSplits, removeTrivialSplits,
     phyDat2alignment, AICc, readDist, writeDist, discrete.gamma, matchSplits, 
     distinct.splits, c.splits, dna2codon, codon2dna, genlight2phyDat,
-    removeUndeterminedSites, phyDat2MultipleAlignment, delta.score, maxCladeCred, as.MultipleAlignment)
+    removeUndeterminedSites, phyDat2MultipleAlignment, delta.score, maxCladeCred, 
+    as.MultipleAlignment, C_FITCH)
 # plot.networx, countCycles, 
 
 S3method('[', splits)          
