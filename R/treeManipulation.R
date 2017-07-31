@@ -469,46 +469,6 @@ nnin <- function (tree, n)
 } 
 
 
-#' Perform one NNI rearrangement at a given branch
-#'
-#' @param tree A tree of class \code{phylo}
-#' @param n Which branch to break
-#'
-#' @return One of the two trees resulting when a NNI rearrangement is 
-#'         performed at node n
-#' @export
-one_nnin <- function (tree, n) {
-    edge    <- tree$edge
-    parent  <- edge[, 1]
-    child   <- edge[, 2]
-    lengths <- tree$edge.length
-    nb.tip  <- length(tree$tip.label)
-    ind     <- which(child > nb.tip)[n]
-    if(is.na(ind)) return(NULL)
-    nb.edge <- length(parent)
-    nb.node <- tree$Nnode
-    if (nb.node == 1) return(tree)
-    p1      <- parent[ind]
-    p2      <- child[ind]
-    ind1    <- which(parent == p1)
-    ind1    <- ind1[ind1 != ind][1]
-    ind2    <- which(parent == p2)[sample(2, 1)]
-    new_ind <- c(ind2, ind1)
-    old_ind <- c(ind1, ind2)
-    child_swap <- child[new_ind]
-    edge [old_ind, 2L] <- child_swap
-    child[old_ind] <- child_swap
-    neworder <- .C(neworder_phylo, as.integer(nb.tip), as.integer(parent), 
-                   as.integer(child), as.integer(nb.edge), integer(nb.edge), 
-                   as.integer(2), NAOK = TRUE)[[5]] # from .reorder_ape
-    tree$edge <- edge[neworder, ]
-    if (!is.null(tree$edge.length)) {
-        lengths[old_ind] <- lengths[new_ind]
-        tree$edge.length <- lengths[neworder]
-    }
-    attr(tree, "order") <- "postorder"
-    tree
-}
 
 ## @aliases nni rNNI rSPR
 #' Tree rearrangements.
@@ -885,24 +845,25 @@ sprMove <- function(tree, m){
 #' @export
 rNNI <- function (tree, moves = 1, n = length(moves)) 
 {
-    k <- nrow(tree$edge) - length(tree$tip.label)
+    k = length(na.omit(match(tree$edge[, 2], tree$edge[, 1])))
     if (n == 1) {
         trees = tree
-        if(moves>0) {
-            for (i in 1:moves) trees = one_nnin(trees, sample(k, 1))
+        if(moves>0){
+            for (i in 1:moves) trees = nnin(trees, sample(k, 1))[[sample(2,1)]]
         }
         trees$tip.label <- tree$tip.label
     }
     else {
+        trees = vector("list", n)
         if(length(moves)==1) moves = rep(moves, n)
-        trees <- lapply(seq_len(n), function (j) {
+        for (j in 1:n) {
             tmp = tree
-            if(moves[j] > 0) {
-                for (i in 1:moves[j]) tmp = one_nnin(tmp, sample(k, 1))
+            if(moves[j]>0){
+                for (i in 1:moves[j]) tmp = nnin(tmp, sample(k, 1))[[sample(2,1)]]
             }
             tmp$tip.label = NULL
-            tmp
-        })
+            trees[[j]] = tmp
+        }
         attr(trees, "TipLabel") <- tree$tip.label
         class(trees) <- "multiPhylo"
     }
