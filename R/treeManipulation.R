@@ -1000,7 +1000,8 @@ allDescendants <- function(x){
 #' @rdname Ancestors
 #' @export
 Children <- function(x, node){
-   if(length(node)==1)return(x$edge[x$edge[,1]==node,2])
+   # return allChildren if node is missing    
+   if(!missing(node) && length(node)==1)return(x$edge[x$edge[,1]==node,2])
    allChildren(x)[node]
 }
 
@@ -1012,7 +1013,7 @@ Descendants = function(x, node, type=c("tips","children","all")){
   if(type=="children") return(Children(x, node))
   if(type=="tips") return(bip(x)[node])
   # new version using Rcpp
-  if(length(node)>10) return(allDescendants(x)[node])
+  if(missing(node) || length(node)>10) return(allDescendants(x)[node])
   ch = allChildren(x) # out of the loop
   isInternal = logical(max(x$edge))
   isInternal[ unique(x$edge[,1]) ] =TRUE  
