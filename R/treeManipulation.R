@@ -988,7 +988,9 @@ allChildren <- function(x){
     }
 }
 
-
+#' @describeIn Ancestors list all the descendant nodes of each node
+#' @keywords internal
+#' @export
 allDescendants <- function(x){
     if (is.null(attr(x, "order")) || attr(x, "order") == "cladewise") 
         x <- reorder(x, "postorder")
