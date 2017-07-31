@@ -1,3 +1,10 @@
+#' Wrapper for FITCH C function
+#' Runs the Fitch algorithm over a given tree
+#' @return a list: 
+#' item 1: Fitch score
+#' item 2: Fitch score for each character in turn
+#' item 3: 
+#' item 4: 
 #' @useDynLib phangorn FITCH
 #' @keywords internal
 #' @export
@@ -58,7 +65,8 @@ fit.fitch <- function (tree, data, returnData = c("pscore", "site", "data"))
     weight = attr(data, "weight")
     m = max(tree$edge) 
     q = length(tree$tip.label)
-    result <- C_FITCH(data[, tree$tip.label], nr, node, edge, length(edge), weight, m, q)
+    result <- .Call("FITCH", data[, tree$tip.label], as.integer(nr), as.integer(node), as.integer(edge),
+          as.integer(length(edge)), as.double(weight), as.integer(m), as.integer(q))
     if (returnData == "site") return(result[[2]])
     pscore <- result[[1]]
     res = pscore
