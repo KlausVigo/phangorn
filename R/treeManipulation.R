@@ -901,6 +901,7 @@ allAncestors <- function(x){
 #' object, see example below.  All the functions allow \code{node} to be either
 #' a scalar or vector.  \code{mrca} is a faster version of the mrca in ape, in
 #' phangorn only because of dependencies.
+#' If the argument node is missing the function is evaluated for all nodes. 
 #' 
 #' @param x a tree (a phylo object).
 #' @param node an integer or a vector of integers corresponding to a node ID
@@ -920,6 +921,8 @@ allAncestors <- function(x){
 #' Children(tree, 11)
 #' Descendants(tree, 11, "tips")
 #' Siblings(tree, 3)
+#' # Siblings of all nodes
+#' Siblings(tree)
 #' mrca.phylo(tree, 1:3)
 #' mrca.phylo(tree, match(c("t1", "t2", "t3"), tree$tip))
 #' mrca.phylo(tree)
@@ -946,8 +949,8 @@ Ancestors <- function (x, node, type = c("all", "parent"))
         }
     res
     }
-    if(length(node)==1) return(anc(pvector, node))
-    else allAncestors(x)[node]
+    if(!missing(node) && length(node)==1) return(anc(pvector, node))
+    else allAncestors(x)[node] 
 }
 
 
@@ -982,7 +985,7 @@ allChildren <- function(x){
         return(res)
     }
     else{
-        if (is.null(attr(x, "order")) || attr(x, "order") == "cladewise") 
+        if (is.null(attr(x, "order")) || attr(x, "order") != "postorder") 
             x <- reorder(x, "postorder")
         allChildrenCPP(x$edge)
     }
@@ -992,7 +995,7 @@ allChildren <- function(x){
 #' @keywords internal
 #' @export
 allDescendants <- function(x){
-    if (is.null(attr(x, "order")) || attr(x, "order") == "cladewise") 
+    if (is.null(attr(x, "order")) || attr(x, "order") != "postorder") 
         x <- reorder(x, "postorder")
     nTips <- as.integer(length(x$tip.label))
     allDescCPP(x$edge, nTips)
@@ -1038,6 +1041,7 @@ Descendants = function(x, node, type=c("tips","children","all")){
 #' @export
 Siblings = function (x, node, include.self = FALSE) 
 {
+    if(missing(node)) node <- as.integer(1:max(x$edge))
     l = length(node)
     if(l==1){
         v <- Children(x, Ancestors(x, node, "parent"))

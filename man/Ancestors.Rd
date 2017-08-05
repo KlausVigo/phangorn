@@ -2,6 +2,7 @@
 % Please edit documentation in R/treeManipulation.R
 \name{Ancestors}
 \alias{Ancestors}
+\alias{allDescendants}
 \alias{Children}
 \alias{Descendants}
 \alias{Siblings}
@@ -9,6 +10,8 @@
 \title{tree utility function}
 \usage{
 Ancestors(x, node, type = c("all", "parent"))
+
+allDescendants(x)
 
 Children(x, node)
 
@@ -41,7 +44,13 @@ easily derived matching against the \code{tip.label} argument of an phylo
 object, see example below.  All the functions allow \code{node} to be either
 a scalar or vector.  \code{mrca} is a faster version of the mrca in ape, in
 phangorn only because of dependencies.
+If the argument node is missing the function is evaluated for all nodes.
 }
+\section{Functions}{
+\itemize{
+\item \code{allDescendants}: list all the descendant nodes of each node
+}}
+
 \examples{
 
 tree = rtree(10)
@@ -52,6 +61,8 @@ Ancestors(tree, 1:3, "all")
 Children(tree, 11)
 Descendants(tree, 11, "tips")
 Siblings(tree, 3)
+# Siblings of all nodes
+Siblings(tree)
 mrca.phylo(tree, 1:3)
 mrca.phylo(tree, match(c("t1", "t2", "t3"), tree$tip))
 mrca.phylo(tree)
@@ -62,4 +73,5 @@ mrca.phylo(tree)
 \code{treewalk}, \code{\link[ape]{phylo}},
 \code{\link[ape]{nodelabels}}
 }
+\keyword{internal}
 \keyword{misc}
