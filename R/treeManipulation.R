@@ -9,6 +9,21 @@
 getRoot <- function (tree) 
 {
     if(!is.null(attr(tree, "order")) && attr(tree, "order") == 
+       "postorder"){
+        return(tree$edge[nrow(tree$edge), 1])
+    }    
+    z <- logical(max(tree$edge))
+    z[tree$edge[, 1]] = TRUE
+    z[tree$edge[, 2]] = FALSE
+    z <- which(z)
+    if (length(z) == 1) return(z)
+    else stop("There are apparently two root edges in your tree")
+}
+
+
+getRoot_old <- function (tree) 
+{
+    if(!is.null(attr(tree, "order")) && attr(tree, "order") == 
            "postorder"){
         return(tree$edge[nrow(tree$edge), 1])
     }    
@@ -985,8 +1000,9 @@ allChildren <- function(x){
         return(res)
     }
     else{
-        if (is.null(attr(x, "order")) || attr(x, "order") != "postorder") 
-            x <- reorder(x, "postorder")
+# not needed           
+#        if (is.null(attr(x, "order")) || attr(x, "order") != "postorder") 
+#            x <- reorder(x, "postorder")
         allChildrenCPP(x$edge)
     }
 }
