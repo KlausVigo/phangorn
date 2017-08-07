@@ -14,15 +14,15 @@ cache: packages
 
 bioc_required: true
 
-r_github_packages:
-  - jimhester/covr
+#r_github_packages:
+#  - jimhester/covr
 
 bioc_packages:
   - seqLogo
   - Biostrings
 
-after_success:
-  - Rscript -e 'library(covr);codecov()'
+#after_success:
+#  - Rscript -e 'library(covr);codecov()'
   
   
 notifications:
