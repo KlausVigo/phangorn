@@ -7,7 +7,9 @@ description: Klaus Schliep's publications
 
 ### journal articles
 
-**Klaus Schliep**, Alastair Alastair Potts, David A Morrison, Guido W Grimm (2017) Intertwining phylogenetic trees and networks (accepted in Methods in Ecology and Evolution) [dx.doi.org/10.1111/2041-210X.12760](https://dx.doi.org/10.1111/2041-210X.12760) 
+Ugur Uslu, Stefan Schliep, **Klaus Schliep**, Michael Erdmann, Hans-Uwe Koch, Hans Parsch, Stina Rosenheinrich, Doris Anzengruber, Anja Katrin Bosserhoff, Gerold Schuler and Beatrice Schuler-Thurner (2017) Comparison of the serum tumor markers S100 and melanoma inhibitory activity (MIA) in the monitoring of metastatic melanoma patients receiving vaccination immunotherapy with dendritic cells (accepted in Anticancer Research) 
+
+**Klaus Schliep**, Alastair Potts, David A Morrison, Guido W Grimm (2017) Intertwining phylogenetic trees and networks. Methods in Ecology and Evolution [dx.doi.org/10.1111/2041-210X.12760](https://dx.doi.org/10.1111/2041-210X.12760) 
 
 Paradis, E., Gosselin, T., Goudet, J., Jombart, T., and **Schliep, K.** (2017) Linking genomics and population genetics with R. Molecular Ecology Resources 17(1) 54--66 [dx.doi.org/10.1111/1755-0998.12577](http://dx.doi.org/10.1111/1755-0998.12577)
 
