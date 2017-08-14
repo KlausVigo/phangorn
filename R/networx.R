@@ -556,18 +556,17 @@ removeTrivialSplits <- function(obj){
 #' @export
 as.networx.splits <- function(x, planar=FALSE, coord = c("none", "2D", "3D"), ...){
   label <- attr(x, "label")
-  
-  x = addTrivialSplits(x)
-  
+  x <- addTrivialSplits(x)
   nTips <- length(label)
+  x <- oneWise(x, nTips) 
+  l <- lengths(x)
+  if(any(l==nTips))x <- x[l!=nTips] # get rid of trivial splits
+  l <- lengths(x)
+  
   weight <- attr(x, "weights")
   if(is.null(weight)) weight = rep(1, length(x))
   attr(x, "weights") <- weight
-  
-  x <- oneWise(x, nTips) 
-  l <- lengths(x)
-#  l <- sapply(x, length)
-  if(any(l==nTips))x <- x[l!=nTips] # get rid of trivial splits
+
   ext <- sum(l==1 | l==(nTips-1))
   if(!is.null(attr(x, "cycle"))){  
       c.ord <- attr(x, "cycle") 
