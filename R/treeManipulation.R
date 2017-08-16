@@ -483,6 +483,74 @@ nnin <- function (tree, n)
     result
 } 
 
+# faster for moves >> 1 
+n_nni <- function(tree, moves=1L){
+    edge    <- tree$edge
+    parent  <- edge[, 1]
+    child   <- edge[, 2]
+    nb.edge <- length(parent)
+    nb.node <- tree$Nnode
+    nb.tip  <- length(tree$tip.label)
+    
+    if(nb.tip==1) return(tree)
+    
+    pvector <- integer(max(edge)) # parents
+    pvector[child] <- parent   
+    
+    ch <- Children(tree)
+    
+    edges <- child[child %in% parent]  # these are the edges we sample from
+    
+    for(i in 1:moves){
+        p2 <- sample(edges, 1)
+        p1 <- pvector[p2]
+        ind1 <- ch[[p1]]
+        v1 <- ind1[ind1 != p2][1]
+        ind2 <- ch[[p2]]
+        r2 <- sample(2, 1)
+        v2 <- ind2[r2]
+        ind1[ind1 == v1] <- v2
+        ind2[r2] <- v1 
+        pvector[v1] <- p2
+        pvector[v2] <- p1
+    }   
+    tree$edge[,1] = pvector[child]
+    attr(tree, "order") <- NULL
+    reorder(tree, "postorder")
+}
+
+# roughly 2* fast from Martin Smith 
+one_nnin <- function (tree, n) {
+    edge    <- tree$edge
+    parent  <- edge[, 1]
+    child   <- edge[, 2]
+    lengths <- tree$edge.length
+    nb.tip  <- length(tree$tip.label)
+    ind     <- which(child > nb.tip)[n]
+    if(is.na(ind)) return(NULL)
+    nb.edge <- length(parent)
+    nb.node <- tree$Nnode
+    if (nb.node == 1) return(tree)
+    p1      <- parent[ind]
+    p2      <- child[ind]
+    ind1    <- which(parent == p1)
+    ind1    <- ind1[ind1 != ind][1]
+    ind2    <- which(parent == p2)[sample(2, 1)]
+    new_ind <- c(ind2, ind1)
+    old_ind <- c(ind1, ind2)
+    child_swap <- child[new_ind]
+    edge [old_ind, 2L] <- child_swap
+    child[old_ind] <- child_swap
+    
+    neworder <- reorderRcpp(edge, as.integer(nb.tip), as.integer(nb.tip+1L), 2L)
+    tree$edge <- edge[neworder, ]
+    if (!is.null(tree$edge.length)) {
+        lengths[old_ind] <- lengths[new_ind]
+        tree$edge.length <- lengths[neworder]
+    }
+    attr(tree, "order") <- "postorder"
+    tree
+}
 
 
 ## @aliases nni rNNI rSPR
