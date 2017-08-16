@@ -86,7 +86,7 @@ List bipCPP(IntegerMatrix orig, int nTips) {
 // import: edge matrix
 // export: list of children 
 // [[Rcpp::export]]
-List allChildrenCPP(IntegerMatrix orig) {
+List allChildrenCPP(const IntegerMatrix orig) {
     IntegerVector parent = orig( _, 0);
     IntegerVector children = orig( _, 1);
     int m = max(parent);
