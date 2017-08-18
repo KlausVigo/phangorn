@@ -26,6 +26,10 @@ markdown: kramdown
 #
 JB :
   version : 0.3.0
+  
+# add Atom (RSS) feeds  
+plugins:
+  - jekyll-feed  
 
   # All links will be namespaced by BASE_PATH if defined.
   # Links in your website should always be prefixed with {{BASE_PATH}}
