@@ -14,7 +14,7 @@ delta.quartet <-
         m1 <- dist.dna[quartet[1],quartet[2]] + dist.dna[quartet[3],quartet[4]]
         m2 <- dist.dna[quartet[1],quartet[3]] + dist.dna[quartet[2],quartet[4]]
         m3 <- dist.dna[quartet[1],quartet[4]] + dist.dna[quartet[2],quartet[3]]
-        m <- sort(c(m1,m2,m3),decreasing=T)
+        m <- sort(c(m1,m2,m3),decreasing=TRUE)
         if((m[1]-m[3])!=0) {
             ret <- (m[1]-m[2])/(m[1]-m[3])
         } else {

@@ -69,7 +69,7 @@ changeEdge = function (tree, swap, edge = NULL, edge.length = NULL)
     attr(tree, "order") = NULL
     child <- tree$edge[, 2]
     tmp = numeric(max(child))
-    tmp[child] = 1:length(child)
+    tmp[child] = seq_along(child)
     tree$edge[tmp[swap[1]], 2] = swap[2]
     tree$edge[tmp[swap[2]], 2] = swap[1]
     if (!is.null(edge)) {
@@ -753,9 +753,9 @@ kSPR = function(tree, k=NULL){
 #    tab = table(dN) 
     tab[1] = tab[1] * 2 
     tab[-1] = tab[-1] * 8   
-    if(is.null(k)) k = 1:length(tab)
-    k = na.omit((1:length(tab))[k])
-    if(length(k)>1)k = sample((1:length(tab))[k], 1, prob=tab[k] / sum(tab[k]) )
+    if(is.null(k)) k = seq_along(tab)
+    k = na.omit((seq_along(tab))[k])
+    if(length(k)>1)k = sample((seq_along(tab))[k], 1, prob=tab[k] / sum(tab[k]) )
     if(k==1) return(rNNI(tree, 1, 1))
     index = which(distN==k, arr.ind=TRUE) + l
     m = dim(index)[1]
@@ -782,7 +782,7 @@ oneOf4 = function(tree, ind1, ind2, from=1, to=1){
 
     child = tree$edge[,2]
     tmp = numeric(max(tree$edge))
-    tmp[child] = 1:length(child)
+    tmp[child] = seq_along(child)
 
     edge = tree$edge
     edge[tmp[kids1[-from]],1] = Ancestors(tree, ind1, "parent")
@@ -1072,7 +1072,7 @@ allChildren <- function(x){
         parent = x$edge[,1]
         children = x$edge[,2]
         res = vector("list", max(x$edge))
-        for(i in 1:length(parent)) res[[parent[i]]] = c(res[[parent[i]]], children[i])
+        for(i in seq_along(parent)) res[[parent[i]]] = c(res[[parent[i]]], children[i])
         return(res)
     }
     else{
