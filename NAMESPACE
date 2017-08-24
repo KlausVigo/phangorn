@@ -2,7 +2,7 @@ useDynLib(phangorn, .registration=TRUE)
 
 importFrom(ape, as.DNAbin, as.phylo, plot.phylo, as.prop.part, nj,old2new.phylo, dist.dna,
     new2old.phylo, cophenetic.phylo, is.rooted, unroot, root, is.binary.tree, as.alignment,
-    di2multi, multi2di, .uncompressTipLabel, .compressTipLabel, prop.part, Ntip,
+    di2multi, multi2di, .uncompressTipLabel, .compressTipLabel, prop.part, Ntip, getMRCA,
     postprocess.prop.part, speciesTree, plotPhyloCoor, cladogram.plot, phylogram.plot,
     node.depth.edgelength, drop.tip, stree, rtree, rcoal, rmtree, is.ultrametric, .PlotPhyloEnv,
     nodelabels, edgelabels, BOTHlabels, read.nexus.data, write.nexus.data, 

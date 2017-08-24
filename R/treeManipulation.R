@@ -932,7 +932,11 @@ rNNI <- function (tree, moves = 1, n = length(moves))
     if (n == 1) {
         trees = tree
         if(moves>0){
-            for (i in 1:moves) trees = nnin(trees, sample(k, 1))[[sample(2,1)]]
+            if (moves > 10) n_nni(tree, moves)
+            else{  
+            for (i in 1:moves) trees <- one_nnin(tree, n) 
+            }
+            #trees = nnin(trees, sample(k, 1))[[sample(2,1)]]
         }
         trees$tip.label <- tree$tip.label
     }
@@ -942,7 +946,11 @@ rNNI <- function (tree, moves = 1, n = length(moves))
         for (j in 1:n) {
             tmp = tree
             if(moves[j]>0){
-                for (i in 1:moves[j]) tmp = nnin(tmp, sample(k, 1))[[sample(2,1)]]
+#                for (i in 1:moves[j]) tmp = nnin(tmp, sample(k, 1))[[sample(2,1)]]
+                if (moves > 10) n_nni(tree, moves)
+                else{  
+                    for (i in 1:moves) trees <- one_nnin(tree, n) 
+                }
             }
             tmp$tip.label = NULL
             trees[[j]] = tmp
@@ -1159,9 +1167,10 @@ Siblings = function (x, node, include.self = FALSE)
 #' @export
 mrca.phylo <- function(x, node=NULL){
     if(is.null(node)) return(mrca2(x))
-    anc <- Ancestors(x, node, type = "all")
-    res <- Reduce(intersect, anc)[1]
-    res
+    return(getMRCA(x, node))
+#    anc <- Ancestors(x, node, type = "all")
+#    res <- Reduce(intersect, anc)[1]
+#    res
 }
 
 
