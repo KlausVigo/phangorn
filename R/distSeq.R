@@ -376,3 +376,24 @@ readDist <- function(file){ #, format="phylip"
     dimnames(dm)=list(labels, labels)    
     as.dist(dm)
 }
+
+
+#' @rdname writeDist
+#' @export 
+unique.dist <-  function(x){-
+        y <- as.matrix(x) 
+        l <- nrow(y)
+        z <- character(l)
+        for(i in seq_len(l)) z[i] <- paste( round(y[i, -i] ,8), "\r")
+        if(any(duplicated(z))){
+            ind <- !duplicated(z)
+            y <- y[ind, ind]
+            if(is.matrix(x))return(y)
+            if(inherits(x, "dist")){
+                #            attrib <- attributes(x)
+                res <- as.dist(y, diag = attr(x, "Diag"), upper = attr(x, "Upper"))  
+                return(res)
+            }
+        }
+        x
+}
