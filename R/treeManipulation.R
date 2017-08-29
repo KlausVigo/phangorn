@@ -666,7 +666,7 @@ allTrees <- function (n, rooted = FALSE, tip.label = NULL)
             newedges <- vector("list", m2)
             for (j in 1:m) {
                 edge <- edges[[j]]
-                l <- nr  # nrindexNNI3(tree)ow(edge)
+                l <- nr  # nrow(edge)
 
                     edgeA <- edge
                     edgeB <- edge
