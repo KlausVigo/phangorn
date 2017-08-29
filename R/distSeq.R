@@ -379,6 +379,7 @@ readDist <- function(file){ #, format="phylip"
 
 
 #' @rdname writeDist
+#' @param incomparables Not used so far.
 #' @export 
 unique.dist <-  function(x, incomparables, ...){
         y <- as.matrix(x) 

@@ -4,6 +4,7 @@
 \alias{writeDist}
 \alias{write.nexus.dist}
 \alias{readDist}
+\alias{unique.dist}
 \title{Writing and reading distances in phylip and nexus format}
 \usage{
 writeDist(x, file = "", format = "phylip", ...)
@@ -12,6 +13,8 @@ write.nexus.dist(x, file = "", append = FALSE, upper = FALSE,
   diag = TRUE, digits = getOption("digits"), taxa = !append)
 
 readDist(file)
+
+\method{unique}{dist}(x, incomparables, ...)
 }
 \arguments{
 \item{x}{A \code{dist} object.}
@@ -33,6 +36,8 @@ should be printed.}
 \item{digits}{passed to format inside of \code{write.nexus.dist}.}
 
 \item{taxa}{logical. If TRUE a taxa block is added.}
+
+\item{incomparables}{Not used so far.}
 }
 \value{
 an object of class \code{dist}
