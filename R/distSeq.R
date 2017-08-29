@@ -380,7 +380,7 @@ readDist <- function(file){ #, format="phylip"
 
 #' @rdname writeDist
 #' @export 
-unique.dist <-  function(x){-
+unique.dist <-  function(x, incomparables, ...){
         y <- as.matrix(x) 
         l <- nrow(y)
         z <- character(l)
