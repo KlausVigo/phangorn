@@ -188,6 +188,214 @@ fitchCoding2ambiguous <- function(x, type="DNA"){
 }    
 
 
+#' @rdname ancestral.pml
+#' @export
+ancestral.pars <- function (tree, data, type = c("MPR", "ACCTRAN"), cost=NULL) 
+{
+    call <- match.call()
+    type <- match.arg(type)
+    if (type == "ACCTRAN") 
+        res = ptree(tree, data, retData = TRUE)[[2]]
+    #    if (type == "MPR") 
+    #        res = mpr(tree, data)
+    if (type == "MPR"){ 
+        res <- mpr(tree, data, cost=cost)
+        attr(res, "call") = call
+        return(res)
+    }
+    l = length(tree$tip.label)
+    
+    x = attributes(data)
+    m = dim(res)[2]
+    label = as.character(1:m)
+    nam = tree$tip.label
+    label[1:length(nam)] = nam
+    x[["names"]] = label
+    
+    nc = attr(data, "nc")
+    result = vector("list", m) 
+    Z = unique(as.vector(res))
+    tmp = t(sapply(Z, function(x)dec2bin(x, nc)))
+    tmp = tmp / rowSums(tmp)
+    #    rownames(tmp) = Z
+    dimnames(tmp) = list(Z, attr(data, "levels"))
+    for(i in 1:m){ 
+        #        tmp = t(sapply(res[,i], function(x, k=4)dec2bin(x, nc)))
+        #        result[[i]] = tmp / rowSums(tmp) no indices
+        #         test = match(res[,i], Z) sollte stimmen wegen fitch
+        result[[i]] = tmp[as.character(res[,i]),,drop=FALSE]
+        rownames(result[[i]]) = NULL
+    }
+    
+    attributes(result) = x
+    attr(result, "call") <- call
+    result
+}
+
+
+#' @rdname ancestral.pml
+#' @export
+pace <- ancestral.pars
+
+
+mpr.help = function (tree, data, cost=NULL) 
+{   
+    tree<- reorder(tree, "postorder")     
+    if (!inherits(data,"phyDat")) 
+        stop("data must be of class phyDat")    
+    levels <- attr(data, "levels")
+    l = length(levels)
+    if (is.null(cost)) {
+        cost <- matrix(1, l, l)
+        cost <- cost - diag(l)
+    }   
+    weight = attr(data, "weight")
+    p = attr(data, "nr")
+    kl = TRUE
+    i = 1
+    dat <- prepareDataSankoff(data)
+    for (i in 1:length(dat)) storage.mode(dat[[i]]) = "double"    
+    tmp = fit.sankoff(tree, dat, cost, returnData='data')
+    p0 = tmp[[1]]    
+    datf = tmp[[2]]
+    datp = pnodes(tree, datf, cost) 
+    
+    nr = attr(data, "nr")
+    nc = attr(data, "nc")
+    node <- tree$edge[, 1]
+    edge <- tree$edge[, 2]
+    
+    node = as.integer(node - 1)      
+    edge = as.integer(edge - 1) 
+    
+    res <- .Call("sankoffMPR", datf, datp, as.numeric(cost), as.integer(nr),as.integer(nc),
+                 node, edge, PACKAGE="phangorn")    
+    root = getRoot(tree)
+    res[[root]] <- datf[[root]]
+    res
+}
+
+
+mpr <- function(tree, data, cost=NULL){
+    data = subset(data, tree$tip.label)
+    att = attributes(data)
+    nr = att$nr
+    nc = att$nc
+    res <- mpr.help(tree,data,cost)
+    l = length(tree$tip.label)
+    m = length(res)
+    label = as.character(1:m)
+    nam = tree$tip.label
+    label[1:length(nam)] = nam
+    att[["names"]] = label
+    ntips = length(tree$tip.label)
+    contrast = att$contrast
+    eps=5e-6
+    rm = apply(res[[ntips+1]], 1, min)
+    RM = matrix(rm,nr, nc) + eps
+    for(i in 1:ntips) res[[i]] = contrast[data[[i]],,drop=FALSE]
+    for(i in (ntips+1):m) res[[i]][] = as.numeric(res[[i]] < RM)
+    fun = function(X){
+        rs = apply(X, 1, sum)
+        X / rs
+    }
+    res <- lapply(res, fun)
+    attributes(res) = att
+    res
+}
+
+
+#' @rdname ancestral.pml
+#' @export
+plotAnc <- function (tree, data, i = 1, col=NULL, cex.pie=par("cex"), pos="bottomright", ...)
+{
+    y = subset(data, , i)
+    #   args <- list(...)
+    #   CEX <- if ("cex" %in% names(args))
+    #       args$cex 
+    #   else par("cex")
+    CEX = cex.pie
+    xrad <- CEX * diff(par("usr")[1:2])/50
+    levels = attr(data, "levels")
+    nc = attr(data, "nc")
+    y = matrix(unlist(y[]), ncol = nc, byrow = TRUE)
+    l = dim(y)[1]
+    dat = matrix(0, l, nc)
+    for (i in 1:l) dat[i, ] = y[[i]]
+    plot(tree, label.offset = 1.1 * xrad, plot = FALSE, ...)
+    lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
+    XX <- lastPP$xx
+    YY <- lastPP$yy
+    xrad <- CEX * diff(lastPP$x.lim * 1.1)/50
+    par(new = TRUE)
+    plot(tree, label.offset = 1.1 * xrad, plot = TRUE, ...)
+    if(is.null(col)) col = rainbow(nc)
+    if(length(col)!=nc) warning("Length of color vector differs from number of levels!")
+    BOTHlabels(pie = y, XX = XX, YY = YY, adj = c(0.5, 0.5),
+               frame = "rect", pch = NULL, sel = 1:length(XX), thermo = NULL,
+               piecol = col, col = "black", bg = "lightblue", horiz = FALSE,
+               width = NULL, height = NULL, cex=cex.pie)
+    legend(pos, levels, text.col = col)
+}
+
+
+ptree2 <- function (tree, data, type = "ACCTRAN", retData = FALSE) 
+{
+    if (!inherits(data,"phyDat")) 
+        stop("data must be of class phyDat")
+    if (is.null(attr(tree, "order")) || attr(tree, "order") == 
+        "cladewise") 
+        tree <- reorder(tree, "postorder")  
+    if (!is.binary.tree(tree)) 
+        stop("Tree must be binary!")
+    tmp = fitch(tree, data, site = "data")
+    nr = attr(data, "nr")
+    node <- tree$edge[, 1]
+    edge <- tree$edge[, 2]
+    weight = attr(data, "weight")
+    m = length(edge) + 1
+    q = length(tree$tip.label)
+    l = as.integer(length(edge))
+    nTips = length(tree$tip.label)
+    dat = tmp[[2]]
+    if (!is.rooted(tree)) {
+        root = getRoot(tree)
+        ind = edge[node == root]
+        rSeq = .C("fitchTriplet", integer(nr), dat[, ind[1]], 
+                  dat[, ind[2]], dat[, ind[3]], as.integer(nr))
+        dat[, root] = rSeq[[1]]
+    }
+    #    result <- .C("ACCTRAN2", dat, as.integer(nr), numeric(nr), 
+    #        as.integer(node[l:1L]), as.integer(edge[l:1L]), l, as.double(weight), numeric(l), as.integer(nTips))
+    result <- .C("ACCTRAN2", dat, as.integer(nr), 
+                 as.integer(node[l:1L]), as.integer(edge[l:1L]), l, as.integer(nTips))
+    el = result[[5]][l:1L]
+    if (!is.rooted(tree)) {
+        ind2 = which(node[] == root)
+        dat = matrix(result[[1]], nr, max(node))
+        result <- .C("ACCTRAN3", result[[1]], as.integer(nr), 
+                     numeric(nr), as.integer(node[(l - 3L):1L]), as.integer(edge[(l - 
+                                                                                      3L):1L]), l - 3L, as.double(weight), numeric(l)) # , as.integer(nTips)
+        el = result[[8]][(l - 3L):1L]
+        pars = .C("fitchTripletACC4", dat[, root], dat[, ind[1]], 
+                  dat[, ind[2]], dat[, ind[3]], as.integer(nr), numeric(1), 
+                  numeric(1), numeric(1), as.double(weight), numeric(nr), 
+                  integer(nr))
+        el[ind2[1]] = pars[[6]]
+        el[ind2[2]] = pars[[7]]
+        el[ind2[3]] = pars[[8]]
+    }
+    else {
+        result <- .C("ACCTRAN3", result[[1]], as.integer(nr), 
+                     numeric(nr), as.integer(node[l:1L]), as.integer(edge[l:1L]), 
+                     l, as.double(weight), numeric(l)) # , as.integer(nTips)
+        el = result[[8]][l:1L]
+    }
+    tree$edge.length = el
+    if (retData) 
+        return(list(tree, matrix(result[[1]], nr, max(node))))
+    tree
+}
 
 
 # raus ??
