@@ -109,6 +109,20 @@ oneWise <- function (x, nTips=NULL)
 }
 
 
+zeroWise <- function (x, nTips=NULL) 
+{
+    if(is.null(nTips))nTips <- length(x[[1L]])
+    v <- 1:nTips
+    for (i in 1:length(x)) {
+        y <- x[[i]]
+        if (y[1] == 1)  
+            y <- v[-y]
+        x[[i]] <- y      
+    }
+    x
+}
+
+
 ## @aliases treedist RF.dist wRF.dist KF.dist path.dist sprdist SPR.dist
 
 #' Distances between trees
