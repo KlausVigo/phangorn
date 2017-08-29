@@ -153,7 +153,7 @@ nni <- function (tree)
 
 #' @rdname nni
 #' @export
-rNNI_fast <- function (tree, moves = 1, n = length(moves)) 
+rNNI <- function (tree, moves = 1, n = length(moves)) 
 {
     k = length(na.omit(match(tree$edge[, 2], tree$edge[, 1])))
     
