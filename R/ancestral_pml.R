@@ -59,7 +59,8 @@
 #' 
 #' @rdname ancestral.pml
 #' @export 
-ancestral.pml <- function (object, type=c("marginal", "ml", "bayes"), return="prob") 
+ancestral.pml <- function(object, type=c("marginal", "ml", "bayes"), 
+                          return="prob") 
 {
     call <- match.call()
     pt <- match.arg(type, c("marginal", "joint", "ml", "bayes"))   
@@ -115,7 +116,8 @@ ancestral.pml <- function (object, type=c("marginal", "ml", "bayes"), return="pr
     pos <- ind2[match(as.integer(1L:ncol(contrast)),  ind2[,2]),1]
     
     nco = as.integer(dim(contrast)[1])
-    for(i in 1:l)dat[i,(nTips + 1):m] <- .Call("LogLik2", data, P[i,], nr, nc, node, edge, nTips, mNodes, contrast, nco, PACKAGE = "phangorn")
+    for(i in 1:l)dat[i,(nTips + 1):m] <- .Call("LogLik2", data, P[i,], nr, nc, 
+                node, edge, nTips, mNodes, contrast, nco, PACKAGE = "phangorn")
     
     parent <- tree$edge[, 1]
     child <- tree$edge[, 2]
@@ -154,7 +156,7 @@ ancestral.pml <- function (object, type=c("marginal", "ml", "bayes"), return="pr
 #}
     
 
-# in ancestral.pml
+# in ancestral.pml and ancestral.pars
 ancestral2phyDat <- function(x) {
     eps <- 1.0e-5
     contr <- attr(x, "contrast")
@@ -172,6 +174,21 @@ ancestral2phyDat <- function(x) {
 # in ancestral.pml
 # variante fuer parsimony und ambiguous DNA 
 
+prob2fitchCoding <- function(x, eps=0.999){
+    row_max <- apply(X, 1, max)
+    x <- x / row_max
+    as.vector((x>eps) %*% c(1L, 2L, 4L, 8L))
+}
+
+
+fitchCoding2ambiguous <- function(x, type="DNA"){
+    y <- c(1L, 2L, 4L, 8L, 8L, 3L, 5L, 9L, 6L, 10L, 12L, 7L, 11L, 13L, 
+           14L, 15L, 15L, 15L)
+    fmatch(x, y)
+}    
+
+
+
 
 # raus ??
 fast.tree  = function(tree, node){
@@ -180,7 +197,8 @@ fast.tree  = function(tree, node){
     l = lengths(children)
 #    l = sapply(children, length)
     edge = cbind(rep(parent, l), unlist(children))
-    obj = list(edge=edge, Nnode=sum(l>0), tip.label=as.character(edge[is.na(match(edge[,2], edge[,1])),2]))
+    obj = list(edge=edge, Nnode=sum(l>0), 
+               tip.label=as.character(edge[is.na(match(edge[,2], edge[,1])),2]))
     class(obj) = 'phylo'
     obj
 }
@@ -191,7 +209,8 @@ fast.tree2  = function(tree, node){
     edge = tree$edge 
     ind = match(edge[,1], parent)
     edge=edge[which(!is.na(ind)),] 
-    obj = list(edge=edge, Nnode=length(parent), tip.label=as.character(edge[is.na(match(edge[,2], edge[,1])),2]))
+    obj = list(edge=edge, Nnode=length(parent), 
+               tip.label=as.character(edge[is.na(match(edge[,2], edge[,1])),2]))
     class(obj) = 'phylo'
     obj
 }
