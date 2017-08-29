@@ -36,12 +36,6 @@ test_that("allTrees", {
 })
 
 
-test_that("nni", {
-    ## nni
-    expect_is(nni(tree), "multiPhylo")
-    expect_true(all(RF.dist(nni(tree), tree)>0))
-})
-
 
 # TODO: check why rooted trees give error in development version
 test_that("midpoint", {

@@ -4,11 +4,13 @@ set.seed(42)
 tree_u <- rtree(100, rooted=FALSE)
 tree_r <- rtree(100)
 
-nni_trees_u <- nni(tree_u)
-nni_trees_r <- nni(tree_r)
-
 
 test_that("nni", {
+    nni_trees_u <- nni(tree_u)
+    nni_trees_r <- nni(tree_r)
+    ## nni
+    expect_is(nni(tree), "multiPhylo")
+    expect_true(all(RF.dist(nni_trees_u, tree_u)>0))
     expect_true(length(nni_trees_u) == 194L)
     expect_true(length(nni_trees_r) == 196L)
     expect_true(all( RF.dist(tree_u, nni_trees_u) == 2))
