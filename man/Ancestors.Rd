@@ -53,7 +53,7 @@ If the argument node is missing the function is evaluated for all nodes.
 
 \examples{
 
-tree = rtree(10)
+tree <- rtree(10)
 plot(tree, show.tip.label = FALSE)
 nodelabels()
 tiplabels()
