@@ -44,9 +44,9 @@
 #' @examples
 #' 
 #' example(NJ)
-#' fit = pml(tree, Laurasiatherian)
-#' anc.ml = ancestral.pml(fit, type = "ml")
-#' anc.p = ancestral.pars(tree, Laurasiatherian)
+#' fit <- pml(tree, Laurasiatherian)
+#' anc.ml <- ancestral.pml(fit, type = "ml")
+#' anc.p <- ancestral.pars(tree, Laurasiatherian)
 #' \dontrun{
 #' require(seqLogo)
 #' seqLogo( t(subset(anc.ml, 48, 1:20)[[1]]), ic.scale=FALSE)
@@ -64,88 +64,88 @@ ancestral.pml <- function(object, type=c("marginal", "ml", "bayes"),
 {
     call <- match.call()
     pt <- match.arg(type, c("marginal", "joint", "ml", "bayes"))   
-    tree = object$tree 
+    tree <- object$tree 
     
     INV <- object$INV
     inv <- object$inv
     
-    data = getCols(object$data, tree$tip.label) 
+    data <- getCols(object$data, tree$tip.label) 
     if (is.null(attr(tree, "order")) || attr(tree, "order") == 
         "cladewise") 
         tree <- reorder(tree, "postorder")
-    nTips = length(tree$tip.label)
+    nTips <- length(tree$tip.label)
     node <- tree$edge[, 1]
     edge <- tree$edge[, 2]
-    m = length(edge) + 1  # max(edge)
-    w = object$w
-    g = object$g
-    l = length(w)    
+    m <- length(edge) + 1  # max(edge)
+    w <- object$w
+    g <- object$g
+    l <- length(w)    
     nr <- attr(data, "nr")
     nc <- attr(data, "nc")
-    dat = vector(mode = "list", length = m*l)
-    result = vector(mode = "list", length = m)
+    dat <- vector(mode = "list", length = m*l)
+    result <- vector(mode = "list", length = m)
     dim(dat) <- c(l,m)
     
-    x = attributes(data)
-    label = as.character(1:m)
-    nam = tree$tip.label
-    label[1:length(nam)] = nam
-    x[["names"]] = label
+    x <- attributes(data)
+    label <- as.character(1:m)
+    nam <- tree$tip.label
+    label[1:length(nam)] <- nam
+    x[["names"]] <- label
     
     
-    tmp = length(data)
+    tmp <- length(data)
     
-    if(return!="phyDat")result = new2old.phyDat(data) 
-    else result[1:nTips] = data
-    eig = object$eig
+    if(return!="phyDat")result <- new2old.phyDat(data) 
+    else result[1:nTips] <- data
+    eig <- object$eig
     
-    bf = object$bf
+    bf <- object$bf
     el <- tree$edge.length
     P <- getP(el, eig, g)
     nr <- as.integer(attr(data, "nr"))
     nc <- as.integer(attr(data, "nc"))
-    node = as.integer(node - min(node))
-    edge = as.integer(edge - 1)
-    nTips = as.integer(length(tree$tip.label))
-    mNodes = as.integer(max(node) + 1)
-    contrast = attr(data, "contrast")
+    node <- as.integer(node - min(node))
+    edge <- as.integer(edge - 1)
+    nTips <- as.integer(length(tree$tip.label))
+    mNodes <- as.integer(max(node) + 1)
+    contrast <- attr(data, "contrast")
 # proper format    
     eps <- 1.0e-5
     ind1 <- which( apply(contrast, 1, function(x)sum(x > eps)) == 1L)
     ind2 <- which( contrast[ind1, ] > eps, arr.ind = TRUE)
     pos <- ind2[match(as.integer(1L:ncol(contrast)),  ind2[,2]),1]
     
-    nco = as.integer(dim(contrast)[1])
+    nco <- as.integer(dim(contrast)[1])
     for(i in 1:l)dat[i,(nTips + 1):m] <- .Call("LogLik2", data, P[i,], nr, nc, 
                 node, edge, nTips, mNodes, contrast, nco, PACKAGE = "phangorn")
     
     parent <- tree$edge[, 1]
     child <- tree$edge[, 2]
-    nTips = min(parent) - 1
+    nTips <- min(parent) - 1
 # in C with scaling    
     for(i in 1:l){     
         for (j in (m - 1):1) {
             if (child[j] > nTips){
-                tmp2 = (dat[[i, parent[j]]]/(dat[[i,child[j]]] %*% P[[i,j]]))
-                dat[[i, child[j]]] = (tmp2 %*% P[[i,j]]) * dat[[i, child[j]]]  
+                tmp2 <- (dat[[i, parent[j]]]/(dat[[i,child[j]]] %*% P[[i,j]]))
+                dat[[i, child[j]]] <- (tmp2 %*% P[[i,j]]) * dat[[i, child[j]]]  
             }
         }
     }
     for (j in unique(parent)) {
         tmp <- matrix(0, nr, nc)
-        if(inv>0) tmp = as.matrix(INV) * inv
+        if(inv>0) tmp <- as.matrix(INV) * inv
         for(i in 1:l){  
 # scaling!!!            
-            tmp = tmp + w[i] * dat[[i, j]]                                 
+            tmp <- tmp + w[i] * dat[[i, j]]                                 
         }
-        if ( (pt == "bayes") || (pt == "marginal")) tmp = tmp * rep(bf, each=nr)
-        tmp = tmp / rowSums(tmp)
+        if ( (pt == "bayes") || (pt == "marginal")) tmp <- tmp * rep(bf, each=nr)
+        tmp <- tmp / rowSums(tmp)
         
         if(return=="phyDat") tmp <- pos[apply(tmp, 1, which.max)]
         
-        result[[j]] = tmp
+        result[[j]] <- tmp
     } 
-    attributes(result) = x
+    attributes(result) <- x
     attr(result, "call") <- call
     result 
 }
@@ -175,7 +175,7 @@ ancestral2phyDat <- function(x) {
 # variante fuer parsimony und ambiguous DNA 
 
 prob2fitchCoding <- function(x, eps=0.999){
-    row_max <- apply(X, 1, max)
+    row_max <- apply(x, 1, max)
     x <- x / row_max
     as.vector((x>eps) %*% c(1L, 2L, 4L, 8L))
 }
@@ -195,39 +195,39 @@ ancestral.pars <- function (tree, data, type = c("MPR", "ACCTRAN"), cost=NULL)
     call <- match.call()
     type <- match.arg(type)
     if (type == "ACCTRAN") 
-        res = ptree(tree, data, retData = TRUE)[[2]]
+        res <- ptree(tree, data, retData = TRUE)[[2]]
     #    if (type == "MPR") 
     #        res = mpr(tree, data)
     if (type == "MPR"){ 
         res <- mpr(tree, data, cost=cost)
-        attr(res, "call") = call
+        attr(res, "call") <- call
         return(res)
     }
-    l = length(tree$tip.label)
+    l <- length(tree$tip.label)
     
-    x = attributes(data)
-    m = dim(res)[2]
-    label = as.character(1:m)
-    nam = tree$tip.label
-    label[1:length(nam)] = nam
-    x[["names"]] = label
+    x <- attributes(data)
+    m <- dim(res)[2]
+    label <- as.character(1:m)
+    nam <- tree$tip.label
+    label[1:length(nam)] <- nam
+    x[["names"]] <- label
     
-    nc = attr(data, "nc")
-    result = vector("list", m) 
-    Z = unique(as.vector(res))
-    tmp = t(sapply(Z, function(x)dec2bin(x, nc)))
-    tmp = tmp / rowSums(tmp)
-    #    rownames(tmp) = Z
-    dimnames(tmp) = list(Z, attr(data, "levels"))
+    nc <- attr(data, "nc")
+    result <- vector("list", m) 
+    Z <- unique(as.vector(res))
+    tmp <- t(sapply(Z, function(x)dec2bin(x, nc)))
+    tmp <- tmp / rowSums(tmp)
+    #    rownames(tmp) <- Z
+    dimnames(tmp) <- list(Z, attr(data, "levels"))
     for(i in 1:m){ 
-        #        tmp = t(sapply(res[,i], function(x, k=4)dec2bin(x, nc)))
-        #        result[[i]] = tmp / rowSums(tmp) no indices
-        #         test = match(res[,i], Z) sollte stimmen wegen fitch
-        result[[i]] = tmp[as.character(res[,i]),,drop=FALSE]
-        rownames(result[[i]]) = NULL
+        #        tmp <- t(sapply(res[,i], function(x, k=4)dec2bin(x, nc)))
+        #        result[[i]] <- tmp / rowSums(tmp) no indices
+        #         test <- match(res[,i], Z) sollte stimmen wegen fitch
+        result[[i]] <- tmp[as.character(res[,i]),,drop=FALSE]
+        rownames(result[[i]]) <- NULL
     }
     
-    attributes(result) = x
+    attributes(result) <- x
     attr(result, "call") <- call
     result
 }
@@ -238,69 +238,69 @@ ancestral.pars <- function (tree, data, type = c("MPR", "ACCTRAN"), cost=NULL)
 pace <- ancestral.pars
 
 
-mpr.help = function (tree, data, cost=NULL) 
+mpr.help <- function (tree, data, cost=NULL) 
 {   
     tree<- reorder(tree, "postorder")     
     if (!inherits(data,"phyDat")) 
         stop("data must be of class phyDat")    
     levels <- attr(data, "levels")
-    l = length(levels)
+    l <- length(levels)
     if (is.null(cost)) {
         cost <- matrix(1, l, l)
         cost <- cost - diag(l)
     }   
-    weight = attr(data, "weight")
-    p = attr(data, "nr")
-    kl = TRUE
-    i = 1
+    weight <- attr(data, "weight")
+    p <- attr(data, "nr")
+    kl <- TRUE
+    i <- 1
     dat <- prepareDataSankoff(data)
-    for (i in 1:length(dat)) storage.mode(dat[[i]]) = "double"    
-    tmp = fit.sankoff(tree, dat, cost, returnData='data')
-    p0 = tmp[[1]]    
-    datf = tmp[[2]]
-    datp = pnodes(tree, datf, cost) 
+    for (i in 1:length(dat)) storage.mode(dat[[i]]) <- "double"    
+    tmp <- fit.sankoff(tree, dat, cost, returnData='data')
+    p0 <- tmp[[1]]    
+    datf <- tmp[[2]]
+    datp <- pnodes(tree, datf, cost) 
     
-    nr = attr(data, "nr")
-    nc = attr(data, "nc")
+    nr <- attr(data, "nr")
+    nc <- attr(data, "nc")
     node <- tree$edge[, 1]
     edge <- tree$edge[, 2]
     
-    node = as.integer(node - 1)      
-    edge = as.integer(edge - 1) 
+    node <- as.integer(node - 1)      
+    edge <- as.integer(edge - 1) 
     
     res <- .Call("sankoffMPR", datf, datp, as.numeric(cost), as.integer(nr),as.integer(nc),
                  node, edge, PACKAGE="phangorn")    
-    root = getRoot(tree)
+    root <- getRoot(tree)
     res[[root]] <- datf[[root]]
     res
 }
 
 
 mpr <- function(tree, data, cost=NULL){
-    data = subset(data, tree$tip.label)
-    att = attributes(data)
-    nr = att$nr
-    nc = att$nc
+    data <- subset(data, tree$tip.label)
+    att <- attributes(data)
+    nr <- att$nr
+    nc <- att$nc
     res <- mpr.help(tree,data,cost)
-    l = length(tree$tip.label)
-    m = length(res)
-    label = as.character(1:m)
-    nam = tree$tip.label
-    label[1:length(nam)] = nam
-    att[["names"]] = label
-    ntips = length(tree$tip.label)
-    contrast = att$contrast
-    eps=5e-6
-    rm = apply(res[[ntips+1]], 1, min)
-    RM = matrix(rm,nr, nc) + eps
-    for(i in 1:ntips) res[[i]] = contrast[data[[i]],,drop=FALSE]
-    for(i in (ntips+1):m) res[[i]][] = as.numeric(res[[i]] < RM)
-    fun = function(X){
-        rs = apply(X, 1, sum)
+    l <- length(tree$tip.label)
+    m <- length(res)
+    label <- as.character(1:m)
+    nam <- tree$tip.label
+    label[1:length(nam)] <- nam
+    att[["names"]] <- label
+    ntips <- length(tree$tip.label)
+    contrast <- att$contrast
+    eps <- 5e-6
+    rm <- apply(res[[ntips+1]], 1, min)
+    RM <- matrix(rm,nr, nc) + eps
+    for(i in 1:ntips) res[[i]] <- contrast[data[[i]],,drop=FALSE]
+    for(i in (ntips+1):m) res[[i]][] <- as.numeric(res[[i]] < RM)
+    fun <- function(X){
+        rs <- apply(X, 1, sum)
         X / rs
     }
     res <- lapply(res, fun)
-    attributes(res) = att
+    attributes(res) <- att
     res
 }
 
@@ -309,19 +309,19 @@ mpr <- function(tree, data, cost=NULL){
 #' @export
 plotAnc <- function (tree, data, i = 1, col=NULL, cex.pie=par("cex"), pos="bottomright", ...)
 {
-    y = subset(data, , i)
+    y <- subset(data, , i)
     #   args <- list(...)
     #   CEX <- if ("cex" %in% names(args))
     #       args$cex 
     #   else par("cex")
-    CEX = cex.pie
+    CEX <- cex.pie
     xrad <- CEX * diff(par("usr")[1:2])/50
-    levels = attr(data, "levels")
-    nc = attr(data, "nc")
-    y = matrix(unlist(y[]), ncol = nc, byrow = TRUE)
-    l = dim(y)[1]
-    dat = matrix(0, l, nc)
-    for (i in 1:l) dat[i, ] = y[[i]]
+    levels <- attr(data, "levels")
+    nc <- attr(data, "nc")
+    y <- matrix(unlist(y[]), ncol = nc, byrow = TRUE)
+    l <- dim(y)[1]
+    dat <- matrix(0, l, nc)
+    for (i in 1:l) dat[i, ] <- y[[i]]
     plot(tree, label.offset = 1.1 * xrad, plot = FALSE, ...)
     lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
     XX <- lastPP$xx
@@ -329,7 +329,7 @@ plotAnc <- function (tree, data, i = 1, col=NULL, cex.pie=par("cex"), pos="botto
     xrad <- CEX * diff(lastPP$x.lim * 1.1)/50
     par(new = TRUE)
     plot(tree, label.offset = 1.1 * xrad, plot = TRUE, ...)
-    if(is.null(col)) col = rainbow(nc)
+    if(is.null(col)) col <- rainbow(nc)
     if(length(col)!=nc) warning("Length of color vector differs from number of levels!")
     BOTHlabels(pie = y, XX = XX, YY = YY, adj = c(0.5, 0.5),
                frame = "rect", pch = NULL, sel = 1:length(XX), thermo = NULL,
@@ -348,50 +348,50 @@ ptree2 <- function (tree, data, type = "ACCTRAN", retData = FALSE)
         tree <- reorder(tree, "postorder")  
     if (!is.binary.tree(tree)) 
         stop("Tree must be binary!")
-    tmp = fitch(tree, data, site = "data")
-    nr = attr(data, "nr")
+    tmp <- fitch(tree, data, site = "data")
+    nr <- attr(data, "nr")
     node <- tree$edge[, 1]
     edge <- tree$edge[, 2]
-    weight = attr(data, "weight")
-    m = length(edge) + 1
-    q = length(tree$tip.label)
-    l = as.integer(length(edge))
-    nTips = length(tree$tip.label)
-    dat = tmp[[2]]
+    weight <- attr(data, "weight")
+    m <- length(edge) + 1
+    q <- length(tree$tip.label)
+    l <- as.integer(length(edge))
+    nTips <- length(tree$tip.label)
+    dat <- tmp[[2]]
     if (!is.rooted(tree)) {
-        root = getRoot(tree)
-        ind = edge[node == root]
-        rSeq = .C("fitchTriplet", integer(nr), dat[, ind[1]], 
+        root <- getRoot(tree)
+        ind <- edge[node == root]
+        rSeq <- .C("fitchTriplet", integer(nr), dat[, ind[1]], 
                   dat[, ind[2]], dat[, ind[3]], as.integer(nr))
-        dat[, root] = rSeq[[1]]
+        dat[, root] <- rSeq[[1]]
     }
     #    result <- .C("ACCTRAN2", dat, as.integer(nr), numeric(nr), 
     #        as.integer(node[l:1L]), as.integer(edge[l:1L]), l, as.double(weight), numeric(l), as.integer(nTips))
     result <- .C("ACCTRAN2", dat, as.integer(nr), 
                  as.integer(node[l:1L]), as.integer(edge[l:1L]), l, as.integer(nTips))
-    el = result[[5]][l:1L]
+    el <- result[[5]][l:1L]
     if (!is.rooted(tree)) {
-        ind2 = which(node[] == root)
-        dat = matrix(result[[1]], nr, max(node))
+        ind2 <- which(node[] == root)
+        dat <- matrix(result[[1]], nr, max(node))
         result <- .C("ACCTRAN3", result[[1]], as.integer(nr), 
                      numeric(nr), as.integer(node[(l - 3L):1L]), as.integer(edge[(l - 
                                                                                       3L):1L]), l - 3L, as.double(weight), numeric(l)) # , as.integer(nTips)
-        el = result[[8]][(l - 3L):1L]
-        pars = .C("fitchTripletACC4", dat[, root], dat[, ind[1]], 
+        el <- result[[8]][(l - 3L):1L]
+        pars <- .C("fitchTripletACC4", dat[, root], dat[, ind[1]], 
                   dat[, ind[2]], dat[, ind[3]], as.integer(nr), numeric(1), 
                   numeric(1), numeric(1), as.double(weight), numeric(nr), 
                   integer(nr))
-        el[ind2[1]] = pars[[6]]
-        el[ind2[2]] = pars[[7]]
-        el[ind2[3]] = pars[[8]]
+        el[ind2[1]] <- pars[[6]]
+        el[ind2[2]] <- pars[[7]]
+        el[ind2[3]] <- pars[[8]]
     }
     else {
         result <- .C("ACCTRAN3", result[[1]], as.integer(nr), 
                      numeric(nr), as.integer(node[l:1L]), as.integer(edge[l:1L]), 
                      l, as.double(weight), numeric(l)) # , as.integer(nTips)
-        el = result[[8]][l:1L]
+        el <- result[[8]][l:1L]
     }
-    tree$edge.length = el
+    tree$edge.length <- el
     if (retData) 
         return(list(tree, matrix(result[[1]], nr, max(node))))
     tree
@@ -399,26 +399,26 @@ ptree2 <- function (tree, data, type = "ACCTRAN", retData = FALSE)
 
 
 # raus ??
-fast.tree  = function(tree, node){
-    parent = c(node, Ancestors(tree, node))
-    children = Descendants(tree, parent, 'children')
-    l = lengths(children)
-#    l = sapply(children, length)
-    edge = cbind(rep(parent, l), unlist(children))
-    obj = list(edge=edge, Nnode=sum(l>0), 
+fast.tree  <- function(tree, node){
+    parent <- c(node, Ancestors(tree, node))
+    children <- Descendants(tree, parent, 'children')
+    l <- lengths(children)
+#    l <- sapply(children, length)
+    edge <- cbind(rep(parent, l), unlist(children))
+    obj <- list(edge=edge, Nnode=sum(l>0), 
                tip.label=as.character(edge[is.na(match(edge[,2], edge[,1])),2]))
-    class(obj) = 'phylo'
+    class(obj) <- 'phylo'
     obj
 }
 
 # schneller ???
-fast.tree2  = function(tree, node){
-    parent = c(node, Ancestors(tree, node))
-    edge = tree$edge 
-    ind = match(edge[,1], parent)
-    edge=edge[which(!is.na(ind)),] 
-    obj = list(edge=edge, Nnode=length(parent), 
+fast.tree2  <- function(tree, node){
+    parent <- c(node, Ancestors(tree, node))
+    edge <- tree$edge 
+    ind <- match(edge[,1], parent)
+    edge <- edge[which(!is.na(ind)),] 
+    obj <- list(edge=edge, Nnode=length(parent), 
                tip.label=as.character(edge[is.na(match(edge[,2], edge[,1])),2]))
-    class(obj) = 'phylo'
+    class(obj) <- 'phylo'
     obj
 }
