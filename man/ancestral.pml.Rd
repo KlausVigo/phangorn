@@ -59,9 +59,9 @@ For further details see vignette("Ancestral").
 \examples{
 
 example(NJ)
-fit = pml(tree, Laurasiatherian)
-anc.ml = ancestral.pml(fit, type = "ml")
-anc.p = ancestral.pars(tree, Laurasiatherian)
+fit <- pml(tree, Laurasiatherian)
+anc.ml <- ancestral.pml(fit, type = "ml")
+anc.p <- ancestral.pars(tree, Laurasiatherian)
 \dontrun{
 require(seqLogo)
 seqLogo( t(subset(anc.ml, 48, 1:20)[[1]]), ic.scale=FALSE)
