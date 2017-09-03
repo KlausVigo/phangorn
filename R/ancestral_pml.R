@@ -314,8 +314,8 @@ mpr.help <- function (tree, data, cost=NULL)
     node <- as.integer(node - 1)      
     edge <- as.integer(edge - 1) 
     
-    res <- .Call("sankoffMPR", datf, datp, as.numeric(cost), as.integer(nr),as.integer(nc),
-                 node, edge, PACKAGE="phangorn")    
+    res <- .Call("sankoffMPR", datf, datp, as.numeric(cost), as.integer(nr),
+                 as.integer(nc), node, edge, PACKAGE="phangorn")    
     root <- getRoot(tree)
     res[[root]] <- datf[[root]]
     res
@@ -382,6 +382,7 @@ mpr <- function(tree, data, cost=NULL, return="prob"){
 
 
 #' @rdname ancestral.pml
+#' @param site.pattern logical, plot i-th site pattern or i-th site
 #' @export
 plotAnc <- function (tree, data, i = 1, site.pattern = TRUE, col=NULL, 
                      cex.pie=par("cex"), pos="bottomright", ...)

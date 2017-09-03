@@ -7,14 +7,15 @@
 \alias{plotAnc}
 \title{Ancestral character reconstruction.}
 \usage{
-ancestral.pml(object, type = c("marginal", "ml", "bayes"), return = "prob")
+ancestral.pml(object, type = "marginal", return = "prob")
 
-ancestral.pars(tree, data, type = c("MPR", "ACCTRAN"), cost = NULL)
+ancestral.pars(tree, data, type = c("MPR", "ACCTRAN"), cost = NULL,
+  return = "prob")
 
-pace(tree, data, type = c("MPR", "ACCTRAN"), cost = NULL)
+pace(tree, data, type = c("MPR", "ACCTRAN"), cost = NULL, return = "prob")
 
-plotAnc(tree, data, i = 1, col = NULL, cex.pie = par("cex"),
-  pos = "bottomright", ...)
+plotAnc(tree, data, i = 1, site.pattern = TRUE, col = NULL,
+  cex.pie = par("cex"), pos = "bottomright", ...)
 }
 \arguments{
 \item{object}{an object of class pml}
@@ -30,6 +31,8 @@ plotAnc(tree, data, i = 1, col = NULL, cex.pie = par("cex"),
 \item{cost}{A cost matrix for the transitions between two states.}
 
 \item{i}{plots the i-th site pattern of the \code{data}.}
+
+\item{site.pattern}{logical, plot i-th site pattern or i-th site}
 
 \item{col}{a vector containing the colors for all possible states.}
 
