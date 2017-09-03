@@ -59,8 +59,7 @@
 #' 
 #' @rdname ancestral.pml
 #' @export 
-ancestral.pml <- function(object, type=c("marginal", "ml", "bayes"), 
-                          return="prob") 
+ancestral.pml <- function(object, type="marginal", return="prob") 
 {
     call <- match.call()
     pt <- match.arg(type, c("marginal", "joint", "ml", "bayes"))   
@@ -70,6 +69,7 @@ ancestral.pml <- function(object, type=c("marginal", "ml", "bayes"),
     inv <- object$inv
     
     data <- getCols(object$data, tree$tip.label) 
+    data_type <- attr(data, "type")    
     if (is.null(attr(tree, "order")) || attr(tree, "order") == 
         "cladewise") 
         tree <- reorder(tree, "postorder")
@@ -92,7 +92,7 @@ ancestral.pml <- function(object, type=c("marginal", "ml", "bayes"),
     label[1:length(nam)] <- nam
     x[["names"]] <- label
     
-    
+
     tmp <- length(data)
     
     if(return!="phyDat")result <- new2old.phyDat(data) 
@@ -141,8 +141,13 @@ ancestral.pml <- function(object, type=c("marginal", "ml", "bayes"),
         if ( (pt == "bayes") || (pt == "marginal")) tmp <- tmp * rep(bf, each=nr)
         tmp <- tmp / rowSums(tmp)
         
-        if(return=="phyDat") tmp <- pos[apply(tmp, 1, which.max)]
-        
+        if(return=="phyDat"){
+            if(data_type=="DNA"){
+                tmp <- prob2fitchCoding(tmp)
+                tmp <- fitchCoding2ambiguous(tmp)
+            }
+            else tmp <- pos[max.col(tmp)]   # [apply(tmp, 1, which.max)]
+        }
         result[[j]] <- tmp
     } 
     attributes(result) <- x
@@ -165,7 +170,8 @@ ancestral2phyDat <- function(x) {
     ind2 <- which( contr[ind1, ] > eps, arr.ind = TRUE)
     pos <- ind2[match(as.integer(1L:ncol(contr)),  ind2[,2]),1]
     # only first hit    
-    res <- lapply(x, function(x, pos) pos[apply(x, 1, which.max)], pos)
+#    res <- lapply(x, function(x, pos) pos[apply(x, 1, which.max)], pos)
+    res <- lapply(x, function(x, pos) pos[max.col(x)], pos)
     attributes(res) <- attributes(x)
     return(res)
 }
@@ -173,7 +179,6 @@ ancestral2phyDat <- function(x) {
 
 # in ancestral.pml
 # variante fuer parsimony und ambiguous DNA 
-
 prob2fitchCoding <- function(x, eps=0.999){
     row_max <- apply(x, 1, max)
     x <- x / row_max
@@ -190,7 +195,8 @@ fitchCoding2ambiguous <- function(x, type="DNA"){
 
 #' @rdname ancestral.pml
 #' @export
-ancestral.pars <- function (tree, data, type = c("MPR", "ACCTRAN"), cost=NULL) 
+ancestral.pars <- function (tree, data, type = c("MPR", "ACCTRAN"), cost=NULL,
+                            return="prob") 
 {
     call <- match.call()
     type <- match.arg(type)
@@ -199,12 +205,12 @@ ancestral.pars <- function (tree, data, type = c("MPR", "ACCTRAN"), cost=NULL)
     #    if (type == "MPR") 
     #        res = mpr(tree, data)
     if (type == "MPR"){ 
-        res <- mpr(tree, data, cost=cost)
+        res <- mpr(tree, data, cost=cost, return=return)
         attr(res, "call") <- call
         return(res)
     }
     l <- length(tree$tip.label)
-    
+    data_type <- attr(data, "type")
     x <- attributes(data)
     m <- dim(res)[2]
     label <- as.character(1:m)
@@ -214,21 +220,48 @@ ancestral.pars <- function (tree, data, type = c("MPR", "ACCTRAN"), cost=NULL)
     
     nc <- attr(data, "nc")
     result <- vector("list", m) 
-    Z <- unique(as.vector(res))
-    tmp <- t(sapply(Z, function(x)dec2bin(x, nc)))
-    tmp <- tmp / rowSums(tmp)
-    #    rownames(tmp) <- Z
-    dimnames(tmp) <- list(Z, attr(data, "levels"))
-    for(i in 1:m){ 
-        #        tmp <- t(sapply(res[,i], function(x, k=4)dec2bin(x, nc)))
-        #        result[[i]] <- tmp / rowSums(tmp) no indices
-        #         test <- match(res[,i], Z) sollte stimmen wegen fitch
+    
+    if(data_type=="DNA"){
+        result[1:l] <- subset(data, nam)
+        for(i in (l+1) : m){
+            result[[i]] <- fitchCoding2ambiguous(res[,i])
+        }
+        # phyDat needs new2old <-
+        #if(return=="prob") tmp <- contrast[tmp, , drop=FALSE]
+    }
+    else {
+        Z <- unique(as.vector(res))
+        tmp <- t(sapply(Z, function(x)dec2bin(x, nc)))
+        tmp <- tmp / rowSums(tmp)
+        dimnames(tmp) <- list(Z, attr(data, "levels"))
+        for(i in seq_len(m)){ 
         result[[i]] <- tmp[as.character(res[,i]),,drop=FALSE]
         rownames(result[[i]]) <- NULL
+        }
     }
-    
     attributes(result) <- x
     attr(result, "call") <- call
+    if(data_type!="DNA" & return=="phyDat"){
+        contrast <- attr(data, "contrast")
+        # proper format    
+        eps <- 1.0e-5
+        ind1 <- which( apply(contrast, 1, function(x)sum(x > eps)) == 1L)
+        ind2 <- which( contrast[ind1, ] > eps, arr.ind = TRUE)
+        pos <- ind2[match(as.integer(1L:ncol(contrast)),  ind2[,2]),1]
+        result[1:l] <- subset(data, nam)
+        for(i in (l+1) : length(result)) {
+            tmp <- result[[i]]
+            result[[i]] <- pos[max.col(tmp)] 
+        }    
+    }
+    if(data_type=="DNA" & return=="prob"){
+        result <- new2old.phyDat(result)
+        for(i in seq_len(length(result))) {
+            tmp <- result[[i]]
+            tmp <- tmp / rowSums(tmp)
+            result[[i]] <- tmp
+        }
+    }    
     result
 }
 
@@ -276,9 +309,10 @@ mpr.help <- function (tree, data, cost=NULL)
 }
 
 
-mpr <- function(tree, data, cost=NULL){
+mpr <- function(tree, data, cost=NULL, return="prob"){
     data <- subset(data, tree$tip.label)
     att <- attributes(data)
+    type <- att$type
     nr <- att$nr
     nc <- att$nc
     res <- mpr.help(tree,data,cost)
@@ -293,23 +327,53 @@ mpr <- function(tree, data, cost=NULL){
     eps <- 5e-6
     rm <- apply(res[[ntips+1]], 1, min)
     RM <- matrix(rm,nr, nc) + eps
-    for(i in 1:ntips) res[[i]] <- contrast[data[[i]],,drop=FALSE]
-    for(i in (ntips+1):m) res[[i]][] <- as.numeric(res[[i]] < RM)
+
+#    if(return!="prob" & type=="DNA"){
+#        for(i in (ntips+1):m){
+#            tmp <- as.numeric(res[[i]] < RM)
+#            tmp <- prob2fitchCoding(tmp)
+#            tmp <- fitchCoding2ambiguous(tmp)
+#            res[[i]] <- tmp
+#        }
+#        browser()
+#        res[1:ntips] <- data
+#        attributes(res) <- att
+#        return(res)
+#    }
     fun <- function(X){
         rs <- apply(X, 1, sum)
         X / rs
     }
-    res <- lapply(res, fun)
+    for(i in 1:ntips) res[[i]] <- contrast[data[[i]],,drop=FALSE]
+    for(i in (ntips+1):m) res[[i]][] <- as.numeric(res[[i]] < RM)
+    if(return=="prob"){
+#        for(i in 1:ntips) res[[i]] <- contrast[data[[i]],,drop=FALSE]
+        if(return=="prob") res <- lapply(res, fun)
+    }
+#    else res[1:ntips] <- data[1:ntips]
     attributes(res) <- att
+    fun2 <- function(x){
+        x <- prob2fitchCoding(x)
+        fitchCoding2ambiguous(x)
+    }
+    if(return!="prob"){
+        if(type=="DNA"){
+            res <- lapply(res, fun2)
+            attributes(res) <- att
+        }    
+        else res <- ancestral2phyDat(res)
+        res[1:ntips] <- data
+    }    
     res
 }
 
 
 #' @rdname ancestral.pml
 #' @export
-plotAnc <- function (tree, data, i = 1, col=NULL, cex.pie=par("cex"), pos="bottomright", ...)
+plotAnc <- function (tree, data, i = 1, site.pattern = TRUE, col=NULL, 
+                     cex.pie=par("cex"), pos="bottomright", ...)
 {
-    y <- subset(data, , i)
+    y <- subset(data, , i, site.pattern=site.pattern)
     #   args <- list(...)
     #   CEX <- if ("cex" %in% names(args))
     #       args$cex 
@@ -335,90 +399,6 @@ plotAnc <- function (tree, data, i = 1, col=NULL, cex.pie=par("cex"), pos="botto
                frame = "rect", pch = NULL, sel = 1:length(XX), thermo = NULL,
                piecol = col, col = "black", bg = "lightblue", horiz = FALSE,
                width = NULL, height = NULL, cex=cex.pie)
-    legend(pos, levels, text.col = col)
+    if(!is.null(pos))legend(pos, levels, text.col = col)
 }
 
-
-ptree2 <- function (tree, data, type = "ACCTRAN", retData = FALSE) 
-{
-    if (!inherits(data,"phyDat")) 
-        stop("data must be of class phyDat")
-    if (is.null(attr(tree, "order")) || attr(tree, "order") == 
-        "cladewise") 
-        tree <- reorder(tree, "postorder")  
-    if (!is.binary.tree(tree)) 
-        stop("Tree must be binary!")
-    tmp <- fitch(tree, data, site = "data")
-    nr <- attr(data, "nr")
-    node <- tree$edge[, 1]
-    edge <- tree$edge[, 2]
-    weight <- attr(data, "weight")
-    m <- length(edge) + 1
-    q <- length(tree$tip.label)
-    l <- as.integer(length(edge))
-    nTips <- length(tree$tip.label)
-    dat <- tmp[[2]]
-    if (!is.rooted(tree)) {
-        root <- getRoot(tree)
-        ind <- edge[node == root]
-        rSeq <- .C("fitchTriplet", integer(nr), dat[, ind[1]], 
-                  dat[, ind[2]], dat[, ind[3]], as.integer(nr))
-        dat[, root] <- rSeq[[1]]
-    }
-    #    result <- .C("ACCTRAN2", dat, as.integer(nr), numeric(nr), 
-    #        as.integer(node[l:1L]), as.integer(edge[l:1L]), l, as.double(weight), numeric(l), as.integer(nTips))
-    result <- .C("ACCTRAN2", dat, as.integer(nr), 
-                 as.integer(node[l:1L]), as.integer(edge[l:1L]), l, as.integer(nTips))
-    el <- result[[5]][l:1L]
-    if (!is.rooted(tree)) {
-        ind2 <- which(node[] == root)
-        dat <- matrix(result[[1]], nr, max(node))
-        result <- .C("ACCTRAN3", result[[1]], as.integer(nr), 
-                     numeric(nr), as.integer(node[(l - 3L):1L]), as.integer(edge[(l - 
-                                                                                      3L):1L]), l - 3L, as.double(weight), numeric(l)) # , as.integer(nTips)
-        el <- result[[8]][(l - 3L):1L]
-        pars <- .C("fitchTripletACC4", dat[, root], dat[, ind[1]], 
-                  dat[, ind[2]], dat[, ind[3]], as.integer(nr), numeric(1), 
-                  numeric(1), numeric(1), as.double(weight), numeric(nr), 
-                  integer(nr))
-        el[ind2[1]] <- pars[[6]]
-        el[ind2[2]] <- pars[[7]]
-        el[ind2[3]] <- pars[[8]]
-    }
-    else {
-        result <- .C("ACCTRAN3", result[[1]], as.integer(nr), 
-                     numeric(nr), as.integer(node[l:1L]), as.integer(edge[l:1L]), 
-                     l, as.double(weight), numeric(l)) # , as.integer(nTips)
-        el <- result[[8]][l:1L]
-    }
-    tree$edge.length <- el
-    if (retData) 
-        return(list(tree, matrix(result[[1]], nr, max(node))))
-    tree
-}
-
-
-# raus ??
-fast.tree  <- function(tree, node){
-    parent <- c(node, Ancestors(tree, node))
-    children <- Descendants(tree, parent, 'children')
-    l <- lengths(children)
-#    l <- sapply(children, length)
-    edge <- cbind(rep(parent, l), unlist(children))
-    obj <- list(edge=edge, Nnode=sum(l>0), 
-               tip.label=as.character(edge[is.na(match(edge[,2], edge[,1])),2]))
-    class(obj) <- 'phylo'
-    obj
-}
-
-# schneller ???
-fast.tree2  <- function(tree, node){
-    parent <- c(node, Ancestors(tree, node))
-    edge <- tree$edge 
-    ind <- match(edge[,1], parent)
-    edge <- edge[which(!is.na(ind)),] 
-    obj <- list(edge=edge, Nnode=length(parent), 
-               tip.label=as.character(edge[is.na(match(edge[,2], edge[,1])),2]))
-    class(obj) <- 'phylo'
-    obj
-}

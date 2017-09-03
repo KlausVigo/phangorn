@@ -12,6 +12,8 @@ BUG FIXES
  
 OTHER CHANGES
 
+    o ancestral reconstrution is made more user friendly
+
     o acctran allows multiPhylo objects as input
 
 
