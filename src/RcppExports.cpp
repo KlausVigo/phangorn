@@ -5,6 +5,17 @@
 
 using namespace Rcpp;
 
+// bitCountInt
+int bitCountInt(int v);
+RcppExport SEXP _phangorn_bitCountInt(SEXP vSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type v(vSEXP);
+    rcpp_result_gen = Rcpp::wrap(bitCountInt(v));
+    return rcpp_result_gen;
+END_RCPP
+}
 // allDescCPP
 List allDescCPP(IntegerMatrix orig, int nTips);
 RcppExport SEXP _phangorn_allDescCPP(SEXP origSEXP, SEXP nTipsSEXP) {
@@ -42,13 +53,25 @@ BEGIN_RCPP
 END_RCPP
 }
 // allChildrenCPP
-List allChildrenCPP(IntegerMatrix orig);
+List allChildrenCPP(const IntegerMatrix orig);
 RcppExport SEXP _phangorn_allChildrenCPP(SEXP origSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< IntegerMatrix >::type orig(origSEXP);
+    Rcpp::traits::input_parameter< const IntegerMatrix >::type orig(origSEXP);
     rcpp_result_gen = Rcpp::wrap(allChildrenCPP(orig));
+    return rcpp_result_gen;
+END_RCPP
+}
+// p2dna
+IntegerVector p2dna(NumericMatrix xx, double eps);
+RcppExport SEXP _phangorn_p2dna(SEXP xxSEXP, SEXP epsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type xx(xxSEXP);
+    Rcpp::traits::input_parameter< double >::type eps(epsSEXP);
+    rcpp_result_gen = Rcpp::wrap(p2dna(xx, eps));
     return rcpp_result_gen;
 END_RCPP
 }

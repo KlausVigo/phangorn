@@ -143,7 +143,7 @@ ancestral.pml <- function(object, type="marginal", return="prob")
         
         if(return=="phyDat"){
             if(data_type=="DNA"){
-                tmp <- prob2fitchCoding(tmp)
+                tmp <- p2dna(tmp) # prob2fitchCoding(tmp)
                 tmp <- fitchCoding2ambiguous(tmp)
             }
             else tmp <- pos[max.col(tmp)]   # [apply(tmp, 1, which.max)]
@@ -178,7 +178,7 @@ ancestral2phyDat <- function(x) {
 
 
 # in ancestral.pml
-# variante fuer parsimony und ambiguous DNA 
+# variante fuer parsimony und ambiguous DNA, ersetzt durch p2dna
 prob2fitchCoding <- function(x, eps=0.999){
     row_max <- apply(x, 1, max)
     x <- x / row_max
@@ -354,7 +354,7 @@ mpr <- function(tree, data, cost=NULL, return="prob"){
 #        return(res)
 #    }
     fun <- function(X){
-        rs <- apply(X, 1, sum)
+        rs <- rowSums(X) #apply(X, 1, sum)
         X / rs
     }
     for(i in 1:ntips) res[[i]] <- contrast[data[[i]],,drop=FALSE]
@@ -366,7 +366,7 @@ mpr <- function(tree, data, cost=NULL, return="prob"){
 #    else res[1:ntips] <- data[1:ntips]
     attributes(res) <- att
     fun2 <- function(x){
-        x <- prob2fitchCoding(x)
+        x <- p2dna(x) # prob2fitchCoding(x)
         fitchCoding2ambiguous(x)
     }
     if(return!="prob"){

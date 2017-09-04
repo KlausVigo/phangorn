@@ -98,6 +98,21 @@ List allChildrenCPP(const IntegerMatrix orig) {
     return wrap(out);
 }
 
-
-
+// [[Rcpp::export]]
+IntegerVector p2dna(NumericMatrix xx, double eps=0.999){
+    int nr = xx.nrow(), nc = 4; //xx.ncol(); 
+    double m=0.0;
+    IntegerVector tmp = IntegerVector::create(1,2,4,8);
+    IntegerVector res(nr);
+    for(int i=0; i<nr; ++i){
+        m=xx(i,0);
+        for(int j=1; j<4; ++j){
+            if(m<xx(i,j)) m=xx(i,j); 
+        }
+        for(int j=0; j<4; ++j){
+            if(xx(i,j) > (m * eps)) res(i)+=tmp[j];
+        }
+    }
+    return res;
+}
 

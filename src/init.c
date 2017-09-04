@@ -82,6 +82,7 @@ extern SEXP sankoffMPR(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP sankoffQuartet(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _phangorn_allDescCPP(SEXP, SEXP);
 extern SEXP _phangorn_allChildrenCPP(SEXP);
+extern SEXP _phangorn_p2dna(SEXP, SEXP);
 
 static const R_CMethodDef CEntries[] = {
     {"ACCTRAN2",         (DL_FUNC) &ACCTRAN2,          6},
@@ -149,6 +150,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"sankoffQuartet",     (DL_FUNC) &sankoffQuartet,      4},
     {"_phangorn_allDescCPP",       (DL_FUNC) &_phangorn_allDescCPP,        2},
     {"_phangorn_allChildrenCPP",   (DL_FUNC) &_phangorn_allChildrenCPP,    1},
+    {"_phangorn_p2dna",              (DL_FUNC) &_phangorn_p2dna,               2},
     {NULL, NULL, 0}
 };
 
