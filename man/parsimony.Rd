@@ -81,8 +81,8 @@ binary trees.
 
 set.seed(3)
 data(Laurasiatherian)
-dm = dist.hamming(Laurasiatherian)
-tree = NJ(dm)
+dm <- dist.hamming(Laurasiatherian)
+tree <- NJ(dm)
 parsimony(tree, Laurasiatherian)
 treeRA <- random.addition(Laurasiatherian)
 treeNNI <- optim.parsimony(tree, Laurasiatherian)
