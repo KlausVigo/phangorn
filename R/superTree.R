@@ -1,15 +1,16 @@
 # now more memoryefficient
 # from phytools code by Liam Revell with a few changes
-my.supertree<-function(trees, trace=0, ...){
+my.supertree <- function(trees, trace=0, ...){
     # some minor error checking
-    if(!inherits(trees,"multiPhylo")) stop("trees must be object of class 'multiPhylo.'")
+    if(!inherits(trees,"multiPhylo")) 
+        stop("trees must be object of class 'multiPhylo.'")
     
     labels <- lapply(trees, function(x)sort(x$tip.label))
     ulabels <- unique(labels)
     lul <- length(ulabels)
     # compute matrix representation phylogenies
     X<-vector("list", lul) # list of bipartitions
-    characters<-0 # number of characters
+    characters <- 0 # number of characters
     weights <- NULL
     species<-trees[[1]]$tip.label
     for(i in 1:lul){
@@ -17,7 +18,8 @@ my.supertree<-function(trees, trace=0, ...){
         ind <- which(!is.na(pos))  
         temp<-prop.part(trees[ind]) # find all bipartitions
         # create matrix representation of trees[[i]] in X[[i]]
-        X[[i]]<-matrix(0,nrow=length(trees[[ind[1]]]$tip.label),ncol=length(temp)-1)
+        X[[i]] <- matrix(0,nrow=length(trees[[ind[1]]]$tip.label), 
+                         ncol=length(temp)-1)
         for(j in 1:ncol(X[[i]])) X[[i]][c(temp[[j+1]]),j]<-1
         rownames(X[[i]])<-attr(temp,"labels") # label rows
         #    if(i==1) species<-trees[[ind[1]]]$tip.label
@@ -26,15 +28,18 @@ my.supertree<-function(trees, trace=0, ...){
         characters<-characters+ncol(X[[i]]) # count characters
         weights <- c(weights, attr(temp, "number")[-1])
     }
-    XX<-matrix(data="?",nrow=length(species),ncol=characters,dimnames=list(species))
+    XX<-matrix(data="?", nrow=length(species), ncol=characters,
+               dimnames=list(species))
     j<-1
     for(i in 1:length(X)){
         # copy each of X into supermatrix XX
-        XX[rownames(X[[i]]),c(j:((j-1)+ncol(X[[i]])))]<-X[[i]][1:nrow(X[[i]]),1:ncol(X[[i]])]
+        XX[rownames(X[[i]]),c(j:((j-1)+ncol(X[[i]])))] <- X[[i]][1:nrow(X[[i]]),
+                                                                 1:ncol(X[[i]])]
         j<-j+ncol(X[[i]])
     }
     # compute contrast matrix for phangorn
-    contrast<-matrix(data=c(1,0,0,1,1,1),3,2,dimnames=list(c("0","1","?"),c("0","1")),byrow=TRUE)
+    contrast<-matrix(data=c(1,0,0,1,1,1), 3, 2, dimnames=list(c("0","1","?"),
+                c("0","1")),byrow=TRUE)
     # convert XX to phyDat object
     XX<-phyDat(XX,type="USER",contrast=contrast, compress=FALSE) 
     attr(XX, "weight") <- weights 
@@ -49,7 +54,8 @@ my.supertree<-function(trees, trace=0, ...){
 fun.rf <- function(x, tree) sum(RF.dist(x, tree))
 fun.spr <- function(x, tree) sum(SPR.dist(x, tree))
 
-dist.superTree <- function(tree, trace=0, fun, start=NULL, multicore=FALSE, mc.cores = NULL){
+dist.superTree <- function(tree, trace=0, fun, start=NULL, multicore=FALSE, 
+                           mc.cores = NULL){
     if(multicore && is.null(mc.cores)){
         mc.cores <- detectCores()
     }
@@ -183,9 +189,9 @@ superTree = function(tree, method="MRP", rooted=FALSE, trace=0,
     tree <- unroot(tree)
     tree <- reorder(tree, "postorder")
 
-    if(method=="RF") res <- dist.superTree(tree, trace=trace, fun.rf, start=start, 
-        multicore=multicore, mc.cores = mc.cores)
-    if(method=="SPR") res <- dist.superTree(tree, trace=trace, fun.spr, start=start, 
-        multicore=multicore, mc.cores = mc.cores)   
+    if(method=="RF") res <- dist.superTree(tree, trace=trace, fun.rf, 
+        start=start, multicore=multicore, mc.cores = mc.cores)
+    if(method=="SPR") res <- dist.superTree(tree, trace=trace, fun.spr, 
+        start=start, multicore=multicore, mc.cores = mc.cores)   
     res
 }
