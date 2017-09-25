@@ -4,7 +4,7 @@
 \alias{coalSpeciesTree}
 \title{Species Tree}
 \usage{
-coalSpeciesTree(tree, X, sTree = NULL)
+coalSpeciesTree(tree, X = NULL, sTree = NULL)
 }
 \arguments{
 \item{tree}{an object of class \code{multiPhylo}}

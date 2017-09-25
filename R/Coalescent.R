@@ -17,15 +17,15 @@ nodeHeight <- function(tree)
 ancstat <- function(phy, x){
   contrast <- attr(x, "contrast")
   storage.mode(contrast) <- "integer"
-  phy=reorder(phy, "postorder")
-  res=matrix(0L, max(phy$edge), ncol(contrast))
+  phy <- reorder(phy, "postorder")
+  res <- matrix(0L, max(phy$edge), ncol(contrast))
   colnames(res) <- attr(x,"levels")
   nTips <- length(phy$tip.label)
   pa <- phy$edge[,1]
   ch <- phy$edge[,2]
   res[1:nTips, ] <- contrast[as.numeric(x)[match(phy$tip.label, names(x))],, 
             drop=FALSE]
-  for(i in 1:length(pa)){
+  for(i in seq_along(pa)){
     res[pa[i],] <- res[pa[i],] | res[ch[i],]    
   }
   res
@@ -82,7 +82,7 @@ comp2 <- function(x, y){
 #' Biology}, \bold{60}, 95--106.
 #' @keywords cluster
 #' 
-coalSpeciesTree <- function(tree, X, sTree=NULL){
+coalSpeciesTree <- function(tree, X=NULL, sTree=NULL){
   
   if(is.null(X))return(speciesTree(tree))  
   trees <- unclass(tree)
@@ -101,7 +101,7 @@ coalSpeciesTree <- function(tree, X, sTree=NULL){
     }
     Y <- matrix(Inf, length(NH), nrow(SST)) 
     dm <- rep(Inf, m)
-    for(i in 1:length(NH)){
+    for(i in seq_along(NH)){
       ind <- comp2(States[[i]],SST)  
       dm <- pmin(dm, NH[[i]][ind])
       #   for(j in 1:length(ind))Y[i, ind[j]] = min(Y[i, ind[j]], NH[[i]][j])
@@ -115,9 +115,9 @@ coalSpeciesTree <- function(tree, X, sTree=NULL){
   else{ 
     SST <- ancstat(sTree, X)
     Y <- matrix(Inf, length(NH), nrow(SST)) 
-    for(i in 1:length(NH)){
+    for(i in seq_along(NH)){
       ind <- comp(States[[i]],SST) 
-      for(j in 1:length(ind))Y[i, ind[j]] <- min(Y[i, ind[j]], NH[[i]][j])
+      for(j in seq_along(ind))Y[i, ind[j]] <- min(Y[i, ind[j]], NH[[i]][j])
     }
     STH <- apply(Y, 2, min)
     sTree$edge.length <- STH[sTree$edge[,1]] - STH[sTree$edge[,2]]
