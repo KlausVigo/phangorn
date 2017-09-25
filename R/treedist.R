@@ -319,7 +319,7 @@ sprdist <- function (tree1, tree2)
     bp2 <- bp2[ lengths(bp2)>1 ] 
     if (length(bp1) != length(bp2)) stop ("number of bipartitions given to C_sprdist are not the same")
     # OBS: SPR distance works w/ incompatible splits only, but it needs common cherries (to replace by single leaf)
-    spr <- .Call("C_sprdist", bp1, bp2, lt1);
+    spr <- .Call("C_sprdist", bp1, bp2, lt1)
     names(spr) <- c("spr", "spr_extra", "rf", "hdist")
 #    list("spr" = spr[1], "spr_extra" = spr[2], "rf" = spr[3], "hdist"= spr[4]);
     spr

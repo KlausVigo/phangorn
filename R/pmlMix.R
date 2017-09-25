@@ -148,7 +148,7 @@ optimMixEdge <- function(object, omega, trace=1,...){
                 iter2 <- iter2+1
             }
             else{
-                scalep = 1;
+                scalep = 1
                 theta = exp(thetaNew)  
                 blub=FALSE  
             }     
