@@ -52,4 +52,5 @@ score_2 <- function (fit, transform=FALSE)
 #    }
 #    -phyloLoglikelihood(tree, branch, D, U, U_inv, pden, L, grad=True) - phyloLogprior_exp(tree, scale, grad=TRUE)
 #}    
+
     

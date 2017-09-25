@@ -127,4 +127,3 @@ test_that("Mkv model works properly", {
     expect_equal(logLik(pmlU2.fitted), logLik(pmlU1))
 })
 
-## 31.91%
