@@ -89,7 +89,7 @@ ancestral.pml <- function(object, type="marginal", return="prob")
     x <- attributes(data)
     label <- as.character(1:m)
     nam <- tree$tip.label
-    label[1:length(nam)] <- nam
+    label[seq_along(nam)] <- nam
     x[["names"]] <- label
     
 
@@ -138,7 +138,7 @@ ancestral.pml <- function(object, type="marginal", return="prob")
 # scaling!!!            
             tmp <- tmp + w[i] * dat[[i, j]]                                 
         }
-        if ( (pt == "bayes") || (pt == "marginal")) tmp <- tmp * rep(bf, each=nr)
+        if ((pt == "bayes") || (pt == "marginal")) tmp <- tmp * rep(bf, each=nr)
         tmp <- tmp / rowSums(tmp)
         
         if(return=="phyDat"){
@@ -228,7 +228,7 @@ ancestral.pars <- function (tree, data, type = c("MPR", "ACCTRAN"), cost=NULL,
     m <- dim(res)[2]
     label <- as.character(1:m)
     nam <- tree$tip.label
-    label[1:length(nam)] <- nam
+    label[seq_along(nam)] <- nam
     x[["names"]] <- label
     
     nc <- attr(data, "nc")
@@ -300,7 +300,7 @@ mpr.help <- function (tree, data, cost=NULL)
     kl <- TRUE
     i <- 1
     dat <- prepareDataSankoff(data)
-    for (i in 1:length(dat)) storage.mode(dat[[i]]) <- "double"    
+    for (i in seq_along(dat)) storage.mode(dat[[i]]) <- "double"    
     tmp <- fit.sankoff(tree, dat, cost, returnData='data')
     p0 <- tmp[[1]]    
     datf <- tmp[[2]]
@@ -333,7 +333,7 @@ mpr <- function(tree, data, cost=NULL, return="prob"){
     m <- length(res)
     label <- as.character(1:m)
     nam <- tree$tip.label
-    label[1:length(nam)] <- nam
+    label[seq_along(nam)] <- nam
     att[["names"]] <- label
     ntips <- length(tree$tip.label)
     contrast <- att$contrast
@@ -408,9 +408,10 @@ plotAnc <- function (tree, data, i = 1, site.pattern = TRUE, col=NULL,
     par(new = TRUE)
     plot(tree, label.offset = 1.1 * xrad, plot = TRUE, ...)
     if(is.null(col)) col <- rainbow(nc)
-    if(length(col)!=nc) warning("Length of color vector differs from number of levels!")
+    if(length(col)!=nc) 
+        warning("Length of color vector differs from number of levels!")
     BOTHlabels(pie = y, XX = XX, YY = YY, adj = c(0.5, 0.5),
-               frame = "rect", pch = NULL, sel = 1:length(XX), thermo = NULL,
+               frame = "rect", pch = NULL, sel = seq_along(XX), thermo = NULL,
                piecol = col, col = "black", bg = "lightblue", horiz = FALSE,
                width = NULL, height = NULL, cex=cex.pie)
     if(!is.null(pos))legend(pos, levels, text.col = col)
