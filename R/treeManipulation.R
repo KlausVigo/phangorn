@@ -593,6 +593,8 @@ allAncestors <- function(x){
 #' @param node an integer or a vector of integers corresponding to a node ID
 #' @param type specify whether to return just direct children / parents or all
 #' @param include.self whether to include self in list of siblings
+#' @param full a logical indicating whether to return the MRCAs among all tips 
+#' and nodes (if TRUE); the default is to return only the MRCAs among tips.
 #' @return a vector or a list containing the indices of the nodes.
 #' @seealso \code{treewalk}, \code{\link[ape]{phylo}},
 #' \code{\link[ape]{nodelabels}}
@@ -737,8 +739,8 @@ Siblings <- function (x, node, include.self = FALSE)
 
 #' @rdname Ancestors
 #' @export
-mrca.phylo <- function(x, node=NULL){
-    if(is.null(node)) return(mrca2(x))
+mrca.phylo <- function(x, node=NULL, full=FALSE){
+    if(is.null(node)) return(mrca2(x, full = full))
     return(getMRCA(x, node))
 }
 
