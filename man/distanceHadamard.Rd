@@ -22,9 +22,9 @@ Distance Hadamard produces spectra of splits from a distance matrix.
 \examples{
 
 data(yeast)
-dm = dist.hamming(yeast)
-dm = as.matrix(dm)
-fit = distanceHadamard(dm)
+dm <- dist.hamming(yeast)
+dm <- as.matrix(dm)
+fit <- distanceHadamard(dm)
 lento(fit)
 plot(as.networx(fit), "2D")
 

@@ -19,7 +19,7 @@ Descendants(x, node, type = c("tips", "children", "all"))
 
 Siblings(x, node, include.self = FALSE)
 
-mrca.phylo(x, node = NULL)
+mrca.phylo(x, node = NULL, full = FALSE)
 }
 \arguments{
 \item{x}{a tree (a phylo object).}
@@ -29,6 +29,9 @@ mrca.phylo(x, node = NULL)
 \item{type}{specify whether to return just direct children / parents or all}
 
 \item{include.self}{whether to include self in list of siblings}
+
+\item{full}{a logical indicating whether to return the MRCAs among all tips 
+and nodes (if TRUE); the default is to return only the MRCAs among tips.}
 }
 \value{
 a vector or a list containing the indices of the nodes.

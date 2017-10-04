@@ -80,7 +80,8 @@ dm <- dist.logDet(Laurasiatherian)
 tree <- NJ(dm)
 # NJ
 set.seed(123)
-NJtrees <- bootstrap.phyDat(Laurasiatherian, FUN=function(x)NJ(dist.logDet(x)), bs=100)
+NJtrees <- bootstrap.phyDat(Laurasiatherian, 
+     FUN=function(x)NJ(dist.logDet(x)), bs=100)
 treeNJ <- plotBS(tree, NJtrees, "phylogram")
 
 # Maximum likelihood

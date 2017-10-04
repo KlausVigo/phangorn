@@ -58,9 +58,9 @@ lento(fit2)
 # write.nexus.splits(fit2, file = "test.nxs")
 # read this file into Spectronet or Splitstree to show the network
 \dontrun{
-dat = as.character(yeast)
-dat4 = phyDat(dat, type="USER", levels=c("a","c", "g", "t"), ambiguity=NULL)
-fit4 = h4st(dat4)
+dat <- as.character(yeast)
+dat4 <- phyDat(dat, type="USER", levels=c("a","c", "g", "t"), ambiguity=NULL)
+fit4 <- h4st(dat4)
 
 par(mfrow=c(3,1))
 lento(fit4[[1]], main="Transversion")
