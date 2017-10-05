@@ -4,7 +4,7 @@ importFrom(ape, as.DNAbin, as.phylo, plot.phylo, as.prop.part, nj,old2new.phylo,
     dist.dna, new2old.phylo, cophenetic.phylo, is.rooted, unroot, root, 
     is.binary.tree, as.alignment, di2multi, multi2di, .uncompressTipLabel, 
     .compressTipLabel, prop.part, Ntip, getMRCA, postprocess.prop.part, 
-    speciesTree, plotPhyloCoor, cladogram.plot, phylogram.plot, 
+    speciesTree, plotPhyloCoor, cladogram.plot, phylogram.plot, has.singles,
     node.depth.edgelength, drop.tip, stree, rtree, rcoal, rmtree, 
     is.ultrametric, .PlotPhyloEnv, nodelabels, edgelabels, BOTHlabels, 
     read.nexus.data, write.nexus.data, read.dna, write.dna, reorder.phylo, 
@@ -68,7 +68,7 @@ export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ,
     phyDat2alignment, AICc, readDist, writeDist, discrete.gamma, matchSplits, 
     distinct.splits, c.splits, dna2codon, codon2dna, genlight2phyDat,
     removeUndeterminedSites, phyDat2MultipleAlignment, delta.score, 
-    maxCladeCred, as.MultipleAlignment)
+    maxCladeCred, as.MultipleAlignment, threshStateC)
 # plot.networx, countCycles, 
 
 S3method('[', splits)          
