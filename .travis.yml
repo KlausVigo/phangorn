@@ -15,6 +15,7 @@ cache: packages
 bioc_required: true
 
 r_github_packages:
+  - KlausVigo/ape    
   - jimhester/covr
 
 bioc_packages:
