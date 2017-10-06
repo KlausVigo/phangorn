@@ -34,10 +34,10 @@ cladePar can help you coloring (choosing edge width/type) of clades.
 }
 \examples{
 
-tree = rtree(10)
+tree <- rtree(10)
 plot(tree)
 nodelabels()
-x = cladePar(tree, 12)
+x <- cladePar(tree, 12)
 cladePar(tree, 18, "blue", "blue", x=x, plot=TRUE)
 
 }
