@@ -136,7 +136,7 @@ bootstrap.phyDat <- function(x, FUN, bs = 100, multicore=FALSE, mc.cores = NULL,
     weight <- attr(x, "weight")
     v <- rep(1:length(weight), weight)
     BS <- vector("list", bs)
-    for(i in 1:bs)BS[[i]]=tabulate(sample(v, replace=TRUE),length(weight)) 
+    for(i in 1:bs)BS[[i]] <- tabulate(sample(v, replace=TRUE),length(weight)) 
     if(jumble){
         J <- vector("list", bs)
         l <- length(x)
@@ -362,7 +362,7 @@ cladeMatrix <- function(x, rooted=FALSE){
     pvec <- c(0,to)
     
     res <- vector("list", l)
-    k=1
+    k <- 1
     for(i in 1:l){
         ppi <- prop.part(x[[i]])  
         if(!rooted)ppi <- oneWise(ppi)

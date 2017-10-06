@@ -46,7 +46,7 @@
 #' @examples
 #' 
 #' data(Laurasiatherian)
-#' laura = as.DNAbin(Laurasiatherian)
+#' laura <- as.DNAbin(Laurasiatherian)
 #' 
 #' dm <- dist.p(Laurasiatherian, "polymorphism")
 #' 
@@ -61,7 +61,7 @@
 #'     "No306     ATAGA",
 #'     file = "exdna.txt", sep = "\n")
 #' (ex.dna <- read.dna("exdna.txt", format = "sequential", as.character=TRUE))
-#' dat= phyDat(ex.dna, "USER", levels=unique(as.vector(ex.dna)))
+#' dat <- phyDat(ex.dna, "USER", levels=unique(as.vector(ex.dna)))
 #' dist.p(dat)
 #' 
 #' 
@@ -71,18 +71,18 @@ dist.p <- function (x, cost="polymorphism", ignore.indels=TRUE)
     if (!inherits(x,"phyDat")) 
         stop("x has to be element of class phyDat")
 
-    l = length(x)
+    l <- length(x)
     weight <- attr(x, "weight")
     n <- length(attr(x, "allLevels"))
-    d = numeric((l * (l - 1))/2)
-    lev = attr(x, "allLevels")    
+    d <- numeric((l * (l - 1))/2)
+    lev <- attr(x, "allLevels")    
     if(is.null(cost)){ 
         cost <- 1 - diag(n)
-        dimnames(cost) = list(lev, lev)
+        dimnames(cost) <- list(lev, lev)
     }    
 #    if(cost=="polymorphism" && attr(x, "type")=="DNA"){   
     if(cost=="polymorphism"){
-        costLev = c('a','c','t','u','g','x','m','r','w','s','y','k','v','h','d','b','-','?','n')
+        costLev <- c('a','c','t','u','g','x','m','r','w','s','y','k','v','h','d','b','-','?','n')
         
     cost <- matrix(c(
        #a,c,t,u,g,X,m,r,w,s,y,k,v,h,d,b,-,?,n,
@@ -108,7 +108,7 @@ dist.p <- function (x, cost="polymorphism", ignore.indels=TRUE)
            ncol = 19,nrow=19,dimnames=list(costLev,costLev))
     }
     
-    lev1 = dimnames(cost)[[1]]
+    lev1 <- dimnames(cost)[[1]]
     
 
     if(any(is.na(match(lev, lev1)))) stop("Levels of x are not in levels of cost matrix!")
@@ -121,11 +121,11 @@ dist.p <- function (x, cost="polymorphism", ignore.indels=TRUE)
     
     cost <- cost[lev, lev]
     
-        k = 1
+        k <- 1
         for (i in 1:(l - 1)) {
             for (j in (i + 1):l) {
-                d[k] = sum(weight * cost[cbind(x[[i]], x[[j]])])
-                k = k + 1
+                d[k] <- sum(weight * cost[cbind(x[[i]], x[[j]])])
+                k <- k + 1
             }
         }
     attr(d, "Size") <- l
