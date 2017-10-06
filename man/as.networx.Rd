@@ -113,9 +113,9 @@ The internal representation is likely to change.
 \examples{
 
 set.seed(1)
-tree1 = rtree(20, rooted=FALSE)
-sp = as.splits(rNNI(tree1, n=10))
-net = as.networx(sp)
+tree1 <- rtree(20, rooted=FALSE)
+sp <- as.splits(rNNI(tree1, n=10))
+net <- as.networx(sp)
 plot(net, "2D")
 \dontrun{
 # also see example in consensusNet 

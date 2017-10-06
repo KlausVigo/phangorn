@@ -31,7 +31,7 @@ set.seed(1)
 bs <- bootstrap.phyDat(Laurasiatherian, FUN = function(x)nj(dist.hamming(x)), 
     bs=50)
 class(bs) <- 'multiPhylo'
-cnet = consensusNet(bs, .3)
+cnet <- consensusNet(bs, .3)
 plot(cnet, "2D")
 \dontrun{
 library(rgl)
@@ -41,7 +41,7 @@ plot(cnet, type = "2D", show.edge.label=TRUE)
 
 tmpfile <- normalizePath(system.file("extdata/trees/RAxML_bootstrap.woodmouse", package="phangorn"))
 trees <- read.tree(tmpfile)
-cnet_woodmouse = consensusNet(trees, .3)
+cnet_woodmouse <- consensusNet(trees, .3)
 plot(cnet_woodmouse, type = "2D", show.edge.label=TRUE)
 }
 

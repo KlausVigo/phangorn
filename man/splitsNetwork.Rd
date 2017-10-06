@@ -41,9 +41,9 @@ External edges are fitted without L1 or L2 constraints.
 \examples{
 
 data(yeast)
-dm = dist.ml(yeast)
-fit = splitsNetwork(dm)
-net = as.networx(fit)
+dm <- dist.ml(yeast)
+fit <- splitsNetwork(dm)
+net <- as.networx(fit)
 plot(net, "2D")
 write.nexus.splits(fit)
 
