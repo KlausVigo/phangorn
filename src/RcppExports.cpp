@@ -5,14 +5,15 @@
 
 using namespace Rcpp;
 
-// bitCountInt
-int bitCountInt(int v);
-RcppExport SEXP _phangorn_bitCountInt(SEXP vSEXP) {
+// threshStateC
+IntegerVector threshStateC(NumericVector x, NumericVector thresholds);
+RcppExport SEXP _phangorn_threshStateC(SEXP xSEXP, SEXP thresholdsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type v(vSEXP);
-    rcpp_result_gen = Rcpp::wrap(bitCountInt(v));
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type thresholds(thresholdsSEXP);
+    rcpp_result_gen = Rcpp::wrap(threshStateC(x, thresholds));
     return rcpp_result_gen;
 END_RCPP
 }
