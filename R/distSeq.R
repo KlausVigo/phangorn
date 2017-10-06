@@ -33,7 +33,8 @@
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso For more distance methods for nucleotide data see
 #' \code{\link[ape]{dist.dna}} and \code{\link{dist.p}} for pairwise
-#' polymorphism p-distances. \code{\link{writeDist}} for export and import distances.
+#' polymorphism p-distances. \code{\link{writeDist}} for export and import 
+#' distances.
 #' @references Lockhart, P. J., Steel, M. A., Hendy, M. D. and Penny, D. (1994)
 #' Recovering evolutionary trees under a more realistic model of sequence
 #' evolution. \emph{Molecular Biology and Evolution}, \bold{11}, 605--602.
@@ -65,28 +66,28 @@ dist.hamming <- function (x, ratio = TRUE, exclude = "none")
 {
     if (!inherits(x,"phyDat")) 
         stop("x has to be element of class phyDat")
-    l = length(x)
+    l <- length(x)
 
     contrast <- attr(x, "contrast")
     nc <- as.integer(attr(x, "nc"))
-    con = rowSums(contrast > 0) < 2
+    con <- rowSums(contrast > 0) < 2
     if (exclude == "all") {
-        index = con[x[[1]]]
-        for (i in 2:l) index = index & con[x[[i]]]
-        index = which(index)
-        x = subset(x, , index)
+        index <- con[x[[1]]]
+        for (i in 2:l) index <- index & con[x[[i]]]
+        index <- which(index)
+        x <- subset(x, , index)
     }
     weight <- attr(x, "weight")  
-    d = numeric((l * (l - 1))/2)
+    d <- numeric((l * (l - 1))/2)
 
     if(exclude == "pairwise"){
         k=1
         W <- numeric(l*(l-1)/2)
         for (i in 1:(l - 1)) {
-            tmp = con[x[[i]]] 
+            tmp <- con[x[[i]]] 
             for (j in (i + 1):l) {
-                W[k] = sum(weight[tmp & con[ x[[j]] ] ])
-                k = k + 1
+                W[k] <- sum(weight[tmp & con[ x[[j]] ] ])
+                k <- k + 1
             }
         }  
              
@@ -94,12 +95,12 @@ dist.hamming <- function (x, ratio = TRUE, exclude = "none")
 
     if(nc > 31){
 #        contrast <- attr(x, "contrast")
-        k = 1
+        k <- 1
         for (i in 1:(l - 1)) {
-            X = contrast[x[[i]], , drop = FALSE]
+            X <- contrast[x[[i]], , drop = FALSE]
             for (j in (i + 1):l) {
-                d[k] = sum(weight * (rowSums(X * contrast[x[[j]], , drop = FALSE]) == 0))
-                k = k + 1
+                d[k] <- sum(weight * (rowSums(X * contrast[x[[j]], , drop = FALSE]) == 0))
+                k <- k + 1
             }
         }
     } # end if  
@@ -108,13 +109,14 @@ dist.hamming <- function (x, ratio = TRUE, exclude = "none")
         if(exclude == "pairwise")ind <- which(con[unlist(x)]==FALSE)  
         x <- prepareDataFitch(x) 
         if(exclude == "pairwise")x[ind] <- as.integer(2L^nc -1L) 
-        res <- .C("distHamming", as.integer(x), as.double(weight), as.integer(nr), as.integer(l), as.double(d), PACKAGE = "phangorn")
+        res <- .C("distHamming", as.integer(x), as.double(weight), 
+            as.integer(nr), as.integer(l), as.double(d), PACKAGE = "phangorn")
         d <- res[[5]]
     }     
 
     if (ratio){
-        if(exclude == "pairwise") d = d/W
-        else d = d/sum(weight)
+        if(exclude == "pairwise") d <- d/W
+        else d <- d/sum(weight)
     }
     attr(d, "Size") <- l
     if (is.list(x)) 
@@ -131,20 +133,21 @@ dist.hamming <- function (x, ratio = TRUE, exclude = "none")
 
 #' @rdname dist.hamming
 #' @export
-dist.ml <- function (x, model = "JC69", exclude = "none", bf = NULL, Q = NULL, k=1L, shape=1, ...) 
+dist.ml <- function (x, model = "JC69", exclude = "none", bf = NULL, Q = NULL, 
+                     k=1L, shape=1, ...) 
 {
     if (!inherits(x,"phyDat")) 
         stop("x has to be element of class phyDat")
-    l = length(x)
-    d = numeric((l * (l - 1))/2)
-    v = numeric((l * (l - 1))/2)
+    l <- length(x)
+    d <- numeric((l * (l - 1))/2)
+    v <- numeric((l * (l - 1))/2)
     contrast <- attr(x, "contrast")
-    con = rowSums(contrast > 0) < 2
+    con <- rowSums(contrast > 0) < 2
     if (exclude == "all") {
-        index = con[x[[1]]]
-        for (i in 2:l) index = index & con[x[[i]]]
-        index = which(index)
-        x = subset(x, , index)
+        index <- con[x[[1]]]
+        for (i in 2:l) index <- index & con[x[[i]]]
+        index <- which(index)
+        x <- subset(x, , index)
     }
     nc <- as.integer(attr(x, "nc"))
     nr <- as.integer(attr(x, "nr"))
@@ -159,40 +162,40 @@ dist.ml <- function (x, model = "JC69", exclude = "none", bf = NULL, Q = NULL, k
     if (is.null(Q)) 
         Q <- rep(1, (nc - 1) * nc/2L)
     
-    bf = as.double(bf)
+    bf <- as.double(bf)
     eig <- edQt(Q = Q, bf = bf)
-    pos = 1
-    k = as.integer(k)
-    w = as.double(w <- rep(1/k, k))
-    g = as.double(discrete.gamma(shape,k))
+    pos <- 1
+    k <- as.integer(k)
+    w <- as.double(w <- rep(1/k, k))
+    g <- as.double(discrete.gamma(shape,k))
     fun <- function(s) -(nc - 1)/nc * log(1 - nc/(nc - 1) * s)
     eps <- (nc - 1)/nc
-    n = as.integer(dim(contrast)[1])
-    ind1 = rep(1:n, n:1)
-    ind2 = unlist(lapply(n:1, function(x) seq_len(x) + n - x))
+    n <- as.integer(dim(contrast)[1])
+    ind1 <- rep(1:n, n:1)
+    ind2 <- unlist(lapply(n:1, function(x) seq_len(x) + n - x))
     li <- as.integer(length(ind1))
-    weight = as.double(attr(x, "weight"))
-    ll.0 = as.double(weight * 0)
+    weight <- as.double(attr(x, "weight"))
+    ll.0 <- as.double(weight * 0)
     if (exclude == "pairwise") {
-        index = con[ind1] & con[ind2]
-        index = which(!index)
+        index <- con[ind1] & con[ind2]
+        index <- which(!index)
     }
-    tmp = (contrast %*% eig[[2]])[ind1, ] * (contrast %*% (t(eig[[3]]) * bf))[ind2, ]
-    tmp2 = vector("list", k)
+    tmp <- (contrast %*% eig[[2]])[ind1, ] * (contrast %*% (t(eig[[3]]) * bf))[ind2, ]
+    tmp2 <- vector("list", k)
 #    wdiag = .Call("PWI", as.integer(1:n), as.integer(1:n), as.integer(n), 
 #                  as.integer(n), rep(1, n), as.integer(li), PACKAGE = "phangorn")
 #    wdiag = which(wdiag > 0)
     
     wshared <- which(rowSums(contrast[ind1, ] * contrast[ind2, ]) > 0)
     
-    tmp2 = vector("list", k)
+    tmp2 <- vector("list", k)
     for (i in 1:(l - 1)) {
         for (j in (i + 1):l) {
-            w0 = .Call("PWI", as.integer(x[[i]]), as.integer(x[[j]]), 
+            w0 <- .Call("PWI", as.integer(x[[i]]), as.integer(x[[j]]), 
                        nr, n, weight, li, PACKAGE = "phangorn")
             if (exclude == "pairwise") 
-                w0[index] = 0.0
-            ind = w0 > 0
+                w0[index] <- 0.0
+            ind <- w0 > 0
             
             old.el <- 1 - (sum(w0[wshared])/sum(w0))
             if (old.el > eps) 
@@ -203,11 +206,12 @@ dist.ml <- function (x, model = "JC69", exclude = "none", bf = NULL, Q = NULL, k
             
             for(lk in 1:k) tmp2[[lk]] <- tmp[ind, , drop = FALSE]
             # FS0 verwenden!!!        
-            res <- .Call("FS5", eig, nc, as.double(old.el), w, g, tmp2, as.integer(k), as.integer(sum(ind)), 
-                         w0[ind], ll.0, PACKAGE = "phangorn") #bf,
+            res <- .Call("FS5", eig, nc, as.double(old.el), w, g, tmp2, 
+                    as.integer(k), as.integer(sum(ind)), 
+                    w0[ind], ll.0, PACKAGE = "phangorn") 
             d[pos] <- res[1] # res[[1]]
             v[pos] <- res[2] # res[[2]]
-            pos = pos + 1
+            pos <- pos + 1
         }
     }
     attr(d, "Size") <- l
@@ -225,28 +229,28 @@ dist.ml <- function (x, model = "JC69", exclude = "none", bf = NULL, Q = NULL, k
 
 #' @rdname dist.hamming
 #' @export   
-dist.logDet = function (x) 
+dist.logDet <- function (x) 
 {
     if (!inherits(x,"phyDat")) 
         stop("x has to be element of class phyDat")
     weight <- attr(x, "weight")
     contrast <- attr(x, 'contrast')
     r <- attr(x, "nc")
-    l = length(x)
-    d = numeric((l * (l - 1))/2)
-    k = 1
+    l <- length(x)
+    d <- numeric((l * (l - 1))/2)
+    k <- 1
     for (i in 1:(l - 1)) {
-        Xi = weight * contrast[x[[i]], , drop=FALSE]
+        Xi <- weight * contrast[x[[i]], , drop=FALSE]
         for (j in (i + 1):l) {
-            tmp = crossprod(Xi, contrast[x[[j]], , drop=FALSE])
-            class(tmp) = "matrix"
-            z = determinant.matrix(tmp, logarithm=TRUE)  
-            res = z$sign*z$modulus
+            tmp <- crossprod(Xi, contrast[x[[j]], , drop=FALSE])
+            class(tmp) <- "matrix"
+            z <- determinant.matrix(tmp, logarithm=TRUE)  
+            res <- z$sign*z$modulus
             if (is.nan(res)) {
-                d[k] = 10
+                d[k] <- 10
             }
-            else d[k] = (-res + sum(log(rowSums(tmp) * colSums(tmp)))/2)/r
-            k = k + 1
+            else d[k] <- (-res + sum(log(rowSums(tmp) * colSums(tmp)))/2)/r
+            k <- k + 1
         }
     }
     attr(d, "Size") <- l
@@ -272,12 +276,13 @@ dist.logDet = function (x)
 #' 
 #' @param x A \code{dist} object.
 #' @param file A file name.
-#' @param format file format, default is "phylip", only other option so far is "nexus". 
+#' @param format file format, default is "phylip", only other option so far is 
+#' "nexus". 
 #' @param \dots Further arguments passed to or from other methods. 
-#' @param upper	logical value indicating whether the upper triangle of the distance 
+#' @param upper	logical value indicating whether the upper triangle of the 
+#' distance matrix should be printed.
+#' @param diag	logical value indicating whether the diagonal of the distance 
 #' matrix should be printed.
-#' @param diag	logical value indicating whether the diagonal of the distance matrix 
-#' should be printed.
 #' @param digits passed to format inside of \code{write.nexus.dist}.
 #' @param taxa logical. If TRUE a taxa block is added.
 #' @param append logical. If TRUE the nexus blocks will be added to a file.
@@ -314,7 +319,8 @@ writeDist <- function(x, file="", format="phylip", ...){
 
 #' @rdname writeDist
 #' @export 
-write.nexus.dist <- function(x, file="", append=FALSE, upper=FALSE, diag=TRUE, digits = getOption("digits"), taxa=!append){
+write.nexus.dist <- function(x, file="", append=FALSE, upper=FALSE, diag=TRUE, 
+                             digits = getOption("digits"), taxa=!append){
     
     taxa.labels <- attr(x, "Labels")
     ntaxa <- length(taxa.labels)
@@ -392,7 +398,7 @@ unique.dist <-  function(x, incomparables, ...){
             if(is.matrix(x))return(y)
             if(inherits(x, "dist")){
                 #            attrib <- attributes(x)
-                res <- as.dist(y, diag = attr(x, "Diag"), upper = attr(x, "Upper"))  
+                res <- as.dist(y, diag=attr(x, "Diag"), upper=attr(x, "Upper"))  
                 return(res)
             }
         }

@@ -21,17 +21,18 @@ readDist(file)
 
 \item{file}{A file name.}
 
-\item{format}{file format, default is "phylip", only other option so far is "nexus".}
+\item{format}{file format, default is "phylip", only other option so far is 
+"nexus".}
 
 \item{\dots}{Further arguments passed to or from other methods.}
 
 \item{append}{logical. If TRUE the nexus blocks will be added to a file.}
 
-\item{upper}{logical value indicating whether the upper triangle of the distance 
-matrix should be printed.}
+\item{upper}{logical value indicating whether the upper triangle of the 
+distance matrix should be printed.}
 
-\item{diag}{logical value indicating whether the diagonal of the distance matrix 
-should be printed.}
+\item{diag}{logical value indicating whether the diagonal of the distance 
+matrix should be printed.}
 
 \item{digits}{passed to format inside of \code{write.nexus.dist}.}
 
