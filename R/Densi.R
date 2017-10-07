@@ -1,16 +1,16 @@
 getAges <- function(x){  
-  fun=function(x) max(node.depth.edgelength(x))  
-  height=NULL
+  fun <- function(x) max(node.depth.edgelength(x))  
+  height <- NULL
   if(inherits(x,"phylo")) height <- fun(x)
   if(inherits(x,"multiPhylo")){
     if(!is.null(attr(x, "TipLabel"))){
-      x = .uncompressTipLabel(x)  
-      x = unclass(x)  
-      height = sapply(x, fun)
+      x <- .uncompressTipLabel(x)  
+      x <- unclass(x)  
+      height <- sapply(x, fun)
     }
     else{
-      x = unclass(x)
-      height = sapply(x, fun) 
+      x <- unclass(x)
+      height <- sapply(x, fun) 
     }
   }
   height
@@ -25,7 +25,7 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt=0, cex=1,
     nTips <- length(tip.label)
     xx <- rep(1, nrow(xy))
     yy <- xy[,2 ]
-    if(direction == "leftwards" | direction == "downwards") xx = xx*0
+    if(direction == "leftwards" | direction == "downwards") xx <- xx*0
     if (!horizontal) {
         tmp <- yy
         yy <- xx
@@ -140,7 +140,7 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL,
       # unroot(midpoint(superTree(x)))
       consensus <- tryCatch(consensus(x, p=.5), error = function(e)unroot(midpoint(superTree(x))))   
   }      
-  if(inherits(consensus,"multiPhylo")) consensus = consensus[[1]]
+  if(inherits(consensus,"multiPhylo")) consensus <- consensus[[1]]
 
 
   sort_tips <- function(x){
@@ -157,23 +157,23 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL,
     "downwards"))
   horizontal <- direction %in% c("rightwards", "leftwards")
   
-  consensus = reorder(consensus)
-  nTip = as.integer(length(consensus$tip.label))
+  consensus <- reorder(consensus)
+  nTip <- as.integer(length(consensus$tip.label))
 #  e2 <- consensus$edge[,2]
   consensus <- sort_tips(consensus)
 #  consensus$tip.label <- consensus$tip.label[e2[e2<=nTip]]
 #  consensus$edge[e2<=nTip,2] <- as.integer(1L:nTip)
-  consensus = reorder(consensus, "postorder")
+  consensus <- reorder(consensus, "postorder")
   
-  maxBT = max(getAges(x))
-  if(scaleX) maxBT=1.0
-  label = rev(pretty(c(maxBT,0)))
-  maxBT = max(label)
-  xy = plotPhyloCoor(consensus, direction=direction, ...)
-  yy = xy[,2]
+  maxBT <- max(getAges(x))
+  if(scaleX) maxBT <- 1.0
+  label <- rev(pretty(c(maxBT,0)))
+  maxBT <- max(label)
+  xy <- plotPhyloCoor(consensus, direction=direction, ...)
+  yy <- xy[,2]
   
   plot.new() 
-  tl = which.max(nchar(consensus$tip.label))
+  tl <- which.max(nchar(consensus$tip.label))
   sw <- strwidth(consensus$tip.label[tl],cex=cex) * 1.1
    
   if(direction=="rightwards"){
@@ -221,8 +221,8 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL,
     
 #    if(!compressed) tiporder <- match(tmp$tip.label, consensus$tip.label)
     xy <- plotPhyloCoor(tmp, tip.height=tiporder, direction=direction, ...)
-    xx = xy[,1]
-    yy = xy[,2]
+    xx <- xy[,1]
+    yy <- xy[,2]
     
     if(horizontal){  
       if(scaleX) xx <- xx/max(xx)
