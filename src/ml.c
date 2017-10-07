@@ -223,7 +223,7 @@ SEXP getPM(SEXP eig, SEXP nc, SEXP el, SEXP w){
 } 
 
 
-
+/*
 SEXP getPM00(SEXP eig, SEXP nc, SEXP el, SEXP w){
     R_len_t i, j, nel, nw, k;
     int m=INTEGER(nc)[0], l=0;
@@ -331,7 +331,7 @@ SEXP getPM002(SEXP eig, SEXP nc, SEXP el, SEXP w){
     //    UNPROTECT(1);//RESULT
     return(ScalarReal(1.0));
 } 
-
+*/
 
 
 void lll(SEXP dlist, double *eva, double *eve, double *evei, double *el, double g, int *nr, int *nc, int *node, int *edge, int nTips, double *contrast, int nco, int n, int *scaleTmp, double *bf, double *TMP, double *ans){

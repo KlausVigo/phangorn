@@ -16,17 +16,17 @@ edgeLengthIndex <- function(child, parent, nTips){
 }
 
 
-has.singles <- function(tree)
-{
-    fun <- function(x){
-        e1 <- x$edge[, 1]
-        tab <- tabulate(e1)
-        if (all(tab != 1L)) return(FALSE) 
-        TRUE
-    }
-    if(inherits(tree, "phylo")) return(fun(tree))
-    if(inherits(tree, "multiPhylo")) return(sapply(tree, fun))
-}
+#has.singles <- function(tree)
+#{
+#    fun <- function(x){
+#        e1 <- x$edge[, 1]
+#        tab <- tabulate(e1)
+#        if (all(tab != 1L)) return(FALSE) 
+#        TRUE
+#    }
+#    if(inherits(tree, "phylo")) return(fun(tree))
+#    if(inherits(tree, "multiPhylo")) return(sapply(tree, fun))
+#}
 
 #
 # Maximum likelihood estimation
