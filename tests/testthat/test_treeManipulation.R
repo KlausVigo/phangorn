@@ -22,6 +22,7 @@ node_108 <- mrca.phylo(tree, node=desc_108)
 test_that("ancestor, mrca, descendants", {
     ## ancestor, mrca, descendants
     expect_equal(mrca.phylo(tree, node=desc_108), 108L)
+    expect_equal(mrca(tree), mrca.phylo(tree))
     kids_108 <- Descendants(tree, 108, "children")
     expect_equal(length(Descendants(tree, 101L, "all")), 197L)
     expect_equal(lengths(Descendants(tree2, 101L:199, "all")), 2 * lengths(prop.part(tree2)) - 2L)

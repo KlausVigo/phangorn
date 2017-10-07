@@ -13,6 +13,7 @@ phy_vec_dna <- phy_matrix[,1]
 phy_vec_user <- sample(c("0","1"), 26, replace=TRUE)
 names(phy_vec_user) <- letters
 phy_dnabin <- as.DNAbin(Laurasiatherian)
+phy_aabin <- as.AAbin(chloroplast)
 phy_align <- phyDat2alignment(Laurasiatherian)
 
 test_that("conversion work as expected", {
@@ -20,10 +21,12 @@ test_that("conversion work as expected", {
     expect_is(phy_matrix, "matrix")
     expect_is(phy_df, "data.frame")
     expect_is(phy_dnabin, "DNAbin")
+    expect_is(phy_aabin, "AAbin")
     expect_is(phy_align, "alignment")
     expect_is(as.phyDat(phy_matrix), "phyDat")
     expect_is(as.phyDat(phy_df), "phyDat")
     expect_is(as.phyDat(phy_dnabin), "phyDat")
+    expect_equal(as.phyDat(phy_aabin), chloroplast)
     expect_is(phyDat(phy_vec_dna), "phyDat")
     expect_is(phyDat(phy_vec_user, type="USER", levels = c("0","1")), "phyDat")
     expect_is(as.phyDat(phy_dnabin), "phyDat")
@@ -33,14 +36,15 @@ test_that("conversion work as expected", {
 })
 
 
-#test_that("conversion with Biostrings work as expected", {
-#    skip_on_cran()
-#    library(Biostrings)
-#    expect_is(MA_AA <- as.MultipleAlignment(chloroplast), "AAMultipleAlignment")
-#    expect_equal(as.phyDat(MA_AA), chloroplast)
-#    expect_is(MA_DNA <- as.MultipleAlignment(Laurasiatherian), "DNAMultipleAlignment")
-#    expect_equal(as.phyDat(MA_DNA), Laurasiatherian)
-#})
+test_that("conversion with Biostrings work as expected", {
+    skip_on_cran()
+    if(require(Biostrings)){
+        expect_is(MA_AA <- as.MultipleAlignment(chloroplast), "AAMultipleAlignment")
+        expect_equal(as.phyDat(MA_AA), chloroplast)
+        expect_is(MA_DNA <- as.MultipleAlignment(Laurasiatherian), "DNAMultipleAlignment")
+        expect_equal(as.phyDat(MA_DNA), Laurasiatherian)
+    }    
+})
 
 
 test_that("subsetting and combining work as expected", {
