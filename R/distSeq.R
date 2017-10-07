@@ -81,7 +81,7 @@ dist.hamming <- function (x, ratio = TRUE, exclude = "none")
     d <- numeric((l * (l - 1))/2)
 
     if(exclude == "pairwise"){
-        k=1
+        k <- 1
         W <- numeric(l*(l-1)/2)
         for (i in 1:(l - 1)) {
             tmp <- con[x[[i]]] 
@@ -360,14 +360,14 @@ write.nexus.dist <- function(x, file="", append=FALSE, upper=FALSE, diag=TRUE,
 
 
 RSS <- function(x, dm, trace=0){
-    labels=attr(x, "labels")
-    dm = as.matrix(dm)
-    k = dim(dm)[1]
-    dm = dm[labels,labels]
-    y = dm[lower.tri(dm)]
+    labels <- attr(x, "labels")
+    dm <- as.matrix(dm)
+    k <- dim(dm)[1]
+    dm <- dm[labels,labels]
+    y <- dm[lower.tri(dm)]
     betahat <- attr(x, "weights")
-    X = splits2design(x)
-    RSS = sum((y-(X%*%betahat))^2)
+    X <- splits2design(x)
+    RSS <- sum((y-(X%*%betahat))^2)
     RSS
 }    
 
@@ -377,7 +377,7 @@ RSS <- function(x, dm, trace=0){
 #' @export  
 readDist <- function(file){ #, format="phylip"
     tmp <- read.table(file, skip=1, stringsAsFactors = FALSE)
-    labels = tmp[,1]
+    labels <- tmp[,1]
     dm <- as.matrix(tmp[,-1]) 
     dimnames(dm)=list(labels, labels)    
     as.dist(dm)

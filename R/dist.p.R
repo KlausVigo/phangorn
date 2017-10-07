@@ -114,8 +114,8 @@ dist.p <- function (x, cost="polymorphism", ignore.indels=TRUE)
     if(any(is.na(match(lev, lev1)))) stop("Levels of x are not in levels of cost matrix!")
 
         if (ignore.indels) {
-            cost["-",]=0
-            cost[,"-"]=0
+            cost["-",] <- 0
+            cost[,"-"] <- 0
         } 
 
     
