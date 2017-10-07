@@ -3,6 +3,7 @@
 [![CRAN Downloads](http://cranlogs.r-pkg.org/badges/phangorn)](https://cran.r-project.org/package=phangorn)
 [![Research software impact](http://depsy.org/api/package/cran/phangorn/badge.svg)](http://depsy.org/package/r/phangorn)
 [![codecov.io](https://codecov.io/github/KlausVigo/phangorn/coverage.svg?branch=master)](https://codecov.io/github/KlausVigo/phangorn?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/KlausVigo/phangorn/badge.svg?branch=master)](https://coveralls.io/github/KlausVigo/phangorn?branch=master)
 
 
 phangorn
@@ -19,6 +20,9 @@ To install the development version you may need to install the Biostrings and se
 source("https://bioconductor.org/biocLite.R")
 biocLite("Biostrings", "seqLogo")
 ```
+Also the development version usually depends on tha latest ape development 
+version and information to download can be found  [here](http://ape-package.ird.fr/ape_installation.html)
+
 
 If you use phangorn please cite:
 
