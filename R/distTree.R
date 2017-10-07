@@ -379,8 +379,9 @@ designTree <- function(tree, method="unrooted", sparse=FALSE, ...){
     if (is.na(method)) stop("invalid method")
     if (method == -1) stop("ambiguous method")
     if(!is.rooted(tree) & method==2) stop("tree has to be rooted")  
-    if(method==1){ X <- designUnrooted(tree,...)
-                   if(sparse) X = Matrix(X)  
+    if(method==1){ 
+        X <- designUnrooted(tree,...)
+        if(sparse) X <- Matrix(X)  
     }
     if(method==2) X <- designUltra(tree, sparse=sparse,...)
     X
@@ -411,7 +412,8 @@ designUnrooted <- function (tree, order = NULL)
             k <- k + 1
         }
     }
-    if(inherits(tree, "phylo"))colnames(res) <- paste(tree$edge[, 1], tree$edge[, 2], sep = "<->")
+    if(inherits(tree, "phylo"))
+        colnames(res) <- paste(tree$edge[, 1], tree$edge[, 2], sep = "<->")
     res
 }
 
@@ -449,7 +451,7 @@ designUltra <- function (tree, sparse=TRUE)
     if(sparse) X <- sparseMatrix(i=u,j=v, x=2L)
     else{
         X <- matrix(0L, n * (n - 1)/2, l)              
-        X[cbind(u,v)]=2L
+        X[cbind(u,v)] <- 2L
     }
     colnames(X) <- nodes
     attr(X, "nodes") <- nodes
@@ -721,8 +723,8 @@ designAll <- function(n, add.split=FALSE){
     k <- 1
     for(i in 1:(n-1)){
         for(j in (i+1):n){
-            Y[k,c(i,j)]=1L
-            k=k+1L
+            Y[k,c(i,j)] <- 1L
+            k <- k+1L
         }
     }
     m <- n-1L

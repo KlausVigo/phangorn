@@ -151,9 +151,7 @@ dist.ml <- function (x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
     }
     nc <- as.integer(attr(x, "nc"))
     nr <- as.integer(attr(x, "nr"))
-    #    model <- match.arg(model, c("JC69", "WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24"))
     model <- match.arg(model, c("JC69", "F81", .aamodels))
-    #    if (!is.na(match(model, c("WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24")))) 
     if (!is.na(match(model, .aamodels))) 
         getModelAA(model, bf = is.null(bf), Q = is.null(Q))
     if(is.null(bf) && model=="F81") bf <- baseFreq(x)
