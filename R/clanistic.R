@@ -326,7 +326,7 @@ E_Intruder_2 <- function (clans, x, native=NULL)
 {     
     contr <- attr(x, "contr")
     d <- dim(contr)
-    if(d[1]>d[2])contr[(d[2]+1):d[1],]=0
+    if(d[1]>d[2]) contr[(d[2]+1):d[1],] <- 0
     cp <- clans %*% contr[as.numeric(x),]
     
 	homo <- which(rowSums(cp > 0) == 1)
@@ -363,7 +363,7 @@ getDiv <- function(tree, x, native=NULL){
 	    d <- which.max(rs[intr==0])
 	    tree2 <- drop.tip(tree, tip=labels[which(clans[d, ]==1)])
     } 
-    else tree2=NULL
+    else tree2 <- NULL
 	list(c(shannon(rowSums(LHG)),      
     summary(factor(attr(x, "allLevels"))[as.numeric(subset(x,,1))]), 
           parsimony(tree, x)), tree2 )     
@@ -470,8 +470,8 @@ compareSplits <- function(res, nam1, nam2){
 	dat <- attr(attr(res, "Perfect"), "data")
     res <- matrix(NA, length(ntrees), length(nam1)*length(nam2))
     for(m in 1:ntrees){
-        k=1
-        trnam=ntrees[m]
+        k <- 1
+        trnam <- ntrees[m]
         for(i in nam1){
             E1 <- wide[m, i]
             for(j in nam2){
@@ -488,7 +488,7 @@ compareSplits <- function(res, nam1, nam2){
                         }
                     }
                 }
-            k=k+1 
+            k <- k+1 
             }
         }
     }    
