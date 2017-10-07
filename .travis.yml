@@ -24,7 +24,7 @@ bioc_packages:
 
 after_success:
   - Rscript -e 'library(covr);coveralls()'
-  - Rscript -e 'library(covr);codecov()'
+#  - Rscript -e 'library(covr);codecov()'
   
   
 notifications:
