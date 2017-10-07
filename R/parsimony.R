@@ -157,52 +157,6 @@ parsinfo <- function (x)
 }
 
 
-# had problems with ambiguous states
-lowerBound_old <- function(x, cost=NULL){
-    tip <- names(x)
-    att <- attributes(x)
-    nc <- attr(x, "nc")
-    nr <- attr(x, "nr")
-    contrast <- attr(x, "contrast")
-    rownames(contrast) <- attr(x, "allLevels")
-    colnames(contrast) <- attr(x, "levels")
-    attr(x, "weight") <- rep(1, nr)
-    attr(x, "index") <- NULL
- 
-    y <- as.character(x)
-    states <- apply(y, 2, unique.default)
-
-# duplicated function(x)x[duplicated(x)]="?" avoids looping
-    if(nr==1) nst <- length(states)   
-    else{
-        if(is.matrix(states)){
-            states <- as.data.frame(states, stringsAsFactors=FALSE)
-            class(states) <- "list"
-        }
-        nst <- lengths(states)
-#        nst <- sapply(states, length)
-    }
-    res <- numeric(nr)
-    ust <- sort(unique(nst))
-
-    if(is.null(cost))cost <- 1 - diag(nc)
-
-    if(any(ust>1)){ 
-        ust <- ust[ust>1]
-        m <- max(ust)    
-        tips <- paste("t", 1:m, sep="") 
-#         
-        for(i in ust){
-            dat <- matrix(unlist(states[nst==i]), nrow=i, dimnames=list(tips[1:i], NULL))
-            dat <- phyDat(dat, type="USER", contrast=contrast)      
-            tree <- stree(i)
-            res[nst==i] <- sankoffNew(tree, dat, cost=cost, site="site")[attr(dat, "index")]
-        }
-    }
-    res
-}
-
-
 # greedy algorithm of Maximum Set Packing (MSP) problem (should work in most instances)
 lowerBound <- function(x, cost=NULL){
     tip <- names(x)
