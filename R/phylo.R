@@ -393,16 +393,6 @@ pml.init <- function(data, k=1L){
 } 
 
 
-pml.free2 <- function(){.C("ll_free2")}
-pml.init2 <- function(data, k=1L){
-    nTips <- length(data)
-    nr <- attr(data, "nr")
-    nc <- attr(data, "nc")    
-    weight <- attr(data, "weight")
-    .C("ll_init2", as.integer(unlist(data, use.names=FALSE)), as.double(weight), as.integer(nr), as.integer(nTips), as.integer(nc), as.integer(k))
-} 
-
-
 fn.quartet <- function(old.el, eig, bf, dat,  g=1, w=1, weight, ll.0) {
     l= length(dat[,1]) 
     ll = ll.0

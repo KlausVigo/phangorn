@@ -59,7 +59,7 @@ void ll_init(int *nr, int *nTips, int *nc, int *k)
 }
 
 
-// contrast und nr,nc,k
+/*
 void ll_free2(){
     free(LL);
     free(SCM);
@@ -78,7 +78,7 @@ void ll_init2(int *data, int *weights, int *nr, int *nTips, int *nc, int *k)
     for(i =0; i < (*nr * *nTips); i++) XXX[i] = data[i];
     for(i =0; i < *nr; i++) WEIGHTS[i] = weights[i];
 }
-
+*/
 
 int edgeLengthIndex(int child, int parent, int nTips){
     if(child <= nTips) return(child-1L);

@@ -35,9 +35,9 @@ extern void fitchTriplet(void *, void *, void *, void *, void *);
 extern void fitchTripletACC4(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
 extern void giveIndex(void *, void *, void *, void *, void *, void *);
 extern void ll_free();
-extern void ll_free2();
+//extern void ll_free2();
 extern void ll_init(void *, void *, void *, void *);
-extern void ll_init2(void *, void *, void *, void *, void *, void *);
+//extern void ll_init2(void *, void *, void *, void *, void *, void *);
 extern void nodeH(void *, void *, void *, void *, void *);
 extern void out(void *, void *, void *, void *, void *);
 
@@ -103,9 +103,9 @@ static const R_CMethodDef CEntries[] = {
     {"fitchTripletACC4", (DL_FUNC) &fitchTripletACC4, 11},
     {"giveIndex",        (DL_FUNC) &giveIndex,         6},
     {"ll_free",          (DL_FUNC) &ll_free,           0},
-    {"ll_free2",         (DL_FUNC) &ll_free2,          0},
+//    {"ll_free2",         (DL_FUNC) &ll_free2,          0},
     {"ll_init",          (DL_FUNC) &ll_init,           4},
-    {"ll_init2",         (DL_FUNC) &ll_init2,          6},
+//    {"ll_init2",         (DL_FUNC) &ll_init2,          6},
     {"nodeH",            (DL_FUNC) &nodeH,             5},
     {"out",              (DL_FUNC) &out,               5},
     {NULL, NULL, 0}
