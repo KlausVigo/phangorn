@@ -10,7 +10,7 @@ mat <- as.matrix(tree2spl)
 Mat <- as.Matrix(tree2spl)
 trees <- nni(tree)
 
-test_that("splits ", {
+test_that("splits", {
     ## skip on CRAN
     skip_on_cran()
     
@@ -22,6 +22,12 @@ test_that("splits ", {
     expect_is(mat, "matrix")
     expect_is(Mat, "Matrix")
     expect_equal(spl2tree , tree)
+    # test generics
+    c_spl <- c(tree2spl, tree2spl, tree2spl)
+    expect_equal(length(c_spl) , 3L*length(tree2spl))
+    expect_equal(length(unique(c_spl)) , length(tree2spl))
+    expect_equal(length(distinct.splits(c_spl)) , length(tree2spl))
+    
     
     spl <- allCircularSplits(6)
     spl <- phangorn:::oneWise(spl, 6)
@@ -53,10 +59,12 @@ test_that("networx ", {
      unlink("tmp.nex")
      cnet <- consensusNet(as.splits(trees))
      expect_is(cnet, "networx") 
-     
      net1$edge.length <- cnet$edge.length <- cnet$edge.labels <- NULL
-     attr(cnet, "order") = NULL
+     attr(cnet, "order") <- NULL
      expect_equal(cnet, net1)
+     expect_equal(nrow(cnet$edge), length(as.splits(cnet)))
+     cnet
+     
 })
 
 
