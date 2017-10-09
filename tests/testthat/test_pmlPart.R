@@ -21,12 +21,14 @@ colnames(W) = c("g1", "g2", "g3")
 # rate
 test_that("rate optimisation works properly", {
     skip_on_cran()
-    sp <- pmlPart(edge ~ rate, fit0, weight=W)
+    sp <- pmlPart(edge ~ rate, fit0, weight=W, control = pml.control(trace=0))
     expect_equal( sp$fits[[1]]$rate  / sp$fits[[2]]$rate , 2, tolerance = 1e-5)
     expect_equal( sp$fits[[1]]$rate  / sp$fits[[3]]$rate , 0.5, tolerance = 1e-5)
 })    
 
 # nni
+
+
 
 # Q
 test_that("transition rate optimisation works properly", {
