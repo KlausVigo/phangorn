@@ -14,9 +14,6 @@
 .gEps <- 1e-30
 
 
-# loadModule("Fitch_mod", TRUE)
-
-
 
 # .onLoad  <- function(libname, pkgname) {
 #    library.dynam("phangorn", pkgname, libname)
