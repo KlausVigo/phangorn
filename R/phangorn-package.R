@@ -79,7 +79,7 @@ NULL
 #' Internal \pkg{phangorn} functions.
 #' 
 #' @name phangorn-internal
-#' @aliases phangorn-internal Fitch threshStateC
+#' @aliases phangorn-internal threshStateC
 #' @keywords internal
 NULL
 
