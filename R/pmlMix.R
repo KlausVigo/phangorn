@@ -11,7 +11,8 @@ optimMixQ <- function(object, Q=c(1, 1, 1, 1, 1, 1), omega,...){
         n <- length(omega)
         p <- length(weight)
         result <- numeric(p)
-        for(i in 1:n)result <- result + as.numeric(update(object[[i]], Q=Q, ...)$lv) * omega[i]
+        for(i in 1:n)result <- result + 
+            as.numeric(update(object[[i]], Q=Q, ...)$lv) * omega[i]
         result <- sum(weight %*% log(result))
         result 
     }
@@ -35,7 +36,8 @@ optimMixBf <- function(object, bf=c(.25,.25,.25,.25), omega,...){
         n <- length(omega)
         p <- length(weight)
         result <- numeric(p)
-        for(i in 1:n)result <- result + as.numeric(update(object[[i]], bf=bf, ...)$lv) * omega[i]
+        for(i in 1:n)result <- result + 
+            as.numeric(update(object[[i]], bf=bf, ...)$lv) * omega[i]
         result <- sum(weight %*% log(result))
         result 
     }
@@ -53,11 +55,12 @@ optimMixInv <- function(object, inv=0.01, omega,...){
         weight <- object[[1]]$weight
         p <- length(weight)
         result <- numeric(p)
-        for(i in 1:n)result <- result + as.numeric(update(object, inv=inv, ...)$lv) * omega[i]
+        for(i in 1:n) result <- result + 
+            as.numeric(update(object, inv=inv, ...)$lv) * omega[i]
         result <- sum(weight %*% log(result))
         result 
     }
-    res = optimize(f=fn, interval = c(0,1), lower = 0, upper = 1, maximum = TRUE,
+    res <- optimize(f=fn, interval=c(0,1), lower=0, upper=1, maximum=TRUE,
                    tol = .0001, object, omega=omega,...)
     #    print(res[[2]]) 
     res[[1]]
@@ -79,8 +82,9 @@ optimMixRate <- function (fits, ll, weight, omega, rate=rep(1,length(fits)))
     ui=diag(r-1)
     ui <- rbind(-omega[-r], ui)
     ci <- c(-1, rep(0, r-1))
-    res <- constrOptim(rate0, fn, grad=NULL, ui=ui, ci=ci, mu = 1e-04, control = list(fnscale=-1),
-                       method = "Nelder-Mead", outer.iterations = 50, outer.eps = 1e-05, fits=fits, ll=ll, weight=weight, omega=omega)
+    res <- constrOptim(rate0, fn, grad=NULL, ui=ui, ci=ci, mu=1e-04, 
+            control=list(fnscale=-1), method="Nelder-Mead", outer.iterations=50,
+            outer.eps = 1e-05, fits=fits, ll=ll, weight=weight, omega=omega)
     rate <- res[[1]]
     res[[1]] <- c(rate, (1- sum(rate *omega[-r]))/omega[r])
     res
@@ -99,9 +103,10 @@ optW <- function (ll, weight, omega,...)
         res = sum(weight * log(ll %*% p)) 
         res
     }
-    if(k==2)res = optimize(f =fn , interval =c(-3,3) , lower = -3, upper = 3, maximum = TRUE, tol = .Machine$double.eps^0.25, ll = ll, weight = weight) 
-    else res = optim(eta, fn = fn, method = "L-BFGS-B", lower=-5, upper=5,control = list(fnscale = -1, 
-                                                                                         maxit=25), gr = NULL, ll = ll, weight = weight)
+    if(k==2)res <- optimize(f=fn , interval=c(-3,3) , lower=-3, upper=3, 
+               maximum=TRUE, tol=.Machine$double.eps^0.25, ll=ll, weight=weight) 
+    else res <- optim(eta, fn=fn, method="L-BFGS-B", lower=-5, upper=5, 
+            control = list(fnscale=-1, maxit=25), gr=NULL, ll=ll, weight=weight)
     
     p = exp(c(0,res[[1]]))
     p = p/sum(p)
@@ -252,7 +257,8 @@ optimMixEdge <- function(object, omega, trace=1,...){
 #' }
 #' 
 #' @export pmlMix
-pmlMix <- function (formula, fit, m = 2, omega = rep(1/m, m), control=pml.control(epsilon=1e-8, maxit=20, trace=1), ...) 
+pmlMix <- function (formula, fit, m = 2, omega = rep(1/m, m), 
+                    control=pml.control(epsilon=1e-8, maxit=20, trace=1), ...) 
 {
     call <- match.call()
     form <- phangornParseFormula(formula)
@@ -299,7 +305,8 @@ pmlMix <- function (formula, fit, m = 2, omega = rep(1/m, m), control=pml.contro
     eps0 <- 1
     iter0 <- 0
     trace = control$trace
-    while (eps0 > control$eps & iter0 < control$maxit) {  #while (eps0 > 1e-6 & iter0 < 20) {
+    while (eps0 > control$eps & iter0 < control$maxit) {  
+        #while (eps0 > 1e-6 & iter0 < 20) {
         eps1 <- 100
         iter1 <- 0
         
@@ -335,9 +342,10 @@ pmlMix <- function (formula, fit, m = 2, omega = rep(1/m, m), control=pml.contro
             
             for (i in 1:r) {
                 pl0 <- ll[, -i, drop = FALSE] %*% omega[-i]
-                fits[[i]] <- optim.pml(fits[[i]], MixNni, MixBf, MixQ, MixInv, MixGamma, 
-                                       MixEdge, optRate=FALSE, control = pml.control(epsilon = 1e-8, maxit = 3,
-                                                                                     trace-1), llMix = pl0, wMix = omega[i])
+                fits[[i]] <- optim.pml(fits[[i]], MixNni, MixBf, MixQ, MixInv, 
+                    MixGamma, MixEdge, optRate=FALSE, control = 
+                    pml.control(epsilon = 1e-8, maxit = 3, trace-1), 
+                    llMix = pl0, wMix = omega[i])
                 ll[, i] <- fits[[i]]$lv 
                 
                 res = optW(ll, weight, omega)
@@ -348,7 +356,8 @@ pmlMix <- function (formula, fit, m = 2, omega = rep(1/m, m), control=pml.contro
                     rate <- rate / blub 
                     tree <- fits[[1]]$tree
                     tree$edge.length <-   tree$edge.length*blub
-                    for (i in 1:r) fits[[i]]<-update(fits[[i]], tree=tree, rate = rate[i])
+                    for (i in 1:r) fits[[i]]<-update(fits[[i]], tree=tree, 
+                                rate = rate[i])
                     for (i in 1:r) ll[, i] <- fits[[i]]$lv
                 }
                 for (i in 1:r){
@@ -365,7 +374,8 @@ pmlMix <- function (formula, fit, m = 2, omega = rep(1/m, m), control=pml.contro
                 rate <- rate / blub 
                 tree <- fits[[1]]$tree
                 tree$edge.length <-   tree$edge.length*blub
-                for (i in 1:r) fits[[i]]<-update(fits[[i]], tree=tree, rate = rate[i])
+                for (i in 1:r) fits[[i]]<-update(fits[[i]], tree=tree, 
+                                                 rate = rate[i])
                 if(trace>0) print(rate)
                 for (i in 1:r) ll[, i] <- fits[[i]]$lv
             }
@@ -386,9 +396,9 @@ pmlMix <- function (formula, fit, m = 2, omega = rep(1/m, m), control=pml.contro
         iter0 <- iter0 + 1
         if(trace>0) print(iter0)
     }
-    parameter <- c(AllBf=AllBf, AllQ=AllQ, AllInv=AllInv, AllGamma=AllGamma, AllEdge=AllEdge, MixNni=MixNni, 
-                   MixBf=MixBf, MixQ=MixQ, MixInv=MixInv, MixGamma=MixGamma, MixEdge=MixEdge, MixRate=MixRate)
-    
+    parameter <- c(AllBf=AllBf, AllQ=AllQ, AllInv=AllInv, AllGamma=AllGamma, 
+          AllEdge=AllEdge, MixNni=MixNni, MixBf=MixBf, MixQ=MixQ, MixInv=MixInv,
+          MixGamma=MixGamma, MixEdge=MixEdge, MixRate=MixRate)
     df <- matrix(1, 6 ,2)
     colnames(df) <- c("#df", "group")
     rownames(df) <- c("Edge", "Shape", "Inv", "Bf", "Q", "Rate")
@@ -407,7 +417,8 @@ pmlMix <- function (formula, fit, m = 2, omega = rep(1/m, m), control=pml.contro
     if(MixRate) df[6,1] = r-1     
     attr(logLik, "df") = sum(df[,1]*df[,2])
     converge <- c(iter=iter0, eps=eps0)
-    result <- list(logLik = ll1, omega = omega, fits = fits, call = call, converge=converge, parameter=parameter, df=df)
+    result <- list(logLik = ll1, omega = omega, fits = fits, call = call, 
+                   converge=converge, parameter=parameter, df=df)
     class(result) <- "pmlMix"
     result
 }
