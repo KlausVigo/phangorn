@@ -668,6 +668,7 @@ void C_cophenetic(int *children, int *parents, double *el, int *lp, int *m, int 
 }
 
 
+/*
 // a bit faster 
 SEXP C_bip(SEXP parent, SEXP child, SEXP nTips, SEXP maxP){ //, SEXP Nnode){
    int eins=1L, i, j, k, l=length(child), *tmp, *tmp2, *lch, *kl, pi, ci, p, nt=INTEGER(nTips)[0], mp=INTEGER(maxP)[0], ltmp; 
@@ -792,7 +793,7 @@ SEXP C_bipart(SEXP parent, SEXP child, SEXP nTips, SEXP maxP){ //, SEXP Nnode){
    UNPROTECT(2);
    return(ans);  
 }
-
+*/
 
 
 
