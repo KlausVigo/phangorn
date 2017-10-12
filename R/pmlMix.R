@@ -2,11 +2,11 @@
 # pmlMix
 #
 optimMixQ <- function(object, Q=c(1, 1, 1, 1, 1, 1), omega,...){
-    l = length(Q)
-    Q = Q[-l]
-    Q = sqrt(Q)
-    fn = function(Q, object, omega,...) {
-        Q = c(Q^2, 1)
+    l <- length(Q)
+    Q <- Q[-l]
+    Q <- sqrt(Q)
+    fn <- function(Q, object, omega,...) {
+        Q <- c(Q^2, 1)
         weight <- object[[1]]$weight
         n <- length(omega)
         p <- length(weight)
@@ -16,22 +16,22 @@ optimMixQ <- function(object, Q=c(1, 1, 1, 1, 1, 1), omega,...){
         result <- sum(weight %*% log(result))
         result 
     }
-    res = optim(par=Q, fn=fn, gr=NULL, method="L-BFGS-B", lower=0, 
+    res <- optim(par=Q, fn=fn, gr=NULL, method="L-BFGS-B", lower=0, 
                 upper=Inf, control=list(fnscale = -1, maxit=25), 
                 object=object, omega=omega,...)
-    res[[1]] = c(res[[1]]^2, 1)
+    res[[1]] <- c(res[[1]]^2, 1)
     res
 }
 
 
 optimMixBf <- function(object, bf=c(.25,.25,.25,.25), omega,...){
-    l = length(bf)
-    nenner = 1/bf[l]
-    lbf = log(bf * nenner)
-    lbf = lbf[-l]
-    fn = function(lbf, object, omega,...) {
-        bf = exp(c(lbf,0))
-        bf = bf/sum(bf)
+    l <- length(bf)
+    nenner <- 1/bf[l]
+    lbf <- log(bf * nenner)
+    lbf <- lbf[-l]
+    fn <- function(lbf, object, omega,...) {
+        bf <- exp(c(lbf,0))
+        bf <- bf/sum(bf)
         weight <- object[[1]]$weight
         n <- length(omega)
         p <- length(weight)
@@ -41,16 +41,16 @@ optimMixBf <- function(object, bf=c(.25,.25,.25,.25), omega,...){
         result <- sum(weight %*% log(result))
         result 
     }
-    res = optim(par=lbf, fn=fn, gr=NULL, method="Nelder-Mead", 
+    res <- optim(par=lbf, fn=fn, gr=NULL, method="Nelder-Mead", 
                 control=list(fnscale=-1, maxit=500), object, omega=omega,...)
     #    print(res[[2]])
-    bf = exp(c(res[[1]],0))
-    bf = bf/sum(bf)
+    bf <- exp(c(res[[1]],0))
+    bf <- bf/sum(bf)
 }
 
 
 optimMixInv <- function(object, inv=0.01, omega,...){
-    fn = function(inv, object, omega,...) {
+    fn <- function(inv, object, omega,...) {
         n <- length(omega)
         weight <- object[[1]]$weight
         p <- length(weight)
@@ -93,14 +93,14 @@ optimMixRate <- function (fits, ll, weight, omega, rate=rep(1,length(fits)))
 
 optW <- function (ll, weight, omega,...) 
 {
-    k = length(omega)
-    nenner = 1/omega[1]
-    eta = log(omega * nenner)
-    eta = eta[-1]
-    fn = function(eta, ll, weight) {
-        eta = c(0,eta)
-        p = exp(eta)/sum(exp(eta))
-        res = sum(weight * log(ll %*% p)) 
+    k <- length(omega)
+    nenner <- 1/omega[1]
+    eta <- log(omega * nenner)
+    eta <- eta[-1]
+    fn <- function(eta, ll, weight) {
+        eta <- c(0,eta)
+        p <- exp(eta)/sum(exp(eta))
+        res <- sum(weight * log(ll %*% p)) 
         res
     }
     if(k==2)res <- optimize(f=fn , interval=c(-3,3) , lower=-3, upper=3, 
@@ -108,9 +108,9 @@ optW <- function (ll, weight, omega,...)
     else res <- optim(eta, fn=fn, method="L-BFGS-B", lower=-5, upper=5, 
             control = list(fnscale=-1, maxit=25), gr=NULL, ll=ll, weight=weight)
     
-    p = exp(c(0,res[[1]]))
-    p = p/sum(p)
-    result = list(par = p, value = res[[2]])
+    p <- exp(c(0,res[[1]]))
+    p <- p/sum(p)
+    result <- list(par = p, value = res[[2]])
     result
 }
 
@@ -118,12 +118,12 @@ optW <- function (ll, weight, omega,...)
 optimMixEdge <- function(object, omega, trace=1,...){
     tree <- object[[1]]$tree
     theta <- object[[1]]$tree$edge.length
-    weight = as.numeric(attr(object[[1]]$data,"weight"))
+    weight <- as.numeric(attr(object[[1]]$data,"weight"))
     n <- length(omega)
     p <- length(weight)
     q <- length(theta)
-    lv1 = numeric(p)
-    for(i in 1:n) lv1 = lv1 + as.numeric(object[[i]]$lv) * omega[i]
+    lv1 <- numeric(p)
+    for(i in 1:n) lv1 <- lv1 + as.numeric(object[[i]]$lv) * omega[i]
     ll0 <- sum(weight * log(lv1))
     eps=1
     iter <- 0
@@ -133,29 +133,29 @@ optimMixEdge <- function(object, omega, trace=1,...){
         dl <- matrix(0,p,q)
         for(i in 1:n)dl <- dl + dl(object[[i]],TRUE) * omega[i]
         dl <- dl/lv1
-        sc = colSums(weight * dl)
-        F = crossprod(dl * weight, dl)+diag(q)*1e-6
+        sc <- colSums(weight * dl)
+        F <- crossprod(dl * weight, dl)+diag(q)*1e-6
         blub <- TRUE
         iter2 <- 0
         while(blub & iter2<10){
-            thetaNew = log(theta) + scalep * solve(F, sc)
-            tree$edge.length = as.numeric(exp(thetaNew))
+            thetaNew <- log(theta) + scalep * solve(F, sc)
+            tree$edge.length <- as.numeric(exp(thetaNew))
             for(i in 1:n)object[[i]] <- update(object[[i]],tree=tree)
-            lv1 = numeric(p)
-            for(i in 1:n) lv1 = lv1 + as.numeric(object[[i]]$lv)  * omega[i]
+            lv1 <- numeric(p)
+            for(i in 1:n) lv1 <- lv1 + as.numeric(object[[i]]$lv)  * omega[i]
             ll1 <- sum(weight * log(lv1))
             eps <- ll1 - ll0     
             if (eps < 0 || is.nan(eps)) {
-                scalep = scalep/2
-                eps = 1
-                thetaNew = log(theta)
-                ll1 = ll0
+                scalep <- scalep/2
+                eps <- 1
+                thetaNew <- log(theta)
+                ll1 <- ll0
                 iter2 <- iter2+1
             }
             else{
-                scalep = 1
-                theta = exp(thetaNew)  
-                blub=FALSE  
+                scalep <- 1
+                theta <- exp(thetaNew)  
+                blub <- FALSE  
             }     
         }             
         iter <- iter+1
@@ -216,13 +216,13 @@ optimMixEdge <- function(object, omega, trace=1,...){
 #' data(Laurasiatherian)
 #' dm <- dist.logDet(Laurasiatherian)
 #' tree <- NJ(dm)
-#' fit=pml(tree, Laurasiatherian)
-#' fit = optim.pml(fit)
+#' fit <- pml(tree, Laurasiatherian)
+#' fit <- optim.pml(fit)
 #' 
 #' fit2 <- update(fit, k=4)
 #' fit2 <- optim.pml(fit2, optGamma=TRUE)
 #' 
-#' fitMix = pmlMix(edge ~ rate, fit, m=4)
+#' fitMix <- pmlMix(edge ~ rate, fit, m=4)
 #' fitMix
 #' 
 #' 
@@ -246,7 +246,7 @@ optimMixEdge <- function(object, omega, trace=1,...){
 #' logLik(fit2)
 #' AIC(fit2, k=log(3000))
 #' 
-#' fitMixEdge = pmlMix( ~ edge, fit1, m=2)
+#' fitMixEdge <- pmlMix( ~ edge, fit1, m=2)
 #' logLik(fitMixEdge)
 #' AIC(fitMixEdge, k=log(3000))
 #' 
@@ -285,11 +285,11 @@ pmlMix <- function (formula, fit, m = 2, omega = rep(1/m, m),
         for (i in 1:m) fits[[i]] <- fit
     }
     dat <- fits[[1]]$data
-    p = attr(dat, "nr")
-    weight = attr(dat, "weight")
-    r = m
-    ll = matrix(0, p, r)
-    for (i in 1:r) ll[, i] = fits[[i]]$lv
+    p <- attr(dat, "nr")
+    weight <- attr(dat, "weight")
+    r <- m
+    ll <- matrix(0, p, r)
+    for (i in 1:r) ll[, i] <- fits[[i]]$lv
     
     for (i in 1:r){
         pl0 <- ll[, -i, drop = FALSE] %*% omega[-i]
@@ -298,13 +298,13 @@ pmlMix <- function (formula, fit, m = 2, omega = rep(1/m, m),
     
     if(MixRate) rate <- rep(1,r)
     
-    llstart = sum(weight * log(ll %*% omega))
+    llstart <- sum(weight * log(ll %*% omega))
     llold <- llstart
     ll0 <- llstart
     ll3 <- llstart
     eps0 <- 1
     iter0 <- 0
-    trace = control$trace
+    trace <- control$trace
     while (eps0 > control$eps & iter0 < control$maxit) {  
         #while (eps0 > 1e-6 & iter0 < 20) {
         eps1 <- 100
@@ -348,8 +348,8 @@ pmlMix <- function (formula, fit, m = 2, omega = rep(1/m, m),
                     llMix = pl0, wMix = omega[i])
                 ll[, i] <- fits[[i]]$lv 
                 
-                res = optW(ll, weight, omega)
-                omega = res$p
+                res <- optW(ll, weight, omega)
+                omega <- res$p
                 
                 if(MixRate){
                     blub <- sum(rate*omega)
@@ -366,9 +366,9 @@ pmlMix <- function (formula, fit, m = 2, omega = rep(1/m, m),
                 }
                 
             }
-            ll1 = sum(weight * log(ll %*% omega))
-            res = optW(ll, weight, omega)
-            omega = res$p
+            ll1 <- sum(weight * log(ll %*% omega))
+            res <- optW(ll, weight, omega)
+            omega <- res$p
             if(MixRate){
                 blub <- sum(rate*omega)
                 rate <- rate / blub 
@@ -384,10 +384,10 @@ pmlMix <- function (formula, fit, m = 2, omega = rep(1/m, m),
                 fits[[i]] <- update(fits[[i]], llMix = pl0, wMix = omega[i])
             }
             
-            ll2 = sum(weight * log(ll %*% omega)) 
-            eps1 = llold - ll2
+            ll2 <- sum(weight * log(ll %*% omega)) 
+            eps1 <- llold - ll2
             iter1 <- iter1 + 1
-            llold = ll2
+            llold <- ll2
         }   
         
         ll1 <- sum(weight * log(ll %*% omega))
@@ -409,13 +409,13 @@ pmlMix <- function (formula, fit, m = 2, omega = rep(1/m, m),
     df[4,1] <- length(unique(fits[[1]]$bf)) - 1
     df[5,1] <- length(unique(fits[[1]]$Q)) - 1
     df[6,1] <- 0  
-    if(MixEdge) df[1,2] = r
-    if(MixGamma) df[2,2] = r
-    if(MixInv) df[3,2] = r
-    if(MixBf) df[4,2] = r
-    if(MixQ) df[5,2] = r
-    if(MixRate) df[6,1] = r-1     
-    attr(logLik, "df") = sum(df[,1]*df[,2])
+    if(MixEdge) df[1,2] <- r
+    if(MixGamma) df[2,2] <- r
+    if(MixInv) df[3,2] <- r
+    if(MixBf) df[4,2] <- r
+    if(MixQ) df[5,2] <- r
+    if(MixRate) df[6,1] <- r-1     
+    attr(logLik, "df") <- sum(df[,1]*df[,2])
     converge <- c(iter=iter0, eps=eps0)
     result <- list(logLik = ll1, omega = omega, fits = fits, call = call, 
                    converge=converge, parameter=parameter, df=df)
@@ -433,7 +433,7 @@ print.pmlMix <- function(x,...){
     w <- w[w>0] 
     type <- attr(x$fits[[1]]$data, "type")
     nc <- attr(x$fits[[1]]$data, "nc")
-    ll0 = sum(w*log(w/sum(w)))
+    ll0 <- sum(w*log(w/sum(w)))
     
     
     bf <- matrix(0,r,nc)
