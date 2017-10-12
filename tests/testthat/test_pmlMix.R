@@ -13,7 +13,7 @@ fit1 <- update(fit, data=X, k=1)
 #fit2 <- update(fit, data=X)
 #(fit2 <- optim.pml(fit2, optGamma=TRUE))
 
-test_that("transition rate optimisation works properly", {
+test_that("rate optimisation works properly", {
     skip_on_cran()
     fitMixture <- pmlMix(~rate, fit1 , m=4, control=pml.control(trace=0))
     expect_equal(fitMixture$logLik, ll0)

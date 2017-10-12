@@ -1,38 +1,45 @@
 context("likelihood")
 
-treeU1 = read.tree(text = "((t1:.1,t2:.1):.1,t3:.2,(t4:.1,t5:.1):.3);")
-treeU2 = read.tree(text = "((t1:.15,t2:.15):.05,t3:.2,(t4:.1,t5:.1):.3);") # edge length changed
-treeU3 = read.tree(text = "((t1:.1,t3:.1):.1,t2:.2,(t4:.1,t5:.1):.3);") # 1 NNI move
+treeU1 <- read.tree(text = "((t1:.1,t2:.1):.1,t3:.2,(t4:.1,t5:.1):.3);")
+# edge length changed
+treeU2 <- read.tree(text = "((t1:.15,t2:.15):.05,t3:.2,(t4:.1,t5:.1):.3);") 
+# 1 NNI move
+treeU3 <- read.tree(text = "((t1:.1,t3:.1):.1,t2:.2,(t4:.1,t5:.1):.3);") 
 
-treeR1 = read.tree(text = "(((t1:.1,t2:.1):.1,t3:.2):.1,(t4:.1,t5:.1):.2);")
-treeR2 = read.tree(text = "(((t1:.15,t2:.15):.05,t3:.2):.1,(t4:.1,t5:.1):.2);") # edge length changed
-treeR3 = read.tree(text = "(((t1:.1,t3:.1):.1,t2:.2):.1,(t4:.1,t5:.1):.2);") # 1 NNI move
+treeR1 <- read.tree(text = "(((t1:.1,t2:.1):.1,t3:.2):.1,(t4:.1,t5:.1):.2);")
+# edge length changed
+treeR2 <- read.tree(text = "(((t1:.15,t2:.15):.05,t3:.2):.1,(t4:.1,t5:.1):.2);") 
+# 1 NNI move
+treeR3 <- read.tree(text = "(((t1:.1,t3:.1):.1,t2:.2):.1,(t4:.1,t5:.1):.2);")
 
 
-# dat <- phyDat(c(t1="a", t2="a",t3="t",t4="t"), type="USER", levels=c("a","c","g","t"))
-#tree2 = read.tree(text = "((t1,t3),t2,t4);")
+# dat <- phyDat(c(t1="a", t2="a",t3="t",t4="t"), type="USER", 
+#                                  levels=c("a","c","g","t"))
+#tree2 <- read.tree(text = "((t1,t3),t2,t4);")
 
-dat = allSitePattern(5)
-weights = as.vector(1000 * exp(pml(treeR1, dat)$siteLik))
-attr(dat, "weight") = weights
+dat <- allSitePattern(5)
+weights <- as.vector(1000 * exp(pml(treeR1, dat)$siteLik))
+attr(dat, "weight") <- weights
 
 dat_Mk <- subset(dat, select = -c(1,342,683, 1024))
 
 
-Q = c(6:1)
+Q <- c(6:1)
 
 
-pmlU1 = pml(treeU1, dat)
-pmlU2 = pml(treeU2, dat)
-pmlU2.fitted = optim.pml(pmlU2, control = pml.control(trace=0))
-pmlU3 = pml(treeU3, dat)
-pmlU3.fitted = optim.pml(pmlU3, TRUE, control = pml.control(trace=0))
+pmlU1 <- pml(treeU1, dat)
+pmlU2 <- pml(treeU2, dat)
+pmlU2.fitted <- optim.pml(pmlU2, control = pml.control(trace=0))
+pmlU3 <- pml(treeU3, dat)
+pmlU3.fitted <- optim.pml(pmlU3, TRUE, control = pml.control(trace=0))
 
-pmlR1 = pml(treeR1, dat)
-pmlR2 = pml(treeR2, dat)
-pmlR2.fitted = optim.pml(pmlR2, optRooted = TRUE, control = pml.control(epsilon=1e-10, trace=0))
-pmlR3 = pml(treeR3, dat)
-pmlR3.fitted = optim.pml(pmlR3, TRUE, optRooted = TRUE,  control = pml.control(epsilon=1e-10, trace=0))
+pmlR1 <- pml(treeR1, dat)
+pmlR2 <- pml(treeR2, dat)
+pmlR2.fitted <- optim.pml(pmlR2, optRooted = TRUE, control = 
+                              pml.control(epsilon=1e-10, trace=0))
+pmlR3 <- pml(treeR3, dat)
+pmlR3.fitted <- optim.pml(pmlR3, TRUE, optRooted = TRUE,  control = 
+                              pml.control(epsilon=1e-10, trace=0))
 
 
 test_that("edge length optimisation works properly", {
