@@ -271,9 +271,10 @@ pmlMix <- function (formula, fit, m = 2, omega = rep(1/m, m), control=pml.contro
     MixGamma <- !is.na(optPart[5])
     MixEdge <- !is.na(optPart[6])
     MixRate <- !is.na(optPart[7])
+    if (inherits(fit,"pmlMix")) fits <- fit$fits     
     if (inherits(fit,"list")) 
         fits <- fit
-    else {
+    if (inherits(fit,"pml")){
         fits <- vector("list", m) 
         for (i in 1:m) fits[[i]] <- fit
     }
