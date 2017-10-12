@@ -23,7 +23,7 @@ bioc_packages:
   - Biostrings
 
 after_success:
-  - Rscript -e 'library(covr);coveralls()'
+  - Rscript -e 'library(covr);coveralls();codecov()'
 #  - Rscript -e 'library(covr);codecov()'
   
   
