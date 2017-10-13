@@ -3,27 +3,29 @@
 #
 
 allKids <- function(phy){
-    nTips = as.integer(length(phy$tip.label))
-    lp=nrow(phy$edge)
-    nNode = phy$Nnode
-    .C("AllKids", as.integer(phy$edge[,2]), as.integer(phy$edge[,1]), as.integer(nTips), 
-       as.integer(nNode), as.integer(lp), integer(lp), integer(nNode+1L),integer(nNode))
+    nTips <- as.integer(length(phy$tip.label))
+    lp <- nrow(phy$edge)
+    nNode <- phy$Nnode
+    .C("AllKids", as.integer(phy$edge[,2]), as.integer(phy$edge[,1]), 
+       as.integer(nTips), as.integer(nNode), as.integer(lp), integer(lp), 
+       integer(nNode+1L),integer(nNode))
 } 
 
 
 coph <- function(x, path=FALSE){ 
     if (is.null(attr(x, "order")) || attr(x, "order") == "cladewise") 
         x <- reorder(x, "postorder")
-    nTips = as.integer(length(x$tip.label))   
-    parents = as.integer(x$edge[,1]) 
-    kids = as.integer(x$edge[,2])
-    lp= as.integer(length(parents))
-    nNode = as.integer(x$Nnode)
-    m = as.integer(max(x$edge))
-    el = double(m)
+    nTips <- as.integer(length(x$tip.label))   
+    parents <- as.integer(x$edge[,1]) 
+    kids <- as.integer(x$edge[,2])
+    lp <- as.integer(length(parents))
+    nNode <- as.integer(x$Nnode)
+    m <- as.integer(max(x$edge))
+    el <- double(m)
     if(path) el <- rep(1.0, m)
-    else el[kids] = x$edge.length
-    dm <- .C("C_cophenetic", kids, parents, as.double(el), lp, m, nTips, nNode, double(nTips*(nTips-1L)/2L))[[8]]
+    else el[kids] <- x$edge.length
+    dm <- .C("C_cophenetic", kids, parents, as.double(el), lp, m, nTips, nNode, 
+             double(nTips*(nTips-1L)/2L))[[8]]
     attr(dm, "Size") <- nTips
     attr(dm, "Labels") <- x$tip.label
     attr(dm, "Diag") <- FALSE
@@ -74,8 +76,8 @@ SHORTwise <- function (x, nTips, delete=FALSE)
     v <- 1:nTips
 #    l <- sapply(x, length)
     l <- lengths(x)
-    lv = floor(nTips/2)  
-    for (i in 1:length(x)) { 
+    lv <- floor(nTips/2)  
+    for (i in seq_along(x)) { 
         if(l[i]>lv){
             y <- x[[i]]
             x[[i]] <- v[-y]
@@ -97,7 +99,7 @@ oneWise <- function (x, nTips=NULL)
 {
     if(is.null(nTips))nTips <- length(x[[1L]])
     v <- 1:nTips
-    for (i in 1:length(x)) {
+    for (i in seq_along(x)) {
         y <- x[[i]]
         if (y[1] != 1) 
             y <- v[-y]
@@ -113,7 +115,7 @@ zeroWise <- function (x, nTips=NULL)
 {
     if(is.null(nTips))nTips <- length(x[[1L]])
     v <- 1:nTips
-    for (i in 1:length(x)) {
+    for (i in seq_along(x)) {
         y <- x[[i]]
         if (y[1] == 1)  
             y <- v[-y]
@@ -146,9 +148,9 @@ zeroWise <- function (x, nTips=NULL)
 #' maximal possible distance \eqn{i(T_1) + i(T_2)}. If both trees are unrooted
 #' and binary this value is \eqn{2n-6}.
 #' 
-#' Functions like \code{RF.dist} returns the Robinson-Foulds distance (Robinson and Foulds 1981)
-#' between either 2 trees or computes a matrix of all pairwise distances if a
-#' \code{multiPhylo} object is given. 
+#' Functions like \code{RF.dist} returns the Robinson-Foulds distance (Robinson 
+#' and Foulds 1981) between either 2 trees or computes a matrix of all pairwise
+#' distances if a \code{multiPhylo} object is given. 
 #' 
 #' For large number of trees the distance functions can use a lot of memory!
 #' 
@@ -212,8 +214,8 @@ treedist <- function (tree1, tree2, check.labels=TRUE)
     if(has.singles(tree1)) tree1 <- collapse.singles(tree1)
     if(has.singles(tree2)) tree2 <- collapse.singles(tree2)
     
-    tree1 = unroot(tree1)
-    tree2 = unroot(tree2)
+    tree1 <- unroot(tree1)
+    tree2 <- unroot(tree2)
     
     if (check.labels) {
         ind <- match(tree1$tip.label, tree2$tip.label)
@@ -221,66 +223,66 @@ treedist <- function (tree1, tree2, check.labels=TRUE)
             length(tree2$tip.label))
             stop("trees have different labels")
         tree2$tip.label <- tree2$tip.label[ind]
-        ind2 <- match(1:length(ind), tree2$edge[, 2])
+        ind2 <- match(seq_along(ind), tree2$edge[, 2])
         tree2$edge[ind2, 2] <- order(ind)
     }
     
-    tree1 = reorder(tree1, "postorder")
-    tree2 = reorder(tree2, "postorder")
+    tree1 <- reorder(tree1, "postorder")
+    tree2 <- reorder(tree2, "postorder")
     
-    symmetric.difference = NULL
-    branch.score.difference = NULL
-    path.difference = NULL
-    quadratic.path.difference = NULL
+    symmetric.difference <- NULL
+    branch.score.difference <- NULL
+    path.difference <- NULL
+    quadratic.path.difference <- NULL
     if(!is.binary.tree(tree1) | !is.binary.tree(tree2))message("Trees are not binary!")
     
-    bp1 = bip(tree1)
-    bp2 = bip(tree2)
+    bp1 <- bip(tree1)
+    bp2 <- bip(tree2)
     bp1 <- SHORTwise(bp1, length(tree1$tip.label))
     bp2 <- SHORTwise(bp2, length(tree2$tip.label))
     bp1 <- sapply(bp1, paste, collapse = "_")
     bp2 <- sapply(bp2, paste, collapse = "_")
     
-    l = length(tree1$tip.label)
+    l <- length(tree1$tip.label)
     
     if (!is.null(tree1$edge.length) & !is.null(tree2$edge.length)) {      
-        dv1 = coph(tree1)
-        dv2 = coph(tree2)
-        quadratic.path.difference = sqrt(sum((dv1 - dv2)^2))
+        dv1 <- coph(tree1)
+        dv2 <- coph(tree2)
+        quadratic.path.difference <- sqrt(sum((dv1 - dv2)^2))
         
     }
     
-    RF = sum(match(bp1, bp2, nomatch=0L)==0L) + sum(match(bp2, bp1, nomatch=0L)==0L)
+    RF <- sum(match(bp1, bp2, nomatch=0L)==0L) + sum(match(bp2, bp1, nomatch=0L)==0L)
     
-    symmetric.difference = RF #2 * (p - sum(r1))
+    symmetric.difference <- RF #2 * (p - sum(r1))
     if (!is.null(tree1$edge.length) & !is.null(tree2$edge.length)) {
-        w1 = numeric(max(tree1$edge))
-        w2 = numeric(max(tree2$edge))
-        w1[tree1$edge[,2]] = tree1$edge.length
-        w2[tree2$edge[,2]] = tree2$edge.length
+        w1 <- numeric(max(tree1$edge))
+        w2 <- numeric(max(tree2$edge))
+        w1[tree1$edge[,2]] <- tree1$edge.length
+        w2[tree2$edge[,2]] <- tree2$edge.length
         
-        v1 = tree1$edge.length
-        v2 = tree2$edge.length
+        v1 <- tree1$edge.length
+        v2 <- tree2$edge.length
         
-        ind3 = match(bp1, bp2, nomatch=0L)
-        ind4 = ind3[ind3>0]
-        ind3 = which(ind3>0)
+        ind3 <- match(bp1, bp2, nomatch=0L)
+        ind4 <- ind3[ind3>0]
+        ind3 <- which(ind3>0)
         
-        s1 = sum((w1[ind3] - w2[ind4])^2)
+        s1 <- sum((w1[ind3] - w2[ind4])^2)
         
-        s2 = sum(w1[-ind3]^2)
-        s3 = sum(w2[-ind4]^2)
-        branch.score.difference = sqrt(s1 + s2 + s3)
+        s2 <- sum(w1[-ind3]^2)
+        s3 <- sum(w2[-ind4]^2)
+        branch.score.difference <- sqrt(s1 + s2 + s3)
     }
     
-    tree1$edge.length = rep(1, nrow(tree1$edge))
-    tree2$edge.length = rep(1, nrow(tree2$edge))
+    tree1$edge.length <- rep(1, nrow(tree1$edge))
+    tree2$edge.length <- rep(1, nrow(tree2$edge))
     
-    dt1 = coph(tree1)
-    dt2 = coph(tree2)  
-    path.difference = sqrt(sum((dt1 - dt2)^2))
+    dt1 <- coph(tree1)
+    dt2 <- coph(tree2)  
+    path.difference <- sqrt(sum((dt1 - dt2)^2))
     
-    result = c(symmetric.difference = symmetric.difference, 
+    result <- c(symmetric.difference = symmetric.difference, 
                branch.score.difference = branch.score.difference, 
                path.difference = path.difference, 
                quadratic.path.difference = quadratic.path.difference)
@@ -297,23 +299,27 @@ sprdist <- function (tree1, tree2)
 {
     if(has.singles(tree1)) tree1 <- collapse.singles(tree1)
     if(has.singles(tree2)) tree2 <- collapse.singles(tree2)
-    tree1 = unroot(tree1)
-    tree2 = unroot(tree2)
-    lt1 = length(tree1$tip.label)
-    lt2 = length(tree2$tip.label)
-    # checking labels is obligatory for spr (user should prune one of them beforehand?)         
+    tree1 <- unroot(tree1)
+    tree2 <- unroot(tree2)
+    lt1 <- length(tree1$tip.label)
+    lt2 <- length(tree2$tip.label)
+    # checking labels is obligatory for spr (user should prune one of them 
+    # beforehand?)         
     ind <- match(tree1$tip.label, tree2$tip.label)
     if (any(is.na(ind)) | lt1 != lt2 )  stop("trees have different labels")
     tree2$tip.label <- tree2$tip.label[ind]
-    ind2 <- match(1:length(ind), tree2$edge[, 2])
+    ind2 <- match(seq_along(ind), tree2$edge[, 2])
     tree2$edge[ind2, 2] <- order(ind)
-    # same as in original treedist (will create list of strings with shorter side of splits)
-    tree1 = reorder(tree1, "postorder")
-    tree2 = reorder(tree2, "postorder")
+    # same as in original treedist (will create list of strings with shorter 
+    # side of splits)
+    tree1 <- reorder(tree1, "postorder")
+    tree2 <- reorder(tree2, "postorder")
     if(!is.binary.tree(tree1) | !is.binary.tree(tree2))message("Trees are not binary!")
     # possibly replace bip with bipart    
-    bp1 = bip(tree1); bp1 <- SHORTwise(bp1, lt1)
-    bp2 = bip(tree2); bp2 <- SHORTwise(bp2, lt2)
+    bp1 <- bip(tree1)
+    bp1 <- SHORTwise(bp1, lt1)
+    bp2 <- bip(tree2)
+    bp2 <- SHORTwise(bp2, lt2)
     
     bp1 <- bp1[ lengths(bp1)>1 ] # only internal nodes 
     bp2 <- bp2[ lengths(bp2)>1 ] 
@@ -406,8 +412,8 @@ SPR.dist <- function(tree1, tree2=NULL){
 
 
 wRF0 <- function(tree1, tree2, normalize=FALSE, check.labels=TRUE, rooted = FALSE){    
-    r1 = is.rooted(tree1)
-    r2 = is.rooted(tree2)
+    r1 <- is.rooted(tree1)
+    r2 <- is.rooted(tree2)
     if (r1 != r2) {
         message("one tree is unrooted, unrooted both")
     }
@@ -419,9 +425,9 @@ wRF0 <- function(tree1, tree2, normalize=FALSE, check.labels=TRUE, rooted = FALS
     }
     if (!r1 | !r2) {
         if (r1) 
-            tree1 = unroot(tree1)
+            tree1 <- unroot(tree1)
         if (r2) 
-            tree2 = unroot(tree2)
+            tree2 <- unroot(tree2)
     }
     if (!is.binary.tree(tree1) | !is.binary.tree(tree2)) 
         message("Trees are not binary!")
@@ -430,13 +436,13 @@ wRF0 <- function(tree1, tree2, normalize=FALSE, check.labels=TRUE, rooted = FALS
         if (any(is.na(ind)) | length(tree1$tip.label) != length(tree2$tip.label)) 
             stop("trees have different labels")
         tree2$tip.label <- tree2$tip.label[ind]
-        ind2 <- match(1:length(ind), tree2$edge[, 2])
+        ind2 <- match(seq_along(ind), tree2$edge[, 2])
         tree2$edge[ind2, 2] <- order(ind)
     }
     if(has.singles(tree1)) tree1 <- collapse.singles(tree1)
     if(has.singles(tree2)) tree2 <- collapse.singles(tree2)
-    bp1 = bip(tree1)
-    bp2 = bip(tree2)
+    bp1 <- bip(tree1)
+    bp2 <- bip(tree2)
     if (!rooted) {
         bp1 <- SHORTwise(bp1, length(tree1$tip.label))
         bp2 <- SHORTwise(bp2, length(tree2$tip.label))
@@ -512,7 +518,7 @@ wRF2 <- function(tree, trees, normalize=FALSE, check.labels = TRUE, rooted=FALSE
     
     if(!rooted & is.rooted(tree)) tree <- unroot(tree)
         
-    bp = bip(tree)
+    bp <- bip(tree)
     
     if(!rooted) bp <- SHORTwise(bp, nTips)
     bp <- sapply(bp, paste, collapse = "_")
@@ -524,14 +530,14 @@ wRF2 <- function(tree, trees, normalize=FALSE, check.labels = TRUE, rooted=FALSE
     wRF <- numeric(l)
     
     for(i in 1:l){
-        ind3 = fmatch(BP[[i]], bp, nomatch=0L)
-        ind4 = ind3[ind3>0]
-        ind3 = which(ind3>0)
+        ind3 <- fmatch(BP[[i]], bp, nomatch=0L)
+        ind4 <- ind3[ind3>0]
+        ind3 <- which(ind3>0)
         
-        s1 = sum(abs(W[[i]][ind3] - w[ind4]))
-        s2 = sum(W[[i]][-ind3])
-        s3 = sum(w[-ind4])
-        wRF[i] = (s1 + s2 + s3)
+        s1 <- sum(abs(W[[i]][ind3] - w[ind4]))
+        s2 <- sum(W[[i]][-ind3])
+        s3 <- sum(w[-ind4])
+        wRF[i] <- (s1 + s2 + s3)
     }
     if(normalize){
         sc <- sapply(trees, function(x)sum(x$edge.length)) + sum(tree$edge.length)
@@ -588,12 +594,12 @@ wRF1 <- function(trees, normalize=FALSE, check.labels = TRUE, rooted=FALSE){
         bp <- BP[[i]]
         w <- W[[i]]
         for (j in (i + 1):l){
-            ind3 = fmatch(BP[[j]], bp, nomatch=0L)
-            ind4 = ind3[ind3>0]
-            ind3 = which(ind3>0)
-            s1 = sum(abs(W[[j]][ind3] - w[ind4]))
-            s2 = sum(W[[j]][-ind3])
-            s3 = sum(w[-ind4])
+            ind3 <- fmatch(BP[[j]], bp, nomatch=0L)
+            ind4 <- ind3[ind3>0]
+            ind3 <- which(ind3>0)
+            s1 <- sum(abs(W[[j]][ind3] - w[ind4]))
+            s2 <- sum(W[[j]][-ind3])
+            s3 <- sum(w[-ind4])
             wRF[k] <- (s1 + s2 + s3)
             if(normalize) wRF[k] <- wRF[k] / (sc[i] + sc[j])
             k=k+1
@@ -622,7 +628,7 @@ mRF2 <- function(tree, trees, normalize=FALSE, check.labels = TRUE, rooted=FALSE
         if (any(is.na(ind)) | length(tipLabel) != length(tree$tip.label))
             stop("trees have different labels")
         tree$tip.label <- tree$tip.label[ind]
-        ind2 <- match(1:length(ind), tree$edge[, 2])
+        ind2 <- match(seq_along(ind), tree$edge[, 2])
         tree$edge[ind2, 2] <- order(ind)
     }
     nTips <- length(tipLabel)
@@ -709,7 +715,7 @@ mRF<-function(trees, normalize=FALSE, rooted=FALSE){
     Nnodes <- sapply(trees, Nnode)
     k=1
     for (i in 1:(l - 1)){
-        tmp = xx[[i]]        
+        tmp <- xx[[i]]        
         for (j in (i + 1):l){
             RF[k] <- Nnodes[i] + Nnodes[j] - 2 * sum(fmatch(xx[[j]], tmp, nomatch=0L)>0L)
 #            RF[k] <- sum(match(xx[[j]], tmp, nomatch=0L)==0L) + sum(match(tmp, xx[[j]], nomatch=0L)==0L)
@@ -729,8 +735,8 @@ mRF<-function(trees, normalize=FALSE, rooted=FALSE){
 RF0 <- function(tree1, tree2=NULL, normalize=FALSE, check.labels = TRUE, rooted=FALSE){   
     if(has.singles(tree1)) tree1 <- collapse.singles(tree1)
     if(has.singles(tree2)) tree2 <- collapse.singles(tree2)
-    r1 = is.rooted(tree1)
-    r2 = is.rooted(tree2)
+    r1 <- is.rooted(tree1)
+    r2 <- is.rooted(tree2)
     if(!rooted){
         if(r1) {
             tree1<-unroot(tree1)
@@ -756,18 +762,18 @@ RF0 <- function(tree1, tree2=NULL, normalize=FALSE, check.labels = TRUE, rooted=
             stop("trees have different labels")
         tree2$tip.label <- tree2$tip.label[ind]
         #       tree2$edge[match(ind, tree2$edge[, 2]), 2] <- 1:length(ind)
-        ind2 <- match(1:length(ind), tree2$edge[, 2])
+        ind2 <- match(seq_along(ind), tree2$edge[, 2])
         tree2$edge[ind2, 2] <- order(ind)
     }
     if(!is.binary.tree(tree1) | !is.binary.tree(tree2))message("Trees are not binary!")
-    bp1 = bipart(tree1)
-    bp2 = bipart(tree2)
+    bp1 <- bipart(tree1)
+    bp2 <- bipart(tree2)
     nTips <- length(tree1$tip.label)
     if(!rooted){
         bp1 <- SHORTwise(bp1, nTips)
         bp2 <- SHORTwise(bp2, nTips)    
     }
-    RF = sum(match(bp1, bp2, nomatch=0L)==0L) + sum(match(bp2, bp1, nomatch=0L)==0L)
+    RF <- sum(match(bp1, bp2, nomatch=0L)==0L) + sum(match(bp2, bp1, nomatch=0L)==0L)
     if(normalize) RF <- RF / (Nnode(tree1) + Nnode(tree2) - 2)
     RF
 }
@@ -815,8 +821,8 @@ kf0 <- function(tree1, tree2, check.labels = TRUE, rooted=FALSE){
         }
     }
     
-    bp1 = bip(tree1)
-    bp2 = bip(tree2)
+    bp1 <- bip(tree1)
+    bp2 <- bip(tree2)
     
     if(!rooted){
         bp1 <- SHORTwise(bp1, length(tree1$tip.label))
@@ -830,14 +836,14 @@ kf0 <- function(tree1, tree2, check.labels = TRUE, rooted=FALSE){
     w1[tree1$edge[,2]] <- tree1$edge.length
     w2[tree2$edge[,2]] <- tree2$edge.length
         
-    ind3 = match(bp1, bp2, nomatch=0L)
-    ind4 = ind3[ind3>0]
-    ind3 = which(ind3>0)
+    ind3 <- match(bp1, bp2, nomatch=0L)
+    ind4 <- ind3[ind3>0]
+    ind3 <- which(ind3>0)
         
-    s1 = sum((w1[ind3] - w2[ind4])^2)
-    s2 = sum(w1[-ind3]^2)
-    s3 = sum(w2[-ind4]^2)
-    branch.score.difference = sqrt(s1 + s2 + s3)
+    s1 <- sum((w1[ind3] - w2[ind4])^2)
+    s2 <- sum(w1[-ind3]^2)
+    s3 <- sum(w2[-ind4]^2)
+    branch.score.difference <- sqrt(s1 + s2 + s3)
     branch.score.difference
 }
 
@@ -902,14 +908,14 @@ kf1 <- function(tree, trees, check.labels = TRUE, rooted=FALSE){
     branch.score.difference <- numeric(l)
     
     for(i in 1:l){
-        ind3 = fmatch(BP[[i]], bp, nomatch=0L)
-        ind4 = ind3[ind3>0]
-        ind3 = which(ind3>0)
+        ind3 <- fmatch(BP[[i]], bp, nomatch=0L)
+        ind4 <- ind3[ind3>0]
+        ind3 <- which(ind3>0)
     
-        s1 = sum((W[[i]][ind3] - w[ind4])^2)
-        s2 = sum(W[[i]][-ind3]^2)
-        s3 = sum(w[-ind4]^2)
-        branch.score.difference[i] = sqrt(s1 + s2 + s3)
+        s1 <- sum((W[[i]][ind3] - w[ind4])^2)
+        s2 <- sum(W[[i]][-ind3]^2)
+        s3 <- sum(w[-ind4]^2)
+        branch.score.difference[i] <- sqrt(s1 + s2 + s3)
     }
     branch.score.difference
 }
@@ -964,14 +970,14 @@ kf2 <- function(trees, check.labels = TRUE, rooted=FALSE){
         bp <- BP[[i]]
         w <- W[[i]]
         for (j in (i + 1):l){
-            ind3 = fmatch(BP[[j]], bp, nomatch=0L)
-            ind4 = ind3[ind3>0]
-            ind3 = which(ind3>0)
-            s1 = sum((W[[j]][ind3] - w[ind4])^2)
-            s2 = sum(W[[j]][-ind3]^2)
-            s3 = sum(w[-ind4]^2)
+            ind3 <- fmatch(BP[[j]], bp, nomatch=0L)
+            ind4 <- ind3[ind3>0]
+            ind3 <- which(ind3>0)
+            s1 <- sum((W[[j]][ind3] - w[ind4])^2)
+            s2 <- sum(W[[j]][-ind3]^2)
+            s3 <- sum(w[-ind4]^2)
             KF[k] <- sqrt(s1 + s2 + s3)
-            k=k+1
+            k <- k+1
         }
     }
     attr(KF, "Size") <- l
@@ -1030,8 +1036,8 @@ pd0 <- function(tree1, tree2, check.labels=TRUE, path=TRUE){
     }    
 #    n <- nrow(tree1$edge)
 #    tree1$edge.length <- tree2$edge.length <- rep(1, n)
-    dt1 = coph(tree1, path)
-    dt2 = coph(tree2, path)  
+    dt1 <- coph(tree1, path)
+    dt2 <- coph(tree2, path)  
     sqrt(sum((dt1 - dt2)^2))
 }
 
