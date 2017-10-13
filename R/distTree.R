@@ -431,7 +431,7 @@ designUltra <- function (tree, sparse=TRUE)
     u <- numeric( n * (n - 1)/2)
     v <- numeric( n * (n - 1)/2)
     m <- 1L
-    for (i in 1:length(leri)) {
+    for (i in seq_along(leri)) {
         if (length(leri[[i]])>1) {
             if(length(leri[[i]])==2)ind <- getIndex(bp[[leri[[i]][1] ]], bp[[leri[[i]][2] ]], n) 
             else {
@@ -476,7 +476,7 @@ designUnrooted2 <- function (tree, sparse=TRUE)
     y <- numeric( n * (n - 1)/2)    
     p <- 1L
     m <- 1L
-    for (i in 1:length(leri)) {
+    for (i in seq_along(leri)) {
         if (length(leri[[i]]) > 1) {
             if(length(leri[[i]])==2){
                 ind <-  getIndex(bp[[leri[[i]][1] ]], bp[[leri[[i]][2] ]], n) 

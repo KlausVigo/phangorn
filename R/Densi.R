@@ -214,7 +214,7 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL,
       else jit <- seq(-jitter$amount, jitter$amount, length=length(x))
   }
   
-  for (treeindex in 1:length(x)) {
+  for (treeindex in seq_along(x)) {
     tmp <- reorder(x[[treeindex]])
     
     tmp <- sort_tips(tmp)

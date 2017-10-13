@@ -105,7 +105,7 @@ print.splits <- function(x, maxp = getOption("max.print"),
 changeOrder <- function(x, labels){
     oldL <- attr(x, "labels")
     ind <- match(oldL,labels)
-    for(i in 1:length(x))
+    for(i in seq_along(x))
         x[[i]] <- sort(ind[x[[i]]])
     if(!is.null(attr(x, "cycle")))
         attr(x, "cycle") <- ind[attr(x, "cycle")]
@@ -157,7 +157,7 @@ optCycle <- function(splits, tree){
     best <- start
     eps <- 1
     if(eps>0){
-        for(i in 1:length(nodes)){
+        for(i in seq_along(nodes)){
             tmptree <- rotate(tree, nodes[i])
             tmp <- tmptree$edge[,2]
             tmp <- tmp[tmp<=m]

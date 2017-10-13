@@ -124,7 +124,7 @@ simSeq.phylo = function(x, l=1000, Q=NULL, bf=NULL, rootseq=NULL, type = "DNA", 
     root <- as.integer(parent[!match(parent, child, 0)][1])  
     res[, root] = rootseq   
     tl = x$edge.length
-    for(i in 1:length(tl)){
+    for(i in seq_along(tl)){
         from = parent[i] 
         to = child[i]
         P = getP(tl[i], eig, rate)[[1]]

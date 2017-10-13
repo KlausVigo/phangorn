@@ -93,7 +93,7 @@ bootstrap.pml <- function (x, bs = 100, trees = TRUE, multicore=FALSE,
     
     data <- x$data
     weight <- attr(data, "weight")
-    v <- rep(1:length(weight), weight)
+    v <- rep(seq_along(weight), weight)
     BS <- vector("list", bs)
     for (i in 1:bs) BS[[i]] <- tabulate(sample(v, replace = TRUE), 
                                        length(weight))
@@ -134,7 +134,7 @@ bootstrap.phyDat <- function(x, FUN, bs = 100, multicore=FALSE, mc.cores = NULL,
         mc.cores <- detectCores()
     }
     weight <- attr(x, "weight")
-    v <- rep(1:length(weight), weight)
+    v <- rep(seq_along(weight), weight)
     BS <- vector("list", bs)
     for(i in 1:bs)BS[[i]] <- tabulate(sample(v, replace=TRUE),length(weight)) 
     if(jumble){
@@ -190,7 +190,7 @@ checkLabels <- function(tree, tip){
     if (any(is.na(ind)) | length(tree$tip.label) != length(tip))
         stop("tree has different labels")
     tree$tip.label <- tree$tip.label[ind]
-    ind2 <- match(1:length(ind), tree$edge[, 2])
+    ind2 <- match(seq_along(ind), tree$edge[, 2])
     tree$edge[ind2, 2] <- order(ind)
     tree
 }

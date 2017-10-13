@@ -259,7 +259,7 @@ write.nexus.networx <- function(obj, file = "", taxa=TRUE, splits=TRUE,
     }
     else {
         translate <- obj$translate
-        for(i in 1:length(translate$label)){
+        for(i in seq_along(translate$label)){
             cat(translate$node[i], " ", translate$label[i], ",\n", sep="", 
                 file = file, append = TRUE)
         }        
@@ -278,7 +278,7 @@ write.nexus.networx <- function(obj, file = "", taxa=TRUE, splits=TRUE,
             }
         }
         else{
-            for(i in 1:length(translate$node)){
+            for(i in seq_along(translate$node)){
                 cat(translate$node[i], " ", translate$label[i], ",\n", sep="", 
                     file = file, append = TRUE)
             }           
@@ -362,7 +362,7 @@ read.nexus.networx <- function(file, splits=TRUE){
             node <- numeric(ntaxa)
             label <- character(ntaxa)
             k=1
-            for(i in 1:length(x)){
+            for(i in seq_along(x)){
                 if(!is.na(y[i])) tmp <- y[i]
                 else{
                     node[k] <- tmp
@@ -484,14 +484,14 @@ write.splits = function (x, file = "", zero.print = ".", one.print = "|",
         d = TRUE
         data = attr(x, "data")
     }
-    if(print.labels){for(i in 1:length(labels)) cat(labels[i], "\n", file=file, 
+    if(print.labels){for(i in seq_along(labels)) cat(labels[i], "\n", file=file, 
                                                     append = TRUE)}
     if (w) 
         cat("weight", "\t", file = file, append = TRUE)
     if (d) 
         cat(paste(colnames(data), "\t"), file = file, append = TRUE)
     cat("\n", file = file, append = TRUE) #"Matrix", 
-    for (i in 1:length(x)) {
+    for (i in seq_along(x)) {
         if (nam) 
             cat(vnames[i], "\t", file = file, append = TRUE)
         if (d) 
