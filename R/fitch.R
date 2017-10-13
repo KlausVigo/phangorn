@@ -395,7 +395,7 @@ getOrder <- function (x)
     on.exit(.C("fitch_free"))
     .C("fitch_init", as.integer(data), as.integer(nTips*nr), as.integer(m), as.double(weight), as.integer(nr))
 
-    for(i in 1:length(remaining)){
+    for(i in seq_along(remaining)){
         tree$edge[3,2]= remaining[i]     
         res[i] <- fast.fitch(tree, nr) 
     }
@@ -569,7 +569,7 @@ bab <- function (data, tree = NULL, trace = 1, ...)
         if(ms<=bound){
             if((a+1L)<nTips){
                 ind <- (1:L[a])[score<=bound]
-                trees[[a+1]][1:length(ind)] <- .Call("AddOnes", tmpTree, as.integer(inord[a+1L]), as.integer(ind), as.integer(L[a]), as.integer(M[a]), PACKAGE="phangorn") 
+                trees[[a+1]][seq_along(ind)] <- .Call("AddOnes", tmpTree, as.integer(inord[a+1L]), as.integer(ind), as.integer(L[a]), as.integer(M[a]), PACKAGE="phangorn") 
                 l <- length(ind)
                 #                os <- order(score[ind], decreasing=TRUE)     
                 os <- seq_len(l)
@@ -582,7 +582,7 @@ bab <- function (data, tree = NULL, trace = 1, ...)
             else{
                 ind <- which(score==ms) 
                 tmp <- vector("list", length(ind)) 
-                tmp[1:length(ind)] <- .Call("AddOnes", tmpTree, as.integer(inord[a+1L]), as.integer(ind), as.integer(L[a]), as.integer(M[a]), PACKAGE="phangorn")
+                tmp[seq_along(ind)] <- .Call("AddOnes", tmpTree, as.integer(inord[a+1L]), as.integer(ind), as.integer(L[a]), as.integer(M[a]), PACKAGE="phangorn")
                 
                 if(ms < bound){
                     bound <- ms
@@ -597,7 +597,7 @@ bab <- function (data, tree = NULL, trace = 1, ...)
         # not needed here        
 #        npsc = nrow(PSC)
     }
-    for(i in 1:length(result)){
+    for(i in seq_along(result)){
         result[[i]] <- structure(list(edge = result[[i]], Nnode = nTips-2L), .Names = c("edge", "Nnode"), class = "phylo", order = "postorder")
     }
     attr(result, "TipLabel") <- tree$tip.label

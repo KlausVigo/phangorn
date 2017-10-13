@@ -414,7 +414,7 @@ old2new.phyDat <- function(obj){
 
 new2old.phyDat <- function(data){
     contrast <- attr(data, "contrast")
-    for(i in 1:length(data)) data[[i]] <- contrast[data[[i]],,drop=FALSE]
+    for(i in seq_along(data)) data[[i]] <- contrast[data[[i]],,drop=FALSE]
     data
     }
 
@@ -423,7 +423,7 @@ prepareDataSankoff <- function(data){
     contrast <- attr(data, "contrast")
     contrast[contrast == 0] <- 1e+06
     contrast[contrast == 1] <- 0
-    for (i in 1:length(data)) data[[i]] <- contrast[data[[i]], , drop = FALSE]
+    for (i in seq_along(data)) data[[i]] <- contrast[data[[i]], , drop = FALSE]
     data
 }
 
@@ -442,7 +442,7 @@ sankoff <- function (tree, data, cost = NULL, site = 'pscore')
         cost <- matrix(1, l, l)
         cost <- cost - diag(l)
     }   
-    for (i in 1:length(data)) storage.mode(data[[i]]) <- "double"
+    for (i in seq_along(data)) storage.mode(data[[i]]) <- "double"
     if(inherits(tree,"phylo")) return(fit.sankoff(tree, data, cost, returnData =site))
     if(inherits(tree,"multiPhylo")){
 	    if(is.null(tree$TipLabel))tree <- unclass(tree)
@@ -470,7 +470,7 @@ fit.sankoff <- function (tree, data, cost, returnData = c("pscore", "site", "dat
     edge <- as.integer(edge - 1)
     nTips <- as.integer(length(tree$tip.label))
     mNodes <- as.integer(max(node) + 1)
-    tips <- as.integer((1:length(tree$tip.label))-1)
+    tips <- as.integer((seq_along(tree$tip.label))-1)
     res <- .Call("sankoff3", dat, as.numeric(cost), as.integer(nr),as.integer(nc),
          node, edge, mNodes, tips, PACKAGE="phangorn")  
     root <- getRoot(tree) 
@@ -515,7 +515,7 @@ indexNNI <- function(tree){
     tips[parent] <-  FALSE
 #    cvector <- allCildren(tree)  
     cvector <- vector("list",max(parent))   
-    for(i in 1:length(parent))  cvector[[parent[i]]] <- c(cvector[[parent[i]]], child[i]) 
+    for(i in seq_along(parent))  cvector[[parent[i]]] <- c(cvector[[parent[i]]], child[i]) 
     k=0
     for(i in ind){        
             p1 <- parent[i]
