@@ -323,7 +323,8 @@ plot.pmlPart<- function(x, ...){
 #' 
 #' @rdname pmlPart
 #' @export pmlPart
-pmlPart <- function (formula, object, control=pml.control(epsilon=1e-8, maxit=10, trace=1), model=NULL, rooted=FALSE, ...) 
+pmlPart <- function (formula, object, control=pml.control(epsilon=1e-8, 
+                maxit=10, trace=1), model=NULL, rooted=FALSE, ...) 
 {
     call <- match.call()
     form <- phangornParseFormula(formula)
@@ -704,40 +705,41 @@ pmlCluster <- function (formula, fit, weight, p = 1:5, part = NULL, nrep = 10,
     
     p=p[p!=1]
     if(length(p)==0)return(fit)
-    n = sum(weight)
-    k=2
+    n <- sum(weight)
+    k <- 2
     
-    BIC = matrix(0, length(p)+1, nrep)
-    BIC[1,] = AIC(fit, k = log(n))
-    LL = matrix(NA, length(p)+1, nrep)
-    LL[1,] = logLik(fit)
+    BIC <- matrix(0, length(p)+1, nrep)
+    BIC[1,] <- AIC(fit, k = log(n))
+    LL <- matrix(NA, length(p)+1, nrep)
+    LL[1,] <- logLik(fit)
     
-    P = array(dim=c(length(p)+1, nrep, dim(weight)[2]))
-    tmpBIC = Inf
-    choice = c(1,1) 
+    P <- array(dim=c(length(p)+1, nrep, dim(weight)[2]))
+    tmpBIC <- Inf
+    choice <- c(1,1) 
     for(j in p){
-        tmp=NULL
+        tmp <- NULL
         for(i in 1:nrep){
-            tmp = pmlCluster.fit(formula, fit, weight, p=j, part=part, control=control,...)
-            P[k,i,] = tmp$Partition
-            BIC[k,i] = AIC(tmp, k = log(n))
-            LL[k,i] = logLik(tmp)
+            tmp <- pmlCluster.fit(formula, fit, weight, p=j, part=part, 
+                                  control=control,...)
+            P[k,i,] <- tmp$Partition
+            BIC[k,i] <- AIC(tmp, k = log(n))
+            LL[k,i] <- logLik(tmp)
             if(BIC[k,i]<tmpBIC){
-                tmpBIC = BIC[k,i]
-                result = tmp
-                choice = c(k,i) 
+                tmpBIC <- BIC[k,i]
+                result <- tmp
+                choice <- c(k,i) 
             }
         }
         k=k+1
     }      
     
-    p = c(1,p)
-    result$choice = choice 
-    result$BIC = BIC
-    result$AllPartitions = P
-    result$AllLL = LL
-    result$p = p 
-    class(result) = c("pmlCluster", "pmlPart")
+    p <- c(1,p)
+    result$choice <- choice 
+    result$BIC <- BIC
+    result$AllPartitions <- P
+    result$AllLL <- LL
+    result$p <- p 
+    class(result) <- c("pmlCluster", "pmlPart")
     result
 }
 
@@ -745,13 +747,13 @@ pmlCluster <- function (formula, fit, weight, p = 1:5, part = NULL, nrep = 10,
 plot.pmlCluster <- function(x, which = c(1L:3L), caption = list("BIC", "log-likelihood", "Partitions"), ...){
     show <- rep(FALSE, 3)
     show[which] <- TRUE
-    choice = x$choice
+    choice <- x$choice
     if(show[1]){
         X <- x$AllPartitions[choice[1],,]
         d <- dim(X)
-        ind = order(X[choice[2],])
-        im  = matrix(0, d[2], d[2])
-        for(j in 1:d[1]){for(i in 1:d[2]) im[i,] = im[i,] + (X[j,] == X[j,i]) }
+        ind <- order(X[choice[2],])
+        im <- matrix(0, d[2], d[2])
+        for(j in 1:d[1]){for(i in 1:d[2]) im[i,] <- im[i,] + (X[j,] == X[j,i]) }
         image(im[ind, ind], ...)
     }
     
@@ -773,7 +775,7 @@ print.pmlPart <- function(x,...){
     lbf=x$df["Bf",2]
     bf <- matrix(0, lbf, nc)
     if(lbf>1)dimnames(bf) <- list(1:r, levels)
-    lQ = x$df["Q",2]
+    lQ <- x$df["Q",2]
     Q <- matrix(0, lQ, nc*(nc-1)/2)
     if(lQ>1)dimnames(Q) <- list(1:r, NULL)
     type <- attr(x$fits[[1]]$data, "type")
@@ -823,51 +825,51 @@ logLik.pmlPart <- function (object, ...)
 
 
 optNNI <- function(fit, INDEX){    
-    tree = fit$tree
+    tree <- fit$tree
     ll.0 <- fit$ll.0
     loli <- fit$logLik
-    bf = fit$bf
-    eig = fit$eig
-    k = fit$k
-    w = fit$w
-    g = fit$g
+    bf <- fit$bf
+    eig <- fit$eig
+    k <- fit$k
+    w <- fit$w
+    g <- fit$g
     rootEdges <- attr(INDEX, "root")
     .dat <- NULL
-    parent = tree$edge[, 1]
-    child = tree$edge[, 2]
+    parent <- tree$edge[, 1]
+    child <- tree$edge[, 2]
     
-    data = getCols(fit$data, tree$tip.label)
+    data <- getCols(fit$data, tree$tip.label)
     datp <- rnodes(tree, data, w, g, eig, bf)       
     # nicht elegant, spaeter auch raus       
-    tmp = length(tree$tip.label)
-    for(i in seq_along(w)).dat[i,1:tmp]=new2old.phyDat(data)       
+    tmp <- length(tree$tip.label)
+    for(i in seq_along(w)).dat[i,1:tmp] <- new2old.phyDat(data)       
     
     evector <- numeric(max(parent))
     evector[child] <- tree$edge.length
     m <- dim(INDEX)[1]
-    k = min(parent)
-    loglik = numeric(2 * m)
+    k <- min(parent)
+    loglik <- numeric(2 * m)
     edgeMatrix <- matrix(0, 2 * m, 5)
     for (i in 1:m) {
-        ei = INDEX[i, ]
-        el0 = evector[INDEX[i, ]]
-        l = length(datp[, 1])
-        weight = fit$weight
-        datn = vector("list", 4 * l)
-        attr(datn, "dim") = c(l, 4)
+        ei <- INDEX[i, ]
+        el0 <- evector[INDEX[i, ]]
+        l <- length(datp[, 1])
+        weight <- fit$weight
+        datn <- vector("list", 4 * l)
+        attr(datn, "dim") <- c(l, 4)
         datn <- .dat[, ei[1:4], drop = FALSE]
         if (!(ei[5] %in% rootEdges)) 
-            datn[, 1] = datp[, ei[1], drop = FALSE]
+            datn[, 1] <- datp[, ei[1], drop = FALSE]
         new1 <- optim.quartet(el0[c(1, 3, 2, 4, 5)], 
                               eig, bf, datn[, c(1, 3, 2, 4), drop = FALSE], g, 
                               w, weight, ll.0, llcomp = fit$log)
         new2 <- optim.quartet(el0[c(1, 4, 3, 2, 5)], 
                               eig, bf, datn[, c(1, 4, 3, 2), drop = FALSE], g, 
                               w, weight, ll.0, llcomp = fit$log)
-        loglik[(2 * i) - 1] = new1[[2]]
-        loglik[(2 * i)] = new2[[2]]
-        edgeMatrix[(2 * i) - 1, ] = new1[[1]]
-        edgeMatrix[(2 * i), ] = new2[[1]]
+        loglik[(2 * i) - 1] <- new1[[2]]
+        loglik[(2 * i)] <- new2[[2]]
+        edgeMatrix[(2 * i) - 1, ] <- new1[[1]]
+        edgeMatrix[(2 * i), ] <- new2[[1]]
     }
     list(loglik=loglik, edges = edgeMatrix)
 }
@@ -877,14 +879,14 @@ optimPartNNI <- function (object, AllEdge=TRUE,...)
 {
     tree <- object[[1]]$tree
     INDEX <- indexNNI(tree)   
-    l = length(object)
-    loglik0 = 0
-    for(i in 1:l)loglik0 = loglik0 + logLik(object[[i]])    
+    l <- length(object)
+    loglik0 <- 0
+    for(i in 1:l)loglik0 <- loglik0 + logLik(object[[i]])    
     
-    l = length(object)
-    TMP=vector("list", l)
+    l <- length(object)
+    TMP <- vector("list", l)
     for(i in 1:l){
-        TMP[[i]] = optNNI(object[[i]], INDEX)
+        TMP[[i]] <- optNNI(object[[i]], INDEX)
     }
     loglik=TMP[[1]][[1]] 
     for(i in 2:l)loglik=loglik+TMP[[i]][[1]]
@@ -893,14 +895,14 @@ optimPartNNI <- function (object, AllEdge=TRUE,...)
     candidates <- loglik > loglik0
     
     while (any(candidates)) {
-        ind = which.max(loglik)
-        loglik[ind] = -Inf
+        ind <- which.max(loglik)
+        loglik[ind] <- -Inf
         if (ind%%2) 
-            swap.edge = c(2, 3)
-        else swap.edge = c(2, 4)
+            swap.edge <- c(2, 3)
+        else swap.edge <- c(2, 4)
         tree2 <- changeEdge(tree, INDEX[(ind + 1)%/%2, swap.edge], 
                             INDEX[(ind + 1)%/%2, ], TMP[[1]][[2]][ind, ])
-        tmpll = 0                 
+        tmpll <- 0                 
         for(i in 1:l){
             if(!AllEdge)tree2 <- changeEdge(object[[i]]$tree, INDEX[(ind + 1)%/%2, swap.edge], 
                                             INDEX[(ind + 1)%/%2, ], TMP[[i]][[2]][ind, ]) 
@@ -908,28 +910,29 @@ optimPartNNI <- function (object, AllEdge=TRUE,...)
         }
         
         if (tmpll < loglik0) 
-            candidates[ind] = FALSE
+            candidates[ind] <- FALSE
         if (tmpll > loglik0) {
             
-            swap = swap + 1
+            swap <- swap + 1
             tree <- tree2
             indi <- which(rep(colSums(apply(INDEX, 1, match, 
-                                            INDEX[(ind + 1)%/%2, ], nomatch = 0)) > 0, each = 2))
+                        INDEX[(ind + 1)%/%2, ], nomatch = 0)) > 0, each = 2))
             candidates[indi] <- FALSE
             loglik[indi] <- -Inf
             
             for(i in 1:l){
-                if(!AllEdge)tree2 <- changeEdge(object[[i]]$tree, INDEX[(ind + 1)%/%2, swap.edge], 
-                                                INDEX[(ind + 1)%/%2, ], TMP[[i]][[2]][ind, ]) 
+                if(!AllEdge)tree2 <- changeEdge(object[[i]]$tree, 
+                            INDEX[(ind + 1)%/%2, swap.edge], 
+                            INDEX[(ind + 1)%/%2, ], TMP[[i]][[2]][ind, ]) 
                 object[[i]] <- update(object[[i]], tree = tree2)
             }
-            loglik0 = 0
-            for(i in 1:l)loglik0 = loglik0 + logLik(object[[i]])    
+            loglik0 <- 0
+            for(i in 1:l)loglik0 <- loglik0 + logLik(object[[i]])    
             cat(loglik0, "\n")
         }
     }
     if(AllEdge)object <- optimPartEdge(object)
-    attr(object,"swap") = swap
+    attr(object,"swap") <- swap
     object
 }
 
