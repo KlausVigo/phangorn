@@ -349,8 +349,6 @@ write.nexus.dist <- function(x, file="", append=FALSE, upper=FALSE, diag=TRUE,
     if(!diag) cat("\tFORMAT NODIAGONAL;\n", file = file, append = TRUE)
     cat("\tMatrix \n", file = file, append = TRUE)
     for(i in 1:l) cat("\t", cf2[i], "\n", sep="", file = file, append = TRUE)
-    #    cat("\t", cf2[l], ";\n", file = file, sep="", append = TRUE)
-    #    cat("END; \n", file = file, append = TRUE)
     cat("\t;\nEND; \n", file = file, append = TRUE)
 }
 
@@ -374,7 +372,7 @@ RSS <- function(x, dm, trace=0){
 #' @export  
 readDist <- function(file){ #, format="phylip"
     tmp <- read.table(file, skip=1, stringsAsFactors = FALSE)
-    labels <- tmp[,1]"NOT_CRAN"), "true")
+    labels <- tmp[,1]
     dm <- as.matrix(tmp[,-1]) 
     dimnames(dm) <- list(labels, labels)    
     as.dist(dm)
