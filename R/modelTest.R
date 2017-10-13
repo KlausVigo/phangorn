@@ -111,7 +111,7 @@ modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80",
     fit <- pml(tree, data)
     fit <- optim.pml(fit, control = control)
     l <- length(model)
-    if(attr(fit$data, "type")=="DNA")FREQ=FALSE    
+    if(attr(fit$data, "type")=="DNA")FREQ <- FALSE    
     n <- 1L + sum(I + G + (G & I) + FREQ + (FREQ & I) + (FREQ & G) + 
                       (FREQ & G & I))
     nseq <- sum(attr(data, "weight"))
