@@ -4,71 +4,71 @@
 fast.table <- function (data)                                                            
 {                                                                                 
     if(!is.data.frame(data)) 
-        data = as.data.frame(data, stringsAsFactors = FALSE)                    
-    da = do.call("paste", c(data, sep = "\r"))                                             
-    ind = !duplicated(da)                                                                  
-    levels = da[ind]                                                                       
-    cat <- factor(da,levels = levels)                                                      
+        data <- as.data.frame(data, stringsAsFactors = FALSE)                    
+    da <- do.call("paste", c(data, sep = "\r"))                                      
+    ind <- !duplicated(da)                                                           
+    levels <- da[ind]                                                                
+    cat <- factor(da,levels = levels)                                               
     nl <- length(levels(cat))                                                        
-    bin <- (as.integer(cat) - 1)                                                           
-    pd <- nl                                                                               
-    bin <- bin[!is.na(bin)]                                                                
-    if (length(bin)) bin <- bin + 1                                                        
-    y <- tabulate(bin, pd)                                                                 
-    result=list(index = bin, weights = y, data = data[ind,])                                         
-    result                                                                                 
+    bin <- (as.integer(cat) - 1)                                                    
+    pd <- nl                                                                        
+    bin <- bin[!is.na(bin)]                                                         
+    if (length(bin)) bin <- bin + 1                                                 
+    y <- tabulate(bin, pd)                                                          
+    result <- list(index = bin, weights = y, data = data[ind,])                       
+    result                                                                          
 }                                                                                        
 
 
-phyDat.default <- function (data, levels = NULL, return.index = TRUE, contrast = NULL, 
-                            ambiguity = "?", compress=TRUE, ...) 
+phyDat.default <- function (data, levels = NULL, return.index = TRUE, 
+                    contrast = NULL, ambiguity = "?", compress=TRUE, ...) 
 {
     if (is.matrix(data)) 
-        nam = row.names(data)
-    else nam = names(data)
+        nam <- row.names(data)
+    else nam <- names(data)
     if(is.null(nam))stop("data object must contain taxa names")
     if(inherits(data, "character")) data <- as.matrix(data)
     if (inherits(data,"DNAbin")) 
-        data = as.character(data)
+        data <- as.character(data)
     if (is.matrix(data)) 
-        data = as.data.frame(t(data), stringsAsFactors = FALSE)
+        data <- as.data.frame(t(data), stringsAsFactors = FALSE)
     # new 4.4.2016 bug fix (reported by Eli Levy Karin)     
     #    if (is.vector(data) && !is.list(data))data = as.data.frame(data, stringsAsFactors = FALSE)
-    else data = as.data.frame(data, stringsAsFactors = FALSE)
+    else data <- as.data.frame(data, stringsAsFactors = FALSE)
     #    data = data.frame(as.matrix(data), stringsAsFactors = FALSE)    
     
     
     if(length(data[[1]])==1) compress=FALSE 
     if(compress){
-        ddd = fast.table(data)
-        data = ddd$data
-        weight = ddd$weight
-        index = ddd$index
+        ddd <- fast.table(data)
+        data <- ddd$data
+        weight <- ddd$weight
+        index <- ddd$index
     }
     else{
-        p = length(data[[1]])
-        weight = rep(1, p)
-        index = 1:p
+        p <- length(data[[1]])
+        weight <- rep(1, p)
+        index <- 1:p
     }
-    q = length(data)
-    p = length(data[[1]])
+    q <- length(data)
+    p <- length(data[[1]])
     tmp <- vector("list", q)
     if (!is.null(contrast)) {
-        levels = colnames(contrast)
-        all.levels = rownames(contrast)
-        rownames(contrast) = NULL
+        levels <- colnames(contrast)
+        all.levels <- rownames(contrast)
+        rownames(contrast) <- NULL
     }
     else {
         if (is.null(levels)) 
             stop("Either argument levels or contrast has to be supplied")
-        l = length(levels)
-        contrast = diag(l)
-        all.levels = levels
+        l <- length(levels)
+        contrast <- diag(l)
+        all.levels <- levels
         if (!is.null(ambiguity)) {
-            all.levels = c(all.levels, ambiguity)
-            k = length(ambiguity)
+            all.levels <- c(all.levels, ambiguity)
+            k <- length(ambiguity)
             if (k > 0) 
-                contrast = rbind(contrast, matrix(1, k, l))
+                contrast <- rbind(contrast, matrix(1, k, l))
         }
     }
     
@@ -77,67 +77,67 @@ phyDat.default <- function (data, levels = NULL, return.index = TRUE, contrast =
 #    data = na.omit(data)
 #    rn = as.numeric(rownames(data))
     
-    d = dim(data)
-    att = attributes(data) 
+    d <- dim(data)
+    att <- attributes(data) 
     
 #    print(system.time(match(unlist(data), all.levels)))
     
-    data = match(unlist(data), all.levels)
-    attr(data, "dim") = d
-    data = as.data.frame(data, stringsAsFactors=FALSE)
-    attributes(data) = att
+    data <- match(unlist(data), all.levels)
+    attr(data, "dim") <- d
+    data <- as.data.frame(data, stringsAsFactors=FALSE)
+    attributes(data) <- att
     
     #    att = attributes(data) 
     #    data = lapply(data, match, all.levels) # avoid unlist   
     #    attributes(data) = att
     
-    row.names(data) = as.character(1:p)
-    data = na.omit(data)
-    aaa = match(index, attr(data, "na.action"))
+    row.names(data) <- as.character(1:p)
+    data <- na.omit(data)
+    aaa <- match(index, attr(data, "na.action"))
     
 
     if(!is.null(attr(data, "na.action"))) warning("Found unknown characters (not supplied in levels). Deleted sites with with unknown states.")
     
-    index = index[is.na(aaa)] 
-    index = match(index, unique(index))
-    rn = as.numeric(rownames(data))
-    attr(data, "na.action") = NULL        
-    weight = weight[rn] 
-    p = dim(data)[1]
-    names(data) = nam
-    attr(data, "row.names") = NULL
-    attr(data, "weight") = weight
-    attr(data, "nr") = p
-    attr(data, "nc") = length(levels)
+    index <- index[is.na(aaa)] 
+    index <- match(index, unique(index))
+    rn <- as.numeric(rownames(data))
+    attr(data, "na.action") <- NULL        
+    weight <- weight[rn] 
+    p <- dim(data)[1]
+    names(data) <- nam
+    attr(data, "row.names") <- NULL
+    attr(data, "weight") <- weight
+    attr(data, "nr") <- p
+    attr(data, "nc") <- length(levels)
     if (return.index) 
-        attr(data, "index") = index
-    attr(data, "levels") = levels
-    attr(data, "allLevels") = all.levels
-    attr(data, "type") = "USER"
-    attr(data, "contrast") = contrast
-    class(data) = "phyDat"
+        attr(data, "index") <- index
+    attr(data, "levels") <- levels
+    attr(data, "allLevels") <- all.levels
+    attr(data, "type") <- "USER"
+    attr(data, "contrast") <- contrast
+    class(data) <- "phyDat"
     data
 }
 
 
 
-phyDat.DNA = function (data, return.index = TRUE) 
+phyDat.DNA <- function (data, return.index = TRUE) 
 {
     if (is.matrix(data)) 
-        nam = row.names(data)
-    else nam = names(data)
+        nam <- row.names(data)
+    else nam <- names(data)
     if (inherits(data,"DNAbin")) 
-        data = as.character(data)
+        data <- as.character(data)
     if(inherits(data, "character")) data <- as.matrix(data)
     if (is.matrix(data)) 
-        data = as.data.frame(t(data), stringsAsFactors = FALSE)
-    else data = as.data.frame(data, stringsAsFactors = FALSE)
+        data <- as.data.frame(t(data), stringsAsFactors = FALSE)
+    else data <- as.data.frame(data, stringsAsFactors = FALSE)
 
-    data = data.frame(tolower(as.matrix(data)), stringsAsFactors = FALSE)
+    data <- data.frame(tolower(as.matrix(data)), stringsAsFactors = FALSE)
  
-    ac = c("a", "c", "g", "t", "u", "m", "r", "w", "s", "y", 
+    ac <- c("a", "c", "g", "t", "u", "m", "r", "w", "s", "y", 
         "k", "v", "h", "d", "b", "n", "?", "-")
-    AC = matrix(c(c(1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 
+    AC <- matrix(c(c(1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 
         0, 1, 1, 1), c(0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 
         0, 1, 1, 1, 1), c(0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 
         0, 1, 1, 1, 1, 1), c(0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 
@@ -145,73 +145,73 @@ phyDat.DNA = function (data, return.index = TRUE)
         "c", "g", "t")))
     
 #    ddd = fast.table(data)
-    compress=TRUE
-    if(length(data[[1]])==1) compress=FALSE 
+    compress <- TRUE
+    if(length(data[[1]])==1) compress <- FALSE 
     if(compress){
-        ddd = fast.table(data)
-        data = ddd$data
-        weight = ddd$weight
-        index = ddd$index
+        ddd <- fast.table(data)
+        data <- ddd$data
+        weight <- ddd$weight
+        index <- ddd$index
     }
     else{
-        p = length(data[[1]])
-        weight = rep(1, p)
-        index = 1:p
+        p <- length(data[[1]])
+        weight <- rep(1, p)
+        index <- 1:p
     }
 #    data = ddd$data
 #    index = ddd$index
-    q = length(data)
-    p = length(data[[1]])
-    d = dim(data)
-    att = attributes(data) 
-    data = match(unlist(data), ac)
-    attr(data, "dim") = d
-    data = as.data.frame(data, stringsAsFactors=FALSE)
-    attributes(data) = att
+    q <- length(data)
+    p <- length(data[[1]])
+    d <- dim(data)
+    att <- attributes(data) 
+    data <- match(unlist(data), ac)
+    attr(data, "dim") <- d
+    data <- as.data.frame(data, stringsAsFactors=FALSE)
+    attributes(data) <- att
 
-    row.names(data) = as.character(1:p)
-    data = na.omit(data)
-    rn = as.numeric(rownames(data))
+    row.names(data) <- as.character(1:p)
+    data <- na.omit(data)
+    rn <- as.numeric(rownames(data))
     
     if(!is.null(attr(data, "na.action"))) warning("Found unknown characters. Deleted sites with with unknown states.")
     
-    aaa = match(index, attr(data, "na.action"))
-    index = index[is.na(aaa)] 
-    index = match(index, unique(index))
-    rn = as.numeric(rownames(data))
-    attr(data, "na.action") = NULL
+    aaa <- match(index, attr(data, "na.action"))
+    index <- index[is.na(aaa)] 
+    index <- match(index, unique(index))
+    rn <- as.numeric(rownames(data))
+    attr(data, "na.action") <- NULL
     
-    weight = weight[rn]
+    weight <- weight[rn]
 #    weight = ddd$weight[rn]
-    p = dim(data)[1]
-    names(data) = nam
-    attr(data, "row.names") = NULL 
-    attr(data, "weight") = weight
-    attr(data, "nr") = p
-    attr(data, "nc") = 4
+    p <- dim(data)[1]
+    names(data) <- nam
+    attr(data, "row.names") <- NULL 
+    attr(data, "weight") <- weight
+    attr(data, "nr") <- p
+    attr(data, "nc") <- 4
     if (return.index) 
-        attr(data, "index") = index
-    attr(data, "levels") = c("a", "c", "g", "t")
-    attr(data, "allLevels") = ac
-    attr(data, "type") = "DNA"
-    attr(data, "contrast") = AC
-    class(data) = "phyDat"
+        attr(data, "index") <- index
+    attr(data, "levels") <- c("a", "c", "g", "t")
+    attr(data, "allLevels") <- ac
+    attr(data, "type") <- "DNA"
+    attr(data, "contrast") <- AC
+    class(data) <- "phyDat"
     data
 }
 
 
 phyDat.AA <- function (data, return.index = TRUE) 
 {
-    if(is.matrix(data)) nam = row.names(data)
-    else nam = names(data)  
+    if(is.matrix(data)) nam <- row.names(data)
+    else nam <- names(data)  
     if (inherits(data,"DNAbin")) 
-        data = as.character(data)
+        data <- as.character(data)
     if(inherits(data, "character")) data <- as.matrix(data)
     if (is.matrix(data)) 
-        data = as.data.frame(t(data), stringsAsFactors = FALSE)
-    else data = as.data.frame(data, stringsAsFactors = FALSE)
+        data <- as.data.frame(t(data), stringsAsFactors = FALSE)
+    else data <- as.data.frame(data, stringsAsFactors = FALSE)
   
-    data = data.frame(tolower(as.matrix(data)), stringsAsFactors = FALSE)
+    data <- data.frame(tolower(as.matrix(data)), stringsAsFactors = FALSE)
 
     aa <- c("a", "r", "n", "d", "c", "q", "e", "g", "h", "i", 
         "l", "k", "m", "f", "p", "s", "t", "w", "y", "v")
@@ -222,63 +222,63 @@ phyDat.AA <- function (data, return.index = TRUE)
     AA <- rbind(AA, matrix(0, 5, 20))
     AA[21, 3] <- AA[21, 4] <- 1 # Aspartate or Asparagine
     AA[22, 6] <- AA[22, 7] <- 1 #
-    AA[23:25, ] = 1
+    AA[23:25, ] <- 1
     dimnames(AA) <- list(aa2, aa)
     
-#    ddd = fast.table(data)
-#    data = ddd$data
-#    index = ddd$index
+#    ddd <- fast.table(data)
+#    data <- ddd$data
+#    index <- ddd$index
     compress=TRUE
     if(length(data[[1]])==1) compress=FALSE 
     if(compress){
-        ddd = fast.table(data)
-        data = ddd$data
-        weight = ddd$weight
-        index = ddd$index
+        ddd <- fast.table(data)
+        data <- ddd$data
+        weight <- ddd$weight
+        index <- ddd$index
         }
     else{
-        p = length(data[[1]])
-        weight = rep(1, p)
-        index = 1:p
+        p <- length(data[[1]])
+        weight <- rep(1, p)
+        index <- 1:p
     }
-    q = length(data)
-    p = length(data[[1]])
+    q <- length(data)
+    p <- length(data[[1]])
     tmp <- vector("list", q)
 
-    d = dim(data)
-    att = attributes(data) 
-    data = match(unlist(data), aa2)
-    attr(data, "dim") = d
-    data = as.data.frame(data, stringsAsFactors=FALSE)
-    attributes(data) = att
+    d <- dim(data)
+    att <- attributes(data) 
+    data <- match(unlist(data), aa2)
+    attr(data, "dim") <- d
+    data <- as.data.frame(data, stringsAsFactors=FALSE)
+    attributes(data) <- att
 
-    row.names(data) = as.character(1:p)
-    data = na.omit(data)
-    rn = as.numeric(rownames(data))
+    row.names(data) <- as.character(1:p)
+    data <- na.omit(data)
+    rn <- as.numeric(rownames(data))
 
     if(!is.null(attr(data, "na.action"))) warning("Found unknown characters. Deleted sites with with unknown states.")
     
-    aaa = match(index, attr(data, "na.action"))
-    index = index[is.na(aaa)] 
-    index = match(index, unique(index))
-    rn = as.numeric(rownames(data))
+    aaa <- match(index, attr(data, "na.action"))
+    index <- index[is.na(aaa)] 
+    index <- match(index, unique(index))
+    rn <- as.numeric(rownames(data))
     attr(data, "na.action") = NULL
   
 #    weight = ddd$weight[rn]
-    weight = weight[rn]  
-    p = dim(data)[1]
-    names(data) = nam
-    attr(data, "row.names") = NULL
-    attr(data, "weight") = weight
-    attr(data, "nr") = p
-    attr(data, "nc") = 20
+    weight <- weight[rn]  
+    p <- dim(data)[1]
+    names(data) <- nam
+    attr(data, "row.names") <- NULL
+    attr(data, "weight") <- weight
+    attr(data, "nr") <- p
+    attr(data, "nc") <- 20
     if (return.index) 
-        attr(data, "index") = index
-    attr(data, "levels") = aa
-    attr(data, "allLevels") = aa2
-    attr(data, "type") = "AA"
-    attr(data, "contrast") = AA    
-    class(data) = "phyDat"
+        attr(data, "index") <- index
+    attr(data, "levels") <- aa
+    attr(data, "allLevels") <- aa2
+    attr(data, "type") <- "AA"
+    attr(data, "contrast") <- AA    
+    class(data) <- "phyDat"
     data
 }
 
@@ -286,41 +286,41 @@ phyDat.AA <- function (data, return.index = TRUE)
 
 phyDat.codon <- function (data, return.index = TRUE) 
 {
-    if(is.matrix(data)) nam = row.names(data)
-    else nam = names(data)  
+    if(is.matrix(data)) nam <- row.names(data)
+    else nam <- names(data)  
     if (inherits(data,"DNAbin")) 
-        data = as.character(data)
+        data <- as.character(data)
     if(inherits(data, "character")) data <- as.matrix(data)
     if (is.matrix(data)) 
-        data = as.data.frame(t(data), stringsAsFactors = FALSE)
-    else data = as.data.frame(data, stringsAsFactors = FALSE)
+        data <- as.data.frame(t(data), stringsAsFactors = FALSE)
+    else data <- as.data.frame(data, stringsAsFactors = FALSE)
     
-    data = data.frame(tolower(as.matrix(data)), stringsAsFactors = FALSE)
+    data <- data.frame(tolower(as.matrix(data)), stringsAsFactors = FALSE)
 
-    data[data=="u"] = "t" 
+    data[data=="u"] <- "t" 
 
-    splseq = function (seq, frame = 0) 
+    splseq <- function (seq, frame = 0) 
     {
         starts <- seq(from = frame + 1, to = length(seq), by = 3L)
         sapply(starts, function(x) paste(seq[x:(x + 2L)], collapse=""))
     } 
  
-    data = data.frame(lapply(data, splseq))
+    data <- data.frame(lapply(data, splseq))
 #    ddd = fast.table(data)
     compress=TRUE
     if(nrow(data)==1) compress=FALSE 
     if(compress){
-            ddd = fast.table(data)
-            data = ddd$data
-            weight = ddd$weight
-            index = ddd$index
+            ddd <- fast.table(data)
+            data <- ddd$data
+            weight <- ddd$weight
+            index <- ddd$index
         }
     else{
-        p = length(data[[1]])
-        weight = rep(1, p)
-        index = 1:p
+        p <- length(data[[1]])
+        weight <- rep(1, p)
+        index <- 1:p
     }
-    codon = c("aaa", "aac", "aag", "aat", "aca", "acc", "acg", "act", 
+    codon <- c("aaa", "aac", "aag", "aat", "aca", "acc", "acg", "act", 
       "aga", "agc", "agg", "agt", "ata", "atc", "atg", "att", 
       "caa", "cac", "cag", "cat", "cca", "ccc", "ccg", "cct", "cga", 
       "cgc", "cgg", "cgt", "cta", "ctc", "ctg", "ctt", "gaa", "gac", 
@@ -335,44 +335,44 @@ phyDat.codon <- function (data, return.index = TRUE)
 
 #    data = ddd$data
 #    index = ddd$index
-    q = length(data)
-    p = length(data[[1]])
+    q <- length(data)
+    p <- length(data[[1]])
     tmp <- vector("list", q)
 
-    d = dim(data)
-    att = attributes(data) 
-    data = match(unlist(data), codon)
-    attr(data, "dim") = d
-    data = as.data.frame(data, stringsAsFactors=FALSE)
-    attributes(data) = att
+    d <- dim(data)
+    att <- attributes(data) 
+    data <- match(unlist(data), codon)
+    attr(data, "dim") <- d
+    data <- as.data.frame(data, stringsAsFactors=FALSE)
+    attributes(data) <- att
 
-    row.names(data) = as.character(1:p)
-    data = na.omit(data)
-    rn = as.numeric(rownames(data))
+    row.names(data) <- as.character(1:p)
+    data <- na.omit(data)
+    rn <- as.numeric(rownames(data))
     
     if(!is.null(attr(data, "na.action"))) warning("Found unknown characters. Deleted sites with with unknown states.")
     
-    aaa = match(index, attr(data, "na.action"))
-    index = index[is.na(aaa)] 
-    index = match(index, unique(index))
-    rn = as.numeric(rownames(data))
-    attr(data, "na.action") = NULL
+    aaa <- match(index, attr(data, "na.action"))
+    index <- index[is.na(aaa)] 
+    index <- match(index, unique(index))
+    rn <- as.numeric(rownames(data))
+    attr(data, "na.action") <- NULL
         
 #    weight = ddd$weight[rn]
-    weight = weight[rn]
-    p = dim(data)[1]
-    names(data) = nam
-    attr(data, "row.names") = NULL
-    attr(data, "weight") = weight
-    attr(data, "nr") = p
-    attr(data, "nc") = 61
+    weight <- weight[rn]
+    p <- dim(data)[1]
+    names(data) <- nam
+    attr(data, "row.names") <- NULL
+    attr(data, "weight") <- weight
+    attr(data, "nr") <- p
+    attr(data, "nc") <- 61
     if (return.index) 
-        attr(data, "index") = index
-    attr(data, "levels") = codon
-    attr(data, "allLevels") = codon
-    attr(data, "type") = "CODON"
-    attr(data, "contrast") = CODON    
-    class(data) = "phyDat"
+        attr(data, "index") <- index
+    attr(data, "levels") <- codon
+    attr(data, "allLevels") <- codon
+    attr(data, "type") <- "CODON"
+    attr(data, "contrast") <- CODON    
+    class(data) <- "phyDat"
     data
 }
 
@@ -474,7 +474,8 @@ phyDat <- function (data, type="DNA", levels=NULL, return.index = TRUE,...)
     if(pt=="DNA") dat <- phyDat.DNA(data, return.index=return.index,...)
     if(pt=="AA") dat <- phyDat.AA(data, return.index=return.index, ...)
     if(pt=="CODON") dat <- phyDat.codon(data, return.index=return.index, ...)
-    if(pt=="USER") dat <- phyDat.default(data, levels = levels, return.index=return.index, ...)
+    if(pt=="USER") dat <- phyDat.default(data, levels = levels, 
+                                         return.index=return.index, ...)
     dat
 }
 
@@ -541,15 +542,15 @@ as.phyDat.alignment <- function (x, type="DNA",...)
 #' @rdname phyDat
 #' @export
 phyDat2alignment <-  function(x){
-    z = as.character(x)
-    nam = rownames(z)
-    type = attr(x, "type")
+    z <- as.character(x)
+    nam <- rownames(z)
+    type <- attr(x, "type")
     seq <- switch(type, 
                   DNA = tolower(apply(z, 1, paste, collapse="")), 
                   AA = toupper(apply(z, 1, paste, collapse="")))                     
     names(seq) <- NULL
     res <- list(nb=length(seq), nam=nam, seq=seq, com=NA)
-    class(res) = "alignment"
+    class(res) <- "alignment"
     res
 }
 
@@ -579,9 +580,9 @@ as.MultipleAlignment <- function (x, ...){
 
 as.MultipleAlignment.phyDat <- function(x, ...){
     if (requireNamespace('Biostrings')){
-    z = as.character(x)
-    nam = rownames(z)
-    type = attr(x, "type")
+    z <- as.character(x)
+    nam <- rownames(z)
+    type <- attr(x, "type")
     seq <- switch(type, 
                   DNA = tolower(apply(z, 1, paste, collapse="")), 
                   AA = toupper(apply(z, 1, paste, collapse="")))
@@ -605,23 +606,24 @@ as.phyDat.data.frame <- function (x, ...) phyDat(data=x, ...)
  
 
 acgt2ry <- function(obj){
-   ac = c("a", "c", "g", "t", "u", "m", "r", "w", "s", "y", 
+   ac <- c("a", "c", "g", "t", "u", "m", "r", "w", "s", "y", 
         "k", "v", "h", "d", "b", "n", "?", "-")
-   AC = matrix(c(c(1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 
+   AC <- matrix(c(c(1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 
         0, 1, 1, 1), c(0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 
         0, 1, 1, 1, 1), c(0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 
         0, 1, 1, 1, 1, 1), c(0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 
         0, 1, 1, 1, 1, 1, 1)), 18, 4, dimnames = list(NULL, c("a", 
         "c", "g", "t")))
-   ry = AC[c(7,10),]
-   RY = AC %*% t(ry)
-   RY[RY==2] = 1
-   dimnames(RY) = list(NULL, c("r", "y"))
-   attr(obj, "levels") = c("r", "y")
-   attr(obj, "nc") = 2
-   attr(obj, "type") = "USER"
-   attr(obj, "contrast") = RY
-   obj=phyDat.default(as.character(obj, allLevels=FALSE), levels = c("r", "y"), ambiguity = NULL)
+   ry <- AC[c(7,10),]
+   RY <- AC %*% t(ry)
+   RY[RY==2] <- 1
+   dimnames(RY) <- list(NULL, c("r", "y"))
+   attr(obj, "levels") <- c("r", "y")
+   attr(obj, "nc") <- 2
+   attr(obj, "type") <- "USER"
+   attr(obj, "contrast") <- RY
+   obj <- phyDat.default(as.character(obj, allLevels=FALSE), 
+                         levels = c("r", "y"), ambiguity = NULL)
    obj  
 }
 
@@ -634,39 +636,39 @@ as.character.phyDat <- function (x, allLevels=TRUE, ...)
     nr <- attr(x, "nr")
     nc <- attr(x, "nc")
     type <- attr(x, "type")
-    labels = attr(x, "allLevels")
+    labels <- attr(x, "allLevels")
     
     if (!is.null(attr(x, "index"))) {
-        index = attr(x, "index")
+        index <- attr(x, "index")
         if (is.data.frame(index)) 
             index <- index[, 1]
     } 
-    else index = rep(1:nr, attr(x, "weight"))
+    else index <- rep(1:nr, attr(x, "weight"))
     if (type == "USER") {
         #levels in acgt2ry
         if(!allLevels){
-            tmp = attr(x, "levels")
-            contrast = attr(x, "contrast") # contrast=AC
-            contrast[contrast>0] = 1
-            ind = which(rowSums(contrast)==1)
-            contrast[rowSums(contrast)>1,] = 0 
-            labels = rep(NA, length(attr(x, "allLevels")))
-            labels[ind] = tmp[contrast%*%c(1:length(tmp))]
+            tmp <- attr(x, "levels")
+            contrast <- attr(x, "contrast") # contrast=AC
+            contrast[contrast>0] <- 1
+            ind <- which(rowSums(contrast)==1)
+            contrast[rowSums(contrast)>1,] <- 0 
+            labels <- rep(NA, length(attr(x, "allLevels")))
+            labels[ind] <- tmp[contrast%*%c(seq_along(tmp))]
         }
     }
     if(type == "AA") labels <- toupper(labels)
     if(type == "CODON"){
         nr <- length(index)
-        result = matrix(NA, nrow = length(x), ncol = 3L*nr)
-        labels = strsplit(labels, "")
-        for (i in 1:length(x)) result[i, ] <- unlist(labels[ x[[i]][index] ])
+        result <- matrix(NA, nrow = length(x), ncol = 3L*nr)
+        labels <- strsplit(labels, "")
+        for (i in seq_along(x)) result[i, ] <- unlist(labels[ x[[i]][index] ])
     }
     else {
-        result = matrix(NA, nrow = length(x), ncol = nr)
-        for (i in 1:length(x)) result[i, ] <- labels[x[[i]]]
-        result = result[, index, drop = FALSE]
+        result <- matrix(NA, nrow = length(x), ncol = nr)
+        for (i in seq_along(x)) result[i, ] <- labels[x[[i]]]
+        result <- result[, index, drop = FALSE]
     }
-    rownames(result) = names(x)
+    rownames(result) <- names(x)
     result
 }
 
@@ -680,15 +682,15 @@ as.data.frame.phyDat <- function(x, ...){
   if(attr(x, "type") == "AA") labels <- toupper(labels)
   result <- vector("list", length(x))
   if (is.null(attr(x, "index"))) 
-    index = rep(1:nr, attr(x, "weight"))
+    index <- rep(1:nr, attr(x, "weight"))
   else {
-    index = attr(x, "index")
+    index <- attr(x, "index")
     if (is.data.frame(index)) 
       index <- index[, 1]
   }
-  for (i in 1:length(x)) result[[i]] <- labels[x[[i]][index]]
+  for (i in seq_along(x)) result[[i]] <- labels[x[[i]][index]]
   attr(result, "names") <- names(x)
-  attr(result, "row.names") <- 1:length(index)
+  attr(result, "row.names") <- seq_along(index)
   attr(result, "class") <- "data.frame"
   result
 }
@@ -707,8 +709,8 @@ as.DNAbin.phyDat <- function (x, ...)
     if(attr(x, "type")=="DNA"){
 
     nr <- attr(x, "nr")
-    ac = attr(x, "allLevels")
-    result = matrix(as.raw(0), nrow = length(x), ncol = nr)
+    ac <- attr(x, "allLevels")
+    result <- matrix(as.raw(0), nrow = length(x), ncol = nr)
     # from ape ._cs_
     cs <- c("a", "g", "c", "t", "r", "m", "w", "s", "k", "y", "v", "h", 
       "d", "b", "n", "-", "?")
@@ -718,19 +720,19 @@ as.DNAbin.phyDat <- function (x, ...)
     ord <- match(ac, cs)
     ord[5] <- 4
 
-    for (i in 1:length(x)){
+    for (i in seq_along(x)){
         ind <- ord[x[[i]]]
         result[i,] <- bs[ind]    
     }    
     if (is.null(attr(x, "index"))) 
-        index = rep(1:nr, attr(x, "weight"))
+        index <- rep(1:nr, attr(x, "weight"))
     else {
-        index = attr(x, "index")
+        index <- attr(x, "index")
         if (is.data.frame(index)) 
             index <- index[, 1]
     }
-    result = result[, index, drop = FALSE]
-    rownames(result) = names(x)
+    result <- result[, index, drop = FALSE]
+    rownames(result) <- names(x)
     class(result) <- "DNAbin"
     return(result)
     }
@@ -746,9 +748,10 @@ as.AAbin.phyDat <- function(x,...) {
 }
 
 
-print.phyDat = function (x, ...) 
+print.phyDat <- function (x, ...) 
 {
-    cat(length(x), "sequences with",sum(attr(x,"weight")), "character and",attr(x,"nr"),"different site patterns.\n")
+    cat(length(x), "sequences with",sum(attr(x,"weight")), "character and", 
+        attr(x,"nr"),"different site patterns.\n")
     cat("The states are",attr(x,"levels"), "\n")
 }
 
@@ -757,7 +760,7 @@ print.phyDat = function (x, ...)
 aggr <- function(weight, ind){
     res <- numeric(max(ind))
     for(i in seq_along(weight))
-        res[ind[i]] = res[ind[i]] + weight[i]
+        res[ind[i]] <- res[ind[i]] + weight[i]
     res
 }
 
@@ -768,15 +771,15 @@ fast.table2 <- function (data)
     if(!is.data.frame(data)) 
         data <- as.data.frame(data, stringsAsFactors = FALSE)                    
     da <- do.call("paste", data)                                             
-    ind <- !duplicated(da)                                                                  
-    levels <- da[ind]                                                                       
-    cat <- factor(da,levels = levels)                                                      
+    ind <- !duplicated(da)                                                          
+    levels <- da[ind]                                                               
+    cat <- factor(da,levels = levels)                                               
     nl <- length(levels)                                                       
-    bin <- (as.integer(cat) - 1L)                                                           
-    bin <- bin[!is.na(bin)]                                                                
-    if (length(bin)) bin <- bin + 1L                                                        
-    result=list(index = bin, pos = ind)                                                                    
-    result                                                                                 
+    bin <- (as.integer(cat) - 1L)                                               
+    bin <- bin[!is.na(bin)]                                                         
+    if (length(bin)) bin <- bin + 1L                                                
+    result <- list(index = bin, pos = ind)                                          
+    result                                                                          
 }                                                                                        
 
 
@@ -858,12 +861,15 @@ write.phyDat <- function(x, file, format="phylip", colsep = "", nbcol=-1, ...){
     format <- match.arg(tolower(format), formats)
     if(format=="nexus"){   
         type = attr(x, "type")
-        if(type=="DNA") write.nexus.data(as.list(as.data.frame(x)), file, format = "dna",...)
-        else write.nexus.data(as.list(as.data.frame(x)), file, format = "protein", ...)
+        if(type=="DNA") write.nexus.data(as.list(as.data.frame(x)), file, 
+                                         format = "dna",...)
+        else write.nexus.data(as.list(as.data.frame(x)), file, 
+                              format = "protein", ...)
     }
     else{
         if(format=="phylip") format = "interleaved" 
-        write.dna(as.character(x), file, format=format, colsep = colsep, nbcol=nbcol, ...)
+        write.dna(as.character(x), file, format=format, colsep = colsep, 
+                  nbcol=nbcol, ...)
     }    
 }
 
@@ -886,8 +892,8 @@ read.phyDat <- function(file, format="phylip", type="DNA", ...){
             data = read.dna(file, format, as.character = TRUE)
             extras <- match.call(expand.dots = FALSE)$...
             extras <- lapply(extras, eval)
-            return(phyDat(data, type, levels=extras$levels, ambiguity = extras$ambiguity, 
-                contrast = extras$contrast))
+            return(phyDat(data, type, levels=extras$levels, 
+                    ambiguity = extras$ambiguity, contrast = extras$contrast))
         }
         # raus
     }
@@ -923,13 +929,13 @@ phylo <- function(edge, tip, edge.length=NULL){
 
 getCols <- function (data, cols) 
 {
-    attrib = attributes(data)
+    attrib <- attributes(data)
     attr(data, "class") <- "list"
-    data = data[cols]
+    data <- data[cols]
     if (is.character(cols)) 
-        attrib$names = cols
-    else attrib$names = attrib$names[cols]
-    attributes(data) = attrib
+        attrib$names <- cols
+    else attrib$names <- attrib$names[cols]
+    attributes(data) <- attrib
     attr(data, "class") <- "phyDat" 
     data
 }
@@ -939,21 +945,21 @@ getCols <- function (data, cols)
 getRows <- function (data, rows, site.pattern = TRUE) 
 {   
   index <- attr(data, "index")
-  if(is.data.frame(index))index = index[,1]
+  if(is.data.frame(index))index <- index[,1]
   if(!site.pattern){ # & all(rows>0)
-    weight = tabulate(index[rows])
-    ind = which(weight>0)
-    rows = ind   # rows[ind]
-    weight = weight[ind]
+    weight <- tabulate(index[rows])
+    ind <- which(weight>0)
+    rows <- ind   # rows[ind]
+    weight <- weight[ind]
   } 
-  for (i in 1:length(data)){ 
-    if(is.matrix(data[[i]]))data[[i]] = data[[i]][rows,]
-    else data[[i]] = data[[i]][rows]
+  for (i in seq_along(data)){ 
+    if(is.matrix(data[[i]]))data[[i]] <- data[[i]][rows,]
+    else data[[i]] <- data[[i]][rows]
   }  
-  attr(data, "weight") = attr(data, "weight")[rows]
-  if(!site.pattern) attr(data, "weight") = weight    
-  attr(data, "nr") = length(attr(data, "weight"))
-  attr(data, "index") = NULL
+  attr(data, "weight") <- attr(data, "weight")[rows]
+  if(!site.pattern) attr(data, "weight") <- weight    
+  attr(data, "nr") <- length(attr(data, "weight"))
+  attr(data, "index") <- NULL
   data
 }
 
@@ -995,15 +1001,15 @@ duplicated_map2 <- function(x, ...){
     dm <- as.matrix(dm)
     tmp <- which(dm==0, arr.ind = TRUE, useNames = FALSE)
     tmp <- tmp[tmp[,1] < tmp[,2],] 
-    tmp[] = names(x)[tmp]
+    tmp[] <- names(x)[tmp]
     g <- graph_from_edgelist(tmp, directed = FALSE)
     clu <- components(g)
     gr <- groups(clu)
     mapping <- matrix(NA, 1,2)
-    for(i in 1:length(gr)){
+    for(i in seq_along(gr)){
         if(length(gr[[i]])==2)mapping <- rbind(mapping, gr[[i]])
         else{
-            tmplab = gr[[i]]
+            tmplab <- gr[[i]]
             sg <- sum(dm[tmplab, tmplab])
             if(sg==0)mapping <- rbind(mapping, cbind(tmplab[1], tmplab[-1]))
         }
@@ -1034,14 +1040,15 @@ unique.phyDat <- function(x, incomparables=FALSE, identical=TRUE, ...){
 } 
 
 
-removeUndeterminedSites <- function(x, use.contrast=TRUE, undetermined=c("?", "n", "-"), ...){
+removeUndeterminedSites <- function(x, use.contrast=TRUE, 
+                                    undetermined=c("?", "n", "-"), ...){
     nc <- attr(x, "nc")
     nr <- attr(x, "nr")
     contrast <- attr(x, "contrast")
     if(use.contrast) ind <- which( (contrast %*% rep(1, nc)) == nc )
     else ind <- sort(match(undetermined, attr(x, "allLevels")))
     tmp <- x[[1]] %in% ind
-    for(i in 2:length(x)) tmp = tmp & (x[[i]] %in% ind)
+    for(i in 2:length(x)) tmp <- tmp & (x[[i]] %in% ind)
     if(any(tmp)) x <- getRows(x, (1:nr)[!tmp]) #getRows(x, -which(tmp))
     x
 }
@@ -1060,31 +1067,32 @@ removeParsUninfoSites <- function(data){
 allSitePattern <- function(n,levels=c("a","c","g","t"), names=NULL){
     l=length(levels)
     X=vector("list", n)
-    if(is.null(names))names(X) = paste0("t", 1:n) 
-    else names(X)=names
+    if(is.null(names))names(X) <- paste0("t", 1:n) 
+    else names(X) <- names
     for(i in 1:n)
-        X[[i]] = rep(rep(levels, each=l^(i-1)),l^(n-i)) 
-    X = as.data.frame(X)
+        X[[i]] <- rep(rep(levels, each=l^(i-1)),l^(n-i)) 
+    X <- as.data.frame(X)
     phyDat.default(X, levels, compress=FALSE) 
 } 
 
 
 constSitePattern <- function(n,levels=c("a","c","g","t"), names=NULL){
-    l=length(levels)
-    X=matrix(0, l,n)
-    X = matrix(rep(levels, each=n), n, l)
-    if(is.null(names))rownames(X) = paste0("t", 1:n)
-    else rownames(X)=names
+    l <- length(levels)
+    X <- matrix(0, l,n)
+    X <- matrix(rep(levels, each=n), n, l)
+    if(is.null(names))rownames(X) <- paste0("t", 1:n)
+    else rownames(X) <- names
     phyDat.default(X, levels)
 } 
 
 
 write.phylip <- function(data, weight, file=""){
-        n = sum(weight)
-        m = dim(data)[2]
+        n <- sum(weight)
+        m <- dim(data)[2]
         cat(m,n,"\n",file = file)
         for(i in 1:m)
-        cat(colnames(data)[i],"   ",toupper(rep(data[,i],weight)),"\n", sep="", file=file, append=TRUE)
+        cat(colnames(data)[i],"   ",toupper(rep(data[,i],weight)),"\n", sep="", 
+            file=file, append=TRUE)
 }
 
 
@@ -1124,25 +1132,25 @@ read.FASTA.AA <- function (file)
     AA <- rbind(AA, matrix(0, 5, 20))
     AA[21, 3] <- AA[21, 4] <- 1 # Aspartate or Asparagine
     AA[22, 6] <- AA[22, 7] <- 1 #
-    AA[23:25, ] = 1
+    AA[23:25, ] <- 1
     dimnames(AA) <- list(aa2, aa)
     
-    ddd = fast.table(res)
+    ddd <- fast.table(res)
     
-    data = ddd$data
+    data <- ddd$data
     names(data) <- sub("^ +", "", names(data))
-    row.names(data) = NULL
+    row.names(data) <- NULL
     
-    attr(data, "row.names") = NULL
-    attr(data, "weight") = ddd$weight
-    attr(data, "nr") = length(ddd$weight)
-    attr(data, "nc") = 20
-    attr(data, "index") = as.integer(ddd$index)
-    attr(data, "levels") = aa
-    attr(data, "allLevels") = aa2
-    attr(data, "type") = "AA"
-    attr(data, "contrast") = AA    
-    class(data) = "phyDat"
+    attr(data, "row.names") <- NULL
+    attr(data, "weight") <- ddd$weight
+    attr(data, "nr") <- length(ddd$weight)
+    attr(data, "nc") <- 20
+    attr(data, "index") <- as.integer(ddd$index)
+    attr(data, "levels") <- aa
+    attr(data, "allLevels") <- aa2
+    attr(data, "type") <- "AA"
+    attr(data, "contrast") <- AA    
+    class(data) <- "phyDat"
     data
 }
 
@@ -1226,7 +1234,7 @@ read.aa <- function (file, format = "interleaved", skip = 0, nlines = 0,
         fl <- unlist(strsplit(fl, NULL))
         bases <- grep("[-AaRrNnDdCcQqEeGgHhIiLlKkMmFfPpSsTtWwYyVvBbZzXx?]", fl)        
         z <- diff(bases)
-        for (i in 1:length(z)) if (all(z[i:(i + 8)] == 1)) 
+        for (i in seq_along(z)) if (all(z[i:(i + 8)] == 1)) 
             break
         start.seq <- bases[i]
         if (is.null(seq.names)) 
@@ -1244,7 +1252,7 @@ read.aa <- function (file, format = "interleaved", skip = 0, nlines = 0,
             bases <- grep("[-AaRrNnDdCcQqEeGgHhIiLlKkMmFfPpSsTtWwYyVvBbZzXx?]", 
                 unlist(strsplit(X[j], NULL)))
             z <- diff(bases)
-            for (k in 1:length(z)) if (all(z[k:(k + 8)] == 1)) 
+            for (k in seq_along(z)) if (all(z[k:(k + 8)] == 1)) 
                 break
             start.seq <- bases[k]
             taxa[i] <- substr(X[j], 1, start.seq - 1)
