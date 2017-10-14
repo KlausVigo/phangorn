@@ -45,7 +45,7 @@ SH.test <- function (..., B = 10000, data = NULL)
     }
     if (inherits(fits[[1]],"list"))
     {
-        fits <- fits[[1]]$fits
+        fits <- fits[[1]]
     }
     k <- length(fits)
     if (is.null(data))
