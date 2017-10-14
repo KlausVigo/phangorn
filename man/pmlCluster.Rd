@@ -52,8 +52,8 @@ side it follows directly that \code{edge} is too.
 data(yeast)
 dm <- dist.logDet(yeast)
 tree <- NJ(dm)
-fit=pml(tree,yeast)
-fit = optim.pml(fit)
+fit <- pml(tree,yeast)
+fit <- optim.pml(fit)
 
 weight=xtabs(~ index+genes,attr(yeast, "index"))
 set.seed(1)

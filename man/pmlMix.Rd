@@ -59,13 +59,13 @@ fit2 <- update(fit, data=X)
 data(Laurasiatherian)
 dm <- dist.logDet(Laurasiatherian)
 tree <- NJ(dm)
-fit=pml(tree, Laurasiatherian)
-fit = optim.pml(fit)
+fit <- pml(tree, Laurasiatherian)
+fit <- optim.pml(fit)
 
 fit2 <- update(fit, k=4)
 fit2 <- optim.pml(fit2, optGamma=TRUE)
 
-fitMix = pmlMix(edge ~ rate, fit, m=4)
+fitMix <- pmlMix(edge ~ rate, fit, m=4)
 fitMix
 
 
@@ -89,7 +89,7 @@ fit2 <- optim.pml(fit1)
 logLik(fit2)
 AIC(fit2, k=log(3000))
 
-fitMixEdge = pmlMix( ~ edge, fit1, m=2)
+fitMixEdge <- pmlMix( ~ edge, fit1, m=2)
 logLik(fitMixEdge)
 AIC(fitMixEdge, k=log(3000))
 

@@ -41,8 +41,8 @@ The lento plot represents support and conflict of splits/bipartitions.
 \examples{
 
 data(yeast)
-yeast.ry = acgt2ry(yeast)
-splits.h = h2st(yeast.ry)
+yeast.ry <- acgt2ry(yeast)
+splits.h <- h2st(yeast.ry)
 lento(splits.h, trivial=TRUE) 
 
 }
