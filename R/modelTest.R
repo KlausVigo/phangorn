@@ -103,7 +103,7 @@ modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80",
     if (is.null(tree)) 
         tree <- NJ(dist.hamming(data))
     else{
-        tree <- nnls.phylo(tree, dist.ml(data)) 
+        if(length(tree$tip.label) > 3) tree <- nnls.phylo(tree, dist.ml(data)) 
         # may need something faster for trees > 500 taxa  
     }
     trace <- control$trace
