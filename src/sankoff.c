@@ -62,9 +62,11 @@ void rowMinInt(int *dat, int n,  int k, int *res){
     }
  */ 
 
-void sankoff4(double *dat, int n, double *cost, int k, double *result){
+/*
+// avoid malloc and free
+void sankoff4_old(double *dat, int n, double *cost, int k, double *result){
     int i, j, h; 
-    double x; //tmp[k], 
+    double x; //tmp[k],  tmp; 
     double *tmp;
     tmp = malloc(k * sizeof(double));
     for(i = 0; i < n; i++){
@@ -77,6 +79,23 @@ void sankoff4(double *dat, int n, double *cost, int k, double *result){
     }        
     free(tmp);
 }    
+*/
+
+void sankoff4(double *dat, int n, double *cost, int k, double *result){
+    int i, j, h; 
+    double x, tmp; 
+    for(i = 0; i < n; i++){
+        for(j = 0; j < k; j++){
+            x = dat[i] + cost[j*k];
+            for(h = 1; h< k; h++){
+                    tmp = dat[i + h*n] + cost[h + j*k];
+                    if(tmp<x)x = tmp;
+                }
+            result[i+j*n] += x;
+        }                   
+    }        
+}    
+
 
 
 SEXP sankoffQuartet(SEXP dat, SEXP sn, SEXP scost, SEXP sk){
