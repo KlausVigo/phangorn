@@ -835,13 +835,18 @@ cbind.phyDat <- function(..., gaps="-", compress=TRUE){
         tmp <- tmp[ddd$pos,]
         weight <- aggregate(weight, by=list(ddd$index), FUN=sum)$x
     }
-    for(i in 1:n){
-        tmp2 <- attr(x[[i]], "index")
-        if(!is.null(tmp2)){
-            if(is.data.frame(tmp2))index[(wvec[i]+1):wvec[i+1]] <- ddd$index[(vec[i]+1):vec[i+1]][tmp2[,1]]
-            else index[(wvec[i]+1):wvec[i+1]] <- ddd$index[(vec[i]+1):vec[i+1]][tmp2]           
-        }
-        else add.index <- FALSE
+    if(any(sapply(x, function(x)is.null(attr(x, "index"))))) add.index <- FALSE
+    if(add.index){
+        for(i in 1:n){
+            tmp2 <- attr(x[[i]], "index")
+            if(!is.null(tmp2)){
+                if(is.data.frame(tmp2))index[(wvec[i]+1):wvec[i+1]] <- 
+                        ddd$index[(vec[i]+1):vec[i+1]][tmp2[,1]]
+                else index[(wvec[i]+1):wvec[i+1]] <- 
+                        ddd$index[(vec[i]+1):vec[i+1]][tmp2]           
+            }
+            else add.index <- FALSE
+        }    
     }
     if(add.index)ATTR$index <- data.frame(index = index, genes=rep(objNames, nr))
     ATTR$weight <- weight
