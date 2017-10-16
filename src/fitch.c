@@ -221,7 +221,8 @@ void fitch9(int *dat, int nr, int *node, int *edge, int nl, double *weight, doub
 
 
 // in fitch
-SEXP FITCH(SEXP dat, SEXP nrx, SEXP node, SEXP edge, SEXP l, SEXP weight, SEXP mx, SEXP q){   
+SEXP FITCH(SEXP dat, SEXP nrx, SEXP node, SEXP edge, SEXP l, SEXP weight, 
+           SEXP mx, SEXP q){   
     int *data, *nr=INTEGER(nrx), m=INTEGER(mx)[0], i, n=INTEGER(q)[0];   
     double *pvtmp;  
     SEXP DAT, pars, pvec, pscore, RESULT;
@@ -237,7 +238,8 @@ SEXP FITCH(SEXP dat, SEXP nrx, SEXP node, SEXP edge, SEXP l, SEXP weight, SEXP m
     REAL(pscore)[0]=0.0;
     for(i=0; i<(*nr * n); i++)data[i] = INTEGER(dat)[i];
     
-    fitch8(data, nr, INTEGER(pars), INTEGER(node), INTEGER(edge), INTEGER(l), REAL(weight), pvtmp, REAL(pscore));
+    fitch8(data, nr, INTEGER(pars), INTEGER(node), INTEGER(edge), INTEGER(l), 
+           REAL(weight), pvtmp, REAL(pscore));
     
     SET_VECTOR_ELT(RESULT, 0, pscore);
     SET_VECTOR_ELT(RESULT, 1, pars);
@@ -291,19 +293,22 @@ void ACCTRAN2(int *dat, int *nr, int *node, int *edge, int *nl, int *nTips)
     int i;
     for (i=0; i< *nl; i++) { 
         // , pars, weight, &pvec[i]
-        if(edge[i]>nTips[0]) fitchT(&dat[(edge[i]-1L) * (*nr)], &dat[(node[i]-1) * (*nr)], nr); 
+        if(edge[i]>nTips[0]) fitchT(&dat[(edge[i]-1L) * (*nr)], &dat[(node[i]-1)
+                                        * (*nr)], nr); 
         }
 }
 
 
 // , int *nTips
-void ACCTRAN3(int *dat, int *nr, double *pars, int *node, int *edge, int *nl, double *weight, double *pvec) 
+void ACCTRAN3(int *dat, int *nr, double *pars, int *node, int *edge, int *nl, 
+              double *weight, double *pvec) 
 {   
     int i;
     for (i=0; i< *nr; i++)pars[i]=0.0;
     for(i=0; i< *nl; i++)pvec[i] = 0.0;
     for (i=0; i< *nl; i++) {               
-        fitchT3(&dat[(edge[i]-1L) * (*nr)], &dat[(node[i]-1) * (*nr)], nr, pars, weight, &pvec[i]); 
+        fitchT3(&dat[(edge[i]-1L) * (*nr)], &dat[(node[i]-1) * (*nr)], nr, pars, 
+                weight, &pvec[i]); 
     }            
 }
 
@@ -390,7 +395,8 @@ void C_MPR(int *res, int *nr, int *parent, int *kids, int *nl) {
         p = parent[i] - 1L;
         k1 = kids[i] - 1L;
         k2 = kids[i-1L] - 1L;
-        fitchTriplet(&res[*nr * p], &data1[*nr* (k1)], &data1[*nr* (k2) ], &data2[*nr * p], nr);
+        fitchTriplet(&res[*nr * p], &data1[*nr* (k1)], &data1[*nr* (k2) ], 
+                     &data2[*nr * p], nr);
         i -= 2L;
     }        
 }
@@ -409,7 +415,8 @@ SEXP C_MPR2(SEXP nrx, SEXP PARENT, SEXP KIDS, SEXP nlx, SEXP M) {
         p = parent[i] - 1L;
         k1 = kids[i] - 1L;
         k2 = kids[i-1L] - 1L;
-        fitchTripletNew(&res[nr * p], &data1[nr * k1], &data1[nr * k2], &data2[nr * p], &nr);
+        fitchTripletNew(&res[nr * p], &data1[nr * k1], &data1[nr * k2], 
+                        &data2[nr * p], &nr);
         i -= 2L;
     }     
     UNPROTECT(1);
@@ -418,7 +425,8 @@ SEXP C_MPR2(SEXP nrx, SEXP PARENT, SEXP KIDS, SEXP nlx, SEXP M) {
 
 
 
-void fitchNACC2(int *root, int *dat, int *nr, double *pars, int *result, double *weight, double *pars1){
+void fitchNACC2(int *root, int *dat, int *nr, double *pars, int *result, 
+                double *weight, double *pars1){
     int k;
     int tmp;
     for(k = 0; k < (*nr); k++){
@@ -439,7 +447,8 @@ void fitchNACC2(int *root, int *dat, int *nr, double *pars, int *result, double 
 }
 
 
-void fitchTripletACC4(int *root, int *dat1, int *dat2, int *dat3, int *nr, double *p1, double *p2, double *p3, double *weight, double *pars1, int *v1) 
+void fitchTripletACC4(int *root, int *dat1, int *dat2, int *dat3, int *nr,  
+    double *p1, double *p2, double *p3, double *weight, double *pars1, int *v1) 
 {   
     int k;
        
@@ -499,13 +508,15 @@ SEXP FITCH345(SEXP nrx, SEXP node, SEXP edge, SEXP l, SEXP mx, SEXP ps){
     for(i=0; i<m; i++) pvtmp[i] = 0.0;
     for(i=0; i<*nr; i++) INTEGER(pars)[i] = 0L;
     REAL(pscore)[0]=0.0;
-    fitch8(data1, nr, INTEGER(pars), INTEGER(node), INTEGER(edge), INTEGER(l), weight, pvtmp, REAL(pscore));
+    fitch8(data1, nr, INTEGER(pars), INTEGER(node), INTEGER(edge), INTEGER(l), 
+           weight, pvtmp, REAL(pscore));
     UNPROTECT(2);
     if(INTEGER(ps)[0]==1)return(pscore);
     else return(pars); 
 }
 
-void FN4(int *dat, int *res, int nr, int *node, int *edge, int nl, int *pc, double *weight, double *tmpvec, double *pvec) { 
+void FN4(int *dat, int *res, int nr, int *node, int *edge, int nl, int *pc, 
+         double *weight, double *tmpvec, double *pvec) { 
     int i=0L, ni, le, ri;
     while(i < nl) {
         ni = node[i] - 1L;
@@ -513,11 +524,13 @@ void FN4(int *dat, int *res, int nr, int *node, int *edge, int nl, int *pc, doub
         ri = edge[i+1L] - 1L;
         if(pc[i+1L]==0L){
             pvec[ni] = tmpvec[le] + tmpvec[ri];
-            fitch54(&res[ni * nr], &dat[(edge[i]-1L) * nr], &dat[ri * nr], nr, weight, &pvec[ni]);              
+            fitch54(&res[ni * nr], &dat[(edge[i]-1L) * nr], &dat[ri * nr], nr, 
+                    weight, &pvec[ni]);              
         }    
         else{ 
             pvec[ni] = tmpvec[le] + pvec[ri];
-            fitch54(&res[ni * nr], &dat[le * nr], &res[ri * nr], nr, weight, &pvec[ni]);   
+            fitch54(&res[ni * nr], &dat[le * nr], &res[ri * nr], nr, weight, 
+                    &pvec[ni]);   
         }
         i+=2;
     }
@@ -541,7 +554,8 @@ void sibs(int *node, int *n, int *start, int *end){
 }
 
 
-void fnindex(int *nodes, int* edges, int *nNodes,  int *start, int *end, int *root, int *res1, int *res2, int *pc){
+void fnindex(int *nodes, int* edges, int *nNodes,  int *start, int *end, 
+             int *root, int *res1, int *res2, int *pc){
     int i, j, p, k, ni, nj, m;
     k=0L;
     for(i=0; i<*nNodes; i++){
@@ -675,7 +689,8 @@ SEXP FNALL6(SEXP nrx, SEXP node, SEXP edge, SEXP mx){
 
 
 // inside optNNI Ziel 3* schneller  , double best
-void fitchquartet(int *dat1, int *dat2, int *dat3, int *dat4, int *nr, double *weight, double *pars){   
+void fitchquartet(int *dat1, int *dat2, int *dat3, int *dat4, int *nr, 
+                  double *weight, double *pars){   
     int k, tmp1, tmp2;  
     pars[0] = 0.0; 
     for(k = 0; k < *nr; k++){
@@ -697,7 +712,8 @@ void fitchquartet(int *dat1, int *dat2, int *dat3, int *dat4, int *nr, double *w
 }
 
 // weight raus 
-void fitchQuartet(int *index, int *n, int *nr, double *psc1, double *psc2, double *weight, double *res){
+void fitchQuartet(int *index, int *n, int *nr, double *psc1, double *psc2, 
+                  double *weight, double *res){
     int i, e1, e2, e3, e4;
     for(i=0; i<*n; i++){ 
         e1=index[(i* 6L)] - 1L;
