@@ -157,8 +157,8 @@ void getP(double *eva, double *ev, double *evi, int m, double el, double w, doub
     int i, j, h;
     double res; //tmp[m],
     double *tmp;
-//    tmp = malloc(m * sizeof(double));
-    tmp = (double *) R_alloc(m, sizeof(double));
+    tmp = (double *) malloc(m * sizeof(double));
+//    tmp = (double *) R_alloc(m, sizeof(double));
 // el = 0 return identity    
     for(i = 0; i < m; i++) tmp[i] = exp(eva[i] * w * el);
 // eva *= tmp???
@@ -171,7 +171,7 @@ void getP(double *eva, double *ev, double *evi, int m, double el, double w, doub
     }
     free(tmp);  // ausserhalb
 }
-
+// 64 * 3 + 4     16 + 64 * 2 
 
 SEXP getPM(SEXP eig, SEXP nc, SEXP el, SEXP w){
     R_len_t i, j, nel, nw, k;
