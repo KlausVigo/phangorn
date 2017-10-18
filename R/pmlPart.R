@@ -580,9 +580,11 @@ pmlCluster.fit <- function (formula, fit, weight, p = 4, part = NULL, control=pm
         if( sum(tmp==0)/length(tmp) < .75){
             medtmp <- quantile(tmp, .25)
             medind <- which(tmp<=medtmp)
-            part[medind] <- apply(LL[medind,], 1, which.max)
+#            part[medind] <- apply(LL[medind,], 1, which.max)
+            part[medind] <- max.col(LL[medind,])
         }
-        else part <- apply(LL, 1, which.max)
+        else part <- max.col(LL)
+#        else part <- apply(LL, 1, which.max)
         # force groups to have at least one member
         part[fixi] <- 1:p
         Part <- cbind(Part, part)
