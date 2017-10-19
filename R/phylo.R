@@ -141,10 +141,11 @@ optimGamma <- function(tree, data, shape=1, k=4,...){
     }
     
  
-optimInv = function(tree, data, inv=0.01, INV=NULL, ll.0=NULL,...){
-    fn = function(inv, tree, data,...)pml.fit(tree, data, inv=inv, INV=INV, ll.0=NULL,...)
-    res = optimize(f=fn, interval = c(0,1), lower = 0, upper = 1, maximum = TRUE,
-         tol = .0001, tree=tree, data=data,...)
+optimInv <- function(tree, data, inv=0.01, INV=NULL, ll.0=NULL,...){
+    fn <- function(inv, tree, data,...)pml.fit(tree, data, inv=inv, INV=INV, 
+                                               ll.0=NULL,...)
+    res <- optimize(f=fn, interval = c(0,1), lower = 0, upper = 1, 
+                    maximum = TRUE, tol = .0001, tree=tree, data=data,...)
     res
     }
   
@@ -152,53 +153,54 @@ optimInv = function(tree, data, inv=0.01, INV=NULL, ll.0=NULL,...){
 # changed to c(-10,10) from c(-5,5)
 optimRate <- function(tree, data, rate=1, ...){
     fn <- function(rate, tree, data, ...) pml.fit(tree, data, rate=exp(rate), ...)
-    res <- optimize(f = fn, interval = c(-10, 10), tree = tree, data = data, ..., maximum = TRUE)
+    res <- optimize(f = fn, interval = c(-10, 10), tree = tree, data = data, 
+                    ..., maximum = TRUE)
     res[[1]] <- exp(res[[1]])
     res
 }
     
 
-optimBf = function(tree, data, bf=c(.25,.25,.25,.25), trace=0,...){
-    l=length(bf)
-    nenner = 1/bf[l]
-    lbf = log(bf * nenner)
-    lbf = lbf[-l]
-    fn = function(lbf, tree, data,...){
-        bf = exp(c(lbf,0))
-        bf = bf/sum(bf)
+optimBf <- function(tree, data, bf=c(.25,.25,.25,.25), trace=0,...){
+    l <- length(bf)
+    nenner <- 1/bf[l]
+    lbf <- log(bf * nenner)
+    lbf <- lbf[-l]
+    fn <- function(lbf, tree, data,...){
+        bf <- exp(c(lbf,0))
+        bf <- bf/sum(bf)
         pml.fit(tree, data, bf=bf, ...)
         }
-    res = optim(par=lbf, fn=fn, gr=NULL, method="Nelder-Mead", control=list(fnscale=-1, maxit=500, trace=trace),tree=tree, data=data,...)
-    bf = exp(c(res[[1]],0))
-    bf = bf/sum(bf)
-    result = list(bf=bf, loglik = res[[2]])
+    res <- optim(par=lbf, fn=fn, gr=NULL, method="Nelder-Mead", control=list(fnscale=-1, maxit=500, trace=trace),tree=tree, data=data,...)
+    bf <- exp(c(res[[1]],0))
+    bf <- bf/sum(bf)
+    result <- list(bf=bf, loglik = res[[2]])
     result
     }
 
 
-optimW = function(fit,...){
-    w = fit$w
-    g = fit$g
-    siteLik = fit$siteLik
-    k = length(w)
-    l = dim(siteLik[[1]])[1]
-    x=matrix(0,l,k)
-    for(i in 1:k)x[,i] = rowSums(siteLik[[i]])
-    weight = fit$weight
-    nenner = 1/w[k]
-    eta = log(w * nenner)
-    eta = eta[-k]
-    fn = function(eta,x,g,weight){
-        eta = c(eta,0)
-        p = exp(eta)/sum(exp(eta))
-        res = x%*%p
-        res = sum(weight*log(res))  * (1 + abs(sum(p*g) - 1))
+optimW <- function(fit,...){
+    w <- fit$w
+    g <- fit$g
+    siteLik <- fit$siteLik
+    k <- length(w)
+    l <- dim(siteLik[[1]])[1]
+    x <- matrix(0,l,k)
+    for(i in 1:k)x[,i] <- rowSums(siteLik[[i]])
+    weight <- fit$weight
+    nenner <- 1/w[k]
+    eta <- log(w * nenner)
+    eta <- eta[-k]
+    fn <- function(eta,x,g,weight){
+        eta <- c(eta,0)
+        p <- exp(eta)/sum(exp(eta))
+        res <- x%*%p
+        res <- sum(weight*log(res))  * (1 + abs(sum(p*g) - 1))
         res
     }  
-    res = optim(eta, fn = fn, method = "Nelder-Mead", control=list(fnscale=-1, reltol = 1e-12),gr=NULL, x=x,g=g, weight=weight)
-    p = exp(c(res$par,0))
-    p = p/sum(p)
-    result = list(par = p, value = res$value)
+    res <- optim(eta, fn = fn, method = "Nelder-Mead", control=list(fnscale=-1, reltol = 1e-12),gr=NULL, x=x,g=g, weight=weight)
+    p <- exp(c(res$par,0))
+    p <- p/sum(p)
+    result <- list(par = p, value = res$value)
     result    
 }
 
@@ -219,16 +221,16 @@ AICc <- function (object, ...)
 
 
 AICc.pml <- function(object, ...){
-    n = sum(object$weight)
-    k = object$df
+    n <- sum(object$weight)
+    k <- object$df
     if(k >= (n-1)) return(NaN)
-    res = AIC(object)
+    res <- AIC(object)
     res +   (2*k*(k+1))/(n-k-1)    
 }
 
 
 BIC.pml <- function(object, ...){
-    res = AIC(object, k=log(sum(object$weight)))
+    res <- AIC(object, k=log(sum(object$weight)))
     res     
 }
 
