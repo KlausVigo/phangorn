@@ -1,6 +1,6 @@
   
 edgeLengthIndex <- function(child, parent, nTips){
-    fun = function(child, parent, nTips){
+    fun <- function(child, parent, nTips){
         if(child <= nTips) return(child)
         else{
             if(child < parent) return(parent)
@@ -9,7 +9,7 @@ edgeLengthIndex <- function(child, parent, nTips){
     }
     if (length(child)==1) return(fun(child, parent, nTips))
     else {
-        res = integer(length(child))
+        res <- integer(length(child))
         for(i in 1:length(child))res[i]=fun(child[i], parent[i], nTips)
         return(res)
     }
@@ -44,65 +44,65 @@ discrete.gamma <- function (alpha, k)
 # allow transition probs of zero (added o)
 optimQ <- function (tree, data, Q=rep(1,6), subs=rep(1,length(Q)), trace = 0, ...) 
 {
-    m = length(Q)
-    n = max(subs)
-    o = min(subs)
-    ab = numeric(n)
+    m <- length(Q)
+    n <- max(subs)
+    o <- min(subs)
+    ab <- numeric(n)
 #    ab = log(Q[match(1:n, subs)])    
-    for(i in 1:n) ab[i]=log(Q[which(subs==i)[1]])
-    fn = function(ab, tree, data, m, n, o, subs,...) {
-        Q = numeric(m)
-        for(i in 1:n)Q[subs==i] = ab[i]
-        if(o < 0)Q[subs<0] = -Inf
+    for(i in 1:n) ab[i] <- log(Q[which(subs==i)[1]])
+    fn <- function(ab, tree, data, m, n, o, subs,...) {
+        Q <- numeric(m)
+        for(i in 1:n)Q[subs==i] <- ab[i]
+        if(o < 0)Q[subs<0] <- -Inf
         pml.fit(tree, data, Q = exp(Q),...)# Q^2, ...)
     }
-    res = optim(par = ab, fn = fn, gr = NULL, method = "L-BFGS-B", 
+    res <- optim(par = ab, fn = fn, gr = NULL, method = "L-BFGS-B", 
         lower = -Inf, upper = 10, control = list(fnscale = -1, 
         maxit = 25, trace = trace), tree = tree, data = data, m=m, n=n, o=o, subs=subs,...)
-    Q = rep(1, m)
-    for(i in 1:n) Q[subs==i] = exp(res[[1]][i])
-    if(o < 0)Q[subs<0] = 0
-    res[[1]] = Q
+    Q <- rep(1, m)
+    for(i in 1:n) Q[subs==i] <- exp(res[[1]][i])
+    if(o < 0)Q[subs<0] <- 0
+    res[[1]] <- Q
     res
 }    
 
   
 optimCodon <- function (tree, data, Q=rep(1,1830), subs=rep(1,length(Q)), syn = rep(0, length(Q)), trace = 0L, ab = c(0,0), optK=TRUE, optW=TRUE, ...) 
 {
-    m = length(Q)
-    n = 1L # max(subs)
+    m <- length(Q)
+    n <- 1L # max(subs)
 
-    fn = function(ab, tree, data, m, n, subs, syn, optK, optW, ...) {
-        Q = numeric(m)
-        Q[subs==1] = 0 # transversion
-        if(optK) Q[subs==2] = ab[1] # transition
-        else Q[subs==2] = 0
-        if(optW) Q[syn==1] = Q[syn==1] + ab[2] # ab[n+1] dnds
-        Q[syn<0] = -Inf
+    fn <- function(ab, tree, data, m, n, subs, syn, optK, optW, ...) {
+        Q <- numeric(m)
+        Q[subs==1] <- 0 # transversion
+        if(optK) Q[subs==2] <- ab[1] # transition
+        else Q[subs==2] <- 0
+        if(optW) Q[syn==1] <- Q[syn==1] + ab[2] # ab[n+1] dnds
+        Q[syn<0] <- -Inf
         pml.fit(tree, data, Q = exp(Q),...)# Q^2, ...)
     }
-    res = optim(par = ab, fn = fn, gr = NULL, method = "L-BFGS-B", 
+    res <- optim(par = ab, fn = fn, gr = NULL, method = "L-BFGS-B", 
         lower = -Inf, upper = Inf, control = list(fnscale = -1, 
         maxit = 25, trace = trace), tree = tree, data = data, m=m, n=n, 
         subs=subs, syn=syn, optK=optK, optW=optW, ...)
-    ab = exp(res[[1]])
-    Q[subs==1] = 1 # transversion
-    if(optK) Q[subs==2] = ab[1] # transition
+    ab <- exp(res[[1]])
+    Q[subs==1] <- 1 # transversion
+    if(optK) Q[subs==2] <- ab[1] # transition
     else{ 
-        Q[subs==2] = 1
-        ab[1] = 1 
+        Q[subs==2] <- 1
+        ab[1] <- 1 
         }  
-    if(optW) Q[syn==1] = Q[syn==1] * ab[2] # dnds
-    else ab[2] = 1
-    Q[syn<0] = 0
-    res[[5]] = ab
-    res[[1]] = Q
+    if(optW) Q[syn==1] <- Q[syn==1] * ab[2] # dnds
+    else ab[2] <- 1
+    Q[syn<0] <- 0
+    res[[5]] <- ab
+    res[[1]] <- Q
     res
 } 
 
 
 subsChoice <- function(type=c("JC", "F81", "K80", "HKY", "TrNe", "TrN", "TPM1", "K81", "TPM1u", "TPM2", "TPM2u", "TPM3", "TPM3u", "TIM1e", "TIM1", "TIM2e", "TIM2", "TIM3e", "TIM3", "TVMe", "TVM", "SYM", "GTR")){
-    type = match.arg(type)
+    type <- match.arg(type)
     switch(type,
          JC = list(optQ=FALSE, optBf=FALSE,   subs=c(0, 0, 0, 0, 0, 0)),
          F81 = list(optQ=FALSE, optBf=TRUE,   subs=c(0, 0, 0, 0, 0, 0)),
@@ -132,10 +132,11 @@ subsChoice <- function(type=c("JC", "F81", "K80", "HKY", "TrNe", "TrN", "TPM1", 
 
 
 
-optimGamma = function(tree, data, shape=1, k=4,...){
-    fn = function(shape, tree, data, k,...)pml.fit(tree, data, shape=shape, k=k,...)
-    res = optimize(f=fn, interval = c(0.1, 500), lower = 0.1, upper = 500, maximum = TRUE,
-        tol = .01, tree=tree, data=data, k=k,...)
+optimGamma <- function(tree, data, shape=1, k=4,...){
+    fn <- function(shape, tree, data, k,...)pml.fit(tree, data, shape=shape, 
+                                                    k=k,...)
+    res <- optimize(f=fn, interval = c(0.1, 500), lower = 0.1, upper = 500, 
+                    maximum = TRUE,  tol = .01, tree=tree, data=data, k=k,...)
     res
     }
     
