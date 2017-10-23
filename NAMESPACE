@@ -34,7 +34,7 @@ importFrom(stats, AIC, BIC, logLik, reorder, update, optim, optimize,
     pgamma, model.matrix, aggregate, lm.fit, xtabs, quantile, sd, runif) 
 importFrom(graphics, plot, plot.default, plot.new, plot.window, text, par, 
     abline, strwidth, axis, title, segments, points, image, matplot, legend, 
-    hist) 
+    hist, identify) 
 importFrom(utils, read.table, download.file, citation, stack, 
     installed.packages, write.table, combn) 
 importFrom(grDevices, rgb, rainbow, adjustcolor, col2rgb)
@@ -110,6 +110,7 @@ S3method(as.splits, networx)
 S3method(as.prop.part, splits)
 S3method(cophenetic, networx)
 S3method(cophenetic, splits)
+S3method(identify, networx)
 S3method(image, phyDat)
 S3method(logLik, pml)
 S3method(logLik, pmlPart)

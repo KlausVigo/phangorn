@@ -1129,6 +1129,7 @@ plot.networx <- function(x, type="3D", use.edge.length = TRUE, show.tip.label=TR
 	        add=FALSE)
     }   
     x$.plot <- list(vertices = coord, edge.color=edge.color, edge.width=edge.width, edge.lty = edge.lty)
+    assign("last_plot.networx", x, envir = .PlotNetworxEnv)
     invisible(x)
 }
 
@@ -1253,5 +1254,43 @@ plot2D <- function(coords, net, show.tip.label=TRUE,
 }   
    
 
+closest.edge <- function(x,y,P1,P2){
+    x1 <- P1[,1]
+    x2 <- P2[,1]
+    y1 <- P1[,2]
+    y2 <- P2[,2]
+    
+    A <- sqrt( (x2-x)^2 + (y2-y)^2 )    # d_BC
+    B <- sqrt( (x1-x)^2 + (y1-y)^2 )    # d_AC
+    C <- sqrt( (x1-x2)^2 + (y1-y2)^2 )  # d_AB 
+    # Kosinussatz
+    alpha <- acos( (B^2 + C^2 - A^2 ) / (2 * B * C) )
+    beta <- acos( (A^2 + C^2 - B^2 ) / (2 * A * C) )
+     
+    d <- abs( (y2-y1) * x - (x2- x1) * y + x2 * y1 - y2 * x1 ) /
+         sqrt( (y2 - y1)^2 + (x2 - x1)^2)
+    d[alpha>(pi/2)] <- B[alpha>(pi/2)]
+    d[beta>(pi/2)] <- A[beta>(pi/2)]
+    d
+}
 
+
+identify.networx <- function (x, quiet = FALSE, ...) 
+{
+    if (!quiet) 
+        cat("Click close to a node of the tree...\n")
+    xy <- locator(1)
+    if (is.null(xy)) 
+        return(NULL)
+    if(is.null(x$.plot)) 
+           lastPP <- get("last_plot.networx", envir = .PlotNetworxEnv)
+    else lastPP <- x$.plot
+    edge <- lastPP$edge
+    vertices <- lastPP$.plot$vertices 
+    P1 <- vertices[edge[,1], , drop=FALSE]
+    P2 <- vertices[edge[,2], , drop=FALSE]
+    d <- closest.edge(xy$x, xy$y, P1, P2)
+    split <- lastPP$splitIndex[which.min(d)]
+    lastPP$splits[split]
+}
 
