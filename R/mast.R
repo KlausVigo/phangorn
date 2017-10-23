@@ -73,7 +73,7 @@ is.ancestor <- function(anc, des, pvec) {
 }
 
 
-mast.fit <- function (x, y) {
+mast.fit_old <- function (x, y) {
     y <- reorder(y, "postorder")
     
     po1 <- c(x$edge[,2], x$edge[nrow(x$edge),1])
@@ -127,5 +127,55 @@ mast.fit <- function (x, y) {
         }
     }
     res <- unlist(m[[length(x$tip.label)+1L,length(y$tip.label)+1L]])
+    res
+}
+
+
+mast.fit <- function (x, y) {
+    y <- reorder(y, "postorder")
+    
+    po1 <- c(x$edge[,2], x$edge[nrow(x$edge),1])
+    po2 <- c(y$edge[,2], y$edge[nrow(y$edge),1])
+    
+    nTips <- length(x$tip.label)
+    # vielleicht ausserhalb    
+    p_vec_1 <- Ancestors(x, 1L:max(x$edge))  #nTips
+    p_vec_2 <- Ancestors(y, 1L:max(y$edge))  #nTips 
+    
+    # vielleicht ausserhalb    
+    CH1 <- allChildren(x)
+    CH2 <- allChildren(y)
+    
+    m <- matrix(list(),nrow=length(po1),ncol=length(po2))
+    
+    for(i in seq_len(nTips)){
+        m[i,i] <- c(i) 
+        m[cbind(i, p_vec_2[[i]])] <- c(i)
+        m[cbind(p_vec_1[[i]], i)] <- c(i)
+    }
+    
+    for (i in po1) {
+        for (j in po2) {
+          if(i>nTips & j>nTips){              
+            l1 <- CH1[[i]][1]
+            r1 <- CH1[[i]][2]
+            l2 <- CH2[[j]][1]
+            r2 <- CH2[[j]][2]
+            mm <- c(m[[l1,l2]],m[[r1,r2]])
+            if ( length(m[[l1,r2]]) + length(m[[r1,l2]]) > length(mm) )
+                mm <- c(m[[l1,r2]],m[[r1,l2]])
+            if ( length(m[[i,l2]]) > length(mm) )
+                mm <- m[[i,l2]]
+            if ( length(m[[i,r2]]) > length(mm) )
+                mm <- m[[i,r2]]
+            if ( length(m[[l1,j]]) > length(mm) )
+                mm <- m[[l1,j]]
+            if ( length(m[[r1,j]]) > length(mm) )
+                mm <- m[[r1,j]]
+            if(!is.null(mm))m[[i,j]] <- mm
+            }
+        }
+    }
+    x$tip.label[m[[i,j]]]
 }
 
