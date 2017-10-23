@@ -1274,7 +1274,28 @@ closest.edge <- function(x,y,P1,P2){
     d
 }
 
-
+#' Identify splits in a network
+#'
+#' \code{identify.networx} reads the position of the graphics pointer when the
+#' mouse button is pressed. It then returns the split belonging to the edge 
+#' closest to the pointer. The network must be plotted beforehand.
+#'
+#' @param x an object of class \code{networx}
+#' @param quiet a logical controlling whether to print a message inviting the 
+#' user to click on the tree.
+#' @param \dots further arguments to be passed to or from other methods.
+#' @return \code{identify.networx} returns a splits object.
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso \code{\link[phangorn]{plot.networx}}
+#' @examples
+#' \dontrun{
+#' data(yeast)
+#' dm <- dist.ml(yeast)
+#' nnet <- neighborNet(dm)
+#' plot(nnet, "2D")
+#' identify(nnet) # click close to an edge 
+#' }
+#' @export identify.networx
 identify.networx <- function (x, quiet = FALSE, ...) 
 {
     if (!quiet) 

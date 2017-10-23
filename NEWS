@@ -4,6 +4,8 @@ NEW FEATURES
 
     o new function mast to compute the maximum agreement subtree
 
+    o identify.networx to identify splits in a network
+
     o densiTree got more attributes
     
     o unique.dist, to filter duplicate distances 
