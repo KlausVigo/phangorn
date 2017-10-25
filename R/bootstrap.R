@@ -284,9 +284,8 @@ plotBS <- function (tree, BStrees, type = "unrooted", bs.col = "black",
 #' 
 #' data(Laurasiatherian)
 #' set.seed(42)
-#' bs <- bootstrap.phyDat(Laurasiatherian, FUN = function(x)upgma(dist.hamming(x)), 
+#' bs <- bootstrap.phyDat(Laurasiatherian, FUN = function(x)upgma(dist.hamming(x)),
 #'     bs=100)
-#' class(bs) <- 'multiPhylo'
 #' 
 #' strict_consensus <- consensus(bs)
 #' majority_consensus <- consensus(bs, p=.5)

@@ -30,7 +30,6 @@ data(Laurasiatherian)
 set.seed(1)
 bs <- bootstrap.phyDat(Laurasiatherian, FUN = function(x)nj(dist.hamming(x)), 
     bs=50)
-class(bs) <- 'multiPhylo'
 cnet <- consensusNet(bs, .3)
 plot(cnet, "2D")
 \dontrun{
