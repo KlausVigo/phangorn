@@ -125,7 +125,7 @@ one_nnin <- function (tree, n) {
 #' @keywords cluster
 #' @examples
 #' 
-#' tree = unroot(rtree(20))
+#' tree <- unroot(rtree(20))
 #' trees1 <- nni(tree)
 #' trees2 <- rSPR(tree, 2, 10)
 #' 
@@ -155,7 +155,7 @@ nni <- function (tree)
 #' @export
 rNNI <- function (tree, moves = 1, n = length(moves)) 
 {
-    k = length(na.omit(match(tree$edge[, 2], tree$edge[, 1])))
+    k <- length(na.omit(match(tree$edge[, 2], tree$edge[, 1])))
     
     k_nni <- function(tree, ch, pvector, moves=1L){
         if(nb.tip==1) return(tree)
@@ -201,22 +201,22 @@ rNNI <- function (tree, moves = 1, n = length(moves))
     edges <- child[child %in% parent]
     
     if (n == 1) {
-        trees = tree
+        trees <- tree
         if(moves>0){
             trees <- k_nni(tree, ch, pvector, moves=moves)
         }
         trees$tip.label <- tree$tip.label
     }
     else {
-        trees = vector("list", n)
-        if(length(moves)==1) moves = rep(moves, n)
+        trees <- vector("list", n)
+        if(length(moves)==1) moves <- rep(moves, n)
         for (j in seq_len(n)) {
-            tmp = tree
+            tmp <- tree
             if(moves[j]>0){
                 tmp <- k_nni(tree, ch, pvector, moves=moves[j])
             }
-            tmp$tip.label = NULL
-            trees[[j]] = tmp
+            tmp$tip.label <- NULL
+            trees[[j]] <- tmp
         }
         attr(trees, "TipLabel") <- tree$tip.label
         class(trees) <- "multiPhylo"
@@ -227,11 +227,11 @@ rNNI <- function (tree, moves = 1, n = length(moves))
 
 rNNI_old <- function (tree, moves = 1, n = length(moves)) 
 {
-    k = length(na.omit(match(tree$edge[, 2], tree$edge[, 1])))
+    k <- length(na.omit(match(tree$edge[, 2], tree$edge[, 1])))
     
     
     if (n == 1) {
-        trees = tree
+        trees <- tree
         if(moves>0){
             if (moves > 1) trees <- n_nni(trees, moves)
             else{  
@@ -243,10 +243,10 @@ rNNI_old <- function (tree, moves = 1, n = length(moves))
         trees$tip.label <- tree$tip.label
     }
     else {
-        trees = vector("list", n)
-        if(length(moves)==1) moves = rep(moves, n)
+        trees <- vector("list", n)
+        if(length(moves)==1) moves <- rep(moves, n)
         for (j in 1:n) {
-            tmp = tree
+            tmp <- tree
             if(moves[j]>0){
                 #            for (i in 1:moves[j]) tmp = nnin(tmp, sample(k, 1))[[sample(2,1)]]
                 if (moves[j] > 1) tmp <- n_nni(tmp, moves[j])
@@ -255,8 +255,8 @@ rNNI_old <- function (tree, moves = 1, n = length(moves))
                     tmp <- one_nnin(tmp, sample(k, 1)) 
                 }
             }
-            tmp$tip.label = NULL
-            trees[[j]] = tmp
+            tmp$tip.label <- NULL
+            trees[[j]] <- tmp
         }
         attr(trees, "TipLabel") <- tree$tip.label
         class(trees) <- "multiPhylo"
@@ -325,7 +325,7 @@ kSPR <- function(tree, k=NULL){
                             sample(c(1,2),1)))
     if(s1==2)res <- (oneOf4(tree, ind[2], ind[1], sample(c(1,2),1), 
                             sample(c(1,2),1))) 
-    res=reroot2(res, root)
+    res <- reroot2(res, root)
     reorderPruning(res)    
 }
 
@@ -381,13 +381,13 @@ sprMove <- function(tree, m){
     #stop("Sorry trees must be unrooted")
     if(!is.binary.tree(tree))stop("Sorry trees must be binary!")
     
-    reroot2 <- function(tree, node){
-        anc <- Ancestors(tree, node, "all")
-        l <- length(anc)
-        ind <- match(c(node, anc[-l]), tree$edge[,2])
-        tree$edge[ind,c(1,2)] <- tree$edge[ind,c(2,1)]
-        tree    
-    }    
+#    reroot2 <- function(tree, node){
+#        anc <- Ancestors(tree, node, "all")
+#        l <- length(anc)
+#        ind <- match(c(node, anc[-l]), tree$edge[,2])
+#        tree$edge[ind,c(1,2)] <- tree$edge[ind,c(2,1)]
+#        tree    
+#    }    
     changeEdge <- function(tree, new, old){
         tree$edge[tree$edge==old] <- 0L
         tree$edge[tree$edge==new] <- old

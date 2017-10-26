@@ -537,7 +537,7 @@ allTrees <- function (n, rooted = FALSE, tip.label = NULL)
                 }
             } # end for 
             edges <- newedges
-            m=m2
+            m <- m2
             i <- i + 1L
             pa <- pa + 1L  
             nr <- nr + 2L 

@@ -271,7 +271,7 @@ as.splits.multiPhylo <- function(x, ...){
     lx <-  length(x)
     x <- unroot(x)  
     splits <- prop.part(x)
-    class(splits)='list'
+    class(splits) <- 'list'
     weights <- attr(splits, 'number')    
     lab <- attr(splits,'labels')
     attr(splits,'labels') <- attr(splits, 'number') <- NULL
@@ -412,7 +412,7 @@ compatible <- function(obj){
     tmp2 <- tcrossprod(1L - bp) #sum((1L - bp[i,])*(1L - bp[j,]))
     tmp3 <- tcrossprod(bp, 1L - bp) #sum(bp[i,]*(1L - bp[j,]))
     tmp4 <- tcrossprod(1L - bp, bp) #sum((1L - bp[i,])*bp[j,]) 
-    res[(tmp1 * tmp2 * tmp3 * tmp4)>0]=1L
+    res[(tmp1 * tmp2 * tmp3 * tmp4)>0] <- 1L
     k <- k+1
     
     res <- res[lower.tri(res)]
@@ -522,13 +522,13 @@ compatible_2 <- function(obj1, obj2)
     n2 <- ncol(m2)
     res <- rep(TRUE, n1)
     for (i in 1:n1){
-        j=1
+        j <- 1
         while(j <= n2){
             if (!arecompatible2(m1[, i], m2[, j], msk, r0)){
-                res[i]=FALSE
+                res[i] <- FALSE
                 break()
             }
-            j=j+1L
+            j <- j+1L
         } 
     }    
     res
