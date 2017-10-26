@@ -74,7 +74,6 @@ cophenetic.networx <- function(x){
 SHORTwise <- function (x, nTips, delete=FALSE) 
 {
     v <- 1:nTips
-#    l <- sapply(x, length)
     l <- lengths(x)
     lv <- floor(nTips/2)  
     for (i in seq_along(x)) { 
@@ -372,8 +371,8 @@ SPR2 <- function(tree, trees){
     trees <- .compressTipLabel(trees)
     tree <- checkLabels(tree, attr(trees, "TipLabel"))
     trees <- .uncompressTipLabel(trees)
-    if (any(sapply(trees, is.rooted))) {
-        trees <- lapply(trees, unroot)
+    if (any(is.rooted(trees))) {
+        trees <- unroot(trees)
     }
     if(any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
     trees <- lapply(trees, reorder, "postorder")
@@ -483,8 +482,7 @@ wRF2 <- function(tree, trees, normalize=FALSE, check.labels = TRUE, rooted=FALSE
 
     if(!rooted){
         if (any(is.rooted(trees))) {
-        #if (any(sapply(trees, is.rooted))) {
-            trees <- unroot(trees) #lapply(trees, unroot)
+            trees <- unroot(trees) 
         }
     }
     
@@ -564,9 +562,6 @@ wRF1 <- function(trees, normalize=FALSE, check.labels = TRUE, rooted=FALSE){
     unclass(trees) 
     
     nTips <- length(trees[[1]]$tip.label)
-#    if (any(sapply(trees, is.rooted))) {
-#        trees <- lapply(trees, unroot)
-#    }
     fun1 <- function(x){
         w <- numeric(max(x$edge))
         w[x$edge[,2]] <- x$edge.length
@@ -638,18 +633,17 @@ mRF2 <- function(tree, trees, normalize=FALSE, check.labels = TRUE, rooted=FALSE
     if(any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
     if(has.singles(tree)) tree <- collapse.singles(tree)
     
-    #    n <- length(attr(trees, "TipLabel"))
-    trees <- unclass(trees)
-    if(!rooted & any(sapply(trees, is.rooted))) {
+#    trees <- unclass(trees)
+    if(!rooted & any(is.rooted(trees))) {
         message("Some trees are rooted. Unrooting all trees.\n")
-        trees <- lapply(trees, unroot)
+        trees <- unroot(trees)
     }
     if(!rooted & is.rooted(tree))tree <- unroot(tree)
-    if (any(sapply(trees, function(x) !is.binary.tree(x)))) {
+    if (any(!is.binary(trees))) {
         message("Some trees are not binary. Result may not what you expect!")
     }
     tree <- reorder(tree, "postorder")
-    trees <- lapply(trees, reorder, "postorder")
+    trees <- reorder(trees, "postorder")
     xx <- lapply(trees, bipart)  
     if(!rooted)xx <- lapply(xx, SHORTwise, nTips)
     xx <- lapply(xx,function(x)sapply(x, paste, collapse="_"))
@@ -658,7 +652,7 @@ mRF2 <- function(tree, trees, normalize=FALSE, check.labels = TRUE, rooted=FALSE
     yy <- sapply(yy, paste, collapse="_")
     
     NnodeT <- Nnode(tree)
-    Nnodes <- sapply(trees, Nnode)
+    Nnodes <- Nnode(trees)
     
     for (i in 1:l){   
         RF[i] <- Nnodes[i] + NnodeT - 2 * sum(fmatch(xx[[i]], yy, nomatch=0L)>0L)
@@ -667,7 +661,7 @@ mRF2 <- function(tree, trees, normalize=FALSE, check.labels = TRUE, rooted=FALSE
     if(!is.null(names(trees)))names(RF) <- names(trees)
     if(!normalize)return(RF)
     else{
-        sc <- sapply(trees, Nnode) + Nnode(tree) - 2
+        sc <- Nnode(trees) + Nnode(tree) - 2
         return(RF/sc)
     }
 }
@@ -1048,12 +1042,12 @@ pd1 <- function(tree, trees, check.labels=TRUE, path=TRUE){
         tree <- checkLabels(tree, attr(trees, "TipLabel"))
     }    
     trees <- .uncompressTipLabel(trees)
-    unclass(trees)
     if(path){
-        trees <- lapply(trees, unroot)
+        trees <- unroot(trees)
         tree <- unroot(tree)
     }    
-    trees <- lapply(trees, reorder, "postorder")
+    trees <- reorder(trees, "postorder")
+    unclass(trees)
     l <- length(trees)
     dt <- coph(tree, path)
     res <- numeric(l)
@@ -1067,10 +1061,10 @@ pd1 <- function(tree, trees, check.labels=TRUE, path=TRUE){
 pd2 <- function(trees, check.labels=TRUE, path=TRUE){
     if(check.labels) trees <- .compressTipLabel(trees)
     trees <- .uncompressTipLabel(trees)
-    unclass(trees) 
-    if(path)trees <- lapply(trees, unroot)
-    trees <- lapply(trees, reorder, "postorder")
+    if(path)trees <- unroot(trees)
+    trees <- reorder(trees, "postorder")
     l <- length(trees)
+    unclass(trees)
     CM <- lapply(trees, coph, path)
     res <- numeric(l)
     k <- 1 
