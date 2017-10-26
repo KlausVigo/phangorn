@@ -124,9 +124,9 @@ splitsNetwork <- function(dm, splits=NULL, gamma=.1, lambda=1e-6, weight=NULL){
 #' @export
 allSplits <- function(k, labels=NULL){
   result <- lapply(1:(2^(k-1)-1),dec2Bin)
-  if(is.null(labels)) labels=(as.character(1:k))
-  attr(result, 'labels') =labels
-  class(result)='splits'
+  if(is.null(labels)) labels <- (as.character(1:k))
+  attr(result, 'labels') <- labels
+  class(result) <- 'splits'
   result
 }   
 
@@ -160,7 +160,7 @@ allCircularSplits <- function(k, labels=NULL){
     if(is.null(labels)) labels <- as.character(1:k)
     attr(res, 'labels') <- labels
     attr(res, "cycle") <- 1:k
-    class(res)="splits"
+    class(res) <- "splits"
     res   
 }
 
@@ -189,7 +189,7 @@ splits2design <- function(obj, weight=NULL){
     sp <- obj[[k]]
     if(p0[k]!=0) i[(p[k]+1):p[k+1]] <- getIndex(sp, l[-sp], m) 
   }
-  dims=c(m*(m-1)/2,n)
+  dims <- c(m*(m-1)/2,n)
   sparseMatrix(i=i, p=p, x=1.0, dims=dims) 
 }
 
@@ -243,10 +243,10 @@ addEdge <- function(network, desc, spl){
             tmp <- union(tmp, tmp2)
         }
         if(identical(ind, tmp)){
-            ind=tmp           
-            add=FALSE
+            ind <- tmp           
+            add <- FALSE
         }
-        ind=tmp
+        ind <- tmp
     }    
    
 
@@ -425,16 +425,16 @@ circNetwork <- function(x, ord=NULL){
 #' Phylogenetic networks
 #' 
 #' \code{as.networx} convert \code{splits} objects into a \code{networx}
-#' object. And most important there exists a generic \code{plot} function to plot 
-#' phylogenetic network or split graphs.
+#' object. And most important there exists a generic \code{plot} function to 
+#' plot phylogenetic network or split graphs.
 #' 
-#' @details A \code{networx} object hold the information for a phylogenetic network and
-#' extends the \code{phylo} object. Therefore some generic function for
-#' \code{phylo} objects will also work for \code{networx} objects.  The
-#' argument \code{planar = TRUE} will create a planar split graph based on a cyclic
-#' ordering. These objects can be nicely plotted in \code{"2D"}. So far not all
-#' parameters behave the same on the the \code{rgl} \code{"3D"} and basic graphic \code{"2D"}
-#' device.
+#' @details A \code{networx} object hold the information for a phylogenetic 
+#' network and extends the \code{phylo} object. Therefore some generic function 
+#' for \code{phylo} objects will also work for \code{networx} objects.  The
+#' argument \code{planar = TRUE} will create a planar split graph based on a 
+#' cyclic ordering. These objects can be nicely plotted in \code{"2D"}. So far 
+#' not all parameters behave the same on the the \code{rgl} \code{"3D"} and 
+#' basic graphic \code{"2D"} device.
 #' 
 #' Often it is easier and safer to supply vectors of graphical parameters for
 #' splits (e.g. splits.color) than for edges. These overwrite values edge.color.
@@ -488,8 +488,9 @@ circNetwork <- function(x, ord=NULL){
 #' \emph{IEEE/ACM Transactions on Computational Biology and Bioinformatics
 #' (TCBB)}, \bold{1(3)}, 109--115
 #' 
-#' Schliep, K., Potts, A. J., Morrison, D. A. and Grimm, G. W. (2017), Intertwining 
-#' phylogenetic trees and networks. \emph{Methods Ecol Evol}. doi:10.1111/2041-210X.12760
+#' Schliep, K., Potts, A. J., Morrison, D. A. and Grimm, G. W. (2017), 
+#' Intertwining phylogenetic trees and networks. \emph{Methods Ecol Evol}. 
+#' doi:10.1111/2041-210X.12760
 #' @keywords plot
 #' @examples
 #' 
@@ -577,7 +578,7 @@ as.networx.splits <- function(x, planar=FALSE, coord = c("none", "2D", "3D"), ..
   dm <- as.matrix(compatible2(x)) 
 # which splits are in circular ordering  
     circSplits <- which(countCycles(x, ord=c.ord)==2) 
-    if(length(circSplits) == length(x)) planar=TRUE
+    if(length(circSplits) == length(x)) planar <- TRUE
     tmp <- circNetwork(x, c.ord)  
     attr(tmp, "order") <- NULL
     if(planar){
@@ -616,11 +617,6 @@ as.networx.splits <- function(x, planar=FALSE, coord = c("none", "2D", "3D"), ..
     tmp
 }
 
-
-#as.networx.phylo <- function(x, ...){
-#    spl <- as.splits(x)
-#    as.networx(x, ...)
-#}
 
 
 #' @rdname as.networx
@@ -1098,7 +1094,7 @@ plot.networx <- function(x, type="3D", use.edge.length = TRUE, show.tip.label=TR
     if(type=="3D") chk <- requireNamespace("rgl", quietly = TRUE) #.check.pkg("rgl")
     if(!chk && type=="3D"){
         warning("type=\"3D\" requires the package \"rgl\"\n, plotting =\"2D\" instead!\n")
-        type="2D"
+        type <- "2D"
     }
     # use precomputed vertices when available
     coord <- NULL
@@ -1159,7 +1155,7 @@ plotRGL <- function(coords, net, show.tip.label=TRUE,
     nTips <- length(net$tip.label)
   
     segments3d(x[t(edge)],y[t(edge)],z[t(edge)], col=rep(edge.color, each=2), lwd=edge.width) 
-    radius=0
+    radius <- 0
     if(show.nodes){
         radius <- sqrt((max(x)-min(x))^2 + (max(y)-min(y))^2 + (max(z)-min(z))^2) / 200    
         spheres3d(x[1:nTips], y[1:nTips],z[1:nTips], radius=2*radius, color="cyan")
@@ -1214,8 +1210,8 @@ plot2D <- function(coords, net, show.tip.label=TRUE,
    }
    cladogram.plot(edge, xx, yy, edge.color, edge.width, edge.lty)
    if(show.tip.label){
-        if(is.null(net$translate)) ind=match(1:nTips, edge[,2])
-        else ind=match(net$translate$node, edge[,2])
+        if(is.null(net$translate)) ind <- match(1:nTips, edge[,2])
+        else ind <- match(net$translate$node, edge[,2])
         pos <- rep(4, nTips)
         XX <- xx[edge[ind, 1]] - xx[edge[ind, 2]]
         pos[XX>0] <- 2
