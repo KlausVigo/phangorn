@@ -91,7 +91,7 @@ upgma_nni <- function(d, method="average", opt="min", trace=0, mc.cores=2L)
     bestME <- sum(best.tree$edge.length)
     run.nni <- TRUE
     count_nni <- 0
-    print(count_nni)
+    if(trace>0) print(count_nni)
     while (run.nni) {
         trees <- nni(best.tree)
         trees <- .uncompressTipLabel(trees)
@@ -106,7 +106,7 @@ upgma_nni <- function(d, method="average", opt="min", trace=0, mc.cores=2L)
                 bestME <- min(ME)
                 count_nni <- count_nni + 1
                 best.tree <- nni.trees[[which.min(ME)]]
-                print(bestME)
+                if(trace>0) print(bestME)
             }
             else run.nni <- FALSE
         }
@@ -116,7 +116,7 @@ upgma_nni <- function(d, method="average", opt="min", trace=0, mc.cores=2L)
                 bestLS <- min(LS)
                 count_nni <- count_nni + 1
                 best.tree <- nni.trees[[which.min(LS)]]
-                print(bestLS)
+                if(trace>0) print(bestLS)
             }
             else run.nni <- FALSE
         }
@@ -433,12 +433,14 @@ designUltra <- function (tree, sparse=TRUE)
     m <- 1L
     for (i in seq_along(leri)) {
         if (length(leri[[i]])>1) {
-            if(length(leri[[i]])==2)ind <- getIndex(bp[[leri[[i]][1] ]], bp[[leri[[i]][2] ]], n) 
+            if(length(leri[[i]])==2)ind <- getIndex(bp[[leri[[i]][1] ]], 
+                                                    bp[[leri[[i]][2] ]], n) 
             else {
                 ind <- NULL
                 le <- leri[[i]]
                 nl <- length(le)
-                for(j in 1:(nl-1)) ind <- c(ind, getIndex(bp[[le[j] ]], unlist(bp[ le[(j+1):nl] ]), n))
+                for(j in 1:(nl-1)) ind <- c(ind, getIndex(bp[[le[j] ]], 
+                                            unlist(bp[ le[(j+1):nl] ]), n))
             }
             li <- length(ind)
             v[m: (m+li-1)] <- k
@@ -674,7 +676,6 @@ nnls.splits <- function(x, dm, trace=0){
     Aind[2,] <- as.integer(1L:n)
     betahat <- quadprog::solve.QP.compact(as.matrix(Dmat),as.vector(dvec),Amat,
                                           Aind)$sol
-    
     RSS <- sum((y-(X%*%betahat))^2)
     ind <- (betahat > 1e-8) | int==1  
     x <- x[ind]
