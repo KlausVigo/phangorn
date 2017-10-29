@@ -2,21 +2,21 @@
 # Data structures for ML and MP
 # 
 fast.table <- function (data)                                                            
-{                                                                                 
+{                                                                               
     if(!is.data.frame(data)) 
-        data <- as.data.frame(data, stringsAsFactors = FALSE)                    
-    da <- do.call("paste", c(data, sep = "\r"))                                      
-    ind <- !duplicated(da)                                                           
-    levels <- da[ind]                                                                
-    cat <- factor(da,levels = levels)                                               
-    nl <- length(levels(cat))                                                        
-    bin <- (as.integer(cat) - 1)                                                    
-    pd <- nl                                                                        
-    bin <- bin[!is.na(bin)]                                                         
-    if (length(bin)) bin <- bin + 1                                                 
-    y <- tabulate(bin, pd)                                                          
-    result <- list(index = bin, weights = y, data = data[ind,])                       
-    result                                                                          
+        data <- as.data.frame(data, stringsAsFactors = FALSE)                   
+    da <- do.call("paste", c(data, sep = "\r"))                                 
+    ind <- !duplicated(da) 
+    levels <- da[ind]   
+    cat <- factor(da,levels = levels)   
+    nl <- length(levels(cat))   
+    bin <- (as.integer(cat) - 1)
+    pd <- nl
+    bin <- bin[!is.na(bin)] 
+    if (length(bin)) bin <- bin + 1 
+    y <- tabulate(bin, pd) 
+    result <- list(index = bin, weights = y, data = data[ind,])             
+    result                                                                      
 }                                                                                        
 
 
@@ -38,7 +38,7 @@ phyDat.default <- function (data, levels = NULL, return.index = TRUE,
     #    data = data.frame(as.matrix(data), stringsAsFactors = FALSE)    
     
     
-    if(length(data[[1]])==1) compress=FALSE 
+    if(length(data[[1]])==1) compress <- FALSE 
     if(compress){
         ddd <- fast.table(data)
         data <- ddd$data
@@ -461,7 +461,7 @@ phyDat.codon <- function (data, return.index = TRUE)
 #' # transform into old ape format
 #' LauraChar <- as.character(Laurasiatherian)
 #' # and back 
-#' Laura <- phyDat(LauraChar, return.index=TRUE)
+#' Laura <- phyDat(LauraChar)
 #' all.equal(Laurasiatherian, Laura)
 #' allSitePattern(5)
 #' 
@@ -776,10 +776,10 @@ fast.table2 <- function (data)
     cat <- factor(da,levels = levels)                                               
     nl <- length(levels)                                                       
     bin <- (as.integer(cat) - 1L)                                               
-    bin <- bin[!is.na(bin)]                                                         
-    if (length(bin)) bin <- bin + 1L                                                
-    result <- list(index = bin, pos = ind)                                          
-    result                                                                          
+    bin <- bin[!is.na(bin)]     
+    if (length(bin)) bin <- bin + 1L
+    result <- list(index = bin, pos = ind)  
+    result  
 }                                                                                        
 
 
@@ -865,14 +865,14 @@ write.phyDat <- function(x, file, format="phylip", colsep = "", nbcol=-1, ...){
     formats <- c("phylip", "nexus", "interleaved", "sequential", "fasta")
     format <- match.arg(tolower(format), formats)
     if(format=="nexus"){   
-        type = attr(x, "type")
+        type <- attr(x, "type")
         if(type=="DNA") write.nexus.data(as.list(as.data.frame(x)), file, 
                                          format = "dna",...)
         else write.nexus.data(as.list(as.data.frame(x)), file, 
                               format = "protein", ...)
     }
     else{
-        if(format=="phylip") format = "interleaved" 
+        if(format=="phylip") format <- "interleaved" 
         write.dna(as.character(x), file, format=format, colsep = colsep, 
                   nbcol=nbcol, ...)
     }    
@@ -890,11 +890,11 @@ read.phyDat <- function(file, format="phylip", type="DNA", ...){
     else {
         if(format=="phylip")format="interleaved"  #"sequential"
         if (type == "DNA" || type == "CODON"){ 
-            data = read.dna(file, format, as.character = TRUE, ...)
+            data <- read.dna(file, format, as.character = TRUE, ...)
         }
-        if (type == "AA") data = read.aa(file, format=format, ...)
+        if (type == "AA") data <- read.aa(file, format=format, ...)
         if (type == "USER"){
-            data = read.dna(file, format, as.character = TRUE)
+            data <- read.dna(file, format, as.character = TRUE)
             extras <- match.call(expand.dots = FALSE)$...
             extras <- lapply(extras, eval)
             return(phyDat(data, type, levels=extras$levels, 
@@ -915,7 +915,7 @@ baseFreq <- function(obj, freq=FALSE, all=FALSE, drop.unused.levels = FALSE){
     weight <- attr(obj,"weight")
     n <- length(obj)    
     res <- numeric(length(labels))  
-    D = diag(length(labels))   
+    D <- diag(length(labels))   
     for(i in 1:n)res <- res + colSums(D[obj[[i]],, drop=FALSE]*weight)
     names(res) <- labels
     if(!all) res <- res[attr(obj, "levels")]
@@ -1070,14 +1070,14 @@ removeParsUninfoSites <- function(data){
 #' @rdname phyDat
 #' @export
 allSitePattern <- function(n,levels=c("a","c","g","t"), names=NULL){
-    l=length(levels)
-    X=vector("list", n)
+    l <- length(levels)
+    X <- vector("list", n)
     if(is.null(names))names(X) <- paste0("t", 1:n) 
     else names(X) <- names
     for(i in 1:n)
         X[[i]] <- rep(rep(levels, each=l^(i-1)),l^(n-i)) 
     X <- as.data.frame(X)
-    phyDat.default(X, levels, compress=FALSE) 
+    phyDat.default(X, levels, compress=FALSE, return.index=FALSE) 
 } 
 
 
