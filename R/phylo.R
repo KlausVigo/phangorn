@@ -2293,6 +2293,12 @@ optim.pml <- function (object, optNni=FALSE, optBf=FALSE, optQ=FALSE,
         tree <- reorder(tree, "postorder")
     if(any(tree$edge.length < 1e-08)) {
         tree$edge.length[tree$edge.length < 1e-08] <- 1e-08
+        if(optRooted){
+            nTips <- as.integer(length(tree$tip.label))
+            ind <- match(as.integer(1:nTips), tree$edge[,2])
+            tree$edge.length[ind] <- tree$edge.length[ind] +
+                nodeHeight(tree)[1:nTips]
+        }
         # save to change to new update.pml       
         object <- update.pml(object, tree = tree)
     }
@@ -2422,7 +2428,8 @@ optim.pml <- function (object, optNni=FALSE, optBf=FALSE, optQ=FALSE,
     
     if (optEdge) {
         
-        # check if non-negative least-squares is better for start of optimisation
+        # check if non-negative least-squares is better for start of 
+        # optimisation
         treetmp <- nnls.phylo(tree, dist.ml(data))
         treetmp$edge.length[treetmp$edge.length < 1e-8] <- 1e-8
         tmplogLik <- pml.fit(treetmp, data, bf, k = k, inv = inv, g = g, w = w, 
@@ -2440,7 +2447,9 @@ optim.pml <- function (object, optNni=FALSE, optBf=FALSE, optQ=FALSE,
         }
     }
     if(optRooted){
-        res <- optimRooted(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, INV=INV, control = pml.control(epsilon = 1e-07, maxit = 10, trace = trace-1))
+        res <- optimRooted(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, 
+            ll.0=ll.0, INV=INV, control = pml.control(epsilon = 1e-07,
+                                            maxit = 10, trace = trace-1))
         if(trace > 0) 
             cat("optimize edge weights: ", ll, "-->", res[[2]], "\n")
         if(res[[2]] > ll){  
