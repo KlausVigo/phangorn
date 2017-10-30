@@ -14,7 +14,7 @@ Description: Phylogenetic analysis in R: Estimation of phylogenetic
     distance methods and Hadamard conjugation.
 Depends:
     R (>= 3.2.0),
-    ape (>= 4.1)
+    ape (>= 5.0)
 Imports:
     quadprog,
     igraph (>= 1.0),
