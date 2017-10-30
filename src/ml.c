@@ -32,8 +32,8 @@ const double LOG_SCALE_EPS = -22.18070977791824915926;
 
 // 2^64 = 18446744073709551616
 
-static double *LL, *WEIGHTS; 
-static int *SCM, *XXX;
+static double *LL;  //, *WEIGHTS; 
+static int *SCM; //, *XXX;
 
 void ll_free(){
     free(LL);

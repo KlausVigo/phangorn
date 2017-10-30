@@ -100,7 +100,7 @@ List allChildrenCPP(const IntegerMatrix orig) {
 
 // [[Rcpp::export]]
 IntegerVector p2dna(NumericMatrix xx, double eps=0.999){
-    int nr = xx.nrow(), nc = 4; //xx.ncol(); 
+    int nr = xx.nrow(); //xx.ncol(), nc = 4; 
     double m=0.0;
     IntegerVector tmp = IntegerVector::create(1,2,4,8);
     IntegerVector res(nr);
