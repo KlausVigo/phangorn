@@ -2268,7 +2268,7 @@ optim.pml <- function (object, optNni=FALSE, optBf=FALSE, optQ=FALSE,
             tree <- reorder(tree2, "postorder")
             mapping <- cbind(labels[dup], labels[ind2])
         }
-        if(!is.binary.tree(tree)) 
+        if(!is.binary(tree)) 
             tree <- multi2di(tree)
         optEdge <- TRUE     
     }

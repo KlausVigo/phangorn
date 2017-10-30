@@ -269,7 +269,7 @@ rNNI_old <- function (tree, moves = 1, n = length(moves))
 # SPR
 ################################################################################
 dn <- function(x){
-    #  if (!is.binary.tree(x) ) x <- multi2di(x, random = FALSE)
+    #  if (!is.binary(x) ) x <- multi2di(x, random = FALSE)
     if(is.null(x$edge.length))x$edge.length=rep(1,nrow(x$edge))
     else x$edge.length[] <- 1
     dist.nodes(x)
@@ -331,7 +331,7 @@ kSPR <- function(tree, k=NULL){
 
 
 oneOf4 <- function(tree, ind1, ind2, from=1, to=1){
-    if (!is.binary.tree(tree)) 
+    if (!is.binary(tree)) 
         stop("Sorry, trees must be binary!")        
     tree <- reroot2(tree, ind2)
     trees <- vector('list', 8)
@@ -379,7 +379,7 @@ rSPR_Old <- function(tree, moves=1, n=1){
 sprMove <- function(tree, m){
     if (is.rooted(tree)) tree <- unroot(tree)
     #stop("Sorry trees must be unrooted")
-    if(!is.binary.tree(tree))stop("Sorry trees must be binary!")
+    if(!is.binary(tree))stop("Sorry trees must be binary!")
     
 #    reroot2 <- function(tree, node){
 #        anc <- Ancestors(tree, node, "all")

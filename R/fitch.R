@@ -309,7 +309,7 @@ fitch.nni <- function (tree, data, ...)
 
 optim.fitch <- function(tree, data, trace=1, rearrangements = "SPR", ...) {
     if(!inherits(tree,"phylo")) stop("tree must be of class phylo") 
-    if(!is.binary.tree(tree)){
+    if(!is.binary(tree)){
         tree <- multi2di(tree)
         attr(tree, "order") <- NULL  
     }

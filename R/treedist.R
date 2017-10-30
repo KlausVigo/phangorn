@@ -233,7 +233,7 @@ treedist <- function (tree1, tree2, check.labels=TRUE)
     branch.score.difference <- NULL
     path.difference <- NULL
     quadratic.path.difference <- NULL
-    if(!is.binary.tree(tree1) | !is.binary.tree(tree2))message("Trees are not binary!")
+    if(!is.binary(tree1) | !is.binary(tree2))message("Trees are not binary!")
     
     bp1 <- bip(tree1)
     bp2 <- bip(tree2)
@@ -313,7 +313,7 @@ sprdist <- function (tree1, tree2)
     # side of splits)
     tree1 <- reorder(tree1, "postorder")
     tree2 <- reorder(tree2, "postorder")
-    if(!is.binary.tree(tree1) | !is.binary.tree(tree2))message("Trees are not binary!")
+    if(!is.binary(tree1) | !is.binary(tree2))message("Trees are not binary!")
     # possibly replace bip with bipart    
     bp1 <- bip(tree1)
     bp1 <- SHORTwise(bp1, lt1)
@@ -428,7 +428,7 @@ wRF0 <- function(tree1, tree2, normalize=FALSE, check.labels=TRUE, rooted = FALS
         if (r2) 
             tree2 <- unroot(tree2)
     }
-    if (!is.binary.tree(tree1) | !is.binary.tree(tree2)) 
+    if (!is.binary(tree1) | !is.binary(tree2)) 
         message("Trees are not binary!")
     if (check.labels) {
         ind <- match(tree1$tip.label, tree2$tip.label)
@@ -694,7 +694,7 @@ mRF<-function(trees, normalize=FALSE, rooted=FALSE){
 #        message("Some trees are rooted. Unrooting all trees.\n")
 #        trees <- lapply(trees, unroot)
 #    }
-    if (any(!is.binary.tree(trees))) {
+    if (any(!is.binary(trees))) {
         message("Some trees are not binary. Result may not what you expect!")
     }
 #    trees <- reorder(trees, "postorder")
@@ -759,7 +759,7 @@ RF0 <- function(tree1, tree2=NULL, normalize=FALSE, check.labels = TRUE, rooted=
         ind2 <- match(seq_along(ind), tree2$edge[, 2])
         tree2$edge[ind2, 2] <- order(ind)
     }
-    if(!is.binary.tree(tree1) | !is.binary.tree(tree2))message("Trees are not binary!")
+    if(!is.binary(tree1) | !is.binary(tree2))message("Trees are not binary!")
     bp1 <- bipart(tree1)
     bp2 <- bipart(tree2)
     nTips <- length(tree1$tip.label)

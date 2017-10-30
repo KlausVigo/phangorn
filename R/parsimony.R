@@ -652,7 +652,7 @@ ptree <- function (tree, data, type = "ACCTRAN", retData = FALSE)
     if (is.null(attr(tree, "order")) || attr(tree, "order") == 
         "cladewise") 
         tree <- reorder(tree, "postorder")  
-    if (!is.binary.tree(tree)) 
+    if (!is.binary(tree)) 
         stop("Tree must be binary!")
     tmp <- fitch(tree, data, site = "data")
     nr <- attr(data, "nr")
