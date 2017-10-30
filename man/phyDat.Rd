@@ -175,7 +175,7 @@ subset(Laurasiatherian, subset=1:5)
 # transform into old ape format
 LauraChar <- as.character(Laurasiatherian)
 # and back 
-Laura <- phyDat(LauraChar, return.index=TRUE)
+Laura <- phyDat(LauraChar)
 all.equal(Laurasiatherian, Laura)
 allSitePattern(5)
 

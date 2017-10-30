@@ -34,7 +34,7 @@ methods may be useful in simulation studies.
 }
 \examples{
 
-tree = unroot(rtree(20))
+tree <- unroot(rtree(20))
 trees1 <- nni(tree)
 trees2 <- rSPR(tree, 2, 10)
 
