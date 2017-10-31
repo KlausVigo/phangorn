@@ -490,7 +490,7 @@ circNetwork <- function(x, ord=NULL){
 #' 
 #' Schliep, K., Potts, A. J., Morrison, D. A. and Grimm, G. W. (2017), 
 #' Intertwining phylogenetic trees and networks. \emph{Methods Ecol Evol}. 
-#' doi:10.1111/2041-210X.12760
+#' \bold{8}, 1212--1220. doi:10.1111/2041-210X.12760
 #' @keywords plot
 #' @examples
 #' 
@@ -746,8 +746,9 @@ createLabel <- function(x, y, label_y, type="edge", nomatch=NA){
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{as.splits}}, \code{\link{as.networx}},
 #' \code{\link{RF.dist}}, \code{\link{plot.phylo}}
-#' @references Schliep, K., Potts, A. J., Morrison, D. A. and Grimm, G. W. (2017), Intertwining 
-#' phylogenetic trees and networks. \emph{Methods Ecol Evol}. doi:10.1111/2041-210X.12760
+#' @references Schliep, K., Potts, A. J., Morrison, D. A. and Grimm, G. W. (2017), 
+#' Intertwining phylogenetic trees and networks. \emph{Methods Ecol Evol}. 
+#' \bold{8}, 1212--1220. doi:10.1111/2041-210X.12760 
 #' @keywords cluster
 #' @examples
 #' 
