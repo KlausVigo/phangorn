@@ -34,8 +34,8 @@ importFrom(stats, AIC, BIC, logLik, reorder, update, optim, optimize,
 importFrom(graphics, plot, plot.default, plot.new, plot.window, text, par, 
     abline, strwidth, axis, title, segments, points, image, matplot, legend, 
     hist, identify, locator) 
-importFrom(utils, read.table, download.file, citation, stack, 
-    installed.packages, write.table, combn) 
+importFrom(utils, read.table, download.file, stack, 
+    installed.packages, write.table, combn, packageDescription) 
 importFrom(grDevices, rgb, rainbow, adjustcolor, col2rgb)
 #importFrom(methods, hasArg, is)
 #importFrom(Rcpp, evalCpp)
