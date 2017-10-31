@@ -130,7 +130,7 @@ Dress, A.W.M. and Huson, D.H. (2004) Constructing Splits Graphs
 
 Schliep, K., Potts, A. J., Morrison, D. A. and Grimm, G. W. (2017), 
 Intertwining phylogenetic trees and networks. \emph{Methods Ecol Evol}. 
-doi:10.1111/2041-210X.12760
+\bold{8}, 1212--1220. doi:10.1111/2041-210X.12760
 }
 \seealso{
 \code{\link{consensusNet}}, \code{\link{neighborNet}},
