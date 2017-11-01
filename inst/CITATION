@@ -10,7 +10,7 @@ bibentry(bibtype = "Article",
 	volume = "27",
 	number = "4",
     pages = "592--593",
-    url = "https://doi.org/10.1093/bioinformatics/btq706"
+    url = "https://doi.org/10.1093/bioinformatics/btq706",
     textVersion = "Schliep K.P. 2011. phangorn: phylogenetic analysis in R. Bioinformatics, 27(4) 592-593")
 
 
