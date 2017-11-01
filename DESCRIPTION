@@ -1,6 +1,6 @@
 Package: phangorn
 Title: Phylogenetic reconstruction and analysis
-Version: 2.3.1
+Version: 2.3.2
 Authors@R: c(person("Klaus", "Schliep", email="klaus.schliep@gmail.com", role = c("aut", "cre")), 
   person("Emmanuel", "Paradis", role = c("aut")), 
   person("Leonardo", "de Oliveira Martins", role = c("aut")), 
