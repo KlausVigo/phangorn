@@ -1270,6 +1270,14 @@ closest.edge <- function(x,y,P1,P2){
     d
 }
 
+closest.node <- function(x, y, P){
+    x1 <- P[,1]
+    y1 <- P[,2]
+    d <- sqrt( (x1-x)^2 + (y1-y)^2 )
+    d
+}
+
+
 #' Identify splits in a network
 #'
 #' \code{identify.networx} reads the position of the graphics pointer when the
