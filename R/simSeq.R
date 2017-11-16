@@ -38,29 +38,30 @@
 #' 
 #' \dontrun{
 #' data(Laurasiatherian)
-#' tree = nj(dist.ml(Laurasiatherian))
-#' fit = pml(tree, Laurasiatherian, k=4)
-#' fit = optim.pml(fit, optNni=TRUE, model="GTR", optGamma=TRUE)
-#' data = simSeq(fit)
+#' tree <- nj(dist.ml(Laurasiatherian))
+#' fit <- pml(tree, Laurasiatherian, k=4)
+#' fit <- optim.pml(fit, optNni=TRUE, model="GTR", optGamma=TRUE)
+#' data <- simSeq(fit)
 #' }
 #' 
-#' tree = rtree(5)
+#' tree <- rtree(5)
 #' plot(tree)
 #' nodelabels()
 #' 
 #' # Example for simple DNA alignment
-#' data = simSeq(tree, l = 10, type="DNA", bf=c(.1,.2,.3,.4), Q=1:6)
+#' data <- simSeq(tree, l = 10, type="DNA", bf=c(.1,.2,.3,.4), Q=1:6)
 #' as.character(data)
 #' 
 #' # Example to simulate discrete Gamma rate variation
-#' rates = discrete.gamma(1,4)
-#' data1 = simSeq(tree, l = 100, type="AA", model="WAG", rate=rates[1])
-#' data2 = simSeq(tree, l = 100, type="AA", model="WAG", rate=rates[2])
-#' data3 = simSeq(tree, l = 100, type="AA", model="WAG", rate=rates[3])
-#' data4 = simSeq(tree, l = 100, type="AA", model="WAG", rate=rates[4])
+#' rates <- discrete.gamma(1,4)
+#' data1 <- simSeq(tree, l = 100, type="AA", model="WAG", rate=rates[1])
+#' data2 <- simSeq(tree, l = 100, type="AA", model="WAG", rate=rates[2])
+#' data3 <- simSeq(tree, l = 100, type="AA", model="WAG", rate=rates[3])
+#' data4 <- simSeq(tree, l = 100, type="AA", model="WAG", rate=rates[4])
 #' data <- c(data1,data2, data3, data4)
 #' 
-#' write.phyDat(data, file="temp.dat", format="sequential",nbcol = -1, colsep = "")
+#' write.phyDat(data, file="temp.dat", format="sequential", nbcol = -1, 
+#'   colsep = "")
 #' unlink("temp.dat") 
 #' 
 #' @rdname simSeq
@@ -72,15 +73,15 @@ simSeq <- function (x, ...)
 #' @rdname simSeq
 #' @method simSeq phylo
 #' @export
-simSeq.phylo = function(x, l=1000, Q=NULL, bf=NULL, rootseq=NULL, type = "DNA", model=NULL,
-                  levels = NULL, rate=1, ancestral=FALSE, ...){
+simSeq.phylo <- function(x, l=1000, Q=NULL, bf=NULL, rootseq=NULL, type = "DNA",
+                  model=NULL, levels = NULL, rate=1, ancestral=FALSE, ...){
    
-    
     if (!is.null(model)) {
-        #        model <- match.arg(model, c("USER", "WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24"))
-        model <- match.arg(model, .aamodels) #match.arg(model, c("USER", .aamodels)) 
+        #    model <- match.arg(model, c("USER", "WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24"))
+        model <- match.arg(model, .aamodels) 
+        #match.arg(model, c("USER", .aamodels)) 
         getModelAA(model, bf=is.null(bf), Q=is.null(Q))
-        type = "AA"
+        type <- "AA"
     }
      
     pt <- match.arg(type, c("DNA", "AA", "USER", "CODON"))
@@ -103,45 +104,48 @@ simSeq.phylo = function(x, l=1000, Q=NULL, bf=NULL, rootseq=NULL, type = "DNA", 
     if (pt == "USER") 
         if(is.null(levels))stop("levels have to be supplied if type is USER")
     
-    lbf = length(levels)
+    lbf <- length(levels)
     
 
     
-    if(is.null(bf)) bf = rep(1/lbf,lbf)
-    if(is.null(Q)) Q = rep(1,lbf*(lbf-1)/2)
-    if(is.matrix(Q)) Q=Q[lower.tri(Q)]
-    eig = edQt(Q, bf)
+    if(is.null(bf)) bf <- rep(1/lbf,lbf)
+    if(is.null(Q)) Q <- rep(1,lbf*(lbf-1)/2)
+    if(is.matrix(Q)) Q <- Q[lower.tri(Q)]
+    eig <- edQt(Q, bf)
     
-    m = length(levels)    
+    m <- length(levels)    
     
-    if(is.null(rootseq))rootseq = sample(levels, l, replace=TRUE, prob=bf)
-    x = reorder(x) 
-    edge = x$edge
-    nNodes = max(edge)
-    res = matrix(NA, l, nNodes)
+    if(is.null(rootseq))rootseq <- sample(levels, l, replace=TRUE, prob=bf)
+    x <- reorder(x) 
+    edge <- x$edge
+    nNodes <- max(edge)
+    res <- matrix(NA, l, nNodes)
     parent <- as.integer(edge[, 1])
     child <- as.integer(edge[, 2])
     root <- as.integer(parent[!match(parent, child, 0)][1])  
-    res[, root] = rootseq   
-    tl = x$edge.length
+    res[, root] <- rootseq   
+    tl <- x$edge.length
     for(i in seq_along(tl)){
-        from = parent[i] 
-        to = child[i]
-        P = getP(tl[i], eig, rate)[[1]]
+        from <- parent[i] 
+        to <- child[i]
+        P <- getP(tl[i], eig, rate)[[1]]
         # avoid numerical problems for larger P and small t        
-        if(any(P < 0)) P[P<0] = 0
+        if(any(P < 0)) P[P<0] <- 0
         for(j in 1:m){
-            ind = res[,from]==levels[j]
-            res[ind,to] = sample(levels, sum(ind), replace=TRUE, prob=P[,j])
+            ind <- res[,from]==levels[j]
+            res[ind,to] <- sample(levels, sum(ind), replace=TRUE, prob=P[,j])
         }
     }
-    k = length(x$tip.label)
-    label = c(x$tip.label, as.character((k+1):nNodes))
-    colnames(res)=label 
-    if(!ancestral)res = res[, x$tip.label, drop=FALSE]
-    if(pt=="DNA") return(phyDat.DNA(as.data.frame(res, stringsAsFactors = FALSE), return.index=TRUE))
-    if(pt=="AA") return(phyDat.AA(as.data.frame(res, stringsAsFactors = FALSE), return.index=TRUE))
-    if(pt=="USER") return(phyDat.default(as.data.frame(res, stringsAsFactors = FALSE), levels = levels, return.index=TRUE))
+    k <- length(x$tip.label)
+    label <- c(x$tip.label, as.character((k+1):nNodes))
+    colnames(res) <- label 
+    if(!ancestral)res <- res[, x$tip.label, drop=FALSE]
+    if(pt=="DNA") return(phyDat.DNA(as.data.frame(res, 
+                            stringsAsFactors = FALSE), return.index=TRUE))
+    if(pt=="AA") return(phyDat.AA(as.data.frame(res, stringsAsFactors = FALSE), 
+                                  return.index=TRUE))
+    if(pt=="USER") return(phyDat.default(as.data.frame(res, 
+                stringsAsFactors = FALSE), levels = levels, return.index=TRUE))
     if(pt=="CODON"){ 
         res <- apply(res, 2, function(x)unlist(strsplit(x, "")))
         return(phyDat.codon(as.data.frame(res, stringsAsFactors = FALSE)))
@@ -153,22 +157,24 @@ simSeq.phylo = function(x, l=1000, Q=NULL, bf=NULL, rootseq=NULL, type = "DNA", 
 #' @method simSeq pml
 #' @export
 simSeq.pml <- function(x, ancestral=FALSE, ...){
-    g = x$g
-    w = x$w
+    g <- x$g
+    w <- x$w
     if(x$inv>0){
-        w = c(x$inv, w)
-        g = c(0.0, g)
+        w <- c(x$inv, w)
+        g <- c(0.0, g)
     }
-    n = length(w)
-    res = vector("list", n)
-    y = sample(n, sum(x$weight), replace=TRUE, prob=w)
-    levels = attr(x$data, "levels")
-    type = attr(x$data, "type")
+    n <- length(w)
+    res <- vector("list", n)
+    y <- sample(n, sum(x$weight), replace=TRUE, prob=w)
+    levels <- attr(x$data, "levels")
+    type <- attr(x$data, "type")
     for(i in 1:n){
-        l = sum(y==i)
-        res[[i]] = simSeq(x$tree, l, Q=x$Q, bf=x$bf, type=type, levels=levels, rate=g[i], ancestral=ancestral)  
+        l <- sum(y==i)
+        res[[i]] <- simSeq(x$tree, l, Q=x$Q, bf=x$bf, type=type, levels=levels,
+                           rate=g[i], ancestral=ancestral)  
     }
-    x = call("c.phyDat", quote(res[[1]]))
-    if(n>1) x <- parse(text= paste("c(", "res[[1]]", paste0(",res[[", 2:n, "]]", collapse=""), ")"))
+    x <- call("c.phyDat", quote(res[[1]]))
+    if(n>1) x <- parse(text= paste("c(", "res[[1]]", paste0(",res[[", 2:n, "]]",
+                                                        collapse=""), ")"))
     eval(x)    
 }
