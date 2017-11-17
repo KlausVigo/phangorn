@@ -476,8 +476,11 @@ getOrder <- function (x)
 bab <- function (data, tree = NULL, trace = 1, ...) 
 {
     if(!is.null(tree)) data <- subset(data, tree$tip.label) 
-    pBound=TRUE
-
+    pBound <- TRUE
+    
+    nTips <- length(data)
+    if(nTips < 4) return(stree(nTips, tip.label = names(data)))
+    
     nr <- attr(data, "nr")
     pis <- parsinfo(data)
     p0 <- sum(attr(data, "weight")[pis[, 1]] * pis[, 2])
