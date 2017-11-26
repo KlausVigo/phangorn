@@ -14,8 +14,8 @@ weights1 <- 1000*exp(fit1$site)
 weights2 <- 1000*exp(fit2$site) 
 
 
-W = cbind(weights0, weights1, weights2) 
-colnames(W) = c("g1", "g2", "g3")
+W <- cbind(weights0, weights1, weights2) 
+colnames(W) <- c("g1", "g2", "g3")
 
 
 # rate
@@ -46,8 +46,8 @@ test_that("transition rate optimisation works properly", {
     weights0 <- weights1
     weights2 <- weights1
 
-    W = cbind(weights0, weights1, weights2) 
-    colnames(W) = c("g1", "g2", "g3")
+    W <- cbind(weights0, weights1, weights2) 
+    colnames(W) <- c("g1", "g2", "g3")
     
     # linked parameter
     
@@ -80,8 +80,8 @@ test_that("base frequency optimisation works properly", {
     weights0 <- weights1
     weights2 <- weights1
     
-    W = cbind(weights0, weights1, weights2) 
-    colnames(W) = c("g1", "g2", "g3")
+    W <- cbind(weights0, weights1, weights2) 
+    colnames(W) <- c("g1", "g2", "g3")
     
     # linked parameter
     
@@ -113,8 +113,8 @@ test_that("shape parameter optimisation works properly", {
     weights0 <- weights1
     weights2 <- weights1
     
-    W = cbind(weights0, weights1, weights2) 
-    colnames(W) = c("g1", "g2", "g3")
+    W <- cbind(weights0, weights1, weights2) 
+    colnames(W) <- c("g1", "g2", "g3")
     
     # linked parameter
   
@@ -146,8 +146,8 @@ test_that("Invariant sites optimisation works properly", {
     weights0 <- weights1
     weights2 <- weights1
     
-    W = cbind(weights0, weights1, weights2) 
-    colnames(W) = c("g1", "g2", "g3")
+    W <- cbind(weights0, weights1, weights2) 
+    colnames(W) <- c("g1", "g2", "g3")
     
     # linked parameter
     

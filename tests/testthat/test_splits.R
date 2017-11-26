@@ -48,7 +48,7 @@ test_that("networx ", {
      net3 <- as.networx(tree)
      # delete some additional attributes
      net2$.plot <- net2$translate <- NULL
-     attr(net1, "order") = NULL
+     attr(net1, "order") <- NULL
      
      expect_is(net1, "networx")
      expect_is(net2, "networx")
