@@ -76,11 +76,11 @@ fnodesNew2 <- function (EDGE, nTips, nr)
 # SPR und bab kompakter
 fnodesNew5 <- function (EDGE, nTips, nr, m= as.integer(max(EDGE)+1L)) 
 {
-    node <- EDGE[, 1]
-    edge <- EDGE[, 2]
+    node <- EDGE[, 1]              # in C    
+    edge <- EDGE[, 2]              # in C
     n <- length(node)              # in C
     m2 <- 2L*n                     # in C
-    root0 <- as.integer(node[n])  # in C 
+    root0 <- as.integer(node[n])   # in C 
     .Call("FNALL5", as.integer(nr), node, edge, as.integer(n), as.integer(m), as.integer(m2), as.integer(root0), PACKAGE="phangorn")
 }   
 
@@ -145,8 +145,10 @@ fitch.spr <- function(tree, data){
     treetmp <- dropTip(tree, i)   
     edge <- treetmp$edge[,2] 
 #    score = fnodesNew5(treetmp$edge, nTips, nr)[edge]
-    score <- .Call("FNALL6", as.integer(nr), treetmp$edge[,1], edge, as.integer(m+1L), PACKAGE="phangorn")[edge]
-    score <- .Call("FITCHTRIP3", as.integer(i), as.integer(nr), as.integer(edge),  as.double(score), as.double(minp))  
+    score <- .Call("FNALL6", as.integer(nr), treetmp$edge[,1], edge, 
+                   as.integer(m+1L), PACKAGE="phangorn")[edge]
+    score <- .Call("FITCHTRIP3", as.integer(i), as.integer(nr), 
+                   as.integer(edge),  as.double(score), as.double(minp))  
     
     if(min(score)<minp){
       nt <- which.min(score)
@@ -164,9 +166,11 @@ fitch.spr <- function(tree, data){
           edge <- tmp[[1]]$edge[,2] 
           
           blub <- fast.fitch(tmp[[2]], nr, TRUE)
-          score <- .Call("FNALL6", as.integer(nr), tmp[[1]]$edge[,1], edge, as.integer(m+1L), PACKAGE="phangorn")[edge] + blub
+          score <- .Call("FNALL6", as.integer(nr), tmp[[1]]$edge[,1], edge, 
+                         as.integer(m+1L), PACKAGE="phangorn")[edge] + blub
 #          score = fnodesNew5(tmp[[1]]$edge, nTips, nr)[edge] + blub
-          score <- .Call("FITCHTRIP3", as.integer(i), as.integer(nr), as.integer(edge), as.double(score), as.double(minp))    
+          score <- .Call("FITCHTRIP3", as.integer(i), as.integer(nr), 
+                         as.integer(edge), as.double(score), as.double(minp))    
           if(min(score)<minp){
               nt <- which.min(score)
               tree <- addOneTree(tmp[[1]], tmp[[2]], nt, tmp[[3]])
@@ -206,7 +210,7 @@ fitch.spr2 <- function(tree, data){
             #            print(paste("new",minp))
         }
     }
-    m=max(tree$edge)
+    m <- max(tree$edge)
     
     root <- getRoot(tree) 
     for(i in (nTips+1L):m){
@@ -217,7 +221,8 @@ fitch.spr2 <- function(tree, data){
             edge <- tmp[[1]]$edge[,2]                          
             blub <- fast.fitch(tmp[[2]], nr, TRUE)
             score <- fnodesNew5(tmp[[1]]$edge, nTips, nr)[edge] + blub
-            score <- .Call("FITCHTRIP3", as.integer(i), as.integer(nr), as.integer(edge), as.double(score), as.double(minp))    
+            score <- .Call("FITCHTRIP3", as.integer(i), as.integer(nr), 
+                           as.integer(edge), as.double(score), as.double(minp))    
             if(min(score)<minp){
                 nt <- which.min(score)
                 tree <- addOneTree(tmp[[1]], tmp[[2]], nt, tmp[[3]])
@@ -259,7 +264,7 @@ indexNNI2 <- function(tree){
     pvector[child] <- parent
     cvector <- allChildren(tree)  
 
-    k=0
+    k <- 0
     for(i in ind){        
             p1 <- parent[i]          
             p2 <- child[i]
@@ -320,6 +325,11 @@ optim.fitch <- function(tree, data, trace=1, rearrangements = "SPR", ...) {
     if(is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise") tree <- reorder(tree, "postorder")  
     if (class(data)[1] != "phyDat") stop("data must be of class phyDat")
 
+#   stop early for n=3 or 4  
+#        if(rt)tree <- ptree(tree, data)  
+#    attr(tree, "pscore") <- pscore + p0
+#    tree
+      
     rt <- FALSE
     nTips <- as.integer(length(tree$tip.label))
 
@@ -339,7 +349,7 @@ optim.fitch <- function(tree, data, trace=1, rearrangements = "SPR", ...) {
     on.exit(.C("fitch_free"))
     .C("fitch_init", as.integer(dat), as.integer(nTips*nr), as.integer(m), as.double(weight), as.integer(nr))
 
-    tree$edge.length=NULL
+    tree$edge.length <- NULL
     swap <- 0
     iter <- TRUE
     pscore <- fast.fitch(tree, nr)  
@@ -355,7 +365,7 @@ optim.fitch <- function(tree, data, trace=1, rearrangements = "SPR", ...) {
                 tree <- fitch.spr(tree, dat)             
                 psc <- fast.fitch(tree, nr)
                 if(trace>1)cat("optimize topology (SPR): ", pscore + p0 , "-->", psc + p0, "\n")
-                if(pscore < psc+1e-6) iter=FALSE
+                if(pscore < psc+1e-6) iter <- FALSE
                 pscore <- psc
             } 
             else iter <- FALSE
@@ -396,13 +406,13 @@ getOrder <- function (x)
     .C("fitch_init", as.integer(data), as.integer(nTips*nr), as.integer(m), as.double(weight), as.integer(nr))
 
     for(i in seq_along(remaining)){
-        tree$edge[3,2]= remaining[i]     
+        tree$edge[3,2] <- remaining[i]     
         res[i] <- fast.fitch(tree, nr) 
     }
     tmp <- which.max(res)
     added <- c(added, remaining[tmp])
     remaining <- remaining[-tmp]
-    tree$edge[,2]= added
+    tree$edge[,2] <- added
 
     for (i in 4:(nTips - 1L)) {
         edge <- tree$edge[,2]                 

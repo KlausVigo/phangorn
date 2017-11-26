@@ -133,10 +133,10 @@ ldfactorial <- function(x){
 #' @rdname hadamard
 #' @export hadamard
 hadamard <- function(x){
-    res=1
+    res <- 1
     while(x>0){
-        res=rbind(cbind(res,res),cbind(res,-res))
-        x=x-1
+        res <- rbind(cbind(res,res),cbind(res,-res))
+        x <- x-1
     }
     res
 }
@@ -249,15 +249,15 @@ h4st <- function(obj, levels=c('a','c','g','t')){
     DNAX <- matrix(0,n,p)
     DNAY <- matrix(0,n,p)
     
-    DNAX[obj==levels[1]]=0
-    DNAX[obj==levels[2]]=1
-    DNAX[obj==levels[3]]=1
-    DNAX[obj==levels[4]]=0
+    DNAX[obj==levels[1]] <- 0
+    DNAX[obj==levels[2]] <- 1
+    DNAX[obj==levels[3]] <- 1
+    DNAX[obj==levels[4]] <- 0
     
-    DNAY[obj==levels[1]]=0
-    DNAY[obj==levels[2]]=1
-    DNAY[obj==levels[3]]=0
-    DNAY[obj==levels[4]]=1
+    DNAY[obj==levels[1]] <- 0
+    DNAY[obj==levels[2]] <- 1
+    DNAY[obj==levels[3]] <- 0
+    DNAY[obj==levels[4]] <- 1
     
     DNAY <- DNAY - DNAY[,p]
     DNAX <- DNAX - DNAX[,p]
@@ -316,7 +316,7 @@ h2st <- function (obj, eps=0.001)
         for(i in 1:n2)splits[[i]] <- dec2Bin(ind2[i])
         attr(splits, "weights") <- qv[ind2]
         attr(splits, "labels") <- names(obj)
-        class(splits)='splits'
+        class(splits) <- 'splits'
         return(splits)    
     }
     result <- data.frame(edges = qv, splits = sv, index = 0:(2^(p - 1) - 1))
