@@ -66,7 +66,7 @@ lento <- function (obj, xlim = NULL, ylim = NULL, main = "Lento plot",
     ord <- order(support, decreasing = TRUE)
     support <- support[ord]
     conflict <- conflict[ord]
-    if(length(col)==length(obj)) col=col[ord]
+    if(length(col)==length(obj)) col <- col[ord]
     plot.new()
     plot.window(xlim, ylim)
     title(main = main, sub = sub, xlab = xlab, ylab = ylab, ...)
