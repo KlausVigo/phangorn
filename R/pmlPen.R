@@ -33,7 +33,7 @@ pmlPartPen <- function(object, lambda, control=pml.control(epsilon=1e-8,
     iter <- 0
     trace <- control$trace
     while( abs(eps)>control$eps & iter<control$maxit){
-        theta=NULL
+        theta <- NULL
         sc <- NULL
         for(i in 1:m){
             theta <- c(theta,fits[[i]]$tree$edge.length)
