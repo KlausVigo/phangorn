@@ -6,11 +6,11 @@ getAges <- function(x){
     if(!is.null(attr(x, "TipLabel"))){
       x <- .uncompressTipLabel(x)  
       x <- unclass(x)  
-      height <- sapply(x, fun)
+      height <- vapply(x, fun, 0)
     }
     else{
       x <- unclass(x)
-      height <- sapply(x, fun) 
+      height <- vapply(x, fun, 0) 
     }
   }
   height

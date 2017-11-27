@@ -351,8 +351,9 @@ cladeMatrix <- function(x, rooted=FALSE){
     pplabel <- attr(pp, "labels")
     if(!rooted)pp <- oneWise(pp)
     x <- .uncompressTipLabel(x)
+    nnodes <- Nnode(x) 
     class(x) <- NULL
-    nnodes <- sapply(x, Nnode)
+    #nnodes <- sapply(x, Nnode)
     l <-  length(x)
     from <- cumsum(c(1, nnodes[-l]))
     to <- cumsum(nnodes)
