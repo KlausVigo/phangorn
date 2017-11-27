@@ -10,7 +10,7 @@ edgeLengthIndex <- function(child, parent, nTips){
     if (length(child)==1) return(fun(child, parent, nTips))
     else {
         res <- integer(length(child))
-        for(i in 1:length(child))res[i]=fun(child[i], parent[i], nTips)
+        for(i in 1:length(child))res[i] <- fun(child[i], parent[i], nTips)
         return(res)
     }
 }
@@ -268,12 +268,12 @@ anova.pml <- function (object, ...)
 #}
                              
 vcov.pml <- function(object, ...){
-    FI = score(object,FALSE)[[2]]
-    l = dim(FI)[1]
-    res = try(solve(FI))
+    FI <- score(object,FALSE)[[2]]
+    l <- dim(FI)[1]
+    res <- try(solve(FI))
     if(class(res) == "try-error"){
         cat("Covariance is ill-conditioned !! \n")
-        res = solve(FI + diag(l)* 1e-8)
+        res <- solve(FI + diag(l)* 1e-8)
         }
     res
 }
@@ -547,10 +547,10 @@ pml.nni.old <- function (tree, data, w, g, eig, bf, ll.0, ll, ...)
             dat1, dat4, dat3, dat2, g, w, weight, ll.0, llcomp=ll, evi=evi, contrast=contrast, contrast2=contrast2, ext=ext[c(1, 4, 3, 2)])
 
 
-        loglik[(2*i)-1]=new1[[2]]
-        loglik[(2*i)]=new2[[2]] 
-        edgeMatrix[(2*i)-1,]=new1[[1]]
-        edgeMatrix[(2*i),]=new2[[1]]           
+        loglik[(2*i)-1] <- new1[[2]]
+        loglik[(2*i)] <- new2[[2]] 
+        edgeMatrix[(2*i)-1,] <- new1[[1]]
+        edgeMatrix[(2*i),] <- new2[[1]]           
     }
     swap <- 0
     eps0 <- 1e-6
@@ -1203,7 +1203,7 @@ update.pml <- function (object, ...)
 #    }
 #    else df = df + (k > 1) + (inv > 0) + length(unique(bf)) - 1 + length(unique(Q)) - 1
     
-    result = list(logLik = tmp$loglik, inv = inv, k = k, shape = shape, Q = Q, 
+    result <- list(logLik = tmp$loglik, inv = inv, k = k, shape = shape, Q = Q, 
                   bf = bf, rate = rate, siteLik = tmp$siteLik, weight = weight, 
                   g = g, w = w, eig = eig, data = data, model = model, 
                   INV = INV, ll.0 = ll.0, tree = tree, lv = tmp$resll,
@@ -1342,7 +1342,7 @@ pml.fit <- function (tree, data, bf = rep(1/length(levels), length(levels)),
         eig = NULL, INV = NULL, ll.0 = NULL, llMix = NULL, wMix = 0, ..., 
         site=FALSE) 
 {
-    Mkv=FALSE
+    Mkv <- FALSE
     weight <- as.double(attr(data, "weight"))
     nr <- as.integer(attr(data, "nr")) 
     nc <- as.integer(attr(data, "nc"))
@@ -1792,7 +1792,7 @@ optimRooted <- function(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate,
     EL <- numeric(max(tree$edge)) 
     EL[tree$edge[, 2]] <- tree$edge.length
     
-    eps0 =1e-8
+    eps0 <- 1e-8
     
     tmp <- scaleEdges(t, trace=0, tree, data, bf = bf, k=k, ll.0=ll.0, 
                       eig = eig, w=w, g=g)
@@ -1834,7 +1834,7 @@ optimRooted <- function(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate,
                 tmpKids <- cvector[[loli]]
                 tmpEdge <- cbind(loli, tmpKids)
                 pml.move(tmpEdge, EL[tmpKids], data, g, w, eig, k, nTips, bf)
-                loli=anc[loli] 
+                loli <- anc[loli] 
             }            
             pml.move(edgeList[[dad]], EL[lengthList[[dad]]], data, g, w, eig, k, nTips, bf)   
             
@@ -1933,7 +1933,7 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV,
     }
     
     optRootU <- function(t, tree, data, bf, g, w, eig, ll.0, k, INV, nh){
-        tree$edge.length = getEL1(t, nh)
+        tree$edge.length <- getEL1(t, nh)
         pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g) 
 #        pml.fit(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k, INV=INV)
     }      
@@ -1958,7 +1958,7 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV,
     
     
     optEdgeU <- function(t, tree, data, bf, g, w, eig, ll.0, k, INV, nh){
-        tree$edge.length = getEL2(t, nh)
+        tree$edge.length <- getEL2(t, nh)
 #        pml.fit(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k, INV=INV)
         pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g) 
     }
@@ -2285,7 +2285,7 @@ optim.pml <- function (object, optNni=FALSE, optBf=FALSE, optQ=FALSE,
     llMix <- object$llMix
 #    Mkv <- object$Mkv
     Mkv <- FALSE
-    if(is.null(llMix)) llMix=0
+    if(is.null(llMix)) llMix <- 0
     if (!is.null(extras)) {
         names(extras) <- pmla[pmatch(names(extras), pmla)]
         existing <- match(pmla, names(extras))
@@ -2300,15 +2300,15 @@ optim.pml <- function (object, optNni=FALSE, optBf=FALSE, optQ=FALSE,
     ratchet2 <- FALSE
     if(optRatchet == TRUE){
         if(optRooted==FALSE){
-            optNni=TRUE
-            optEdge=TRUE
-            ratchet=TRUE
+            optNni <- TRUE
+            optEdge <- TRUE
+            ratchet <- TRUE
         }
     }
     if(optRatchet2 == TRUE){
-        optNni=TRUE
-        optEdge=TRUE
-        ratchet2=TRUE
+        optNni <- TRUE
+        optEdge <- TRUE
+        ratchet2 <- TRUE
     }
     
     data <- object$data
@@ -2519,7 +2519,7 @@ optim.pml <- function (object, optNni=FALSE, optBf=FALSE, optQ=FALSE,
             tree <- res[[1]]
         }     
     }
-    rounds = 1
+    rounds <- 1
     while (opti) {
         if (optBf) {
             res <- optimBf(tree, data, bf = bf, inv = inv, Q = Q, w = w, g = g, 
@@ -2791,11 +2791,12 @@ optim.pml <- function (object, optNni=FALSE, optBf=FALSE, optQ=FALSE,
                 if(ll2 > (ll + epsR)){
                     tree <- tree2
                     ll <- ll2
-                    kmax=1
+                    kmax <- 1
                 } 
                 else kmax <- kmax+1
-                if(trace > 0) print(paste("Ratchet iteration ", i,", best pscore so far:",ll))
-                i=i+1
+                if(trace > 0) print(paste("Ratchet iteration ", i,", best pscore 
+                                          so far:",ll))
+                i <- i+1
                 if(kmax > maxR) i <- maxit
             }  
             optNni <- TRUE
@@ -2839,7 +2840,7 @@ indexNNI3 <- function(tree){
     #    cvector <- allCildren(tree)  
     cvector <- vector("list",max(parent))   
     for(i in 1:length(parent))  cvector[[parent[i]]] <- c(cvector[[parent[i]]], child[i]) 
-    k=1L
+    k <- 1L
     for(i in ind){   
         f <- pvector[i] #f
         ab <- cvector[[i]] #a,b
