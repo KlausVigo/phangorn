@@ -96,7 +96,8 @@ phyDat.default <- function (data, levels = NULL, return.index = TRUE,
     aaa <- match(index, attr(data, "na.action"))
     
 
-    if(!is.null(attr(data, "na.action"))) warning("Found unknown characters (not supplied in levels). Deleted sites with with unknown states.")
+    if(!is.null(attr(data, "na.action"))) warning("Found unknown characters (not 
+                supplied in levels). Deleted sites with with unknown states.")
     
     index <- index[is.na(aaa)] 
     index <- match(index, unique(index))
@@ -228,8 +229,8 @@ phyDat.AA <- function (data, return.index = TRUE)
 #    ddd <- fast.table(data)
 #    data <- ddd$data
 #    index <- ddd$index
-    compress=TRUE
-    if(length(data[[1]])==1) compress=FALSE 
+    compress <- TRUE
+    if(length(data[[1]])==1) compress <- FALSE 
     if(compress){
         ddd <- fast.table(data)
         data <- ddd$data
@@ -262,7 +263,7 @@ phyDat.AA <- function (data, return.index = TRUE)
     index <- index[is.na(aaa)] 
     index <- match(index, unique(index))
     rn <- as.numeric(rownames(data))
-    attr(data, "na.action") = NULL
+    attr(data, "na.action") <- NULL
   
 #    weight = ddd$weight[rn]
     weight <- weight[rn]  
@@ -308,7 +309,7 @@ phyDat.codon <- function (data, return.index = TRUE)
     data <- data.frame(lapply(data, splseq))
 #    ddd = fast.table(data)
     compress=TRUE
-    if(nrow(data)==1) compress=FALSE 
+    if(nrow(data)==1) compress <- FALSE 
     if(compress){
             ddd <- fast.table(data)
             data <- ddd$data
@@ -886,9 +887,9 @@ read.phyDat <- function(file, format="phylip", type="DNA", ...){
     formats <- c("phylip", "nexus", "interleaved", "sequential", "fasta", "clustal")
     format <- match.arg(tolower(format), formats)
     
-    if(format=="nexus") data=read.nexus.data(file, ...)
+    if(format=="nexus") data <- read.nexus.data(file, ...)
     else {
-        if(format=="phylip")format="interleaved"  #"sequential"
+        if(format=="phylip") format <- "interleaved"  #"sequential"
         if (type == "DNA" || type == "CODON"){ 
             data <- read.dna(file, format, as.character = TRUE, ...)
         }
@@ -927,7 +928,7 @@ baseFreq <- function(obj, freq=FALSE, all=FALSE, drop.unused.levels = FALSE){
 
 phylo <- function(edge, tip, edge.length=NULL){
     res <- list(edge=edge, tip.label=tip, edge.length=edge.length)
-    class(res)="phylo"
+    class(res) <- "phylo"
     res
     }
 
@@ -995,7 +996,7 @@ duplicated_phyDat <- function(x, ...){
     if(all(dm>0)) return(res)
     tmp <- which(dm==0, arr.ind = TRUE, useNames = FALSE)
     tmp <- tmp[tmp[,1] < tmp[,2],2]
-    res[unique(tmp)]=TRUE
+    res[unique(tmp)] <- TRUE
     res
 }
 

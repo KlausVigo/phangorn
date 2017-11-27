@@ -24,7 +24,7 @@ cyclicSplits <- function(k, labels=NULL){
     if(is.null(labels)) labels <- (as.character(1:k))
     attr(res, 'labels') <- labels
     attr(res, "cycle") <- 1:k
-    class(res)="splits"
+    class(res) <- "splits"
     res   
 }
 
@@ -41,7 +41,7 @@ distC <- function(d, CL){
 
 
 updateDM <- function(DM, d, CL, j){
-    l=length(CL)
+    l <- length(CL)
     for(i in 1:l){
         DM[i,j] <- DM[j, i] <- mean.default(d[CL[[i]], CL[[j]]])
     }
@@ -598,7 +598,7 @@ getOrderingNN4 <- function (x, splits=TRUE)
     res <- res[1L:nres]
     attr(res, 'labels') <- labels
     attr(res, "cycle") <- newOrd
-    class(res)="splits"
+    class(res) <- "splits"
     res   
 }
 
