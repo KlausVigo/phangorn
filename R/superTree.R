@@ -134,52 +134,52 @@ dist.superTree <- function(tree, trace=0, fun, start=NULL, multicore=FALSE,
 #' }
 #' 
 #' @export superTree
-superTree = function(tree, method="MRP", rooted=FALSE, trace=0, 
+superTree <- function(tree, method="MRP", rooted=FALSE, trace=0, 
     start=NULL, multicore=FALSE, mc.cores=NULL, ...){
-    fun = function(x){
-        x=reorder(x, "postorder")
-        nTips = length(x$tip.label)
-        x$edge[x$edge>nTips] = x$edge[x$edge>nTips] + 2L
-        l=nrow(x$edge)
-        oldroot = x$edge[l,1L]
-        x$edge=rbind(x$edge,matrix(c(rep(nTips+2,2),oldroot,nTips+1),2L,2L))
-        x$edge.length=c(x$edge.length, 100, 100)
-        x$tip.label=c(x$tip.label, "ZZZ")
-        x$Nnode=x$Nnode+1L
+    fun <- function(x){
+        x <- reorder(x, "postorder")
+        nTips <- length(x$tip.label)
+        x$edge[x$edge>nTips] <- x$edge[x$edge>nTips] + 2L
+        l <- nrow(x$edge)
+        oldroot <- x$edge[l,1L]
+        x$edge <- rbind(x$edge,matrix(c(rep(nTips+2,2),oldroot,nTips+1),2L,2L))
+        x$edge.length <- c(x$edge.length, 100, 100)
+        x$tip.label <- c(x$tip.label, "ZZZ")
+        x$Nnode <- x$Nnode+1L
         x
     }
-    if(method != "MRP") rooted=FALSE
+    if(method != "MRP") rooted <- FALSE
     if(!rooted) tree <- unroot(tree)
     if(method=="MRP" | is.null(start)){
         if(rooted){
-            if(!is.null(attr(tree, "TipLabel")))tree = .uncompressTipLabel(tree)
-            tree = unclass(tree)
-            if(rooted) tree = lapply(tree, fun)    
-            class(tree)="multiPhylo"
+            if(!is.null(attr(tree, "TipLabel")))tree <- .uncompressTipLabel(tree)
+            tree <- unclass(tree)
+            if(rooted) tree <- lapply(tree, fun)    
+            class(tree) <- "multiPhylo"
         }    
-        res = my.supertree(tree, trace=trace, ...)
+        res <- my.supertree(tree, trace=trace, ...)
         if(rooted){
             if(inherits(res,"multiPhylo")){
-                res = lapply(res, root, "ZZZ")
-                res = lapply(res, drop.tip, "ZZZ")  
-                class(res) = "multiPhylo"
+                res <- lapply(res, root, "ZZZ")
+                res <- lapply(res, drop.tip, "ZZZ")  
+                class(res) <- "multiPhylo"
             }
             else{
-                res = root(res, "ZZZ")
-                res = drop.tip(res, "ZZZ")  
+                res <- root(res, "ZZZ")
+                res <- drop.tip(res, "ZZZ")  
             }
         }
         if(inherits(res,"multiPhylo")){
-            fun = function(x){
+            fun <- function(x){
                 x$edge.length <- rep(.1, nrow(x$edge)) 
                 x
             }
             res <- lapply(res, fun)
             res <- lapply(res, reorder, "postorder")
-            class(res) = "multiPhylo"
+            class(res) <- "multiPhylo"
         }       
         else{ 
-            res$edge.length = rep(.1, nrow(res$edge))
+            res$edge.length <- rep(.1, nrow(res$edge))
             res <- reorder(res, "postorder")
         }
     }    

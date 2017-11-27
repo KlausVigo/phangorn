@@ -88,7 +88,7 @@ SHORTwise <- function (x, nTips, delete=FALSE)
         }
     }
     if(any(l==nTips) && delete){
-        x=x[l!=nTips]
+        x <- x[l!=nTips]
     }
     x
 }
@@ -355,7 +355,7 @@ SPR1 <- function(trees){
         bp <- BP[[i]]
         for (j in (i + 1):l){
             SPR[k] <-  .Call("C_sprdist", bp, BP[[j]], nTips)[1]
-            k=k+1
+            k <- k+1
         }
     }
     attr(SPR, "Size") <- l
@@ -597,7 +597,7 @@ wRF1 <- function(trees, normalize=FALSE, check.labels = TRUE, rooted=FALSE){
             s3 <- sum(w[-ind4])
             wRF[k] <- (s1 + s2 + s3)
             if(normalize) wRF[k] <- wRF[k] / (sc[i] + sc[j])
-            k=k+1
+            k <- k+1
         }
     }
     attr(wRF, "Size") <- l
@@ -707,14 +707,14 @@ mRF<-function(trees, normalize=FALSE, rooted=FALSE){
     xx <- lapply(xx,function(x)sapply(x, paste, collapse="_")) 
     # returns list of character vectors
     Nnodes <- sapply(trees, Nnode)
-    k=1
+    k <- 1
     for (i in 1:(l - 1)){
         tmp <- xx[[i]]        
         for (j in (i + 1):l){
             RF[k] <- Nnodes[i] + Nnodes[j] - 2 * sum(fmatch(xx[[j]], tmp, nomatch=0L)>0L)
 #            RF[k] <- sum(match(xx[[j]], tmp, nomatch=0L)==0L) + sum(match(tmp, xx[[j]], nomatch=0L)==0L)
             if(normalize) RF[k] <- RF[k] / ( Nnodes[i] + Nnodes[j] - 2)
-            k=k+1
+            k <- k+1
         }   
     }
     attr(RF, "Size") <- l
@@ -1072,7 +1072,7 @@ pd2 <- function(trees, check.labels=TRUE, path=TRUE){
     for (i in 1:(l - 1)){
         for (j in (i + 1):l){
             PD[k] <- sqrt(sum((CM[[i]] - CM[[j]])^2))    
-            k=k+1
+            k <- k+1
         }
     }
     attr(PD, "Size") <- l

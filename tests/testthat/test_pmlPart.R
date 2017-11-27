@@ -101,7 +101,7 @@ test_that("base frequency optimisation works properly", {
 test_that("shape parameter optimisation works properly", {
     skip_on_cran()
     
-    shape=2
+    shape <- 2
     
     fit0 <- pml(tree, X, k=4)
     fit1 <- pml(tree, X, k=4, shape=shape)
@@ -134,7 +134,7 @@ test_that("shape parameter optimisation works properly", {
 test_that("Invariant sites optimisation works properly", {
     skip_on_cran()
     
-    inv=.2
+    inv <- .2
     
     fit0 <- pml(tree, X, k=4)
     fit1 <- pml(tree, X, k=4, inv=inv)

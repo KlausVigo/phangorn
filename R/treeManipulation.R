@@ -320,7 +320,7 @@ dropNode <- function(x, i, check.binary=FALSE, check.root=TRUE, all.ch=NULL){
   pa <- edge[ch,1] 
   if(i>nTips){
 #    kids <- Descendants(x, i, "all")
-    if(is.null(all.ch)) all.ch=allChildren(x)  
+    if(is.null(all.ch)) all.ch <- allChildren(x)  
     kids <- descAll(edge, i, nTips, all.ch)  
     ind <- match(kids,edge[,2])
     edge2 <- edge[sort(ind),]            
@@ -730,7 +730,7 @@ Siblings <- function (x, node, include.self = FALSE)
                 tmp <- ch[[ pvector[i] ]]
                 res[[k]] <- tmp[tmp != i]
             } 
-            k=k+1    
+            k <- k+1    
         }     
     }
     res
