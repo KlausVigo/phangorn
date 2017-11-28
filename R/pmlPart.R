@@ -44,7 +44,7 @@ optimPartBf <- function (object, bf = c(0.25, 0.25, 0.25, 0.25), ...)
     }
     res <- optim(par = lbf, fn = fn, gr = NULL, method = "Nelder-Mead", 
                 control = list(fnscale = -1, maxit = 500), object, ...)
-    print(res[[2]])
+#    print(res[[2]])
     bf <- exp(c(res[[1]], 0))
     bf <- bf/sum(bf)
 }
