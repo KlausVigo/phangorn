@@ -308,7 +308,7 @@ phyDat.codon <- function (data, return.index = TRUE)
  
     data <- data.frame(lapply(data, splseq))
 #    ddd = fast.table(data)
-    compress=TRUE
+    compress <- TRUE
     if(nrow(data)==1) compress <- FALSE 
     if(compress){
             ddd <- fast.table(data)
