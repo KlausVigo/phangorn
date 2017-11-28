@@ -270,7 +270,7 @@ rNNI_old <- function (tree, moves = 1, n = length(moves))
 ################################################################################
 dn <- function(x){
     #  if (!is.binary(x) ) x <- multi2di(x, random = FALSE)
-    if(is.null(x$edge.length))x$edge.length=rep(1,nrow(x$edge))
+    if(is.null(x$edge.length)) x$edge.length <- rep(1,nrow(x$edge))
     else x$edge.length[] <- 1
     dist.nodes(x)
 }
@@ -305,7 +305,7 @@ rSPR <- function (tree, moves = 1, n = length(moves), k=NULL)
 
 kSPR <- function(tree, k=NULL){  
     l <- length(tree$tip.label)
-    root= getRoot(tree)
+    root <- getRoot(tree)
     distN <- dn(tree)[-c(1:l), -c(1:l)]
     distN[upper.tri(distN)] <- Inf
     dN <- distN[lower.tri(distN)]
@@ -356,7 +356,7 @@ oneOf4 <- function(tree, ind1, ind2, from=1, to=1){
 
 # faster than kSPR
 rSPR_Old <- function(tree, moves=1, n=1){
-    k=length(tree$edge[,1])
+    k <- length(tree$edge[,1])
     if(n==1){
         trees <- tree
         for(i in 1:moves) trees <- sprMove(trees,sample(k,1))  

@@ -128,7 +128,7 @@ compressSites <- function(data){
     uni <- match(lev, LEV)    
     fun <- function(x, uni) {
         u <- unique.default(x)
-        res=  if(any(is.na(match(u, uni)))) return(x)
+        res <- if(any(is.na(match(u, uni)))) return(x)
         match(x, u)
     }
     data <- t(apply(data, 1, fun, uni))         
@@ -136,7 +136,7 @@ compressSites <- function(data){
     data <- ddd$data
     class(data) <- "list"
     attrData$weight <- tapply(attrData$weight,ddd$index, sum)
-    attrData$index=NULL
+    attrData$index <- NULL
     attrData$nr <- length(attrData$weight)
     attrData$compressed <- TRUE
     attributes(data) <- attrData
@@ -157,7 +157,8 @@ parsinfo <- function (x)
 }
 
 
-# greedy algorithm of Maximum Set Packing (MSP) problem (should work in most instances)
+# greedy algorithm of Maximum Set Packing (MSP) problem 
+# (should work in most instances)
 lowerBound <- function(x, cost=NULL){
     tip <- names(x)
     att <- attributes(x)
@@ -210,11 +211,12 @@ upperBound <- function(x, cost=NULL){
 
 #' Consistency Index and Retention Index
 #' 
-#' \code{CI} and \code{RI} compute the Consistency Index (CI) and Retention Index (RI).
+#' \code{CI} and \code{RI} compute the Consistency Index (CI) and Retention 
+#' Index (RI).
 #' 
-#' @details The Consistency Index is defined as minimum number of changes divided by the 
-#' number of changes required on the tree (parsimony score). The Consistency 
-#' Index is equal to one if there is no homoplasy.
+#' @details The Consistency Index is defined as minimum number of changes 
+#' divided by the number of changes required on the tree (parsimony score). The 
+#' Consistency Index is equal to one if there is no homoplasy.
 #' And the Retention Index is defined as
 #' \deqn{RI = \frac{MaxChanges - ObsChanges}{MaxChanges - MinChanges}}{RI = (MaxChanges - ObsChanges) / (MaxChanges - MinChanges)}
 #' 
@@ -319,7 +321,7 @@ old2new.phyDat <- function(obj){
     X <- matrix(rep(rowSums(contrast), each=nr),nrow=nr)   
     for(i in 1:l)obj[[i]][obj[[i]]>0] <- 1
     res <- vector("list", l)
-    contrast[contrast==0]=1e6   
+    contrast[contrast==0] <- 1e6   
     for(i in 1:l){
         tmp <-  tcrossprod(obj[[i]], contrast) - X
         res[[i]] <- unlist(apply(tmp, 1, function(x)which(x<1e-6)[1]))
@@ -434,7 +436,7 @@ indexNNI <- function(tree){
 #    cvector <- allCildren(tree)  
     cvector <- vector("list",max(parent))   
     for(i in seq_along(parent))  cvector[[parent[i]]] <- c(cvector[[parent[i]]], child[i]) 
-    k=0
+    k <- 0
     for(i in ind){        
             p1 <- parent[i]
             p2 <- child[i]
@@ -443,7 +445,7 @@ indexNNI <- function(tree){
             e12 <- ind1[ind1 != p2]
             if(pvector[p1])e12 <- c(p1,e12)
             edgeMatrix[k+1, ] <- c(e12,e34,p2)
-            k=k+1
+            k <- k+1
     } 
 # vielleicht raus
     attr(edgeMatrix, 'root') <-cvector[[min(parent)]]  
@@ -502,7 +504,8 @@ sankoff.nni <- function (tree, data, cost, ...)
             swap <- swap+1
             tree <- tree2
             candidates[ind] <- FALSE
-            indi <- which(rep(colSums(apply(INDEX,1,match,INDEX[(ind+1)%/%2,],nomatch=0))>0,each=2))
+            indi <- which(rep(colSums(apply(INDEX,1,match,INDEX[(ind+1)%/%2,],
+                                            nomatch=0))>0,each=2))
             candidates[indi] <- FALSE
             pscore[indi] <- Inf
         }
@@ -513,9 +516,12 @@ sankoff.nni <- function (tree, data, cost, ...)
 
 #' @rdname parsimony
 #' @export
-optim.parsimony <- function(tree,data, method='fitch', cost=NULL, trace=1, rearrangements="SPR", ...){
-    if(method=='fitch') result <- optim.fitch(tree=tree, data=data, trace=trace, rearrangements=rearrangements, ...) 
-    if(method=='sankoff') result <- optim.sankoff(tree=tree, data=data, cost=cost, trace=trace, ...)
+optim.parsimony <- function(tree,data, method='fitch', cost=NULL, trace=1, 
+                            rearrangements="SPR", ...){
+    if(method=='fitch') result <- optim.fitch(tree=tree, data=data, trace=trace, 
+                                             rearrangements=rearrangements, ...) 
+    if(method=='sankoff') result <- optim.sankoff(tree=tree, data=data, 
+                                                  cost=cost, trace=trace, ...)
     result 
 }
 
@@ -523,7 +529,8 @@ optim.parsimony <- function(tree,data, method='fitch', cost=NULL, trace=1, rearr
 #' @rdname parsimony
 #' @export
 # perturbation="ratchet", "stochastic"
-pratchet <- function (data, start=NULL, method="fitch", maxit=1000, k=10, trace=1, all=FALSE, rearrangements="SPR", perturbation="ratchet", ...) 
+pratchet <- function (data, start=NULL, method="fitch", maxit=1000, k=10, 
+        trace=1, all=FALSE, rearrangements="SPR", perturbation="ratchet", ...) 
 {
     eps <- 1e-08
 #    if(method=="fitch" && (is.null(attr(data, "compressed")) || attr(data, "compressed") == FALSE)) 
@@ -534,7 +541,7 @@ pratchet <- function (data, start=NULL, method="fitch", maxit=1000, k=10, trace=
         res <- trees[[1]]
         result <- list()
         result[[1]] <- res
-        k=2
+        k <- 2
         trees <- trees[-1]
         while (length(trees) > 0) {
 # test and replace            
@@ -552,7 +559,8 @@ pratchet <- function (data, start=NULL, method="fitch", maxit=1000, k=10, trace=
         result
     }
     if (is.null(start)) 
-        start <- optim.parsimony(nj(dist.hamming(data)), data, trace = trace, method=method, rearrangements=rearrangements, ...)
+        start <- optim.parsimony(nj(dist.hamming(data)), data, trace = trace, 
+                        method=method, rearrangements=rearrangements, ...)
     tree <- start
     data <- subset(data, tree$tip.label) 
     attr(tree, "pscore") <- parsimony(tree, data, method=method, ...)
@@ -561,15 +569,18 @@ pratchet <- function (data, start=NULL, method="fitch", maxit=1000, k=10, trace=
         print(paste("Best pscore so far:",attr(tree, "pscore")))
 
     FUN <- function(data, tree, method, rearrangements, ...) 
-         optim.parsimony(tree, data = data, method=method, rearrangements=rearrangements, ...)
+         optim.parsimony(tree, data = data, method=method, 
+                         rearrangements=rearrangements, ...)
     result <- list()
     result[[1]] <- tree
     kmax <- 1
     nTips <- length(tree$tip.label)
     for (i in 1:maxit) {
         if(perturbation=="ratchet"){
-            bstrees <- bootstrap.phyDat(data, FUN, tree = tree, bs = 1, trace = trace, method=method, rearrangements=rearrangements, ...)
-            trees <- lapply(bstrees, optim.parsimony, data, trace = trace, method=method, rearrangements=rearrangements, ...)
+            bstrees <- bootstrap.phyDat(data, FUN, tree=tree, bs=1, 
+                trace=trace, method=method, rearrangements=rearrangements, ...)
+            trees <- lapply(bstrees, optim.parsimony, data, trace = trace, 
+                            method=method, rearrangements=rearrangements, ...)
         }
         if(perturbation=="stochastic"){
             treeNNI <- rNNI(tree, floor(nTips/2))
@@ -577,7 +588,7 @@ pratchet <- function (data, start=NULL, method="fitch", maxit=1000, k=10, trace=
                  method = method, rearrangements = rearrangements, ...)
             trees <- list(trees)
         }
-        if(inherits(result,"phylo"))m=1
+        if(inherits(result,"phylo")) m <- 1
         else m <- length(result)
         if(m>0) trees[2 : (1+m)] <- result[1:m]
         pscores <- sapply(trees, function(data) attr(data, "pscore"))
@@ -622,7 +633,7 @@ optim.sankoff <- function(tree, data, cost=NULL, trace=1, ...) {
         cost <- cost - diag(l)
         #       rt = TRUE
     }
-    tree$edge.length=NULL
+    tree$edge.length <- NULL
     swap <- 0
     iter <- TRUE
     pscore <- fit.sankoff(tree,dat,cost,'pscore')
@@ -681,7 +692,8 @@ ptree <- function (tree, data, type = "ACCTRAN", retData = FALSE)
         dat <- matrix(result[[1]], nr, max(node))
         result <- .C("ACCTRAN3", result[[1]], as.integer(nr), 
             numeric(nr), as.integer(node[(l - 3L):1L]), as.integer(edge[(l - 
-                3L):1L]), l - 3L, as.double(weight), numeric(l)) # , as.integer(nTips)
+                3L):1L]), l - 3L, as.double(weight), numeric(l)) 
+        # , as.integer(nTips)
         el <- result[[8]][(l - 3L):1L]
         pars <- .C("fitchTripletACC4", dat[, root], dat[, ind[1]], 
             dat[, ind[2]], dat[, ind[3]], as.integer(nr), numeric(1), 
@@ -709,7 +721,7 @@ ptree <- function (tree, data, type = "ACCTRAN", retData = FALSE)
 acctran <- function(tree, data){
     if(inherits(tree, "multiPhylo")){
         compress <- FALSE
-        if(!is.null(attr(tree, "TipLabel"))) compress=TRUE
+        if(!is.null(attr(tree, "TipLabel"))) compress <- TRUE
         res <- lapply(tree, ptree, data, type="ACCTRAN", retData=FALSE)
         class(res) <- "multiPhylo"
         if(compress) res <- .compressTipLabel(res)

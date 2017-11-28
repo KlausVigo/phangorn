@@ -79,7 +79,7 @@ optimMixRate <- function (fits, ll, weight, omega, rate=rep(1,length(fits)))
         for (i in 1:r) ll[, i] <- fits[[i]]$lv
         sum(weight*log(ll%*%omega)) 
     }
-    ui=diag(r-1)
+    ui <- diag(r-1)
     ui <- rbind(-omega[-r], ui)
     ci <- c(-1, rep(0, r-1))
     res <- constrOptim(rate0, fn, grad=NULL, ui=ui, ci=ci, mu=1e-04, 
@@ -125,7 +125,7 @@ optimMixEdge <- function(object, omega, trace=1,...){
     lv1 <- numeric(p)
     for(i in 1:n) lv1 <- lv1 + as.numeric(object[[i]]$lv) * omega[i]
     ll0 <- sum(weight * log(lv1))
-    eps=1
+    eps <- 1
     iter <- 0
     scalep <- 1
     if(trace>0) cat(ll0)

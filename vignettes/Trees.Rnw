@@ -278,6 +278,11 @@ fit
 bs = bootstrap.pml(fit, bs=100, optNni=TRUE, multicore=TRUE)
 @
 
+<<echo=FALSE>>=
+options(prompt="> ")
+options(continue="+ ")
+@
+
 \newpage
 
 % \cite{Sugiura1978}

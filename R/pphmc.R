@@ -31,7 +31,7 @@ Logpost <- function(tree, data, bf, eig, scale=0.1, surrogate=FALSE, delta = 0.0
 #GradLogpost <- function(tree, data, bf, eig, scale=0.1, surrogate=FALSE, delta = 0.01){
 #    if(surrogate){
 #        tree$edge.length <- mollifier(tree$edge.length, delta) 
-#        return (-phyloLoglikelihood(tree, maped_branch, D, U, U_inv, pden, L, grad=True)  
+#        return (-phyloLoglikelihood(tree, maped_branch, D, U, U_inv, pden, L, grad=True) 
 #        - phyloLogprior_exp(tree, scale, grad=TRUE)) * np.minimum(branch,delta)/delta
 #    }
 #    -phyloLoglikelihood(tree, branch, D, U, U_inv, pden, L, grad=True) - phyloLogprior_exp(tree, scale, grad=TRUE)
@@ -52,7 +52,4 @@ score_2 <- function (fit, transform=FALSE)
     sc <- colSums(weight * dl)
     sc
 }
-
-
-
     
