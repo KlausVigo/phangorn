@@ -593,9 +593,9 @@ pratchet <- function (data, start=NULL, method="fitch", maxit=1000, k=10,
         if(m>0) trees[2 : (1+m)] <- result[1:m]
         pscores <- sapply(trees, function(data) attr(data, "pscore"))
         mp1 <- min(pscores)
-        if((mp1+eps) < mp) kmax=1
-        else kmax=kmax+1
-        mp=mp1
+        if((mp1+eps) < mp) kmax <- 1
+        else kmax <- kmax+1
+        mp <- mp1
 
         if (trace >= 0) 
             print(paste("Best pscore so far:",mp))
@@ -617,6 +617,14 @@ pratchet <- function (data, start=NULL, method="fitch", maxit=1000, k=10,
     result
 }  # pratchet
 
+
+start_tree <- function(x, maxit = 1, trace = 0, ...){
+    tree <- pratchet(x, maxit=maxit, trace=trace, ...)
+    ps <- attr(tree, "pscore")
+    tl <- ps / (sum(attr(x,"weight")) * Ntip(tree))
+    tree$edge.length <- rep(tl, nrow(tree$edge))
+    tree
+}
 
 
 optim.sankoff <- function(tree, data, cost=NULL, trace=1, ...) {
