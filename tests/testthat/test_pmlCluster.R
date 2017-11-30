@@ -9,7 +9,7 @@ gene3 <- simSeq(tree1, l=200)
 gene4 <- simSeq(tree2, l=200)
 gene5 <- simSeq(tree2, l=200)
 
-X <- cbind(dat1, dat2, dat3, dat4, dat5)
+X <- cbind(gene1, gene2, gene3, gene4, gene5)
 weight <- xtabs(~ index+genes,attr(X, "index"))
 
 fit <- pml(tree1, X)
@@ -20,3 +20,5 @@ test_that("rate optimisation works properly", {
     sp <- pmlCluster( ~ edge + nni, fit, weight, p=1:3)
     expect_equal( sp$Partition, c(1,1,1,2,2))
 })
+
+
