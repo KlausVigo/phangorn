@@ -19,12 +19,13 @@ RI(tree, data, cost = NULL, sitewise = FALSE)
 \item{sitewise}{return CI/RI for alignment or sitewise}
 }
 \description{
-\code{CI} and \code{RI} compute the Consistency Index (CI) and Retention Index (RI).
+\code{CI} and \code{RI} compute the Consistency Index (CI) and Retention 
+Index (RI).
 }
 \details{
-The Consistency Index is defined as minimum number of changes divided by the 
-number of changes required on the tree (parsimony score). The Consistency 
-Index is equal to one if there is no homoplasy.
+The Consistency Index is defined as minimum number of changes 
+divided by the number of changes required on the tree (parsimony score). The 
+Consistency Index is equal to one if there is no homoplasy.
 And the Retention Index is defined as
 \deqn{RI = \frac{MaxChanges - ObsChanges}{MaxChanges - MinChanges}}{RI = (MaxChanges - ObsChanges) / (MaxChanges - MinChanges)}
 }
