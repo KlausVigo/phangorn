@@ -15,7 +15,7 @@ weight <- xtabs(~ index+genes,attr(X, "index"))
 fit <- pml(tree1, X)
 fit <- optim.pml(fit, control=pml.control(trace=0))
 
-test_that("rate optimisation works properly", {
+test_that("nni optimisation works properly", {
     skip_on_cran()
     sp <- pmlCluster( ~ edge + nni, fit, weight, p=1:3)
     expect_equal( sp$Partition, c(1,1,1,2,2))

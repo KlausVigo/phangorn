@@ -196,13 +196,13 @@ fitchCoding2ambiguous <- function(x, type="DNA"){
 
 fitchCoding2ambiguous2 <- function(x, type="DNA"){
     y <- c(1L, 2L, 4L, 8L, 8L, 3L, 5L, 9L, 6L, 10L, 12L, 7L, 11L, 13L, 14L, 15L)
-    dna <- c("a", "c", "g", "t", "u", "m", "r", "w", "s", "y", "k", "v", "h", 
+    dna <- c("a", "c", "g", "t", "t", "m", "r", "w", "s", "y", "k", "v", "h", 
              "d", "b", "n")    
     rna <- c("a", "c", "g", "u", "u", "m", "r", "w", "s", "y", "k", "v", "h", 
              "d", "b", "n") 
     res <- switch(type, 
                   "DNA" = dna[match(x,y)],
-                  "DNA" = dna[match(x,y)])
+                  "RNA" = rna[match(x,y)])
     res
 }
 
