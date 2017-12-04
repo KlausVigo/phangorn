@@ -103,9 +103,9 @@ static R_INLINE void getP00(double *eva, double *ev, double *evi, int m, double 
         }
     }
 }
-*/
 
- 
+
+// in getPM2 
 static R_INLINE void getPP(double *eva, double *ev, double *evi, int m, double el, double w, double *result){
     int i, j, h;
 //    double tmp[m];
@@ -120,7 +120,7 @@ static R_INLINE void getPP(double *eva, double *ev, double *evi, int m, double e
     }
     free(tmp);
 }
-
+*/
 
 void getdP(double *eva, double *ev, double *evi, int m, double el, double w, double *result){
     int i, j, h;
@@ -189,7 +189,7 @@ void getd2P2(double *eva, double *ev, double *evi, int m, double el, double w, d
     free(tmp);
 }
 
-
+/*
 SEXP getPM2(SEXP eig, SEXP nc, SEXP el, SEXP w){
     R_len_t i, j, nel, nw;
     int m=INTEGER(nc)[0], l=0;
@@ -216,7 +216,7 @@ SEXP getPM2(SEXP eig, SEXP nc, SEXP el, SEXP w){
     UNPROTECT(1);//RESULT
     return(RESULT);
 } 
-
+*/
 
 SEXP getdPM(SEXP eig, SEXP nc, SEXP el, SEXP w){
     R_len_t i, j, nel, nw;
