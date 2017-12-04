@@ -43,6 +43,8 @@
 SH.test <- function (..., B = 10000, data = NULL, weight=NULL)
 {
     fits <- list(...)
+    if (inherits(fits[[1]], "matrix") || inherits(fits[[1]], "data.frame"))
+        return(SH.tmp(fits[[1]], weight=weight, B=B))
     p <- 1
     if (inherits(fits[[1]],"pmlPart"))
     {
