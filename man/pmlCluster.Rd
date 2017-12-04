@@ -55,7 +55,7 @@ tree <- NJ(dm)
 fit <- pml(tree,yeast)
 fit <- optim.pml(fit)
 
-weight=xtabs(~ index+genes,attr(yeast, "index"))
+weight <- xtabs(~ index+genes,attr(yeast, "index"))
 set.seed(1)
 
 sp <- pmlCluster(edge~rate, fit, weight, p=1:4)
