@@ -16,18 +16,6 @@ edgeLengthIndex <- function(child, parent, nTips){
 }
 
 
-#has.singles <- function(tree)
-#{
-#    fun <- function(x){
-#        e1 <- x$edge[, 1]
-#        tab <- tabulate(e1)
-#        if (all(tab != 1L)) return(FALSE) 
-#        TRUE
-#    }
-#    if(inherits(tree, "phylo")) return(fun(tree))
-#    if(inherits(tree, "multiPhylo")) return(sapply(tree, fun))
-#}
-
 #
 # Maximum likelihood estimation
 #
@@ -202,7 +190,8 @@ optimW <- function(fit,...){
         res <- sum(weight*log(res))  * (1 + abs(sum(p*g) - 1))
         res
     }  
-    res <- optim(eta, fn = fn, method = "Nelder-Mead", control=list(fnscale=-1, reltol = 1e-12),gr=NULL, x=x,g=g, weight=weight)
+    res <- optim(eta, fn = fn, method = "Nelder-Mead", control=list(fnscale=-1, 
+                                reltol = 1e-12),gr=NULL, x=x,g=g, weight=weight)
     p <- exp(c(res$par,0))
     p <- p/sum(p)
     result <- list(par = p, value = res$value)
@@ -393,7 +382,8 @@ pml.init <- function(data, k=1L){
     nTips <- length(data)
     nr <- attr(data, "nr")
     nc <- attr(data, "nc")    
-    .C("ll_init", as.integer(nr), as.integer(nTips), as.integer(nc), as.integer(k))
+    .C("ll_init", as.integer(nr), as.integer(nTips), as.integer(nc), 
+       as.integer(k))
 #    INV <- lli(data) #, tree
 #    .iind <<- which((INV %*% rep(1, nc)) > 0)
 #    .INV <<-  Matrix(INV, sparse=TRUE)
@@ -541,11 +531,12 @@ pml.nni.old <- function (tree, data, w, g, eig, bf, ll.0, ll, ...)
         if(ext[4]) dat4 <- data[[ ei[4] ]]
              else dat4 <- .dat[, ei[4], drop=FALSE]
 
-        new1 <- optim.quartet2(el0[c(1, 3, 2, 4, 5)], eig, bf, 
-            dat1, dat3, dat2, dat4, g, w, weight, ll.0, llcomp=ll, evi=evi, contrast=contrast, contrast2=contrast2, ext=ext[c(1, 3, 2, 4)])
-        new2 <- optim.quartet2(el0[c(1, 4, 3, 2, 5)], eig, bf,  
-            dat1, dat4, dat3, dat2, g, w, weight, ll.0, llcomp=ll, evi=evi, contrast=contrast, contrast2=contrast2, ext=ext[c(1, 4, 3, 2)])
-
+        new1 <- optim.quartet2(el0[c(1, 3, 2, 4, 5)], eig, bf, dat1, dat3, dat2,
+                dat4, g, w, weight, ll.0, llcomp=ll, evi=evi, contrast=contrast, 
+                contrast2=contrast2, ext=ext[c(1, 3, 2, 4)])
+        new2 <- optim.quartet2(el0[c(1, 4, 3, 2, 5)], eig, bf, dat1, dat4, dat3, 
+                dat2, g, w, weight, ll.0, llcomp=ll, evi=evi, contrast=contrast, 
+                contrast2=contrast2, ext=ext[c(1, 4, 3, 2)])
 
         loglik[(2*i)-1] <- new1[[2]]
         loglik[(2*i)] <- new2[[2]] 
@@ -568,15 +559,17 @@ pml.nni.old <- function (tree, data, w, g, eig, bf, ll.0, ll, ...)
         loglik[ind] <- -Inf
         if( ind %% 2 ) swap.edge <- c(2,3)
         else swap.edge <- c(2,4)
-        tree2 <- changeEdge(tree, INDEX[(ind+1)%/%2,swap.edge], INDEX[(ind+1)%/%2,], edgeMatrix[ind,])
+        tree2 <- changeEdge(tree, INDEX[(ind+1)%/%2,swap.edge], 
+                            INDEX[(ind+1)%/%2,], edgeMatrix[ind,])
  
-        test <- pml.fit(tree2, data, bf = bf, k=k, g=g, w=w, eig=eig, ll.0=ll.0, ...) 
+        test <- pml.fit(tree2, data, bf=bf, k=k, g=g, w=w, eig=eig, ll.0=ll.0, ...) 
         if(test <= ll + eps0) candidates[ind] <- FALSE
         if(test > ll + eps0) {
             ll <- test 
             swap <- swap+1
             tree <- tree2
-            indi <- which(rep(colSums(apply(INDEX,1,match,INDEX[(ind+1)%/%2,],nomatch=0))>0,each=2))
+            indi <- which(rep(colSums(apply(INDEX,1,match,INDEX[(ind+1)%/%2,],
+                                            nomatch=0))>0,each=2))
             candidates[indi] <- FALSE
             loglik[indi] <- -Inf
         }
@@ -611,7 +604,8 @@ rnodes <- function (tree, data, w, g, eig, bf)
     mNodes <- as.integer(max(node) + 1)
     contrast <- attr(data, "contrast")
     nco <- as.integer(dim(contrast)[1])
-    for(i in 1:l)dat[i,(q + 1):m] <- .Call("LogLik2", data, P[i,], nr, nc, node, edge, nTips, mNodes, contrast, nco)
+    for(i in 1:l)dat[i,(q + 1):m] <- .Call("LogLik2", data, P[i,], nr, nc, node, 
+                                           edge, nTips, mNodes, contrast, nco)
     parent <- tree$edge[, 1]
     child <- tree$edge[, 2]
     nTips <- min(parent) - 1
@@ -653,7 +647,7 @@ score <- function (fit, transform=TRUE)
 
 
 # wird noch in partition models verwendet
-optim.quartet <- function (old.el, eig, bf, dat, g = 1, w = 1, weight, ll.0 = weight * 
+optim.quartet <- function (old.el, eig, bf, dat, g=1, w=1, weight, ll.0=weight * 
     0, control = list(eps = 1e-08, maxit = 5, trace = 0), llcomp=-Inf) 
 {
     eps <- 1
@@ -754,7 +748,8 @@ likelihoodRatchet <- function(obj, maxit=100, k=10,
             kmax <- 1
         } 
         else kmax <- kmax+1
-        if(trace > 0) print(paste("Iteration ", i,", best pscore so far:",logLik(obj)))
+        if(trace > 0) print(paste("Iteration ", i,", best pscore so far:",
+                                  logLik(obj)))
         if(kmax == k) break()
     }  
     obj
@@ -775,12 +770,12 @@ fs <- function (old.el, eig, parent.dat, child.dat, weight, g=g,
     .Call("FS4", eig, as.integer(length(bf)), as.double(old.el), 
             as.double(w), as.double(g), X, child.dat, dad, as.integer(length(w)), 
             as.integer(length(weight)), as.double(weight), 
-            as.double(ll.0), as.integer(getA), as.integer(getB))  # as.double(bf),
+            as.double(ll.0), as.integer(getA), as.integer(getB))  
 }
 
 
-fs3 <- function (old.el, eig, parent.dat, child, weight, g=g, 
-    w=w, bf=bf, ll.0=ll.0, contrast, contrast2, evi, ext=TRUE, getA=TRUE, getB=TRUE) # child.dat
+fs3 <- function (old.el, eig, parent.dat, child, weight, g=g, w=w, bf=bf, 
+        ll.0=ll.0, contrast, contrast2, evi, ext=TRUE, getA=TRUE, getB=TRUE) 
 {
     if (old.el < 1e-8) old.el <- 1e-8
     lg <- length(parent.dat)
@@ -800,15 +795,16 @@ fs3 <- function (old.el, eig, parent.dat, child, weight, g=g,
         for (i in 1:lg)child.dat[[i]] <- contrast[child, , drop=FALSE]
         X <- .Call("getPrep2", dad, child, contrast2, evi, nr, nc, nco)
     }
-    .Call("FS4", eig, as.integer(length(bf)), as.double(old.el), 
-            as.double(w), as.double(g), X, child.dat, dad, as.integer(length(w)), 
-            as.integer(length(weight)), as.double(weight),  
-            as.double(ll.0), as.integer(getA), as.integer(getB)) # as.double(bf), 
+    .Call("FS4", eig, as.integer(length(bf)), as.double(old.el), as.double(w), 
+          as.double(g), X, child.dat, dad, as.integer(length(w)), 
+          as.integer(length(weight)), as.double(weight), as.double(ll.0), 
+          as.integer(getA), as.integer(getB)) # as.double(bf), 
 }
 
 
-optimEdge <- function (tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0,
-                        control = pml.control(epsilon = 1e-08, maxit = 10, trace=0), ...) 
+optimEdge <- function(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, 
+                      ll.0=ll.0, control = pml.control(epsilon = 1e-08,
+                      maxit = 10, trace=0), ...) 
 {
     if (is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise") 
         tree <- reorder(tree, "postorder") 
@@ -853,9 +849,10 @@ optimEdge <- function (tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.
     
     while (eps > control$eps && iter < control$maxit) {
         EL <- .Call("optE", as.integer(parent), as.integer(child), 
-                    as.integer(anc0), eig, evi, EL, w, g, as.integer(nr), as.integer(nc), 
-                    as.integer(nTips), as.double(contrast), 
-                    as.double(contrast2), nco, data, as.double(weight), as.double(ll.0))       
+                    as.integer(anc0), eig, evi, EL, w, g, as.integer(nr), 
+                    as.integer(nc), as.integer(nTips), as.double(contrast), 
+                    as.double(contrast2), nco, data, as.double(weight), 
+                    as.double(ll.0))       
         iter <- iter + 1
         treeP$edge.length <- EL[treeP$edge[,2]]
         newll <- pml.fit4(treeP, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k)
@@ -880,32 +877,12 @@ pml.move <- function(EDGE, el, data, g, w, eig, k, nTips, bf){
     edge <- as.integer(edge - 1L)
     contrast <- attr(data, "contrast")
     nco <- as.integer(dim(contrast)[1])    
-    tmp <- .Call("PML3", dlist=data, as.double(el), as.double(g), nr, nc, k, eig, as.double(bf), node, edge, nTips, nco, contrast, N=as.integer(length(edge))) 
+    tmp <- .Call("PML3", dlist=data, as.double(el), as.double(g), nr, nc, k, 
+                 eig, as.double(bf), node, edge, nTips, nco, contrast, 
+                 N=as.integer(length(edge))) 
 # as.double(w),
     return(NULL)
 }
-
-
-# bip_old <- function (obj) 
-#{
-#    if (is.null(attr(obj, "order")) || attr(obj, "order") == 
-#            "cladewise") 
-#        obj <- reorder(obj, "postorder")
-#    maxP = max(obj$edge)
-#    nTips = length(obj$tip.label)
-#    res <- .Call("C_bip", as.integer(obj$edge[, 1]), as.integer(obj$edge[, 2]), as.integer(nTips), as.integer(maxP))
-#    res
-#}
-
-
-#bipart_old <- function(obj){
-#    if (is.null(attr(obj, "order")) || attr(obj, "order") == "cladewise") 
-#        obj <- reorder(obj, "postorder")
-#    maxP  = max(obj$edge)
-#    nTips = length(obj$tip.label)
-#    res <- .Call("C_bipart", as.integer(obj$edge[,1]) , as.integer(obj$edge[,2]), as.integer(nTips), as.integer(maxP))  #, as.integer(obj$Nnode))
-#    res    
-#}
 
 
 bip <- function(x) 
@@ -948,9 +925,11 @@ bipartition <- function (tree)
 
 
 readAArate <- function(file){
-    tmp <- read.table(system.file(file.path("extdata", file)), col.names = 1:20, fill=TRUE)
+    tmp <- read.table(system.file(file.path("extdata", file)), col.names = 1:20, 
+                      fill=TRUE)
     Q <- tmp[1:19,1:19]
-    names <- c("a", "r", "n", "d", "c", "q", "e", "g", "h", "i", "l", "k", "m", "f", "p", "s", "t", "w",  "y", "v")
+    names <- c("a", "r", "n", "d", "c", "q", "e", "g", "h", "i", "l", "k", "m", 
+               "f", "p", "s", "t", "w",  "y", "v")
     Q <- as.numeric(Q[lower.tri(Q,TRUE)])
     bf <- as.numeric(as.character(unlist(tmp[20,])))
     names(bf) <- names
@@ -1021,7 +1000,8 @@ print.pml <- function(x,...){
 }
 
 
-optEdgeMulti <- function (object, control = pml.control(epsilon = 1e-8, maxit = 10, trace=1), ...) 
+optEdgeMulti <- function (object, control = pml.control(epsilon = 1e-8, 
+                          maxit = 10, trace=1), ...) 
 {
     tree <- object$tree
     theta <- object$tree$edge.length
@@ -1034,7 +1014,7 @@ optEdgeMulti <- function (object, control = pml.control(epsilon = 1e-8, maxit = 
     # l <- length(theta)
     while (abs(eps) > control$eps && iter < control$maxit) {
         dl <- score(object)
-        thetaNew <- log(theta) + scale * solve(dl[[2]], dl[[1]]) #+ diag(l)*1e-10
+        thetaNew <- log(theta) + scale * solve(dl[[2]], dl[[1]]) #+diag(l)*1e-10
         newtheta <- exp(thetaNew)
         tree$edge.length <- as.numeric(newtheta)
         object <- update(object, tree = tree)
@@ -1102,7 +1082,8 @@ update.pml <- function (object, ...)
     updateRates <- FALSE
     if (is.na(existing[1])) tree <- object$tree
     else tree <- eval(extras[[existing[1]]], parent.frame())
-    if(is.null(attr(tree,"order")) || attr(tree,"order")=="cladewise")tree <- reorder(tree, "postorder")
+    if(is.null(attr(tree,"order")) || attr(tree,"order")=="cladewise")
+        tree <- reorder(tree, "postorder")
     if (is.na(existing[2])){
         data <- object$data
         INV <- object$INV
@@ -1130,8 +1111,8 @@ update.pml <- function (object, ...)
     model<-NULL
     if (type == "AA") {
         if(!is.na(existing[9]) ){  
-#        model <- match.arg(eval(extras[[existing[9]]], parent.frame()), c("WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24"))
-        model <- match.arg(eval(extras[[existing[9]]], parent.frame()), .aamodels)
+        model <- match.arg(eval(extras[[existing[9]]], parent.frame()), 
+                           .aamodels)
         getModelAA(model, bf = is.na(existing[3]), Q = is.na(existing[4]))
         updateEig <- TRUE
         } 
@@ -1153,8 +1134,10 @@ update.pml <- function (object, ...)
         shape <- eval(extras[[existing[7]]], parent.frame())
         updateRates <- TRUE
     }
-    rate <- ifelse(is.na(existing[8]), object$rate, eval(extras[[existing[8]]], parent.frame()))
-    wMix <- ifelse(is.na(existing[10]), object$wMix, eval(extras[[existing[10]]], parent.frame()))
+    rate <- ifelse(is.na(existing[8]), object$rate, 
+                   eval(extras[[existing[8]]], parent.frame()))
+    wMix <- ifelse(is.na(existing[10]), object$wMix, 
+                   eval(extras[[existing[10]]], parent.frame()))
     if(is.na(existing[11])) llMix <- object$llMix
     else llMix <- eval(extras[[existing[11]]], parent.frame())
     levels <- attr(data, "levels")
@@ -1189,7 +1172,6 @@ update.pml <- function (object, ...)
             site = TRUE)
     
     df <- ifelse(is.ultrametric(tree), tree$Nnode, length(tree$edge.length))
-#    ifelse()
     df <- switch(type, 
                  DNA = df + (k>1) + (inv > 0) + length(unique(bf)) - 1 + 
                      length(unique(Q)) - 1, 
@@ -1279,8 +1261,9 @@ pml.fit4 <- function (tree, data, bf = rep(1/length(levels), length(levels)),
     contrast <- attr(data, "contrast")
     nco <- as.integer(dim(contrast)[1])    
 
-    siteLik <- .Call("PML4", dlist=data, el, as.double(w), as.double(g), nr, nc, k, eig, as.double(bf), 
-                     node, edge, nTips, nco, contrast, N=as.integer(length(edge))) 
+    siteLik <- .Call("PML4", dlist=data, el, as.double(w), as.double(g), nr, nc, 
+                     k, eig, as.double(bf), node, edge, nTips, nco, contrast, 
+                     N=as.integer(length(edge))) 
 # if(inv>0) siteLik[.iind] <- log(exp(siteLik[.iind]) + ll.0[.iind]) 
     ind <- which(ll.0>0)
 #    if(!is.null(ll.0)) siteLik[.iind] <- log(exp(siteLik[.iind]) + ll.0[.iind]) 
