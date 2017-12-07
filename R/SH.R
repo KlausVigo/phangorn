@@ -4,10 +4,12 @@
 #' 
 #' 
 #' @param ... either a series of objects of class \code{"pml"} separated by
-#' commas, a list containing such objects or an object of class
-#' \code{"pmlPart"}.
+#' commas, a list containing such objects or an object of class \code{"pmlPart"}
+#' or a matrix containing the site-wise likelihoods in columns.
 #' @param B the number of bootstrap replicates.
 #' @param data an object of class \code{"phyDat"}.
+#' @param weight if a matrix with site (log-)likelihoods is is supplied an 
+#' optional vector containing the number of occurances of each site pattern.  
 #' @return a numeric vector with the P-value associated with each tree given in
 #' \code{...}.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
@@ -27,16 +29,22 @@
 #' fit2 <- pml(tree2, Laurasiatherian)
 #' fit1 <- optim.pml(fit1) # optimize edge weights
 #' fit2 <- optim.pml(fit2)
-#' SH.test(fit1, fit2, B=500)
+#' # with pml objects as input
+#' SH.test(fit1, fit2, B=1000)
 #' # in real analysis use larger B, e.g. 10000
+#' 
+#' # with matrix as input
+#' X <- matrix(c(fit1$siteLik, fit2$siteLik), ncol=2)
+#' SH.test(X, weight=attr(Laurasiatherian, "weight"), B=1000)
 #' \dontrun{
 #' example(pmlPart)
 #' SH.test(sp, B=1000)
 #' }
-#' 
-SH.test <- function (..., B = 10000, data = NULL)
+SH.test <- function (..., B = 10000, data = NULL, weight=NULL)
 {
     fits <- list(...)
+    if (inherits(fits[[1]], "matrix") || inherits(fits[[1]], "data.frame"))
+        return(SH.tmp(fits[[1]], weight=weight, B=B))
     p <- 1
     if (inherits(fits[[1]],"pmlPart"))
     {
@@ -88,3 +96,30 @@ SH.test <- function (..., B = 10000, data = NULL)
                             "p-value")
     res
 }
+
+
+SH.tmp <- function(siteLik, weight=NULL, B = 10000){
+    lw <- nrow(siteLik)
+    if(is.null(weight)) weight <- rep(1, lw)
+    ntree <- k <- ncol(siteLik)
+    Lalpha <- drop(crossprod(siteLik, weight))
+    Talpha <- max(Lalpha) - Lalpha
+    M <- matrix(NA, k, B)
+    wvec <- rep(1L:lw, weight)
+    size <- length(wvec)
+    for (i in 1:B) {
+        boot <- tabulate(sample(wvec, replace=TRUE), nbins=lw)
+        M[, i] <- crossprod(siteLik, boot)
+    }
+    M <- M - rowMeans(M)
+    S <- matrix(apply(M,2,min), k, B, byrow=TRUE)
+    S <- M - S
+    count <- numeric(ntree)
+    for (j in 1:ntree) count[j] <- sum(S[j, ] > Talpha[j])
+    count <- count/B
+    trees <- 1:k
+    res <- cbind(trees, Lalpha, Talpha, count)
+    colnames(res) <- c("Trees", "ln L", "Diff ln L", "p-value")
+    res
+}
+

@@ -4,16 +4,19 @@
 \alias{SH.test}
 \title{Shimodaira-Hasegawa Test}
 \usage{
-SH.test(..., B = 10000, data = NULL)
+SH.test(..., B = 10000, data = NULL, weight = NULL)
 }
 \arguments{
 \item{...}{either a series of objects of class \code{"pml"} separated by
-commas, a list containing such objects or an object of class
-\code{"pmlPart"}.}
+commas, a list containing such objects or an object of class \code{"pmlPart"}
+or a matrix containing the site-wise likelihoods in columns.}
 
 \item{B}{the number of bootstrap replicates.}
 
 \item{data}{an object of class \code{"phyDat"}.}
+
+\item{weight}{if a matrix with site (log-)likelihoods is is supplied an 
+optional vector containing the number of occurances of each site pattern.}
 }
 \value{
 a numeric vector with the P-value associated with each tree given in
@@ -32,13 +35,17 @@ fit1 <- pml(tree1, Laurasiatherian)
 fit2 <- pml(tree2, Laurasiatherian)
 fit1 <- optim.pml(fit1) # optimize edge weights
 fit2 <- optim.pml(fit2)
-SH.test(fit1, fit2, B=500)
+# with pml objects as input
+SH.test(fit1, fit2, B=1000)
 # in real analysis use larger B, e.g. 10000
+
+# with matrix as input
+X <- matrix(c(fit1$siteLik, fit2$siteLik), ncol=2)
+SH.test(X, weight=attr(Laurasiatherian, "weight"), B=1000)
 \dontrun{
 example(pmlPart)
 SH.test(sp, B=1000)
 }
-
 }
 \references{
 Shimodaira, H. and Hasegawa, M. (1999) Multiple comparisons of
