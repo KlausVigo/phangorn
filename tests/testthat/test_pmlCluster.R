@@ -18,7 +18,9 @@ fit <- optim.pml(fit, control=pml.control(trace=0))
 test_that("nni optimisation works properly", {
     skip_on_cran()
     sp <- pmlCluster( ~ edge + nni, fit, weight, p=1:3)
-    expect_equal( sp$Partition, c(1,1,1,2,2))
+#    expect_equal( sp$Partition, c(1,1,1,2,2))
+    expect_equal( all(sp$Partition ==  c(1,1,1,2,2)) || 
+                      all(sp$Partition ==  c(2,2,2,1,1)) , TRUE)
 })
 
 
