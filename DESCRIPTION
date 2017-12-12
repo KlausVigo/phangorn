@@ -1,5 +1,5 @@
 Package: phangorn
-Title: Phylogenetic reconstruction and analysis
+Title: Phylogenetic Reconstruction and Analysis
 Version: 2.3.2
 Authors@R: c(person("Klaus", "Schliep", email="klaus.schliep@gmail.com", role = c("aut", "cre")), 
   person("Emmanuel", "Paradis", role = c("aut")), 
