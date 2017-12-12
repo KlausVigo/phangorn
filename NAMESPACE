@@ -67,7 +67,7 @@ export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ,
     phyDat2alignment, AICc, readDist, writeDist, discrete.gamma, matchSplits, 
     distinct.splits, c.splits, dna2codon, codon2dna, genlight2phyDat,
     removeUndeterminedSites, phyDat2MultipleAlignment, delta.score, 
-    maxCladeCred, as.MultipleAlignment, threshStateC)
+    maxCladeCred, as.MultipleAlignment, threshStateC, coords)
 # plot.networx, countCycles, 
 
 S3method('[', splits)          
