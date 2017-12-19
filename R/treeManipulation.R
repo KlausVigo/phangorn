@@ -147,6 +147,10 @@ node2root <- function(x){
      } 
      res
 }
+    if(is.null(tree$edge.length)){
+        warning("tree needs edge length")
+        return(tree)
+    }
     oldtree <- tree
     tree <- unroot(tree)   
     nTips <- length(tree$tip.label)
