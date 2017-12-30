@@ -2511,9 +2511,9 @@ optim.pml <- function (object, optNni=FALSE, optBf=FALSE, optQ=FALSE,
         res <- optimRooted(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, 
             ll.0=ll.0, INV=INV, control = pml.control(epsilon = 1e-07,
                                             maxit = 10, trace = trace-1))
-        if(trace > 0) 
-            cat("optimize edge weights: ", ll, "-->", res[[2]], "\n")
         if(res[[2]] > ll){  
+            if(trace > 0) 
+                cat("optimize edge weights: ", ll, "-->", res[[2]], "\n")
             ll <- res[[2]]
             tree <- res[[1]]
         }     
@@ -2523,16 +2523,18 @@ optim.pml <- function (object, optNni=FALSE, optBf=FALSE, optQ=FALSE,
         if (optBf) {
             res <- optimBf(tree, data, bf = bf, inv = inv, Q = Q, w = w, g = g, 
                            INV = INV, rate = rate, k = k, llMix = llMix)
-            bf <- res[[1]]
-            eig <- edQt(Q = Q, bf = bf)
-            if (inv > 0) 
-                ll.0 <- as.matrix(INV %*% (bf * inv))
-            if (wMix > 0) 
-                ll.0 <- ll.0 + llMix
-            if (trace > 0) 
-                cat("optimize base frequencies: ", ll, "-->", 
-                    res[[2]], "\n")
-            ll <- res[[2]]
+            if(res[[2]] > ll){  
+                bf <- res[[1]]
+                eig <- edQt(Q = Q, bf = bf)
+                if (inv > 0) 
+                    ll.0 <- as.matrix(INV %*% (bf * inv))
+                if (wMix > 0) 
+                    ll.0 <- ll.0 + llMix
+                if (trace > 0) 
+                    cat("optimize base frequencies: ", ll, "-->", 
+                        res[[2]], "\n")
+                ll <- res[[2]]
+            }
         }
         if (optQ) {
             if(type=="CODON"){
@@ -2576,39 +2578,43 @@ optim.pml <- function (object, optNni=FALSE, optBf=FALSE, optQ=FALSE,
         if(optInv) {
             res <- optimInv(tree, data, inv = inv, INV = INV, Q = Q, 
                          bf = bf, eig = eig, k = k, shape = shape, rate = rate)
-            inv <- res[[1]]
-            w <- rep(1/k, k)
-            g <- discrete.gamma(shape, k)
-            w <- (1 - inv) * w
-            if (wMix > 0) 
-                w <- (1 - wMix) * w
-            g <- g/(1 - inv)
-            g <- g * rate
-            ll.0 <- as.matrix(INV %*% (bf * inv))
-            if (wMix > 0) 
-                ll.0 <- ll.0 + llMix
-            if (trace > 0) 
-                cat("optimize invariant sites: ", ll, "-->", res[[2]], "\n")
-            ll <- res[[2]]
+            if (res[[2]] > ll){  
+                inv <- res[[1]]
+                w <- rep(1/k, k)
+                g <- discrete.gamma(shape, k)
+                w <- (1 - inv) * w
+                if (wMix > 0) 
+                    w <- (1 - wMix) * w
+                g <- g/(1 - inv)
+                g <- g * rate
+                ll.0 <- as.matrix(INV %*% (bf * inv))
+                if (wMix > 0) 
+                    ll.0 <- ll.0 + llMix
+                if (trace > 0) 
+                    cat("optimize invariant sites: ", ll, "-->", res[[2]], "\n")
+                ll <- res[[2]]
+            }
         }
         if(optGamma) {
             res <- optimGamma(tree, data, shape = shape, k = k, inv = inv, 
                              INV = INV, Q = Q, bf = bf, eig = eig, 
                              ll.0 = ll.0, rate = rate)
-            shape <- res[[1]]
-            w <- rep(1/k, k)
-            g <- discrete.gamma(shape, k)
-            if (inv > 0) {
-                w <- (1 - inv) * w
-                g <- g/(1 - inv)
+            if(res[[2]] > ll){  
+                shape <- res[[1]]
+                w <- rep(1/k, k)
+                g <- discrete.gamma(shape, k)
+                if (inv > 0) {
+                    w <- (1 - inv) * w
+                    g <- g/(1 - inv)
+                }
+                if (wMix > 0) 
+                    w <- (1 - wMix) * w
+                g <- g * rate
+                if (trace > 0) 
+                    cat("optimize shape parameter: ", ll, "-->", 
+                        res[[2]], "\n")
+                ll <- res[[2]]
             }
-            if (wMix > 0) 
-                w <- (1 - wMix) * w
-            g <- g * rate
-            if (trace > 0) 
-                cat("optimize shape parameter: ", ll, "-->", 
-                    res[[2]], "\n")
-            ll <- res[[2]]
         }
         if(optRate) {
             res <- optimRate(tree, data, rate = rate, inv = inv, 
@@ -2697,7 +2703,6 @@ optim.pml <- function (object, optNni=FALSE, optBf=FALSE, optQ=FALSE,
             kmax <- 1
             i <- 1
             while(i < maxit){
-                
                 tree2 <- rNNI(tree, moves=round(nTips * ratchet.par$prop), n=1)
                 #tree <- rSPR(tree, moves=10, k=3, n=1)
                 swap <- 1
