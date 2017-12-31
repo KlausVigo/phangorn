@@ -1158,6 +1158,19 @@ update.pml <- function (object, ...)
     if (wMix > 0) 
         w <- wMix * w                  
     m <- 1
+### play save 
+    kmax <- k
+    if(any(g<.gEps)){
+        for(i in 1:length(g)){
+            if(g[i]<.gEps){
+                inv <- inv+w[i]
+            }
+        }
+        w <- w[g>.gEps]
+        g <- g[g>.gEps]
+        k <- length(w)
+    }
+####    
     
     resll <- matrix(0, nr, k)
     nTips <- as.integer(length(tree$tip.label))  
@@ -1185,11 +1198,12 @@ update.pml <- function (object, ...)
 #    }
 #    else df = df + (k > 1) + (inv > 0) + length(unique(bf)) - 1 + length(unique(Q)) - 1
     
-    result <- list(logLik = tmp$loglik, inv = inv, k = k, shape = shape, Q = Q, 
-                  bf = bf, rate = rate, siteLik = tmp$siteLik, weight = weight, 
-                  g = g, w = w, eig = eig, data = data, model = model, 
-                  INV = INV, ll.0 = ll.0, tree = tree, lv = tmp$resll,
-                  call = call, df = df, wMix = wMix, llMix = llMix)
+    result <- list(logLik = tmp$loglik, inv = inv, k = kmax, shape = shape, 
+                   Q = Q, bf = bf, rate = rate, siteLik = tmp$siteLik, 
+                   weight = weight, g = g, w = w, eig = eig, data = data,
+                   model = model, INV = INV, ll.0 = ll.0, tree = tree, 
+                   lv = tmp$resll, call = call, df = df, wMix = wMix, 
+                   llMix = llMix)
     if (type == "CODON") {
         result$dnds <- 1
         result$tstv <- 1
