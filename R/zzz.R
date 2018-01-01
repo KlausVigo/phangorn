@@ -10,8 +10,8 @@
   "TVM", "SYM", "GTR")
 
 
-# if g[i] is smaller .gEps inv is increased w[i]
-.gEps <- 1e-30
+# if rate g[i] is smaller than .gEps invariant site is increased by w[i]
+.gEps <- 1e-12
 
 
 .PlotNetworxEnv <- new.env()
