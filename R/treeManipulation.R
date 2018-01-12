@@ -436,26 +436,67 @@ reorderPruning <- function (x, ...)
 }
 
 
-add.tip <- function(phy, n, edgeLength=NULL, tip=""){ 
-     ind <- which(phy$edge[,2] == n)
-     phy <- new2old.phylo(phy) 
-     edge <- matrix(as.numeric(phy$edge),ncol=2)
-     k <- min(edge)
-     l <- max(edge)
-     phy$edge <- rbind(phy$edge, c(k-1,phy$edge[ind,2]))
-     phy$edge <- rbind(phy$edge, c(k-1,l+1))
-     phy$edge[ind,2] <- k-1 
-     phy$edge.length[ind] <- edgeLength[1]
-     phy$edge.length <- c(phy$edge.length, edgeLength[-1])
-     phy$tip.label <- c(phy$tip.label, tip) 
-     phy <- old2new.phylo(phy)
-     phy <- reorder(phy, "postorder") 
-     phy
+
+# add tips to nodes, adds multi-furcations to the tree 
+# should be similar to bind.tip
+# where can be integer vector or character vector with
+add.tip <- function(tree, tips, where, edge.length=NULL, ...){
+    nTips <- length(tree$tip.label)
+    edge <- tree$edge
+    if(is.character(where)){
+#        node.labels <- if(is.null(tree$node.label)) rep("", tree$Nnode)
+#                       else tree$node.label  
+        where <- match(where, c(tree$tip.label, tree$node.label))
+    }
+    ind <- match(where, edge[,2])
+    
+    n_ext <- sum(unique(where)<=nTips)
+    nt <- as.integer(length(tips))
+    edge_old <- edge
+    edge[edge>nTips] <- edge[edge>nTips] + nt 
+    
+    # first handle internal nodes (easy)
+    if(any(where>nTips)){
+        ind_internal <- ind[where>nTips]
+        edge_internal <- cbind(edge[ind_internal, 2], 
+                         c((nTips+1L):(nTips+nt))[where>nTips])
+        storage.mode(edge_internal) <- "integer"
+        edge <- rbind(edge, edge_internal)
+    }
+#    storage.mode(edge_internal) <- "integer"
+
+    if(any(where<=nTips)){   
+        tmp_tip <- c((nTips+1L):(nTips+nt))
+        m <- max(edge) +1L
+        tmp <- unique(where) 
+        tmp <- tmp[tmp<=nTips]
+        ind_external <- match(tmp, edge[,2])
+#        edge_external <- matrix(0L, n_ext + sum(where<=nTips), 2)
+        edge_external <-  NULL
+        for(i in seq_along(tmp)){
+            blub <- c(edge[ind_external[i],2], tmp_tip[where==tmp[i]])
+            edge_external <- rbind(edge_external, cbind(m, blub))
+            edge[ind_external[i],2] <- m 
+            m <- m+1L
+        }
+        storage.mode(edge_external) <- "integer"
+        edge <- rbind(edge, edge_external)
+    }
+      
+    if(!is.null(tree$edge.length)){
+        if(is.null(edge.length)) edge.length <- rep(0, nt+n_ext)
+        tree$edge.length <- c(tree$edge.length, edge.length)
+    }    
+    if(!is.null(tree$node.label)){}
+    tree$edge <- edge
+    tree$Nnode <- tree$Nnode + n_ext
+    tree$tip.label <- c(tree$tip.label, tips)
+    attr(tree, "order") <- NULL
+    tree <- reorder(tree)
+    tree
 }
 
 
-
-# maybe into treeManipulation
 addAllTips <- function(tree, mapping){
     tree2 <- tree
     uni <- unique(mapping[,2])
@@ -465,14 +506,16 @@ addAllTips <- function(tree, mapping){
 }
 
 
-
+# external
 addTips2Tree <- function (tree, tips, where){
     nTips <- length(tree$tip.label)
     edge <- tree$edge
     
+    
     where <- match(where, tree$tip.label)
     
     ind <- match(where, edge[,2])
+    
     nt <- as.integer(length(tips))
     edge[edge>nTips] <- edge[edge>nTips]+nt
     m <- max(edge)
