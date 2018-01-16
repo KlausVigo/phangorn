@@ -32,7 +32,6 @@ Imports:
 LinkingTo: Rcpp
 Suggests:
     testthat,
-    seqLogo,
     seqinr,
     xtable,
     flashClust,
