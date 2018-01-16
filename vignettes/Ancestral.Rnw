@@ -78,26 +78,28 @@ anc.mpr <- ancestral.pars(tree, primates, "MPR")
 
 All the ancestral reconstructions for parsimony are based on the fitch algorithm and so far only bifurcating trees are allowed. However trees can get pruned afterwards using the function \Rfunction{multi2di} from \ape{}.
  
-The \Rfunction{seqLogo} function from the \Rpackage{seqLogo} package from Bioconductor provides a neat way to show proportions of a nucleotides of ancestral states (see figure \ref{fig:seqLogo}). You can install \Rpackage{seqLogo} the following way
-<<eval=FALSE>>=
-source("https://bioconductor.org/biocLite.R")
-biocLite("seqLogo")
-@
+The \Rfunction{seqLogo} function from the \Rpackage{seqLogo} package from Bioconductor provides a neat way to show proportions of a nucleotides of ancestral states (see figure \ref{fig:seqLogo}). 
 
-<<eval=FALSE>> %label=plotLOGO,include=FALSE
+<<eval=FALSE>>= 
 library(seqLogo)
 seqLogo( t(subset(anc.mpr, getRoot(tree), 1:20)[[1]]), ic.scale=FALSE)
 @
 \begin{figure}
 \begin{center}
-\includegraphics{seqLogo.pdf}
 %<<label=figLOGO,fig=TRUE,echo=FALSE,width=6,height=4>>=
 %<<plotLOGO>>
 %@
+\includegraphics{seqLogo.pdf}
 \caption{Representation for the reconstruction of the first 20 characters for the root node.}
 \end{center}
 \label{fig:seqLogo}
 \end{figure}
+
+You may need to install \Rpackage{seqLogo} before
+<<eval=FALSE>>=
+source("https://bioconductor.org/biocLite.R")
+biocLite("seqLogo")
+@
 
 <<echo=false>>=
 options(SweaveHooks=list(fig=function()
