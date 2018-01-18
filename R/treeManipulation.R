@@ -438,63 +438,77 @@ reorderPruning <- function (x, ...)
 
 
 # add tips to nodes, adds multi-furcations to the tree 
-# should be similar to bind.tip
-# where can be integer vector or character vector with
+# similar to bind.tip (phytools)
+# where can be integer or character vector 
 add.tip <- function(tree, tips, where, edge.length=NULL, ...){
     nTips <- length(tree$tip.label)
+    nTips_new <- length(tips)
+    if(nTips_new < 1) return(tree)
     edge <- tree$edge
     if(is.character(where)){
-#        node.labels <- if(is.null(tree$node.label)) rep("", tree$Nnode)
-#                       else tree$node.label  
         where <- match(where, c(tree$tip.label, tree$node.label))
     }
     ind <- match(where, edge[,2])
     
-    n_ext <- sum(unique(where)<=nTips)
-    nt <- as.integer(length(tips))
-    edge_old <- edge
-    edge[edge>nTips] <- edge[edge>nTips] + nt 
+    n_internal <- sum(unique(where)<=nTips)
+    edge[edge>nTips] <- edge[edge>nTips] + nTips_new
+    p_vec <- integer(max(edge) + n_internal)
+    p_vec[edge[,2]] <- edge[,1]
+    tip_index <- (nTips +1) : (nTips + nTips_new)
+    c_vec <- c(edge[,2], tip_index)
+    
+    #    browser()
     
     # first handle internal nodes (easy)
     if(any(where>nTips)){
-        ind_internal <- ind[where>nTips]
-        edge_internal <- cbind(edge[ind_internal, 2], 
-                         c((nTips+1L):(nTips+nt))[where>nTips])
-        storage.mode(edge_internal) <- "integer"
-        edge <- rbind(edge, edge_internal)
+        ind1 <- where>nTips
+        p_vec[tip_index[ind1]] <- where[ind1]  + nTips_new
     }
-#    storage.mode(edge_internal) <- "integer"
-
+    # handle tips 
     if(any(where<=nTips)){   
-        tmp_tip <- c((nTips+1L):(nTips+nt))
-        m <- max(edge) +1L
+        #        browser()
+        m <- max(edge) 
         tmp <- unique(where) 
         tmp <- tmp[tmp<=nTips]
-        ind_external <- match(tmp, edge[,2])
-#        edge_external <- matrix(0L, n_ext + sum(where<=nTips), 2)
-        edge_external <-  NULL
-        for(i in seq_along(tmp)){
-            blub <- c(edge[ind_external[i],2], tmp_tip[where==tmp[i]])
-            edge_external <- rbind(edge_external, cbind(m, blub))
-            edge[ind_external[i],2] <- m 
-            m <- m+1L
+        new_internal <- as.integer((m+1L) : (m + n_internal))
+        # add new internal node
+        p_vec[new_internal] <- edge[match(tmp,edge[,2]),1]
+        p_vec[tmp] <- new_internal
+        # add tip    
+        ind2 <- (where <= nTips)
+        p_vec[tip_index[ind2]] <- p_vec[where[ind2]]
+        c_vec[ind[ind2]] <- new_internal
+        c_vec <- c(c_vec, tmp)
+        if(!is.null(tree$node.label)){
+            tree$node.label <- c(tree$node.label, rep("", n_internal))
         }
-        storage.mode(edge_external) <- "integer"
-        edge <- rbind(edge, edge_external)
     }
-      
-    if(!is.null(tree$edge.length)){
-        if(is.null(edge.length)) edge.length <- rep(0, nt+n_ext)
-        tree$edge.length <- c(tree$edge.length, edge.length)
-    }    
-    if(!is.null(tree$node.label)){}
+    edge <- matrix(c(p_vec[c_vec], c_vec), ncol=2)
+    #browser()    
     tree$edge <- edge
-    tree$Nnode <- tree$Nnode + n_ext
+    
+    if(!is.null(tree$edge.length)){
+        if(is.null(edge.length)){
+            #            nh <- phangorn:::nodeHeight(tree)
+            tree$edge.length <- c(tree$edge.length, 
+                                  rep(0, nTips_new + n_internal))
+        }    
+        else tree$edge.length <- c(tree$edge.length, edge.length)
+    }
+    tree$Nnode <- tree$Nnode + n_internal
     tree$tip.label <- c(tree$tip.label, tips)
     attr(tree, "order") <- NULL
     tree <- reorder(tree)
+    if(!is.null(tree$edge.length)){
+        if(is.null(edge.length)){
+            nh <- phangorn:::nodeHeight(tree)
+            nh[tip_index] <- 0
+            tree$edge.length <- nh[tree$edge[,1]] - nh[tree$edge[,2]]
+        }    
+    }
     tree
 }
+
 
 
 addAllTips <- function(tree, mapping){
