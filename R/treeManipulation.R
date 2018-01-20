@@ -440,7 +440,7 @@ reorderPruning <- function (x, ...)
 # add tips to nodes, adds multi-furcations to the tree 
 # similar to bind.tip (phytools)
 # where can be integer or character vector 
-add.tip <- function(tree, tips, where, edge.length=NULL, ...){
+add.tips <- function(tree, tips, where, edge.length=NULL, ...){
     nTips <- length(tree$tip.label)
     nTips_new <- length(tips)
     if(nTips_new < 1) return(tree)
@@ -456,9 +456,6 @@ add.tip <- function(tree, tips, where, edge.length=NULL, ...){
     p_vec[edge[,2]] <- edge[,1]
     tip_index <- (nTips +1) : (nTips + nTips_new)
     c_vec <- c(edge[,2], tip_index)
-    
-    #    browser()
-    
     # first handle internal nodes (easy)
     if(any(where>nTips)){
         ind1 <- where>nTips
@@ -483,13 +480,10 @@ add.tip <- function(tree, tips, where, edge.length=NULL, ...){
             tree$node.label <- c(tree$node.label, rep("", n_internal))
         }
     }
-    edge <- matrix(c(p_vec[c_vec], c_vec), ncol=2)
-    #browser()    
-    tree$edge <- edge
+    tree$edge <- matrix(c(p_vec[c_vec], c_vec), ncol=2)
     
     if(!is.null(tree$edge.length)){
         if(is.null(edge.length)){
-            #            nh <- phangorn:::nodeHeight(tree)
             tree$edge.length <- c(tree$edge.length, 
                                   rep(0, nTips_new + n_internal))
         }    
