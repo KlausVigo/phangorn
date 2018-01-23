@@ -54,3 +54,16 @@ test_that("maxCladeCred", {
   expect_equal(maxCladeCred(c(tree, trees)), tree)
 })
 
+
+test_that("add.tips", {
+    tree <- rcoal(20)
+    tree$tip.label <- paste0("t", 1:Ntip(tree))
+    tree$node.label <- paste0("n", 1:Nnode(tree))
+    tree1 <- add.tips(tree, c("A", "B", "C", "D"), c("t5", "t10", "n5", "n10"))
+    tree2 <- add.tips(tree, c("A", "B", "C", "D"), c(5, 10, 25, 30))
+    expect_equal(RF.dist(tree1, tree2), 0)
+    expect_false(is.binary(tree1))
+    expect_false(is.binary(tree2))
+})
+
+
