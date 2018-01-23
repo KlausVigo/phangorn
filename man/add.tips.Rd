@@ -25,8 +25,11 @@ This function binds tips to  phylogenetic trees.
 \examples{
 
 tree <- rcoal(10)
+plot(tree)
+nodelabels()
+tiplabels()
 tree1 <- add.tips(tree, c("A", "B", "C"), c(1,2,15)) 
-
+plot(tree1) 
 }
 \seealso{
 \code{\link{bind.tree}}

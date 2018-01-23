@@ -2422,7 +2422,9 @@ optim.pml <- function (object, optNni=FALSE, optBf=FALSE, optQ=FALSE,
 #   bf
 #   Q     
         if(addTaxa){
-            tree <- addAllTips(tree, mapping)
+            tree <- add.tips(tree, tips=mapping[,1], where=mapping[,2], 
+                             edge.length=rep(0,nrow(mapping)) )
+            # addAllTips(tree, mapping)
             data <- orig.data
         }
         df <- ifelse(optRooted, tree$Nnode, length(tree$edge.length))

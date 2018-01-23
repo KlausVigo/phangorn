@@ -21,19 +21,6 @@ getRoot <- function (tree)
 }
 
 
-getRoot_old <- function (tree) 
-{
-    if(!is.null(attr(tree, "order")) && attr(tree, "order") == 
-           "postorder"){
-        return(tree$edge[nrow(tree$edge), 1])
-    }    
-    res <-  unique(tree$edge[, 1][!match(tree$edge[, 1], tree$edge[, 2], 0)])
-    if (length(res) == 1) 
-        return(res)
-    else stop("There are apparently two root edges in your tree")
-}
-
-
 # renames root node 
 reroot <-  function (tree, node) 
 {
@@ -521,45 +508,6 @@ add.tips <- function(tree, tips, where, edge.length=NULL){
     }
     tree
 }
-
-
-
-addAllTips <- function(tree, mapping){
-    tree2 <- tree
-    uni <- unique(mapping[,2])
-    for(i in uni)
-        tree2 <- addTips2Tree(tree2, mapping[mapping[,2]==i,1],i)
-    tree2
-}
-
-
-# external
-addTips2Tree <- function (tree, tips, where){
-    nTips <- length(tree$tip.label)
-    edge <- tree$edge
-    
-    
-    where <- match(where, tree$tip.label)
-    
-    ind <- match(where, edge[,2])
-    
-    nt <- as.integer(length(tips))
-    edge[edge>nTips] <- edge[edge>nTips]+nt
-    m <- max(edge)
-    edge[ind,2] <- m+1L    
-    
-    newEdge <- cbind(m+1L,c(where,(nTips+1L):(nTips+nt)))
-    edge <- rbind(newEdge, edge)
-    storage.mode(edge) <- "integer"
-    if(!is.null(tree$edge.length)) tree$edge.length <- c(rep(0, nrow(newEdge)),
-                                                         tree$edge.length)
-    tree$edge <- edge
-    tree$Nnode <- tree$Nnode + 1L
-    tree$tip.label <- c(tree$tip.label, tips)
-    attr(tree, "order") <- NULL
-    tree <- reorder(tree, "postorder")
-    tree
-}    
 
 
 
