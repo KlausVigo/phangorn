@@ -437,10 +437,30 @@ reorderPruning <- function (x, ...)
 
 
 
-# add tips to nodes, adds multi-furcations to the tree 
-# similar to bind.tip (phytools)
-# where can be integer or character vector 
-add.tips <- function(tree, tips, where, edge.length=NULL, ...){
+#' Add tips to a tree
+#' 
+#' This function binds tips to  phylogenetic trees.
+#' 
+#'
+#' @param tree an object of class "phylo".
+#' @param tips a character vector containing the names of the tips.
+#' @param where an integer or character vector of the same length as tips giving 
+#' the number of the node or tip of the tree x where the tree y is binded.
+#' @param edge.length optional numeric vector with edge length
+#' @return an object of class phylo
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso \code{\link{bind.tree}}
+#' @keywords cluster 
+#' @examples
+#' 
+#' tree <- rcoal(10)
+#' plot(tree)
+#' nodelabels()
+#' tiplabels()
+#' tree1 <- add.tips(tree, c("A", "B", "C"), c(1,2,15)) 
+#' plot(tree1) 
+#' @export lento
+add.tips <- function(tree, tips, where, edge.length=NULL){
     nTips <- length(tree$tip.label)
     nTips_new <- length(tips)
     if(nTips_new < 1) return(tree)
@@ -463,7 +483,6 @@ add.tips <- function(tree, tips, where, edge.length=NULL, ...){
     }
     # handle tips 
     if(any(where<=nTips)){   
-        #        browser()
         m <- max(edge) 
         tmp <- unique(where) 
         tmp <- tmp[tmp<=nTips]
