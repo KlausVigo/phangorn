@@ -253,7 +253,7 @@ The "YN98" model \cite{Yang98} is similar to the "codon1", but addional optimise
 %trees = allTrees(5)
 %@
 <<label=plotAll,include=FALSE>>=
-trees = allTrees(5)
+trees <- allTrees(5)
 par(mfrow=c(3,5), mar=rep(0,4)) 
 for(i in 1:15)plot(trees[[i]], cex=1, type="u")
 @

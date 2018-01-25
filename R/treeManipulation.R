@@ -446,7 +446,7 @@ reorderPruning <- function (x, ...)
 #' tiplabels()
 #' tree1 <- add.tips(tree, c("A", "B", "C"), c(1,2,15)) 
 #' plot(tree1) 
-#' @export lento
+#' @export
 add.tips <- function(tree, tips, where, edge.length=NULL){
     nTips <- length(tree$tip.label)
     nTips_new <- length(tips)
