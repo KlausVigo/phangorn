@@ -480,7 +480,9 @@ add.tips <- function(tree, tips, where, edge.length=NULL){
         # add tip    
         ind2 <- (where <= nTips)
         p_vec[tip_index[ind2]] <- p_vec[where[ind2]]
-        c_vec[ind[ind2]] <- new_internal
+#        browser()
+        ind <- match(tmp, edge[,2])
+        c_vec[ind] <- new_internal
         c_vec <- c(c_vec, tmp)
         if(!is.null(tree$node.label)){
             tree$node.label <- c(tree$node.label, rep("", n_internal))
@@ -501,7 +503,7 @@ add.tips <- function(tree, tips, where, edge.length=NULL){
     tree <- reorder(tree)
     if(!is.null(tree$edge.length)){
         if(is.null(edge.length)){
-            nh <- phangorn:::nodeHeight(tree)
+            nh <- nodeHeight(tree)
             nh[tip_index] <- 0
             tree$edge.length <- nh[tree$edge[,1]] - nh[tree$edge[,2]]
         }    
