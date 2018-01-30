@@ -222,8 +222,7 @@ plotBS <- function (tree, BStrees, type = "unrooted", bs.col = "black",
         tree$node.label <- x
     }
     else{
-        if(is.null(tree$node.label))stop("You need to supply BStrees or tree needs 
-        needs BS-values as node.label")
+        if(is.null(tree$node.label))stop("You need to supply 'trees' or the tree needs support-values as node.label")
         x <- tree$node.label
     }
     

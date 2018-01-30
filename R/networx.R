@@ -1085,9 +1085,9 @@ plot.networx <- function(x, type="3D", use.edge.length = TRUE, show.tip.label=TR
     
     chk <- FALSE
     
-    if(type=="3D") chk <- requireNamespace("rgl", quietly = TRUE) #.check.pkg("rgl")
+    if(type=="3D") chk <- requireNamespace("rgl", quietly = TRUE) 
     if(!chk && type=="3D"){
-        warning("type=\"3D\" requires the package \"rgl\"\n, plotting =\"2D\" instead!\n")
+        warning("type='3D' requires the package 'rgl', plotting in '2D' instead!\n")
         type <- "2D"
     }
     # use precomputed vertices when available
