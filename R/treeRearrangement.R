@@ -379,7 +379,7 @@ rSPR_Old <- function(tree, moves=1, n=1){
 sprMove <- function(tree, m){
     if (is.rooted(tree)) tree <- unroot(tree)
     #stop("Sorry trees must be unrooted")
-    if(!is.binary(tree))stop("Sorry trees must be binary!")
+    if(!is.binary(tree))stop("Sorry, trees must be binary!")
     
 #    reroot2 <- function(tree, node){
 #        anc <- Ancestors(tree, node, "all")
