@@ -196,12 +196,14 @@ densiTree <- function(x, type="cladogram", alpha=1/length(x), consensus=NULL,
       if(scale.bar) axis(side=2,at=seq(0,1.0, length.out=length(label)), labels=label)
       #text(x=xy[1:nTip,1],y=rep(1.0,Ntip(consensus)),labels=consensus$tip.label,pos=3,cex=cex, font=font, srt=90)  
   }
+  tip_labels <- consensus$tip.label
   if (is.expression(consensus$tip.label)) 
       underscore <- TRUE
   if (!underscore) 
-      consensus$tip.label <- gsub("_", " ", consensus$tip.label)
- 
-  add_tiplabels(xy, consensus$tip.label, direction, adj=adj, font=font, srt=srt, 
+      tip_labels <- gsub("_", " ", tip_labels)
+#      consensus$tip.label <- gsub("_", " ", consensus$tip.label)
+  
+  add_tiplabels(xy, tip_labels, direction, adj=adj, font=font, srt=srt, 
                 cex=cex, col=tip.color, label.offset=label.offset)
   
   col <- rep(col, length.out = length(x))
