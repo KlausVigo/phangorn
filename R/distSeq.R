@@ -383,19 +383,20 @@ readDist <- function(file){ #, format="phylip"
 #' @param incomparables Not used so far.
 #' @export 
 unique.dist <-  function(x, incomparables, ...){
-        y <- as.matrix(x) 
-        l <- nrow(y)
-        z <- character(l)
-        for(i in seq_len(l)) z[i] <- paste( round(y[i, -i] ,8), "\r")
-        if(any(duplicated(z))){
-            ind <- !duplicated(z)
-            y <- y[ind, ind]
-            if(is.matrix(x))return(y)
-            if(inherits(x, "dist")){
-                #            attrib <- attributes(x)
-                res <- as.dist(y, diag=attr(x, "Diag"), upper=attr(x, "Upper"))  
-                return(res)
-            }
+    y <- as.matrix(x) 
+    l <- nrow(y)
+    z <- character(l)
+#    for(i in seq_len(l)) z[i] <- paste( round(y[i, -i] ,8), "\r")
+    for(i in seq_len(l)) z[i] <- paste( round(y[i, ] ,8), collapse="_")
+    if(any(duplicated(z))){
+        ind <- !duplicated(z)
+        y <- y[ind, ind]
+        if(is.matrix(x))return(y)
+        if(inherits(x, "dist")){
+            #            attrib <- attributes(x)
+            res <- as.dist(y, diag=attr(x, "Diag"), upper=attr(x, "Upper"))  
+            return(res)
         }
-        x
+    }
+    x
 }
