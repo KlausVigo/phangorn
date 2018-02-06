@@ -538,9 +538,8 @@ allTrees <- function (n, rooted = FALSE, tip.label = NULL)
 	n <- as.integer(n)  
     nt <- as.integer(round(dfactorial(2 * (n + rooted) - 5))) 
     if ((n + rooted) > 10) {
-        nt <- dfactorial(2 * (n + rooted) - 5)
-        stop("That would generate ", round(nt)," trees, and take up more than ", 
-            round(nt/1000), " MB of memory!")
+        stop(gettextf("That would generate %d trees, and take up more than %d MB of memory!", 
+                      nt, as.integer(round(nt/1000)), domain = "R-phangorn"))
     }
     if (n < 2) {
         stop("A tree must have at least two taxa.")

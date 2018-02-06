@@ -96,8 +96,7 @@ phyDat.default <- function (data, levels = NULL, return.index = TRUE,
     aaa <- match(index, attr(data, "na.action"))
     
 
-    if(!is.null(attr(data, "na.action"))) warning("Found unknown characters (not 
-                supplied in levels). Deleted sites with with unknown states.")
+    if(!is.null(attr(data, "na.action"))) warning("Found unknown characters (not supplied in levels). Deleted sites with with unknown states.")
     
     index <- index[is.na(aaa)] 
     index <- match(index, unique(index))
