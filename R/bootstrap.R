@@ -340,12 +340,6 @@ mcc <- maxCladeCred
 
 cladeMatrix <- function(x, rooted=FALSE){
     if(!rooted) x <- unroot(x)
-#    if(!rooted){
-#        x <- .uncompressTipLabel(x)
-#        x <- lapply(x, unroot) 
-#        class(x) <- "multiPhylo"
-#        x <- .compressTipLabel(x)
-#    }    
     pp <- prop.part(x)
     pplabel <- attr(pp, "labels")
     if(!rooted)pp <- oneWise(pp)

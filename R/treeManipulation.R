@@ -426,7 +426,7 @@ reorderPruning <- function (x, ...)
 
 #' Add tips to a tree
 #' 
-#' This function binds tips to  phylogenetic trees.
+#' This function binds tips to nodes of a phylogenetic trees.
 #' 
 #'
 #' @param tree an object of class "phylo".
@@ -495,7 +495,12 @@ add.tips <- function(tree, tips, where, edge.length=NULL){
             tree$edge.length <- c(tree$edge.length, 
                                   rep(0, nTips_new + n_internal))
         }    
-        else tree$edge.length <- c(tree$edge.length, edge.length)
+        else {
+            if(length(edge.length) < nTips_new) edge.length <- rep(edge.length, 
+                                                          length.out=nTips_new)
+            tree$edge.length <- c(tree$edge.length, edge.length, 
+                                  rep(0, n_internal))
+        }
     }
     tree$Nnode <- tree$Nnode + n_internal
     tree$tip.label <- c(tree$tip.label, tips)
