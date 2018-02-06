@@ -69,7 +69,7 @@
 dist.p <- function (x, cost="polymorphism", ignore.indels=TRUE) 
 {
     if (!inherits(x,"phyDat")) 
-        stop("x has to be element of class phyDat")
+        stop("x must be of class phyDat")
 
     l <- length(x)
     weight <- attr(x, "weight")

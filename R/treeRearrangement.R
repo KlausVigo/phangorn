@@ -401,7 +401,7 @@ sprMove <- function(tree, m){
     k <- max(edge)
     nTips <- length(tree$tip.label)
     nEdges <- 2*nTips-3 
-    if(m > nEdges) stop("m to big")
+    if(m > nEdges) stop("m is chosen too big")
     
     parent <- edge[,1]
     child <- edge[,2]

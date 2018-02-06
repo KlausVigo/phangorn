@@ -476,7 +476,7 @@ wRF2 <- function(tree, trees, normalize=FALSE, check.labels = TRUE, rooted=FALSE
     trees <- .uncompressTipLabel(trees)
     
     if (rooted & any(!is.rooted(trees))){
-        warning("Some trees are unrooted, unrooted all")
+        warning("some trees were rooted, unrooted all")
         rooted <- FALSE
     }
 
@@ -550,7 +550,7 @@ wRF1 <- function(trees, normalize=FALSE, check.labels = TRUE, rooted=FALSE){
     trees <- .uncompressTipLabel(trees)
     
     if (rooted & any(!is.rooted(trees))){
-        warning("Some trees are unrooted, unrooted all")
+        warning("some trees were rooted, unrooted all")
         rooted <- FALSE
     }
     if(!rooted){
@@ -635,7 +635,7 @@ mRF2 <- function(tree, trees, normalize=FALSE, check.labels = TRUE, rooted=FALSE
     
 #    trees <- unclass(trees)
     if(!rooted & any(is.rooted(trees))) {
-        message("Some trees are rooted. Unrooting all trees.\n")
+        warning("some trees were rooted, unrooted all")
         trees <- unroot(trees)
     }
     if(!rooted & is.rooted(tree))tree <- unroot(tree)
@@ -677,7 +677,7 @@ mRF<-function(trees, normalize=FALSE, rooted=FALSE){
     RF <- numeric((l * (l - 1))/2)
     
     if (rooted & any(!is.rooted(trees))){
-        warning("Some trees are unrooted, unrooted all")
+        warning("some trees were rooted, unrooted all")
         rooted <- FALSE
     }
     if(!rooted){
@@ -691,7 +691,7 @@ mRF<-function(trees, normalize=FALSE, rooted=FALSE){
     #    n <- length(attr(trees, "TipLabel"))
 
 #    if (any(sapply(trees, is.rooted))) {
-#        message("Some trees are rooted. Unrooting all trees.\n")
+#        warning("some trees were rooted, unrooted all")
 #        trees <- lapply(trees, unroot)
 #    }
     if (any(!is.binary(trees))) {
@@ -852,7 +852,7 @@ kf1 <- function(tree, trees, check.labels = TRUE, rooted=FALSE){
     if(has.singles(tree)) tree <- collapse.singles(tree)
     
     if (rooted & any(!is.rooted(trees))){
-        warning("Some trees are unrooted, unrooted all")
+        warning("some trees were rooted, unrooted all")
         rooted <- FALSE
     }
     if(!rooted){
@@ -927,7 +927,7 @@ kf2 <- function(trees, check.labels = TRUE, rooted=FALSE){
 #        trees <- lapply(trees, unroot)
 #    }
     if (rooted & any(!is.rooted(trees))){
-        warning("Some trees are unrooted, unrooted all")
+        warning("some trees were rooted, unrooted all")
         rooted <- FALSE
     }
     if (!rooted & any(is.rooted(trees))) {

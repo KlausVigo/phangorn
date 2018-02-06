@@ -2341,7 +2341,7 @@ optim.pml <- function (object, optNni=FALSE, optBf=FALSE, optQ=FALSE,
     }
     if(optRooted){
         optEdge <- FALSE
-        if(!is.rooted(tree)) stop("Tree must be rooted!")
+        if(!is.rooted(tree)) stop("tree must be rooted")
         if(!is.ultrametric(tree)) stop("Tree must be ultrametric!")
     }
     trace <- control$trace
