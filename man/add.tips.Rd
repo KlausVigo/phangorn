@@ -20,7 +20,7 @@ the number of the node or tip of the tree x where the tree y is binded.}
 an object of class phylo
 }
 \description{
-This function binds tips to  phylogenetic trees.
+This function binds tips to nodes of a phylogenetic trees.
 }
 \examples{
 
