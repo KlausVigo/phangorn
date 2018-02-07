@@ -79,3 +79,16 @@ test_that("read and write work as expected", {
     unlink("tmp.fas")
 })
 
+
+test_that("removing duplicated sequences works", {
+    skip_on_cran()
+    
+    tmp <- as.character(Laurasiatherian)
+    laura <- phyDat(rbind(phy_matrix, phy_matrix))
+    names(laura) <- paste0(names(laura), rep(c(1,2), each=47))
+
+    map1 <- map_duplicates(laura)
+    map2 <- map_duplicates(Laurasiatherian)
+    expect_null(map2)
+    expect_is(map1, "data.frame")
+})    

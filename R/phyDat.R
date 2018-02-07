@@ -988,52 +988,34 @@ subset.phyDat <- function (x, subset, select, site.pattern = TRUE,...)
 }
 
 
-duplicated_phyDat <- function(x, ...){
-    dm <- as.matrix(dist.hamming(x))
-    diag(dm) <- 1
-    res <- logical(nrow(dm))
-    if(all(dm>0)) return(res)
-    tmp <- which(dm==0, arr.ind = TRUE, useNames = FALSE)
-    tmp <- tmp[tmp[,1] < tmp[,2],2]
-    res[unique(tmp)] <- TRUE
+
+map_duplicates <-  function(x, ...){
+    labels <- names(x)
+    y <- as.matrix(dist.hamming(x)) 
+    l <- nrow(y)
+    z <- character(l)
+    for(i in seq_len(l)) z[i] <- paste( round(y[i, ] ,8), collapse="_")
+    res <- NULL
+    if(any(duplicated(z))){
+        ind <- duplicated(z)
+        ind2 <- match(z[ind], z)
+        res <- data.frame(duplicates=labels[ind], where=labels[ind2],
+                          stringsAsFactors = FALSE)
+    }
     res
 }
 
 
-duplicated_map2 <- function(x, ...){
-    dm <- dist.hamming(x)
-    if(all(dm>0)) return(NULL)
-    dm <- as.matrix(dm)
-    tmp <- which(dm==0, arr.ind = TRUE, useNames = FALSE)
-    tmp <- tmp[tmp[,1] < tmp[,2],] 
-    tmp[] <- names(x)[tmp]
-    g <- graph_from_edgelist(tmp, directed = FALSE)
-    clu <- components(g)
-    gr <- groups(clu)
-    mapping <- matrix(NA, 1,2)
-    for(i in seq_along(gr)){
-        if(length(gr[[i]])==2)mapping <- rbind(mapping, gr[[i]])
-        else{
-            tmplab <- gr[[i]]
-            sg <- sum(dm[tmplab, tmplab])
-            if(sg==0)mapping <- rbind(mapping, cbind(tmplab[1], tmplab[-1]))
-        }
-    }
-    mapping[-1,c(2,1)]
-}
-
-
-duplicated_map <- function(x, ...){
-# exact matches    
-   dup <-  duplicated(x)
-   mapping <- NULL
-   if(any(dup)){ # && optNNI
-       labels <- names(x)
-       ind <- match(subset(x, dup), x)
-       mapping <- cbind(labels[dup], labels[ind])
-   }
-   mapping
-}   
+# duplicated_phyDat <- function(x, ...){
+#    dm <- as.matrix(dist.hamming(x))
+#    diag(dm) <- 1
+#    res <- logical(nrow(dm))
+#    if(all(dm>0)) return(res)
+#    tmp <- which(dm==0, arr.ind = TRUE, useNames = FALSE)
+#    tmp <- tmp[tmp[,1] < tmp[,2],2]
+#    res[unique(tmp)] <- TRUE
+#    res
+#}
 
 
 #' @rdname phyDat

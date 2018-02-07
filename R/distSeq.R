@@ -386,7 +386,6 @@ unique.dist <-  function(x, incomparables, ...){
     y <- as.matrix(x) 
     l <- nrow(y)
     z <- character(l)
-#    for(i in seq_len(l)) z[i] <- paste( round(y[i, -i] ,8), "\r")
     for(i in seq_len(l)) z[i] <- paste( round(y[i, ] ,8), collapse="_")
     if(any(duplicated(z))){
         ind <- !duplicated(z)
