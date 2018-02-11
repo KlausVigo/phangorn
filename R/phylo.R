@@ -232,18 +232,20 @@ BIC.pml <- function(object, ...){
 anova.pml <- function (object, ...) 
 {
     X <- c(list(object), list(...))
-    df <- sapply(X, "[[", "df")
-    ll <- sapply(X, "[[", "logLik")
-    dev <- c(NA, 2 * diff(ll)) 
-    ddf <- c(NA, diff(df))
-    table <- data.frame(ll, df, ddf, dev, pchisq(dev, ddf, lower.tail = FALSE))
+    fun <- function(x){
+        tmp <- logLik(x)
+        c(tmp[1], attr(tmp, "df"))
+    }
+    DF <- t(sapply(X, fun)) 
+    dev <- c(NA, 2 * diff(DF[,1])) 
+    ddf <- c(NA, diff(DF[,2]))
+    table <- data.frame(DF, ddf, dev, pchisq(dev, ddf, lower.tail = FALSE))
     dimnames(table) <- list(1:length(X), c("Log lik.", "Df", 
-        "Df change", "Diff log lik.", "Pr(>|Chi|)"))
+                                           "Df change", "Diff log lik.", "Pr(>|Chi|)"))
     structure(table, heading = "Likelihood Ratio Test Table", 
-        class = c("anova", "data.frame"))
+              class = c("anova", "data.frame"))
 }
-    
-    
+
 #vcov.pml <- function(object, obs=FALSE,...){
 #    if(obs) FI = score4(object)[[2]]
 #    else FI = score(object,FALSE)[[2]]
