@@ -27,7 +27,8 @@ phyDat.default <- function (data, levels = NULL, return.index = TRUE,
         nam <- row.names(data)
     else nam <- names(data)
     if(is.null(nam))stop("data object must contain taxa names")
-    if(inherits(data, "character")) data <- as.matrix(data)
+    if(inherits(data, "character") | inherits(data, "numeric")) 
+        data <- as.matrix(data)
     if (inherits(data,"DNAbin")) 
         data <- as.character(data)
     if (is.matrix(data)) 
@@ -36,7 +37,6 @@ phyDat.default <- function (data, levels = NULL, return.index = TRUE,
     #    if (is.vector(data) && !is.list(data))data = as.data.frame(data, stringsAsFactors = FALSE)
     else data <- as.data.frame(data, stringsAsFactors = FALSE)
     #    data = data.frame(as.matrix(data), stringsAsFactors = FALSE)    
-    
     
     if(length(data[[1]])==1) compress <- FALSE 
     if(compress){
@@ -204,13 +204,14 @@ phyDat.AA <- function (data, return.index = TRUE)
 {
     if(is.matrix(data)) nam <- row.names(data)
     else nam <- names(data)  
-    if (inherits(data,"DNAbin")) 
+    # AAbin
+    if (inherits(data,"AAbin")) 
         data <- as.character(data)
     if(inherits(data, "character")) data <- as.matrix(data)
     if (is.matrix(data)) 
         data <- as.data.frame(t(data), stringsAsFactors = FALSE)
     else data <- as.data.frame(data, stringsAsFactors = FALSE)
-  
+
     data <- data.frame(tolower(as.matrix(data)), stringsAsFactors = FALSE)
 
     aa <- c("a", "r", "n", "d", "c", "q", "e", "g", "h", "i", 
