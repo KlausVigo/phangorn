@@ -55,6 +55,7 @@ test_that("NNI optimisation works properly", {
     expect_equal(logLik(pmlU3.fitted), logLik(pmlU1))
     expect_equal(logLik(pmlR3.fitted), logLik(pmlR1))
     expect_equal(pmlU3.fitted$tree, pmlU1$tree, tolerance=1e-6)
+    expect_equal(storage.mode(pmlU3.fitted$tree$edge), "integer")
 #    expect_equal(pmlR3.fitted$tree, pmlR1$tree, tolerance=5e-6)
 })
 

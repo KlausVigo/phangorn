@@ -2816,9 +2816,9 @@ indexNNI3 <- function(tree){
     #       e-----f       c is closest to root, f is root from subtree
     #      /       \  
     #     b         c     c(a,b,c,d,e,f)     
-    edgeMatrix <- matrix(0,(Nnode-1), 6)
+    edgeMatrix <- matrix(0L,(Nnode-1), 6)
     
-    pvector <- numeric(max(parent))
+    pvector <- integer(max(parent))
     pvector[child] <- parent
     tips  <- !logical(max(parent))
     tips[parent] <-  FALSE
@@ -3022,9 +3022,6 @@ pml.nni <- function (tree, data, w, g, eig, bf, ll.0, ll, INV=INV, ...)
     tmpl <- pml.fit4(tree, data, bf=bf, g=g, w=w, eig=eig, INV=INV, ll.0=ll.0, 
                      k=k, ...)
 
-#    parent = tree$edge[,1]
-#    child = tree$edge[,2]
-    
     nr <- as.integer(attr(data, "nr"))
     nc <- as.integer(attr(data, "nc"))
     weight <- as.numeric(attr(data, "weight"))
@@ -3034,18 +3031,15 @@ pml.nni <- function (tree, data, w, g, eig, bf, ll.0, ll, INV=INV, ...)
     evi <- (t(eig[[3]]) * bf)
     nTips <- as.integer(length(tree$tip.label))
     
-    
-    #    EL <- numeric(max(parent)) 
-    #    EL[child] <- tree$edge.length
     m <- dim(INDEX)[1]
     loglik <- numeric(2*m)
-    edgeMatrix <- matrix(0, 2*m, 5)
+    edgeMatrix <- matrix(0L, 2*m, 5)
     
     anc <- Ancestors(tree, 1:max(tree$edge), "parent")  
     loli <- getRoot(tree)
     
-    ind1 <- c(1,4,3,2,5) # 
-    ind2 <- c(4,2,3,1,5) #  
+    ind1 <- c(1L, 4L, 3L, 2L, 5L) # 
+    ind2 <- c(4L, 2L ,3L, 1L, 5L) #  
  
     for(i in 1:m){
         ei <- INDEX[i,]
