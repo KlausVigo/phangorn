@@ -171,7 +171,9 @@ lowerBound <- function(x, cost=NULL){
     attr(x, "index") <- NULL
     
     y <- as.character(x)
-    states <- apply(y, 2, unique.default)
+#    states <- apply(y, 2, unique.default) return type not known 
+    states <- vector("list", ncol(y))
+    for(i in seq_len(ncol(y)))states[[i]] <- unique.default(y[,i])
     
     singles <- which(rowSums(contrast) == 1) # 
     noinfo <- which(rowSums(contrast) == nc) # 
