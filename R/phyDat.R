@@ -1051,8 +1051,13 @@ removeUndeterminedSites <- function(x, use.contrast=TRUE,
 removeParsUninfoSites <- function(data){
     nr <- attr(data, "nr")
     pis <- parsinfo(data)
-    if (length(pis) > 0) 
+    if (length(pis) > 0){ 
+        p0 <- sum(attr(data, "weight")[pis[, 1]] * pis[, 2])
         data <- getRows(data, c(1:nr)[-pis[, 1]], TRUE)
+        if(length(attr(data, "p0"))) p0 <- p0 + attr(data, "p0")
+        attr(data, "p0") <-  p0
+    }
+    data
 }
 
 
