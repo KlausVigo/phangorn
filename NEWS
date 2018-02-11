@@ -7,7 +7,17 @@ NEW FEATURES
 BUG FIXES
 
     o densiTree, bug report by Richel Bilderbeek
- 
+    
+    o tree rearrangement in optim.pml return tree with double edge matrix
+    
+    o phyDat should work now for named vectors
+    
+OTHER CHANGES
+
+    o many more unit tests
+    
+    o more consistent coding style
+
 
      CHANGES in PHANGORN VERSION 2.3.0
 
