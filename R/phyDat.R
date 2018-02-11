@@ -989,10 +989,9 @@ subset.phyDat <- function (x, subset, select, site.pattern = TRUE,...)
 }
 
 
-
 map_duplicates <-  function(x, ...){
     labels <- names(x)
-    y <- as.matrix(dist.hamming(x)) 
+    y <- as.matrix(dist.hamming(x, FALSE)) 
     l <- nrow(y)
     z <- character(l)
     for(i in seq_len(l)) z[i] <- paste( round(y[i, ] ,8), collapse="_")
@@ -1006,6 +1005,11 @@ map_duplicates <-  function(x, ...){
     res
 }
 
+
+#duplicated_phyDat <- function(x, ...){
+#    tmp <- map_duplicates(x)[,1]
+#    getCols(x, setdiff(names(x), tmp))
+#}
 
 # duplicated_phyDat <- function(x, ...){
 #    dm <- as.matrix(dist.hamming(x))
@@ -1024,7 +1028,9 @@ map_duplicates <-  function(x, ...){
 #' @export
 unique.phyDat <- function(x, incomparables=FALSE, identical=TRUE, ...){
     if(identical) return(getCols(x, !duplicated(x)))
-    getCols(x, !duplicated_phyDat(x))
+    tmp <- map_duplicates(x)[,1]
+    getCols(x, setdiff(names(x), tmp))
+#    getCols(x, !duplicated_phyDat(x))
 } 
 
 
