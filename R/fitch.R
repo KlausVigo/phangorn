@@ -31,7 +31,8 @@ fitch <- function (tree, data, site="pscore")
             tree <- lapply(tree, reorder, "postorder")
             site <- ifelse(site == "pscore", 1L, 0L) 
             on.exit(.C("fitch_free"))
-            .C("fitch_init", as.integer(data), as.integer(nTips*nr), as.integer(m), as.double(weight), as.integer(nr)) 
+            .C("fitch_init", as.integer(data), as.integer(nTips*nr), 
+               as.integer(m), as.double(weight), as.integer(nr)) 
             return(sapply(tree, fast.fitch, nr, site)) 
         }       
     }
@@ -50,7 +51,9 @@ fit.fitch <- function (tree, data, returnData = c("pscore", "site", "data"))
     weight <- attr(data, "weight")
     m <- max(tree$edge) 
     q <- length(tree$tip.label)
-    result <- .Call("FITCH", data[, tree$tip.label], as.integer(nr), as.integer(node), as.integer(edge), as.integer(length(edge)), as.double(weight), as.integer(m), as.integer(q))
+    result <- .Call("FITCH", data[, tree$tip.label], as.integer(nr), 
+                as.integer(node), as.integer(edge), as.integer(length(edge)), 
+                as.double(weight), as.integer(m), as.integer(q))
     if (returnData == "site") return(result[[2]])
     pscore <- result[[1]]
     res <- pscore
@@ -69,7 +72,8 @@ fnodesNew2 <- function (EDGE, nTips, nr)
     m <- as.integer(max(EDGE)+1L)
     m2 <- 2L*n
     root0 <- as.integer(node[n]) 
-    .Call("FNALL_NNI", as.integer(nr), node, edge, as.integer(n), as.integer(m), as.integer(m2), as.integer(root0))
+    .Call("FNALL_NNI", as.integer(nr), node, edge, as.integer(n), as.integer(m),
+          as.integer(m2), as.integer(root0))
 }   
 
 
@@ -81,7 +85,8 @@ fnodesNew5 <- function (EDGE, nTips, nr, m= as.integer(max(EDGE)+1L))
     n <- length(node)              # in C
     m2 <- 2L*n                     # in C
     root0 <- as.integer(node[n])   # in C 
-    .Call("FNALL5", as.integer(nr), node, edge, as.integer(n), as.integer(m), as.integer(m2), as.integer(root0), PACKAGE="phangorn")
+    .Call("FNALL5", as.integer(nr), node, edge, as.integer(n), as.integer(m), 
+          as.integer(m2), as.integer(root0), PACKAGE="phangorn")
 }   
 
 
@@ -110,14 +115,16 @@ random.addition <- function(data, method="fitch")
     m <- nr*(2L*nTips - 2L)
 
     on.exit(.C("fitch_free"))
-    .C("fitch_init", as.integer(data), as.integer(nTips*nr), as.integer(m), as.double(weight), as.integer(nr))
+    .C("fitch_init", as.integer(data), as.integer(nTips*nr), as.integer(m), 
+       as.double(weight), as.integer(nr))
     
     storage.mode(weight) <- "double"
 
     for (i in remaining) {               
         edge <- tree$edge[,2]   
         score <- fnodesNew5(tree$edge, nTips, nr)[edge]      
-        score <- .Call("FITCHTRIP3", as.integer(i), as.integer(nr), as.integer(edge), as.double(score), as.double(Inf))    
+        score <- .Call("FITCHTRIP3", as.integer(i), as.integer(nr), 
+                       as.integer(edge), as.double(score), as.double(Inf))    
         res <- min(score) 
         nt <- which.min(score)  
         tree <- addOne(tree, i, nt) 
@@ -132,7 +139,8 @@ fast.fitch <- function (tree,  nr, ps = TRUE)
     node <- tree$edge[, 1]
     edge <- tree$edge[, 2]
     m <- max(tree$edge) 
-    .Call("FITCH345", as.integer(nr), as.integer(node), as.integer(edge), as.integer(length(edge)), as.integer(m), as.integer(ps))
+    .Call("FITCH345", as.integer(nr), as.integer(node), as.integer(edge), 
+          as.integer(length(edge)), as.integer(m), as.integer(ps))
 }
 
 
@@ -201,8 +209,8 @@ fitch.spr2 <- function(tree, data){
         treetmp <- dropTip(tree, i)   
         edge <- treetmp$edge[,2] 
         score <- fnodesNew5(treetmp$edge, nTips, nr)[edge]   
-        score <- .Call("FITCHTRIP3", as.integer(i), as.integer(nr), as.integer(edge),  as.double(score), as.double(minp))  
-        
+        score <- .Call("FITCHTRIP3", as.integer(i), as.integer(nr), 
+                       as.integer(edge),  as.double(score), as.double(minp))  
         if(min(score)<minp){
             nt <- which.min(score)
             tree <- addOne(treetmp, i, nt) 
@@ -289,7 +297,9 @@ fitch.nni <- function (tree, data, ...)
     p0 <- fast.fitch(tree, nr)
     m <- dim(INDEX)[2]    
     tmp <- fnodesNew2(tree$edge, nTips, nr)
-    pscore <- .C("fitchQuartet", as.integer(INDEX), as.integer(m), as.integer(nr), as.double(tmp[[1]]), as.double(tmp[[2]]), as.double(weight), double(m))[[7]]    
+    pscore <- .C("fitchQuartet", as.integer(INDEX), as.integer(m), 
+                 as.integer(nr), as.double(tmp[[1]]), as.double(tmp[[2]]), 
+                 as.double(weight), double(m))[[7]]    
     swap <- 0
     candidates <- pscore < p0
     while (any(candidates)) {
@@ -322,7 +332,8 @@ optim.fitch <- function(tree, data, trace=1, rearrangements = "SPR", ...) {
         tree <- unroot(tree)
         attr(tree, "order") <- NULL
     }
-    if(is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise") tree <- reorder(tree, "postorder")  
+    if(is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise") 
+        tree <- reorder(tree, "postorder")  
     if (class(data)[1] != "phyDat") stop("data must be of class phyDat")
 
 #   stop early for n=3 or 4  
@@ -341,13 +352,15 @@ optim.fitch <- function(tree, data, trace=1, rearrangements = "SPR", ...) {
     
     nr <- attr(data, "nr")
    
-    data <- subset(data,tree$tip.label,order(attr(data, "weight"), decreasing=TRUE))   
+    data <- subset(data, tree$tip.label, order(attr(data, "weight"), 
+                                               decreasing=TRUE))   
     dat <- prepareDataFitch(data) 
     weight <- attr(data, "weight")
 
     m <- nr*(2L*nTips - 2L)
     on.exit(.C("fitch_free"))
-    .C("fitch_init", as.integer(dat), as.integer(nTips*nr), as.integer(m), as.double(weight), as.integer(nr))
+    .C("fitch_init", as.integer(dat), as.integer(nTips*nr), as.integer(m), 
+       as.double(weight), as.integer(nr))
 
     tree$edge.length <- NULL
     swap <- 0
@@ -356,22 +369,24 @@ optim.fitch <- function(tree, data, trace=1, rearrangements = "SPR", ...) {
     while (iter) {
         res <- fitch.nni(tree, dat, ...)
         tree <- res$tree
-        if(trace>1)cat("optimize topology: ", pscore + p0, "-->", res$pscore + p0, 
-            "\n")
+        if(trace>1)cat("optimize topology: ", pscore + p0, "-->", 
+                       res$pscore + p0, "\n")
         pscore <- res$pscore
         swap <- swap + res$swap
         if (res$swap == 0){
             if(rearrangements=="SPR"){
                 tree <- fitch.spr(tree, dat)             
                 psc <- fast.fitch(tree, nr)
-                if(trace>1)cat("optimize topology (SPR): ", pscore + p0 , "-->", psc + p0, "\n")
+                if(trace>1)cat("optimize topology (SPR): ", pscore + p0 , "-->", 
+                               psc + p0, "\n")
                 if(pscore < psc+1e-6) iter <- FALSE
                 pscore <- psc
             } 
             else iter <- FALSE
         }
     }
-    if(trace>0)cat("Final p-score",pscore + p0,"after ",swap, "nni operations \n") 
+    if(trace>0) cat("Final p-score", pscore + p0,"after ", swap, 
+                    "nni operations \n") 
     if(rt)tree <- ptree(tree, data)  
     attr(tree, "pscore") <- pscore + p0
     tree
@@ -387,7 +402,9 @@ getOrder <- function (x)
     added <- ind
     remaining <- c(1:nTips)[-ind]
 
-    tree <- structure(list(edge = structure(c(rep(nTips+1L, 3), c(ind, 0L)), .Dim = c(3L, 2L)), tip.label = label, Nnode = 1L), .Names = c("edge", "tip.label", "Nnode"), class = "phylo", order = "postorder")      
+    tree <- structure(list(edge = structure(c(rep(nTips+1L, 3), c(ind, 0L)), 
+        .Dim = c(3L, 2L)), tip.label = label, Nnode = 1L), .Names = c("edge", 
+        "tip.label", "Nnode"), class = "phylo", order = "postorder")      
 
     l <- length(remaining)
     res <- numeric(l)
@@ -403,7 +420,8 @@ getOrder <- function (x)
     m <- nr*(2L*nTips - 2L)
 
     on.exit(.C("fitch_free"))
-    .C("fitch_init", as.integer(data), as.integer(nTips*nr), as.integer(m), as.double(weight), as.integer(nr))
+    .C("fitch_init", as.integer(data), as.integer(nTips*nr), as.integer(m), 
+       as.double(weight), as.integer(nr))
 
     for(i in seq_along(remaining)){
         tree$edge[3,2] <- remaining[i]     
@@ -414,7 +432,8 @@ getOrder <- function (x)
     remaining <- remaining[-tmp]
     tree$edge[,2] <- added
 
-    for (i in 4:(nTips - 1L)) {
+#    for (i in 4:(nTips - 1L)) {
+    while(length(remaining)>0){     
         edge <- tree$edge[,2]                 
         score0 <- fnodesNew5(tree$edge, nTips, nr)[edge]        
         
@@ -423,8 +442,9 @@ getOrder <- function (x)
         nt <- numeric(l)
         k <- length(added)+1L
         for(j in 1:l){
-            score <- .Call("FITCHTRIP3", as.integer(remaining[j]), as.integer(nr), as.integer(edge), as.double(score0), as.double(Inf))   
-            
+            score <- .Call("FITCHTRIP3", as.integer(remaining[j]), 
+                           as.integer(nr), as.integer(edge), as.double(score0), 
+                           as.double(Inf))   
 #            score = score0[edge] + psc
             res[j] <- min(score) 
             nt[j] <- which.min(score)
@@ -491,18 +511,40 @@ bab <- function (data, tree = NULL, trace = 1, ...)
     nTips <- length(data)
     if(nTips < 4) return(stree(nTips, tip.label = names(data)))
     
-    nr <- attr(data, "nr")
-    pis <- parsinfo(data)
-    p0 <- sum(attr(data, "weight")[pis[, 1]] * pis[, 2])
-    if (length(pis) > 0) 
-        data <- getRows(data, c(1:nr)[-pis[, 1]], TRUE)
-    # TODO unique data
-    # added compressSites
+    data <- removeParsUninfoSites(data)
+    p0 <- attr(data, "p0")
+#    nr <- attr(data, "nr")
+#    pis <- parsinfo(data)
+#    p0 <- sum(attr(data, "weight")[pis[, 1]] * pis[, 2])
+#    if (length(pis) > 0) 
+#        data <- getRows(data, c(1:nr)[-pis[, 1]], TRUE)
+    if(attr(data, "nr") == 0) return(stree(nTips, tip.label = names(data)))
+    
+    # added compressSites        
     data <- compressSites(data)
-
+    dup_list <- NULL
+    addTaxa <- FALSE
+    dup <- map_duplicates(data)
+# should be recursive    
+    if(!is.null(dup)){
+        dup_list <- c(list(dup), dup_list)
+        addTaxa <- TRUE
+        data <- subset(data, setdiff(names(data), dup[,1]))
+    }
+    #<- unique.phyDat
+    nTips <- length(data)
+    if(nTips < 4L){
+        tree <- stree(nTips, tip.label = names(data))
+        return(add.tips(tree, dup[,1], dup[,2]))
+    }
+# todo add.tips in the end
+# add.tips for multiPhylo   
+# browser()    
+    
     o <- order(attr(data, "weight"), decreasing = TRUE)
     data <- subset(data, , o)
-        
+    
+    
     tree <- pratchet(data, start = tree, trace = trace - 1, ...)
     data <- subset(data, tree$tip.label) 
     nr <- as.integer(attr(data, "nr"))
@@ -522,8 +564,10 @@ bab <- function (data, tree = NULL, trace = 1, ...)
     weight <- as.double(attr(data, "weight"))
     data <- prepareDataFitch(data)
     m <- nr*(2L*nTips - 2L)
+    # spaeter
     on.exit(.C("fitch_free"))
-    .C("fitch_init", as.integer(data), as.integer(nTips*nr), as.integer(m), as.double(weight), as.integer(nr))
+    .C("fitch_init", as.integer(data), as.integer(nTips*nr), as.integer(m), 
+             as.double(weight), as.integer(nr))
     mmsAmb <- 0
     mmsAmb <- TMP %*% weight  
     mmsAmb <- mmsAmb[nTips] - mmsAmb
@@ -576,13 +620,17 @@ bab <- function (data, tree = NULL, trace = 1, ...)
         tmpTree <- trees[[a]][[b]]
         edge <- tmpTree[,2]  
         score <- fnodesNew5(tmpTree, nTips, nr, M[a])[edge] + mms0[a+1L] 
-        score <- .Call("FITCHTRIP3", as.integer(inord[a+1L]), as.integer(nr), as.integer(edge), as.double(score), as.double(bound), PACKAGE="phangorn")    
+        score <- .Call("FITCHTRIP3", as.integer(inord[a+1L]), as.integer(nr), 
+                       as.integer(edge), as.double(score), as.double(bound), 
+                       PACKAGE="phangorn")    
         
         ms <- min(score)
         if(ms<=bound){
             if((a+1L)<nTips){
                 ind <- (1:L[a])[score<=bound]
-                trees[[a+1]][seq_along(ind)] <- .Call("AddOnes", tmpTree, as.integer(inord[a+1L]), as.integer(ind), as.integer(L[a]), as.integer(M[a]), PACKAGE="phangorn") 
+                trees[[a+1]][seq_along(ind)] <- .Call("AddOnes", tmpTree, 
+                    as.integer(inord[a+1L]), as.integer(ind), as.integer(L[a]), 
+                    as.integer(M[a]), PACKAGE="phangorn") 
                 l <- length(ind)
                 #                os <- order(score[ind], decreasing=TRUE)     
                 os <- seq_len(l)
@@ -590,13 +638,14 @@ bab <- function (data, tree = NULL, trace = 1, ...)
                 PSC <- rbind(PSC, cbind(rep(a+1, l), os, score[ind] ))
                 npsc <- npsc + l
                 blub[a] <- blub[a] + l
-                #                PSC = rbind(PSC, cbind(rep(a+1, l), os, score[ind][os] ))
+                #  PSC = rbind(PSC, cbind(rep(a+1, l), os, score[ind][os] ))
             }
             else{
                 ind <- which(score==ms) 
                 tmp <- vector("list", length(ind)) 
-                tmp[seq_along(ind)] <- .Call("AddOnes", tmpTree, as.integer(inord[a+1L]), as.integer(ind), as.integer(L[a]), as.integer(M[a]), PACKAGE="phangorn")
-                
+                tmp[seq_along(ind)] <- .Call("AddOnes", tmpTree, 
+                        as.integer(inord[a+1L]), as.integer(ind), 
+                        as.integer(L[a]), as.integer(M[a]), PACKAGE="phangorn")
                 if(ms < bound){
                     bound <- ms
                     if(trace)cat("upper bound:", bound + p0, "\n") 
@@ -611,11 +660,18 @@ bab <- function (data, tree = NULL, trace = 1, ...)
 #        npsc = nrow(PSC)
     }
     for(i in seq_along(result)){
-        result[[i]] <- structure(list(edge = result[[i]], Nnode = nTips-2L), .Names = c("edge", "Nnode"), class = "phylo", order = "postorder")
+        result[[i]] <- structure(list(edge = result[[i]], Nnode = nTips-2L), 
+            .Names = c("edge", "Nnode"), class = "phylo", order = "postorder")
     }
     attr(result, "TipLabel") <- tree$tip.label
 #    attr(result, "visited") = blub
     class(result) <- "multiPhylo"
+    if(addTaxa){
+        result <- .uncompressTipLabel(trees)
+        class(result) <- NULL
+        result <- lapply(result, add.tips, dup[,1], dup[,2])
+        result <- .uncompressTipLabel(trees)
+    }
     return(result)
 }
 
