@@ -537,13 +537,8 @@ bab <- function (data, tree = NULL, trace = 1, ...)
         tree <- stree(nTips, tip.label = names(data))
         return(add.tips(tree, dup[,1], dup[,2]))
     }
-# todo add.tips in the end
-# add.tips for multiPhylo   
-# browser()    
-    
     o <- order(attr(data, "weight"), decreasing = TRUE)
     data <- subset(data, , o)
-    
     
     tree <- pratchet(data, start = tree, trace = trace - 1, ...)
     data <- subset(data, tree$tip.label) 
@@ -574,7 +569,6 @@ bab <- function (data, tree = NULL, trace = 1, ...)
     mms0 <- 0
     if(pBound) mms0 <- pBound(dat_used, UB) 
     mms0 <- mms0 + mmsAmb
-    
     
     minPars <- mms0[1]
     kPars <- 0
