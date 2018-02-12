@@ -906,19 +906,14 @@ bipart <- function(x)
 bipartition <- function (tree) 
 {
     if(is.rooted(tree))tree <- unroot(tree)
-    if(is.null(attr(tree,"order")) || attr(tree, "order")=="cladewise") tree <- reorder(tree, "postorder")
-    bp <- bipart(tree)
+    if(is.null(attr(tree,"order")) || attr(tree, "order")=="cladewise") 
+        tree <- reorder(tree, "postorder")
+    bp <- bip(tree)
     nTips <- length(tree$tip.label)
     l <- length(bp)
-    m <- max(lengths(bp))
-    k <- length(tree$edge[, 1])
-    result <- matrix(0L, l, m)
-    res <- matrix(0L, k, m)
-    for (i in 1:l) result[i, bp[[i]]] <- 1L
-    result <- result[-l, ,drop=FALSE]
-    for (i in 1:nTips) res[(tree$edge[, 2] == i), i] <- 1L     
-#    res[tree$edge[, 2] > nTips, ] = result
-    res[ match(unique(tree$edge[,1]),tree$edge[,2])[-l], ] <- result
+    res <- matrix(0L, l, nTips)
+    for (i in 1:l) res[i, bp[[i]]] <- 1L
+    res <- res[tree$edge[,2], , drop=FALSE]
     colnames(res) <- tree$tip.label
     rownames(res) <- tree$edge[,2]
     res[res[, 1] == 1, ] <- 1L - res[res[, 1] == 1, ]
