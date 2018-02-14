@@ -17,6 +17,8 @@ OTHER CHANGES
     o many more unit tests
     
     o more consistent coding style
+    
+    o flashClust and seqLogo are not suggested packages any more
 
 
      CHANGES in PHANGORN VERSION 2.3.0

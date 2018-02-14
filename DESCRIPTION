@@ -34,7 +34,6 @@ Suggests:
     testthat,
     seqinr,
     xtable,
-    flashClust,
     rgl,
     knitr,
     rmarkdown,
