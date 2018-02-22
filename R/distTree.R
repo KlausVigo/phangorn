@@ -351,6 +351,10 @@ PNJ <- function (data)
 #' @param rooted compute a "rooted" or "unrooted" tree.
 #' @param trace defines how much information is printed during optimisation.
 #' @param \dots further arguments, passed to other methods.
+#' @param weight vector of weights to be used in the fitting process. 
+#' Weighted least squares is used with weights w, i.e., sum(w * e^2) is 
+#' minimized.
+#' @param balanced use weights as in balanced fastME
 #' @return \code{nnls.tree} return a tree, i.e. an object of class
 #' \code{phylo}.  \code{designTree} and \code{designSplits} a matrix, possibly
 #' sparse.
@@ -535,12 +539,17 @@ designUnrooted2 <- function (tree, sparse=TRUE)
 
 #' @rdname designTree
 #' @export
-nnls.tree <- function(dm, tree, rooted=FALSE, trace=1){
+nnls.tree <- function(dm, tree, rooted=FALSE, trace=1, weight=NULL, 
+                      balanced=FALSE){
     if(is.rooted(tree) & rooted==FALSE){
         tree <- unroot(tree)
         warning("tree was rooted, I unrooted the tree!")
     }
     tree <- reorder(tree, "postorder")
+    if(balanced){
+        if(!is.binary(tree)) stop("tree must be binary")
+        weight <- rowSums(designTree(unroot(tree)))
+    }
     dm <- as.matrix(dm)
     k <- dim(dm)[1]
     labels <- tree$tip.label
@@ -549,6 +558,11 @@ nnls.tree <- function(dm, tree, rooted=FALSE, trace=1){
     #computing the design matrix from the tree   
     if(rooted) X <- designUltra(tree) 
     else X <- designUnrooted2(tree)
+    
+    if(!is.null(weight)){
+        y <- y * sqrt(weight)
+        X <- X * sqrt(weight)
+    }
     
     lab <- attr(X, "nodes")
     
@@ -580,7 +594,6 @@ nnls.tree <- function(dm, tree, rooted=FALSE, trace=1){
     # non-negative LS
     n <- dim(X)[2]
     l <- nrow(tree$edge)
-    
     
     lab <- attr(X, "nodes")
     # vielleicht solve.QP.compact
@@ -627,8 +640,8 @@ nnls.tree <- function(dm, tree, rooted=FALSE, trace=1){
 
 #' @rdname designTree
 #' @export
-nnls.phylo <- function(x, dm, rooted=FALSE, trace=0){
-    nnls.tree(dm, x, rooted, trace=trace)
+nnls.phylo <- function(x, dm, rooted=FALSE, trace=0, ...){
+    nnls.tree(dm, x, rooted, trace=trace, ...)
 }
 
 
