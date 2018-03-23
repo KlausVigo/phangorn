@@ -4,7 +4,7 @@ data(yeast)
 yeast.ry <- acgt2ry(yeast)
 splits.h <- h2st(yeast.ry)
 
-lentoPlot <- function() lento(splits.h, trivial=TRUE)
+lentoPlot <- function() lento(splits.h)
 
 # Visual tests ------------------------------------------------------------
 test_that("visual appearance", {
