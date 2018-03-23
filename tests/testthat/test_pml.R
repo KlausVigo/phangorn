@@ -43,7 +43,7 @@ pmlR3.fitted <- optim.pml(pmlR3, TRUE, optRooted = TRUE,  control =
 
 
 test_that("edge length optimisation works properly", {
-    skip_on_cran()
+#    skip_on_cran()
     expect_equal(logLik(pmlU2.fitted), logLik(pmlU1))
     expect_equal(logLik(pmlR2.fitted), logLik(pmlR1))  
     expect_equal(pmlU2.fitted$tree, pmlU1$tree, tolerance=1e-6)
@@ -51,7 +51,7 @@ test_that("edge length optimisation works properly", {
 })
 
 test_that("NNI optimisation works properly", {
-    skip_on_cran()
+#    skip_on_cran()
     expect_equal(logLik(pmlU3.fitted), logLik(pmlU1))
     expect_equal(logLik(pmlR3.fitted), logLik(pmlR1))
     expect_equal(pmlU3.fitted$tree, pmlU1$tree, tolerance=1e-6)

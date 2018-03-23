@@ -178,7 +178,7 @@ test_that("Linked parameters optimisation works properly", {
 
     fit_Z <- update(fit0, data=Z)
     fit_Z <- optim.pml(fit_Z, model="GTR", rearrangement="NNI", optGamma=TRUE, 
-                   optInv=TRUE)
+                   optInv=TRUE, control=pml.control(trace=0))
     sp <- pmlPart(edge + bf + Q + shape + inv + nni ~ ., fit_Z, weight=W)    
 
     expect_equal(sp$logLik[[1]], fit_Z$logLik, tolerance = 1e-5)

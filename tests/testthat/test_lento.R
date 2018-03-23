@@ -8,6 +8,6 @@ lentoPlot <- function() lento(splits.h, trivial=TRUE)
 
 # Visual tests ------------------------------------------------------------
 test_that("visual appearance", {
-    testthat::skip_on_cran()
+    skip_on_cran()
     vdiffr::expect_doppelganger("lento plot", lentoPlot)
 })
