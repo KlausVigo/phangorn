@@ -702,7 +702,7 @@ pmlCluster <- function (formula, fit, weight, p = 1:5, part = NULL, nrep = 10,
         tmp1 <- opt2 %in% form$left
         tmp1 <- tmp1 | (opt2 %in% form$right)
         fit <- optim.pml(fit, tmp1[1], tmp1[2], tmp1[3], tmp1[4],
-                         tmp1[5], tmp1[6])
+                         tmp1[5], tmp1[6], control=control)
     }
     
     p <- p[p!=1]

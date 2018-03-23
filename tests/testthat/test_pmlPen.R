@@ -15,7 +15,7 @@ attr(Y, "weight") <- 1000*exp(fit2$site)
 fit1 <- update(fit1, data=X)
 fit2 <- update(fit2, data=Y)
 
-sp <- pmlPart(~ edge, list(fit1, fit2))
+sp <- pmlPart(~ edge, list(fit1, fit2), pml.control(trace = 0))
 pp0 <- pmlPen(sp, lambda = 0, pml.control(trace = 0))
 ppInf <- pmlPen(sp, lambda = 1e6, pml.control(trace = 0))
 
