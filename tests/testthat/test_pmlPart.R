@@ -21,8 +21,8 @@ colnames(W) <- c("g1", "g2", "g3")
 test_that("rate optimisation works properly", {
     skip_on_cran()
     sp <- pmlPart(edge ~ rate, fit0, weight=W, control = pml.control(trace=0))
-    expect_equal( sp$fits[[1]]$rate  / sp$fits[[2]]$rate , 2, tolerance = 1e-5)
-    expect_equal( sp$fits[[1]]$rate  / sp$fits[[3]]$rate , 0.5, tolerance = 1e-5)
+    expect_equal( sp$fits[[1]]$rate / sp$fits[[2]]$rate , 2, tolerance = 1e-5)
+    expect_equal( sp$fits[[1]]$rate / sp$fits[[3]]$rate , 0.5, tolerance = 1e-5)
 })    
 
 # nni
@@ -50,14 +50,14 @@ test_that("transition rate optimisation works properly", {
     
     # linked parameter
     
-    sp <- pmlPart(edge + Q ~ ., fit0, weight=W)    
+    sp <- pmlPart(edge + Q ~ ., fit0, weight=W, control = pml.control(trace=0))    
     expect_equal(logLik(sp)[1], logLik(fit1)[1]*3, tolerance=5e-4 )
     expect_equal(Q, sp$fits[[1]]$Q, tolerance=5e-4)
     
     # unlinked parameter
     # TODO more complicated models
     # weights0 <- 1000*exp(fit0$site)
-    sp <- pmlPart( ~ Q, fit0, weight=W)   
+    sp <- pmlPart( ~ Q, fit0, weight=W, control = pml.control(trace=0))   
     expect_equal(logLik(sp)[1], logLik(fit1)[1]*3, tolerance=5e-4 )
     expect_equal(Q, sp$fits[[1]]$Q, tolerance=5e-4)
 })
@@ -84,14 +84,14 @@ test_that("base frequency optimisation works properly", {
     
     # linked parameter
     
-    sp <- pmlPart(edge + bf ~ ., fit0, weight=W)    
+    sp <- pmlPart(edge + bf ~ ., fit0, weight=W, control = pml.control(trace=0))    
     expect_equal(logLik(sp)[1], logLik(fit1)[1]*3, tolerance=5e-4 )
     expect_equal(bf, sp$fits[[1]]$bf, tolerance=5e-4)
     
     # unlinked parameter
     # TODO more complicated models
     # weights0 <- 1000*exp(fit0$site)
-    sp <- pmlPart( ~ bf, fit0, weight=W)   
+    sp <- pmlPart( ~ bf, fit0, weight=W, control = pml.control(trace=0))   
     expect_equal(logLik(sp)[1], logLik(fit1)[1]*3, tolerance=5e-4 )
     expect_equal(bf, sp$fits[[1]]$bf, tolerance=5e-4)
 })
@@ -117,14 +117,15 @@ test_that("shape parameter optimisation works properly", {
     
     # linked parameter
   
-    sp <- pmlPart(edge + shape ~ ., fit0, weight=W)    
+    sp <- pmlPart(edge + shape ~ ., fit0, weight=W, 
+                  control=pml.control(trace=0))    
     expect_equal(logLik(sp)[1], logLik(fit1)[1]*3, tolerance=5e-4 )
     expect_equal(shape, sp$fits[[1]]$shape, tolerance=5e-3)
     
     # unlinked parameter
     # TODO more complicated models
     # weights0 <- 1000*exp(fit0$site)
-    sp <- pmlPart( ~ shape, fit0, weight=W)   
+    sp <- pmlPart( ~ shape, fit0, weight=W, control=pml.control(trace=0))   
     expect_equal(logLik(sp)[1], logLik(fit1)[1]*3, tolerance=5e-4 )
     expect_equal(shape, sp$fits[[1]]$shape, tolerance=5e-4)
 })
@@ -150,14 +151,14 @@ test_that("Invariant sites optimisation works properly", {
     
     # linked parameter
     
-    sp <- pmlPart(edge + inv ~ ., fit0, weight=W)    
+    sp <- pmlPart(edge + inv ~ ., fit0, weight=W, control=pml.control(trace=0))    
     expect_equal(logLik(sp)[1], logLik(fit1)[1]*3, tolerance=5e-4 )
     expect_equal(inv, sp$fits[[1]]$inv, tolerance=5e-5)
     
     # unlinked parameter
     # TODO more complicated models
     # weights0 <- 1000*exp(fit0$site)
-    sp <- pmlPart( ~ inv, fit0, weight=W)   
+    sp <- pmlPart( ~ inv, fit0, weight=W, control = pml.control(trace=0))   
     expect_equal(logLik(sp)[1], logLik(fit1)[1]*3, tolerance=5e-4 )
     expect_equal(inv, sp$fits[[1]]$inv, tolerance=5e-5)
 })
