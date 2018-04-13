@@ -279,5 +279,18 @@ modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80",
 }
 
 
-
+tidy.modelTest <- function(x){
+    env <- attr(x, "env")
+    l <- nrow(x)
+    k <- rep(1L, l)
+    shape <- rep(NA_real_, l)
+    inv <- rep(0, l)
+    for(i in seq_len(l)){
+        tmp <- get(x$Model[i], env)
+        if(!is.null(tmp[["k"]]))k[i] <- tmp[["k"]]
+        if(!is.null(tmp[["shape"]]))shape[i] <- tmp[["shape"]]
+        if(!is.null(tmp[["inv"]]))inv[i] <- tmp[["inv"]]
+    }
+    data.frame(Model = x$Model, k=k, shape=shape, inv=inv)
+}
 
