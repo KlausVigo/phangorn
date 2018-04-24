@@ -36,7 +36,7 @@
 \usage{
 phyDat(data, type = "DNA", levels = NULL, return.index = TRUE, ...)
 
-dna2codon(x)
+dna2codon(x, codonstart = 1)
 
 codon2dna(x)
 
@@ -89,6 +89,10 @@ genlight2phyDat(x, ambiguity = NA)
 
 \item{x}{An object containing sequences.}
 
+\item{codonstart}{an integer giving where to start the translation. This 
+should be 1, 2, or 3, but larger values are accepted and have for effect to 
+start the translation further within the sequence.}
+
 \item{allLevels}{return original data.}
 
 \item{file}{A file name.}
@@ -131,7 +135,8 @@ sequences are considered duplicates if distance between sequences is zero
 
 \item{names}{Names of sequences.}
 
-\item{ambiguity}{character for ambiguous character and no contrast is provided.}
+\item{ambiguity}{character for ambiguous character and no contrast is 
+provided.}
 }
 \value{
 The functions return an object of class \code{phyDat}.
@@ -169,14 +174,24 @@ ry-coded dataset.
 data(Laurasiatherian)
 class(Laurasiatherian)
 Laurasiatherian
+# base frequencies
 baseFreq(Laurasiatherian)
 baseFreq(Laurasiatherian, all=TRUE)
+baseFreq(Laurasiatherian, freq=TRUE)
+# subsetting phyDat objects
+# the first 5 sequences
 subset(Laurasiatherian, subset=1:5)
+# the first 5 characters
+subset(Laurasiatherian, select=1:5, site.pattern = FALSE)
+# the first 5 site patterns (often more than 5 characters)
+subset(Laurasiatherian, select=1:5, site.pattern = TRUE)
 # transform into old ape format
 LauraChar <- as.character(Laurasiatherian)
 # and back 
 Laura <- phyDat(LauraChar)
 all.equal(Laurasiatherian, Laura)
+# Compute all possible site patterns 
+# for nucleotides there $4 ^ (number of tips)$ patterns
 allSitePattern(5)
 
 }

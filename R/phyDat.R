@@ -441,7 +441,11 @@ phyDat.codon <- function (data, return.index = TRUE)
 #' @param identical if TRUE (default) sequences have to be identical, if FALSE
 #' sequences are considered duplicates if distance between sequences is zero
 #' (happens frequently with ambiguous sites).
-#' @param ambiguity character for ambiguous character and no contrast is provided.
+#' @param ambiguity character for ambiguous character and no contrast is 
+#' provided.
+#' @param codonstart an integer giving where to start the translation. This 
+#' should be 1, 2, or 3, but larger values are accepted and have for effect to 
+#' start the translation further within the sequence.
 #' @param ... further arguments passed to or from other methods.
 #' @return The functions return an object of class \code{phyDat}.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
@@ -456,14 +460,24 @@ phyDat.codon <- function (data, return.index = TRUE)
 #' data(Laurasiatherian)
 #' class(Laurasiatherian)
 #' Laurasiatherian
+#' # base frequencies
 #' baseFreq(Laurasiatherian)
 #' baseFreq(Laurasiatherian, all=TRUE)
+#' baseFreq(Laurasiatherian, freq=TRUE)
+#' # subsetting phyDat objects
+#' # the first 5 sequences
 #' subset(Laurasiatherian, subset=1:5)
+#' # the first 5 characters
+#' subset(Laurasiatherian, select=1:5, site.pattern = FALSE)
+#' # the first 5 site patterns (often more than 5 characters)
+#' subset(Laurasiatherian, select=1:5, site.pattern = TRUE)
 #' # transform into old ape format
 #' LauraChar <- as.character(Laurasiatherian)
 #' # and back 
 #' Laura <- phyDat(LauraChar)
 #' all.equal(Laurasiatherian, Laura)
+#' # Compute all possible site patterns 
+#' # for nucleotides there $4 ^ (number of tips)$ patterns
 #' allSitePattern(5)
 #' 
 #' @rdname phyDat
@@ -483,8 +497,13 @@ phyDat <- function (data, type="DNA", levels=NULL, return.index = TRUE,...)
 
 #' @rdname phyDat
 #' @export
-dna2codon <- function(x){
+dna2codon <- function(x, codonstart=1){
     if(!inherits(x, "phyDat"))stop("x needs to be of class phyDat!")
+    if(attr(x, "type")=="AA")stop("x needs to be a nucleotide sequence!")
+    if(codonstart>1){
+        del <- -seq_len(codonstart)
+        x <- subset(x, select=del, site.pattern=FALSE)
+    }
     phyDat.codon(as.character(x))
 }
 
@@ -953,8 +972,14 @@ getRows <- function (data, rows, site.pattern = TRUE)
   index <- attr(data, "index")
   if(is.data.frame(index))index <- index[,1]
   if(!site.pattern){ # & all(rows>0)
+
     weight <- tabulate(index[rows])
     ind <- which(weight>0)
+# update index     
+    new_index <- integer(length(weight))
+    new_index[ind] <- seq_along(ind)
+    attr(data, "index") <- new_index[index[rows]]
+        
     rows <- ind   # rows[ind]
     weight <- weight[ind]
   } 
@@ -965,7 +990,7 @@ getRows <- function (data, rows, site.pattern = TRUE)
   attr(data, "weight") <- attr(data, "weight")[rows]
   if(!site.pattern) attr(data, "weight") <- weight    
   attr(data, "nr") <- length(attr(data, "weight"))
-  attr(data, "index") <- NULL
+  if(site.pattern)attr(data, "index") <- NULL
   data
 }
 
