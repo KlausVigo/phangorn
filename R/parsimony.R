@@ -3,7 +3,7 @@
 #
 rowMin <- function(X){
     d <- dim(X)
-    .Call("C_rowMin", X, as.integer(d[1]), as.integer(d[2]), PACKAGE = "phangorn") 
+    .Call("C_rowMin", X, as.integer(d[1]), as.integer(d[2]), PACKAGE="phangorn")
 }
 
 
@@ -365,7 +365,8 @@ sankoff <- function (tree, data, cost = NULL, site = 'pscore')
         cost <- cost - diag(l)
     }   
     for (i in seq_along(data)) storage.mode(data[[i]]) <- "double"
-    if(inherits(tree,"phylo")) return(fit.sankoff(tree, data, cost, returnData =site))
+    if(inherits(tree,"phylo")) return(fit.sankoff(tree, data, cost, 
+                                                  returnData=site))
     if(inherits(tree,"multiPhylo")){
 	    if(is.null(tree$TipLabel))tree <- unclass(tree)
 	    return(sapply(tree, fit.sankoff, data, cost, site))
@@ -373,7 +374,7 @@ sankoff <- function (tree, data, cost = NULL, site = 'pscore')
 }
 
 
-fit.sankoff <- function (tree, data, cost, returnData = c("pscore", "site", "data")) 
+fit.sankoff <- function (tree, data, cost, returnData=c("pscore", "site", "data")) 
 {
     if (is.null(attr(tree, "order")) || attr(tree, "order") == 
         "cladewise") 
@@ -393,10 +394,11 @@ fit.sankoff <- function (tree, data, cost, returnData = c("pscore", "site", "dat
     nTips <- as.integer(length(tree$tip.label))
     mNodes <- as.integer(max(node) + 1)
     tips <- as.integer((seq_along(tree$tip.label))-1)
-    res <- .Call("sankoff3", dat, as.numeric(cost), as.integer(nr),as.integer(nc),
-         node, edge, mNodes, tips, PACKAGE="phangorn")  
+    res <- .Call("sankoff3", dat, as.numeric(cost), as.integer(nr),
+                 as.integer(nc), node, edge, mNodes, tips, PACKAGE="phangorn")  
     root <- getRoot(tree) 
-    erg <- .Call("C_rowMin", res[[root]], as.integer(nr), as.integer(nc), PACKAGE = "phangorn")
+    erg <- .Call("C_rowMin", res[[root]], as.integer(nr), as.integer(nc), 
+                 PACKAGE = "phangorn")
     if (returnData=='site') return(erg)
     pscore <- sum(weight * erg)
     result <- pscore
@@ -437,7 +439,8 @@ indexNNI <- function(tree){
     tips[parent] <-  FALSE
 #    cvector <- allCildren(tree)  
     cvector <- vector("list",max(parent))   
-    for(i in seq_along(parent))  cvector[[parent[i]]] <- c(cvector[[parent[i]]], child[i]) 
+    for(i in seq_along(parent))  cvector[[parent[i]]] <- c(cvector[[parent[i]]], 
+                                                           child[i]) 
     k <- 0
     for(i in ind){        
             p1 <- parent[i]
@@ -520,8 +523,8 @@ sankoff.nni <- function (tree, data, cost, ...)
 #' @export
 optim.parsimony <- function(tree,data, method='fitch', cost=NULL, trace=1, 
                             rearrangements="SPR", ...){
-    if(method=='fitch') result <- optim.fitch(tree=tree, data=data, trace=trace, 
-                                             rearrangements=rearrangements, ...) 
+    if(method=='fitch') result <- optim.fitch(tree=tree, data=data, trace=trace,
+                                             rearrangements=rearrangements, ...)
     if(method=='sankoff') result <- optim.sankoff(tree=tree, data=data, 
                                                   cost=cost, trace=trace, ...)
     result 
@@ -632,7 +635,8 @@ start_tree <- function(x, maxit = 1, trace = 0, ...){
 optim.sankoff <- function(tree, data, cost=NULL, trace=1, ...) {
     if(!inherits(tree,"phylo")) stop("tree must be of class phylo") 
     if(is.rooted(tree))tree <- unroot(tree)
-    if(is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise") tree <- reorder(tree, "postorder")
+    if(is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise") 
+        tree <- reorder(tree, "postorder")
     if (class(data)[1] != "phyDat") stop("data must be of class phyDat")
     
     rt <- FALSE
