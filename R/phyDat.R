@@ -1,7 +1,7 @@
 #
 # Data structures for ML and MP
 # 
-fast.table <- function (data)                                                            
+fast.table <- function (data)   
 {                                                                               
     if(!is.data.frame(data)) 
         data <- as.data.frame(data, stringsAsFactors = FALSE)                   
@@ -34,7 +34,8 @@ phyDat.default <- function (data, levels = NULL, return.index = TRUE,
     if (is.matrix(data)) 
         data <- as.data.frame(t(data), stringsAsFactors = FALSE)
     # new 4.4.2016 bug fix (reported by Eli Levy Karin)     
-    #    if (is.vector(data) && !is.list(data))data = as.data.frame(data, stringsAsFactors = FALSE)
+    #    if (is.vector(data) && !is.list(data))data = as.data.frame(data, 
+    #    stringsAsFactors = FALSE)
     else data <- as.data.frame(data, stringsAsFactors = FALSE)
     #    data = data.frame(as.matrix(data), stringsAsFactors = FALSE)    
     
@@ -1003,10 +1004,6 @@ subset.phyDat <- function (x, subset, select, site.pattern = TRUE,...)
      
     if (!missing(subset)) x <- getCols(x, subset)
     if (!missing(select)){
-#         if(!site.pattern){
-#             if(is.data.frame(attr(x, "index"))) select <- attr(x, "index")[select,1]
-#             else select <- attr(x, "index")[select]
-#         }     
          if(any(is.na(select))) return(NULL) 
          x <- getRows(x, select, site.pattern=site.pattern)
     }    
