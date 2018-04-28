@@ -2,6 +2,10 @@
 
 language: r
 sudo: required
+
+r_packages:
+  - devtools
+
 bioc_required: true
 
 bioc_packages:
