@@ -12,3 +12,6 @@ bioc_packages:
 env:
   - WARNINGS_ARE_ERRORS=false
   - NOT_CRAN=true
+
+before_script:
+  - sudo apt install seq-gen
