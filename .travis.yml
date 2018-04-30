@@ -2,6 +2,10 @@
 
 language: r
 sudo: required
+
+r_packages:
+  - devtools
+
 bioc_required: true
 
 bioc_packages:
@@ -12,3 +16,6 @@ bioc_packages:
 env:
   - WARNINGS_ARE_ERRORS=false
   - NOT_CRAN=true
+
+before_script:
+  - sudo apt install seq-gen
