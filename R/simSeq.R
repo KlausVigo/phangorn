@@ -7,7 +7,8 @@
 #' 
 #' Simulate sequences for a given evolutionary tree.
 #' 
-#' \code{simSeq} is now a generic function to simulate sequence alignments.  It
+#' \code{simSeq} is now a generic function to simulate sequence alignments to
+#' along a phylogeny. It
 #' is quite flexible and allows to generate DNA, RNA, amino acids or binary
 #' sequences.  It is possible to give a \code{pml} object as input simSeq
 #' return a \code{phyDat} from these model.  There is also a more low level
