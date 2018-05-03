@@ -171,6 +171,32 @@ optimBf <- function(tree, data, bf=c(.25,.25,.25,.25), trace=0,...){
     }
 
 
+
+optimF3X4 <- function(tree, data, bf_codon=matrix(.25,4,3), trace=0,...){
+    l <- nrow(bf_codon)
+    nenner <- 1/bf_codon[l,]
+    lbf <- log(bf * rep(nenner, each=4))
+    lbf <- lbf[-l,]
+    fn <- function(lbf, tree, data,...){
+        bf_codon <- rbind(exp(lbf), c(1,1,1))
+        bf_codon <- bf_codon/rep(colSums(bf_codon), each=4)
+        bf <- F3x4_freq(bf_codon)
+        pml.fit(tree, data, bf=bf, ...)
+    }
+    res <- optim(par=lbf, fn=fn, gr=NULL, method="Nelder-Mead", control=
+                     list(fnscale=-1, maxit=500, trace=trace),tree=tree, 
+                 data=data,...)
+    bf_codon <- rbind(exp(res[[1]]), c(1,1,1))
+    bf_codon <- bf_codon/rep(colSums(bf_codon), each=4)
+    bf <- F3x4_freq(bf_codon)
+#    bf <- exp(c(res[[1]],0))
+#    bf <- bf/sum(bf)
+    result <- list(bf=bf, bf_codon=bf_codon, loglik = res[[2]])
+    result
+}
+
+
+
 optimW <- function(fit,...){
     w <- fit$w
     g <- fit$g
