@@ -941,10 +941,49 @@ reorder.networx <- function (x, order =  "cladewise", index.only = FALSE, ...)
 }
 
 
+spl2angle <- function(x){
+    l <- length(attr(x, "labels"))
+    ord <- 1:l
+    if(!is.null(attr(x, "cycle"))) ord <- attr(x, "cycle")
+    x <- phangorn:::changeOrder(x, attr(x, "labels")[ord])
+    angle <- ((vapply(x, sum, 0) / lengths(x) - 1) / l ) * 2*pi
+    #kreis2kart(attr(x, "weight"), angle)
+    angle
+}
+
+
+coords.equal.angle <- function(obj){
+    if(is.null(attr(obj,"order")) || (attr(obj, "order")=="postorder") ) 
+        obj <- reorder.networx(obj)
+    
+    spl <- obj$splits
+    
+    l <- length(obj$edge.length)
+    ind1 <- which(!duplicated(obj$splitIndex))
+    n <- max(obj$edge)
+    
+    angle <- spl2angle(spl)
+    weight <- attr(spl, "weight")
+    
+    k <- matrix(0, max(obj$splitIndex), 2)
+    
+    res <- matrix(0, max(obj$edge), 2)
+    for(i in 1:l){# unique(obj$splitIndex)
+        j <- obj$edge[i,1]
+        m <- obj$edge[i,2]
+        p <- obj$splitIndex[i]
+        res[m,] <- res[j,] + kreis2kart(weight[p], angle[p])     
+    }
+    res  
+}
+
+
 coords <- function(obj, dim="3D"){
 #    if(is.null(attr(obj,"order")) || (attr(obj, "order")=="postorder") ) 
 #        obj = reorder.networx(obj)
 
+    if(dim=="equal_angle") return(coords.equal.angle(obj))
+    
     l <- length(obj$edge.length)
     ind1 <- which(!duplicated(obj$splitIndex))
 
@@ -1016,7 +1055,9 @@ kart2kreis <- function(x,y){
 	
 
 kreis2kart <- function(r,alpha){
-	c(r*cos(alpha), r*sin(alpha))
+    c(r*cos(alpha), r*sin(alpha))
+#    if(length(r)>1) return(matrix(c(r*cos(alpha), r*sin(alpha)), ncol=2))
+#	else return(c(r*cos(alpha), r*sin(alpha)))
 }
 
 
@@ -1053,7 +1094,7 @@ plot.networx <- function(x, type="3D", use.edge.length = TRUE, show.tip.label=TR
     col.node.label = tip.color, col.edge.label = tip.color, 
     font.node.label = font, font.edge.label = font,
     ...){
-    type <- match.arg(type, c("3D", "2D")) 
+    type <- match.arg(type, c("3D", "2D", "equal angle")) 
     if(use.edge.length==FALSE) x$edge.length[] <- 1
 # test    
 #    x = reorder(x)
@@ -1106,8 +1147,11 @@ plot.networx <- function(x, type="3D", use.edge.length = TRUE, show.tip.label=TR
              font.node.label = font.node.label, font.edge.label = font.edge.label)
     }
     else{
-        if(is.null(coord) || ncol(coord)!=2)
-     	    coord <- coords(x, dim="2D")
+        if(is.null(coord) || ncol(coord)!=2){
+#            browser()
+            if(type=="equal angle") coord <- coords.equal.angle(x)
+     	    else coord <- coords(x, dim="2D")
+        }    
 	    plot2D(coord, x, show.tip.label=show.tip.label, show.edge.label=show.edge.label, 
 	        edge.label = edge.label, show.node.label = show.node.label, node.label=node.label,
 	        show.nodes=show.nodes, tip.color = tip.color, edge.color=edge.color,
