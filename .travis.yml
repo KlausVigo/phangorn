@@ -1,21 +1,26 @@
-# Sample .travis.yml for R projects from https://github.com/craigcitro/r-travis
+    # Sample .travis.yml for R projects from https://github.com/craigcitro/r-travis
 
 language: r
+
+sudo: required
+
+
 r:
   - release
   - devel
 
 warnings_are_errors: false
 
-sudo: false
 cran: http://cran.at.r-project.org
 
 cache: packages
 
 bioc_required: true
 
+r_packages:
+  - devtools
+
 r_github_packages:
-  - KlausVigo/ape    
   - jimhester/covr
 
 bioc_packages:
@@ -24,18 +29,23 @@ bioc_packages:
 
 after_success:
   - Rscript -e 'library(covr);coveralls();codecov()'
-#  - Rscript -e 'library(covr);codecov()'
-  
-  
+
 notifications:
   email:
     on_success: change
     on_failure: always
 
 env:
+  - WARNINGS_ARE_ERRORS=false
+  - NOT_CRAN=true
   global:
     - NOT_CRAN: true
     - R_CHECK_ARGS="--as-cran --timings"
     - R_CHECK_TIME="TRUE"
     - R_CHECK_TESTS="TRUE"
     - _R_CHECK_TIMINGS_="0"  
+
+
+before_script:
+  - sudo apt install seq-gen
+
