@@ -8,6 +8,7 @@
 % tools::texi2dvi("phangorn-specials.tex", pdf=TRUE)
 \usepackage{times}
 \usepackage{hyperref}
+\usepackage{amsmath}
 
 \newcommand{\Rfunction}[1]{{\texttt{#1}}}
 \newcommand{\Robject}[1]{{\texttt{#1}}}
@@ -112,6 +113,30 @@ Here we defined "n" as a state which can be any nucleotide but not a gap "-" and
 These data can be used in all functions available in \phangorn{} to compute distance matrices or perform parsimony and maximum likelihood analysis.  
 
 
+\section{Markov models of character evolution}
+To model nucleotide substitutions across the edges of a tree T we can assign a transition matrix. In the case of nucleotides, with four character states, each 4 $\times$ 4 transition matrix has, at most, 12 free parameters.
+
+Time-reversible Markov models are used to describe how characters change over time, and use fewer parameters. Time-reversible means that these models need not be directed in time, and the Markov property states that these models depend only on the current state. These models are used in analysis of phylogenies using maximum likelihood and MCMC, computing pairwise distances, as well in simulating sequence evolution.
+
+We will now describe the General Time-Reversible (GTR) model \cite{Tavare1986}. The parameters
+of the GTR model are the equilibrium frequencies $\pi = (\pi_A ,\pi_C ,\pi_G ,\pi_T)$ and a rate
+matrix $Q$ which has the form
+\begin{equation}\label{eq:GTR}
+Q = 
+\begin{pmatrix}
+\ast  & \alpha\pi_C & \beta\pi_G & \gamma\pi_T \\
+\alpha\pi_A & \ast & \delta\pi_G & \epsilon\pi_T \\
+\beta\pi_A & \delta\pi_C & \ast & \eta\pi_T \\
+\gamma\pi_A &  \epsilon\pi_C & \eta\pi_G & \ast \\
+\end{pmatrix}
+\end{equation}
+where we need to assign 6 paramters $\alpha, \dots, \eta$. The elements on the diagonal are chosen so that the rows sum to zero. The Jukes-Cantor (JC) \cite{Jukes1969} model can be derived as special case from the GTR model, for equal equilibrium frequencies $\pi_A = \pi_C = \pi_G = \pi_T = 0.25$ and equal rates set to $\alpha = \beta = \gamma = \delta = \eta$. Table \ref{models} lists all built-in nucleotide models in \phangorn. 
+The transition probabilities which describe the probabilities of change from character $i$ to $j$ in time $t$, are given by the corresponding entries of the matrix exponential
+\[
+P(t) = (p_{ij}(t)) = e^{Qt}, \qquad \sum_j p_{ij}=1
+\]
+where $P(t)$ is the transition matrix spanning a period of time $t$.
+
 \section{Estimation of non-standard transition rate matrices}
 In the last section \ref{sec:USER} we described how to set up user defined data formats. Now we describe how to estimate transition matrices with pml. 
 
@@ -183,11 +208,11 @@ If optQ=TRUE and neither a model or subs are supplied than a symmetric (optBf=FA
          GTR & TRUE & TRUE & $c(1, 2, 3, 4, 5, 0)$ & 8 \\
          \hline
    \end{tabular}
-   \caption{DNA models available in phangorn, how they are defined and number of parameters to estimate. }\label{models} 
+   \caption{DNA models available in phangorn, how they are defined and number of parameters to estimate. The elements of the vector subs correspond to $\alpha, \dots, \eta$ in equation (\ref{eq:GTR})}\label{models} 
 \end{table}
 
 \section{Codon substitution models}
-A special case of the transition rates are codon models. \phangorn{} now offers the possibility to estimate the $d_N/d_S$ ratio (sometimes called ka/ks), for an overview see \cite{Yang2006}. These functions extend the option to estimates the $d_N/d_S$ ratio for pairwise sequence comparison as it is available through the function \Rfunction{kaks} in \Rpackage{seqinr}. The transition rate between between codon $i$ and $j$ is defined as follows:
+A special case of the transition rates are codon models. \phangorn{} now offers the possibility to estimate the $d_N/d_S$ ratio (sometimes called ka/ks), for an overview see \cite{Yang2014}. These functions extend the option to estimates the $d_N/d_S$ ratio for pairwise sequence comparison as it is available through the function \Rfunction{kaks} in \Rpackage{seqinr}. The transition rate between between codon $i$ and $j$ is defined as follows:
 \begin{eqnarray}
 q_{ij}=\left\{ 
     \begin{array}{l@{\quad}l}
@@ -207,7 +232,8 @@ There are four models available:
 We compute the $d_N/d_S$ for some sequences given a tree using the ML functions \Rfunction{pml} and \Rfunction{optim.pml}. First we have to transform the the nucleotide sequences into codons (so far the algorithms always takes triplets). 
 <<echo=TRUE>>=
 library(phangorn)
-primates = read.phyDat("primates.dna", format="phylip", type="DNA")
+fdir <- system.file("extdata/trees", package = "phangorn")
+primates <- read.phyDat(file.path(fdir, "primates.dna"), format = "phylip", type = "DNA")
 tree <- NJ(dist.ml(primates))
 dat <- phyDat(as.character(primates), "CODON")
 fit <- pml(tree, dat)
@@ -218,6 +244,7 @@ fit3 <- optim.pml(fit, model="codon3", control=pml.control(trace=0))
 anova(fit0, fit2, fit3, fit1)
 @
 The models described here all assume equal frequencies for each codon (=1/61). One can optimise the codon frequencies setting the option to optBf=TRUE. As the convergence of the 61 parameters the convergence is likely slow set the maximal iterations to a higher value than the default (e.g. control = pml.control(maxit=50)).  
+The "YN98" model \cite{Yang98} is similar to the "codon1", but addional optimises the codon frequencies.   
 
 \section{Generating trees}
 \phangorn{} has several functions to generate tree topologies, which may are interesting for simulation studies. \Rfunction{allTrees} computes all possible bifurcating tree topologies either rooted or unrooted for up to 10 taxa. One has to keep in mind that the number of trees is growing exponentially, use \Rfunction(howmanytrees) from \ape{} as a reminder. 
@@ -226,7 +253,7 @@ The models described here all assume equal frequencies for each codon (=1/61). O
 %trees = allTrees(5)
 %@
 <<label=plotAll,include=FALSE>>=
-trees = allTrees(5)
+trees <- allTrees(5)
 par(mfrow=c(3,5), mar=rep(0,4)) 
 for(i in 1:15)plot(trees[[i]], cex=1, type="u")
 @

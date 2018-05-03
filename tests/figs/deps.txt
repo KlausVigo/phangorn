@@ -1,0 +1,5 @@
+Fontconfig: 2.11.94
+FreeType: 2.8.0
+Cairo: 1.14.10
+vdiffr: 0.2.2
+svglite: 1.2.1

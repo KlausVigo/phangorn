@@ -67,8 +67,8 @@ The first thing we have to do is to read in an alignment. Unfortunately there ex
 We start our analysis loading the \phangorn{} package and then reading in an alignment.  
 <<echo=TRUE>>=
 library(phangorn)
-primates <- read.phyDat("primates.dna", format="phylip", 
-    type="DNA")
+fdir <- system.file("extdata/trees", package = "phangorn")
+primates <- read.phyDat(file.path(fdir, "primates.dna"), format = "phylip")
 @
 \section{Distance based methods}
 After reading in the alignment we can build a first tree with distance based methods. The function dist.dna from the ape package computes distances for many DNA substitution models. To use the function dist.dna we have to transform the data to class DNAbin. For amino acids the function \Rfunction{dist.ml} offers common substitution models (for example "WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa" or "mtREV24").  
@@ -137,7 +137,9 @@ fitGTR <- optim.pml(fitGTR, model="GTR", optInv=TRUE, optGamma=TRUE,
     rearrangement = "NNI", control = pml.control(trace = 0))
 fitGTR 
 @
-With the control parameters the threshols for the fitting process can be changed. Here we want just to supress output during the fitting process. For larger trees the NNI rearrangements often get stuck in local maxima. We added a stochatic algortithm similar as in \cite{Nguyen2015}, which makes random NNI permuation to the tree, which than gets optimised to escape local optima. While this may find better trees it will also take more time.      
+With the control parameters the threshols for the fitting process can be changed. Here we want just to supress output during the fitting process. For larger trees the NNI rearrangements often get stuck in local maxima. We added two stochatic algorithm to improve topology search. The first (set rearrangement="stochastic") performs stochastic rearrangements similar as in \cite{Nguyen2015}, which makes random NNI permuation to the tree, which than gets optimised to escape local optima. The second option (rearrangement="ratchet") perform the likelihood ratchet \cite{Vos2003}. 
+
+While these algorithms may find better trees they will also take more time.      
 <<echo=TRUE>>=
 fitGTR <- optim.pml(fitGTR, model="GTR", optInv=TRUE, optGamma=TRUE, 
     rearrangement = "stochastic", control = pml.control(trace = 0))
@@ -228,9 +230,9 @@ tree <- pratchet(dat)          # parsimony tree
 tree <- nnls.phylo(tree, dm)   # need edge weights
 
 
-# 1. alternative: quick and dirty: GTR + G + NNI
+# 1. alternative: quick and dirty: GTR + G 
 fitStart = pml(tree, dat, k=4)
-fit = optim.pml(fitStart, model="GTR", optGamma=TRUE, rearrangement="NNI") 
+fit = optim.pml(fitStart, model="GTR", optGamma=TRUE, rearrangement="stochastic") 
  
 # 2. alternative: preper with modelTest  
 mt <- modelTest(dat, tree=tree, multicore=TRUE)
@@ -274,6 +276,11 @@ fit = optim.pml(fitNJ, rearrangement = "stochastic",
 fit
 
 bs = bootstrap.pml(fit, bs=100, optNni=TRUE, multicore=TRUE)
+@
+
+<<echo=FALSE>>=
+options(prompt="> ")
+options(continue="+ ")
 @
 
 \newpage

@@ -1,13 +1,186 @@
-     CHANGES in PHANGORN VERSION 2.0.2
+     CHANGES in PHANGORN VERSION 2.5.0
 
-NEW FEATURES 
+
+     CHANGES in PHANGORN VERSION 2.4.0
+
+NEW FEATURES
+
+    o new function add.tips
 
 BUG FIXES
 
+    o densiTree, bug report by Richel Bilderbeek
+    
+    o tree rearrangement in optim.pml return tree with double edge matrix
+    
+    o phyDat should work now for named vectors
+    
 OTHER CHANGES
 
-    o added Rcpp and RcppArmadillo 
+    o many more unit tests
+    
+    o more consistent coding style
+    
+    o flashClust and seqLogo are not suggested packages any more
 
+
+     CHANGES in PHANGORN VERSION 2.3.0
+
+NEW FEATURES
+
+    o new function mast to compute the maximum agreement subtree
+
+    o identify.networx to identify splits in a network
+
+    o densiTree got more attributes
+    
+    o unique.dist, to filter duplicate distances 
+    
+    o ancestral.pml and ancestral.pars are now may return proper phyDat objects
+
+      and in for DNA may return ambiguous states
+
+BUG FIXES
+
+    o densiTree may if the consensus tree had different ordering of labels
+ 
+OTHER CHANGES
+
+    o acctran allows multiPhylo objects as input
+    
+    o rNNI has been completely rewritten and is faster
+
+
+     CHANGES in PHANGORN VERSION 2.2.0
+
+NEW FEATURES
+
+    o midpoint in now generic and works for multiPhylo objects
+
+    o as.bitsplits.splits to better interact with ape
+
+BUG FIXES
+
+    o bug fix in RI and CI for ambiguous data  
+
+OTHER CHANGES
+
+    o added roxygen2 documentation, so R code is now much better documented,
+    
+      reorganisation of some documentation
+    
+    o many more unit tests
+
+
+     CHANGES in PHANGORN VERSION 2.1.0
+
+NEW FEATURES
+
+    o new functions to compute the (approximate) SPR distance (sprdist, SPR.dist)
+    
+      contributed by Leonardo de Oliveira Martins.
+
+    o super tree methods based on NNI and SPR distances
+
+BUG FIXES
+
+    o fixed bug in KF.dist  
+
+OTHER CHANGES
+
+    o improvements to as.networx. It often now produces networks with less edges 
+   
+      resulting in much nicer plots 
+
+    o plot.networx does take a different layout algorithm 
+
+    o as.data.frame.phyDat and as.character.phyDat return amino acids 
+    
+      now in upper cases
+
+    o more unit tests
+
+    o improved cbind.phyDat, faster and more flexible
+    
+    o phangorn now requires ape 4.0
+    
+    o phangorn now imports Rcpp, but not nnls any more 
+    
+    
+
+    CHANGES in PHANGORN VERSION 2.0.4
+     
+NEW FEATURES
+
+    o new weighted Robinson-Foulds (1979) distance wRF, suggested by Michelle Kendall
+    
+      and normalized Robinson-Foulds suggested by Sereina Rutschmann
+
+    o codon model "YN98" can be called directly, improved documentation
+
+    o bootstrap.phyDat got an new argument jumble, 
+    
+      which randomizes input order of sequences
+    
+OTHER CHANGES
+
+    o more unit tests
+    
+    
+
+     CHANGES in PHANGORN VERSION 2.0.3
+
+NEW FEATURES 
+
+    o new function maxCladeCred computing the maximum clade credibility tree
+     
+      from a sample of trees
+
+    o function read.nexus.networx and write.nexus.networx to import / export 
+    
+      phylogenetic networx to SplitsTree
+      
+    o function as.AAbin.phyDat to exchange data with the new AAbin class from ape   
+    
+    o likelihood ratchet (Vos 2003) topology optimisation in optim.pml 
+    
+    o with KF.dist (Kuhner & Felsenstein) and path.dist can be used like RF.dist  
+
+BUG FIXES
+
+    o improvements to optim.pml to avoid numerical problems, 
+    
+      can now handle much more taxa (still experimantal)
+
+OTHER CHANGES
+    
+    o mrca.phylo can be used like mrca from ape (faster for large trees)
+    
+    o individual splits can be colored in lento plots (suggested by France Thouzé)
+    
+    o plot.networx now (silently) returns a networx object with some of the graphics
+    
+      parameters, more plot options
+    
+    o lots of small changes to make handling and identifying splits, edges in 
+     
+      trees and networks easier
+
+    o plotBS has a new argument frame and arguments BStrees can be empty
+    
+    o new vignette IntertwiningTreesAndNetworks
+      
+      
+
+     CHANGES in PHANGORN VERSION 2.0.2
+
+OTHER CHANGES
+ 
+    o phangorn now suggests only the Biostrings and not depends on it
+    
+    o some improvements to bab (branch and bound), may be faster 
+    
+    
 
      CHANGES in PHANGORN VERSION 2.0.0
 

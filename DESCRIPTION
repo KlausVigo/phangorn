@@ -1,23 +1,48 @@
 Package: phangorn
-Title: Phylogenetic Analysis in R
-Version: 2.0.2
-Date: 2015-12-15
+Title: Phylogenetic Reconstruction and Analysis
+Version: 2.5.0
 Authors@R: c(person("Klaus", "Schliep", email="klaus.schliep@gmail.com", role = c("aut", "cre")), 
   person("Emmanuel", "Paradis", role = c("aut")), 
-  person("Alastair", "Potts", role = c("aut")))
+  person("Leonardo", "de Oliveira Martins", role = c("aut")), 
+  person("Alastair", "Potts", role = c("aut")), 
+  person("Tim W.", "White", role = c("aut")),
+  person("Cyrill", "Stachniss", role = c("ctb")),
+  person("Michelle", "Kendall", email="m.kendall@imperial.ac.uk", role = c("ctb")))
 Maintainer: Klaus Schliep <klaus.schliep@gmail.com>
-Description: Phylogenetic analysis in R: Estimation of phylogenetic
-        trees and networks using Maximum Likelihood, Maximum Parsimony,
-        distance methods and Hadamard conjugation.
-Depends: R (>= 3.0.0), ape (>= 3.4)
-Imports: Rcpp(>= 0.12.2), quadprog, igraph (>= 1.0), Matrix, parallel, nnls, methods, utils, stats, graphics, grDevices, Biostrings
-Suggests: testthat, seqLogo, seqinr, xtable, flashClust, rgl, knitr
-LinkingTo: Rcpp, RcppArmadillo
+Description: Package contains methods for estimation of phylogenetic trees and
+    networks using Maximum Likelihood, Maximum Parsimony, distance methods and
+    Hadamard conjugation. Allows to compare trees, models selection and offers
+    visualizations for trees and split networks. 
+Depends:
+    R (>= 3.2.0),
+    ape (>= 5.0)
+Imports:
+    quadprog,
+    igraph (>= 1.0),
+    Matrix,
+    parallel,
+    methods,
+    utils,
+    stats,
+    graphics,
+    grDevices,
+    fastmatch,
+    magrittr,
+    Rcpp (>= 0.12.0)
+LinkingTo: Rcpp
+Suggests:
+    testthat,
+    vdiffr,     
+    seqinr,
+    xtable,
+    rgl,
+    knitr,
+    rmarkdown,
+    Biostrings
 ByteCompile: TRUE
 License: GPL (>= 2)
 VignetteBuilder: utils, knitr
 URL: https://github.com/KlausVigo/phangorn
+BugReports: https://github.com/KlausVigo/phangorn/issues
 Repository: CRAN
-
-
-
+RoxygenNote: 6.0.1

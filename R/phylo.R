@@ -1,6 +1,26 @@
+  
+edgeLengthIndex <- function(child, parent, nTips){
+    fun <- function(child, parent, nTips){
+        if(child <= nTips) return(child)
+        else{
+            if(child < parent) return(parent)
+            return(child)
+        }
+    }
+    if (length(child)==1) return(fun(child, parent, nTips))
+    else {
+        res <- integer(length(child))
+        for(i in 1:length(child))res[i] <- fun(child[i], parent[i], nTips)
+        return(res)
+    }
+}
+
+
 #
 # Maximum likelihood estimation
 #
+#' @rdname pml.fit
+#' @export
 discrete.gamma <- function (alpha, k) 
 {
     if (k == 1) return(1)
@@ -12,65 +32,69 @@ discrete.gamma <- function (alpha, k)
 # allow transition probs of zero (added o)
 optimQ <- function (tree, data, Q=rep(1,6), subs=rep(1,length(Q)), trace = 0, ...) 
 {
-    m = length(Q)
-    n = max(subs)
-    o = min(subs)
-    ab = numeric(n)
+    m <- length(Q)
+    n <- max(subs)
+    o <- min(subs)
+    ab <- numeric(n)
 #    ab = log(Q[match(1:n, subs)])    
-    for(i in 1:n) ab[i]=log(Q[which(subs==i)[1]])
-    fn = function(ab, tree, data, m, n, o, subs,...) {
-        Q = numeric(m)
-        for(i in 1:n)Q[subs==i] = ab[i]
-        if(o < 0)Q[subs<0] = -Inf
+    for(i in 1:n) ab[i] <- log(Q[which(subs==i)[1]])
+    fn <- function(ab, tree, data, m, n, o, subs,...) {
+        Q <- numeric(m)
+        for(i in 1:n)Q[subs==i] <- ab[i]
+        if(o < 0)Q[subs<0] <- -Inf
         pml.fit(tree, data, Q = exp(Q),...)# Q^2, ...)
     }
-    res = optim(par = ab, fn = fn, gr = NULL, method = "L-BFGS-B", 
-        lower = -Inf, upper = 10, control = list(fnscale = -1, 
-        maxit = 25, trace = trace), tree = tree, data = data, m=m, n=n, o=o, subs=subs,...)
-    Q = rep(1, m)
-    for(i in 1:n) Q[subs==i] = exp(res[[1]][i])
-    if(o < 0)Q[subs<0] = 0
-    res[[1]] = Q
+    res <- optim(par = ab, fn = fn, gr = NULL, method = "L-BFGS-B", 
+        lower = -Inf, upper = 10, control = list(fnscale = -1, maxit = 25,
+        trace = trace), tree = tree, data = data, m=m, n=n, o=o, subs=subs,...)
+    Q <- rep(1, m)
+    for(i in 1:n) Q[subs==i] <- exp(res[[1]][i])
+    if(o < 0)Q[subs<0] <- 0
+    res[[1]] <- Q
     res
 }    
 
   
-optimCodon <- function (tree, data, Q=rep(1,1830), subs=rep(1,length(Q)), syn = rep(0, length(Q)), trace = 0L, ab = c(0,0), optK=TRUE, optW=TRUE, ...) 
+optimCodon <- function (tree, data, Q=rep(1,1830), subs=rep(1,length(Q)), 
+    syn = rep(0, length(Q)), trace = 0L, ab = c(0,0), optK=TRUE, optW=TRUE, ...) 
 {
-    m = length(Q)
-    n = 1L # max(subs)
+    m <- length(Q)
+    n <- 1L # max(subs)
 
-    fn = function(ab, tree, data, m, n, subs, syn, optK, optW, ...) {
-        Q = numeric(m)
-        Q[subs==1] = 0 # transversion
-        if(optK) Q[subs==2] = ab[1] # transition
-        else Q[subs==2] = 0
-        if(optW) Q[syn==1] = Q[syn==1] + ab[2] # ab[n+1] dnds
-        Q[syn<0] = -Inf
+    fn <- function(ab, tree, data, m, n, subs, syn, optK, optW, ...) {
+        Q <- numeric(m)
+        Q[subs==1] <- 0 # transversion
+        if(optK) Q[subs==2] <- ab[1] # transition
+        else Q[subs==2] <- 0
+        if(optW) Q[syn==1] <- Q[syn==1] + ab[2] # ab[n+1] dnds
+        Q[syn<0] <- -Inf
         pml.fit(tree, data, Q = exp(Q),...)# Q^2, ...)
     }
-    res = optim(par = ab, fn = fn, gr = NULL, method = "L-BFGS-B", 
+    res <- optim(par = ab, fn = fn, gr = NULL, method = "L-BFGS-B", 
         lower = -Inf, upper = Inf, control = list(fnscale = -1, 
         maxit = 25, trace = trace), tree = tree, data = data, m=m, n=n, 
         subs=subs, syn=syn, optK=optK, optW=optW, ...)
-    ab = exp(res[[1]])
-    Q[subs==1] = 1 # transversion
-    if(optK) Q[subs==2] = ab[1] # transition
+    ab <- exp(res[[1]])
+    Q[subs==1] <- 1 # transversion
+    if(optK) Q[subs==2] <- ab[1] # transition
     else{ 
-        Q[subs==2] = 1
-        ab[1] = 1 
+        Q[subs==2] <- 1
+        ab[1] <- 1 
         }  
-    if(optW) Q[syn==1] = Q[syn==1] * ab[2] # dnds
-    else ab[2] = 1
-    Q[syn<0] = 0
-    res[[5]] = ab
-    res[[1]] = Q
+    if(optW) Q[syn==1] <- Q[syn==1] * ab[2] # dnds
+    else ab[2] <- 1
+    Q[syn<0] <- 0
+    res[[5]] <- ab
+    res[[1]] <- Q
     res
 } 
 
 
-subsChoice <- function(type=c("JC", "F81", "K80", "HKY", "TrNe", "TrN", "TPM1", "K81", "TPM1u", "TPM2", "TPM2u", "TPM3", "TPM3u", "TIM1e", "TIM1", "TIM2e", "TIM2", "TIM3e", "TIM3", "TVMe", "TVM", "SYM", "GTR")){
-    type = match.arg(type)
+subsChoice <- function(type=c("JC", "F81", "K80", "HKY", "TrNe", "TrN", "TPM1", 
+                              "K81", "TPM1u", "TPM2", "TPM2u", "TPM3", "TPM3u", 
+                              "TIM1e", "TIM1", "TIM2e", "TIM2", "TIM3e", "TIM3", 
+                              "TVMe", "TVM", "SYM", "GTR")){
+    type <- match.arg(type)
     switch(type,
          JC = list(optQ=FALSE, optBf=FALSE,   subs=c(0, 0, 0, 0, 0, 0)),
          F81 = list(optQ=FALSE, optBf=TRUE,   subs=c(0, 0, 0, 0, 0, 0)),
@@ -100,18 +124,20 @@ subsChoice <- function(type=c("JC", "F81", "K80", "HKY", "TrNe", "TrN", "TPM1", 
 
 
 
-optimGamma = function(tree, data, shape=1, k=4,...){
-    fn = function(shape, tree, data, k,...)pml.fit(tree, data, shape=shape, k=k,...)
-    res = optimize(f=fn, interval = c(0.1, 500), lower = 0.1, upper = 500, maximum = TRUE,
-        tol = .01, tree=tree, data=data, k=k,...)
+optimGamma <- function(tree, data, shape=1, k=4,...){
+    fn <- function(shape, tree, data, k,...)pml.fit(tree, data, shape=shape, 
+                                                    k=k,...)
+    res <- optimize(f=fn, interval = c(0.1, 500), lower = 0.1, upper = 500, 
+                    maximum = TRUE,  tol = .01, tree=tree, data=data, k=k,...)
     res
     }
     
  
-optimInv = function(tree, data, inv=0.01, INV=NULL, ll.0=NULL,...){
-    fn = function(inv, tree, data,...)pml.fit(tree, data, inv=inv, INV=INV, ll.0=NULL,...)
-    res = optimize(f=fn, interval = c(0,1), lower = 0, upper = 1, maximum = TRUE,
-         tol = .0001, tree=tree, data=data,...)
+optimInv <- function(tree, data, inv=0.01, INV=NULL, ll.0=NULL,...){
+    fn <- function(inv, tree, data,...)pml.fit(tree, data, inv=inv, INV=INV, 
+                                               ll.0=NULL,...)
+    res <- optimize(f=fn, interval = c(0,1), lower = 0, upper = 1, 
+                    maximum = TRUE, tol = .0001, tree=tree, data=data,...)
     res
     }
   
@@ -119,53 +145,82 @@ optimInv = function(tree, data, inv=0.01, INV=NULL, ll.0=NULL,...){
 # changed to c(-10,10) from c(-5,5)
 optimRate <- function(tree, data, rate=1, ...){
     fn <- function(rate, tree, data, ...) pml.fit(tree, data, rate=exp(rate), ...)
-    res <- optimize(f = fn, interval = c(-10, 10), tree = tree, data = data, ..., maximum = TRUE)
+    res <- optimize(f = fn, interval = c(-10, 10), tree = tree, data = data, 
+                    ..., maximum = TRUE)
     res[[1]] <- exp(res[[1]])
     res
 }
     
 
-optimBf = function(tree, data, bf=c(.25,.25,.25,.25), trace=0,...){
-    l=length(bf)
-    nenner = 1/bf[l]
-    lbf = log(bf * nenner)
-    lbf = lbf[-l]
-    fn = function(lbf, tree, data,...){
-        bf = exp(c(lbf,0))
-        bf = bf/sum(bf)
+optimBf <- function(tree, data, bf=c(.25,.25,.25,.25), trace=0,...){
+    l <- length(bf)
+    nenner <- 1/bf[l]
+    lbf <- log(bf * nenner)
+    lbf <- lbf[-l]
+    fn <- function(lbf, tree, data,...){
+        bf <- exp(c(lbf,0))
+        bf <- bf/sum(bf)
         pml.fit(tree, data, bf=bf, ...)
         }
-    res = optim(par=lbf, fn=fn, gr=NULL, method="Nelder-Mead", control=list(fnscale=-1, maxit=500, trace=trace),tree=tree, data=data,...)
-    bf = exp(c(res[[1]],0))
-    bf = bf/sum(bf)
-    result = list(bf=bf, loglik = res[[2]])
+    res <- optim(par=lbf, fn=fn, gr=NULL, method="Nelder-Mead", control=
+            list(fnscale=-1, maxit=500, trace=trace),tree=tree, data=data,...)
+    bf <- exp(c(res[[1]],0))
+    bf <- bf/sum(bf)
+    result <- list(bf=bf, loglik = res[[2]])
     result
     }
 
 
-optimW = function(fit,...){
-    w = fit$w
-    g = fit$g
-    siteLik = fit$siteLik
-    k = length(w)
-    l = dim(siteLik[[1]])[1]
-    x=matrix(0,l,k)
-    for(i in 1:k)x[,i] = rowSums(siteLik[[i]])
-    weight = fit$weight
-    nenner = 1/w[k]
-    eta = log(w * nenner)
-    eta = eta[-k]
-    fn = function(eta,x,g,weight){
-        eta = c(eta,0)
-        p = exp(eta)/sum(exp(eta))
-        res = x%*%p
-        res = sum(weight*log(res))  * (1 + abs(sum(p*g) - 1))
+
+optimF3X4 <- function(tree, data, bf_codon=matrix(.25,4,3), trace=0,...){
+    l <- nrow(bf_codon)
+    nenner <- 1/bf_codon[l,]
+    lbf <- log(bf * rep(nenner, each=4))
+    lbf <- lbf[-l,]
+    fn <- function(lbf, tree, data,...){
+        bf_codon <- rbind(exp(lbf), c(1,1,1))
+        bf_codon <- bf_codon/rep(colSums(bf_codon), each=4)
+        bf <- F3x4_freq(bf_codon)
+        pml.fit(tree, data, bf=bf, ...)
+    }
+    res <- optim(par=lbf, fn=fn, gr=NULL, method="Nelder-Mead", control=
+                     list(fnscale=-1, maxit=500, trace=trace),tree=tree, 
+                 data=data,...)
+    bf_codon <- rbind(exp(res[[1]]), c(1,1,1))
+    bf_codon <- bf_codon/rep(colSums(bf_codon), each=4)
+    bf <- F3x4_freq(bf_codon)
+#    bf <- exp(c(res[[1]],0))
+#    bf <- bf/sum(bf)
+    result <- list(bf=bf, bf_codon=bf_codon, loglik = res[[2]])
+    result
+}
+
+
+
+optimW <- function(fit,...){
+    w <- fit$w
+    g <- fit$g
+    siteLik <- fit$siteLik
+    k <- length(w)
+    l <- dim(siteLik[[1]])[1]
+    x <- matrix(0,l,k)
+    for(i in 1:k)x[,i] <- rowSums(siteLik[[i]])
+    weight <- fit$weight
+    nenner <- 1/w[k]
+    eta <- log(w * nenner)
+    eta <- eta[-k]
+    fn <- function(eta,x,g,weight){
+        eta <- c(eta,0)
+        p <- exp(eta)/sum(exp(eta))
+        res <- x%*%p
+        res <- sum(weight*log(res))  * (1 + abs(sum(p*g) - 1))
         res
     }  
-    res = optim(eta, fn = fn, method = "Nelder-Mead", control=list(fnscale=-1, reltol = 1e-12),gr=NULL, x=x,g=g, weight=weight)
-    p = exp(c(res$par,0))
-    p = p/sum(p)
-    result = list(par = p, value = res$value)
+    res <- optim(eta, fn = fn, method = "Nelder-Mead", control=list(fnscale=-1, 
+                                reltol = 1e-12),gr=NULL, x=x,g=g, weight=weight)
+    p <- exp(c(res$par,0))
+    p <- p/sum(p)
+    result <- list(par = p, value = res$value)
     result    
 }
 
@@ -186,16 +241,16 @@ AICc <- function (object, ...)
 
 
 AICc.pml <- function(object, ...){
-    n = sum(object$weight)
-    k = object$df
+    n <- sum(object$weight)
+    k <- object$df
     if(k >= (n-1)) return(NaN)
-    res = AIC(object)
+    res <- AIC(object)
     res +   (2*k*(k+1))/(n-k-1)    
 }
 
 
 BIC.pml <- function(object, ...){
-    res = AIC(object, k=log(sum(object$weight)))
+    res <- AIC(object, k=log(sum(object$weight)))
     res     
 }
 
@@ -203,18 +258,20 @@ BIC.pml <- function(object, ...){
 anova.pml <- function (object, ...) 
 {
     X <- c(list(object), list(...))
-    df <- sapply(X, "[[", "df")
-    ll <- sapply(X, "[[", "logLik")
-    dev <- c(NA, 2 * diff(ll)) 
-    ddf <- c(NA, diff(df))
-    table <- data.frame(ll, df, ddf, dev, pchisq(dev, ddf, lower.tail = FALSE))
+    fun <- function(x){
+        tmp <- logLik(x)
+        c(tmp[1], attr(tmp, "df"))
+    }
+    DF <- t(sapply(X, fun)) 
+    dev <- c(NA, 2 * diff(DF[,1])) 
+    ddf <- c(NA, diff(DF[,2]))
+    table <- data.frame(DF, ddf, dev, pchisq(dev, ddf, lower.tail = FALSE))
     dimnames(table) <- list(1:length(X), c("Log lik.", "Df", 
-        "Df change", "Diff log lik.", "Pr(>|Chi|)"))
+                                           "Df change", "Diff log lik.", "Pr(>|Chi|)"))
     structure(table, heading = "Likelihood Ratio Test Table", 
-        class = c("anova", "data.frame"))
+              class = c("anova", "data.frame"))
 }
-    
-    
+
 #vcov.pml <- function(object, obs=FALSE,...){
 #    if(obs) FI = score4(object)[[2]]
 #    else FI = score(object,FALSE)[[2]]
@@ -228,12 +285,12 @@ anova.pml <- function (object, ...)
 #}
                              
 vcov.pml <- function(object, ...){
-    FI = score(object,FALSE)[[2]]
-    l = dim(FI)[1]
-    res = try(solve(FI))
+    FI <- score(object,FALSE)[[2]]
+    l <- dim(FI)[1]
+    res <- try(solve(FI))
     if(class(res) == "try-error"){
         cat("Covariance is ill-conditioned !! \n")
-        res = solve(FI + diag(l)* 1e-8)
+        res <- solve(FI + diag(l)* 1e-8)
         }
     res
 }
@@ -281,6 +338,8 @@ getP <- function(el, eig=edQt(), g=1.0){
 }
 
 
+#' @rdname pml.fit
+#' @export
 lli <- function (data, tree=NULL, ...) 
 {
     contrast <- attr(data, "contrast")
@@ -288,99 +347,95 @@ lli <- function (data, tree=NULL, ...)
     nc <- attr(data, "nc")
     nco <- as.integer(dim(contrast)[1])
     if(!is.null(tree)) data <- subset(data, tree$tip.label)
-    .Call("invSites", data, as.integer(nr), as.integer(nc), contrast, as.integer(nco))    
+    .Call("invSites", data, as.integer(nr), as.integer(nc), contrast, 
+          as.integer(nco))    
 }
 
 
+#' @rdname pml.fit
+#' @export
 edQt <- function (Q = c(1, 1, 1, 1, 1, 1), bf = c(0.25, 0.25, 0.25, 0.25)) 
 {
-    l = length(bf)
-    res = matrix(0, l, l)
-    res[lower.tri(res)] = Q
-    res = res + t(res)
-    res = res * bf
-    res2 = res * rep(bf, each = l)    
-    diag(res) = -colSums(res)
-    res = res/sum(res2)
-    e = eigen(res, FALSE)
-    e$inv = solve.default(e$vec)
+    l <- length(bf)
+    res <- matrix(0, l, l)
+    res[lower.tri(res)] <- Q
+    res <- res + t(res)
+    res <- res * bf
+    res2 <- res * rep(bf, each = l)    
+    diag(res) <- -colSums(res)
+    res <- res/sum(res2)
+    e <- eigen(res, FALSE)
+    e$inv <- solve.default(e$vec)
     e
 }
 
 
 edQ <- function(Q=c(1,1,1,1,1,1), bf=c(0.25,.25,.25,.25)){
-    l=length(bf)
-    res = matrix(0, l, l)
-    res[lower.tri(res)] = Q
-    res = res+t(res)
-    res = res * rep(bf,each=l)
-    diag(res) = -rowSums(res)
-    res2 = res * rep(bf,l)
-    diag(res2)=0 
-    res = res/sum(res2)
-    e = eigen(res, FALSE)
-    e$inv = solve.default(e$vec)
+    l <- length(bf)
+    res <- matrix(0, l, l)
+    res[lower.tri(res)] <- Q
+    res <- res+t(res)
+    res <- res * rep(bf,each=l)
+    diag(res) <- -rowSums(res)
+    res2 <- res * rep(bf,l)
+    diag(res2) <- 0 
+    res <- res/sum(res2)
+    e <- eigen(res, FALSE)
+    e$inv <- solve.default(e$vec)
     e
 }
 
 edQ2 <- function(Q){
-    res = Q
-    l=dim(Q)[1]
-    diag(res) = 0
-    diag(res) = -rowSums(res)
-    e = eigen(res, FALSE)
-    e$inv = solve.default(e$vec)
+    res <- Q
+    l <- dim(Q)[1]
+    diag(res) <- 0
+    diag(res) <- -rowSums(res)
+    e <- eigen(res, FALSE)
+    e$inv <- solve.default(e$vec)
     e
 }
 
 
+#' @rdname pml.fit
+#' @export
 pml.free <- function(){
     .C("ll_free")
 #    rm(.INV, .iind, envir = parent.frame())
 }
 
 
+#' @rdname pml.fit
+#' @export
 pml.init <- function(data, k=1L){
     nTips <- length(data)
     nr <- attr(data, "nr")
     nc <- attr(data, "nc")    
-    .C("ll_init", as.integer(nr), as.integer(nTips), as.integer(nc), as.integer(k))
-    INV <- lli(data) #, tree
+    .C("ll_init", as.integer(nr), as.integer(nTips), as.integer(nc), 
+       as.integer(k))
+#    INV <- lli(data) #, tree
 #    .iind <<- which((INV %*% rep(1, nc)) > 0)
 #    .INV <<-  Matrix(INV, sparse=TRUE)
-    assign(".iind", which((INV %*% rep(1, nc)) > 0), envir=parent.frame())
-    assign(".INV", Matrix(INV, sparse=TRUE), envir=parent.frame())
-} 
-
-
-
-pml.free2 <- function(){.C("ll_free2")}
-
-pml.init2 <- function(data, k=1L){
-    nTips <- length(data)
-    nr <- attr(data, "nr")
-    nc <- attr(data, "nc")    
-    weight <- attr(data, "weight")
-    .C("ll_init2", as.integer(unlist(data, use.names=FALSE)), as.double(weight), as.integer(nr), as.integer(nTips), as.integer(nc), as.integer(k))
+#    assign(".iind", which((INV %*% rep(1, nc)) > 0), envir=parent.frame())
+#    assign(".INV", Matrix(INV, sparse=TRUE), envir=parent.frame())
 } 
 
 
 fn.quartet <- function(old.el, eig, bf, dat,  g=1, w=1, weight, ll.0) {
-    l= length(dat[,1]) 
-    ll = ll.0
-    res = vector("list", 2*l)
-    tmp1 = NULL
-    tmp2 = NULL
-    attr(res,"dim") = c(l,2)
+    l <- length(dat[,1]) 
+    ll <- ll.0
+    res <- vector("list", 2*l)
+    tmp1 <- NULL
+    tmp2 <- NULL
+    attr(res,"dim") <- c(l,2)
     for(j in 1:l){
-            P = getP(old.el, eig, g[j])
-            tmp1 = (dat[[j,1]] %*% P[[1]]) *(dat[[j,2]] %*% P[[2]])
-            tmp2 = (dat[[j,3]] %*% P[[3]]) * (dat[[j,4]] %*% P[[4]])
-            res[[j,1]] = tmp1 * (tmp2 %*% P[[5]])
-            res[[j,2]] = tmp2
-            ll = ll +  res[[j,1]] %*% (w[j]*bf)
+            P <- getP(old.el, eig, g[j])
+            tmp1 <- (dat[[j,1]] %*% P[[1]]) *(dat[[j,2]] %*% P[[2]])
+            tmp2 <- (dat[[j,3]] %*% P[[3]]) * (dat[[j,4]] %*% P[[4]])
+            res[[j,1]] <- tmp1 * (tmp2 %*% P[[5]])
+            res[[j,2]] <- tmp2
+            ll <- ll +  res[[j,1]] %*% (w[j]*bf)
         } 
-    l0 = sum(weight * log(ll))
+    l0 <- sum(weight * log(ll))
     list(ll=l0,res=res)
 }
 
@@ -388,127 +443,133 @@ fn.quartet <- function(old.el, eig, bf, dat,  g=1, w=1, weight, ll.0) {
 fn.quartet2 <- function (old.el, eig, bf, dat1, dat2, dat3, dat4, g = 1, w = 1, 
     weight, ll.0, contrast, ext) 
 {
-    l = length(w)
-    ll = ll.0
-    res = vector("list", 2 * l)
-    tmp1 = NULL
-    tmp2 = NULL
-    attr(res, "dim") = c(l, 2)
+    l <- length(w)
+    ll <- ll.0
+    res <- vector("list", 2 * l)
+    tmp1 <- NULL
+    tmp2 <- NULL
+    attr(res, "dim") <- c(l, 2)
     for (j in 1:l) {
-        P = getP(old.el, eig, g[j])
+        P <- getP(old.el, eig, g[j])
         if (ext[1] == FALSE && ext[2] == FALSE) 
-            tmp1 = (dat1[[j]] %*% P[[1]]) * (dat2[[j]] %*% P[[2]])
+            tmp1 <- (dat1[[j]] %*% P[[1]]) * (dat2[[j]] %*% P[[2]])
         if (ext[1] == FALSE && ext[2] == TRUE) 
-            tmp1 = (dat1[[j]] %*% P[[1]]) * (contrast %*% P[[2]])[dat2, ]
+            tmp1 <- (dat1[[j]] %*% P[[1]]) * (contrast %*% P[[2]])[dat2, ]
         if (ext[1] == TRUE && ext[2] == FALSE) 
-            tmp1 = (contrast %*% P[[1]])[dat1, ] * (dat2[[j]] %*% P[[2]])
+            tmp1 <- (contrast %*% P[[1]])[dat1, ] * (dat2[[j]] %*% P[[2]])
         if (ext[1] == TRUE && ext[2] == TRUE) 
-            tmp1 = (contrast %*% P[[1]])[dat1, ] * (contrast %*% P[[2]])[dat2, ]
+            tmp1 <- (contrast %*% P[[1]])[dat1, ] * (contrast %*% P[[2]])[dat2, ]
         if (ext[3] == FALSE && ext[4] == FALSE) 
-            tmp2 = (dat3[[j]] %*% P[[3]]) * (dat4[[j]] %*% P[[4]])
+            tmp2 <- (dat3[[j]] %*% P[[3]]) * (dat4[[j]] %*% P[[4]])
         if (ext[3] == FALSE && ext[4] == TRUE) 
-            tmp2 = (dat3[[j]] %*% P[[3]]) * (contrast %*% P[[4]])[dat4, ]
+            tmp2 <- (dat3[[j]] %*% P[[3]]) * (contrast %*% P[[4]])[dat4, ]
         if (ext[3] == TRUE && ext[4] == FALSE) 
-            tmp2 = (contrast %*% P[[3]])[dat3, ] * (dat4[[j]] %*% P[[4]])
+            tmp2 <- (contrast %*% P[[3]])[dat3, ] * (dat4[[j]] %*% P[[4]])
         if (ext[3] == TRUE && ext[4] == TRUE) 
-            tmp2 = (contrast %*% P[[3]])[dat3, ] * (contrast %*% P[[4]])[dat4, ]
-        res[[j, 1]] = tmp1 * (tmp2 %*% P[[5]])
-        res[[j, 2]] = tmp2
-        ll = ll + res[[j, 1]] %*% (w[j] * bf)
+            tmp2 <- (contrast %*% P[[3]])[dat3, ] * (contrast %*% P[[4]])[dat4, ]
+        res[[j, 1]] <- tmp1 * (tmp2 %*% P[[5]])
+        res[[j, 2]] <- tmp2
+        ll <- ll + res[[j, 1]] %*% (w[j] * bf)
     }
-    l0 = sum(weight * log(ll))
+    l0 <- sum(weight * log(ll))
     list(ll = l0, res = res)
 }
 
 
-optim.quartet2 <- function (old.el, eig, bf, dat1, dat2, dat3, dat4, g = 1, w = 1, 
-    weight, ll.0 = weight * 0, control = list(eps = 1e-08, maxit = 5, 
+optim.quartet2 <- function (old.el, eig, bf, dat1, dat2, dat3, dat4, g = 1, 
+        w = 1, weight, ll.0 = weight * 0, control = list(eps = 1e-08, maxit = 5, 
         trace = 0), llcomp = -Inf, evi, contrast, contrast2, 
-    ext = c(FALSE, FALSE, FALSE, FALSE)) 
+        ext = c(FALSE, FALSE, FALSE, FALSE)) 
 {
-    eps = 1
-    iter = 0
+    eps <- 1
+    iter <- 0
     while (eps > control$eps && iter < control$maxit) {
-        tmp <- fn.quartet2(old.el = old.el, eig = eig, bf = bf, 
-            dat1 = dat1, dat2 = dat2, dat3 = dat3, dat4 = dat4, 
-            g = g, w = w, weight = weight, ll.0 = ll.0, contrast=contrast, ext = ext)
-        old.ll = tmp$ll
+        tmp <- fn.quartet2(old.el = old.el, eig = eig, bf = bf, dat1 = dat1, 
+            dat2 = dat2, dat3 = dat3, dat4 = dat4, g = g, w = w, 
+            weight = weight, ll.0 = ll.0, contrast=contrast, ext = ext)
+        old.ll <- tmp$ll
    
-        el1 <- fs3(old.el[1], eig, tmp$res[, 1], dat1, weight, 
-            g = g, w = w, bf = bf, ll.0 = ll.0, contrast=contrast, contrast2=contrast2, evi=evi, ext = ext[1], getA=TRUE, getB=FALSE)
-        el2 <- fs3(old.el[2], eig, el1[[2]], dat2, weight, 
-            g = g, w = w, bf = bf, ll.0 = ll.0, contrast=contrast, contrast2=contrast2, evi=evi, ext = ext[2], getA=TRUE, getB=FALSE)
-        el5 <- fs3(old.el[5], eig, el2[[2]], tmp$res[, 2], weight, 
-            g = g, w = w, bf = bf, ll.0 = ll.0, contrast=contrast, contrast2=contrast2, evi=evi, ext = 0L, getA=FALSE, getB=TRUE)
-        el3 <- fs3(old.el[3], eig, el5[[3]], dat3, weight, 
-            g = g, w = w, bf = bf, ll.0 = ll.0, contrast=contrast, contrast2=contrast2, evi=evi, ext = ext[3], getA=TRUE, getB=FALSE)
-        el4 <- fs3(old.el[4], eig, el3[[2]], dat4, weight, 
-            g = g, w = w, bf = bf, ll.0 = ll.0, contrast=contrast, contrast2=contrast2, evi=evi, ext = ext[4], getA=FALSE, getB=FALSE)
-        old.el[1] = el1[[1]]
-        old.el[2] = el2[[1]]
-        old.el[3] = el3[[1]]
-        old.el[4] = el4[[1]]
-        old.el[5] = el5[[1]]
-        iter = iter + 1
-        ll = el4[[4]]
-        eps = (old.ll - ll)/ll
+        el1 <- fs3(old.el[1], eig, tmp$res[, 1], dat1, weight, g = g, w = w, 
+                   bf = bf, ll.0 = ll.0, contrast=contrast, contrast2=contrast2,
+                   evi=evi, ext = ext[1], getA=TRUE, getB=FALSE)
+        el2 <- fs3(old.el[2], eig, el1[[2]], dat2, weight, g = g, w = w, 
+                   bf = bf, ll.0 = ll.0, contrast=contrast, contrast2=contrast2, 
+                   evi=evi, ext = ext[2], getA=TRUE, getB=FALSE)
+        el5 <- fs3(old.el[5], eig, el2[[2]], tmp$res[, 2], weight, g = g, w = w, 
+                   bf = bf, ll.0 = ll.0, contrast=contrast, contrast2=contrast2, 
+                   evi=evi, ext = 0L, getA=FALSE, getB=TRUE)
+        el3 <- fs3(old.el[3], eig, el5[[3]], dat3, weight, g = g, w = w, 
+                   bf = bf, ll.0 = ll.0, contrast=contrast, contrast2=contrast2, 
+                   evi=evi, ext = ext[3], getA=TRUE, getB=FALSE)
+        el4 <- fs3(old.el[4], eig, el3[[2]], dat4, weight, g = g, w = w, 
+                   bf = bf, ll.0 = ll.0, contrast=contrast, contrast2=contrast2, 
+                   evi=evi, ext = ext[4], getA=FALSE, getB=FALSE)
+        old.el[1] <- el1[[1]]
+        old.el[2] <- el2[[1]]
+        old.el[3] <- el3[[1]]
+        old.el[4] <- el4[[1]]
+        old.el[5] <- el5[[1]]
+        iter <- iter + 1
+        ll <- el4[[4]]
+        eps <- (old.ll - ll)/ll
         if (ll < llcomp) 
             return(list(old.el, ll))
-        old.ll = ll
+        old.ll <- ll
     }
     list(old.el, ll)
 }
 
 
-pml.nni <- function (tree, data, w, g, eig, bf, ll.0, ll, ...) 
+pml.nni.old <- function (tree, data, w, g, eig, bf, ll.0, ll, ...) 
 {        
-    k = length(w)
+    k <- length(w)
     INDEX <-  indexNNI(tree)
     rootEdges <- attr(INDEX,"root")
     .dat <- NULL
-    data = getCols(data, tree$tip)
+    data <- getCols(data, tree$tip.label)
 
-    parent = tree$edge[,1]
-    child = tree$edge[,2]
-    weight = attr(data, "weight")
-    datp = rnodes(tree, data, w, g, eig, bf)    
+    parent <- tree$edge[,1]
+    child <- tree$edge[,2]
+    weight <- attr(data, "weight")
+    datp <- rnodes(tree, data, w, g, eig, bf)    
     contrast <- attr(data, "contrast")
     contrast2 <- contrast %*% eig[[2]] 
-    evi = (t(eig[[3]]) * bf)
+    evi <- (t(eig[[3]]) * bf)
 
-    nTips = length(tree$tip.label)
+    nTips <- length(tree$tip.label)
     evector <- numeric(max(parent)) 
     evector[child] <- tree$edge.length
     m <- dim(INDEX)[1]
-    loglik = numeric(2*m)
+    loglik <- numeric(2*m)
     edgeMatrix <- matrix(0, 2*m, 5)
-    l = length(datp[, 1])
+    l <- length(datp[, 1])
     for(i in 1:m){
-        ei = INDEX[i,]
-        el0 = evector[INDEX[i,]]
+        ei <- INDEX[i,]
+        el0 <- evector[INDEX[i,]]
 
-        ext = ei[1:4] < nTips+1L
-        if (!(ei[5] %in% rootEdges)) dat1 = datp[, ei[1], drop = FALSE]
-        else{ if(ext[1]) dat1 = data[[ ei[1] ]]
-             else dat1 = .dat[, ei[1], drop=FALSE]
+        ext <- ei[1:4] < nTips+1L
+        if (!(ei[5] %in% rootEdges)) dat1 <- datp[, ei[1], drop = FALSE]
+        else{ if(ext[1]) dat1 <- data[[ ei[1] ]]
+             else dat1 <- .dat[, ei[1], drop=FALSE]
         } 
-        if(ext[2]) dat2 = data[[ ei[2] ]]
-             else dat2 = .dat[, ei[2], drop=FALSE] 
-        if(ext[3]) dat3 = data[[ ei[3] ]]
-             else dat3 = .dat[, ei[3], drop=FALSE]
-        if(ext[4]) dat4 = data[[ ei[4] ]]
-             else dat4 = .dat[, ei[4], drop=FALSE]
+        if(ext[2]) dat2 <- data[[ ei[2] ]]
+             else dat2 <- .dat[, ei[2], drop=FALSE] 
+        if(ext[3]) dat3 <- data[[ ei[3] ]]
+             else dat3 <- .dat[, ei[3], drop=FALSE]
+        if(ext[4]) dat4 <- data[[ ei[4] ]]
+             else dat4 <- .dat[, ei[4], drop=FALSE]
 
-        new1 <- optim.quartet2(el0[c(1, 3, 2, 4, 5)], eig, bf, 
-            dat1, dat3, dat2, dat4, g, w, weight, ll.0, llcomp=ll, evi=evi, contrast=contrast, contrast2=contrast2, ext=ext[c(1, 3, 2, 4)])
-        new2 <- optim.quartet2(el0[c(1, 4, 3, 2, 5)], eig, bf,  
-            dat1, dat4, dat3, dat2, g, w, weight, ll.0, llcomp=ll, evi=evi, contrast=contrast, contrast2=contrast2, ext=ext[c(1, 4, 3, 2)])
+        new1 <- optim.quartet2(el0[c(1, 3, 2, 4, 5)], eig, bf, dat1, dat3, dat2,
+                dat4, g, w, weight, ll.0, llcomp=ll, evi=evi, contrast=contrast, 
+                contrast2=contrast2, ext=ext[c(1, 3, 2, 4)])
+        new2 <- optim.quartet2(el0[c(1, 4, 3, 2, 5)], eig, bf, dat1, dat4, dat3, 
+                dat2, g, w, weight, ll.0, llcomp=ll, evi=evi, contrast=contrast, 
+                contrast2=contrast2, ext=ext[c(1, 4, 3, 2)])
 
-
-        loglik[(2*i)-1]=new1[[2]]
-        loglik[(2*i)]=new2[[2]] 
-        edgeMatrix[(2*i)-1,]=new1[[1]]
-        edgeMatrix[(2*i),]=new2[[1]]           
+        loglik[(2*i)-1] <- new1[[2]]
+        loglik[(2*i)] <- new2[[2]] 
+        edgeMatrix[(2*i)-1,] <- new1[[1]]
+        edgeMatrix[(2*i),] <- new2[[1]]           
     }
     swap <- 0
     eps0 <- 1e-6
@@ -520,21 +581,23 @@ pml.nni <- function (tree, data, w, g, eig, bf, ll.0, ll, ...)
  
 #    on.exit(.C("ll_free"))
 #    .C("ll_init", nr, nTips, nc, as.integer(k))
-
+#    cat("candidates", sum(candidates), "\n")
     while(any(candidates)){     
-        ind = which.max(loglik)
-        loglik[ind]=-Inf
-        if( ind %% 2 ) swap.edge = c(2,3)
-        else swap.edge = c(2,4)
-        tree2 <- changeEdge(tree, INDEX[(ind+1)%/%2,swap.edge], INDEX[(ind+1)%/%2,], edgeMatrix[ind,])
+        ind <- which.max(loglik)
+        loglik[ind] <- -Inf
+        if( ind %% 2 ) swap.edge <- c(2,3)
+        else swap.edge <- c(2,4)
+        tree2 <- changeEdge(tree, INDEX[(ind+1)%/%2,swap.edge], 
+                            INDEX[(ind+1)%/%2,], edgeMatrix[ind,])
  
-        test <- pml.fit(tree2, data, bf = bf, k=k, g=g, w=w, eig=eig, ll.0=ll.0, ...) 
-        if(test <= ll + eps0) candidates[ind] = FALSE
+        test <- pml.fit(tree2, data, bf=bf, k=k, g=g, w=w, eig=eig, ll.0=ll.0, ...) 
+        if(test <= ll + eps0) candidates[ind] <- FALSE
         if(test > ll + eps0) {
-            ll = test 
-            swap=swap+1
+            ll <- test 
+            swap <- swap+1
             tree <- tree2
-            indi <- which(rep(colSums(apply(INDEX,1,match,INDEX[(ind+1)%/%2,],nomatch=0))>0,each=2))
+            indi <- which(rep(colSums(apply(INDEX,1,match,INDEX[(ind+1)%/%2,],
+                                            nomatch=0))>0,each=2))
             candidates[indi] <- FALSE
             loglik[indi] <- -Inf
         }
@@ -548,41 +611,42 @@ rnodes <- function (tree, data, w, g, eig, bf)
     if (is.null(attr(tree, "order")) || attr(tree, "order") == 
         "cladewise") 
         tree <- reorder(tree, "postorder")
-    data = getCols(data, tree$tip) 
-    q = length(tree$tip.label)
+    data <- getCols(data, tree$tip.label) 
+    q <- length(tree$tip.label)
     node <- tree$edge[, 1]
     edge <- tree$edge[, 2]
-    m = length(edge) + 1  # max(edge)
-    l = length(w)        
-    dat = vector(mode = "list", length = m*l)
+    m <- length(edge) + 1  # max(edge)
+    l <- length(w)        
+    dat <- vector(mode = "list", length = m*l)
     dim(dat) <- c(l,m)
-    tmp = length(data)
+    tmp <- length(data)
 #    for(i in 1:length(w))dat[i,1:tmp]=new2old.phyDat(data) #
 #    dat[1,1:tmp] <- data  vielleicht gebraucht
     el <- tree$edge.length
     P <- getP(el, eig, g)
     nr <- as.integer(attr(data, "nr"))
     nc <- as.integer(attr(data, "nc"))
-    node = as.integer(node - min(node))
-    edge = as.integer(edge - 1)
-    nTips = as.integer(length(tree$tip))
-    mNodes = as.integer(max(node) + 1)
-    contrast = attr(data, "contrast")
-    nco = as.integer(dim(contrast)[1])
-    for(i in 1:l)dat[i,(q + 1):m] <- .Call("LogLik2", data, P[i,], nr, nc, node, edge, nTips, mNodes, contrast, nco)
+    node <- as.integer(node - min(node))
+    edge <- as.integer(edge - 1)
+    nTips <- as.integer(length(tree$tip.label))
+    mNodes <- as.integer(max(node) + 1)
+    contrast <- attr(data, "contrast")
+    nco <- as.integer(dim(contrast)[1])
+    for(i in 1:l)dat[i,(q + 1):m] <- .Call("LogLik2", data, P[i,], nr, nc, node, 
+                                           edge, nTips, mNodes, contrast, nco)
     parent <- tree$edge[, 1]
     child <- tree$edge[, 2]
-    nTips = min(parent) - 1
-    datp = vector("list", m)   
-    dat2 = vector("list", m * l)
+    nTips <- min(parent) - 1
+    datp <- vector("list", m)   
+    dat2 <- vector("list", m * l)
     dim(dat2) <- c(l,m)
     for(i in 1:l){     
-      datp[(nTips + 1)] = dat[i,(nTips + 1)]
+      datp[(nTips + 1)] <- dat[i,(nTips + 1)]
       for (j in (m - 1):1) {
           if (child[j] > nTips){
-             tmp2 = (datp[[parent[j]]]/(dat[[i,child[j]]] %*% P[[i,j]]))
-             datp[[child[j]]] = (tmp2 %*% P[[i,j]]) * dat[[i,child[j]]]  
-             dat2[[i, child[j]]] = tmp2
+             tmp2 <- (datp[[parent[j]]]/(dat[[i,child[j]]] %*% P[[i,j]]))
+             datp[[child[j]]] <- (tmp2 %*% P[[i,j]]) * dat[[i,child[j]]]  
+             dat2[[i, child[j]]] <- tmp2
              }
        }
     }
@@ -593,34 +657,34 @@ rnodes <- function (tree, data, w, g, eig, bf)
 
 score <- function (fit, transform=TRUE) 
 {
-    tree = fit$tree
+    tree <- fit$tree
     child <- tree$edge[, 2]
-    l = length(child)
-    sc = numeric(l)
-    weight = as.numeric(fit$weight)
+    l <- length(child)
+    sc <- numeric(l)
+    weight <- as.numeric(fit$weight)
     f <- drop(exp(fit$site))
-    dl = dl(fit, transform)
-    dl = dl/f
-    sc = colSums(weight * dl)
-    F = crossprod(dl*weight,dl) 
-    names(sc) = child
-    dimnames(F) = list(child, child) 
-    result = list(sc = sc, F = F)
+    dl <- dl(fit, transform)
+    dl <- dl/f
+    sc <- colSums(weight * dl)
+    F <- crossprod(dl*weight,dl) 
+    names(sc) <- child
+    dimnames(F) <- list(child, child) 
+    result <- list(sc = sc, F = F)
     result
 }
 
 
 # wird noch in partition models verwendet
-optim.quartet <- function (old.el, eig, bf, dat, g = 1, w = 1, weight, ll.0 = weight * 
+optim.quartet <- function (old.el, eig, bf, dat, g=1, w=1, weight, ll.0=weight * 
     0, control = list(eps = 1e-08, maxit = 5, trace = 0), llcomp=-Inf) 
 {
-    eps = 1
-    iter = 0
-    evi = (t(eig[[3]]) * bf)
+    eps <- 1
+    iter <- 0
+    evi <- (t(eig[[3]]) * bf)
     while (eps > control$eps && iter < control$maxit) {
         tmp <- fn.quartet(old.el = old.el, eig = eig, bf = bf, dat = dat, 
             g = g, w = w, weight = weight, ll.0 = ll.0)
-        old.ll = tmp$ll 
+        old.ll <- tmp$ll 
         el1 <- fs(old.el[1], eig, tmp$res[, 1], dat[, 1], weight, 
             g = g, w = w, bf = bf, ll.0 = ll.0, evi, getA=TRUE, getB=FALSE)
         el2 <- fs(old.el[2], eig, el1[[2]], dat[, 2], weight, 
@@ -631,16 +695,16 @@ optim.quartet <- function (old.el, eig, bf, dat, g = 1, w = 1, weight, ll.0 = we
             g = g, w = w, bf = bf, ll.0 = ll.0, evi, getA=TRUE, getB=FALSE)
         el4 <- fs(old.el[4], eig, el3[[2]], dat[, 4], weight, 
             g = g, w = w, bf = bf, ll.0 = ll.0, evi, getA=FALSE, getB=FALSE)
-        old.el[1] = el1[[1]]
-        old.el[2] = el2[[1]]
-        old.el[3] = el3[[1]]
-        old.el[4] = el4[[1]]
-        old.el[5] = el5[[1]]
-        iter = iter + 1
-        ll = el4[[4]]
-        eps = (old.ll - ll) / ll
+        old.el[1] <- el1[[1]]
+        old.el[2] <- el2[[1]]
+        old.el[3] <- el3[[1]]
+        old.el[4] <- el4[[1]]
+        old.el[5] <- el5[[1]]
+        iter <- iter + 1
+        ll <- el4[[4]]
+        eps <- (old.ll - ll) / ll
         if(ll<llcomp)return(list(old.el, ll))  
-        old.ll = ll
+        old.ll <- ll
     }
     list(old.el, ll)
 }
@@ -682,6 +746,8 @@ phangornParseFormula <- function(model){
 }
 
 
+#' @rdname pml
+#' @export
 pml.control <- function (epsilon = 1e-08, maxit = 10, trace = 1) 
 {
     if (!is.numeric(epsilon) || epsilon <= 0) 
@@ -695,852 +761,198 @@ pml.control <- function (epsilon = 1e-08, maxit = 10, trace = 1)
 # improves trees similar to 
 likelihoodRatchet <- function(obj, maxit=100, k=10, 
         control=pml.control(epsilon = 1e-08, maxit = 10, trace = 1L)){
-    tree = obj$tree
+    tree <- obj$tree
     nTips <- length(tree$tip.label)
-    trace = control$trace
-    control$trace = trace-1L
-    kmax=1
+    trace <- control$trace
+    control$trace <- trace-1L
+    kmax <- 1
     for(i in 1:maxit){
         tree<- rNNI(obj$tree, moves=nTips/3, n=1)
         #tree <- rSPR(tree, moves=10, k=3, n=1)
-        obj2 = update(obj, tree=tree)
+        obj2 <- update(obj, tree=tree)
         obj2 <- optim.pml(obj2, TRUE, control = control)
         if(logLik(obj2) > logLik(obj)){
             obj <- obj2
-            kmax=1
+            kmax <- 1
         } 
-        else kmax = kmax+1
-        if(trace > 0) print(paste("Iteration ", i,", best pscore so far:",logLik(obj)))
+        else kmax <- kmax+1
+        if(trace > 0) print(paste("Iteration ", i,", best pscore so far:",
+                                  logLik(obj)))
         if(kmax == k) break()
     }  
     obj
 }
 
-
+ 
 fs <- function (old.el, eig, parent.dat, child.dat, weight, g=g, 
     w=w, bf=bf, ll.0=ll.0, evi, getA=TRUE, getB=TRUE) 
 {
     if (old.el < 1e-8) old.el <- 1e-8
-    lg = length(parent.dat)
+    lg <- length(parent.dat)
     P <- getP(old.el, eig, g)
-    nr = as.integer(length(weight))
-    nc = as.integer(length(bf))
-    eve = eig[[2]]
+    nr <- as.integer(length(weight))
+    nc <- as.integer(length(bf))
+    eve <- eig[[2]]
     dad <- .Call("getDAD", parent.dat, child.dat, P, nr, nc) 
     X <- .Call("getPrep", dad, child.dat, eig[[2]], evi, nr, nc) 
     .Call("FS4", eig, as.integer(length(bf)), as.double(old.el), 
             as.double(w), as.double(g), X, child.dat, dad, as.integer(length(w)), 
-            as.integer(length(weight)), as.double(bf), as.double(weight), 
-            as.double(ll.0), as.integer(getA), as.integer(getB))
+            as.integer(length(weight)), as.double(weight), 
+            as.double(ll.0), as.integer(getA), as.integer(getB))  
 }
 
 
-fs3 <- function (old.el, eig, parent.dat, child, weight, g=g, 
-    w=w, bf=bf, ll.0=ll.0, contrast, contrast2, evi, ext=TRUE, getA=TRUE, getB=TRUE) # child.dat
+fs3 <- function (old.el, eig, parent.dat, child, weight, g=g, w=w, bf=bf, 
+        ll.0=ll.0, contrast, contrast2, evi, ext=TRUE, getA=TRUE, getB=TRUE) 
 {
     if (old.el < 1e-8) old.el <- 1e-8
-    lg = length(parent.dat)
+    lg <- length(parent.dat)
     P <- getP(old.el, eig, g)
-    nr = as.integer(length(weight))
-    nc = as.integer(length(bf))
+    nr <- as.integer(length(weight))
+    nc <- as.integer(length(bf))
     if(ext==FALSE){ 
        child.dat <- child
-       eve = eig[[2]]
+       eve <- eig[[2]]
        dad <- .Call("getDAD", parent.dat, child.dat, P, nr, nc) 
        X <- .Call("getPrep", dad, child.dat, eig[[2]], evi, nr, nc) 
     }
     else {
-        nco = as.integer(nrow(contrast))
+        nco <- as.integer(nrow(contrast))
         dad <- .Call("getDAD2", parent.dat, child, contrast, P, nr, nc, nco)
         child.dat <- vector("list", lg)
         for (i in 1:lg)child.dat[[i]] <- contrast[child, , drop=FALSE]
         X <- .Call("getPrep2", dad, child, contrast2, evi, nr, nc, nco)
     }
-    .Call("FS4", eig, as.integer(length(bf)), as.double(old.el), 
-            as.double(w), as.double(g), X, child.dat, dad, as.integer(length(w)), 
-            as.integer(length(weight)), as.double(bf), as.double(weight), 
-            as.double(ll.0), as.integer(getA), as.integer(getB))
+    .Call("FS4", eig, as.integer(length(bf)), as.double(old.el), as.double(w), 
+          as.double(g), X, child.dat, dad, as.integer(length(w)), 
+          as.integer(length(weight)), as.double(weight), as.double(ll.0), 
+          as.integer(getA), as.integer(getB)) # as.double(bf), 
 }
 
 
-
-optimEdge <- function (tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0,
-                        control = pml.control(epsilon = 1e-08, maxit = 10, trace=0), ...) 
+optimEdge <- function(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, 
+                      ll.0=ll.0, control = pml.control(epsilon = 1e-08,
+                      maxit = 10, trace=0), ...) 
 {
     if (is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise") 
         tree <- reorder(tree, "postorder") 
-    nTips <- length(tree$tip)
+    nTips <- length(tree$tip.label)
     el <- tree$edge.length
     tree$edge.length[el < 1e-08] <- 1e-08
-    oldtree = tree
-    k = length(w)    
-    data = subset(data, tree$tip) 
-    loglik = pml.fit2(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k)
+    oldtree <- tree
+    k <- length(w)    
+    data <- subset(data, tree$tip.label) 
+    loglik <- pml.fit4(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k) 
     start.ll <- old.ll <- loglik 
     contrast <- attr(data, "contrast")
     contrast2 <- contrast %*% eig[[2]] 
-    evi = (t(eig[[3]]) * bf)
+    evi <- (t(eig[[3]]) * bf)
     weight <- attr(data, "weight")
-    eps = 1
-    iter = 0
+    eps <- 1
+    iter <- 0
     
-    treeP = tree
-    tree = reorder(tree)
+    treeP <- tree
+    tree <- reorder(tree)
     
-    child = tree$edge[, 2]
-    parent = tree$edge[, 1]
+    child <- tree$edge[, 2]
+    parent <- tree$edge[, 1]
     m <- max(tree$edge)
     pvec <- integer(m)
     pvec[child] <- parent
     
-    EL = numeric(m)
-    EL[child] = tree$edge.length
+    EL <- numeric(m)
+    EL[child] <- tree$edge.length
     
-    n = length(tree$edge.length)  
+    n <- length(tree$edge.length)  
     
-    nr = as.integer(length(weight))
-    nc = as.integer(length(bf))
-    nco = as.integer(nrow(contrast))
-    eve = eig[[2]]
-    lg = k
-    rootNode = getRoot(tree)         
-    ScaleEPS = 1.0/4294967296.0
-    anc = Ancestors(tree, 1:m, "parent")  
-    anc0 = as.integer(c(0L, anc))
+    nr <- as.integer(length(weight))
+    nc <- as.integer(length(bf))
+    nco <- as.integer(nrow(contrast))
+    eve <- eig[[2]]
+    lg <- k
+    rootNode <- getRoot(tree)  # raus       
+    ScaleEPS <- 1.0/4294967296.0
+    anc <- Ancestors(tree, 1:m, "parent")  
+    anc0 <- as.integer(c(0L, anc))
     
     while (eps > control$eps && iter < control$maxit) {
-        blub3 <- .Call("extractScale", as.integer(rootNode), w, g, as.integer(nr), as.integer(nc), as.integer(nTips))
-        rowM = apply(blub3, 1, min)       
-        blub3 = (blub3-rowM) 
-        blub3 = ScaleEPS ^ (blub3) 
         EL <- .Call("optE", as.integer(parent), as.integer(child), 
-                    as.integer(anc0), eig, evi, EL, w, g, as.integer(nr), as.integer(nc), 
-                    as.integer(nTips), as.double(contrast), 
-                    as.double(contrast2), nco, blub3, data, as.double(weight), as.double(ll.0))       
-        iter = iter + 1
-#        tree$edge.length = EL[tree$edge[,2]]
-        treeP$edge.length = EL[treeP$edge[,2]]
-        newll <- pml.fit2(treeP, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k)
+                    as.integer(anc0), eig, evi, EL, w, g, as.integer(nr), 
+                    as.integer(nc), as.integer(nTips), as.double(contrast), 
+                    as.double(contrast2), nco, data, as.double(weight), 
+                    as.double(ll.0))       
+        iter <- iter + 1
+        treeP$edge.length <- EL[treeP$edge[,2]]
+        newll <- pml.fit4(treeP, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k)
         
-        eps = ( old.ll - newll ) / newll
+        eps <- ( old.ll - newll ) / newll
         if( eps <0 ) return(list(oldtree, old.ll))
-        oldtree = treeP
+        oldtree <- treeP
         if(control$trace>1) cat(old.ll, " -> ", newll, "\n") 
-        old.ll = newll
-        #        loli = parent[1] 
+        old.ll <- newll
     }
     if(control$trace>0) cat(start.ll, " -> ", newll, "\n")
     list(tree=treeP, logLik=newll, c(eps, iter))
 }
 
 
-# bf raus C naeher
-# data=data, k=k, g=g, w=w, eig=eig, bf=bf, ll.0=ll.0, INV=INV)
 pml.move <- function(EDGE, el, data, g, w, eig, k, nTips, bf){
     node <- EDGE[, 1]
     edge <- EDGE[, 2]
-    root <- as.integer(node[length(node)])     
-#    el <- as.double(tree$edge.length)
-    nr = as.integer(attr(data, "nr"))
-    nc = as.integer(attr(data, "nc"))    
-    node = as.integer(node - nTips - 1L)  
-    edge = as.integer(edge - 1L)
-    contrast = attr(data, "contrast")
-    nco = as.integer(dim(contrast)[1])    
-    tmp <- .Call("PML3", dlist=data, as.double(el), as.double(w), as.double(g), nr, nc, k, eig, as.double(bf), node, edge, nTips, root, nco, contrast, N=as.integer(length(edge))) 
+    nr <- as.integer(attr(data, "nr"))
+    nc <- as.integer(attr(data, "nc"))    
+    node <- as.integer(node - nTips - 1L)  
+    edge <- as.integer(edge - 1L)
+    contrast <- attr(data, "contrast")
+    nco <- as.integer(dim(contrast)[1])    
+    tmp <- .Call("PML3", dlist=data, as.double(el), as.double(g), nr, nc, k, 
+                 eig, as.double(bf), node, edge, nTips, nco, contrast, 
+                 N=as.integer(length(edge))) 
+# as.double(w),
     return(NULL)
 }
 
 
-
-#
-# pmlPart + pmlCluster
-#
-optimPartQ <- function (object, Q = c(1, 1, 1, 1, 1, 1), ...) 
+bip <- function(x) 
 {
-    l = length(Q)
-    Q = Q[-l]
-    Q = sqrt(Q)
-    fn = function(Q, object, ...) {
-        result <- 0
-        Q = c(Q^2, 1)
-        n <- length(object)
-        for (i in 1:n) result <- result + update(object[[i]], Q = Q, ...)$logLik
-        result
-    }
-    res = optim(par = Q, fn = fn, gr = NULL, method = "L-BFGS-B", 
-        lower = 0, upper = Inf, control = list(fnscale = -1, 
-            maxit = 25), object = object, ...)
-    res[[1]] = c(res[[1]]^2, 1)
-    res
+    x <- reorder(x, "postorder")
+    nTips <- as.integer(length(x$tip.label))
+    .Call('_phangorn_bipCPP', PACKAGE = 'phangorn', x$edge, nTips)
 }
 
 
-optimPartQGeneral <- function (object, Q = c(1, 1, 1, 1, 1, 1), subs=rep(1,length(Q)), ...) 
+bipart <- function(x) 
 {
-    m = length(Q)
-    n = max(subs)
-    ab = numeric(n)
-    for(i in 1:n) ab[i]=log(Q[which(subs==i)[1]])
-    fn = function(ab, object, m, n, subs, ...) {
-        Q = numeric(m)
-        for(i in 1:n)Q[subs==i] = ab[i]
-        Q = exp(Q)
-        result = 0
-        for (i in 1:length(object)) result <- result + update(object[[i]], Q = Q, ...)$logLik
-        result
-    }
-    res = optim(par = ab, fn = fn, gr = NULL, method = "L-BFGS-B", 
-        lower = -Inf, upper = Inf, control = list(fnscale = -1, 
-            maxit = 25), object = object, m=m, n=n, subs=subs, ...)
-    Q = rep(1, m)
-    for(i in 1:n) Q[subs==i] = exp(res[[1]][i])
-    res[[1]] = Q
-    res
-}
-
-
-optimPartBf <- function (object, bf = c(0.25, 0.25, 0.25, 0.25), ...) 
-{
-    l = length(bf)
-    nenner = 1/bf[l]
-    lbf = log(bf * nenner)
-    lbf = lbf[-l]
-    fn = function(lbf, object, ...) {
-        result <- 0
-        bf = exp(c(lbf, 0))
-        bf = bf/sum(bf)
-        n <- length(object)
-        for (i in 1:n) result <- result + update(object[[i]], 
-            bf = bf, ...)$logLik
-        result
-    }
-    res = optim(par = lbf, fn = fn, gr = NULL, method = "Nelder-Mead", 
-        control = list(fnscale = -1, maxit = 500), object, ...)
-    print(res[[2]])
-    bf = exp(c(res[[1]], 0))
-    bf = bf/sum(bf)
-}
-
-
-optimPartInv <- function (object, inv = 0.01, ...) 
-{
-    fn = function(inv, object, ...) {
-        result <- 0
-        n <- length(object)
-        for (i in 1:n) result <- result + update(object[[i]], inv = inv, 
-            ...)$logLik
-        result
-    }
-    res = optimize(f = fn, interval = c(0, 1), lower = 0, upper = 1, 
-        maximum = TRUE, tol = 1e-04, object, ...)
-#    print(res[[2]])
-    res[[1]]
-}
-
-
-optimPartGamma <- function (object, shape = 1, ...) 
-{
-    fn = function(shape, object, ...) {
-        result <- 0
-        n <- length(object)
-        for (i in 1:n) result <- result + update(object[[i]], shape = shape, 
-            ...)$logLik
-        result
-    }    
-    res = optimize(f = fn, interval = c(0, 100), lower = 0, upper = 100, 
-        maximum = TRUE, tol = 0.01, object, ...)
-    res
-}
-
-
-dltmp <- function (fit, i=1, transform=transform) # i = weights
-{
-    tree = fit$tree 
-    data = getCols(fit$data, tree$tip) 
-    if (is.null(attr(tree, "order")) || attr(tree, "order") == 
-        "cladewise") 
-        tree <- reorder(tree, "postorder")
-    q = length(tree$tip.label)
-    node <- tree$edge[, 1]
-    edge <- tree$edge[, 2]
-    m = length(edge) + 1  # max(edge)
-    dat = vector(mode = "list", length = m)
-    eig = fit$eig
-    w = fit$w[i]
-    g = fit$g[i]
-    bf = fit$bf
-    el <- tree$edge.length
-    P <- getP(el, eig, g)
-    nr <- as.integer(attr(data, "nr"))
-    nc <- as.integer(attr(data, "nc"))
-    node = as.integer(node - min(node))
-    edge = as.integer(edge - 1)
-    nTips = as.integer(length(tree$tip))
-    mNodes = as.integer(max(node) + 1)
-    contrast = attr(data, "contrast")
-    nco = as.integer(dim(contrast)[1])
-    dat[(q + 1):m] <- .Call("LogLik2", data, P, nr, nc, node, edge, nTips, mNodes, contrast, nco)
-    result = dat[[q+1]] %*% (bf * w)
-
-    parent <- tree$edge[, 1]
-    child <- tree$edge[, 2]
-    nTips = min(parent) - 1
-    datp = vector("list", m)
-    el = tree$edge.length 
-    if (transform) dP = getdP(tree$edge.length, eig, g)
-    else dP = getdP2(tree$edge.length, eig, g)
-   
-    datp[(nTips + 1)] = dat[(nTips + 1)]
-    l = length(child)
-    dl = matrix(0, nr, l)
-    for (j in (m - 1):1) {
-        # tips have factor format, internal edges are matrices
-        if (child[j] > nTips){
-             tmp2 = (datp[[parent[j]]]/(dat[[child[j]]] %*% P[[j]]))
-             dl[, j] = (tmp2 * (dat[[child[j]]] %*% dP[[j]])) %*% (w * bf)
-             datp[[child[j]]] = (tmp2 %*% P[[j]]) * dat[[child[j]]]  
-             }
-        else{
-             tmp2 = (datp[[parent[j]]]/((contrast %*% P[[j]])[data[[child[j]]],] ))
-             dl[, j] = (tmp2 * ((contrast %*% dP[[j]])[data[[child[j]]],]) ) %*% (w * bf)    
-             }
-    }
-    dl
-}
-
-
-dl <- function(x, transform = TRUE){
-  w = x$w 
-  l=length(x$w)
-  dl = dltmp(x, 1, transform)
-  i=2
-  while(i < (l+1)){
-    dl = dl + dltmp(x, i, transform)
-    i = i + 1
-  } 
-  dl
-}
-
-
-# add control and change edge
-optimPartEdge <- function (object, ...) 
-{
-    tree <- object[[1]]$tree
-    theta <- object[[1]]$tree$edge.length
-    n <- length(object)
-    l <- length(theta)
-    nrv <- numeric(n)
-    for (i in 1:n) nrv[i] = attr(object[[i]]$data, "nr")
-    cnr <- cumsum(c(0, nrv))
-    weight = numeric(sum(nrv))
-    dl <- matrix(NA, sum(nrv), l)
-    for (i in 1:n) weight[(cnr[i] + 1):cnr[i + 1]] = attr(object[[i]]$data, 
-        "weight")
-    ll0 = 0
-    for (i in 1:n) ll0 = ll0 + object[[i]]$logLik
-    eps = 1
-    scalep =1
-    k = 1
-    while (eps > 0.001 & k<50) {
-        if(scalep==1){
-            for (i in 1:n) {
-                lv = drop(exp(object[[i]]$site))
-                dl[(cnr[i] + 1):cnr[i + 1], ] = dl(object[[i]], TRUE)/lv
-            }
-            sc = colSums(weight * dl)
-            F = crossprod(dl * weight, dl) + diag(l)*1e-10
-            # add small ridge penalty for numerical stability 
-        }
-        thetaNew = log(theta) + scalep * solve(F, sc)
-        tree$edge.length = as.numeric(exp(thetaNew))
-        for (i in 1:n) object[[i]] <- update(object[[i]], tree = tree)
-        ll1 = 0
-        for (i in 1:n) ll1 = ll1 + object[[i]]$logLik
-        eps <- ll1 - ll0
-        if (eps < 0 || is.nan(eps)) {
-            scalep = scalep/2
-            eps = 1
-            thetaNew = log(theta)
-            ll1 = ll0
-        }
-        else scalep = 1
-        theta = exp(thetaNew)
-        ll0 <- ll1
-        k=k+1
-    }
-    object
-}
-
-
-makePart <- function(fit, rooted, weight=~index+genes){
-    if(inherits(fit,"phyDat")){
-        x <- fit
-        dm <- dist.ml(x)
-        if(!rooted) tree <- NJ(dm)
-        else tree <- upgma(dm)
-        fit <- pml(tree, x, k=4)
-    }     
-    dat <- fit$data 
-    if(class(weight)[1]=="formula")     
-        weight <- xtabs(weight, data=attr(dat, "index"))
-    fits <- NULL 
-    for(i in 1:dim(weight)[2]){ 
-        ind <- which(weight[,i] > 0)
-        dat2 <- getRows(dat, ind)
-        attr(dat2, "weight") <- weight[ind,i]
-        fits[[i]] <- update(fit, data = dat2)
-    }
-    names(fits) = colnames(fits)
-    fits    
-}
-
-
-multiphyDat2pmlPart <- function(x, rooted=FALSE, ...){
-    fun <-  function(x, ...){
-        dm <- dist.ml(x)
-        if(!rooted) tree <- NJ(dm)
-        else tree <- upgma(dm)
-        fit <- pml(tree, x, ...)
-    }
-    fits <- lapply(x@dna, fun, ...)
-    fits
-}
-
-
-pmlPart2multiPhylo <- function(x){
-    res <- lapply(x$fits, FUN=function(x)x$tree)
-    class(res) <- "multiPhylo"
-    res
-}
-
-
-plot.pmlPart<- function(x, ...){
-    plot(pmlPart2multiPhylo(x), ...)
-}
-
-
-pmlPart <- function (formula, object, control=pml.control(epsilon=1e-8, maxit=10, trace=1), model=NULL, rooted=FALSE, ...) 
-{
-    call <- match.call()
-    form <- phangornParseFormula(formula)
-    opt <- c("nni", "bf", "Q", "inv", "shape", "edge", "rate")
-    optAll <- match(opt, form$left)
-    optPart <- match(opt, form$right)
-    AllNNI <- !is.na(optAll[1])
-    AllBf <- !is.na(optAll[2])
-    AllQ <- !is.na(optAll[3])
-    AllInv <- !is.na(optAll[4])
-    AllGamma <- !is.na(optAll[5])
-    AllEdge <- !is.na(optAll[6])
-    PartNni <- !is.na(optPart[1])
-    PartBf <- !is.na(optPart[2])
-    PartQ <- !is.na(optPart[3])
-    PartInv <- !is.na(optPart[4])
-    PartGamma <- !is.na(optPart[5])
-    PartEdge <- !is.na(optPart[6])
-    PartRate <- !is.na(optPart[7])
- 
-    if(inherits(object,"multiphyDat")){
-        if(AllNNI || AllEdge) object <- do.call(cbind.phyDat, object@dna)
-        else fits <- multiphyDat2pmlPart(object, rooted=rooted, ...)
-    } 
-    if(inherits(object,"pml")) fits <- makePart(object, rooted=rooted, ...) 
-    if(inherits(object,"phyDat")) fits <- makePart(object, rooted=rooted, ...)
-    if(inherits(object,"pmlPart")) fits <- object$fits
-    if(inherits(object,"list")) fits <- object
-
-
-    trace = control$trace
-    epsilon = control$epsilon
-    maxit = control$maxit
-
-    p <- length(fits)
- #   if(length(model)<p) model = rep(model, length = p)
-
-    m = 1
-    logLik = 0
-    for (i in 1:p) logLik = logLik + fits[[i]]$log
-    eps = 10
-    while (eps > epsilon & m < maxit) {
-        loli = 0
-        if(any(c(PartNni, PartBf, PartInv, PartQ, PartGamma, PartEdge, PartRate))){
-            for (i in 1:p) {
-                fits[[i]] = optim.pml(fits[[i]], optNni=PartNni, optBf=PartBf, 
-                    optQ=PartQ, optInv=PartInv, optGamma=PartGamma,  optEdge=PartEdge, 
-                    optRate=PartRate, optRooted=rooted,  
-                    control = pml.control(maxit = 3, epsilon = 1e-8, trace-1), model=model[i])
-            }
-        } 
-        if (AllQ) {
-            Q = fits[[1]]$Q
-            subs = c(1:(length(Q)-1), 0)
-            newQ <- optimPartQGeneral(fits, Q=Q, subs=subs)
-            for (i in 1:p) fits[[i]] <- update(fits[[i]], Q = newQ[[1]])
-        }
-        if (AllBf) {
-             bf = fits[[1]]$bf
-            newBf <- optimPartBf(fits, bf=bf)
-            for (i in 1:p) fits[[i]] <- update(fits[[i]], bf = newBf)
-        }
-        if (AllInv) {
-            inv = fits[[1]]$inv
-            newInv <- optimPartInv(fits, inv=inv)
-            for (i in 1:p) fits[[i]] <- update(fits[[i]], inv = newInv)
-        }
-        if (AllGamma) {
-            shape = fits[[1]]$shape
-            newGamma <- optimPartGamma(fits, shape=shape)[[1]]
-            for (i in 1:p) fits[[i]] <- update(fits[[i]], shape = newGamma)
-        }
-        if (AllNNI){
-            fits <- optimPartNNI(fits,AllEdge)
-            if(trace>0) cat(attr(fits,"swap"), " NNI operations performed")
-        }
-        if (AllEdge) 
-            fits <- optimPartEdge(fits)
-        if (PartRate){
-            tree = fits[[1]]$tree
-            rate=numeric(p)
-            wp =numeric(p) 
-            for(i in 1:p){
-                wp[i]=sum(fits[[i]]$weight)
-                rate[i] <- fits[[i]]$rate
-                }          
-            ratemult = sum(wp) / sum(wp*rate)
-            tree$edge.length = tree$edge.length/ratemult  
-            for(i in 1:p)fits[[i]] = update(fits[[i]], tree=tree, rate=rate[i]*ratemult)   
-        }
-        loli <- 0
-        for (i in 1:p) loli <- loli + fits[[i]]$log
-        eps = (logLik - loli)/loli
-        if(trace>0) cat("loglik:", logLik, "-->", loli, "\n")
-        logLik <- loli
-        m = m + 1
-    }
-    
-    df <- matrix(1, 6 ,2)
-    colnames(df) <- c("#df", "group")
-    rownames(df) <- c("Edge", "Shape", "Inv", "Bf", "Q", "Rate")
-    df[1,1] <- length(fits[[1]]$tree$edge.length)
-    df[2,1] <- fits[[1]]$k > 1
-    df[3,1] <- fits[[1]]$inv > 0
-    df[4,1] <- length(unique(fits[[1]]$bf)) - 1
-    df[5,1] <- length(unique(fits[[1]]$Q)) - 1
-    df[6,1] <- 0 # rates 
-    if(PartEdge) df[1,2] = p
-    if(PartGamma) df[2,2] = p
-    if(PartInv) df[3,2] = p
-    if(PartBf) df[4,2] = p
-    if(PartQ) df[5,2] = p
-    if(PartRate) df[6,1] = p-1     
-    attr(logLik, "df") = sum(df[,1]*df[,2])
-    object <- list(logLik = logLik, fits = fits, call = call, df=df)
-    class(object) <- "pmlPart" 
-    object
-}
-
-
-
-bip <- function (obj) 
-{
-    if (is.null(attr(obj, "order")) || attr(obj, "order") == 
-            "cladewise") 
-        obj <- reorder(obj, "postorder")
-    maxP = max(obj$edge)
-    nTips = length(obj$tip)
-    res <- .Call("C_bip", as.integer(obj$edge[, 1]), as.integer(obj$edge[, 2]), as.integer(nTips), as.integer(maxP))
-    res
-}
-
-
-bipart <- function(obj){
-    if (is.null(attr(obj, "order")) || attr(obj, "order") == "cladewise") 
-        obj <- reorder(obj, "postorder")
-    maxP  = max(obj$edge)
-    nTips = length(obj$tip)
-    res <- .Call("C_bipart", as.integer(obj$edge[,1]) , as.integer(obj$edge[,2]), as.integer(nTips), as.integer(maxP))  #, as.integer(obj$Nnode))
-#    attr(res, "nodes") = unique(obj$edge[,1])
-    res    
+    x <- reorder(x, "postorder")
+    nTips <- as.integer(length(x$tip.label))
+    .Call('_phangorn_bipartCPP', PACKAGE = 'phangorn', x$edge, nTips)
 }
 
 
 bipartition <- function (tree) 
 {
     if(is.rooted(tree))tree <- unroot(tree)
-    if(is.null(attr(tree,"order")) || attr(tree, "order")=="cladewise") tree <- reorder(tree, "postorder")
-    bp <- bipart(tree)
-    nTips = length(tree$tip)
-    l = length(bp)
-    m = length(bp[[l]])
-    k = length(tree$edge[, 1])
-    result = matrix(0L, l, m)
-    res = matrix(0L, k, m)
-    for (i in 1:l) result[i, bp[[i]]] = 1L
-    result = result[-l, ,drop=FALSE]
-    for (i in 1:nTips) res[(tree$edge[, 2] == i), i] = 1L     
-#    res[tree$edge[, 2] > nTips, ] = result
-    res[ match(unique(tree$edge[,1]),tree$edge[,2])[-l], ] = result
-    colnames(res) = tree$tip.label
-    rownames(res) = tree$edge[,2]
-    res[res[, 1] == 1, ] = 1L - res[res[, 1] == 1, ]
+    if(is.null(attr(tree,"order")) || attr(tree, "order")=="cladewise") 
+        tree <- reorder(tree, "postorder")
+    bp <- bip(tree)
+    nTips <- length(tree$tip.label)
+    l <- length(bp)
+    res <- matrix(0L, l, nTips)
+    for (i in 1:l) res[i, bp[[i]]] <- 1L
+    res <- res[tree$edge[,2], , drop=FALSE]
+    colnames(res) <- tree$tip.label
+    rownames(res) <- tree$edge[,2]
+    res[res[, 1] == 1, ] <- 1L - res[res[, 1] == 1, ]
     res
 }
 
 
-
-pmlCluster.fit <- function (formula, fit, weight, p = 4, part = NULL, control=pml.control(epsilon=1e-8, maxit=10, trace=1), ...) 
-{
-    call <- match.call()
-    form <- phangornParseFormula(formula)
-    opt <- c("nni", "bf", "Q", "inv", "shape", "edge", "rate")
-    optAll <- match(opt, form$left)
-    optPart <- match(opt, form$right)
-    AllNNI <- !is.na(optAll[1])
-    AllBf <- !is.na(optAll[2])
-    AllQ <- !is.na(optAll[3])
-    AllInv <- !is.na(optAll[4])
-    AllGamma <- !is.na(optAll[5])
-    AllEdge <- !is.na(optAll[6])
-    PartNni <- !is.na(optPart[1])
-    PartBf <- !is.na(optPart[2])
-    PartQ <- !is.na(optPart[3])
-    PartInv <- !is.na(optPart[4])
-    PartGamma <- !is.na(optPart[5])
-    PartEdge <- !is.na(optPart[6])
-    PartRate <- !is.na(optPart[7])
-    nrw <- dim(weight)[1]
-    ncw <- dim(weight)[2]
-    if (is.null(part)){ 
-        part = rep(1:p, length=ncw)
-        part = sample(part)
-        }
-    Part = part
-    Gtrees = vector("list", p)
-    dat <- fit$data
-    attr(fit$orig.data, "index") <- attr(dat, "index") <- NULL
-    for (i in 1:p) Gtrees[[i]] = fit$tree
-    fits = vector("list", p)
-    for (i in 1:p) fits[[i]] = fit
-    trace = control$trace
-    eps = 0
-    m = 1
-    logLik = fit$log
-    trees = list()
-    weights = matrix(0, nrw, p)
-    lls = matrix(0, nrw, p)
-    loli = fit$log
-    oldpart = part
-    eps2 = 1
-    iter = 0
-    swap = 1
-    while (eps < ncw || abs(eps2) > control$eps) {
-        df2 = 0
-        
-        if(any(c(PartNni, PartBf, PartInv, PartQ, PartGamma, PartEdge, PartRate))){
-            for (i in 1:p) {
-                weights[, i] = rowSums(weight[, which(part == i), 
-                    drop = FALSE])
-                ind <- which(weights[, i] > 0)
-                dat2 <- getRows(dat, ind)
-                attr(dat2, "weight") <- weights[ind, i]
-                fits[[i]] <- update(fits[[i]], data = dat2)
-                fits[[i]] = optim.pml(fits[[i]], PartNni, PartBf, 
-                    PartQ, PartInv, PartGamma, PartEdge, PartRate, 
-                    control = pml.control(epsilon = 1e-8, maxit = 3, trace-1))
-                lls[, i] = update(fits[[i]], data = dat)$site
-                Gtrees[[i]] = fits[[i]]$tree
-            }
-        }
-        if (AllQ) {
-            Q = fits[[1]]$Q
-            subs = c(1:(length(Q)-1), 0)
-            newQ <- optimPartQGeneral(fits, Q=Q, subs=subs)[[1]]
-            for (i in 1:p) fits[[i]] <- update(fits[[i]], Q = newQ)
-            df2 = df2 + length(unique(newQ)) - 1
-        }
-        if (AllBf) {
-	        bf = fits[[1]]$bf
-            newBf <- optimPartBf(fits, bf=bf)
-            for (i in 1:p) fits[[i]] <- update(fits[[i]], bf = newBf)
-            df2 = df2 + length(unique(newBf)) - 1
-        }
-        if (AllInv) {
-            inv = fits[[1]]$inv
-            newInv <- optimPartInv(fits, inv=inv)
-            for (i in 1:p) fits[[i]] <- update(fits[[i]], inv = newInv) #there was an Error
-            df2 = df2 + 1
-        }
-        if (AllGamma) {
-            shape = fits[[1]]$shape
-            newGamma <- optimPartGamma(fits, shape=shape)[[1]]        
-            for (i in 1:p) fits[[i]] <- update(fits[[i]], shape = newGamma)
-            df2 = df2 + 1
-        }
-        if (AllNNI) {
-            fits <- optimPartNNI(fits, AllEdge)
-            if(trace>0)cat(attr(fits, "swap"), " NNI operations performed")
-            swap <- attr(fits, "swap")
-        }
-        if (AllEdge) {
-            fits <- optimPartEdge(fits)
-            df2 = df2 + length(fits[[1]]$tree$edge.length)
-        }
-        if (PartRate) {
-            tree = fits[[1]]$tree
-            rate = numeric(p)
-            wp = numeric(p)
-            for (i in 1:p) {
-                wp[i] = sum(fits[[i]]$weight)
-                rate[i] <- fits[[i]]$rate
-            }
-            ratemult = sum(wp)/sum(wp * rate)
-            tree$edge.length = tree$edge.length/ratemult
-            for (i in 1:p) fits[[i]] = update(fits[[i]], tree = tree, 
-                rate = rate[i] * ratemult)
-        }
-        for (i in 1:p) lls[, i] = update(fits[[i]], data = dat)$site
-        trees[[m]] = Gtrees
-        LL = t(weight) %*% lls       
-# choose partitions which change        
-        tmp =(LL[cbind(1:ncw,part)] - apply(LL, 1, max))/colSums(weight)
-        fixi = numeric(p)
-        for(i in 1:p){
-            tmpi = which(part == i)
-            fixi[i] = tmpi[which.max(tmp[tmpi])]     
-            }
-        oldpart = part
-# restrict the number of elements changing groups 
-# If more than 25% would change, only the 25% with the highest increase per site change       
-        if( sum(tmp==0)/length(tmp) < .75){
-           medtmp = quantile(tmp, .25)
-           medind = which(tmp<=medtmp)
-           part[medind] = apply(LL[medind,], 1, which.max)
-           }
-        else part = apply(LL, 1, which.max)
-# force groups to have at least one member
-        part[fixi] = 1:p
-        Part = cbind(Part, part)
-        eps = sum(diag(table(part, oldpart)))
-        eps2 = loli
-        loli = sum(apply(LL, 1, max))
-        eps2 = (eps2 - loli)/loli
-        logLik = c(logLik, loli)
-        if(trace>0) print(loli)
-        Part = cbind(Part, part)
-        df2 = df2 + df2
-        if (eps == ncw & swap == 0) 
-            AllNNI = FALSE
-        m = m + 1
-        if (eps == ncw) 
-            iter = iter + 1
-        if (iter == 3) 
-            break
-    }
-    df <- matrix(1, 6, 2)
-    colnames(df) <- c("#df", "group")
-    rownames(df) <- c("Edge", "Shape", "Inv", "Bf", "Q", "Rate")
-    df[1, 1] <- length(fits[[1]]$tree$edge.length)
-    df[2, 1] <- fits[[1]]$k - 1
-    df[3, 1] <- fits[[1]]$inv > 0
-    df[4, 1] <- length(unique(fits[[1]]$bf)) - 1
-    df[5, 1] <- length(unique(fits[[1]]$Q)) - 1
-    df[6, 1] <- 0
-    if (PartEdge) 
-        df[1, 2] = p
-    if (PartGamma) 
-        df[2, 2] = p
-    if (PartInv) 
-        df[3, 2] = p
-    if (PartBf) 
-        df[4, 2] = p
-    if (PartQ) 
-        df[5, 2] = p
-    if (PartRate) 
-        df[6, 1] = p - 1
-    attr(logLik, "df") = sum(df[, 1] * df[, 2])
-    res = list(logLik = logLik, Partition = Part, trees = trees) # intermediate results
-    result <- list(logLik = loli, fits = fits, Partition = part, df = df, res = res, call = call)
-    class(result) <- c("pmlPart")
-    result
-}
-
-
-pmlCluster <- function (formula, fit, weight, p = 1:5, part = NULL, nrep = 10, control = pml.control(epsilon = 1e-08,
-   maxit = 10, trace = 1), ...)
-{
-   call <- match.call()
-   form <- phangornParseFormula(formula)
-   if(any(p==1)){
-       opt2 <- c("nni", "bf", "Q", "inv", "shape", "edge")
-       tmp1 <- opt2 %in% form$left
-       tmp1 <- tmp1 | (opt2 %in% form$right)
-       fit <- optim.pml(fit, tmp1[1], tmp1[2], tmp1[3], tmp1[4],
-       tmp1[5], tmp1[6])
-   }
-
-   p=p[p!=1]
-   if(length(p)==0)return(fit)
-   n = sum(weight)
-   k=2
-
-   BIC = matrix(0, length(p)+1, nrep)
-   BIC[1,] = AIC(fit, k = log(n))
-   LL = matrix(NA, length(p)+1, nrep)
-   LL[1,] = logLik(fit)
-
-   P = array(dim=c(length(p)+1, nrep, dim(weight)[2]))
-   tmpBIC = Inf
-   choice = c(1,1) 
-   for(j in p){
-       tmp=NULL
-       for(i in 1:nrep){
-           tmp = pmlCluster.fit(formula, fit, weight, p=j, part=part, control=control,...)
-           P[k,i,] = tmp$Partition
-           BIC[k,i] = AIC(tmp, k = log(n))
-           LL[k,i] = logLik(tmp)
-           if(BIC[k,i]<tmpBIC){
-                tmpBIC = BIC[k,i]
-                result = tmp
-                choice = c(k,i) 
-           }
-       }
-       k=k+1
-   }      
-
-   p = c(1,p)
-   result$choice = choice 
-   result$BIC = BIC
-   result$AllPartitions = P
-   result$AllLL = LL
-   result$p = p 
-   class(result) = c("pmlCluster", "pmlPart")
-   result
-}
-
-
-plot.pmlCluster <- function(x, which = c(1L:3L), caption = list("BIC", "log-likelihood", "Partitions"), ...){
-   show <- rep(FALSE, 3)
-   show[which] <- TRUE
-   choice = x$choice
-   if(show[1]){
-       X <- x$AllPartitions[choice[1],,]
-       d <- dim(X)
-       ind = order(X[choice[2],])
-       im  = matrix(0, d[2], d[2])
-       for(j in 1:d[1]){for(i in 1:d[2]) im[i,] = im[i,] + (X[j,] == X[j,i]) }
-       image(im[ind, ind], ...)
-   }
-
-   if(show[1])matplot(x$p, x$BIC, ylab="BIC", xlab="number of clusters")
-   if(show[1])matplot(x$p, x$AllLL, ylab="log-likelihood", xlab="number of clusters")
-}
-
-
 readAArate <- function(file){
-    tmp <- read.table(system.file(file.path("extdata", file)), col.names = 1:20, fill=TRUE)
+    tmp <- read.table(system.file(file.path("extdata", file)), col.names = 1:20, 
+                      fill=TRUE)
     Q <- tmp[1:19,1:19]
-    names <- c("a", "r", "n", "d", "c", "q", "e", "g", "h", "i", "l", "k", "m", "f", "p", "s", "t", "w",  "y", "v")
+    names <- c("a", "r", "n", "d", "c", "q", "e", "g", "h", "i", "l", "k", "m", 
+               "f", "p", "s", "t", "w",  "y", "v")
     Q <- as.numeric(Q[lower.tri(Q,TRUE)])
     bf <- as.numeric(as.character(unlist(tmp[20,])))
     names(bf) <- names
@@ -1560,20 +972,20 @@ readAArate <- function(file){
 
 getModelAA <- function(model, bf=TRUE, Q=TRUE){
     model <- match.arg(eval(model), .aamodels)
-    tmp = get(paste(".", model, sep=""), environment(pml))
+    tmp <- get(paste(".", model, sep=""), environment(pml))
     if(Q) assign("Q", tmp$Q, envir=parent.frame())
     if(bf) assign("bf", tmp$bf, envir=parent.frame())
 }
 
 
-print.pml = function(x,...){
+print.pml <- function(x,...){
     cat("\n loglikelihood:", x$logLik, "\n")
     w <- x$weight
     w <- w[w>0]    
     type <- attr(x$data, "type")
     levels <- attr(x$data, "levels")
     nc <- attr(x$data, "nc")
-    ll0 = sum(w*log(w/sum(w)))
+    ll0 <- sum(w*log(w/sum(w)))
     cat("\nunconstrained loglikelihood:", ll0, "\n")
     if(x$inv > 0)cat("Proportion of invariant sites:",x$inv,"\n")
     if(x$k >1){
@@ -1584,13 +996,13 @@ print.pml = function(x,...){
     if(type=="AA") cat("Rate matrix:",x$model, "\n")    
     if(type=="DNA"){
         cat("\nRate matrix:\n")    
-        QM = matrix(0, nc, nc, dimnames = list(levels,levels))    
-        QM[lower.tri(QM)] = x$Q    
-        QM = QM+t(QM)
+        QM <- matrix(0, nc, nc, dimnames = list(levels,levels))    
+        QM[lower.tri(QM)] <- x$Q    
+        QM <- QM+t(QM)
         print(QM)
         cat("\nBase frequencies:  \n")
-        bf = x$bf
-        names(bf) = levels 
+        bf <- x$bf
+        names(bf) <- levels 
         cat(bf, "\n")
     }
     if(type=="CODON") {
@@ -1599,52 +1011,53 @@ print.pml = function(x,...){
     }
     if(type=="USER" & length(x$bf)<11){         
         cat("\nRate matrix:\n")    
-        QM = matrix(0, nc, nc, dimnames = list(levels,levels))    
-        QM[lower.tri(QM)] = x$Q    
-        QM = QM+t(QM)
+        QM <- matrix(0, nc, nc, dimnames = list(levels,levels))    
+        QM[lower.tri(QM)] <- x$Q    
+        QM <- QM+t(QM)
         print(QM)
         cat("\nBase frequencies:  \n")
-        bf = x$bf
-        names(bf) = levels 
+        bf <- x$bf
+        names(bf) <- levels 
         cat(bf, "\n")
     }        
 }
 
 
-optEdgeMulti <- function (object, control = pml.control(epsilon = 1e-8, maxit = 10, trace=1), ...) 
+optEdgeMulti <- function (object, control = pml.control(epsilon = 1e-8, 
+                          maxit = 10, trace=1), ...) 
 {
     tree <- object$tree
     theta <- object$tree$edge.length
     weight <- attr(object$data, "weight")
-    ll0 = object$logLik
-    eps = 1
-    iter = 0
-    iter2 = 0
-    scale = 1
-    # l = length(theta)
+    ll0 <- object$logLik
+    eps <- 1
+    iter <- 0
+    iter2 <- 0
+    scale <- 1
+    # l <- length(theta)
     while (abs(eps) > control$eps && iter < control$maxit) {
-        dl = score(object)
-        thetaNew = log(theta) + scale * solve(dl[[2]], dl[[1]]) #+ diag(l)*1e-10
-        newtheta = exp(thetaNew)
-        tree$edge.length = as.numeric(newtheta)
+        dl <- score(object)
+        thetaNew <- log(theta) + scale * solve(dl[[2]], dl[[1]]) #+diag(l)*1e-10
+        newtheta <- exp(thetaNew)
+        tree$edge.length <- as.numeric(newtheta)
         object <- update(object, tree = tree)
-        ll1 = object$logLik 
+        ll1 <- object$logLik 
         eps <- ( ll0 - ll1 ) / ll1 
         if(eps < 0){
-             newtheta = theta
-             scale = scale / 2
-             tree$edge.length = as.numeric(theta)  
-             ll1 = ll0  
+             newtheta <- theta
+             scale <- scale / 2
+             tree$edge.length <- as.numeric(theta)  
+             ll1 <- ll0  
              iter2 <- iter2+1             
         }
         else{
-            scale=1
-            iter2 = 0
+            scale <- 1
+            iter2 <- 0
         }  
-        theta = newtheta 
+        theta <- newtheta 
         if(iter2==0 && control$trace>0) cat("loglik: ",ll1,"\n")
         ll0 <- ll1
-        if(iter2==10)iter2=0  
+        if(iter2==10)iter2 <- 0  
         if(iter2==0)iter <- iter+1
     }
     object <- update(object, tree = tree) 
@@ -1678,7 +1091,7 @@ update.pml <- function (object, ...)
     pmla <- c("tree", "data", "bf", "Q", "inv", "k", "shape", 
         "rate", "model", "wMix", "llMix", "...") 
     names(extras) <- pmla[pmatch(names(extras), pmla[-length(pmla)])]
-    call = object$call
+    call <- object$call
     if (length(extras)) {
         existing <- !is.na(match(names(extras), names(call)))
         for (a in names(extras)[existing]) call[[a]] <- extras[[a]]
@@ -1692,7 +1105,8 @@ update.pml <- function (object, ...)
     updateRates <- FALSE
     if (is.na(existing[1])) tree <- object$tree
     else tree <- eval(extras[[existing[1]]], parent.frame())
-    if(is.null(attr(tree,"order")) || attr(tree,"order")=="cladewise")tree <- reorder(tree, "postorder")
+    if(is.null(attr(tree,"order")) || attr(tree,"order")=="cladewise")
+        tree <- reorder(tree, "postorder")
     if (is.na(existing[2])){
         data <- object$data
         INV <- object$INV
@@ -1720,8 +1134,8 @@ update.pml <- function (object, ...)
     model<-NULL
     if (type == "AA") {
         if(!is.na(existing[9]) ){  
-#        model <- match.arg(eval(extras[[existing[9]]], parent.frame()), c("WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24"))
-        model <- match.arg(eval(extras[[existing[9]]], parent.frame()), .aamodels)
+        model <- match.arg(eval(extras[[existing[9]]], parent.frame()), 
+                           .aamodels)
         getModelAA(model, bf = is.na(existing[3]), Q = is.na(existing[4]))
         updateEig <- TRUE
         } 
@@ -1743,8 +1157,10 @@ update.pml <- function (object, ...)
         shape <- eval(extras[[existing[7]]], parent.frame())
         updateRates <- TRUE
     }
-    rate <- ifelse(is.na(existing[8]), object$rate, eval(extras[[existing[8]]], parent.frame()))
-    wMix <- ifelse(is.na(existing[10]), object$wMix, eval(extras[[existing[10]]], parent.frame()))
+    rate <- ifelse(is.na(existing[8]), object$rate, 
+                   eval(extras[[existing[8]]], parent.frame()))
+    wMix <- ifelse(is.na(existing[10]), object$wMix, 
+                   eval(extras[[existing[10]]], parent.frame()))
     if(is.na(existing[11])) llMix <- object$llMix
     else llMix <- eval(extras[[existing[11]]], parent.frame())
     levels <- attr(data, "levels")
@@ -1759,808 +1175,14 @@ update.pml <- function (object, ...)
     if (inv > 0) g <- g/(1 - inv)
     ll.0 <- as.matrix(INV %*% (bf * inv))
     if(wMix>0) ll.0 <- ll.0 + llMix
-    w = rep(1/k, k)
+    w <- rep(1/k, k)
     if (inv > 0) 
         w <- (1 - inv) * w
     if (wMix > 0) 
         w <- wMix * w                  
     m <- 1
-    
-    resll <- matrix(0, nr, k)
-    nTips = as.integer(length(tree$tip.label))  
-
-    data <- subset(data, tree$tip.label)     
-
-    on.exit(.C("ll_free"))
-    .C("ll_init", nr, nTips, nc, as.integer(k))
-    tmp <- pml.fit(tree, data, bf, shape = shape, k = k, Q = Q, levels = attr(data, "levels"),
-        inv = inv, rate = rate, g = g, w = w, eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix,
-        wMix = wMix, site = TRUE)
-    
-    df <- ifelse(is.ultrametric(tree), tree$Nnode, length(tree$edge.length))
-#    ifelse()
-    df <- switch(type, 
-                 DNA = df + (k>1) + (inv > 0) + length(unique(bf)) - 1 + length(unique(Q)) - 1, 
-                 AA = df + (k>1) + (inv > 0) ,
-                 CODON = df + (k>1) + (inv > 0) + length(unique(bf)) - 1 , #+ (dnds != 1) + (tstv != 1),  
-                 USER = df + (k>1) + (inv > 0) + length(unique(bf)) - 1 + length(unique(Q)) - 1)
-#    if (type == "CODON") {
-#        df <- df + (k > 1) + (inv > 0) + length(unique(bf)) - 1
-#    }
-#    else df = df + (k > 1) + (inv > 0) + length(unique(bf)) - 1 + length(unique(Q)) - 1
-    
-    result = list(logLik = tmp$loglik, inv = inv, k = k, shape = shape, Q = Q, bf = bf, 
-        rate = rate, siteLik = tmp$siteLik, weight = weight, g = g, w = w, eig = eig, 
-        data = data, model = model, INV = INV, ll.0 = ll.0, tree = tree, lv = tmp$resll,
-        call = call, df = df, wMix = wMix, llMix = llMix)
-    if (type == "CODON") {
-        result$dnds <- 1
-        result$tstv <- 1
-    }
-    class(result) = "pml"
-    result 
-}
-
-
-optimMixQ <- function(object, Q=c(1, 1, 1, 1, 1, 1), omega,...){
-    l = length(Q)
-    Q = Q[-l]
-    Q = sqrt(Q)
-    fn = function(Q, object, omega,...) {
-        Q = c(Q^2, 1)
-        weight <- object[[1]]$weight
-        n <- length(omega)
-        p <- length(weight)
-        result <- numeric(p)
-        for(i in 1:n)result <- result + as.numeric(update(object[[i]], Q=Q, ...)$lv) * omega[i]
-        result <- sum(weight %*% log(result))
-        result 
-    }
-    res = optim(par=Q, fn=fn, gr=NULL, method="L-BFGS-B", lower=0, 
-            upper=Inf, control=list(fnscale = -1, maxit=25), 
-            object=object, omega=omega,...)
-    res[[1]] = c(res[[1]]^2, 1)
-    res
-}
-
-
-optimMixBf <- function(object, bf=c(.25,.25,.25,.25), omega,...){
-    l = length(bf)
-    nenner = 1/bf[l]
-    lbf = log(bf * nenner)
-    lbf = lbf[-l]
-    fn = function(lbf, object, omega,...) {
-    bf = exp(c(lbf,0))
-    bf = bf/sum(bf)
-    weight <- object[[1]]$weight
-        n <- length(omega)
-        p <- length(weight)
-        result <- numeric(p)
-        for(i in 1:n)result <- result + as.numeric(update(object[[i]], bf=bf, ...)$lv) * omega[i]
-        result <- sum(weight %*% log(result))
-        result 
-    }
-    res = optim(par=lbf, fn=fn, gr=NULL, method="Nelder-Mead", 
-        control=list(fnscale=-1, maxit=500), object, omega=omega,...)
-#    print(res[[2]])
-    bf = exp(c(res[[1]],0))
-    bf = bf/sum(bf)
-}
-
-
-optimMixInv <- function(object, inv=0.01, omega,...){
-    fn = function(inv, object, omega,...) {
-        n <- length(omega)
-        weight <- object[[1]]$weight
-        p <- length(weight)
-        result <- numeric(p)
-         for(i in 1:n)result <- result + as.numeric(update(object, inv=inv, ...)$lv) * omega[i]
-        result <- sum(weight %*% log(result))
-        result 
-    }
-    res = optimize(f=fn, interval = c(0,1), lower = 0, upper = 1, maximum = TRUE,
-        tol = .0001, object, omega=omega,...)
-#    print(res[[2]]) 
-    res[[1]]
-}
-
-
-optimMixRate <- function (fits, ll, weight, omega, rate=rep(1,length(fits))) 
-{
-    r <- length(fits)
-    rate0 <- rate[-r]   
-
-    fn<-function(rate, fits, ll, weight, omega){
-        r <-  length(fits)
-        rate <- c(rate, (1- sum(rate *omega[-r]))/omega[r])
-        for (i in 1:r) fits[[i]]<-update(fits[[i]], rate = rate[i])
-        for (i in 1:r) ll[, i] <- fits[[i]]$lv
-        sum(weight*log(ll%*%omega)) 
-    }
-    ui=diag(r-1)
-    ui <- rbind(-omega[-r], ui)
-    ci <- c(-1, rep(0, r-1))
-    res <- constrOptim(rate0, fn, grad=NULL, ui=ui, ci=ci, mu = 1e-04, control = list(fnscale=-1),
-        method = "Nelder-Mead", outer.iterations = 50, outer.eps = 1e-05, fits=fits, ll=ll, weight=weight, omega=omega)
-    rate <- res[[1]]
-    res[[1]] <- c(rate, (1- sum(rate *omega[-r]))/omega[r])
-    res
-}
-
-
-optW <- function (ll, weight, omega,...) 
-{
-    k = length(omega)
-    nenner = 1/omega[1]
-    eta = log(omega * nenner)
-    eta = eta[-1]
-    fn = function(eta, ll, weight) {
-        eta = c(0,eta)
-        p = exp(eta)/sum(exp(eta))
-        res = sum(weight * log(ll %*% p)) 
-        res
-    }
-    if(k==2)res = optimize(f =fn , interval =c(-3,3) , lower = -3, upper = 3, maximum = TRUE, tol = .Machine$double.eps^0.25, ll = ll, weight = weight) 
-    else res = optim(eta, fn = fn, method = "L-BFGS-B", lower=-5, upper=5,control = list(fnscale = -1, 
-        maxit=25), gr = NULL, ll = ll, weight = weight)
-
-    p = exp(c(0,res[[1]]))
-    p = p/sum(p)
-    result = list(par = p, value = res[[2]])
-    result
-}
-
-
-optimMixEdge <- function(object, omega, trace=1,...){
-    tree <- object[[1]]$tree
-    theta <- object[[1]]$tree$edge.length
-    weight = as.numeric(attr(object[[1]]$data,"weight"))
-    n <- length(omega)
-    p <- length(weight)
-    q <- length(theta)
-    lv1 = numeric(p)
-    for(i in 1:n) lv1 = lv1 + as.numeric(object[[i]]$lv) * omega[i]
-    ll0 <- sum(weight * log(lv1))
-    eps=1
-    iter <- 0
-    scalep <- 1
-    if(trace>0) cat(ll0)
-    while(abs(eps)>.001 & iter<10){
-        dl <- matrix(0,p,q)
-        for(i in 1:n)dl <- dl + dl(object[[i]],TRUE) * omega[i]
-        dl <- dl/lv1
-        sc = colSums(weight * dl)
-        F = crossprod(dl * weight, dl)+diag(q)*1e-6
-        blub <- TRUE
-        iter2 <- 0
-        while(blub & iter2<10){
-        thetaNew = log(theta) + scalep * solve(F, sc)
-        tree$edge.length = as.numeric(exp(thetaNew))
-        for(i in 1:n)object[[i]] <- update(object[[i]],tree=tree)
-        lv1 = numeric(p)
-        for(i in 1:n) lv1 = lv1 + as.numeric(object[[i]]$lv)  * omega[i]
-        ll1 <- sum(weight * log(lv1))
-        eps <- ll1 - ll0     
-        if (eps < 0 || is.nan(eps)) {
-            scalep = scalep/2
-            eps = 1
-            thetaNew = log(theta)
-            ll1 = ll0
-            iter2 <- iter2+1
-        }
-        else{
-             scalep = 1;
-             theta = exp(thetaNew)  
-             blub=FALSE  
-            }     
-        }             
-        iter <- iter+1
-        ll0 <- ll1
-    }       
-    tree$edge.length <- theta
-    for(i in 1:n)object[[i]] <- update(object[[i]],tree=tree)
-    if(trace>0) cat("->", ll1, "\n")
-    object
-}
-
-
-pmlMix <- function (formula, fit, m = 2, omega = rep(1/m, m), control=pml.control(epsilon=1e-8, maxit=20, trace=1), ...) 
-{
-    call <- match.call()
-    form <- phangornParseFormula(formula)
-    opt <- c("nni", "bf", "Q", "inv", "shape", "edge", "rate")
-    optAll <- match(opt, form$left)
-    optPart <- match(opt, form$right)
-    AllBf <- !is.na(optAll[2])
-    AllQ <- !is.na(optAll[3])
-    AllInv <- !is.na(optAll[4])
-    AllGamma <- !is.na(optAll[5])
-    AllEdge <- !is.na(optAll[6])
-    MixNni <- !is.na(optPart[1])
-    MixBf <- !is.na(optPart[2])
-    MixQ <- !is.na(optPart[3])
-    MixInv <- !is.na(optPart[4])
-    MixGamma <- !is.na(optPart[5])
-    MixEdge <- !is.na(optPart[6])
-    MixRate <- !is.na(optPart[7])
-    if (inherits(fit,"list")) 
-        fits <- fit
-    else {
-        fits <- vector("list", m) 
-        for (i in 1:m) fits[[i]] <- fit
-    }
-    dat <- fits[[1]]$data
-    p = attr(dat, "nr")
-    weight = attr(dat, "weight")
-    r = m
-    ll = matrix(0, p, r)
-    for (i in 1:r) ll[, i] = fits[[i]]$lv
-
-    for (i in 1:r){
-         pl0 <- ll[, -i, drop = FALSE] %*% omega[-i]
-         fits[[i]] <- update(fits[[i]], llMix = pl0, wMix = omega[i])
-    }
-
-    if(MixRate) rate <- rep(1,r)
-
-    llstart = sum(weight * log(ll %*% omega))
-    llold <- llstart
-    ll0 <- llstart
-    ll3 <- llstart
-    eps0 <- 1
-    iter0 <- 0
-    trace = control$trace
-    while (eps0 > control$eps & iter0 < control$maxit) {  #while (eps0 > 1e-6 & iter0 < 20) {
-        eps1 <- 100
-        iter1 <- 0
-        
-        if (AllQ) {
-            newQ <- optimMixQ(fits, Q = fits[[1]]$Q, 
-                omega = omega)[[1]]
-            for (i in 1:m) fits[[i]] <- update(fits[[i]], Q = newQ)
-        }
-        if (AllBf) {
-            newBf <- optimMixBf(fits, bf = fits[[1]]$bf, 
-                omega = omega)
-            for (i in 1:m) fits[[i]] <- update(fits[[i]], bf = newBf)
-        }
-        if (AllInv) {
-            newInv <- optimMixInv(fits, inv = fits[[1]]$inv, 
-                omega = omega)
-            for (i in 1:m) fits[[i]] <- update(fits[[i]], Inv = newInv)
-        }
-        if (AllEdge) 
-            fits <- optimMixEdge(fits, omega, trace=trace-1)
-        for (i in 1:r) ll[, i] <- fits[[i]]$lv
-
-        while ( abs(eps1) > 0.001 & iter1 < 3) {
-             if(MixRate){
-                 rate <- optimMixRate(fits, ll, weight, omega, rate)[[1]]
-                 for (i in 1:r) fits[[i]] <- update(fits[[i]], rate=rate[i]) 
-                 for (i in 1:r) ll[, i] <- fits[[i]]$lv
-            }
-            for (i in 1:r){
-                pl0 <- ll[, -i, drop = FALSE] %*% omega[-i]
-                fits[[i]] <- update(fits[[i]], llMix = pl0, wMix = omega[i])
-            }
-
-            for (i in 1:r) {
-                pl0 <- ll[, -i, drop = FALSE] %*% omega[-i]
-                fits[[i]] <- optim.pml(fits[[i]], MixNni, MixBf, MixQ, MixInv, MixGamma, 
-                    MixEdge, optRate=FALSE, control = pml.control(epsilon = 1e-8, maxit = 3,
-                    trace-1), llMix = pl0, wMix = omega[i])
-                 ll[, i] <- fits[[i]]$lv 
-
-            res = optW(ll, weight, omega)
-               omega = res$p
-            
-            if(MixRate){
-                blub <- sum(rate*omega)
-                rate <- rate / blub 
-                tree <- fits[[1]]$tree
-                tree$edge.length <-   tree$edge.length*blub
-                for (i in 1:r) fits[[i]]<-update(fits[[i]], tree=tree, rate = rate[i])
-                for (i in 1:r) ll[, i] <- fits[[i]]$lv
-             }
-             for (i in 1:r){
-                 pl0 <- ll[, -i, drop = FALSE] %*% omega[-i]
-                 fits[[i]] <- update(fits[[i]], llMix = pl0, wMix = omega[i])
-             }
-             
-         }
-         ll1 = sum(weight * log(ll %*% omega))
-         res = optW(ll, weight, omega)
-         omega = res$p
-         if(MixRate){
-                blub <- sum(rate*omega)
-                rate <- rate / blub 
-                tree <- fits[[1]]$tree
-                tree$edge.length <-   tree$edge.length*blub
-                for (i in 1:r) fits[[i]]<-update(fits[[i]], tree=tree, rate = rate[i])
-                     if(trace>0) print(rate)
-                     for (i in 1:r) ll[, i] <- fits[[i]]$lv
-                }
-         for (i in 1:r){
-             pl0 <- ll[, -i, drop = FALSE] %*% omega[-i]
-             fits[[i]] <- update(fits[[i]], llMix = pl0, wMix = omega[i])
-        }
-
-        ll2 = sum(weight * log(ll %*% omega)) 
-        eps1 = llold - ll2
-        iter1 <- iter1 + 1
-        llold = ll2
-        }   
-
-        ll1 <- sum(weight * log(ll %*% omega))
-        eps0 <- (ll3 - ll1) / ll1
-        ll3 <- ll1
-        iter0 <- iter0 + 1
-        if(trace>0) print(iter0)
-    }
-    parameter <- c(AllBf=AllBf, AllQ=AllQ, AllInv=AllInv, AllGamma=AllGamma, AllEdge=AllEdge, MixNni=MixNni, 
-       MixBf=MixBf, MixQ=MixQ, MixInv=MixInv, MixGamma=MixGamma, MixEdge=MixEdge, MixRate=MixRate)
-    
-    df <- matrix(1, 6 ,2)
-    colnames(df) <- c("#df", "group")
-    rownames(df) <- c("Edge", "Shape", "Inv", "Bf", "Q", "Rate")
-    df[1,1] <- length(fits[[1]]$tree$edge.length)
-#    df[2,1] <- fits[[1]]$k - 1     
-    df[2,1] <- fits[[1]]$k > 1
-    df[3,1] <- fits[[1]]$inv > 0
-    df[4,1] <- length(unique(fits[[1]]$bf)) - 1
-    df[5,1] <- length(unique(fits[[1]]$Q)) - 1
-    df[6,1] <- 0  
-    if(MixEdge) df[1,2] = r
-    if(MixGamma) df[2,2] = r
-    if(MixInv) df[3,2] = r
-    if(MixBf) df[4,2] = r
-    if(MixQ) df[5,2] = r
-    if(MixRate) df[6,1] = r-1     
-    attr(logLik, "df") = sum(df[,1]*df[,2])
-    converge <- c(iter=iter0, eps=eps0)
-    result <- list(logLik = ll1, omega = omega, fits = fits, call = call, converge=converge, parameter=parameter, df=df)
-    class(result) <- "pmlMix"
-    result
-}
-
-
-print.pmlMix <- function(x,...){
-    nc <- attr(x$fits[[1]]$data, "nc")
-    nr <- attr(x$fits[[1]]$data, "nr")
-    levels <- attr(x$fits[[1]]$data, "levels")
-    r <- length(x$fits)   
-    w <- x$fits[[1]]$weight
-    w <- w[w>0] 
-    type <- attr(x$fits[[1]]$data, "type")
-    nc <- attr(x$fits[[1]]$data, "nc")
-    ll0 = sum(w*log(w/sum(w)))
-
-    
-    bf <- matrix(0,r,nc)
-    dimnames(bf) <- list(1:r, levels)
-    Q <- matrix(0, r, nc*(nc-1)/2)
-    dimnames(Q) <- list(1:r, NULL)
-
-    rate <- numeric(r)
-    inv <- x$fits[[1]]$inv
-    shape <- numeric(r)
-
-    for(i in 1:r){
-        bf[i, ] <- x$fits[[i]]$bf
-        Q[i, ] <- x$fits[[i]]$Q
-        rate[i] <- x$fits[[i]]$rate
-        shape[i] <- x$fits[[i]]$shape
-    }
-    cat("\nloglikelihood:", x$logLik, "\n")
-    cat("\nunconstrained loglikelihood:", ll0, "\n") 
-    cat("AIC: ", AIC(x), " BIC: ", AIC(x, k=log(nr)), "\n\n")
-    cat("\nposterior:", x$omega ,"\n")   
-    if(inv > 0)cat("Proportion of invariant sites:",inv,"\n")
-    cat("\nRates:\n")
-    cat(rate,"\n")
-    cat("\nBase frequencies:  \n")
-    print(bf)
-    cat("\nRate matrix:\n")
-    print(Q)
-}
-
-
-logLik.pmlMix <- function (object, ...) 
-{
-    res <- object$logLik
-    attr(res, "df") <- sum(object$df[,1] * object$df[,2])
-    class(res) <- "logLik"
-    res
-}
- 
-
-print.pmlPart <- function(x,...){
-    df <- x$df
-    nc <- attr(x$fits[[1]]$data, "nc")
-    levels <- attr(x$fits[[1]]$data, "levels")
-    r <- length(x$fits)   
-    nc <- attr(x$fits[[1]]$data, "nc")
-    nr <- attr(x$fits[[1]]$data, "nr")
-    k <- x$fits[[1]]$k    
-
-    lbf=x$df["Bf",2]
-    bf <- matrix(0, lbf, nc)
-    if(lbf>1)dimnames(bf) <- list(1:r, levels)
-    lQ = x$df["Q",2]
-    Q <- matrix(0, lQ, nc*(nc-1)/2)
-    if(lQ>1)dimnames(Q) <- list(1:r, NULL)
-    type <- attr(x$fits[[1]]$data, "type")
-    
-    loli <- numeric(r)
-    rate <- numeric(r)
-    shape <- numeric(r)
-    sizes <- numeric(r)
-    inv <- numeric(r)      
-    for(i in 1:r){
-        loli[i] <- x$fits[[i]]$logLik
-        if(i <= lbf)bf[i, ] <- x$fits[[i]]$bf
-        if(i <= lQ)Q[i, ] <- x$fits[[i]]$Q
-        rate[i] <- x$fits[[i]]$rate
-        shape[i] <- x$fits[[i]]$shape
-        inv[i] <- x$fits[[i]]$inv
-        sizes[i] <- sum(attr(x$fits[[i]]$data,"weight"))
-    }
-    cat("\nloglikelihood:", x$logLik, "\n")
-    cat("\nloglikelihood of partitions:\n ", loli, "\n")
-    cat("AIC: ", AIC(x), " BIC: ", AIC(x, k=log(sum(sizes))), "\n\n")    
-    cat("Proportion of invariant sites:",inv,"\n")
-    cat("\nRates:\n")
-    cat(rate,"\n")
-    if(k>1){
-        cat("\nShape parameter:\n") 
-        cat(shape,"\n")
-    }
-    if(type=="AA") cat("Rate matrix:",x$fits[[1]]$model, "\n")
-    else{
-        cat("\nBase frequencies:  \n")
-        print(bf)
-        cat("\nRate matrix:\n")
-        print(Q)
-    }
-}
-
-
-logLik.pmlPart <- function (object, ...) 
-{
-    res <- object$logLik
-    attr(res, "df") <- sum(object$df[,1] * object$df[,2])
-    class(res) <- "logLik"
-    res
-}
-
-
-pmlPen <- function(object, lambda, ...){
-    if(inherits(object,"pmlPart")) return(pmlPartPen(object, lambda,...))
-    if(inherits(object,"pmlMix")) return(pmlMixPen(object, lambda,...))
-    else stop("object has to be of class pmlPart or pmlMix")
-    }
-       
-   
-pmlPartPen <- function(object, lambda, control=pml.control(epsilon=1e-8, maxit=20, trace=1),...){
-    fits <- object$fits
-    
-    m <- length(fits)
-    K = -diag(length(fits[[1]]$tree$edge.length))
-    Ktmp=K
-    for(i in 1:(m-1))Ktmp = cbind(Ktmp,K)
-    KM = Ktmp
-    for(i in 1:(m-1))KM = rbind(KM,Ktmp)
-    diag(KM) = m-1
-    theta=NULL
-    l = length(fits[[1]]$tree$edge.length)
-    loglik = 0
-    for(i in 1:m){
-        theta = c(theta,fits[[i]]$tree$edge.length)
-        loglik = loglik + fits[[i]]$logLik
-    }
-    print(loglik)
-    pen = - 0.5 * lambda * t(theta)%*%KM%*%theta
-    loglik = loglik - 0.5 * lambda * t(theta)%*%KM%*%theta 
-    eps=1
-    H  = matrix(0, m * l, m * l)
-    iter=0
-    trace = control$trace
-    while( abs(eps)>control$eps & iter<control$maxit){
-        theta=NULL
-        sc = NULL
-        for(i in 1:m){
-            theta = c(theta,fits[[i]]$tree$edge.length)
-            scoretmp = score(fits[[i]], TRUE)
-            sc = c(sc,scoretmp$sc)
-            H[(1:l)+l*(i-1), (1:l)+l*(i-1)] = scoretmp$F
-        }
-        sc = sc - lambda * KM%*% log(theta)
-        thetanew = log(theta) +  solve(H + lambda*KM, sc)
-        for(i in 1:m) fits[[i]]$tree$edge.length = exp(thetanew[(1:l)+(i-1)*l])
-        for(i in 1:m) fits[[i]] = update.pml(fits[[i]], tree=fits[[i]]$tree)
-        loglik1 = 0
-        for(i in 1:m) loglik1 = loglik1 + fits[[i]]$logLik
-        logLik <- loglik1
-        if(trace>0)print(loglik1)
-        loglik0 = loglik1
-        pen = - 0.5 * lambda * t(theta)%*%KM%*%theta
-        loglik1 = loglik1 - 0.5 * lambda * t(thetanew)%*%KM%*%thetanew
-        eps =  (loglik - loglik1) / loglik1   
-        loglik = loglik1
-        theta = exp(thetanew)
-        iter = iter+1
-        if(trace>0)print(iter)
-    }
-    df = sum( diag(solve(H + lambda* KM, H)))
-    
-    object$df[1,1] = df
-    object$df[1,2] = 1
-    object$fits = fits
-    object$logLik = loglik0
-    attr(object$logLik, "df") = sum(object$df[,1]*object$df[,2])
-    object$logLik.pen = loglik
-    attr(object$logLik.pen, "df") = sum(object$df[,1]*object$df[,2])      
-    object
-}
-
-
-pmlMixPen = function (object, lambda, optOmega=TRUE, control=pml.control(epsilon=1e-8, maxit=20, trace=1), ...) 
-{
-    fits <- object$fits
-    m <- length(fits)
-    K = -diag(length(fits[[1]]$tree$edge.length))
-    tree <- fits[[1]]$tree
-    Ktmp = K
-    for (i in 1:(m - 1)) Ktmp = cbind(Ktmp, K)
-    KM = Ktmp
-    for (i in 1:(m - 1)) KM = rbind(KM, Ktmp)
-    diag(KM) = m - 1
-    theta = NULL
-    l = length(fits[[1]]$tree$edge.length)
-    omega <- object$omega
-    dat <- fits[[1]]$data
-    nr = attr(dat, "nr")
-    weight = drop(attr(dat, "weight"))
-    ll = matrix(0, nr, m)
-    for (i in 1:m) ll[, i] = fits[[i]]$lv
-    lv = drop(ll %*% omega)
-    loglik = sum(weight * log(lv))
-    for (i in 1:m) theta = c(theta, fits[[i]]$tree$edge.length)
-    pen = - 0.5 * lambda * t(theta) %*% KM %*% theta
-    loglik = loglik + pen
-    print(loglik)    
-    eps0 = 1 
-    dl <- matrix(0, nr, m * l)
-    iter0 = 0
-    trace = control$trace 
-    while (abs(eps0) > control$eps & iter0 < control$maxit) {
-      eps = 1
-      iter = 0      
-      while (abs(eps) > 0.01 & iter < 5) {
-        for (i in 1:m) {
-            dl[, (1:l) + l * (i - 1)] <- dl(fits[[i]], TRUE) * 
-                omega[i]
-        }
-        dl <- dl/lv
-        sc = colSums(weight * dl) - lambda * KM %*% log(theta)
-        H = crossprod(dl * weight, dl)
-        thetanew = log(theta) + solve(H + lambda * KM, sc)
-        for (i in 1:m) fits[[i]]$tree$edge.length = exp(thetanew[(1:l) + 
-            (i - 1) * l])
-        for (i in 1:m) {
-            tree$edge.length = exp(thetanew[(1:l) + (i - 1) * l])
-            fits[[i]] = update.pml(fits[[i]], tree = tree)
-            ll[, i] = fits[[i]]$lv
-        }
-        lv = drop(ll %*% omega)
-        loglik1 = sum(weight * log(lv))
-        pen =  - 0.5 * lambda * t(thetanew) %*% KM %*% thetanew
-        loglik1 = loglik1 + pen
-        eps = abs(loglik1 - loglik)
-        theta = exp(thetanew)
-        loglik <- loglik1
-        iter = iter + 1  
-       }
-       if(optOmega){
-            res = optWPen(ll, weight, omega, pen)
-            omega = res$p
-            for (i in 1:m) {
-                pl0 <- ll[, -i, drop = FALSE] %*% omega[-i]
-                fits[[i]] <- update(fits[[i]], llMix = pl0, wMix = omega[i])
-                }
-            } 
-        lv = drop(ll %*% omega)
-        loglik1 = sum(weight * log(lv))
-        loglik0 =loglik1
-        loglik1 = loglik1 - 0.5 * lambda * t(thetanew) %*% KM %*% thetanew
-        eps0 = (loglik - loglik1) / loglik1
-        theta = exp(thetanew)
-        loglik <- loglik1
-        iter0 = iter0 + 1
-        if(trace>0) print(loglik)  
-    }
-
-    for (i in 1:m) {
-        pl0 <- ll[, -i, drop = FALSE] %*% omega[-i]
-        fits[[i]] <- update(fits[[i]], llMix = pl0, wMix = omega[i])
-    }
-    df = sum(diag(solve(H + lambda * KM, H)))
-    penalty <- list(lambda=lambda, K=KM, thetanew=thetanew, ploglik=loglik)
-    object$omega = omega
-    object$df[1, 1] = df
-    object$df[1, 2] = 1
-    object$fits = fits
-    object$logLik = loglik0
-    object$penalty = penalty
-    object
-}
-
-
-optWPen = function (ll, weight, omega, pen, ...) 
-{
-    k = length(omega)
-    nenner = 1/omega[1]
-    eta = log(omega * nenner)
-    eta = eta[-1]
-    fn = function(eta, ll, weight, pen) {
-        eta = c(0, eta)
-        p = exp(eta)/sum(exp(eta))
-        res = sum(weight * log(ll %*% p)) + pen
-        res
-    }
-    if (k == 2) 
-        res = optimize(f = fn, interval = c(-3, 3), lower = -3, 
-            upper = 3, maximum = TRUE, tol = .Machine$double.eps^0.25, 
-            ll = ll, weight = weight, pen = pen)
-    else res = optim(eta, fn = fn, method = "L-BFGS-B", lower = -5, 
-        upper = 5, control = list(fnscale = -1, maxit = 25), 
-        gr = NULL, ll = ll, weight = weight, pen=pen)
-    p = exp(c(0, res[[1]]))
-    p = p/sum(p)
-    result = list(par = p, value = res[[2]])
-    result
-} 
-
-
-optNNI <- function(fit, INDEX){    
-       tree = fit$tree
-       ll.0 <- fit$ll.0
-       loli <- fit$logLik
-       bf = fit$bf
-       eig = fit$eig
-       k = fit$k
-       w = fit$w
-       g = fit$g
-       rootEdges <- attr(INDEX, "root")
-       .dat <- NULL
-       parent = tree$edge[, 1]
-       child = tree$edge[, 2]
-             
-       data = getCols(fit$data, tree$tip)
-       datp <- rnodes(tree, data, w, g, eig, bf)       
-# nicht elegant, spaeter auch raus       
-       tmp = length(tree$tip.label)
-       for(i in 1:length(w)).dat[i,1:tmp]=new2old.phyDat(data)       
-       
-       evector <- numeric(max(parent))
-       evector[child] <- tree$edge.length
-       m <- dim(INDEX)[1]
-       k = min(parent)
-       loglik = numeric(2 * m)
-       edgeMatrix <- matrix(0, 2 * m, 5)
-       for (i in 1:m) {
-           ei = INDEX[i, ]
-           el0 = evector[INDEX[i, ]]
-           l = length(datp[, 1])
-           weight = fit$weight
-           datn = vector("list", 4 * l)
-           attr(datn, "dim") = c(l, 4)
-           datn <- .dat[, ei[1:4], drop = FALSE]
-           if (!(ei[5] %in% rootEdges)) 
-                datn[, 1] = datp[, ei[1], drop = FALSE]
-           new1 <- optim.quartet(el0[c(1, 3, 2, 4, 5)], 
-               eig, bf, datn[, c(1, 3, 2, 4), drop = FALSE], g, 
-               w, weight, ll.0, llcomp = fit$log)
-           new2 <- optim.quartet(el0[c(1, 4, 3, 2, 5)], 
-               eig, bf, datn[, c(1, 4, 3, 2), drop = FALSE], g, 
-               w, weight, ll.0, llcomp = fit$log)
-           loglik[(2 * i) - 1] = new1[[2]]
-           loglik[(2 * i)] = new2[[2]]
-           edgeMatrix[(2 * i) - 1, ] = new1[[1]]
-           edgeMatrix[(2 * i), ] = new2[[1]]
-           }
-       list(loglik=loglik, edges = edgeMatrix)
-       }
-
-
-optimPartNNI <- function (object, AllEdge=TRUE,...) 
-{
-    tree <- object[[1]]$tree
-    INDEX <- indexNNI(tree)   
-    l = length(object)
-    loglik0 = 0
-    for(i in 1:l)loglik0 = loglik0 + logLik(object[[i]])    
-    
-    l = length(object)
-    TMP=vector("list", l)
-    for(i in 1:l){
-        TMP[[i]] = optNNI(object[[i]], INDEX)
-        }
-    loglik=TMP[[1]][[1]] 
-    for(i in 2:l)loglik=loglik+TMP[[i]][[1]]
-
-    swap <- 0
-    candidates <- loglik > loglik0
-
-    while (any(candidates)) {
-        ind = which.max(loglik)
-        loglik[ind] = -Inf
-        if (ind%%2) 
-            swap.edge = c(2, 3)
-        else swap.edge = c(2, 4)
-        tree2 <- changeEdge(tree, INDEX[(ind + 1)%/%2, swap.edge], 
-            INDEX[(ind + 1)%/%2, ], TMP[[1]][[2]][ind, ])
-        tmpll = 0                 
-        for(i in 1:l){
-            if(!AllEdge)tree2 <- changeEdge(object[[i]]$tree, INDEX[(ind + 1)%/%2, swap.edge], 
-                INDEX[(ind + 1)%/%2, ], TMP[[i]][[2]][ind, ]) 
-            tmpll <- tmpll + update(object[[i]], tree = tree2)$logLik
-            }
-
-        if (tmpll < loglik0) 
-            candidates[ind] = FALSE
-        if (tmpll > loglik0) {
-
-            swap = swap + 1
-            tree <- tree2
-            indi <- which(rep(colSums(apply(INDEX, 1, match, 
-                INDEX[(ind + 1)%/%2, ], nomatch = 0)) > 0, each = 2))
-            candidates[indi] <- FALSE
-            loglik[indi] <- -Inf
-
-            for(i in 1:l){
-                if(!AllEdge)tree2 <- changeEdge(object[[i]]$tree, INDEX[(ind + 1)%/%2, swap.edge], 
-                    INDEX[(ind + 1)%/%2, ], TMP[[i]][[2]][ind, ]) 
-                object[[i]] <- update(object[[i]], tree = tree2)
-                }
-            loglik0 = 0
-            for(i in 1:l)loglik0 = loglik0 + logLik(object[[i]])    
-            cat(loglik0, "\n")
-        }
-    }
-    if(AllEdge)object <- optimPartEdge(object)
-    attr(object,"swap") = swap
-    object
-}
-
-
-pml.fit2 <- function (tree, data, bf = rep(1/length(levels), length(levels)), 
-                     shape = 1, k = 1, Q = rep(1, length(levels) * (length(levels) - 1)/2), 
-                     levels = attr(data, "levels"), inv = 0, rate = 1, g = NULL, w = NULL, 
-                     eig = NULL, INV = NULL, ll.0 = NULL, llMix = NULL, wMix = 0, ..., site=FALSE) 
-{
-    weight <- as.double(attr(data, "weight"))
-    nr <- as.integer(attr(data, "nr")) 
-    nc <- as.integer(attr(data, "nc"))
-    nTips <- as.integer(length(tree$tip.label)) 
-    k <- as.integer(k)
-    m = 1
-    if (is.null(eig)) 
-        eig = edQt(bf = bf, Q = Q)
-    if (is.null(w)) {
-        w = rep(1/k, k)
-        if (inv > 0) 
-            w <- (1 - inv) * w
-        if (wMix > 0) 
-            w <- (1 - wMix) * w           
-    }
-    if (is.null(g)) {
-        g = discrete.gamma(shape, k)
-        if (inv > 0) 
-            g <- g/(1 - inv)
-        g <- g * rate     
-    } 
-#    inv0 <- inv
+### play save 
+    kmax <- k
     if(any(g<.gEps)){
         for(i in 1:length(g)){
             if(g[i]<.gEps){
@@ -2569,73 +1191,75 @@ pml.fit2 <- function (tree, data, bf = rep(1/length(levels), length(levels)),
         }
         w <- w[g>.gEps]
         g <- g[g>.gEps]
-#        kmax <- k
         k <- length(w)
     }
-    if (is.null(INV)) 
-        INV <- Matrix(lli(data, tree), sparse=TRUE)
-    if (is.null(ll.0)){ 
-        ll.0 <- numeric(attr(data,"nr"))    
+####    
+    
+    resll <- matrix(0, nr, k)
+    nTips <- as.integer(length(tree$tip.label))  
+
+    data <- subset(data, tree$tip.label)     
+
+    on.exit(.C("ll_free"))
+    .C("ll_init", nr, nTips, nc, as.integer(k))
+    tmp <- pml.fit(tree, data, bf, shape = shape, k = k, Q = Q, 
+            levels = attr(data, "levels"), inv = inv, rate = rate, g = g, w = w, 
+            eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, wMix = wMix, 
+            site = TRUE)
+    
+    df <- ifelse(is.ultrametric(tree), tree$Nnode, length(tree$edge.length))
+    df <- switch(type, 
+                 DNA = df + (k>1) + (inv > 0) + length(unique(bf)) - 1 + 
+                     length(unique(Q)) - 1, 
+                 AA = df + (k>1) + (inv > 0) ,
+                 CODON = df + (k>1) + (inv > 0) + length(unique(bf)) - 1 , 
+                                    #+ (dnds != 1) + (tstv != 1),  
+                 USER = df + (k>1) + (inv > 0) + length(unique(bf)) - 1 + 
+                     length(unique(Q)) - 1)
+#    if (type == "CODON") {
+#        df <- df + (k > 1) + (inv > 0) + length(unique(bf)) - 1
+#    }
+#    else df = df + (k > 1) + (inv > 0) + length(unique(bf)) - 1 + length(unique(Q)) - 1
+    
+    result <- list(logLik = tmp$loglik, inv = inv, k = kmax, shape = shape, 
+                   Q = Q, bf = bf, rate = rate, siteLik = tmp$siteLik, 
+                   weight = weight, g = g, w = w, eig = eig, data = data,
+                   model = model, INV = INV, ll.0 = ll.0, tree = tree, 
+                   lv = tmp$resll, call = call, df = df, wMix = wMix, 
+                   llMix = llMix)
+    if (type == "CODON") {
+        result$dnds <- 1
+        result$tstv <- 1
     }
-    if(inv>0)
-        ll.0 <- as.matrix(INV %*% (bf * inv))              
-    if (wMix > 0)
-        ll.0 <- ll.0 + llMix           
-    
-    node <- tree$edge[, 1]
-    edge <- tree$edge[, 2]
-    root <- as.integer(node[length(node)])     
-    el <- as.double(tree$edge.length)
-    node = as.integer(node - nTips - 1L) #    min(node))
-    edge = as.integer(edge - 1L)
-    
-    contrast = attr(data, "contrast")
-    nco = as.integer(dim(contrast)[1])    
-# dlist=data, nr, nc, weight, k ausserhalb definieren  
-# pmlPart einbeziehen 
-    resll <- .Call("PML3", dlist=data, el, as.double(w), as.double(g), nr, nc, k, eig, as.double(bf), node, edge, nTips, root, nco, contrast, N=as.integer(length(edge))) 
-
-    # sort(INV@i)+1L  
-    ind = which(ll.0>0) # automatic in INV gespeichert
-
-    sca = .Call("rowMax", resll, length(weight), as.integer(k)) + 1   # nr statt length(weight)
-    lll = resll - sca 
-    lll <- exp(lll) 
-    lll <- (lll%*%w)
-    lll[ind] = lll[ind] + exp(log(ll.0[ind])-sca[ind])    
-    siteLik <- lll 
-    siteLik <- log(siteLik) + sca
-    # needs to change
-    if(wMix >0) siteLik <- log(exp(siteLik) * (1-wMix) + llMix )
-    loglik <- sum(weight * siteLik)
-    if(!site) return(loglik)
-    resll = exp(resll) 
-    return(list(loglik=loglik, siteLik=siteLik, resll=resll))         
+    class(result) <- "pml"
+    result 
 }
 
 
+### this is the version we want to optimise
 pml.fit4 <- function (tree, data, bf = rep(1/length(levels), length(levels)), 
-                          shape = 1, k = 1, Q = rep(1, length(levels) * (length(levels) - 1)/2), 
-                          levels = attr(data, "levels"), inv = 0, rate = 1, g = NULL, w = NULL, 
-                          eig = NULL, INV = NULL, ll.0 = NULL, llMix = NULL, wMix = 0, ..., site=FALSE) 
+        shape = 1, k = 1, Q = rep(1, length(levels) * (length(levels) - 1)/2), 
+        levels = attr(data, "levels"), inv = 0, rate = 1, g = NULL, w = NULL, 
+        eig = NULL, INV = NULL, ll.0 = NULL, llMix = NULL, wMix = 0, ..., 
+        site=FALSE) 
 {
     weight <- as.double(attr(data, "weight"))
     nr <- as.integer(attr(data, "nr")) 
     nc <- as.integer(attr(data, "nc"))
     nTips <- as.integer(length(tree$tip.label)) 
     k <- as.integer(k)
-    m = 1
+    m <- 1
     if (is.null(eig)) 
-        eig = edQt(bf = bf, Q = Q)
+        eig <- edQt(bf = bf, Q = Q)
     if (is.null(w)) {
-        w = rep(1/k, k)
+        w <- rep(1/k, k)
         if (inv > 0) 
             w <- (1 - inv) * w
         if (wMix > 0) 
             w <- (1 - wMix) * w           
     }
     if (is.null(g)) {
-        g = discrete.gamma(shape, k)
+        g <- discrete.gamma(shape, k)
         if (inv > 0) 
             g <- g/(1 - inv)
         g <- g * rate     
@@ -2666,20 +1290,22 @@ pml.fit4 <- function (tree, data, bf = rep(1/length(levels), length(levels)),
     
     node <- tree$edge[, 1]
     edge <- tree$edge[, 2]
-    root <- as.integer(node[length(node)])     
+#    root <- as.integer(node[length(node)])     
     el <- as.double(tree$edge.length)
-    node = as.integer(node - nTips - 1L) #    min(node))
-    edge = as.integer(edge - 1L)
+    node <- as.integer(node - nTips - 1L) #    min(node))
+    edge <- as.integer(edge - 1L)
     
-    contrast = attr(data, "contrast")
-    nco = as.integer(dim(contrast)[1])    
+    contrast <- attr(data, "contrast")
+    nco <- as.integer(dim(contrast)[1])    
 
-    siteLik <- .Call("PML4", dlist=data, el, as.double(w), as.double(g), nr, nc, k, eig, as.double(bf), 
-                     node, edge, nTips, root, nco, contrast, N=as.integer(length(edge))) 
-# if(inv>0) siteLik[.iind] = log(exp(siteLik[.iind]) + ll.0[.iind]) 
-    ind = which(ll.0>0)
-#    if(!is.null(ll.0)) siteLik[.iind] = log(exp(siteLik[.iind]) + ll.0[.iind]) 
-    if(!is.null(ll.0)) siteLik[ind] = log(exp(siteLik[ind]) + ll.0[ind]) 
+    siteLik <- .Call("PML4", dlist=data, el, as.double(w), as.double(g), nr, nc, 
+                     k, eig, as.double(bf), node, edge, nTips, nco, contrast, 
+                     N=as.integer(length(edge))) 
+# if(inv>0) siteLik[.iind] <- log(exp(siteLik[.iind]) + ll.0[.iind]) 
+    ind <- which(ll.0>0)
+#    if(!is.null(ll.0)) siteLik[.iind] <- log(exp(siteLik[.iind]) + ll.0[.iind]) 
+    if(!is.null(ll.0)) siteLik[ind] <- log(exp(siteLik[ind]) + ll.0[ind]) 
+#   diese 2 zeilen darueber in C, weight, nr, nc, nco, contrast in C struct definieren      
     if(wMix >0) siteLik <- log(exp(siteLik) * (1-wMix) + llMix )
     loglik <- sum(weight * siteLik)
     if(!site) return(loglik)
@@ -2688,28 +1314,70 @@ pml.fit4 <- function (tree, data, bf = rep(1/length(levels), length(levels)),
 
 
 
+#' Internal maximum likelihood functions.
+#' 
+#' These functions are internally used for the likelihood computations in
+#' \code{pml} or \code{optim.pml}.
+#' 
+#' These functions are exported to be used in different packages so far only in
+#' the package coalescentMCMC, but are not intended for end user. Most of the
+#' functions call C code and are far less forgiving if the import is not what
+#' they expect than \code{pml}.
+#' 
+#' @param tree A phylogenetic \code{tree}, object of class \code{phylo}.
+#' @param data An alignment, object of class \code{phyDat}.
+#' @param bf Base frequencies.
+#' @param shape Shape parameter of the gamma distribution.
+#' @param alpha Shape parameter of the gamma distribution.
+#' @param k Number of intervals of the discrete gamma distribution.
+#' @param Q A vector containing the lower triangular part of the rate matrix.
+#' @param levels The alphabet used e.g. c("a", "c", "g", "t") for DNA
+#' @param inv Proportion of invariable sites.
+#' @param rate Rate.
+#' @param g vector of quantiles (default is NULL)
+#' @param w vector of probabilities (default is NULL)
+#' @param eig Eigenvalue decomposition of Q
+#' @param INV Sparse representation of invariant sites
+#' @param ll.0 default is NULL
+#' @param llMix default is NULL
+#' @param wMix default is NULL
+#' @param \dots Further arguments passed to or from other methods.
+#' @param site return the log-likelihood or vector of sitewise likelihood
+#' values
+#' @return \code{pml.fit} returns the log-likelihood.
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso \code{\link{pml}, \link{pmlPart}, \link{pmlMix}}
+#' @references Felsenstein, J. (1981) Evolutionary trees from DNA sequences: a
+#' maximum likelihood approach. \emph{Journal of Molecular Evolution},
+#' \bold{17}, 368--376.
+#' @keywords cluster
+#' 
+#' @rdname pml.fit
+#' @export pml.fit
 pml.fit <- function (tree, data, bf = rep(1/length(levels), length(levels)), 
-                     shape = 1, k = 1, Q = rep(1, length(levels) * (length(levels) - 1)/2), 
-                     levels = attr(data, "levels"), inv = 0, rate = 1, g = NULL, w = NULL, 
-                     eig = NULL, INV = NULL, ll.0 = NULL, llMix = NULL, wMix = 0, ..., site=FALSE) 
+        shape = 1, k = 1, Q = rep(1, length(levels) * (length(levels) - 1)/2), 
+        levels = attr(data, "levels"), inv = 0, rate = 1, g = NULL, w = NULL, 
+        eig = NULL, INV = NULL, ll.0 = NULL, llMix = NULL, wMix = 0, ..., 
+        site=FALSE) 
 {
+    Mkv <- FALSE
     weight <- as.double(attr(data, "weight"))
     nr <- as.integer(attr(data, "nr")) 
     nc <- as.integer(attr(data, "nc"))
     nTips <- as.integer(length(tree$tip.label)) 
     k <- as.integer(k)
-    m = 1
+    m <- 1
     if (is.null(eig)) 
-        eig = edQt(bf = bf, Q = Q)
+        eig <- edQt(bf = bf, Q = Q)
     if (is.null(w)) {
-        w = rep(1/k, k)
+        w <- rep(1/k, k)
         if (inv > 0) 
             w <- (1 - inv) * w
         if (wMix > 0) 
             w <- (1 - wMix) * w           
     }
     if (is.null(g)) {
-        g = discrete.gamma(shape, k)
+        g <- discrete.gamma(shape, k)
         if (inv > 0) 
             g <- g/(1 - inv)
         g <- g * rate     
@@ -2732,57 +1400,245 @@ pml.fit <- function (tree, data, bf = rep(1/length(levels), length(levels)),
         ll.0 <- numeric(attr(data,"nr"))    
     }
     if(inv>0)
-        ll.0 <- as.matrix(INV %*% (bf * inv))              
+        ll.0 <- as.matrix(INV %*% (bf * inv))
+    if(Mkv)
+        ll.0 <- as.matrix(INV %*% bf)
     if (wMix > 0)
         ll.0 <- ll.0 + llMix           
     
     node <- tree$edge[, 1]
     edge <- tree$edge[, 2]
-    root <- as.integer(node[length(node)])     
+#    root <- as.integer(node[length(node)])     
     el <- as.double(tree$edge.length)
-    node = as.integer(node - nTips - 1L) #    min(node))
-    edge = as.integer(edge - 1L)
+    node <- as.integer(node - nTips - 1L) #    min(node))
+    edge <- as.integer(edge - 1L)
     
-    contrast = attr(data, "contrast")
-    nco = as.integer(dim(contrast)[1])    
+    contrast <- attr(data, "contrast")
+    nco <- as.integer(dim(contrast)[1])    
     # dlist=data, nr, nc, weight, k ausserhalb definieren  
     # pmlPart einbeziehen 
-    resll <- .Call("PML0", dlist=data, el, as.double(w), as.double(g), nr, nc, k, eig, as.double(bf), node, edge, nTips, root, nco, contrast, N=as.integer(length(edge))) 
-    
+    # as.double(w),
+    resll <- .Call("PML0", dlist=data, el, as.double(g), nr, nc, k, eig, 
+                   as.double(bf), node, edge, nTips, nco, contrast, 
+                   N=as.integer(length(edge))) 
     # sort(INV@i)+1L  
-    ind = which(ll.0>0) # automatic in INV gespeichert
+    ind <- which(ll.0>0) # automatic in INV gespeichert
     
-    sca = .Call("rowMax", resll, length(weight), as.integer(k)) + 1   # nr statt length(weight)
-    lll = resll - sca 
+    sca <- .Call("rowMax", resll, length(weight), as.integer(k)) + 1   # nr statt length(weight)
+    lll <- resll - sca 
     lll <- exp(lll) 
     lll <- (lll%*%w)
-    lll[ind] = lll[ind] + exp(log(ll.0[ind])-sca[ind])    
+    if(Mkv) p0 <- sum(exp(log(lll[ind]) + sca[ind]))
+    lll[ind] <- lll[ind] + exp(log(ll.0[ind])-sca[ind])    
     siteLik <- lll 
     siteLik <- log(siteLik) + sca
     # needs to change
     if(wMix >0) siteLik <- log(exp(siteLik) * (1-wMix) + llMix )
+    if(Mkv)siteLik <- siteLik + log(1-p0)
     loglik <- sum(weight * siteLik)
     if(!site) return(loglik)
-    resll = exp(resll) 
+    resll <- exp(resll) 
     return(list(loglik=loglik, siteLik=siteLik, resll=resll))         
 }
 
 
+
+
+#' Likelihood of a tree.
+#' 
+#' \code{pml} computes the likelihood of a phylogenetic tree given a sequence
+#' alignment and a model. \code{optim.pml} optimizes the different model
+#' parameters.
+#' 
+#' The topology search uses a nearest neighbor interchange (NNI) and the
+#' implementation is similar to phyML.  The option model in pml is only used
+#' for amino acid models.  The option model defines the nucleotide model which
+#' is getting optimised, all models which are included in modeltest can be
+#' chosen. Setting this option (e.g. "K81" or "GTR") overrules options optBf
+#' and optQ.  Here is a overview how to estimate different phylogenetic models
+#' with \code{pml}: \tabular{lll}{ model \tab optBf \tab optQ \cr Jukes-Cantor
+#' \tab FALSE \tab FALSE \cr F81 \tab TRUE \tab FALSE \cr symmetric \tab FALSE
+#' \tab TRUE \cr GTR \tab TRUE \tab TRUE } Via model in optim.pml the following
+#' nucleotide models can be specified: JC, F81, K80, HKY, TrNe, TrN, TPM1, K81,
+#' TPM1u, TPM2, TPM2u, TPM3, TPM3u, TIM1e, TIM1, TIM2e, TIM2, TIM3e, TIM3,
+#' TVMe, TVM, SYM and GTR.  These models are specified as in Posada (2008).
+#' 
+#' So far 17 amino acid models are supported ("WAG", "JTT", "LG", "Dayhoff",
+#' "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24", "VT","RtREV", "HIVw", "HIVb",
+#' "FLU", "Blossum62", "Dayhoff_DCMut" and "JTT_DCMut") and additionally rate
+#' matrices and amino acid frequencies can be supplied.
+#' 
+#' It is also possible to estimate codon models (e.g. YN98), for details see
+#' also the chapter in vignette("phangorn-specials").
+#' 
+#' If the option 'optRooted' is set to TRUE than the edge lengths of rooted
+#' tree are optimized. The tree has to be rooted and by now ultrametric!
+#' Optimising rooted trees is generally much slower.
+#' 
+#' \code{pml.control} controls the fitting process. \code{epsilon} and
+#' \code{maxit} are only defined for the most outer loop, this affects
+#' \code{pmlCluster}, \code{pmlPart} and \code{pmlMix}.  \code{epsilon} is
+#' defined as (logLik(k)-logLik(k+1))/logLik(k+1), this seems to be a good
+#' heuristics which works reasonably for small and large trees or alignments.
+#' If \code{trace} is set to zero than no out put is shown, if functions are
+#' called internally than the trace is decreased by one, so a higher of trace
+#' produces more feedback.
+#' 
+#' If \code{rearrangement} is set to \code{stochastic} a stochastic search
+#' algorithm similar to Nguyen et al. (2015). and for \code{ratchet} the
+#' likelihood ratchet as in Vos (2003).  This should helps often to find better
+#' tree topologies, especially for larger trees.
+#' 
+#' @aliases pml 
+#' @param tree A phylogenetic \code{tree}, object of class \code{phylo}.
+#' @param data An alignment, object of class \code{phyDat}.
+#' @param bf Base frequencies.
+#' @param Q A vector containing the lower triangular part of the rate matrix.
+#' @param inv Proportion of invariable sites.
+#' @param k Number of intervals of the discrete gamma distribution.
+#' @param shape Shape parameter of the gamma distribution.
+#' @param rate Rate.
+#' @param model allows to choose an amino acid models or nucleotide model, see
+#' details.
+#' @param object An object of class \code{pml}.
+#' @param optNni Logical value indicating whether toplogy gets optimized (NNI).
+#' @param optBf Logical value indicating whether base frequencies gets
+#' optimized.
+#' @param optQ Logical value indicating whether rate matrix gets optimized.
+#' @param optInv Logical value indicating whether proportion of variable size
+#' gets optimized.
+#' @param optGamma Logical value indicating whether gamma rate parameter gets
+#' optimized.
+#' @param optEdge Logical value indicating the edge lengths gets optimized.
+#' @param optRate Logical value indicating the overall rate gets optimized.
+#' @param optRooted Logical value indicating if the edge lengths of a rooted
+#' tree get optimized.
+#' @param ratchet.par search parameter for stochastic search
+#' @param rearrangement type of tree tree rearrangements to perform, one of
+#' "none", "NNI", "stochastic" or "ratchet"
+#' @param control A list of parameters for controlling the fitting process.
+#' @param subs A (integer) vector same length as Q to specify the optimization
+#' of Q
+#' @param \dots Further arguments passed to or from other methods.
+#' @param epsilon Stop criterion for optimisation (see details).
+#' @param maxit Maximum number of iterations (see details).
+#' @param trace Show output during optimization (see details).
+#' @return \code{pml} or \code{optim.pml} return a list of class \code{pml},
+#' some are useful for further computations like \item{tree}{the phylogenetic
+#' tree.} \item{data}{the alignment.} \item{logLik}{Log-likelihood of the
+#' tree.} \item{siteLik}{Site log-likelihoods.} \item{weight}{Weight of the
+#' site patterns.}
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso \code{\link{bootstrap.pml}}, \code{\link{modelTest}},
+#' \code{\link{pmlPart}}, \code{\link{pmlMix}}, \code{\link{plot.phylo}},
+#' \code{\link{SH.test}}, \code{\link{ancestral.pml}}
+#' @references Felsenstein, J. (1981) Evolutionary trees from DNA sequences: a
+#' maximum likelihood approach. \emph{Journal of Molecular Evolution},
+#' \bold{17}, 368--376.
+#' 
+#' Felsenstein, J. (2004). \emph{Inferring Phylogenies}. Sinauer Associates,
+#' Sunderland.
+#' 
+#' Yang, Z. (2006). \emph{Computational Molecular evolution}. Oxford University
+#' Press, Oxford.
+#' 
+#' Adachi, J., P. J. Waddell, W. Martin, and M. Hasegawa (2000) Plastid genome
+#' phylogeny and a model of amino acid substitution for proteins encoded by
+#' chloroplast DNA.  \emph{Journal of Molecular Evolution}, \bold{50}, 348--358
+#' 
+#' Rota-Stabelli, O., Z. Yang, and M. Telford. (2009) MtZoa: a general
+#' mitochondrial amino acid substitutions model for animal evolutionary
+#' studies. \emph{Mol. Phyl. Evol}, \bold{52(1)}, 268--72
+#' 
+#' Whelan, S. and Goldman, N. (2001) A general empirical model of protein
+#' evolution derived from multiple protein families using a maximum-likelihood
+#' approach. \emph{Molecular Biology and Evolution}, \bold{18}, 691--699
+#' 
+#' Le, S.Q. and Gascuel, O. (2008) LG: An Improved, General Amino-Acid
+#' Replacement Matrix \emph{Molecular Biology and Evolution}, \bold{25(7)},
+#' 1307--1320
+#' 
+#' Yang, Z., R. Nielsen, and M. Hasegawa (1998) Models of amino acid
+#' substitution and applications to Mitochondrial protein evolution.
+#' \emph{Molecular Biology and Evolution}, \bold{15}, 1600--1611
+#' 
+#' Abascal, F., D. Posada, and R. Zardoya (2007) MtArt: A new Model of amino
+#' acid replacement for Arthropoda. \emph{Molecular Biology and Evolution},
+#' \bold{24}, 1--5
+#' 
+#' Kosiol, C, and Goldman, N (2005) Different versions of the Dayhoff rate
+#' matrix - \emph{Molecular Biology and Evolution}, \bold{22}, 193--199
+#' 
+#' L.-T. Nguyen, H.A. Schmidt, A. von Haeseler, and B.Q. Minh (2015) IQ-TREE: A
+#' fast and effective stochastic algorithm for estimating maximum likelihood
+#' phylogenies. \emph{Molecular Biology and Evolution}, \bold{32}, 268--274.
+#' 
+#' Vos, R. A. (2003) Accelerated Likelihood Surface Exploration: The Likelihood
+#' Ratchet. \emph{Systematic Biology}, \bold{52(3)}, 368--373
+#' 
+#' Yang, Z., and R. Nielsen (1998) Synonymous and nonsynonymous rate variation
+#' in nuclear genes of mammals. \emph{Journal of Molecular Evolution},
+#' \bold{46}, 409-418.
+#' 
+#' Lewis, P.O. (2001) A likelihood approach to estimating phylogeny from
+#' discrete morphological character data. \emph{Systematic Biology} \bold{50},
+#' 913--925.
+#' @keywords cluster
+#' @examples
+#' 
+#'   example(NJ)
+#' # Jukes-Cantor (starting tree from NJ)  
+#'   fitJC <- pml(tree, Laurasiatherian)  
+#' # optimize edge length parameter     
+#'   fitJC <- optim.pml(fitJC)
+#'   fitJC 
+#'   
+#' \dontrun{    
+#' # search for a better tree using NNI rearrangements     
+#'   fitJC <- optim.pml(fitJC, optNni=TRUE)
+#'   fitJC   
+#'   plot(fitJC$tree)
+#' 
+#' # JC + Gamma + I - model
+#'   fitJC_GI <- update(fitJC, k=4, inv=.2)
+#' # optimize shape parameter + proportion of invariant sites     
+#'   fitJC_GI <- optim.pml(fitJC_GI, optGamma=TRUE, optInv=TRUE)
+#' # GTR + Gamma + I - model
+#'   fitGTR <- optim.pml(fitJC_GI, rearrangement = "stochastic", 
+#'       optGamma=TRUE, optInv=TRUE, model="GTR") 
+#' }
+#' 
+#' 
+#' # 2-state data (RY-coded)  
+#'   dat <- acgt2ry(Laurasiatherian) 
+#'   fit2ST <- pml(tree, dat) 
+#'   fit2ST <- optim.pml(fit2ST,optNni=TRUE) 
+#'   fit2ST
+#' # show some of the methods available for class pml
+#'   methods(class="pml")  
+#' 
+#' @rdname pml
+#' @export pml
 pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1, 
     rate = 1, model=NULL, ...) 
 {
+    Mkv <- FALSE
+    if(!is.null(model) && model=="Mkv")Mkv <- TRUE
     call <- match.call()
     extras <- match.call(expand.dots = FALSE)$...
     pmla <- c("wMix", "llMix") 
     existing <- match(pmla, names(extras))
-    wMix <- ifelse(is.na(existing[1]), 0, eval(extras[[existing[1]]], parent.frame()) )  
-    llMix <- ifelse(is.na(existing[2]), 0, eval(extras[[existing[2]]], parent.frame()) )
+    wMix <- ifelse(is.na(existing[1]), 0, 
+                    eval(extras[[existing[1]]], parent.frame()) )  
+    llMix <- ifelse(is.na(existing[2]), 0, 
+                    eval(extras[[existing[2]]], parent.frame()) )
   
     if(!inherits(tree,"phylo")) stop("tree must be of class phylo") 
 #    if(is.null(tree$edge.length)){
 #        warning("tree has no edge length, used nnls.phylo to assign them")
 #        tree <- nnls.phylo(tree, dist.ml(data))
 #    }    
+    if(any(duplicated(tree$tip.label))) stop("tree must have unique labels!")
     if (is.null(attr(tree, "order")) || attr(tree, "order") == 
         "cladewise") 
         tree <- reorder(tree, "postorder")
@@ -2792,9 +1648,14 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     }
     if (class(data)[1] != "phyDat") stop("data must be of class phyDat")
     if(is.null(tree$edge.length)) stop("tree must have edge weights") 
-    if(any(is.na(match(tree$tip, attr(data, "names"))))) stop("tip labels are not in data")  
+    if(any(is.na(match(tree$tip.label, attr(data, "names"))))) stop("tip labels are not in data")  
     data <- subset(data, tree$tip.label) # needed
     levels <- attr(data, "levels")
+    if(Mkv){
+        data <- cbind(constSitePattern(length(tree$tip.label),levels, 
+                                       tree$tip.label), data)
+        attr(data, "weight")[1:attr(data, "nc")] <- 0.0
+    }    
     weight <- attr(data, "weight")
     nr <- attr(data, "nr")
     type <- attr(data,"type")
@@ -2802,7 +1663,9 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
         model <- match.arg(model, .aamodels)
         getModelAA(model, bf=is.null(bf), Q=is.null(Q)) 
     }  
-    if(type=="CODON") Q <- as.numeric(.syn > 0)
+    if(type=="CODON"){ 
+        Q <- as.numeric(.syn > 0)
+    }
     if (is.null(bf)) 
         bf <- rep(1/length(levels), length(levels))
     if (is.null(Q)) 
@@ -2834,6 +1697,8 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     
     INV <- Matrix(lli(data, tree), sparse=TRUE)
     ll.0 <- as.matrix(INV %*% (bf * inv))
+#    if(Mkv) ll.0 <- as.matrix(INV %*% rep(1, length(bf))) 
+    
     if(wMix>0) ll.0 <- ll.0 + llMix
 
     nr <- as.integer(attr(data, "nr")) 
@@ -2844,15 +1709,18 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     .C("ll_init", nr, nTips, nc, as.integer(k))
     tmp <- pml.fit(tree, data, bf, shape = shape, k = k, Q = Q, 
         levels = attr(data, "levels"), inv = inv, rate = rate, g = g, w = w, 
-        eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, wMix = wMix, site=TRUE) 
+        eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, wMix=wMix, site=TRUE)  
+        #, Mkv=Mkv
     
     df <- ifelse(is.ultrametric(tree), tree$Nnode, length(tree$edge.length))
     
     df <- switch(type, 
-                  DNA =  df + (kmax>1) + (inv0 > 0) + length(unique(bf)) - 1 + length(unique(Q)) - 1, 
+                  DNA =  df + (kmax>1) + (inv0 > 0) + length(unique(bf)) - 1 + 
+                     length(unique(Q)) - 1, 
                   AA = df + (kmax>1) + (inv0 > 0) ,
                   CODON = df + (kmax>1) + (inv0 > 0) + length(unique(bf)) - 1, 
-                  USER = df + (kmax>1) + (inv0 > 0) + length(unique(bf)) - 1 + length(unique(Q)) - 1)
+                  USER = df + (kmax>1) + (inv0 > 0) + length(unique(bf)) - 1 + 
+                     length(unique(Q)) - 1)
     
 #    if(type=="AA" & !is.null(model)){ 
 #        df <- df + (kmax>1) + (inv0 > 0) #+ length(unique(bf)) - 1 
@@ -2861,58 +1729,62 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
 #        df <- df + (kmax>1) + (inv0 > 0) + length(unique(bf)) - 1 
 #        }
 #    else df = df + (kmax>1) + (inv0 > 0) + length(unique(bf)) - 1 + length(unique(Q)) - 1
-    result = list(logLik = tmp$loglik, inv = inv, k = kmax, shape = shape,
+    result <- list(logLik = tmp$loglik, inv = inv, k = kmax, shape = shape,
         Q = Q, bf = bf, rate = rate, siteLik = tmp$siteLik, weight = weight, 
         g = g, w = w, eig = eig, data = data, model=model, INV = INV, 
-        ll.0 = ll.0, tree = tree, lv = tmp$resll, call = call, df=df, wMix=wMix, llMix=llMix)
+        ll.0 = ll.0, tree = tree, lv = tmp$resll, call = call, df=df, wMix=wMix, 
+        llMix=llMix) #, Mkv=Mkv
     if(type=="CODON"){
         result$dnds <- 1
         result$tstv <- 1
     }
-    class(result) = "pml"
+    class(result) <- "pml"
     result
 }
 
 
-optimRooted <- function(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, INV=INV,
-                        control = pml.control(epsilon = 1e-08, maxit = 25, trace=0), ...){
+optimRooted <- function(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, 
+                    ll.0=ll.0, INV=INV, control = pml.control(epsilon = 1e-08, 
+                    maxit = 25, trace=0), ...){
     
     tree$edge.length[tree$edge.length < 1e-08] <- 1e-08 # nicht richtig
-    nTips = as.integer(length(tree$tip.label))   
-    k = length(w)
+    nTips <- as.integer(length(tree$tip.label))   
+    k <- length(w)
     
     # optimising rooted triplets 
     optRoot0 <- function(t, tree, data, g, w, eig, bf, ll.0, k){
-        l = length(tree$edge.length)
-        tree$edge.length[1:(l-1)] = tree$edge.length[1:(l-1)] + t   
-        tree$edge.length[l] = tree$edge.length[l] - t
-        loglik = pml.fit4(tree, data, bf=bf, g=g, w=w, eig=eig, INV=INV, ll.0=ll.0, k=k) #
+        l <- length(tree$edge.length)
+        tree$edge.length[1:(l-1)] <- tree$edge.length[1:(l-1)] + t   
+        tree$edge.length[l] <- tree$edge.length[l] - t
+        loglik <- pml.fit4(tree, data, bf=bf, g=g, w=w, eig=eig, INV=INV, 
+                           ll.0=ll.0, k=k) #
         loglik
     }      
     # optim edges leading to the root
     optRoot2 <- function(t, tree, data, g, w, eig, bf, ll.0, k){
-        tree$edge.length = tree$edge.length + t   #c(el1+t, el2-t)
-        loglik = pml.fit4(tree, data, bf=bf, g=g, w=w, eig=eig, INV=INV, ll.0=ll.0, k=k) #, INV=INV
+        tree$edge.length <- tree$edge.length + t   #c(el1+t, el2-t)
+        loglik <- pml.fit4(tree, data, bf=bf, g=g, w=w, eig=eig, INV=INV, 
+                           ll.0=ll.0, k=k) #, INV=INV
         loglik
     }
     # scale whole tree
-    scaleEdges = function(t=1, trace=0, tree, data, ...){
-        fn = function(t, tree, data,...){
-            tree$edge.length = tree$edge.length*t
+    scaleEdges <- function(t=1, trace=0, tree, data, ...){
+        fn <- function(t, tree, data,...){
+            tree$edge.length <- tree$edge.length*t
             pml.fit4(tree, data, ...)
         }
-        optimize(f=fn, interval=c(0.25,4), tree=tree, data=data, ..., maximum = TRUE,
-                 tol = .00001)
+        optimize(f=fn, interval=c(0.25,4), tree=tree, data=data, ..., 
+                 maximum = TRUE, tol = .00001)
     }
-    parent = tree$edge[, 1]
-    child = tree$edge[, 2]
+    parent <- tree$edge[, 1]
+    child <- tree$edge[, 2]
     
     anc <- Ancestors(tree, 1:max(tree$edge), "parent")        
     sibs <- Siblings(tree, 1:max(tree$edge))        
     allKids <- cvector <- allChildren(tree)
-    rootNode = getRoot(tree)   
+    rootNode <- getRoot(tree)   
     
-    child2 = orderNNI(tree, nTips)   #(cvector, rootNode, nTips, TRUE)
+    child2 <- orderNNI(tree, nTips)   #(cvector, rootNode, nTips, TRUE)
     
     lengthList <- edgeList <- vector("list", max(tree$edge))
     for(i in tree$edge[,2]){
@@ -2935,228 +1807,221 @@ optimRooted <- function(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll
         treeList[[i]] <- cbind(i, c(kids, pa))
     }
     
-    ll <- pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g) #, INV=INV
+    ll <- pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, 
+                   g=g) #, INV=INV
 #    if(control$trace>2)cat("ll", ll, "\n")
-    eps=10
-    iter = 1
+    eps <- 10
+    iter <- 1
     
-    EL = numeric(max(tree$edge)) 
-    EL[tree$edge[, 2]] = tree$edge.length
+    EL <- numeric(max(tree$edge)) 
+    EL[tree$edge[, 2]] <- tree$edge.length
     
-    eps0 =1e-8
+    eps0 <- 1e-8
     
-    tmp <- scaleEdges(t, trace=0, tree, data, bf = bf, k=k, ll.0=ll.0, eig = eig, w=w, g=g)
+    tmp <- scaleEdges(t, trace=0, tree, data, bf = bf, k=k, ll.0=ll.0, 
+                      eig = eig, w=w, g=g)
 #    if(control$trace>2)cat("scale", tmp[[2]], "\n")
-    t = tmp[[1]]
-    tree$edge.length = tree$edge.length*t        
-    el = tree$edge.length
-    EL[tree$edge[, 2]] = tree$edge.length
-    ll2 <- pml.fit4(tree, data, bf=bf,  k=k, eig=eig, INV=INV, ll.0=ll.0, w=w, g=g) 
+    t <- tmp[[1]]
+    tree$edge.length <- tree$edge.length*t        
+    el <- tree$edge.length
+    EL[tree$edge[, 2]] <- tree$edge.length
+    ll2 <- pml.fit4(tree, data, bf=bf,  k=k, eig=eig, INV=INV, ll.0=ll.0, w=w, 
+                    g=g) 
     
-    tmptree = tree    
+    tmptree <- tree    
     
     while(eps>control$eps && iter < control$maxit){
-        ll2 <- pml.fit4(tree, data, bf=bf,  k=k, eig=eig, INV=INV, ll.0=ll.0, w=w, g=g)
+        ll2 <- pml.fit4(tree, data, bf=bf,  k=k, eig=eig, INV=INV, ll.0=ll.0, 
+                        w=w, g=g)
         loli <- rootNode
         
         children <- allKids[[rootNode]]
         kidsEl <- EL[children]  
-        minEl = min(kidsEl) 
-        kidsEl = kidsEl - minEl
+        minEl <- min(kidsEl) 
+        kidsEl <- kidsEl - minEl
         
-        tmptree$edge = cbind(rootNode, children)
-        tmptree$edge.length = kidsEl 
+        tmptree$edge <- cbind(rootNode, children)
+        tmptree$edge.length <- kidsEl 
         
-        t <- optimize(f=optRoot2,interval=c(1e-8,3), tmptree, data=data, k=k, g=g, w=w, eig=eig, bf=bf, ll.0=ll.0, maximum=TRUE)
-        optRoot2(t[[1]], tmptree, data=data, k=k, g=g, w=w, eig=eig, bf=bf, ll.0=ll.0)  
+        t <- optimize(f=optRoot2,interval=c(1e-8,3), tmptree, data=data, k=k, 
+                      g=g, w=w, eig=eig, bf=bf, ll.0=ll.0, maximum=TRUE)
+        optRoot2(t[[1]], tmptree, data=data, k=k, g=g, w=w, eig=eig, bf=bf, 
+                 ll.0=ll.0)  
 #        if(control$trace>2)cat("optRoot", t[[2]], "\n")    
-        ll3 = t[[2]]
-        EL[children] = kidsEl + t[[1]]     
+        ll3 <- t[[2]]
+        EL[children] <- kidsEl + t[[1]]     
         
-        tree$edge.length = EL[tree$edge[, 2]]  
-        ll2 <- pml.fit4(tree, data, bf=bf, k=k, eig=eig, INV=INV, ll.0=ll.0, w=w, g=g)  
+        tree$edge.length <- EL[tree$edge[, 2]]  
+        ll2 <- pml.fit4(tree, data, bf=bf, k=k, eig=eig, INV=INV, ll.0=ll.0, 
+                        w=w, g=g)  
         for(i in 1:length(child2)){ 
-            dad = child2[i]
+            dad <- child2[i]
             
             #            if(dad>nTips ){ # kann raus
-            pa = anc[dad]             
+            pa <- anc[dad]             
             while(loli != pa){                
-                tmpKids= cvector[[loli]]
-                tmpEdge = cbind(loli, tmpKids)
+                tmpKids <- cvector[[loli]]
+                tmpEdge <- cbind(loli, tmpKids)
                 pml.move(tmpEdge, EL[tmpKids], data, g, w, eig, k, nTips, bf)
-                loli=anc[loli] 
+                loli <- anc[loli] 
             }            
-            pml.move(edgeList[[dad]], EL[lengthList[[dad]]], data, g, w, eig, k, nTips, bf)   
+            pml.move(edgeList[[dad]], EL[lengthList[[dad]]], data, g, w, eig, k, 
+                     nTips, bf)   
             
             children <- allKids[[dad]]
             kidsEl <- EL[children]  
-            minEl = min(kidsEl) 
-            maxEl = EL[dad]
-            EDGE = treeList[[dad]]
+            minEl <- min(kidsEl) 
+            maxEl <- EL[dad]
+            EDGE <- treeList[[dad]]
             
-            tmptree$edge = EDGE
-            tmptree$edge.length = c(kidsEl, maxEl) 
+            tmptree$edge <- EDGE
+            tmptree$edge.length <- c(kidsEl, maxEl) 
             
-            t0 = optRoot0(0, tmptree, data, g, w, eig, bf, ll.0, k)  
+            t0 <- optRoot0(0, tmptree, data, g, w, eig, bf, ll.0, k)  
             
-            t = optimize(f=optRoot0, interval=c(-minEl+eps0,maxEl-eps0), tmptree, data=data, g=g, w=w, eig=eig, bf=bf, ll.0=ll.0, k=k, maximum=TRUE)
-            
+            t <- optimize(f=optRoot0, interval=c(-minEl+eps0,maxEl-eps0), 
+                          tmptree, data=data, g=g, w=w, eig=eig, bf=bf, 
+                          ll.0=ll.0, k=k, maximum=TRUE)
 #            if(control$trace>2) cat("edge", t[[2]], "\n")
             if(!is.nan(t[[2]]) & t[[2]] > ll3){
-                optRoot0(t[[1]], tmptree, data=data, g=g, w=w, eig=eig, bf=bf, ll.0=ll.0, k=k)   
-                EL[children] = kidsEl+t[[1]]
-                EL[dad] = maxEl-t[[1]]
-                ll3 = t[[2]]                   
+                optRoot0(t[[1]], tmptree, data=data, g=g, w=w, eig=eig, bf=bf, 
+                         ll.0=ll.0, k=k)   
+                EL[children] <- kidsEl+t[[1]]
+                EL[dad] <- maxEl-t[[1]]
+                ll3 <- t[[2]]                   
             }
             else optRoot0(0, tmptree, data, g, w, eig, bf, ll.0, k)
-            loli = dad                
+            loli <- dad                
             #            }
         }
-        tree$edge.length = EL[tree$edge[, 2]]   
-        ll2 <- pml.fit(tree, data, bf=bf, k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g)
-        eps = (ll - ll2) / ll2
+        tree$edge.length <- EL[tree$edge[, 2]]   
+        ll2 <- pml.fit(tree, data, bf=bf, k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, 
+                       g=g)
+        eps <- (ll - ll2) / ll2
         
         if(control$trace>1) cat("optimRooted: ", ll, " -> ", ll2, "\n")   
-        ll=ll2
-        iter = iter+1
+        ll <- ll2
+        iter <- iter+1
     }
     list(tree=tree, logLik=ll, c(eps=eps, iter=iter))
 }
 
 
-
-# copy node likelihoods from C to R
-getNodeLogLik = function(data, i, j=1L){
-    nr = attr(data, "nr")
-    nc = attr(data, "nc")
-    ntips = length(data)
-    .Call("getLL", as.integer(i), as.integer(j-1L), as.integer(nr), as.integer(nc), as.integer(ntips))
-}
-
-
-# copy scaling parameters from C to R
-getSC = function(data, k=1L){
-    nr = attr(data, "nr")
-    ntips = length(data)
-    .Call("getSCM", as.integer(k),  as.integer(nr), as.integer(ntips))
-}
-
-
 index.nni <- function (ch, cvector, pvector, root) 
 {
-    p1 = pvector[ch]
-    k12 = cvector[[ch]]    
-    k3 = cvector[[p1]]
-    k3 = k3[k3 != ch]
-    kids = c(k12, k3, ch)
-    parents = c(ch, ch, p1, p1)    
+    p1 <- pvector[ch]
+    k12 <- cvector[[ch]]    
+    k3 <- cvector[[p1]]
+    k3 <- k3[k3 != ch]
+    kids <- c(k12, k3, ch)
+    parents <- c(ch, ch, p1, p1)    
     if (p1 != root){    
-        k4 = pvector[p1]
-        kids = c(kids, k4)
-        parents = c(parents, p1)
+        k4 <- pvector[p1]
+        kids <- c(kids, k4)
+        parents <- c(parents, p1)
     }     
     cbind(parents, kids)
 }
 
 
 orderNNI <- function (tree, nTips){
-    res = reorder(tree)$edge[,2]
-    res = res[res>nTips]
+    res <- reorder(tree)$edge[,2]
+    res <- res[res>nTips]
     res
 }
 
 
 rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV,
     control = pml.control(epsilon = 1e-08, maxit = 25, trace=0), ...){
-    ind0 = which(ll.0>0) 
-    contrast = attr(data, "contrast")
+    ind0 <- which(ll.0>0) 
+    contrast <- attr(data, "contrast")
     tree$edge.length[tree$edge.length < 1e-08] <- 1e-08
-    nTips = as.integer(length(tree$tip.label))   
-    k = length(w)
+    nTips <- as.integer(length(tree$tip.label))   
+    k <- length(w)
     if (is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise") 
         tree <- reorder.phylo(tree, "postorder") 
     if(!is.rooted(tree))stop("tree must be rooted")
     
-    attr(tree, "order") = NULL
-    weight = attr(data , "weight")
-    nr = as.integer(attr(data , "nr"))
-    nc = as.integer(attr(data , "nc"))
+    attr(tree, "order") <- NULL
+    weight <- attr(data , "weight")
+    nr <- as.integer(attr(data , "nr"))
+    nc <- as.integer(attr(data , "nc"))
     
     getEL1 <- function(t, nh){
-        el = numeric(4)
+        el <- numeric(4)
         if(nh[1] > nh[2]){
-            el[2] = nh[1] -nh[2]
-            tnh = nh[1] + t[1]  
+            el[2] <- nh[1] -nh[2]
+            tnh <- nh[1] + t[1]  
         }
         else{
-            el[1] = nh[2] -nh[1]
-            tnh = nh[2] + t[1] 
+            el[1] <- nh[2] -nh[1]
+            tnh <- nh[2] + t[1] 
         }
-        el[1:2] = el[1:2] + t[1]
-        if(tnh > nh[3]) el[3] = el[3] + tnh - nh[3]
-        else el[4] = el[4] - tnh + nh[3]
-        el[3:4] = el[3:4] + t[2]
+        el[1:2] <- el[1:2] + t[1]
+        if(tnh > nh[3]) el[3] <- el[3] + tnh - nh[3]
+        else el[4] <- el[4] - tnh + nh[3]
+        el[3:4] <- el[3:4] + t[2]
         el
     }
     
     optRootU <- function(t, tree, data, bf, g, w, eig, ll.0, k, INV, nh){
-        tree$edge.length = getEL1(t, nh)
+        tree$edge.length <- getEL1(t, nh)
         pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g) 
 #        pml.fit(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k, INV=INV)
     }      
 
     
-    getEL2 = function(t, nh){
-        el = numeric(5)
-        eps= 1e-6           
-        nh12.min = max(nh[1:2]) + eps
-        nh123.min = max(nh12.min, nh[3]) + eps
-        l1 = nh[5] - nh123.min -  eps
-        el[5] = l1 * t[1] + eps
-        nh123 = nh[5] - el[5]
-        l2 = nh123 - nh12.min - eps  
-        nh12 = nh12.min + l2 * t[2]         
-        el[1] = nh12 - nh[1]
-        el[2] = nh12 - nh[2]
-        el[3] = nh123 - nh[3]
-        el[4] = nh123 - nh12
+    getEL2 <- function(t, nh){
+        el <- numeric(5)
+        eps <- 1e-6           
+        nh12.min <- max(nh[1:2]) + eps
+        nh123.min <- max(nh12.min, nh[3]) + eps
+        l1 <- nh[5] - nh123.min -  eps
+        el[5] <- l1 * t[1] + eps
+        nh123 <- nh[5] - el[5]
+        l2 <- nh123 - nh12.min - eps  
+        nh12 <- nh12.min + l2 * t[2]         
+        el[1] <- nh12 - nh[1]
+        el[2] <- nh12 - nh[2]
+        el[3] <- nh123 - nh[3]
+        el[4] <- nh123 - nh12
         el
     } 
     
     
     optEdgeU <- function(t, tree, data, bf, g, w, eig, ll.0, k, INV, nh){
-        tree$edge.length = getEL2(t, nh)
+        tree$edge.length <- getEL2(t, nh)
 #        pml.fit(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k, INV=INV)
         pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g) 
     }
     
      
-    child = tree$edge[, 2]   
-    parent = tree$edge[, 1]
+    child <- tree$edge[, 2]   
+    parent <- tree$edge[, 1]
 #    ll <-  pml.fit(tree, data, bf=bf, k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g)
-    ll <-  pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g) 
+    ll <-  pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, 
+                    g=g) 
     llstart <- ll
-    eps=.00001
-    iter = 1  
-    EL = numeric(max(tree$edge)) 
-    EL[tree$edge[,2]] = tree$edge.length
-    change = numeric(length(parent)) + 1    
-    rootNode = getRoot(tree)    
-    anc = Ancestors(tree, 1:max(tree$edge), "parent")  
-    cvector = allChildren(tree)    
+    eps <- .00001
+    iter <- 1  
+    EL <- numeric(max(tree$edge)) 
+    EL[tree$edge[,2]] <- tree$edge.length
+    change <- numeric(length(parent)) + 1    
+    rootNode <- getRoot(tree)    
+    anc <- Ancestors(tree, 1:max(tree$edge), "parent")  
+    cvector <- allChildren(tree)    
     sibs <- Siblings(tree, 1:max(tree$edge))
     
-    child2 = orderNNI(tree, nTips)
+    child2 <- orderNNI(tree, nTips)
     
     while(iter < 2){    
-        ll2 <-  pml.fit(tree, data, bf=bf, k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g)
-
-        nh=nodeHeight(tree)
-        
+        ll2 <-  pml.fit(tree, data, bf=bf, k=k, eig=eig, ll.0=ll.0, INV=INV, 
+                        w=w, g=g)
+        nh <- nodeHeight(tree)
         loli <- rootNode                
-        pa <-rootNode    
-        nchanges = 0
-        ind=1
+        pa <- rootNode    
+        nchanges <- 0
+        ind <- 1
         i <- 1 
         
         tree1 <- tree2 <- tree3 <- tree
@@ -3165,7 +2030,7 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV,
             dad <- anc[ch]          
             if(ch>nTips){
                 
-                EL[tree$edge[,2]] = tree$edge.length
+                EL[tree$edge[,2]] <- tree$edge.length
                 
                 pa <- ifelse(dad==rootNode, rootNode ,anc[dad])   
 # should avoid unnecessary movements                                                   
@@ -3173,37 +2038,41 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV,
                     if(loli==pa){ 
                         tmpKids <- sibs[[dad]]
                         tmpEdge <- cbind(pa, c(anc[pa], tmpKids))
-                        pml.move(tmpEdge, EL[c(pa, tmpKids)], data, g, w, eig, k, nTips, bf)                                            
+                        pml.move(tmpEdge, EL[c(pa, tmpKids)], data, g, w, eig, 
+                                 k, nTips, bf)                                            
 # cat("move from pa to dad \n")                                           
-                        loli = dad
+                        loli <- dad
                     }                                    
                     else{                        
-#                        cat("move loli up", loli, "dad", dad, "pa", pa, "ch", ch, "\n")
-                        tmpKids = cvector[[loli]]
-                        tmpEdge = cbind(loli, tmpKids)
-                        pml.move(tmpEdge, EL[tmpKids], data, g, w, eig, k, nTips, bf) 
-                        loli=anc[loli]
+#   cat("move loli up", loli, "dad", dad, "pa", pa, "ch", ch, "\n")
+                        tmpKids <- cvector[[loli]]
+                        tmpEdge <- cbind(loli, tmpKids)
+                        pml.move(tmpEdge, EL[tmpKids], data, g, w, eig, k, 
+                                 nTips, bf) 
+                        loli <- anc[loli]
                     }
                     
                 } 
           
                 if(loli == rootNode && dad!= loli){                    
                     # update all nodes
-                    pml.fit(tree, data, bf=bf, k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g)                                        
-#                    cat("move down loli", loli, "dad", dad, "pa", pa, "ch", ch, "\n")  
+                    pml.fit(tree, data, bf=bf, k=k, eig=eig, ll.0=ll.0, INV=INV, 
+                            w=w, g=g)                                        
+#   cat("move down loli", loli, "dad", dad, "pa", pa, "ch", ch, "\n")  
                     gd <- rev(Ancestors(tree, ch, "all")) 
                     
                     tmpKids <- sibs[[gd[2]]]
                     tmpEdge <- cbind(rootNode, tmpKids)
-                    pml.move(tmpEdge, EL[tmpKids], data, g, w, eig, k, nTips, bf)                  
-                    gd = gd[-1]           
+                    pml.move(tmpEdge, EL[tmpKids], data, g, w, eig, k, nTips, bf)          
+                    gd <- gd[-1]           
                     while(length(gd)>1){
                         tmpKids <- sibs[[gd[2]]]
-                        tmpEdge = cbind(gd[1], c(anc[gd[1]],tmpKids))
-                        pml.move(tmpEdge, EL[c(gd[1],tmpKids)], data, g, w, eig, k, nTips, bf)      
-                        gd = gd[-1]   
+                        tmpEdge <- cbind(gd[1], c(anc[gd[1]],tmpKids))
+                        pml.move(tmpEdge, EL[c(gd[1],tmpKids)], data, g, w, eig, 
+                                 k, nTips, bf)      
+                        gd <- gd[-1]   
                     }
-                    loli=dad
+                    loli <- dad
                 }            
                 
                 X1 <- index.nni(ch, cvector, anc, rootNode)                 
@@ -3213,205 +2082,207 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV,
 #                    tmpEdge <- cbind(dad, c(pa, tmpKids))
 #                    tree1$edge <- tmpEdge
 #                    tree1$edge.length = EL[c(dad, tmpKids)]
-#                    ll0 = pml.fit(tree1, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k, INV=INV)
+#                    ll0 = pml.fit(tree1, data, bf=bf, g=g, w=w, eig=eig, 
+#                         ll.0=ll.0, k=k, INV=INV)
 #                    cat("triplet", ll0, "\n")
 #                }
                 
                             
                 if(loli!=rootNode){
                      tree1$edge <- X1
-                    tree1$edge.length = abs(nh[X1[,1]] - nh[X1[,2]])
-#                    ll0 = pml.fit(tree1, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k, INV=INV)
-                    ll0 <- pml.fit4(tree1, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g) 
+                    tree1$edge.length <- abs(nh[X1[,1]] - nh[X1[,2]])
+#  ll0 = pml.fit(tree1, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k, INV=INV)
+                    ll0 <- pml.fit4(tree1, data, bf=bf,  k=k, eig=eig, 
+                                    ll.0=ll.0, INV=INV, w=w, g=g) 
 #                    cat("quartet", ll0, ch, dad, "\n")
                 }                
                 
                 
                 if(dad == rootNode){
                
-                    ll0 = pml.fit(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k, INV=INV)
-                    
+                    ll0 <- pml.fit(tree, data, bf=bf, g=g, w=w, eig=eig, 
+                                  ll.0=ll.0, k=k, INV=INV)
 #                    cat("at root", ll0, ch, dad, "\n")   
-                    ind2 = c(1,3,2,4)
-                    ind3 = c(3,2,1,4)     
-                    X2 = X3 = X1
-                    X2[,2] = X1[ind2, 2]
-                    X3[,2] = X1[ind3, 2]                
+                    ind2 <- c(1,3,2,4)
+                    ind3 <- c(3,2,1,4)     
+                    X2 <- X3 <- X1
+                    X2[,2] <- X1[ind2, 2]
+                    X3[,2] <- X1[ind3, 2]                
                     
-                    tree1$edge = X1 
-                    tree2$edge = X2
-                    tree3$edge = X3
+                    tree1$edge <- X1 
+                    tree2$edge <- X2
+                    tree3$edge <- X3
                     edge1 <- X1[,2]
-                    edge1[4] = dad
-                    res1 =optim(par = c(.1,.1), optRootU, gr=NULL, tree=tree1, data=data, nh=nh[X1[,2]], g=g, w=w, eig=eig, bf=bf, ll.0=ll.0, INV=INV, k=k, method = "L-BFGS-B", lower = 1e-8, upper = 5, control = list(fnscale=-1))
-                    res2 =optim(par = c(.1,.1), optRootU, gr=NULL, tree=tree2, data=data, nh=nh[X2[,2]], g=g, w=w, eig=eig, bf=bf, ll.0=ll.0, INV=INV, k=k, method = "L-BFGS-B", lower = 1e-8, upper = 5, control = list(fnscale=-1))                    
-                    res3 =optim(par = c(.1,.1), optRootU, gr=NULL, tree=tree3, data=data,  nh=nh[X3[,2]], g=g, w=w, eig=eig, bf=bf, ll.0=ll.0, INV=INV, k=k, method = "L-BFGS-B", lower = 1e-8, upper = 5, control = list(fnscale=-1))                                       
-
-                    ind = which.max(c(res1[[2]], res2[[2]], res3[[2]]))          
-                    if(control$trace>2) cat("root", c(res1[[2]], res2[[2]], res3[[2]]), "\n")
+                    edge1[4] <- dad
+                    res1 <- optim(par = c(.1,.1), optRootU, gr=NULL, tree=tree1, 
+                            data=data, nh=nh[X1[,2]], g=g, w=w, eig=eig, bf=bf, 
+                            ll.0=ll.0, INV=INV, k=k, method="L-BFGS-B", 
+                            lower = 1e-8, upper = 5, control = list(fnscale=-1))
+                    res2 <- optim(par = c(.1,.1), optRootU, gr=NULL, tree=tree2, 
+                            data=data, nh=nh[X2[,2]], g=g, w=w, eig=eig, bf=bf, 
+                            ll.0=ll.0, INV=INV, k=k, method = "L-BFGS-B", 
+                            lower = 1e-8, upper = 5, control = list(fnscale=-1))
+                    res3 <- optim(par = c(.1,.1), optRootU, gr=NULL, tree=tree3, 
+                            data=data,  nh=nh[X3[,2]], g=g, w=w, eig=eig, bf=bf, 
+                            ll.0=ll.0, INV=INV, k=k, method = "L-BFGS-B", 
+                            lower = 1e-8, upper = 5, control = list(fnscale=-1))
+                    ind <- which.max(c(res1[[2]], res2[[2]], res3[[2]]))          
+                    if(control$trace>2) cat("root", c(res1[[2]], res2[[2]], 
+                                                      res3[[2]]), "\n")
                     
                     if(ind==1){   
-                        ll2 = res1[[2]]
-                        optRootU(t=res1[[1]], tree=tree1, data=data, nh=nh[X1[,2]], g=g, w=w, eig=eig, bf=bf, ll.0=ll.0, INV=INV, k=k)
-                        tmpEL = getEL1(res1[[1]], nh[X1[,2]])
-                        tree = changeEdgeLength(tree, X1[,2], tmpEL)
+                        ll2 <- res1[[2]]
+                        optRootU(t=res1[[1]], tree=tree1, data=data,
+                                 nh=nh[X1[,2]], g=g, w=w, eig=eig, bf=bf, 
+                                 ll.0=ll.0, INV=INV, k=k)
+                        tmpEL <- getEL1(res1[[1]], nh[X1[,2]])
+                        tree <- changeEdgeLength(tree, X1[,2], tmpEL)
                     }
                     if(ind==2){   
-                        ll2 = res2[[2]]
-                        optRootU(t=res2[[1]], tree=tree2, data=data, nh=nh[X2[,2]], g=g, w=w, eig=eig, bf=bf, ll.0=ll.0, INV=INV, k=k) 
-                        tmpEL = getEL1(res2[[1]], nh[X2[,2]])
+                        ll2 <- res2[[2]]
+                        optRootU(t=res2[[1]], tree=tree2, data=data,
+                                 nh=nh[X2[,2]], g=g, w=w, eig=eig, bf=bf, 
+                                 ll.0=ll.0, INV=INV, k=k) 
+                        tmpEL <- getEL1(res2[[1]], nh[X2[,2]])
                         tree <- changeEdge(tree, X1[c(2,3),2])                        
-                        tree = changeEdgeLength(tree, X2[,2], tmpEL)
+                        tree <- changeEdgeLength(tree, X2[,2], tmpEL)
                     }
                     if(ind==2){   
-                        ll2 = res3[[2]]
-                        optRootU(t=res3[[1]], tree=tree3, data=data, nh=nh[X3[,2]], g=g, w=w, eig=eig, bf=bf, ll.0=ll.0, INV=INV, k=k)
-                        tmpEL = getEL1(res3[[1]], nh[X3[,2]])
+                        ll2 <- res3[[2]]
+                        optRootU(t=res3[[1]], tree=tree3, data=data, 
+                                 nh=nh[X3[,2]], g=g, w=w, eig=eig, bf=bf, 
+                                 ll.0=ll.0, INV=INV, k=k)
+                        tmpEL <- getEL1(res3[[1]], nh[X3[,2]])
                         tree <- changeEdge(tree, X1[c(1,3),2])
-                        tree = changeEdgeLength(tree, X3[,2], tmpEL)
+                        tree <- changeEdgeLength(tree, X3[,2], tmpEL)
                     }
                 }
                 else{
-                    loli = dad                                        
-                    ind2 = c(1,3,2,4,5)
-                    ind3 = c(3,2,1,4,5)
-                    X2 = X3 = X1
-                    X2[,2] = X1[ind2, 2]
-                    X3[,2] = X1[ind3, 2]
-                    tree1$edge = X1 
-                    tree2$edge = X2
-                    tree3$edge = X3                      
-                    tt = c(.3,.5)        
+                    loli <- dad                                        
+                    ind2 <- c(1,3,2,4,5)
+                    ind3 <- c(3,2,1,4,5)
+                    X2 <- X3 <- X1
+                    X2[,2] <- X1[ind2, 2]
+                    X3[,2] <- X1[ind3, 2]
+                    tree1$edge <- X1 
+                    tree2$edge <- X2
+                    tree3$edge <- X3                      
+                    tt <- c(.3,.5)        
 
-                    res1 =optim(par = tt, optEdgeU, gr=NULL, tree=tree1, data, nh=nh[X1[,2]], g=g, w=w, eig=eig, bf=bf, ll.0=ll.0, INV=INV, k=k, method = "L-BFGS-B", lower = 1e-4, upper = 1-1e-4, control = list(fnscale=-1))
-    
-                    res2 =optim(par = tt, optEdgeU, gr=NULL, tree=tree2, data, nh=nh[X2[,2]], g=g, w=w, eig=eig, bf=bf, ll.0=ll.0, INV=INV, k=k, method = "L-BFGS-B", lower = 1e-4, upper = 1-1e-4, control = list(fnscale=-1))
-                    
-                    res3 =optim(par = tt, optEdgeU, gr=NULL, tree=tree3, data, nh=nh[X3[,2]], g=g, w=w, eig=eig, bf=bf, ll.0=ll.0, INV=INV, k=k, method = "L-BFGS-B", lower = 1e-4, upper = 1-1e-4, control = list(fnscale=-1))  
-                                  
-                ind = which.max(c(res1[[2]], res2[[2]], res3[[2]]))     
-                if(control$trace>2) cat("edge", ch, ":", c(res1[[2]], res2[[2]], res3[[2]]), "\n")    
-                ll3 = max(c(res1[[2]], res2[[2]], res3[[2]]))
+                    res1 <- optim(par = tt, optEdgeU, gr=NULL, tree=tree1, data, 
+                            nh=nh[X1[,2]], g=g, w=w, eig=eig, bf=bf, ll.0=ll.0, 
+                            INV=INV, k=k, method = "L-BFGS-B", lower = 1e-4, 
+                            upper = 1-1e-4, control = list(fnscale=-1))
+                    res2 <- optim(par = tt, optEdgeU, gr=NULL, tree=tree2, data, 
+                            nh=nh[X2[,2]], g=g, w=w, eig=eig, bf=bf, ll.0=ll.0, 
+                            INV=INV, k=k, method = "L-BFGS-B", lower = 1e-4, 
+                            upper = 1-1e-4, control = list(fnscale=-1))
+                    res3 <- optim(par = tt, optEdgeU, gr=NULL, tree=tree3, data, 
+                            nh=nh[X3[,2]], g=g, w=w, eig=eig, bf=bf, ll.0=ll.0, 
+                            INV=INV, k=k, method = "L-BFGS-B", lower = 1e-4, 
+                            upper = 1-1e-4, control = list(fnscale=-1))  
+        
+                ind <- which.max(c(res1[[2]], res2[[2]], res3[[2]]))     
+                if(control$trace>2) cat("edge", ch, ":", c(res1[[2]], res2[[2]], 
+                                                           res3[[2]]), "\n")    
+                ll3 <- max(c(res1[[2]], res2[[2]], res3[[2]]))
                 
                 if( (ll3 - 1e-5*ll3) < ll2){
-                    loli = rootNode   
-#                    ll2 <- pml.fit(tree, data, bf=bf, eig=eig, ll.0=ll.0, w=w, g=g)
-                    ll2 <- pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g) 
-                    nh=nodeHeight(tree)
-                    EL[tree$edge[,2]] = tree$edge.length
-                    ind=0
+                    loli <- rootNode   
+#                 2 <- pml.fit(tree, data, bf=bf, eig=eig, ll.0=ll.0, w=w, g=g)
+                    ll2 <- pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0,
+                                    INV=INV, w=w, g=g) 
+                    nh <- nodeHeight(tree)
+                    EL[tree$edge[,2]] <- tree$edge.length
+                    ind <- 0
                 }   
                 else{                        
                 if(ind==1){   
-                    ll2 = res1[[2]]
-                    optEdgeU(res1[[1]], tree=tree1, data, nh=nh[X1[,2]], g=g, w=w, eig=eig, bf=bf, ll.0=ll.0, INV=INV, k=k)
-                    tmpEL = getEL2(res1[[1]], nh[X1[,2]])
-                    tmpE = X1[,2]
-                    tmpE[5] = X1[5,1]
-                    tree = changeEdgeLength(tree, tmpE, tmpEL)
+                    ll2 <- res1[[2]]
+                    optEdgeU(res1[[1]], tree=tree1, data, nh=nh[X1[,2]], g=g, 
+                             w=w, eig=eig, bf=bf, ll.0=ll.0, INV=INV, k=k)
+                    tmpEL <- getEL2(res1[[1]], nh[X1[,2]])
+                    tmpE <- X1[,2]
+                    tmpE[5] <- X1[5,1]
+                    tree <- changeEdgeLength(tree, tmpE, tmpEL)
                 }
                 if(ind==2){    
-                    ll2 = res2[[2]]
-                    optEdgeU(res2[[1]], tree=tree2, data, nh=nh[X2[,2]], g=g, w=w, eig=eig, bf=bf, ll.0=ll.0, INV=INV, k=k)
-                    tmpEL = getEL2(res2[[1]], nh[X2[,2]])
-                    tmpE = X2[,2]
-                    tmpE[5] = X1[5,1]
+                    ll2 <- res2[[2]]
+                    optEdgeU(res2[[1]], tree=tree2, data, nh=nh[X2[,2]], g=g, 
+                             w=w, eig=eig, bf=bf, ll.0=ll.0, INV=INV, k=k)
+                    tmpEL <- getEL2(res2[[1]], nh[X2[,2]])
+                    tmpE <- X2[,2]
+                    tmpE[5] <- X1[5,1]
                     tree <- changeEdge(tree, X1[c(2,3),2])
-                    tree = changeEdgeLength(tree, tmpE, tmpEL)
+                    tree <- changeEdgeLength(tree, tmpE, tmpEL)
                 }
                 if(ind==3){       
-                    ll2 = res3[[2]]
-                    optEdgeU(res3[[1]], tree=tree3, data, nh=nh[X3[,2]], g=g, w=w, eig=eig, bf=bf, ll.0=ll.0, INV=INV, k=k)
-                    tmpEL = getEL2(res3[[1]], nh[X3[,2]])
-                    tmpE = X3[,2]
-                    tmpE[5] = X1[5,1]
+                    ll2 <- res3[[2]]
+                    optEdgeU(res3[[1]], tree=tree3, data, nh=nh[X3[,2]], g=g, 
+                             w=w, eig=eig, bf=bf, ll.0=ll.0, INV=INV, k=k)
+                    tmpEL <- getEL2(res3[[1]], nh[X3[,2]])
+                    tmpE <- X3[,2]
+                    tmpE[5] <- X1[5,1]
                     tree <- changeEdge(tree, X1[c(1,3),2])
-                    tree = changeEdgeLength(tree, tmpE, tmpEL)
+                    tree <- changeEdgeLength(tree, tmpE, tmpEL)
                 }
                 
               }
             }
-            nh=nodeHeight(tree)
-            EL[tree$edge[,2]] = tree$edge.length
-            loli = dad                           
+            nh <- nodeHeight(tree)
+            EL[tree$edge[,2]] <- tree$edge.length
+            loli <- dad                           
 
             if(ind>1){
 # print("NNI swap")                
-                nchanges = nchanges+1 
-                anc = Ancestors(tree, 1:max(tree$edge), "parent")  
-                cvector = allChildren(tree)
+                nchanges <- nchanges+1 
+                anc <- Ancestors(tree, 1:max(tree$edge), "parent")  
+                cvector <- allChildren(tree)
                 sibs <- Siblings(tree, 1:max(tree$edge))
                 } 
             }    
             
         }
-#        ll2 <- pml.fit(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k, INV=INV)
-        ll2 <- pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, INV=INV, w=w, g=g) 
+#  ll2 <- pml.fit(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k, INV=INV)
+        ll2 <- pml.fit4(tree, data, bf=bf,  k=k, eig=eig, ll.0=ll.0, INV=INV, 
+                        w=w, g=g) 
         
-        eps = (ll - ll2) / ll2
+        eps <- (ll - ll2) / ll2
         if(control$trace>1) cat(ll, " -> ", ll2, "\n") 
         if(control$trace>1) cat("swap:", nchanges) 
-        ll=ll2
-        iter = iter+1
+        ll <- ll2
+        iter <- iter+1
     }
     list(tree=tree, logLik=ll, iter=iter, swap=nchanges)
 }
 
 
-# maybe into treeManipulation
-addAllTips <- function(tree, mapping){
-    tree2 <- tree
-    uni <- unique(mapping[,2])
-    for(i in uni)
-        tree2 = addTips2Tree(tree2, mapping[mapping[,2]==i,1],i)
-    tree2
-}
-
-
-
-addTips2Tree <- function (tree, tips, where){
-    nTips <- length(tree$tip.label)
-    edge = tree$edge
-    
-    where <- match(where, tree$tip.label)
-    
-    ind = match(where, edge[,2])
-    nt <- as.integer(length(tips))
-    edge[edge>nTips] = edge[edge>nTips]+nt
-    m = max(edge)
-    edge[ind,2] <- m+1L    
-    
-    newEdge <- cbind(m+1L,c(where,(nTips+1L):(nTips+nt)))
-    edge <- rbind(newEdge, edge)
-    storage.mode(edge) <- "integer"
-    if(!is.null(tree$edge.length)) tree$edge.length = c(rep(0, nrow(newEdge)), tree$edge.length)
-    tree$edge = edge
-    tree$Nnode = tree$Nnode + 1L
-    tree$tip.label = c(tree$tip.label, tips)
-    attr(tree, "order") <- NULL
-    tree <- reorder(tree, "postorder")
-    tree
-}    
-
-
-optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE, 
-                        optInv = FALSE, optGamma = FALSE, optEdge = TRUE, optRate = FALSE, optRooted=FALSE,
-                        control = pml.control(epsilon = 1e-8, maxit = 10, trace = 1L), 
-                        model = NULL, rearrangement = ifelse(optNni, "NNI","none"), subs = NULL, ratchet.par = list(iter = 10L, maxit = 100L, prop = 1/3), ...) 
+#' @rdname pml
+#' @aliases optim.pml
+#' @export
+optim.pml <- function (object, optNni=FALSE, optBf=FALSE, optQ=FALSE, 
+    optInv=FALSE, optGamma=FALSE, optEdge=TRUE, optRate=FALSE,  optRooted=FALSE,
+    control = pml.control(epsilon = 1e-8, maxit = 10, trace = 1L), 
+    model = NULL, rearrangement = ifelse(optNni, "NNI","none"), subs = NULL,
+    ratchet.par = list(iter = 20L, maxit = 100L, prop = 1/3), ...) 
 {
-    optRatchet = FALSE
+    optRatchet <- FALSE
+    optRatchet2 <- FALSE
     if(rearrangement ==  "none"){
-        optNni = FALSE
-        optRatchet = FALSE
+        optNni <- FALSE
+        optRatchet <- FALSE
+        optRatchet2 <- FALSE
     }
-    if(rearrangement ==  "NNI")optNni = TRUE
-    if(rearrangement ==  "stochastic") optRatchet = TRUE
-    
+    if(rearrangement ==  "NNI")optNni <- TRUE
+    if(rearrangement ==  "stochastic") optRatchet <- TRUE
+    if(rearrangement ==  "ratchet") optRatchet2 <- TRUE
     extras <- match.call(expand.dots = FALSE)$...
     pmla <- c("wMix", "llMix")
     wMix <- object$wMix
     llMix <- object$llMix
-    if(is.null(llMix)) llMix=0
+#    Mkv <- object$Mkv
+    Mkv <- FALSE
+    if(is.null(llMix)) llMix <- 0
     if (!is.null(extras)) {
         names(extras) <- pmla[pmatch(names(extras), pmla)]
         existing <- match(pmla, names(extras))
@@ -3420,22 +2291,29 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         if (!is.na(existing[2])) 
             llMix <- eval(extras[[existing[2]]], parent.frame())
     }
-    tree = object$tree
-    call = object$call
-    ratchet=FALSE
+    tree <- object$tree
+    call <- object$call
+    ratchet <- FALSE
+    ratchet2 <- FALSE
     if(optRatchet == TRUE){
         if(optRooted==FALSE){
-            optNni=TRUE
-            optEdge=TRUE
-            ratchet=TRUE
+            optNni <- TRUE
+            optEdge <- TRUE
+            ratchet <- TRUE
         }
+    }
+    if(optRatchet2 == TRUE){
+        optNni <- TRUE
+        optEdge <- TRUE
+        ratchet2 <- TRUE
     }
     
     data <- object$data
     addTaxa <- FALSE
     
     if(optNni) {
-        dup <-  duplicated(data)
+        # test this more 
+        dup <-  duplicated(data) # duplicated_phyDat(data)
         if(any(dup)){ # && optNNI
             orig.data <- data
             addTaxa <- TRUE
@@ -3446,15 +2324,23 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
             tree <- reorder(tree2, "postorder")
             mapping <- cbind(labels[dup], labels[ind2])
         }
-        if(!is.binary.tree(tree)) 
-            tree = multi2di(tree)
-        optEdge = TRUE     
+        if(!is.binary(tree)) 
+            tree <- multi2di(tree)
+        optEdge <- TRUE     
     }
+    if(length(tree$tip.label) < (3 + !optRooted) ){
+        optNni <- FALSE
+        ratchet <- FALSE
+        ratchet2 <- FALSE
+    } 
+    if(length(tree$tip.label) < (2 + !optRooted) ){
+        stop("rooted / unrooted tree needs at least 2 / 3 tips")
+    } 
     if(is.rooted(tree)) {
         if(optRooted==FALSE && optEdge==TRUE){
-            tree = unroot(tree)
+            tree <- unroot(tree)
             attr(tree, "order") <- NULL
-            tree = reorder(tree, "postorder")
+            tree <- reorder(tree, "postorder")
             warning("I unrooted the tree", call. = FALSE)
         }    
     }
@@ -3463,64 +2349,78 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         tree <- reorder(tree, "postorder")
     if(any(tree$edge.length < 1e-08)) {
         tree$edge.length[tree$edge.length < 1e-08] <- 1e-08
+        if(optRooted){
+            nTips <- as.integer(length(tree$tip.label))
+            ind <- match(as.integer(1:nTips), tree$edge[,2])
+            tree$edge.length[ind] <- tree$edge.length[ind] +
+                nodeHeight(tree)[1:nTips]
+        }
         # save to change to new update.pml       
         object <- update.pml(object, tree = tree)
     }
     if(optEdge & optRate) {
         warning("You can't optimise edges and rates at the same time, only edges are optimised!", call. = FALSE)
-        optRate = FALSE
+        optRate <- FALSE
     }
     if(optRooted){
-        optEdge = FALSE
-        if(!is.rooted(tree)) stop("Tree must be rooted!")
+        optEdge <- FALSE
+        if(!is.rooted(tree)) stop("tree must be rooted")
         if(!is.ultrametric(tree)) stop("Tree must be ultrametric!")
     }
     trace <- control$trace
     
-    data = subset(data, tree$tip.label) 
+    data <- subset(data, tree$tip.label) 
     
     type <- attr(data, "type")
     if (type == "AA" & !is.null(model)){
-        object = update(object, model=model)  
+        object <- update(object, model=model)  
     }     
     if (type == "CODON") {
+        if(is.null(model)) model <- "codon1"
+        model <- match.arg(model, c("codon0", "codon1", "codon2", "codon3", 
+                                    "YN98"))
         dnds <- object$dnds 
         tstv <- object$tstv
         if(!is.null(model)){
-            if(model == "codon0") optQ = FALSE
-            else  optQ = TRUE
+            if(model == "codon0") optQ <- FALSE
+            else  optQ <- TRUE
+            if(model == "YN98") optBf <- TRUE
         }
     }       
-    Q = object$Q
-    if(is.null(subs)) subs = c(1:(length(Q) - 1), 0)
-    bf = object$bf
-    eig = object$eig
-    inv = object$inv
-    k = object$k
+    Q <- object$Q
+    if(is.null(subs)) subs <- c(1:(length(Q) - 1), 0)
+    bf <- object$bf
+    eig <- object$eig
+    inv <- object$inv
+    k <- object$k
     if(k==1 & optGamma){
-        optGamma = FALSE
+        optGamma <- FALSE
         message('only one rate class, ignored optGamma')
     }
-    shape = object$shape
-    w = object$w
-    g = object$g
+#    if(Mkv==TRUE & optInv==TRUE){ 
+#        optInv = FALSE
+#        message('cannot estimate invariant sites and Mkv model, ignored optInv')
+#    } 
+    shape <- object$shape
+    w <- object$w
+    g <- object$g
     if (type == "DNA" & !is.null(model)) {
-        tmp = subsChoice(model)
-        optQ = tmp$optQ
+        tmp <- subsChoice(model)
+        optQ <- tmp$optQ
         if (!optQ) 
-            Q = rep(1, 6)
-        optBf = tmp$optBf
+            Q <- rep(1, 6)
+        optBf <- tmp$optBf
         if (!optBf) 
-            bf = c(0.25, 0.25, 0.25, 0.25)
-        subs = tmp$subs
+            bf <- c(0.25, 0.25, 0.25, 0.25)
+        subs <- tmp$subs
     }   
     ll0 <- object$logLik
     INV <- object$INV
     ll.0 <- object$ll.0
     rate <- object$rate
-    ll = ll0
-    ll1 = ll0
-    opti = TRUE
+    ll <- ll0
+    ll1 <- ll0
+    opti <- TRUE
     
     nr <- as.integer(attr(data, "nr")) 
     nc <- as.integer(attr(data, "nc"))
@@ -3528,20 +2428,14 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     
     #    on.exit(.C("ll_free"))
     #    .C("ll_init", nr, nTips, nc, as.integer(k))
-    .INV <- .iind <- NULL
+    #    .INV <- .iind <- NULL
     on.exit({
-        if(type=="CODON"){
-            object$dnds = dnds
-            object$tstv = tstv
-        }
-
         tmp <- pml.fit(tree, data, bf, shape = shape, k = k, Q = Q, 
-                       levels = attr(data, "levels"), inv = inv, rate = rate, 
-                       g = g, w = w, eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, 
-                       wMix = wMix, site = TRUE)
+             levels = attr(data, "levels"), inv = inv, rate = rate, 
+             g = g, w = w, eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix,
+             wMix = wMix, site = TRUE)
         
-        df <- ifelse(optRooted, tree$Nnode, length(tree$edge.length))
-
+#   df <- ifelse(optRooted, tree$Nnode, length(tree$edge.length))
 #   length(tree$edge.length)    
 #   nTips             
 #   nNodes
@@ -3550,31 +2444,25 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
 #   kmax>1        
 #   bf
 #   Q     
-        df <- switch(type, 
-                      DNA = df + (k>1) + (inv > 0) + length(unique(bf)) - 1 + length(unique(Q)) - 1, 
-                      AA = df + (k>1) + (inv > 0) +  optBf * (length(unique(bf)) - 1),
-                      CODON = df + (k>1) + (inv > 0) + length(unique(bf)) - 1 + (dnds != 1) + (tstv != 1),  
-                      USER = df + (k>1) + (inv > 0) + length(unique(bf)) - 1 + length(unique(Q)) - 1)
-        
-#        if(type=="AA" & !is.null(model)){ 
-#            df <- df + (k>1) + (inv > 0) +  optBf * (length(unique(bf)) - 1) 
-#        }
-#        if (type == "CODON") {
-#            df <- df + (k > 1) + (inv > 0) + 
-#                length(unique(bf)) - 1 + (dnds != 1) + (tstv != 1) 
-#        }
-#        else df = df + (k > 1) + (inv > 0) + 
-#            length(unique(bf)) - 1 + length(unique(Q)) - 1
-
         if(addTaxa){
-#            pml.free()
-            tree <- addAllTips(tree, mapping)
+            tree <- add.tips(tree, tips=mapping[,1], where=mapping[,2], 
+                             edge.length=rep(0,nrow(mapping)) )
+            # addAllTips(tree, mapping)
             data <- orig.data
-#            pml.init(subset(data, tree$tip.label), k) 
         }
-                
-        object = list(logLik = tmp$loglik, inv = inv, k = k, shape = shape, 
-                      Q = Q, bf = bf, rate = rate, siteLik = tmp$siteLik, weight = attr(data, "weight"), 
+        df <- ifelse(optRooted, tree$Nnode, length(tree$edge.length))
+        df <- switch(type, 
+            DNA = df + (k>1) + (inv > 0) + length(unique(bf)) - 1 + 
+                length(unique(Q)) - 1, 
+            AA = df + (k>1) + (inv > 0) +  optBf * (length(unique(bf)) - 1),
+            CODON = df + (k>1) + (inv > 0) + length(unique(bf)) - 1 + 
+                (dnds != 1) + (tstv != 1),  
+            USER = df + (k>1) + (inv > 0) + length(unique(bf)) - 1 + 
+                length(unique(Q)) - 1)
+        
+        object <- list(logLik = tmp$loglik, inv = inv, k = k, shape = shape, 
+              Q = Q, bf = bf, rate = rate, siteLik = tmp$siteLik, 
+              weight = attr(data, "weight"), 
                       g = g, w = w, eig = eig, data = data, model = model, 
                       INV = INV, ll.0 = ll.0, tree = tree, lv = tmp$resll, 
                       call = call, df = df, wMix = wMix, llMix = llMix)
@@ -3582,9 +2470,10 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
             object$dnds <- dnds
             object$tstv <- tstv
         }
-        class(object) = "pml"
+        class(object) <- "pml"
         
-        extras = pairlist(bf = bf, Q = Q, inv = inv, shape = shape, rate = rate)[c(optBf, optQ, optInv, optGamma, optRate)]
+        extras <- pairlist(bf = bf, Q = Q, inv = inv, shape = shape, 
+                         rate = rate)[c(optBf, optQ, optInv, optGamma, optRate)]
         if (length(extras)) {
             existing <- !is.na(match(names(extras), names(call)))
             for (a in names(extras)[existing]) call[[a]] <- extras[[a]]
@@ -3593,256 +2482,682 @@ optim.pml <- function (object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                 call <- as.call(call)
             }
         }
-        object$call = call   
+        object$call <- call   
         
         pml.free()
         return(object)
-        #        rm(.INV, .iind)
     })
     pml.init(data, k)    
     
     if (optEdge) {
         
-        # check if non-negative least-squares is better for start of optimisation
+        # check if non-negative least-squares is better for start of 
+        # optimisation
         treetmp <- nnls.phylo(tree, dist.ml(data))
         treetmp$edge.length[treetmp$edge.length < 1e-8] <- 1e-8
         tmplogLik <- pml.fit(treetmp, data, bf, k = k, inv = inv, g = g, w = w, 
             eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, wMix = wMix)
         if(tmplogLik>ll) tree <- treetmp
         
-        res <- optimEdge(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, INV=INV,
-                         control = pml.control(epsilon = 1e-07, maxit = 5, trace=trace - 1)) 
+        res <- optimEdge(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, 
+                         ll.0=ll.0, INV=INV,
+        control <- pml.control(epsilon = 1e-07, maxit = 5, trace=trace - 1)) 
         if(trace > 0) 
-            cat("optimize edge weights: ", ll, "-->", res[[2]], "\n")  
+            cat("optimize edge weights: ", ll, "-->", max(res[[2]], ll), "\n")  
         if (res[[2]] > ll){  
             ll <- res[[2]]
             tree <- res[[1]]
         }
     }
     if(optRooted){
-        res <- optimRooted(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, INV=INV, control = pml.control(epsilon = 1e-07, maxit = 10, trace = trace-1))
+        res <- optimRooted(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, 
+            ll.0=ll.0, INV=INV, control = pml.control(epsilon = 1e-07,
+                                            maxit = 10, trace = trace-1))
         if(trace > 0) 
-            cat("optimize edge weights: ", ll, "-->", res[[2]], "\n")
+            cat("optimize edge weights: ", ll, "-->", max(res[[2]], ll), "\n")
         if(res[[2]] > ll){  
             ll <- res[[2]]
             tree <- res[[1]]
         }     
     }
-    rounds = 1
+    rounds <- 1
     while (opti) {
         if (optBf) {
-            res = optimBf(tree, data, bf = bf, inv = inv, Q = Q, 
-                          w = w, g = g, INV = INV, rate = rate, k = k, 
-                          llMix = llMix)
-            bf = res[[1]]
-            eig = edQt(Q = Q, bf = bf)
-            if (inv > 0) 
-                ll.0 <- as.matrix(INV %*% (bf * inv))
-            if (wMix > 0) 
-                ll.0 <- ll.0 + llMix
+            res <- optimBf(tree, data, bf = bf, inv = inv, Q = Q, w = w, g = g, 
+                           INV = INV, rate = rate, k = k, llMix = llMix)
             if (trace > 0) 
                 cat("optimize base frequencies: ", ll, "-->", 
-                    res[[2]], "\n")
-            ll = res[[2]]
+                    max(res[[2]], ll), "\n")
+            if(res[[2]] > ll){  
+                bf <- res[[1]]
+                eig <- edQt(Q = Q, bf = bf)
+                if (inv > 0) 
+                    ll.0 <- as.matrix(INV %*% (bf * inv))
+                if (wMix > 0) 
+                    ll.0 <- ll.0 + llMix
+                ll <- res[[2]]
+            }
         }
         if (optQ) {
             if(type=="CODON"){
-                if(is.null(model)) model <- "codon1"
-                model <- match.arg(model, c("codon0", "codon1", "codon2", "codon3"))
+#                if(is.null(model)) model <- "codon1"
+#                model <- match.arg(model, c("codon0", "codon1", "codon2", "codon3", "YN98"))
                 ab <- c(tstv, dnds)
                 res <- switch(model, 
-                              codon1 = optimCodon(tree,data, Q=rep(1,1830), subs=.sub, syn=.syn, 
-                                                  bf = bf, w = w, g = g, inv = inv, INV = INV, ll.0 = ll.0, rate = rate, k = k, ab=log(ab),
-                                                  optK=TRUE, optW = TRUE),  
-                              codon2 = optimCodon(tree,data, Q=rep(1,1830), subs=.sub, syn=.syn, 
-                                                  bf = bf, w = w, g = g, inv = inv, INV = INV, ll.0 = ll.0, rate = rate, k = k, ab=log(ab), 
-                                                  optK=FALSE, optW = TRUE),
-                              codon3 = optimCodon(tree,data, Q=rep(1,1830), subs=.sub, syn=.syn, 
-                                                  bf = bf, w = w, g = g, inv = inv, INV = INV, ll.0 = ll.0, rate = rate, k = k, ab=log(ab),
-                                                  optK=TRUE, optW = FALSE))
+                    YN98 = optimCodon(tree,data, Q=rep(1,1830), subs=.sub, 
+                            syn=.syn, bf = bf, w = w, g = g, inv = inv, 
+                            INV = INV, ll.0 = ll.0, rate = rate, k = k, 
+                            ab=log(ab), optK=TRUE, optW = TRUE),                        
+                    codon1 = optimCodon(tree,data, Q=rep(1,1830), subs=.sub, 
+                            syn=.syn, bf = bf, w = w, g = g, inv = inv, 
+                            INV = INV, ll.0 = ll.0, rate = rate, k = k, 
+                            ab=log(ab), optK=TRUE, optW = TRUE),  
+                    codon2 = optimCodon(tree,data, Q=rep(1,1830), subs=.sub, 
+                            syn=.syn, bf = bf, w = w, g = g, inv = inv, 
+                            INV = INV, ll.0 = ll.0, rate = rate, k = k, 
+                            ab=log(ab), optK=FALSE, optW = TRUE),
+                    codon3 = optimCodon(tree,data, Q=rep(1,1830), subs=.sub, 
+                            syn=.syn, bf = bf, w = w, g = g, inv = inv, 
+                            INV = INV, ll.0 = ll.0, rate = rate, k = k, 
+                            ab=log(ab), optK=TRUE, optW = FALSE))
                 tmp <- res[[5]]
-                m = length(tmp)
-                dnds = tmp[m]
+                m <- length(tmp)
+                dnds <- tmp[m]
                 
                 if(m>1) tstv <- tmp[1]
             }
             else
-                res = optimQ(tree, data, Q = Q, subs = subs, bf = bf, w = w, g = g, inv = inv, INV = INV, 
+                res <- optimQ(tree, data, Q = Q, subs = subs, bf = bf, w = w, 
+                             g = g, inv = inv, INV = INV, 
                              ll.0 = ll.0, rate = rate, k = k)
-            Q = res[[1]]
-            eig = edQt(Q = Q, bf = bf)
+            Q <- res[[1]]
+            eig <- edQt(Q = Q, bf = bf)
             if (trace > 0) 
                 cat("optimize rate matrix: ", ll, "-->", res[[2]], 
                     "\n")
-            ll = res[[2]]
+            ll <- res[[2]]
         }
         if(optInv) {
-            res = optimInv(tree, data, inv = inv, INV = INV, Q = Q, 
-                           bf = bf, eig = eig, k = k, shape = shape, rate = rate)
-            inv = res[[1]]
-            w = rep(1/k, k)
-            g = discrete.gamma(shape, k)
-            w = (1 - inv) * w
-            if (wMix > 0) 
-                w <- (1 - wMix) * w
-            g = g/(1 - inv)
-            g <- g * rate
-            ll.0 = as.matrix(INV %*% (bf * inv))
-            if (wMix > 0) 
-                ll.0 <- ll.0 + llMix
+            res <- optimInv(tree, data, inv = inv, INV = INV, Q = Q, 
+                         bf = bf, eig = eig, k = k, shape = shape, rate = rate)
             if (trace > 0) 
-                cat("optimize invariant sites: ", ll, "-->", res[[2]], "\n")
-            ll = res[[2]]
+                cat("optimize invariant sites: ", ll, "-->", max(res[[2]], ll),
+                    "\n")
+            if (res[[2]] > ll){  
+                inv <- res[[1]]
+                w <- rep(1/k, k)
+                g <- discrete.gamma(shape, k)
+                w <- (1 - inv) * w
+                if (wMix > 0) 
+                    w <- (1 - wMix) * w
+                g <- g/(1 - inv)
+                g <- g * rate
+                ll.0 <- as.matrix(INV %*% (bf * inv))
+                if (wMix > 0) 
+                    ll.0 <- ll.0 + llMix
+                ll <- res[[2]]
+            }
         }
         if(optGamma) {
-            res = optimGamma(tree, data, shape = shape, k = k, 
-                             inv = inv, INV = INV, Q = Q, bf = bf, eig = eig, 
+            res <- optimGamma(tree, data, shape = shape, k = k, inv = inv, 
+                             INV = INV, Q = Q, bf = bf, eig = eig, 
                              ll.0 = ll.0, rate = rate)
-            shape = res[[1]]
-            w = rep(1/k, k)
-            g = discrete.gamma(shape, k)
-            if (inv > 0) {
-                w = (1 - inv) * w
-                g = g/(1 - inv)
-            }
-            if (wMix > 0) 
-                w <- (1 - wMix) * w
-            g <- g * rate
             if (trace > 0) 
                 cat("optimize shape parameter: ", ll, "-->", 
-                    res[[2]], "\n")
-            ll = res[[2]]
+                    max(res[[2]], ll), "\n")
+            if(res[[2]] > ll){  
+                shape <- res[[1]]
+                w <- rep(1/k, k)
+                g <- discrete.gamma(shape, k)
+                if (inv > 0) {
+                    w <- (1 - inv) * w
+                    g <- g/(1 - inv)
+                }
+                if (wMix > 0) 
+                    w <- (1 - wMix) * w
+                g <- g * rate
+                ll <- res[[2]]
+            }
         }
         if(optRate) {
-            res = optimRate(tree, data, rate = rate, inv = inv, 
+            res <- optimRate(tree, data, rate = rate, inv = inv, 
                             INV = INV, Q = Q, bf = bf, eig = eig, k = k, 
                             shape = shape, w = w, ll.0 = ll.0)
-            if (res[[2]] > ll)rate = res[[1]]
-            g = discrete.gamma(shape, k)
-            w = rep(1/k, k)
-            if (inv > 0) {
-                w = (1 - inv) * w
-                g = g/(1 - inv)
-            }
-            if (wMix > 0) 
-                w <- (1 - wMix) * w
-            g <- g * rate
             if (trace > 0) 
-                cat("optimize rate: ", ll, "-->", res[[2]], "\n")
-            ll = res[[2]]
+                cat("optimize rate: ", ll, "-->", max(res[[2]], ll), "\n")
+            if (res[[2]] > ll){
+                rate <- res[[1]]
+                g <- discrete.gamma(shape, k)
+                w <- rep(1/k, k)
+                if (inv > 0) {
+                    w <- (1 - inv) * w
+                    g <- g/(1 - inv)
+                }
+                if (wMix > 0) 
+                    w <- (1 - wMix) * w
+                g <- g * rate
+                ll <- res[[2]]
+            }
         }
         if (optEdge) {  
-            res <- optimEdge(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0,
-                             control = pml.control(epsilon = 1e-08, maxit = 5, trace=trace - 1)) 
+            res <- optimEdge(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate,
+                            ll.0=ll.0, control = pml.control(epsilon = 1e-08, 
+                            maxit = 5, trace=trace - 1)) 
             if (trace > 0) 
-                cat("optimize edge weights: ", ll, "-->", res[[2]], "\n")
+                cat("optimize edge weights: ", ll, "-->", max(res[[2]], ll), 
+                    "\n")
             if (res[[2]] > ll){  
                 ll <- res[[2]]
                 tree <- res[[1]]
             }
         }
         if(optRooted){
-            res <- optimRooted(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, INV=INV, control = pml.control(epsilon = 1e-07, maxit = 10, trace = trace-1))
+            res <- optimRooted(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, 
+                     ll.0=ll.0, INV=INV, control = pml.control(epsilon = 1e-07, 
+                     maxit = 10, trace = trace-1))
             if(trace > 0) 
-                cat("optimize edge weights: ", ll, "-->", res[[2]], "\n")
+                cat("optimize edge weights: ", ll, "-->", max(res[[2]], ll), 
+                    "\n")
             if (res[[2]] > ll){  
                 ll <- res[[2]]
                 tree <- res[[1]]
             }     
         }
         if(optNni) {
-            swap = 0
-            iter = 1
+            swap <- 0
+            iter <- 1
             while (iter < 4) {
                 if(optEdge){
-                    tmp <- pml.nni(tree, data, w, g, eig, bf, ll.0, ll, ...) 
-                    swap = swap + tmp$swap
-                    res <- optimEdge(tmp$tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, control = pml.control(epsilon = 1e-08, maxit = 3, trace=0)) 
-                    ll2 = res[[2]] 
+#               tmp <- pml.nni.old(tree, data, w, g, eig, bf, ll.0, ll, ...) 
+                    tmp <- pml.nni(tree, data, w=w, g=g, eig=eig, bf=bf, 
+                                   ll.0=ll.0, ll=ll, INV=INV, ...)
+                    swap <- swap + tmp$swap
+                    res <- optimEdge(tmp$tree, data, eig=eig, w=w, g=g, bf=bf, 
+                        rate=rate, ll.0=ll.0, control=pml.control(
+                            epsilon = 1e-08, maxit = 3, trace=0)) 
+                    ll2 <- res[[2]] 
                     tree <- res[[1]]
                 }
                 else{ 
-                    tmp <- rooted.nni(tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, INV=INV, ...) 
-                    swap = swap + tmp$swap
-                    res <- optimRooted(tmp$tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, INV=INV, control = pml.control(epsilon = 1e-08, maxit = 5, trace = trace-1))
+                    tmp <- rooted.nni(tree, data, eig=eig, w=w, g=g, bf=bf, 
+                                      rate=rate, ll.0=ll.0, INV=INV, ...) 
+                    swap <- swap + tmp$swap
+                    res <- optimRooted(tmp$tree, data, eig=eig, w=w, g=g, bf=bf, 
+                            rate=rate, ll.0=ll.0, INV=INV, control= pml.control(
+                                epsilon = 1e-08, maxit = 5, trace = trace-1))
                     tree <- tmp$tree
-                    ll2 = tmp$logLik
+                    ll2 <- tmp$logLik
                 }
                 if (trace > 0) 
                     cat("optimize topology: ", ll, "-->", ll2, "\n")
-                ll = ll2
-                iter = iter + 1
+                ll <- ll2
+                iter <- iter + 1
                 if (tmp$swap == 0) {
-                    iter = 4
+                    iter <- 4
                 }
             }
             if (trace > 0) 
                 cat(swap, "\n")
             if (swap > 0) 
-                rounds = 1
+                rounds <- 1
             if (swap == 0) 
-                optNni = FALSE
+                optNni <- FALSE
         }
         epsR <- 1e-8
         if( (ratchet==TRUE) && (optNni == FALSE) ){
-            #            likelihoodRatchet <- function(obj, maxit=100, k=10, 
-            #                                      control=pml.control(epsilon = 1e-08, maxit = 10, trace = 1L)){
-            #            tree = obj$tree
-            #            nTips <- length(tree$tip.label)
-            #            trace = control$trace
-            #            control$trace = trace-1L
-            maxR = ratchet.par$iter
-            maxit = ratchet.par$maxit
-            kmax=1
-            i=1
+            maxR <- ratchet.par$iter
+            maxit <- ratchet.par$maxit
+            kmax <- 1
+            i <- 1
             while(i < maxit){
-                
-#                tree2 <- unroot(multi2di(di2multi(tree,  tol  = 0.000000011)))
-#                tree2$edge.length[tree2$edge.length < 1e-8] <- 1e-8
-#                tree2<- rNNI(tree2, moves=round(nTips * ratchet.par$prop), n=1)
-                
-                tree2<- rNNI(tree, moves=round(nTips * ratchet.par$prop), n=1)
+                tree2 <- rNNI(tree, moves=round(nTips * ratchet.par$prop), n=1)
                 #tree <- rSPR(tree, moves=10, k=3, n=1)
-                #                obj2 = update(obj, tree=tree)
-                #                obj2 <- optim.pml(obj2, TRUE, control = control)
-                swap = 1
+                swap <- 1
                 ll2 <- pml.fit(tree2, data, bf, shape = shape, k = k, Q = Q, 
-                               levels = attr(data, "levels"), inv = inv, rate = rate, 
-                               g = g, w = w, eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, 
-                               wMix = wMix, site = FALSE)
+                        levels = attr(data, "levels"), inv = inv, rate = rate, 
+                        g = g, w = w, eig = eig, INV = INV, ll.0 = ll.0, 
+                        llMix = llMix, wMix = wMix, site = FALSE)
                 
                 while(swap>0){
-                    tmp <- pml.nni(tree2, data, w, g, eig, bf, ll.0, ll=ll2, ...) 
-                    swap = tmp$swap
-                    res <- optimEdge(tmp$tree, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, control = pml.control(epsilon = 1e-08, maxit = 3, trace=0)) 
-                    ll2 = res[[2]] 
+#            tmp <- pml.nni(tree2, data, w, g, eig, bf, ll.0, ll=ll2, ...) 
+                    tmp <- pml.nni(tree2, data, w=w, g=g, eig=eig, bf=bf, 
+                                   ll.0=ll.0, ll=ll2, INV=INV, ...)
+                    swap <- tmp$swap
+                    res <- optimEdge(tmp$tree, data, eig=eig, w=w, g=g, bf=bf, 
+                            rate=rate, ll.0=ll.0, control = pml.control(
+                            epsilon = 1e-08, maxit = 3, trace=0))
+                    if (trace > 1) 
+                        cat("optimize topology: ", ll2, "-->", res[[2]], "\n", 
+                            "swaps:", tmp$swap, "\n")
+                    ll2 <- res[[2]] 
                     tree2 <- res[[1]]
                 }
                 
                 if(ll2 > (ll + epsR)){
                     tree <- tree2
                     ll <- ll2
-                    kmax=1
+                    kmax <- 1
                 } 
-                else kmax = kmax+1
-                if(trace > 0) print(paste("Ratchet iteration ", i,", best pscore so far:",ll))
-                i=i+1
+                else kmax <- kmax+1
+                if(trace > 0) print(paste("Ratchet iteration ", i,
+                                          ", best pscore so far:",ll))
+                i <- i+1
                 if(kmax > maxR) i <- maxit
             }  
-            optNni = TRUE
-            ratchet=FALSE
-            rounds = 1
+            optNni <- TRUE
+            ratchet <- FALSE
+            rounds <- 1
+        }
+        
+        if( (ratchet2==TRUE) && (optNni == FALSE) ){
+            if(optRooted){
+                FUN <- function(x, bf, Q, k, shape){
+                dm <- dist.ml(x, bf=bf, Q=Q, k=k, shape=shape)
+                tr <- wpgma(dm)
+                #                nnls.phylo(tr, dm, TRUE)
+                tr
+                }
+            }
+            else{
+                FUN <- function(x, bf, Q, k, shape){
+                dm <- dist.ml(x, bf=bf, Q=Q)
+                tr <- fastme.bal(dm, TRUE, FALSE, FALSE)
+                tr$edge.length[tr$edge.length < 1e-8] <- 1e-8
+                tr #nnls.phylo(tr, dm)
+                }
+            }
+            maxR <- ratchet.par$iter
+            maxit <- ratchet.par$maxit
+            kmax <- 1
+            i <- 1
+            while(i < maxit){
+                tree2 <- bootstrap.phyDat(data, FUN, bs = 1, bf=bf, Q=Q, k=k, 
+                                          shape=shape)[[1]]
+                tree2 <- checkLabels(tree2, tree$tip.label)
+                tree2 <- reorder(tree2, "postorder")
+                swap <- 1
+           
+                ll2 <- pml.fit(tree2, data, bf, shape = shape, k = k, Q = Q, 
+                        levels = attr(data, "levels"), inv = inv, rate = rate, 
+                        g = g, w = w, eig = eig, INV = INV, ll.0 = ll.0, 
+                        llMix = llMix, wMix = wMix, site = FALSE)
+#print(ll2)                 
+                while(swap>0){
+#                    tmp <- pml.nni(tree2, data, w, g, eig, bf, ll.0, ll=ll2, ...) 
+                    tmp <- pml.nni(tree2, data, w=w, g=g, eig=eig, bf=bf, 
+                                   ll.0=ll.0, ll=ll2, INV=INV, ...)
+                    swap <- tmp$swap
+                    res <- optimEdge(tmp$tree, data, eig=eig, w=w, g=g, bf=bf, 
+                                rate=rate, ll.0=ll.0, control = pml.control(
+                                    epsilon = 1e-08, maxit = 3, trace=0)) 
+                    if (trace > 1) 
+                        cat("optimize topology: ", ll2, "-->", res[[2]], "\n", 
+                            "swaps:", tmp$swap, "\n")
+                    ll2 <- res[[2]] 
+                    tree2 <- res[[1]]
+                }
+                if(ll2 > (ll + epsR)){
+                    tree <- tree2
+                    ll <- ll2
+                    kmax <- 1
+                } 
+                else kmax <- kmax+1
+                if(trace > 0) print(paste("Ratchet iteration ", i,", best pscore 
+                                          so far:",ll))
+                i <- i+1
+                if(kmax > maxR) i <- maxit
+            }  
+            optNni <- TRUE
+            ratchet2 <- FALSE
+            rounds <- 1
         }
         
         if(rounds > control$maxit) opti <- FALSE
         if ((( ll1 - ll ) / ll  < control$eps ) && rounds > 2 ) #abs(ll1 - ll)
             opti <- FALSE
-        rounds = rounds + 1
-        ll1 = ll
+        rounds <- rounds + 1
+        ll1 <- ll
     }  
 }
 
 
+################################################################################
+#
+# experimental pml.nni 
+#
+################################################################################
+indexNNI3 <- function(tree){
+    parent <- tree$edge[, 1]
+    child <- tree$edge[, 2]
+    ind <- reorder(tree)$edge[,2]
+    nTips <- length(tree$tip.label)
+    ind <- ind[ind>nTips]
+    #    ind <- which(child %in% parent)
+    Nnode <- tree$Nnode
+    #     a         d
+    #      \       /
+    #       e-----f       c is closest to root, f is root from subtree
+    #      /       \  
+    #     b         c     c(a,b,c,d,e,f)     
+    edgeMatrix <- matrix(0L,(Nnode-1), 6)
+    
+    pvector <- integer(max(parent))
+    pvector[child] <- parent
+    tips  <- !logical(max(parent))
+    tips[parent] <-  FALSE
+    #    cvector <- allCildren(tree)  
+    cvector <- vector("list",max(parent))   
+    for(i in 1:length(parent))  cvector[[parent[i]]] <- c(cvector[[parent[i]]], 
+                                                          child[i]) 
+    k <- 1L
+    for(i in ind){   
+        f <- pvector[i] #f
+        ab <- cvector[[i]] #a,b
+        ind1 <- cvector[[f]] #c,d
+        cd <- ind1[ind1 != i]
+        if(pvector[f])cd <- c(pvector[f], cd) # cd  
+        edgeMatrix[k, 1:6] <- c(ab,cd,i,f)
+        k <- k+1L
+    } 
+    edgeMatrix
+}
+
+# EL ausserhalb
+index2tree <- function(x, tree, root=length(tree$tip.label)+1L){
+    EL <- numeric(max(tree$edge))
+    EL[tree$edge[,2]] <- tree$edge.length  #edgeLengthIndex()
+    pa <- c(5L,5L,6L,6L,6L)
+    ch <- c(1L,2L,5L,4L,3L)
+    elind <- c(1L,2L,5L,4L,6L)                # raus 
+    if(x[6L]==root) el <- EL[x[ch]]        #1 Zeile raus
+    else   el <- EL[x[elind]]              #edgeLengthIndex()
+    structure(list(edge = structure(c(x[pa], x[ch]), .Dim = c(5L, 2L)), 
+        edge.length = el, Nnode = 2L), .Names = c("edge", "edge.length", 
+        "Nnode"), class = "phylo", order = "postorder")
+}
+
+
+index2tree2 <- function(x, tree, root=length(tree$tip.label)+1L){
+    EL <- numeric(max(tree$edge))
+    EL[tree$edge[,2]] <- tree$edge.length
+    pa <- c(6L,6L,5L,5L,5L)
+    ch <- c(3L,4L,6L,1L,2L)
+    elr <- c(3L,4L,5L,1L,2L)
+    eln <- c(6L,4L,5L,1L,2L)
+    if(x[6L]==root) el <- EL[x[elr]]
+    else   el <- EL[x[eln]]  
+    structure(list(edge = structure(c(x[pa], x[ch]), .Dim = c(5L, 2L)), 
+            edge.length = el, Nnode = 2L), 
+            .Names = c("edge", "edge.length", "Nnode"), class = "phylo", 
+            order = "postorder")
+}
+
+
+# weight, nr, nc, contrast, nco (Reihenfolge beibehalten)      
+# INV raus
+# evi, eve, contrast2 ausserhalb definieren
+optimQuartet <- function (tree, data, eig, w, g, bf, rate, ll.0, nTips,
+        weight, nr, nc, contrast, nco, llcomp =-Inf,                  
+        control = pml.control(epsilon = 1e-08, maxit = 5, trace=0), ...) 
+{
+#    if (is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise") {
+#        tree <- reorder(tree, "postorder") 
+#     print("reorder")   
+#    }    
+#    nTips <- length(tree$tip.label)
+    el <- tree$edge.length
+    tree$edge.length[el < 1e-08] <- 1e-08
+    oldtree <- tree
+    k <- length(w)    
+    loglik <- pml.quartet(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, k=k, 
+        nTips=nTips, weight=weight, nr=nr, nc=nc, contrast=contrast, nco=nco)
+    start.ll <- old.ll <- new.ll <- loglik 
+#    contrast <- attr(data, "contrast")
+    contrast2 <- contrast %*% eig[[2]] 
+    evi <- (t(eig[[3]]) * bf)
+#    weight <- attr(data, "weight")
+    eps <- 1
+    iter <- 0
+    
+#    treeP <- tree  
+    
+    child <- tree$edge[, 2]
+    parent <- tree$edge[, 1]
+    m <- max(tree$edge)
+
+    EL <- tree$edge.length  
+    n <- length(tree$edge.length)  
+    
+    ind.inv <- which(ll.0>0)
+
+#    nr <- as.integer(length(weight))
+#    nc <- as.integer(length(bf))
+#    nco <- as.integer(nrow(contrast))
+    eve <- eig[[2]]
+    lg <- k
+    rootNode <- getRoot(tree)  # raus       
+    ScaleEPS <- 1.0/4294967296.0
+    #    anc <- Ancestors(tree, 1:m, "parent")  
+    #    anc0 <- as.integer(c(0L, anc))
+    
+    while (eps > control$eps && iter < control$maxit) {
+        EL <- .Call("optQrtt", as.integer(parent), as.integer(child), eig, evi, 
+                    EL, w, g, as.integer(nr), as.integer(nc), as.integer(nTips), 
+                    as.double(contrast), as.double(contrast2), nco, data, 
+                    as.double(weight), as.double(ll.0))       
+        iter <- iter + 1
+        #        tree$edge.length <- EL[tree$edge[,2]]
+        tree$edge.length <- EL  # [treeP$edge[,2]] # vormals treeP
+        newll <- pml.quartet(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, 
+                k=k, nTips=nTips, weight=weight, nr=nr, nc=nc, 
+                contrast=contrast, nco=nco) # vormals treeP
+        eps <- ( old.ll - newll ) / newll
+        if( (eps<0) || (newll < llcomp) ) return(list(tree=oldtree, 
+                                                logLik=old.ll, c(eps, iter)))
+        
+        oldtree <- tree # vormals treeP
+        if(control$trace>1) cat(old.ll, " -> ", newll, "\n") 
+        old.ll <- newll
+        #        loli <- parent[1] 
+    }
+    if(control$trace>0) cat(start.ll, " -> ", newll, "\n")
+    list(tree=tree, logLik=newll, c(eps, iter)) # vormals treeP
+}
+
+
+# weight, nr, nc, contrast, nco rein
+# inv, INV, site, ... raus 
+# wMix, rate last
+pml.quartet <- function (tree, data, bf = rep(.25, 4), k = 1, rate = 1, g, w, 
+    eig, ll.0 = NULL, ind.ll0=NULL, llMix = NULL, wMix = 0, nTips, 
+    weight, nr, nc, contrast, nco, ..., site=FALSE) 
+{
+#    k <- as.integer(k)
+#    m = 1
+
+#    if(any(g<.gEps)){
+#        for(i in 1:length(g)){
+#            if(g[i]<.gEps){
+#                inv <- inv+w[i]
+#            }
+#        }
+#        w <- w[g>.gEps]
+#        g <- g[g>.gEps]
+#        k <- length(w)
+#    }
+#    if (is.null(INV)) 
+#        INV <- Matrix(lli(data, tree), sparse=TRUE)
+    
+# in C    
+    if (is.null(ll.0)){ 
+        ll.0 <- numeric(nr)    
+    }
+    if(is.null(ind.ll0)){
+        ind <- which(ll.0>0)  
+    }
+    else ind <- ind.ll0
+#    if(inv>0)
+#        ll.0 <- as.matrix(INV %*% (bf * inv))              
+#    if (wMix > 0)
+#        ll.0 <- ll.0 + llMix           
+    
+#    node <- tree$edge[, 1]
+#    edge <- tree$edge[, 2]
+#    root <- as.integer(node[length(node)])     
+#    el <- as.double(tree$edge.length)
+    node <- as.integer(tree$edge[, 1] - nTips - 1L) #    min(node))
+    edge <- as.integer(tree$edge[, 2] - 1L)
+    
+#    contrast = attr(data, "contrast")
+#    nco = as.integer(dim(contrast)[1])    
+#    dlist=data, nr, nc, weight, k ausserhalb definieren  
+#    pmlPart einbeziehen 
+    siteLik <- .Call("PML4", dlist=data, as.double(tree$edge.length), 
+                     as.double(w), as.double(g), nr, nc, as.integer(k), eig, 
+                     as.double(bf), node, edge, nTips, nco, contrast, 
+                     N=as.integer(length(edge))) 
+    
+# in C    
+    if(!is.null(ll.0)){
+#        ind = which(ll.0>0)                                    
+        siteLik[ind] <- log(exp(siteLik[ind]) + ll.0[ind])       
+    }    
+    if(wMix >0) siteLik <- log(exp(siteLik) * (1-wMix) + llMix ) 
+    loglik <- sum(weight * siteLik)                              
+    return(loglik)
+}
+
+
+index2edge <- function(x, root){
+    ch <- c(1L,2L,5L,4L,3L)
+    elind <- c(1L,2L,5L,4L,6L)                
+    if(x[6L]==root) el <- x[ch]        
+    else   el <- x[elind]              
+    el
+}
+
+
+pml.nni <- function (tree, data, w, g, eig, bf, ll.0, ll, INV=INV, ...) 
+{        
+    k <- length(w)
+    INDEX <-  indexNNI3(tree)
+
+    tmpl <- pml.fit4(tree, data, bf=bf, g=g, w=w, eig=eig, INV=INV, ll.0=ll.0, 
+                     k=k, ...)
+
+    nr <- as.integer(attr(data, "nr"))
+    nc <- as.integer(attr(data, "nc"))
+    weight <- as.numeric(attr(data, "weight"))
+    contrast <- attr(data, "contrast")
+    nco <- as.integer(dim(contrast)[1])
+    contrast2 <- contrast %*% eig[[2]] 
+    evi <- (t(eig[[3]]) * bf)
+    nTips <- as.integer(length(tree$tip.label))
+    
+    m <- dim(INDEX)[1]
+    loglik <- numeric(2*m)
+    edgeMatrix <- matrix(0L, 2*m, 5)
+    
+    anc <- Ancestors(tree, 1:max(tree$edge), "parent")  
+    loli <- getRoot(tree)
+    
+    ind1 <- c(1L, 4L, 3L, 2L, 5L) # 
+    ind2 <- c(4L, 2L ,3L, 1L, 5L) #  
+ 
+    for(i in 1:m){
+        ei <- INDEX[i,]
+        #        el0 <- evector[INDEX[i,]]
+        tree0 <- index2tree(INDEX[i, ], tree, nTips+1L)
+        ch <- ei[5]
+        pa <- ei[6]
+        
+        # move up
+        while(pa != loli){
+            tmpr <- match(loli, INDEX[,5])
+            treetmp <- index2tree(INDEX[tmpr, ], tree, nTips+1L)
+            tmpl <- pml.quartet(treetmp, data, bf=bf, g=g, w=w, eig=eig, 
+                                ll.0=ll.0, k=k, nTips=nTips, weight=weight, 
+                                nr=nr, nc=nc, contrast=contrast, nco=nco)
+            loli <- anc[loli]
+        }
+        llt0 <- pml.quartet(tree0, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, 
+                            k=k, nTips=nTips, weight=weight, nr=nr, nc=nc, 
+                            contrast=contrast, nco=nco)
+#        new0 <- optimQuartet(tree0, data, eig=eig, w=w, g=g, bf=bf, rate=rate, ll.0=ll.0, nTips=nTips, 
+#                weight=weight, nr=nr, nc=nc, contrast=contrast, nco=nco, 
+#                control = list(epsilon = 1e-08, maxit = 3, trace=0))
+        tree2 <- tree1 <- tree0
+        tree1$edge[,2] <- tree1$edge[ind1,2]
+        tree1$edge.length <- tree1$edge.length[ind1]
+        tree2$edge[,2] <- tree2$edge[ind2,2]
+        tree2$edge.length <- tree2$edge.length[ind2]
+        
+        new1 <- optimQuartet(tree1, data, eig=eig, w=w, g=g, bf=bf, ll.0=ll.0, 
+                             nTips=nTips, weight=weight, nr=nr, nc=nc, 
+                             contrast=contrast, nco=nco, llcomp = ll+1e-8, ...) 
+        # new0$logLik+1e-8)
+        new2 <- optimQuartet(tree2, data, eig=eig, w=w, g=g, bf=bf, ll.0=ll.0, 
+                             nTips=nTips, weight=weight, nr=nr, nc=nc, 
+                             contrast=contrast, nco=nco, llcomp = ll+1e-8, ...)
+        #new0$logLik+1e-8)
+        loglik[(2*i)-1] <- new1$logLik
+        loglik[(2*i)] <- new2$logLik 
+        edgeMatrix[(2*i)-1,] <- new1$tree$edge.length
+        edgeMatrix[(2*i),] <- new2$tree$edge.length      
+        
+        # godown or recompute           
+        if(any (INDEX[i, c(1,2)]>nTips )) {
+            tree00 <- index2tree2(INDEX[i, ], tree, nTips+1L)     
+            tmp3 <- pml.quartet(tree00, data, bf=bf, g=g, w=w, eig=eig, 
+                                ll.0=ll.0, k=k, nTips=nTips, weight=weight, 
+                                nr=nr, nc=nc, contrast=contrast, nco=nco)
+            loli <- getRoot(tree00)
+        }   
+        else tmp3 <- pml.quartet(tree0, data, bf=bf, g=g, w=w, eig=eig, 
+                                 ll.0=ll.0, k=k, nTips=nTips, weight=weight, 
+                                 nr=nr, nc=nc, contrast=contrast, nco=nco)             
+    }
+    swap <- 0
+    eps0 <- 1e-6
+    candidates <- loglik > ll + eps0
+#    cat("candidates", sum(candidates), "\n")
+    INDEX2 <- t(apply(INDEX, 1, index2edge, root=getRoot(tree)))
+    while(any(candidates)){     
+        ind <- which.max(loglik)
+        loglik[ind] <- -Inf
+        if( ind %% 2 ) swap.edge <- c(2,4)
+        else swap.edge <- c(1,4)
+        
+        IND <- index2edge(INDEX[(ind+1) %/% 2,],nTips+1L)
+        treeT <- changeEdge(tree, IND[swap.edge], IND, edgeMatrix[ind,]) 
+        test <- pml.fit4(treeT, data, bf = bf, k=k, g=g, w=w, eig=eig,
+                         ll.0=ll.0, INV=INV, ...) 
+
+        if(test <= ll + eps0) candidates[ind] <- FALSE
+        if(test > ll + eps0) {
+            ll <- test 
+            swap <- swap+1
+            tree <- treeT
+            indi <- which(rep(colSums(apply(INDEX,1,match,INDEX[(ind+1)%/%2,],
+                                            nomatch=0))>0,each=2))
+            candidates[indi] <- FALSE
+            loglik[indi] <- -Inf
+        }
+    }    
+        #    trees <- vector("list", 2*m)
+        #    for(i in 1:length(loglik)){     
+        #        ind = i
+        #        if( ind %% 2 ) swap.edge = c(2,4)
+        #        else swap.edge = c(1,4)
+        #        IND = index2edge(INDEX[(ind+1)%/%2,])
+        #        tree2 <- try( changeEdge(tree, IND[swap.edge], IND, edgeMatrix[ind,]) )
+        #        trees[[i]] <- tree2
+        #    }
+        #    class(trees) <- "multiPhylo"
+        #    trees <- .compressTipLabel(trees) 
+        # , all=loglik
+    list(tree=tree, loglik=ll, swap=swap, candidates = candidates)
+}
 
 
 

@@ -1,17 +1,36 @@
-citHeader("To cite phangorn in a publication use:")
+note <- sprintf("(phangorn %s).", meta$Version)
 
-citEntry(entry="Article",
+citHeader("Use 2011 to cite phangorn in a publication; 2017 for plotting phylogenetic networks. As phangorn is evolving quickly, you may want to cite also its version number", note)
+
+bibentry(bibtype = "Article",
 	title = "phangorn: phylogenetic analysis in R",
         author = personList(as.person("K.P. Schliep")),
 	journal = "Bioinformatics",
   	year = "2011",
 	volume = "27",
 	number = "4",
-        pages = "592--593",
-        textVersion = "Schliep K.P. 2011. phangorn: phylogenetic analysis in R. Bioinformatics, 27(4) 592-593")
+    pages = "592--593",
+    url = "https://doi.org/10.1093/bioinformatics/btq706",
+    textVersion = "Schliep K.P. 2011. phangorn: phylogenetic analysis in R. Bioinformatics, 27(4) 592-593")
 
-citFooter("As phangorn is evolving quickly, you may want to cite also its version number (found with 'library(help = phangorn)').")
+
+bibentry(bibtype = "Article",
+    author = "Schliep, Klaus and Potts, Alastair J. and Morrison, David A. and Grimm, Guido W.",
+    title = "Intertwining phylogenetic trees and networks",
+    journal = "Methods in Ecology and Evolution",
+    volume = "8",
+    number = "10",
+    issn = "2041-210X",
+    url = "http://dx.doi.org/10.1111/2041-210X.12760",
+    doi = "10.1111/2041-210X.12760",
+    pages = "1212--1220",
+    keywords = "exploratory data analysis, networks, phangorn, R, trees",
+    year = "2017", 
+    textVersion = "Schliep, K., Potts, A. J., Morrison, D. A., Grimm, G. W. (2017), Intertwining phylogenetic trees and networks. Methods in Ecology and Evolution, 8: 1212--1220. doi: 10.1111/2041-210X.12760"
+)
 
 
-if(!exists("meta") || is.null(meta)) meta <- packageDescription("phangorn")
+
+
+
 

@@ -1,8 +1,9 @@
 [![Build Status](https://travis-ci.org/KlausVigo/phangorn.svg?branch=master)](https://travis-ci.org/KlausVigo/phangorn)
-[![CRAN Status Badge](http://www.r-pkg.org/badges/version/phangorn)](http://cran.r-project.org/package=phangorn)
-[![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html)
-[![CRAN Downloads](http://cranlogs.r-pkg.org/badges/phangorn)](http://cran.r-project.org/package=phangorn)
+[![CRAN Status Badge](http://www.r-pkg.org/badges/version/phangorn)](https://cran.r-project.org/package=phangorn)
+[![CRAN Downloads](http://cranlogs.r-pkg.org/badges/phangorn)](https://cran.r-project.org/package=phangorn)
 [![Research software impact](http://depsy.org/api/package/cran/phangorn/badge.svg)](http://depsy.org/package/r/phangorn)
+[![codecov.io](https://codecov.io/github/KlausVigo/phangorn/coverage.svg?branch=master)](https://codecov.io/github/KlausVigo/phangorn?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/KlausVigo/phangorn/badge.svg?branch=master)](https://coveralls.io/github/KlausVigo/phangorn?branch=master)
 
 
 phangorn
@@ -12,7 +13,16 @@ phangorn is a package for phylogenetic reconstruction and analysis in the R lang
 
 You can install
 - the latest released version `install.packages("phangorn")`
-- the latest development version `devtools::install_github("KlausVigo/phangorn")` 
+- the latest development version `devtools::install_github("KlausVigo/phangorn")`
+
+To install the development version you may need to install the Biostrings and seqLogo package from bioconductor first:
+```
+source("https://bioconductor.org/biocLite.R")
+biocLite("Biostrings", "seqLogo")
+```
+Also the development version usually depends on tha latest ape development 
+version and information to download can be found  [here](http://ape-package.ird.fr/ape_installation.html)
+
 
 If you use phangorn please cite:
 

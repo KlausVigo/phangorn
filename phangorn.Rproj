@@ -14,4 +14,6 @@ LaTeX: pdfLaTeX
 
 BuildType: Package
 PackageInstallArgs: --no-multiarch --with-keep.source
-PackageCheckArgs: --as-cran
+PackageBuildArgs: --compact-vignettes=gs+qpdf
+PackageCheckArgs: --as-cran --timings
+PackageRoxygenize: rd

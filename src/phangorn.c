@@ -1,7 +1,7 @@
 /* 
  * phangorn.c
  *
- * (c) 2008-2015  Klaus Schliep (klaus.schliep@gmail.com)
+ * (c) 2008-2017  Klaus Schliep (klaus.schliep@gmail.com)
  * 
  * 
  * This code may be distributed under the GNU GPL
@@ -31,25 +31,6 @@
 
 // index sankoff
 #define SINDEX(i) i * (nr*nc) 
-
-/* from coalescentMCMC
-void get_single_index_integer(int *x, int *val, int *index)
-{
-    int i = 0, v = *val;
-	while (x[i] != v) i++;
-	*index = i + 1;
-}
-
-void get_two_index_integer(int *x, int *val, int *index)
-{
-	int i1 = 0, i2, v = *val;
-	while (x[i1] != v) i1++;
-	i2 = i1 + 1;
-	while (x[i2] != v) i2++;
-	index[0] = i1 + 1;
-	index[1] = i2 + 1;
-}
-*/
 
 
 void countCycle(int *M, int *l, int *m, int *res){
@@ -122,12 +103,14 @@ static R_INLINE void getP00(double *eva, double *ev, double *evi, int m, double 
         }
     }
 }
-*/
 
- 
+
+// in getPM2 
 static R_INLINE void getPP(double *eva, double *ev, double *evi, int m, double el, double w, double *result){
     int i, j, h;
-    double tmp[m];
+//    double tmp[m];
+    double *tmp;
+    tmp = malloc(m * sizeof(double));
     for(i = 0; i < m; i++) tmp[i] = exp(eva[i] * w * el);
     for(i = 0; i < m; i++){    
         for(j = 0; j < m; j++){
@@ -135,12 +118,15 @@ static R_INLINE void getPP(double *eva, double *ev, double *evi, int m, double e
             for(h = 0; h < m; h++) result[i+j*m] += ev[i + h*m] * tmp[h] * evi[h + j*m];                
         }
     }
+    free(tmp);
 }
-
+*/
 
 void getdP(double *eva, double *ev, double *evi, int m, double el, double w, double *result){
     int i, j, h;
-    double tmp[m], res;
+    double  res; //tmp[m],
+    double *tmp;
+    tmp = malloc(m * sizeof(double));
     for(i = 0; i < m; i++) tmp[i] = (eva[i] * w  * el) * exp(eva[i] * w * el);
     for(i = 0; i < m; i++){    
         for(j = 0; j < m; j++){
@@ -149,12 +135,15 @@ void getdP(double *eva, double *ev, double *evi, int m, double el, double w, dou
             result[i+j*m] = res;    
         }
     }
+    free(tmp);
 }
 
 
 void getdP2(double *eva, double *ev, double *evi, int m, double el, double w, double *result){
     int i, j, h;
-    double tmp[m], res;
+    double  res; //tmp[m],
+    double *tmp;
+    tmp = malloc(m * sizeof(double));
     for(i = 0; i < m; i++) tmp[i] = (eva[i] * w) * exp(eva[i] * w * el);
     for(i = 0; i < m; i++){    
         for(j = 0; j < m; j++){
@@ -163,12 +152,15 @@ void getdP2(double *eva, double *ev, double *evi, int m, double el, double w, do
             result[i+j*m] = res;    
         }
     }
+    free(tmp);
 }
 
 
 void getd2P(double *eva, double *ev, double *evi, int m, double el, double w, double *result){
     int i, j, h;
-    double tmp[m], res;
+    double res; //tmp[m], 
+    double *tmp;
+    tmp = malloc(m * sizeof(double));
     for(i = 0; i < m; i++) tmp[i] = (eva[i] * w * el) * (eva[i] * w * el) * exp(eva[i] * w * el);
     for(i = 0; i < m; i++){    
         for(j = 0; j < m; j++){
@@ -177,12 +169,15 @@ void getd2P(double *eva, double *ev, double *evi, int m, double el, double w, do
             result[i+j*m] = res;    
         }
     }
+    free(tmp);
 }
 
 
 void getd2P2(double *eva, double *ev, double *evi, int m, double el, double w, double *result){
     int i, j, h;
-    double tmp[m], res;
+    double  res; //tmp[m],
+    double *tmp;
+    tmp = malloc(m * sizeof(double));
     for(i = 0; i < m; i++) tmp[i] = (eva[i] * w) * (eva[i] * w) * exp(eva[i] * w * el);
     for(i = 0; i < m; i++){    
         for(j = 0; j < m; j++){
@@ -191,9 +186,10 @@ void getd2P2(double *eva, double *ev, double *evi, int m, double el, double w, d
             result[i+j*m] = res;    
         }
     }
+    free(tmp);
 }
 
-
+/*
 SEXP getPM2(SEXP eig, SEXP nc, SEXP el, SEXP w){
     R_len_t i, j, nel, nw;
     int m=INTEGER(nc)[0], l=0;
@@ -220,7 +216,7 @@ SEXP getPM2(SEXP eig, SEXP nc, SEXP el, SEXP w){
     UNPROTECT(1);//RESULT
     return(RESULT);
 } 
-
+*/
 
 SEXP getdPM(SEXP eig, SEXP nc, SEXP el, SEXP w){
     R_len_t i, j, nel, nw;
@@ -403,7 +399,7 @@ void C_reorder(int *from, int *to, int *n, int *sumNode,  int *neworder, int *ro
 }
 
 
-
+/*
 SEXP AllChildren(SEXP children, SEXP parent, SEXP M){
     int i, j, k, l=0L, m=INTEGER(M)[0], *tab, p;   
     R_len_t n=length(parent); 
@@ -438,7 +434,7 @@ SEXP AllChildren(SEXP children, SEXP parent, SEXP M){
     UNPROTECT(1);
     return(RESULT);
 }
-
+*/
 
 void AllKids(int *children, int *parents, int *nTips, int *nNode, int *lp, int *kids, int *lkids, int *pkids){
     int i, k, m=nNode[0], p; // l=0L, *tab , j 
@@ -483,7 +479,7 @@ allDesc = function(x, node){
 }
 
 allDesc(tree, 14)
- */
+ 
  
 SEXP AllDesc(SEXP child, SEXP parent, SEXP M, SEXP NODE){
     int i, m=INTEGER(M)[0]+1, *tab, *res, p, node=INTEGER(NODE)[0];   
@@ -507,82 +503,16 @@ SEXP AllDesc(SEXP child, SEXP parent, SEXP M, SEXP NODE){
     UNPROTECT(1);
     return(RESULT);
 }
+ */
 
-
-// combine two sorted vectors
-void crsort(double *x, double *y, int *a, int *b, double *res){
-   double xi, yi;
+// std::merge
+void cisort(int *x, int *y, int a, int b, int *res){
    int i, j, k;    
    i=0;
    j=0;
    k=0;
-   xi=x[0];
-   yi=y[0];  
-   while(k<((*a)+(*b))){
-      if(i<(*a)){
-          if( (xi<yi) | (j==((*b))) ){  //-1L
-              res[k]=xi;      
-              i++;
-              if(i<(*a))xi=x[i];   
-              k++;     
-          }
-          else{
-              j++;
-              res[k]=yi;
-              if(j<(*b))yi=y[j];  
-              k++;
-          }
-        }
-        else{
-              j++;
-              res[k]=yi;
-              if(j<(*b))yi=y[j];  
-              k++;
-          }
-    }  
-}    
-
-
-void cisort(int *x, int *y, int *a, int *b, int *res){
-   int xi, yi;
-   int i, j, k;    
-   i=0;
-   j=0;
-   k=0;
-   xi=x[0];
-   yi=y[0];  
-   while(k<((*a)+(*b))){
-      if(i<(*a)){
-          if( (xi<yi) | (j==((*b))) ){  //-1L
-              res[k]=xi;      
-              i++;
-              if(i<(*a))xi=x[i];   
-              k++;     
-          }
-          else{
-              j++;
-              res[k]=yi;
-              if(j<(*b))yi=y[j];  
-              k++;
-          }
-        }
-        else{
-              j++;
-              res[k]=yi;
-              if(j<(*b))yi=y[j];  
-              k++;
-          }
-    }
-}    
-
-void cisort2(int *x, int *y, int a, int b, int *res){
-   int xi, yi;
-   int i, j, k;    
-   i=0;
-   j=0;
-   k=0;
-   xi=x[0];
-   yi=y[0];  
+   int xi=x[0];
+   int yi=y[0];  
    while(k<((a)+(b))){
       if(i<(a)){
           if( (xi<yi) | (j==b) ){  //-1L
@@ -605,10 +535,10 @@ void cisort2(int *x, int *y, int a, int b, int *res){
               k++;
           }
     }
-}    
+}  
+
 
 // faster cophenetic 
-
 void C_bipHelp(int *parents, int *children, int *ntips, int *mp, int *l, int *ltips, int *ptips){
    int p, k, i;
    for(i=0; i<*ntips; i++)ltips[i]=1L;
@@ -639,12 +569,12 @@ void C_bip2(int *parents, int *children, int *ntips, int *mp, int *l, int *ltips
         ci = children[i];
         if(pi==p){
              if(ci < (*ntips+1L)){
-                 cisort(&ci, tmp, &eins, &ltmp, tmp2);            
+                 cisort(&ci, tmp, eins, ltmp, tmp2);            
                  ltmp += 1L;
                  for(j=0; j<ltmp; j++) tmp[j] = tmp2[j];
              }
              else{
-                 cisort(&tips[ptips[ci-1L]], tmp, &(ltips[ci-1L]), &ltmp, tmp2);                       
+                 cisort(&tips[ptips[ci-1L]], tmp, (ltips[ci-1L]), ltmp, tmp2);                       
                  ltmp += ltips[ci-1L]; //  lch[ci]; 
 //               ltmp +=   lch[ci];
                  for(j=0; j<ltmp; j++) tmp[j] = tmp2[j];                                
@@ -738,6 +668,7 @@ void C_cophenetic(int *children, int *parents, double *el, int *lp, int *m, int 
 }
 
 
+/*
 // a bit faster 
 SEXP C_bip(SEXP parent, SEXP child, SEXP nTips, SEXP maxP){ //, SEXP Nnode){
    int eins=1L, i, j, k, l=length(child), *tmp, *tmp2, *lch, *kl, pi, ci, p, nt=INTEGER(nTips)[0], mp=INTEGER(maxP)[0], ltmp; 
@@ -760,12 +691,12 @@ SEXP C_bip(SEXP parent, SEXP child, SEXP nTips, SEXP maxP){ //, SEXP Nnode){
         ci = INTEGER(child)[i];
         if(pi==p){
              if(ci < (nt+1L)){
-                 cisort(&ci, tmp, &eins, &ltmp, tmp2);            
+                 cisort(&ci, tmp, eins, ltmp, tmp2);            
                  ltmp += 1L;
                  for(j=0; j<ltmp; j++) tmp[j] = tmp2[j];
              }
              else{
-                 cisort(INTEGER(VECTOR_ELT(ans, ci-1L)), tmp, &(lch[ci]), &ltmp, tmp2);                       
+                 cisort(INTEGER(VECTOR_ELT(ans, ci-1L)), tmp, (lch[ci]), ltmp, tmp2);                       
                  ltmp += lch[ci]; 
                  for(j=0; j<ltmp; j++) tmp[j] = tmp2[j];                                
              }
@@ -824,12 +755,12 @@ SEXP C_bipart(SEXP parent, SEXP child, SEXP nTips, SEXP maxP){ //, SEXP Nnode){
         ci = INTEGER(child)[i];
         if(pi==p){
              if(ci < (nt+1L)){
-                 cisort(&ci, tmp, &eins, &ltmp, tmp2);            
+                 cisort(&ci, tmp, eins, ltmp, tmp2);            
                  ltmp += 1L;
                  for(j=0; j<ltmp; j++) tmp[j] = tmp2[j];
              }
              else{
-                 cisort(INTEGER(VECTOR_ELT(ans, kl[ci])), tmp, &(lch[ci]), &ltmp, tmp2);                       
+                 cisort(INTEGER(VECTOR_ELT(ans, kl[ci])), tmp, lch[ci], ltmp, tmp2);                       
                  ltmp += lch[ci]; 
                  for(j=0; j<ltmp; j++) tmp[j] = tmp2[j];                                
              }
@@ -862,7 +793,7 @@ SEXP C_bipart(SEXP parent, SEXP child, SEXP nTips, SEXP maxP){ //, SEXP Nnode){
    UNPROTECT(2);
    return(ans);  
 }
-
+*/
 
 
 
