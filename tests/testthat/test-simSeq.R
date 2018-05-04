@@ -1,0 +1,105 @@
+context("simSeq")
+
+test_that("compare to seq-gen", {
+
+    skip_on_cran()
+    # Hypothesis: 
+    #   phangorn::simSeq and seq-gen generate alignments 
+    #   with approximately the same number of mutations
+    #
+    # Method:
+    #
+    # - Create a phylogeny to work on
+    # - Simulate alignments with seq-gen, count number of mutations
+    # - Simulate alignments with phangorn::simSeq, count number of mutations
+    # - Compare distributions of number of mutations
+    # - Reject hypothesis if distributions are different
+
+    set.seed(42)
+
+    # Alignment length, in base pairs
+    sequence_length <- 1000
+
+    # Set the rigor of the experiment
+    n_replicates <- 100
+
+    # Create the simplest tree possible to simulate alignments on 
+    tree <- ape::read.tree(text = "(t1:1,t2:1);")
+
+    ############################################################################
+    # seq-gen
+    ############################################################################
+    
+    # Use a simple root sequence, note the uppercase adenine
+    root_sequence <- rep("A", sequence_length)
+    root_sequence_str <- paste0(root_sequence, collapse = "")
+    
+    # seq-gen 
+    diffs_1 <- rep(NA, n_replicates)
+    diffs_2 <- rep(NA, n_replicates)
+    for (i in seq(1, n_replicates))
+    {
+    
+      lines <- c(
+        paste0("1 ", sequence_length),
+        paste0("t0 ", root_sequence_str),
+        "1",
+        ape::write.tree(phy = tree)
+      )
+      filename <- tempfile()
+      writeLines(text = lines, con = filename)
+      # Put the root sequence at index 1
+      out <- system2(command = "seq-gen", 
+        args = c(paste0("-l", sequence_length), "-mHKY", "-k1"),
+        stdin = filename,
+        stdout = TRUE,
+        stderr = FALSE
+      )
+      seq1 <- strsplit(out[2], split = " ")[[1]][9]
+      seq2 <- strsplit(out[3], split = " ")[[1]][9]
+      diffs_1[i] <- sum(strsplit(seq1, split = "")[[1]] != root_sequence)
+      diffs_2[i] <- sum(strsplit(seq2, split = "")[[1]] != root_sequence)
+    }
+    seq_gen_diffs <- c(diffs_1, diffs_2)
+
+    ############################################################################
+    # phangorn::simSeq
+    ############################################################################
+
+    # Use a simple root sequence, note the lower-case adenine
+    root_sequence <- rep("a", sequence_length)
+
+    # Measure with `phangorn::simSeq`
+    diffs_1 <- rep(NA, n_replicates)
+    diffs_2 <- rep(NA, n_replicates)
+    for (i in seq(1, n_replicates))
+    {
+      data <- simSeq(
+        tree, 
+        l = sequence_length, 
+        rootseq = root_sequence, 
+        type = "DNA", 
+        rate = 1.0
+      )
+      diffs_1[i] <- sum(as.character(data)[1, ] != root_sequence)
+      diffs_2[i] <- sum(as.character(data)[2, ] != root_sequence)
+    }
+    sim_seq_diffs <- c(diffs_1, diffs_2)
+
+    ############################################################################
+    # Compare
+    ############################################################################
+    
+    # Use Kolmogorov-Smirnov test to determine if two distributions
+    # are the same. Warning: p-value will be approximate in the presence of ties
+    test <- suppressWarnings(
+        ks.test(seq_gen_diffs, sim_seq_diffs)
+    )
+    # If p-value is less than 0.05, we assume the distributions to
+    # be different. If the distributions are different, phangorn::simSeq
+    # and seq-gen produce a different number of mutations. 
+    p_value <- test$p.value
+    
+    # Expect distributions not to be similar
+    expect_gt(p_value, 0.05)
+})

@@ -69,7 +69,6 @@ export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ,
     removeUndeterminedSites, phyDat2MultipleAlignment, delta.score, 
     maxCladeCred, as.MultipleAlignment, threshStateC, coords, add.tips, 
     map_duplicates)
-# plot.networx, countCycles, 
 
 S3method('[', splits)          
 S3method(addConfidences, phylo)

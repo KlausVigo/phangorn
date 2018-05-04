@@ -70,6 +70,7 @@ fit.sankoffNew <- function (tree, data, cost, returnData = c("pscore", "site", "
     pscore <- sum(weight * erg)
     result <- pscore
     if (returnData=="data"){ 
+        res[1:nTips] <- new2old.phyDat(data)[tree$tip.label]
         result <- list(pscore = pscore, dat = res)
         }
     result
