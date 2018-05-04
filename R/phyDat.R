@@ -900,11 +900,44 @@ write.phyDat <- function(x, file, format="phylip", colsep = "", nbcol=-1, ...){
 }
 
 
+
+read.fasta.user <- function (file, skip = 0, nlines = 0, 
+                             comment.char = "#", seq.names = NULL) 
+{
+    getTaxaNames <- function(x) {
+        x <- sub("^ +", "", x)
+        x <- sub(" +$", "", x)
+        x <- sub("^['\"]", "", x)
+        x <- sub("['\"]$", "", x)
+        x
+    }
+    
+    X <- scan(file = file, what = character(), sep = "\n", quiet = TRUE, 
+              skip = skip, nlines = nlines, comment.char = comment.char)      
+    
+    start <- grep("^ {0,}>", X)
+    taxa <- X[start]
+    n <- length(taxa)
+    obj <- vector("list", n)
+    if (is.null(seq.names)) {
+        taxa <- sub("^ {0,}>", "", taxa)
+        seq.names <- getTaxaNames(taxa)
+    }
+    start <- c(start, length(X) + 1)
+    for (i in 1:n) obj[[i]] <- unlist(strsplit(gsub(" ", 
+                        "", X[(start[i] + 1):(start[i + 1] - 1)]), NULL))
+    names(obj) <- seq.names
+    obj <- lapply(obj, tolower)
+    obj   
+}
+
+
 #' @rdname phyDat
 #' @export
 read.phyDat <- function(file, format="phylip", type="DNA", ...){
     
-    formats <- c("phylip", "nexus", "interleaved", "sequential", "fasta", "clustal")
+    formats <- c("phylip", "nexus", "interleaved", "sequential", "fasta", 
+                 "clustal")
     format <- match.arg(tolower(format), formats)
     
     if(format=="nexus") data <- read.nexus.data(file, ...)
@@ -915,7 +948,9 @@ read.phyDat <- function(file, format="phylip", type="DNA", ...){
         }
         if (type == "AA") data <- read.aa(file, format=format, ...)
         if (type == "USER"){
-            data <- read.dna(file, format, as.character = TRUE)
+            if(format=="fasta")
+                data <- read.fasta.user(file)
+            else data <- read.dna(file, format, as.character = TRUE)
             extras <- match.call(expand.dots = FALSE)$...
             extras <- lapply(extras, eval)
             return(phyDat(data, type, levels=extras$levels, 
