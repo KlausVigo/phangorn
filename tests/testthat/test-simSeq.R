@@ -102,4 +102,55 @@ test_that("compare to seq-gen", {
     
     # Expect distributions not to be similar
     expect_gt(p_value, 0.05)
+    
+    
+    ############################################################################
+    # test for site pattern
+    ############################################################################
+    
+    tree <- read.tree(text="(t1:0.1,t2:0.1,t3:0.2);")
+    dat <- allSitePattern(3)
+    prob <- as.vector(exp(pml(tree, dat)$site))
+    sitePattern <- function(x){
+        attr(x, "index") <- NULL
+        attr(x, "weight") <- rep(1, length(attr(x, "weight")))
+        x <- as.data.frame(x, stringsAsFactors = FALSE)
+        do.call("paste", c(x, sep = ""))  
+    }
+    ref <- sitePattern(dat)
+    attr(dat, "weight") <- 1000 * prob
+    fit <- pml(tree, dat)
+    
+    p_value1 <- numeric(100)
+    p_value2 <- numeric(100)
+    for(i in 1:100){
+        x <- simSeq(tree)
+        y <- sitePattern(x)
+        obs <- numeric(length(ref))
+        obs[match(y, ref)] <- attr(x, "weight")
+        
+        test <- suppressWarnings(
+            chisq.test(obs, p=prob)
+        )
+        # If p-value is less than 0.05, we assume the distributions to
+        # be different. 
+        p_value1[i] <- test$p.value
+    }
+    expect_gt(mean(p_value1), 0.05)
+    
+    for(i in 1:100){
+        x <- simSeq(fit)
+        y <- sitePattern(x)
+        obs <- numeric(length(ref))
+        obs[match(y, ref)] <- attr(x, "weight")
+        
+        test <- suppressWarnings(
+            chisq.test(obs, p=prob)
+        )
+        # If p-value is less than 0.05, we assume the distributions to
+        # be different. 
+        p_value2[i] <- test$p.value
+    }
+    expect_gt(mean(p_value2), 0.05)
+    
 })
