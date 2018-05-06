@@ -36,8 +36,6 @@ notifications:
     on_failure: always
 
 env:
-  - WARNINGS_ARE_ERRORS=false
-  - NOT_CRAN=true
   global:
     - NOT_CRAN: true
     - R_CHECK_ARGS="--as-cran --timings"
