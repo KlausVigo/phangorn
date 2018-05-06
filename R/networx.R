@@ -945,7 +945,7 @@ spl2angle <- function(x){
     l <- length(attr(x, "labels"))
     ord <- 1:l
     if(!is.null(attr(x, "cycle"))) ord <- attr(x, "cycle")
-    x <- phangorn:::changeOrder(x, attr(x, "labels")[ord])
+    x <- changeOrder(x, attr(x, "labels")[ord])
     angle <- ((vapply(x, sum, 0) / lengths(x) - 1) / l ) * 2*pi
     #kreis2kart(attr(x, "weight"), angle)
     angle
