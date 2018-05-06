@@ -958,6 +958,10 @@ read.phyDat <- function(file, format="phylip", type="DNA", ...){
         }
         # raus
     }
+    if(is.list(data)){
+        ll <- lengths(data)
+        if(!all(ll == ll[[1]])) stop("sequences have different length")
+    }
     phyDat(data, type, return.index = TRUE)
 }
 
