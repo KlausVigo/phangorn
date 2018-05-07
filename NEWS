@@ -1,5 +1,16 @@
      CHANGES in PHANGORN VERSION 2.5.0
 
+OTHER CHANGES
+
+     o Additional Codon models (F3x4)
+     
+     o several small improvemets to more intuitively use pml and phyDat 
+     
+     o several more unit tests
+
+     o two new contributors, Keren and Richel     
+     
+
 
      CHANGES in PHANGORN VERSION 2.4.0
 

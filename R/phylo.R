@@ -1450,6 +1450,13 @@ pml.fit <- function (tree, data, bf = rep(1/length(levels), length(levels)),
 #' alignment and a model. \code{optim.pml} optimizes the different model
 #' parameters.
 #' 
+#' Base frequencies in \code{pml} can be either supplied in different ways. 
+#' For amino acid they are usually defined through specifying a model, so the 
+#' argument bf does not need to be specified. Otherwise if \code{bf=NULL}, 
+#' each state is given equal probabilty. It can be a numeric vector given the 
+#' frequencies. Last but not least \code{bf} can be string "equal", "empirical" 
+#' and for codon models additionally "F3x4". 
+#' 
 #' The topology search uses a nearest neighbor interchange (NNI) and the
 #' implementation is similar to phyML.  The option model in pml is only used
 #' for amino acid models.  The option model defines the nucleotide model which
@@ -1492,7 +1499,7 @@ pml.fit <- function (tree, data, bf = rep(1/length(levels), length(levels)),
 #' @aliases pml 
 #' @param tree A phylogenetic \code{tree}, object of class \code{phylo}.
 #' @param data An alignment, object of class \code{phyDat}.
-#' @param bf Base frequencies.
+#' @param bf Base frequencies (see details).   
 #' @param Q A vector containing the lower triangular part of the rate matrix.
 #' @param inv Proportion of invariable sites.
 #' @param k Number of intervals of the discrete gamma distribution.
@@ -1668,6 +1675,17 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     }
     if (is.null(bf)) 
         bf <- rep(1/length(levels), length(levels))
+    if (is.character(bf)){
+        bf_choice <- match.arg(bf, c("equal", "empirical", "F3x4"))
+        if(bf_choice == "F3x4" & type !="CODON"){
+            # bf_choice = "equal"
+            stop("F3x4 not available for this data type")
+        }
+        bf <- switch(bf_choice, 
+                     equal = rep(1/length(levels), length(levels)),
+                     empirical = baseFreq(data), 
+                     F3x4 = F3x4(data))
+    }
     if (is.null(Q)) 
         Q <- rep(1, length(levels) * (length(levels) - 1)/2)
     m <- 1

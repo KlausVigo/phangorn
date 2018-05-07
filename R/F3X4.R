@@ -47,6 +47,12 @@ F3x4_freq <- function(M, CodonAlphabet=.CodonAlphabet,
     M[pos[,1],1] * M[pos[,2],2] * M[pos[,3],3]
 }
 
+
+F3x4 <- function(x){
+    BF <- bf_by_codon(x)
+    F3x4_freq(BF)
+}
+
 # test
 #SCRIPT_DIR = # please fill in the script dir
 #codon_data_path = SCRIPT_DIR + "/codon_aln.fas"

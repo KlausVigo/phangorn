@@ -29,7 +29,7 @@ optim.pml(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
 
 \item{data}{An alignment, object of class \code{phyDat}.}
 
-\item{bf}{Base frequencies.}
+\item{bf}{Base frequencies (see details).}
 
 \item{Q}{A vector containing the lower triangular part of the rate matrix.}
 
@@ -91,6 +91,13 @@ alignment and a model. \code{optim.pml} optimizes the different model
 parameters.
 }
 \details{
+Base frequencies in \code{pml} can be either supplied in different ways. 
+For amino acid they are usually defined through specifying a model, so the 
+argument bf does not need to be specified. Otherwise if \code{bf=NULL}, 
+each state is given equal probabilty. It can be a numeric vector given the 
+frequencies. Last but not least \code{bf} can be string "equal", "empirical" 
+and for codon models additionally "F3x4".
+
 The topology search uses a nearest neighbor interchange (NNI) and the
 implementation is similar to phyML.  The option model in pml is only used
 for amino acid models.  The option model defines the nucleotide model which
