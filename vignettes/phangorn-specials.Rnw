@@ -233,7 +233,8 @@ We compute the $d_N/d_S$ for some sequences given a tree using the ML functions 
 <<echo=TRUE>>=
 library(phangorn)
 fdir <- system.file("extdata/trees", package = "phangorn")
-primates <- read.phyDat(file.path(fdir, "primates.dna"), format = "phylip", type = "DNA")
+primates <- read.phyDat(file.path(fdir, "primates.dna"), 
+                        format="phylip", type="DNA")
 tree <- NJ(dist.ml(primates))
 dat <- phyDat(as.character(primates), "CODON")
 fit <- pml(tree, dat, bf="F3x4")
@@ -243,7 +244,14 @@ fit2 <- optim.pml(fit, model="codon2", control=pml.control(trace=0))
 fit3 <- optim.pml(fit, model="codon3", control=pml.control(trace=0))
 anova(fit0, fit2, fit3, fit1)
 @
-The models described here all assume equal frequencies for each codon (=1/61). One can optimise the codon frequencies setting the option to optBf=TRUE. As the convergence of the 61 parameters the convergence is likely slow set the maximal iterations to a higher value than the default (e.g. control = pml.control(maxit=50)).  
+
+There are several ways to estimate the codon frequencies $\pi_j$. The simplest model is to assume they have equal frequencies 
+(=1/61). A second is to use the empirical codon frequencies, either computed using \Rfunction{baseFreq} or using 
+the argument \Rfunction{bf="empirical"} in \Rfunction{pml}. Last but not least the frequencies can be derived from the 
+base frequencies at each codon position, the F3x4 model is set by the argument \Rfunction{bf="F3x4"}.  
+One can estimate the codon frequencies setting the option to \Rfunction{optBf=TRUE} in \Rfunction{optim.pml}. As the convergence of the 60 parameters the convergence is likely slow set the maximal iterations to a higher value than the default (e.g. \Rfunction{control = pml.control(maxit=50)}). Similar parameters of the F3x4 can also estmated using ML \Rfunction{optF3x4=TRUE} instead. 
+
+
 The "YN98" model \cite{Yang98} is similar to the "codon1", but addional optimises the codon frequencies.   
 
 \section{Generating trees}
