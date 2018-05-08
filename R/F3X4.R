@@ -24,6 +24,7 @@ getF3X4codon_frequencies <- function(codon_data, codon_alphabet=.CodonAlphabet,
         nuc3_freq <- nuc_freq_by_pos[which(nucleotide_alphabet==codon_components[3]),3]
         codon_frequencies[i] <- nuc1_freq*nuc2_freq*nuc3_freq
     }
+    codon_frequencies <-  codon_frequencies / sum( codon_frequencies)
     return(codon_frequencies)
 }
 
@@ -44,7 +45,8 @@ F3x4_freq <- function(M, CodonAlphabet=.CodonAlphabet,
                       nucleotideAlphabet=.nucleotideAlphabet){
     pos <- CodonAlphabet %>% strsplit("") %>% unlist %>% 
         match(nucleotideAlphabet) %>% matrix(ncol=3, byrow = TRUE) 
-    M[pos[,1],1] * M[pos[,2],2] * M[pos[,3],3]
+    codon_frequencies <- M[pos[,1],1] * M[pos[,2],2] * M[pos[,3],3]
+    codon_frequencies / sum(codon_frequencies)
 }
 
 

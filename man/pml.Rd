@@ -13,10 +13,10 @@ pml(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
 
 optim.pml(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   optInv = FALSE, optGamma = FALSE, optEdge = TRUE, optRate = FALSE,
-  optRooted = FALSE, control = pml.control(epsilon = 1e-08, maxit = 10,
-  trace = 1L), model = NULL, rearrangement = ifelse(optNni, "NNI", "none"),
-  subs = NULL, ratchet.par = list(iter = 20L, maxit = 100L, prop = 1/3),
-  ...)
+  optRooted = FALSE, optF3x4 = FALSE, control = pml.control(epsilon =
+  1e-08, maxit = 10, trace = 1L), model = NULL,
+  rearrangement = ifelse(optNni, "NNI", "none"), subs = NULL,
+  ratchet.par = list(iter = 20L, maxit = 100L, prop = 1/3), ...)
 }
 \arguments{
 \item{epsilon}{Stop criterion for optimisation (see details).}
@@ -77,6 +77,9 @@ tree get optimized.}
 of Q}
 
 \item{ratchet.par}{search parameter for stochastic search}
+
+\item{optF3x4Logical}{value indicating if codon frequencies are estimated 
+for the F3x4 model}
 }
 \value{
 \code{pml} or \code{optim.pml} return a list of class \code{pml},
@@ -91,7 +94,7 @@ alignment and a model. \code{optim.pml} optimizes the different model
 parameters.
 }
 \details{
-Base frequencies in \code{pml} can be either supplied in different ways. 
+Base frequencies in \code{pml} can be supplied in different ways. 
 For amino acid they are usually defined through specifying a model, so the 
 argument bf does not need to be specified. Otherwise if \code{bf=NULL}, 
 each state is given equal probabilty. It can be a numeric vector given the 

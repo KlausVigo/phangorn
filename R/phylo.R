@@ -171,13 +171,14 @@ optimBf <- function(tree, data, bf=c(.25,.25,.25,.25), trace=0,...){
     }
 
 
-
-optimF3X4 <- function(tree, data, bf_codon=matrix(.25,4,3), trace=0,...){
+# MLF3x4 model
+optimF3x4 <- function(tree, data, bf_codon=matrix(.25,4,3), trace=0,...){
     l <- nrow(bf_codon)
     nenner <- 1/bf_codon[l,]
-    lbf <- log(bf * rep(nenner, each=4))
+    lbf <- log(bf_codon * rep(nenner, each=4))
     lbf <- lbf[-l,]
     fn <- function(lbf, tree, data,...){
+        dim(lbf) <- c(3,3)
         bf_codon <- rbind(exp(lbf), c(1,1,1))
         bf_codon <- bf_codon/rep(colSums(bf_codon), each=4)
         bf <- F3x4_freq(bf_codon)
@@ -191,7 +192,7 @@ optimF3X4 <- function(tree, data, bf_codon=matrix(.25,4,3), trace=0,...){
     bf <- F3x4_freq(bf_codon)
 #    bf <- exp(c(res[[1]],0))
 #    bf <- bf/sum(bf)
-    result <- list(bf=bf, bf_codon=bf_codon, loglik = res[[2]])
+    result <- list(bf=bf, loglik = res[[2]], bf_codon=bf_codon)
     result
 }
 
@@ -1520,6 +1521,8 @@ pml.fit <- function (tree, data, bf = rep(1/length(levels), length(levels)),
 #' @param optRate Logical value indicating the overall rate gets optimized.
 #' @param optRooted Logical value indicating if the edge lengths of a rooted
 #' tree get optimized.
+#' @param optF3x4Logical value indicating if codon frequencies are estimated 
+#' for the F3x4 model
 #' @param ratchet.par search parameter for stochastic search
 #' @param rearrangement type of tree tree rearrangements to perform, one of
 #' "none", "NNI", "stochastic" or "ratchet"
@@ -2280,8 +2283,8 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV,
 #' @export
 optim.pml <- function (object, optNni=FALSE, optBf=FALSE, optQ=FALSE, 
     optInv=FALSE, optGamma=FALSE, optEdge=TRUE, optRate=FALSE,  optRooted=FALSE,
-    control = pml.control(epsilon = 1e-8, maxit = 10, trace = 1L), 
-    model = NULL, rearrangement = ifelse(optNni, "NNI","none"), subs = NULL,
+    optF3x4=FALSE, control=pml.control(epsilon = 1e-8, maxit = 10, trace = 1L), 
+    model=NULL, rearrangement=ifelse(optNni, "NNI","none"), subs = NULL,
     ratchet.par = list(iter = 20L, maxit = 100L, prop = 1/3), ...) 
 {
     optRatchet <- FALSE
@@ -2392,7 +2395,14 @@ optim.pml <- function (object, optNni=FALSE, optBf=FALSE, optQ=FALSE,
     type <- attr(data, "type")
     if (type == "AA" & !is.null(model)){
         object <- update(object, model=model)  
-    }     
+    }
+    if(optF3x4){
+        if(type!="CODON") stop("optF3x4 needs codon data")
+        optBf <- FALSE
+        bf <- F3x4(data)
+        bf_codon <- bf_by_codon(data)
+        object <- update.pml(object, bf = bf)
+    }
     if (type == "CODON") {
         if(is.null(model)) model <- "codon1"
         model <- match.arg(model, c("codon0", "codon1", "codon2", "codon3", 
@@ -2554,6 +2564,24 @@ optim.pml <- function (object, optNni=FALSE, optBf=FALSE, optQ=FALSE,
                 if (wMix > 0) 
                     ll.0 <- ll.0 + llMix
                 ll <- res[[2]]
+            }
+        }
+        if (optF3x4) {
+            # <- function(tree, data, bf_codon=matrix(.25,4,3), trace=0,.n..)
+            res <- optimF3x4(tree, data, bf_codon=bf_codon, inv=inv, Q=Q, w=w, 
+                             g=g, INV = INV, rate = rate, k = k, llMix = llMix)
+            if (trace > 0) 
+                cat("optimize base frequencies: ", ll, "-->", 
+                    max(res[[2]], ll), "\n")
+            if(res[[2]] > ll){  
+                bf <- res[[1]]
+                eig <- edQt(Q = Q, bf = bf)
+                if (inv > 0) 
+                    ll.0 <- as.matrix(INV %*% (bf * inv))
+                if (wMix > 0) 
+                    ll.0 <- ll.0 + llMix
+                ll <- res[[2]]
+                
             }
         }
         if (optQ) {
