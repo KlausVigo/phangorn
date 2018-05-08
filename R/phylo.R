@@ -1450,7 +1450,7 @@ pml.fit <- function (tree, data, bf = rep(1/length(levels), length(levels)),
 #' alignment and a model. \code{optim.pml} optimizes the different model
 #' parameters.
 #' 
-#' Base frequencies in \code{pml} can be either supplied in different ways. 
+#' Base frequencies in \code{pml} can be supplied in different ways. 
 #' For amino acid they are usually defined through specifying a model, so the 
 #' argument bf does not need to be specified. Otherwise if \code{bf=NULL}, 
 #' each state is given equal probabilty. It can be a numeric vector given the 

@@ -237,7 +237,7 @@ primates <- read.phyDat(file.path(fdir, "primates.dna"), format = "phylip", type
 tree <- NJ(dist.ml(primates))
 dat <- phyDat(as.character(primates), "CODON")
 fit <- pml(tree, dat, bf="F3x4")
-fit0 <- optim.pml(fit, control = pml.control(trace = 0))
+fit0 <- optim.pml(fit, model="codon0", control=pml.control(trace=0))
 fit1 <- optim.pml(fit, model="codon1", control=pml.control(trace=0))
 fit2 <- optim.pml(fit, model="codon2", control=pml.control(trace=0))
 fit3 <- optim.pml(fit, model="codon3", control=pml.control(trace=0))
