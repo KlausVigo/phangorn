@@ -1521,7 +1521,7 @@ pml.fit <- function (tree, data, bf = rep(1/length(levels), length(levels)),
 #' @param optRate Logical value indicating the overall rate gets optimized.
 #' @param optRooted Logical value indicating if the edge lengths of a rooted
 #' tree get optimized.
-#' @param optF3x4Logical value indicating if codon frequencies are estimated 
+#' @param optF3x4 Logical value indicating if codon frequencies are estimated 
 #' for the F3x4 model
 #' @param ratchet.par search parameter for stochastic search
 #' @param rearrangement type of tree tree rearrangements to perform, one of
