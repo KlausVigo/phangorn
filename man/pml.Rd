@@ -68,6 +68,9 @@ optimized.}
 \item{optRooted}{Logical value indicating if the edge lengths of a rooted
 tree get optimized.}
 
+\item{optF3x4}{Logical value indicating if codon frequencies are estimated 
+for the F3x4 model}
+
 \item{control}{A list of parameters for controlling the fitting process.}
 
 \item{rearrangement}{type of tree tree rearrangements to perform, one of
@@ -77,9 +80,6 @@ tree get optimized.}
 of Q}
 
 \item{ratchet.par}{search parameter for stochastic search}
-
-\item{optF3x4Logical}{value indicating if codon frequencies are estimated 
-for the F3x4 model}
 }
 \value{
 \code{pml} or \code{optim.pml} return a list of class \code{pml},
