@@ -54,14 +54,28 @@ optimQ <- function (tree, data, Q=rep(1,6), subs=rep(1,length(Q)), trace = 0, ..
     res
 }    
 
-  
+
+CodonQ <- function (subs=.sub, syn=.syn, tstv=1, dnds=1) 
+{
+    Q <- numeric(1830)
+    Q[subs==1] <- 1 # transversion
+    Q[subs==2] <- tstv # transition
+    Q[syn==1] <- Q[syn==1] * dnds
+    Q[syn<0] <- 0
+    Q
+} 
+
+
+# needs no Q  
 optimCodon <- function (tree, data, Q=rep(1,1830), subs=rep(1,length(Q)), 
-    syn = rep(0, length(Q)), trace = 0L, ab = c(0,0), optK=TRUE, optW=TRUE, ...) 
+      syn=rep(0, length(Q)), trace=0L, ab = c(0,0), optK=TRUE, optW=TRUE, ...) 
 {
     m <- length(Q)
     n <- 1L # max(subs)
 
     fn <- function(ab, tree, data, m, n, subs, syn, optK, optW, ...) {
+        # ab <- exp(ab)
+        # Q <- codonQ(subs=subs, syn=syn, tstv=ab[1], dnds=ab[2])        
         Q <- numeric(m)
         Q[subs==1] <- 0 # transversion
         if(optK) Q[subs==2] <- ab[1] # transition
@@ -1636,13 +1650,19 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     if(!is.null(model) && model=="Mkv")Mkv <- TRUE
     call <- match.call()
     extras <- match.call(expand.dots = FALSE)$...
-    pmla <- c("wMix", "llMix") 
+    pmla <- c("wMix", "llMix", "dnds", "tstv") 
     existing <- match(pmla, names(extras))
     wMix <- ifelse(is.na(existing[1]), 0, 
                     eval(extras[[existing[1]]], parent.frame()) )  
     llMix <- ifelse(is.na(existing[2]), 0, 
                     eval(extras[[existing[2]]], parent.frame()) )
-  
+# allow     
+    dnds <- tstv <- 1
+    dnds <- ifelse(is.na(existing[3]), 0, 
+                    eval(extras[[existing[3]]], parent.frame()) )
+    tstv <- ifelse(is.na(existing[4]), 0, 
+           eval(extras[[existing[4]]], parent.frame()) )
+    
     if(!inherits(tree,"phylo")) stop("tree must be of class phylo") 
 #    if(is.null(tree$edge.length)){
 #        warning("tree has no edge length, used nnls.phylo to assign them")
@@ -1674,7 +1694,9 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
         getModelAA(model, bf=is.null(bf), Q=is.null(Q)) 
     }  
     if(type=="CODON"){ 
-        Q <- as.numeric(.syn > 0)
+        # bug??
+        # Q <- as.numeric(.syn >= 0)
+        Q <- CodonQ(subs=.sub, syn=.syn, tstv=tstv, dnds=dnds)
     }
     if (is.null(bf)) 
         bf <- rep(1/length(levels), length(levels))
