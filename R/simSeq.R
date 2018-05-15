@@ -84,7 +84,13 @@ simSeq.phylo <- function(x, l=1000, Q=NULL, bf=NULL, rootseq=NULL, type = "DNA",
         getModelAA(model, bf=is.null(bf), Q=is.null(Q))
         type <- "AA"
     }
-     
+
+    extras <- match.call(expand.dots = FALSE)$...
+    tmp <- c("dnds", "tstv") 
+    names(extras) <- tmp[pmatch(names(extras), tmp)]
+    existing <- match(tmp, names(extras))
+    
+    
     pt <- match.arg(type, c("DNA", "AA", "USER", "CODON"))
     if (pt == "DNA") 
         levels <- c("a", "c", "g", "t")
@@ -100,7 +106,12 @@ simSeq.phylo <- function(x, l=1000, Q=NULL, bf=NULL, rootseq=NULL, type = "DNA",
           "ggt", "gta", "gtc", "gtg", "gtt", "tac", "tat", 
           "tca", "tcc", "tcg", "tct", "tgc", "tgg", "tgt", "tta", 
           "ttc", "ttg", "ttt")
-        Q <- as.numeric(.syn > 0)
+        dnds <- tstv <- 1
+        if (!is.na(existing[1])) 
+            dnds <- eval(extras[[existing[1]]], parent.frame())
+        if (!is.na(existing[2])) 
+            tstv <- eval(extras[[existing[1]]], parent.frame())
+#        Q <- as.numeric(.syn > 0)
     }
     if (pt == "USER") 
         if(is.null(levels))stop("levels have to be supplied if type is USER")
@@ -108,9 +119,11 @@ simSeq.phylo <- function(x, l=1000, Q=NULL, bf=NULL, rootseq=NULL, type = "DNA",
     lbf <- length(levels)
     
 
-    
     if(is.null(bf)) bf <- rep(1/lbf,lbf)
-    if(is.null(Q)) Q <- rep(1,lbf*(lbf-1)/2)
+    if(is.null(Q)){
+        if(type=="CODON") Q <- CodonQ(subs=.sub, syn=.syn, tstv=1, dnds=1)
+        else Q <- rep(1,lbf*(lbf-1)/2)
+    }    
     if(is.matrix(Q)) Q <- Q[lower.tri(Q)]
     eig <- edQt(Q, bf)
     
