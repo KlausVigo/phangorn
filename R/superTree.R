@@ -63,6 +63,8 @@ tree2phyDat <- function(trees){
 
 
 my.supertree <- function(trees, trace=0, ...){
+    has_edge_length <- vapply(trees, function(x) !is.null(x$edge.length), FALSE)
+    if(all(has_edge_length)) trees <- di2multi(trees) 
     XX <- tree2phyDat(trees)
     supertree<-pratchet(XX,all=TRUE, trace=trace, ...)
 #    supertree <- acctran(supertree, XX)
@@ -178,7 +180,8 @@ dist.superTree <- function(tree, trace=0, fun, start=NULL, multicore=FALSE,
 #' @param trace defines how much information is printed during optimization.
 #' @param start a starting tree can be supplied.
 #' @param multicore logical, whether models should estimated in parallel.
-#' @param mc.cores The number of cores to use, i.e. at most how many child processes will be run simultaneously.
+#' @param mc.cores The number of cores to use, i.e. at most how many child 
+#' processes will be run simultaneously.
 #' @param \dots further arguments passed to or from other methods.
 #' @return The function returns an object of class \code{phylo}.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com} Liam Revell
