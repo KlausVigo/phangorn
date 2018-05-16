@@ -109,10 +109,12 @@ simSeq.phylo <- function(x, l=1000, Q=NULL, bf=NULL, rootseq=NULL, type = "DNA",
           "tca", "tcc", "tcg", "tct", "tgc", "tgg", "tgt", "tta", 
           "ttc", "ttg", "ttt")
         dnds <- tstv <- 1
-        if (!is.na(existing[1])) 
-            dnds <- eval(extras[[existing[1]]], parent.frame())
-        if (!is.na(existing[2])) 
-            tstv <- eval(extras[[existing[1]]], parent.frame())
+        if(!is.null(extras)){
+            if (!is.na(existing[1])) 
+                dnds <- eval(extras[[existing[1]]], parent.frame())
+            if (!is.na(existing[2])) 
+                tstv <- eval(extras[[existing[1]]], parent.frame())
+        }    
 #        Q <- as.numeric(.syn > 0)
     }
     if (pt == "USER") 
