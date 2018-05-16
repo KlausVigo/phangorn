@@ -21,7 +21,8 @@ tree.  Possible are "MRP", "NNI", and "SPR".}
 
 \item{multicore}{logical, whether models should estimated in parallel.}
 
-\item{mc.cores}{The number of cores to use, i.e. at most how many child processes will be run simultaneously.}
+\item{mc.cores}{The number of cores to use, i.e. at most how many child 
+processes will be run simultaneously.}
 
 \item{\dots}{further arguments passed to or from other methods.}
 }

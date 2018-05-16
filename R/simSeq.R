@@ -87,10 +87,11 @@ simSeq.phylo <- function(x, l=1000, Q=NULL, bf=NULL, rootseq=NULL, type = "DNA",
     }
 
     extras <- match.call(expand.dots = FALSE)$...
-    tmp <- c("dnds", "tstv") 
-    names(extras) <- tmp[pmatch(names(extras), tmp)]
-    existing <- match(tmp, names(extras))
-    
+    if(!is.null(extras)){
+        tmp <- c("dnds", "tstv") 
+        names(extras) <- tmp[pmatch(names(extras), tmp)]
+        existing <- match(tmp, names(extras))
+    }
     
     pt <- match.arg(type, c("DNA", "AA", "USER", "CODON"))
     if (pt == "DNA") 
@@ -122,7 +123,7 @@ simSeq.phylo <- function(x, l=1000, Q=NULL, bf=NULL, rootseq=NULL, type = "DNA",
 
     if(is.null(bf)) bf <- rep(1/lbf,lbf)
     if(is.null(Q)){
-        if(type=="CODON") Q <- CodonQ(subs=.sub, syn=.syn, tstv=1, dnds=1)
+        if(type=="CODON") Q <- CodonQ(subs=.sub, syn=.syn, tstv=tstv, dnds=dnds)
         else Q <- rep(1,lbf*(lbf-1)/2)
     }    
     if(is.matrix(Q)) Q <- Q[lower.tri(Q)]
