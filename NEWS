@@ -1,8 +1,12 @@
      CHANGES in PHANGORN VERSION 2.5.0
 
+NEW FEATURES
+ 
+     o Additional Codon models (F3x4) 
+
 OTHER CHANGES
 
-     o Additional Codon models (F3x4)
+     o many small improvements to codon models
      
      o several small improvemets to more intuitively use pml and phyDat 
      

@@ -1658,9 +1658,9 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
                     eval(extras[[existing[2]]], parent.frame()) )
 # allow     
     dnds <- tstv <- 1
-    dnds <- ifelse(is.na(existing[3]), 0, 
+    dnds <- ifelse(is.na(existing[3]), 1, 
                     eval(extras[[existing[3]]], parent.frame()) )
-    tstv <- ifelse(is.na(existing[4]), 0, 
+    tstv <- ifelse(is.na(existing[4]), 1, 
            eval(extras[[existing[4]]], parent.frame()) )
     
     if(!inherits(tree,"phylo")) stop("tree must be of class phylo") 
@@ -1778,8 +1778,8 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
         ll.0 = ll.0, tree = tree, lv = tmp$resll, call = call, df=df, wMix=wMix, 
         llMix=llMix) #, Mkv=Mkv
     if(type=="CODON"){
-        result$dnds <- 1
-        result$tstv <- 1
+        result$dnds <- dnds
+        result$tstv <- tstv
     }
     class(result) <- "pml"
     result

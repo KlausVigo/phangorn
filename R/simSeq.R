@@ -78,7 +78,8 @@ simSeq.phylo <- function(x, l=1000, Q=NULL, bf=NULL, rootseq=NULL, type = "DNA",
                   model=NULL, levels = NULL, rate=1, ancestral=FALSE, ...){
    
     if (!is.null(model)) {
-        #    model <- match.arg(model, c("USER", "WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24"))
+        #    model <- match.arg(model, c("USER", "WAG", "JTT", "LG", "Dayhoff",
+        #     "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24"))
         model <- match.arg(model, .aamodels) 
         #match.arg(model, c("USER", .aamodels)) 
         getModelAA(model, bf=is.null(bf), Q=is.null(Q))
