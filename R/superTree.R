@@ -1,6 +1,77 @@
+tree2phyDat <- function(trees){
+    # some minor error checking
+    if(!inherits(trees,"multiPhylo")) 
+        stop("trees must be object of class 'multiPhylo.'")
+    
+    labels <- lapply(trees, function(x)sort(x$tip.label))
+    ulabels <- unique(labels)
+    lul <- length(ulabels)
+    # compute matrix representation phylogenies
+    X<-vector("list", lul) # list of bipartitions
+    characters <- 0 # number of characters
+    weights <- NULL
+    species<-trees[[1]]$tip.label
+    
+    
+    characters <- 0 # number of characters
+    weights <- NULL
+    
+    for(i in 1:lul){
+        pos <- match(labels, ulabels[i])
+        ind <- which(!is.na(pos))  
+        temp<-prop.part(trees[ind]) # find all bipartitions
+        # create matrix representation of trees[[i]] in X[[i]]
+        TMP <- matrix(1L, nrow=length(temp)-1, 
+                      ncol= length(trees[[ind[1]]]$tip.label))
+        for(j in 1:nrow(TMP)) TMP[j, c(temp[[j+1]])] <- 2L
+        colnames(TMP)<-attr(temp,"labels") # label rows
+        
+        X[[i]] <- TMP
+        
+        species<-union(species,trees[[ind[1]]]$tip.label) # accumulate labels
+        characters<-characters+nrow(TMP) # count characters
+        weights <- c(weights, attr(temp, "number")[-1])
+    }
+    data<-matrix(data=3L, nrow=characters, ncol=length(species),
+                 dimnames=list(NULL, species))
+    j<-1
+    for(i in 1:length(X)){
+        # copy each of X into supermatrix data
+        data[c(j:((j-1)+nrow(X[[i]]))), colnames(X[[i]])] <- X[[i]] #[1:nrow(X[[i]]),1:ncol(X[[i]])]
+        j<-j+nrow(X[[i]])
+        
+        
+    }
+    data <- as.data.frame(data)
+    
+    # compute contrast matrix 
+    contrast<-matrix(data=c(1,0,0,1,1,1), 3, 2, 
+                     dimnames=list(NULL, c("0","1")), byrow=TRUE)
+    
+    attr(data, "row.names") <- NULL
+    class(data) <- "phyDat"
+    attr(data, "weight") <- weights
+    attr(data, "nr") <- length(weights)
+    attr(data, "nc") <- 2L
+    attr(data, "levels") <- c("0","1")
+    attr(data, "allLevels") <- c("0","1","?")
+    attr(data, "type") <- "USER"
+    attr(data, "contrast") <- contrast
+    class(data) <- "phyDat"
+    data
+}
+
+
+my.supertree <- function(trees, trace=0, ...){
+    XX <- tree2phyDat(trees)
+    supertree<-pratchet(XX,all=TRUE, trace=trace, ...)
+#    supertree <- acctran(supertree, XX)
+    return(supertree)
+}    
+    
 # now more memoryefficient
 # from phytools code by Liam Revell with a few changes
-my.supertree <- function(trees, trace=0, ...){
+my.supertree.old <- function(trees, trace=0, ...){
     # some minor error checking
     if(!inherits(trees,"multiPhylo")) 
         stop("trees must be object of class 'multiPhylo.'")
