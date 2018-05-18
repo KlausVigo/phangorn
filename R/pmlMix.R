@@ -258,7 +258,7 @@ optimMixEdge <- function(object, omega, trace=1,...){
 #' 
 #' @export pmlMix
 pmlMix <- function (formula, fit, m = 2, omega = rep(1/m, m), 
-                    control=pml.control(epsilon=1e-8, maxit=10, trace=1), ...) 
+                    control=pml.control(epsilon=1e-8, maxit=20, trace=1), ...) 
 {
     call <- match.call()
     form <- phangornParseFormula(formula)
@@ -464,10 +464,13 @@ print.pmlMix <- function(x,...){
     if(inv > 0)cat("Proportion of invariant sites:",inv,"\n")
     cat("\nRates:\n")
     cat(rate,"\n")
+    
     cat("\nBase frequencies:  \n")
     print(bf)
-    cat("\nRate matrix:\n")
-    print(Q)
+    if(length(bf) < 21){
+        cat("\nRate matrix:\n")
+        print(Q)
+    }
 }
 
 
