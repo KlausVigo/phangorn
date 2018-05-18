@@ -258,7 +258,7 @@ optimMixEdge <- function(object, omega, trace=1,...){
 #' 
 #' @export pmlMix
 pmlMix <- function (formula, fit, m = 2, omega = rep(1/m, m), 
-                    control=pml.control(epsilon=1e-8, maxit=20, trace=1), ...) 
+                    control=pml.control(epsilon=1e-8, maxit=10, trace=1), ...) 
 {
     call <- match.call()
     form <- phangornParseFormula(formula)
@@ -309,7 +309,7 @@ pmlMix <- function (formula, fit, m = 2, omega = rep(1/m, m),
         #while (eps0 > 1e-6 & iter0 < 20) {
         eps1 <- 100
         iter1 <- 0
-        
+
         if (AllQ) {
             newQ <- optimMixQ(fits, Q = fits[[1]]$Q, 
                               omega = omega)[[1]]
@@ -342,10 +342,12 @@ pmlMix <- function (formula, fit, m = 2, omega = rep(1/m, m),
             
             for (i in 1:r) {
                 pl0 <- ll[, -i, drop = FALSE] %*% omega[-i]
-                fits[[i]] <- optim.pml(fits[[i]], MixNni, MixBf, MixQ, MixInv, 
-                    MixGamma, MixEdge, optRate=FALSE, control = 
-                    pml.control(epsilon = 1e-8, maxit = 3, trace-1), 
-                    llMix = pl0, wMix = omega[i])
+                if(any(c(MixNni, MixBf, MixQ, MixInv, MixGamma, MixEdge))){
+                fits[[i]] <- optim.pml(fits[[i]], optNni=MixNni, optBf=MixBf, 
+                    optQ=MixQ, optInv=MixInv,optGamma=MixGamma, optEdge=MixEdge, 
+                    optRate=FALSE, control=pml.control(epsilon=1e-8, maxit = 3, 
+                    trace-1), llMix=pl0, wMix=omega[i])
+                }
                 ll[, i] <- fits[[i]]$lv 
                 
                 res <- optW(ll, weight, omega)
@@ -392,9 +394,13 @@ pmlMix <- function (formula, fit, m = 2, omega = rep(1/m, m),
         
         ll1 <- sum(weight * log(ll %*% omega))
         eps0 <- (ll3 - ll1) / ll1
-        ll3 <- ll1
         iter0 <- iter0 + 1
-        if(trace>0) print(iter0)
+        if(trace>0){
+            cat("iteration:", iter0, "\n")
+            cat("omega:", omega, "\n")
+            cat("log-likelihood:", ll3, "==>", ll1, "\n")
+        }    
+        ll3 <- ll1
     }
     parameter <- c(AllBf=AllBf, AllQ=AllQ, AllInv=AllInv, AllGamma=AllGamma, 
           AllEdge=AllEdge, MixNni=MixNni, MixBf=MixBf, MixQ=MixQ, MixInv=MixInv,
