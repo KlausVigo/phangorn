@@ -1710,6 +1710,7 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
                      equal = rep(1/length(levels), length(levels)),
                      empirical = baseFreq(data), 
                      F3x4 = F3x4(data))
+        names(bf) <- NULL
     }
     if (is.null(Q)) 
         Q <- rep(1, length(levels) * (length(levels) - 1)/2)
