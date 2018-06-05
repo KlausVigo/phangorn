@@ -267,31 +267,6 @@ RI <- function (tree, data, cost = NULL, sitewise=FALSE)
 }
 
 
-# not used
-add.one <- function (tree, tip.name, i){
-    if (!inherits(tree,"phylo")) 
-        stop("tree should be an object of class 'phylo.'")
-    nTips <- length(tree$tip.label)
-    tmpedge <- tree$edge
-    m <- max(tmpedge)
-    l <- nrow(tmpedge)
-    trees <- vector("list", l)
-    tmp <- tree
-    tmp$tip.label <- c(tree$tip.label, tip.name)
-    tmpedge[tmpedge > nTips] <- tmpedge[tmpedge > nTips] + 1L
-    tmp$Nnode <- tmp$Nnode + 1L
-    tmp$edge.length <- NULL
-    tmpedge <- rbind(tmpedge, matrix(c(m + 2L, m + 2L, 0L, nTips + 1L), 2, 2))
-    edge <- tmpedge
-    edge[l + 1L, 2] <- edge[i, 2]
-    edge[i, 2] <- m + 2L
-    neworder <- .C("C_reorder", edge[, 1], edge[, 2], as.integer(l + 
-           2L), as.integer(m + 2L), integer(l + 2L), as.integer(nTips + 
-           1L), PACKAGE = "phangorn")[[5]] 
-    tmp$edge <- edge[neworder, ]
-    tmp
-}
-
 
 #
 # Sankoff 

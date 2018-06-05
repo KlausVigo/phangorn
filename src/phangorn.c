@@ -60,7 +60,6 @@ void countCycle2(int *M, int *l, int *m, int *res){
 }
 
 
-
 void nodeH(int *edge, int *node, double *el, int *l,  double *res){
     int ei, i;
     for (i=*l-1L; i>=0; i--) {
@@ -69,7 +68,7 @@ void nodeH(int *edge, int *node, double *el, int *l,  double *res){
     }
 }
 
-
+// C++
 SEXP rowMax(SEXP sdat, SEXP sn, SEXP sk){
     int i, h, n=INTEGER(sn)[0], k=INTEGER(sk)[0];  
     double x, *res, *dat;
@@ -126,7 +125,7 @@ void getdP(double *eva, double *ev, double *evi, int m, double el, double w, dou
     int i, j, h;
     double  res; //tmp[m],
     double *tmp;
-    tmp = malloc(m * sizeof(double));
+    tmp = (double *) malloc(m * sizeof(double));
     for(i = 0; i < m; i++) tmp[i] = (eva[i] * w  * el) * exp(eva[i] * w * el);
     for(i = 0; i < m; i++){    
         for(j = 0; j < m; j++){
@@ -143,7 +142,7 @@ void getdP2(double *eva, double *ev, double *evi, int m, double el, double w, do
     int i, j, h;
     double  res; //tmp[m],
     double *tmp;
-    tmp = malloc(m * sizeof(double));
+    tmp = (double *) malloc(m * sizeof(double));
     for(i = 0; i < m; i++) tmp[i] = (eva[i] * w) * exp(eva[i] * w * el);
     for(i = 0; i < m; i++){    
         for(j = 0; j < m; j++){
@@ -160,7 +159,7 @@ void getd2P(double *eva, double *ev, double *evi, int m, double el, double w, do
     int i, j, h;
     double res; //tmp[m], 
     double *tmp;
-    tmp = malloc(m * sizeof(double));
+    tmp = (double *) malloc(m * sizeof(double));
     for(i = 0; i < m; i++) tmp[i] = (eva[i] * w * el) * (eva[i] * w * el) * exp(eva[i] * w * el);
     for(i = 0; i < m; i++){    
         for(j = 0; j < m; j++){
@@ -177,7 +176,7 @@ void getd2P2(double *eva, double *ev, double *evi, int m, double el, double w, d
     int i, j, h;
     double  res; //tmp[m],
     double *tmp;
-    tmp = malloc(m * sizeof(double));
+    tmp = (double *) malloc(m * sizeof(double));
     for(i = 0; i < m; i++) tmp[i] = (eva[i] * w) * (eva[i] * w) * exp(eva[i] * w * el);
     for(i = 0; i < m; i++){    
         for(j = 0; j < m; j++){

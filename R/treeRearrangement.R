@@ -381,13 +381,6 @@ sprMove <- function(tree, m){
     #stop("Sorry trees must be unrooted")
     if(!is.binary(tree))stop("Sorry, trees must be binary!")
     
-#    reroot2 <- function(tree, node){
-#        anc <- Ancestors(tree, node, "all")
-#        l <- length(anc)
-#        ind <- match(c(node, anc[-l]), tree$edge[,2])
-#        tree$edge[ind,c(1,2)] <- tree$edge[ind,c(2,1)]
-#        tree    
-#    }    
     changeEdge <- function(tree, new, old){
         tree$edge[tree$edge==old] <- 0L
         tree$edge[tree$edge==new] <- old
