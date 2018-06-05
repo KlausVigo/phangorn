@@ -511,33 +511,47 @@ bab <- function (data, tree = NULL, trace = 1, ...)
     nTips <- length(data)
     if(nTips < 4) return(stree(nTips, tip.label = names(data)))
     
-    data <- removeParsUninfoSites(data)
-    p0 <- attr(data, "p0")
-#    nr <- attr(data, "nr")
-#    pis <- parsinfo(data)
-#    p0 <- sum(attr(data, "weight")[pis[, 1]] * pis[, 2])
-#    if (length(pis) > 0) 
-#        data <- getRows(data, c(1:nr)[-pis[, 1]], TRUE)
-    if(attr(data, "nr") == 0) return(stree(nTips, tip.label = names(data)))
-    
-    # added compressSites        
-    data <- compressSites(data)
     dup_list <- NULL
     addTaxa <- FALSE
     dup <- map_duplicates(data)
-# should be recursive    
-    if(!is.null(dup)){
-        dup_list <- c(list(dup), dup_list)
-        addTaxa <- TRUE
-        data <- subset(data, setdiff(names(data), dup[,1]))
-    }
-    #<- unique.phyDat
+    # should be recursive    
+    tmp=TRUE
+    star_tree=FALSE
+    while(tmp){
+        nam <- names(data)
+        data <- removeParsUninfoSites(data)
+        p0 <- attr(data, "p0")
+        if(attr(data, "nr") == 0){ 
+            star_tree=FALSE
+            break()
+            tmp=FALSE
+        }    
+        # unique sequences
+        dup <- map_duplicates(data)
+        if(!is.null(dup)){
+            dup_list <- c(list(dup), dup_list)
+            addTaxa <- TRUE
+            data <- subset(data, setdiff(names(data), dup[,1]))
+        }
+        else tmp=FALSE
+    }    
+    # star tree
+    #  if(attr(data, "nr") == 0) return(stree(nTips, tip.label = names(data)))
     nTips <- length(data)
-    if(nTips < 4L){
-        tree <- stree(nTips, tip.label = names(data))
-        return(add.tips(tree, dup[,1], dup[,2]))
+    if(nTips < 4L  || star_tree){
+        if(star_tree) tree <- stree(length(nam), tip.label = nam)
+        else tree <- stree(nTips, tip.label = names(data))
+        for(i in seq_along(dup_list)){
+            dup <- dup_list[[i]]
+            tree <- add.tips(tree, dup[,1], dup[,2])
+        }
+        return(tree)
     }
-    o <- order(attr(data, "weight"), decreasing = TRUE)
+    
+    # compress sequences (all transitions count equal)        
+    data <- compressSites(data)
+    
+    o <-order(attr(data, "weight"), decreasing = TRUE)
     data <- subset(data, , o)
     
     tree <- pratchet(data, start = tree, trace = trace - 1, ...)
@@ -562,7 +576,7 @@ bab <- function (data, tree = NULL, trace = 1, ...)
     # spaeter
     on.exit(.C("fitch_free"))
     .C("fitch_init", as.integer(data), as.integer(nTips*nr), as.integer(m), 
-             as.double(weight), as.integer(nr))
+       as.double(weight), as.integer(nr))
     mmsAmb <- 0
     mmsAmb <- TMP %*% weight  
     mmsAmb <- mmsAmb[nTips] - mmsAmb
@@ -592,9 +606,6 @@ bab <- function (data, tree = NULL, trace = 1, ...)
     # index L[i] is length(node) tree mit i+1 
     L <- as.integer( 2L*(1L:nTips) -3L ) 
     M <- as.integer( 1L:nTips + nTips - 1L )    
-    
-    #   PSC = matrix(0, sum(sapply(trees, length)), 3)    
-    #   PSC[1,] = c(3,1,0)  
     
     PSC <- matrix(c(3,1,0), 1, 3)
     PSC[1,3] <- fast.fitch(startTree, nr)
@@ -626,7 +637,7 @@ bab <- function (data, tree = NULL, trace = 1, ...)
                     as.integer(inord[a+1L]), as.integer(ind), as.integer(L[a]), 
                     as.integer(M[a]), PACKAGE="phangorn") 
                 l <- length(ind)
-                #                os <- order(score[ind], decreasing=TRUE)     
+                # os <- order(score[ind], decreasing=TRUE)     
                 os <- seq_len(l)
                 # in C pushback                
                 PSC <- rbind(PSC, cbind(rep(a+1, l), os, score[ind] ))
@@ -650,21 +661,23 @@ bab <- function (data, tree = NULL, trace = 1, ...)
                 else result <- c(result, tmp)  
             }
         }    
-        # not needed here        
-#        npsc = nrow(PSC)
     }
     for(i in seq_along(result)){
         result[[i]] <- structure(list(edge = result[[i]], Nnode = nTips-2L), 
             .Names = c("edge", "Nnode"), class = "phylo", order = "postorder")
     }
     attr(result, "TipLabel") <- tree$tip.label
-#    attr(result, "visited") = blub
+    #    attr(result, "visited") = blub
     class(result) <- "multiPhylo"
     if(addTaxa){
-        result <- .uncompressTipLabel(trees)
+        result <- .uncompressTipLabel(result)
         class(result) <- NULL
-        result <- lapply(result, add.tips, dup[,1], dup[,2])
-        result <- .uncompressTipLabel(trees)
+        for(i in seq_along(dup_list)){
+            dup <- dup_list[[i]]
+            result <- lapply(result, add.tips, dup[,1], dup[,2])
+        }
+        class(result) <- "multiPhylo"
+        result <- .compressTipLabel(result)
     }
     return(result)
 }
