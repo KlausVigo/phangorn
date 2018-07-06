@@ -236,7 +236,7 @@ fdir <- system.file("extdata/trees", package = "phangorn")
 primates <- read.phyDat(file.path(fdir, "primates.dna"), 
                         format="phylip", type="DNA")
 tree <- NJ(dist.ml(primates))
-dat <- phyDat(as.character(primates), "CODON")
+dat <- dna2codon(primates)
 fit <- pml(tree, dat, bf="F3x4")
 fit0 <- optim.pml(fit, model="codon0", control=pml.control(trace=0))
 fit1 <- optim.pml(fit, model="codon1", control=pml.control(trace=0))
@@ -244,6 +244,7 @@ fit2 <- optim.pml(fit, model="codon2", control=pml.control(trace=0))
 fit3 <- optim.pml(fit, model="codon3", control=pml.control(trace=0))
 anova(fit0, fit2, fit3, fit1)
 @
+%dat <- phyDat(as.character(primates), "CODON")
 
 There are several ways to estimate the codon frequencies $\pi_j$. The simplest model is to assume they have equal frequencies 
 (=1/61). A second is to use the empirical codon frequencies, either computed using \Rfunction{baseFreq} or using 
