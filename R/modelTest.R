@@ -275,8 +275,13 @@ modelTest <- function (object, tree = NULL, model = c("JC", "F81", "K80",
         }
     }
     attr(RESULT, "env") <- env 
+    class(RESULT) <- c("modelTest", "data.frame")
     RESULT
 }
+
+
+
+tidy <- function(x, ...) UseMethod("tidy")
 
 
 tidy.modelTest <- function(x){
