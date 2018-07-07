@@ -483,7 +483,8 @@ circNetwork <- function(x, ord=NULL){
 #' \code{\link{splitsNetwork}}, \code{\link{hadamard}},
 #' \code{\link{distanceHadamard}}, \code{\link{layout_with_kk}},
 #' \code{\link[ape]{evonet}}, \code{\link[ape]{as.igraph}},
-#' \code{\link{densiTree}}
+#' \code{\link{densiTree}}, \code{\link[ape]{nodelabels}},
+#' \code{\link[ape]{tiplabels}}
 #' @references Dress, A.W.M. and Huson, D.H. (2004) Constructing Splits Graphs
 #' \emph{IEEE/ACM Transactions on Computational Biology and Bioinformatics
 #' (TCBB)}, \bold{1(3)}, 109--115
@@ -941,16 +942,35 @@ reorder.networx <- function (x, order =  "cladewise", index.only = FALSE, ...)
 }
 
 
+# some trigonemetric functions
+rad2deg <- function(rad) {(rad * 180) / (pi)}
+deg2rad <- function(deg) {(deg * pi) / (180)}
+
+# circular mean
+# https://en.wikipedia.org/wiki/Mean_of_circular_quantities
+circ.mean <- function(deg){
+    rad.m <- (deg * pi) / (180)
+    mean.cos <- mean(cos(rad.m))
+    mean.sin <- mean(sin(rad.m))
+    
+    theta <- rad2deg(atan(mean.sin/mean.cos))
+    if(mean.cos < 0) theta <- theta + 180
+    if((mean.sin < 0) & (mean.cos > 0)) theta <- theta + 360
+    theta    
+}
+
+
 spl2angle <- function(x){
     l <- length(attr(x, "labels"))
     ord <- 1:l
     if(!is.null(attr(x, "cycle"))) ord <- attr(x, "cycle")
     x <- changeOrder(x, attr(x, "labels")[ord])
-    angle <- ((vapply(x, sum, 0) / lengths(x) - 1) / l ) * 2*pi
+    y <- lapply(x, function(x,l) (x-1)/l * 360, l=l)
+    angle <- vapply(y, circ.mean, 0) %>% deg2rad()
+    #angle <- ((vapply(x, sum, 0) / lengths(x) - 1) / l ) * 2*pi
     #kreis2kart(attr(x, "weight"), angle)
     angle
 }
-
 
 coords.equal.angle <- function(obj){
     if(is.null(attr(obj,"order")) || (attr(obj, "order")=="postorder") ) 
@@ -1162,7 +1182,10 @@ plot.networx <- function(x, type="3D", use.edge.length = TRUE, show.tip.label=TR
 	        add=FALSE)
     }   
     x$.plot <- list(vertices = coord, edge.color=edge.color, edge.width=edge.width, edge.lty = edge.lty)
-    assign("last_plot.networx", x, envir = .PlotNetworxEnv)
+#    assign("last_plot.networx", x, envir = .PlotNetworxEnv)    
+    L <- list(Ntip = nTips)
+    assign("last_plot.phylo", c(L, list(edge = x$edge, xx = coord[,1], 
+                yy = coord[,2])), envir = .PlotPhyloEnv)
     invisible(x)
 }
 
@@ -1344,11 +1367,19 @@ identify.networx <- function (x, quiet = FALSE, ...)
     xy <- locator(1)
     if (is.null(xy)) 
         return(NULL)
-    if(is.null(x$.plot)) 
-           lastPP <- get("last_plot.networx", envir = .PlotNetworxEnv)
-    else lastPP <- x$.plot
-    edge <- lastPP$edge
-    vertices <- lastPP$.plot$vertices 
+    if(is.null(x$.plot)){ 
+#           lastPP <- get("x", envir = .PlotNetworxEnv)
+           lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
+           edge <- lastPP$edge
+           xx <- lastPP$xx
+           yy <- lastPP$yy
+           vertices <- cbind(xx, yy)
+    }
+    else{
+        lastPP <- x$.plot
+        edge <- lastPP$edge
+        vertices <- lastPP$.plot$vertices 
+    }
     P1 <- vertices[edge[,1], , drop=FALSE]
     P2 <- vertices[edge[,2], , drop=FALSE]
     d <- closest.edge(xy$x, xy$y, P1, P2)
