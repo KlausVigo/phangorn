@@ -1036,8 +1036,6 @@ coords <- function(obj, dim="3D"){
     }
     else{
         coord <- layout_nicely(g, dim=2)
-#        coord <- layout_with_kk(g, dim=2)
-#        coord <- layout.kamada.kawai(g, dim=2)
         k <- matrix(0, max(obj$splitIndex), 2)
         for(i in ind1){
             tmp <- coord[obj$edge[i, 2],] - coord[obj$edge[i, 1],]
@@ -1183,7 +1181,7 @@ plot.networx <- function(x, type="3D", use.edge.length = TRUE, show.tip.label=TR
     }   
     x$.plot <- list(vertices = coord, edge.color=edge.color, edge.width=edge.width, edge.lty = edge.lty)
 #    assign("last_plot.networx", x, envir = .PlotNetworxEnv)    
-    L <- list(Ntip = nTips)
+    L <- list(Ntip = nTips, type="networx")
     assign("last_plot.phylo", c(L, list(edge = x$edge, xx = coord[,1], 
                 yy = coord[,2])), envir = .PlotPhyloEnv)
     invisible(x)
@@ -1363,7 +1361,7 @@ closest.node <- function(x, y, P){
 identify.networx <- function (x, quiet = FALSE, ...) 
 {
     if (!quiet) 
-        cat("Click close to a node of the tree...\n")
+        cat("Click close to a node or edge of the tree...\n")
     xy <- locator(1)
     if (is.null(xy)) 
         return(NULL)
@@ -1377,13 +1375,13 @@ identify.networx <- function (x, quiet = FALSE, ...)
     }
     else{
         lastPP <- x$.plot
-        edge <- lastPP$edge
-        vertices <- lastPP$.plot$vertices 
+        edge <- x$edge
+        vertices <- lastPP$vertices 
     }
     P1 <- vertices[edge[,1], , drop=FALSE]
     P2 <- vertices[edge[,2], , drop=FALSE]
     d <- closest.edge(xy$x, xy$y, P1, P2)
-    split <- lastPP$splitIndex[which.min(d)]
-    lastPP$splits[split]
+    split <- x$splitIndex[which.min(d)]
+    x$splits[split]
 }
 
