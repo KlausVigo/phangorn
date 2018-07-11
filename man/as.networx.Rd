@@ -137,7 +137,8 @@ Intertwining phylogenetic trees and networks. \emph{Methods Ecol Evol}.
 \code{\link{splitsNetwork}}, \code{\link{hadamard}},
 \code{\link{distanceHadamard}}, \code{\link{layout_with_kk}},
 \code{\link[ape]{evonet}}, \code{\link[ape]{as.igraph}},
-\code{\link{densiTree}}
+\code{\link{densiTree}}, \code{\link[ape]{nodelabels}},
+\code{\link[ape]{tiplabels}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

@@ -556,7 +556,7 @@ removeTrivialSplits <- function(obj){
 #' @rdname as.networx
 #' @method as.networx splits
 #' @export
-as.networx.splits <- function(x, planar=FALSE, coord = c("none", "2D", "3D"), ...){
+as.networx.splits <- function(x, planar=FALSE, coord=c("none", "2D", "3D"), ...){
   label <- attr(x, "label")
   x <- addTrivialSplits(x)
   nTips <- length(label)
@@ -848,7 +848,8 @@ addConfidences.splits <- function(x, y, scaler=1, ...){
     pos <-  which(!is.na(ind))
     confidences <- rep(NA_real_, length(x)) #numeric(length(x))  #character 
     confidences[pos] <- attr(spl, "confidences")[ind[pos]] * scaler
-    if(add==TRUE) confidences <- paste(prettyNum(attr(x, "confidences")) , prettyNum(confidences * scaler), sep="/")
+    if(add==TRUE) confidences <- paste(prettyNum(attr(x, "confidences")) , 
+                                       prettyNum(confidences * scaler), sep="/")
     #        y$node.label[ind[pos] - nTips]
     attr(x, "confidences") <- confidences
     x  
@@ -1156,13 +1157,14 @@ plot.networx <- function(x, type="3D", use.edge.length = TRUE, show.tip.label=TR
     if(type=="3D") {
         if(is.null(coord) || ncol(coord)!=3)        
             coord <- coords(x, dim="3D")
-        plotRGL(coord, x, show.tip.label=show.tip.label, show.edge.label=show.edge.label, 
-             edge.label = edge.label, show.node.label = show.node.label, node.label=node.label, 
-             show.nodes=show.nodes, tip.color = tip.color, edge.color=edge.color, 
-             edge.width = edge.width, font = font, cex = cex, 
-             cex.node.label=cex.node.label, cex.edge.label=cex.edge.label,
-             col.node.label = col.node.label, col.edge.label = col.edge.label,
-             font.node.label = font.node.label, font.edge.label = font.edge.label)
+        plotRGL(coord, x, show.tip.label=show.tip.label, 
+            show.edge.label=show.edge.label, edge.label = edge.label, 
+            show.node.label=show.node.label, node.label=node.label, 
+            show.nodes=show.nodes, tip.color=tip.color, edge.color=edge.color, 
+            edge.width=edge.width, font=font, cex=cex, 
+            cex.node.label=cex.node.label, cex.edge.label=cex.edge.label,
+            col.node.label=col.node.label, col.edge.label=col.edge.label,
+            font.node.label=font.node.label, font.edge.label=font.edge.label)
     }
     else{
         if(is.null(coord) || ncol(coord)!=2){
@@ -1170,16 +1172,18 @@ plot.networx <- function(x, type="3D", use.edge.length = TRUE, show.tip.label=TR
             if(type=="equal angle") coord <- coords.equal.angle(x)
      	    else coord <- coords(x, dim="2D")
         }    
-	    plot2D(coord, x, show.tip.label=show.tip.label, show.edge.label=show.edge.label, 
-	        edge.label = edge.label, show.node.label = show.node.label, node.label=node.label,
-	        show.nodes=show.nodes, tip.color = tip.color, edge.color=edge.color,
-	        edge.width = edge.width, edge.lty=edge.lty,font = font, cex = cex, 
+	    plot2D(coord, x, show.tip.label=show.tip.label, 
+	        show.edge.label=show.edge.label, edge.label=edge.label, 
+	        show.node.label=show.node.label, node.label=node.label,
+	        show.nodes=show.nodes, tip.color=tip.color, edge.color=edge.color,
+	        edge.width=edge.width, edge.lty=edge.lty,font=font, cex=cex, 
 	        cex.node.label=cex.node.label, cex.edge.label=cex.edge.label,
-	        col.node.label = col.node.label, col.edge.label = col.edge.label,
-	        font.node.label = font.node.label, font.edge.label = font.edge.label,
+	        col.node.label=col.node.label, col.edge.label=col.edge.label,
+	        font.node.label=font.node.label, font.edge.label=font.edge.label,
 	        add=FALSE)
     }   
-    x$.plot <- list(vertices = coord, edge.color=edge.color, edge.width=edge.width, edge.lty = edge.lty)
+    x$.plot <- list(vertices=coord, edge.color=edge.color, 
+                    edge.width=edge.width, edge.lty=edge.lty)
 #    assign("last_plot.networx", x, envir = .PlotNetworxEnv)    
     L <- list(Ntip = nTips, type="networx")
     assign("last_plot.phylo", c(L, list(edge = x$edge, xx = coord[,1], 
@@ -1189,17 +1193,14 @@ plot.networx <- function(x, type="3D", use.edge.length = TRUE, show.tip.label=TR
 
     
 plotRGL <- function(coords, net, show.tip.label=TRUE, 
-        show.edge.label=FALSE, edge.label=NULL, show.node.label=FALSE, node.label=NULL,
-        show.nodes=FALSE, tip.color = "blue", edge.color="grey", 
-        edge.width = 3, font = 3, cex = par("cex"), 
+        show.edge.label=FALSE, edge.label=NULL, show.node.label=FALSE, 
+        node.label=NULL, show.nodes=FALSE, tip.color = "blue", 
+        edge.color="grey", edge.width = 3, font = 3, cex = par("cex"), 
         cex.node.label=cex,  cex.edge.label=cex,
         col.node.label=tip.color, col.edge.label=tip.color,
         font.node.label=font, font.edge.label=font,        
         ...){
     
-#    chk <- .check.pkg("rgl")
-#    if(!chk) open3d <- segments3d <- spheres3d <- rgl.texts <- function(...)NULL
-
     open3d <- rgl::open3d 
     segments3d  <- rgl::segments3d
     spheres3d <- rgl::spheres3d 
@@ -1213,36 +1214,42 @@ plotRGL <- function(coords, net, show.tip.label=TRUE,
      
     nTips <- length(net$tip.label)
   
-    segments3d(x[t(edge)],y[t(edge)],z[t(edge)], col=rep(edge.color, each=2), lwd=edge.width) 
+    segments3d(x[t(edge)],y[t(edge)],z[t(edge)], col=rep(edge.color, each=2), 
+               lwd=edge.width) 
     radius <- 0
     if(show.nodes){
         radius <- sqrt((max(x)-min(x))^2 + (max(y)-min(y))^2 + (max(z)-min(z))^2) / 200    
         spheres3d(x[1:nTips], y[1:nTips],z[1:nTips], radius=2*radius, color="cyan")
-        spheres3d(x[-c(1:nTips)], y[-c(1:nTips)],z[-c(1:nTips)], radius=radius, color="magenta")
+        spheres3d(x[-c(1:nTips)], y[-c(1:nTips)],z[-c(1:nTips)], radius=radius,
+                  color="magenta")
     }
     if(show.tip.label){
         if(is.null(net$translate))   
-        rgl.texts(x[1:nTips]+2.05*radius,y[1:nTips],z[1:nTips],net$tip.label, color=tip.color, cex=cex, font=font)
+        rgl.texts(x[1:nTips]+2.05*radius,y[1:nTips],z[1:nTips],net$tip.label, 
+                  color=tip.color, cex=cex, font=font)
         else
-        rgl.texts(x[net$translate$node]+2.05*radius,y[net$translate$node],z[net$translate$node],net$tip.label, color=tip.color, cex=cex, font=font)    
+        rgl.texts(x[net$translate$node]+2.05*radius,y[net$translate$node],
+                  z[net$translate$node],net$tip.label, color=tip.color, cex=cex, 
+                  font=font)    
     }
     if(show.edge.label){
 	    ec <- edgeLabels(x, y, z, edge)
       if(is.null(edge.label)) edge.label <- net$splitIndex
         #else edge.label = net$splitIndex    
-	    rgl.texts(ec[,1], ec[,2], ec[,3], edge.label, color=col.edge.label, cex=cex.edge.label, font=font.edge.label)     
+	    rgl.texts(ec[,1], ec[,2], ec[,3], edge.label, color=col.edge.label, 
+	              cex=cex.edge.label, font=font.edge.label)     
     } 
     if(show.node.label){
-        rgl.texts(x, y, z, node.label, color=col.node.label, cex=cex.node.label, font=font.node.label) 
+        rgl.texts(x, y, z, node.label, color=col.node.label, cex=cex.node.label,
+                  font=font.node.label) 
     }
 }
 
 
 plot2D <- function(coords, net, show.tip.label=TRUE,  
-       show.edge.label=FALSE, edge.label=NULL, show.node.label=FALSE, node.label=NULL,
-       tip.color = "blue", edge.color="grey",                   
-       edge.width = 3, edge.lty=1, 
-       font = 3, cex = par("cex"), 
+       show.edge.label=FALSE, edge.label=NULL, show.node.label=FALSE, 
+       node.label=NULL, tip.color = "blue", edge.color="grey",                   
+       edge.width = 3, edge.lty=1, font = 3, cex = par("cex"), 
        cex.node.label=cex,  cex.edge.label=cex,
        col.node.label=tip.color, col.edge.label=tip.color,
        font.node.label=font, font.edge.label=font,
@@ -1281,8 +1288,10 @@ plot2D <- function(coords, net, show.tip.label=TRUE,
         XX[is.na(XX)] <- 0
         YY[is.na(YY)] <- 0
         pos[abs(YY)>abs(XX)] <- pos2[abs(YY)>abs(XX)] 	
-        if(is.null(net$translate)) text(xx[1:nTips], yy[1:nTips], labels=label, pos=pos, col=tip.color, cex=cex, font=font)
-        else text(xx[net$translate$node], yy[net$translate$node], labels=label, pos=pos, col=tip.color, cex=cex, font=font)
+        if(is.null(net$translate)) text(xx[1:nTips], yy[1:nTips], labels=label, 
+                                    pos=pos, col=tip.color, cex=cex, font=font)
+        else text(xx[net$translate$node], yy[net$translate$node], labels=label, 
+                  pos=pos, col=tip.color, cex=cex, font=font)
     }
     if(show.edge.label){
 	    ec <- edgeLabels(xx,yy, edge=edge)
@@ -1300,10 +1309,12 @@ plot2D <- function(coords, net, show.tip.label=TRUE,
 	        }
 	    }
 	    
-	    text(ec[,1], ec[,2], labels=edge.label, col=col.edge.label, cex=cex.edge.label, font=font.edge.label)     
+	    text(ec[,1], ec[,2], labels=edge.label, col=col.edge.label, 
+	         cex=cex.edge.label, font=font.edge.label)     
 	} 
     if(show.node.label){
-         text(xx, yy, labels=node.label, col=col.node.label, cex=cex.node.label, font=font.node.label)    
+         text(xx, yy, labels=node.label, col=col.node.label, cex=cex.node.label, 
+              font=font.node.label)    
     }   
 }   
    
