@@ -640,7 +640,7 @@ void C_cophenetic(int *children, int *parents, double *el, int *lp, int *m, int 
     int i, lt; 
     int *kids, *lkids, *pkids;
     int *tips, *ltips, *ptips;
-    nh = (double *) calloc(*m, sizeof(double)); 
+    nh = (double *) R_alloc(*m, sizeof(double)); 
     kids = (int *) R_alloc(*lp, sizeof(int));
     lkids = (int *) R_alloc(*nNode + 1L, sizeof(int));
     pkids = (int *) R_alloc(*nNode, sizeof(int));
