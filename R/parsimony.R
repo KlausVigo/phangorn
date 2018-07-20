@@ -564,8 +564,14 @@ pratchet <- function (data, start=NULL, method="fitch", maxit=1000, k=10,
         }
         if(perturbation=="stochastic"){
             treeNNI <- rNNI(tree, floor(nTips/2))
-            trees <- optim.parsimony(treeNNI, data, trace = trace, 
-                 method = method, rearrangements = rearrangements, ...)
+            trees <- optim.parsimony(treeNNI, data, trace=trace, method=method,
+                                     rearrangements = rearrangements, ...)
+            trees <- list(trees)
+        }
+        if(perturbation=="random_addition"){
+            treeRA <- random.addition(data)
+            trees <- optim.parsimony(treeRA, data, trace=trace, method=method,
+                                     rearrangements=rearrangements, ...)
             trees <- list(trees)
         }
         if(inherits(result,"phylo")) m <- 1
