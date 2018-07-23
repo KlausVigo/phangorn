@@ -116,3 +116,14 @@ IntegerVector p2dna(NumericMatrix xx, double eps=0.999){
     return res;
 }
 
+
+// [[Rcpp::export]]
+NumericVector node_height_cpp(IntegerVector edge1, IntegerVector edge2, 
+                              NumericVector edge_length)
+{
+    NumericVector xx(max(edge2));
+    for (int i = (edge2.size() - 1); i >= 0; i--)
+        xx[edge2[i] - 1] = xx[edge1[i] - 1] + edge_length[i];
+    return(max(xx) - xx);
+}
+

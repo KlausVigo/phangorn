@@ -1,17 +1,25 @@
+#nodeHeight <- function(tree) 
+#{
+#    if(is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise")
+#        tree <- reorder(tree, "postorder")
+#    edge <- tree$edge[, 2]
+#    node <- tree$edge[, 1]
+#    m <- max(tree$edge)
+#    el <- double(m)
+#    el[edge] <- tree$edge.length
+#    res <- .C("nodeH", as.integer(edge), as.integer(node), el, 
+#              as.integer(length(edge)), double(m))[[5]] 
+#    max(res) - res
+#}
+
+
 nodeHeight <- function(tree) 
 {
     if(is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise")
         tree <- reorder(tree, "postorder")
-    edge <- tree$edge[, 2]
-    node <- tree$edge[, 1]
-    m <- max(tree$edge)
-    el <- double(m)
-    el[edge] <- tree$edge.length
-    res <- .C("nodeH", as.integer(edge), as.integer(node), el, 
-              as.integer(length(edge)), double(m))[[5]] 
-    max(res) - res
+    node_height_cpp(as.integer(tree$edge[, 1]), as.integer(tree$edge[, 2]), 
+                               as.double(tree$edge.length)) 
 }
-
 
 
 ancstat <- function(phy, x){
