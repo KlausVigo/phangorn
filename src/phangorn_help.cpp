@@ -1,6 +1,10 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
+
+#define DINDEX(i, j) n*(i - 1) - i * (i - 1)/2 + j - i - 1
+
+
 // import: edge matrix, number of tips
 // export: Descendants(x, 1:max(x$edge), "all")
 // [[Rcpp::export]]
@@ -57,7 +61,7 @@ List bipartCPP(IntegerMatrix orig, int nTips) {
 // import: edge matrix, number of tips
 // export: Descendants(x, 1:max(x$edge), "all")
 // [[Rcpp::export]]
-List bipCPP(IntegerMatrix orig, int nTips) {
+std::vector< std::vector<int> > bipCPP(IntegerMatrix orig, int nTips) {
     IntegerVector parent = orig( _, 0);
     IntegerVector children = orig( _, 1);
     int m = max(parent), j=0;
@@ -78,7 +82,7 @@ List bipCPP(IntegerMatrix orig, int nTips) {
     for(int i=0; i<m; ++i){
         sort(out[i].begin(), out[i].end());
     }
-    return wrap(out);    // return the list
+    return out;    // return the list
 }
 
 
@@ -126,4 +130,53 @@ NumericVector node_height_cpp(IntegerVector edge1, IntegerVector edge2,
         xx[edge2[i] - 1] = xx[edge1[i] - 1] + edge_length[i];
     return(max(xx) - xx);
 }
+
+
+
+/*
+Fast cophenetic distance 
+*/
+int give_index3(int i, int j, int n)
+{
+    if (i > j) return(DINDEX(j, i));
+    else return(DINDEX(i, j));
+}
+
+
+void copheneticHelpCpp(std::vector<int> left, std::vector<int> right, int h, NumericVector nh, int nTips, NumericVector dm){
+    int ind;
+    for(int i=0; i<left.size(); i++){
+        for(int j=0; j<right.size(); j++){
+            ind = give_index3(left[i], right[j], nTips);
+            dm[ind] = 2.0*nh[h] - nh[left[i]-1L] - nh[right[j]-1L]; 
+        }   
+    }
+}     
+
+
+// [[Rcpp::export]]
+NumericVector cophenetic_cpp(IntegerMatrix edge, NumericVector edge_length, 
+                             int nTips, int nNode){
+    IntegerVector parents = edge( _, 0);
+    IntegerVector children = edge( _, 1);    
+    NumericVector nh = node_height_cpp(parents, children, edge_length);
+    List ch = allChildrenCPP(edge);
+    std::vector< std::vector<int> > bip = bipCPP(edge, nTips);
+    NumericVector dm( nTips * (nTips-1) /2 );
+    int l=0, left, right;
+    for(int h=nNode; h<(nNode + nTips); h++){
+        NumericVector tmp_ch = ch[h];
+        l = tmp_ch.size();
+        for(int j=0; j<(l-1L); j++){
+            left = tmp_ch[j] - 1;
+            for(int k=j+1L; k<l; k++) {
+                right = tmp_ch[k] - 1;
+                //void copheneticHelpCpp(IntegerVector left, IntegerVector right, int h, NumericVector nh, int nTips, NumericVector dm){
+                copheneticHelpCpp(bip[left], bip[right], h, nh, nTips, dm);
+            }
+        }
+    }
+    return dm;
+}
+
 

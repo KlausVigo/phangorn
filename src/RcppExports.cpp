@@ -42,7 +42,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // bipCPP
-List bipCPP(IntegerMatrix orig, int nTips);
+std::vector< std::vector<int> > bipCPP(IntegerMatrix orig, int nTips);
 RcppExport SEXP _phangorn_bipCPP(SEXP origSEXP, SEXP nTipsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -73,6 +73,33 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< NumericMatrix >::type xx(xxSEXP);
     Rcpp::traits::input_parameter< double >::type eps(epsSEXP);
     rcpp_result_gen = Rcpp::wrap(p2dna(xx, eps));
+    return rcpp_result_gen;
+END_RCPP
+}
+// node_height_cpp
+NumericVector node_height_cpp(IntegerVector edge1, IntegerVector edge2, NumericVector edge_length);
+RcppExport SEXP _phangorn_node_height_cpp(SEXP edge1SEXP, SEXP edge2SEXP, SEXP edge_lengthSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type edge1(edge1SEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type edge2(edge2SEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type edge_length(edge_lengthSEXP);
+    rcpp_result_gen = Rcpp::wrap(node_height_cpp(edge1, edge2, edge_length));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cophenetic_cpp
+NumericVector cophenetic_cpp(IntegerMatrix edge, NumericVector edge_length, int nTips, int nNode);
+RcppExport SEXP _phangorn_cophenetic_cpp(SEXP edgeSEXP, SEXP edge_lengthSEXP, SEXP nTipsSEXP, SEXP nNodeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerMatrix >::type edge(edgeSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type edge_length(edge_lengthSEXP);
+    Rcpp::traits::input_parameter< int >::type nTips(nTipsSEXP);
+    Rcpp::traits::input_parameter< int >::type nNode(nNodeSEXP);
+    rcpp_result_gen = Rcpp::wrap(cophenetic_cpp(edge, edge_length, nTips, nNode));
     return rcpp_result_gen;
 END_RCPP
 }

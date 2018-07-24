@@ -25,3 +25,11 @@ p2dna <- function(xx, eps = 0.999) {
     .Call(`_phangorn_p2dna`, xx, eps)
 }
 
+node_height_cpp <- function(edge1, edge2, edge_length) {
+    .Call(`_phangorn_node_height_cpp`, edge1, edge2, edge_length)
+}
+
+cophenetic_cpp <- function(edge, edge_length, nTips, nNode) {
+    .Call(`_phangorn_cophenetic_cpp`, edge, edge_length, nTips, nNode)
+}
+
