@@ -515,16 +515,16 @@ bab <- function (data, tree = NULL, trace = 1, ...)
     addTaxa <- FALSE
     dup <- map_duplicates(data)
     # should be recursive    
-    tmp=TRUE
-    star_tree=FALSE
+    tmp <- TRUE
+    star_tree <- FALSE
     while(tmp){
         nam <- names(data)
         data <- removeParsUninfoSites(data)
         p0 <- attr(data, "p0")
         if(attr(data, "nr") == 0){ 
-            star_tree=FALSE
+            star_tree <- FALSE
             break()
-            tmp=FALSE
+            tmp <- FALSE
         }    
         # unique sequences
         dup <- map_duplicates(data)
@@ -533,7 +533,7 @@ bab <- function (data, tree = NULL, trace = 1, ...)
             addTaxa <- TRUE
             data <- subset(data, setdiff(names(data), dup[,1]))
         }
-        else tmp=FALSE
+        else tmp <- FALSE
     }    
     # star tree
     #  if(attr(data, "nr") == 0) return(stree(nTips, tip.label = names(data)))
