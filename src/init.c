@@ -21,8 +21,6 @@
 /* .C calls */
 extern void ACCTRAN2(void *, void *, void *, void *, void *, void *);
 extern void ACCTRAN3(void *, void *, void *, void *, void *, void *, void *, void *);
-extern void AllKids(void *, void *, void *, void *, void *, void *, void *, void *);
-extern void C_cophenetic(void *, void *, void *, void *, void *, void *, void *, void *);
 extern void C_fhm(void *, void *);
 extern void C_reorder(void *, void *, void *, void *, void *, void *);
 extern void countCycle(void *, void *, void *, void *);
@@ -35,9 +33,7 @@ extern void fitchTriplet(void *, void *, void *, void *, void *);
 extern void fitchTripletACC4(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
 extern void giveIndex(void *, void *, void *, void *, void *, void *);
 extern void ll_free();
-//extern void ll_free2();
 extern void ll_init(void *, void *, void *, void *);
-//extern void ll_init2(void *, void *, void *, void *, void *, void *);
 extern void nodeH(void *, void *, void *, void *, void *);
 extern void out(void *, void *, void *, void *, void *);
 
@@ -90,8 +86,6 @@ extern SEXP _phangorn_cophenetic_cpp(SEXP, SEXP, SEXP, SEXP);
 static const R_CMethodDef CEntries[] = {
     {"ACCTRAN2",         (DL_FUNC) &ACCTRAN2,          6},
     {"ACCTRAN3",         (DL_FUNC) &ACCTRAN3,          8},
-    {"AllKids",          (DL_FUNC) &AllKids,           8},
-    {"C_cophenetic",     (DL_FUNC) &C_cophenetic,      8},
     {"C_fhm",            (DL_FUNC) &C_fhm,             2},
     {"C_reorder",        (DL_FUNC) &C_reorder,         6},
     {"countCycle",       (DL_FUNC) &countCycle,        4},
@@ -104,9 +98,7 @@ static const R_CMethodDef CEntries[] = {
     {"fitchTripletACC4", (DL_FUNC) &fitchTripletACC4, 11},
     {"giveIndex",        (DL_FUNC) &giveIndex,         6},
     {"ll_free",          (DL_FUNC) &ll_free,           0},
-//    {"ll_free2",         (DL_FUNC) &ll_free2,          0},
     {"ll_init",          (DL_FUNC) &ll_init,           4},
-//    {"ll_init2",         (DL_FUNC) &ll_init2,          6},
     {"nodeH",            (DL_FUNC) &nodeH,             5},
     {"out",              (DL_FUNC) &out,               5},
     {NULL, NULL, 0}

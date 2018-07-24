@@ -1,40 +1,6 @@
 #
 # tree distance functions
 #
-
-#allKids <- function(phy){
-#    nTips <- as.integer(length(phy$tip.label))
-#    lp <- nrow(phy$edge)
-#    nNode <- phy$Nnode
-#    .C("AllKids", as.integer(phy$edge[,2]), as.integer(phy$edge[,1]), 
-#       as.integer(nTips), as.integer(nNode), as.integer(lp), integer(lp), 
-#       integer(nNode+1L),integer(nNode))
-#} 
-
-
-#coph <- function(x, path=FALSE){ 
-#    if (is.null(attr(x, "order")) || attr(x, "order") == "cladewise") 
-#        x <- reorder(x, "postorder")
-#    nTips <- as.integer(length(x$tip.label))   
-#    parents <- as.integer(x$edge[,1]) 
-#    kids <- as.integer(x$edge[,2])
-#    lp <- as.integer(length(parents))
-#    nNode <- as.integer(x$Nnode)
-#    m <- as.integer(max(x$edge)) # nNode + nTip
-#    el <- double(m)
-#    if(path) el <- rep(1.0, m)
-#    else el[kids] <- x$edge.length
-#    dm <- .C("C_cophenetic", kids, parents, as.double(el), lp, m, nTips, nNode, 
-#             double(nTips*(nTips-1L)/2L))[[8]]
-#    attr(dm, "Size") <- nTips
-#    attr(dm, "Labels") <- x$tip.label
-#    attr(dm, "Diag") <- FALSE
-#    attr(dm, "Upper") <- FALSE
-#    class(dm) <- "dist"
-#    dm
-#} 
-
-
 coph <- function(x, path=FALSE){ 
     if (is.null(attr(x, "order")) || attr(x, "order") == "cladewise") 
         x <- reorder(x, "postorder")
@@ -63,7 +29,6 @@ cophenetic.splits <- function(x){
     class(dm) <- "dist"
     dm
 }
-
 
 
 

@@ -171,7 +171,6 @@ NumericVector cophenetic_cpp(IntegerMatrix edge, NumericVector edge_length,
             left = tmp_ch[j] - 1;
             for(int k=j+1L; k<l; k++) {
                 right = tmp_ch[k] - 1;
-                //void copheneticHelpCpp(IntegerVector left, IntegerVector right, int h, NumericVector nh, int nTips, NumericVector dm){
                 copheneticHelpCpp(bip[left], bip[right], h, nh, nTips, dm);
             }
         }
