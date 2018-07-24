@@ -112,7 +112,7 @@ simSeq.phylo <- function(x, l=1000, Q=NULL, bf=NULL, rootseq=NULL, type = "DNA",
             if (!is.na(existing[1])) 
                 dnds <- eval(extras[[existing[1]]], parent.frame())
             if (!is.na(existing[2])) 
-                tstv <- eval(extras[[existing[1]]], parent.frame())
+                tstv <- eval(extras[[existing[2]]], parent.frame())
         }    
 #        Q <- as.numeric(.syn > 0)
     }
