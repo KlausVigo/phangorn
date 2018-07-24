@@ -42,7 +42,7 @@ coph <- function(x, path=FALSE){
     if(path) el <- rep(1.0, nrow(x$edge))
     nTips <- as.integer(length(x$tip.label))   
     nNode <- as.integer(x$Nnode)
-    dm <- phangorn:::cophentic_cpp(x$edge, as.double(el), nTips, nNode)
+    dm <- cophenetic_cpp(x$edge, as.double(el), nTips, nNode)
     attr(dm, "Size") <- nTips
     attr(dm, "Labels") <- x$tip.label
     attr(dm, "Diag") <- FALSE
