@@ -1,21 +1,3 @@
-  
-edgeLengthIndex <- function(child, parent, nTips){
-    fun <- function(child, parent, nTips){
-        if(child <= nTips) return(child)
-        else{
-            if(child < parent) return(parent)
-            return(child)
-        }
-    }
-    if (length(child)==1) return(fun(child, parent, nTips))
-    else {
-        res <- integer(length(child))
-        for(i in 1:length(child))res[i] <- fun(child[i], parent[i], nTips)
-        return(res)
-    }
-}
-
-
 #
 # Maximum likelihood estimation
 #
@@ -1701,15 +1683,18 @@ pml <- function (tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     if (is.null(bf)) 
         bf <- rep(1/length(levels), length(levels))
     if (is.character(bf)){
-        bf_choice <- match.arg(bf, c("equal", "empirical", "F3x4"))
+        bf_choice <- match.arg(bf, c("equal", "empirical", "F1x4", "F3x4"))
         if(bf_choice == "F3x4" & type !="CODON"){
-            # bf_choice = "equal"
             stop("F3x4 not available for this data type")
+        }
+        if(bf_choice == "F1x4" & type !="CODON"){
+            stop("F1x4 not available for this data type")
         }
         bf <- switch(bf_choice, 
                      equal = rep(1/length(levels), length(levels)),
                      empirical = baseFreq(data), 
-                     F3x4 = F3x4(data))
+                     F3x4 = F3x4(data), 
+                     F1x4 = F1x4(data))
         names(bf) <- NULL
     }
     if (is.null(Q)) 

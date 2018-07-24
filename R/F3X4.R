@@ -55,6 +55,15 @@ F3x4 <- function(x){
     F3x4_freq(BF)
 }
 
+
+F1x4 <- function(x){
+    bf <- codon2dna(x) %>% baseFreq
+    BF <- matrix(bf, 4,3)
+    F3x4_freq(BF)
+}
+
+
+
 # test
 #SCRIPT_DIR = # please fill in the script dir
 #codon_data_path = SCRIPT_DIR + "/codon_aln.fas"
