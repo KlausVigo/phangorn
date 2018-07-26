@@ -367,32 +367,6 @@ edQt <- function (Q = c(1, 1, 1, 1, 1, 1), bf = c(0.25, 0.25, 0.25, 0.25))
 }
 
 
-edQ <- function(Q=c(1,1,1,1,1,1), bf=c(0.25,.25,.25,.25)){
-    l <- length(bf)
-    res <- matrix(0, l, l)
-    res[lower.tri(res)] <- Q
-    res <- res+t(res)
-    res <- res * rep(bf,each=l)
-    diag(res) <- -rowSums(res)
-    res2 <- res * rep(bf,l)
-    diag(res2) <- 0 
-    res <- res/sum(res2)
-    e <- eigen(res, FALSE)
-    e$inv <- solve.default(e$vec)
-    e
-}
-
-edQ2 <- function(Q){
-    res <- Q
-    l <- dim(Q)[1]
-    diag(res) <- 0
-    diag(res) <- -rowSums(res)
-    e <- eigen(res, FALSE)
-    e$inv <- solve.default(e$vec)
-    e
-}
-
-
 #' @rdname pml.fit
 #' @export
 pml.free <- function(){
