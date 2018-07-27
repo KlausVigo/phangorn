@@ -511,9 +511,9 @@ optim.parsimony <- function(tree,data, method='fitch', cost=NULL, trace=1,
 #' @rdname parsimony
 #' @export
 # perturbation="ratchet", "stochastic"
-pratchet <- function (data, start=NULL, method="fitch", maxit=1000, k=10, 
-        trace=1, all=FALSE, rearrangements="SPR", perturbation="ratchet", 
-        search_history=c(FALSE, FALSE), ...) 
+pratchet <- function (data, start=NULL, method="fitch", maxit=1000, minit=10, 
+                    k=10, trace=1, all=FALSE, rearrangements="SPR", 
+                    perturbation="ratchet", search_history=c(FALSE, FALSE), ...) 
 {
     eps <- 1e-08
 #    if(method=="fitch" && (is.null(attr(data, "compressed")) || attr(data, "compressed") == FALSE)) 
@@ -568,7 +568,7 @@ pratchet <- function (data, start=NULL, method="fitch", maxit=1000, k=10,
     })
     kmax <- 1
     nTips <- length(tree$tip.label)
-    for (i in 1:maxit) {
+    for (i in seq_len(maxit)) {
         if(perturbation=="ratchet"){
             bstrees <- bootstrap.phyDat(data, FUN, tree=tree, bs=1, 
                 trace=trace, method=method, rearrangements=rearrangements, ...)
@@ -614,7 +614,7 @@ pratchet <- function (data, start=NULL, method="fitch", maxit=1000, k=10,
             l <- length(result)
             tree <- result[[sample(l, 1)]]
         }
-        if( (kmax == k) & (i>=minit) ) break()
+        if( (kmax >= k) && (i>=minit) ) break()
     }# for
 }  # pratchet
 

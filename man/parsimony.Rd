@@ -21,8 +21,8 @@ sankoff(tree, data, cost = NULL, site = "pscore")
 optim.parsimony(tree, data, method = "fitch", cost = NULL, trace = 1,
   rearrangements = "SPR", ...)
 
-pratchet(data, start = NULL, method = "fitch", maxit = 1000, k = 10,
-  trace = 1, all = FALSE, rearrangements = "SPR",
+pratchet(data, start = NULL, method = "fitch", maxit = 1000, minit = 10,
+  k = 10, trace = 1, all = FALSE, rearrangements = "SPR",
   perturbation = "ratchet", search_history = c(FALSE, FALSE), ...)
 
 acctran(tree, data)
@@ -49,6 +49,8 @@ model="sankoff" and cost matrix).}
 
 \item{maxit}{maximum number of iterations in the ratchet.}
 
+\item{minit}{minimum number of iterations in the ratchet.}
+
 \item{k}{number of rounds ratchet is stopped, when there is no improvement.}
 
 \item{all}{return all equally good trees or just one of them.}
@@ -57,8 +59,6 @@ model="sankoff" and cost matrix).}
 "stochastic" (nni) for shuffling the tree.}
 
 \item{search_history}{record the trees visited during the search.}
-
-\item{minit}{minimum number of iterations in the ratchet.}
 }
 \value{
 \code{parsimony} returns the maximum parsimony score (pscore).

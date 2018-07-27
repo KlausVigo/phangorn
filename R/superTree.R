@@ -66,7 +66,8 @@ my.supertree <- function(trees, trace=0, ...){
     has_edge_length <- vapply(trees, function(x) !is.null(x$edge.length), FALSE)
     if(all(has_edge_length)) trees <- di2multi(trees) 
     XX <- tree2phyDat(trees)
-    supertree<-pratchet(XX,all=TRUE, trace=trace, ...)
+    supertree<-pratchet(XX, trace=trace, ...) 
+    # supertree<-pratchet(XX,all=TRUE, trace=trace, ...)
 #    supertree <- acctran(supertree, XX)
     return(supertree)
 }    
@@ -149,8 +150,8 @@ dist.superTree <- function(tree, trace=0, fun, start=NULL, multicore=FALSE,
 #' set.seed(1)
 #' bs <- bootstrap.phyDat(Laurasiatherian, FUN = function(x)upgma(dist.hamming(x)), bs=50)
 #' 
-#' mrp_st <- superTree(bs, rooted=TRUE)
-#' plot(superTree(mrp_st))
+#' mrp_st <- superTree(bs)
+#' plot(mrp_st)
 #' \dontrun{
 #' rf_st <- superTree(bs, method = "RF")
 #' spr_st <- superTree(bs, method = "SPR")
