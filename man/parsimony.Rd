@@ -23,7 +23,7 @@ optim.parsimony(tree, data, method = "fitch", cost = NULL, trace = 1,
 
 pratchet(data, start = NULL, method = "fitch", maxit = 1000, k = 10,
   trace = 1, all = FALSE, rearrangements = "SPR",
-  perturbation = "ratchet", ...)
+  perturbation = "ratchet", search_history = c(FALSE, FALSE), ...)
 
 acctran(tree, data)
 }
@@ -53,8 +53,12 @@ model="sankoff" and cost matrix).}
 
 \item{all}{return all equally good trees or just one of them.}
 
-\item{perturbation}{whether using a ratchet or stochastic (nni) for
-shuffling the tree.}
+\item{perturbation}{whether to use "ratchet", "random.addition" or 
+"stochastic" (nni) for shuffling the tree.}
+
+\item{search_history}{record the trees visited during the search.}
+
+\item{minit}{minimum number of iterations in the ratchet.}
 }
 \value{
 \code{parsimony} returns the maximum parsimony score (pscore).

@@ -29,7 +29,7 @@ simSeq(x, ...)
 \item{rootseq}{a vector of length l containing the root sequence, other root
 sequence is randomly generated.}
 
-\item{type}{Type of sequences ("DNA", "AA" or "USER").}
+\item{type}{Type of sequences ("DNA", "AA", "CODON" or "USER").}
 
 \item{model}{Amino acid models: e.g. "WAG", "JTT", "Dayhoff" or "LG"}
 
@@ -50,12 +50,16 @@ Simulate sequences for a given evolutionary tree.
 \details{
 \code{simSeq} is now a generic function to simulate sequence alignments to
 along a phylogeny. It
-is quite flexible and allows to generate DNA, RNA, amino acids or binary
-sequences.  It is possible to give a \code{pml} object as input simSeq
+is quite flexible and allows to generate DNA, RNA, amino acids, codon  or 
+binary sequences.  It is possible to give a \code{pml} object as input simSeq
 return a \code{phyDat} from these model.  There is also a more low level
 version, which lacks rate variation, but one can combine different
 alignments having their own rate (see example). The rate parameter acts like
 a scaler for the edge lengths.
+
+For codon models \code{type="CODON"} two additional arguments \code{dnds} 
+for the dN/dS ratio and \code{tstv} for the transition transversion ratio
+can be supplied.
 }
 \examples{
 
