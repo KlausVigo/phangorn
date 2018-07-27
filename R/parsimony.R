@@ -44,10 +44,12 @@ sankoff.quartet <- function (dat, cost, p, l, weight)
 #' @param rearrangements SPR or NNI rearrangements.
 #' @param start a starting tree can be supplied.
 #' @param maxit maximum number of iterations in the ratchet.
+#' @param minit minimum number of iterations in the ratchet.
 #' @param k number of rounds ratchet is stopped, when there is no improvement.
 #' @param all return all equally good trees or just one of them.
-#' @param perturbation whether using a ratchet or stochastic (nni) for
-#' shuffling the tree.
+#' @param perturbation whether to use "ratchet", "random.addition" or 
+#' "stochastic" (nni) for shuffling the tree.
+#' @param search_history record the trees visited during the search.
 #' @param ... Further arguments passed to or from other methods (e.g.
 #' model="sankoff" and cost matrix).
 #' @return \code{parsimony} returns the maximum parsimony score (pscore).
@@ -510,7 +512,8 @@ optim.parsimony <- function(tree,data, method='fitch', cost=NULL, trace=1,
 #' @export
 # perturbation="ratchet", "stochastic"
 pratchet <- function (data, start=NULL, method="fitch", maxit=1000, k=10, 
-        trace=1, all=FALSE, rearrangements="SPR", perturbation="ratchet", ...) 
+        trace=1, all=FALSE, rearrangements="SPR", perturbation="ratchet", 
+        search_history=c(FALSE, FALSE), ...) 
 {
     eps <- 1e-08
 #    if(method=="fitch" && (is.null(attr(data, "compressed")) || attr(data, "compressed") == FALSE)) 
@@ -538,6 +541,8 @@ pratchet <- function (data, start=NULL, method="fitch", maxit=1000, k=10,
         }
         result
     }
+    if(search_history[1]) start_trees <- list()
+    if(search_history[2]) search_trees <- list()
     if (is.null(start)) 
         start <- optim.parsimony(nj(dist.hamming(data)), data, trace = trace, 
                         method=method, rearrangements=rearrangements, ...)
@@ -553,6 +558,14 @@ pratchet <- function (data, start=NULL, method="fitch", maxit=1000, k=10,
                          rearrangements=rearrangements, ...)
     result <- list()
     result[[1]] <- tree
+    on.exit({
+        if(!all) return(tree)
+        if(length(result)==1) return(result[[1]])
+        class(result) <- "multiPhylo"
+        if(any(search_history)) result <- list(best=result, 
+                        start_trees=start_trees, search_trees=search_trees)
+        result
+    })
     kmax <- 1
     nTips <- length(tree$tip.label)
     for (i in 1:maxit) {
@@ -561,18 +574,24 @@ pratchet <- function (data, start=NULL, method="fitch", maxit=1000, k=10,
                 trace=trace, method=method, rearrangements=rearrangements, ...)
             trees <- lapply(bstrees, optim.parsimony, data, trace = trace, 
                             method=method, rearrangements=rearrangements, ...)
+            if(search_history[1]) start_trees[[i]] <- bstrees[[1]]
+            if(search_history[2]) search_trees[[i]] <- trees[[1]]
         }
         if(perturbation=="stochastic"){
             treeNNI <- rNNI(tree, floor(nTips/2))
             trees <- optim.parsimony(treeNNI, data, trace=trace, method=method,
                                      rearrangements = rearrangements, ...)
             trees <- list(trees)
+            if(search_history[1]) start_trees[[i]] <- treeNNI
+            if(search_history[2]) search_trees[[i]] <- trees[[1]] 
         }
         if(perturbation=="random_addition"){
             treeRA <- random.addition(data)
             trees <- optim.parsimony(treeRA, data, trace=trace, method=method,
                                      rearrangements=rearrangements, ...)
             trees <- list(trees)
+            if(search_history[1]) start_trees[[i]] <- treeRA
+            if(search_history[2]) search_trees[[i]] <- trees[[1]]
         }
         if(inherits(result,"phylo")) m <- 1
         else m <- length(result)
@@ -595,12 +614,8 @@ pratchet <- function (data, start=NULL, method="fitch", maxit=1000, k=10,
             l <- length(result)
             tree <- result[[sample(l, 1)]]
         }
-        if(kmax == k) break()
+        if( (kmax == k) & (i>=minit) ) break()
     }# for
-    if(!all) return(tree)
-    if(length(result)==1) return(result[[1]])
-    class(result) <- "multiPhylo"
-    result
 }  # pratchet
 
 
