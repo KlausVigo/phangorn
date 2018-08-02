@@ -1050,16 +1050,20 @@ subset.phyDat <- function (x, subset, select, site.pattern = TRUE,...)
 }
 
 
-map_duplicates <-  function(x, ...){
+map_duplicates <-  function(x, dist=TRUE, ...){
     labels <- names(x)
-    y <- as.matrix(dist.hamming(x, FALSE)) 
-    l <- nrow(y)
-    z <- character(l)
-    for(i in seq_len(l)) z[i] <- paste( round(y[i, ] ,8), collapse="_")
-    res <- NULL
-    if(any(duplicated(z))){
+    if(dist){
+        y <- as.matrix(dist.hamming(x, FALSE)) 
+        l <- nrow(y)
+        z <- character(l)
+        for(i in seq_len(l)) z[i] <- paste( round(y[i, ] ,8), collapse="_")
         ind <- duplicated(z)
-        ind2 <- match(z[ind], z)
+    }
+    else ind <- duplicated(x)
+    res <- NULL
+    if(any(ind)){
+        if(dist) ind2 <- match(z[ind], z)
+        else ind2 <- match(x[ind], x)
         res <- data.frame(duplicates=labels[ind], where=labels[ind2],
                           stringsAsFactors = FALSE)
     }
@@ -1072,17 +1076,6 @@ map_duplicates <-  function(x, ...){
 #    getCols(x, setdiff(names(x), tmp))
 #}
 
-# duplicated_phyDat <- function(x, ...){
-#    dm <- as.matrix(dist.hamming(x))
-#    diag(dm) <- 1
-#    res <- logical(nrow(dm))
-#    if(all(dm>0)) return(res)
-#    tmp <- which(dm==0, arr.ind = TRUE, useNames = FALSE)
-#    tmp <- tmp[tmp[,1] < tmp[,2],2]
-#    res[unique(tmp)] <- TRUE
-#    res
-#}
-
 
 #' @rdname phyDat
 #' @method unique phyDat
@@ -1091,7 +1084,6 @@ unique.phyDat <- function(x, incomparables=FALSE, identical=TRUE, ...){
     if(identical) return(getCols(x, !duplicated(x)))
     tmp <- map_duplicates(x)[,1]
     getCols(x, setdiff(names(x), tmp))
-#    getCols(x, !duplicated_phyDat(x))
 } 
 
 
