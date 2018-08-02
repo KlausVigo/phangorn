@@ -635,20 +635,41 @@ optim.sankoff <- function(tree, data, cost=NULL, trace=1, ...) {
         tree <- reorder(tree, "postorder")
     if (class(data)[1] != "phyDat") stop("data must be of class phyDat")
     
+    mapping <- map_duplicates(data) 
+    if(!is.null(mapping)){ 
+#        orig.data <- data
+        addTaxa <- TRUE
+        tree2 <- drop.tip(tree, mapping[,1])
+        tree <- reorder(tree2, "postorder")
+    }
+    
     rt <- FALSE
     dat <- prepareDataSankoff(data)
     l <- attr(dat, "nc")
     if (is.null(cost)) {
         cost <- matrix(1, l, l)
         cost <- cost - diag(l)
-        #       rt = TRUE
     }
+    
+    
     tree$edge.length <- NULL
     swap <- 0
     iter <- TRUE
-    pscore <- fit.sankoff(tree,dat,cost,'pscore')
+    pscore <- fit.sankoff(tree, dat, cost, 'pscore')
+    
+    on.exit({
+        if(rt) tree <- ptree(tree, data) 
+        if(addTaxa){
+            if(rt)tree <- add.tips(tree, tips=mapping[,1], where=mapping[,2], 
+                             edge.length=rep(0,nrow(mapping)) )
+            else tree <- add.tips(tree, tips=mapping[,1], where=mapping[,2])
+        }
+        attr(tree, "pscore") <- pscore
+        return(tree)
+    })
+    
     while (iter) {
-        res <- sankoff.nni(tree,dat,cost,...)
+        res <- sankoff.nni(tree, dat, cost,...)
         tree <- res$tree
         if(trace>1)cat("optimize topology: ", pscore , "-->", res$pscore, 
             "\n")
@@ -657,9 +678,9 @@ optim.sankoff <- function(tree, data, cost=NULL, trace=1, ...) {
         if (res$swap == 0) iter <- FALSE
         }
     if(trace>0)cat("Final p-score",pscore,"after ",swap, "nni operations \n") 
-    if(rt)tree <- ptree(tree, data)  
-    attr(tree, "pscore") <- pscore
-    tree
+#    if(rt)tree <- ptree(tree, data)  
+#    attr(tree, "pscore") <- pscore
+#    tree
 }
 
 
