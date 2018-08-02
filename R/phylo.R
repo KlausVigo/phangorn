@@ -2316,16 +2316,23 @@ optim.pml <- function (object, optNni=FALSE, optBf=FALSE, optQ=FALSE,
     
     if(optNni) {
         # test this more 
-        dup <-  duplicated(data) # duplicated_phyDat(data)
-        if(any(dup)){ # && optNNI
+#        dup <-  duplicated(data) 
+#        if(any(dup)){ # && optNNI
+#            orig.data <- data
+#            addTaxa <- TRUE
+#            labels <- names(data)
+#            ldup <- labels[dup]
+#            ind2 <- match(subset(data, dup), data)
+#            tree2 <- drop.tip(tree, ldup)
+#            tree <- reorder(tree2, "postorder")
+#            mapping <- cbind(labels[dup], labels[ind2])
+#        }
+        mapping <- map_duplicates(data) 
+        if(!is.null(mapping)){ # && optNNI
             orig.data <- data
             addTaxa <- TRUE
-            labels <- names(data)
-            ldup <- labels[dup]
-            ind2 <- match(subset(data, dup), data)
-            tree2 <- drop.tip(tree, ldup)
+            tree2 <- drop.tip(tree, mapping[,1])
             tree <- reorder(tree2, "postorder")
-            mapping <- cbind(labels[dup], labels[ind2])
         }
         if(!is.binary(tree)) 
             tree <- multi2di(tree)
