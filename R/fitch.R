@@ -237,7 +237,6 @@ fitch.spr2 <- function(tree, data){
                 minp <- min(score)
             }
             }
-#            browser()
 #            j = Ancestors(tree, i, "parent")
 #            tree2 = reroot(tree, node=i)
 #            tree2 = unroot(tree2)
@@ -342,23 +341,62 @@ optim.fitch <- function(tree, data, trace=1, rearrangements = "SPR", ...) {
 #    tree
       
     rt <- FALSE
-    nTips <- as.integer(length(tree$tip.label))
 
-    nr <- attr(data, "nr")    
-    pis <- parsinfo(data)
-    p0 <- sum(attr(data, "weight")[pis[, 1]] * pis[, 2])
-    if (length(pis) > 0) 
-        data <- getRows(data, c(1:nr)[-pis[, 1]], TRUE)    
+    dup_list <- NULL
+    addTaxa <- FALSE
+    tmp <- TRUE
+    star_tree <- FALSE
+# recursive remove parsimonious uniformative sites and 
+# identical sequences    
+    while(tmp){
+        nam <- names(data)
+        data <- removeParsUninfoSites(data)
+        p0 <- attr(data, "p0")
+        if(attr(data, "nr") == 0){ 
+            star_tree <- TRUE
+            break()
+            tmp <- FALSE
+        }    
+        # unique sequences
+        dup <- map_duplicates(data)
+        if(!is.null(dup)){
+            tree <- drop.tip(tree, dup[,1])
+            tree <- reorder(tree, "postorder")  
+            dup_list <- c(list(dup), dup_list)
+            addTaxa <- TRUE
+            data <- subset(data, setdiff(names(data), dup[,1]))
+        }
+        else break() #tmp <- FALSE
+    }    
+#    nr <- attr(data, "nr")    
+#    pis <- parsinfo(data)
+#    p0 <- sum(attr(data, "weight")[pis[, 1]] * pis[, 2])
+#    if (length(pis) > 0) 
+#        data <- getRows(data, c(1:nr)[-pis[, 1]], TRUE)    
     
     nr <- attr(data, "nr")
-   
+    nTips <- as.integer(length(tree$tip.label))
     data <- subset(data, tree$tip.label, order(attr(data, "weight"), 
                                                decreasing=TRUE))   
     dat <- prepareDataFitch(data) 
     weight <- attr(data, "weight")
 
     m <- nr*(2L*nTips - 2L)
-    on.exit(.C("fitch_free"))
+    on.exit({
+        .C("fitch_free")
+        if(addTaxa){
+            if(rt)tree <- ptree(tree, data)  
+            for(i in seq_along(dup_list)){
+                dup <- dup_list[[i]]
+                tree <- add.tips(tree, dup[,1], dup[,2])
+            }
+            attr(tree, "pscore") <- pscore + p0
+            tree
+        }
+
+        attr(tree, "pscore") <- pscore
+        return(tree)
+        })
     .C("fitch_init", as.integer(dat), as.integer(nTips*nr), as.integer(m), 
        as.double(weight), as.integer(nr))
 
@@ -387,9 +425,9 @@ optim.fitch <- function(tree, data, trace=1, rearrangements = "SPR", ...) {
     }
     if(trace>0) cat("Final p-score", pscore + p0,"after ", swap, 
                     "nni operations \n") 
-    if(rt)tree <- ptree(tree, data)  
-    attr(tree, "pscore") <- pscore + p0
-    tree
+#    if(rt)tree <- ptree(tree, data)  
+#    attr(tree, "pscore") <- pscore + p0
+#    tree
 }
 
 # branch and bound
@@ -513,7 +551,7 @@ bab <- function (data, tree = NULL, trace = 1, ...)
     
     dup_list <- NULL
     addTaxa <- FALSE
-    dup <- map_duplicates(data)
+    #dup <- map_duplicates(data)
     # should be recursive    
     tmp <- TRUE
     star_tree <- FALSE
@@ -552,7 +590,7 @@ bab <- function (data, tree = NULL, trace = 1, ...)
     data <- compressSites(data)
     
     o <-order(attr(data, "weight"), decreasing = TRUE)
-    data <- subset(data, , o)
+    data <- subset(data, select=o)
     
     tree <- pratchet(data, start = tree, trace = trace - 1, ...)
     data <- subset(data, tree$tip.label) 
