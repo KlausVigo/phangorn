@@ -390,11 +390,10 @@ optim.fitch <- function(tree, data, trace=1, rearrangements = "SPR", ...) {
                 dup <- dup_list[[i]]
                 tree <- add.tips(tree, dup[,1], dup[,2])
             }
-            attr(tree, "pscore") <- pscore + p0
+#            attr(tree, "pscore") <- pscore + p0
             tree
         }
-
-        attr(tree, "pscore") <- pscore
+        attr(tree, "pscore") <- pscore + p0
         return(tree)
         })
     .C("fitch_init", as.integer(dat), as.integer(nTips*nr), as.integer(m), 
