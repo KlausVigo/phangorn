@@ -156,7 +156,7 @@ bootstrap.phyDat <- function(x, FUN, bs = 100, multicore=FALSE, mc.cores = NULL,
         FUN(data,...)        
     }
     if(multicore){
-        if(jumble) res <- mclapply(J, fitPar, x, ..., mc.cores = mc.cores) 
+        if(jumble) res <- mclapply(J, fitParJumble, x, ..., mc.cores = mc.cores) 
         else res <- mclapply(BS, fitPar, x, ..., mc.cores = mc.cores) 
     }        
     else{
