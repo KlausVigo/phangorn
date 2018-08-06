@@ -4,8 +4,8 @@
 \alias{SOWH.test}
 \title{Swofford-Olsen-Waddell-Hillis Test}
 \usage{
-SOWH.test(x, n = 100, restricted = list(optNni = FALSE), optNni = TRUE,
-  trace = 1, ...)
+SOWH.test(x, n = 100, restricted = list(optNni = FALSE),
+  optNni = TRUE, trace = 1, ...)
 }
 \arguments{
 \item{x}{an object of class \code{"pml"}.}

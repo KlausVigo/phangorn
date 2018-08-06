@@ -12,11 +12,12 @@ pml(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   rate = 1, model = NULL, ...)
 
 optim.pml(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
-  optInv = FALSE, optGamma = FALSE, optEdge = TRUE, optRate = FALSE,
-  optRooted = FALSE, optF3x4 = FALSE, control = pml.control(epsilon =
-  1e-08, maxit = 10, trace = 1L), model = NULL,
-  rearrangement = ifelse(optNni, "NNI", "none"), subs = NULL,
-  ratchet.par = list(iter = 20L, maxit = 100L, prop = 1/3), ...)
+  optInv = FALSE, optGamma = FALSE, optEdge = TRUE,
+  optRate = FALSE, optRooted = FALSE, optF3x4 = FALSE,
+  control = pml.control(epsilon = 1e-08, maxit = 10, trace = 1L),
+  model = NULL, rearrangement = ifelse(optNni, "NNI", "none"),
+  subs = NULL, ratchet.par = list(iter = 20L, maxit = 100L, prop =
+  1/3), ...)
 }
 \arguments{
 \item{epsilon}{Stop criterion for optimisation (see details).}

@@ -19,11 +19,11 @@ pml.free()
 
 pml.init(data, k = 1L)
 
-pml.fit(tree, data, bf = rep(1/length(levels), length(levels)), shape = 1,
-  k = 1, Q = rep(1, length(levels) * (length(levels) - 1)/2),
-  levels = attr(data, "levels"), inv = 0, rate = 1, g = NULL,
-  w = NULL, eig = NULL, INV = NULL, ll.0 = NULL, llMix = NULL,
-  wMix = 0, ..., site = FALSE)
+pml.fit(tree, data, bf = rep(1/length(levels), length(levels)),
+  shape = 1, k = 1, Q = rep(1, length(levels) * (length(levels) -
+  1)/2), levels = attr(data, "levels"), inv = 0, rate = 1,
+  g = NULL, w = NULL, eig = NULL, INV = NULL, ll.0 = NULL,
+  llMix = NULL, wMix = 0, ..., site = FALSE)
 }
 \arguments{
 \item{alpha}{Shape parameter of the gamma distribution.}

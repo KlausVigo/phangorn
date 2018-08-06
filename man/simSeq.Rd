@@ -8,9 +8,9 @@
 \usage{
 simSeq(x, ...)
 
-\method{simSeq}{phylo}(x, l = 1000, Q = NULL, bf = NULL, rootseq = NULL,
-  type = "DNA", model = NULL, levels = NULL, rate = 1,
-  ancestral = FALSE, ...)
+\method{simSeq}{phylo}(x, l = 1000, Q = NULL, bf = NULL,
+  rootseq = NULL, type = "DNA", model = NULL, levels = NULL,
+  rate = 1, ancestral = FALSE, ...)
 
 \method{simSeq}{pml}(x, ancestral = FALSE, ...)
 }

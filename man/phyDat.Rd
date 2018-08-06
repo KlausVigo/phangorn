@@ -60,7 +60,8 @@ phyDat2alignment(x)
 
 \method{as.AAbin}{phyDat}(x, ...)
 
-write.phyDat(x, file, format = "phylip", colsep = "", nbcol = -1, ...)
+write.phyDat(x, file, format = "phylip", colsep = "", nbcol = -1,
+  ...)
 
 read.phyDat(file, format = "phylip", type = "DNA", ...)
 
@@ -68,7 +69,8 @@ baseFreq(obj, freq = FALSE, all = FALSE, drop.unused.levels = FALSE)
 
 \method{subset}{phyDat}(x, subset, select, site.pattern = TRUE, ...)
 
-\method{unique}{phyDat}(x, incomparables = FALSE, identical = TRUE, ...)
+\method{unique}{phyDat}(x, incomparables = FALSE, identical = TRUE,
+  ...)
 
 allSitePattern(n, levels = c("a", "c", "g", "t"), names = NULL)
 

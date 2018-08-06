@@ -4,8 +4,8 @@
 \alias{superTree}
 \title{Super Tree methods}
 \usage{
-superTree(tree, method = "MRP", rooted = FALSE, trace = 0, start = NULL,
-  multicore = FALSE, mc.cores = NULL, ...)
+superTree(tree, method = "MRP", rooted = FALSE, trace = 0,
+  start = NULL, multicore = FALSE, mc.cores = NULL, ...)
 }
 \arguments{
 \item{tree}{an object of class \code{multiPhylo}}
