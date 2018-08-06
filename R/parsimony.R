@@ -634,7 +634,7 @@ optim.sankoff <- function(tree, data, cost=NULL, trace=1, ...) {
     if(is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise") 
         tree <- reorder(tree, "postorder")
     if (class(data)[1] != "phyDat") stop("data must be of class phyDat")
-    
+    addTaxa <- FALSE
     mapping <- map_duplicates(data) 
     if(!is.null(mapping)){ 
 #        orig.data <- data
