@@ -1060,7 +1060,7 @@ update.pml <- function (object, ...)
 {
     extras <- match.call(expand.dots = FALSE)$...
     pmla <- c("tree", "data", "bf", "Q", "inv", "k", "shape", 
-        "rate", "model", "wMix", "llMix", "...") 
+        "rate", "model", "wMix", "llMix", "dnds", "tstv", "...") 
     names(extras) <- pmla[pmatch(names(extras), pmla[-length(pmla)])]
     call <- object$call
     if (length(extras)) {
@@ -1112,7 +1112,19 @@ update.pml <- function (object, ...)
         } 
 #        else model <- object$model
     }
-   
+    if (type == "CODON") {
+        if (is.na(existing[12])) dnds <- object$dnds
+        else{
+            dnds <- eval(extras[[existing[12]]], parent.frame())
+            updateEig <- TRUE
+        }
+        if (is.na(existing[13])) tstv <- object$tstv 
+        else{
+            tstv <- eval(extras[[existing[13]]], parent.frame())
+            updateEig <- TRUE
+        }
+        if(updateEig)Q <- CodonQ(subs = .sub, syn = .syn, tstv = tstv, dnds = dnds)
+    }
     if(is.na(existing[5])) inv <- object$inv
     else{
         inv <- eval(extras[[existing[5]]], parent.frame())
@@ -1199,8 +1211,8 @@ update.pml <- function (object, ...)
                    lv = tmp$resll, call = call, df = df, wMix = wMix, 
                    llMix = llMix)
     if (type == "CODON") {
-        result$dnds <- 1
-        result$tstv <- 1
+        result$dnds <- dnds
+        result$tstv <- tstv
     }
     class(result) <- "pml"
     result 
