@@ -1,4 +1,5 @@
 #  computes all n(n-1)/2 cyclic splits
+# allCircularSplits in networx
 cyclicSplits <- function(k, labels=NULL){
     k <- as.integer(k)
     l <- (k-1L) %/% 2L
@@ -393,7 +394,7 @@ neighborNet <-  function(x, ord=NULL){
     l <- length(labels)    
 #browser()    
     if(is.null(ord))ord <- getOrderingNN(x)
-    spl <- cyclicSplits(l, labels[ord])
+    spl <- allCircularSplits(l, labels[ord])
     spl <- nnls.splits(spl, x)
     # nnls.split mit nnls statt quadprog
     attr(spl, "cycle") <- 1:l

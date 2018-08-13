@@ -186,8 +186,6 @@ optimF3x4 <- function(tree, data, bf_codon=matrix(.25,4,3), trace=0,...){
     bf_codon <- rbind(exp(res[[1]]), c(1,1,1))
     bf_codon <- bf_codon/rep(colSums(bf_codon), each=4)
     bf <- F3x4_freq(bf_codon)
-#    bf <- exp(c(res[[1]],0))
-#    bf <- bf/sum(bf)
     result <- list(bf=bf, loglik = res[[2]], bf_codon=bf_codon)
     result
 }

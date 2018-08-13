@@ -134,17 +134,16 @@ allSplits <- function(k, labels=NULL){
 #' @rdname as.splits
 #' @export
 allCircularSplits <- function(k, labels=NULL){
+    fun <- function(x,y){
+        tmp <- (1L:y)+x
+        tmp %% (k+1L) + tmp %/% (k+1L)
+    }
     k <- as.integer(k)
     l <- (k-1L) %/% 2L
     res <- vector("list", k*(k-1L)/2)
-    
     res[1:k] <- 1L:k
     ind <- k
     if(k>3){
-        fun <- function(x,y){
-            tmp <- (1L:y)+x
-            tmp %% (k+1L) + tmp %/% (k+1L)
-        }
         if(k>4L){
             for(i in 2:l){
                 res[(ind+1):(ind+k)] <- lapply(0L:(k-1L), fun, i)
