@@ -66,14 +66,14 @@ optimMixM2a <- function(object, dnds_old = c(0.1, 2), omega,...){
 # needs to be included
 optimMixTSTV <- function(object, tstv = 1, omega,...){
     weight <- object[[1]]$weight
-    fn <- function(tstv, object, omega, weight, l0, ...) {
+    fn <- function(tstv, object, omega, weight, ...) {
         result <- numeric(length(weight))
         for(i in seq_along(omega) )result <- result + 
                 as.numeric(update(object[[i]], tstv=tstv, ...)$lv) * omega[i]
         sum(weight %*% log(result))
     }
     res <- optimize(f=fn, c(0,100), object=object, omega=omega, 
-                    weight=weight, l0=l0, lower=0, upper=100, maximum=TRUE)
+                    weight=weight, lower=0, upper=100, maximum=TRUE)
     res
 }
 
@@ -352,6 +352,7 @@ pmlMix <- function (formula, fit, m = 2, omega = rep(1/m, m),
     
     if(MixRate) rate <- rep(1,r)
     dnds <- NULL
+    CODON <- FALSE
     if(M1a){
         dnds <- c(fits[[1]]$dnds, fits[[2]]$dnds)
         CODON <- TRUE
