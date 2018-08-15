@@ -11,8 +11,14 @@ discrete.gamma <- function (alpha, k)
 }
 
 
+discrete.beta <- function (shape1, shape2, k) 
+{
+    qbeta( ((0:(k-1)) + .5) /k , shape1, shape2)
+}
+    
+
 # allow transition probs of zero (added o)
-optimQ <- function (tree, data, Q=rep(1,6), subs=rep(1,length(Q)), trace = 0, ...) 
+optimQ <- function (tree, data, Q=rep(1,6), subs=rep(1,length(Q)), trace=0, ...) 
 {
     m <- length(Q)
     n <- max(subs)
@@ -359,6 +365,24 @@ edQt <- function (Q = c(1, 1, 1, 1, 1, 1), bf = c(0.25, 0.25, 0.25, 0.25))
     res2 <- res * rep(bf, each = l)    
     diag(res) <- -colSums(res)
     res <- res/sum(res2)
+    e <- eigen(res, FALSE)
+    e$inv <- solve.default(e$vec)
+    e
+}
+
+
+
+edQt2 <- function (Q = c(1, 1, 1, 1, 1, 1), bf = c(0.25, 0.25, 0.25, 0.25), 
+                  scale=1) 
+{
+    l <- length(bf)
+    res <- matrix(0, l, l)
+    res[lower.tri(res)] <- Q
+    res <- res + t(res)
+    res <- res * bf
+    res2 <- res * rep(bf, each = l)    
+    diag(res) <- -colSums(res)
+    res <- res/scale
     e <- eigen(res, FALSE)
     e$inv <- solve.default(e$vec)
     e
