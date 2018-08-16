@@ -63,6 +63,23 @@ optimMixM2a <- function(object, dnds_old = c(0.1, 2), omega,...){
 }
 
 
+optimMixM7 <- function(object, pq = c(1, 1), omega, ...){
+    weight <- object[[1]]$weight
+    fn <- function(pq, object, omega, weight, ...) {
+        dnds <- discrete.beta(pq[1], pq[2], length(omega))
+        result <- numeric(length(weight))
+        for(i in seq_along(omega) ) result <- result + 
+            as.numeric(update(object[[i]], dnds=dnds[i], ...)$lv) * omega[i]
+        sum(weight %*% log(result))
+    }
+    res <- optimize(f=fn, c(1,1), object=object[[1]], omega=omega, 
+                        weight=weight, 
+                        lower=c(0, 0), upper=c(100, 100), maximum = TRUE)
+    res
+}
+
+
+
 # needs to be included
 optimMixTSTV <- function(object, tstv = 1, omega,...){
     weight <- object[[1]]$weight
@@ -187,7 +204,7 @@ optimMixEdge <- function(object, omega, trace=1,...){
         for(i in 1:n)dl <- dl + dl(object[[i]],TRUE) * omega[i]
         dl <- dl/lv1
         sc <- colSums(weight * dl)
-        F <- crossprod(dl * weight, dl)+diag(q)*1e-6
+        F <- crossprod(dl * weight, dl) + diag(q) * 1e-6
         blub <- TRUE
         iter2 <- 0
         while(blub & iter2<10){
