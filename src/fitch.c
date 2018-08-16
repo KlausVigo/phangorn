@@ -312,7 +312,7 @@ void ACCTRAN3(int *dat, int *nr, double *pars, int *node, int *edge, int *nl,
     }            
 }
 
-
+/*
 void fitchNNN(int d1, int d2){
     int tmp;
     tmp = d1 & d2;
@@ -320,7 +320,7 @@ void fitchNNN(int d1, int d2){
     else d1 = d1 | d2;
 }
 
-// haeufig 0
+
 void fitchTripletNew(int *res, int *dat1, int *dat2, int *dat3, int *nr) 
 {   
     int k, v1, v2, v3;
@@ -342,7 +342,8 @@ void fitchTripletNew(int *res, int *dat1, int *dat2, int *dat3, int *nr)
     res[k] = res[k] & v3; 
     }
 }
-
+*/
+ 
 void fitchN(int *dat1, int *dat2, int *nr){
     int k;
     int tmp;
@@ -421,7 +422,6 @@ SEXP C_MPR2(SEXP nrx, SEXP PARENT, SEXP KIDS, SEXP nlx, SEXP M) {
     UNPROTECT(1);
     return(RES);
 }
-*/
 
 
 void fitchNACC2(int *root, int *dat, int *nr, double *pars, int *result, 
@@ -444,7 +444,7 @@ void fitchNACC2(int *root, int *dat, int *nr, double *pars, int *result,
        }
     }        
 }
-
+*/
 
 void fitchTripletACC4(int *root, int *dat1, int *dat2, int *dat3, int *nr,  
     double *p1, double *p2, double *p3, double *weight, double *pars1, int *v1) 
@@ -687,7 +687,6 @@ SEXP FNALL6(SEXP nrx, SEXP node, SEXP edge, SEXP mx){
 }
 
 
-// inside optNNI Ziel 3* schneller  , double best
 void fitchquartet(int *dat1, int *dat2, int *dat3, int *dat4, int *nr, 
                   double *weight, double *pars){   
     int k, tmp1, tmp2;  
