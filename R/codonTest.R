@@ -46,7 +46,7 @@ codonTest <- function(tree, object, model=c("M0", "M1a", "M2a"),
     
     M2a_start <- list(update(M0, dnds=0.1), update(M0, dnds=1), 
                       update(M0, dnds=3))
-    M2a <- pmlMix(edge ~., M2a_start, m=3)
+    M2a <- pmlMix(edge ~ M2a, M2a_start, m=3)
     
     #    attr(RESULT, "env") <- env 
     #    class(RESULT) <- c("modelTest", "data.frame")
