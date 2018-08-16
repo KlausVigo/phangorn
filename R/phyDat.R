@@ -83,10 +83,6 @@ phyDat.default <- function (data, levels = NULL, return.index = TRUE,
     data <- as.data.frame(data, stringsAsFactors=FALSE)
     attributes(data) <- att
     
-    #    att = attributes(data) 
-    #    data = lapply(data, match, all.levels) # avoid unlist   
-    #    attributes(data) = att
-    
     row.names(data) <- as.character(1:p)
     data <- na.omit(data)
     aaa <- match(index, attr(data, "na.action"))
@@ -324,8 +320,6 @@ phyDat.codon <- function (data, return.index = TRUE, ambiguity = "---")
     else codon_amb <- codon
     dimnames(CODON) <- list(codon_amb, codon)
 
-#    data = ddd$data
-#    index = ddd$index
     q <- length(data)
     p <- length(data[[1]])
     tmp <- vector("list", q)
@@ -338,6 +332,7 @@ phyDat.codon <- function (data, return.index = TRUE, ambiguity = "---")
     attributes(data) <- att
 
     row.names(data) <- as.character(1:p)
+    
     data <- na.omit(data)
     rn <- as.numeric(rownames(data))
     
@@ -348,8 +343,7 @@ phyDat.codon <- function (data, return.index = TRUE, ambiguity = "---")
     index <- match(index, unique(index))
     rn <- as.numeric(rownames(data))
     attr(data, "na.action") <- NULL
-        
-#    weight = ddd$weight[rn]
+    
     weight <- weight[rn]
     p <- dim(data)[1]
     names(data) <- nam
@@ -487,14 +481,14 @@ phyDat <- function (data, type="DNA", levels=NULL, return.index = TRUE,...)
 
 #' @rdname phyDat
 #' @export
-dna2codon <- function(x, codonstart=1, ambiguity = "---"){
+dna2codon <- function(x, codonstart=1, ambiguity="---"){
     if(!inherits(x, "phyDat"))stop("x needs to be of class phyDat!")
     if(attr(x, "type")=="AA")stop("x needs to be a nucleotide sequence!")
     if(codonstart>1){
         del <- -seq_len(codonstart)
         x <- subset(x, select=del, site.pattern=FALSE)
     }
-    phyDat.codon(as.character(x))
+    phyDat.codon(as.character(x), ambiguity=ambiguity)
 }
 
 

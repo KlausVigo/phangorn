@@ -1,23 +1,26 @@
 #' codonTest
 #' 
-#' Comparison of different codon substitution models
+#' Models for detecting positive selection
 #' 
-#' \code{codonTest} estimates all the specified models for a given tree and
-#' data. 
+#' Currently \code{codonTest} estimates all the specified models for a given 
+#' tree and data. 
+#' There are several options for deriving the codon frequencies. 
+#' Frequencies can be "equal" (1/61), derived from nucleotide frequencies "F1x4"
+#' and "F3x4" or "empirical" codon frequencies. The frequencies taken using  
+#' the empirical frequencies or estimated via maximum likelihood. 
 #' 
+#' So far the M0 model (Goldman and Yang 2002), the M1, M1a and M2a are 
+#' implemented. The M0 model is always computed the other a re optional.
+#' M1a can be used as the null model to test positive selection   
 #' 
-#' Currently the codon frequencies, options are "equal", "F1x4", "F3x4" 
-#' and "empirical" ("F61"). The frequencies can be taken from the empirical 
-#' or estimated. 
-#' 
-#' 
-#' @aliases mcodonTest 
+#' @aliases codonTest 
 #' @param object an object of class phyDat.
 #' @param tree a phylogenetic tree.
 #' @param model a vector containing the substitution models to compare with
 #' each other or "all" to test all available models. 
 #' @param frequencies a character string or vector defining how to compute 
 #' the codon frequencies 
+#' @param opt_freq optimize frequencies (so far ignored)
 #' @param k number of rate classes
 #' @param control A list of parameters for controlling the fitting process.
 #' @return A data.frame containing the log-likelihood, number of estimated
@@ -32,14 +35,17 @@
 
 codonTest <- function(tree, object, model=c("M0", "M1a", "M2a"), 
                       frequencies="F3x4", 
-                      empirical=TRUE, codonstart = 1, ...){
+                      opt_freq=FALSE, codonstart = 1, ...){
     if(attr(object, "type")=="DNA") 
         object <- dna2codon(object, codonstart=codonstart)
     fit <- pml(tree, object, bf=frequencies)
     M0 <- optim.pml(fit, model="codon1")
     
-#    M1_start <- list(update(M0, dnds=0), update(M0, dnds=1))
-#    M1 <- pmlMix(edge ~ ., M1_start, m=2)
+    choices <- c("M0", "M1", "M1a", "M2a")
+    model <- match.arg(choices , type, TRUE)
+    
+    M1_start <- list(update(M0, dnds=0), update(M0, dnds=1))
+    M1 <- pmlMix(edge ~ ., M1_start, m=2)
     
     M1a_start <- list(update(M0, dnds=0.1), update(M0, dnds=1))
     M1a <- pmlMix(edge ~ M1a, M1a_start, m=2)
@@ -49,9 +55,7 @@ codonTest <- function(tree, object, model=c("M0", "M1a", "M2a"),
     M2a <- pmlMix(edge ~ M2a, M2a_start, m=3)
     
     #    attr(RESULT, "env") <- env 
-    #    class(RESULT) <- c("modelTest", "data.frame")
-    #    RESULT
-    
+
     result <- list(M0, M1a, M2a)
     
     M0_ <- c(model="M0", Frequencies=frequencies, "empirical", glance.pml(M0))

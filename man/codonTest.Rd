@@ -2,7 +2,6 @@
 % Please edit documentation in R/codonTest.R
 \name{codonTest}
 \alias{codonTest}
-\alias{mcodonTest}
 \title{codonTest}
 \usage{
 codonTest(tree, object, model = c("M0", "M1a", "M2a"),
@@ -31,15 +30,18 @@ data and the calls to allow get the estimated models, e.g. as a starting
 point for further analysis (see example).
 }
 \description{
-Comparison of different codon substitution models
+Models for detecting positive selection
 }
 \details{
-\code{codonTest} estimates all the specified models for a given tree and
-data.
+Currently \code{codonTest} estimates all the specified models for a given 
+tree and data. 
+There are several options for deriving the codon frequencies. 
+Frequencies can be "equal" (1/61), derived from nucleotide frequencies "F1x4"
+and "F3x4" or "empirical" codon frequencies. The frequencies taken using  
+the empirical frequencies or estimated via maximum likelihood.
 
-Currently the codon frequencies, options are "equal", "F1x4", "F1x4" 
-and "empirical" ("F61"). The frequencies can be taken from the empirical 
-or estimated.
+So far the M0 model (Goldman and Yang 2002), the M1, M1a and M2a are 
+implemented.
 }
 \seealso{
 \code{\link{pml}}, \code{\link{pmlMix}}, \code{\link{modelTest}},

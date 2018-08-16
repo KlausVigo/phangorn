@@ -36,7 +36,7 @@
 \usage{
 phyDat(data, type = "DNA", levels = NULL, return.index = TRUE, ...)
 
-dna2codon(x, codonstart = 1)
+dna2codon(x, codonstart = 1, ambiguity = "---")
 
 codon2dna(x)
 
@@ -95,6 +95,9 @@ genlight2phyDat(x, ambiguity = NA)
 should be 1, 2, or 3, but larger values are accepted and have for effect to 
 start the translation further within the sequence.}
 
+\item{ambiguity}{character for ambiguous character and no contrast is 
+provided.}
+
 \item{allLevels}{return original data.}
 
 \item{file}{A file name.}
@@ -136,9 +139,6 @@ sequences are considered duplicates if distance between sequences is zero
 \item{n}{Number of sequences.}
 
 \item{names}{Names of sequences.}
-
-\item{ambiguity}{character for ambiguous character and no contrast is 
-provided.}
 }
 \value{
 The functions return an object of class \code{phyDat}.
