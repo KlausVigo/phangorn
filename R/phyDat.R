@@ -72,17 +72,12 @@ phyDat.default <- function (data, levels = NULL, return.index = TRUE,
                 contrast <- rbind(contrast, matrix(1, k, l))
         }
     }
-    
-    
 #    row.names(data) = as.character(1:p)
 #    data = na.omit(data)
 #    rn = as.numeric(rownames(data))
     
     d <- dim(data)
     att <- attributes(data) 
-    
-#    print(system.time(match(unlist(data), all.levels)))
-    
     data <- match(unlist(data), all.levels)
     attr(data, "dim") <- d
     data <- as.data.frame(data, stringsAsFactors=FALSE)
@@ -96,7 +91,6 @@ phyDat.default <- function (data, levels = NULL, return.index = TRUE,
     data <- na.omit(data)
     aaa <- match(index, attr(data, "na.action"))
     
-
     if(!is.null(attr(data, "na.action"))) warning("Found unknown characters (not supplied in levels). Deleted sites with with unknown states.")
     
     index <- index[is.na(aaa)] 
@@ -145,7 +139,6 @@ phyDat.DNA <- function (data, return.index = TRUE)
         0, 1, 1, 1, 1, 1, 1)), 18, 4, dimnames = list(NULL, c("a", 
         "c", "g", "t")))
     
-#    ddd = fast.table(data)
     compress <- TRUE
     if(length(data[[1]])==1) compress <- FALSE 
     if(compress){
@@ -159,8 +152,6 @@ phyDat.DNA <- function (data, return.index = TRUE)
         weight <- rep(1, p)
         index <- 1:p
     }
-#    data = ddd$data
-#    index = ddd$index
     q <- length(data)
     p <- length(data[[1]])
     d <- dim(data)
@@ -226,10 +217,6 @@ phyDat.AA <- function (data, return.index = TRUE)
     AA[22, 6] <- AA[22, 7] <- 1 #
     AA[23:25, ] <- 1
     dimnames(AA) <- list(aa2, aa)
-    
-#    ddd <- fast.table(data)
-#    data <- ddd$data
-#    index <- ddd$index
     compress <- TRUE
     if(length(data[[1]])==1) compress <- FALSE 
     if(compress){
@@ -265,8 +252,6 @@ phyDat.AA <- function (data, return.index = TRUE)
     index <- match(index, unique(index))
     rn <- as.numeric(rownames(data))
     attr(data, "na.action") <- NULL
-  
-#    weight = ddd$weight[rn]
     weight <- weight[rn]  
     p <- dim(data)[1]
     names(data) <- nam
@@ -286,7 +271,7 @@ phyDat.AA <- function (data, return.index = TRUE)
 
 
 
-phyDat.codon <- function (data, return.index = TRUE) 
+phyDat.codon <- function (data, return.index = TRUE, ambiguity = "---") 
 {
     if(is.matrix(data)) nam <- row.names(data)
     else nam <- names(data)  
@@ -308,7 +293,6 @@ phyDat.codon <- function (data, return.index = TRUE)
     } 
  
     data <- data.frame(lapply(data, splseq))
-#    ddd = fast.table(data)
     compress <- TRUE
     if(nrow(data)==1) compress <- FALSE 
     if(compress){
@@ -333,7 +317,12 @@ phyDat.codon <- function (data, return.index = TRUE)
 # ohne Stopcodons "taa", "tag", "tga",     
 
     CODON <- diag(61)
-    dimnames(CODON) <- list(codon, codon)
+    if(ambiguity!=""){
+        codon_amb <- c(codon, ambiguity)
+        CODON <- rbind(CODON, matrix(1, length(ambiguity), 61))
+    }
+    else codon_amb <- codon
+    dimnames(CODON) <- list(codon_amb, codon)
 
 #    data = ddd$data
 #    index = ddd$index
@@ -343,7 +332,7 @@ phyDat.codon <- function (data, return.index = TRUE)
 
     d <- dim(data)
     att <- attributes(data) 
-    data <- match(unlist(data), codon)
+    data <- match(unlist(data), codon_amb)
     attr(data, "dim") <- d
     data <- as.data.frame(data, stringsAsFactors=FALSE)
     attributes(data) <- att
@@ -371,7 +360,7 @@ phyDat.codon <- function (data, return.index = TRUE)
     if (return.index) 
         attr(data, "index") <- index
     attr(data, "levels") <- codon
-    attr(data, "allLevels") <- codon
+    attr(data, "allLevels") <- codon_amb
     attr(data, "type") <- "CODON"
     attr(data, "contrast") <- CODON    
     class(data) <- "phyDat"
@@ -498,7 +487,7 @@ phyDat <- function (data, type="DNA", levels=NULL, return.index = TRUE,...)
 
 #' @rdname phyDat
 #' @export
-dna2codon <- function(x, codonstart=1){
+dna2codon <- function(x, codonstart=1, ambiguity = "---"){
     if(!inherits(x, "phyDat"))stop("x needs to be of class phyDat!")
     if(attr(x, "type")=="AA")stop("x needs to be a nucleotide sequence!")
     if(codonstart>1){
