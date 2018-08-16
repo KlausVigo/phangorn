@@ -5,7 +5,7 @@
 \title{codonTest}
 \usage{
 codonTest(tree, object, model = c("M0", "M1a", "M2a"),
-  frequencies = "F3x4", empirical = TRUE, codonstart = 1, ...)
+  frequencies = "F3x4", opt_freq = FALSE, codonstart = 1, ...)
 }
 \arguments{
 \item{tree}{a phylogenetic tree.}
@@ -17,6 +17,8 @@ each other or "all" to test all available models.}
 
 \item{frequencies}{a character string or vector defining how to compute 
 the codon frequencies}
+
+\item{opt_freq}{optimize frequencies (so far ignored)}
 
 \item{k}{number of rate classes}
 
@@ -41,7 +43,8 @@ and "F3x4" or "empirical" codon frequencies. The frequencies taken using
 the empirical frequencies or estimated via maximum likelihood.
 
 So far the M0 model (Goldman and Yang 2002), the M1, M1a and M2a are 
-implemented.
+implemented. The M0 model is always computed the other a re optional.
+M1a can be used as the null model to test positive selection
 }
 \seealso{
 \code{\link{pml}}, \code{\link{pmlMix}}, \code{\link{modelTest}},

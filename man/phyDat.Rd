@@ -36,7 +36,7 @@
 \usage{
 phyDat(data, type = "DNA", levels = NULL, return.index = TRUE, ...)
 
-dna2codon(x, codonstart = 1, ambiguity = "---")
+dna2codon(x, codonstart = 1, ambiguity = "---", ...)
 
 codon2dna(x)
 

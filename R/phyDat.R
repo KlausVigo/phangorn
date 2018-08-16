@@ -267,7 +267,8 @@ phyDat.AA <- function (data, return.index = TRUE)
 
 
 
-phyDat.codon <- function (data, return.index = TRUE, ambiguity = "---") 
+phyDat.codon <- function (data, return.index = TRUE, ambiguity = "---", 
+                          NA_as_ambiguous=TRUE) 
 {
     if(is.matrix(data)) nam <- row.names(data)
     else nam <- names(data)  
@@ -313,6 +314,11 @@ phyDat.codon <- function (data, return.index = TRUE, ambiguity = "---")
 # ohne Stopcodons "taa", "tag", "tga",     
 
     CODON <- diag(61)
+    
+    if(NA_as_ambiguous){
+        ambiguity <- unique(c("---", ambiguity))
+    }    
+    
     if(ambiguity!=""){
         codon_amb <- c(codon, ambiguity)
         CODON <- rbind(CODON, matrix(1, length(ambiguity), 61))
@@ -327,6 +333,10 @@ phyDat.codon <- function (data, return.index = TRUE, ambiguity = "---")
     d <- dim(data)
     att <- attributes(data) 
     data <- match(unlist(data), codon_amb)
+    if(NA_as_ambiguous){
+        ind <- match("---", codon_amb)  
+        data[is.na(data)] <- ind
+    }
     attr(data, "dim") <- d
     data <- as.data.frame(data, stringsAsFactors=FALSE)
     attributes(data) <- att
@@ -481,14 +491,14 @@ phyDat <- function (data, type="DNA", levels=NULL, return.index = TRUE,...)
 
 #' @rdname phyDat
 #' @export
-dna2codon <- function(x, codonstart=1, ambiguity="---"){
+dna2codon <- function(x, codonstart=1, ambiguity="---", ...){
     if(!inherits(x, "phyDat"))stop("x needs to be of class phyDat!")
     if(attr(x, "type")=="AA")stop("x needs to be a nucleotide sequence!")
     if(codonstart>1){
         del <- -seq_len(codonstart)
         x <- subset(x, select=del, site.pattern=FALSE)
     }
-    phyDat.codon(as.character(x), ambiguity=ambiguity)
+    phyDat.codon(as.character(x), ambiguity=ambiguity, ...)
 }
 
 
