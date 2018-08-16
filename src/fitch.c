@@ -67,7 +67,7 @@ void addOne(int *edge, int *tip, int *ind, int *l, int *m, int *result){
     }
 }
 
-
+/*
 SEXP AddOne(SEXP edge, SEXP tip, SEXP ind, SEXP l, SEXP m){
     SEXP result;
     PROTECT(result = allocMatrix(INTSXP, INTEGER(l)[0]+2L, 2L));
@@ -75,7 +75,7 @@ SEXP AddOne(SEXP edge, SEXP tip, SEXP ind, SEXP l, SEXP m){
     UNPROTECT(1);
     return(result);
 }
-
+*/
 
 SEXP AddOnes(SEXP edge, SEXP tip, SEXP ind, SEXP l, SEXP m){
     R_len_t n = length(ind); 
@@ -357,8 +357,7 @@ void fitchN(int *dat1, int *dat2, int *nr){
 // MPR reconstruction nicht immer gleiches ergebnis
 void fitchTriplet(int *res, int *dat1, int *dat2, int *dat3, int *nr) 
 {   
-    int k; // ni,
-//    ni = 0;
+    int k; 
     
     int *v1, *v2, *v3;
     v1 = (int *) R_alloc(*nr, sizeof(int));    
@@ -381,7 +380,7 @@ void fitchTriplet(int *res, int *dat1, int *dat2, int *dat3, int *nr)
     for(k = 0; k < (*nr); k++)res[k] = res[k] & v3[k];  
 }
 
-
+/*
 void prepRooted(int *res, int *nr, int *kids){ //int *data1, 
     fitchTriplet(res, &data1[*nr * (kids[0]-1L)], &data1[*nr * (kids[1]-1L)],  
         &data1[*nr * (kids[2]-1L)], nr);
@@ -422,7 +421,7 @@ SEXP C_MPR2(SEXP nrx, SEXP PARENT, SEXP KIDS, SEXP nlx, SEXP M) {
     UNPROTECT(1);
     return(RES);
 }
-
+*/
 
 
 void fitchNACC2(int *root, int *dat, int *nr, double *pars, int *result, 
@@ -580,7 +579,7 @@ void fnindex(int *nodes, int* edges, int *nNodes,  int *start, int *end,
     }
 }
 
-
+// c++ only edge
 void fnhelp(int *node, int * edge, int *n, int *m, int *root, int *edge2, int *node2, int *pc){
     int *startv, *endv, i;
     startv = (int *) R_alloc(*m, sizeof(int));
