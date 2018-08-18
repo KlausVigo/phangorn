@@ -53,15 +53,12 @@ delta.quartet <-
 #'
 #' @export delta.score
 delta.score <- function(x, arg = "mean", ...) {
-  # dist.dna <- as.matrix(dist.dna(dna,"raw"))
-  # dist.dna(dna,"raw") is equivalent to dist.hamming(as.phyDat(dna), exclude="all")
   dist.dna <- as.matrix(dist.hamming(x, ...))
-  # Number of quartets
-  # choose(length(names(x)),4)
   # Create all quartets
   all.quartets <- t(combn(names(x), 4))
   delta.values <- apply(all.quartets[, ], 1, delta.quartet, dist.dna)
-  if (!arg %in% c("all", "mean", "sd")) stop("return options are: all, mean, or sd")
+  if (!arg %in% c("all", "mean", "sd"))
+    stop("return options are: all, mean, or sd")
   if (arg == "all") return(delta.values)
   if (arg == "mean") return(mean(delta.values))
   if (arg == "sd") return(sd(delta.values))

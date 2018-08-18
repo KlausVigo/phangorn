@@ -82,7 +82,8 @@ dist.p <- function(x, cost = "polymorphism", ignore.indels = TRUE) {
   }
   #    if(cost=="polymorphism" && attr(x, "type")=="DNA"){
   if (cost == "polymorphism") {
-    costLev <- c("a", "c", "t", "u", "g", "x", "m", "r", "w", "s", "y", "k", "v", "h", "d", "b", "-", "?", "n")
+    costLev <- c("a", "c", "t", "u", "g", "x", "m", "r", "w", "s", "y", "k",
+                 "v", "h", "d", "b", "-", "?", "n")
 
     cost <- matrix(c(
       # a,c,t,u,g,X,m,r,w,s,y,k,v,h,d,b,-,?,n,
@@ -112,7 +113,8 @@ dist.p <- function(x, cost = "polymorphism", ignore.indels = TRUE) {
 
   lev1 <- dimnames(cost)[[1]]
 
-  if (any(is.na(match(lev, lev1)))) stop("Levels of x are not in levels of cost matrix!")
+  if (any(is.na(match(lev, lev1))))
+    stop("Levels of x are not in levels of cost matrix!")
 
   if (ignore.indels) {
     cost["-", ] <- 0
