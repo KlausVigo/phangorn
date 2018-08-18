@@ -391,11 +391,11 @@ getDiversity <- function (tree, x, norm = TRUE, var.names = NULL, labels="new")
     colnames(PM) <- c("Tree", "Var")
     PM <- PM[FALSE,] 
     PM[1 :(k*l), ] <- NA 
-    perfect <- names(x)
+#    perfect <- names(x)
     L <- vector("list",k*l)
     m <- 1
-    o <- 1
-    ok <- 0
+#    o <- 1
+#    ok <- 0
     for (i in 1:k) {
         if (inherits(tree,"multiPhylo")) 
             tmptree <- tree[[i]]
@@ -425,8 +425,8 @@ getDiversity <- function (tree, x, norm = TRUE, var.names = NULL, labels="new")
         names(res) <- c("tree", "variable", "E clan", "# natives", 
             "# intruder", "# unknown", "E slice", "# intruder", "# unknown", 
             "E melange", "# intruder", "# unknown", "bs 1", "bs 2", "p-score")    
-        warning("The variable names have changed")       
-    }    
+        warning("The variable names have changed")
+    }
     attr(res, "Perfect") <- L
     class(res) <- c("clanistics", "data.frame")
     res
