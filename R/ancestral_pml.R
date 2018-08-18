@@ -59,19 +59,17 @@
 #' 
 #' @rdname ancestral.pml
 #' @export 
-ancestral.pml <- function(object, type="marginal", return="prob") 
+ancestral.pml <- function(object, type="marginal", return="prob")
 {
     call <- match.call()
-    pt <- match.arg(type, c("marginal", "joint", "ml", "bayes"))   
-    tree <- object$tree 
-    
+    pt <- match.arg(type, c("marginal", "joint", "ml", "bayes"))
+    tree <- object$tree
     INV <- object$INV
     inv <- object$inv
-    
-    data <- getCols(object$data, tree$tip.label) 
-    data_type <- attr(data, "type")    
+    data <- getCols(object$data, tree$tip.label)
+    data_type <- attr(data, "type")
     if (is.null(attr(tree, "order")) || attr(tree, "order") == 
-        "cladewise") 
+        "cladewise")
         tree <- reorder(tree, "postorder")
     nTips <- length(tree$tip.label)
     node <- tree$edge[, 1]
@@ -91,11 +89,9 @@ ancestral.pml <- function(object, type="marginal", return="prob")
     nam <- tree$tip.label
     label[seq_along(nam)] <- nam
     x[["names"]] <- label
-    
-
     tmp <- length(data)
     
-    if(return!="phyDat")result <- new2old.phyDat(data) 
+    if(return!="phyDat")result <- new2old.phyDat(data)
     else result[1:nTips] <- data
     eig <- object$eig
     
@@ -116,43 +112,43 @@ ancestral.pml <- function(object, type="marginal", return="prob")
 #    pos <- ind2[match(as.integer(1L:ncol(contrast)),  ind2[,2]),1]
     pos <- ind2[match(seq_len(ncol(contrast)),  ind2[,2]),1]
     nco <- as.integer(dim(contrast)[1])
-    for(i in 1:l)dat[i,(nTips + 1):m] <- .Call("LogLik2", data, P[i,], nr, nc, 
+    for(i in 1:l)dat[i, (nTips + 1):m] <- .Call("LogLik2", data, P[i,], nr, nc, 
                 node, edge, nTips, mNodes, contrast, nco, PACKAGE = "phangorn")
     
     parent <- tree$edge[, 1]
     child <- tree$edge[, 2]
     nTips <- min(parent) - 1
-# in C with scaling    
-    for(i in 1:l){     
+# in C with scaling
+    for(i in 1:l){    
         for (j in (m - 1):1) {
             if (child[j] > nTips){
                 tmp2 <- (dat[[i, parent[j]]]/(dat[[i,child[j]]] %*% P[[i,j]]))
-                dat[[i, child[j]]] <- (tmp2 %*% P[[i,j]]) * dat[[i, child[j]]]  
+                dat[[i, child[j]]] <- (tmp2 %*% P[[i,j]]) * dat[[i, child[j]]]
             }
         }
     }
     for (j in unique(parent)) {
         tmp <- matrix(0, nr, nc)
         if(inv>0) tmp <- as.matrix(INV) * inv
-        for(i in 1:l){  
+        for(i in 1:l){
 # scaling!!!            
-            tmp <- tmp + w[i] * dat[[i, j]]                                 
+            tmp <- tmp + w[i] * dat[[i, j]]
         }
         if ((pt == "bayes") || (pt == "marginal")) tmp <- tmp * rep(bf, each=nr)
         tmp <- tmp / rowSums(tmp)
         
         if(return=="phyDat"){
             if(data_type=="DNA"){
-                tmp <- p2dna(tmp) # prob2fitchCoding(tmp)
+                tmp <- p2dna(tmp)
                 tmp <- fitchCoding2ambiguous(tmp)
             }
-            else tmp <- pos[max.col(tmp)]   # [apply(tmp, 1, which.max)]
+            else tmp <- pos[max.col(tmp)]
         }
         result[[j]] <- tmp
-    } 
+    }
     attributes(result) <- x
     attr(result, "call") <- call
-    result 
+    result
 }
 
 
@@ -165,13 +161,12 @@ ancestral.pml <- function(object, type="marginal", return="prob")
 ancestral2phyDat <- function(x) {
     eps <- 1.0e-5
     contr <- attr(x, "contrast")
-    # a bit too complicated    
+    # a bit too complicated
     ind1 <- which( apply(contr, 1, function(x)sum(x > eps)) == 1L)
     ind2 <- which( contr[ind1, ] > eps, arr.ind = TRUE)
 #    pos <- ind2[match(as.integer(1L:ncol(contr)),  ind2[,2]),1]
     pos <- ind2[match(seq_len(ncol(contr)),  ind2[,2]),1]
-    # only first hit    
-#    res <- lapply(x, function(x, pos) pos[apply(x, 1, which.max)], pos)
+    # only first hit
     res <- lapply(x, function(x, pos) pos[max.col(x)], pos)
     attributes(res) <- attributes(x)
     return(res)
