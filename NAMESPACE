@@ -1,21 +1,21 @@
 useDynLib(phangorn, .registration=TRUE)
 
-importFrom(ape, as.DNAbin, as.phylo, plot.phylo, as.prop.part, nj,old2new.phylo, 
-    dist.dna, new2old.phylo, cophenetic.phylo, is.rooted, unroot, root, 
-    is.binary, as.alignment, di2multi, multi2di, .uncompressTipLabel, 
-    .compressTipLabel, prop.part, Ntip, getMRCA, postprocess.prop.part, 
+importFrom(ape, as.DNAbin, as.phylo, plot.phylo, as.prop.part, nj,old2new.phylo,
+    dist.dna, new2old.phylo, cophenetic.phylo, is.rooted, unroot, root,
+    is.binary, as.alignment, di2multi, multi2di, .uncompressTipLabel,
+    .compressTipLabel, prop.part, Ntip, getMRCA, postprocess.prop.part,
     speciesTree, plotPhyloCoor, cladogram.plot, phylogram.plot, has.singles,
-    node.depth.edgelength, drop.tip, stree, rtree, rcoal, rmtree, 
-    is.ultrametric, .PlotPhyloEnv, nodelabels, edgelabels, BOTHlabels, 
-    read.nexus.data, write.nexus.data, read.dna, write.dna, reorder.phylo, 
-    dist.nodes, collapse.singles, rotate, prop.clades, fastme.bal, fastme.ols, 
-    Nnode, image.DNAbin, ONEwise, as.AAbin, as.phyDat.AAbin, image.AAbin, 
-    as.bitsplits, as.bitsplits.prop.part, arecompatible, is.compatible, 
+    node.depth.edgelength, drop.tip, stree, rtree, rcoal, rmtree,
+    is.ultrametric, .PlotPhyloEnv, nodelabels, edgelabels, BOTHlabels,
+    read.nexus.data, write.nexus.data, read.dna, write.dna, reorder.phylo,
+    dist.nodes, collapse.singles, rotate, prop.clades, fastme.bal, fastme.ols,
+    Nnode, image.DNAbin, ONEwise, as.AAbin, as.phyDat.AAbin, image.AAbin,
+    as.bitsplits, as.bitsplits.prop.part, arecompatible, is.compatible,
     is.compatible.bitsplits, reorderRcpp)
-importFrom(igraph, graph, graph_from_adjacency_matrix, layout_with_kk, 
-    plot.igraph, shortest_paths, set.edge.attribute, set_edge_attr, decompose, 
+importFrom(igraph, graph, graph_from_adjacency_matrix, layout_with_kk,
+    plot.igraph, shortest_paths, set.edge.attribute, set_edge_attr, decompose,
     components, groups, vcount, graph.edgelist, graph_from_edgelist, topo_sort,
-    layout_nicely) 
+    layout_nicely)
 #layout.kamada.kawai, graph.adjacency, get.shortest.paths, topological.sort,
 
 import(methods, Rcpp)
@@ -28,14 +28,14 @@ importFrom(fastmatch, fmatch, "%fin%")
 import(parallel)
 importFrom(quadprog, solve.QP, solve.QP.compact)
 #importFrom(rgl, open3d, segments3d, spheres3d, rgl.texts)
-importFrom(stats, AIC, BIC, logLik, reorder, update, optim, optimize, 
-    constrOptim, na.omit, cophenetic, hclust, as.dist, pchisq, reshape, qgamma, 
-    pgamma, model.matrix, aggregate, lm.fit, xtabs, quantile, sd, runif) 
-importFrom(graphics, plot, plot.default, plot.new, plot.window, text, par, 
-    abline, strwidth, axis, title, segments, points, image, matplot, legend, 
-    hist, identify, locator) 
-importFrom(utils, read.table, download.file, stack, 
-    installed.packages, write.table, combn, packageDescription) 
+importFrom(stats, AIC, BIC, logLik, reorder, update, optim, optimize,
+    constrOptim, na.omit, cophenetic, hclust, as.dist, pchisq, reshape, qgamma,
+    pgamma, model.matrix, aggregate, lm.fit, xtabs, quantile, sd, runif, qbeta)
+importFrom(graphics, plot, plot.default, plot.new, plot.window, text, par,
+    abline, strwidth, axis, title, segments, points, image, matplot, legend,
+    hist, identify, locator)
+importFrom(utils, read.table, download.file, stack,
+    installed.packages, write.table, combn, packageDescription)
 importFrom(grDevices, rgb, rainbow, adjustcolor, col2rgb)
 #importFrom(methods, hasArg, is)
 #importFrom(Rcpp, evalCpp)
@@ -45,32 +45,32 @@ importFrom(grDevices, rgb, rainbow, adjustcolor, col2rgb)
 #importFrom(Biostrings,AAMultipleAlignment)
 
 
-export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ, 
-    UNJ, PNJ, phyDat, cbind.phyDat, read.phyDat, write.phyDat, as.Matrix, 
-    as.phyDat, as.splits, as.networx, dfactorial, ldfactorial, hadamard, nni, 
-    allSitePattern, allSplits, allCircularSplits, fhm, distanceHadamard, 
-    treedist, sankoff, fitch, h2st, h4st, dist.logDet, dist.hamming, 
-    dist.ml, dist.p, unique.dist, upgma, wpgma, write.nexus.splits, 
-    read.nexus.splits, read.nexus.networx, write.nexus.networx, write.splits, 
-    write.nexus.dist, pmlPart, pmlCluster, pmlMix, pmlPen, read.aa, allTrees, 
+export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ,
+    UNJ, PNJ, phyDat, cbind.phyDat, read.phyDat, write.phyDat, as.Matrix,
+    as.phyDat, as.splits, as.networx, dfactorial, ldfactorial, hadamard, nni,
+    allSitePattern, allSplits, allCircularSplits, fhm, distanceHadamard,
+    treedist, sankoff, fitch, h2st, h4st, dist.logDet, dist.hamming,
+    dist.ml, dist.p, unique.dist, upgma, wpgma, write.nexus.splits,
+    read.nexus.splits, read.nexus.networx, write.nexus.networx, write.splits,
+    write.nexus.dist, pmlPart, pmlCluster, pmlMix, pmlPen, read.aa, allTrees,
     designTree, designSplits, nnls.tree, nnls.splits, nnls.phylo, nnls.networx,
     neighborNet, pmlPart2multiPhylo, multiphyDat2pmlPart, splitsNetwork, simSeq,
-    SH.test, bootstrap.pml, bootstrap.phyDat, RF.dist, wRF.dist, KF.dist, 
-    path.dist, sprdist, SPR.dist, mast, rNNI, rSPR, plotBS, Ancestors, 
-    Descendants, allDescendants, mrca.phylo, Children, Siblings, pace, 
-    modelTest, lento, compatible, acgt2ry, ancestral.pars, ancestral.pml, CI, 
-    RI, getClans, getSlices, getClips, getDiversity, midpoint, pruneTree, 
-    acctran, getRoot, plotAnc, consensusNet, bab, random.addition, diversity, 
-    baseFreq, densiTree, superTree, coalSpeciesTree, pml.fit, pml.init, 
-    pml.free, edQt, lli, cladePar, addConfidences, createLabel, SOWH.test, 
+    SH.test, bootstrap.pml, bootstrap.phyDat, RF.dist, wRF.dist, KF.dist,
+    path.dist, sprdist, SPR.dist, mast, rNNI, rSPR, plotBS, Ancestors,
+    Descendants, allDescendants, mrca.phylo, Children, Siblings, pace,
+    modelTest, lento, compatible, acgt2ry, ancestral.pars, ancestral.pml, CI,
+    RI, getClans, getSlices, getClips, getDiversity, midpoint, pruneTree,
+    acctran, getRoot, plotAnc, consensusNet, bab, random.addition, diversity,
+    baseFreq, densiTree, superTree, coalSpeciesTree, pml.fit, pml.init,
+    pml.free, edQt, lli, cladePar, addConfidences, createLabel, SOWH.test,
     presenceAbsence, as.networx.splits, addTrivialSplits, removeTrivialSplits,
-    phyDat2alignment, AICc, readDist, writeDist, discrete.gamma, matchSplits, 
+    phyDat2alignment, AICc, readDist, writeDist, discrete.gamma, matchSplits,
     distinct.splits, c.splits, dna2codon, codon2dna, genlight2phyDat,
-    removeUndeterminedSites, phyDat2MultipleAlignment, delta.score, 
-    maxCladeCred, as.MultipleAlignment, threshStateC, coords, add.tips, 
-    map_duplicates)
+    removeUndeterminedSites, phyDat2MultipleAlignment, delta.score,
+    maxCladeCred, as.MultipleAlignment, threshStateC, coords, add.tips,
+    map_duplicates, codonTest)
 
-S3method('[', splits)          
+S3method('[', splits)
 S3method(addConfidences, phylo)
 S3method(addConfidences, splits)
 S3method(addConfidences, networx)
@@ -82,11 +82,11 @@ S3method(BIC, pml)
 S3method(c, phyDat)
 S3method(c, splits)
 S3method(cbind, phyDat)
-S3method(unique, phyDat) 
-S3method(unique, dist) 
+S3method(unique, phyDat)
+S3method(unique, dist)
 S3method(as.bitsplits, splits)
 S3method(as.matrix, splits)
-S3method(as.Matrix, splits) 
+S3method(as.Matrix, splits)
 S3method(as.networx, splits)
 S3method(unique, splits)
 S3method(as.networx, phylo)
@@ -99,7 +99,7 @@ S3method(as.phyDat, factor)
 S3method(as.phyDat, matrix)
 S3method(as.phyDat, MultipleAlignment)
 S3method(as.MultipleAlignment, phyDat)
-S3method(as.AAbin, phyDat) 
+S3method(as.AAbin, phyDat)
 S3method(as.DNAbin, phyDat)
 S3method(as.phylo, splits)
 S3method(as.splits, phylo)
