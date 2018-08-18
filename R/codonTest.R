@@ -31,6 +31,8 @@
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{pml}}, \code{\link{pmlMix}}, \code{\link{modelTest}},
 #' \code{\link[stats]{AIC}}
+#' @references Ziheng Yang (2014). \emph{Molecular Evolution: A Statistical 
+#' Approach}. Oxford University Press, Oxford
 #' @keywords cluster
 
 codonTest <- function(tree, object, model=c("M0", "M1a", "M2a"), 
@@ -75,5 +77,4 @@ glance.pml <- function(x, ...){
 }
     
     
-
 

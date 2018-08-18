@@ -46,6 +46,10 @@ So far the M0 model (Goldman and Yang 2002), the M1, M1a and M2a are
 implemented. The M0 model is always computed the other a re optional.
 M1a can be used as the null model to test positive selection
 }
+\references{
+Ziheng Yang (2014). \emph{Molecular Evolution: A Statistical 
+Approach}. Oxford University Press, Oxford
+}
 \seealso{
 \code{\link{pml}}, \code{\link{pmlMix}}, \code{\link{modelTest}},
 \code{\link[stats]{AIC}}
