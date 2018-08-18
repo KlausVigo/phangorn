@@ -44,7 +44,7 @@ codonTest <- function(tree, object, model=c("M0", "M1a", "M2a"),
     M0 <- optim.pml(fit, model="codon1")
     
     choices <- c("M0", "M1", "M1a", "M2a")
-    model <- match.arg(choices , type, TRUE)
+    model <- match.arg(choices, model, TRUE)
     
     M1_start <- list(update(M0, dnds=0), update(M0, dnds=1))
     M1 <- pmlMix(edge ~ ., M1_start, m=2)
