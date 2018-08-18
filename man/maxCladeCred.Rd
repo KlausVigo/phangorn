@@ -37,8 +37,8 @@ for the trees in x.
 
 data(Laurasiatherian)
 set.seed(42)
-bs <- bootstrap.phyDat(Laurasiatherian, FUN = function(x)upgma(dist.hamming(x)),
-    bs=100)
+bs <- bootstrap.phyDat(Laurasiatherian,
+  FUN = function(x)upgma(dist.hamming(x)), bs=100)
 
 strict_consensus <- consensus(bs)
 majority_consensus <- consensus(bs, p=.5)

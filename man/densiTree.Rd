@@ -19,20 +19,20 @@ densiTree(x, type = "cladogram", alpha = 1/length(x),
 
 \item{alpha}{parameter for semi-transparent colors.}
 
-\item{consensus}{A tree or character vector which is used to define the order 
+\item{consensus}{A tree or character vector which is used to define the order
 of the tip labels.}
 
-\item{direction}{a character string specifying the direction of the tree. 
-Four values are possible: "rightwards" (the default), "leftwards", "upwards", 
+\item{direction}{a character string specifying the direction of the tree.
+Four values are possible: "rightwards" (the default), "leftwards", "upwards",
 and "downwards".}
 
 \item{optim}{not yet used.}
 
 \item{scaleX}{scale trees to have identical heights.}
 
-\item{col}{a skalar or vector giving the colours used to draw the edges for 
-each plotted phylogeny. These are taken to be in the same order than input 
-trees x. If fewer colours are given than the number of trees, then the 
+\item{col}{a skalar or vector giving the colours used to draw the edges for
+each plotted phylogeny. These are taken to be in the same order than input
+trees x. If fewer colours are given than the number of trees, then the
 colours are recycled.}
 
 \item{width}{edge width.}
@@ -46,12 +46,12 @@ colours are recycled.}
 
 \item{tip.color}{color of the tip labels.}
 
-\item{adj}{a numeric specifying the justification of the text strings of the 
+\item{adj}{a numeric specifying the justification of the text strings of the
 labels: 0 (left-justification), 0.5 (centering), or 1 (right-justification).}
 
 \item{srt}{a numeric giving how much the labels are rotated in degrees.}
 
-\item{underscore}{a logical specifying whether the underscores in tip labels 
+\item{underscore}{a logical specifying whether the underscores in tip labels
 should be written as spaces (the default) or left as are (if TRUE).}
 
 \item{label.offset}{a numeric giving the space between the nodes and the tips of the
@@ -59,7 +59,7 @@ phylogeny and their corresponding labels.}
 
 \item{scale.bar}{a logical specifying whether add scale.bar to the plot.}
 
-\item{jitter}{allows to shift treees. a list with two arguments: the amount of 
+\item{jitter}{allows to shift treees. a list with two arguments: the amount of
 jitter and random or equally spaced (see details below)}
 
 \item{\dots}{further arguments to be passed to plot.}
@@ -68,31 +68,31 @@ jitter and random or equally spaced (see details below)}
 An R function to plot trees similar to those produced by DensiTree.
 }
 \details{
-If no consensus tree is provided \code{densiTree} computes a consensus tree, 
-and if the input trees have different labels a mrp.supertree as a backbone. 
-This should avoid too many unnecessary crossings of edges.  
+If no consensus tree is provided \code{densiTree} computes a consensus tree,
+and if the input trees have different labels a mrp.supertree as a backbone.
+This should avoid too many unnecessary crossings of edges.
 Trees should be rooted, other wise the output may not be visually pleasing.
-\code{jitter} shifts trees a bit so that they are not exactly on top of each other. 
+\code{jitter} shifts trees a bit so that they are not exactly on top of each other.
 If \code{amount == 0}, it is ignored. If \code{random=TRUE} the result of the perputation is
 \code{runif(n, -amount, amount)}, otherwise \code{seq(-amount, amount, length=n)}, where \code{n <- length(x)}.
 }
 \examples{
-  
+
 data(Laurasiatherian)
 set.seed(1)
-bs <- bootstrap.phyDat(Laurasiatherian, FUN = 
+bs <- bootstrap.phyDat(Laurasiatherian, FUN =
    function(x) upgma(dist.hamming(x)), bs=25)
 # cladogram nice to show topological differences
 densiTree(bs, type="cladogram", col="blue")
 densiTree(bs, type="phylogram", col="green", direction="downwards", width=2)
-# plot five trees slightly shifted, no transparent color 
+# plot five trees slightly shifted, no transparent color
 densiTree(bs[1:5], type="phylogram", col=1:5, width=2, jitter=
     list(amount=.3, random=FALSE), alpha=1)
 \dontrun{
 # phylograms are nice to show different age estimates
 require(PhyloOrchard)
 data(BinindaEmondsEtAl2007)
-BinindaEmondsEtAl2007 <- .compressTipLabel(BinindaEmondsEtAl2007) 
+BinindaEmondsEtAl2007 <- .compressTipLabel(BinindaEmondsEtAl2007)
 densiTree(BinindaEmondsEtAl2007, type="phylogram", col="red")
 }
 

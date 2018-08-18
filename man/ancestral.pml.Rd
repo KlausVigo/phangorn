@@ -73,7 +73,7 @@ seqLogo( t(subset(anc.p, 48, 1:20)[[1]]), ic.scale=FALSE)
 }
 # plot the first site pattern
 plotAnc(tree, anc.ml, 1)
-# plot the third character 
+# plot the third character
 plotAnc(tree, anc.ml, attr(anc.ml, "index")[3])
 
 }

@@ -82,7 +82,7 @@ York: Academic Press. 21--132.
 \seealso{
 For more distance methods for nucleotide data see
 \code{\link[ape]{dist.dna}} and \code{\link{dist.p}} for pairwise
-polymorphism p-distances. \code{\link{writeDist}} for export and import 
+polymorphism p-distances. \code{\link{writeDist}} for export and import
 distances.
 }
 \author{

@@ -21,17 +21,17 @@ readDist(file)
 
 \item{file}{A file name.}
 
-\item{format}{file format, default is "phylip", only other option so far is 
+\item{format}{file format, default is "phylip", only other option so far is
 "nexus".}
 
 \item{\dots}{Further arguments passed to or from other methods.}
 
 \item{append}{logical. If TRUE the nexus blocks will be added to a file.}
 
-\item{upper}{logical value indicating whether the upper triangle of the 
+\item{upper}{logical value indicating whether the upper triangle of the
 distance matrix should be printed.}
 
-\item{diag}{logical value indicating whether the diagonal of the distance 
+\item{diag}{logical value indicating whether the diagonal of the distance
 matrix should be printed.}
 
 \item{digits}{passed to format inside of \code{write.nexus.dist}.}
@@ -44,7 +44,7 @@ matrix should be printed.}
 an object of class \code{dist}
 }
 \description{
-\code{readDist}, \code{writeDist} and \code{write.nexus.dist} are useful to 
+\code{readDist}, \code{writeDist} and \code{write.nexus.dist} are useful to
 exchange distance matrices with other phylogenetic programs.
 }
 \examples{
@@ -56,8 +56,8 @@ write.nexus.dist(dm)
 
 }
 \references{
-Maddison, D. R., Swofford, D. L. and Maddison, W. P. (1997) 
-NEXUS: an extensible file format for systematic information. 
+Maddison, D. R., Swofford, D. L. and Maddison, W. P. (1997)
+NEXUS: an extensible file format for systematic information.
 \emph{Systematic Biology}, \bold{46}, 590--621.
 }
 \seealso{
