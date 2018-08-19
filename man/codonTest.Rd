@@ -15,12 +15,14 @@ codonTest(tree, object, model = c("M0", "M1a", "M2a"),
 \item{model}{a vector containing the substitution models to compare with
 each other or "all" to test all available models.}
 
-\item{frequencies}{a character string or vector defining how to compute 
+\item{frequencies}{a character string or vector defining how to compute
 the codon frequencies}
 
 \item{opt_freq}{optimize frequencies (so far ignored)}
 
-\item{k}{number of rate classes}
+\item{codonstart}{an integer giving where to start the translation. This
+should be 1, 2, or 3, but larger values are accepted and have for effect to
+start the translation further within the sequence.}
 
 \item{control}{A list of parameters for controlling the fitting process.}
 }
@@ -35,19 +37,19 @@ point for further analysis (see example).
 Models for detecting positive selection
 }
 \details{
-Currently \code{codonTest} estimates all the specified models for a given 
-tree and data. 
-There are several options for deriving the codon frequencies. 
+Currently \code{codonTest} estimates all the specified models for a given
+tree and data.
+There are several options for deriving the codon frequencies.
 Frequencies can be "equal" (1/61), derived from nucleotide frequencies "F1x4"
-and "F3x4" or "empirical" codon frequencies. The frequencies taken using  
+and "F3x4" or "empirical" codon frequencies. The frequencies taken using
 the empirical frequencies or estimated via maximum likelihood.
 
-So far the M0 model (Goldman and Yang 2002), the M1, M1a and M2a are 
+So far the M0 model (Goldman and Yang 2002), the M1, M1a and M2a are
 implemented. The M0 model is always computed the other a re optional.
 M1a can be used as the null model to test positive selection
 }
 \references{
-Ziheng Yang (2014). \emph{Molecular Evolution: A Statistical 
+Ziheng Yang (2014). \emph{Molecular Evolution: A Statistical
 Approach}. Oxford University Press, Oxford
 }
 \seealso{
