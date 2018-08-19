@@ -73,7 +73,7 @@ sp2 <- pmlPart(~ edge + inv, fits, weight=weight)
 sp2
 AIC(sp2)
 
-sp3 <- pmlPen(sp2, lambda = 2) 
+sp3 <- pmlPen(sp2, lambda = 2)
 AIC(sp3)
 }
 

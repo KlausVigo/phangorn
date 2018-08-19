@@ -69,8 +69,9 @@ compatible(obj)
 \item{maxp}{integer, default from \code{options(max.print)}, influences how
 many entries of large matrices are printed at all.}
 
-\item{recursive}{logical. If recursive = TRUE, the function recursively descends 
-through lists (and pairlists) combining all their elements into a vector.}
+\item{recursive}{logical. If recursive = TRUE, the function recursively
+descends through lists (and pairlists) combining all their elements into a
+vector.}
 
 \item{incomparables}{only for compatibility so far.}
 
@@ -82,7 +83,7 @@ through lists (and pairlists) combining all their elements into a vector.}
 \code{as.splits} returns an object of class splits, which is mainly
 a list of splits and some attributes. Often a \code{splits} object will
 contain attributes \code{confidences} for bootstrap or Bayesian support
-values and \code{weight} storing edge weights.  
+values and \code{weight} storing edge weights.
 \code{compatible} return a lower triangular matrix where an 1 indicates that
 two splits are incompatible.
 }
@@ -101,8 +102,9 @@ plot(as.networx(spl), "2D")
 
 }
 \seealso{
-\code{\link{prop.part}}, \code{\link{lento}}, \code{\link{as.networx}}, 
-\code{\link{distanceHadamard}}, \code{\link{read.nexus.splits}}
+\code{\link{prop.part}}, \code{\link{lento}},
+\code{\link{as.networx}}, \code{\link{distanceHadamard}},
+\code{\link{read.nexus.splits}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

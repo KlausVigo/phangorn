@@ -47,16 +47,16 @@ write.splits(x, file = "", zero.print = ".", one.print = "|",
 \item{labels}{names of taxa.}
 }
 \value{
-\code{write.nexus.splits} and \code{write.nexus.networx} write out 
+\code{write.nexus.splits} and \code{write.nexus.networx} write out
 the \code{splits} and \code{networx} object to read with
 other software like Splitstree.
-\code{read.nexus.splits} and \code{read.nexus.networx} return an \code{splits} 
+\code{read.nexus.splits} and \code{read.nexus.networx} return an \code{splits}
 and \code{networx} object.
 }
 \description{
-\code{read.nexus.splits}, \code{write.nexus.splits}, \code{read.nexus.networx}, \code{write.nexus.networx} 
+\code{read.nexus.splits}, \code{write.nexus.splits}, \code{read.nexus.networx}, \code{write.nexus.networx}
 can be used to import and export splits and networks with nexus format
-and allow to exchange these object with other software like Splitstree. 
+and allow to exchange these object with other software like Splitstree.
 \code{write.splits} returns a human readable output.
 }
 \note{

@@ -92,16 +92,16 @@ labels.}
 }
 \description{
 \code{as.networx} convert \code{splits} objects into a \code{networx}
-object. And most important there exists a generic \code{plot} function to 
+object. And most important there exists a generic \code{plot} function to
 plot phylogenetic network or split graphs.
 }
 \details{
-A \code{networx} object hold the information for a phylogenetic 
-network and extends the \code{phylo} object. Therefore some generic function 
+A \code{networx} object hold the information for a phylogenetic
+network and extends the \code{phylo} object. Therefore some generic function
 for \code{phylo} objects will also work for \code{networx} objects.  The
-argument \code{planar = TRUE} will create a planar split graph based on a 
-cyclic ordering. These objects can be nicely plotted in \code{"2D"}. So far 
-not all parameters behave the same on the the \code{rgl} \code{"3D"} and 
+argument \code{planar = TRUE} will create a planar split graph based on a
+cyclic ordering. These objects can be nicely plotted in \code{"2D"}. So far
+not all parameters behave the same on the the \code{rgl} \code{"3D"} and
 basic graphic \code{"2D"} device.
 
 Often it is easier and safer to supply vectors of graphical parameters for
@@ -118,7 +118,7 @@ sp <- as.splits(rNNI(tree1, n=10))
 net <- as.networx(sp)
 plot(net, "2D")
 \dontrun{
-# also see example in consensusNet 
+# also see example in consensusNet
 example(consensusNet)
 }
 
@@ -128,8 +128,8 @@ Dress, A.W.M. and Huson, D.H. (2004) Constructing Splits Graphs
 \emph{IEEE/ACM Transactions on Computational Biology and Bioinformatics
 (TCBB)}, \bold{1(3)}, 109--115
 
-Schliep, K., Potts, A. J., Morrison, D. A. and Grimm, G. W. (2017), 
-Intertwining phylogenetic trees and networks. \emph{Methods Ecol Evol}. 
+Schliep, K., Potts, A. J., Morrison, D. A. and Grimm, G. W. (2017),
+Intertwining phylogenetic trees and networks. \emph{Methods Ecol Evol}.
 \bold{8}, 1212--1220. doi:10.1111/2041-210X.12760
 }
 \seealso{

@@ -56,7 +56,7 @@ model="sankoff" and cost matrix).}
 
 \item{all}{return all equally good trees or just one of them.}
 
-\item{perturbation}{whether to use "ratchet", "random.addition" or 
+\item{perturbation}{whether to use "ratchet", "random.addition" or
 "stochastic" (nni) for shuffling the tree.}
 
 \item{search_history}{record the trees visited during the search.}
@@ -109,7 +109,7 @@ Nixon, K. (1999) The Parsimony Ratchet, a New Method for Rapid Parsimony
 Analysis. \emph{Cladistics} \bold{15}, 407-414
 }
 \seealso{
-\code{\link{bab}}, \code{\link{CI}}, \code{\link{RI}}, \code{\link{ancestral.pml}}, 
+\code{\link{bab}}, \code{\link{CI}}, \code{\link{RI}}, \code{\link{ancestral.pml}},
 \code{\link{nni}}, \code{\link{NJ}}, \code{\link{pml}}, \code{\link{getClans}}
 ,\code{\link{ancestral.pars}}, \code{\link{bootstrap.pml}}
 }

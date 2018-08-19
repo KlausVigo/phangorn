@@ -11,7 +11,7 @@ add.tips(tree, tips, where, edge.length = NULL)
 
 \item{tips}{a character vector containing the names of the tips.}
 
-\item{where}{an integer or character vector of the same length as tips giving 
+\item{where}{an integer or character vector of the same length as tips giving
 the number of the node or tip of the tree x where the tree y is binded.}
 
 \item{edge.length}{optional numeric vector with edge length}
@@ -28,8 +28,8 @@ tree <- rcoal(10)
 plot(tree)
 nodelabels()
 tiplabels()
-tree1 <- add.tips(tree, c("A", "B", "C"), c(1,2,15)) 
-plot(tree1) 
+tree1 <- add.tips(tree, c("A", "B", "C"), c(1,2,15))
+plot(tree1)
 }
 \seealso{
 \code{\link{bind.tree}}

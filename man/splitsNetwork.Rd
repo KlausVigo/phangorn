@@ -32,9 +32,9 @@ matrix.
 \details{
 \code{splitsNetwork} fits non-negative least-squares phylogenetic networks
 using L1 (LASSO), L2(ridge regression) constraints.  The function minimizes
-the penalized least squares 
-\deqn{\beta = min \sum(dm - X\beta)^2 + \lambda \|\beta \|^2_2 }{ beta = sum(dm - X*beta)^2 + lambda |beta|^2_2 } 
-with respect to \deqn{\|\beta \|_1 <= \gamma, \beta >= 0}{ |beta|_1 = gamma, beta >= 0} 
+the penalized least squares
+\deqn{\beta = min \sum(dm - X\beta)^2 + \lambda \|\beta \|^2_2 }{ beta = sum(dm - X*beta)^2 + lambda |beta|^2_2 }
+with respect to \deqn{\|\beta \|_1 <= \gamma, \beta >= 0}{ |beta|_1 = gamma, beta >= 0}
 where \eqn{X} is a design matrix constructed with \code{designSplits}.
 External edges are fitted without L1 or L2 constraints.
 }

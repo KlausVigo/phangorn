@@ -50,14 +50,14 @@ Simulate sequences for a given evolutionary tree.
 \details{
 \code{simSeq} is now a generic function to simulate sequence alignments to
 along a phylogeny. It
-is quite flexible and allows to generate DNA, RNA, amino acids, codon  or 
+is quite flexible and allows to generate DNA, RNA, amino acids, codon  or
 binary sequences.  It is possible to give a \code{pml} object as input simSeq
 return a \code{phyDat} from these model.  There is also a more low level
 version, which lacks rate variation, but one can combine different
 alignments having their own rate (see example). The rate parameter acts like
 a scaler for the edge lengths.
 
-For codon models \code{type="CODON"} two additional arguments \code{dnds} 
+For codon models \code{type="CODON"} two additional arguments \code{dnds}
 for the dN/dS ratio and \code{tstv} for the transition transversion ratio
 can be supplied.
 }
@@ -87,9 +87,9 @@ data3 <- simSeq(tree, l = 100, type="AA", model="WAG", rate=rates[3])
 data4 <- simSeq(tree, l = 100, type="AA", model="WAG", rate=rates[4])
 data <- c(data1,data2, data3, data4)
 
-write.phyDat(data, file="temp.dat", format="sequential", nbcol = -1, 
+write.phyDat(data, file="temp.dat", format="sequential", nbcol = -1,
   colsep = "")
-unlink("temp.dat") 
+unlink("temp.dat")
 
 }
 \seealso{

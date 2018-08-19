@@ -69,7 +69,7 @@ optimized.}
 \item{optRooted}{Logical value indicating if the edge lengths of a rooted
 tree get optimized.}
 
-\item{optF3x4}{Logical value indicating if codon frequencies are estimated 
+\item{optF3x4}{Logical value indicating if codon frequencies are estimated
 for the F3x4 model}
 
 \item{control}{A list of parameters for controlling the fitting process.}
@@ -95,11 +95,11 @@ alignment and a model. \code{optim.pml} optimizes the different model
 parameters.
 }
 \details{
-Base frequencies in \code{pml} can be supplied in different ways. 
-For amino acid they are usually defined through specifying a model, so the 
-argument bf does not need to be specified. Otherwise if \code{bf=NULL}, 
-each state is given equal probabilty. It can be a numeric vector given the 
-frequencies. Last but not least \code{bf} can be string "equal", "empirical" 
+Base frequencies in \code{pml} can be supplied in different ways.
+For amino acid they are usually defined through specifying a model, so the
+argument bf does not need to be specified. Otherwise if \code{bf=NULL},
+each state is given equal probabilty. It can be a numeric vector given the
+frequencies. Last but not least \code{bf} can be string "equal", "empirical"
 and for codon models additionally "F3x4".
 
 The topology search uses a nearest neighbor interchange (NNI) and the
@@ -144,35 +144,35 @@ tree topologies, especially for larger trees.
 \examples{
 
   example(NJ)
-# Jukes-Cantor (starting tree from NJ)  
-  fitJC <- pml(tree, Laurasiatherian)  
-# optimize edge length parameter     
+# Jukes-Cantor (starting tree from NJ)
+  fitJC <- pml(tree, Laurasiatherian)
+# optimize edge length parameter
   fitJC <- optim.pml(fitJC)
-  fitJC 
-  
-\dontrun{    
-# search for a better tree using NNI rearrangements     
+  fitJC
+
+\dontrun{
+# search for a better tree using NNI rearrangements
   fitJC <- optim.pml(fitJC, optNni=TRUE)
-  fitJC   
+  fitJC
   plot(fitJC$tree)
 
 # JC + Gamma + I - model
   fitJC_GI <- update(fitJC, k=4, inv=.2)
-# optimize shape parameter + proportion of invariant sites     
+# optimize shape parameter + proportion of invariant sites
   fitJC_GI <- optim.pml(fitJC_GI, optGamma=TRUE, optInv=TRUE)
 # GTR + Gamma + I - model
-  fitGTR <- optim.pml(fitJC_GI, rearrangement = "stochastic", 
-      optGamma=TRUE, optInv=TRUE, model="GTR") 
+  fitGTR <- optim.pml(fitJC_GI, rearrangement = "stochastic",
+      optGamma=TRUE, optInv=TRUE, model="GTR")
 }
 
 
-# 2-state data (RY-coded)  
-  dat <- acgt2ry(Laurasiatherian) 
-  fit2ST <- pml(tree, dat) 
-  fit2ST <- optim.pml(fit2ST,optNni=TRUE) 
+# 2-state data (RY-coded)
+  dat <- acgt2ry(Laurasiatherian)
+  fit2ST <- pml(tree, dat)
+  fit2ST <- optim.pml(fit2ST,optNni=TRUE)
   fit2ST
 # show some of the methods available for class pml
-  methods(class="pml")  
+  methods(class="pml")
 
 }
 \references{

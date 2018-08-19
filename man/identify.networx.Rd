@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{an object of class \code{networx}}
 
-\item{quiet}{a logical controlling whether to print a message inviting the 
+\item{quiet}{a logical controlling whether to print a message inviting the
 user to click on the tree.}
 
 \item{\dots}{further arguments to be passed to or from other methods.}
@@ -19,7 +19,7 @@ user to click on the tree.}
 }
 \description{
 \code{identify.networx} reads the position of the graphics pointer when the
-mouse button is pressed. It then returns the split belonging to the edge 
+mouse button is pressed. It then returns the split belonging to the edge
 closest to the pointer. The network must be plotted beforehand.
 }
 \examples{
@@ -28,7 +28,7 @@ data(yeast)
 dm <- dist.ml(yeast)
 nnet <- neighborNet(dm)
 plot(nnet, "2D")
-identify(nnet) # click close to an edge 
+identify(nnet) # click close to an edge
 }
 }
 \seealso{

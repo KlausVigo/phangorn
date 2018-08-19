@@ -28,7 +28,7 @@ list of trees, i.e. an class of class \code{multiPhylo}. Computes a
 
 data(Laurasiatherian)
 set.seed(1)
-bs <- bootstrap.phyDat(Laurasiatherian, FUN = function(x)nj(dist.hamming(x)), 
+bs <- bootstrap.phyDat(Laurasiatherian, FUN = function(x)nj(dist.hamming(x)),
     bs=50)
 cnet <- consensusNet(bs, .3)
 plot(cnet, "2D")

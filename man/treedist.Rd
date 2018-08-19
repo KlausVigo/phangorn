@@ -53,7 +53,7 @@ Robinson-Foulds distance}
 }
 \description{
 \code{treedist} computes different tree distance methods and \code{RF.dist}
-the Robinson-Foulds or symmetric distance. The Robinson-Foulds distance only 
+the Robinson-Foulds or symmetric distance. The Robinson-Foulds distance only
 depends on the toplogy of the trees. If edge weights should be considered
 \code{wRF.dist} calculates the weighted RF distance (Robinson & Foulds
 1981). and \code{KF.dist} calculates the branch score distance (Kuhner &
@@ -72,9 +72,9 @@ Robinson-Foulds distance is derived by dividing \eqn{d(T_1, T_2)} by the
 maximal possible distance \eqn{i(T_1) + i(T_2)}. If both trees are unrooted
 and binary this value is \eqn{2n-6}.
 
-Functions like \code{RF.dist} returns the Robinson-Foulds distance (Robinson 
+Functions like \code{RF.dist} returns the Robinson-Foulds distance (Robinson
 and Foulds 1981) between either 2 trees or computes a matrix of all pairwise
-distances if a \code{multiPhylo} object is given. 
+distances if a \code{multiPhylo} object is given.
 
 For large number of trees the distance functions can use a lot of memory!
 }
