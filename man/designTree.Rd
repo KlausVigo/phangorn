@@ -37,8 +37,8 @@ designSplits(x, splits = "all", ...)
 
 \item{trace}{defines how much information is printed during optimisation.}
 
-\item{weight}{vector of weights to be used in the fitting process. 
-Weighted least squares is used with weights w, i.e., sum(w * e^2) is 
+\item{weight}{vector of weights to be used in the fitting process.
+Weighted least squares is used with weights w, i.e., sum(w * e^2) is
 minimized.}
 
 \item{balanced}{use weights as in balanced fastME}
@@ -67,7 +67,7 @@ dm <-  as.matrix(dm)
 y <- dm[lower.tri(dm)]
 X <- designTree(tree)
 lm(y~X-1)
-# avoids negative edge weights 
+# avoids negative edge weights
 tree2 = nnls.tree(dm, tree)
 
 }

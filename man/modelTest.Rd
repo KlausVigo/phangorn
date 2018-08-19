@@ -53,14 +53,14 @@ work within a GUI interface and will not work under Windows.
 }
 \examples{
 
-\dontrun{    
+\dontrun{
 example(NJ)
 (mT <- modelTest(Laurasiatherian, tree))
 
 # some R magic
 env <- attr(mT, "env")
 ls(env=env)
-(F81 <- get("F81+G", env)) # a call  
+(F81 <- get("F81+G", env)) # a call
 eval(F81, env=env)
 
 data(chloroplast)
