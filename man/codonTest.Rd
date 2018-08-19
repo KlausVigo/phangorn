@@ -24,7 +24,7 @@ the codon frequencies}
 should be 1, 2, or 3, but larger values are accepted and have for effect to
 start the translation further within the sequence.}
 
-\item{control}{A list of parameters for controlling the fitting process.}
+\item{...}{further arguments passed to or from other methods.}
 }
 \value{
 A data.frame containing the log-likelihood, number of estimated

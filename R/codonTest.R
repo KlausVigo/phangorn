@@ -24,7 +24,7 @@
 #' @param codonstart an integer giving where to start the translation. This
 #' should be 1, 2, or 3, but larger values are accepted and have for effect to
 #' start the translation further within the sequence.
-#' @param control A list of parameters for controlling the fitting process.
+#' @param ... further arguments passed to or from other methods.
 #' @return A data.frame containing the log-likelihood, number of estimated
 #' parameters, AIC, AICc and BIC all tested models.  The data.frame has an
 #' attributes "env" which is an environment which contains all the trees, the
@@ -36,6 +36,7 @@
 #' @references Ziheng Yang (2014). \emph{Molecular Evolution: A Statistical
 #' Approach}. Oxford University Press, Oxford
 #' @keywords cluster
+# @param control A list of parameters for controlling the fitting process.
 
 codonTest <- function(tree, object, model=c("M0", "M1a", "M2a"),
                       frequencies="F3x4",
