@@ -1,8 +1,8 @@
 context("codon")
 
-
+# use lysin data & tree ?
 tree <- read.tree(text = "(((t1:.1,t2:.1):.1,t3:.2):.1,(t4:.1,t5:.1):.2);")
-set.seed(42)
+set.seed(1)
 
 dat_1 <- simSeq(tree, l=1000, type = "CODON", dnds=0.5, tstv=2)
 dat_2 <- simSeq(tree, l=1000, type = "CODON", dnds=1, tstv=2)
@@ -16,12 +16,13 @@ fit_GY <- pml(tree, dat_1, bf="empirical")
 
 test_that("edge length optimisation works properly", {
     skip_on_cran()
-    
-    fit_GY_opt <- optim.pml(fit_GY, model="codon1")
+
+    fit_GY_opt <- optim.pml(fit_GY, model="codon1",
+                            control=pml.control(trace=0))
     expect_lt(fit_GY_opt$dnds, 1)
     expect_gt(fit_GY_opt$tstv, 1)
-    
-    fit_selection <- codonTest(tree, dat_4)
+
+#    fit_selection <- codonTest(tree, dat_4, control=pml.control(trace=0))
 })
 
 
