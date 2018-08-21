@@ -989,6 +989,7 @@ print.pml <- function(x, ...) {
   if (type == "CODON") {
     cat("dn/ds:", x$dnds, "\n")
     cat("ts/tv:", x$tstv, "\n")
+    cat("Freq:", x$frequencies, "\n")
   }
   if (type == "USER" & length(x$bf) < 11) {
     cat("\nRate matrix:\n")
@@ -1082,6 +1083,10 @@ update.pml <- function(object, ...) {
   existing <- match(pmla, names(extras))
   updateEig <- FALSE
   updateRates <- FALSE
+  type <- attr(object$data, "type")
+  if(type=="CODON"){
+    bf_choice <- object$frequencies
+  }
   if (is.na(existing[1])) tree <- object$tree
   else tree <- eval(extras[[existing[1]]], parent.frame())
   if (is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise")
@@ -1101,6 +1106,31 @@ update.pml <- function(object, ...) {
   if (is.na(existing[3])) bf <- object$bf
   else {
     bf <- eval(extras[[existing[3]]], parent.frame())
+    # check for "character"
+    if (is.character(bf)) {
+      bf_choice <- match.arg(bf, c("equal", "empirical", "F1x4", "F3x4", "F61"))
+      # if(bf_choice %in% c("F1x4", "F3x4", "F61") & type != "CODON")
+      if (bf_choice == "F3x4" & type != "CODON")
+        stop("F3x4 not available for this data type")
+      if (bf_choice == "F1x4" & type != "CODON")
+        stop("F1x4 not available for this data type")
+      if (bf_choice == "F61" & type != "CODON")
+        stop("F61 not available for this data type")
+      bf <- switch(bf_choice,
+                   equal = rep(1 / nc, nc),
+                   empirical = baseFreq(data),
+                   F61 = baseFreq(data),
+                   F3x4 = F3x4(data),
+                   F1x4 = F1x4(data))
+      # function ausserhalb
+      freq_df <- switch(bf_choice,
+                        equal = 0,
+                        empirical = 60,
+                        F61 = 60,
+                        F3x4 = 9,
+                        F1x4 = 3)
+      names(bf) <- NULL
+    }
     updateEig <- TRUE
   }
   if (is.na(existing[4])) Q <- object$Q
@@ -1203,8 +1233,8 @@ update.pml <- function(object, ...) {
     DNA = df + (k > 1) + (inv > 0) + length(unique(bf)) - 1 +
       length(unique(Q)) - 1,
     AA = df + (k > 1) + (inv > 0),
-    CODON = df + (k > 1) + (inv > 0) + length(unique(bf)) - 1,
-    #+ (dnds != 1) + (tstv != 1),
+    CODON = df + (k > 1) + (inv > 0) + length(unique(bf)) - 1 + (dnds != 1)
+      + (tstv != 1),
     USER = df + (k > 1) + (inv > 0) + length(unique(bf)) - 1 +
       length(unique(Q)) - 1)
   #    if (type == "CODON") {
@@ -1222,6 +1252,7 @@ update.pml <- function(object, ...) {
   if (type == "CODON") {
     result$dnds <- dnds
     result$tstv <- tstv
+    result$frequencies <- bf_choice
   }
   class(result) <- "pml"
   result
@@ -1674,18 +1705,25 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   if (is.null(bf))
     bf <- rep(1 / length(levels), length(levels))
   if (is.character(bf)) {
-    bf_choice <- match.arg(bf, c("equal", "empirical", "F1x4", "F3x4"))
-    if (bf_choice == "F3x4" & type != "CODON") {
+    bf_choice <- match.arg(bf, c("equal", "empirical", "F1x4", "F3x4", "F61"))
+    if (bf_choice == "F3x4" & type != "CODON")
       stop("F3x4 not available for this data type")
-    }
-    if (bf_choice == "F1x4" & type != "CODON") {
+    if (bf_choice == "F1x4" & type != "CODON")
       stop("F1x4 not available for this data type")
-    }
+    if (bf_choice == "F61" & type != "CODON")
+      stop("F61 not available for this data type")
     bf <- switch(bf_choice,
       equal = rep(1 / length(levels), length(levels)),
       empirical = baseFreq(data),
+      F61 = baseFreq(data),
       F3x4 = F3x4(data),
       F1x4 = F1x4(data))
+    freq_df <- switch(bf_choice,
+      equal = 0,
+      empirical = 60,
+      F61 = 60,
+      F3x4 = 9,
+      F1x4 = 3)
     names(bf) <- NULL
   }
   if (is.null(Q))
@@ -1738,18 +1776,18 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     DNA =  df + (kmax > 1) + (inv0 > 0) + length(unique(bf)) - 1 +
       length(unique(Q)) - 1,
     AA = df + (kmax > 1) + (inv0 > 0),
-    CODON = df + (kmax > 1) + (inv0 > 0) + length(unique(bf)) - 1,
+    CODON = df + (kmax > 1) + (inv0 > 0) + freq_df + (dnds!=1) + (tstv!=1),
     USER = df + (kmax > 1) + (inv0 > 0) + length(unique(bf)) - 1 +
       length(unique(Q)) - 1)
 
-  #    if(type=="AA" & !is.null(model)){
-  #        df <- df + (kmax>1) + (inv0 > 0) #+ length(unique(bf)) - 1
-  #    }
-  #    if(type=="CODON"){
-  #        df <- df + (kmax>1) + (inv0 > 0) + length(unique(bf)) - 1
-  #        }
-  #    else df = df + (kmax>1) + (inv0 > 0) + length(unique(bf)) - 1 +
-  #               length(unique(Q)) - 1
+  # if(type=="AA" & !is.null(model)){
+  #   df <- df + (kmax>1) + (inv0 > 0) #+ length(unique(bf)) - 1
+  # }
+  # if(type=="CODON"){
+  #   df <- df + (kmax>1) + (inv0 > 0) + length(unique(bf)) - 1
+  # }
+  # else df = df + (kmax>1) + (inv0 > 0) + length(unique(bf)) - 1 +
+  #   length(unique(Q)) - 1
   result <- list(logLik = tmp$loglik, inv = inv, k = kmax, shape = shape,
     Q = Q, bf = bf, rate = rate, siteLik = tmp$siteLik, weight = weight,
     g = g, w = w, eig = eig, data = data, model = model, INV = INV,
@@ -1758,6 +1796,7 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   if (type == "CODON") {
     result$dnds <- dnds
     result$tstv <- tstv
+    result$frequencies <- bf_choice
   }
   class(result) <- "pml"
   result

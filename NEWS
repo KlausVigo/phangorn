@@ -2,18 +2,35 @@
 
 NEW FEATURES
  
-     o Additional Codon models (F3x4) 
+     o pratchet, optim.parsimony, optim.pml all may now return trees with 
+     
+       multifurcations in case duplicated sequences are discovered. This may 
+       
+       lead to speeding up computations and improved tree topology search
+ 
+     o Additional Codon models (M1a, M2a, and several options 
+     
+       to estimate coden frequencies (F3x4, F1x4) 
 
+     o tidy function for several objects to easier compare models
+
+     o new "equal_angle" layout for 2D-networks 
+     
+     o tiplabels, nodelabels, edgelabels from ape work for plot.networx if 
+     
+       plotted with base R 
+        
 OTHER CHANGES
 
-     o many small improvements to codon models
-     
-     o several small improvements to more intuitively use pml and phyDat 
+     o several small improvements to more intuitively use pml and phyDat objects
      
      o several more unit tests
 
      o two new contributors, Keren and Richel     
      
+     o optim.parsimony, pratchet, pmlMix and pmlPart may return the current best
+       
+       tree or object when interrupted.
 
 
      CHANGES in PHANGORN VERSION 2.4.0
