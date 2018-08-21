@@ -37,20 +37,41 @@ point for further analysis (see example).
 Models for detecting positive selection
 }
 \details{
-Currently \code{codonTest} estimates all the specified models for a given
-tree and data.
+\code{codonTest} allows to test for positive selection similar to programs
+like PAML (Yang ) or HyPhy (Kosakovsky Pond et al. 2005).
+
 There are several options for deriving the codon frequencies.
 Frequencies can be "equal" (1/61), derived from nucleotide frequencies "F1x4"
 and "F3x4" or "empirical" codon frequencies. The frequencies taken using
 the empirical frequencies or estimated via maximum likelihood.
 
-So far the M0 model (Goldman and Yang 2002), the M1, M1a and M2a are
-implemented. The M0 model is always computed the other a re optional.
-M1a can be used as the null model to test positive selection
+So far the M0 model (Goldman and Yang 2002), M1a and M2a are
+implemented. The M0 model is always computed the other are optional.
+M1a can be used as the null model to test positive selection.
+}
+\examples{
+
+\dontrun{
+dat_dna <- read.phyDat("/home/klaus/Dropbox/Klaus/R/Paml_files/lysin.nuc")
+dat_codon <- dna2codon(dat_dna)
+tree <- read.tree("/home/klaus/Dropbox/Klaus/R/Paml_files/lysin.trees")
+tree <- nnls.phylo(tree, dist.ml(dat_codon))
+fit <- pml(tree, dat_codon, bf="F3x4")
+M0 <- optim.pml(fit, model="codon1")
+
+M0_M1_M2 <- codonTest(tree, dat_codon)
+
+
+}
+
 }
 \references{
 Ziheng Yang (2014). \emph{Molecular Evolution: A Statistical
 Approach}. Oxford University Press, Oxford
+
+Sergei L. Kosakovsky Pond, Simon D. W. Frost, Spencer V. Muse (2005) HyPhy:
+hypothesis testing using phylogenies, \emph{Bioinformatics}, \bold{21(5)}:
+676--679, https://doi.org/10.1093/bioinformatics/bti079
 }
 \seealso{
 \code{\link{pml}}, \code{\link{pmlMix}}, \code{\link{modelTest}},

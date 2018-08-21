@@ -2,16 +2,17 @@
 #'
 #' Models for detecting positive selection
 #'
-#' Currently \code{codonTest} estimates all the specified models for a given
-#' tree and data.
+#' \code{codonTest} allows to test for positive selection similar to programs
+#' like PAML (Yang ) or HyPhy (Kosakovsky Pond et al. 2005).
+#'
 #' There are several options for deriving the codon frequencies.
 #' Frequencies can be "equal" (1/61), derived from nucleotide frequencies "F1x4"
 #' and "F3x4" or "empirical" codon frequencies. The frequencies taken using
 #' the empirical frequencies or estimated via maximum likelihood.
 #'
-#' So far the M0 model (Goldman and Yang 2002), the M1, M1a and M2a are
-#' implemented. The M0 model is always computed the other a re optional.
-#' M1a can be used as the null model to test positive selection
+#' So far the M0 model (Goldman and Yang 2002), M1a and M2a are
+#' implemented. The M0 model is always computed the other are optional.
+#' M1a can be used as the null model to test positive selection.
 #'
 #' @aliases codonTest
 #' @param object an object of class phyDat.
@@ -35,35 +36,65 @@
 #' \code{\link[stats]{AIC}}
 #' @references Ziheng Yang (2014). \emph{Molecular Evolution: A Statistical
 #' Approach}. Oxford University Press, Oxford
+#'
+#' Sergei L. Kosakovsky Pond, Simon D. W. Frost, Spencer V. Muse (2005) HyPhy:
+#' hypothesis testing using phylogenies, \emph{Bioinformatics}, \bold{21(5)}:
+#' 676--679, https://doi.org/10.1093/bioinformatics/bti079
+#'
+#' @examples
+#'
+#' \dontrun{
+#' dat_dna <- read.phyDat("/home/klaus/Dropbox/Klaus/R/Paml_files/lysin.nuc")
+#' dat_codon <- dna2codon(dat_dna)
+#' tree <- read.tree("/home/klaus/Dropbox/Klaus/R/Paml_files/lysin.trees")
+#' tree <- nnls.phylo(tree, dist.ml(dat_codon))
+#' fit <- pml(tree, dat_codon, bf="F3x4")
+#' M0 <- optim.pml(fit, model="codon1")
+#'
+#' M0_M1_M2 <- codonTest(tree, dat_codon)
+#'
+#'
+#' }
+#'
 #' @keywords cluster
 # @param control A list of parameters for controlling the fitting process.
+
 
 codonTest <- function(tree, object, model=c("M0", "M1a", "M2a"),
                       frequencies="F3x4",
                       opt_freq=FALSE, codonstart = 1, ...){
     if(attr(object, "type")=="DNA")
         object <- dna2codon(object, codonstart=codonstart)
+    if(is.null(tree$edge.length)) tree <- nnls.phylo(tree, dist.ml(object))
     fit <- pml(tree, object, bf=frequencies)
     M0 <- optim.pml(fit, model="codon1")
 
-    choices <- c("M0", "M1", "M1a", "M2a")
+    choices <- c("M0", "M1a", "M2a")
     model <- match.arg(choices, model, TRUE)
 
-    M1_start <- list(update(M0, dnds=0), update(M0, dnds=1))
-    M1 <- pmlMix(edge ~ ., M1_start, m=2)
+    if( !("M0" %in% model)) model <- c("M0", model)
 
-    M1a_start <- list(update(M0, dnds=0.1), update(M0, dnds=1))
-    M1a <- pmlMix(edge ~ M1a, M1a_start, m=2)
+#    M1_start <- list(update(M0, dnds=0), update(M0, dnds=1))
+#    M1 <- pmlMix(edge ~ ., M1_start, m=2)
 
-    M2a_start <- list(update(M0, dnds=0.1), update(M0, dnds=1),
-                      update(M0, dnds=3))
-    M2a <- pmlMix(edge ~ M2a, M2a_start, m=3)
+    M1a <- NULL
+    M2a <- NULL
 
-    #    attr(RESULT, "env") <- env
+    if("M1a"){
+      M1a_start <- list(update(M0, dnds=0.1), update(M0, dnds=1))
+      M1a <- pmlMix(edge ~ M1a, M1a_start, m=2)
+    }
+    if("M2a"){
+      M2a_start <- list(update(M0, dnds=0.1), update(M0, dnds=1),
+                        update(M0, dnds=3))
+      M2a <- pmlMix(edge ~ M2a, M2a_start, m=3)
+    }
 
     result <- list(M0, M1a, M2a)
 
     M0_ <- c(model="M0", Frequencies=frequencies, "empirical", glance.pml(M0))
+
+    print(M0_)
 
     class(result) <- c("codonTest") #, "data.frame")
     result
@@ -79,5 +110,18 @@ glance.pml <- function(x, ...){
     res
 }
 
+
+glance.pmlPart <- function(x, ...){
+  res <- data.frame(logLik = x$logLik,
+#                    df = x$df,
+                    AIC = AIC(x),
+                    BIC = BIC(x))
+  res
+}
+
+
+plot.codonTest <- function(x, model="M1a"){
+  return(NULL)
+}
 
 
