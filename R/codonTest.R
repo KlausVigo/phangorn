@@ -62,17 +62,19 @@
 
 codonTest <- function(tree, object, model=c("M0", "M1a", "M2a"),
                       frequencies="F3x4",
-                      opt_freq=FALSE, codonstart = 1, ...){
+                      opt_freq=FALSE, codonstart = 1, trace=0, ...){
     if(attr(object, "type")=="DNA")
         object <- dna2codon(object, codonstart=codonstart)
     if(is.null(tree$edge.length)) tree <- nnls.phylo(tree, dist.ml(object))
+    if( !("M0" %in% model)) model <- c("M0", model)
+
+
+    if(trace>2) print("optimize model M0")
     fit <- pml(tree, object, bf=frequencies)
     M0 <- optim.pml(fit, model="codon1")
 
     choices <- c("M0", "M1a", "M2a")
     model <- match.arg(choices, model, TRUE)
-
-    if( !("M0" %in% model)) model <- c("M0", model)
 
 #    M1_start <- list(update(M0, dnds=0), update(M0, dnds=1))
 #    M1 <- pmlMix(edge ~ ., M1_start, m=2)
@@ -80,11 +82,13 @@ codonTest <- function(tree, object, model=c("M0", "M1a", "M2a"),
     M1a <- NULL
     M2a <- NULL
 
-    if("M1a"){
+    if("M1a" %in% model){
+      if(trace>2) print("optimize model M1a")
       M1a_start <- list(update(M0, dnds=0.1), update(M0, dnds=1))
       M1a <- pmlMix(edge ~ M1a, M1a_start, m=2)
     }
-    if("M2a"){
+    if("M2a" %in% model){
+      if(trace>2) print("optimize model M2a")
       M2a_start <- list(update(M0, dnds=0.1), update(M0, dnds=1),
                         update(M0, dnds=3))
       M2a <- pmlMix(edge ~ M2a, M2a_start, m=3)
