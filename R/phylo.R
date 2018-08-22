@@ -366,7 +366,19 @@ edQt <- function(Q = c(1, 1, 1, 1, 1, 1), bf = c(0.25, 0.25, 0.25, 0.25)) {
 }
 
 
+# some functions to get codon models to work
+getScaler <- function(Q = c(1, 1, 1, 1, 1, 1), bf = c(0.25, 0.25, 0.25, 0.25)) {
+  l <- length(bf)
+  res <- matrix(0, l, l)
+  res[lower.tri(res)] <- Q
+  res <- res + t(res)
+  res <- res * bf
+  res2 <- res * rep(bf, each = l)
+  diag(res) <- -colSums(res)
+  sum(res2)
+}
 
+# eigen value decomposition without scaling
 edQt2 <- function(Q = c(1, 1, 1, 1, 1, 1), bf = c(0.25, 0.25, 0.25, 0.25),
                   scale = 1) {
   l <- length(bf)
@@ -380,6 +392,16 @@ edQt2 <- function(Q = c(1, 1, 1, 1, 1, 1), bf = c(0.25, 0.25, 0.25, 0.25),
   e <- eigen(res, FALSE)
   e$inv <- solve.default(e$vec)
   e
+}
+
+
+df_freq_codon <- function(bf) {
+  switch(bf,
+         equal = 0,
+         empirical = 60,
+         F61 = 60,
+         F3x4 = 9,
+         F1x4 = 3)
 }
 
 
@@ -1123,12 +1145,13 @@ update.pml <- function(object, ...) {
                    F3x4 = F3x4(data),
                    F1x4 = F1x4(data))
       # function ausserhalb
-      freq_df <- switch(bf_choice,
-                        equal = 0,
-                        empirical = 60,
-                        F61 = 60,
-                        F3x4 = 9,
-                        F1x4 = 3)
+      freq_df <- df_freq_codon(bf_choice)
+#      switch(bf_choice,
+#                        equal = 0,
+#                        empirical = 60,
+#                        F61 = 60,
+#                        F3x4 = 9,
+#                        F1x4 = 3)
       names(bf) <- NULL
     }
     updateEig <- TRUE
@@ -1237,11 +1260,6 @@ update.pml <- function(object, ...) {
       + (tstv != 1),
     USER = df + (k > 1) + (inv > 0) + length(unique(bf)) - 1 +
       length(unique(Q)) - 1)
-  #    if (type == "CODON") {
-  #        df <- df + (k > 1) + (inv > 0) + length(unique(bf)) - 1
-  #    }
-  #    else df = df + (k > 1) + (inv > 0) + length(unique(bf)) - 1 +
-  #      length(unique(Q)) - 1
 
   result <- list(logLik = tmp$loglik, inv = inv, k = kmax, shape = shape,
     Q = Q, bf = bf, rate = rate, siteLik = tmp$siteLik,
@@ -1462,7 +1480,8 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
   return(list(loglik = loglik, siteLik = siteLik, resll = resll))
 }
 
-
+### @param optF3x4 Logical value indicating if codon frequencies are estimated
+### for the F3x4 model
 
 
 #' Likelihood of a tree.
@@ -1541,8 +1560,6 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #' @param optRate Logical value indicating the overall rate gets optimized.
 #' @param optRooted Logical value indicating if the edge lengths of a rooted
 #' tree get optimized.
-#' @param optF3x4 Logical value indicating if codon frequencies are estimated
-#' for the F3x4 model
 #' @param ratchet.par search parameter for stochastic search
 #' @param rearrangement type of tree tree rearrangements to perform, one of
 #' "none", "NNI", "stochastic" or "ratchet"
@@ -1701,6 +1718,7 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   }
   if (type == "CODON") {
     Q <- CodonQ(subs = .sub, syn = .syn, tstv = tstv, dnds = dnds)
+    if(is.null(bf)) bf_choice <- "equal"
   }
   if (is.null(bf))
     bf <- rep(1 / length(levels), length(levels))
@@ -1718,14 +1736,9 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
       F61 = baseFreq(data),
       F3x4 = F3x4(data),
       F1x4 = F1x4(data))
-    freq_df <- switch(bf_choice,
-      equal = 0,
-      empirical = 60,
-      F61 = 60,
-      F3x4 = 9,
-      F1x4 = 3)
     names(bf) <- NULL
   }
+  if (type == "CODON") freq_df  <- df_freq_codon(bf_choice)
   if (is.null(Q))
     Q <- rep(1, length(levels) * (length(levels) - 1) / 2)
   m <- 1
@@ -2303,7 +2316,7 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV,
 #' @export
 optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                       optInv = FALSE, optGamma = FALSE, optEdge = TRUE,
-                      optRate = FALSE,  optRooted = FALSE, optF3x4 = FALSE,
+                      optRate = FALSE,  optRooted = FALSE, #optF3x4 = FALSE,
                       control = pml.control(epsilon = 1e-8, maxit = 10,
                                             trace = 1L), model = NULL,
                       rearrangement = ifelse(optNni, "NNI", "none"),
@@ -2311,6 +2324,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                                                       prop = 1 / 3), ...) {
   optRatchet <- FALSE
   optRatchet2 <- FALSE
+  optF3x4 <- FALSE
   if (rearrangement ==  "none") {
     optNni <- FALSE
     optRatchet <- FALSE
@@ -2425,13 +2439,6 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   if (type == "AA" & !is.null(model)) {
     object <- update(object, model = model)
   }
-  if (optF3x4) {
-    if (type != "CODON") stop("optF3x4 needs codon data")
-    optBf <- FALSE
-    bf <- F3x4(data)
-    bf_codon <- bf_by_codon(data)
-    object <- update.pml(object, bf = bf)
-  }
   if (type == "CODON") {
     if (is.null(model)) model <- "codon1"
     model <- match.arg(model, c("codon0", "codon1", "codon2", "codon3",
@@ -2443,6 +2450,16 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       else  optQ <- TRUE
       if (model == "YN98") optBf <- TRUE
     }
+    bf_choice <- object$frequencies
+    freq_df <- df_freq_codon(bf_choice)
+    if(bf_choice=="F3x4" & optBf) optF3x4 <- TRUE
+  }
+  if (optF3x4) {
+    if (type != "CODON") stop("optF3x4 needs codon data")
+    optBf <- FALSE
+    bf <- F3x4(data)
+    bf_codon <- bf_by_codon(data)
+    object <- update.pml(object, bf = bf)
   }
   Q <- object$Q
   if (is.null(subs)) subs <- c(1:(length(Q) - 1), 0)
@@ -2512,8 +2529,9 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       DNA = df + (k > 1) + (inv > 0) + length(unique(bf)) - 1 +
         length(unique(Q)) - 1,
       AA = df + (k > 1) + (inv > 0) +  optBf * (length(unique(bf)) - 1),
-      CODON = df + (k > 1) + (inv > 0) + length(unique(bf)) - 1 +
-        (dnds != 1) + (tstv != 1),
+#      CODON = df + (k > 1) + (inv > 0) + length(unique(bf)) - 1 +
+#        (dnds != 1) + (tstv != 1),
+      CODON = df + (k > 1) + (inv > 0) + freq_df + (dnds != 1) + (tstv != 1),
       USER = df + (k > 1) + (inv > 0) + length(unique(bf)) - 1 +
         length(unique(Q)) - 1)
 
@@ -2526,6 +2544,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     if (type == "CODON") {
       object$dnds <- dnds
       object$tstv <- tstv
+      object$frequencies <- bf_choice
     }
     class(object) <- "pml"
 
