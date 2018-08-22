@@ -82,6 +82,8 @@ codonTest <- function(tree, object, model=c("M0", "M1a", "M2a"),
     M1a <- NULL
     M2a <- NULL
 
+#    scaler_Q <- getScaler()
+
     if("M1a" %in% model){
       if(trace>2) print("optimize model M1a")
       M1a_start <- list(update(M0, dnds=0.1), update(M0, dnds=1))

@@ -1091,7 +1091,7 @@ update.pmlNew <- function(object, ..., evaluate = TRUE) {
 update.pml <- function(object, ...) {
   extras <- match.call(expand.dots = FALSE)$...
   pmla <- c("tree", "data", "bf", "Q", "inv", "k", "shape",
-    "rate", "model", "wMix", "llMix", "dnds", "tstv", "...")
+    "rate", "model", "wMix", "llMix", "dnds", "tstv", "scaleQ","...")
   names(extras) <- pmla[pmatch(names(extras), pmla[-length(pmla)])]
   call <- object$call
   if (length(extras)) {
@@ -1144,14 +1144,7 @@ update.pml <- function(object, ...) {
                    F61 = baseFreq(data),
                    F3x4 = F3x4(data),
                    F1x4 = F1x4(data))
-      # function ausserhalb
       freq_df <- df_freq_codon(bf_choice)
-#      switch(bf_choice,
-#                        equal = 0,
-#                        empirical = 60,
-#                        F61 = 60,
-#                        F3x4 = 9,
-#                        F1x4 = 3)
       names(bf) <- NULL
     }
     updateEig <- TRUE
@@ -1172,6 +1165,7 @@ update.pml <- function(object, ...) {
     }
     #        else model <- object$model
   }
+  scaleQ <- FALSE
   if (type == "CODON") {
     if (is.na(existing[12])) dnds <- object$dnds
     else {
@@ -1181,6 +1175,10 @@ update.pml <- function(object, ...) {
     if (is.na(existing[13])) tstv <- object$tstv
     else {
       tstv <- eval(extras[[existing[13]]], parent.frame())
+      updateEig <- TRUE
+    }
+    if (!is.na(existing[14])) {
+      scaleQ <- eval(extras[[existing[14]]], parent.frame())
       updateEig <- TRUE
     }
     if (updateEig) Q <- CodonQ(subs = .sub, syn = .syn, tstv = tstv,
@@ -1209,7 +1207,10 @@ update.pml <- function(object, ...) {
   else llMix <- eval(extras[[existing[11]]], parent.frame())
   levels <- attr(data, "levels")
   weight <- attr(data, "weight")
-  if (updateEig) eig <- edQt(bf = bf, Q = Q)
+  if (updateEig){
+    if(scaleQ) eig <- edQt2(Q = Q, bf = bf, scale = scaleQ)
+    else eig <- edQt(Q = Q, bf = bf)
+  }
   else {
     eig <- object$eig
     model <- object$model
