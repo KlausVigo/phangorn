@@ -41,19 +41,25 @@
 #' hypothesis testing using phylogenies, \emph{Bioinformatics}, \bold{21(5)}:
 #' 676--679, https://doi.org/10.1093/bioinformatics/bti079
 #'
+#' Nielsen, R., and Z. Yang. (1998) Likelihood models for detecting positively
+#' selected amino acid sites and applications to the HIV-1 envelope gene.
+#' \emph{Genetics}, \bold{148}: 929--936
+#'
 #' @examples
 #'
 #' \dontrun{
-#' dat_dna <- read.phyDat("/home/klaus/Dropbox/Klaus/R/Paml_files/lysin.nuc")
+#' fdir <- system.file("extdata/HIV-2nef", package = "phangorn")
+#' dat_dna <- read.phyDat(file.path(fdir, "seqfile.txt"), format = "sequential")
 #' dat_codon <- dna2codon(dat_dna)
-#' tree <- read.tree("/home/klaus/Dropbox/Klaus/R/Paml_files/lysin.trees")
+#' tree <- read.tree(file.path(fdir, "tree.txt"))
+#' tree
+#' # add edge length
 #' tree <- nnls.phylo(tree, dist.ml(dat_codon))
+#' # optimise the model the old way
 #' fit <- pml(tree, dat_codon, bf="F3x4")
 #' M0 <- optim.pml(fit, model="codon1")
-#'
+#' # Now using the codonTest function
 #' M0_M1_M2 <- codonTest(tree, dat_codon)
-#'
-#'
 #' }
 #'
 #' @keywords cluster
@@ -76,31 +82,37 @@ codonTest <- function(tree, object, model=c("M0", "M1a", "M2a"),
     choices <- c("M0", "M1a", "M2a")
     model <- match.arg(choices, model, TRUE)
 
-#    M1_start <- list(update(M0, dnds=0), update(M0, dnds=1))
-#    M1 <- pmlMix(edge ~ ., M1_start, m=2)
-
     M1a <- NULL
     M2a <- NULL
 
-#    scaler_Q <- getScaler()
+    prob <- list()
 
     if("M1a" %in% model){
       if(trace>2) print("optimize model M1a")
-      M1a_start <- list(update(M0, dnds=0.1), update(M0, dnds=1))
-      M1a <- pmlMix(edge ~ M1a, M1a_start, m=2)
+      M1a_start <- list(update(M0, dnds = 0.1, scaleQ = 1),
+                        update(M0, dnds = 1, scaleQ = 1))
+      M1a <- pmlMix(rate ~ M1a, M1a_start, m = 2)
+      M1a_glance <- c(model = "M1a", Frequencies = frequencies, "empirical",
+                      glance.pmlMix(M1a))
+      neb_M1a <- neb(M1a)
     }
     if("M2a" %in% model){
       if(trace>2) print("optimize model M2a")
-      M2a_start <- list(update(M0, dnds=0.1), update(M0, dnds=1),
-                        update(M0, dnds=3))
-      M2a <- pmlMix(edge ~ M2a, M2a_start, m=3)
+      M2a_start <- list(update(M0, dnds = 0.1, scaleQ = 1),
+                        update(M0, dnds = 1, scaleQ = 1),
+                        update(M0, dnds = 3, scaleQ = 1))
+      M2a <- pmlMix(rate ~ M2a, M2a_start, m = 3)
+      M2a_glance <- c(model="M2a", Frequencies=frequencies, "empirical",
+                      glance.pmlMix(M2a))
+      neb_M2a <- neb(M2a)
     }
 
     result <- list(M0, M1a, M2a)
 
-    M0_ <- c(model="M0", Frequencies=frequencies, "empirical", glance.pml(M0))
+    M0_glance <- c(model="M0", Frequencies=frequencies, "empirical",
+                   glance.pml(M0))
 
-    print(M0_)
+#    print(M0_)
 
     class(result) <- c("codonTest") #, "data.frame")
     result
@@ -109,25 +121,43 @@ codonTest <- function(tree, object, model=c("M0", "M1a", "M2a"),
 
 #tidy codon
 glance.pml <- function(x, ...){
-    res <- data.frame(logLik = x$logLik,
-                      df = x$df,
-                      AIC = AIC(x),
-                      BIC = BIC(x))
-    res
-}
-
-
-glance.pmlPart <- function(x, ...){
   res <- data.frame(logLik = x$logLik,
-#                    df = x$df,
+                    df = x$df,
                     AIC = AIC(x),
                     BIC = BIC(x))
+  if(attr(x$data, "type")=="CODON") res <- cbind(res, dnds = x$dnds,
+                                                 tstv = x$tstv)
   res
 }
+
+
+glance.pmlMix <- function(x, ...){
+  nr <- attr(x$fits[[1]]$data, "nr")
+  res <- data.frame(logLik = x$logLik,
+                    df = attr(logLik(x), "df"),
+                    AIC = AIC(x),
+                    BIC = AIC(x, k = log(nr)))
+  res
+}
+
+
+
 
 
 plot.codonTest <- function(x, model="M1a"){
   return(NULL)
 }
 
+
+# compute Naive Empirical Bayes (NEB) probabilities
+neb <- function(x){
+  #  check for pmlMix
+  p <- x$omega
+  l <- length(p)
+  index <- attr(x$fits[[1]]$data, "index")
+  res <- matrix(0, max(index), l)
+  for(i in seq_len(l)) res[, i] <- p[i] * x$fits[[i]]$lv
+  res <- res / rowSums(res)
+  res[index, ]
+}
 
