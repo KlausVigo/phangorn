@@ -837,6 +837,7 @@ fs3 <- function(old.el, eig, parent.dat, child, weight, g = g, w = w, bf = bf,
 }
 
 
+# rate not used internally
 optimEdge <- function(tree, data, eig = eig, w = w, g = g, bf = bf, rate = rate,
                       ll.0 = ll.0, control = pml.control(epsilon = 1e-08,
                         maxit = 10, trace = 0), ...) {
@@ -1794,14 +1795,6 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     USER = df + (kmax > 1) + (inv0 > 0) + length(unique(bf)) - 1 +
       length(unique(Q)) - 1)
 
-  # if(type=="AA" & !is.null(model)){
-  #   df <- df + (kmax>1) + (inv0 > 0) #+ length(unique(bf)) - 1
-  # }
-  # if(type=="CODON"){
-  #   df <- df + (kmax>1) + (inv0 > 0) + length(unique(bf)) - 1
-  # }
-  # else df = df + (kmax>1) + (inv0 > 0) + length(unique(bf)) - 1 +
-  #   length(unique(Q)) - 1
   result <- list(logLik = tmp$loglik, inv = inv, k = kmax, shape = shape,
     Q = Q, bf = bf, rate = rate, siteLik = tmp$siteLik, weight = weight,
     g = g, w = w, eig = eig, data = data, model = model, INV = INV,
