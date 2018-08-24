@@ -5,7 +5,8 @@
 \title{codonTest}
 \usage{
 codonTest(tree, object, model = c("M0", "M1a", "M2a"),
-  frequencies = "F3x4", opt_freq = FALSE, codonstart = 1, ...)
+  frequencies = "F3x4", opt_freq = FALSE, codonstart = 1,
+  trace = 0, ...)
 }
 \arguments{
 \item{tree}{a phylogenetic tree.}
@@ -52,16 +53,18 @@ M1a can be used as the null model to test positive selection.
 \examples{
 
 \dontrun{
-dat_dna <- read.phyDat("/home/klaus/Dropbox/Klaus/R/Paml_files/lysin.nuc")
+fdir <- system.file("extdata/HIV-2nef", package = "phangorn")
+dat_dna <- read.phyDat(file.path(fdir, "seqfile.txt))
 dat_codon <- dna2codon(dat_dna)
-tree <- read.tree("/home/klaus/Dropbox/Klaus/R/Paml_files/lysin.trees")
+tree <- read.tree(file.path(fdir, "tree.txt))
+tree
+# add edge length
 tree <- nnls.phylo(tree, dist.ml(dat_codon))
+# optimise the model the old way
 fit <- pml(tree, dat_codon, bf="F3x4")
 M0 <- optim.pml(fit, model="codon1")
-
+# Now using the codonTest function
 M0_M1_M2 <- codonTest(tree, dat_codon)
-
-
 }
 
 }
@@ -72,6 +75,10 @@ Approach}. Oxford University Press, Oxford
 Sergei L. Kosakovsky Pond, Simon D. W. Frost, Spencer V. Muse (2005) HyPhy:
 hypothesis testing using phylogenies, \emph{Bioinformatics}, \bold{21(5)}:
 676--679, https://doi.org/10.1093/bioinformatics/bti079
+
+Nielsen, R., and Z. Yang. (1998) Likelihood models for detecting positively
+selected amino acid sites and applications to the HIV-1 envelope gene.
+\emph{Genetics}, \bold{148}: 929--936
 }
 \seealso{
 \code{\link{pml}}, \code{\link{pmlMix}}, \code{\link{modelTest}},

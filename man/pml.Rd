@@ -13,11 +13,10 @@ pml(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
 
 optim.pml(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   optInv = FALSE, optGamma = FALSE, optEdge = TRUE,
-  optRate = FALSE, optRooted = FALSE, optF3x4 = FALSE,
-  control = pml.control(epsilon = 1e-08, maxit = 10, trace = 1L),
-  model = NULL, rearrangement = ifelse(optNni, "NNI", "none"),
-  subs = NULL, ratchet.par = list(iter = 20L, maxit = 100L, prop =
-  1/3), ...)
+  optRate = FALSE, optRooted = FALSE, control = pml.control(epsilon =
+  1e-08, maxit = 10, trace = 1L), model = NULL,
+  rearrangement = ifelse(optNni, "NNI", "none"), subs = NULL,
+  ratchet.par = list(iter = 20L, maxit = 100L, prop = 1/3), ...)
 }
 \arguments{
 \item{epsilon}{Stop criterion for optimisation (see details).}
@@ -68,9 +67,6 @@ optimized.}
 
 \item{optRooted}{Logical value indicating if the edge lengths of a rooted
 tree get optimized.}
-
-\item{optF3x4}{Logical value indicating if codon frequencies are estimated
-for the F3x4 model}
 
 \item{control}{A list of parameters for controlling the fitting process.}
 
