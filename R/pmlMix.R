@@ -24,40 +24,44 @@ optimMixQ <- function(object, Q = c(1, 1, 1, 1, 1, 1), omega, ...) {
 }
 
 
-optimMixM1a <- function(object, dnds = 0.1, omega, ...) {
+optimMixM1a <- function(object, dnds = 0.1, omega, scaleQ = 1, ...) {
   weight <- object[[1]]$weight
   l0 <- object[[2]]$lv * omega[2]
-  fn <- function(dnds, object, omega, weight, l0, ...) {
+  fn <- function(dnds, object, omega, weight, l0, scaleQ, ...) {
     result <- l0 +
-      as.numeric(update(object, dnds = dnds, ...)$lv) * omega[1]
+      as.numeric(update(object, dnds = dnds, scaleQ = scaleQ, ...)$lv) *
+      omega[1]
     sum(weight %*% log(result))
   }
   res <- optimize(f = fn, c(0, 1), object = object[[1]], omega = omega,
-    weight = weight, l0 = l0, lower = 0, upper = 1, maximum = TRUE)
+    weight = weight, l0 = l0, scaleQ = scaleQ, lower = 0, upper = 1,
+    maximum = TRUE)
   res
 }
 
-optimMixM2a <- function(object, dnds_old = c(0.1, 2), omega, ...) {
+
+optimMixM2a <- function(object, dnds_old = c(0.1, 2), omega, scaleQ = 1, ...) {
   weight <- object[[1]]$weight
   l2 <- object[[2]]$lv * omega[2]
-  fn <- function(dnds, object, omega, weight, l0, ...) {
+  fn <- function(dnds, object, omega, weight, l0, scaleQ, ...) {
     result <- l0 +
-      as.numeric(update(object, dnds = dnds, ...)$lv) * omega[1]
+      as.numeric(update(object, dnds = dnds, scaleQ = scaleQ, ...)$lv) *
+      omega[1]
     sum(weight %*% log(result))
   }
   l3  <- object[[3]]$lv * omega[3]
   dnds <- dnds_old
   for (i in 1:3) {
     res <- optimize(f = fn, c(0, 1), object = object[[1]], omega = omega,
-      weight = weight, l0 = l2 + l3,
+      weight = weight, l0 = l2 + l3, scaleQ = scaleQ,
       lower = 0, upper = 1, maximum = TRUE)
     dnds[1] <- res[[1]]
-    l1 <- update(object[[1]], dnds = res[[1]])$lv * omega[1]
+    l1 <- update(object[[1]], dnds = res[[1]], scaleQ = scaleQ)$lv * omega[1]
     res <- optimize(f = fn, c(1, 10), object = object[[3]], omega = omega,
-      weight = weight, l0 = l2 + l1,
+      weight = weight, l0 = l2 + l1, scaleQ = scaleQ,
       lower = 1, upper = 10, maximum = TRUE)
     dnds[2] <- res[[1]]
-    l3 <- update(object[[3]], dnds = res[[1]])$lv * omega[3]
+    l3 <- update(object[[3]], dnds = res[[1]], scaleQ = scaleQ)$lv * omega[3]
   }
   dnds
 }
@@ -79,20 +83,36 @@ optimMixM7 <- function(object, pq = c(1, 1), omega, ...) {
 }
 
 
-
 # needs to be included
-optimMixTSTV <- function(object, tstv = 1, omega, ...) {
+optimMixTSTV <- function(object, tstv = 1, omega, scaleQ = 1, ...) {
   weight <- object[[1]]$weight
-  fn <- function(tstv, object, omega, weight, ...) {
+  fn <- function(tstv, object, omega, weight, scaleQ, ...) {
     result <- numeric(length(weight))
     for (i in seq_along(omega)) result <- result +
-        as.numeric(update(object[[i]], tstv = tstv, ...)$lv) * omega[i]
+      as.numeric(update(object[[i]], tstv = tstv, scaleQ = scaleQ, ...)$lv) *
+        omega[i]
     sum(weight %*% log(result))
   }
   res <- optimize(f = fn, c(0, 100), object = object, omega = omega,
-    weight = weight, lower = 0, upper = 100, maximum = TRUE)
+    weight = weight, scaleQ=scaleQ, lower = 0, upper = 100, maximum = TRUE)
   res
 }
+
+
+optimAllRate <- function(object, rate = 1, omega, ...) {
+  weight <- object[[1]]$weight
+  fn <- function(rate, object, omega, weight, ...) {
+    result <- numeric(length(weight))
+    for (i in seq_along(object)) result <- result +
+        as.numeric(update(object[[i]], rate = rate, ...)$lv) *
+        omega[i]
+    sum(weight %*% log(result))
+  }
+  res <- optimize(f = fn, c(0.01, 10), object = object, omega = omega,
+                  weight = weight, lower = 0, upper = 100, maximum = TRUE)
+  res
+}
+
 
 
 optimMixBf <- function(object, bf = c(.25, .25, .25, .25), omega, ...) {
@@ -335,6 +355,7 @@ pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
   AllInv <- !is.na(optAll[4])
   AllGamma <- !is.na(optAll[5])
   AllEdge <- !is.na(optAll[6])
+  AllRate <- !is.na(optAll[7])
   MixNni <- !is.na(optPart[1])
   MixBf <- !is.na(optPart[2])
   MixQ <- !is.na(optPart[3])
@@ -406,23 +427,30 @@ pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
         omega = omega)
       for (i in seq_len(m)) fits[[i]] <- update(fits[[i]], Inv = newInv)
     }
+    if (AllRate) {
+      newrate <- optimAllRate(fits, rate=1, omega)
+      print(newrate)
+#      browser()
+      for (i in  seq_len(m)) fits[[i]] <- update(fits[[i]], rate = newrate[[1]])
+    }
+
     if (M1a) {
-      tmp <- optimMixM1a(fits, dnds[1], omega) # [[1]]
-      fits[[1]] <- update(fits[[1]], dnds = tmp[[1]])
+      tmp <- optimMixM1a(fits, dnds[1], omega, scaleQ = 1) # [[1]]
+      fits[[1]] <- update(fits[[1]], dnds = tmp[[1]], scaleQ = 1)
       dnds[1] <- tmp[[i]]
       ll[, 1] <- fits[[1]]$lv
     }
     if (M2a) {
-      tmp <- optimMixM2a(fits, dnds[c(1, 3)], omega) # [[1]]
-      fits[[1]] <- update(fits[[1]], dnds = tmp[1])
-      fits[[3]] <- update(fits[[3]], dnds = tmp[2])
+      tmp <- optimMixM2a(fits, dnds[c(1, 3)], omega, scaleQ = 1) # [[1]]
+      fits[[1]] <- update(fits[[1]], dnds = tmp[1], scaleQ = 1)
+      fits[[3]] <- update(fits[[3]], dnds = tmp[2], scaleQ = 1)
       dnds[c(1, 3)] <- tmp
     }
     if (CODON) {
       tstv <- fits[[2]]$tstv
-      tmp <- optimMixTSTV(fits, tstv, omega)
+      tmp <- optimMixTSTV(fits, tstv, omega, scaleQ = 1)
       for (i in seq_len(m)) {
-        fits[[i]] <- update(fits[[i]], tstv = tmp[[1]])
+        fits[[i]] <- update(fits[[i]], tstv = tmp[[1]], scaleQ = 1)
       }
       tstv <- tmp[[1]]
     }
@@ -570,10 +598,9 @@ print.pmlMix <- function(x, ...) {
   if (inv > 0) cat("Proportion of invariant sites:", inv, "\n")
   cat("\nRates:\n")
   cat(rate, "\n")
-
-  cat("\nBase frequencies:  \n")
-  print(bf)
   if (length(bf) < 21) {
+    cat("\nBase frequencies:  \n")
+    print(bf)
     cat("\nRate matrix:\n")
     print(Q)
   }
