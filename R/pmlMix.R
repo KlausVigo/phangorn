@@ -365,8 +365,10 @@ pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
   MixRate <- !is.na(optPart[7])
   M1a <- !is.na(optPart[8])
   M2a <- !is.na(optPart[9])
-
-  if (inherits(fit, "pmlMix")) fits <- fit$fits
+  if (inherits(fit, "pmlMix")){
+    fits <- fit$fits
+    omega <- fit$omega
+  }
   if (inherits(fit, "list"))
     fits <- fit
   if (inherits(fit, "pml")) {
@@ -399,7 +401,6 @@ pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
     codon <- "M2a"
   }
 
-
   llstart <- sum(weight * log(ll %*% omega))
   llold <- llstart
   ll0 <- llstart
@@ -407,6 +408,41 @@ pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
   eps0 <- 1
   iter0 <- 0
   trace <- control$trace
+
+  on.exit({
+    parameter <- c(AllBf = AllBf, AllQ = AllQ, AllInv = AllInv,
+                   AllGamma = AllGamma, AllEdge = AllEdge, MixNni = MixNni,
+                   MixBf = MixBf, MixQ = MixQ, MixInv = MixInv,
+                   MixGamma = MixGamma, MixEdge = MixEdge, MixRate = MixRate)
+    df <- matrix(1, 6, 2)
+    colnames(df) <- c("#df", "group")
+    rownames(df) <- c("Edge", "Shape", "Inv", "Bf", "Q", "Rate")
+    df[1, 1] <- length(fits[[1]]$tree$edge.length)
+    df[2, 1] <- fits[[1]]$k > 1
+    df[3, 1] <- fits[[1]]$inv > 0
+    df[4, 1] <- length(unique(fits[[1]]$bf)) - 1
+    df[5, 1] <- length(unique(fits[[1]]$Q)) - 1
+    df[6, 1] <- 0
+    if (MixEdge) df[1, 2] <- r
+    if (MixGamma) df[2, 2] <- r
+    if (MixInv) df[3, 2] <- r
+    if (MixBf) df[4, 2] <- r
+    if (MixQ) df[5, 2] <- r
+    if (MixRate) df[6, 1] <- r - 1
+    attr(logLik, "df") <- sum(df[, 1] * df[, 2])
+    converge <- c(iter = iter0, eps = eps0)
+    if (CODON)
+      result <- list(logLik = ll1, omega = omega, fits = fits, call = call,
+                     converge = converge, parameter = parameter, df = df,
+                     dnds = dnds, codon = codon)
+    else
+      result <- list(logLik = ll1, omega = omega, fits = fits, call = call,
+                     converge = converge, parameter = parameter, df = df)
+    class(result) <- "pmlMix"
+    return(result)
+  })
+
+
   while (eps0 > control$eps & iter0 < control$maxit) {
     # while (eps0 > 1e-6 & iter0 < 20) {
     eps1 <- 100
@@ -429,8 +465,7 @@ pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
     }
     if (AllRate) {
       newrate <- optimAllRate(fits, rate=1, omega)
-      print(newrate)
-#      browser()
+#      print(newrate)
       for (i in  seq_len(m)) fits[[i]] <- update(fits[[i]], rate = newrate[[1]])
     }
 
@@ -531,36 +566,6 @@ pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
     }
     ll3 <- ll1
   }
-  parameter <- c(AllBf = AllBf, AllQ = AllQ, AllInv = AllInv,
-                 AllGamma = AllGamma, AllEdge = AllEdge, MixNni = MixNni,
-                 MixBf = MixBf, MixQ = MixQ, MixInv = MixInv,
-                 MixGamma = MixGamma, MixEdge = MixEdge, MixRate = MixRate)
-  df <- matrix(1, 6, 2)
-  colnames(df) <- c("#df", "group")
-  rownames(df) <- c("Edge", "Shape", "Inv", "Bf", "Q", "Rate")
-  df[1, 1] <- length(fits[[1]]$tree$edge.length)
-  df[2, 1] <- fits[[1]]$k > 1
-  df[3, 1] <- fits[[1]]$inv > 0
-  df[4, 1] <- length(unique(fits[[1]]$bf)) - 1
-  df[5, 1] <- length(unique(fits[[1]]$Q)) - 1
-  df[6, 1] <- 0
-  if (MixEdge) df[1, 2] <- r
-  if (MixGamma) df[2, 2] <- r
-  if (MixInv) df[3, 2] <- r
-  if (MixBf) df[4, 2] <- r
-  if (MixQ) df[5, 2] <- r
-  if (MixRate) df[6, 1] <- r - 1
-  attr(logLik, "df") <- sum(df[, 1] * df[, 2])
-  converge <- c(iter = iter0, eps = eps0)
-  if (CODON)
-    result <- list(logLik = ll1, omega = omega, fits = fits, call = call,
-      converge = converge, parameter = parameter, df = df,
-      dnds = dnds, codon = codon)
-  else
-    result <- list(logLik = ll1, omega = omega, fits = fits, call = call,
-      converge = converge, parameter = parameter, df = df)
-  class(result) <- "pmlMix"
-  result
 }
 
 
