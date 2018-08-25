@@ -1,35 +1,35 @@
      CHANGES in PHANGORN VERSION 2.5.0
 
 NEW FEATURES
- 
-     o pratchet, optim.parsimony, optim.pml all may now return trees with 
-     
-       multifurcations in case duplicated sequences are discovered. This may 
-       
-       lead to speeding up computations and improved tree topology search
- 
-     o Additional Codon models (M1a, M2a, and several options 
-     
-       to estimate coden frequencies (F3x4, F1x4) 
 
-     o tidy function for several objects to easier compare models
+     o pratchet, optim.parsimony, optim.pml all may now return trees with
 
-     o new "equal_angle" layout for 2D-networks 
-     
-     o tiplabels, nodelabels, edgelabels from ape work for plot.networx if 
-     
-       plotted with base R 
-        
+       multifurcations in case duplicated sequences are discovered. This may
+
+       lead to speeding up computations and improved tree topology search.
+
+     o function codonTest which adds codon models to detect positive selection
+
+       (M1a, M2a) and several options to estimate codon frequencies (F3x4, F1x4)
+
+     o broom type tidy function for several objects to easier compare models
+
+     o new "equal_angle" layout for 2D-networks (now the default)
+
+     o tiplabels, nodelabels, edgelabels from ape work for plot.networx if
+
+       plotted with base R
+
 OTHER CHANGES
 
      o several small improvements to more intuitively use pml and phyDat objects
-     
+
      o several more unit tests
 
-     o two new contributors, Keren and Richel     
-     
+     o two new contributors, Keren and Richel
+
      o optim.parsimony, pratchet, pmlMix and pmlPart may return the current best
-       
+
        tree or object when interrupted.
 
 
@@ -42,17 +42,17 @@ NEW FEATURES
 BUG FIXES
 
     o densiTree, bug report by Richel Bilderbeek
-    
+
     o tree rearrangement in optim.pml return tree with double edge matrix
-    
+
     o phyDat should work now for named vectors
-    
+
 OTHER CHANGES
 
     o many more unit tests
-    
+
     o more consistent coding style
-    
+
     o flashClust and seqLogo are not suggested packages any more
 
 
@@ -65,9 +65,9 @@ NEW FEATURES
     o identify.networx to identify splits in a network
 
     o densiTree got more attributes
-    
-    o unique.dist, to filter duplicate distances 
-    
+
+    o unique.dist, to filter duplicate distances
+
     o ancestral.pml and ancestral.pars are now may return proper phyDat objects
 
       and in for DNA may return ambiguous states
@@ -75,11 +75,11 @@ NEW FEATURES
 BUG FIXES
 
     o densiTree may if the consensus tree had different ordering of labels
- 
+
 OTHER CHANGES
 
     o acctran allows multiPhylo objects as input
-    
+
     o rNNI has been completely rewritten and is faster
 
 
@@ -93,14 +93,14 @@ NEW FEATURES
 
 BUG FIXES
 
-    o bug fix in RI and CI for ambiguous data  
+    o bug fix in RI and CI for ambiguous data
 
 OTHER CHANGES
 
     o added roxygen2 documentation, so R code is now much better documented,
-    
+
       reorganisation of some documentation
-    
+
     o many more unit tests
 
 
@@ -109,147 +109,147 @@ OTHER CHANGES
 NEW FEATURES
 
     o new functions to compute the (approximate) SPR distance (sprdist, SPR.dist)
-    
+
       contributed by Leonardo de Oliveira Martins.
 
     o super tree methods based on NNI and SPR distances
 
 BUG FIXES
 
-    o fixed bug in KF.dist  
+    o fixed bug in KF.dist
 
 OTHER CHANGES
 
-    o improvements to as.networx. It often now produces networks with less edges 
-   
-      resulting in much nicer plots 
+    o improvements to as.networx. It often now produces networks with less edges
 
-    o plot.networx does take a different layout algorithm 
+      resulting in much nicer plots
 
-    o as.data.frame.phyDat and as.character.phyDat return amino acids 
-    
+    o plot.networx does take a different layout algorithm
+
+    o as.data.frame.phyDat and as.character.phyDat return amino acids
+
       now in upper cases
 
     o more unit tests
 
     o improved cbind.phyDat, faster and more flexible
-    
+
     o phangorn now requires ape 4.0
-    
-    o phangorn now imports Rcpp, but not nnls any more 
-    
-    
+
+    o phangorn now imports Rcpp, but not nnls any more
+
+
 
     CHANGES in PHANGORN VERSION 2.0.4
-     
+
 NEW FEATURES
 
     o new weighted Robinson-Foulds (1979) distance wRF, suggested by Michelle Kendall
-    
+
       and normalized Robinson-Foulds suggested by Sereina Rutschmann
 
     o codon model "YN98" can be called directly, improved documentation
 
-    o bootstrap.phyDat got an new argument jumble, 
-    
+    o bootstrap.phyDat got an new argument jumble,
+
       which randomizes input order of sequences
-    
+
 OTHER CHANGES
 
     o more unit tests
-    
-    
+
+
 
      CHANGES in PHANGORN VERSION 2.0.3
 
-NEW FEATURES 
+NEW FEATURES
 
     o new function maxCladeCred computing the maximum clade credibility tree
-     
+
       from a sample of trees
 
-    o function read.nexus.networx and write.nexus.networx to import / export 
-    
+    o function read.nexus.networx and write.nexus.networx to import / export
+
       phylogenetic networx to SplitsTree
-      
-    o function as.AAbin.phyDat to exchange data with the new AAbin class from ape   
-    
-    o likelihood ratchet (Vos 2003) topology optimisation in optim.pml 
-    
-    o with KF.dist (Kuhner & Felsenstein) and path.dist can be used like RF.dist  
+
+    o function as.AAbin.phyDat to exchange data with the new AAbin class from ape
+
+    o likelihood ratchet (Vos 2003) topology optimisation in optim.pml
+
+    o with KF.dist (Kuhner & Felsenstein) and path.dist can be used like RF.dist
 
 BUG FIXES
 
-    o improvements to optim.pml to avoid numerical problems, 
-    
+    o improvements to optim.pml to avoid numerical problems,
+
       can now handle much more taxa (still experimantal)
 
 OTHER CHANGES
-    
+
     o mrca.phylo can be used like mrca from ape (faster for large trees)
-    
+
     o individual splits can be colored in lento plots (suggested by France Thouzé)
-    
+
     o plot.networx now (silently) returns a networx object with some of the graphics
-    
+
       parameters, more plot options
-    
-    o lots of small changes to make handling and identifying splits, edges in 
-     
+
+    o lots of small changes to make handling and identifying splits, edges in
+
       trees and networks easier
 
     o plotBS has a new argument frame and arguments BStrees can be empty
-    
+
     o new vignette IntertwiningTreesAndNetworks
-      
-      
+
+
 
      CHANGES in PHANGORN VERSION 2.0.2
 
 OTHER CHANGES
- 
+
     o phangorn now suggests only the Biostrings and not depends on it
-    
-    o some improvements to bab (branch and bound), may be faster 
-    
-    
+
+    o some improvements to bab (branch and bound), may be faster
+
+
 
      CHANGES in PHANGORN VERSION 2.0.0
 
-NEW FEATURES    
-    
+NEW FEATURES
+
     o as.phyDat.MultipleAlignment to excange data with Biostrings
-    
+
     o dist.ml can now compute distances using a discrete gamma model
-    
+
       and the "F81" model.
 
-    o optim.pml got a new rearrangement argument and can now 
-    
+    o optim.pml got a new rearrangement argument and can now
+
       use a stochastic rearrangements similar to Nguyen et al. (2015)
 
 BUG FIXES
 
-    o plotBS may double counted edges when rooted trees were in the sample 
-    
+    o plotBS may double counted edges when rooted trees were in the sample
+
 OTHER CHANGES
 
-    o optim.pml uses more C code and should be more robust  
+    o optim.pml uses more C code and should be more robust
 
     o more unit tests
-    
-    o baseFreq got additional parameter 'all' similar to base.freq in ape 
-    
+
+    o baseFreq got additional parameter 'all' similar to base.freq in ape
+
     o lots of little improvements in the manual and help files
-    
+
     o modelTest now also shows AIC weights and model="all" will test
-    
+
       all available models
 
 
 
      CHANGES in PHANGORN VERSION 1.99.14
- 
+
 NEW FEATURES
 
     o phyDat2alignment to exports files to seqinr
@@ -257,12 +257,12 @@ NEW FEATURES
     o readDist, writeDist to import / export distance matrices
 
     o cophenetic distance function for splits and networx
-    
+
     o added unit tests
 
 BUG FIXES
 
-    o as.splits.networx did not work properly for 4 taxa 
+    o as.splits.networx did not work properly for 4 taxa
 
       (reported by Laurélène Faye)
 
@@ -288,7 +288,7 @@ OTHER CHANGES
 
     o pml and optim.pml now uses more C-code (and is a bit faster)
 
-    o defaults in modelTest changed 
+    o defaults in modelTest changed
 
     o discrete.gamma is now exported in the NAMESPACE
 
@@ -314,17 +314,17 @@ NEW FEATURES
 
 BUG FIXES
 
-    o plotBS was not working correctly if bootstraped trees are in 
+    o plotBS was not working correctly if bootstraped trees are in
 
       compressed form (bug report by Tobias Müller)
 
 OTHER CHANGES
 
-    o many splits and networx methods have been improved 
+    o many splits and networx methods have been improved
 
       and a vignette was added
 
-    o phangorn now suggests only the rgl and not depends on it 
+    o phangorn now suggests only the rgl and not depends on it
 
       to avoid problems on different platforms (suggestion by Matt Pennell)
 
@@ -335,10 +335,10 @@ OTHER CHANGES
      CHANGES in PHANGORN VERSION 1.99-10
 
 BUG FIXES
- 
+
     o reorder.networx may not work as expected
 
-    o Gamma model was not working properly in simSeq.pml 
+    o Gamma model was not working properly in simSeq.pml
 
 
 
@@ -352,33 +352,33 @@ BUG FIXES
 
 
 
-     CHANGES in PHANGORN VERSION 1.99-8 
+     CHANGES in PHANGORN VERSION 1.99-8
 
 NEW FEATURES
 
-    o pmlPart got an argument rooted to handle rooted trees 
+    o pmlPart got an argument rooted to handle rooted trees
 
-    o simSeq is now a generic function. This simplifies the  
+    o simSeq is now a generic function. This simplifies the
 
       construcion of parametric bootstrap test
- 
+
     o SOWH.test (very experimental)
 
-    o as.networx and plot.networx improved considerably 
+    o as.networx and plot.networx improved considerably
 
-      (often generate networks less edges) 
+      (often generate networks less edges)
 
       and planar graphs are now plotted nicely
 
 BUG FIXES
 
-    o fixed some bugs in ancestral.pars 
+    o fixed some bugs in ancestral.pars
 
     o amino acid model "Blosum62" was not working
 
 OTHER CHANGES
 
-    o improvements to read.nexus.splits, write.nexus.splits to 
+    o improvements to read.nexus.splits, write.nexus.splits to
 
       be more consistant with splitstree
 
@@ -388,27 +388,27 @@ OTHER CHANGES
 
       and improved
 
-    o treedist is much faster for larger trees 
+    o treedist is much faster for larger trees
 
-    o several changes to keep R CMD check happy 
+    o several changes to keep R CMD check happy
 
     o a development version phangorn is now available on github
 
-      https://github.com/KlausVigo/phangorn.git 
+      https://github.com/KlausVigo/phangorn.git
 
- 
 
-     CHANGES in PHANGORN VERSION 1.99-6 
+
+     CHANGES in PHANGORN VERSION 1.99-6
 
 NEW FEATURES
 
-    o cladePar helps coloring trees 
+    o cladePar helps coloring trees
 
-    o treedist is faster for larger trees, better documentation and examples 
+    o treedist is faster for larger trees, better documentation and examples
 
 BUG FIXES
 
-    o the plot of consensusNet shows now the proper bootstrap values 
+    o the plot of consensusNet shows now the proper bootstrap values
 
 OTHER CHANGES
 
@@ -420,7 +420,7 @@ OTHER CHANGES
 
 
 
-      CHANGES in PHANGORN VERSION 1.99-5 
+      CHANGES in PHANGORN VERSION 1.99-5
 
 NEW FEATURES
 
@@ -432,7 +432,7 @@ NEW FEATURES
 
 BUG FIXES
 
-    o rNNI did return sometimes trees without tip labels 
+    o rNNI did return sometimes trees without tip labels
 
     o SH.test did not work for pmlCluster objects
 
@@ -440,7 +440,7 @@ BUG FIXES
 
 OTHER CHANGES
 
-    o lots of internal code C-code changed 
+    o lots of internal code C-code changed
 
     o exports of some of the internal ML function, this should speed up in
 
@@ -448,7 +448,7 @@ OTHER CHANGES
 
       considerably (interface may changes in the future)
 
-    o registered C routines 
+    o registered C routines
 
 
 
@@ -456,27 +456,27 @@ OTHER CHANGES
 
 NEW FEATURES
 
-    o new function dist.p to estimate pairwise polymorphism 
+    o new function dist.p to estimate pairwise polymorphism
 
       p-distances from DNA sequences
 
-BUG FIXES 
+BUG FIXES
 
-    o as.data.frame.phyDat returned only site patterns and so did 
+    o as.data.frame.phyDat returned only site patterns and so did
 
       write.phyDat for nexus files
 
-    o some of the recently introduced (1.7-4) amino acid models were not known 
+    o some of the recently introduced (1.7-4) amino acid models were not known
 
-      by all functions and contained NAs 
+      by all functions and contained NAs
 
 OTHER CHANGES
 
-    o changed package imports and depends structure to aviod error messages, 
+    o changed package imports and depends structure to aviod error messages,
 
       thanks to Brian Ripley
 
-    o a lot of the internal C-code has changed 
+    o a lot of the internal C-code has changed
 
 
 
@@ -484,7 +484,7 @@ OTHER CHANGES
 
 NEW FEATURES
 
-    o densiTree plots are available now 
+    o densiTree plots are available now
 
     o new species tree and super tree methods
 
@@ -494,9 +494,9 @@ BUG FIXES
 
     o phangorn now depends on rgl instead of suggests rgl,
 
-      rgl wants to be loaded before igraph, otherwise a compiling error 
+      rgl wants to be loaded before igraph, otherwise a compiling error
 
-      on some platforms occured! 
+      on some platforms occured!
 
     o fixed a bug that sometimes caused in pratched to crash
 
@@ -504,7 +504,7 @@ BUG FIXES
 
     o the search heuristic SPR in optim.parsimony evaluates now more trees
 
-      and is more likely to find better ones 
+      and is more likely to find better ones
 
 OTHER CHANGES
 
@@ -512,23 +512,23 @@ OTHER CHANGES
 
       less memory reallocations and potentially time savings
 
-      hopefully I included not too many bugs     
+      hopefully I included not too many bugs
 
     o optimising edge length changed from Jacobi to Gauss-Seidel method
- 
+
       and will hopefully be more robust in the long term!
 
     o Descendants is much faster for option type="all"
 
-    o plotAnc gives user more control and produces nicer plots 
+    o plotAnc gives user more control and produces nicer plots
 
 
       CHANGES in PHANGORN VERSION 1.7-1
 
 NEW FEATURES
 
-    o pmlPart got additional argument model 
-      
+    o pmlPart got additional argument model
+
       (request from Santiago Claramunt)
 
 BUG FIXES
@@ -540,8 +540,8 @@ OTHER CHANGES
     o started reorganising the code
 
     o underlying code of several parsimony functions has changed and
-     
-      these are now considerably faster  
+
+      these are now considerably faster
 
     o some examples are changed to allow faster checking on CRAN
 
@@ -557,7 +557,7 @@ NEW FEATURES
 
 BUG FIXES
 
-    o phangorn links properly to ape 
+    o phangorn links properly to ape
 
 
 
@@ -569,7 +569,7 @@ NEW FEATURES
 
 BUG FIXES
 
-    o changed package to work with igraph >= 0.6 
+    o changed package to work with igraph >= 0.6
 
 OTHER CHANGES
 
@@ -589,11 +589,11 @@ BUG FIXES
 
 OTHER CHANGES
 
-    o vignettes changed for a faster compilation of the package 
+    o vignettes changed for a faster compilation of the package
 
     o Ancestors allows a vector of nodes as input
 
-    o midpoint uses less memory and works for larger trees (10000 of tips) 
+    o midpoint uses less memory and works for larger trees (10000 of tips)
 
     o ancestral.pars gives better formated output
 
@@ -603,7 +603,7 @@ OTHER CHANGES
 
 OTHER CHANGES
 
-    o several examples changed for a faster compilation of the package 
+    o several examples changed for a faster compilation of the package
 
 
 
@@ -611,10 +611,10 @@ OTHER CHANGES
 
 NEW FEATURES
 
-    o codon models can be used directly 
+    o codon models can be used directly
 
       (dn/ds ratio can be computed)
-    
+
     o modelTest works now also for amino acids
 
 BUG FIXES
@@ -623,7 +623,7 @@ BUG FIXES
 
 OTHER CHANGES
 
-    o package parallel is used instead of multicore 
+    o package parallel is used instead of multicore
 
     o vignettes, examples, help improved
 
@@ -635,26 +635,26 @@ OTHER CHANGES
 
 NEW FEATURES
 
-    o parsimony branch-and-bould algorithms bab (so far pretty slow and memory intensive) 
+    o parsimony branch-and-bould algorithms bab (so far pretty slow and memory intensive)
 
     o more amino acid models
 
-    o function nnls.tree to compute non-negative edge weights for 
+    o function nnls.tree to compute non-negative edge weights for
 
-      a given tree and a distance matrix 
+      a given tree and a distance matrix
 
 BUG FIXES
-    
-    o allTrees returns now an integer edge matrix, 
+
+    o allTrees returns now an integer edge matrix,
 
       this could have caused some problems previously
 
     o CI and RI now take better care of ambiguous states
 
-    o dist.ml has default value for amino acids 
+    o dist.ml has default value for amino acids
 
-    o as.splits.multiPhylo produces more sensible bipartitions 
- 
+    o as.splits.multiPhylo produces more sensible bipartitions
+
       and so lento and consensusNet produce more useful plots
 
       (thanks to Emmanuel Paradis)
@@ -669,31 +669,31 @@ OTHER CHANGES
 
     o vignette "Trees" has a few more examples
 
-    o dist.ml is more general (base frequencies and rate matrix can be supplied) 
+    o dist.ml is more general (base frequencies and rate matrix can be supplied)
 
     o pml objects are more compact, thanks to the Matrix package
 
     o xtable is now a suggested package (needed for vignettes)
-      
-      
+
+
 
         CHANGES in PHANGORN VERSION 1.4-0
 
 NEW FEATURES
 
     o plot.network to plot split networks in 3D (requires rgl) and 2D
- 
+
       (still very experimantal)
 
-    o consensusNet computes consensus networks 
+    o consensusNet computes consensus networks
 
-    o Lento plot allows to take multiPhylo objects as input 
+    o Lento plot allows to take multiPhylo objects as input
 
 BUG FIXES
 
-    o CI and RI did not work with only one site pattern present 
-    
-    o pratchet returned only one, not all of the best trees found 
+    o CI and RI did not work with only one site pattern present
+
+    o pratchet returned only one, not all of the best trees found
 
 OTHER CHANGES
 
@@ -701,11 +701,11 @@ OTHER CHANGES
 
     o designTree returns a sparse Matrix and this can save a lot of memory
 
-    o internal code for computing bipartitions is much faster for large trees, 
+    o internal code for computing bipartitions is much faster for large trees,
 
       and so are several functions depending on it, e.g. RF.dist, treedist, Descendants
-      
-      
+
+
 
         CHANGES in PHANGORN VERSION 1.3-1
 
@@ -713,10 +713,10 @@ BUG FIXES
 
     o the multicore package may failed, if executed in a GUI environment,
 
-      more error checks included 
+      more error checks included
 
-    o optim.pml, in rare cases may failed to optimize edge length 
-    
+    o optim.pml, in rare cases may failed to optimize edge length
+
       (should be more robust now)
 
 OTHER CHANGES
@@ -725,15 +725,15 @@ OTHER CHANGES
 
     o modelTest, pratchet, bootstrap.pml, bootstrap.phyDat
 
-      got an additional argument multicore option to switch 
+      got an additional argument multicore option to switch
 
-      between serial and parallel execution 
-  
+      between serial and parallel execution
 
 
-        CHANGES in PHANGORN VERSION 1.3-0            
 
-          
+        CHANGES in PHANGORN VERSION 1.3-0
+
+
 NEW FEATURES
 
     o acctran to assign edge length to parsimony trees
@@ -750,27 +750,27 @@ OTHER CHANGES
 
 
 
-        CHANGES in PHANGORN VERSION 1.2-0            
+        CHANGES in PHANGORN VERSION 1.2-0
 
-          
+
 NEW FEATURES
 
-    o new function pratchet (parsimony ratchet)   
+    o new function pratchet (parsimony ratchet)
 
     o new function midpoint for rooting trees
 
-    o new function pruneTree to build concensus trees from node labels 
-    
+    o new function pruneTree to build concensus trees from node labels
+
       (e.g. bootstrap values)
-    
-    o multicore support for modelTest  
-    
+
+    o multicore support for modelTest
+
 BUG FIXES
 
     o ancestral.pars sometimes did not show all possible states
-    
-    o the call-attributes did not get proper changed in update.pml and 
-    
+
+    o the call-attributes did not get proper changed in update.pml and
+
       optim.pml
 
 OTHER CHANGES
@@ -778,37 +778,37 @@ OTHER CHANGES
     o there is now a general help page displayed with '?phangorn'
 
     o dist.hamming is faster
- 
-    o getClans, getSlices and getDiverstity can now 
-    
-      handle multifurcating trees     
-    
+
+    o getClans, getSlices and getDiverstity can now
+
+      handle multifurcating trees
+
 
 
         CHANGES in PHANGORN VERSION 1.1-2
 
-       
+
 NEW FEATURES
 
     o more generic methods for class splits (print, as.matrix)
-    
+
     o plotBS can plot now cladograms and phylograms
-          
+
 BUG FIXES
 
-    o read.phyDat sometimes did not work properly for amino acids 
+    o read.phyDat sometimes did not work properly for amino acids
 
 
 
         CHANGES in PHANGORN VERSION 1.1-1
 
-       
+
 NEW FEATURES
 
     o optim.pml allows to optimise rooted trees
 
 OTHER CHANGES
- 
+
     o description of getClans improved
 
 
@@ -816,64 +816,64 @@ OTHER CHANGES
 
         CHANGES in PHANGORN VERSION 1.1-0
 
-       
+
 NEW FEATURES
 
     o Consistency Index (CI) and and Rentention Index (RI)
 
-    o clanistic tools  
+    o clanistic tools
 
     o new generic function cbind.phyDat
 
     o optim.parsimony works now also with the fitch algorithm,
 
-      faster than the sankoff version 
+      faster than the sankoff version
 
 BUG FIXES
 
-    o treedist and RF.dist now check whether trees are binary and 
-    
-      try to handle multifurcations (thanks to Jeremy Beaulieu for bug fixes)  
+    o treedist and RF.dist now check whether trees are binary and
+
+      try to handle multifurcations (thanks to Jeremy Beaulieu for bug fixes)
 
 OTHER CHANGES
 
-    o second vignette describing some special features 
-    
-    o allTrees is faster 
+    o second vignette describing some special features
 
-    o trace and pml.control are now more consistent 
+    o allTrees is faster
 
-    o optim.pml uses less memory and can be faster 
- 
+    o trace and pml.control are now more consistent
+
+    o optim.pml uses less memory and can be faster
+
       for data with lots of characters
 
 
 
         CHANGES in PHANGORN VERSION 1.0-2
 
-        
+
 BUG FIXES
 
-    o pml.control did not work properly     
+    o pml.control did not work properly
 
 OTHER CHANGES
 
     o pmlCluster, pmlMix and pmlPart gained an attribute control,
 
-      which controls the outermost loop 
-   
+      which controls the outermost loop
+
     o some more error checking for pml and parsimony classes
-    
+
       (thanks to Emmanuel and Liat)
-    
-    
-    
+
+
+
         CHANGES in PHANGORN VERSION 1.0-1
 
-       
+
 NEW FEATURES
 
-    o ancestral sequence reconstruction 
+    o ancestral sequence reconstruction
 
       (parsimony and likelihood based)
 
@@ -883,29 +883,29 @@ NEW FEATURES
 
 BUG FIXES
 
-    o a small error in pmlCluster was fixed     
-	
+    o a small error in pmlCluster was fixed
+
 OTHER CHANGES
-	
+
     o upgma changed to accommodate change in as.phylo.hclust
 
     o lento plots are looking nicer
 
-	
 
-	
+
+
 	CHANGES IN PHANGORN VERSION 1.0-0
 
-        
+
 NEW FEATURES
 
-    o implementation of many nucleotide substitution models 
+    o implementation of many nucleotide substitution models
 
       (additional general transition models can be defined)
 
     o new function modelTest, comparison of different phylogenetic model
 
-      with AIC or BIC 
+      with AIC or BIC
 
     o Lento plot
 
@@ -913,29 +913,29 @@ NEW FEATURES
 
 BUG FIXES
 
-    o an error in pace is fixed 
-           
+    o an error in pace is fixed
+
 OTHER CHANGES
 
     o parsimony (fitch and sankoff) can now handle multiPhylo objects
 
     o splits structure (which is a list of bipartitions), used by lento
-    
-      and hadamard conjugation  
+
+      and hadamard conjugation
 
     o phyDat objects can be more general generated using a contrast
-    
+
       matrix
-    
+
 
 
         CHANGES IN PHANGORN VERSION 0.99-6
 
-        
+
 NEW FEATURES
 
-    o pace, extracts the ancestral states of the root of a tree  
-  
+    o pace, extracts the ancestral states of the root of a tree
+
       using the sankoff algorithm
 
 BUG FIXES
@@ -943,7 +943,7 @@ BUG FIXES
     o fixed a bug in dist.ml (thanks to Emmanuel)
 
     o fixed a bug introduced to SH.test in 0.99-5
-           
+
 OTHER CHANGES
 
     o fixed several spelling mistakes in the documentation
@@ -952,10 +952,10 @@ OTHER CHANGES
 
         CHANGES IN PHANGORN VERSION 0.99-5
 
-        
+
 NEW FEATURES
 
-    o parallel computing via multicore 
+    o parallel computing via multicore
 
       (so far bootstrap.pml, bootstrap.pml profit under linux)
 
@@ -963,42 +963,42 @@ NEW FEATURES
 
 BUG FIXES
 
-    o optim.pml had problems when 
-    
+    o optim.pml had problems when
+
     o as.character converted ?,- wrongly to NA
 
     o fitch needed binary trees as input, otherwise pscore is
 
       likely to be wrong (returns now a warning)
-      
-    o optim.pml had a problem with identical sequences  
-           
+
+    o optim.pml had a problem with identical sequences
+
 OTHER CHANGES
 
-    o optim.parsimony returns now a tree with edge weights 
-    
-    o vignette is enhanced, I fixed some spelling mistakes and added 
-  
+    o optim.parsimony returns now a tree with edge weights
+
+    o vignette is enhanced, I fixed some spelling mistakes and added
+
       some more examples.
 
 
 
         CHANGES IN PHANGORN VERSION 0.99-4
 
-        
+
 NEW FEATURES
 
     o new generic function unique.phyDat
-           
+
 OTHER CHANGES
 
-    o internal data format phyDat changed 
-    
+    o internal data format phyDat changed
+
       and data are stored more memory efficient
-      
-      (optim.pml and friends use less memory and may be faster) 
-    
-        
+
+      (optim.pml and friends use less memory and may be faster)
+
+
 
 		CHANGES IN PHANGORN VERSION 0.99-3
 
@@ -1006,66 +1006,66 @@ OTHER CHANGES
 BUG FIXES
 
     o RF.dist sometimes returned wrong distances
-    
-    o rate parameter is now properly normalized in pml.Part 
-    
+
+    o rate parameter is now properly normalized in pml.Part
+
       and pmlCluster
-    
-    o simSeq had problems simulating a single character 
-        
+
+    o simSeq had problems simulating a single character
+
 NEW FEATURES
 
     o rSPR and rNNI to simulate tree rearrangements
 
-                    
-   
+
+
 		CHANGES IN PHANGORN VERSION 0.99-2
 
 
 NEW FEATURES
 
-    o bootstrap.pml and bootstrap.phyDat: parametric 
-    
+    o bootstrap.pml and bootstrap.phyDat: parametric
+
       bootstrap methods
 
-    o simSeq: A new function to simulate sequence data 
+    o simSeq: A new function to simulate sequence data
 
     o read.phyDat: simplifies reading in alignments
-    
+
     o SH.test: Shimodaira-Hasegawa test
-    
-    o RF.dist: Robinson-Foulds distance as replacement 
-    
+
+    o RF.dist: Robinson-Foulds distance as replacement
+
       for treedist (uses less memory and is much faster)
-          
+
 BUG FIXES
 
-    o dist.ml returned wrong variances.   
-    
-    o as.character.phyDat, as.data.frame caused an error 
-       
-      for alignments with only one site.    
-          
-OTHER CHANGES    
-    
+    o dist.ml returned wrong variances.
+
+    o as.character.phyDat, as.data.frame caused an error
+
+      for alignments with only one site.
+
+OTHER CHANGES
+
     o added vignette describing how to perform some
-    
-      standard phylogenetic analysis with phangorn.   
-      
+
+      standard phylogenetic analysis with phangorn.
+
     o more functions to convert between different data formats.
-    
-    o NNI tree search is now general possible for 
-      
+
+    o NNI tree search is now general possible for
+
       partition models (pmlPart, pmlCluster)
-        
-      
+
+
 
 		CHANGES IN PHANGORN VERSION 0.0-5
 
 
 BUG FIXES
 
-    o Solved a namespace problem with ape (>=2.2-3). 
+    o Solved a namespace problem with ape (>=2.2-3).
 
 
 
@@ -1074,86 +1074,86 @@ BUG FIXES
 
 NEW FEATURES
 
-    o splitsNetwork fits a phylogenetic network using a L1 penalty. 
-    
-      (High memory consumption)  
+    o splitsNetwork fits a phylogenetic network using a L1 penalty.
+
+      (High memory consumption)
 
     o pmlPen: A new function to estimate penalized likelihood models
-    
+
       for sets of edge weights in mixtures or partition models.
 
 BUG FIXES
 
     o dist.ml should be more forgiving for different inputs.
-    
-OTHER CHANGES    
-    
-    o a new dataset.     
-      
-      
-      
+
+OTHER CHANGES
+
+    o a new dataset.
+
+
+
 
 		CHANGES IN PHANGORN VERSION 0.0-3
 
 
 NEW FEATURES
 
-    o amino acid models 
+    o amino acid models
 
     o several new maximum likelihood models:
-    
-      mixture models (pmlMix), and some model for 
-      
-      phylogenomic data partition models (pmlPart), 
-      
-      and clustering of partitions / genes (pmlCluster)  
-      
-      (still experimental, feed back wellcome)
-        
-    o design matrices for phylogenetic distance methods 
-    
-    o added some functions useful for simulations
-    
-      (nni, allTrees) 
-    
-       
-    
-OTHER CHANGES    
-    
-    o the data object phyDat changed slightly internally
-    
-    o a new dataset 
-    
-    o read.aa to read amino acid data in phylip format 
-      
-      based on read.dna from the ape package
-       
 
-      
-      
+      mixture models (pmlMix), and some model for
+
+      phylogenomic data partition models (pmlPart),
+
+      and clustering of partitions / genes (pmlCluster)
+
+      (still experimental, feed back wellcome)
+
+    o design matrices for phylogenetic distance methods
+
+    o added some functions useful for simulations
+
+      (nni, allTrees)
+
+
+
+OTHER CHANGES
+
+    o the data object phyDat changed slightly internally
+
+    o a new dataset
+
+    o read.aa to read amino acid data in phylip format
+
+      based on read.dna from the ape package
+
+
+
+
 
 		CHANGES IN PHANGORN VERSION 0.0-2
 
 
 NEW FEATURES
 
-    o more generic functions (plot.pml, update.pml) 
-      
-            
+    o more generic functions (plot.pml, update.pml)
+
+
 BUG FIXES
 
-    o the "Fitch" algorithm in parsimony contained a bug 
-    
-    
-OTHER CHANGES    
-    
-    o pml has a cleaner interface (less parameter)
-    
-    o new faster parsimony analysis (more compiled C-Code) 
-          
-    o added NAMESPACE
-    
-          
+    o the "Fitch" algorithm in parsimony contained a bug
 
-      
-               
+
+OTHER CHANGES
+
+    o pml has a cleaner interface (less parameter)
+
+    o new faster parsimony analysis (more compiled C-Code)
+
+    o added NAMESPACE
+
+
+
+
+
