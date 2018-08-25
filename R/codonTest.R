@@ -48,18 +48,17 @@
 #' @examples
 #'
 #' \dontrun{
-#' fdir <- system.file("extdata/HIV-2nef", package = "phangorn")
-#' dat_dna <- read.phyDat(file.path(fdir, "seqfile.txt"), format = "sequential")
-#' dat_codon <- dna2codon(dat_dna)
-#' tree <- read.tree(file.path(fdir, "tree.txt"))
-#' tree
-#' # add edge length
-#' tree <- nnls.phylo(tree, dist.ml(dat_codon))
+#' # load woodmouse data from ape
+#' data(woodmouse)
+#' dat_codon <- dna2codon(as.phyDat(woodmouse))
+#' tree <- NJ(dist.ml(dat_codon))
 #' # optimise the model the old way
 #' fit <- pml(tree, dat_codon, bf="F3x4")
 #' M0 <- optim.pml(fit, model="codon1")
 #' # Now using the codonTest function
-#' M0_M1_M2 <- codonTest(tree, dat_codon)
+#' fit_codon <- codonTest(tree, dat_codon)
+#' fit_codon
+#' # plot(fit_codon, "M2a")
 #' }
 #'
 #' @keywords cluster
@@ -85,6 +84,8 @@ codonTest <- function(tree, object, model=c("M0", "M1a", "M2a"),
     M1a <- NULL
     M2a <- NULL
 
+    estimates <- vector("list", length(model))
+    estimates["M0"] <- M0
     prob <- list()
 
     if("M1a" %in% model){
@@ -94,7 +95,8 @@ codonTest <- function(tree, object, model=c("M0", "M1a", "M2a"),
       M1a <- pmlMix(rate ~ M1a, M1a_start, m = 2)
       M1a_glance <- c(model = "M1a", Frequencies = frequencies, "empirical",
                       glance.pmlMix(M1a))
-      neb_M1a <- neb(M1a)
+      prob["M1a"] <- neb(M1a)
+      estimates["M1a"] <- M1a
     }
     if("M2a" %in% model){
       if(trace>2) print("optimize model M2a")
@@ -104,7 +106,9 @@ codonTest <- function(tree, object, model=c("M0", "M1a", "M2a"),
       M2a <- pmlMix(rate ~ M2a, M2a_start, m = 3)
       M2a_glance <- c(model="M2a", Frequencies=frequencies, "empirical",
                       glance.pmlMix(M2a))
-      neb_M2a <- neb(M2a)
+#      neb_M2a <- neb(M2a)
+      prob["M2a"] <- neb(M2a)
+      estimates["M1a"] <- M2a
     }
 
     result <- list(M0, M1a, M2a)
@@ -141,7 +145,9 @@ glance.pmlMix <- function(x, ...){
 }
 
 
-
+#print.codonTest <- function(x, model="M1a"){
+#  return(NULL)
+#}
 
 
 plot.codonTest <- function(x, model="M1a"){
