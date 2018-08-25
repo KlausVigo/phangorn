@@ -360,6 +360,29 @@ pmlPart <- function(formula, object, control = pml.control(epsilon = 1e-8,
   logLik <- 0
   for (i in 1:p) logLik <- logLik + fits[[i]]$log
   eps <- 10
+
+  on.exit({
+    df <- matrix(1, 6, 2)
+    colnames(df) <- c("#df", "group")
+    rownames(df) <- c("Edge", "Shape", "Inv", "Bf", "Q", "Rate")
+    df[1, 1] <- length(fits[[1]]$tree$edge.length)
+    df[2, 1] <- fits[[1]]$k > 1
+    df[3, 1] <- fits[[1]]$inv > 0
+    df[4, 1] <- length(unique(fits[[1]]$bf)) - 1
+    df[5, 1] <- length(unique(fits[[1]]$Q)) - 1
+    df[6, 1] <- 0 # rates
+    if (PartEdge) df[1, 2] <- p
+    if (PartGamma) df[2, 2] <- p
+    if (PartInv) df[3, 2] <- p
+    if (PartBf) df[4, 2] <- p
+    if (PartQ) df[5, 2] <- p
+    if (PartRate) df[6, 1] <- p - 1
+    attr(logLik, "df") <- sum(df[, 1] * df[, 2])
+    object <- list(logLik = logLik, fits = fits, call = call, df = df)
+    class(object) <- "pmlPart"
+    return(object)
+  })
+
   while (eps > epsilon & m < maxit) {
     loli <- 0
     if (any(c(PartNni, PartBf, PartInv, PartQ, PartGamma, PartEdge, PartRate))) {
@@ -418,26 +441,6 @@ pmlPart <- function(formula, object, control = pml.control(epsilon = 1e-8,
     logLik <- loli
     m <- m + 1
   }
-
-  df <- matrix(1, 6, 2)
-  colnames(df) <- c("#df", "group")
-  rownames(df) <- c("Edge", "Shape", "Inv", "Bf", "Q", "Rate")
-  df[1, 1] <- length(fits[[1]]$tree$edge.length)
-  df[2, 1] <- fits[[1]]$k > 1
-  df[3, 1] <- fits[[1]]$inv > 0
-  df[4, 1] <- length(unique(fits[[1]]$bf)) - 1
-  df[5, 1] <- length(unique(fits[[1]]$Q)) - 1
-  df[6, 1] <- 0 # rates
-  if (PartEdge) df[1, 2] <- p
-  if (PartGamma) df[2, 2] <- p
-  if (PartInv) df[3, 2] <- p
-  if (PartBf) df[4, 2] <- p
-  if (PartQ) df[5, 2] <- p
-  if (PartRate) df[6, 1] <- p - 1
-  attr(logLik, "df") <- sum(df[, 1] * df[, 2])
-  object <- list(logLik = logLik, fits = fits, call = call, df = df)
-  class(object) <- "pmlPart"
-  object
 }
 
 
@@ -493,9 +496,39 @@ pmlCluster.fit <- function(formula, fit, weight, p = 4, part = NULL,
   eps2 <- 1
   iter <- 0
   swap <- 1
+
+  on.exit({
+    df <- matrix(1, 6, 2)
+    colnames(df) <- c("#df", "group")
+    rownames(df) <- c("Edge", "Shape", "Inv", "Bf", "Q", "Rate")
+    df[1, 1] <- length(fits[[1]]$tree$edge.length)
+    df[2, 1] <- fits[[1]]$k - 1
+    df[3, 1] <- fits[[1]]$inv > 0
+    df[4, 1] <- length(unique(fits[[1]]$bf)) - 1
+    df[5, 1] <- length(unique(fits[[1]]$Q)) - 1
+    df[6, 1] <- 0
+    if (PartEdge)
+      df[1, 2] <- p
+    if (PartGamma)
+      df[2, 2] <- p
+    if (PartInv)
+      df[3, 2] <- p
+    if (PartBf)
+      df[4, 2] <- p
+    if (PartQ)
+      df[5, 2] <- p
+    if (PartRate)
+      df[6, 1] <- p - 1
+    attr(logLik, "df") <- sum(df[, 1] * df[, 2])
+    res <- list(logLik = logLik, Partition = Part, trees = trees)
+    result <- list(logLik = loli, fits = fits, Partition = part, df = df,
+                   res = res, call = call)
+    class(result) <- c("pmlPart")
+    return(result)
+  })
+
   while (eps < ncw || abs(eps2) > control$eps) {
     df2 <- 0
-
     if (any(c(PartNni, PartBf, PartInv, PartQ, PartGamma, PartEdge, PartRate))) {
       for (i in 1:p) {
         weights[, i] <- rowSums(weight[, which(part == i),
@@ -599,33 +632,6 @@ pmlCluster.fit <- function(formula, fit, weight, p = 4, part = NULL,
     if (iter == 3)
       break
   }
-  df <- matrix(1, 6, 2)
-  colnames(df) <- c("#df", "group")
-  rownames(df) <- c("Edge", "Shape", "Inv", "Bf", "Q", "Rate")
-  df[1, 1] <- length(fits[[1]]$tree$edge.length)
-  df[2, 1] <- fits[[1]]$k - 1
-  df[3, 1] <- fits[[1]]$inv > 0
-  df[4, 1] <- length(unique(fits[[1]]$bf)) - 1
-  df[5, 1] <- length(unique(fits[[1]]$Q)) - 1
-  df[6, 1] <- 0
-  if (PartEdge)
-    df[1, 2] <- p
-  if (PartGamma)
-    df[2, 2] <- p
-  if (PartInv)
-    df[3, 2] <- p
-  if (PartBf)
-    df[4, 2] <- p
-  if (PartQ)
-    df[5, 2] <- p
-  if (PartRate)
-    df[6, 1] <- p - 1
-  attr(logLik, "df") <- sum(df[, 1] * df[, 2])
-  res <- list(logLik = logLik, Partition = Part, trees = trees)
-  result <- list(logLik = loli, fits = fits, Partition = part, df = df,
-                 res = res, call = call)
-  class(result) <- c("pmlPart")
-  result
 }
 
 
