@@ -53,18 +53,17 @@ M1a can be used as the null model to test positive selection.
 \examples{
 
 \dontrun{
-fdir <- system.file("extdata/HIV-2nef", package = "phangorn")
-dat_dna <- read.phyDat(file.path(fdir, "seqfile.txt))
-dat_codon <- dna2codon(dat_dna)
-tree <- read.tree(file.path(fdir, "tree.txt))
-tree
-# add edge length
-tree <- nnls.phylo(tree, dist.ml(dat_codon))
+# load woodmouse data from ape
+data(woodmouse)
+dat_codon <- dna2codon(as.phyDat(woodmouse))
+tree <- NJ(dist.ml(dat_codon))
 # optimise the model the old way
 fit <- pml(tree, dat_codon, bf="F3x4")
 M0 <- optim.pml(fit, model="codon1")
 # Now using the codonTest function
-M0_M1_M2 <- codonTest(tree, dat_codon)
+fit_codon <- codonTest(tree, dat_codon)
+fit_codon
+# plot(fit_codon, "M2a")
 }
 
 }

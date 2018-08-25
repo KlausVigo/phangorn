@@ -91,11 +91,11 @@ genlight2phyDat(x, ambiguity = NA)
 
 \item{x}{An object containing sequences.}
 
-\item{codonstart}{an integer giving where to start the translation. This 
-should be 1, 2, or 3, but larger values are accepted and have for effect to 
+\item{codonstart}{an integer giving where to start the translation. This
+should be 1, 2, or 3, but larger values are accepted and have for effect to
 start the translation further within the sequence.}
 
-\item{ambiguity}{character for ambiguous character and no contrast is 
+\item{ambiguity}{character for ambiguous character and no contrast is
 provided.}
 
 \item{allLevels}{return original data.}
@@ -189,10 +189,10 @@ subset(Laurasiatherian, select=1:5, site.pattern = FALSE)
 subset(Laurasiatherian, select=1:5, site.pattern = TRUE)
 # transform into old ape format
 LauraChar <- as.character(Laurasiatherian)
-# and back 
+# and back
 Laura <- phyDat(LauraChar)
 all.equal(Laurasiatherian, Laura)
-# Compute all possible site patterns 
+# Compute all possible site patterns
 # for nucleotides there $4 ^ (number of tips)$ patterns
 allSitePattern(5)
 
