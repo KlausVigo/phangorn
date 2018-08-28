@@ -77,6 +77,10 @@ codonTest <- function(tree, object, model=c("M0", "M1a", "M2a"),
     if(trace>2) print("optimize model M0")
     fit <- pml(tree, object, bf=frequencies)
     M0 <- optim.pml(fit, model="codon1")
+    result <- cbind(model="M0", Frequencies=frequencies,
+                       estimate = "empirical", glance.pml(M0), dnds_0 = M0$dnds,
+                       dnds_1 = NA, dnds_2 = NA, p_0 = 1, p_1 = NA, p_2 = NA,
+                       tstv = M0$tstv)
 
     choices <- c("M0", "M1a", "M2a")
     model <- match.arg(choices, model, TRUE)
@@ -84,8 +88,11 @@ codonTest <- function(tree, object, model=c("M0", "M1a", "M2a"),
     M1a <- NULL
     M2a <- NULL
 
+
+
     estimates <- vector("list", length(model))
-    estimates["M0"] <- M0
+    names(estimates) <- model
+    estimates[["M0"]] <- M0
     prob <- list()
 
     if("M1a" %in% model){
@@ -93,10 +100,13 @@ codonTest <- function(tree, object, model=c("M0", "M1a", "M2a"),
       M1a_start <- list(update(M0, dnds = 0.1, scaleQ = 1),
                         update(M0, dnds = 1, scaleQ = 1))
       M1a <- pmlMix(rate ~ M1a, M1a_start, m = 2)
-      M1a_glance <- c(model = "M1a", Frequencies = frequencies, "empirical",
-                      glance.pmlMix(M1a))
-      prob["M1a"] <- neb(M1a)
-      estimates["M1a"] <- M1a
+      result <- rbind(result, cbind(model = "M1a", Frequencies = frequencies,
+                       estimate = "empirical", glance.pmlMix(M1a),
+                       dnds_0 = M1a$dnds[1], dnds_1 = 1, dnds_2 = NA,
+                       p_0 = M1a$omega[1], p_1 = M1a$omega[2], p_2 = NA,
+                       tstv = M1a$fits[[1]]$tstv))
+      prob[["M1a"]] <- neb(M1a)
+      estimates[["M1a"]] <- M1a
     }
     if("M2a" %in% model){
       if(trace>2) print("optimize model M2a")
@@ -104,21 +114,19 @@ codonTest <- function(tree, object, model=c("M0", "M1a", "M2a"),
                         update(M0, dnds = 1, scaleQ = 1),
                         update(M0, dnds = 3, scaleQ = 1))
       M2a <- pmlMix(rate ~ M2a, M2a_start, m = 3)
-      M2a_glance <- c(model="M2a", Frequencies=frequencies, "empirical",
-                      glance.pmlMix(M2a))
-#      neb_M2a <- neb(M2a)
-      prob["M2a"] <- neb(M2a)
-      estimates["M1a"] <- M2a
+      result <- rbind(result, cbind(model="M2a", Frequencies = frequencies,
+                          estimate = "empirical", glance.pmlMix(M2a),
+                          dnds_0 = M2a$dnds[1], dnds_1 = 1,
+                          dnds_2 = M2a$dnds[3],
+                          p_0 = M2a$omega[1], p_1 = M2a$omega[2],
+                          p_2 = M2a$omega[3],
+                          tstv = M2a$fits[[1]]$tstv))
+      prob[["M2a"]] <- neb(M2a)
+      estimates[["M2a"]] <- M2a
     }
-
-    result <- list(M0, M1a, M2a)
-
-    M0_glance <- c(model="M0", Frequencies=frequencies, "empirical",
-                   glance.pml(M0))
-
-#    print(M0_)
-
-    class(result) <- c("codonTest") #, "data.frame")
+    attr(result, "estimates") <- estimates
+    attr(result, "prob") <- prob
+#    class(result) <- c("codonTest")
     result
 }
 
@@ -129,8 +137,8 @@ glance.pml <- function(x, ...){
                     df = x$df,
                     AIC = AIC(x),
                     BIC = BIC(x))
-  if(attr(x$data, "type")=="CODON") res <- cbind(res, dnds = x$dnds,
-                                                 tstv = x$tstv)
+#  if(attr(x$data, "type")=="CODON") res <- cbind(res, dnds = x$dnds,
+#                                                 tstv = x$tstv)
   res
 }
 
