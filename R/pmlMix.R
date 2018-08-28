@@ -67,7 +67,7 @@ optimMixM2a <- function(object, dnds_old = c(0.1, 2), omega, scaleQ = 1, ...) {
 }
 
 
-optimMixM7 <- function(object, pq = c(1, 1), omega, ...) {
+optimMixM7 <- function(object, pq = c(1, 1), omega, scaleQ = 1, ...) {
   weight <- object[[1]]$weight
   fn <- function(pq, object, omega, weight, ...) {
     dnds <- discrete.beta(pq[1], pq[2], length(omega))
@@ -403,7 +403,7 @@ pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
 
   llstart <- sum(weight * log(ll %*% omega))
   llold <- llstart
-  ll0 <- llstart
+  ll_tmp <- llstart
   ll3 <- llstart
   eps0 <- 1
   iter0 <- 0
@@ -470,9 +470,9 @@ pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
     }
 
     if (M1a) {
-      tmp <- optimMixM1a(fits, dnds[1], omega, scaleQ = 1) # [[1]]
+      tmp <- optimMixM1a(fits, dnds[1], omega, scaleQ = 1)
       fits[[1]] <- update(fits[[1]], dnds = tmp[[1]], scaleQ = 1)
-      dnds[1] <- tmp[[i]]
+      dnds[1] <- tmp[[1]]
       ll[, 1] <- fits[[1]]$lv
     }
     if (M2a) {
