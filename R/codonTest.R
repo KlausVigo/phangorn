@@ -88,8 +88,6 @@ codonTest <- function(tree, object, model=c("M0", "M1a", "M2a"),
     M1a <- NULL
     M2a <- NULL
 
-
-
     estimates <- vector("list", length(model))
     names(estimates) <- model
     estimates[["M0"]] <- M0
@@ -126,7 +124,6 @@ codonTest <- function(tree, object, model=c("M0", "M1a", "M2a"),
     }
     attr(result, "estimates") <- estimates
     attr(result, "prob") <- prob
-#    class(result) <- c("codonTest")
     result
 }
 
@@ -137,8 +134,6 @@ glance.pml <- function(x, ...){
                     df = x$df,
                     AIC = AIC(x),
                     BIC = BIC(x))
-#  if(attr(x$data, "type")=="CODON") res <- cbind(res, dnds = x$dnds,
-#                                                 tstv = x$tstv)
   res
 }
 
@@ -153,11 +148,6 @@ glance.pmlMix <- function(x, ...){
 }
 
 
-#print.codonTest <- function(x, model="M1a"){
-#  return(NULL)
-#}
-
-
 plot.codonTest <- function(x, model="M1a"){
   return(NULL)
 }
@@ -165,7 +155,6 @@ plot.codonTest <- function(x, model="M1a"){
 
 # compute Naive Empirical Bayes (NEB) probabilities
 neb <- function(x){
-  #  check for pmlMix
   p <- x$omega
   l <- length(p)
   index <- attr(x$fits[[1]]$data, "index")
