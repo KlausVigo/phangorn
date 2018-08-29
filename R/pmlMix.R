@@ -69,16 +69,18 @@ optimMixM2a <- function(object, dnds_old = c(0.1, 2), omega, scaleQ = 1, ...) {
 
 optimMixM7 <- function(object, pq = c(1, 1), omega, scaleQ = 1, ...) {
   weight <- object[[1]]$weight
-  fn <- function(pq, object, omega, weight, ...) {
+
+  fn <- function(pq, object, omega, weight, scaleQ, ...) {
     dnds <- discrete.beta(pq[1], pq[2], length(omega))
     result <- numeric(length(weight))
     for (i in seq_along(omega)) result <- result +
-        as.numeric(update(object[[i]], dnds = dnds[i], ...)$lv) * omega[i]
+        as.numeric(update(object[[i]], dnds = dnds[i],
+                          scaleQ = scaleQ, ...)$lv) * omega[i]
     sum(weight %*% log(result))
   }
   res <- optimize(f = fn, c(1, 1), object = object[[1]], omega = omega,
-    weight = weight,
-    lower = c(0, 0), upper = c(100, 100), maximum = TRUE)
+    weight = weight, scaleQ = scaleQ,
+    lower = c(0, 0), upper = c(10, 10), maximum = TRUE)
   res
 }
 
