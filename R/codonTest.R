@@ -154,8 +154,9 @@ print.codonTest <- function(x) print(x$summary)
 
 plot.codonTest <- function(x, model = "M1a", col = c(2, 5, 6), ...) {
   dat <- t(x$posterior[[model]])
-  barplot(dat, col = col, space = 0, border = NA)
-#  legend
+  colnames(dat) <- seq_len(ncol(dat))
+  barplot(dat, col = col, space = 0, border = NA,
+          legend.text = prettyNum(x$estimates[[model]]$dnds), ...)
 }
 
 
