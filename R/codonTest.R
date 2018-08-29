@@ -63,104 +63,109 @@
 #'
 #' @keywords cluster
 # @param control A list of parameters for controlling the fitting process.
+codonTest <- function(tree, object, model = c("M0", "M1a", "M2a"),
+                      frequencies = "F3x4",
+                      opt_freq = FALSE, codonstart = 1, trace = 0, ...) {
+  if (attr(object, "type") == "DNA")
+    object <- dna2codon(object, codonstart = codonstart)
+  if (is.null(tree$edge.length)) tree <- nnls.phylo(tree, dist.ml(object))
+  if (!("M0" %in% model)) model <- c("M0", model)
 
 
-codonTest <- function(tree, object, model=c("M0", "M1a", "M2a"),
-                      frequencies="F3x4",
-                      opt_freq=FALSE, codonstart = 1, trace=0, ...){
-    if(attr(object, "type")=="DNA")
-        object <- dna2codon(object, codonstart=codonstart)
-    if(is.null(tree$edge.length)) tree <- nnls.phylo(tree, dist.ml(object))
-    if( !("M0" %in% model)) model <- c("M0", model)
+  if (trace > 2) print("optimize model M0")
+  fit <- pml(tree, object, bf = frequencies)
+  M0 <- optim.pml(fit, model = "codon1")
+  result <- cbind(model = "M0", Frequencies = frequencies,
+    estimate = "empirical", glance.pml(M0), dnds_0 = M0$dnds,
+    dnds_1 = NA, dnds_2 = NA, p_0 = 1, p_1 = NA, p_2 = NA,
+    tstv = M0$tstv)
 
+  choices <- c("M0", "M1a", "M2a")
+  model <- match.arg(choices, model, TRUE)
 
-    if(trace>2) print("optimize model M0")
-    fit <- pml(tree, object, bf=frequencies)
-    M0 <- optim.pml(fit, model="codon1")
-    result <- cbind(model="M0", Frequencies=frequencies,
-                       estimate = "empirical", glance.pml(M0), dnds_0 = M0$dnds,
-                       dnds_1 = NA, dnds_2 = NA, p_0 = 1, p_1 = NA, p_2 = NA,
-                       tstv = M0$tstv)
+  M1a <- NULL
+  M2a <- NULL
 
-    choices <- c("M0", "M1a", "M2a")
-    model <- match.arg(choices, model, TRUE)
+  estimates <- vector("list", length(model))
+  names(estimates) <- model
+  estimates[["M0"]] <- M0
+  prob <- list()
 
-    M1a <- NULL
-    M2a <- NULL
+  if ("M1a" %in% model) {
+    if (trace > 2) print("optimize model M1a")
+    M1a_start <- list(update(M0, dnds = 0.1, scaleQ = 1),
+      update(M0, dnds = 1, scaleQ = 1))
+    M1a <- pmlMix(rate ~ M1a, M1a_start, m = 2)
+    result <- rbind(result, cbind(model = "M1a", Frequencies = frequencies,
+      estimate = "empirical", glance.pmlMix(M1a),
+      dnds_0 = M1a$dnds[1], dnds_1 = 1, dnds_2 = NA,
+      p_0 = M1a$omega[1], p_1 = M1a$omega[2], p_2 = NA,
+      tstv = M1a$fits[[1]]$tstv))
+    prob[["M1a"]] <- neb(M1a)
+    estimates[["M1a"]] <- M1a
+  }
+  if ("M2a" %in% model) {
+    if (trace > 2) print("optimize model M2a")
+    M2a_start <- list(update(M0, dnds = 0.1, scaleQ = 1),
+      update(M0, dnds = 1, scaleQ = 1),
+      update(M0, dnds = 3, scaleQ = 1))
+    M2a <- pmlMix(rate ~ M2a, M2a_start, m = 3)
+    result <- rbind(result, cbind(model = "M2a", Frequencies = frequencies,
+      estimate = "empirical", glance.pmlMix(M2a),
+      dnds_0 = M2a$dnds[1], dnds_1 = 1,
+      dnds_2 = M2a$dnds[3],
+      p_0 = M2a$omega[1], p_1 = M2a$omega[2],
+      p_2 = M2a$omega[3],
+      tstv = M2a$fits[[1]]$tstv))
+    prob[["M2a"]] <- neb(M2a)
+    estimates[["M2a"]] <- M2a
+  }
 
-    estimates <- vector("list", length(model))
-    names(estimates) <- model
-    estimates[["M0"]] <- M0
-    prob <- list()
-
-    if("M1a" %in% model){
-      if(trace>2) print("optimize model M1a")
-      M1a_start <- list(update(M0, dnds = 0.1, scaleQ = 1),
-                        update(M0, dnds = 1, scaleQ = 1))
-      M1a <- pmlMix(rate ~ M1a, M1a_start, m = 2)
-      result <- rbind(result, cbind(model = "M1a", Frequencies = frequencies,
-                       estimate = "empirical", glance.pmlMix(M1a),
-                       dnds_0 = M1a$dnds[1], dnds_1 = 1, dnds_2 = NA,
-                       p_0 = M1a$omega[1], p_1 = M1a$omega[2], p_2 = NA,
-                       tstv = M1a$fits[[1]]$tstv))
-      prob[["M1a"]] <- neb(M1a)
-      estimates[["M1a"]] <- M1a
-    }
-    if("M2a" %in% model){
-      if(trace>2) print("optimize model M2a")
-      M2a_start <- list(update(M0, dnds = 0.1, scaleQ = 1),
-                        update(M0, dnds = 1, scaleQ = 1),
-                        update(M0, dnds = 3, scaleQ = 1))
-      M2a <- pmlMix(rate ~ M2a, M2a_start, m = 3)
-      result <- rbind(result, cbind(model="M2a", Frequencies = frequencies,
-                          estimate = "empirical", glance.pmlMix(M2a),
-                          dnds_0 = M2a$dnds[1], dnds_1 = 1,
-                          dnds_2 = M2a$dnds[3],
-                          p_0 = M2a$omega[1], p_1 = M2a$omega[2],
-                          p_2 = M2a$omega[3],
-                          tstv = M2a$fits[[1]]$tstv))
-      prob[["M2a"]] <- neb(M2a)
-      estimates[["M2a"]] <- M2a
-    }
-    attr(result, "estimates") <- estimates
-    attr(result, "prob") <- prob
-    result
-}
-
-
-#tidy codon
-glance.pml <- function(x, ...){
-  res <- data.frame(logLik = x$logLik,
-                    df = x$df,
-                    AIC = AIC(x),
-                    BIC = BIC(x))
+  # attr(result, "estimates") <- estimates
+  # attr(result, "prob") <- prob
+  res <- list(summary = result, posterior = prob, estimates = estimates)
+  class(res) <- "codonTest"
   res
 }
 
 
-glance.pmlMix <- function(x, ...){
+# tidy codon
+glance.pml <- function(x, ...) {
+  res <- data.frame(logLik = x$logLik,
+    df = x$df,
+    AIC = AIC(x),
+    BIC = BIC(x))
+  res
+}
+
+
+glance.pmlMix <- function(x, ...) {
   nr <- attr(x$fits[[1]]$data, "nr")
   res <- data.frame(logLik = x$logLik,
-                    df = attr(logLik(x), "df"),
-                    AIC = AIC(x),
-                    BIC = AIC(x, k = log(nr)))
+    df = attr(logLik(x), "df"),
+    AIC = AIC(x),
+    BIC = AIC(x, k = log(nr)))
   res
 }
 
 
-plot.codonTest <- function(x, model="M1a"){
-  return(NULL)
+print.codonTest <- function(x) print(x$summary)
+
+
+plot.codonTest <- function(x, model = "M1a", col = c(2, 5, 6), ...) {
+  dat <- t(x$posterior[[model]])
+  barplot(dat, col = col, space = 0, border = NA)
+#  legend
 }
 
 
 # compute Naive Empirical Bayes (NEB) probabilities
-neb <- function(x){
+neb <- function(x) {
   p <- x$omega
   l <- length(p)
   index <- attr(x$fits[[1]]$data, "index")
   res <- matrix(0, max(index), l)
-  for(i in seq_len(l)) res[, i] <- p[i] * x$fits[[i]]$lv
+  for (i in seq_len(l)) res[, i] <- p[i] * x$fits[[i]]$lv
   res <- res / rowSums(res)
   res[index, ]
 }
-
