@@ -623,6 +623,7 @@ optim.sankoff <- function(tree, data, cost = NULL, trace = 1, ...) {
   if (!is.null(mapping)) {
     addTaxa <- TRUE
     tree2 <- drop.tip(tree, mapping[, 1])
+    tree2 <- unroot(tree2)
     tree <- reorder(tree2, "postorder")
   }
 
