@@ -406,7 +406,7 @@ pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
   llstart <- sum(weight * log(ll %*% omega))
   llold <- llstart
   ll_tmp <- llstart
-  ll3 <- llstart
+  ll3 <- ll1 <- llstart
   eps0 <- 1
   iter0 <- 0
   trace <- control$trace

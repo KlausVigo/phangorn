@@ -58,7 +58,7 @@
 #' # Now using the codonTest function
 #' fit_codon <- codonTest(tree, dat_codon)
 #' fit_codon
-#' # plot(fit_codon, "M2a")
+#' plot(fit_codon, "M1a")
 #' }
 #'
 #' @keywords cluster
