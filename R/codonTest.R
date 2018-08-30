@@ -12,7 +12,7 @@
 #'
 #' So far the M0 model (Goldman and Yang 2002), M1a and M2a are
 #' implemented. The M0 model is always computed the other are optional.
-#' M1a can be used as the null model to test positive selection.
+#' The convergence may be very slow and sometimes fails.
 #'
 #' @aliases codonTest
 #' @param object an object of class phyDat.
@@ -26,11 +26,10 @@
 #' should be 1, 2, or 3, but larger values are accepted and have for effect to
 #' start the translation further within the sequence.
 #' @param ... further arguments passed to or from other methods.
-#' @return A data.frame containing the log-likelihood, number of estimated
-#' parameters, AIC, AICc and BIC all tested models.  The data.frame has an
-#' attributes "env" which is an environment which contains all the trees, the
-#' data and the calls to allow get the estimated models, e.g. as a starting
-#' point for further analysis (see example).
+#' @return A list whith an element called summary containing a data.frame with
+#' the log-likelihood, number of estimated parameters, etc. of all tested
+#' models. An object called posterior which contains the posterior probability
+#' for the rate class for each sites and the estimates of the defined models.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{pml}}, \code{\link{pmlMix}}, \code{\link{modelTest}},
 #' \code{\link[stats]{AIC}}
