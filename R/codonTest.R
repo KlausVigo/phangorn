@@ -25,6 +25,7 @@
 #' @param codonstart an integer giving where to start the translation. This
 #' should be 1, 2, or 3, but larger values are accepted and have for effect to
 #' start the translation further within the sequence.
+#' @param control a list of parameters for controlling the fitting process.
 #' @param ... further arguments passed to or from other methods.
 #' @return A list whith an element called summary containing a data.frame with
 #' the log-likelihood, number of estimated parameters, etc. of all tested
@@ -63,17 +64,18 @@
 #' @keywords cluster
 # @param control A list of parameters for controlling the fitting process.
 codonTest <- function(tree, object, model = c("M0", "M1a", "M2a"),
-                      frequencies = "F3x4",
-                      opt_freq = FALSE, codonstart = 1, trace = 0, ...) {
+                      frequencies = "F3x4", opt_freq=FALSE, codonstart = 1,
+                      control=pml.control(maxit = 20), ...){
   if (attr(object, "type") == "DNA")
     object <- dna2codon(object, codonstart = codonstart)
   if (is.null(tree$edge.length)) tree <- nnls.phylo(tree, dist.ml(object))
   if (!("M0" %in% model)) model <- c("M0", model)
-
+  trace <- control$trace
+  control$trace <- trace - 1
 
   if (trace > 2) print("optimize model M0")
   fit <- pml(tree, object, bf = frequencies)
-  M0 <- optim.pml(fit, model = "codon1")
+  M0 <- optim.pml(fit, model="codon1", control = control)
   result <- cbind(model = "M0", Frequencies = frequencies,
     estimate = "empirical", glance.pml(M0), dnds_0 = M0$dnds,
     dnds_1 = NA, dnds_2 = NA, p_0 = 1, p_1 = NA, p_2 = NA,
@@ -94,7 +96,7 @@ codonTest <- function(tree, object, model = c("M0", "M1a", "M2a"),
     if (trace > 2) print("optimize model M1a")
     M1a_start <- list(update(M0, dnds = 0.1, scaleQ = 1),
       update(M0, dnds = 1, scaleQ = 1))
-    M1a <- pmlMix(rate ~ M1a, M1a_start, m = 2)
+    M1a <- pmlMix(rate ~ M1a, M1a_start, m = 2, control = control)
     result <- rbind(result, cbind(model = "M1a", Frequencies = frequencies,
       estimate = "empirical", glance.pmlMix(M1a),
       dnds_0 = M1a$dnds[1], dnds_1 = 1, dnds_2 = NA,
@@ -108,7 +110,7 @@ codonTest <- function(tree, object, model = c("M0", "M1a", "M2a"),
     M2a_start <- list(update(M0, dnds = 0.1, scaleQ = 1),
       update(M0, dnds = 1, scaleQ = 1),
       update(M0, dnds = 3, scaleQ = 1))
-    M2a <- pmlMix(rate ~ M2a, M2a_start, m = 3)
+    M2a <- pmlMix(rate ~ M2a, M2a_start, m = 3, control = control)
     result <- rbind(result, cbind(model = "M2a", Frequencies = frequencies,
       estimate = "empirical", glance.pmlMix(M2a),
       dnds_0 = M2a$dnds[1], dnds_1 = 1,

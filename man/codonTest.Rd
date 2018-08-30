@@ -6,7 +6,7 @@
 \usage{
 codonTest(tree, object, model = c("M0", "M1a", "M2a"),
   frequencies = "F3x4", opt_freq = FALSE, codonstart = 1,
-  trace = 0, ...)
+  control = pml.control(maxit = 20), ...)
 }
 \arguments{
 \item{tree}{a phylogenetic tree.}
@@ -24,6 +24,8 @@ the codon frequencies}
 \item{codonstart}{an integer giving where to start the translation. This
 should be 1, 2, or 3, but larger values are accepted and have for effect to
 start the translation further within the sequence.}
+
+\item{control}{a list of parameters for controlling the fitting process.}
 
 \item{...}{further arguments passed to or from other methods.}
 }
