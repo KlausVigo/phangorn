@@ -433,10 +433,14 @@ pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
     if (MixRate) df[6, 1] <- r - 1
     attr(logLik, "df") <- sum(df[, 1] * df[, 2])
     converge <- c(iter = iter0, eps = eps0)
-    if (CODON)
+    if (CODON){
+      if(M1a) df[5,1] <- 3
+      if(M2a) df[5,1] <- 5
+      df[4, 1] <- df_freq_codon(fits[[1]]$frequencies)
       result <- list(logLik = ll1, omega = omega, fits = fits, call = call,
                      converge = converge, parameter = parameter, df = df,
                      dnds = dnds, codon = codon)
+    }
     else
       result <- list(logLik = ll1, omega = omega, fits = fits, call = call,
                      converge = converge, parameter = parameter, df = df)
@@ -467,7 +471,6 @@ pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
     }
     if (AllRate) {
       newrate <- optimAllRate(fits, rate=1, omega)
-#      print(newrate)
       for (i in  seq_len(m)) fits[[i]] <- update(fits[[i]], rate = newrate[[1]])
     }
 
