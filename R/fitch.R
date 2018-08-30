@@ -361,6 +361,7 @@ optim.fitch <- function(tree, data, trace = 1, rearrangements = "SPR", ...) {
 
   nr <- attr(data, "nr")
   nTips <- as.integer(length(tree$tip.label))
+  if(nTips < 5) rearrangements = "NNI"
   data <- subset(data, tree$tip.label, order(attr(data, "weight"),
     decreasing = TRUE))
   dat <- prepareDataFitch(data)
@@ -386,6 +387,7 @@ optim.fitch <- function(tree, data, trace = 1, rearrangements = "SPR", ...) {
   tree$edge.length <- NULL
   swap <- 0
   iter <- TRUE
+  if(nTips < 4) iter <- FALSE
   pscore <- fast.fitch(tree, nr)
   while (iter) {
     res <- fitch.nni(tree, dat, ...)
