@@ -150,7 +150,7 @@ glance.pmlMix <- function(x, ...) {
 }
 
 
-print.codonTest <- function(x) print(x$summary)
+print.codonTest <- function(x, ...) print(x$summary)
 
 
 plot.codonTest <- function(x, model = "M1a", col = c(2, 5, 6), ...) {

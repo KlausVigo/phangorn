@@ -33,7 +33,7 @@ importFrom(stats, AIC, BIC, logLik, reorder, update, optim, optimize,
     pgamma, model.matrix, aggregate, lm.fit, xtabs, quantile, sd, runif, qbeta)
 importFrom(graphics, plot, plot.default, plot.new, plot.window, text, par,
     abline, strwidth, axis, title, segments, points, image, matplot, legend,
-    hist, identify, locator)
+    hist, identify, locator, barplot)
 importFrom(utils, read.table, download.file, stack,
     installed.packages, write.table, combn, packageDescription)
 importFrom(grDevices, rgb, rainbow, adjustcolor, col2rgb)
