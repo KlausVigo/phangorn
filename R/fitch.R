@@ -350,7 +350,7 @@ optim.fitch <- function(tree, data, trace = 1, rearrangements = "SPR", ...) {
     dup <- map_duplicates(data)
     if (!is.null(dup)) {
       tree <- drop.tip(tree, dup[, 1])
-      tree <- unroot(tree)
+      if(length(tree$tip.label) > 2) tree <- unroot(tree)
       tree <- reorder(tree, "postorder")
       dup_list <- c(list(dup), dup_list)
       addTaxa <- TRUE
@@ -378,6 +378,7 @@ optim.fitch <- function(tree, data, trace = 1, rearrangements = "SPR", ...) {
       }
       tree
     }
+    if(length(tree$tip.label) > 2) tree <- unroot(tree)
     attr(tree, "pscore") <- pscore + p0
     return(tree)
   })
