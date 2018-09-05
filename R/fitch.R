@@ -3,6 +3,7 @@
 fitch <- function(tree, data, site = "pscore") {
   if (!inherits(data, "phyDat"))
     stop("data must be of class phyDat")
+  if (any(!is.binary(tree))) stop("Tree must be binary!")
   if (inherits(tree, "multiPhylo")) {
     TL <- attr(tree, "TipLabel")
     if (!is.null(TL)) {
