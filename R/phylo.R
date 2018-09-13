@@ -1693,12 +1693,19 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   #        tree <- nnls.phylo(tree, dist.ml(data))
   #    }
   if (any(duplicated(tree$tip.label))) stop("tree must have unique labels!")
+  nTips <- as.integer(length(tree$tip.label))
   if (is.null(attr(tree, "order")) || attr(tree, "order") ==
     "cladewise")
     tree <- reorder(tree, "postorder")
   if (any(tree$edge.length < 0)) {
+    if(is.rooted(tree)) nh <- nodeHeight(tree)[1:nTips]
     tree$edge.length[tree$edge.length < 0] <- 1e-08
     message("negative edges length changed to 0!")
+    if(is.rooted(tree)){
+      ind <- match(as.integer(1:nTips), tree$edge[, 2])
+      tree$edge.length[ind] <- tree$edge.length[ind] +
+        (nodeHeight(tree)[1:nTips] - nh)
+    }
   }
   if (class(data)[1] != "phyDat") stop("data must be of class phyDat")
   if (is.null(tree$edge.length)) stop("tree must have edge weights")
@@ -1776,7 +1783,6 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
 
   nr <- as.integer(attr(data, "nr"))
   nc <- as.integer(attr(data, "nc"))
-  nTips <- as.integer(length(tree$tip.label))
 
   on.exit(.C("ll_free"))
   .C("ll_init", nr, nTips, nc, as.integer(k))
