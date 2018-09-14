@@ -2,9 +2,12 @@
 % Please edit documentation in R/bootstrap.R
 \name{maxCladeCred}
 \alias{maxCladeCred}
+\alias{mcc}
 \title{Maximum clade credibility tree}
 \usage{
 maxCladeCred(x, tree = TRUE, part = NULL, rooted = TRUE)
+
+mcc(x, tree = TRUE, part = NULL, rooted = TRUE)
 }
 \arguments{
 \item{x}{\code{x} is an object of class \code{multiPhylo} or \code{phylo}}

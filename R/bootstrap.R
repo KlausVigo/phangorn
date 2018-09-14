@@ -327,7 +327,8 @@ plotBS <- function(tree, BStrees, type = "unrooted", bs.col = "black",
 #' maxCladeCred(c(tree, bs[[1]]), tree=FALSE, part = pp)
 #' # first value likely be -Inf
 #'
-#' @export maxCladeCred
+#' @rdname maxCladeCred
+#' @export
 maxCladeCred <- function(x, tree = TRUE, part = NULL, rooted = TRUE) {
   if (inherits(x, "phylo")) x <- c(x)
   if (is.null(part)) {
@@ -370,6 +371,8 @@ maxCladeCred <- function(x, tree = TRUE, part = NULL, rooted = TRUE) {
 }
 
 
+#' @rdname maxCladeCred
+#' @export
 mcc <- maxCladeCred
 
 
