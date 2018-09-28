@@ -65,7 +65,7 @@
 #'
 #' # Maximum likelihood
 #' fit <- pml(tree, Laurasiatherian)
-#' fit <- optim.pml(fit, rearrangements="NNI")
+#' fit <- optim.pml(fit, rearrangement="NNI")
 #' set.seed(123)
 #' bs <- bootstrap.pml(fit, bs=100, optNni=TRUE)
 #' treeBS <- plotBS(fit$tree,bs)
@@ -89,21 +89,22 @@ bootstrap.pml <- function(x, bs = 100, trees = TRUE, multicore = FALSE,
   if (multicore && is.null(mc.cores)) {
     mc.cores <- detectCores()
   }
-
   data <- x$data
   weight <- attr(data, "weight")
   v <- rep(seq_along(weight), weight)
+  ntips <- Ntip(x$tree)
   BS <- vector("list", bs)
-  for (i in 1:bs) BS[[i]] <- tabulate(
-      sample(v, replace = TRUE),
-      length(weight)
-    )
+  for (i in 1:bs) BS[[i]][[1]] <- tabulate(sample(v, replace = TRUE),
+                                      length(weight))
+  for (i in 1:bs) BS[[i]][[2]] <- sample(ntips)
   pmlPar <- function(weights, fit, trees = TRUE, ...) {
     data <- fit$data
-    ind <- which(weights > 0)
+    tree <- fit$tree
+    ind <- which(weights[[1]] > 0)
     data <- getRows(data, ind)
-    attr(data, "weight") <- weights[ind]
-    fit <- update(fit, data = data)
+    attr(data, "weight") <- weights[[1]][ind]
+    tree <- checkLabels(tree, tree$tip.label[ weights[[2]] ])
+    fit <- update(fit, data = data, tree=tree)
     fit <- optim.pml(fit, ...)
     if (trees) {
       tree <- fit$tree
@@ -125,51 +126,41 @@ bootstrap.pml <- function(x, bs = 100, trees = TRUE, multicore = FALSE,
   res
 }
 
-
 #' @rdname bootstrap.pml
 #' @export
-bootstrap.phyDat <- function(x, FUN, bs = 100, multicore = FALSE,
-                             mc.cores = NULL, jumble = TRUE, ...) {
+bootstrap.pml <- function(x, bs = 100, trees = TRUE, multicore = FALSE,
+                          mc.cores = NULL, ...) {
   if (multicore && is.null(mc.cores)) {
     mc.cores <- detectCores()
   }
-  weight <- attr(x, "weight")
+
+  data <- x$data
+  weight <- attr(data, "weight")
   v <- rep(seq_along(weight), weight)
   BS <- vector("list", bs)
-  for (i in 1:bs) BS[[i]] <- tabulate(sample(v, replace = TRUE), length(weight))
-  if (jumble) {
-    J <- vector("list", bs)
-    l <- length(x)
-    for (i in 1:bs) J[[i]] <- list(BS[[i]], sample(l))
-  }
-  fitPar <- function(weights, data, ...) {
+  for (i in 1:bs) BS[[i]] <- tabulate(sample(v, replace = TRUE),
+                                      length(weight))
+  pmlPar <- function(weights, fit, trees = TRUE, ...) {
+    data <- fit$data
     ind <- which(weights > 0)
     data <- getRows(data, ind)
     attr(data, "weight") <- weights[ind]
-    FUN(data, ...)
-  }
-  fitParJumble <- function(J, data, ...) {
-    ind <- which(J[[1]] > 0)
-    data <- getRows(data, ind)
-    attr(data, "weight") <- J[[1]][ind]
-    data <- subset(data, J[[2]])
-    FUN(data, ...)
-  }
-  if (multicore) {
-    if (jumble) {
-      res <- mclapply(J, fitParJumble, x, ..., mc.cores = mc.cores)
-    } else {
-      res <- mclapply(BS, fitPar, x, ..., mc.cores = mc.cores)
+    fit <- update(fit, data = data)
+    fit <- optim.pml(fit, ...)
+    if (trees) {
+      tree <- fit$tree
+      return(tree)
     }
+    attr(fit, "data") <- NULL
+    fit
   }
-  else {
-    if (jumble) {
-      res <- lapply(J, fitParJumble, x, ...)
-    } else {
-      res <- lapply(BS, fitPar, x, ...)
-    }
+  eval.success <- FALSE
+  if (!eval.success & multicore) {
+    res <- mclapply(BS, pmlPar, x, trees = trees, ..., mc.cores = mc.cores)
+    eval.success <- TRUE
   }
-  if (class(res[[1]]) == "phylo") {
+  if (!eval.success) res <- lapply(BS, pmlPar, x, trees = trees, ...)
+  if (trees) {
     class(res) <- "multiPhylo"
     res <- .compressTipLabel(res) # save memory
   }
@@ -412,4 +403,14 @@ moving_average <- function(obj, window = 50) {
   }
   res <- apply(obj$X, 1, fun)
   rownames(res) <- c()
+}
+
+
+candidate.tree <- function(x){
+  tree <- random.addition(x)
+  tree <- optim.parsimony(tree, x)
+  tree <- multi2di(tree)
+  tree <- acctran(tree, x)
+  tree$edge.length <- tree$edge.length / sum(attr(yeast, "x"))
+  tree
 }
