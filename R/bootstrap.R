@@ -120,7 +120,7 @@ bootstrap.pml <- function(x, bs = 100, trees = TRUE, multicore = FALSE,
   pmlPar <- function(weights, fit, trees = TRUE, do_rearr, ...) {
     data <- fit$data
     tree <- fit$tree
-    ind <- which(weights[[1]] > 0)
+    ind <- which(weights > 0)
     data <- getRows(data, ind)
     attr(data, "weight") <- weights[ind]
     fit <- update(fit, data = data)
