@@ -1,3 +1,13 @@
+candidate.tree <- function(x){
+  tree <- random.addition(x)
+  tree <- optim.parsimony(tree, x)
+  tree <- multi2di(tree)
+  tree <- acctran(tree, x)
+  tree$edge.length <- tree$edge.length / sum(attr(x, "weight"))
+  tree
+}
+
+
 #' Bootstrap
 #'
 #' \code{bootstrap.pml} performs (non-parametric) bootstrap analysis and
@@ -89,22 +99,51 @@ bootstrap.pml <- function(x, bs = 100, trees = TRUE, multicore = FALSE,
   if (multicore && is.null(mc.cores)) {
     mc.cores <- detectCores()
   }
+<<<<<<< HEAD
+=======
+  extras <- match.call(expand.dots = FALSE)$...
+  rearr <- c("optNni", "rearrangement")
+  tmp <- pmatch(names(extras), rearr)
+  do_rearr <- FALSE
+  if(!is.na(tmp)){
+    if(tmp==1) do_rearr <- extras$optNni
+    if(tmp==2) do_rearr <- extras$rearrangement %in% c("NNI", "stochastic",
+                                                       "ratchet")
+  }
+>>>>>>> 17c4e46124597333bcc71d9872a2f53223683252
   data <- x$data
   weight <- attr(data, "weight")
   v <- rep(seq_along(weight), weight)
   ntips <- Ntip(x$tree)
   BS <- vector("list", bs)
+<<<<<<< HEAD
   for (i in 1:bs) BS[[i]][[1]] <- tabulate(sample(v, replace = TRUE),
                                       length(weight))
   for (i in 1:bs) BS[[i]][[2]] <- sample(ntips)
   pmlPar <- function(weights, fit, trees = TRUE, ...) {
+=======
+  for (i in 1:bs) BS[[i]] <- tabulate(
+      sample(v, replace = TRUE),
+      length(weight)
+    )
+  pmlPar <- function(weights, fit, trees = TRUE, do_rearr, ...) {
+>>>>>>> 17c4e46124597333bcc71d9872a2f53223683252
     data <- fit$data
     tree <- fit$tree
     ind <- which(weights[[1]] > 0)
     data <- getRows(data, ind)
+<<<<<<< HEAD
     attr(data, "weight") <- weights[[1]][ind]
     tree <- checkLabels(tree, tree$tip.label[ weights[[2]] ])
     fit <- update(fit, data = data, tree=tree)
+=======
+    attr(data, "weight") <- weights[ind]
+    fit <- update(fit, data = data)
+    if(do_rearr){
+      tree <- candidate.tree(data)
+      fit <- update(fit, tree = tree)
+    }
+>>>>>>> 17c4e46124597333bcc71d9872a2f53223683252
     fit <- optim.pml(fit, ...)
     if (trees) {
       tree <- fit$tree
@@ -115,10 +154,12 @@ bootstrap.pml <- function(x, bs = 100, trees = TRUE, multicore = FALSE,
   }
   eval.success <- FALSE
   if (!eval.success & multicore) {
-    res <- mclapply(BS, pmlPar, x, trees = trees, ..., mc.cores = mc.cores)
+    res <- mclapply(BS, pmlPar, x, trees = trees, do_rearr = do_rearr, ...,
+                    mc.cores = mc.cores)
     eval.success <- TRUE
   }
-  if (!eval.success) res <- lapply(BS, pmlPar, x, trees = trees, ...)
+  if (!eval.success) res <- lapply(BS, pmlPar, x, trees = trees,
+                                   do_rearr = do_rearr, ...)
   if (trees) {
     class(res) <- "multiPhylo"
     res <- .compressTipLabel(res) # save memory

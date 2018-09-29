@@ -78,9 +78,10 @@ phyDat.default <- function (data, levels = NULL, return.index = TRUE,
 
     d <- dim(data)
     att <- attributes(data)
-    data <- match(unlist(data), all.levels)
-    attr(data, "dim") <- d
-    data <- as.data.frame(data, stringsAsFactors=FALSE)
+    data <- lapply(data, match, all.levels)
+#    data <- match(unlist(data), all.levels)
+#    attr(data, "dim") <- d
+#    data <- as.data.frame(data, stringsAsFactors=FALSE)
     attributes(data) <- att
 
     row.names(data) <- as.character(1:p)
@@ -135,7 +136,7 @@ phyDat.DNA_old <- function (data, return.index = TRUE)
         0, 1, 1, 1, 1, 1, 1)), 18, 4, dimnames = list(NULL, c("a",
         "c", "g", "t")))
 
-    compress <- FALSE #TRUE
+    compress <- TRUE
     if(length(data[[1]])==1) compress <- FALSE
     if(compress){
         ddd <- fast.table(data)
@@ -213,7 +214,7 @@ phyDat.DNA <- function (data, return.index = TRUE)
                  c(0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1)),
                18, 4, dimnames = list(NULL, c("a", "c", "g", "t")))
 
-  compress <- FALSE#TRUE
+  compress <- TRUE
   if(length(data[[1]])==1) compress <- FALSE
   if(compress){
     ddd <- fast.table(data)
@@ -232,7 +233,6 @@ phyDat.DNA <- function (data, return.index = TRUE)
   att <- attributes(data)
 
   data <- lapply(data, match, ac)
-#  class(data)
 #  data <- match(unlist(data), ac)
 #  attr(data, "dim") <- d
 #  data <- as.data.frame(data, stringsAsFactors=FALSE)
@@ -311,9 +311,11 @@ phyDat.AA <- function (data, return.index = TRUE)
 
     d <- dim(data)
     att <- attributes(data)
-    data <- match(unlist(data), aa2)
-    attr(data, "dim") <- d
-    data <- as.data.frame(data, stringsAsFactors=FALSE)
+
+    data <- lapply(data, match, aa2)
+    # data <- match(unlist(data), aa2)
+    # attr(data, "dim") <- d
+    # data <- as.data.frame(data, stringsAsFactors=FALSE)
     attributes(data) <- att
 
     row.names(data) <- as.character(1:p)

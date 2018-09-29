@@ -63,7 +63,10 @@ tree2phyDat <- function(trees) {
 
 my.supertree <- function(trees, trace = 0, ...) {
   has_edge_length <- vapply(trees, function(x) !is.null(x$edge.length), FALSE)
-  if (all(has_edge_length)) trees <- di2multi(trees)
+  if (all(has_edge_length)){
+    trees <- .uncompressTipLabel(trees)
+    trees <- di2multi(trees)
+  }
   XX <- tree2phyDat(trees)
   supertree <- pratchet(XX, trace = trace, ...)
   # maybe add edge length supertree <- acctran(supertree, XX)
