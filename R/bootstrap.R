@@ -153,39 +153,48 @@ bootstrap.pml <- function(x, bs = 100, trees = TRUE, multicore = FALSE,
 
 #' @rdname bootstrap.pml
 #' @export
-bootstrap.pml <- function(x, bs = 100, trees = TRUE, multicore = FALSE,
-                          mc.cores = NULL, ...) {
+bootstrap.phyDat <- function(x, FUN, bs = 100, multicore = FALSE,
+                             mc.cores = NULL, jumble = TRUE, ...) {
   if (multicore && is.null(mc.cores)) {
     mc.cores <- detectCores()
   }
-
-  data <- x$data
-  weight <- attr(data, "weight")
+  weight <- attr(x, "weight")
   v <- rep(seq_along(weight), weight)
   BS <- vector("list", bs)
-  for (i in 1:bs) BS[[i]] <- tabulate(sample(v, replace = TRUE),
-                                      length(weight))
-  pmlPar <- function(weights, fit, trees = TRUE, ...) {
-    data <- fit$data
+  for (i in 1:bs) BS[[i]] <- tabulate(sample(v, replace = TRUE), length(weight))
+  if (jumble) {
+    J <- vector("list", bs)
+    l <- length(x)
+    for (i in 1:bs) J[[i]] <- list(BS[[i]], sample(l))
+  }
+  fitPar <- function(weights, data, ...) {
     ind <- which(weights > 0)
     data <- getRows(data, ind)
     attr(data, "weight") <- weights[ind]
-    fit <- update(fit, data = data)
-    fit <- optim.pml(fit, ...)
-    if (trees) {
-      tree <- fit$tree
-      return(tree)
+    FUN(data, ...)
+  }
+  fitParJumble <- function(J, data, ...) {
+    ind <- which(J[[1]] > 0)
+    data <- getRows(data, ind)
+    attr(data, "weight") <- J[[1]][ind]
+    data <- subset(data, J[[2]])
+    FUN(data, ...)
+  }
+  if (multicore) {
+    if (jumble) {
+      res <- mclapply(J, fitParJumble, x, ..., mc.cores = mc.cores)
+    } else {
+      res <- mclapply(BS, fitPar, x, ..., mc.cores = mc.cores)
     }
-    attr(fit, "data") <- NULL
-    fit
   }
-  eval.success <- FALSE
-  if (!eval.success & multicore) {
-    res <- mclapply(BS, pmlPar, x, trees = trees, ..., mc.cores = mc.cores)
-    eval.success <- TRUE
+  else {
+    if (jumble) {
+      res <- lapply(J, fitParJumble, x, ...)
+    } else {
+      res <- lapply(BS, fitPar, x, ...)
+    }
   }
-  if (!eval.success) res <- lapply(BS, pmlPar, x, trees = trees, ...)
-  if (trees) {
+  if (class(res[[1]]) == "phylo") {
     class(res) <- "multiPhylo"
     res <- .compressTipLabel(res) # save memory
   }
