@@ -192,16 +192,16 @@ treedist <- function(tree1, tree2, check.labels = TRUE) {
 
   tree1 <- unroot(tree1)
   tree2 <- unroot(tree2)
-
-  if (check.labels) {
-    ind <- match(tree1$tip.label, tree2$tip.label)
-    if (any(is.na(ind)) | length(tree1$tip.label) !=
-      length(tree2$tip.label))
-      stop("trees have different labels")
-    tree2$tip.label <- tree2$tip.label[ind]
-    ind2 <- match(seq_along(ind), tree2$edge[, 2])
-    tree2$edge[ind2, 2] <- order(ind)
-  }
+  if (check.labels) tree2 <- checkLabels(tree2, tree1$tip.label)
+#  if (check.labels) {
+#    ind <- match(tree1$tip.label, tree2$tip.label)
+#    if (any(is.na(ind)) | length(tree1$tip.label) !=
+#      length(tree2$tip.label))
+#      stop("trees have different labels")
+#    tree2$tip.label <- tree2$tip.label[ind]
+#    ind2 <- match(seq_along(ind), tree2$edge[, 2])
+#    tree2$edge[ind2, 2] <- order(ind)
+#  }
 
   tree1 <- reorder(tree1, "postorder")
   tree2 <- reorder(tree2, "postorder")
@@ -411,14 +411,15 @@ wRF0 <- function(tree1, tree2, normalize = FALSE, check.labels = TRUE,
   }
   if (!is.binary(tree1) | !is.binary(tree2))
     message("Trees are not binary!")
-  if (check.labels) {
-    ind <- match(tree1$tip.label, tree2$tip.label)
-    if (any(is.na(ind)) | length(tree1$tip.label) != length(tree2$tip.label))
-      stop("trees have different labels")
-    tree2$tip.label <- tree2$tip.label[ind]
-    ind2 <- match(seq_along(ind), tree2$edge[, 2])
-    tree2$edge[ind2, 2] <- order(ind)
-  }
+  if (check.labels) tree2 <- checkLabels(tree2, tree1$tip.label)
+#  if (check.labels) {
+#    ind <- match(tree1$tip.label, tree2$tip.label)
+#    if (any(is.na(ind)) | length(tree1$tip.label) != length(tree2$tip.label))
+#      stop("trees have different labels")
+#    tree2$tip.label <- tree2$tip.label[ind]
+#    ind2 <- match(seq_along(ind), tree2$edge[, 2])
+#    tree2$edge[ind2, 2] <- order(ind)
+#  }
   if (has.singles(tree1)) tree1 <- collapse.singles(tree1)
   if (has.singles(tree2)) tree2 <- collapse.singles(tree2)
   bp1 <- bip(tree1)
@@ -600,14 +601,15 @@ mRF2 <- function(tree, trees, normalize = FALSE, check.labels = TRUE,
     stop("trees should be an object of class \"phylo\"")
   trees <- .compressTipLabel(trees)
   tipLabel <- attr(trees, "TipLabel")
-  if (check.labels) {
-    ind <- match(tipLabel, tree$tip.label)
-    if (any(is.na(ind)) | length(tipLabel) != length(tree$tip.label))
-      stop("trees have different labels")
-    tree$tip.label <- tree$tip.label[ind]
-    ind2 <- match(seq_along(ind), tree$edge[, 2])
-    tree$edge[ind2, 2] <- order(ind)
-  }
+  if (check.labels) tree <- checkLabels(tree, tipLabel)
+#  if (check.labels) {
+#    ind <- match(tipLabel, tree$tip.label)
+#    if (any(is.na(ind)) | length(tipLabel) != length(tree$tip.label))
+#      stop("trees have different labels")
+#    tree$tip.label <- tree$tip.label[ind]
+#    ind2 <- match(seq_along(ind), tree$edge[, 2])
+#    tree$edge[ind2, 2] <- order(ind)
+#  }
   nTips <- length(tipLabel)
   l <- length(trees)
   RF <- numeric(l)
@@ -689,7 +691,7 @@ mRF <- function(trees, normalize = FALSE, rooted = FALSE) {
   if (!rooted) xx <- lapply(xx, SHORTwise, nTips)
   xx <- lapply(xx, function(x) sapply(x, paste, collapse = "_"))
   # returns list of character vectors
-  Nnodes <- sapply(trees, Nnode)
+  Nnodes <- Nnode(trees) # sapply(trees, Nnode)
   k <- 1
   for (i in 1:(l - 1)) {
     tmp <- xx[[i]]
@@ -735,16 +737,16 @@ RF0 <- function(tree1, tree2 = NULL, normalize = FALSE, check.labels = TRUE,
       r1 <- r2 <- FALSE
     }
   }
-  if (check.labels) {
-    ind <- match(tree1$tip.label, tree2$tip.label)
-    if (any(is.na(ind)) | length(tree1$tip.label) !=
-      length(tree2$tip.label))
-      stop("trees have different labels")
-    tree2$tip.label <- tree2$tip.label[ind]
-    #       tree2$edge[match(ind, tree2$edge[, 2]), 2] <- 1:length(ind)
-    ind2 <- match(seq_along(ind), tree2$edge[, 2])
-    tree2$edge[ind2, 2] <- order(ind)
-  }
+  if (check.labels) tree2 <- checkLabels(tree2, tree1$tip.label)
+#  if (check.labels) {
+#    ind <- match(tree1$tip.label, tree2$tip.label)
+#    if (any(is.na(ind)) | length(tree1$tip.label) !=
+#      length(tree2$tip.label))
+#      stop("trees have different labels")
+#    tree2$tip.label <- tree2$tip.label[ind]
+#    ind2 <- match(seq_along(ind), tree2$edge[, 2])
+#    tree2$edge[ind2, 2] <- order(ind)
+#  }
   if (!is.binary(tree1) | !is.binary(tree2)) message("Trees are not binary!")
   bp1 <- bipart(tree1)
   bp2 <- bipart(tree2)
