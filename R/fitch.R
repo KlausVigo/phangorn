@@ -362,7 +362,7 @@ optim.fitch <- function(tree, data, trace = 1, rearrangements = "SPR", ...) {
 
   nr <- attr(data, "nr")
   nTips <- as.integer(length(tree$tip.label))
-  if(nTips < 5) rearrangements = "NNI"
+  if(nTips < 5) rearrangements <- "NNI"
   data <- subset(data, tree$tip.label, order(attr(data, "weight"),
     decreasing = TRUE))
   dat <- prepareDataFitch(data)
