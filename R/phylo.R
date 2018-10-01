@@ -264,7 +264,7 @@ anova.pml <- function(object, ...) {
   dev <- c(NA, 2 * diff(DF[, 1]))
   ddf <- c(NA, diff(DF[, 2]))
   table <- data.frame(DF, ddf, dev, pchisq(dev, ddf, lower.tail = FALSE))
-  dimnames(table) <- list(1:length(X), c("Log lik.", "Df",
+  dimnames(table) <- list(seq_along(X), c("Log lik.", "Df",
     "Df change", "Diff log lik.", "Pr(>|Chi|)"))
   structure(table, heading = "Likelihood Ratio Test Table",
     class = c("anova", "data.frame"))
@@ -628,7 +628,7 @@ rnodes <- function(tree, data, w, g, eig, bf) {
   dat <- vector(mode = "list", length = m * l)
   dim(dat) <- c(l, m)
   tmp <- length(data)
-  #    for(i in 1:length(w))dat[i,1:tmp]=new2old.phyDat(data) #
+  #    for(i in seq_along(w))dat[i,1:tmp]=new2old.phyDat(data) #
   #    dat[1,1:tmp] <- data  vielleicht gebraucht
   el <- tree$edge.length
   P <- getP(el, eig, g)
@@ -1230,7 +1230,7 @@ update.pml <- function(object, ...) {
   ### play save
   kmax <- k
   if (any(g < .gEps)) {
-    for (i in 1:length(g)) {
+    for (i in seq_along(g)) {
       if (g[i] < .gEps) {
         inv <- inv + w[i]
       }
@@ -1309,7 +1309,7 @@ pml.fit4 <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
   }
   #    inv0 <- inv
   if (any(g < .gEps)) {
-    for (i in 1:length(g)) {
+    for (i in seq_along(g)) {
       if (g[i] < .gEps) {
         inv <- inv + w[i]
       }
@@ -1424,7 +1424,7 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
   }
   #    inv0 <- inv
   if (any(g < .gEps)) {
-    for (i in 1:length(g)) {
+    for (i in seq_along(g)) {
       if (g[i] < .gEps) {
         inv <- inv + w[i]
       }
@@ -1765,7 +1765,7 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   inv0 <- inv
   kmax <- k
   if (any(g < .gEps)) {
-    for (i in 1:length(g)) {
+    for (i in seq_along(g)) {
       if (g[i] < .gEps) {
         inv <- inv + w[i]
       }
@@ -1927,7 +1927,7 @@ optimRooted <- function(tree, data, eig = eig, w = w, g = g, bf = bf,
     tree$edge.length <- EL[tree$edge[, 2]]
     ll2 <- pml.fit4(tree, data, bf = bf, k = k, eig = eig, INV = INV,
                     ll.0 = ll.0, w = w, g = g)
-    for (i in 1:length(child2)) {
+    for (i in seq_along(child2)) {
       dad <- child2[i]
 
       #            if(dad>nTips ){ # kann raus
@@ -2094,7 +2094,7 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV,
     i <- 1
 
     tree1 <- tree2 <- tree3 <- tree
-    for (i in 1:length(child2)) {
+    for (i in seq_along(child2)) {
       ch <- child2[i]
       dad <- anc[ch]
       if (ch > nTips) {
@@ -2942,7 +2942,7 @@ indexNNI3 <- function(tree) {
   tips[parent] <-  FALSE
   #    cvector <- allCildren(tree)
   cvector <- vector("list", max(parent))
-  for (i in 1:length(parent)) cvector[[parent[i]]] <- c(cvector[[parent[i]]],
+  for (i in seq_along(parent)) cvector[[parent[i]]] <- c(cvector[[parent[i]]],
       child[i])
   k <- 1L
   for (i in ind) {
@@ -3067,7 +3067,7 @@ pml.quartet <- function(tree, data, bf = rep(.25, 4), k = 1, rate = 1, g, w,
   #    m = 1
 
   #    if(any(g<.gEps)){
-  #        for(i in 1:length(g)){
+  #        for(i in seq_along(g)){
   #            if(g[i]<.gEps){
   #                inv <- inv+w[i]
   #            }
@@ -3231,7 +3231,7 @@ pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, INV = INV, ...) {
     }
   }
   #    trees <- vector("list", 2*m)
-  #    for(i in 1:length(loglik)){
+  #    for(i in seq_along(loglik)){
   #        ind = i
   #        if( ind %% 2 ) swap.edge = c(2,4)
   #        else swap.edge = c(1,4)
