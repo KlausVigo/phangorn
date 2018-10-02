@@ -684,6 +684,7 @@ mRF <- function(trees, normalize = FALSE, rooted = FALSE) {
   }
   #    trees <- reorder(trees, "postorder")
   #    trees <- lapply(trees, reorder, "postorder")
+  Nnodes <- Nnode(trees)
   trees <- .uncompressTipLabel(trees)
   trees <- unclass(trees)
 
@@ -691,7 +692,7 @@ mRF <- function(trees, normalize = FALSE, rooted = FALSE) {
   if (!rooted) xx <- lapply(xx, SHORTwise, nTips)
   xx <- lapply(xx, function(x) sapply(x, paste, collapse = "_"))
   # returns list of character vectors
-  Nnodes <- Nnode(trees) # sapply(trees, Nnode)
+
   k <- 1
   for (i in 1:(l - 1)) {
     tmp <- xx[[i]]
