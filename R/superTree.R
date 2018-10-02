@@ -172,6 +172,12 @@ superTree <- function(tree, method = "MRP", rooted = FALSE, trace = 0,
     x$Nnode <- x$Nnode + 1L
     x
   }
+
+#  labels_start <- unique(unlist(lapply(tree, function(x)x$tip.label)))
+  tmp <- Nnode(tree)
+  if(any(tmp <= (2 + !rooted))) tree <- tree[ tmp > (2 + !rooted) ]
+# TODO check for missing labels
+
   if (method != "MRP") rooted <- FALSE
   if (!rooted) tree <- unroot(tree)
   if (method == "MRP" | is.null(start)) {
