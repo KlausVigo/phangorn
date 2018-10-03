@@ -2,6 +2,7 @@ candidate.tree <- function(x){
   tree <- random.addition(x)
   tree <- optim.parsimony(tree, x)
   tree <- multi2di(tree)
+  tree <- unroot(tree)
   tree <- acctran(tree, x)
   tree$edge.length <- tree$edge.length / sum(attr(x, "weight"))
   tree
