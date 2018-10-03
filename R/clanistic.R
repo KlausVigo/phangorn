@@ -384,7 +384,7 @@ getDiversity <- function (tree, x, norm = TRUE, var.names = NULL, labels="new")
     if (inherits(tree,"multiPhylo")) {
         tnam <- names(tree)
         if (is.null(tnam))
-            tnam <- 1:length(tree)
+            tnam <- seq_along(tree)
     }
     if(is.null(var.names)) var.names <- 1:l
     PM <- data.frame("t1", "a", stringsAsFactors = FALSE)

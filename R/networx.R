@@ -323,7 +323,7 @@ circNetwork <- function(x, ord = NULL) {
   rsY <- rowSums(Y)
   X <- X[ind, ]
 
-  for (k in 1:length(ind)) {
+  for (k in seq_along(ind)) {
     Vstart <- ord[1]
     Vstop <- ord[nTips]
     ordStart <- 1
