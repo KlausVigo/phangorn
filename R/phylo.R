@@ -2321,7 +2321,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                                             trace = 1L), model = NULL,
                       rearrangement = ifelse(optNni, "NNI", "none"),
                       subs = NULL, ratchet.par = list(iter = 20L, maxit = 100L,
-                                                      prop = 1 / 3), ...) {
+                                                      prop = 1 / 2), ...) {
   optRatchet <- FALSE
   optRatchet2 <- FALSE
   optF3x4 <- FALSE

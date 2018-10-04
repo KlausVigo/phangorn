@@ -58,11 +58,11 @@ SOWH.test <- function(x, n = 100, restricted = list(optNni = FALSE),
 
   if (!is.null(extras)) {
     namAll <-  names(extras)
-    for (i in 1:length(extras)) optU[[namAll[i]]] <- extras[[i]]
+    for (i in seq_along(extras)) optU[[namAll[i]]] <- extras[[i]]
   }
   optR <- optU
   namR <- names(restricted)
-  for (i in 1:length(namR)) optR[[namR[i]]] <- restricted[[i]]
+  for (i in seq_along(namR)) optR[[namR[i]]] <- restricted[[i]]
   restr <- optim.pml(x, optNni = optR$optNni, optBf = optR$optBf,
                      optQ = optR$optQ, optInv = optR$optInv,
                      optGamma = optR$optGamma, optEdge = optR$optEdge,

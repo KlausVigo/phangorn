@@ -35,7 +35,7 @@ tree2phyDat <- function(trees) {
   data <- matrix(data = 3L, nrow = characters, ncol = length(species),
     dimnames = list(NULL, species))
   j <- 1
-  for (i in 1:length(X)) {
+  for (i in seq_along(X)) {
     # copy each of X into supermatrix data
     data[c(j:((j - 1) + nrow(X[[i]]))), colnames(X[[i]])] <- X[[i]]
     # [1:nrow(X[[i]]),1:ncol(X[[i]])]
