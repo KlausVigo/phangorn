@@ -268,10 +268,7 @@ plotBS <- function(tree, BStrees, type = "unrooted", bs.col = "black",
   }
 
   label <- c(rep(0, length(tree$tip.label)), x)
-  ind <- get("last_plot.phylo", envir = .PlotPhyloEnv)$edge[
-    ,
-    2
-  ]
+  ind <- get("last_plot.phylo", envir = .PlotPhyloEnv)$edge[ ,2 ]
   if (type == "phylogram" | type == "cladogram") {
     root <- getRoot(tree)
     label <- c(rep(0, length(tree$tip.label)), x)
