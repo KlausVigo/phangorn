@@ -109,6 +109,11 @@ bootstrap.pml <- function(x, bs = 100, trees = TRUE, multicore = FALSE,
     if(tmp==2) do_rearr <- extras$rearrangement %in% c("NNI", "stochastic",
                                                        "ratchet")
   }
+  is_ultrametric <- FALSE
+  tmp <- pmatch("optRooted", names(extras))
+  if(!is.na(tmp)){
+    is_ultrametric <- extras$optRooted
+  }
   data <- x$data
   weight <- attr(data, "weight")
   v <- rep(seq_along(weight), weight)
@@ -126,7 +131,11 @@ bootstrap.pml <- function(x, bs = 100, trees = TRUE, multicore = FALSE,
     attr(data, "weight") <- weights[ind]
     fit <- update(fit, data = data)
     if(do_rearr){
-      tree <- candidate.tree(data)
+      if(is_ultrametric){
+        tree <- dist.ml(data, bf=fit$bf, Q=fit$Q) %>% wpgma()
+      }
+      else tree <- candidate.tree(data)
+
       fit <- update(fit, tree = tree)
     }
     fit <- optim.pml(fit, ...)
