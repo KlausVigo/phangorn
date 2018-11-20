@@ -365,7 +365,6 @@ SPR2 <- function(tree, trees) {
   }
 
   bp <-  fun(tree, nTips)
-#  k <- 1
   l <- length(trees)
   SPR <- numeric(l)
   for (i in 1:l) {
