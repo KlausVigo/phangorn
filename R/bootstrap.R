@@ -347,10 +347,12 @@ plotBS <- function(tree, BStrees, type = "unrooted", bs.col = "black",
 #'
 #' strict_consensus <- consensus(bs)
 #' majority_consensus <- consensus(bs, p=.5)
+#' all_compat <- allCompat(bs)
 #' max_clade_cred <- maxCladeCred(bs)
-#' par(mfrow = c(1,3), mar = c(1,4,1,1))
+#' par(mfrow = c(2,2), mar = c(1,4,1,1))
 #' plot(strict_consensus, main="Strict consensus tree")
 #' plot(majority_consensus, main="Majority consensus tree")
+#' plot(all_compat, main="Majority consensus tree with compatible splits")
 #' plot(max_clade_cred, main="Maximum clade credibility tree")
 #'
 #' # compute clade credibility for trees given a prop.part object
@@ -406,6 +408,29 @@ maxCladeCred <- function(x, tree = TRUE, part = NULL, rooted = TRUE) {
 #' @rdname maxCladeCred
 #' @export
 mcc <- maxCladeCred
+
+
+#' @rdname maxCladeCred
+#' @export
+allCompat <- function(x) {
+  l <- length(x)
+  spl <- prop.part(x)
+  spl <- postprocess.prop.part(spl)
+  spl <- as.splits(spl)
+  w <- attr(spl, "weights")
+  ind <- (w / l) > 0.5
+  res <- spl[ind]
+  spl <- spl[!ind]
+  w <- attr(spl, "weights")
+  ord <- order(w, decreasing = TRUE)
+  for(i in ord){
+    if(all(compatible2(res, spl[i]) == 0)) res <- c(res, spl[i])
+  }
+  tree <- as.phylo(res)
+  tree$edge.length <- NULL
+  tree
+}
+
 
 
 cladeMatrix <- function(x, rooted = FALSE) {

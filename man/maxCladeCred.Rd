@@ -3,11 +3,14 @@
 \name{maxCladeCred}
 \alias{maxCladeCred}
 \alias{mcc}
+\alias{allCompat}
 \title{Maximum clade credibility tree}
 \usage{
 maxCladeCred(x, tree = TRUE, part = NULL, rooted = TRUE)
 
 mcc(x, tree = TRUE, part = NULL, rooted = TRUE)
+
+allCompat(x)
 }
 \arguments{
 \item{x}{\code{x} is an object of class \code{multiPhylo} or \code{phylo}}
@@ -45,10 +48,12 @@ bs <- bootstrap.phyDat(Laurasiatherian,
 
 strict_consensus <- consensus(bs)
 majority_consensus <- consensus(bs, p=.5)
+all_compat <- allCompat(bs)
 max_clade_cred <- maxCladeCred(bs)
-par(mfrow = c(1,3), mar = c(1,4,1,1))
+par(mfrow = c(2,2), mar = c(1,4,1,1))
 plot(strict_consensus, main="Strict consensus tree")
 plot(majority_consensus, main="Majority consensus tree")
+plot(all_compat, main="Majority consensus tree with compatible splits")
 plot(max_clade_cred, main="Maximum clade credibility tree")
 
 # compute clade credibility for trees given a prop.part object
