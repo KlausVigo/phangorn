@@ -855,7 +855,7 @@ cbind.phyDat <- function(..., gaps="-", compress=TRUE){
         weight <- aggregate(weight, by=list(ddd$index), FUN=sum)$x
     }
     if(any(sapply(x, function(x)is.null(attr(x, "index"))))) add.index <- FALSE
-    if(add.index){
+    if(add.index  & compress){
         for(i in 1:n){
             tmp2 <- attr(x[[i]], "index")
             if(!is.null(tmp2)){
