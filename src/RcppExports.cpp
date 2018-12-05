@@ -64,6 +64,28 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// allSiblingsCPP
+List allSiblingsCPP(const IntegerMatrix edge);
+RcppExport SEXP _phangorn_allSiblingsCPP(SEXP edgeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const IntegerMatrix >::type edge(edgeSEXP);
+    rcpp_result_gen = Rcpp::wrap(allSiblingsCPP(edge));
+    return rcpp_result_gen;
+END_RCPP
+}
+// preorder
+IntegerMatrix preorder(const IntegerMatrix edge);
+RcppExport SEXP _phangorn_preorder(SEXP edgeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const IntegerMatrix >::type edge(edgeSEXP);
+    rcpp_result_gen = Rcpp::wrap(preorder(edge));
+    return rcpp_result_gen;
+END_RCPP
+}
 // p2dna
 IntegerVector p2dna(NumericMatrix xx, double eps);
 RcppExport SEXP _phangorn_p2dna(SEXP xxSEXP, SEXP epsSEXP) {
