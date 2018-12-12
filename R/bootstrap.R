@@ -413,6 +413,7 @@ mcc <- maxCladeCred
 #' @rdname maxCladeCred
 #' @export
 allCompat <- function(x) {
+  x <- unroot(x)
   l <- length(x)
   spl <- prop.part(x)
   spl <- postprocess.prop.part(spl)
