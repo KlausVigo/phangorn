@@ -44,9 +44,9 @@ sankoff.quartet <- function(dat, cost, p, l, weight) {
 #' @param minit minimum number of iterations in the ratchet.
 #' @param k number of rounds ratchet is stopped, when there is no improvement.
 #' @param all return all equally good trees or just one of them.
-#' @param perturbation whether to use "ratchet", "random.addition" or
+#' @param perturbation whether to use "ratchet", "random_addition" or
 #' "stochastic" (nni) for shuffling the tree.
-#' @param search_history record the trees visited during the search.
+#' @param return return only best tree(s) or trees from each run.
 #' @param ... Further arguments passed to or from other methods (e.g.
 #' model="sankoff" and cost matrix).
 #' @return \code{parsimony} returns the maximum parsimony score (pscore).
@@ -495,8 +495,17 @@ optim.parsimony <- function(tree, data, method = "fitch", cost = NULL,
 # perturbation="ratchet", "stochastic"
 pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
                      minit = 10, k = 10, trace = 1, all = FALSE,
-                      rearrangements = "SPR", perturbation = "ratchet",
-                     search_history = c(FALSE, FALSE), ...) {
+                     rearrangements = "SPR", perturbation = "ratchet",
+                     return="single", ...) {
+  search_history = c(FALSE, FALSE)
+  if (return=="single") all=FALSE
+  if(return=="best") all=TRUE
+  if(return=="all" | return=="history"){
+    all=TRUE
+    search_history = c(TRUE, TRUE)
+  }
+  # c("single", "best", "all", "history") needs better names
+
   eps <- 1e-08
   # if(method=="fitch" && (is.null(attr(data, "compressed")) ||
   #    attr(data, "compressed") == FALSE))
@@ -510,11 +519,10 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
     k <- 2
     trees <- trees[-1]
     while (length(trees) > 0) {
-      # test and replace
-      # change RF to do this faster
-      # RF.dist(res, trees) class(tree) = "multiPhylo"
-      # simpler is rf2 = RF.dist(res, trees, FALSE)
-      rf <- sapply(trees, RF.dist, res, FALSE)
+#      rf <- sapply(trees, RF.dist, res, FALSE)
+      class(trees) = "multiPhylo"
+      rf <- RF.dist(res, trees, FALSE)
+# end new code
       if (any(rf == 0)) trees <- trees[-which(rf == 0)]
       if (length(trees) > 0) {
         res <- trees[[1]]
@@ -527,28 +535,43 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
   }
   if (search_history[1]) start_trees <- list()
   if (search_history[2]) search_trees <- list()
-  if (is.null(start))
-    start <- optim.parsimony(nj(dist.hamming(data)), data, trace = trace,
-      method = method, rearrangements = rearrangements, ...)
-  tree <- start
-  data <- subset(data, tree$tip.label)
-  attr(tree, "pscore") <- parsimony(tree, data, method = method, ...)
-  mp <- attr(tree, "pscore")
-  if (trace >= 0)
-    print(paste("Best pscore so far:", attr(tree, "pscore")))
-
+  tree <- NULL
+  mp <- Inf
+  if (perturbation != "random_addition"){
+    if(is.null(start)) start <- optim.parsimony(nj(dist.hamming(data)), data,
+                                        trace = trace, method = method,
+                                        rearrangements = rearrangements, ...)
+    tree <- start
+    data <- subset(data, tree$tip.label)
+    attr(tree, "pscore") <- parsimony(tree, data, method = method, ...)
+    mp <- attr(tree, "pscore")
+    if (trace >= 0)
+      print(paste("Best pscore so far:", attr(tree, "pscore")))
+  }
   FUN <- function(data, tree, method, rearrangements, ...)
     optim.parsimony(tree, data = data, method = method,
       rearrangements = rearrangements, ...)
   result <- list()
   result[[1]] <- tree
   on.exit({
-    if (!all) return(tree)
-    if (length(result) == 1) return(result[[1]])
-    class(result) <- "multiPhylo"
-    if (any(search_history)) result <- list(best = result,
-        start_trees = start_trees, search_trees = search_trees)
-    result
+    if (!all) result <- tree
+    else class(result) <- "multiPhylo"
+    if (length(result) == 1) result <- result[[1]]
+    if(return=="all"){
+      all=FALSE
+      class(search_trees) <- "multiPhylo"
+      search_trees <- .compressTipLabel(search_trees)
+      result <- search_trees
+    }
+    if (return=="history"){
+      class(start_trees) <- "multiPhylo"
+      class(search_trees) <- "multiPhylo"
+      start_trees <- .compressTipLabel(start_trees)
+      search_trees <- .compressTipLabel(search_trees)
+      result <- list(best = result,
+                     start_trees = start_trees, search_trees = search_trees)
+    }
+    return(result)
   })
   kmax <- 1
   nTips <- length(tree$tip.label)
