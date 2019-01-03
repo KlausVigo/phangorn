@@ -16,7 +16,7 @@ optim.pml(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   optRate = FALSE, optRooted = FALSE, control = pml.control(epsilon =
   1e-08, maxit = 10, trace = 1L), model = NULL,
   rearrangement = ifelse(optNni, "NNI", "none"), subs = NULL,
-  ratchet.par = list(iter = 20L, maxit = 100L, prop = 1/3), ...)
+  ratchet.par = list(iter = 20L, maxit = 100L, prop = 1/2), ...)
 }
 \arguments{
 \item{epsilon}{Stop criterion for optimisation (see details).}
