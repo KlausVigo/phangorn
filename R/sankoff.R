@@ -66,17 +66,3 @@ fit.sankoffNew <- function(tree, data, cost, returnData = c("pscore", "site",
   result
 }
 
-
-pnodesNew <- function(tree, data, cost) {
-  if (is.null(attr(tree, "order")) || attr(tree, "order") ==
-    "cladewise")
-    tree <- reorder(tree, "postorder")
-  node <- tree$edge[, 1]
-  edge <- tree$edge[, 2]
-  nr <- nrow(data[[1]])
-  nc <- ncol(data[[1]])
-  node <- as.integer(node - 1)
-  edge <- as.integer(edge - 1)
-  .Call("pNodes", data, as.numeric(cost), as.integer(nr), as.integer(nc),
-    node, edge, PACKAGE = "phangorn")
-}
