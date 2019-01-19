@@ -25,4 +25,14 @@ test_that("edge length optimisation works properly", {
 #    fit_selection <- codonTest(tree, dat_4, control=pml.control(trace=0))
 })
 
+library(ape)
+data(woodmouse)
+dat_codon <- dna2codon(as.phyDat(woodmouse))
+tree <- NJ(dist.ml(dat_codon))
 
+test_that("edge length optimisation works properly", {
+  skip_on_cran()
+    fit_codon <- codonTest(tree, dat_codon, model = c("M0", "M1a"),
+                       control = pml.control(maxit = 20))
+    expect_s3_class(fit_codon, "codonTest")
+})
