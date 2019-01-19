@@ -181,34 +181,6 @@ IntegerMatrix preorder(const IntegerMatrix edge){
   return out;
 }
 
-// phangorn:::preorder(tree$edge)
-/*
-void fnindex(int *nodes, int* edges, int *nNodes,  int *start, int *end,
-             int *root, int *res1, int *res2, int *pc){
-  int i, j, p, k, ni, nj, m;
-  k=0L;
-  for(i=0; i<*nNodes; i++){
-    m = *nNodes-(1L+i);
-    p = nodes[m];
-    ni = edges[m];
-    for(j=start[p]; j<=end[p]; j++){
-      nj = edges[j];
-      if(ni!=nj){
-        res1[k] = nj;
-        res2[k] = ni;
-        pc[k] = 0L;
-        k++;
-      }
-    }
-    if(p!=*root){
-      res1[k] = p;
-      res2[k] = ni;
-      pc[k] = 1L;
-      k++;
-    }
-  }
-}
-*/
 
 // [[Rcpp::export]]
 IntegerVector p2dna(NumericMatrix xx, double eps=0.999){
@@ -287,4 +259,17 @@ NumericVector cophenetic_cpp(IntegerMatrix edge, NumericVector edge_length,
     return dm;
 }
 
+
+// For phytools
+// [[Rcpp::export]]
+IntegerVector threshStateC(NumericVector x, NumericVector thresholds) {
+  int n = x.size(), m = thresholds.size()-1L, j=0L;
+  IntegerVector out(n);
+  for (int i = 0; i < n; i++) {
+    j=0L;
+    while(x[i]>thresholds[j] && j<m ) j++;
+    out[i] = j+1L;
+  }
+  return out;
+}
 

@@ -5,18 +5,6 @@
 
 using namespace Rcpp;
 
-// threshStateC
-IntegerVector threshStateC(NumericVector x, NumericVector thresholds);
-RcppExport SEXP _phangorn_threshStateC(SEXP xSEXP, SEXP thresholdsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type thresholds(thresholdsSEXP);
-    rcpp_result_gen = Rcpp::wrap(threshStateC(x, thresholds));
-    return rcpp_result_gen;
-END_RCPP
-}
 // allDescCPP
 List allDescCPP(IntegerMatrix orig, int nTips);
 RcppExport SEXP _phangorn_allDescCPP(SEXP origSEXP, SEXP nTipsSEXP) {
@@ -122,6 +110,18 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type nTips(nTipsSEXP);
     Rcpp::traits::input_parameter< int >::type nNode(nNodeSEXP);
     rcpp_result_gen = Rcpp::wrap(cophenetic_cpp(edge, edge_length, nTips, nNode));
+    return rcpp_result_gen;
+END_RCPP
+}
+// threshStateC
+IntegerVector threshStateC(NumericVector x, NumericVector thresholds);
+RcppExport SEXP _phangorn_threshStateC(SEXP xSEXP, SEXP thresholdsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type thresholds(thresholdsSEXP);
+    rcpp_result_gen = Rcpp::wrap(threshStateC(x, thresholds));
     return rcpp_result_gen;
 END_RCPP
 }

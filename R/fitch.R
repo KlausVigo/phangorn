@@ -129,7 +129,7 @@ random.addition <- function(data, method = "fitch") {
 }
 
 
-fast.fitch <- function(tree,  nr, ps = TRUE) {
+fast.fitch <- function(tree, nr, ps = TRUE) {
   node <- tree$edge[, 1]
   edge <- tree$edge[, 2]
   m <- max(tree$edge)
@@ -279,7 +279,7 @@ indexNNI2 <- function(tree) {
 # nr statt data uebergeben, fitchQuartet ohne weight
 # weniger Speicher 2 Zeilen weinger
 fitch.nni <- function(tree, data, ...) {
-  nTips <- as.integer(length(tree$tip.label)) # auskommentieren?
+  nTips <- as.integer(length(tree$tip.label))
   INDEX <- indexNNI2(tree)
   nr <- attr(data, "nr")
   weight <- attr(data, "weight")
@@ -466,7 +466,7 @@ getOrder <- function(x) {
       score <- .Call("FITCHTRIP3", as.integer(remaining[j]),
         as.integer(nr), as.integer(edge), as.double(score0),
         as.double(Inf))
-      #            score = score0[edge] + psc
+      # score = score0[edge] + psc
       res[j] <- min(score)
       nt[j] <- which.min(score)
     }
