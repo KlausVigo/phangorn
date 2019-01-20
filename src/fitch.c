@@ -313,37 +313,6 @@ void ACCTRAN3(int *dat, int *nr, double *pars, int *node, int *edge, int *nl,
     }
 }
 
-/*
-void fitchNNN(int d1, int d2){
-    int tmp;
-    tmp = d1 & d2;
-    if(tmp) d1 = tmp;
-    else d1 = d1 | d2;
-}
-
-
-void fitchTripletNew(int *res, int *dat1, int *dat2, int *dat3, int *nr)
-{
-    int k, v1, v2, v3;
-
-    for(k = 0; k < (*nr); k++){
-    v1 = dat1[k];
-    fitchNNN(v1, dat2[k]);
-    fitchNNN(v1, dat3[k]);
-
-    v2 = dat1[k];
-    fitchNNN(v2, dat3[k]);
-    fitchNNN(v2, dat2[k]);
-
-    v3 = dat2[k];
-    fitchNNN(v3, dat3[k]);
-    fitchNNN(v3, dat1[k]);
-
-    res[k] = v1 & v2; // &v3[k];
-    res[k] = res[k] & v3;
-    }
-}
-*/
 
 void fitchN(int *dat1, int *dat2, int *nr){
     int k;
@@ -382,70 +351,6 @@ void fitchTriplet(int *res, int *dat1, int *dat2, int *dat3, int *nr)
     for(k = 0; k < (*nr); k++)res[k] = res[k] & v3[k];
 }
 
-/*
-void prepRooted(int *res, int *nr, int *kids){ //int *data1,
-    fitchTriplet(res, &data1[*nr * (kids[0]-1L)], &data1[*nr * (kids[1]-1L)],
-        &data1[*nr * (kids[2]-1L)], nr);
-}
-
-
-void C_MPR(int *res, int *nr, int *parent, int *kids, int *nl) {
-    int p, k1, k2;
-    int i = *nl -1;
-    while (i > 0L) {
-        p = parent[i] - 1L;
-        k1 = kids[i] - 1L;
-        k2 = kids[i-1L] - 1L;
-        fitchTriplet(&res[*nr * p], &data1[*nr* (k1)], &data1[*nr* (k2) ],
-                     &data2[*nr * p], nr);
-        i -= 2L;
-    }
-}
-
-
-SEXP C_MPR2(SEXP nrx, SEXP PARENT, SEXP KIDS, SEXP nlx, SEXP M) {
-    int nr=INTEGER(nrx)[0], nl=INTEGER(nlx)[0], m=INTEGER(M)[0], *res;
-    int *parent = INTEGER(PARENT), *kids=INTEGER(KIDS);
-    int j, p, k1, k2;
-    int i = nl -1;
-    SEXP RES;
-    PROTECT(RES = allocVector(INTSXP, nr * m));
-    res = INTEGER(RES);
-    for(j = 0; j < (nr * m); j++) res[j]=0;
-    while (i > 0L) {
-        p = parent[i] - 1L;
-        k1 = kids[i] - 1L;
-        k2 = kids[i-1L] - 1L;
-        fitchTripletNew(&res[nr * p], &data1[nr * k1], &data1[nr * k2],
-                        &data2[nr * p], &nr);
-        i -= 2L;
-    }
-    UNPROTECT(1);
-    return(RES);
-}
-
-
-void fitchNACC2(int *root, int *dat, int *nr, double *pars, int *result,
-                double *weight, double *pars1){
-    int k;
-    int tmp;
-    for(k = 0; k < (*nr); k++){
-//       result[k] = 0L;
-       tmp = root[k] & dat[k];
-       if(tmp==0L) {
-             pars[0] += weight[k];
-             pars1[k] += weight[k];
-             }
-       if(tmp >0){
-           if(tmp < root[k]){
-              pars[0] += .5*weight[k];
-              pars1[k] += .5*weight[k];
-              result[k] += 1L;
-           }
-       }
-    }
-}
-*/
 
 void fitchTripletACC4(int *root, int *dat1, int *dat2, int *dat3, int *nr,
     double *p1, double *p2, double *p3, double *weight, double *pars1, int *v1)
@@ -646,9 +551,7 @@ SEXP FNALL5(SEXP nrx, SEXP node, SEXP edge, SEXP l, SEXP mx, SEXP my, SEXP root)
         pvtmp2[i] = 0.0;
     }
     fnhelp(INTEGER(node), INTEGER(edge),  n, &m, INTEGER(root), edge2, node2, pc);
-//    fitch8(data1, nr, pars, INTEGER(node), INTEGER(edge), INTEGER(l), weight, pvtmp, &pscore);
     fitch9(data1, nr, INTEGER(node), INTEGER(edge), INTEGER(l)[0], weight, pvtmp, &pscore);
-//    FN3(data1, data2, nr, pars, node2, edge2, INTEGER(my), pc, weight, pvtmp, pvtmp2);
     FN4(data1, data2, nr, node2, edge2, INTEGER(my)[0], pc, weight, pvtmp, pvtmp2); // pars,
     for(i=0; i<m; i++) pvtmp[i] += pvtmp2[i];
 // return(pvtmp[edge])??

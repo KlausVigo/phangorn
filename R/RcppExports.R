@@ -21,14 +21,6 @@ allChildrenCPP <- function(orig) {
     .Call(`_phangorn_allChildrenCPP`, orig)
 }
 
-allSiblingsCPP <- function(edge) {
-    .Call(`_phangorn_allSiblingsCPP`, edge)
-}
-
-preorder <- function(edge) {
-    .Call(`_phangorn_preorder`, edge)
-}
-
 p2dna <- function(xx, eps = 0.999) {
     .Call(`_phangorn_p2dna`, xx, eps)
 }

@@ -78,8 +78,8 @@ extern SEXP sankoffMPR(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP sankoffQuartet(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _phangorn_allDescCPP(SEXP, SEXP);
 extern SEXP _phangorn_allChildrenCPP(SEXP);
-extern SEXP _phangorn_allSiblingsCPP(SEXP);
-extern SEXP _phangorn_preorder(SEXP);
+//extern SEXP _phangorn_allSiblingsCPP(SEXP);
+//extern SEXP _phangorn_preorder(SEXP);
 extern SEXP _phangorn_p2dna(SEXP, SEXP);
 extern SEXP _phangorn_threshStateC(SEXP, SEXP);
 extern SEXP _phangorn_node_height_cpp(SEXP, SEXP, SEXP);
@@ -147,8 +147,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"sankoffQuartet",     (DL_FUNC) &sankoffQuartet,      4},
     {"_phangorn_allDescCPP",       (DL_FUNC) &_phangorn_allDescCPP,        2},
     {"_phangorn_allChildrenCPP",   (DL_FUNC) &_phangorn_allChildrenCPP,    1},
-    {"_phangorn_allSiblingsCPP",   (DL_FUNC) &_phangorn_allSiblingsCPP,    1},
-    {"_phangorn_preorder",         (DL_FUNC) &_phangorn_preorder,          1},
+//    {"_phangorn_allSiblingsCPP",   (DL_FUNC) &_phangorn_allSiblingsCPP,    1},
+//    {"_phangorn_preorder",         (DL_FUNC) &_phangorn_preorder,          1},
     {"_phangorn_p2dna",     (DL_FUNC) &_phangorn_p2dna,   2},
     {"_phangorn_threshStateC",     (DL_FUNC) &_phangorn_threshStateC, 2},
     {"_phangorn_node_height_cpp",     (DL_FUNC) &_phangorn_node_height_cpp, 3},
