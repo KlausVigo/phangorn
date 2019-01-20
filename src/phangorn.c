@@ -1,9 +1,9 @@
-/* 
+/*
  * phangorn.c
  *
  * (c) 2008-2017  Klaus Schliep (klaus.schliep@gmail.com)
- * 
- * 
+ *
+ *
  * This code may be distributed under the GNU GPL
  *
  */
@@ -11,9 +11,9 @@
 # define USE_RINTERNALS
 
 #include <Rmath.h>
-#include <math.h>
-#include <R.h> 
-#include <R_ext/Lapack.h>
+// #include <math.h>
+#include <R.h>
+// #include <R_ext/Lapack.h>
 #include <Rinternals.h>
 
 
@@ -30,7 +30,7 @@
 #define LINDEX3(i, k) (i-*nTips-1L) * (*nr* *nc) + k * *nTips * (*nr * *nc)
 
 // index sankoff
-#define SINDEX(i) i * (nr*nc) 
+#define SINDEX(i) i * (nr*nc)
 
 
 void countCycle(int *M, int *l, int *m, int *res){
@@ -40,7 +40,7 @@ void countCycle(int *M, int *l, int *m, int *res){
         tmp = 0;
         if(M[i] != M[i + (*m -1) * *l])tmp++;
         for (j=1; j<*m; j++) {
-            if(M[i + (j-1)* *l] != M[i + j * *l])tmp++;            
+            if(M[i + (j-1)* *l] != M[i + j * *l])tmp++;
         }
         if(tmp>2L)res[0]+=tmp;
     }
@@ -53,7 +53,7 @@ void countCycle2(int *M, int *l, int *m, int *res){
         tmp = 0L;
         if(M[i] != M[i + (*m -1) * *l])tmp=1L;
         for (j=1; j<*m; j++) {
-            if(M[i + (j-1L)* *l] != M[i + j * *l])tmp++;            
+            if(M[i + (j-1L)* *l] != M[i + j * *l])tmp++;
         }
         res[i]=tmp;
     }
@@ -70,7 +70,7 @@ void nodeH(int *edge, int *node, double *el, int *l,  double *res){
 
 // C++
 SEXP rowMax(SEXP sdat, SEXP sn, SEXP sk){
-    int i, h, n=INTEGER(sn)[0], k=INTEGER(sk)[0];  
+    int i, h, n=INTEGER(sn)[0], k=INTEGER(sk)[0];
     double x, *res, *dat;
     SEXP result;
     PROTECT(result = allocVector(REALSXP, n));
@@ -80,41 +80,41 @@ SEXP rowMax(SEXP sdat, SEXP sn, SEXP sk){
     for(i = 0; i < n; i++){
         x = dat[i];
         for(h = 1; h< k; h++) {if(dat[i + h*n] > x) x=dat[i + h*n];}
-        res[i] = x;               
+        res[i] = x;
         }
     UNPROTECT(2);
-    return(result);        
+    return(result);
 }
-    
+
 /*
 static R_INLINE void getP00(double *eva, double *ev, double *evi, int m, double el, double w, double *result){
     int i, j, h;
     double tmp, res;
     for(i = 0; i < m; i++){
         tmp = exp(eva[i] * w * el);
-        for(j=0; j<m; j++) evi[i + j*m] *= tmp;   
-    }    
-    for(i = 0; i < m; i++){    
-        for(j = 0; j < m; j++){
-            res = 0.0;    
-            for(h = 0; h < m; h++) res += ev[i + h*m] * evi[h + j*m];
-            result[i+j*m] = res;    
-        }
+        for(j=0; j<m; j++) evi[i + j*m] *= tmp;
     }
+    for(i = 0; i < m; i++){
+        for(j = 0; j < m; j++){
+            res = 0.0;
+            for(h = 0; h < m; h++) res += ev[i + h*m] * evi[h + j*m];
+            result[i+j*m] = res;
+        }
+    }https://de.wikipedia.org/wiki/R%C3%BCdiger_Schulzki
 }
 
 
-// in getPM2 
+// in getPM2
 static R_INLINE void getPP(double *eva, double *ev, double *evi, int m, double el, double w, double *result){
     int i, j, h;
 //    double tmp[m];
     double *tmp;
     tmp = malloc(m * sizeof(double));
     for(i = 0; i < m; i++) tmp[i] = exp(eva[i] * w * el);
-    for(i = 0; i < m; i++){    
+    for(i = 0; i < m; i++){
         for(j = 0; j < m; j++){
             result[i+j*m] = 0;
-            for(h = 0; h < m; h++) result[i+j*m] += ev[i + h*m] * tmp[h] * evi[h + j*m];                
+            for(h = 0; h < m; h++) result[i+j*m] += ev[i + h*m] * tmp[h] * evi[h + j*m];
         }
     }
     free(tmp);
@@ -127,11 +127,11 @@ void getdP(double *eva, double *ev, double *evi, int m, double el, double w, dou
     double *tmp;
     tmp = (double *) malloc(m * sizeof(double));
     for(i = 0; i < m; i++) tmp[i] = (eva[i] * w  * el) * exp(eva[i] * w * el);
-    for(i = 0; i < m; i++){    
+    for(i = 0; i < m; i++){
         for(j = 0; j < m; j++){
-            res = 0.0;    
+            res = 0.0;
             for(h = 0; h < m; h++)    res += ev[i + h*m] * tmp[h] * evi[h + j*m];
-            result[i+j*m] = res;    
+            result[i+j*m] = res;
         }
     }
     free(tmp);
@@ -144,11 +144,11 @@ void getdP2(double *eva, double *ev, double *evi, int m, double el, double w, do
     double *tmp;
     tmp = (double *) malloc(m * sizeof(double));
     for(i = 0; i < m; i++) tmp[i] = (eva[i] * w) * exp(eva[i] * w * el);
-    for(i = 0; i < m; i++){    
+    for(i = 0; i < m; i++){
         for(j = 0; j < m; j++){
-            res = 0.0;    
+            res = 0.0;
             for(h = 0; h < m; h++)    res += ev[i + h*m] * tmp[h] * evi[h + j*m];
-            result[i+j*m] = res;    
+            result[i+j*m] = res;
         }
     }
     free(tmp);
@@ -157,15 +157,15 @@ void getdP2(double *eva, double *ev, double *evi, int m, double el, double w, do
 
 void getd2P(double *eva, double *ev, double *evi, int m, double el, double w, double *result){
     int i, j, h;
-    double res; //tmp[m], 
+    double res; //tmp[m],
     double *tmp;
     tmp = (double *) malloc(m * sizeof(double));
     for(i = 0; i < m; i++) tmp[i] = (eva[i] * w * el) * (eva[i] * w * el) * exp(eva[i] * w * el);
-    for(i = 0; i < m; i++){    
+    for(i = 0; i < m; i++){
         for(j = 0; j < m; j++){
-            res = 0.0;    
+            res = 0.0;
             for(h = 0; h < m; h++)    res += ev[i + h*m] * tmp[h] * evi[h + j*m];
-            result[i+j*m] = res;    
+            result[i+j*m] = res;
         }
     }
     free(tmp);
@@ -178,11 +178,11 @@ void getd2P2(double *eva, double *ev, double *evi, int m, double el, double w, d
     double *tmp;
     tmp = (double *) malloc(m * sizeof(double));
     for(i = 0; i < m; i++) tmp[i] = (eva[i] * w) * (eva[i] * w) * exp(eva[i] * w * el);
-    for(i = 0; i < m; i++){    
+    for(i = 0; i < m; i++){
         for(j = 0; j < m; j++){
-            res = 0.0;    
+            res = 0.0;
             for(h = 0; h < m; h++)    res += ev[i + h*m] * tmp[h] * evi[h + j*m];
-            result[i+j*m] = res;    
+            result[i+j*m] = res;
         }
     }
     free(tmp);
@@ -198,12 +198,12 @@ SEXP getPM2(SEXP eig, SEXP nc, SEXP el, SEXP w){
     SEXP P, RESULT;
     nel = length(el);
     nw = length(w);
-    if(!isNewList(eig)) error("'eig' must be a list");    
+    if(!isNewList(eig)) error("'eig' must be a list");
     eva = REAL(VECTOR_ELT(eig, 0));
     eve = REAL(VECTOR_ELT(eig, 1));
     evei = REAL(VECTOR_ELT(eig, 2));
-    PROTECT(RESULT = allocVector(VECSXP, nel*nw));    
-    for(j=0; j<nel; j++){ 
+    PROTECT(RESULT = allocVector(VECSXP, nel*nw));
+    for(j=0; j<nel; j++){
         for(i=0; i<nw; i++){
             PROTECT(P = allocMatrix(REALSXP, m, m));
             getPP(eva, eve, evei, m, edgelen[j], ws[i], REAL(P));
@@ -214,7 +214,7 @@ SEXP getPM2(SEXP eig, SEXP nc, SEXP el, SEXP w){
     }
     UNPROTECT(1);//RESULT
     return(RESULT);
-} 
+}
 */
 
 SEXP getdPM(SEXP eig, SEXP nc, SEXP el, SEXP w){
@@ -229,9 +229,9 @@ SEXP getdPM(SEXP eig, SEXP nc, SEXP el, SEXP w){
     eva = REAL(VECTOR_ELT(eig, 0));
     eve = REAL(VECTOR_ELT(eig, 1));
     evei = REAL(VECTOR_ELT(eig, 2));
-    PROTECT(RESULT = allocVector(VECSXP, nel*nw));    
+    PROTECT(RESULT = allocVector(VECSXP, nel*nw));
     double *p;
-    if(!isNewList(eig)) error("'dlist' must be a list");    
+    if(!isNewList(eig)) error("'dlist' must be a list");
     for(j=0; j<nel; j++){
         for(i=0; i<nw; i++){
             PROTECT(P = allocMatrix(REALSXP, m, m));
@@ -244,7 +244,7 @@ SEXP getdPM(SEXP eig, SEXP nc, SEXP el, SEXP w){
     }
     UNPROTECT(1);//RESULT
     return(RESULT);
-} 
+}
 
 
 SEXP getdPM2(SEXP eig, SEXP nc, SEXP el, SEXP w){
@@ -259,9 +259,9 @@ SEXP getdPM2(SEXP eig, SEXP nc, SEXP el, SEXP w){
     eva = REAL(VECTOR_ELT(eig, 0));
     eve = REAL(VECTOR_ELT(eig, 1));
     evei = REAL(VECTOR_ELT(eig, 2));
-    PROTECT(RESULT = allocVector(VECSXP, nel*nw));    
+    PROTECT(RESULT = allocVector(VECSXP, nel*nw));
     double *p;
-    if(!isNewList(eig)) error("'dlist' must be a list");    
+    if(!isNewList(eig)) error("'dlist' must be a list");
     for(j=0; j<nel; j++){
         for(i=0; i<nw; i++){
             PROTECT(P = allocMatrix(REALSXP, m, m));
@@ -274,7 +274,7 @@ SEXP getdPM2(SEXP eig, SEXP nc, SEXP el, SEXP w){
     }
     UNPROTECT(1); //RESULT
     return(RESULT);
-} 
+}
 
 
 SEXP getd2PM(SEXP eig, SEXP nc, SEXP el, SEXP w){
@@ -289,9 +289,9 @@ SEXP getd2PM(SEXP eig, SEXP nc, SEXP el, SEXP w){
     eva = REAL(VECTOR_ELT(eig, 0));
     eve = REAL(VECTOR_ELT(eig, 1));
     evei = REAL(VECTOR_ELT(eig, 2));
-    PROTECT(RESULT = allocVector(VECSXP, nel*nw));    
+    PROTECT(RESULT = allocVector(VECSXP, nel*nw));
     double *p;
-    if(!isNewList(eig)) error("'dlist' must be a list");    
+    if(!isNewList(eig)) error("'dlist' must be a list");
     for(j=0; j<nel; j++){
         for(i=0; i<nw; i++){
             PROTECT(P = allocMatrix(REALSXP, m, m));
@@ -304,7 +304,7 @@ SEXP getd2PM(SEXP eig, SEXP nc, SEXP el, SEXP w){
     }
     UNPROTECT(1); //RESULT
     return(RESULT);
-} 
+}
 
 
 SEXP getd2PM2(SEXP eig, SEXP nc, SEXP el, SEXP w){
@@ -319,9 +319,9 @@ SEXP getd2PM2(SEXP eig, SEXP nc, SEXP el, SEXP w){
     eva = REAL(VECTOR_ELT(eig, 0));
     eve = REAL(VECTOR_ELT(eig, 1));
     evei = REAL(VECTOR_ELT(eig, 2));
-    PROTECT(RESULT = allocVector(VECSXP, nel*nw));    
+    PROTECT(RESULT = allocVector(VECSXP, nel*nw));
     double *p;
-    if(!isNewList(eig)) error("'dlist' must be a list");    
+    if(!isNewList(eig)) error("'dlist' must be a list");
     for(j=0; j<nel; j++){
         for(i=0; i<nw; i++){
             PROTECT(P = allocMatrix(REALSXP, m, m));
@@ -334,7 +334,7 @@ SEXP getd2PM2(SEXP eig, SEXP nc, SEXP el, SEXP w){
     }
     UNPROTECT(1); //RESULT
     return(RESULT);
-} 
+}
 
 
 /*
@@ -346,17 +346,17 @@ static R_INLINE void emult(double *x, double *y, int n){
 
 void tabulate(int *x, int *n, int *nbin, int *ans){
     int i, tmp;
-    for (i=0; i < *nbin; i++) ans[i]=0L; 
+    for (i=0; i < *nbin; i++) ans[i]=0L;
     for (i=0; i < *n; i++) {
         tmp = x[i];
-        if( (tmp>0) & (tmp<(*nbin+1L)) )   
+        if( (tmp>0) & (tmp<(*nbin+1L)) )
         ans[tmp-1L] ++;
     }
 }
 
 
-void C_reorder(int *from, int *to, int *n, int *sumNode,  int *neworder, int *root){ 
-    int i, j, sum=0, k, Nnode, ind, *ord, *csum, *tips, *stack, z=0;  // l, 
+void C_reorder(int *from, int *to, int *n, int *sumNode,  int *neworder, int *root){
+    int i, j, sum=0, k, Nnode, ind, *ord, *csum, *tips, *stack, z=0;  // l,
     double *parent;
     int m=sumNode[0];
     parent = (double *) R_alloc((*n), sizeof(double));
@@ -365,36 +365,36 @@ void C_reorder(int *from, int *to, int *n, int *sumNode,  int *neworder, int *ro
     csum = (int *) R_alloc( (m+1), sizeof(int));
     stack = (int *) R_alloc(m, sizeof(int));
     for(j=0;j<(*n);j++) parent[j] = (double)from[j];
-   
+
     for(j=0;j<(*n);j++) ord[j] = j;
     for(j=0;j<m;j++) tips[j] = 0;
-        
+
     rsort_with_index(parent, ord, *n);
     tabulate(from, n, sumNode, tips);
     csum[0]=0;
     for(i=0;i<(*sumNode);i++){
-        sum+=tips[i];                 
-        csum[i+1] = sum;                        
-    }      
+        sum+=tips[i];
+        csum[i+1] = sum;
+    }
     k = (*n)-1;
     Nnode = 0;
     stack[0] = *root;
-    
+
     while(z > -1){
-        j=stack[z];          
-        if(tips[j]>0){   
+        j=stack[z];
+        if(tips[j]>0){
             for(i=csum[j];i<csum[j+1];i++){
-                ind = ord[i];                     
-                neworder[k] = ind + 1;        
+                ind = ord[i];
+                neworder[k] = ind + 1;
                 stack[z] = to[ind]-1;
                 k -=1;
-                z++;                            
-            }         
-            Nnode += 1; 
+                z++;
             }
-        z--;       
-    }                
-    root[0]=Nnode;     
+            Nnode += 1;
+            }
+        z--;
+    }
+    root[0]=Nnode;
 }
 
 

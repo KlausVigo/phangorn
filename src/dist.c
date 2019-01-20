@@ -10,12 +10,11 @@
 
 # define USE_RINTERNALS
 
-#include <Rmath.h>
-#include <math.h>
 #include <R.h>
-#include <R_ext/Lapack.h>
+// #include <R_ext/Lapack.h>
 #include <Rinternals.h>
-// #include "dist.h"
+#include <Rmath.h>
+//#include <math.h>
 
 
 // off-diagonal

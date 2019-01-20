@@ -185,3 +185,16 @@ NumericVector cophenetic_cpp(IntegerMatrix edge, NumericVector edge_length,
 }
 
 
+// For phytools
+// [[Rcpp::export]]
+IntegerVector threshStateC(NumericVector x, NumericVector thresholds) {
+  int n = x.size(), m = thresholds.size()-1L, j=0L;
+  IntegerVector out(n);
+  for (int i = 0; i < n; i++) {
+    j=0L;
+    while(x[i]>thresholds[j] && j<m ) j++;
+    out[i] = j+1L;
+  }
+  return out;
+}
+

@@ -1,10 +1,9 @@
 #define USE_RINTERNALS
 
-#include <Rmath.h>
-#include <math.h>
 #include <R.h>
 #include <Rinternals.h>
-
+#include <Rmath.h>
+// #include <math.h>
 
 
 // use R_len_t stat int, e.g. nr
