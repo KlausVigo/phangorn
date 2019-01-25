@@ -48,6 +48,22 @@ reroot2 <- function(tree, node) {
   reorderPruning(tree)
 }
 
+# needs some work
+reroot3 <- function (tree, node) {
+  if (node == getRoot(tree))
+    return(tree)
+  anc <- Ancestors(tree, node, "all")
+  l <- length(anc)
+  ind <- match(c(node, anc[-l]), tree$edge[, 2])
+  tree$edge[ind, c(1, 2)] <- tree$edge[ind, c(2, 1)]
+  #reorderPruning(tree)
+  nb.tip <- Ntip(tree)
+  neworder <- reorderRcpp(tree$edge, as.integer(nb.tip), as.integer(node), 2L)
+  tree$edge.length <- tree$edge.length[neworder]
+  attr(tree, "order") <- "postorder"
+  tree
+}
+
 
 changeEdge <- function(tree, swap, edge = NULL, edge.length = NULL) {
   attr(tree, "order") <- NULL
