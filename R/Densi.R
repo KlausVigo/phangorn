@@ -139,7 +139,7 @@ densiTree <- function(x, type = "cladogram", alpha = 1 / length(x),
     consensus$edge.length <- rep(1.0, nrow(consensus$edge))
   }
   if (is.null(consensus)) {
-    consensus <- tryCatch(consensus(x, p = .5),
+    consensus <- tryCatch(ape::consensus(x, p = .5),
                           error = function(e) unroot(midpoint(superTree(x))))
   }
   if (inherits(consensus, "multiPhylo")) consensus <- consensus[[1]]
