@@ -248,8 +248,8 @@ pruneTree <- function(tree, ..., FUN = ">=") {
 # pos statt i
 dropTip <- function(x, i, check.binary = FALSE, check.root = TRUE) {
   edge <- x$edge
-  root <- getRoot(x)
-  ch <- which(edge[, 2] == i)
+  root <- edge[nrow(edge), 1] #getRoot(x)
+  ch <- match(i, edge[,2]) #which(edge[, 2] == i)
   pa <- edge[ch, 1]
   edge <- edge[-ch, ]
   ind <- which(edge[, 1] == pa)
@@ -272,7 +272,7 @@ dropTip <- function(x, i, check.binary = FALSE, check.root = TRUE) {
     # todo handle unrooted trees
   }
   else {
-    nind <- which(edge[, 2] == pa)
+    nind <- match(pa, edge[,2]) #which(edge[, 2] == pa)
     # normal binary case
     if (length(ind) == 1) {
       edge[nind, 2] <- edge[ind, 2]
@@ -312,7 +312,7 @@ dropNode <- function(x, i, check.binary = FALSE, check.root = TRUE,
                      all.ch = NULL) {
   edge <- x$edge
   root <- getRoot(x)
-  ch <- which(edge[, 2] == i)
+  ch <- match(i, edge[, 2]) # which(edge[, 2] == i)
 
   nTips <- length(x$tip.label)
   pa <- edge[ch, 1]
@@ -345,7 +345,7 @@ dropNode <- function(x, i, check.binary = FALSE, check.root = TRUE,
     # todo handle unrooted trees
   }
   else {
-    nind <- which(edge[, 2] == pa)
+    nind <- match(pa, edge[,2]) # which(edge[, 2] == pa)
     # normal binary case
     if (length(ind) == 1) {
       edge[nind, 2] <- edge[ind, 2]
