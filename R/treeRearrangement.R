@@ -301,19 +301,22 @@ kSPR <- function(tree, k = NULL) {
   if (m == 0) stop("k is chosen too big")
   ind <- index[sample(m, 1), ]
   s1 <- sample(c(1, 2), 1)
-  if (s1 == 1) res <- (oneOf4(tree, ind[1], ind[2], sample(c(1, 2), 1),
-      sample(c(1, 2), 1)))
-  if (s1 == 2) res <- (oneOf4(tree, ind[2], ind[1], sample(c(1, 2), 1),
-      sample(c(1, 2), 1)))
-  res <- reroot2(res, root)
-  reorderPruning(res)
+  if (s1 == 1) res <- oneOf4(tree, ind[1], ind[2], sample(c(1, 2), 1),
+      sample(c(1, 2), 1), root)
+  if (s1 == 2) res <- oneOf4(tree, ind[2], ind[1], sample(c(1, 2), 1),
+      sample(c(1, 2), 1), root)
+#  res <- reroot2(res, root)
+#  reorderPruning(res)
+#  reroot(res, root, FALSE)
+  res
 }
 
 
-oneOf4 <- function(tree, ind1, ind2, from = 1, to = 1) {
+oneOf4 <- function(tree, ind1, ind2, from = 1, to = 1, root) {
   if (!is.binary(tree))
     stop("Sorry, trees must be binary!")
-  tree <- reroot2(tree, ind2)
+#  tree <- reroot2(tree, ind2)
+  tree <- reroot(tree, ind2, FALSE)
   kids1 <- Children(tree, ind1)
   anc <- Ancestors(tree, ind1, "all")
   l <- length(anc)
@@ -328,8 +331,12 @@ oneOf4 <- function(tree, ind1, ind2, from = 1, to = 1) {
   edge[tmp[kids1[-from]], 1] <- Ancestors(tree, ind1, "parent")
   edge[tmp[kids2[to]], 1] <- ind1
   edge[tmp[ind1]] <- ind2
+
   tree$edge <- edge
-  reorderPruning(tree)
+  tree <- reroot(tree, root, FALSE)
+#  reorderPruning(tree)
+  attr(tree, "order") <- NULL
+  reorder(tree, "postorder")
 }
 
 

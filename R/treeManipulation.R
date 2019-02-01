@@ -49,7 +49,7 @@ reroot <- function (tree, node, switch_root=TRUE) {
     tree$edge[tree$edge == 0L] <-  node
   }
   attr(tree, "order") <- "postorder"
-  tree <- collapse.singles(tree)
+  if(switch_root) tree <- collapse.singles(tree)
   tree
 }
 
