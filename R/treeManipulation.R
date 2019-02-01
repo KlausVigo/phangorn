@@ -20,24 +20,6 @@ getRoot <- function(tree) {
 }
 
 
-# renames root node
-reroot <-  function(tree, node) {
-  anc <-  Ancestors(tree, node, "all")
-  l <-  length(anc)
-  if (is.na(match(node, tree$edge[, 1]))) stop("node not in tree")
-  if (l == 0) return(tree)
-  ind <-  match(c(node, anc[-l]), tree$edge[, 2])
-  tree$edge[ind, c(1, 2)] <-  tree$edge[ind, c(2, 1)]
-  root <-  anc[l]
-  tree$edge[tree$edge == root] <-  0L
-  tree$edge[tree$edge == node] <-  root
-  tree$edge[tree$edge == 0L] <-  node
-  # needed for unrooted trees
-  tree <- collapse.singles(tree)
-  attr(tree, "order") <- NULL
-  reorder(tree, "postorder")
-}
-
 
 reroot2 <- function(tree, node) {
   if (node == getRoot(tree)) return(tree)
@@ -49,7 +31,7 @@ reroot2 <- function(tree, node) {
 }
 
 # seems to work now
-reroot3 <- function (tree, node, switch_root=TRUE) {
+reroot <- function (tree, node, switch_root=TRUE) {
   root <- getRoot(tree)
   if (node == root)
     return(tree)
