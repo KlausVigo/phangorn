@@ -48,18 +48,24 @@ reroot2 <- function(tree, node) {
   reorderPruning(tree)
 }
 
-# needs some work
-reroot3 <- function (tree, node) {
-  if (node == getRoot(tree))
+# seems to work now
+reroot3 <- function (tree, node, switch_root=TRUE) {
+  root <- getRoot(tree)
+  if (node == root)
     return(tree)
   anc <- Ancestors(tree, node, "all")
   l <- length(anc)
   ind <- match(c(node, anc[-l]), tree$edge[, 2])
   tree$edge[ind, c(1, 2)] <- tree$edge[ind, c(2, 1)]
-  #reorderPruning(tree)
   nb.tip <- Ntip(tree)
   neworder <- reorderRcpp(tree$edge, as.integer(nb.tip), as.integer(node), 2L)
-  tree$edge.length <- tree$edge.length[neworder]
+  tree$edge <- tree$edge[neworder, ]
+  if(!is.null(tree$edge.length)) tree$edge.length <- tree$edge.length[neworder]
+  if(switch_root){
+    tree$edge[tree$edge == root] <-  0L
+    tree$edge[tree$edge == node] <-  root
+    tree$edge[tree$edge == 0L] <-  node
+  }
   attr(tree, "order") <- "postorder"
   tree
 }
@@ -243,7 +249,6 @@ pruneTree <- function(tree, ..., FUN = ">=") {
 
 
 # requires postorder
-# works fine with fit.fitch
 # for internal use in fitch.spr
 # pos statt i
 dropTip <- function(x, i, check.binary = FALSE, check.root = TRUE) {
