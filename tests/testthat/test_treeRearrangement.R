@@ -16,7 +16,7 @@ test_that("nni", {
     expect_true(all( RF.dist(tree_u, nni_trees_u) == 2))
     expect_true(median( RF.dist(tree_r, nni_trees_r) ) == 2)
 })
-                
+
 
 r_nni <- rNNI(tree_u, 3, 100)
 
@@ -27,7 +27,7 @@ test_that("rNNI", {
     expect_true(median( RF.dist(r_nni[[1]], r_nni) ) == 12)
 })
 
-
+set.seed(42)
 r_spr <- rSPR(tree_u, 3, 100)
 test_that("allTrees", {
     expect_true(length(r_spr) == 100L)
