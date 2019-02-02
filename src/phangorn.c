@@ -342,7 +342,7 @@ SEXP getd2PM2(SEXP eig, SEXP nc, SEXP el, SEXP w){
 static R_INLINE void emult(double *x, double *y, int n){
     for(int i=0; i<n; i++) x[i]*=y[i];
 }
-*/
+
 
 
 void tabulate(int *x, int *n, int *nbin, int *ans){
@@ -398,6 +398,6 @@ void C_reorder(int *from, int *to, int *n, int *sumNode,  int *neworder, int *ro
     root[0]=Nnode;
 }
 
-
+*/
 
 
