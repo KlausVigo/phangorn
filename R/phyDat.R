@@ -841,7 +841,8 @@ cbind.phyDat <- function(..., gaps="-", compress=TRUE){
     ATTR$names <- snames
     ATTR$nr <- vec[n+1]
 
-    tmp <- matrix(gapsInd, vec[n+1], length(snames), dimnames = list(NULL, snames))
+    tmp <- matrix(gapsInd, vec[n+1], length(snames),
+                  dimnames = list(NULL, snames))
     tmp <- as.data.frame(tmp)
     add.index <- TRUE
     for(i in 1:n){
