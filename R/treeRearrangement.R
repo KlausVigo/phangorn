@@ -316,6 +316,7 @@ oneOf4 <- function(tree, ind1, ind2, from = 1, to = 1, root) {
   if (!is.binary(tree))
     stop("Sorry, trees must be binary!")
 #  tree <- reroot2(tree, ind2)
+#  browser()#
   tree <- reroot(tree, ind2, FALSE)
   kids1 <- Children(tree, ind1)
   anc <- Ancestors(tree, ind1, "all")
@@ -333,10 +334,12 @@ oneOf4 <- function(tree, ind1, ind2, from = 1, to = 1, root) {
   edge[tmp[ind1]] <- ind2
 
   tree$edge <- edge
+  attr(tree, "order") <- NULL
   tree <- reroot(tree, root, FALSE)
 #  reorderPruning(tree)
-  attr(tree, "order") <- NULL
-  reorder(tree, "postorder")
+  #  reorder(tree)
+#  reorder(tree, "postorder")
+  tree
 }
 
 

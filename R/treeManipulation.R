@@ -33,7 +33,7 @@ getRoot <- function(tree) {
 reroot <- function (tree, node, switch_root=TRUE) {
   root <- getRoot(tree)
   if (node == root)
-    return(tree)
+    return(reorder(tree, "postorder"))
   anc <- Ancestors(tree, node, "all")
   l <- length(anc)
   ind <- match(c(node, anc[-l]), tree$edge[, 2])
