@@ -618,7 +618,7 @@ as.networx.splits <- function(x, planar = FALSE, coord = c("none", "2D", "3D"),
 as.networx.phylo <- function(x, ...) {
   spl <- as.splits(x)
   spl <- spl[x$tree[, 2]]
-  x$splitIndex <- 1:nrow(x$edge)
+  x$splitIndex <- seq_len( nrow(x$edge) )
   x$splits <- spl
   class(x) <- c("networx", "phylo")
   x

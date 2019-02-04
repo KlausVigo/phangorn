@@ -23,7 +23,7 @@ tree2phyDat <- function(trees) {
     # create matrix representation of trees[[i]] in X[[i]]
     TMP <- matrix(1L, nrow = length(temp) - 1,
       ncol = length(trees[[ind[1]]]$tip.label))
-    for (j in 1:nrow(TMP)) TMP[j, c(temp[[j + 1]])] <- 2L
+    for (j in seq_len(nrow(TMP)))  TMP[j, c(temp[[j + 1]])] <- 2L
     colnames(TMP) <- attr(temp, "labels") # label rows
 
     X[[i]] <- TMP

@@ -497,12 +497,12 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
                      minit = 10, k = 10, trace = 1, all = FALSE,
                      rearrangements = "SPR", perturbation = "ratchet",
                      return="single", ...) {
-  search_history = c(FALSE, FALSE)
-  if (return=="single") all=FALSE
-  if(return=="best") all=TRUE
+  search_history <- c(FALSE, FALSE)
+  if (return=="single") all <- FALSE
+  if(return=="best") all <- TRUE
   if(return=="all" | return=="history"){
-    all=TRUE
-    search_history = c(TRUE, TRUE)
+    all <- TRUE
+    search_history <- c(TRUE, TRUE)
   }
   # c("single", "best", "all", "history") needs better names
 
@@ -520,7 +520,7 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
     trees <- trees[-1]
     while (length(trees) > 0) {
 #      rf <- sapply(trees, RF.dist, res, FALSE)
-      class(trees) = "multiPhylo"
+      class(trees) <- "multiPhylo"
       rf <- RF.dist(res, trees, FALSE)
 # end new code
       if (any(rf == 0)) trees <- trees[-which(rf == 0)]
@@ -558,7 +558,7 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
     else class(result) <- "multiPhylo"
     if (length(result) == 1) result <- result[[1]]
     if(return=="all"){
-      all=FALSE
+      all <- FALSE
       class(search_trees) <- "multiPhylo"
       search_trees <- .compressTipLabel(search_trees)
       result <- search_trees
