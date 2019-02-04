@@ -40,7 +40,7 @@
 #'
 #' Yang, Z. (2006). \emph{Computational Molecular evolution}. Oxford University
 #' Press, Oxford.
-#' @keywords ~kwd1 ~kwd2
+#' @keywords cluster
 #' @examples
 #'
 #' example(NJ)

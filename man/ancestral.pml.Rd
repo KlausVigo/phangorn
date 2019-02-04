@@ -94,5 +94,4 @@ Press, Oxford.
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}
 }
-\keyword{~kwd1}
-\keyword{~kwd2}
+\keyword{cluster}

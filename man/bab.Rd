@@ -63,4 +63,3 @@ Klaus Schliep \email{klaus.schliep@gmail.com} based on work on Liam
 Revell
 }
 \keyword{cluster}
-\keyword{~kwd2}

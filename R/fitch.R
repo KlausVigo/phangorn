@@ -448,7 +448,7 @@ getOrder <- function(x) {
 #'
 #' White, W.T. and Holland, B.R. (2011) Faster exact maximum parsimony search
 #' with XMP. \emph{Bioinformatics}, \bold{27(10)},1359--1367
-#' @keywords cluster ~kwd2
+#' @keywords cluster
 #' @examples
 #'
 #' data(yeast)
