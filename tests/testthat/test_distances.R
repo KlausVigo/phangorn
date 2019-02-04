@@ -4,11 +4,12 @@ X <- allSitePattern(5)
 tree <- read.tree(text = "((t1:0.3,t2:0.3):0.1,(t3:0.3,t4:0.3):0.1,t5:0.5);")
 fit <- pml(tree,X, k=4, shape=0.5)
 
-weights <- as.vector(1000*exp(fit$site)) 
+weights <- as.vector(1000*exp(fit$site))
 attr(X, "weight") <- weights
 dm <- cophenetic(tree)
 
-Y <- phyDat(matrix(c("A", "C", "G", "T", "A", "C", "G", "A"), 2, 4, dimnames=list(c("a", "b", NULL)), byrow=TRUE)) 
+Y <- phyDat(matrix(c("A", "C", "G", "T", "A", "C", "G", "A"), 2, 4,
+                   dimnames=list(c("a", "b", NULL)), byrow=TRUE))
 
 fun <- function(s) - 3/4 * log(1 - 4/3 * s)
 

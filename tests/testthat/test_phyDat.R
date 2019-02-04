@@ -1,5 +1,5 @@
 context("conversion_and_subsetting")
-# to test: phyDat.codon, 
+# to test: phyDat.codon,
 data(Laurasiatherian)
 data(chloroplast)
 set.seed(42)
@@ -32,29 +32,33 @@ test_that("conversion work as expected", {
     expect_is(as.phyDat(phy_dnabin), "phyDat")
     expect_is(as.phyDat(phy_align), "phyDat")
     expect_is(c2d <- codon2dna(codon_align), "phyDat")
-    expect_equal(dna2codon(c2d), codon_align) 
+    expect_equal(dna2codon(c2d), codon_align)
 })
 
 
 test_that("conversion with Biostrings work as expected", {
     skip_on_cran()
     if(require(Biostrings)){
-        expect_is(MA_AA <- as.MultipleAlignment(chloroplast), "AAMultipleAlignment")
+        expect_is(MA_AA <- as.MultipleAlignment(chloroplast),
+                  "AAMultipleAlignment")
         expect_equal(as.phyDat(MA_AA), chloroplast)
-        expect_is(MA_DNA <- as.MultipleAlignment(Laurasiatherian), "DNAMultipleAlignment")
+        expect_is(MA_DNA <- as.MultipleAlignment(Laurasiatherian),
+                  "DNAMultipleAlignment")
         expect_equal(as.phyDat(MA_DNA), Laurasiatherian)
-    }    
+    }
 })
 
 
 test_that("subsetting and combining work as expected", {
 ##    skip_on_cran()
-    
-    expect_is(subset_1 <- subset(Laurasiatherian, select = 1:1000, site.pattern = FALSE), "phyDat")
-    expect_is(subset_2 <- subset(Laurasiatherian, select = 1001:3179, site.pattern = FALSE), "phyDat")
+
+    expect_is(subset_1 <- subset(Laurasiatherian, select = 1:1000,
+                                 site.pattern = FALSE), "phyDat")
+    expect_is(subset_2 <- subset(Laurasiatherian, select = 1001:3179,
+                                 site.pattern = FALSE), "phyDat")
     expect_is(lauraCbind1 <- cbind(subset_1, subset_2), "phyDat")
     expect_equal(baseFreq(lauraCbind1), baseFreq(Laurasiatherian))
-    
+
     expect_is(subset_3 <- subset(Laurasiatherian, select = 1:100), "phyDat")
     expect_is(subset_4 <- subset(Laurasiatherian, select = 101:1605), "phyDat")
     expect_is(lauraCbind2 <- cbind(subset_3, subset_4), "phyDat")
@@ -64,7 +68,7 @@ test_that("subsetting and combining work as expected", {
 
 test_that("read and write work as expected", {
     skip_on_cran()
-    
+
     write.phyDat(Laurasiatherian, "tmp1.txt")
     expect_is(laura <- read.phyDat("tmp1.txt"), "phyDat")
     expect_equal(laura, Laurasiatherian)
@@ -74,7 +78,8 @@ test_that("read and write work as expected", {
     expect_equal(chloro, chloroplast)
     unlink("tmp2.txt")
     write.phyDat(chloroplast, "tmp.fas", format="fasta")
-    expect_is(chloro_fas <- read.phyDat("tmp.fas", type="AA", format = "fasta"), "phyDat")
+    expect_is(chloro_fas <- read.phyDat("tmp.fas", type="AA", format = "fasta"),
+              "phyDat")
     expect_equal(chloro_fas, chloroplast)
     unlink("tmp.fas")
 })
@@ -82,7 +87,7 @@ test_that("read and write work as expected", {
 
 test_that("removing duplicated sequences works", {
     skip_on_cran()
-    
+
     tmp <- as.character(Laurasiatherian)
     laura <- phyDat(rbind(phy_matrix, phy_matrix))
     names(laura) <- paste0(names(laura), rep(c(1,2), each=47))
@@ -91,4 +96,4 @@ test_that("removing duplicated sequences works", {
     map2 <- map_duplicates(Laurasiatherian)
     expect_null(map2)
     expect_is(map1, "data.frame")
-})    
+})

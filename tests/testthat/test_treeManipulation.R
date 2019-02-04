@@ -25,8 +25,10 @@ test_that("ancestor, mrca, descendants", {
     expect_equal(mrca(tree), mrca.phylo(tree))
     kids_108 <- Descendants(tree, 108, "children")
     expect_equal(length(Descendants(tree, 101L, "all")), 197L)
-    expect_equal(lengths(Descendants(tree2, 101L:199, "all")), 2 * lengths(prop.part(tree2)) - 2L)
-    expect_equal(Ancestors(tree, kids_108, "parent"), rep(108L, length(kids_108)))
+    expect_equal(lengths(Descendants(tree2, 101L:199, "all")),
+                 2 * lengths(prop.part(tree2)) - 2L)
+    expect_equal(Ancestors(tree, kids_108, "parent"),
+                 rep(108L, length(kids_108)))
     expect_equal(Siblings(tree, kids_108[1], include.self=TRUE), kids_108)
 })
 
@@ -41,11 +43,12 @@ test_that("allTrees", {
 # TODO: check why rooted trees give error in development version
 test_that("midpoint", {
     # topology stays the same
-    expect_equal( max( sapply(trees, function(x)RF.dist(x,midpoint(x)))), 0) 
-    # 2 * max(height) == max(cophenetic) 
-    expect_equal( max( node.depth.edgelength(midpoint(tree)) *2) ,  max(cophenetic(tree)))              
-})    
-    
+    expect_equal( max( sapply(trees, function(x)RF.dist(x,midpoint(x)))), 0)
+    # 2 * max(height) == max(cophenetic)
+    expect_equal( max( node.depth.edgelength(midpoint(tree)) *2),
+                  max(cophenetic(tree)))
+})
+
 
 
 test_that("maxCladeCred", {
