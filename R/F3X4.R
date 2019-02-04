@@ -1,7 +1,8 @@
 
 # estimate codon frequencies based on the F3X4 method
-getF3X4codon_frequencies <- function(codon_data, codon_alphabet = .CodonAlphabet,
-                                     nucleotide_alphabet = .nucleotideAlphabet) {
+getF3X4codon_frequencies <- function(codon_data,
+                                     codon_alphabet = .CodonAlphabet,
+                                     nucleotide_alphabet = .nucleotideAlphabet){
   epirical_codon_frequenices <- baseFreq(codon_data)
   # get the position-wise nucleotide frequencies
   nuc_freq_by_pos <- matrix(0, nrow = length(nucleotide_alphabet), ncol = 3)

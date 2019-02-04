@@ -609,7 +609,9 @@ nnls.tree <- function(dm, tree, rooted = FALSE, trace = 1, weight = NULL,
   if (any(is.na(Aind))) {
     na_ind <- which(is.na(Aind), arr.ind = TRUE)
     Aind[is.na(Aind)] <- 0L
-    for (i in 1:nrow(na_ind)) Aind[1, na_ind[i, 2]] <- Aind[1, na_ind[i, 2]] - 1L
+    for (i in seq_len(nrow(na_ind)) ){
+      Aind[1, na_ind[i, 2]] <- Aind[1, na_ind[i, 2]] - 1L
+    }
   }
 
   betahat <- quadprog::solve.QP.compact(as.matrix(Dmat), as.vector(dvec), Amat,

@@ -507,12 +507,12 @@ getOrderingNN4 <- function(x, splits = TRUE) {
 
           nres <- nres + 1L
           res[[nres]] <- sort(newOrd)
-          #                   nres <- nres+1L
-          #                   res[[nres]] <- sort(c(newCL, CL[[e1]][2]))
-          #                   nres <- nres+1L
-          #                   res[[nres]] <- sort(c(newCL, CL[[e2]][1]))
-          #                   nres <- nres+1L
-          #                   res[[nres]] <- sort(c(newCL, CL[[e1]][2], CL[[e2]][1]))
+          # nres <- nres+1L
+          # res[[nres]] <- sort(c(newCL, CL[[e1]][2]))
+          # nres <- nres+1L
+          # res[[nres]] <- sort(c(newCL, CL[[e2]][1]))
+          # nres <- nres+1L
+          # res[[nres]] <- sort(c(newCL, CL[[e1]][2], CL[[e2]][1]))
         }
         if (blub == 3) {
           newCL <- c(CL[[e1]][2], CL[[e2]][1])
@@ -522,12 +522,12 @@ getOrderingNN4 <- function(x, splits = TRUE) {
 
           nres <- nres + 1L
           res[[nres]] <- sort(newOrd)
-          #                    nres <- nres+1L
-          #                    res[[nres]] <- sort(c(newCL, CL[[e1]][1]))
-          #                    nres <- nres+1L
-          #                    res[[nres]] <- sort(c(newCL, CL[[e2]][2]))
-          #                    nres <- nres+1L
-          #                    res[[nres]] <- sort(c(newCL, CL[[e1]][1], CL[[e2]][2]))
+          # nres <- nres+1L
+          # res[[nres]] <- sort(c(newCL, CL[[e1]][1]))
+          # nres <- nres+1L
+          # res[[nres]] <- sort(c(newCL, CL[[e2]][2]))
+          # nres <- nres+1L
+          # res[[nres]] <- sort(c(newCL, CL[[e1]][1], CL[[e2]][2]))
         }
         if (blub == 4) {
           newCL <- c(CL[[e1]][1], CL[[e2]][1])
@@ -537,12 +537,12 @@ getOrderingNN4 <- function(x, splits = TRUE) {
 
           nres <- nres + 1L
           res[[nres]] <- sort(newOrd)
-          #                    nres <- nres+1L
-          #                    res[[nres]] <- sort(c(newCL, CL[[e1]][2]))
-          #                    nres <- nres+1L
-          #                    res[[nres]] <- sort(c(newCL, CL[[e2]][2]))
-          #                    nres <- nres+1L
-          #                    res[[nres]] <- sort(c(newCL, CL[[e1]][2], CL[[e2]][2]))
+          # nres <- nres+1L
+          # res[[nres]] <- sort(c(newCL, CL[[e1]][2]))
+          # nres <- nres+1L
+          # res[[nres]] <- sort(c(newCL, CL[[e2]][2]))
+          # nres <- nres+1L
+          # res[[nres]] <- sort(c(newCL, CL[[e1]][2], CL[[e2]][2]))
         }
       }
 

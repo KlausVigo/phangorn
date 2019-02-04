@@ -91,7 +91,8 @@ dist.hamming <- function(x, ratio = TRUE, exclude = "none"){
     for (i in 1:(l - 1)) {
       X <- contrast[x[[i]], , drop = FALSE]
       for (j in (i + 1):l) {
-        d[k] <- sum(weight * (rowSums(X * contrast[x[[j]], , drop = FALSE]) == 0))
+        d[k] <- sum(weight *
+                      (rowSums(X * contrast[x[[j]], , drop = FALSE]) == 0))
         k <- k + 1
       }
     }
@@ -169,7 +170,8 @@ dist.ml <- function(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
     index <- con[ind1] & con[ind2]
     index <- which(!index)
   }
-  tmp <- (contrast %*% eig[[2]])[ind1, ] * (contrast %*% (t(eig[[3]]) * bf))[ind2, ]
+  tmp <- (contrast %*% eig[[2]])[ind1, ] *
+    (contrast %*% (t(eig[[3]]) * bf))[ind2, ]
   tmp2 <- vector("list", k)
 
   wshared <- which(rowSums(contrast[ind1, ] * contrast[ind2, ]) > 0)
