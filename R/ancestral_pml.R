@@ -254,7 +254,7 @@ ancestral.pars <- function(tree, data, type = c("MPR", "ACCTRAN"), cost = NULL,
   }
   else {
     Z <- unique(as.vector(res))
-    tmp <- t(sapply(Z, function(x) dec2bin(x, nc)))
+    tmp <- t(vapply(Z, function(x) dec2bin(x, nc), integer(nc)))
     tmp <- tmp / rowSums(tmp)
     dimnames(tmp) <- list(Z, attr(data, "levels"))
     for (i in seq_len(m)) {
