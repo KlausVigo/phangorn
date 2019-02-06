@@ -108,6 +108,7 @@ prepareDataFitch <- function(data) {
   attributes(X) <- attrData
   attr(X, "dim") <- c(nr, nc)
   dimnames(X) <- list(NULL, nam)
+  class(X) <- NULL
   X
 }
 
