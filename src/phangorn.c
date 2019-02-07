@@ -11,26 +11,9 @@
 # define USE_RINTERNALS
 
 #include <Rmath.h>
-// #include <math.h>
 #include <R.h>
-// #include <R_ext/Lapack.h>
 #include <Rinternals.h>
 
-
-
-// off-diagonal
-#define DINDEX(i, j) n*(i - 1) - i * (i - 1)/2 + j - i - 1
-// with diagonal (+i), R index (+1)
-#define DINDEX2(i, j) n*(i - 1) - i * (i - 1)/2 + j - 1
-
-// index likelihood pml
-// need to define nr, nc, nTips, nNodes k
-#define LINDEX(i) (i-nTips) * (nr*nc) //+ k * nTips * (nr * nc)
-#define LINDEX2(i, k) (i-nTips) * (nr*nc) + k * nTips * (nr * nc)
-#define LINDEX3(i, k) (i-*nTips-1L) * (*nr* *nc) + k * *nTips * (*nr * *nc)
-
-// index sankoff
-#define SINDEX(i) i * (nr*nc)
 
 
 void countCycle(int *M, int *l, int *m, int *res){
