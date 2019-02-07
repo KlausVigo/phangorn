@@ -1148,14 +1148,14 @@ constSitePattern <- function(n,levels=c("a","c","g","t"), names=NULL){
 }
 
 
-write.phylip <- function(data, weight, file=""){
-        n <- sum(weight)
-        m <- dim(data)[2]
-        cat(m,n,"\n",file = file)
-        for(i in 1:m)
-        cat(colnames(data)[i],"   ",toupper(rep(data[,i],weight)),"\n", sep="",
-            file=file, append=TRUE)
-}
+# write.phylip <- function(data, weight, file=""){
+#         n <- sum(weight)
+#         m <- dim(data)[2]
+#         cat(m,n,"\n",file = file)
+#         for(i in 1:m)
+#         cat(colnames(data)[i],"   ",toupper(rep(data[,i],weight)),"\n", sep="",
+#             file=file, append=TRUE)
+# }
 
 
 read.FASTA.AA <- function (file)
@@ -1217,8 +1217,6 @@ read.FASTA.AA <- function (file)
 }
 
 
-# throw out
-
 
 #' Read Amino Acid Sequences in a File
 #'
@@ -1268,7 +1266,8 @@ read.aa <- function (file, format = "interleaved", skip = 0, nlines = 0,
 
 
     if (format == "fasta") {
-        obj <- read.FASTA.AA(file)
+#        obj <- read.FASTA.AA(file)
+        obj <- read.FASTA(file, type = "AA")
         return(obj)
     }
     X <- scan(file = file, what = character(), sep = "\n", quiet = TRUE,
@@ -1330,7 +1329,7 @@ read.aa <- function (file, format = "interleaved", skip = 0, nlines = 0,
         if (is.null(seq.names))
             seq.names <- getTaxaNames(taxa)
     }
-    if (format == "fasta") return(read.FASTA.AA(file))
+#    if (format == "fasta") return(read.FASTA.AA(file))
 #        start <- grep("^ {0,}>", X)
 #        taxa <- X[start]
 #        n <- length(taxa)
