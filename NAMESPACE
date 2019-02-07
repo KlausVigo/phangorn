@@ -68,7 +68,7 @@ export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ,
     distinct.splits, c.splits, dna2codon, codon2dna, genlight2phyDat,
     removeUndeterminedSites, phyDat2MultipleAlignment, delta.score,
     maxCladeCred, mcc, allCompat, as.MultipleAlignment, threshStateC, coords,
-    add.tips, map_duplicates, codonTest)
+    add.tips, map_duplicates, codonTest, '%>%')
 
 S3method('[', splits)
 S3method(addConfidences, phylo)
