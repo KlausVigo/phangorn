@@ -150,8 +150,8 @@ int give_index3(int i, int j, int n)
 
 void copheneticHelpCpp(std::vector<int> left, std::vector<int> right, int h, NumericVector nh, int nTips, NumericVector dm){
     int ind;
-    for(int i=0; i<left.size(); i++){
-        for(int j=0; j<right.size(); j++){
+    for(std::size_t i=0; i<left.size(); i++){
+        for(std::size_t j=0; j<right.size(); j++){
             ind = give_index3(left[i], right[j], nTips);
             dm[ind] = 2.0*nh[h] - nh[left[i]-1L] - nh[right[j]-1L];
         }
