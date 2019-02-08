@@ -70,7 +70,7 @@ extern SEXP PML3(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEX
 extern SEXP PML4(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP pNodes(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP PWI(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP rawStream2phyDat(SEXP);
+// extern SEXP rawStream2phyDat(SEXP);
 extern SEXP rowMax(SEXP, SEXP, SEXP);
 extern SEXP sankoff3(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP sankoff3B(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
@@ -139,7 +139,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"PML4",               (DL_FUNC) &PML4,               15},
     {"pNodes",             (DL_FUNC) &pNodes,              6},
     {"PWI",                (DL_FUNC) &PWI,                 6},
-    {"rawStream2phyDat",   (DL_FUNC) &rawStream2phyDat,    1},
+//    {"rawStream2phyDat",   (DL_FUNC) &rawStream2phyDat,    1},
     {"rowMax",             (DL_FUNC) &rowMax,              3},
     {"sankoff3",           (DL_FUNC) &sankoff3,            8},
     {"sankoff3B",          (DL_FUNC) &sankoff3B,          10},
