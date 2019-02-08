@@ -41,9 +41,16 @@ env:
     - R_CHECK_ARGS="--as-cran --timings"
     - R_CHECK_TIME="TRUE"
     - R_CHECK_TESTS="TRUE"
-    - _R_CHECK_TIMINGS_="0"  
+    - _R_CHECK_TIMINGS_="0"
 
 
 before_script:
   - sudo apt install seq-gen
 
+addons:
+  apt:
+    update: true
+    packages:
+      - libgs-dev
+      - qpdf
+      - ghostscript
