@@ -71,6 +71,7 @@ export(pml, optim.pml, pml.control, parsimony, optim.parsimony, pratchet, NJ,
     maxCladeCred, mcc, allCompat, as.MultipleAlignment, threshStateC, coords,
     add.tips, map_duplicates, codonTest, '%>%')
 
+S3method('[', phyDat)
 S3method('[', splits)
 S3method(addConfidences, phylo)
 S3method(addConfidences, splits)

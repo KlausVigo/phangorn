@@ -28,6 +28,7 @@
 \alias{read.phyDat}
 \alias{baseFreq}
 \alias{subset.phyDat}
+\alias{[.phyDat}
 \alias{unique.phyDat}
 \alias{allSitePattern}
 \alias{genlight2phyDat}
@@ -68,6 +69,8 @@ read.phyDat(file, format = "phylip", type = "DNA", ...)
 baseFreq(obj, freq = FALSE, all = FALSE, drop.unused.levels = FALSE)
 
 \method{subset}{phyDat}(x, subset, select, site.pattern = TRUE, ...)
+
+\method{[}{phyDat}(x, i, j, ..., drop = FALSE)
 
 \method{unique}{phyDat}(x, incomparables = FALSE, identical = TRUE,
   ...)
@@ -139,6 +142,10 @@ sequences are considered duplicates if distance between sequences is zero
 \item{n}{Number of sequences.}
 
 \item{names}{Names of sequences.}
+
+\item{{i, j}}{indices of the rows and/or columns to select or to drop. They
+may be numeric, logical, or character (in the same way than for standard R
+objects).}
 }
 \value{
 The functions return an object of class \code{phyDat}.
