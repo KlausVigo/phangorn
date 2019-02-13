@@ -1,6 +1,6 @@
-#
-# pmlPen penalized ML
-#
+##
+## pmlPen penalized ML
+##
 pmlPen <- function(object, lambda, ...) {
   if (inherits(object, "pmlPart")) return(pmlPartPen(object, lambda, ...))
   if (inherits(object, "pmlMix")) return(pmlMixPen(object, lambda, ...))

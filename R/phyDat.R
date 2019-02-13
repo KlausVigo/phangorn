@@ -1049,9 +1049,10 @@ subset.phyDat <- function (x, subset, select, site.pattern = TRUE,...)
 }
 
 ## Needs testing that it is not used e.g. prepareDataFitch returns no class
-#' @param {i,j}	indices of the rows and/or columns to select or to drop. They
+#' @param i,j	indices of the rows and/or columns to select or to drop. They
 #' may be numeric, logical, or character (in the same way than for standard R
 #' objects).
+#' @param drop for compatibility with the generic (unused).
 #' @rdname phyDat
 #' @export
 "[.phyDat" <- function(x, i, j, ..., drop=FALSE){

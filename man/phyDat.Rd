@@ -133,6 +133,12 @@ contrast.}
 
 \item{site.pattern}{select site pattern or sites.}
 
+\item{i, j}{indices of the rows and/or columns to select or to drop. They
+may be numeric, logical, or character (in the same way than for standard R
+objects).}
+
+\item{drop}{for compatibility with the generic (unused).}
+
 \item{incomparables}{for compatibility with unique.}
 
 \item{identical}{if TRUE (default) sequences have to be identical, if FALSE
@@ -142,10 +148,6 @@ sequences are considered duplicates if distance between sequences is zero
 \item{n}{Number of sequences.}
 
 \item{names}{Names of sequences.}
-
-\item{{i, j}}{indices of the rows and/or columns to select or to drop. They
-may be numeric, logical, or character (in the same way than for standard R
-objects).}
 }
 \value{
 The functions return an object of class \code{phyDat}.
