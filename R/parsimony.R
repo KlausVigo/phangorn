@@ -542,10 +542,8 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
     if(is.null(start)) start <- optim.parsimony(nj(dist.hamming(data)), data,
                                         trace = trace, method = method,
                                         rearrangements = rearrangements, ...)
-    else{
-      if(!is.binary(start)) start <- multi2di(start)
-    }
     tree <- start
+    if(!is.binary(tree)) tree <- multi2di(tree)
     data <- subset(data, tree$tip.label)
     attr(tree, "pscore") <- parsimony(tree, data, method = method, ...)
     mp <- attr(tree, "pscore")
