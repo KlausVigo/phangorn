@@ -522,7 +522,7 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
     while (length(trees) > 0) {
 #      rf <- sapply(trees, RF.dist, res, FALSE)
       class(trees) <- "multiPhylo"
-      rf <- suppressWarnings( RF.dist(res, trees, FALSE) )
+      rf <- suppressMessages( RF.dist(res, trees, FALSE) )
 # end new code
       if (any(rf == 0)) trees <- trees[-which(rf == 0)]
       if (length(trees) > 0) {
