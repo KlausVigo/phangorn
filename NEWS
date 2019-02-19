@@ -1,4 +1,4 @@
-     CHANGES in PHANGORN VERSION 2.5.0
+     CHANGES in PHANGORN VERSION 2.5.2
 
 NEW FEATURES
 
@@ -10,7 +10,9 @@ NEW FEATURES
 
      o function codonTest which adds codon models to detect positive selection
 
-       (M1a, M2a) and several options to estimate codon frequencies (F3x4, F1x4)
+       (M1a, M2a) and several options to estimate codon frequencies
+
+       (F3x4, F1x4). Can be pretty slow and still experimental.
 
      o broom type tidy function for several objects to easier compare models
 
@@ -22,7 +24,9 @@ NEW FEATURES
 
 OTHER CHANGES
 
-     o several small improvements to more intuitively use pml and phyDat objects
+     o several small improvements to more intuitively use pml and phyDat
+
+      objects, like subset with "[i, j]".
 
      o several more unit tests
 
