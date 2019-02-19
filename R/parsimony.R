@@ -46,7 +46,7 @@ sankoff.quartet <- function(dat, cost, p, l, weight) {
 #' @param all return all equally good trees or just one of them.
 #' @param perturbation whether to use "ratchet", "random_addition" or
 #' "stochastic" (nni) for shuffling the tree.
-#' @param return return only best tree(s) or trees from each run.
+
 #' @param ... Further arguments passed to or from other methods (e.g.
 #' model="sankoff" and cost matrix).
 #' @return \code{parsimony} returns the maximum parsimony score (pscore).
@@ -491,20 +491,23 @@ optim.parsimony <- function(tree, data, method = "fitch", cost = NULL,
 }
 
 
+## @param return return only best tree(s) or trees from each run.
+
 #' @rdname parsimony
 #' @export
 # perturbation="ratchet", "stochastic"
 pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
                      minit = 10, k = 10, trace = 1, all = FALSE,
-                     rearrangements = "SPR", perturbation = "ratchet",
-                     return="single", ...) {
+                     rearrangements = "SPR", perturbation = "ratchet", ...) {
   search_history <- c(FALSE, FALSE)
-  if (return=="single") all <- FALSE
-  if(return=="best") all <- TRUE
-  if(return=="all" | return=="history"){
-    all <- TRUE
-    search_history <- c(TRUE, TRUE)
-  }
+  # search_history <- c(FALSE, FALSE)
+  # return="single",
+  # if (return=="single") all <- FALSE
+  # if(return=="best") all <- TRUE
+  # if(return=="all" | return=="history"){
+  #  all <- TRUE
+  #  search_history <- c(TRUE, TRUE)
+  #}
   # c("single", "best", "all", "history") needs better names
 
   eps <- 1e-08
@@ -559,20 +562,20 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
     if (!all) result <- tree
     else class(result) <- "multiPhylo"
     if (length(result) == 1) result <- result[[1]]
-    if(return=="all"){
-      all <- FALSE
-      class(search_trees) <- "multiPhylo"
-      search_trees <- .compressTipLabel(search_trees)
-      result <- search_trees
-    }
-    if (return=="history"){
-      class(start_trees) <- "multiPhylo"
-      class(search_trees) <- "multiPhylo"
-      start_trees <- .compressTipLabel(start_trees)
-      search_trees <- .compressTipLabel(search_trees)
-      result <- list(best = result,
-                     start_trees = start_trees, search_trees = search_trees)
-    }
+#    if(return=="all"){
+#      all <- FALSE
+#      class(search_trees) <- "multiPhylo"
+#      search_trees <- .compressTipLabel(search_trees)
+#      result <- search_trees
+#    }
+#    if (return=="history"){
+#      class(start_trees) <- "multiPhylo"
+#      class(search_trees) <- "multiPhylo"
+#      start_trees <- .compressTipLabel(start_trees)
+#      search_trees <- .compressTipLabel(search_trees)
+#      result <- list(best = result,
+#                     start_trees = start_trees, search_trees = search_trees)
+#    }
     return(result)
   })
   kmax <- 1
