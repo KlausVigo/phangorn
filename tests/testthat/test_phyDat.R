@@ -61,6 +61,7 @@ test_that("subsetting and combining work as expected", {
 
     expect_is(subset_3 <- subset(Laurasiatherian, select = 1:100), "phyDat")
     expect_is(subset_4 <- subset(Laurasiatherian, select = 101:1605), "phyDat")
+    expect_equal(subset_1, Laurasiatherian[, 1:1000])
     expect_is(lauraCbind2 <- cbind(subset_3, subset_4), "phyDat")
     expect_equal(baseFreq(lauraCbind2), baseFreq(Laurasiatherian))
 })

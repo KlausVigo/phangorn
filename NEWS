@@ -26,7 +26,7 @@ OTHER CHANGES
 
      o several small improvements to more intuitively use pml and phyDat
 
-      objects, like subset with "[i, j]".
+       objects, like subsetting phyDat objects with "[i, j]".
 
      o several more unit tests
 
