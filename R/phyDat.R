@@ -941,7 +941,7 @@ read.phyDat <- function(file, format="phylip", type="DNA", ...){
 
     if(format=="nexus") data <- read.nexus.data(file, ...)
     else {
-        if(format=="phylip") format <- "interleaved"  #"sequential"
+        if(format=="phylip") format <- "sequential" #"interleaved"
         if (type == "DNA" || type == "CODON"){
             data <- read.dna(file, format, as.character = TRUE, ...)
         }
