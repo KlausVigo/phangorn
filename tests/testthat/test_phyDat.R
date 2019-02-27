@@ -38,7 +38,7 @@ test_that("conversion work as expected", {
 
 test_that("conversion with Biostrings work as expected", {
     skip_on_cran()
-    if(require(Biostrings)){
+    if(requireNamespace(Biostrings)){
         expect_is(MA_AA <- as.MultipleAlignment(chloroplast),
                   "AAMultipleAlignment")
         expect_equal(as.phyDat(MA_AA), chloroplast)
