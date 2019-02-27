@@ -234,7 +234,7 @@ We compute the $d_N/d_S$ for some sequences given a tree using the ML functions 
 library(phangorn)
 fdir <- system.file("extdata/trees", package = "phangorn")
 primates <- read.phyDat(file.path(fdir, "primates.dna"),
-                        format="phylip", type="DNA")
+                        format = "interleaved")
 tree <- NJ(dist.ml(primates))
 dat <- dna2codon(primates)
 fit <- pml(tree, dat, bf="F3x4")
