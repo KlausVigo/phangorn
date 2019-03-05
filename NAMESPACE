@@ -1,18 +1,19 @@
 useDynLib(phangorn, .registration=TRUE)
 
-importFrom(ape, as.DNAbin, as.phylo, plot.phylo, as.prop.part, nj,old2new.phylo,
-    dist.dna, new2old.phylo, cophenetic.phylo, is.rooted, unroot, root,
-    is.binary, as.alignment, di2multi, multi2di, .uncompressTipLabel,
-    .compressTipLabel, prop.part, Ntip, getMRCA, postprocess.prop.part,
-    speciesTree, plotPhyloCoor, cladogram.plot, phylogram.plot, has.singles,
-    node.depth.edgelength, drop.tip, stree, rtree, rcoal, rmtree,
-    is.ultrametric, .PlotPhyloEnv, nodelabels, edgelabels, BOTHlabels,
-    read.nexus.data, write.nexus.data, read.dna, write.dna, reorder.phylo,
-    dist.nodes, collapse.singles, rotate, prop.clades, fastme.bal, fastme.ols,
-    Nnode, image.DNAbin, ONEwise, as.AAbin, as.phyDat.AAbin, image.AAbin,
-    as.bitsplits, as.bitsplits.prop.part, arecompatible, is.compatible,
-    is.compatible.bitsplits, reorderRcpp, c.multiPhylo, c.phylo, consensus,
-    read.FASTA)
+#importFrom(ape, as.DNAbin, as.phylo, plot.phylo, as.prop.part, nj,old2new.phylo,
+#    dist.dna, new2old.phylo, cophenetic.phylo, is.rooted, unroot, root,
+#    is.binary, as.alignment, di2multi, multi2di, .uncompressTipLabel,
+#    .compressTipLabel, prop.part, Ntip, getMRCA, postprocess.prop.part,
+#    speciesTree, plotPhyloCoor, cladogram.plot, phylogram.plot, has.singles,
+#    node.depth.edgelength, drop.tip, stree, rtree, rcoal, rmtree,
+#    is.ultrametric, .PlotPhyloEnv, nodelabels, edgelabels, BOTHlabels,
+#    read.nexus.data, write.nexus.data, read.dna, write.dna, reorder.phylo,
+#    dist.nodes, collapse.singles, rotate, prop.clades, fastme.bal, fastme.ols,
+#    Nnode, image.DNAbin, ONEwise, as.AAbin, as.phyDat.AAbin, image.AAbin,
+#    as.bitsplits, as.bitsplits.prop.part, arecompatible, is.compatible,
+#    is.compatible.bitsplits, reorderRcpp, c.multiPhylo, c.phylo, consensus,
+#    read.FASTA)
+import(ape)
 importFrom(igraph, graph, graph_from_adjacency_matrix, layout_with_kk,
     plot.igraph, shortest_paths, set.edge.attribute, set_edge_attr, decompose,
     components, groups, vcount, graph.edgelist, graph_from_edgelist, topo_sort,
