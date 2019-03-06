@@ -99,7 +99,7 @@ changeEdgeLength <- function(tree, edge, edge.length) {
 #' @keywords cluster
 #' @examples
 #'
-#' tree <- unroot(rtree(10))
+#' tree <- rtree(10, rooted = FALSE)
 #' tree$node.label <- c("", round(runif(tree$Nnode-1), 3))
 #'
 #' tree2 <- midpoint(tree)

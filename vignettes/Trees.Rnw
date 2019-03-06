@@ -66,6 +66,7 @@ The first thing we have to do is to read in an alignment. Unfortunately there ex
 %When using the \Rfunction{read.dna} from \ape{} the parameter the we have to use as.character=TRUE.
 We start our analysis loading the \phangorn{} package and then reading in an alignment.
 <<echo=TRUE>>=
+library(ape)
 library(phangorn)
 fdir <- system.file("extdata/trees", package = "phangorn")
 primates <- read.phyDat(file.path(fdir, "primates.dna"), format = "interleaved")

@@ -7,3 +7,7 @@
 #' @importFrom magrittr %>%
 #' @usage lhs \%>\% rhs
 NULL
+
+#' @importFrom ape rtree
+#' @export
+ape::rtree

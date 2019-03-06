@@ -163,6 +163,7 @@ If we want to fit a non-standard transition rate matrices, we have to tell \Rfun
 The parameter vector subs accepts a vector of consecutive integers and at least one element has to be zero (these gets the reference rate of 1).
 Negative values indicate that there is no direct transition is possible and the rate is set to zero.
 <<>>=
+library(ape)
 tree = unroot(rtree(3))
 fit = pml(tree, gapsdata3)
 fit = optim.pml(fit, optQ=TRUE, subs=c(1,0,1,2,1,0,2,1,2,2),
