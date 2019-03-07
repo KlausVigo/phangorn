@@ -1,5 +1,9 @@
 ## zzz.R
 
+#' @import methods
+#' @import Rcpp
+#' @import parallel
+#' @import ape
 #' @useDynLib phangorn, .registration = TRUE
 
 .packageName <- "phangorn"

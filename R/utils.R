@@ -1,22 +1,12 @@
-#' Pipe operator
-#'
-#' @name %>%
-#' @rdname pipe
-#' @keywords internal
-#' @export
 #' @importFrom magrittr %>%
-#' @usage lhs \%>\% rhs
-NULL
+#' @export
+magrittr::'%>%'
 
-#' @importFrom ape rtree
+
 #' @export
 ape::rtree
 
 
-#' @import methods
-#' @import Rcpp
-#' @import parallel
-#' @import ape
 #' @importFrom stats AIC BIC logLik reorder update optim optimize constrOptim
 #' @importFrom stats cophenetic hclust as.dist pchisq reshape qgamma pgamma
 #' @importFrom stats na.omit model.matrix aggregate lm.fit xtabs quantile sd
