@@ -1,5 +1,7 @@
 ## zzz.R
 
+#' @useDynLib phangorn, .registration = TRUE
+
 .packageName <- "phangorn"
 
 .aamodels <- c("WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt",

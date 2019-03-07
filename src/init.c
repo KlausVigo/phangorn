@@ -89,7 +89,6 @@ static const R_CMethodDef CEntries[] = {
     {"ACCTRAN2",         (DL_FUNC) &ACCTRAN2,          6},
     {"ACCTRAN3",         (DL_FUNC) &ACCTRAN3,          8},
     {"C_fhm",            (DL_FUNC) &C_fhm,             2},
-//    {"C_reorder",        (DL_FUNC) &C_reorder,         6},
     {"countCycle",       (DL_FUNC) &countCycle,        4},
     {"countCycle2",      (DL_FUNC) &countCycle2,       4},
     {"distHamming",      (DL_FUNC) &distHamming,       5},

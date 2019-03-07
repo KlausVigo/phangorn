@@ -47,4 +47,5 @@ VignetteBuilder: utils, knitr
 URL: https://github.com/KlausVigo/phangorn
 BugReports: https://github.com/KlausVigo/phangorn/issues
 Repository: CRAN
+Encoding: UTF-8
 RoxygenNote: 6.1.1

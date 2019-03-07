@@ -8,6 +8,11 @@
 #' @usage lhs \%>\% rhs
 NULL
 
+#' @importFrom ape rtree
+#' @export
+ape::rtree
+
+
 #' @import methods
 #' @import Rcpp
 #' @import parallel
@@ -23,5 +28,4 @@ NULL
 #' @importFrom utils installed.packages write.table combn packageDescription
 #' @importFrom grDevices rgb rainbow adjustcolor col2rgb
 
-#' @export
-ape::rtree
+
