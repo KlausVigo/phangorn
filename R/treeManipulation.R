@@ -430,7 +430,7 @@ addOneTree <- function(tree, subtree, i, node) {
 #' @seealso \code{\link{bind.tree}}
 #' @keywords cluster
 #' @examples
-#'
+#' library(ape)
 #' tree <- rcoal(10)
 #' plot(tree)
 #' nodelabels()

@@ -624,6 +624,8 @@ as.phyDat.character <- function (x, ...) phyDat(data=x, ...)
 as.phyDat.data.frame <- function (x, ...) phyDat(data=x, ...)
 
 
+#' @rdname phyDat
+#' @export
 acgt2ry <- function(obj){
    ac <- c("a", "c", "g", "t", "u", "m", "r", "w", "s", "y",
         "k", "v", "h", "d", "b", "n", "?", "-")

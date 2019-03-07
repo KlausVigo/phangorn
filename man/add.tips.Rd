@@ -23,7 +23,7 @@ an object of class phylo
 This function binds tips to nodes of a phylogenetic trees.
 }
 \examples{
-
+library(ape)
 tree <- rcoal(10)
 plot(tree)
 nodelabels()

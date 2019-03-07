@@ -1,6 +1,7 @@
 context("treedist")
 
 ## generate data
+library(ape)
 set.seed(42)
 tree <- rtree(10, FALSE)
 trees <- nni(tree)
@@ -104,6 +105,7 @@ test_that("When each tree has unit branch lengths, RF = wRF", {
 #############################
 test_that("SPR distance", {
     ## check spr dist
+    skip_on_cran()
     set.seed(123)
     tree1 <- rtree(100, rooted = FALSE)
     tree2 <- rSPR(tree1, 1)
