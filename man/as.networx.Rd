@@ -135,7 +135,7 @@ Intertwining phylogenetic trees and networks. \emph{Methods Ecol Evol}.
 \seealso{
 \code{\link{consensusNet}}, \code{\link{neighborNet}},
 \code{\link{splitsNetwork}}, \code{\link{hadamard}},
-\code{\link{distanceHadamard}}, \code{\link{layout_with_kk}},
+\code{\link{distanceHadamard}},
 \code{\link[ape]{evonet}}, \code{\link[ape]{as.igraph}},
 \code{\link{densiTree}}, \code{\link[ape]{nodelabels}},
 \code{\link[ape]{tiplabels}}

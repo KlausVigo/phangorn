@@ -53,6 +53,8 @@ phyDat2alignment(x)
 
 \method{as.phyDat}{MultipleAlignment}(x, ...)
 
+acgt2ry(obj)
+
 \method{as.character}{phyDat}(x, allLevels = TRUE, ...)
 
 \method{as.data.frame}{phyDat}(x, ...)
@@ -101,6 +103,8 @@ start the translation further within the sequence.}
 \item{ambiguity}{character for ambiguous character and no contrast is
 provided.}
 
+\item{obj}{as object of class phyDat}
+
 \item{allLevels}{return original data.}
 
 \item{file}{A file name.}
@@ -115,8 +119,6 @@ default).}
 \item{nbcol}{a numeric specifying the number of columns per row (-1 by
 default); may be negative implying that the nucleotides are printed on a
 single line.}
-
-\item{obj}{as object of class phyDat}
 
 \item{freq}{logical, if 'TRUE', frequencies or counts are returned otherwise
 proportions}

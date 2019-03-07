@@ -475,7 +475,7 @@ circNetwork <- function(x, ord = NULL) {
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{consensusNet}}, \code{\link{neighborNet}},
 #' \code{\link{splitsNetwork}}, \code{\link{hadamard}},
-#' \code{\link{distanceHadamard}}, \code{\link{layout_with_kk}},
+#' \code{\link{distanceHadamard}},
 #' \code{\link[ape]{evonet}}, \code{\link[ape]{as.igraph}},
 #' \code{\link{densiTree}}, \code{\link[ape]{nodelabels}},
 #' \code{\link[ape]{tiplabels}}
@@ -487,6 +487,7 @@ circNetwork <- function(x, ord = NULL) {
 #' Intertwining phylogenetic trees and networks. \emph{Methods Ecol Evol}.
 #' \bold{8}, 1212--1220. doi:10.1111/2041-210X.12760
 #' @keywords plot
+#' @importFrom igraph graph
 #' @examples
 #'
 #' set.seed(1)
@@ -547,6 +548,7 @@ removeTrivialSplits <- function(obj) {
 
 
 #' @rdname as.networx
+#' @importFrom igraph shortest_paths decompose
 #' @method as.networx splits
 #' @export
 as.networx.splits <- function(x, planar = FALSE, coord = c("none", "2D", "3D"),
@@ -1003,8 +1005,6 @@ coords <- function(obj, dim = "3D") {
   #    g2 <- set.edge.attribute(g, "weight", value=rep(1, nrow(obj$edge))
   if (dim == "3D") {
     coord <- layout_nicely(g, dim = 3)
-    #        coord <- layout_with_kk(g, dim=3)
-    #        coord <- layout.kamada.kawai(g, dim=3)
     k <- matrix(0, max(obj$splitIndex), 3)
     for (i in ind1) {
       tmp <- coord[obj$edge[i, 2], ] - coord[obj$edge[i, 1], ]
@@ -1086,6 +1086,7 @@ edgeLabels <- function(xx, yy, zz = NULL, edge) {
 
 
 #' @rdname as.networx
+#' @importFrom igraph graph_from_adjacency_matrix vcount topo_sort layout_nicely
 #' @method plot networx
 #' @export
 plot.networx <- function(x, type = "3D", use.edge.length = TRUE,
