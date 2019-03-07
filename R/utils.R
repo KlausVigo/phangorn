@@ -8,6 +8,11 @@
 #' @usage lhs \%>\% rhs
 NULL
 
-#' @importFrom ape rtree
+#' @import methods
+#' @import Rcpp
+#' @import parallel
+#' @import ape
+## @importFrom ape rtree
+
 #' @export
 ape::rtree

@@ -36,6 +36,8 @@ OTHER CHANGES
 
        tree or object when interrupted.
 
+     o roxygen2 is used to generate NAMESPACE
+
 
      CHANGES in PHANGORN VERSION 2.4.0
 

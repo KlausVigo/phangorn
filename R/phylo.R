@@ -421,11 +421,6 @@ pml.init <- function(data, k = 1L) {
   nc <- attr(data, "nc")
   .C("ll_init", as.integer(nr), as.integer(nTips), as.integer(nc),
     as.integer(k))
-  #    INV <- lli(data) #, tree
-  #    .iind <<- which((INV %*% rep(1, nc)) > 0)
-  #    .INV <<-  Matrix(INV, sparse=TRUE)
-  #    assign(".iind", which((INV %*% rep(1, nc)) > 0), envir=parent.frame())
-  #    assign(".INV", Matrix(INV, sparse=TRUE), envir=parent.frame())
 }
 
 
