@@ -174,6 +174,7 @@ zeroWise <- function(x, nTips = NULL) {
 #' VI: Proceedings of the Sixth Australian Conference on Combinatorial
 #' Mathematics, Armidale, Australia}, 119--126
 #' @keywords classif
+#' @importFrom fastmatch fmatch
 #' @examples
 #'
 #' tree1 <- rtree(100, rooted=FALSE)

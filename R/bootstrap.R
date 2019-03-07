@@ -335,6 +335,7 @@ plotBS <- function(tree, BStrees, type = "unrooted", bs.col = "black",
 #' @seealso \code{\link{consensus}}, \code{\link{consensusNet}},
 #' \code{\link{prop.part}}
 #' @keywords cluster
+#' @importFrom fastmatch fmatch
 #' @examples
 #'
 #'

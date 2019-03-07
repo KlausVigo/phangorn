@@ -364,7 +364,8 @@ PNJ <- function(data)
 #' \code{\link[phangorn]{distanceHadamard}},
 #' \code{\link[phangorn]{splitsNetwork}}, \code{\link[phangorn]{upgma}}
 #' @keywords cluster
-#' @importFrom Matrix Matrix
+#' @importFrom Matrix Matrix sparseMatrix crossprod solve
+#' @importFrom quadprog solve.QP.compact
 #' @examples
 #'
 #' example(NJ)

@@ -41,6 +41,7 @@
 #' Yang, Z. (2006). \emph{Computational Molecular evolution}. Oxford University
 #' Press, Oxford.
 #' @keywords cluster
+#' @importFrom fastmatch fmatch
 #' @examples
 #'
 #' example(NJ)

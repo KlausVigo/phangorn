@@ -66,6 +66,7 @@ as.matrix.splits <- function(x, zero.print = 0L, one.print = 1L, ...) {
 
 
 #' @rdname as.splits
+#' @importFrom Matrix sparseMatrix
 #' @method as.Matrix splits
 #' @export
 as.Matrix.splits <- function(x, ...) {

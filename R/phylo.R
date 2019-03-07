@@ -1628,6 +1628,7 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #' discrete morphological character data. \emph{Systematic Biology} \bold{50},
 #' 913--925.
 #' @keywords cluster
+#' @importFrom Matrix Matrix
 #' @examples
 #'
 #'   example(NJ)

@@ -31,6 +31,8 @@
 #' K. P. Schliep (2009). Some Applications of statistical phylogenetics (PhD
 #' Thesis)
 #' @keywords cluster
+#' @importFrom Matrix sparseMatrix
+#' @importFrom quadprog solve.QP
 #' @examples
 #'
 #' data(yeast)
@@ -549,6 +551,7 @@ removeTrivialSplits <- function(obj) {
 
 #' @rdname as.networx
 #' @importFrom igraph shortest_paths decompose
+#' @importFrom Matrix spMatrix
 #' @method as.networx splits
 #' @export
 as.networx.splits <- function(x, planar = FALSE, coord = c("none", "2D", "3D"),
