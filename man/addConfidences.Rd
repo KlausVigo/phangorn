@@ -3,12 +3,21 @@
 \name{createLabel}
 \alias{createLabel}
 \alias{addConfidences}
+\alias{addConfidences.splits}
+\alias{addConfidences.networx}
+\alias{addConfidences.phylo}
 \alias{presenceAbsence}
 \title{Compare splits and add support values to an object}
 \usage{
 createLabel(x, y, label_y, type = "edge", nomatch = NA)
 
 addConfidences(x, y, ...)
+
+\method{addConfidences}{splits}(x, y, scaler = 1, ...)
+
+\method{addConfidences}{networx}(x, y, scaler = 1, ...)
+
+\method{addConfidences}{phylo}(x, y, ...)
 
 presenceAbsence(x, y)
 }

@@ -14,6 +14,7 @@
 \alias{as.matrix.splits}
 \alias{as.Matrix.splits}
 \alias{print.splits}
+\alias{[.splits}
 \alias{c.splits}
 \alias{unique.splits}
 \alias{as.splits.phylo}
@@ -36,6 +37,8 @@ as.splits(x, ...)
 
 \method{print}{splits}(x, maxp = getOption("max.print"),
   zero.print = ".", one.print = "|", ...)
+
+\method{[}{splits}(x, i)
 
 \method{c}{splits}(..., recursive = FALSE)
 
