@@ -248,7 +248,7 @@ pmlPart2multiPhylo <- function(x) {
   res
 }
 
-
+#' @export
 plot.pmlPart <- function(x, ...) {
   plot(pmlPart2multiPhylo(x), ...)
 }
@@ -769,7 +769,7 @@ plot.pmlCluster <- function(x, which = c(1L:3L), caption =
 }
 
 
-
+#' @export
 print.pmlPart <- function(x, ...) {
   df <- x$df
   nc <- attr(x$fits[[1]]$data, "nc")
@@ -820,8 +820,7 @@ print.pmlPart <- function(x, ...) {
   }
 }
 
-#' @rdname pmlPart
-#' @method logLik pmlPart
+
 #' @export
 logLik.pmlPart <- function(object, ...) {
   res <- object$logLik

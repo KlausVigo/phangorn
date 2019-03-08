@@ -573,7 +573,7 @@ pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
   }
 }
 
-
+#' @export
 print.pmlMix <- function(x, ...) {
   nc <- attr(x$fits[[1]]$data, "nc")
   nr <- attr(x$fits[[1]]$data, "nr")
@@ -617,8 +617,6 @@ print.pmlMix <- function(x, ...) {
 }
 
 
-#' @rdname pmlMix
-#' @method logLik pmlMix
 #' @export
 logLik.pmlMix <- function(object, ...) {
   res <- object$logLik

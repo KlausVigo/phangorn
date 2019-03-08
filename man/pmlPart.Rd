@@ -4,7 +4,6 @@
 \alias{multiphyDat2pmlPart}
 \alias{pmlPart2multiPhylo}
 \alias{pmlPart}
-\alias{logLik.pmlPart}
 \title{Partition model.}
 \usage{
 multiphyDat2pmlPart(x, rooted = FALSE, ...)
@@ -13,8 +12,6 @@ pmlPart2multiPhylo(x)
 
 pmlPart(formula, object, control = pml.control(epsilon = 1e-08, maxit =
   10, trace = 1), model = NULL, rooted = FALSE, ...)
-
-\method{logLik}{pmlPart}(object, ...)
 }
 \arguments{
 \item{x}{an object of class \code{pmlPart}}
