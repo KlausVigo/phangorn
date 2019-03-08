@@ -53,6 +53,8 @@ phyDat2alignment(x)
 
 \method{as.phyDat}{MultipleAlignment}(x, ...)
 
+\method{as.MultipleAlignment}{phyDat}(x, ...)
+
 acgt2ry(obj)
 
 \method{as.character}{phyDat}(x, allLevels = TRUE, ...)

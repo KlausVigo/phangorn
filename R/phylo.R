@@ -237,10 +237,13 @@ logLik.pml <- function(object, ...) {
 }
 
 
+#' @rdname pml
+#' @export
 AICc <- function(object, ...)
   UseMethod("AICc")
 
-
+#' @rdname pml
+#' @export
 AICc.pml <- function(object, ...) {
   n <- sum(object$weight)
   k <- object$df
@@ -250,12 +253,16 @@ AICc.pml <- function(object, ...) {
 }
 
 
+# @rdname pml
+#' @export
 BIC.pml <- function(object, ...) {
   res <- AIC(object, k = log(sum(object$weight)))
   res
 }
 
 
+# @rdname pml
+#' @export
 anova.pml <- function(object, ...) {
   X <- c(list(object), list(...))
   fun <- function(x) {
@@ -979,6 +986,8 @@ getModelAA <- function(model, bf = TRUE, Q = TRUE) {
 }
 
 
+#' @rdname pml
+#' @export
 print.pml <- function(x, ...) {
   cat("\n loglikelihood:", x$logLik, "\n")
   w <- x$weight

@@ -2,14 +2,23 @@
 % Please edit documentation in R/phylo.R
 \name{logLik.pml}
 \alias{logLik.pml}
+\alias{AICc}
+\alias{AICc.pml}
 \alias{pml.control}
+\alias{print.pml}
 \alias{pml}
 \alias{optim.pml}
 \title{Likelihood of a tree.}
 \usage{
 \method{logLik}{pml}(object, ...)
 
+AICc(object, ...)
+
+\method{AICc}{pml}(object, ...)
+
 pml.control(epsilon = 1e-08, maxit = 10, trace = 1)
+
+\method{print}{pml}(x, ...)
 
 pml(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   rate = 1, model = NULL, ...)

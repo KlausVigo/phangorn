@@ -591,12 +591,16 @@ as.phyDat.MultipleAlignment <- function(x, ...){
 }
 
 
+# @rdname phyDat
+#' @export
 as.MultipleAlignment <- function (x, ...){
     if (inherits(x,"MultipleAlignment")) return(x)
     UseMethod("as.MultipleAlignment")
 }
 
 
+#' @rdname phyDat
+#' @export
 as.MultipleAlignment.phyDat <- function(x, ...){
     if (requireNamespace('Biostrings')){
     z <- as.character(x)
@@ -614,13 +618,16 @@ as.MultipleAlignment.phyDat <- function(x, ...){
 
 phyDat2MultipleAlignment <- as.MultipleAlignment.phyDat
 
-
+# @rdname phyDat
+#' @export
 as.phyDat.matrix <- function (x, ...) phyDat(data=x, ...)
 
-
+# @rdname phyDat
+#' @export
 as.phyDat.character <- function (x, ...) phyDat(data=x, ...)
 
-
+# @rdname phyDat
+#' @export
 as.phyDat.data.frame <- function (x, ...) phyDat(data=x, ...)
 
 
@@ -804,7 +811,8 @@ fast.table2 <- function (data)
 }
 
 
-# new cbind.phyDat
+# @rdname phyDat
+#' @export
 cbind.phyDat <- function(..., gaps="-", compress=TRUE){
     object <- as.list(substitute(list(...)))[-1]
     x <- list(...)
@@ -877,7 +885,8 @@ cbind.phyDat <- function(..., gaps="-", compress=TRUE){
     tmp
 }
 
-
+# @rdname phyDat
+#' @export
 c.phyDat <- cbind.phyDat
 
 

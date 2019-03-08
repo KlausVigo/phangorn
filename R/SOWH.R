@@ -98,6 +98,7 @@ SOWH.test <- function(x, n = 100, restricted = list(optNni = FALSE),
 }
 
 
+#' @export
 print.SOWH <- function(x, digits = 4L, ...) {
   resLL <- logLik(x$restr)
   unresLL <- logLik(x$unrestr)
@@ -110,6 +111,7 @@ print.SOWH <- function(x, digits = 4L, ...) {
 }
 
 
+#' @export
 summary.SOWH <- function(object, digits = 4L, plot = TRUE, ...) {
   resLL <- logLik(object$restr)
   unresLL <- logLik(object$unrestr)
