@@ -28,8 +28,8 @@ UPGMA and WPGMA clustering. Just a wrapper function around
 \examples{
 
 data(Laurasiatherian)
-dm = dist.ml(Laurasiatherian)
-tree = upgma(dm)
+dm <- dist.ml(Laurasiatherian)
+tree <- upgma(dm)
 plot(tree)
 
 }

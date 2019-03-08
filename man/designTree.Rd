@@ -68,7 +68,7 @@ y <- dm[lower.tri(dm)]
 X <- designTree(tree)
 lm(y~X-1)
 # avoids negative edge weights
-tree2 = nnls.tree(dm, tree)
+tree2 <- nnls.tree(dm, tree)
 
 }
 \seealso{

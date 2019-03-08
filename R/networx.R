@@ -1353,7 +1353,7 @@ closest.node <- function(x, y, P) {
 #' @param \dots further arguments to be passed to or from other methods.
 #' @return \code{identify.networx} returns a splits object.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link[phangorn]{plot.networx}}
+#' @seealso \code{\link[phangorn]{plot.networx}}, \code{\link[graphics]{identify}}
 #' @examples
 #' \dontrun{
 #' data(yeast)
@@ -1362,7 +1362,9 @@ closest.node <- function(x, y, P) {
 #' plot(nnet, "2D")
 #' identify(nnet) # click close to an edge
 #' }
-#' @export identify.networx
+#' @importFrom graphics identify
+#' @method identify networx
+#' @export
 identify.networx <- function(x, quiet = FALSE, ...) {
   if (!quiet)
     cat("Click close to a node or edge of the tree...\n")
