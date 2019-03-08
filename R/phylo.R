@@ -226,8 +226,7 @@ optimW <- function(fit, ...) {
 
 # predict.pml <- function(object, newdata,...) sum(object$site * newdata)
 
-#' @rdname pml
-#' @method logLik pml
+
 #' @export
 logLik.pml <- function(object, ...) {
   res <- object$logLik
@@ -237,12 +236,11 @@ logLik.pml <- function(object, ...) {
 }
 
 
-#' @rdname pml
 #' @export
 AICc <- function(object, ...)
   UseMethod("AICc")
 
-#' @rdname pml
+
 #' @export
 AICc.pml <- function(object, ...) {
   n <- sum(object$weight)
@@ -253,7 +251,6 @@ AICc.pml <- function(object, ...) {
 }
 
 
-# @rdname pml
 #' @export
 BIC.pml <- function(object, ...) {
   res <- AIC(object, k = log(sum(object$weight)))
@@ -261,7 +258,6 @@ BIC.pml <- function(object, ...) {
 }
 
 
-# @rdname pml
 #' @export
 anova.pml <- function(object, ...) {
   X <- c(list(object), list(...))
@@ -291,6 +287,7 @@ anova.pml <- function(object, ...) {
 #    res
 # }
 
+#' @export
 vcov.pml <- function(object, ...) {
   FI <- score(object, FALSE)[[2]]
   l <- dim(FI)[1]
@@ -722,6 +719,7 @@ optim.quartet <- function(old.el, eig, bf, dat, g = 1, w = 1, weight,
 }
 
 
+#' @export
 plot.pml <- function(x, ...) plot.phylo(x$tree, ...)
 
 
@@ -986,7 +984,6 @@ getModelAA <- function(model, bf = TRUE, Q = TRUE) {
 }
 
 
-#' @rdname pml
 #' @export
 print.pml <- function(x, ...) {
   cat("\n loglikelihood:", x$logLik, "\n")
@@ -1095,6 +1092,7 @@ update.pmlNew <- function(object, ..., evaluate = TRUE) {
 }
 
 
+#' @export
 update.pml <- function(object, ...) {
   extras <- match.call(expand.dots = FALSE)$...
   pmla <- c("tree", "data", "bf", "Q", "inv", "k", "shape",

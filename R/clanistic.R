@@ -452,6 +452,7 @@ summary.clanistics <- function(object, ...){
     }
 
 
+#' @export
 print.summary.clanistics <- function(x, ...){
     print(aggregate(x[,-1], list(Variable=x[,1]), sum), ...)
 }

@@ -747,6 +747,7 @@ pmlCluster <- function(formula, fit, weight, p = 1:5, part = NULL, nrep = 10,
 }
 
 
+#' @export
 plot.pmlCluster <- function(x, which = c(1L:3L), caption =
                             list("BIC", "log-likelihood", "Partitions"), ...) {
   show <- rep(FALSE, 3)

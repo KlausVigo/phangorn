@@ -45,6 +45,7 @@ as.splits <- function(x, ...) {
 }
 
 
+#' @export
 as.Matrix <- function(x, ...) {
   if (inherits(x, "Matrix")) return(x)
   UseMethod("as.Matrix")
@@ -80,7 +81,6 @@ as.Matrix.splits <- function(x, ...) {
 
 
 #' @rdname as.splits
-#' @method print splits
 #' @export
 print.splits <- function(x, maxp = getOption("max.print"),
                          zero.print = ".", one.print = "|", ...) {
@@ -119,7 +119,7 @@ changeOrder <- function(x, labels) {
 
 
 ## @rdname as.splits
-## @export
+#' @export
 matchSplits <- function(x, y, as.in = TRUE) {
   tiplabel <- attr(x, "label")
   if (any(is.na(match(tiplabel, attr(y, "label")))))
@@ -216,6 +216,8 @@ unique.splits <- function(x, incomparables = FALSE, unrooted = TRUE, ...) {
 }
 
 
+
+#' @export
 distinct.splits <- function(...) {
   tmp <- c(...)
   res <- unique(tmp)
@@ -278,6 +280,7 @@ as.splits.multiPhylo <- function(x, ...) {
 }
 
 
+#' @export
 as.splits.prop.part <- function(x, ...) {
   if (is.null(attr(x, "number")))
     attr(x, "weights") <- rep(1, length(x))
@@ -312,7 +315,7 @@ as.prop.part.splits <- function(x, ...) {
 ## as.splits.phylo
 ## @rdname as.splits
 ## @method as.phylo splits
-## @export
+#' @export
 as.phylo.splits <- function(x, result = "phylo", ...) {
   result <- match.arg(result, c("phylo", "all"))
   labels <- attr(x, "labels")

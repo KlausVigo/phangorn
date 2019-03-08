@@ -18,6 +18,7 @@ coph <- function(x, path = FALSE) {
 }
 
 
+#' @export
 cophenetic.splits <- function(x) {
   labels <- attr(x, "labels")
   X <- splits2design(x)
@@ -46,6 +47,7 @@ cophenetic.splits <- function(x) {
 #' @seealso \code{\link[stats]{cophenetic}} for the generic function,
 #' \code{neighborNet} to construct a network from a distance matrix
 #' @keywords manip
+#' @export
 cophenetic.networx <- function(x) {
   spl <- x$splits
   cophenetic.splits(spl)

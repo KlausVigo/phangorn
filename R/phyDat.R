@@ -616,13 +616,14 @@ as.MultipleAlignment.phyDat <- function(x, ...){
 }
 
 
+#' @export
 phyDat2MultipleAlignment <- as.MultipleAlignment.phyDat
 
-# @rdname phyDat
+
 #' @export
 as.phyDat.matrix <- function (x, ...) phyDat(data=x, ...)
 
-# @rdname phyDat
+
 #' @export
 as.phyDat.character <- function (x, ...) phyDat(data=x, ...)
 
@@ -776,6 +777,7 @@ as.AAbin.phyDat <- function(x,...) {
 }
 
 
+#' @export
 print.phyDat <- function (x, ...)
 {
     cat(length(x), "sequences with",sum(attr(x,"weight")), "character and",
