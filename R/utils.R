@@ -3,10 +3,5 @@
 magrittr::'%>%'
 
 
-#' @export
-ape::rtree
-
-
-
 
 

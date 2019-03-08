@@ -22,8 +22,8 @@
 #' @examples
 #'
 #' data(Laurasiatherian)
-#' dm = dist.ml(Laurasiatherian)
-#' tree = upgma(dm)
+#' dm <- dist.ml(Laurasiatherian)
+#' tree <- upgma(dm)
 #' plot(tree)
 #'
 #' @rdname upgma
@@ -374,7 +374,7 @@ PNJ <- function(data)
 #' X <- designTree(tree)
 #' lm(y~X-1)
 #' # avoids negative edge weights
-#' tree2 = nnls.tree(dm, tree)
+#' tree2 <- nnls.tree(dm, tree)
 #'
 #' @rdname designTree
 #' @export

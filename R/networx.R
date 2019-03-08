@@ -521,7 +521,8 @@ getOrdering <- function(x) {
   ord
 }
 
-## as.splits.phylo
+
+#' @export
 addTrivialSplits <- function(obj) {
   label <- attr(obj, "label")
   nTips <- length(label)
@@ -541,6 +542,7 @@ addTrivialSplits <- function(obj) {
 }
 
 
+#' @export
 removeTrivialSplits <- function(obj) {
   nTips <- length(attr(obj, "label"))
   l <- lengths(obj)

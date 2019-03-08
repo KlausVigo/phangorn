@@ -4,7 +4,6 @@
 \name{reexports}
 \alias{reexports}
 \alias{\%>\%}
-\alias{rtree}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -12,8 +11,6 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{ape}{\code{\link[ape]{rtree}}}
-
   \item{magrittr}{\code{\link[magrittr]{\%>\%}}}
 }}
 

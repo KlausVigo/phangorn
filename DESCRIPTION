@@ -17,8 +17,8 @@ Description: Package contains methods for estimation of phylogenetic trees and
     visualizations for trees and split networks. 
 Depends:
     R (>= 3.2.0),
+    ape (>= 5.0)
 Imports:
-    ape (>= 5.0),
     quadprog,
     igraph (>= 1.0),
     Matrix,
