@@ -617,6 +617,9 @@ print.pmlMix <- function(x, ...) {
 }
 
 
+#' @rdname pmlMix
+#' @method logLik pmlMix
+#' @export
 logLik.pmlMix <- function(object, ...) {
   res <- object$logLik
   attr(res, "df") <- sum(object$df[, 1] * object$df[, 2])

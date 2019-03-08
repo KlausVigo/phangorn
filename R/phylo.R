@@ -226,7 +226,9 @@ optimW <- function(fit, ...) {
 
 # predict.pml <- function(object, newdata,...) sum(object$site * newdata)
 
-
+#' @rdname pml
+#' @method logLik pml
+#' @export
 logLik.pml <- function(object, ...) {
   res <- object$logLik
   attr(res, "df") <- object$df

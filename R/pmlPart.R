@@ -820,7 +820,9 @@ print.pmlPart <- function(x, ...) {
   }
 }
 
-
+#' @rdname pmlPart
+#' @method logLik pmlPart
+#' @export
 logLik.pmlPart <- function(object, ...) {
   res <- object$logLik
   attr(res, "df") <- sum(object$df[, 1] * object$df[, 2])
