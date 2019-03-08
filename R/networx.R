@@ -811,7 +811,6 @@ addConfidencesMultiPhylo <- function(spl, trees) {
 }
 
 
-#' @rdname addConfidences
 #' @export
 addConfidences.splits <- function(x, y, scaler = 1, ...) {
   if (hasArg(add))
@@ -852,7 +851,6 @@ addConfidences.splits <- function(x, y, scaler = 1, ...) {
 }
 
 
-#' @rdname addConfidences
 #' @export
 addConfidences.networx <- function(x, y, scaler = 1, ...) {
   spl <- x$splits

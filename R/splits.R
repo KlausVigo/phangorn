@@ -91,7 +91,6 @@ print.splits <- function(x, maxp = getOption("max.print"),
 }
 
 
-#' @rdname as.splits
 #' @export
 "[.splits" <- function(x, i) {
   tmp <- attributes(x)
