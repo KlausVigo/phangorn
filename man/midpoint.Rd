@@ -59,7 +59,7 @@ plot(tree3, show.node.label=TRUE)
 }
 \seealso{
 \code{\link[ape]{consensus}}, \code{\link[ape]{root}},
-\code{\link[ape]{di2multi}}
+\code{\link[ape]{multi2di}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

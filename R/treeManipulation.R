@@ -95,7 +95,7 @@ changeEdgeLength <- function(tree, edge, edge.length) {
 #' the root node.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link[ape]{consensus}}, \code{\link[ape]{root}},
-#' \code{\link[ape]{di2multi}}
+#' \code{\link[ape]{multi2di}}
 #' @keywords cluster
 #' @examples
 #'
@@ -652,7 +652,7 @@ allAncestors <- function(x) {
 #' @param full a logical indicating whether to return the MRCAs among all tips
 #' and nodes (if TRUE); the default is to return only the MRCAs among tips.
 #' @return a vector or a list containing the indices of the nodes.
-#' @seealso \code{treewalk}, \code{\link[ape]{phylo}},
+#' @seealso \code{treewalk}, \code{\link[ape]{as.phylo}},
 #' \code{\link[ape]{nodelabels}}
 #' @keywords misc
 #' @examples
