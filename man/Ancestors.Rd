@@ -73,7 +73,7 @@ mrca.phylo(tree)
 
 }
 \seealso{
-\code{treewalk}, \code{\link[ape]{phylo}},
+\code{treewalk}, \code{\link[ape]{as.phylo}},
 \code{\link[ape]{nodelabels}}
 }
 \keyword{internal}
