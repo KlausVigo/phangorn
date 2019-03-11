@@ -96,7 +96,6 @@ BinindaEmondsEtAl2007 <- .compressTipLabel(BinindaEmondsEtAl2007)
 densiTree(BinindaEmondsEtAl2007, type="phylogram", col="red")
 }
 
-
 }
 \references{
 densiTree is inspired from the great

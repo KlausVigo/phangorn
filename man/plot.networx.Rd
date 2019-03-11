@@ -106,7 +106,7 @@ Intertwining phylogenetic trees and networks. \emph{Methods Ecol Evol}.
 \seealso{
 \code{\link{consensusNet}}, \code{\link{neighborNet}},
 \code{\link{splitsNetwork}}, \code{\link{hadamard}},
-\code{\link{distanceHadamard}},
+\code{\link{distanceHadamard}}, \code{\link{as.networx}},
 \code{\link[ape]{evonet}}, \code{\link[ape]{as.phylo}},
 \code{\link{densiTree}}, \code{\link[ape]{nodelabels}}
 }

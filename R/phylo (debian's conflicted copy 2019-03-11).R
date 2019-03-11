@@ -1,4 +1,6 @@
-## Maximum likelihood estimation
+#
+# Maximum likelihood estimation
+#
 #' @rdname pml.fit
 #' @export
 discrete.gamma <- function(alpha, k) {

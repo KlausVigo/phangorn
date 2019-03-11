@@ -47,10 +47,6 @@ comp2 <- function(x, y) {
   apply(res, 2, which.min)
 }
 
-# single linkage of minimal coalescent times
-# extends speciesTree fom ape
-
-
 
 #' Species Tree
 #'
@@ -61,8 +57,6 @@ comp2 <- function(x, y) {
 #' et al. (2010) from the element wise minima of the cophenetic matrices of the
 #' gene trees. It extends \code{speciesTree} in ape as it allows that have
 #' several individuals per gene tree.
-#'
-#' @export
 #'
 #' @param tree an object of class \code{multiPhylo}
 #' @param X A \code{phyDat} object to define which individual belongs to which
@@ -76,6 +70,7 @@ comp2 <- function(x, y) {
 #' Biology}, \bold{60}, 95--106.
 #' @keywords cluster
 #'
+#' @export
 coalSpeciesTree <- function(tree, X = NULL, sTree = NULL) {
   if (is.null(X)) return(speciesTree(tree))
   trees <- unclass(tree)

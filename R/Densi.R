@@ -125,8 +125,7 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt = 0, cex = 1,
 #' densiTree(BinindaEmondsEtAl2007, type="phylogram", col="red")
 #' }
 #'
-#'
-#' @export densiTree
+#' @export
 densiTree <- function(x, type = "cladogram", alpha = 1 / length(x),
                       consensus = NULL, direction = "rightwards", optim = FALSE,
                       scaleX = FALSE, col = 1, width = 1, lty = 1, cex = .8,

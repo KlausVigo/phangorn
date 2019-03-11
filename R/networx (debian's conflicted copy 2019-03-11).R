@@ -1,125 +1,3 @@
-#' Phylogenetic Network
-#'
-#' \code{splitsNetwork} estimates weights for a splits graph from a distance
-#' matrix.
-#'
-#' \code{splitsNetwork} fits non-negative least-squares phylogenetic networks
-#' using L1 (LASSO), L2(ridge regression) constraints.  The function minimizes
-#' the penalized least squares
-#' \deqn{\beta = min \sum(dm - X\beta)^2 + \lambda \|\beta \|^2_2 }{ beta = sum(dm - X*beta)^2 + lambda |beta|^2_2 }
-#' with respect to \deqn{\|\beta \|_1 <= \gamma, \beta >= 0}{ |beta|_1 = gamma, beta >= 0}
-#' where \eqn{X} is a design matrix constructed with \code{designSplits}.
-#' External edges are fitted without L1 or L2 constraints.
-#'
-#' @param dm A distance matrix.
-#' @param splits a splits object, containing all splits to consider, otherwise
-#' all possible splits are used
-#' @param gamma penalty value for the L1 constraint.
-#' @param lambda penalty value for the L2 constraint.
-#' @param weight a vector of weights.
-#' @return \code{splitsNetwork} returns a splits object with a matrix added.
-#' The first column contains the indices of the splits, the second column an
-#' unconstrained fit without penalty terms and the third column the constrained
-#' fit.
-#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link[phangorn]{distanceHadamard}},
-#' \code{\link[phangorn]{designTree}} \code{\link[phangorn]{consensusNet}},
-#' \code{\link[phangorn]{plot.networx}}
-#' @references Efron, Hastie, Johnstone and Tibshirani (2004) Least Angle
-#' Regression (with discussion) \emph{Annals of Statistics} \bold{32(2)}, 407--499
-#'
-#' K. P. Schliep (2009). Some Applications of statistical phylogenetics (PhD
-#' Thesis)
-#' @keywords cluster
-#' @importFrom Matrix sparseMatrix
-#' @importFrom quadprog solve.QP
-#' @examples
-#'
-#' data(yeast)
-#' dm <- dist.ml(yeast)
-#' fit <- splitsNetwork(dm)
-#' net <- as.networx(fit)
-#' plot(net, "2D")
-#' write.nexus.splits(fit)
-#'
-#' @export splitsNetwork
-splitsNetwork <- function(dm, splits = NULL, gamma = .1, lambda = 1e-6,
-                          weight = NULL) {
-  dm <- as.matrix(dm)
-  k <- dim(dm)[1]
-
-  if (!is.null(splits)) {
-    tmp <- which(lengths(splits) == k)
-    splits <- splits[-tmp]
-    lab <- attr(splits, "labels")
-    dm <- dm[lab, lab]
-  }
-
-  if (is.null(splits)) {
-    X2 <- designAll(k, TRUE)
-    X <- X2[[1]]
-  }
-  else X <- as.matrix(splits2design(splits))
-
-  y <- dm[lower.tri(dm)]
-  if (is.null(splits)) ind <- c(2^(0:(k - 2)), 2^(k - 1) - 1)
-  else ind <- which(lengths(splits) == 1)
-  #  else ind = which(sapply(splits, length)==1)
-  #   y2 = lm(y~X[,ind]-1)$res
-  n <- dim(X)[2]
-
-  ridge <- lambda * diag(n)
-  ridge[ind, ind] <- 0
-  if (!is.null(weight)) Dmat <- crossprod(X * sqrt(weight)) + ridge
-  else Dmat <- crossprod(X) + ridge
-  if (!is.null(weight)) dvec <- crossprod(X * sqrt(weight), y * sqrt(weight))
-  else dvec <- crossprod(X, y)
-
-  ind1       <- rep(1, n)
-  ind1[ind]  <- 0
-
-  Amat       <- cbind(ind1, diag(n))
-  bvec       <- c(gamma, rep(0, n))
-
-  # needs quadprog::solve.QP.compact
-  solution <- quadprog::solve.QP(Dmat, dvec, Amat, bvec = bvec, meq = 1)$sol
-
-  ind2 <- which(solution > 1e-8)
-  n2 <- length(ind2)
-
-  ind3 <- which(duplicated(c(ind2, ind), fromLast = TRUE)[1:n2])
-  ridge2 <- lambda * diag(n2)
-  ridge2[ind3, ind3] <- 0
-
-  if (!is.null(weight)) Dmat <- crossprod(X[, ind2] * sqrt(weight)) + ridge2
-  else Dmat <- crossprod(X[, ind2]) + ridge2
-  if (!is.null(weight)) dvec <- crossprod(X[, ind2] * sqrt(weight),
-                                          y * sqrt(weight))
-  else dvec <- crossprod(X[, ind2], y)
-
-  Amat2 <- diag(n2)
-  bvec2 <- rep(0, n2)
-  # needs quadprog::solve.QP.compact
-  # bvec2 not used
-  solution2  <- quadprog::solve.QP(Dmat, dvec, Amat2)$sol
-
-  RSS1 <- sum( (y - X[, ind2] %*% solution[ind2])^2)
-  RSS2 <- sum( (y - X[, ind2] %*% solution2)^2)
-
-  if (is.null(splits)) {
-    splits <- vector("list", length(ind2))
-    for (i in seq_along(ind2)) splits[[i]] <- which(X2[[2]][ind2[i], ] == 1)
-  }
-  else splits <- splits[ind2]
-  attr(splits, "weights") <- solution[ind2]
-  attr(splits, "unrestricted") <- solution2
-  attr(splits, "stats") <- c(df = n2, RSS_p = RSS1, RSS_u = RSS2)
-  attr(splits, "labels") <- dimnames(dm)[[1]]
-  class(splits) <- "splits"
-  return(splits)
-}
-
-
 #' @rdname as.splits
 #' @export
 allSplits <- function(k, labels = NULL) {
@@ -418,7 +296,7 @@ circNetwork <- function(x, ord = NULL) {
 }
 
 
-#' Phylogenetic networks
+#' Conversion among phylogenetic network 0bjects
 #'
 #' \code{as.networx} convert \code{splits} objects into a \code{networx}
 #' object. And most important there exists a generic \code{plot} function to
@@ -428,12 +306,7 @@ circNetwork <- function(x, ord = NULL) {
 #' network and extends the \code{phylo} object. Therefore some generic function
 #' for \code{phylo} objects will also work for \code{networx} objects.  The
 #' argument \code{planar = TRUE} will create a planar split graph based on a
-#' cyclic ordering. These objects can be nicely plotted in \code{"2D"}. So far
-#' not all parameters behave the same on the the \code{rgl} \code{"3D"} and
-#' basic graphic \code{"2D"} device.
-#'
-#' Often it is easier and safer to supply vectors of graphical parameters for
-#' splits (e.g. splits.color) than for edges. These overwrite values edge.color.
+#' cyclic ordering. These objects can be nicely plotted in \code{"2D"}.
 #'
 #' @aliases networx
 #' @param x an object of class \code{"splits"} (as.networx) or \code{"networx"}
@@ -441,50 +314,14 @@ circNetwork <- function(x, ord = NULL) {
 #' @param planar logical whether to produce a planar graph from only cyclic
 #' splits (may excludes splits).
 #' @param coord add coordinates of the nodes, allows to reproduce the plot.
-#' @param type "3D" to plot using rgl or "2D" in the normal device.
-#' @param use.edge.length a logical indicating whether to use the edge weights
-#' of the network to draw the branches (the default) or not.
-#' @param show.tip.label a logical indicating whether to show the tip labels on
-#' the graph (defaults to \code{TRUE}, i.e. the labels are shown).
-#' @param show.edge.label a logical indicating whether to show the tip labels
-#' on the graph.
-#' @param edge.label an additional vector of edge labels (normally not needed).
-#' @param show.node.label a logical indicating whether to show the node labels
-#' (see example).
-#' @param node.label an additional vector of node labels (normally not needed).
-#' @param show.nodes a logical indicating whether to show the nodes (see
-#' example).
-#' @param tip.color the colors used for the tip labels.
-#' @param edge.color the colors used to draw edges.
-#' @param edge.width the width used to draw edges.
-#' @param edge.lty a vector of line types.
-#' @param split.color the colors used to draw edges.
-#' @param split.width the width used to draw edges.
-#' @param split.lty a vector of line types.
-#' @param font an integer specifying the type of font for the labels: 1 (plain
-#' text), 2 (bold), 3 (italic, the default), or 4 (bold italic).
-#' @param cex a numeric value giving the factor scaling of the labels.
-#' @param cex.node.label a numeric value giving the factor scaling of the node
-#' labels.
-#' @param cex.edge.label a numeric value giving the factor scaling of the edge
-#' labels.
-#' @param col.node.label the colors used for the node labels.
-#' @param col.edge.label the colors used for the edge labels.
-#' @param font.node.label the font used for the node labels.
-#' @param font.edge.label the font used for the edge labels.
 #' @param \dots Further arguments passed to or from other methods.
 #' @note The internal representation is likely to change.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{consensusNet}}, \code{\link{neighborNet}},
 #' \code{\link{splitsNetwork}}, \code{\link{hadamard}},
-#' \code{\link{distanceHadamard}},
-#' \code{\link[ape]{evonet}}, \code{\link[ape]{as.igraph}},
-#' \code{\link{densiTree}}, \code{\link[ape]{nodelabels}},
-#' \code{\link[ape]{tiplabels}}
-#' @references Dress, A.W.M. and Huson, D.H. (2004) Constructing Splits Graphs
-#' \emph{IEEE/ACM Transactions on Computational Biology and Bioinformatics
-#' (TCBB)}, \bold{1(3)}, 109--115
-#'
+#' \code{\link{distanceHadamard}}, \code{\link{plot.networx}},
+#' \code{\link[ape]{evonet}}, \code{\link[ape]{as.phylo}}
+#' @references
 #' Schliep, K., Potts, A. J., Morrison, D. A. and Grimm, G. W. (2017),
 #' Intertwining phylogenetic trees and networks. \emph{Methods Ecol Evol}.
 #' \bold{8}, 1212--1220. doi:10.1111/2041-210X.12760
@@ -1090,8 +927,74 @@ edgeLabels <- function(xx, yy, zz = NULL, edge) {
 }
 
 
-
-#' @rdname as.networx
+#' plot phylogenetic networks
+#'
+#' So far not all parameters behave the same on the the \code{rgl} \code{"3D"} and
+#' basic graphic \code{"2D"} device.
+#'
+#' Often it is easier and safer to supply vectors of graphical parameters for
+#' splits (e.g. splits.color) than for edges. These overwrite values edge.color.
+#'
+#' @param type "3D" to plot using rgl or "2D" in the normal device.
+#' @param use.edge.length a logical indicating whether to use the edge weights
+#' of the network to draw the branches (the default) or not.
+#' @param show.tip.label a logical indicating whether to show the tip labels on
+#' the graph (defaults to \code{TRUE}, i.e. the labels are shown).
+#' @param show.edge.label a logical indicating whether to show the tip labels
+#' on the graph.
+#' @param edge.label an additional vector of edge labels (normally not needed).
+#' @param show.node.label a logical indicating whether to show the node labels
+#' (see example).
+#' @param node.label an additional vector of node labels (normally not needed).
+#' @param show.nodes a logical indicating whether to show the nodes (see
+#' example).
+#' @param tip.color the colors used for the tip labels.
+#' @param edge.color the colors used to draw edges.
+#' @param edge.width the width used to draw edges.
+#' @param edge.lty a vector of line types.
+#' @param split.color the colors used to draw edges.
+#' @param split.width the width used to draw edges.
+#' @param split.lty a vector of line types.
+#' @param font an integer specifying the type of font for the labels: 1 (plain
+#' text), 2 (bold), 3 (italic, the default), or 4 (bold italic).
+#' @param cex a numeric value giving the factor scaling of the labels.
+#' @param cex.node.label a numeric value giving the factor scaling of the node
+#' labels.
+#' @param cex.edge.label a numeric value giving the factor scaling of the edge
+#' labels.
+#' @param col.node.label the colors used for the node labels.
+#' @param col.edge.label the colors used for the edge labels.
+#' @param font.node.label the font used for the node labels.
+#' @param font.edge.label the font used for the edge labels.
+#' @param \dots Further arguments passed to or from other methods.
+#' @rdname plot.networx
+#' @note The internal representation is likely to change.
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso \code{\link{consensusNet}}, \code{\link{neighborNet}},
+#' \code{\link{splitsNetwork}}, \code{\link{hadamard}},
+#' \code{\link{distanceHadamard}}, \code{\link{as.networx}},
+#' \code{\link[ape]{evonet}}, \code{\link[ape]{as.phylo}},
+#' \code{\link{densiTree}}, \code{\link[ape]{nodelabels}}
+#' @references Dress, A.W.M. and Huson, D.H. (2004) Constructing Splits Graphs
+#' \emph{IEEE/ACM Transactions on Computational Biology and Bioinformatics
+#' (TCBB)}, \bold{1(3)}, 109--115
+#'
+#' Schliep, K., Potts, A. J., Morrison, D. A. and Grimm, G. W. (2017),
+#' Intertwining phylogenetic trees and networks. \emph{Methods Ecol Evol}.
+#' \bold{8}, 1212--1220. doi:10.1111/2041-210X.12760
+#' @keywords plot
+#' @importFrom igraph graph
+#' @examples
+#'
+#' set.seed(1)
+#' tree1 <- rtree(20, rooted=FALSE)
+#' sp <- as.splits(rNNI(tree1, n=10))
+#' net <- as.networx(sp)
+#' plot(net, "2D")
+#' \dontrun{
+#' # also see example in consensusNet
+#' example(consensusNet)
+#' }
 #' @importFrom igraph graph_from_adjacency_matrix vcount topo_sort layout_nicely
 #' @method plot networx
 #' @export
