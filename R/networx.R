@@ -319,8 +319,8 @@ circNetwork <- function(x, ord = NULL) {
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{consensusNet}}, \code{\link{neighborNet}},
 #' \code{\link{splitsNetwork}}, \code{\link{hadamard}},
-#' \code{\link{distanceHadamard}},
-#' \code{\link[ape]{evonet}}, \code{\link[ape]{as.phylo}},
+#' \code{\link{distanceHadamard}}, \code{\link{plot.networx}},
+#' \code{\link[ape]{evonet}}, \code{\link[ape]{as.phylo}}
 #' @references
 #' Schliep, K., Potts, A. J., Morrison, D. A. and Grimm, G. W. (2017),
 #' Intertwining phylogenetic trees and networks. \emph{Methods Ecol Evol}.
@@ -972,7 +972,7 @@ edgeLabels <- function(xx, yy, zz = NULL, edge) {
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{consensusNet}}, \code{\link{neighborNet}},
 #' \code{\link{splitsNetwork}}, \code{\link{hadamard}},
-#' \code{\link{distanceHadamard}},
+#' \code{\link{distanceHadamard}}, \code{\link{as.networx}},
 #' \code{\link[ape]{evonet}}, \code{\link[ape]{as.phylo}},
 #' \code{\link{densiTree}}, \code{\link[ape]{nodelabels}}
 #' @references Dress, A.W.M. and Huson, D.H. (2004) Constructing Splits Graphs
