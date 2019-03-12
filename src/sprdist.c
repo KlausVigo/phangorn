@@ -1,9 +1,9 @@
-/* 
+/*
  * sprdist.c
  *
- * (c) 2016-2017 Leonardo de Oliveira Martins (leomrtns@gmail.com) 
- * 
- * 
+ * (c) 2016-2019 Leonardo de Oliveira Martins (leomrtns@gmail.com)
+ *
+ *
  * This code may be distributed under the GNU GPL
  *
  */
@@ -12,7 +12,7 @@
 
 #include <Rmath.h>
 #include <math.h>
-#include <R.h> 
+#include <R.h>
 #include <Rinternals.h>
 #include <stdint.h>     /* standard integer types (int32_t typedef etc.) [C99]*/
 
@@ -30,7 +30,7 @@ struct splitset_struct
 {
   int size, spsize, spr, spr_extra, rf, hdist; /*! \brief spr, extra prunes for spr, rf distances and hdist=assignment cost */
   int n_g, n_s, n_agree, n_disagree;
-  bipartition *g_split, *s_split, *agree, *disagree; 
+  bipartition *g_split, *s_split, *agree, *disagree;
   bipartition prune;
   hungarian h; /* hungarian method for solving the assignment between edges */
   bool match;  /*! \brief do we want to calculate the minimum cost assignment */
@@ -46,7 +46,7 @@ struct hungarian_struct
 };
 
 /*! \brief Bit-string representation of splits. */
-struct bipartition_struct 
+struct bipartition_struct
 {
   unsigned long long *bs;  /*! \brief Representation of a bipartition by a vector of integers (bitstrings). */
   int n_ones;  /*! \brief Counter (number of "one"s) */
@@ -129,7 +129,7 @@ void bipartition_resize_vector (bipartition *bvec, int n_b);
 /*! \brief Main SPR calculation function, to be used within R */
 SEXP C_sprdist (SEXP bp1, SEXP bp2, SEXP lt) {
   int i, j, n_leaves = INTEGER(lt)[0];
-  SEXP result;  
+  SEXP result;
   double *res;
   splitset split;
 
@@ -144,16 +144,16 @@ SEXP C_sprdist (SEXP bp1, SEXP bp2, SEXP lt) {
     for (j=0; j < length(VECTOR_ELT (bp1, i)); j++) bipartition_set (split->g_split[i], INTEGER (VECTOR_ELT (bp1, i))[j] - 1);
     for (j=0; j < length(VECTOR_ELT (bp2, i)); j++) bipartition_set (split->s_split[i], INTEGER (VECTOR_ELT (bp2, i))[j] - 1);
   }
-  dSPR_topology_lowlevel (split); 
+  dSPR_topology_lowlevel (split);
   res[0] = split->spr;
   res[1] = split->spr_extra;
   res[2] = split->rf;
   res[3] = split->hdist;
   del_splitset (split);
 
-  UNPROTECT(1); // result 
+  UNPROTECT(1); // result
   return(result);
-}  
+}
 
 /* functions below should not be called outside this scope */
 
@@ -166,7 +166,7 @@ new_splitset (int nleaves, int nsplits)
   split = (splitset) malloc (sizeof (struct splitset_struct));
   split->n_g = split->n_s = split->size = nsplits;
   split->n_agree = split->n_disagree = 0;
-  split->prune = NULL; 
+  split->prune = NULL;
   split->match = true; /* do we want to calculate the assignment matching cost (using hungarian() )? */
   split->spr = split->spr_extra = split->rf = split->hdist = 0;
 
@@ -178,12 +178,12 @@ new_splitset (int nleaves, int nsplits)
     split->g_split[i] = new_bipartition_from_bipsize (split->g_split[0]->n); /* use same bipsize */
     split->s_split[i] = new_bipartition_from_bipsize (split->s_split[0]->n);
   }
-  
+
 
   split->agree    = (bipartition*) malloc (split->size * sizeof (bipartition));
   split->disagree = (bipartition*) malloc (split->size * split->size * sizeof (bipartition));
-  split->agree[0]    = new_bipartition (nleaves); // this bipsize will be recycled below 
-  split->disagree[0] = new_bipartition (nleaves); 
+  split->agree[0]    = new_bipartition (nleaves); // this bipsize will be recycled below
+  split->disagree[0] = new_bipartition (nleaves);
   for (i = 1; i < split->size; i++)               split->agree[i]    = new_bipartition_from_bipsize (split->agree[0]->n);
   for (i = 1; i < split->size * split->size; i++) split->disagree[i] = new_bipartition_from_bipsize (split->disagree[0]->n);
   split->prune = new_bipartition_from_bipsize (split->disagree[0]->n);
@@ -259,13 +259,13 @@ dSPR_topology_lowlevel (splitset split)
     if (mismatch == -1) split->rf = split->n_g + split->n_s;
     mismatch = (split->n_g > 0) && (split->n_s > 0); // all edges were in agreement
     if (!mismatch) return split->spr;
-    
+
     split_create_disagreement_list (split); // vector of smallest disagreements
     split_disagreement_assign_match (split); /* assignment matching between edges using hungarian method (split->hdist after first time) */
-    
-    split_remove_duplicates (split->disagree, &(split->n_disagree)); // some elements are equal; this function also qsorts 
-    split_find_small_disagreement (split);  // could also be one leaf only 
-    
+
+    split_remove_duplicates (split->disagree, &(split->n_disagree)); // some elements are equal; this function also qsorts
+    split_find_small_disagreement (split);  // could also be one leaf only
+
     //for (i = 0; i < split->n_disagree; i++) { bipartition_print_to_stdout (split->disagree[i]); printf ("\n"); }
     //printf ("{%d} prune: ", split->n_disagree); bipartition_print_to_stdout (split->prune); printf ("\n");
 
@@ -284,9 +284,9 @@ split_create_agreement_list (splitset split)
   int s, g;
   for (g = 0; g < split->n_g; g++) for (s = 0; s < split->n_s; s++)
     if (bipartition_is_equal (split->g_split[g], split->s_split[s])) {
-      bipartition_copy (split->agree[split->n_agree++], split->g_split[g]); 
+      bipartition_copy (split->agree[split->n_agree++], split->g_split[g]);
       split->n_g--; split_swap_position (split->g_split, g, split->n_g); /* if we don't swap them, we lose ref to "old" value on g_split[] */
-      split->n_s--; split_swap_position (split->s_split, s, split->n_s); 
+      split->n_s--; split_swap_position (split->s_split, s, split->n_s);
       g--; s = split->n_s; /* pretend loop finished, examine again with new values */
     }
   split_remove_agree_edges (split, split->g_split, &(split->n_g));
@@ -297,9 +297,9 @@ void
 split_remove_agree_edges (splitset split, bipartition *b, int *nb)
 {
   int i, a;
-  for (i = 0; i < (*nb); i++) for (a = 0; a < split->n_agree; a++) 
+  for (i = 0; i < (*nb); i++) for (a = 0; a < split->n_agree; a++)
     if (bipartition_is_equal (b[i], split->agree[a])) {
-      (*nb)--; 
+      (*nb)--;
       split_swap_position (b, i, (*nb));
       i--;
       a = split->n_agree; /* loop again over new value */
@@ -348,7 +348,7 @@ split_create_disagreement_list (splitset split)
 {
   int g, s;
 
-  for (g = 0; g < split->n_g; g++) for (s = 0; s < split->n_s; s++) { 
+  for (g = 0; g < split->n_g; g++) for (s = 0; s < split->n_s; s++) {
     bipartition_XOR (split->disagree[g * split->n_s + s], split->g_split[g], split->s_split[s], true); /* true means to calculate n_ones */
     bipartition_flip_to_smaller_set (split->disagree[g * split->n_s + s]);
   }
@@ -357,15 +357,15 @@ split_create_disagreement_list (splitset split)
 
 void
 split_disagreement_assign_match (splitset split)
-{ /* also calculates split->hdist */ 
+{ /* also calculates split->hdist */
   int g, s, max_n, sum = 0;
-  
+
   if (split->n_g > split->n_s) max_n = split->n_g;
   else                         max_n = split->n_s;
   if (max_n < 2) return;
-  
+
   hungarian_reset (split->h);
-  for (g = 0; g < split->n_g; g++) for (s = 0; s < split->n_s; s++)  
+  for (g = 0; g < split->n_g; g++) for (s = 0; s < split->n_s; s++)
     hungarian_update_cost (split->h, g, s, split->disagree[g * split->n_s + s]->n_ones);
   hungarian_solve (split->h, max_n);
   /* now split->h->col_mate will have the pairs */
@@ -385,12 +385,12 @@ split_find_small_disagreement (splitset split)
   bipartition dis;
   int a, d;
 
-  bipartition_copy (split->prune, split->disagree[0]); /* smallest, in case we don't find a better one in loop below */ 
+  bipartition_copy (split->prune, split->disagree[0]); /* smallest, in case we don't find a better one in loop below */
   if (split->prune->n_ones < 2) return;
 
   dis = new_bipartition_from_bipsize (split->disagree[0]->n);
   for (d = 0; d < split->n_disagree; d++) for (a = 0; a < split->n_agree; a++) {
-    if ((split->disagree[d]->n_ones == split->agree[a]->n_ones) || 
+    if ((split->disagree[d]->n_ones == split->agree[a]->n_ones) ||
         (split->disagree[d]->n_ones == (split->agree[a]->n->bits - split->agree[a]->n_ones))) {
       bipartition_XOR (dis, split->disagree[d], split->agree[a], true);
       if      (!dis->n_ones)               { bipartition_copy (split->prune, split->disagree[d]); d = split->n_disagree; a = split->n_agree; }
@@ -403,14 +403,14 @@ split_find_small_disagreement (splitset split)
       bipartition_NOT (dis, split->g_split[d]);
       if (!bipartition_contains_bits (dis, split->prune)) { split->spr_extra++; d = split->n_g; }
     }
-  } 
-  del_bipartition (dis); 
+  }
+  del_bipartition (dis);
 }
 
 void
 split_remove_small_disagreement (splitset split)
 {
-  int *index, i, j = split->prune->n_ones - 1, k = 0, size = split->agree[0]->n->bits; 
+  int *index, i, j = split->prune->n_ones - 1, k = 0, size = split->agree[0]->n->bits;
 
   index = (int*) malloc (split->prune->n_ones * sizeof (int));
   bipartition_to_int_vector (split->prune, index, split->prune->n_ones);
@@ -419,11 +419,11 @@ split_remove_small_disagreement (splitset split)
     if (index[k] >= (size - split->prune->n_ones)) i = -1;
     else {
       if (i == index[j]) j--;
-      else split_replace_bit (split, index[k++], i); 
+      else split_replace_bit (split, index[k++], i);
     }
   }
 
-  split_new_size (split,size - split->prune->n_ones, true); 
+  split_new_size (split,size - split->prune->n_ones, true);
   if (index) free (index);
 }
 
@@ -432,7 +432,7 @@ split_minimize_subtrees (splitset split)
 {
   int i;
 
-  for (i = 0; i < split->n_s; i++) {      
+  for (i = 0; i < split->n_s; i++) {
     bipartition_flip_to_smaller_set (split->s_split[i]);
     if (split->s_split[i]->n_ones < 2) { split->n_s--; split_swap_position (split->s_split, i, split->n_s); i--; }
   }
@@ -489,7 +489,7 @@ split_swap_position (bipartition *b, int i1, int i2)
 /* The hungarian method below is copied from http://www.informatik.uni-freiburg.de/~stachnis/misc.html
  * The (edited) original message follows:
  *
- ** libhungarian by Cyrill Stachniss, 2004  Solving the Minimum Assignment Problem using the 
+ ** libhungarian by Cyrill Stachniss, 2004  Solving the Minimum Assignment Problem using the
  ** Hungarian Method.         ** This file may be freely copied and distributed! **
  **
  ** Parts of the used code was originally provided by the "Stanford GraphGase", but I made changes to this code.
@@ -514,7 +514,7 @@ new_hungarian (int size)
   int i;
   hungarian p;
 
-  p = (hungarian) malloc (sizeof (struct hungarian_struct)); 
+  p = (hungarian) malloc (sizeof (struct hungarian_struct));
   p->size = size; /* n_rows = n_columns; if it's not, fill with zeroes (no cost) */
   p->cost = (int**) malloc (size * sizeof (int*));
   for (i = 0; i < p->size; i++)
@@ -541,7 +541,7 @@ hungarian_update_cost (hungarian p, int row, int col, int cost)
   p->cost[row][col] = cost;
 }
 
-void 
+void
 del_hungarian (hungarian p)
 {
   int i;
@@ -561,7 +561,7 @@ del_hungarian (hungarian p)
   free (p);
 }
 
-void 
+void
 hungarian_solve (hungarian p, int this_size)
 {
   int i, j, nrows = this_size, ncols = this_size, k, l, s, t, q, unmatched;
@@ -575,7 +575,7 @@ hungarian_solve (hungarian p, int this_size)
     p->initial_cost += s; /* this should be added to final_cost to have classical assignment cost; here we distinguish them */
     if (s!=0)	for (k = 0; k < nrows; k++) p->cost[k][l] -= s;
   } // End subtract column minima in order to start with lots of zeroes 12
- 
+
   // Begin initial state 16
   t=0;
   for (l = 0; l < ncols; l++)  { // n => num_cols
@@ -763,9 +763,9 @@ del_bipartition (bipartition bip)
 {
   if (bip) {
     if (--bip->ref_counter) return;
-    if (bip->bs) free (bip->bs); 
+    if (bip->bs) free (bip->bs);
     del_bipsize (bip->n);
-    free (bip); 
+    free (bip);
   }
 }
 
@@ -783,7 +783,7 @@ bipsize_resize (bipsize n, int nbits)
 {
   int i;
   n->bits = nbits;
-  n->ints = nbits/BitStringSize + 1; // might be smaller than original bs size 
+  n->ints = nbits/BitStringSize + 1; // might be smaller than original bs size
   n->mask = 0ULL;
   for (i=0; i < nbits%BitStringSize; i++) n->mask |= (1ULL << i); /* disregard other bits */
 }
@@ -793,7 +793,7 @@ bipartition_initialize (bipartition bip, int position)
 {
   int i, j;
   for (i=0; i < bip->n->ints; i++) bip->bs[i] = 0ULL;
-  j = position%BitStringSize; 
+  j = position%BitStringSize;
   i = position/BitStringSize;
 
   bip->bs[i] = (1ULL << j);
@@ -851,7 +851,7 @@ bipartition_OR (bipartition result, const bipartition b1, const bipartition b2, 
   for (i=0; i < result->n->ints; i++) result->bs[i] = b1->bs[i] | b2->bs[i];
   result->bs[i-1] &= b1->n->mask; /* do not change last bits (do not belong to bipartition) */
   if (update_count) bipartition_count_n_ones (result);
-  else result->n_ones = b1->n_ones + b2->n_ones; // works on topologies where b1 and b2 are disjoint 
+  else result->n_ones = b1->n_ones + b2->n_ones; // works on topologies where b1 and b2 are disjoint
 }
 
 void
@@ -909,7 +909,7 @@ bipartition_count_n_ones (const bipartition bip)
   int i;
   unsigned long long j;
   bip->n_ones = 0;
-/* // Naive approach 
+/* // Naive approach
   for (i=0; i < bip->n_ints - 1; i++) for (j=0; j < BitStringSize; j++) bip->n_ones += ((bip->bs[i] >> j) & 1ULL);
   for (j=0; j < bip->n_bits%BitStringSize; j++) bip->n_ones += ((bip->bs[i] >> j) & 1ULL);
  */
@@ -925,7 +925,7 @@ bipartition_is_equal (const bipartition b1, const bipartition b2)
   if (b1->n->ints != b2->n->ints) return false;
   for (i=0; i < b1->n->ints - 1; i++) if (b1->bs[i] != b2->bs[i]) return false;
   b1->bs[i] &= b1->n->mask; b2->bs[i] &= b2->n->mask; /* apply mask before comparing last elems */
-  if (b1->bs[i] != b2->bs[i]) return false; 
+  if (b1->bs[i] != b2->bs[i]) return false;
   return true;
 }
 
@@ -935,7 +935,7 @@ bipartition_is_equal_bothsides (const bipartition b1, const bipartition b2)
   int i;
   bool equal = true;
   for (i=0; (i < b1->n->ints - 1) && (equal); i++) if (b1->bs[i] != b2->bs[i]) equal = false;
-  if ((equal) && ((b1->bs[i] & b1->n->mask) != (b2->bs[i] & b2->n->mask))) equal = false; 
+  if ((equal) && ((b1->bs[i] & b1->n->mask) != (b2->bs[i] & b2->n->mask))) equal = false;
   if (equal) return true; /* the biparitions are already the same, without flipping the bits */
   /* now we compare one bipartition with the complement of the other */
   for (i=0; (i < b1->n->ints - 1); i++) if (b1->bs[i] != ~b2->bs[i]) return false;
@@ -976,7 +976,7 @@ bipartition_flip_to_smaller_set (bipartition bip)
 bool
 bipartition_is_bit_set (const bipartition bip, int position)
 {
-  if (bip->bs[(int)(position/BitStringSize)] & (1ULL << (int)(position%BitStringSize))) return true; 
+  if (bip->bs[(int)(position/BitStringSize)] & (1ULL << (int)(position%BitStringSize))) return true;
   return false;
 }
 
@@ -1009,7 +1009,7 @@ bipartition_print_to_stdout (const bipartition b1)
   printf ("[%d] ", b1->n_ones);
 }
 */
- 
+
 void
 bipartition_replace_bit_in_vector (bipartition *bvec, int n_b, int to, int from, bool reduce)
 { /* copy info from position "from" to position "to" */
@@ -1019,10 +1019,10 @@ bipartition_replace_bit_in_vector (bipartition *bvec, int n_b, int to, int from,
    * n_ones is different from default bipartition_set() behaviour: it's not an extra "1" (that is, one that did not
    * contribute to n_ones), but an existing "1" that change places. Schematically:
    * from -> to | normal n_ones count | when bitstring is reduced afterwards
-   * 0    -> 0  |     0               |  0 
+   * 0    -> 0  |     0               |  0
    * 0    -> 1  |    -1               | -1
    * 1    -> 0  |    +1               |  0  (since it's a leaf that belonged to position "from" and now is on position "to")
-   * 1    -> 1  |     0               | -1  (in fact one of the two "1"s dissapeared after reducing the bitstring 
+   * 1    -> 1  |     0               | -1  (in fact one of the two "1"s dissapeared after reducing the bitstring
    * (the above description is outdated since I rewrote by hand the bit functions -- observe how we must erase 1 values from "from") */
   if (reduce) for (k = 0; k < n_b; k++) { // copy 0 or 1 values, erasing "from" values to avoid problems after reducing space (hanging 1s out of range)
     if      ( ((bvec[k]->bs[i] >> j) & 1ULL) && ((bvec[k]->bs[i2] >> j2) & 1ULL) )  { bvec[k]->n_ones--; bvec[k]->bs[i] &= ~(1ULL << j); }
@@ -1031,8 +1031,8 @@ bipartition_replace_bit_in_vector (bipartition *bvec, int n_b, int to, int from,
     /* else do nothing (from zero to zero) */
   }
 
-  else for (k = 0; k < n_b; k++) { // copy 0 or 1 values 
-    if ( ((bvec[k]->bs[i] >> j) & 1ULL) ) bipartition_set_lowlevel   (bvec[k], i2, j2); // will check if n_ones change or not 
+  else for (k = 0; k < n_b; k++) { // copy 0 or 1 values
+    if ( ((bvec[k]->bs[i] >> j) & 1ULL) ) bipartition_set_lowlevel   (bvec[k], i2, j2); // will check if n_ones change or not
     else                                 bipartition_unset_lowlevel (bvec[k], i2, j2);
   }
 }

@@ -1,7 +1,7 @@
 /*
  * dist.c
  *
- * (c) 2008-2018  Klaus Schliep (klaus.schliep@gmail.com)
+ * (c) 2008-2019  Klaus Schliep (klaus.schliep@gmail.com)
  *
  *
  * This code may be distributed under the GNU GPL
@@ -45,41 +45,10 @@ void rowMin2(double *dat, int n,  int k, double *res){
         x = dat[i];
         for(h = 1; h< k; h++) {if(dat[i + h*n] < x) x=dat[i + h*n];}
         res[i] = x;
-        }
     }
-
-/*
- * never used
-
-void rowMinInt(int *dat, int n,  int k, int *res){
-    int i, h;
-    int x;
-    for(i = 0; i < n; i++){
-        x = dat[i];
-        for(h = 1; h< k; h++) {if(dat[i + h*n] < x) x=dat[i + h*n];}
-        res[i] = x;
-        }
-    }
- */
-
-/*
-// avoid malloc and free
-void sankoff4_old(double *dat, int n, double *cost, int k, double *result){
-    int i, j, h;
-    double x; //tmp[k],  tmp;
-    double *tmp;
-    tmp = malloc(k * sizeof(double));
-    for(i = 0; i < n; i++){
-        for(j = 0; j < k; j++){
-            for(h = 0; h< k; h++){tmp[h] = dat[i + h*n] + cost[h + j*k];}
-            x = tmp[0];
-            for(h = 1; h< k; h++) {if(tmp[h]<x) {x=tmp[h];}}
-            result[i+j*n] += x;
-        }
-    }
-    free(tmp);
 }
-*/
+
+
 
 void sankoff4(double *dat, int n, double *cost, int k, double *result){
     int i, j, h;
