@@ -15,8 +15,7 @@ as.networx(x, ...)
 \method{as.networx}{phylo}(x, ...)
 }
 \arguments{
-\item{x}{an object of class \code{"splits"} (as.networx) or \code{"networx"}
-(plot)}
+\item{x}{an object of class \code{"splits"} or \code{"phylo"}}
 
 \item{\dots}{Further arguments passed to or from other methods.}
 

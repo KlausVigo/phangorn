@@ -15,6 +15,8 @@
   font.node.label = font, font.edge.label = font, ...)
 }
 \arguments{
+\item{x}{an object of class \code{"networx"}}
+
 \item{type}{"3D" to plot using rgl or "2D" in the normal device.}
 
 \item{use.edge.length}{a logical indicating whether to use the edge weights

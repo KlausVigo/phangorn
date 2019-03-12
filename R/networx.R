@@ -309,8 +309,7 @@ circNetwork <- function(x, ord = NULL) {
 #' cyclic ordering. These objects can be nicely plotted in \code{"2D"}.
 #'
 #' @aliases networx
-#' @param x an object of class \code{"splits"} (as.networx) or \code{"networx"}
-#' (plot)
+#' @param x an object of class \code{"splits"} or \code{"phylo"}
 #' @param planar logical whether to produce a planar graph from only cyclic
 #' splits (may excludes splits).
 #' @param coord add coordinates of the nodes, allows to reproduce the plot.
@@ -935,6 +934,7 @@ edgeLabels <- function(xx, yy, zz = NULL, edge) {
 #' Often it is easier and safer to supply vectors of graphical parameters for
 #' splits (e.g. splits.color) than for edges. These overwrite values edge.color.
 #'
+#' @param x an object of class \code{"networx"}
 #' @param type "3D" to plot using rgl or "2D" in the normal device.
 #' @param use.edge.length a logical indicating whether to use the edge weights
 #' of the network to draw the branches (the default) or not.
