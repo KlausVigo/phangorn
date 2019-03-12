@@ -314,44 +314,39 @@ as.prop.part.splits <- function(x, ...) {
 ## @rdname as.splits
 ## @method as.phylo splits
 #' @export
-as.phylo.splits <- function(x, result = "phylo", ...) {
-  result <- match.arg(result, c("phylo", "all"))
+as.phylo.splits <- function(x, ...){
   labels <- attr(x, "labels")
   nTips <- length(labels)
-  weights <- attr(x, "weights")
-  nTips <- length(labels)
-  x <- SHORTwise(x, nTips)
-  dm <- as.matrix(compatible(x))
-  rs <- rowSums(dm)
-  ind <- which(rs == 0)
-  if (any(rs > 0)) {
-    tmp <- which(rs > 0)
-    candidates <- tmp[order(rs[tmp])]
-    for (i in candidates) {
-      if (sum(dm[ind, i]) == 0)
-        ind <- c(ind, i)
-    }
+  x <- SHORTwise(x, nTips, TRUE)
+  l <- lengths(x)
+  x <- x[order(l)]
+  x <- x[lengths(x) > 1]
+  nNodes <- length(x) + 1L
+  node_i <- as.integer( nNodes + nTips )
+  edge <- matrix(0L, node_i - 1L, 2L)
+  y <- seq_len(nTips)
+  x <- unclass(x)
+  m <- 0
+  for(i in seq_along(x)){
+    tmp <- x[[i]]
+    kids <- unique( y[ tmp ] )
+    k <- length(kids)
+    y[ tmp ] <- node_i
+    edge[m + 1:k ,1] <- node_i
+    edge[m + 1:k ,2] <- kids
+    m <- m + k
+    node_i <- node_i - 1L
   }
-  splits <- x[ind]
-  weights <- weights[ind]
-  l <- length(ind)
-  res <- matrix(0L, l, nTips)
-  for (i in 1:l) res[i, splits[[i]]] <- 1L
-  dm2 <- (crossprod(res * weights, 1 - res))
-  dm2 <- dm2 + t(dm2)
-  dimnames(dm2) <- list(labels, labels)
-  tree <- di2multi(NJ(dm2), tol = 1e-08)
-  attr(tree, "order") <- NULL
-  tree <- reorder(tree)
-  tree <- optCycle(x, tree)
-  tree <- reorder(tree, "postorder")
-  if (result == "phylo")
-    return(tree)
-  spl <- as.splits(tree)
-  spl <- SHORTwise(spl, nTips)
-  spl <- spl[tree$edge[, 2]]
-  list(tree = tree, index = tree$edge[, 2], split = spl, rest = x[-ind])
+  kids <- unique( y )
+  k <- length(kids)
+  edge[m + 1:k ,1] <- node_i
+  edge[m + 1:k ,2] <- kids
+  phy <- structure(list(edge, labels, nNodes),
+                   .Names = c("edge", "tip.label", "Nnode"),
+                   class = "phylo", order = "postorder")
+  phy
 }
+
 
 
 #' @rdname as.splits

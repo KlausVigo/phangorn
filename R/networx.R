@@ -219,7 +219,6 @@ circNetwork <- function(x, ord = NULL) {
         ordStop <- j - 1
       }
     }
-
     fromTo <- ordStart:ordStop
     if (ordStart > ordStop) fromTo <- c(ordStart:nTips, 1:ordStop)
     fromTo <- ord[fromTo]
@@ -230,8 +229,6 @@ circNetwork <- function(x, ord = NULL) {
     sp0 <- NULL
 
     for (i in 2:length(fromTo)) {
-      #            sptmp <- get.shortest.paths(g, fromTo[i-1], fromTo[i],
-      #                                       output=c("epath"))$epath[[1]]
       sptmp <- shortest_paths(g, fromTo[i - 1], fromTo[i],
         output = c("epath"))$epath[[1]]
       sp2 <- c(sp2, sptmp[-c(1, length(sptmp))])
@@ -347,8 +344,11 @@ as.networx <- function(x, ...) {
 }
 
 
-getOrdering <- function(x) {
-  tree <- as.phylo(x)
+getOrdering <- function(x, opt=TRUE) {
+  tree <- allCompat(x)
+  tree <- reorder(tree)
+  if(opt) tree <- optCycle(x, tree)
+#  tree <- as.phylo(x)
   nTips <- length(tree$tip.label)
   ord <- reorder(tree)$edge[, 2]
   ord <- ord[ord <= nTips]
