@@ -125,49 +125,6 @@ upgma_nni <- function(d, method = "average", opt = "min", trace = 0,
 }
 
 
-NJ_old <- function(x){
-  x <- as.matrix(x)
-  labels <- attr(x, "Labels")[[1]]
-  edge.length <- NULL
-  edge <- NULL
-  d <- as.matrix(x)
-  if (is.null(labels))
-    labels <- colnames(d)
-  l <- dim(d)[1]
-  m <- l - 2
-  nam <- 1L:l
-  k <- 2L * l - 2L
-  while (l > 2) {
-    r <- rowSums(d) / (l - 2)
-    i <- 0
-    j <- 0
-    tmp <- .C("out", as.double(d), as.double(r), as.integer(l),
-      as.integer(i), as.integer(j))
-    e2 <- tmp[[5]]
-    e1 <- tmp[[4]]
-    l1 <- d[e1, e2] / 2 + (r[e1] - r[e2]) / (2)
-    l2 <- d[e1, e2] - l1
-    edge.length <- c(l1, l2, edge.length)
-    edge <- rbind(c(k, nam[e2]), edge)
-    edge <- rbind(c(k, nam[e1]), edge)
-    nam <- c(nam[c(-e1, -e2)], k)
-    dnew <- (d[e1, ] + d[e2, ] - d[e1, e2]) / 2
-    d <- cbind(d, dnew)
-    d <- rbind(d, c(dnew, 0))
-    d <- d[-c(e1, e2), -c(e1, e2)]
-    k <- k - 1L
-    l <- l - 1L
-  }
-  edge.length <- c(d[2, 1], edge.length)
-  attr(edge.length, "names") <- NULL
-  result <- list(edge = rbind(c(nam[2], nam[1]), edge),
-                 edge.length = edge.length, tip.label = labels, Nnode = m)
-  class(result) <- "phylo"
-  reorder(result, "postorder")
-}
-
-
-
 
 #' Neighbor-Joining
 #'
