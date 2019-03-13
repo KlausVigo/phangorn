@@ -426,7 +426,7 @@ allCompat <- function(x) {
   for(i in ord){
     if(all(compatible2(res, spl[i]) == 0)) res <- c(res, spl[i])
   }
-  tree <- as.phylo(res)
+  tree <- as.phylo(res, FALSE)
 #  tree$edge.length <- NULL
   tree
 }

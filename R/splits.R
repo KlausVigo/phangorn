@@ -260,6 +260,7 @@ as.splits.multiPhylo <- function(x, ...) {
   lx <-  length(x)
   x <- unroot(x)
   splits <- prop.part(x)
+  splits <- postprocess.prop.part(splits)
   class(splits) <- "list"
   weights <- attr(splits, "number")
   lab <- attr(splits, "labels")
@@ -270,7 +271,7 @@ as.splits.multiPhylo <- function(x, ...) {
   result <- c(splitTips, splits)
   attr(result, "weights") <- c(rep(lx, l), weights)
   attr(result, "confidences") <- attr(result, "weights") / lx
-  attr(result, "summary") <- list(confidences = "ratio", ntrees = l,
+  attr(result, "summary") <- list(confidences = "ratio", ntrees = lx,
                                   clades = FALSE)
   attr(result, "labels") <- lab
   class(result) <- c("splits", "prop.part")
@@ -314,7 +315,17 @@ as.prop.part.splits <- function(x, ...) {
 ## @rdname as.splits
 ## @method as.phylo splits
 #' @export
-as.phylo.splits <- function(x, ...){
+as.phylo.splits <- function(x, check=TRUE,...){
+  if(check) x <- compatibleSplits(x)
+  phy <- splits2phylo(x)
+  spl <- as.splits(phy)[phy$edge[,2]]
+  ind <- matchSplits(spl, x, FALSE)
+  phy$edge.length <- attr(x, "weights")[ind]
+  phy
+}
+
+
+splits2phylo <- function(x){
   labels <- attr(x, "labels")
   nTips <- length(labels)
   x <- SHORTwise(x, nTips, TRUE)
@@ -347,6 +358,58 @@ as.phylo.splits <- function(x, ...){
   phy
 }
 
+compatibleSplits <- function(x) {
+  x <- postprocess.splits(x)
+  labels <- attr(x, "labels")
+  nTips <- length(labels)
+  x <- SHORTwise(x, nTips)
+#  x <- x[lengths(x)>1]
+  dm <- as.matrix(compatible(x))
+  rs <- rowSums(dm)
+  ind <- which(rs == 0)
+  if (any(rs > 0)) {
+    tmp <- which(rs > 0)
+    candidates <- tmp[order(rs[tmp])]
+    for (i in candidates) {
+      if (sum(dm[ind, i]) == 0)
+        ind <- c(ind, i)
+    }
+  }
+  x[ind]
+}
+
+
+postprocess.splits <- function (x)
+{
+  #  w <- attr(x, "number")
+  tmp <- attributes(x)
+  labels <- attr(x, "labels")
+  x <- SHORTwise(x, length(labels))
+  drop <- duplicated(x)
+  if (any(drop)) {
+    W <- ifelse (is.null(tmp$weights), FALSE, TRUE)
+    CONF <- ifelse (is.null(tmp$confidences), FALSE, TRUE)
+    if(W) w <- tmp$weights
+    if (CONF) conf <- tmp$confidences
+    class(x) <- NULL
+    attributes(x) <- NULL
+    y <- x[drop]
+    ind1 <- match(y, x)
+    ind2 <- which(drop)
+    for (i in seq_along(ind2)) {
+      if(W) w[ind1[i]] <- w[ind1[i]] + w[ind2[i]]
+      if(CONF) conf[ind1[i]] <- conf[ind1[i]] + conf[ind2[i]]
+    }
+    x <- x[!drop]
+    w <- w[!drop]
+    if(CONF) conf <- conf[!drop]
+    attr(x, "weights") <- w
+    if(CONF) attr(x, "confidences") <- conf
+    attr(x, "labels") <- labels
+    class(x) <- c("splits", "prop.part")
+  }
+  x
+}
 
 
 #' @rdname as.splits

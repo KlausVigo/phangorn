@@ -345,7 +345,7 @@ as.networx <- function(x, ...) {
 
 
 getOrdering <- function(x, opt=TRUE) {
-  tree <- allCompat(x)
+  tree <- as.phylo(x, TRUE)
   tree <- reorder(tree)
   if(opt) tree <- optCycle(x, tree)
 #  tree <- as.phylo(x)
