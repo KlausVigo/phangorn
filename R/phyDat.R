@@ -1073,6 +1073,8 @@ subset.phyDat <- function (x, subset, select, site.pattern = TRUE,...)
 }
 
 
+#' @rdname phangorn-internal
+#' @export
 map_duplicates <-  function(x, dist=TRUE, ...){
     labels <- names(x)
     if(dist){
@@ -1110,6 +1112,8 @@ unique.phyDat <- function(x, incomparables=FALSE, identical=TRUE, ...){
 }
 
 
+#' @rdname phyDat
+#' @export
 removeUndeterminedSites <- function(x, use.contrast=TRUE,
                                     undetermined=c("?", "n", "-"), ...){
     nc <- attr(x, "nc")

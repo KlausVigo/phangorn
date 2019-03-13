@@ -79,6 +79,9 @@ baseFreq(obj, freq = FALSE, all = FALSE, drop.unused.levels = FALSE)
 \method{unique}{phyDat}(x, incomparables = FALSE, identical = TRUE,
   ...)
 
+removeUndeterminedSites(x, use.contrast = TRUE, undetermined = c("?",
+  "n", "-"), ...)
+
 allSitePattern(n, levels = c("a", "c", "g", "t"), names = NULL)
 
 genlight2phyDat(x, ambiguity = NA)

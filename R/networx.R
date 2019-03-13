@@ -802,19 +802,17 @@ spl2angle <- function(x) {
   angle
 }
 
+
 coords.equal.angle <- function(obj) {
   if (is.null(attr(obj, "order")) || (attr(obj, "order") == "postorder"))
     obj <- reorder.networx(obj)
 
   spl <- obj$splits
-
   l <- length(obj$edge.length)
 #  ind1 <- which(!duplicated(obj$splitIndex))
   n <- max(obj$edge)
-
   angle <- spl2angle(spl)
   weight <- attr(spl, "weight")
-
   k <- matrix(0, max(obj$splitIndex), 2)
 
   res <- matrix(0, max(obj$edge), 2)
@@ -828,6 +826,8 @@ coords.equal.angle <- function(obj) {
 }
 
 
+#' @rdname phangorn-internal
+#' @export
 coords <- function(obj, dim = "3D") {
   #    if(is.null(attr(obj,"order")) || (attr(obj, "order")=="postorder") )
   #        obj = reorder.networx(obj)

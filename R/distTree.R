@@ -215,6 +215,8 @@ UNJ <- function(x){
 }
 
 
+#' @rdname phangorn-internal
+#' @export
 PNJ <- function(data)
 {
   q <- l <- r <- length(data)
