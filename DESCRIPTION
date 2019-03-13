@@ -41,7 +41,6 @@ Suggests:
     knitr,
     rmarkdown,
     Biostrings
-ByteCompile: TRUE
 License: GPL (>= 2)
 VignetteBuilder: utils, knitr
 URL: https://github.com/KlausVigo/phangorn

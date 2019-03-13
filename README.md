@@ -17,8 +17,9 @@ You can install
 
 To install the development version you may need to install the Biostrings and seqLogo package from bioconductor first:
 ```
-source("https://bioconductor.org/biocLite.R")
-biocLite("Biostrings", "seqLogo")
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("Biostrings", "seqLogo")
 ```
 Also the development version usually depends on tha latest ape development 
 version and information to download can be found  [here](http://ape-package.ird.fr/ape_installation.html)
