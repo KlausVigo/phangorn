@@ -1114,13 +1114,14 @@ unique.phyDat <- function(x, incomparables=FALSE, identical=TRUE, ...){
 
 #' @rdname phyDat
 #' @export
-removeUndeterminedSites <- function(x, use.contrast=TRUE,
-                                    undetermined=c("?", "n", "-"), ...){
+removeUndeterminedSites <- function(x, ...){
+# , use.contrast=TRUE, undetermined=c("?", "n", "-")
     nc <- attr(x, "nc")
     nr <- attr(x, "nr")
     contrast <- attr(x, "contrast")
-    if(use.contrast) ind <- which( (contrast %*% rep(1, nc)) == nc )
-    else ind <- sort(match(undetermined, attr(x, "allLevels")))
+#    if(use.contrast)
+    ind <- which( (contrast %*% rep(1, nc)) == nc )
+#    else ind <- sort(match(undetermined, attr(x, "allLevels")))
     tmp <- x[[1]] %in% ind
     for(i in 2:length(x)) tmp <- tmp & (x[[i]] %in% ind)
     if(any(tmp)) x <- getRows(x, (1:nr)[!tmp]) #getRows(x, -which(tmp))

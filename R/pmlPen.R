@@ -1,7 +1,7 @@
 ##
 ## pmlPen penalized ML
 ##
-#' @rdname pmlMix
+#' @rdname phangorn-internal
 #' @export
 pmlPen <- function(object, lambda, ...) {
   if (inherits(object, "pmlPart")) return(pmlPartPen(object, lambda, ...))

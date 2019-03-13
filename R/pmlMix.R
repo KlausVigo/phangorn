@@ -272,7 +272,7 @@ optimMixEdge <- function(object, omega, trace = 1, ...) {
 #' only allowed on the left-hand side.  The convergence of the algorithm is
 #' very slow and is likely that the algorithm can get stuck in local optima.
 #'
-#' @aliases pmlMix pmlPen
+#' @aliases pmlMix
 #' @param formula a formula object (see details).
 #' @param fit an object of class \code{pml}.
 #' @param m number of mixtures.

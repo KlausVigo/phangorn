@@ -131,7 +131,6 @@ upgma_nni <- function(d, method = "average", opt = "min", trace = 0,
 #' This function performs the neighbor-joining tree estimation of Saitou and
 #' Nei (1987). UNJ is the unweighted version from Gascuel (1997).
 #'
-#' @aliases PNJ
 #'
 #' @param x A distance matrix.
 #' @return an object of class \code{"phylo"}.
@@ -215,8 +214,6 @@ UNJ <- function(x){
 }
 
 
-#' @rdname phangorn-internal
-#' @export
 PNJ <- function(data)
 {
   q <- l <- r <- length(data)
