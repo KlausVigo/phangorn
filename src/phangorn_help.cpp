@@ -186,6 +186,8 @@ NumericVector cophenetic_cpp(IntegerMatrix edge, NumericVector edge_length,
 
 
 // For phytools
+//' @rdname phangorn-internal
+//' @export
 // [[Rcpp::export]]
 IntegerVector threshStateC(NumericVector x, NumericVector thresholds) {
   int n = x.size(), m = thresholds.size()-1L, j=0L;

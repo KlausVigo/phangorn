@@ -29,6 +29,8 @@ cophenetic_cpp <- function(edge, edge_length, nTips, nNode) {
     .Call(`_phangorn_cophenetic_cpp`, edge, edge_length, nTips, nNode)
 }
 
+#' @rdname phangorn-internal
+#' @export
 threshStateC <- function(x, thresholds) {
     .Call(`_phangorn_threshStateC`, x, thresholds)
 }
