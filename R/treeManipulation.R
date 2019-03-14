@@ -139,6 +139,13 @@ midpoint.phylo <- function(tree, node.labels = "support", ...) {
     return(tree)
   }
   oldtree <- tree
+  if(Ntip(tree)==1) return(tree)
+  if(Ntip(tree)==2){
+    tree <- collapse.singles(tree)
+    el <- sum(tree$edge.length)
+    tree$edge.length[] <- el / 2
+    return(tree)
+  }
   tree <- unroot(tree)
   nTips <- length(tree$tip.label)
   maxD1 <- node2root(tree)[1:nTips]

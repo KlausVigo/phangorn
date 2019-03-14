@@ -13,7 +13,6 @@ trees <- lapply(sample(10:500,50), function(x)tree <- rtree(x, rooted=FALSE) )
 #Descendants(x, node, type=c("tips","children","all"))
 #Siblings(tree, 3)
 #mrca.phylo(tree, 1:3)
-#midpoint
 
 
 desc_108 <- Descendants(tree, 108)[[1]]
