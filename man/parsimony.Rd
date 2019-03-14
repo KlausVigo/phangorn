@@ -88,7 +88,8 @@ tree <- NJ(dm)
 parsimony(tree, Laurasiatherian)
 treeRA <- random.addition(Laurasiatherian)
 treeNNI <- optim.parsimony(tree, Laurasiatherian)
-treeRatchet <- pratchet(Laurasiatherian, start=tree, maxit=100, k=5)
+treeRatchet <- pratchet(Laurasiatherian, start=tree, maxit=100,
+                        minit=5, k=5, trace=0)
 # assign edge length
 treeRatchet <- acctran(treeRatchet, Laurasiatherian)
 

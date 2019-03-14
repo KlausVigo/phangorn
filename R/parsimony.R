@@ -73,7 +73,8 @@ sankoff.quartet <- function(dat, cost, p, l, weight) {
 #' parsimony(tree, Laurasiatherian)
 #' treeRA <- random.addition(Laurasiatherian)
 #' treeNNI <- optim.parsimony(tree, Laurasiatherian)
-#' treeRatchet <- pratchet(Laurasiatherian, start=tree, maxit=100, k=5)
+#' treeRatchet <- pratchet(Laurasiatherian, start=tree, maxit=100,
+#'                         minit=5, k=5, trace=0)
 #' # assign edge length
 #' treeRatchet <- acctran(treeRatchet, Laurasiatherian)
 #'
@@ -523,10 +524,8 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
     k <- 2
     trees <- trees[-1]
     while (length(trees) > 0) {
-#      rf <- sapply(trees, RF.dist, res, FALSE)
       class(trees) <- "multiPhylo"
       rf <- suppressMessages( RF.dist(res, trees, FALSE) )
-# end new code
       if (any(rf == 0)) trees <- trees[-which(rf == 0)]
       if (length(trees) > 0) {
         res <- trees[[1]]
