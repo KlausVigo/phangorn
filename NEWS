@@ -47,6 +47,8 @@ NEW FEATURES
 
 BUG FIXES
 
+    o midpoint works now for trees with only 2 tips
+
     o densiTree, bug report by Richel Bilderbeek
 
     o tree rearrangement in optim.pml return tree with double edge matrix
