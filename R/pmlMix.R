@@ -1,6 +1,3 @@
-#
-# pmlMix
-#
 optimMixQ <- function(object, Q = c(1, 1, 1, 1, 1, 1), omega, ...) {
   l <- length(Q)
   Q <- Q[-l]

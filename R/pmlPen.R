@@ -1,6 +1,3 @@
-##
-## pmlPen penalized ML
-##
 #' @rdname phangorn-internal
 #' @export
 pmlPen <- function(object, lambda, ...) {
