@@ -814,6 +814,7 @@ fast.table2 <- function (data)
 
 
 # @rdname phyDat
+#' @export cbind.phyDat
 #' @export
 cbind.phyDat <- function(..., gaps="-", compress=TRUE){
     object <- as.list(substitute(list(...)))[-1]
