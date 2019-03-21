@@ -5,6 +5,7 @@
 \alias{getSlices}
 \alias{getClips}
 \alias{getDiversity}
+\alias{summary.clanistics}
 \alias{diversity}
 \title{Clans, slices and clips}
 \usage{
@@ -15,6 +16,8 @@ getSlices(tree)
 getClips(tree, all = TRUE)
 
 getDiversity(tree, x, norm = TRUE, var.names = NULL, labels = "new")
+
+\method{summary}{clanistics}(object, ...)
 
 diversity(tree, X)
 }

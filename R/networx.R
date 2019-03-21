@@ -751,6 +751,7 @@ presenceAbsence <- function(x, y) {
 }
 
 
+#' @export
 reorder.networx <- function(x, order =  "cladewise", index.only = FALSE, ...) {
   order <- match.arg(order, c("cladewise", "postorder"))
   if (!is.null(attr(x, "order")))

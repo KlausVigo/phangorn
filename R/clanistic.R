@@ -433,6 +433,8 @@ getDiversity <- function (tree, x, norm = TRUE, var.names = NULL, labels="new")
 }
 
 
+#' @rdname getClans
+#' @export
 summary.clanistics <- function(object, ...){
     res <- matrix(FALSE, nrow(object), 5)
     res[,1] <- object[,4]>0 & object[,"p-score"]==0 # "natives"

@@ -889,6 +889,7 @@ cbind.phyDat <- function(..., gaps="-", compress=TRUE){
 }
 
 # @rdname phyDat
+#' @export c.phyDat
 #' @export
 c.phyDat <- cbind.phyDat
 
