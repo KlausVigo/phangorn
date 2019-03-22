@@ -72,6 +72,8 @@
 #' @param var.names A vector of variable names.
 #' @param labels see details.
 #' @param X a data.frame
+#' @param object an object for which a summary is desired.
+#' @param ... Further arguments passed to or from other methods.
 #' @return getClans, getSlices and getClips return a matrix of partitions, a
 #' matrix of ones and zeros where rows correspond to a clan, slice or clip and
 #' columns to tips. A one indicates that a tip belongs to a certain partition.

@@ -35,6 +35,10 @@ Diversity.}
 
 \item{labels}{see details.}
 
+\item{object}{an object for which a summary is desired.}
+
+\item{...}{Further arguments passed to or from other methods.}
+
 \item{X}{a data.frame}
 }
 \value{
