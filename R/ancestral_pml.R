@@ -113,7 +113,7 @@ ancestral.pml <- function(object, type = "marginal", return = "prob") {
   eps <- 1.0e-5
   ind1 <- which(apply(contrast, 1, function(x) sum(x > eps)) == 1L)
   ind2 <- which(contrast[ind1, ] > eps, arr.ind = TRUE)
-  #    pos <- ind2[match(as.integer(1L:ncol(contrast)),  ind2[,2]),1]
+
   pos <- ind2[match(seq_len(ncol(contrast)), ind2[, 2]), 1]
   nco <- as.integer(dim(contrast)[1])
   for (i in 1:l) dat[i, (nTips + 1):m] <- .Call("LogLik2", data, P[i, ], nr, nc,
@@ -165,7 +165,7 @@ ancestral.pml <- function(object, type = "marginal", return = "prob") {
 # }
 
 
-# in ancestral.pml and ancestral.pars
+# in mpr
 ancestral2phyDat <- function(x) {
   eps <- 1.0e-5
   contr <- attr(x, "contrast")
@@ -178,15 +178,6 @@ ancestral2phyDat <- function(x) {
   res <- lapply(x, function(x, pos) pos[max.col(x)], pos)
   attributes(res) <- attributes(x)
   return(res)
-}
-
-
-# in ancestral.pml
-# variante fuer parsimony und ambiguous DNA, ersetzt durch p2dna
-prob2fitchCoding <- function(x, eps = 0.999) {
-  row_max <- apply(x, 1, max)
-  x <- x / row_max
-  as.vector((x > eps) %*% c(1L, 2L, 4L, 8L))
 }
 
 
@@ -210,8 +201,8 @@ fitchCoding2ambiguous2 <- function(x, type = "DNA") {
     "d", "b", "n"
   )
   res <- switch(type,
-    "DNA" = dna[match(x, y)],
-    "RNA" = rna[match(x, y)]
+    "DNA" = dna[fmatch(x, y)],
+    "RNA" = rna[fmatch(x, y)]
   )
   res
 }
@@ -323,8 +314,8 @@ mpr.help <- function(tree, data, cost = NULL) {
   node <- tree$edge[, 1]
   edge <- tree$edge[, 2]
 
-  node <- as.integer(node - 1)
-  edge <- as.integer(edge - 1)
+  node <- as.integer(node - 1L)
+  edge <- as.integer(edge - 1L)
 
   res <- .Call("sankoffMPR", datf, datp, as.numeric(cost), as.integer(nr),
     as.integer(nc), node, edge,
@@ -355,18 +346,6 @@ mpr <- function(tree, data, cost = NULL, return = "prob") {
   rm <- apply(res[[ntips + 1]], 1, min)
   RM <- matrix(rm, nr, nc) + eps
 
-  #    if(return!="prob" & type=="DNA"){
-  #        for(i in (ntips+1):m){
-  #            tmp <- as.numeric(res[[i]] < RM)
-  #            tmp <- prob2fitchCoding(tmp)
-  #            tmp <- fitchCoding2ambiguous(tmp)
-  #            res[[i]] <- tmp
-  #        }
-  #        browser()
-  #        res[1:ntips] <- data
-  #        attributes(res) <- att
-  #        return(res)
-  #    }
   fun <- function(X) {
     rs <- rowSums(X) # apply(X, 1, sum)
     X / rs
@@ -380,7 +359,7 @@ mpr <- function(tree, data, cost = NULL, return = "prob") {
   #    else res[1:ntips] <- data[1:ntips]
   attributes(res) <- att
   fun2 <- function(x) {
-    x <- p2dna(x) # prob2fitchCoding(x)
+    x <- p2dna(x)
     fitchCoding2ambiguous(x)
   }
   if (return != "prob") {
@@ -403,10 +382,6 @@ mpr <- function(tree, data, cost = NULL, return = "prob") {
 plotAnc <- function(tree, data, i = 1, site.pattern = TRUE, col = NULL,
                     cex.pie = par("cex"), pos = "bottomright", ...) {
   y <- subset(data, select = i, site.pattern = site.pattern)
-  #   args <- list(...)
-  #   CEX <- if ("cex" %in% names(args))
-  #       args$cex
-  #   else par("cex")
   CEX <- cex.pie
   xrad <- CEX * diff(par("usr")[1:2]) / 50
   levels <- attr(data, "levels")
