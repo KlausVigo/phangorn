@@ -48,8 +48,22 @@
 }
 
 
+wpgma_weights <- function(tree){
+  ntips <- Ntip(tree)
+  tree_u <- unroot(tree)
+  ind <- sort(unique( tree_u$edge[,1]) )[-1]
+  desc <- Descendants(tree_u, ind)
+  x <- seq_len(ntips)
+  w <- integer( ntips * (ntips-1L) / 2 )
+  for(i in seq_along(ind)){
+    ind <- getIndex(desc[[i]], x[-desc[[i]]], ntips)
+    w[ind] <- w[ind] + 1L
+  }
+  w
+}
+
 upgma.edge.length <- function(x, dm, method = "average") {
-  METHODS <- c("average", "single", "complete") # , "mcquitty"
+  METHODS <- c("average", "single", "complete", "mcquitty")
   i.meth <- match.arg(method, METHODS)
   X <- designTree(x, "rooted", TRUE)
   labels <- x$tip
@@ -62,10 +76,22 @@ upgma.edge.length <- function(x, dm, method = "average") {
   X@x[] <- 1
   nh <- numeric(max(x$edge))
   Y <- X * dm
+  if(i.meth=="mcquitty"){
+    w <- .5 ^ wpgma_weights(x)
+    Y <- X * (dm * w)
+    Y[,1] <- Y[,1]/2
+#    Y = as.matrix(X)
+#    beta = solve( t(Y) %*% diag(w) %*% Y ) %*% (t(Y) %*% diag(w) %*% y)
+#    nh[X@nodes] <- beta
+#    x$edge.length <- (nh[x$edge[, 1]] - nh[x$edge[, 2]]) / 2
+#    return( x )
+  }
+
   for (i in 1:(length(node) - 1)) {
     pos <- ind[(node[i] + 1):node[i + 1]]
     tmp <- switch(i.meth,
       average = mean(Y[pos, i]),
+      mcquitty = sum(Y[pos, i]),
       single = min(Y[pos, i]),
       complete = max(Y[pos, i]))
     nh[X@nodes[i]] <- tmp
@@ -77,7 +103,7 @@ upgma.edge.length <- function(x, dm, method = "average") {
 
 upgma_nni <- function(d, method = "average", opt = "min", trace = 0,
                       mc.cores = 2L){
-  METHODS <- c("average", "single", "complete") # , "mcquitty"
+  METHODS <- c("average", "single", "complete", "mcquitty")
   method <- match.arg(method, METHODS)
   OPT <- c("min", "ls")
   opt <- match.arg(opt, OPT)
