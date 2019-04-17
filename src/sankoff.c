@@ -11,12 +11,9 @@
 
 # define USE_RINTERNALS
 
-
 #include <R.h>
-// #include <R_ext/Lapack.h>
 #include <Rinternals.h>
 #include <Rmath.h>
-// #include <math.h>
 
 
 
