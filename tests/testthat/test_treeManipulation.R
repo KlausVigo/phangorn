@@ -32,9 +32,9 @@ test_that("ancestor, mrca, descendants", {
 })
 
 test_that("allTrees", {
-    ## allTrees
-    expect_is(allTrees(6), "multiPhylo")
-    expect_true(all(RF.dist(allTrees(6))>0))
+  ## allTrees
+  expect_s3_class(allTrees(6), "multiPhylo")
+  expect_true(all(RF.dist(allTrees(6))>0))
 })
 
 

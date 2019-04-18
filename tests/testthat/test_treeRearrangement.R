@@ -9,7 +9,7 @@ test_that("nni", {
     nni_trees_u <- nni(tree_u)
     nni_trees_r <- nni(tree_r)
     ## nni
-    expect_is(nni(tree_u), "multiPhylo")
+    expect_s3_class(nni(tree_u), "multiPhylo")
     expect_true(all(RF.dist(nni_trees_u, tree_u)>0))
     expect_true(length(nni_trees_u) == 194L)
     expect_true(length(nni_trees_r) == 196L)

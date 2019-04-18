@@ -13,8 +13,8 @@ test_that("Hadamard conjugation works as expected", {
     # fast fft like multiplication
     expect_is(H <- hadamard(3), "matrix")
     expect_equal(as.vector(H %*% v), fhm(v))
-    expect_is(spl_ry <- h2st(yeast_ry), "splits")
-    expect_is(spl_dm <- distanceHadamard(dm), "splits")
+    expect_s3_class(spl_ry <- h2st(yeast_ry), "splits")
+    expect_s3_class(spl_dm <- distanceHadamard(dm), "splits")
 })
 
 
