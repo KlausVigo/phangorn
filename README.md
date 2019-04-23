@@ -19,7 +19,7 @@ To install the development version you may need to install the Biostrings and se
 ```
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
-BiocManager::install("Biostrings", "seqLogo")
+BiocManager::install(c("Biostrings", "seqLogo"))
 ```
 Also the development version usually depends on tha latest ape development 
 version and information to download can be found  [here](http://ape-package.ird.fr/ape_installation.html)
