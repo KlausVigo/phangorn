@@ -13,7 +13,7 @@ phangorn is a package for phylogenetic reconstruction and analysis in the R lang
 
 You can install
 - the latest released version `install.packages("phangorn")`
-- the latest development version `devtools::install_github("KlausVigo/phangorn")`
+- the latest development version `remotes::install_github("KlausVigo/phangorn")`
 
 To install the development version you may need to install the Biostrings and seqLogo package from bioconductor first:
 ```
@@ -23,7 +23,8 @@ BiocManager::install(c("Biostrings", "seqLogo"))
 ```
 Also the development version usually depends on tha latest ape development 
 version and information to download can be found  [here](http://ape-package.ird.fr/ape_installation.html)
-
+Additionally you may need to install on windows [Rtools](https://cran.r-project.org/bin/windows/Rtools/) and on mac [XCode](https://developer.apple.com/xcode/)
+and [GFortran](https://gcc.gnu.org/wiki/GFortranBinaries).
 
 If you use phangorn please cite:
 
