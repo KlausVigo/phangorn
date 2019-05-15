@@ -42,15 +42,6 @@ void countCycle2(int *M, int *l, int *m, int *res){
     }
 }
 
-/*
-void nodeH(int *edge, int *node, double *el, int *l,  double *res){
-    int ei, i;
-    for (i=*l-1L; i>=0; i--) {
-        ei = edge[i] - 1L;
-        res[ei] = res[node[i]-1L] + el[ei];
-    }
-}
-*/
 
 // C++
 SEXP rowMax(SEXP sdat, SEXP sn, SEXP sk){

@@ -34,7 +34,6 @@ extern void fitchTripletACC4(void *, void *, void *, void *, void *, void *, voi
 extern void giveIndex(void *, void *, void *, void *, void *, void *);
 extern void ll_free();
 extern void ll_init(void *, void *, void *, void *);
-//extern void nodeH(void *, void *, void *, void *, void *);
 extern void out(void *, void *, void *, void *, void *);
 
 /* .Call calls */
@@ -103,7 +102,7 @@ static const R_CMethodDef CEntries[] = {
     {"out",              (DL_FUNC) &out,               5},
     {NULL, NULL, 0}
 };
-//    {"nodeH",            (DL_FUNC) &nodeH,             5},
+
 
 static const R_CallMethodDef CallEntries[] = {
     {"AddOnes",            (DL_FUNC) &AddOnes,             5},
