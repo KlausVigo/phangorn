@@ -70,40 +70,6 @@ SEXP rowMax(SEXP sdat, SEXP sn, SEXP sk){
     return(result);
 }
 
-/*
-static R_INLINE void getP00(double *eva, double *ev, double *evi, int m, double el, double w, double *result){
-    int i, j, h;
-    double tmp, res;
-    for(i = 0; i < m; i++){
-        tmp = exp(eva[i] * w * el);
-        for(j=0; j<m; j++) evi[i + j*m] *= tmp;
-    }
-    for(i = 0; i < m; i++){
-        for(j = 0; j < m; j++){
-            res = 0.0;
-            for(h = 0; h < m; h++) res += ev[i + h*m] * evi[h + j*m];
-            result[i+j*m] = res;
-        }
-    }https://de.wikipedia.org/wiki/R%C3%BCdiger_Schulzki
-}
-
-
-// in getPM2
-static R_INLINE void getPP(double *eva, double *ev, double *evi, int m, double el, double w, double *result){
-    int i, j, h;
-//    double tmp[m];
-    double *tmp;
-    tmp = malloc(m * sizeof(double));
-    for(i = 0; i < m; i++) tmp[i] = exp(eva[i] * w * el);
-    for(i = 0; i < m; i++){
-        for(j = 0; j < m; j++){
-            result[i+j*m] = 0;
-            for(h = 0; h < m; h++) result[i+j*m] += ev[i + h*m] * tmp[h] * evi[h + j*m];
-        }
-    }
-    free(tmp);
-}
-*/
 
 void getdP(double *eva, double *ev, double *evi, int m, double el, double w, double *result){
     int i, j, h;
@@ -172,34 +138,6 @@ void getd2P2(double *eva, double *ev, double *evi, int m, double el, double w, d
     free(tmp);
 }
 
-/*
-SEXP getPM2(SEXP eig, SEXP nc, SEXP el, SEXP w){
-    R_len_t i, j, nel, nw;
-    int m=INTEGER(nc)[0], l=0;
-    double *ws=REAL(w);
-    double *edgelen=REAL(el);
-    double *eva, *eve, *evei;
-    SEXP P, RESULT;
-    nel = length(el);
-    nw = length(w);
-    if(!isNewList(eig)) error("'eig' must be a list");
-    eva = REAL(VECTOR_ELT(eig, 0));
-    eve = REAL(VECTOR_ELT(eig, 1));
-    evei = REAL(VECTOR_ELT(eig, 2));
-    PROTECT(RESULT = allocVector(VECSXP, nel*nw));
-    for(j=0; j<nel; j++){
-        for(i=0; i<nw; i++){
-            PROTECT(P = allocMatrix(REALSXP, m, m));
-            getPP(eva, eve, evei, m, edgelen[j], ws[i], REAL(P));
-            SET_VECTOR_ELT(RESULT, l, P);
-            UNPROTECT(1);
-            l++;
-        }
-    }
-    UNPROTECT(1);//RESULT
-    return(RESULT);
-}
-*/
 
 SEXP getdPM(SEXP eig, SEXP nc, SEXP el, SEXP w){
     R_len_t i, j, nel, nw;

@@ -22,7 +22,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install(c("Biostrings", "seqLogo"))
 ```
 Also the development version usually depends on tha latest ape development 
-version and information to download can be found  [here](http://ape-package.ird.fr/ape_installation.html)
+version and information to download can be found  [here](http://ape-package.ird.fr/ape_installation.html). 
 Additionally you may need to install on windows [Rtools](https://cran.r-project.org/bin/windows/Rtools/) and on mac [XCode](https://developer.apple.com/xcode/)
 and [GFortran](https://gcc.gnu.org/wiki/GFortranBinaries).
 
