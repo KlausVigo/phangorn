@@ -55,7 +55,7 @@ void ll_init(int *nr, int *nTips, int *nc, int *k)
 }
 
 
-
+// in C++ ??
 void matm(int *x, double *contrast, int *nr, int *nc, int *nco, double *result){
     int i, j;
     for(i = 0; i < (*nr); i++){
@@ -840,7 +840,7 @@ SEXP optE(SEXP PARENT, SEXP CHILD, SEXP ANC, SEXP eig, SEXP EVI, SEXP EL,
     double *el; //=REAL(EL);
     double *eva, *eve, *evei, *tmp, *P;
     double  *X; // define it *blub=REAL(BLUB),
-    double *blub = (double *) R_alloc(nr * nc, sizeof(double));
+    double *blub = (double *) R_alloc(nr * k, sizeof(double));
     double oldel; //=el[ch-1L]
     int ancloli, pa, ch; //=anc[loli]
     double *res = (double *) R_alloc(3L, sizeof(double));
@@ -922,7 +922,7 @@ SEXP optQrtt(SEXP PARENT, SEXP CHILD, SEXP eig, SEXP EVI, SEXP EL,
     double *g=REAL(G), *evi=REAL(EVI), *contrast=REAL(CONTRAST), *contrast2=REAL(CONTRAST2);
     double *el, *X;
     double *eva, *eve, *evei, *tmp, *P;
-    double *blub = (double *) R_alloc(nr * nc, sizeof(double));
+    double *blub = (double *) R_alloc(nr * k, sizeof(double));
     double oldel;
     double *res = (double *) R_alloc(3L, sizeof(double));
     tmp = (double *) R_alloc(nr * nc, sizeof(double));
