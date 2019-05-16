@@ -2438,8 +2438,9 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   data <- subset(data, tree$tip.label)
 
   type <- attr(data, "type")
-  if (type == "AA" & !is.null(model)) {
-    object <- update(object, model = model)
+  if (type == "AA") {
+    if(!is.null(model)) object <- update(object, model = model)
+    model <- object$model
   }
   if (type == "CODON") {
     if (is.null(model)) model <- "codon1"
