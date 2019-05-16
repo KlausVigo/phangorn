@@ -63,6 +63,7 @@
 #'
 #' @keywords cluster
 # @param control A list of parameters for controlling the fitting process.
+#' @export
 codonTest <- function(tree, object, model = c("M0", "M1a", "M2a"),
                       frequencies = "F3x4", opt_freq=FALSE, codonstart = 1,
                       control=pml.control(maxit = 20), ...){
