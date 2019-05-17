@@ -285,7 +285,7 @@ as.splits.prop.part <- function(x, ...) {
     attr(x, "weights") <- rep(1, length(x))
   else {
     attr(x, "weights") <- attr(x, "number")
-    attr(x, "confidences") <- attr(x, "number") / attr(x, "number")[1]
+    if( is.integer(attr(x, "number")) )attr(x, "confidences") <- attr(x, "number") / attr(x, "number")[1]
   }
   class(x) <- c("splits", "prop.part")
   x
@@ -307,6 +307,7 @@ as.splits.networx <- function(x, ...) {
 as.prop.part.splits <- function(x, ...) {
   attr(x, "number") <- attr(x, "weights")
   attr(x, "weights") <- NULL
+  attr(x, "confidences") <- NULL
   class(x) <- c("prop.part")
   x
 }
@@ -438,6 +439,14 @@ as.bitsplits.splits <- function(x) {
 }
 
 
+#' @rdname as.splits
+#' @method as.splits bitsplits
+#' @export
+as.splits.bitsplits <- function(x){
+  as.splits(as.prop.part(x))
+}
+
+
 # computes compatible splits
 #' @rdname as.splits
 #' @export
@@ -470,6 +479,7 @@ compatible <- function(obj) {
 }
 
 
+# replace compatible ??
 compatible2 <- function(obj1, obj2 = NULL) {
   if (!inherits(obj1, "splits"))
     stop("obj needs to be of class splits")
