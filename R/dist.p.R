@@ -67,6 +67,7 @@
 #'
 #' @export dist.p
 dist.p <- function(x, cost = "polymorphism", ignore.indels = TRUE) {
+  if(inherits(x, "DNAbin")) x <- as.phyDat(x)
   if (!inherits(x, "phyDat")) {
     stop("x must be of class phyDat")
   }

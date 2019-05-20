@@ -1,3 +1,13 @@
+     CHANGES in PHANGORN VERSION 2.5.4
+
+NEW FEATURES
+
+     o dist.ml, dist.hamming, dist.logDet and dist.p also take DNAbin or
+
+       AAbin objects as input
+
+
+
      CHANGES in PHANGORN VERSION 2.5.2
 
 NEW FEATURES

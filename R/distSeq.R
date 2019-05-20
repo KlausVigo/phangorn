@@ -58,6 +58,7 @@
 #' @rdname dist.hamming
 #' @export
 dist.hamming <- function(x, ratio = TRUE, exclude = "none"){
+  if(inherits(x, "DNAbin") | inherits(x, "AAbin")) x <- as.phyDat(x)
   if (!inherits(x, "phyDat"))
     stop("x must be of class phyDat")
   l <- length(x)
@@ -128,6 +129,7 @@ dist.hamming <- function(x, ratio = TRUE, exclude = "none"){
 #' @export
 dist.ml <- function(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
                     k = 1L, shape = 1, ...){
+  if(inherits(x, "DNAbin") | inherits(x, "AAbin")) x <- as.phyDat(x)
   if (!inherits(x, "phyDat"))
     stop("x must be of class phyDat")
   l <- length(x)
@@ -217,6 +219,7 @@ dist.ml <- function(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
 #' @export
 dist.logDet <- function(x)
 {
+  if(inherits(x, "DNAbin") | inherits(x, "AAbin")) x <- as.phyDat(x)
   if (!inherits(x, "phyDat"))
     stop("x must be of class phyDat")
   weight <- attr(x, "weight")
