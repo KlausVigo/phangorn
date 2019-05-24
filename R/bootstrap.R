@@ -105,7 +105,10 @@ bootstrap.pml <- function(x, bs = 100, trees = TRUE, multicore = FALSE,
   tmp <- pmatch(names(extras), rearr)
   do_rearr <- FALSE
   if(!is.na(tmp)){
-    if(tmp==1) do_rearr <- extras$optNni
+    if(tmp==1){
+      do_rearr <- extras$optNni
+      if(is.name(do_rearr)) do_rearr <- as.logical(as.character(do_rearr))
+    }
     if(tmp==2) do_rearr <- extras$rearrangement %in% c("NNI", "stochastic",
                                                        "ratchet")
   }
