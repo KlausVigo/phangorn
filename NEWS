@@ -6,6 +6,12 @@ NEW FEATURES
 
        AAbin objects as input
 
+BUG FIXES
+
+    o bootstrap.pml returned an error with argument optNni=T
+
+      Best practise is to always use TRUE and not T!!!
+
 
 
      CHANGES in PHANGORN VERSION 2.5.2
