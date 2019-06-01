@@ -4,6 +4,7 @@
 \alias{writeDist}
 \alias{write.nexus.dist}
 \alias{readDist}
+\alias{read.nexus.dist}
 \alias{unique.dist}
 \title{Writing and reading distances in phylip and nexus format}
 \usage{
@@ -12,7 +13,9 @@ writeDist(x, file = "", format = "phylip", ...)
 write.nexus.dist(x, file = "", append = FALSE, upper = FALSE,
   diag = TRUE, digits = getOption("digits"), taxa = !append)
 
-readDist(file)
+readDist(file, format = "phylip")
+
+read.nexus.dist(file)
 
 \method{unique}{dist}(x, incomparables, ...)
 }

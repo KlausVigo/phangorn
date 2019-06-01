@@ -26,8 +26,15 @@ test_that("dist.ml works properly", {
 
 test_that("read/write of distances works", {
     skip_on_cran()
+    # phylip
+    dm <- as.dist(dm)
     writeDist(dm, "dm.txt")
-    expect_equal(as.dist(dm), readDist("dm.txt"))
+    expect_equal(dm, readDist("dm.txt"))
+    #nexus
+    writeDist(dm, "dm.txt", format="nexus", upper=TRUE)
+    expect_equal(dm, readDist("dm.txt", format="nexus"))
+    writeDist(dm, "dm.txt", format="nexus", upper=FALSE)
+    expect_equal(dm, readDist("dm.txt", format="nexus"))
     unlink("dm.txt")
 })
 

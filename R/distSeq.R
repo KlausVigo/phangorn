@@ -311,6 +311,7 @@ writeDist <- function(x, file = "", format = "phylip", ...) {
 write.nexus.dist <- function(x, file = "", append = FALSE, upper = FALSE,
                              diag = TRUE, digits = getOption("digits"),
                              taxa = !append) {
+  if(!inherits(x, "dist")) x <- as.dist(x)
   taxa.labels <- attr(x, "Labels")
   ntaxa <- length(taxa.labels)
 
@@ -360,12 +361,70 @@ RSS <- function(x, dm, trace = 0) {
 
 #' @rdname writeDist
 #' @export
-readDist <- function(file) { # , format="phylip"
-  tmp <- read.table(file, skip = 1, stringsAsFactors = FALSE)
+readDist <- function(file, format="phylip") {
+  format <- match.arg(format, c("phylip", "nexus"))
+  if(format=="phylip") return(readPhylip(file))
+  else return(read.nexus.dist(file))
+  NULL
+}
+
+
+readPhylip <- function(file, skip = 1, ...) {
+  tmp <- read.table(file, stringsAsFactors = FALSE, skip=skip, ...)
   labels <- tmp[, 1]
   dm <- as.matrix(tmp[, -1])
   dimnames(dm) <- list(labels, labels)
   as.dist(dm)
+}
+
+
+#' @rdname writeDist
+#' @export
+read.nexus.dist <- function(file){
+    X <- scan(file = file, what = "", sep = "\n", quiet = TRUE,
+              strip.white = TRUE)
+    semico <- grep(";", X)
+    X <- gsub("\\[(.*?)\\]", "", X) # get rid of comments
+    i1 <- grep("TAXLABELS", X, ignore.case = TRUE)
+    taxlab <- ifelse(length(i1) > 0, TRUE, FALSE)
+    if (taxlab) {
+      end <- semico[semico >= i1][1]
+      x <- X[(i1):end] # assumes not a 'new line' after "TRANSLATE"
+      x <- gsub("TAXLABELS", "", x, ignore.case = TRUE)
+      x <- unlist(strsplit(x, "[,; \t]"))
+      x <- x[nzchar(x)]
+      x <- gsub("['\"]", "", x)
+    }
+    distStart <- grep("DISTANCES;", X, ignore.case = TRUE)
+    distEnd <- grep("END;", X, ignore.case = TRUE)
+    distEnd <- distEnd[distEnd > distStart][1]
+
+    matr <- grep("MATRIX", X, ignore.case = TRUE)
+    format <- grep("FORMAT", X, ignore.case = TRUE)
+    start <- matr[matr > distStart][1] + 1
+    end <- semico[semico > start][1] - 1
+    format <- format[(format > distStart) & (format < distEnd)]
+
+    res <- vector("list", end - start + 1)
+    weights <- numeric(end - start + 1)
+    j <- 1
+
+    flab <- FALSE
+    if (length(format) > 0) {
+      tmp <- X[format]
+      tmp <- gsub("\\;", "", tmp)
+      tmp <- gsub("\\s+", "", tmp)
+      flab <- grepl("labels=left", tmp, ignore.case = TRUE)
+    }
+    tmp <- tempfile()
+    writeLines(X[start:end], tmp)
+    nTip <- end-start+1
+    colnames <- c("label" , paste("V", seq_len(nTip)))
+    dm <- readPhylip(tmp, fill=TRUE, skip=0, col.names = colnames,
+                     colClasses=c("character", rep("numeric", nTip)))
+
+    unlink(tmp)
+    dm
 }
 
 
