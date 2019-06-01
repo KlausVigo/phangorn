@@ -21,6 +21,7 @@
 \alias{as.splits.networx}
 \alias{as.prop.part.splits}
 \alias{as.bitsplits.splits}
+\alias{as.splits.bitsplits}
 \alias{compatible}
 \title{Splits representation of graphs and trees.}
 \usage{
@@ -50,6 +51,8 @@ as.splits(x, ...)
 \method{as.prop.part}{splits}(x, ...)
 
 \method{as.bitsplits}{splits}(x)
+
+\method{as.splits}{bitsplits}(x)
 
 compatible(obj)
 }
