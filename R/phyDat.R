@@ -1,14 +1,13 @@
 #
 # Data structures for ML and MP
 #
-fast.table <- function (data)
-{
+fast.table <- function (data) {
     if(!is.data.frame(data))
         data <- as.data.frame(data, stringsAsFactors = FALSE)
     da <- do.call("paste", c(data, sep = "\r"))
     ind <- !duplicated(da)
     levels <- da[ind]
-    cat <- factor(da,levels = levels)
+    cat <- factor(da, levels = levels)
     nl <- length(levels(cat))
     bin <- (as.integer(cat) - 1)
     pd <- nl
@@ -112,8 +111,7 @@ phyDat.default <- function (data, levels = NULL, return.index = TRUE,
 }
 
 
-phyDat.DNA <- function (data, return.index = TRUE)
-{
+phyDat.DNA <- function (data, return.index = TRUE){
   if (is.matrix(data))
     nam <- row.names(data)
   else nam <- names(data)
@@ -725,18 +723,12 @@ as.data.frame.phyDat <- function(x, ...){
 }
 
 
-#as.DNAbin.phyDat <- function(x,...) {
-#   if(attr(x, "type")=="DNA") return(as.DNAbin(as.character(x, ...)))
-#   else stop("x must be a nucleotide sequence")
-#}
 
-# quite abit faster
 #' @rdname phyDat
 #' @export
 as.DNAbin.phyDat <- function (x, ...)
 {
     if(attr(x, "type")=="DNA"){
-
     nr <- attr(x, "nr")
     ac <- attr(x, "allLevels")
     result <- matrix(as.raw(0), nrow = length(x), ncol = nr)
@@ -881,7 +873,7 @@ cbind.phyDat <- function(..., gaps="-", compress=TRUE){
             else add.index <- FALSE
         }
     }
-    if(add.index)ATTR$index <- data.frame(index = index, genes=rep(objNames, nr))
+    if(add.index) ATTR$index <- data.frame(index = index, genes=rep(objNames, nr))
     ATTR$weight <- weight
     ATTR$nr <- length(weight)
     attributes(tmp) <- ATTR
@@ -1281,19 +1273,6 @@ read.aa <- function (file, format = "interleaved", skip = 0, nlines = 0,
         if (is.null(seq.names))
             seq.names <- getTaxaNames(taxa)
     }
-#    if (format == "fasta") return(read.FASTA.AA(file))
-#        start <- grep("^ {0,}>", X)
-#        taxa <- X[start]
-#        n <- length(taxa)
-#        obj <- vector("list", n)
-#        if (is.null(seq.names)) {
-#            taxa <- sub("^ {0,}>", "", taxa)
-#            seq.names <- getTaxaNames(taxa)
-#        }
-#        start <- c(start, length(X) + 1)
-#        for (i in 1:n) obj[[i]] <- unlist(strsplit(gsub(" ",
-#            "", X[(start[i] + 1):(start[i + 1] - 1)]), NULL))
-#    }
     if (phylip) {
         rownames(obj) <- seq.names
         obj <- tolower(obj)
