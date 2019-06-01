@@ -123,11 +123,11 @@ upgma_nni <- function(d, method = "average", opt = "min", trace = 0,
     trees <- .uncompressTipLabel(trees)
     trees <- unclass(trees)
     nni.trees <- lapply(trees, upgma.edge.length, y, method = method)
-    ind <- which(sapply(nni.trees, function(x) !any(x$edge.length < 0)))
+    ind <- which(vapply(nni.trees, function(x) !any(x$edge.length < 0), FALSE))
     if (length(ind) == 0) return(best.tree)
     nni.trees <- nni.trees[ind]
     if (opt == "min") {
-      ME <- sapply(nni.trees, function(x) sum(x$edge.length))
+      ME <- vapply(nni.trees, function(x) sum(x$edge.length), 0)
       if (any(ME < bestME)) {
         bestME <- min(ME)
         count_nni <- count_nni + 1
@@ -137,7 +137,7 @@ upgma_nni <- function(d, method = "average", opt = "min", trace = 0,
       else run.nni <- FALSE
     }
     else {
-      LS <- sapply(nni.trees, function(x) sum( (coph(x) - y)^2))
+      LS <- vapply(nni.trees, function(x) sum( (coph(x) - y)^2), 0)
       if (any(LS < bestLS)) {
         bestLS <- min(LS)
         count_nni <- count_nni + 1
