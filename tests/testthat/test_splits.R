@@ -45,28 +45,40 @@ test_that("splits", {
 
 
 test_that("networx ", {
-     net1 <- neighborNet(dm)
-     write.nexus.networx(net1, "tmp.nex")
-     net2 <- read.nexus.networx("tmp.nex")
-     net3 <- as.networx(tree)
-     # delete some additional attributes
-     net2$.plot <- net2$translate <- NULL
-     attr(net1, "order") <- NULL
+    ## skip on CRAN
+    skip_on_cran()
 
-     expect_is(net1, "networx")
-     expect_is(net2, "networx")
-     expect_is(net3, "networx")
+    net1 <- neighborNet(dm)
+    write.nexus.networx(net1, "tmp.nex")
+    net2 <- read.nexus.networx("tmp.nex")
+    net3 <- as.networx(tree)
+    # delete some additional attributes
+    net2$.plot <- net2$translate <- NULL
+    attr(net1, "order") <- NULL
+    expect_is(net1, "networx")
+    expect_is(net2, "networx")
+    expect_is(net3, "networx")
 #     expect_equal(net1, net2, tolerance=1e-6)
 #     expect_equal(net3, net2, tolerance=1e-6)
-     expect_equal(net1, net3)
-     unlink("tmp.nex")
-     cnet <- consensusNet(as.splits(trees))
-     expect_is(cnet, "networx")
-     net1$edge.length <- cnet$edge.length <- cnet$edge.labels <- NULL
-     attr(cnet, "order") <- NULL
-     expect_equal(cnet, net1)
-     expect_equal(nrow(cnet$edge), length(as.splits(cnet)))
-     cnet
+    expect_equal(net1, net3)
+    unlink("tmp.nex")
+    cnet <- consensusNet(as.splits(trees))
+    expect_is(cnet, "networx")
+    net1$edge.length <- cnet$edge.length <- cnet$edge.labels <- NULL
+    attr(cnet, "order") <- NULL
+    expect_equal(cnet, net1)
+    expect_equal(nrow(cnet$edge), length(as.splits(cnet)))
+})
+
+
+test_that("consensusNet", {
+    ## skip on CRAN
+    skip_on_cran()
+    set.seed(1)
+    bs <- bootstrap.phyDat(Laurasiatherian,
+                           FUN = function(x)nj(dist.hamming(x)), bs=50)
+    cnet <- consensusNet(bs)
+    expect_is(cnet, "networx")
 
 })
 
