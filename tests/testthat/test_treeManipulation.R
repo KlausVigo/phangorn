@@ -54,6 +54,9 @@ test_that("maxCladeCred", {
   tree <- rcoal(100)
   trees <- nni(tree)
   expect_equal(maxCladeCred(c(tree, trees)), tree)
+  tree <- rtree(100, rooted = FALSE)
+  trees <- nni(tree)
+  expect_equal(tree, allCompat(trees), use.edge.length = FALSE)
 })
 
 
