@@ -13,6 +13,7 @@ Y <- phyDat(matrix(c("A", "C", "G", "T", "A", "C", "G", "A"), 2, 4,
 
 fun <- function(s) - 3/4 * log(1 - 4/3 * s)
 
+data(woodmouse)
 
 test_that("dist.ml works properly", {
 #    skip_on_cran()
@@ -21,6 +22,19 @@ test_that("dist.ml works properly", {
     expect_that(dist.ml(X), is_a("dist"))
     expect_equal(as.matrix(dist.ml(X, k=4, shape=.5)), dm)
     expect_equal(as.matrix(dist.ml(Y)), as.matrix(fun(dist.hamming(Y))))
+    expect_equivalent(dist.dna(woodmouse, "JC", pairwise.deletion = FALSE),
+                      dist.ml(woodmouse, exclude = "all"))
+    expect_equivalent(dist.dna(woodmouse, "JC", pairwise.deletion = TRUE),
+                      dist.ml(woodmouse, exclude = "pairwise"))
+    expect_equivalent( dist.dna(woodmouse, "raw"),
+                       dist.hamming(woodmouse, exclude="all"))
+    expect_equivalent( dist.dna(woodmouse, "raw", pairwise.deletion = TRUE),
+                       dist.hamming(woodmouse, exclude="pairwise"))
+    expect_equivalent( dist.dna(woodmouse, "N"),
+                       dist.hamming(woodmouse, exclude="all", ratio = FALSE))
+    expect_equivalent( dist.dna(woodmouse, "N", pairwise.deletion = TRUE),
+                       dist.hamming(woodmouse, exclude="pairwise",
+                                    ratio = FALSE))
 })
 
 
