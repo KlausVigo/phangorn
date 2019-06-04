@@ -52,7 +52,7 @@ as.splits(x, ...)
 
 \method{as.bitsplits}{splits}(x)
 
-\method{as.splits}{bitsplits}(x)
+\method{as.splits}{bitsplits}(x, ...)
 
 compatible(obj)
 }

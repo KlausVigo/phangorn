@@ -414,6 +414,7 @@ postprocess.splits <- function (x)
 
 
 #' @rdname as.splits
+#' @importFrom ape as.bitsplits
 #' @method as.bitsplits splits
 #' @export
 as.bitsplits.splits <- function(x) {
@@ -442,7 +443,7 @@ as.bitsplits.splits <- function(x) {
 #' @rdname as.splits
 #' @method as.splits bitsplits
 #' @export
-as.splits.bitsplits <- function(x){
+as.splits.bitsplits <- function(x, ...){
   as.splits(as.prop.part(x))
 }
 
