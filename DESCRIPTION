@@ -9,7 +9,8 @@ Authors@R: c(person("Klaus", "Schliep", email="klaus.schliep@gmail.com", role = 
   person("Cyrill", "Stachniss", role = c("ctb")),
   person("Michelle", "Kendall", email="m.kendall@imperial.ac.uk", role = c("ctb")), 
   person("Keren", "Halabi", role = c("ctb")),
-  person("Richel", "Bilderbeek", role = c("ctb")))
+  person("Richel", "Bilderbeek", role = c("ctb")),
+  person("Kristin", "Winchell", role = c("ctb")))
 Maintainer: Klaus Schliep <klaus.schliep@gmail.com>
 Description: Package contains methods for estimation of phylogenetic trees and
     networks using Maximum Likelihood, Maximum Parsimony, distance methods and
