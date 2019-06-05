@@ -19,5 +19,5 @@ BuildType: Package
 PackageInstallArgs: --no-multiarch --with-keep.source
 PackageBuildArgs: --compact-vignettes=gs+qpdf
 PackageBuildBinaryArgs: --compact-vignettes=gs+qpdf
-PackageCheckArgs: --compact-vignettes=gs+qpdf --as-cran --timings
+PackageCheckArgs: --as-cran --timings
 PackageRoxygenize: rd,collate,namespace

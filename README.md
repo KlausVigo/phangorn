@@ -5,9 +5,8 @@
 [![codecov.io](https://codecov.io/github/KlausVigo/phangorn/coverage.svg?branch=master)](https://codecov.io/github/KlausVigo/phangorn?branch=master)
 [![Coverage Status](https://coveralls.io/repos/github/KlausVigo/phangorn/badge.svg?branch=master)](https://coveralls.io/github/KlausVigo/phangorn?branch=master)
 
+# phangorn <img src="inst/phangorn_sticker.png" align="right" width="120" />
 
-phangorn
-========================================================
 
 phangorn is a package for phylogenetic reconstruction and analysis in the R language. phangorn offers the possibility of reconstructing phylogenies with distance based methods, maximum parsimony or maximum likelihood (ML) and performing Hadamard conjugation. Extending the general ML framework, this package provides the possibility of estimating mixture and partition models. Furthermore, phangorn offers several functions for comparing trees, phylogenetic models or splits, simulating character data and performing congruence analyses. 
 
