@@ -10,8 +10,11 @@ BUG FIXES
 
     o bootstrap.pml returned an error with argument optNni=T
 
-      Best practise is to always use TRUE and not T!!!
+      Best practise is to always use TRUE and not T as shortcut
 
+OTHER CHANGES
+
+    o  several more unit tests
 
 
      CHANGES in PHANGORN VERSION 2.5.2
