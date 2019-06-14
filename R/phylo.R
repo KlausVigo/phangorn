@@ -1,17 +1,3 @@
-#' @rdname pml.fit
-#' @export
-discrete.gamma <- function(alpha, k) {
-  if (k == 1) return(1)
-  quants <- qgamma( (1:(k - 1)) / k, shape = alpha, rate = alpha)
-  diff(c(0, pgamma(quants * alpha, alpha + 1), 1)) * k
-}
-
-
-discrete.beta <- function(shape1, shape2, k) {
-  qbeta( ( (0:(k - 1)) + .5) / k, shape1, shape2)
-}
-
-
 # allow transition probs of zero (added o)
 optimQ <- function(tree, data, Q = rep(1, 6), subs = rep(1, length(Q)),
                    trace = 0, ...) {
