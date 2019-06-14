@@ -13,12 +13,9 @@
 #' @param alpha Shape parameter of the gamma distribution.
 #' @param k Number of intervals of the discrete gamma distribution.
 #' @param inv Proportion of invariable sites.
-#' @param rate Rate.
-#' @param g vector of quantiles (default is NULL)
-#' @param w vector of probabilities (default is NULL)
 #' @param discrete logical wether to plot discrete (default) or continous pdf or
 #' cdf.
-#' @param discrete logical wether to plot the cummulative distribution function
+#' @param cdf logical wether to plot the cummulative distribution function
 #' or density / probability function.
 #' @param append logical; if TRUE only add to an existing plot.
 #' @param xlab a label for the x axis, defaults to a description of x.

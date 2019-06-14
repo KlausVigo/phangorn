@@ -1355,7 +1355,6 @@ pml.fit4 <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #' @param data An alignment, object of class \code{phyDat}.
 #' @param bf Base frequencies.
 #' @param shape Shape parameter of the gamma distribution.
-#' @param alpha Shape parameter of the gamma distribution.
 #' @param k Number of intervals of the discrete gamma distribution.
 #' @param Q A vector containing the lower triangular part of the rate matrix.
 #' @param levels The alphabet used e.g. c("a", "c", "g", "t") for DNA

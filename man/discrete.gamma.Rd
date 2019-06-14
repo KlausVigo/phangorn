@@ -23,6 +23,9 @@ plot_gamma_plus_inv(shape = 1, inv = 0, k = 4, discrete = TRUE,
 \item{discrete}{logical wether to plot discrete (default) or continous pdf or
 cdf.}
 
+\item{cdf}{logical wether to plot the cummulative distribution function
+or density / probability function.}
+
 \item{append}{logical; if TRUE only add to an existing plot.}
 
 \item{xlab}{a label for the x axis, defaults to a description of x.}
@@ -34,15 +37,6 @@ cdf.}
 \item{verticals}{ogical; if TRUE, draw vertical lines at steps.}
 
 \item{\dots}{Further arguments passed to or from other methods.}
-
-\item{rate}{Rate.}
-
-\item{g}{vector of quantiles (default is NULL)}
-
-\item{w}{vector of probabilities (default is NULL)}
-
-\item{discrete}{logical wether to plot the cummulative distribution function
-or density / probability function.}
 }
 \value{
 \code{discrete.gamma} returns a matrix.

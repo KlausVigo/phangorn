@@ -59,8 +59,6 @@ pml.fit(tree, data, bf = rep(1/length(levels), length(levels)),
 
 \item{site}{return the log-likelihood or vector of sitewise likelihood
 values}
-
-\item{alpha}{Shape parameter of the gamma distribution.}
 }
 \value{
 \code{pml.fit} returns the log-likelihood.
