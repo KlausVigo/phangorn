@@ -140,8 +140,8 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
       if(!append) plot(g, w, xlim = xlim, #c(-.5, 1.25 * max(g)),
                        ylim=c(0, 1),
                        type="n", xlab=xlab, ylab=ylab, ...)
-      curve(cdf_fun(x, shape, inv),  xlim[1], -.001, add=TRUE, ...)
-      curve(cdf_fun(x, shape, inv),  0, xlim[2], add=TRUE, ...)
+      curve(function(x)cdf_fun(x, shape, inv),  xlim[1], -.001, add=TRUE, ...)
+      curve(function(x)cdf_fun(x, shape, inv),  0, xlim[2], add=TRUE, ...)
       points(0, inv, ...)
       if(verticals) segments(0, 0, 0, inv, ...)
     }
