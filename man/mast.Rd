@@ -23,8 +23,7 @@ of the the maximum agreement subtree.}
 \code{mast} computes the maximum agreement subtree (MAST).
 }
 \details{
-The code is derived from the code example in Valiente (2009),
-for the original code see \url{http://www.cs.upc.edu/~valiente/comput-biol/}.
+The code is derived from the code example in Valiente (2009).
 The version for the unrooted trees is much slower.
 }
 \examples{
