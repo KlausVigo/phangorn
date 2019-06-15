@@ -242,7 +242,8 @@ as.splits.phylo <- function(x, ...) {
   }
   if (!is.null(x$node.label)) {
     conf <- x$node.label
-    if (is.character(conf)) conf <- as.numeric(conf)
+    if (is.character(conf)) as.is <- TRUE
+      #conf <- as.numeric(conf)
     if (!as.is) if (max(na.omit(conf)) > (1 + 1e-8)) conf <- conf / 100
     attr(result, "confidences") <- c(rep(NA_real_, length(x$tip.label)), conf)
   }

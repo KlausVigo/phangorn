@@ -677,7 +677,10 @@ addConfidences.splits <- function(x, y, scaler = 1, ...) {
   #    pos <-  which(ind > nTips)
   pos <-  which(!is.na(ind))
   confidences <- rep(NA_real_, length(x)) # numeric(length(x))  #character
-  confidences[pos] <- attr(spl, "confidences")[ind[pos]] * scaler
+
+  if(is.numeric(attr(spl, "confidences")))
+     confidences[pos] <- attr(spl, "confidences")[ind[pos]] * scaler
+  else confidences[pos] <- attr(spl, "confidences")[ind[pos]]
   if (add == TRUE) confidences <- paste(prettyNum(attr(x, "confidences")),
       prettyNum(confidences * scaler), sep = "/")
   #        y$node.label[ind[pos] - nTips]
@@ -705,7 +708,8 @@ addConfidences.phylo <- function(x, y, ...) {
   spl <- as.splits(x) %>% oneWise(nTips = nTips)
   conf <- attr(addConfidences(spl, y), "confidences")
   l <- lengths(spl)
-  if (is.character(conf)) conf <- as.numeric(conf)
+  if (is.character(conf)) as.is <- TRUE
+    # conf <- as.numeric(conf)
   ind <- (l == 1L) | (l == (nTips - 1L)) | (l == nTips)
   conf[ind == TRUE] <- NA_real_
   nTips <- length(x$tip.label)
