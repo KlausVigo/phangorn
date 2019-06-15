@@ -31,11 +31,11 @@
 #'
 #' par(mfrow = c(2,1))
 #'
-#' plot_gamma_plus_inv(discrete = FALSE, cdf=FALSE)
-#' plot_gamma_plus_inv(append = TRUE, cdf=FALSE)
+#' plot_gamma_plus_inv(shape=2, discrete = FALSE, cdf=FALSE)
+#' plot_gamma_plus_inv(shape=2, append = TRUE, cdf=FALSE)
 #'
-#' plot_gamma_plus_inv(discrete = FALSE)
-#' plot_gamma_plus_inv(append = TRUE)
+#' plot_gamma_plus_inv(shape=2, discrete = FALSE)
+#' plot_gamma_plus_inv(shape=2, append = TRUE)
 #'
 #' par(mfrow = c(1,1))
 #'
@@ -127,7 +127,6 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
 
   plot_cdf_continuos <- function(shape=1, inv=0, k=4, verticals=FALSE,
                                  append=FALSE, ylab=ylab, xlim=xlim, ...){
-    #    browser()
     if(inv==0){
       if(!append) plot(function(x)cdf_fun(x, shape, inv), xlim[1], xlim[2],
                        ylim=c(0, 1), xlab=xlab, ylab=ylab, ...)
@@ -149,7 +148,6 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
 
   plot_density_continuous <- function(shape=1, inv=0, k=4, append=FALSE,
                                       xlab=xlab, ylab=ylab, xlim=xlim, ...){
-    #browser()
     if(!append) plot(function(x)density_fun(x, shape = shape, inv=inv),
                      xlim[1], xlim[2], xlab=xlab, ylab=ylab, ...)
     else{

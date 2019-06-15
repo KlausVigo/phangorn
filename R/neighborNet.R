@@ -188,7 +188,6 @@ getOrderingNN2 <- function(x) {
   # DM_C connected components, DM_V vertices
   DM_C <- DM_V <- DM <- d
   z <- 0
-  # browser()
   while (lCL > 1) {
     i <- 0
     j <- 0
@@ -286,8 +285,6 @@ getOrderingNN2 <- function(x) {
           d <- reduc(d, CL[[e1]][1], CL[[e2]][2], CL[[e2]][1])
         }
       }
-      #            browser()
-
       ord[[e1]] <- newOrd
       ord <- ord[-e2]
 
@@ -300,8 +297,6 @@ getOrderingNN2 <- function(x) {
       lCL <- lCL - 1L
     }
   }
-  #    print(z)
-  #    browser()
   newOrd
 }
 
@@ -340,7 +335,6 @@ neighborNet <-  function(x, ord = NULL) {
   if (is.null(labels))
     labels <- colnames(x)
   l <- length(labels)
-  # browser()
   if (is.null(ord)) ord <- getOrderingNN(x)
   spl <- allCircularSplits(l, labels[ord])
   spl <- nnls.splits(spl, x)
