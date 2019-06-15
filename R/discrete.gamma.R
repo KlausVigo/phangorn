@@ -55,6 +55,8 @@ discrete.beta <- function(shape1, shape2, k) {
 }
 
 #' @rdname discrete.gamma
+#' @importFrom stats dgamma qgamma stepfun
+#' @importFrom graphics curve
 #' @export
 plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
                                 append=FALSE, xlab = "x",
