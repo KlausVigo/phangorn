@@ -414,7 +414,6 @@ postprocess.splits <- function (x)
 
 
 #' @rdname as.splits
-#' @importFrom ape as.bitsplits
 #' @method as.bitsplits splits
 #' @export
 as.bitsplits.splits <- function(x) {
