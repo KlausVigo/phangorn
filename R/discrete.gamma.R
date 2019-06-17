@@ -121,8 +121,8 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
     w <- g_w[, "w"]
     if(!append) plot(g, w, xlim = xlim, ylim=c(0, 1), type="n",
                      xlab=xlab, ylab=ylab, ...)
-    segments(g, 0, g, w)
-    points(g, w)
+    segments(g, 0, g, w, ...)
+    points(g, w, ...)
   }
 
   plot_cdf_continuos <- function(shape=1, inv=0, k=4, verticals=FALSE,
