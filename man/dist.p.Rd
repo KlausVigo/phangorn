@@ -57,7 +57,7 @@ cat("3 5",
 dat <- phyDat(ex.dna, "USER", levels=unique(as.vector(ex.dna)))
 dist.p(dat)
 
-unlink(ex.dna)
+unlink("exdna.txt")
 
 }
 \references{

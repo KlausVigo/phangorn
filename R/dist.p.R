@@ -64,7 +64,7 @@
 #' dat <- phyDat(ex.dna, "USER", levels=unique(as.vector(ex.dna)))
 #' dist.p(dat)
 #'
-#' unlink(ex.dna)
+#' unlink("exdna.txt")
 #'
 #' @export dist.p
 dist.p <- function(x, cost = "polymorphism", ignore.indels = TRUE) {
