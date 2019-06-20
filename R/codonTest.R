@@ -155,8 +155,9 @@ glance.pmlMix <- function(x, ...) {
 print.codonTest <- function(x, ...) print(x$summary)
 
 
+#' @importFrom grDevices hcl.colors
 #' @export
-plot.codonTest <- function(x, model = "M1a", col = c(2, 5, 6), ...) {
+plot.codonTest <- function(x, model = "M1a", col = hcl.colors(3), ...) {
   dat <- t(x$posterior[[model]])
   colnames(dat) <- seq_len(ncol(dat))
   barplot(dat, col = col, space = 0, border = NA,
