@@ -17,7 +17,7 @@ Description: Package contains methods for estimation of phylogenetic trees and
     Hadamard conjugation. Allows to compare trees, models selection and offers
     visualizations for trees and split networks. 
 Depends:
-    R (>= 3.2.0),
+    R (>= 3.6.0),
     ape (>= 5.0)
 Imports:
     quadprog,
