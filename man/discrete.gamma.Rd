@@ -3,13 +3,17 @@
 \name{discrete.gamma}
 \alias{discrete.gamma}
 \alias{plot_gamma_plus_inv}
+\alias{plotRates}
 \title{Discrete Gamma function}
 \usage{
 discrete.gamma(alpha, k)
 
 plot_gamma_plus_inv(shape = 1, inv = 0, k = 4, discrete = TRUE,
   cdf = TRUE, append = FALSE, xlab = "x", ylab = ifelse(cdf,
-  "F(x)", "f(x)"), xlim = NULL, verticals = FALSE, ...)
+  "F(x)", "f(x)"), xlim = NULL, verticals = FALSE,
+  edge.length = NULL, ...)
+
+plotRates(obj, cdf.color = "red", main = "cdf", ...)
 }
 \arguments{
 \item{alpha}{Shape parameter of the gamma distribution.}
@@ -36,7 +40,15 @@ or density / probability function.}
 
 \item{verticals}{ogical; if TRUE, draw vertical lines at steps.}
 
+\item{edge.length}{Total edge length (sum of all edges in a tree).}
+
 \item{\dots}{Further arguments passed to or from other methods.}
+
+\item{obj}{an object of class pml}
+
+\item{cdf.color}{color of the cdf.}
+
+\item{main}{a main title for the plot.}
 }
 \value{
 \code{discrete.gamma} returns a matrix.

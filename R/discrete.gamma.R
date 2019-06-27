@@ -13,6 +13,7 @@
 #' @param alpha Shape parameter of the gamma distribution.
 #' @param k Number of intervals of the discrete gamma distribution.
 #' @param inv Proportion of invariable sites.
+#' @param edge.length Total edge length (sum of all edges in a tree).
 #' @param discrete logical wether to plot discrete (default) or continous pdf or
 #' cdf.
 #' @param cdf logical wether to plot the cummulative distribution function
@@ -61,7 +62,7 @@ discrete.beta <- function(shape1, shape2, k) {
 plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
                                 append=FALSE, xlab = "x",
                                 ylab=ifelse(cdf, "F(x)", "f(x)"), xlim=NULL,
-                                verticals=FALSE, ...){
+                                verticals=FALSE, edge.length=NULL, ...){
 
   l <- max(lengths(list(shape, k, inv)))
   if(l>1){
@@ -98,18 +99,20 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
     (1-inv) * dgamma(x, shape = shape, rate = shape)
   }
 
-  step_GpI <- function(alpha=1, k=4, inv=0){
+  step_GpI <- function(alpha=1, k=4, inv=0, edge.length=NULL){
     w <- rep(1/k, k)
     if (inv > 0) w <- c(inv, (1 - inv) * w)
     cw <- cumsum(w)
     g <- discrete.gamma(alpha, k)
     if (inv > 0) g <- c(0, g/(1 - inv))
+    if(!is.null(edge.length)) g <- g * edge.length
     stepfun(g, c(0, cw))
   }
 
   plot_cdf_discrete <- function(shape=1, inv=0, k=4, verticals=FALSE,
-                                append=FALSE, ylab=ylab, xlim=xlim, ...){
-    sf <- step_GpI(shape, inv, k=k)
+                                append=FALSE, ylab=ylab, xlim=xlim,
+                                edge.length=edge.length, ...){
+    sf <- step_GpI(shape, inv, k=k, edge.length=edge.length)
     if(append) plot(sf, verticals=verticals, add=TRUE, xlim=xlim, ...)
     else plot(sf, verticals=verticals, ylab=ylab, xlim=xlim, ...)
   }
@@ -152,7 +155,7 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
                      xlim[1], xlim[2], xlab=xlab, ylab=ylab, ...)
     else{
       plot(function(x)density_fun(x, shape = shape, inv=inv),
-               xlim[1], xlim[2], add=TRUE, ...)
+           xlim[1], xlim[2], add=TRUE, ...)
     }
     if(inv>0){
       segments(0, 0, 0, inv, ...)
@@ -166,7 +169,8 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
     if(cdf){
       if(discrete){
         plot_cdf_discrete(shape[i], inv[i], k[i], verticals = verticals[i],
-                          append = append, ylab = ylab, xlim=xlim, ...)
+                          append = append, ylab = ylab, xlim=xlim,
+                          edge.length=edge.length,...)
       }
       else{
         plot_cdf_continuos(shape[i], inv[i], k[i], verticals = verticals[i],
@@ -184,8 +188,28 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
                                 xlab=xlab, ylab=ylab, xlim=xlim, ...)
       }
     }
-
     append <- TRUE
     i <- i+1L
   }
 }
+
+
+
+#' @rdname discrete.gamma
+#' @importFrom stats ecdf
+#' @importFrom graphics rug
+#' @param obj an object of class pml
+#' @param main a main title for the plot.
+#' @param cdf.color color of the cdf.
+#' @export
+plotRates <- function(obj, cdf.color="blue", main="cdf", ...){
+  pscores <- parsimony(obj$tree, obj$data, site="site")[attr(obj$data, "index")]
+  ecdf_pscores <- ecdf(pscores)
+  plot(ecdf_pscores, verticals = TRUE, do.points=FALSE, main=main, ...)
+  rug(jitter(pscores)) # rug(sort(unique(pscores)))
+  plot_gamma_plus_inv(k=obj$k, shape=obj$shape, obj=x$inv, append=TRUE,
+                      xlim = c(-.25, 1.1 * max(pscores)),
+                      edge.length=sum(obj$tree$edge.length),
+                      verticals=TRUE, col=cdf.color, ...)
+}
+
