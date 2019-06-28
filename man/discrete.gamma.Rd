@@ -13,7 +13,7 @@ plot_gamma_plus_inv(shape = 1, inv = 0, k = 4, discrete = TRUE,
   "F(x)", "f(x)"), xlim = NULL, verticals = FALSE,
   edge.length = NULL, ...)
 
-plotRates(obj, cdf.color = "red", main = "cdf", ...)
+plotRates(obj, cdf.color = "blue", main = "cdf", ...)
 }
 \arguments{
 \item{alpha}{Shape parameter of the gamma distribution.}
