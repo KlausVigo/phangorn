@@ -56,7 +56,7 @@ test_that("tree length works properly", {
 test_that("tree length works properly", {
     skip_on_cran()
     ra_tree <- random.addition(yeast)
-    ratchet_tree <- pratchet(yeast, start=ra_tree)
+    ratchet_tree <- pratchet(yeast, start=ra_tree, trace=0)
     expect_gte(attr(ra_tree, "pscore"), attr(ratchet_tree, "pscore"))
 })
 

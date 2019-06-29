@@ -72,3 +72,17 @@ test_that("add.tips", {
 })
 
 
+test_that("plotBS", {
+  skip_on_cran()
+  set.seed(1)
+  data("Laurasiatherian")
+  bs <- bootstrap.phyDat(Laurasiatherian,
+                         FUN = function(x)NJ(dist.hamming(x)), bs=50)
+  tree <- NJ(dist.hamming(Laurasiatherian))
+  treeBS <- plotBS(tree, bs, type="none")
+  expect_length(treeBS$node.label, treeBS$Nnode)
+  expect_true(all(treeBS$node.label >=0) )
+  expect_true(all(treeBS$node.label <= 100) )
+})
+
+
