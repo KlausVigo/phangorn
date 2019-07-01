@@ -14,7 +14,7 @@ fit_F1x4 <- pml(tree, dat_1, bf="F1x4")
 fit_F3x4 <- pml(tree, dat_1, bf="F3x4")
 fit_GY <- pml(tree, dat_1, bf="empirical")
 
-test_that("edge length optimisation works properly", {
+test_that("dn/ds optimisation works properly", {
     skip_on_cran()
 
     fit_GY_opt <- optim.pml(fit_GY, model="codon1",
@@ -30,7 +30,7 @@ data(woodmouse)
 dat_codon <- dna2codon(as.phyDat(woodmouse))
 tree <- NJ(dist.ml(dat_codon))
 
-test_that("edge length optimisation works properly", {
+test_that("M0, M1a optimisation works properly", {
   skip_on_cran()
     fit_codon <- codonTest(tree, dat_codon, model = c("M0", "M1a"),
                        control = pml.control(maxit = 20))
