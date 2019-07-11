@@ -207,9 +207,10 @@ plotRates <- function(obj, cdf.color="blue", main="cdf", ...){
   ecdf_pscores <- ecdf(pscores)
   plot(ecdf_pscores, verticals = TRUE, do.points=FALSE, main=main, ...)
   rug(jitter(pscores)) # rug(sort(unique(pscores)))
+  el <- obj$tree$edge.length
   plot_gamma_plus_inv(k=obj$k, shape=obj$shape, inv=obj$inv, append=TRUE,
                       xlim = c(-.25, 1.1 * max(pscores)),
-                      edge.length=sum(obj$tree$edge.length),
+                      edge.length=sum(el),
                       verticals=TRUE, col=cdf.color, ...)
 }
 
