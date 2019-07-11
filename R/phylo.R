@@ -883,7 +883,9 @@ optimEdge <- function(tree, data, eig = eig, w = w, g = g, bf = bf, rate = rate,
     if (control$trace > 1) cat(old.ll, " -> ", newll, "\n")
     old.ll <- newll
   }
-  if (control$trace > 0) cat(start.ll, " -> ", newll, "\n")
+  if (control$trace > 0)
+    cat("optimize edge weights: ", start.ll, "-->", newll, "\n")
+#    cat(start.ll, " -> ", newll, "\n")
   list(tree = treeP, logLik = newll, c(eps, iter))
 }
 
@@ -2562,12 +2564,11 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     tmplogLik <- pml.fit(treetmp, data, bf, k = k, inv = inv, g = g, w = w,
       eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, wMix = wMix)
     if (tmplogLik > ll) tree <- treetmp
-
     res <- optimEdge(tree, data, eig = eig, w = w, g = g, bf = bf, rate = rate,
       ll.0 = ll.0, INV = INV,
-      control <- pml.control(epsilon = 1e-07, maxit = 5, trace = trace - 1))
-    if (trace > 0)
-      cat("optimize edge weights: ", ll, "-->", max(res[[2]], ll), "\n")
+      control <- pml.control(epsilon = 1e-07, maxit = 5, trace = trace))
+#    if (trace > 0)
+#      cat("optimize edge weights: ", ll, "-->", max(res[[2]], ll), "\n")
     if (res[[2]] > ll) {
       ll <- res[[2]]
       tree <- res[[1]]
@@ -2727,10 +2728,10 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       res <- optimEdge(tree, data, eig = eig, w = w, g = g, bf = bf,
                        rate = rate, ll.0 = ll.0,
                        control = pml.control(epsilon = 1e-08, maxit = 5,
-                                             trace = trace - 1))
-      if (trace > 0)
-        cat("optimize edge weights: ", ll, "-->", max(res[[2]], ll),
-          "\n")
+                                             trace = trace))
+#      if (trace > 0)
+#        cat("optimize edge weights: ", ll, "-->", max(res[[2]], ll),
+#          "\n")
       if (res[[2]] > ll) {
         ll <- res[[2]]
         tree <- res[[1]]
