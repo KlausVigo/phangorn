@@ -2318,6 +2318,7 @@ updateRates <- function(res, ll, rate, shape, k, inv, wMix, update="rate"){
   assign("g", g, envir = parent.frame(n = 1))
   assign("w", w, envir = parent.frame(n = 1))
   assign("inv", inv, envir = parent.frame(n = 1))
+  assign("shape", shape, envir = parent.frame(n = 1))
   assign("ll", res[[2]], envir = parent.frame(n = 1))
 }
 
@@ -2658,24 +2659,24 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     if (optInv) {
       res <- optimInv(tree, data, inv = inv, INV = INV, Q = Q,
         bf = bf, eig = eig, k = k, shape = shape, rate = rate)
-      browser()
+#      browser()
       if (trace > 0)
         cat("optimize invariant sites: ", ll, "-->", max(res[[2]], ll), "\n")
-#      updateRates(res, ll, rate, shape, k, inv, wMix, update="inv")
-      if (res[[2]] > ll) {
-        inv <- res[[1]]
-        w <- rep(1 / k, k)
-        g <- discrete.gamma(shape, k)
-        w <- (1 - inv) * w
-        if (wMix > 0)
-          w <- (1 - wMix) * w
-        g <- g / (1 - inv)
-        g <- g * rate
+      updateRates(res, ll, rate, shape, k, inv, wMix, update="inv")
+#      if (res[[2]] > ll) {
+#        inv <- res[[1]]
+#        w <- rep(1 / k, k)
+#        g <- discrete.gamma(shape, k)
+#        w <- (1 - inv) * w
+#        if (wMix > 0)
+#          w <- (1 - wMix) * w
+#        g <- g / (1 - inv)
+#        g <- g * rate
         ll.0 <- as.matrix(INV %*% (bf * inv))
         if (wMix > 0)
           ll.0 <- ll.0 + llMix
-        ll <- res[[2]]
-      }
+#        ll <- res[[2]]
+#       }
     }
     if (optGamma) {
       res <- optimGamma(tree, data, shape = shape, k = k, inv = inv,
@@ -2683,20 +2684,20 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         ll.0 = ll.0, rate = rate)
       if (trace > 0)
         cat("optimize shape parameter: ", ll, "-->", max(res[[2]], ll), "\n")
-#      updateRates(res, ll, rate, shape, k, inv, wMix, update="shape")
-      if (res[[2]] > ll) {
-        shape <- res[[1]]
-        w <- rep(1 / k, k)
-        g <- discrete.gamma(shape, k)
-        if (inv > 0) {
-          w <- (1 - inv) * w
-          g <- g / (1 - inv)
-        }
-        if (wMix > 0)
-          w <- (1 - wMix) * w
-        g <- g * rate
-        ll <- res[[2]]
-      }
+      updateRates(res, ll, rate, shape, k, inv, wMix, update="shape")
+#      if (res[[2]] > ll) {
+#        shape <- res[[1]]
+#        w <- rep(1 / k, k)
+#        g <- discrete.gamma(shape, k)
+#        if (inv > 0) {
+#          w <- (1 - inv) * w
+#          g <- g / (1 - inv)
+#        }
+#        if (wMix > 0)
+#          w <- (1 - wMix) * w
+#        g <- g * rate
+#      if (res[[2]] > ll) ll <- res[[2]]
+#      }
     }
     if (optRate) {
       res <- optimRate(tree, data, rate = rate, inv = inv,
@@ -2704,20 +2705,20 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         shape = shape, w = w, ll.0 = ll.0)
       if (trace > 0)
         cat("optimize rate: ", ll, "-->", max(res[[2]], ll), "\n")
-#      updateRates(res, ll, rate, shape, k, inv, wMix, update="rate")
-      if (res[[2]] > ll) {
-        rate <- res[[1]]
-        g <- discrete.gamma(shape, k)
-        w <- rep(1 / k, k)
-        if (inv > 0) {
-          w <- (1 - inv) * w
-          g <- g / (1 - inv)
-        }
-        if (wMix > 0)
-          w <- (1 - wMix) * w
-        g <- g * rate
-        ll <- res[[2]]
-      }
+      updateRates(res, ll, rate, shape, k, inv, wMix, update="rate")
+#      if (res[[2]] > ll) {
+#        rate <- res[[1]]
+#        g <- discrete.gamma(shape, k)
+#        w <- rep(1 / k, k)
+#        if (inv > 0) {
+#          w <- (1 - inv) * w
+#          g <- g / (1 - inv)
+#        }
+#        if (wMix > 0)
+#          w <- (1 - wMix) * w
+#        g <- g * rate
+#        ll <- res[[2]]
+#      }
     }
     if (optEdge) {
       res <- optimEdge(tree, data, eig = eig, w = w, g = g, bf = bf,
