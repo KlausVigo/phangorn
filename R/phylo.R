@@ -2300,6 +2300,28 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV,
 }
 
 
+updateRates <- function(res, ll, rate, shape, k, inv, wMix, update="rate"){
+  update <- match.arg(update, c("rate", "shape", "inv"))
+  if(res[[2]] < ll) return(NULL)
+  if(update=="rate") rate <- res[[1]]
+  if(update=="shape") shape <- res[[1]]
+  if(update=="inv") inv <- res[[1]]
+  g <- discrete.gamma(shape, k)
+  w <- rep(1 / k, k)
+  if (inv > 0) {
+    w <- (1 - inv) * w
+    g <- g / (1 - inv)
+  }
+  if (wMix > 0)
+    w <- (1 - wMix) * w
+  g <- g * rate
+  assign("g", g, envir = parent.frame(n = 1))
+  assign("w", w, envir = parent.frame(n = 1))
+  assign("inv", inv, envir = parent.frame(n = 1))
+  assign("ll", res[[2]], envir = parent.frame(n = 1))
+}
+
+
 #' @rdname pml
 #' @aliases optim.pml
 #' @export
@@ -2358,18 +2380,6 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   addTaxa <- FALSE
 
   if (optNni) {
-    # test this more
-    #        dup <-  duplicated(data)
-    #        if(any(dup)){ # && optNNI
-    #            orig.data <- data
-    #            addTaxa <- TRUE
-    #            labels <- names(data)
-    #            ldup <- labels[dup]
-    #            ind2 <- match(subset(data, dup), data)
-    #            tree2 <- drop.tip(tree, ldup)
-    #            tree <- reorder(tree2, "postorder")
-    #            mapping <- cbind(labels[dup], labels[ind2])
-    #        }
     mapping <- map_duplicates(data)
     if (!is.null(mapping)) {
       orig.data <- data
@@ -2489,29 +2499,14 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   nr <- as.integer(attr(data, "nr"))
   nc <- as.integer(attr(data, "nc"))
   nTips <- as.integer(length(tree$tip.label))
-
-  #    on.exit(.C("ll_free"))
-  #    .C("ll_init", nr, nTips, nc, as.integer(k))
-  #    .INV <- .iind <- NULL
   on.exit({
     tmp <- pml.fit(tree, data, bf, shape = shape, k = k, Q = Q,
       levels = attr(data, "levels"), inv = inv, rate = rate,
       g = g, w = w, eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix,
       wMix = wMix, site = TRUE)
-
-    #   df <- ifelse(optRooted, tree$Nnode, length(tree$edge.length))
-    #   length(tree$edge.length)
-    #   nTips
-    #   nNodes
-    #   uniqueTips
-    #   uniqueNodes
-    #   kmax>1
-    #   bf
-    #   Q
     if (addTaxa) {
       tree <- add.tips(tree, tips = mapping[, 1], where = mapping[, 2],
         edge.length = rep(0, nrow(mapping)))
-      # addAllTips(tree, mapping)
       data <- orig.data
     }
     df <- ifelse(optRooted, tree$Nnode, length(tree$edge.length))
@@ -2519,8 +2514,6 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       DNA = df + (k > 1) + (inv > 0) + length(unique(bf)) - 1 +
         length(unique(Q)) - 1,
       AA = df + (k > 1) + (inv > 0) +  optBf * (length(unique(bf)) - 1),
-#      CODON = df + (k > 1) + (inv > 0) + length(unique(bf)) - 1 +
-#        (dnds != 1) + (tstv != 1),
       CODON = df + (k > 1) + (inv > 0) + freq_df + (dnds != 1) + (tstv != 1),
       USER = df + (k > 1) + (inv > 0) + length(unique(bf)) - 1 +
         length(unique(Q)) - 1)
@@ -2665,9 +2658,10 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     if (optInv) {
       res <- optimInv(tree, data, inv = inv, INV = INV, Q = Q,
         bf = bf, eig = eig, k = k, shape = shape, rate = rate)
+      browser()
       if (trace > 0)
-        cat("optimize invariant sites: ", ll, "-->", max(res[[2]], ll),
-          "\n")
+        cat("optimize invariant sites: ", ll, "-->", max(res[[2]], ll), "\n")
+#      updateRates(res, ll, rate, shape, k, inv, wMix, update="inv")
       if (res[[2]] > ll) {
         inv <- res[[1]]
         w <- rep(1 / k, k)
@@ -2688,8 +2682,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         INV = INV, Q = Q, bf = bf, eig = eig,
         ll.0 = ll.0, rate = rate)
       if (trace > 0)
-        cat("optimize shape parameter: ", ll, "-->",
-          max(res[[2]], ll), "\n")
+        cat("optimize shape parameter: ", ll, "-->", max(res[[2]], ll), "\n")
+#      updateRates(res, ll, rate, shape, k, inv, wMix, update="shape")
       if (res[[2]] > ll) {
         shape <- res[[1]]
         w <- rep(1 / k, k)
@@ -2710,6 +2704,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         shape = shape, w = w, ll.0 = ll.0)
       if (trace > 0)
         cat("optimize rate: ", ll, "-->", max(res[[2]], ll), "\n")
+#      updateRates(res, ll, rate, shape, k, inv, wMix, update="rate")
       if (res[[2]] > ll) {
         rate <- res[[1]]
         g <- discrete.gamma(shape, k)
