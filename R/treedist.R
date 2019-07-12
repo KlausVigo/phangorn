@@ -584,9 +584,9 @@ wRF1 <- function(trees, normalize = FALSE, check.labels = TRUE,
 mRF2 <- function(tree, trees, normalize = FALSE, check.labels = TRUE,
                  rooted = FALSE) {
   if (!inherits(trees, "multiPhylo"))
-    stop("trees should be an object of class \"multiPhylo\"")
+    stop("Argument trees should be an object of class \"multiPhylo\"")
   if (!inherits(tree, "phylo"))
-    stop("trees should be an object of class \"phylo\"")
+    stop("Argument tree should be an object of class \"phylo\"")
   trees <- .compressTipLabel(trees)
   tipLabel <- attr(trees, "TipLabel")
   if (check.labels) tree <- checkLabels(tree, tipLabel)
@@ -642,7 +642,7 @@ mRF2 <- function(tree, trees, normalize = FALSE, check.labels = TRUE,
 
 mRF <- function(trees, normalize = FALSE, rooted = FALSE) {
   if (!inherits(trees, "multiPhylo"))
-    stop("trees should be an object of class \"multiPhylo\"")
+    stop("Argument trees should be an object of class \"multiPhylo\"")
   trees <- .compressTipLabel(trees)
   tipLabel <- attr(trees, "TipLabel")
   nTips <- length(tipLabel)
@@ -650,7 +650,7 @@ mRF <- function(trees, normalize = FALSE, rooted = FALSE) {
   RF <- numeric( (l * (l - 1)) / 2)
 
   if (rooted & any(!is.rooted(trees))) {
-    warning("some trees were rooted, unrooted all")
+    warning("Some trees were rooted, unrooted all")
     rooted <- FALSE
   }
   if (!rooted) {
