@@ -2318,6 +2318,7 @@ updateRates <- function(res, ll, rate, shape, k, inv, wMix, update="rate"){
   assign("g", g, envir = parent.frame(n = 1))
   assign("w", w, envir = parent.frame(n = 1))
   assign("inv", inv, envir = parent.frame(n = 1))
+  assign("rate", rate, envir = parent.frame(n = 1))
   assign("shape", shape, envir = parent.frame(n = 1))
   assign("ll", res[[2]], envir = parent.frame(n = 1))
 }
