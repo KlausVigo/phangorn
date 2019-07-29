@@ -448,6 +448,10 @@ phyDat.codon <- function (data, return.index = TRUE, ambiguity = "---",
 #' subset(Laurasiatherian, subset=1:5)
 #' # the first 5 characters
 #' subset(Laurasiatherian, select=1:5, site.pattern = FALSE)
+#' # subsetting with []
+#' Laurasiatherian[1:5, 1:20]
+#' # short for
+#' subset(Laurasiatherian, subset=1:5, select=1:20, site.pattern = FALSE)
 #' # the first 5 site patterns (often more than 5 characters)
 #' subset(Laurasiatherian, select=1:5, site.pattern = TRUE)
 #' # transform into old ape format
@@ -996,6 +1000,7 @@ getRows <- function (data, rows, site.pattern = TRUE){
   index <- attr(data, "index")
   if(is.data.frame(index))index <- index[,1]
   if(!site.pattern){
+    if(is.null(index)) index <- seq_len(length(data[[1]]))
     weight <- tabulate(index[rows])
     ind <- which(weight>0)
 # update index
@@ -1022,13 +1027,20 @@ getRows <- function (data, rows, site.pattern = TRUE){
 #' @method subset phyDat
 #' @export
 subset.phyDat <- function (x, subset, select, site.pattern = TRUE,...){
-  if (!missing(subset)) x <- getCols(x, subset)
+  if (!missing(subset)){
+    if(any(subset>length(x))) stop("subscript out of bounds")
+    x <- getCols(x, subset)
+  }
   if (!missing(select)){
-     if(any(is.na(select))) return(NULL)
-     x <- getRows(x, select, site.pattern=site.pattern)
+    w <- attr(x, "weight")
+    if(site.pattern) if(any(select > length(w))) stop("subscript out of bounds")
+    else if(any(select > sum(w))) stop("subscript out of bounds")
+    if(any(is.na(select))) return(NULL)
+    x <- getRows(x, select, site.pattern=site.pattern)
   }
   x
 }
+
 
 ## Needs testing that it is not used e.g. prepareDataFitch returns no class
 #' @param i,j	indices of the rows and/or columns to select or to drop. They

@@ -28,7 +28,8 @@ test_that("conversion work as expected", {
     expect_s3_class(as.phyDat(phy_dnabin), "phyDat")
     expect_equal(as.phyDat(phy_aabin), chloroplast)
     expect_s3_class(phyDat(phy_vec_dna), "phyDat")
-    expect_s3_class(phyDat(phy_vec_user, type="USER", levels = c("0","1")), "phyDat")
+    expect_s3_class(phyDat(phy_vec_user, type="USER", levels = c("0","1")),
+                    "phyDat")
     expect_s3_class(as.phyDat(phy_dnabin), "phyDat")
     expect_s3_class(as.phyDat(phy_align), "phyDat")
     expect_s3_class(c2d <- codon2dna(codon_align), "phyDat")
@@ -51,18 +52,19 @@ test_that("conversion with Biostrings work as expected", {
 
 test_that("subsetting and combining work as expected", {
 ##    skip_on_cran()
-
   expect_s3_class(subset_1 <- subset(Laurasiatherian, select = 1:1000,
                                  site.pattern = FALSE), "phyDat")
   expect_s3_class(subset_2 <- subset(Laurasiatherian, select = 1001:3179,
                                  site.pattern = FALSE), "phyDat")
   expect_s3_class(lauraCbind1 <- cbind(subset_1, subset_2), "phyDat")
   expect_equal(baseFreq(lauraCbind1), baseFreq(Laurasiatherian))
-
   expect_s3_class(subset_3 <- subset(Laurasiatherian, select = 1:100), "phyDat")
-  expect_s3_class(subset_4 <- subset(Laurasiatherian, select = 101:1605), "phyDat")
+  expect_s3_class(subset_4 <- subset(Laurasiatherian, select = 101:1605),
+                  "phyDat")
   expect_equal(subset_1, Laurasiatherian[, 1:1000])
-  expect_s3_class(lauraCbind2 <- cbind(subset_3, subset_4), "phyDat")
+  expect_error(subset(Laurasiatherian, 1:100), "subscript out of bounds")
+  expect_s3_class(lauraCbind2 <- cbind(subset_3, subset_4), "phyDat",
+                  ignore.case = TRUE)
   expect_equal(baseFreq(lauraCbind2), baseFreq(Laurasiatherian))
 })
 
