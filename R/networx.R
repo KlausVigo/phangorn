@@ -70,26 +70,6 @@ splits2design <- function(obj, weight = NULL) {
 }
 
 
-hC <- function(g, set) {
-  intersec <- NULL
-  allEdges <- NULL
-  fromTo <- set
-  l <- length(set)
-  sptmp <- shortest_paths(g, fromTo[l], fromTo[1],
-                          output = c("epath"))$epath[[1]]
-  sptmp <- as.vector(sptmp)
-  allEdges <- sptmp
-  for (i in 2:length(set)) {
-    sptmp <- shortest_paths(g, fromTo[i - 1], fromTo[i],
-                            output = c("epath"))$epath[[1]]
-    sptmp <- as.vector(sptmp)
-    intersec <- c(intersec, intersect(allEdges, sptmp))
-    allEdges <- c(allEdges, sptmp)
-  }
-  #    allEdges = unique(allEdges)
-  list(allEdges, unique(allEdges), intersec)
-}
-
 
 addEdge <- function(network, desc, spl) {
   edge <- network$edge
