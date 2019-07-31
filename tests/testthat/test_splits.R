@@ -77,9 +77,8 @@ test_that("consensusNet", {
     set.seed(1)
     bs <- bootstrap.phyDat(Laurasiatherian,
                            FUN = function(x)nj(dist.hamming(x)), bs=50)
-    cnet <- consensusNet(bs)
+    cnet <- consensusNet(bs, .2)
     expect_is(cnet, "networx")
-
 })
 
 
