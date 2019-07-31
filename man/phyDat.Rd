@@ -200,6 +200,10 @@ baseFreq(Laurasiatherian, freq=TRUE)
 subset(Laurasiatherian, subset=1:5)
 # the first 5 characters
 subset(Laurasiatherian, select=1:5, site.pattern = FALSE)
+# subsetting with []
+Laurasiatherian[1:5, 1:20]
+# short for
+subset(Laurasiatherian, subset=1:5, select=1:20, site.pattern = FALSE)
 # the first 5 site patterns (often more than 5 characters)
 subset(Laurasiatherian, select=1:5, site.pattern = TRUE)
 # transform into old ape format
