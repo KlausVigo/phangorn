@@ -412,6 +412,8 @@ as.networx.splits <- function(x, planar = FALSE, coord = c("none", "2D", "3D"),
   }
   else c.ord <- getOrdering(x)
   attr(x, "cycle") <- c.ord
+  # check for star tree
+  if(length(x)==nTips) return(as.phylo(x))
   # which splits are in circular ordering
   circSplits <- which(countCycles(x, ord = c.ord) == 2)
   if (length(circSplits) == length(x)) planar <- TRUE
@@ -470,7 +472,6 @@ as.networx.phylo <- function(x, ...) {
 # as.igraph.networx <- function(x, directed=FALSE){
 #    graph(t(x$edge), directed=directed)
 # }
-
 
 
 
@@ -785,8 +786,8 @@ spl2angle <- function(x) {
 coords.equal.angle <- function(obj) {
   if (is.null(attr(obj, "order")) || (attr(obj, "order") == "postorder"))
     obj <- reorder.networx(obj)
-
   spl <- obj$splits
+  spl <- SHORTwise(spl, length(obj$tip.label))
   l <- length(obj$edge.length)
 #  ind1 <- which(!duplicated(obj$splitIndex))
   n <- max(obj$edge)
