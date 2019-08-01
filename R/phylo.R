@@ -628,34 +628,6 @@ fs <- function(old.el, eig, parent.dat, child.dat, weight, g = g,
 }
 
 
-fs3 <- function(old.el, eig, parent.dat, child, weight, g = g, w = w, bf = bf,
-                ll.0 = ll.0, contrast, contrast2, evi, ext = TRUE, getA = TRUE,
-                getB = TRUE) {
-  if (old.el < 1e-8) old.el <- 1e-8
-  lg <- length(parent.dat)
-  P <- getP(old.el, eig, g)
-  nr <- as.integer(length(weight))
-  nc <- as.integer(length(bf))
-  if (ext == FALSE) {
-    child.dat <- child
-    eve <- eig[[2]]
-    dad <- .Call("getDAD", parent.dat, child.dat, P, nr, nc)
-    X <- .Call("getPrep", dad, child.dat, eig[[2]], evi, nr, nc)
-  }
-  else {
-    nco <- as.integer(nrow(contrast))
-    dad <- .Call("getDAD2", parent.dat, child, contrast, P, nr, nc, nco)
-    child.dat <- vector("list", lg)
-    for (i in 1:lg) child.dat[[i]] <- contrast[child, , drop = FALSE]
-    X <- .Call("getPrep2", dad, child, contrast2, evi, nr, nc, nco)
-  }
-  .Call("FS4", eig, as.integer(length(bf)), as.double(old.el), as.double(w),
-    as.double(g), X, child.dat, dad, as.integer(length(w)),
-    as.integer(length(weight)), as.double(weight), as.double(ll.0),
-    as.integer(getA), as.integer(getB)) # as.double(bf),
-}
-
-
 # rate not used internally
 optimEdge <- function(tree, data, eig = eig, w = w, g = g, bf = bf, rate = rate,
                       ll.0 = ll.0, control = pml.control(epsilon = 1e-08,
