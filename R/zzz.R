@@ -13,7 +13,7 @@
 #' @importFrom graphics hist identify locator barplot
 #' @importFrom utils read.table download.file stack
 #' @importFrom utils installed.packages write.table combn packageDescription
-#' @importFrom grDevices rgb rainbow adjustcolor col2rgb
+#' @importFrom grDevices rgb adjustcolor col2rgb
 #' @useDynLib phangorn, .registration = TRUE
 
 .packageName <- "phangorn"

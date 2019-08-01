@@ -378,6 +378,7 @@ mpr <- function(tree, data, cost = NULL, return = "prob") {
 
 #' @rdname ancestral.pml
 #' @param site.pattern logical, plot i-th site pattern or i-th site
+#' @importFrom grDevices hcl.colors
 #' @export
 plotAnc <- function(tree, data, i = 1, site.pattern = TRUE, col = NULL,
                     cex.pie = par("cex"), pos = "bottomright", ...) {
@@ -397,7 +398,7 @@ plotAnc <- function(tree, data, i = 1, site.pattern = TRUE, col = NULL,
   xrad <- CEX * diff(lastPP$x.lim * 1.1) / 50
   par(new = TRUE)
   plot(tree, label.offset = 1.1 * xrad, plot = TRUE, ...)
-  if (is.null(col)) col <- rainbow(nc)
+  if (is.null(col)) col <-  hcl.colors(nc) #rainbow(nc)
   if (length(col) != nc) {
     warning("Length of color vector differs from number of levels!")
   }
@@ -407,7 +408,7 @@ plotAnc <- function(tree, data, i = 1, site.pattern = TRUE, col = NULL,
     piecol = col, col = "black", bg = "lightblue", horiz = FALSE,
     width = NULL, height = NULL, cex = cex.pie
   )
-  if (!is.null(pos)) legend(pos, levels, text.col = col)
+  if (!is.null(pos)) legend(pos, legend=levels, text.col = col)
 }
 
 #
