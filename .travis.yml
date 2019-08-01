@@ -54,3 +54,5 @@ addons:
       - libgs-dev
       - qpdf
       - ghostscript
+      - mesa-common-dev
+      - libglu1-mesa-dev
