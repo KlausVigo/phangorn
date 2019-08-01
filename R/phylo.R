@@ -584,7 +584,6 @@ pml.control <- function(epsilon = 1e-08, maxit = 10, trace = 1) {
 }
 
 
-# improves trees similar to
 likelihoodRatchet <- function(obj, maxit = 100, k = 10,
                               control = pml.control(epsilon = 1e-08, maxit = 10,
                                                     trace = 1L)) {
@@ -2708,11 +2707,6 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
 }
 
 
-################################################################################
-#
-# experimental pml.nni
-#
-################################################################################
 indexNNI3 <- function(tree) {
   parent <- tree$edge[, 1]
   child <- tree$edge[, 2]
