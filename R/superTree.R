@@ -12,7 +12,6 @@ tree2phyDat <- function(trees) {
   weights <- NULL
   species <- trees[[1]]$tip.label
 
-
   characters <- 0 # number of characters
   weights <- NULL
 
@@ -42,7 +41,6 @@ tree2phyDat <- function(trees) {
     j <- j + nrow(X[[i]])
   }
   data <- as.data.frame(data)
-
   # compute contrast matrix
   contrast <- matrix(data = c(1, 0, 0, 1, 1, 1), 3, 2,
     dimnames = list(NULL, c("0", "1")), byrow = TRUE)
