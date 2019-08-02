@@ -1723,8 +1723,6 @@ optimRooted <- function(tree, data, eig = eig, w = w, g = g, bf = bf,
                     ll.0 = ll.0, w = w, g = g)
     for (i in seq_along(child2)) {
       dad <- child2[i]
-
-      #            if(dad>nTips ){ # kann raus
       pa <- anc[dad]
       while (loli != pa) {
         tmpKids <- cvector[[loli]]
@@ -2220,6 +2218,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   if (any(tree$edge.length < 1e-08)) {
     tree$edge.length[tree$edge.length < 1e-08] <- 1e-08
     if (optRooted) {
+      # ensure tree is ultrametric
       nTips <- as.integer(length(tree$tip.label))
       ind <- match(as.integer(1:nTips), tree$edge[, 2])
       tree$edge.length[ind] <- tree$edge.length[ind] +
@@ -2238,9 +2237,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     if (!is.ultrametric(tree)) stop("Tree must be ultrametric!")
   }
   trace <- control$trace
-
   data <- subset(data, tree$tip.label)
-
   type <- attr(data, "type")
   if (type == "AA") {
     if(!is.null(model)) object <- update(object, model = model)
@@ -2248,8 +2245,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   }
   if (type == "CODON") {
     if (is.null(model)) model <- "codon1"
-    model <- match.arg(model, c("codon0", "codon1", "codon2", "codon3",
-      "YN98"))
+    model <- match.arg(model, c("codon0", "codon1", "codon2", "codon3", "YN98"))
     dnds <- object$dnds
     tstv <- object$tstv
     if (!is.null(model)) {
@@ -2278,10 +2274,10 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     optGamma <- FALSE
     message("only one rate class, ignored optGamma")
   }
-  # if(Mkv==TRUE & optInv==TRUE){
-  #   optInv = FALSE
-  #   message('cannot estimate invariant sites and Mkv model, ignored optInv')
-  # }
+  if(Mkv==TRUE & optInv==TRUE){
+    optInv = FALSE
+    message('cannot estimate invariant sites and Mkv model, ignored optInv')
+  }
   shape <- object$shape
   w <- object$w
   g <- object$g
@@ -2356,7 +2352,6 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   pml.init(data, k)
 
   if (optEdge) {
-
     # check if non-negative least-squares is better for start of
     # optimisation
     treetmp <- nnls.phylo(tree, dist.ml(data))
@@ -2379,8 +2374,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                        rate = rate, ll.0 = ll.0, INV = INV,
                        control = pml.control(epsilon = 1e-07, maxit = 10,
                                              trace = trace - 1))
-    if (trace > 0)
-      cat("optimize edge weights: ", ll, "-->", max(res[[2]], ll), "\n")
+#    if (trace > 0)
+#      cat("optimize edge weights: ", ll, "-->", max(res[[2]], ll), "\n")
     if (res[[2]] > ll) {
       ll <- res[[2]]
       tree <- res[[1]]
@@ -2419,14 +2414,10 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         if (wMix > 0)
           ll.0 <- ll.0 + llMix
         ll <- res[[2]]
-
       }
     }
     if (optQ) {
       if (type == "CODON") {
-        # if(is.null(model)) model <- "codon1"
-        # model <- match.arg(model, c("codon0", "codon1", "codon2", "codon3",
-        #  "YN98"))
         ab <- c(tstv, dnds)
         res <- switch(model,
           YN98 = optimCodon(tree, data, Q = rep(1, 1830), subs = .sub,
@@ -2451,59 +2442,30 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
 
         if (m > 1) tstv <- tmp[1]
       }
-      else
-        res <- optimQ(tree, data, Q = Q, subs = subs, bf = bf, w = w,
-          g = g, inv = inv, INV = INV,
-          ll.0 = ll.0, rate = rate, k = k)
+      else{
+        res <- optimQ(tree, data, Q = Q, subs = subs, bf = bf, w = w, g = g,
+                      inv = inv, INV = INV, ll.0 = ll.0, rate = rate, k = k)
+      }
       Q <- res[[1]]
       eig <- edQt(Q = Q, bf = bf)
-      if (trace > 0)
-        cat("optimize rate matrix: ", ll, "-->", res[[2]],
-          "\n")
+      if (trace > 0) cat("optimize rate matrix: ", ll, "-->", res[[2]], "\n")
       ll <- res[[2]]
     }
     if (optInv) {
       res <- optimInv(tree, data, inv = inv, INV = INV, Q = Q,
         bf = bf, eig = eig, k = k, shape = shape, rate = rate)
-#      browser()
       if (trace > 0)
         cat("optimize invariant sites: ", ll, "-->", max(res[[2]], ll), "\n")
       updateRates(res, ll, rate, shape, k, inv, wMix, update="inv")
-#      if (res[[2]] > ll) {
-#        inv <- res[[1]]
-#        w <- rep(1 / k, k)
-#        g <- discrete.gamma(shape, k)
-#        w <- (1 - inv) * w
-#        if (wMix > 0)
-#          w <- (1 - wMix) * w
-#        g <- g / (1 - inv)
-#        g <- g * rate
-        ll.0 <- as.matrix(INV %*% (bf * inv))
-        if (wMix > 0)
-          ll.0 <- ll.0 + llMix
-#        ll <- res[[2]]
-#       }
+      ll.0 <- as.matrix(INV %*% (bf * inv))
+      if (wMix > 0) ll.0 <- ll.0 + llMix
     }
     if (optGamma) {
-      res <- optimGamma(tree, data, shape = shape, k = k, inv = inv,
-        INV = INV, Q = Q, bf = bf, eig = eig,
-        ll.0 = ll.0, rate = rate)
+      res <- optimGamma(tree, data, shape = shape, k = k, inv = inv, INV = INV,
+                        Q = Q, bf = bf, eig = eig, ll.0 = ll.0, rate = rate)
       if (trace > 0)
         cat("optimize shape parameter: ", ll, "-->", max(res[[2]], ll), "\n")
       updateRates(res, ll, rate, shape, k, inv, wMix, update="shape")
-#      if (res[[2]] > ll) {
-#        shape <- res[[1]]
-#        w <- rep(1 / k, k)
-#        g <- discrete.gamma(shape, k)
-#        if (inv > 0) {
-#          w <- (1 - inv) * w
-#          g <- g / (1 - inv)
-#        }
-#        if (wMix > 0)
-#          w <- (1 - wMix) * w
-#        g <- g * rate
-#      if (res[[2]] > ll) ll <- res[[2]]
-#      }
     }
     if (optRate) {
       res <- optimRate(tree, data, rate = rate, inv = inv,
@@ -2512,19 +2474,6 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       if (trace > 0)
         cat("optimize rate: ", ll, "-->", max(res[[2]], ll), "\n")
       updateRates(res, ll, rate, shape, k, inv, wMix, update="rate")
-#      if (res[[2]] > ll) {
-#        rate <- res[[1]]
-#        g <- discrete.gamma(shape, k)
-#        w <- rep(1 / k, k)
-#        if (inv > 0) {
-#          w <- (1 - inv) * w
-#          g <- g / (1 - inv)
-#        }
-#        if (wMix > 0)
-#          w <- (1 - wMix) * w
-#        g <- g * rate
-#        ll <- res[[2]]
-#      }
     }
     if (optEdge) {
       res <- optimEdge(tree, data, eig = eig, w = w, g = g, bf = bf,
@@ -2544,9 +2493,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                          rate = rate, ll.0 = ll.0, INV = INV,
                          control = pml.control(epsilon = 1e-07, maxit = 10,
                                                trace = trace - 1))
-      if (trace > 0)
-        cat("optimize edge weights: ", ll, "-->", max(res[[2]], ll),
-          "\n")
+#      if (trace > 0)
+#        cat("optimize edge weights: ", ll, "-->", max(res[[2]], ll), "\n")
       if (res[[2]] > ll) {
         ll <- res[[2]]
         tree <- res[[1]]
@@ -2574,8 +2522,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
           res <- optimRooted(tmp$tree, data, eig = eig, w = w, g = g, bf = bf,
             rate = rate, ll.0 = ll.0, INV = INV, control = pml.control(
               epsilon = 1e-08, maxit = 5, trace = trace - 1))
-          tree <- tmp$tree
-          ll2 <- tmp$logLik
+          tree <- res$tree
+          ll2 <- res$logLik
         }
         if (trace > 0)
           cat("optimize topology: ", ll, "-->", ll2, "\n")
@@ -2600,7 +2548,6 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       i <- 1
       while (i < maxit) {
         tree2 <- rNNI(tree, moves = round(nTips * ratchet.par$prop), n = 1)
-        # tree <- rSPR(tree, moves=10, k=3, n=1)
         swap <- 1
         ll2 <- pml.fit(tree2, data, bf, shape = shape, k = k, Q = Q,
           levels = attr(data, "levels"), inv = inv, rate = rate,
@@ -2628,7 +2575,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         }
         else kmax <- kmax + 1
         if (trace > 0) print(paste("Ratchet iteration ", i,
-            ", best pscore so far:", ll))
+                                   ", best pscore so far:", ll))
         i <- i + 1
         if (kmax > maxR) i <- maxit
       }
@@ -2642,7 +2589,6 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         FUN <- function(x, bf, Q, k, shape) {
           dm <- dist.ml(x, bf = bf, Q = Q, k = k, shape = shape)
           tr <- wpgma(dm)
-          # nnls.phylo(tr, dm, TRUE)
           tr
         }
       }
@@ -2651,7 +2597,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
           dm <- dist.ml(x, bf = bf, Q = Q)
           tr <- fastme.bal(dm, TRUE, FALSE, FALSE)
           tr$edge.length[tr$edge.length < 1e-8] <- 1e-8
-          tr # nnls.phylo(tr, dm)
+          tr
         }
       }
       maxR <- ratchet.par$iter
