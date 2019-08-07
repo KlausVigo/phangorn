@@ -10,6 +10,29 @@
 \usepackage{hyperref}
 \usepackage{amsmath}
 
+\usepackage{xcolor}  % for color definitions
+\usepackage{sectsty} % to modify heading colors
+\usepackage{fancyhdr}
+
+\definecolor{bluetext}{RGB}{0,101,165}
+\definecolor{graytext}{RGB}{80,80,80}
+
+\hypersetup{
+  pdfborder={0 0 0}
+ , colorlinks=true
+ , urlcolor=blue
+ , linkcolor=bluetext
+ , linktoc=all
+ , citecolor=blue
+}
+
+\sectionfont{\color{bluetext}}
+\subsectionfont{\color{bluetext}}
+\subsubsectionfont{\color{bluetext}}
+
+
+
+
 \newcommand{\Rfunction}[1]{{\texttt{#1}}}
 \newcommand{\Robject}[1]{{\texttt{#1}}}
 \newcommand{\Rpackage}[1]{{\textit{#1}}}
@@ -33,7 +56,11 @@
 \newcommand{\term}[1]{\emph{#1}}
 \newcommand{\mref}[2]{\htmladdnormallinkfoot{#2}{#1}}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\title{Special features of phangorn} % (Version \Sexpr{packageVersion("phangorn")})}
+\author{\mref{mailto:klaus.schliep@gmail.com}{Klaus P. Schliep}}
+\date{\today{} | Package version \Sexpr{packageVersion("phangorn")}}
 
 \begin{document}
 \SweaveOpts{concordance=TRUE}
@@ -48,13 +75,12 @@
 <<echo=FALSE>>=
 options(width=70)
 options("show.signif.stars" = FALSE)
-foo <- packageDescription("phangorn")
 @
 
 
-\title{Special features of phangorn (Version \Sexpr{foo$Version})} %$
-\author{\mref{mailto:klaus.schliep@gmail.com}{Klaus P. Schliep}}
 \maketitle
+\thispagestyle{empty}
+\tableofcontents{}
 
 \nocite{Paradis2012}
 \section*{Introduction}

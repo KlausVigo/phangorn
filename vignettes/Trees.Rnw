@@ -55,7 +55,11 @@ options("show.signif.stars" = FALSE)
 
 \title{Estimating phylogenetic trees with phangorn} %$ (Version \Sexpr{foo$Version})}
 \author{\mref{mailto:klaus.schliep@gmail.com}{Klaus P. Schliep}}
+\date{\today{} | Package version \Sexpr{packageVersion("phangorn")}}
+
 \maketitle
+\thispagestyle{empty}
+\tableofcontents{}
 
 \nocite{Paradis2012}
 \section{Introduction}
@@ -69,7 +73,8 @@ We start our analysis loading the \phangorn{} package and then reading in an ali
 library(ape)
 library(phangorn)
 fdir <- system.file("extdata/trees", package = "phangorn")
-primates <- read.phyDat(file.path(fdir, "primates.dna"), format = "interleaved")
+primates <- read.phyDat(file.path(fdir, "primates.dna"),
+                        format = "interleaved")
 @
 \section{Distance based methods}
 After reading in the alignment we can build a first tree with distance based methods. The function dist.dna from the ape package computes distances for many DNA substitution models. To use the function dist.dna we have to transform the data to class DNAbin. For amino acids the function \Rfunction{dist.ml} offers common substitution models (for example "WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa" or "mtREV24").

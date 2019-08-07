@@ -49,8 +49,9 @@ foo <- packageDescription("phangorn")
 
 
 
-\title{Ancestral sequence reconstruction with phangorn (Version \Sexpr{foo$Version})} %$
+\title{Ancestral sequence reconstruction with phangorn} % (Version \Sexpr{foo$Version})}
 \author{\mref{mailto:klaus.schliep@gmail.com}{Klaus P. Schliep}}
+\date{\today{} | Package version \Sexpr{packageVersion("phangorn")}}
 \maketitle
 
 \nocite{Paradis2006}
@@ -62,7 +63,8 @@ To reconstruct ancestral sequences we first load some data and reconstruct a tre
 <<echo=TRUE>>=
 library(phangorn)
 fdir <- system.file("extdata/trees", package = "phangorn")
-primates <- read.phyDat(file.path(fdir, "primates.dna"), format = "interleaved")
+primates <- read.phyDat(file.path(fdir, "primates.dna"),
+                        format = "interleaved")
 tree <- pratchet(primates, trace=0) %>% acctran(primates)
 parsimony(tree, primates)
 @
