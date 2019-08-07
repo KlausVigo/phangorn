@@ -694,7 +694,7 @@ optimEdge <- function(tree, data, eig = eig, w = w, g = g, bf = bf, rate = rate,
   list(tree = treeP, logLik = newll, c(eps, iter))
 }
 
-
+# only use of PML3
 pml.move <- function(EDGE, el, data, g, w, eig, k, nTips, bf) {
   node <- EDGE[, 1]
   edge <- EDGE[, 2]
@@ -2224,7 +2224,6 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       tree$edge.length[ind] <- tree$edge.length[ind] +
         nodeHeight(tree)[1:nTips]
     }
-    # save to change to new update.pml
     object <- update.pml(object, tree = tree)
   }
   if (optEdge & optRate) {
@@ -2400,12 +2399,10 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       }
     }
     if (optF3x4) {
-      # <- function(tree, data, bf_codon=matrix(.25,4,3), trace=0,.n..)
       res <- optimF3x4(tree, data, bf_codon = bf_codon, inv = inv, Q = Q, w = w,
         g = g, INV = INV, rate = rate, k = k, llMix = llMix)
       if (trace > 0)
-        cat("optimize base frequencies: ", ll, "-->",
-          max(res[[2]], ll), "\n")
+        cat("optimize base frequencies: ", ll, "-->", max(res[[2]], ll), "\n")
       if (res[[2]] > ll) {
         bf <- res[[1]]
         eig <- edQt(Q = Q, bf = bf)
@@ -2505,7 +2502,6 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       iter <- 1
       while (iter < 4) {
         if (optEdge) {
-          # tmp <- pml.nni.old(tree, data, w, g, eig, bf, ll.0, ll, ...)
           tmp <- pml.nni(tree, data, w = w, g = g, eig = eig, bf = bf,
             ll.0 = ll.0, ll = ll, INV = INV, ...)
           swap <- swap + tmp$swap
