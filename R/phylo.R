@@ -107,7 +107,7 @@ subsChoice <- function(type = c("JC", "F81", "K80", "HKY", "TrNe", "TrN",
 optimGamma <- function(tree, data, shape = 1, k = 4, ...) {
   fn <- function(shape, tree, data, k, ...) pml.fit(tree, data, shape = shape,
       k = k, ...)
-  res <- optimize(f = fn, interval = c(0.1, 500), lower = 0.1, upper = 500,
+  res <- optimize(f = fn, interval = c(0.1, 1000), lower = 0.1, upper = 1000,
     maximum = TRUE,  tol = .01, tree = tree, data = data, k = k, ...)
   res
 }
