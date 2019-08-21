@@ -1192,8 +1192,7 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
                                                 (length(levels) - 1) / 2),
                     levels = attr(data, "levels"), inv = 0, rate = 1, g = NULL,
                     w = NULL, eig = NULL, INV = NULL, ll.0 = NULL, llMix = NULL,
-                    wMix = 0, ..., site = FALSE) {
-  Mkv <- FALSE
+                    wMix = 0, ..., site = FALSE, Mkv = FALSE) {
   weight <- as.double(attr(data, "weight"))
   nr <- as.integer(attr(data, "nr"))
   nc <- as.integer(attr(data, "nc"))
@@ -1263,13 +1262,14 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
   lll <- exp(lll)
   lll <- (lll %*% w)
   if (Mkv) p0 <- sum(exp(log(lll[ind]) + sca[ind]))
-  lll[ind] <- lll[ind] + exp(log(ll.0[ind]) - sca[ind])
+  if (inv > 0) lll[ind] <- lll[ind] + exp(log(ll.0[ind]) - sca[ind])
   siteLik <- lll
   siteLik <- log(siteLik) + sca
   # needs to change
   if (wMix > 0) siteLik <- log(exp(siteLik) * (1 - wMix) + llMix)
-  if (Mkv) siteLik <- siteLik + log(1 - p0)
+#  if (Mkv) siteLik <- siteLik - log(1 - p0)
   loglik <- sum(weight * siteLik)
+  if (Mkv) loglik <- loglik - sum(weight) * log(1 - p0)
   if (!site) return(loglik)
   resll <- exp(resll)
   return(list(loglik = loglik, siteLik = siteLik, resll = resll))
@@ -1571,7 +1571,7 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
 
   INV <- Matrix(lli(data, tree), sparse = TRUE)
   ll.0 <- as.matrix(INV %*% (bf * inv))
-  #    if(Mkv) ll.0 <- as.matrix(INV %*% rep(1, length(bf)))
+  if(Mkv) ll.0 <- as.matrix(INV %*% rep(1, length(bf)))
 
   if (wMix > 0) ll.0 <- ll.0 + llMix
 
@@ -1582,9 +1582,8 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   .C("ll_init", nr, nTips, nc, as.integer(k))
   tmp <- pml.fit(tree, data, bf, shape = shape, k = k, Q = Q,
     levels = attr(data, "levels"), inv = inv, rate = rate, g = g, w = w,
-    eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, wMix = wMix, site = TRUE)
-  # , Mkv=Mkv
-
+    eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, wMix = wMix, site = TRUE,
+    Mkv=Mkv)
   df <- ifelse(is.ultrametric(tree), tree$Nnode, length(tree$edge.length))
 
   df <- switch(type,
@@ -1599,7 +1598,7 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     Q = Q, bf = bf, rate = rate, siteLik = tmp$siteLik, weight = weight,
     g = g, w = w, eig = eig, data = data, model = model, INV = INV,
     ll.0 = ll.0, tree = tree, lv = tmp$resll, call = call, df = df, wMix = wMix,
-    llMix = llMix) # , Mkv=Mkv
+    llMix = llMix, Mkv=Mkv) #
   if (type == "CODON") {
     result$dnds <- dnds
     result$tstv <- tstv
