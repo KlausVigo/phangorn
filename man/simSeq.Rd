@@ -10,7 +10,7 @@ simSeq(x, ...)
 
 \method{simSeq}{phylo}(x, l = 1000, Q = NULL, bf = NULL,
   rootseq = NULL, type = "DNA", model = NULL, levels = NULL,
-  rate = 1, ancestral = FALSE, ...)
+  rate = 1, ancestral = FALSE, code = 1, ...)
 
 \method{simSeq}{pml}(x, ancestral = FALSE, ...)
 }
@@ -40,6 +40,9 @@ default is for nucleotide sequences, only used when type = "USER".}
 greater than zero.}
 
 \item{ancestral}{Return ancestral sequences?}
+
+\item{code}{The ncbi genetic code number for translation (see details). By
+default the standard genetic code is used.}
 }
 \value{
 \code{simSeq} returns an object of class phyDat.

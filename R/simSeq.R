@@ -29,6 +29,8 @@
 #' @param rate mutation rate or scaler for the edge length, a numerical value
 #' greater than zero.
 #' @param ancestral Return ancestral sequences?
+#' @param code	The ncbi genetic code number for translation (see details). By
+#' default the standard genetic code is used.
 #' @param \dots Further arguments passed to or from other methods.
 #' @return \code{simSeq} returns an object of class phyDat.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
@@ -75,7 +77,7 @@ simSeq <- function(x, ...)
 #' @export
 simSeq.phylo <- function(x, l = 1000, Q = NULL, bf = NULL, rootseq = NULL,
                          type = "DNA", model = NULL, levels = NULL, rate = 1,
-                         ancestral = FALSE, ...) {
+                         ancestral = FALSE, code=1, ...) {
   if (!is.null(model)) {
     #    model <- match.arg(model, c("USER", "WAG", "JTT", "LG", "Dayhoff",
     #     "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24"))
@@ -98,14 +100,18 @@ simSeq.phylo <- function(x, l = 1000, Q = NULL, bf = NULL, rootseq = NULL,
     levels <- c("a", "r", "n", "d", "c", "q", "e", "g", "h", "i",
       "l", "k", "m", "f", "p", "s", "t", "w", "y", "v")
   if (pt == "CODON") {
-    levels <- c("aaa", "aac", "aag", "aat", "aca", "acc", "acg", "act",
-      "aga", "agc", "agg", "agt", "ata", "atc", "atg", "att",
-      "caa", "cac", "cag", "cat", "cca", "ccc", "ccg", "cct", "cga",
-      "cgc", "cgg", "cgt", "cta", "ctc", "ctg", "ctt", "gaa", "gac",
-      "gag", "gat", "gca", "gcc", "gcg", "gct", "gga", "ggc", "ggg",
-      "ggt", "gta", "gtc", "gtg", "gtt", "tac", "tat",
-      "tca", "tcc", "tcg", "tct", "tgc", "tgg", "tgt", "tta",
-      "ttc", "ttg", "ttt")
+    .syn <- synonymous_subs(code=code)
+    .sub <- tstv_subs(code=code)
+    tmp <- .CODON[, as.character(code)]
+    levels <- rownames(.CODON)[tmp != "*"]
+#    levels <- c("aaa", "aac", "aag", "aat", "aca", "acc", "acg", "act",
+#      "aga", "agc", "agg", "agt", "ata", "atc", "atg", "att",
+#      "caa", "cac", "cag", "cat", "cca", "ccc", "ccg", "cct", "cga",
+#      "cgc", "cgg", "cgt", "cta", "ctc", "ctg", "ctt", "gaa", "gac",
+#      "gag", "gat", "gca", "gcc", "gcg", "gct", "gga", "ggc", "ggg",
+#      "ggt", "gta", "gtc", "gtg", "gtt", "tac", "tat",
+#      "tca", "tcc", "tcg", "tct", "tgc", "tgg", "tgt", "tta",
+#      "ttc", "ttg", "ttt")
     dnds <- tstv <- 1
     if (!is.null(extras)) {
       if (!is.na(existing[1]))

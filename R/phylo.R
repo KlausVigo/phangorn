@@ -976,8 +976,12 @@ update.pml <- function(object, ...) {
       scaleQ <- eval(extras[[existing[14]]], parent.frame())
       updateEig <- TRUE
     }
-    if (updateEig) Q <- CodonQ(subs = .sub, syn = .syn, tstv = tstv,
+    if (updateEig){
+      .syn <- synonymous_subs(code=attr(data, "code"))
+      .sub <- tstv_subs(code=attr(data, "code"))
+      Q <- CodonQ(subs = .sub, syn = .syn, tstv = tstv,
                                dnds = dnds)
+    }
   }
   if (is.na(existing[5])) inv <- object$inv
   else {
@@ -1521,6 +1525,8 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     getModelAA(model, bf = is.null(bf), Q = is.null(Q))
   }
   if (type == "CODON") {
+    .syn <- synonymous_subs(code=attr(data, "code"))
+    .sub <- tstv_subs(code=attr(data, "code"))
     Q <- CodonQ(subs = .sub, syn = .syn, tstv = tstv, dnds = dnds)
     if(is.null(bf)) bf_choice <- "equal"
   }
@@ -2243,6 +2249,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     model <- object$model
   }
   if (type == "CODON") {
+    .syn <- synonymous_subs(code=attr(data, "code"))
+    .sub <- tstv_subs(code=attr(data, "code"))
     if (is.null(model)) model <- "codon1"
     model <- match.arg(model, c("codon0", "codon1", "codon2", "codon3", "YN98"))
     dnds <- object$dnds
