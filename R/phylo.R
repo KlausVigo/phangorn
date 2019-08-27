@@ -1177,6 +1177,7 @@ pml.fit4 <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #' @param \dots Further arguments passed to or from other methods.
 #' @param site return the log-likelihood or vector of sitewise likelihood
 #' values
+#' @param Mkv indicate if Lewis' Mkv should be estimated.
 #' @return \code{pml.fit} returns the log-likelihood.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{pml}, \link{pmlPart}, \link{pmlMix}}

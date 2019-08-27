@@ -59,6 +59,8 @@ pml.fit(tree, data, bf = rep(1/length(levels), length(levels)),
 
 \item{site}{return the log-likelihood or vector of sitewise likelihood
 values}
+
+\item{Mkv}{indicate if Lewis' Mkv should be estimated.}
 }
 \value{
 \code{pml.fit} returns the log-likelihood.
