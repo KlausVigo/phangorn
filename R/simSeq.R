@@ -92,8 +92,6 @@ simSeq.phylo <- function(x, l = 1000, Q = NULL, bf = NULL, rootseq = NULL,
                          type = "DNA", model = NULL, levels = NULL, rate = 1,
                          ancestral = FALSE, code=1, ...) {
   if (!is.null(model)) {
-    #    model <- match.arg(model, c("USER", "WAG", "JTT", "LG", "Dayhoff",
-    #     "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24"))
     model <- match.arg(model, .aamodels)
     getModelAA(model, bf = is.null(bf), Q = is.null(Q))
     type <- "AA"
