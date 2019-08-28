@@ -20,26 +20,29 @@ simSeq(x, ...)
 
 \item{\dots}{Further arguments passed to or from other methods.}
 
-\item{l}{length of the sequence to simulate.}
+\item{l}{The length of the sequence to simulate.}
 
-\item{Q}{the rate matrix.}
+\item{Q}{The rate matrix.}
 
-\item{bf}{base frequencies.}
+\item{bf}{Base frequencies.}
 
-\item{rootseq}{a vector of length l containing the root sequence, other root
-sequence is randomly generated.}
+\item{rootseq}{A vector of length \code{l} containing the root sequence.
+If not provided, the root sequence is randomly generated.}
 
 \item{type}{Type of sequences ("DNA", "AA", "CODON" or "USER").}
 
-\item{model}{Amino acid models: e.g. "WAG", "JTT", "Dayhoff" or "LG"}
+\item{model}{Model of evolution to employ, for example "WAG", "JTT",
+ "Dayhoff" or "LG".
+ For a full list of supported models, type \code{phangorn:::.aamodels} or
+\code{phangorn:::.dnamodels}.}
 
-\item{levels}{\code{levels} takes a character vector of the different bases,
-default is for nucleotide sequences, only used when type = "USER".}
+\item{levels}{A character vector of the different character tokens.
+Ignored unless type = "USER".}
 
-\item{rate}{mutation rate or scaler for the edge length, a numerical value
-greater than zero.}
+\item{rate}{A numerical value greater than zero giving the mutation rate
+or scaler for edge lengths.}
 
-\item{ancestral}{Return ancestral sequences?}
+\item{ancestral}{Logical specifying whether to return ancestral sequences.}
 
 \item{code}{The ncbi genetic code number for translation (see details). By
 default the standard genetic code is used.}
@@ -48,21 +51,32 @@ default the standard genetic code is used.}
 \code{simSeq} returns an object of class phyDat.
 }
 \description{
-Simulate sequences for a given evolutionary tree.
+Simulate sequences from a given evolutionary tree.
 }
 \details{
-\code{simSeq} is now a generic function to simulate sequence alignments to
-along a phylogeny. It
-is quite flexible and allows to generate DNA, RNA, amino acids, codon  or
-binary sequences.  It is possible to give a \code{pml} object as input simSeq
-return a \code{phyDat} from these model.  There is also a more low level
+\code{simSeq} is a generic function to simulate sequence alignments
+along a phylogeny. It is quite flexible and can generate DNA, RNA,
+amino acids, codon, morphological or binary sequences.
+simSeq can take as input a phylogenetic tree of class \code{phylo},
+or a \code{pml} object; it will return an object of class \code{phyDat}.
+There is also a more low level
 version, which lacks rate variation, but one can combine different
-alignments having their own rate (see example). The rate parameter acts like
+alignments with their own rates (see example). The rate parameter acts like
 a scaler for the edge lengths.
 
-For codon models \code{type="CODON"} two additional arguments \code{dnds}
+For codon models \code{type="CODON"}, two additional arguments \code{dnds}
 for the dN/dS ratio and \code{tstv} for the transition transversion ratio
 can be supplied.
+
+\strong{Defaults:}
+
+If \code{x} is a tree of class \code{phylo}, then sequences will be generated
+with the default Jukes-Cantor DNA model (\code{"JC"}).
+
+If \code{bf} is not specified, then all states will be treated as equally
+probable.
+
+If \code{Q} is not specified, then a uniform rate matrix will be employed.
 }
 \examples{
 

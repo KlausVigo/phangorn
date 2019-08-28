@@ -1,37 +1,53 @@
 #' Simulate sequences.
 #'
-#' Simulate sequences for a given evolutionary tree.
+#' Simulate sequences from a given evolutionary tree.
 #'
-#' \code{simSeq} is now a generic function to simulate sequence alignments to
-#' along a phylogeny. It
-#' is quite flexible and allows to generate DNA, RNA, amino acids, codon  or
-#' binary sequences.  It is possible to give a \code{pml} object as input simSeq
-#' return a \code{phyDat} from these model.  There is also a more low level
+#' \code{simSeq} is a generic function to simulate sequence alignments
+#' along a phylogeny. It is quite flexible and can generate DNA, RNA,
+#' amino acids, codon, morphological or binary sequences.
+#' simSeq can take as input a phylogenetic tree of class \code{phylo},
+#' or a \code{pml} object; it will return an object of class \code{phyDat}.
+#' There is also a more low level
 #' version, which lacks rate variation, but one can combine different
-#' alignments having their own rate (see example). The rate parameter acts like
+#' alignments with their own rates (see example). The rate parameter acts like
 #' a scaler for the edge lengths.
 #'
-#' For codon models \code{type="CODON"} two additional arguments \code{dnds}
+#' For codon models \code{type="CODON"}, two additional arguments \code{dnds}
 #' for the dN/dS ratio and \code{tstv} for the transition transversion ratio
 #' can be supplied.
 #'
+#' \strong{Defaults:}
+#'
+#' If \code{x} is a tree of class \code{phylo}, then sequences will be generated
+#' with the default Jukes-Cantor DNA model (\code{"JC"}).
+#'
+#' If \code{bf} is not specified, then all states will be treated as equally
+#' probable.
+#'
+#' If \code{Q} is not specified, then a uniform rate matrix will be employed.
+#'
+#'
 #' @param x a phylogenetic tree \code{tree}, i.e. an object of class
 #' \code{phylo} or and object of class \code{pml}.
-#' @param l length of the sequence to simulate.
-#' @param Q the rate matrix.
-#' @param bf base frequencies.
-#' @param rootseq a vector of length l containing the root sequence, other root
-#' sequence is randomly generated.
+#' @param l The length of the sequence to simulate.
+#' @param Q The rate matrix.
+#' @param bf Base frequencies.
+#' @param rootseq A vector of length \code{l} containing the root sequence.
+#' If not provided, the root sequence is randomly generated.
 #' @param type Type of sequences ("DNA", "AA", "CODON" or "USER").
-#' @param model Amino acid models: e.g. "WAG", "JTT", "Dayhoff" or "LG"
-#' @param levels \code{levels} takes a character vector of the different bases,
-#' default is for nucleotide sequences, only used when type = "USER".
-#' @param rate mutation rate or scaler for the edge length, a numerical value
-#' greater than zero.
-#' @param ancestral Return ancestral sequences?
+#' @param model Model of evolution to employ, for example "WAG", "JTT",
+#'  "Dayhoff" or "LG".
+#'  For a full list of supported models, type \code{phangorn:::.aamodels} or
+#' \code{phangorn:::.dnamodels}.
+#' @param levels A character vector of the different character tokens.
+#' Ignored unless type = "USER".
+#' @param rate A numerical value greater than zero giving the mutation rate
+#' or scaler for edge lengths.
+#' @param ancestral Logical specifying whether to return ancestral sequences.
 #' @param code	The ncbi genetic code number for translation (see details). By
 #' default the standard genetic code is used.
 #' @param \dots Further arguments passed to or from other methods.
+
 #' @return \code{simSeq} returns an object of class phyDat.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{phyDat}}, \code{\link{pml}}, \code{\link{SOWH.test}}
@@ -79,8 +95,6 @@ simSeq.phylo <- function(x, l = 1000, Q = NULL, bf = NULL, rootseq = NULL,
                          type = "DNA", model = NULL, levels = NULL, rate = 1,
                          ancestral = FALSE, code=1, ...) {
   if (!is.null(model)) {
-    #    model <- match.arg(model, c("USER", "WAG", "JTT", "LG", "Dayhoff",
-    #     "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24"))
     model <- match.arg(model, .aamodels)
     getModelAA(model, bf = is.null(bf), Q = is.null(Q))
     type <- "AA"
