@@ -1,8 +1,8 @@
 #' Simulate sequences.
 #'
-#' Simulate sequences for a given evolutionary tree.
+#' Simulate sequences from a given evolutionary tree.
 #'
-#' \code{simSeq} is now a generic function to simulate sequence alignments
+#' \code{simSeq} is a generic function to simulate sequence alignments
 #' along a phylogeny. It is quite flexible and can generate DNA, RNA,
 #' amino acids, codon, morphological or binary sequences.
 #' simSeq can take as input a phylogenetic tree of class \code{phylo},
@@ -16,7 +16,8 @@
 #' for the dN/dS ratio and \code{tstv} for the transition transversion ratio
 #' can be supplied.
 #'
-#' @section Defaults
+#' \strong{Defaults:}
+#'
 #' If \code{x} is a tree of class \code{phylo}, then sequences will be generated
 #' with the default Jukes-Cantor DNA model (\code{"JC"}).
 #'
@@ -28,23 +29,25 @@
 #'
 #' @param x a phylogenetic tree \code{tree}, i.e. an object of class
 #' \code{phylo} or and object of class \code{pml}.
-#' @param l length of the sequence to simulate.
-#' @param Q the rate matrix.
-#' @param bf base frequencies.
-#' @param rootseq a vector of length l containing the root sequence, other root
-#' sequence is randomly generated.
+#' @param l The length of the sequence to simulate.
+#' @param Q The rate matrix.
+#' @param bf Base frequencies.
+#' @param rootseq A vector of length \code{l} containing the root sequence.
+#' If not provided, the root sequence is randomly generated.
 #' @param type Type of sequences ("DNA", "AA", "CODON" or "USER").
-#' @param model Models of evolution: e.g. "WAG", "JTT", "Dayhoff" or "LG". For
-#' a full list of supported models, type \code{phangorn:::.aamodels} or
+#' @param model Model of evolution to employ, for example "WAG", "JTT",
+#'  "Dayhoff" or "LG".
+#'  For a full list of supported models, type \code{phangorn:::.aamodels} or
 #' \code{phangorn:::.dnamodels}.
-#' @param levels \code{levels} takes a character vector of the different bases,
-#' default is for nucleotide sequences, only used when type = "USER".
-#' @param rate mutation rate or scaler for the edge length, a numerical value
-#' greater than zero.
-#' @param ancestral Return ancestral sequences?
+#' @param levels A character vector of the different character tokens.
+#' Ignored unless type = "USER".
+#' @param rate A numerical value greater than zero giving the mutation rate
+#' or scaler for edge lengths.
+#' @param ancestral Logical specifying whether to return ancestral sequences.
 #' @param code	The ncbi genetic code number for translation (see details). By
 #' default the standard genetic code is used.
 #' @param \dots Further arguments passed to or from other methods.
+
 #' @return \code{simSeq} returns an object of class phyDat.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{phyDat}}, \code{\link{pml}}, \code{\link{SOWH.test}}
