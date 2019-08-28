@@ -2,18 +2,29 @@
 #'
 #' Simulate sequences for a given evolutionary tree.
 #'
-#' \code{simSeq} is now a generic function to simulate sequence alignments to
-#' along a phylogeny. It
-#' is quite flexible and allows to generate DNA, RNA, amino acids, codon  or
-#' binary sequences.  It is possible to give a \code{pml} object as input simSeq
-#' return a \code{phyDat} from these model.  There is also a more low level
+#' \code{simSeq} is now a generic function to simulate sequence alignments
+#' along a phylogeny. It is quite flexible and can generate DNA, RNA,
+#' amino acids, codon, morphological or binary sequences.
+#' simSeq can take as input a phylogenetic tree of class \code{phylo},
+#' or a \code{pml} object; it will return an object of class \code{phyDat}.
+#' There is also a more low level
 #' version, which lacks rate variation, but one can combine different
-#' alignments having their own rate (see example). The rate parameter acts like
+#' alignments with their own rates (see example). The rate parameter acts like
 #' a scaler for the edge lengths.
 #'
-#' For codon models \code{type="CODON"} two additional arguments \code{dnds}
+#' For codon models \code{type="CODON"}, two additional arguments \code{dnds}
 #' for the dN/dS ratio and \code{tstv} for the transition transversion ratio
 #' can be supplied.
+#'
+#' @section Defaults
+#' If \code{x} is a tree of class \code{phylo}, then sequences will be generated
+#' with the default Jukes-Cantor DNA model (\code{"JC"}).
+#'
+#' If \code{bf} is not specified, then all states will be treated as equally
+#' probable.
+#'
+#' If \code{Q} is not specified, then a uniform rate matrix will be employed.
+#'
 #'
 #' @param x a phylogenetic tree \code{tree}, i.e. an object of class
 #' \code{phylo} or and object of class \code{pml}.
@@ -23,7 +34,9 @@
 #' @param rootseq a vector of length l containing the root sequence, other root
 #' sequence is randomly generated.
 #' @param type Type of sequences ("DNA", "AA", "CODON" or "USER").
-#' @param model Amino acid models: e.g. "WAG", "JTT", "Dayhoff" or "LG"
+#' @param model Models of evolution: e.g. "WAG", "JTT", "Dayhoff" or "LG". For
+#' a full list of supported models, type \code{phangorn:::.aamodels} or
+#' \code{phangorn:::.dnamodels}.
 #' @param levels \code{levels} takes a character vector of the different bases,
 #' default is for nucleotide sequences, only used when type = "USER".
 #' @param rate mutation rate or scaler for the edge length, a numerical value
