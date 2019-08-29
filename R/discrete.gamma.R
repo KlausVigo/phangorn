@@ -200,6 +200,7 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
 #' @rdname discrete.gamma
 #' @importFrom stats ecdf
 #' @importFrom graphics rug
+#' @importFrom statmod gauss.quad.prob
 #' @param obj an object of class pml
 #' @param main a main title for the plot.
 #' @param cdf.color color of the cdf.
@@ -217,7 +218,7 @@ plotRates <- function(obj, cdf.color="blue", main="cdf", ...){
 }
 
 
-
+# from selac
 LaguerreQuad <- function(shape=1, ncats=4) {
   # Determine rates based on alpha and the number of bins
   # bins roots normalized to 1 of the General Laguerre Quadrature
@@ -228,12 +229,22 @@ LaguerreQuad <- function(shape=1, ncats=4) {
   f <- prod(1 + (shape - 1)/(1:ncats))
 
   for (i in 1:ncats) {
-    weights[i] <- f*roots[i]/((ncats + 1)^2*Laguerre(roots[i], shape - 1, ncats + 1)^2)
+    weights[i] <- f * roots[i] / ((ncats + 1)^2 *
+                                    Laguerre(roots[i], shape - 1, ncats + 1)^2)
   }
   roots <- roots/shape
   return(matrix(c(roots, weights), ncol=2L,
                 dimnames = list(NULL, c("rate", "weight"))))
 }
+
+
+LogNormalQuad <- function(shape, ncats){
+  s = shape
+  m = -(s^2)/2
+  pp <- gauss.quad.prob(ncats, dist="normal", mu=m, sigma=s)
+  return(c(exp(pp$nodes/m), pp$weights))
+}
+
 
 
 findRoots <- function(shape, ncats) {
@@ -257,7 +268,8 @@ Laguerre <- function(x, shape, degree) {
 }
 
 
-#Took this from R.basic -- the C version did not work when LaguerreQuad was called internally. Adding this function fixed this issue (JMB 9-29-2016).
+#Took this from R.basic -- the C version did not work when LaguerreQuad was
+#called internally. Adding this function fixed this issue (JMB 9-29-2016).
 nChooseK <- function(n, k, log=FALSE) {
   nChooseK0 <- function(n, k) {
     if((n == k) || (k==0))
