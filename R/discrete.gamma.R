@@ -62,7 +62,8 @@ discrete.beta <- function(shape1, shape2, k) {
 plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
                                 append=FALSE, xlab = "x",
                                 ylab=ifelse(cdf, "F(x)", "f(x)"), xlim=NULL,
-                                verticals=FALSE, edge.length=NULL, ...){
+                                verticals=FALSE, edge.length=NULL,
+                                gamma.type="mean", ...){
 
   l <- max(lengths(list(shape, k, inv)))
   if(l>1){
@@ -72,9 +73,10 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
     verticals <- rep_len(verticals, l)
   }
 
-  gw <-  function(shape, k, inv){
-    w <- rep(1/k, k)
-    g <- discrete.gamma(shape, k)
+  gw <-  function(shape, k, inv, gamma.type){
+    gw <- rates_n_weights(shape, k, gamma.type)
+    g <- gw[, 1]
+    w <- gw[, 2]
     if (inv > 0){
       w <- c(inv, (1 - inv) * w)
       g <- c(0, g/(1 - inv))
@@ -82,7 +84,7 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
     cbind(w=w, g=g)
   }
 
-  g <- mapply(function(shape, k, inv) max(gw(shape, k, inv)[,"g"]),
+  g <- mapply(function(shape, k, inv) max(gw(shape, k, inv, gamma.type)[,"g"]),
               shape, k, inv) %>% max()
 
   if(is.null(xlim)) xlim <- c(-0.25, 1.25 * g)
@@ -101,11 +103,13 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
     (1-inv) * dgamma(x, shape = shape, rate = shape)
   }
 
-  step_GpI <- function(alpha=1, k=4, inv=0, edge.length=NULL){
-    w <- rep(1/k, k)
+  step_GpI <- function(alpha=1, k=4, inv=0, edge.length=NULL,
+                       gamma.type="mean"){
+    rw <- rates_n_weights(alpha, k, gamma.type)
+    g <- rw[, 1]
+    w <- rw[, 2]
     if (inv > 0) w <- c(inv, (1 - inv) * w)
     cw <- cumsum(w)
-    g <- discrete.gamma(alpha, k)
     if (inv > 0) g <- c(0, g/(1 - inv))
     if(!is.null(edge.length)) g <- g * edge.length
     stepfun(g, c(0, cw))
@@ -113,15 +117,18 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
 
   plot_cdf_discrete <- function(shape=1, inv=0, k=4, verticals=FALSE,
                                 append=FALSE, ylab=ylab, xlim=xlim,
-                                edge.length=edge.length, ...){
-    sf <- step_GpI(shape, inv, k=k, edge.length=edge.length)
+                                edge.length=edge.length, gamma.type="mean",
+                                ...){
+    sf <- step_GpI(shape, inv, k=k, edge.length=edge.length,
+                   gamma.type = gamma.type)
     if(append) plot(sf, verticals=verticals, add=TRUE, xlim=xlim, ...)
     else plot(sf, verticals=verticals, ylab=ylab, xlim=xlim, ...)
   }
 
   plot_density_discrete <- function(shape=1, inv=0, k=4, append=FALSE,
-                                    xlab=xlab, ylab=ylab, xlim=xlim,...){
-    g_w <- gw(shape, k, inv)
+                                    xlab=xlab, ylab=ylab, xlim=xlim,
+                                    gamma.type="mean", ...){
+    g_w <- gw(shape, k, inv, gamma.type)
     g <- g_w[, "g"]
     w <- g_w[, "w"]
     if(!append) plot(g, w, xlim = xlim, ylim=c(0, 1), type="n",
@@ -131,14 +138,15 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
   }
 
   plot_cdf_continuos <- function(shape=1, inv=0, k=4, verticals=FALSE,
-                                 append=FALSE, ylab=ylab, xlim=xlim, ...){
+                                 append=FALSE, ylab=ylab, xlim=xlim,
+                                 gamma.type="mean",...){
     if(inv==0){
       if(!append) plot(function(x)cdf_fun(x, shape, inv), xlim[1], xlim[2],
                        ylim=c(0, 1), xlab=xlab, ylab=ylab, ...)
       else plot(function(x)cdf_fun(x, shape, inv), add=TRUE, ...)
     }
     else{
-      g_w <- gw(shape, k, inv)
+      g_w <- gw(shape, k, inv, gamma.type)
       g <- g_w[, "g"]
       w <- g_w[, "w"]
       if(!append) plot(g, w, xlim = xlim, #c(-.5, 1.25 * max(g)),
@@ -172,18 +180,20 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
       if(discrete){
         plot_cdf_discrete(shape[i], inv[i], k[i], verticals = verticals[i],
                           append = append, ylab = ylab, xlim=xlim,
-                          edge.length=edge.length,...)
+                          edge.length=edge.length, gamma.type=gamma.type, ...)
       }
       else{
         plot_cdf_continuos(shape[i], inv[i], k[i], verticals = verticals[i],
-                           append = append, ylab = ylab, xlim=xlim, ...)
+                           append = append, ylab = ylab, xlim=xlim,
+                           gamma.type=gamma.type,...)
       }
     }
     else{
       if(discrete){
 
         plot_density_discrete(shape[i], inv[i], k[i], append=append,
-                              xlab=xlab, ylab=ylab, xlim=xlim, ...)
+                              xlab=xlab, ylab=ylab, xlim=xlim,
+                              gamma.type=gamma.type, ...)
       }
       else{
         plot_density_continuous(shape[i], inv[i], k[i], append=append,
@@ -200,7 +210,7 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
 #' @rdname discrete.gamma
 #' @importFrom stats ecdf
 #' @importFrom graphics rug
-#' @importFrom statmod gauss.quad.prob
+## @importFrom statmod gauss.quad.prob
 #' @param obj an object of class pml
 #' @param main a main title for the plot.
 #' @param cdf.color color of the cdf.
@@ -211,10 +221,11 @@ plotRates <- function(obj, cdf.color="blue", main="cdf", ...){
   plot(ecdf_pscores, verticals = TRUE, do.points=FALSE, main=main, ...)
   rug(jitter(pscores)) # rug(sort(unique(pscores)))
   el <- obj$tree$edge.length
+  xlim <- c(-.25, 1.1 * max(pscores))
   plot_gamma_plus_inv(k=obj$k, shape=obj$shape, inv=obj$inv, append=TRUE,
-                      xlim = c(-.25, 1.1 * max(pscores)),
-                      edge.length=sum(el),
-                      verticals=TRUE, col=cdf.color, ...)
+                      xlim = xlim,
+                      edge.length=sum(el), verticals=TRUE, col=cdf.color,
+                      gamma.type=obj$gamma.type, ...)
 }
 
 
@@ -238,13 +249,13 @@ LaguerreQuad <- function(shape=1, ncats=4) {
 }
 
 # needs to be fixed
-LogNormalQuad <- function(shape, ncats){
-  s = shape
-  m = -(s^2)/2
-  pp <- gauss.quad.prob(ncats, dist="normal", mu=m, sigma=s)
-  matrix(c(exp(pp$nodes/m), pp$weights), ncol=2L,
-         dimnames = list(NULL, c("rate", "weight")))
-}
+#LogNormalQuad <- function(shape, ncats){
+#  s = shape
+#  m = -(s^2)/2
+#  pp <- gauss.quad.prob(ncats, dist="normal", mu=m, sigma=s)
+#  matrix(c(exp(pp$nodes/m), pp$weights), ncol=2L,
+#         dimnames = list(NULL, c("rate", "weight")))
+#}
 
 
 

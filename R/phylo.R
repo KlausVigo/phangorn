@@ -900,6 +900,8 @@ update.pml <- function(object, ...) {
   existing <- match(pmla, names(extras))
   updateEig <- FALSE
   updateRates <- FALSE
+  Mkv <- object$Mkv
+  gamma.type <- object$gamma.type
   type <- attr(object$data, "type")
   if(type=="CODON"){
     bf_choice <- object$frequencies
@@ -1014,16 +1016,31 @@ update.pml <- function(object, ...) {
     eig <- object$eig
     model <- object$model
   }
-  g <- discrete.gamma(shape, k)
-  g <- rate * g
-  if (inv > 0) g <- g / (1 - inv)
+
+  rw <- rates_n_weights(shape, k, gamma.type)
+  g <- rw[, 1]
+  w <- rw[, 2]
+
+  if (inv > 0){
+    w <- (1 - inv) * w
+    g <- g / (1 - inv)
+  }
+  if (wMix > 0)
+    w <- (1 - wMix) * w
+  g <- g * rate
+
+#  g <- discrete.gamma(shape, k)
+#  g <- rate * g
+#  if (inv > 0) g <- g / (1 - inv)
+#  w <- rep(1 / k, k)
+#  if (inv > 0)
+#    w <- (1 - inv) * w
+#  if (wMix > 0)
+#    w <- wMix * w
+
   ll.0 <- as.matrix(INV %*% (bf * inv))
   if (wMix > 0) ll.0 <- ll.0 + llMix
-  w <- rep(1 / k, k)
-  if (inv > 0)
-    w <- (1 - inv) * w
-  if (wMix > 0)
-    w <- wMix * w
+
   m <- 1
   ### play save
   kmax <- k
@@ -1066,7 +1083,7 @@ update.pml <- function(object, ...) {
     weight = weight, g = g, w = w, eig = eig, data = data,
     model = model, INV = INV, ll.0 = ll.0, tree = tree,
     lv = tmp$resll, call = call, df = df, wMix = wMix,
-    llMix = llMix)
+    llMix = llMix, Mkv=Mkv, gamma.type=gamma.type)
   if (type == "CODON") {
     result$dnds <- dnds
     result$tstv <- tstv
@@ -1083,7 +1100,8 @@ pml.fit4 <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
                                                  (length(levels) - 1) / 2),
                      levels = attr(data, "levels"), inv = 0, rate = 1, g = NULL,
                      w = NULL, eig = NULL, INV = NULL, ll.0 = NULL,
-                     llMix = NULL, wMix = 0, ..., site = FALSE) {
+                     llMix = NULL, wMix = 0, ..., site = FALSE,
+                     gamma.type = "mean") {
   weight <- as.double(attr(data, "weight"))
   nr <- as.integer(attr(data, "nr"))
   nc <- as.integer(attr(data, "nc"))
@@ -1092,19 +1110,33 @@ pml.fit4 <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
   m <- 1
   if (is.null(eig))
     eig <- edQt(bf = bf, Q = Q)
-  if (is.null(w)) {
-    w <- rep(1 / k, k)
-    if (inv > 0)
+
+  if(is.null(g) | is.null(w)){
+    rw <- rates_n_weights(shape, k, gamma.type)
+    g <- rw[, 1]
+    w <- rw[, 2]
+    if (inv > 0){
       w <- (1 - inv) * w
+      g <- g / (1 - inv)
+    }
     if (wMix > 0)
       w <- (1 - wMix) * w
-  }
-  if (is.null(g)) {
-    g <- discrete.gamma(shape, k)
-    if (inv > 0)
-      g <- g / (1 - inv)
     g <- g * rate
   }
+
+#  if (is.null(w)) {
+#    w <- rep(1 / k, k)
+#    if (inv > 0)
+#      w <- (1 - inv) * w
+#    if (wMix > 0)
+#      w <- (1 - wMix) * w
+#  }
+#  if (is.null(g)) {
+#    g <- discrete.gamma(shape, k)
+#    if (inv > 0)
+#      g <- g / (1 - inv)
+#    g <- g * rate
+#  }
   #    inv0 <- inv
   if (any(g < .gEps)) {
     for (i in seq_along(g)) {
@@ -1182,6 +1214,10 @@ pml.fit4 <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #' @param site return the log-likelihood or vector of sitewise likelihood
 #' values
 #' @param Mkv indicate if Lewis' Mkv should be estimated.
+#' @param gamma.type Indicates what type of gamma distribution to use. Options
+#' are "mean" approach of Yang 1994 (default), "quadrature" after the Laguerre
+#' quadrature approach of Felsenstein 2001 or "lognormal" after a lognormal
+#' quadrature approach.
 #' @return \code{pml.fit} returns the log-likelihood.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{pml}, \link{pmlPart}, \link{pmlMix}}
@@ -1197,7 +1233,8 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
                                                 (length(levels) - 1) / 2),
                     levels = attr(data, "levels"), inv = 0, rate = 1, g = NULL,
                     w = NULL, eig = NULL, INV = NULL, ll.0 = NULL, llMix = NULL,
-                    wMix = 0, ..., site = FALSE, Mkv = FALSE) {
+                    wMix = 0, ..., site = FALSE, Mkv = FALSE,
+                    gamma.type = "mean") {
   weight <- as.double(attr(data, "weight"))
   nr <- as.integer(attr(data, "nr"))
   nc <- as.integer(attr(data, "nc"))
@@ -1206,19 +1243,32 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
   m <- 1
   if (is.null(eig))
     eig <- edQt(bf = bf, Q = Q)
-  if (is.null(w)) {
-    w <- rep(1 / k, k)
-    if (inv > 0)
+  if(is.null(g) | is.null(w)){
+    rw <- rates_n_weights(shape, k, gamma.type)
+    g <- rw[, 1]
+    w <- rw[, 2]
+
+    if (inv > 0){
       w <- (1 - inv) * w
+      g <- g / (1 - inv)
+    }
     if (wMix > 0)
       w <- (1 - wMix) * w
-  }
-  if (is.null(g)) {
-    g <- discrete.gamma(shape, k)
-    if (inv > 0)
-      g <- g / (1 - inv)
     g <- g * rate
   }
+#  if (is.null(w)) {
+#    w <- rep(1 / k, k)
+#    if (inv > 0)
+#      w <- (1 - inv) * w
+#    if (wMix > 0)
+#      w <- (1 - wMix) * w
+#  }
+#  if (is.null(g)) {
+#    g <- discrete.gamma(shape, k)
+#    if (inv > 0)
+#      g <- g / (1 - inv)
+#    g <- g * rate
+#  }
   #    inv0 <- inv
   if (any(g < .gEps)) {
     for (i in seq_along(g)) {
@@ -1347,6 +1397,10 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #' @param rate Rate.
 #' @param model allows to choose an amino acid models or nucleotide model, see
 #' details.
+#' @param gamma.type Indicates what type of gamma distribution to use. Options
+#' are "mean" approach of Yang 1994 (default), "quadrature" after the Laguerre
+#' quadrature approach of Felsenstein 2001 or "lognormal" after a lognormal
+#' quadrature approach.
 #' @param object An object of class \code{pml}.
 #' @param optNni Logical value indicating whether toplogy gets optimized (NNI).
 #' @param optBf Logical value indicating whether base frequencies gets
@@ -1468,7 +1522,7 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #' @rdname pml
 #' @export pml
 pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
-                rate = 1, model = NULL, ...) {
+                rate = 1, model = NULL, gamma.type = "mean", ...) {
   Mkv <- FALSE
   if (!is.null(model) && model == "Mkv") Mkv <- TRUE
   call <- match.call()
@@ -1495,7 +1549,7 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   nTips <- as.integer(length(tree$tip.label))
   if (is.null(attr(tree, "order")) || attr(tree, "order") ==
     "cladewise")
-    tree <- reorder(tree, "postorder")
+     tree <- reorder(tree, "postorder")
   if (any(tree$edge.length < 0)) {
     if(is.rooted(tree)) nh <- nodeHeight(tree)[1:nTips]
     tree$edge.length[tree$edge.length < 0] <- 1e-08
@@ -1554,15 +1608,27 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   m <- 1
   eig <- edQt(bf = bf, Q = Q)
 
-  w <- rep(1 / k, k)
-  if (inv > 0)
+  rw <- rates_n_weights(shape, k, gamma.type)
+  g <- rw[, 1]
+  w <- rw[, 2]
+  if (inv > 0){
     w <- (1 - inv) * w
-  if (wMix > 0)
-    w <- wMix * w
-  g <- discrete.gamma(shape, k)
-  if (inv > 0)
     g <- g / (1 - inv)
-  g <- rate * g
+  }
+  if (wMix > 0)
+    w <- (1 - wMix) * w
+  g <- g * rate
+
+#  w <- rep(1 / k, k)
+#  if (inv > 0)
+#    w <- (1 - inv) * w
+#  if (wMix > 0)
+#    w <- wMix * w
+#  g <- discrete.gamma(shape, k)
+#  if (inv > 0)
+#    g <- g / (1 - inv)
+#  g <- rate * g
+
   inv0 <- inv
   kmax <- k
   if (any(g < .gEps)) {
@@ -1605,7 +1671,7 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     Q = Q, bf = bf, rate = rate, siteLik = tmp$siteLik, weight = weight,
     g = g, w = w, eig = eig, data = data, model = model, INV = INV,
     ll.0 = ll.0, tree = tree, lv = tmp$resll, call = call, df = df, wMix = wMix,
-    llMix = llMix, Mkv=Mkv) #
+    llMix = llMix, Mkv=Mkv, gamma.type=gamma.type) #
   if (type == "CODON") {
     result$dnds <- dnds
     result$tstv <- tstv
@@ -2109,21 +2175,35 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV,
 }
 
 
-updateRates <- function(res, ll, rate, shape, k, inv, wMix, update="rate"){
+updateRates <- function(res, ll, rate, shape, k, inv, wMix, update="rate",
+                        gamma.type = "mean"){
   update <- match.arg(update, c("rate", "shape", "inv"))
   if(res[[2]] < ll) return(NULL)
   if(update=="rate") rate <- res[[1]]
   if(update=="shape") shape <- res[[1]]
   if(update=="inv") inv <- res[[1]]
-  g <- discrete.gamma(shape, k)
-  w <- rep(1 / k, k)
-  if (inv > 0) {
+
+  rw <- rates_n_weights(shape, k, gamma.type)
+  g <- rw[, 1]
+  w <- rw[, 2]
+
+  if (inv > 0){
     w <- (1 - inv) * w
     g <- g / (1 - inv)
   }
   if (wMix > 0)
     w <- (1 - wMix) * w
   g <- g * rate
+
+#  g <- discrete.gamma(shape, k)
+#  w <- rep(1 / k, k)
+#  if (inv > 0) {
+#    w <- (1 - inv) * w
+#    g <- g / (1 - inv)
+#  }
+#  if (wMix > 0)
+#    w <- (1 - wMix) * w
+#  g <- g * rate
   assign("g", g, envir = parent.frame(n = 1))
   assign("w", w, envir = parent.frame(n = 1))
   assign("inv", inv, envir = parent.frame(n = 1))
@@ -2159,8 +2239,9 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   pmla <- c("wMix", "llMix")
   wMix <- object$wMix
   llMix <- object$llMix
-  #    Mkv <- object$Mkv
-  Mkv <- FALSE
+  Mkv <- object$Mkv
+#  Mkv <- FALSE
+  gamma.type <- object$gamma.type
   if (is.null(llMix)) llMix <- 0
   if (!is.null(extras)) {
     names(extras) <- pmla[pmatch(names(extras), pmla)]
@@ -2333,7 +2414,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       weight = attr(data, "weight"),
       g = g, w = w, eig = eig, data = data, model = model,
       INV = INV, ll.0 = ll.0, tree = tree, lv = tmp$resll,
-      call = call, df = df, wMix = wMix, llMix = llMix)
+      call = call, df = df, wMix = wMix, llMix = llMix, Mkv=Mkv,
+      gamma.type=gamma.type)
     if (type == "CODON") {
       object$dnds <- dnds
       object$tstv <- tstv
@@ -2461,7 +2543,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         bf = bf, eig = eig, k = k, shape = shape, rate = rate)
       if (trace > 0)
         cat("optimize invariant sites: ", ll, "-->", max(res[[2]], ll), "\n")
-      updateRates(res, ll, rate, shape, k, inv, wMix, update="inv")
+      updateRates(res, ll, rate, shape, k, inv, wMix, update="inv",
+                  gamma.type=gamma.type)
       ll.0 <- as.matrix(INV %*% (bf * inv))
       if (wMix > 0) ll.0 <- ll.0 + llMix
     }
@@ -2470,7 +2553,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                         Q = Q, bf = bf, eig = eig, ll.0 = ll.0, rate = rate)
       if (trace > 0)
         cat("optimize shape parameter: ", ll, "-->", max(res[[2]], ll), "\n")
-      updateRates(res, ll, rate, shape, k, inv, wMix, update="shape")
+      updateRates(res, ll, rate, shape, k, inv, wMix, update="shape",
+                  gamma.type=gamma.type)
     }
     if (optRate) {
       res <- optimRate(tree, data, rate = rate, inv = inv,
@@ -2478,7 +2562,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         shape = shape, w = w, ll.0 = ll.0)
       if (trace > 0)
         cat("optimize rate: ", ll, "-->", max(res[[2]], ll), "\n")
-      updateRates(res, ll, rate, shape, k, inv, wMix, update="rate")
+      updateRates(res, ll, rate, shape, k, inv, wMix, update="rate",
+                  gamma.type=gamma.type)
     }
     if (optEdge) {
       res <- optimEdge(tree, data, eig = eig, w = w, g = g, bf = bf,
