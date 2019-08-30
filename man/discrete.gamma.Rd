@@ -11,7 +11,7 @@ discrete.gamma(alpha, k)
 plot_gamma_plus_inv(shape = 1, inv = 0, k = 4, discrete = TRUE,
   cdf = TRUE, append = FALSE, xlab = "x", ylab = ifelse(cdf,
   "F(x)", "f(x)"), xlim = NULL, verticals = FALSE,
-  edge.length = NULL, ...)
+  edge.length = NULL, gamma.type = "mean", ...)
 
 plotRates(obj, cdf.color = "blue", main = "cdf", ...)
 }

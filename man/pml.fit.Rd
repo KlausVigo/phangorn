@@ -20,7 +20,8 @@ pml.fit(tree, data, bf = rep(1/length(levels), length(levels)),
   shape = 1, k = 1, Q = rep(1, length(levels) * (length(levels) -
   1)/2), levels = attr(data, "levels"), inv = 0, rate = 1,
   g = NULL, w = NULL, eig = NULL, INV = NULL, ll.0 = NULL,
-  llMix = NULL, wMix = 0, ..., site = FALSE, Mkv = FALSE)
+  llMix = NULL, wMix = 0, ..., site = FALSE, Mkv = FALSE,
+  gamma.type = "mean")
 }
 \arguments{
 \item{data}{An alignment, object of class \code{phyDat}.}
@@ -61,6 +62,11 @@ pml.fit(tree, data, bf = rep(1/length(levels), length(levels)),
 values}
 
 \item{Mkv}{indicate if Lewis' Mkv should be estimated.}
+
+\item{gamma.type}{Indicates what type of gamma distribution to use. Options
+are "mean" approach of Yang 1994 (default), "quadrature" after the Laguerre
+quadrature approach of Felsenstein 2001 or "lognormal" after a lognormal
+quadrature approach.}
 }
 \value{
 \code{pml.fit} returns the log-likelihood.
