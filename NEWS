@@ -1,8 +1,18 @@
      CHANGES in PHANGORN VERSION 2.6.0
 
+NEW FEATURES
+
+    o add Laguerre quadrature as option for discrete rate classes
+
+    o add different genetic codes for codon models.
+
 OTHER CHANGES
 
-    o changed R dependencies to 3.6.0
+    o changed R dependencies to 3.6.0 mainly to supply nicer palettes via
+
+      hcl.colors()
+
+    o lots of small improvements to codon models
 
 
      CHANGES in PHANGORN VERSION 2.5.4
