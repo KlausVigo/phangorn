@@ -237,12 +237,13 @@ LaguerreQuad <- function(shape=1, ncats=4) {
                 dimnames = list(NULL, c("rate", "weight"))))
 }
 
-
+# needs to be fixed
 LogNormalQuad <- function(shape, ncats){
   s = shape
   m = -(s^2)/2
   pp <- gauss.quad.prob(ncats, dist="normal", mu=m, sigma=s)
-  return(c(exp(pp$nodes/m), pp$weights))
+  matrix(c(exp(pp$nodes/m), pp$weights), ncol=2L,
+         dimnames = list(NULL, c("rate", "weight")))
 }
 
 
@@ -301,4 +302,22 @@ nChooseK <- function(n, k, log=FALSE) {
   }
 }
 
+
+rates_n_weights <- function(shape, k, gamma.type = "mean"){
+  if(k==1) rates.and.weights <- matrix(c(1,1), ncol=2L,
+                                  dimnames = list(NULL, c("rate", "weight")))
+  else{
+    if(gamma.type == "mean"){
+      g <- discrete.gamma(shape, k=k)
+      w <- rep(1 / k, k)
+      rates.and.weights <- matrix( c(g, w), ncol=2L,
+                          dimnames = list(NULL, c("rate", "weight")))
+    }
+    if(gamma.type == "quadrature")
+      rates.and.weights <- LaguerreQuad(shape=shape, k)
+    if(gamma.type == "lognormal")
+      rates.and.weights <- LogNormalQuad(shape=shape, k)
+  }
+  rates.and.weights
+}
 
