@@ -33,11 +33,11 @@
 #' @aliases
 #' dna2codon codon2dna
 #' @param x An object containing sequences.
-#' @param code The ncbi genetic code number for translation (see details).
-#' By default the standard genetic code is used.
 #' @param codonstart an integer giving where to start the translation. This
 #' should be 1, 2, or 3, but larger values are accepted and have for effect to
 #' start the translation further within the sequence.
+#' @param code The ncbi genetic code number for translation (see details).
+#' By default the standard genetic code is used.
 #' @param ambiguity character for ambiguous character and no contrast is
 #' provided.
 #' @param ... further arguments passed to or from other methods.
@@ -56,7 +56,7 @@
 #'
 #' @rdname dna2codon
 #' @export
-dna2codon <- function(x, code=1, codonstart=1, ambiguity="---", ...){
+dna2codon <- function(x, codonstart=1, code=1, ambiguity="---", ...){
   if(!inherits(x, "phyDat"))stop("x needs to be of class phyDat!")
   if(attr(x, "type")=="AA")stop("x needs to be a nucleotide sequence!")
 
