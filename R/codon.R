@@ -113,7 +113,7 @@ tstv_subs <- function(code=1, stop.codon=FALSE){
 
 
 phyDat.codon <- function (data, return.index = TRUE, ambiguity = "---",
-                          NA_as_ambiguous=TRUE, code=1){
+                          NA_as_ambiguous=TRUE, code=1, stopcodon="exlude"){
   if(is.matrix(data)) nam <- row.names(data)
   else nam <- names(data)
   if (inherits(data,"DNAbin"))
@@ -124,8 +124,9 @@ phyDat.codon <- function (data, return.index = TRUE, ambiguity = "---",
   else data <- as.data.frame(data, stringsAsFactors = FALSE)
 
   data <- data.frame(tolower(as.matrix(data)), stringsAsFactors = FALSE)
-
   data[data=="u"] <- "t"
+
+  stopcodon <- match.arg(stopcodon, c("exclude", "include"))
 
   splseq <- function (seq, frame = 0){
     starts <- seq(from = frame + 1, to = length(seq), by = 3L)
@@ -133,6 +134,20 @@ phyDat.codon <- function (data, return.index = TRUE, ambiguity = "---",
   }
 
   data <- data.frame(lapply(data, splseq))
+
+  tmp <- .CODON[, as.character(code)]
+  codon <- rownames(.CODON)
+  stop_codons <- codon[tmp == "*"]
+  if(stopcodon!="include") codon <- codon[tmp != "*"] # no stop codons
+
+  if(stopcodon=="exclude"){
+    for(i in stopcodon){
+      data[data==i] <- NA
+    }
+    rm_stop <- which(is.na(data), arr.ind = TRUE)[,1]
+    if(length(rm_stop)>0) data[-unique(rm_stop), ]
+  }
+
   compress <- TRUE
   if(nrow(data)==1) compress <- FALSE
   if(compress){
@@ -147,13 +162,7 @@ phyDat.codon <- function (data, return.index = TRUE, ambiguity = "---",
     index <- 1:p
   }
 
-
-  tmp <- .CODON[, as.character(code)]
-  codon <- rownames(.CODON)
-  codon <- codon[tmp != "*"] # no stop codons
-
   CODON <- diag(length(codon))
-
   if(NA_as_ambiguous){
     ambiguity <- unique(c("---", ambiguity))
   }
