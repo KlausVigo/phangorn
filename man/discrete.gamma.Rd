@@ -42,6 +42,10 @@ or density / probability function.}
 
 \item{edge.length}{Total edge length (sum of all edges in a tree).}
 
+\item{gamma.type}{Indicates what type of gamma distribution to use. Options
+are "mean" approach of Yang 1994 (default), "quadrature" after the Laguerre
+quadrature approach of Felsenstein 2001.}
+
 \item{\dots}{Further arguments passed to or from other methods.}
 
 \item{obj}{an object of class pml}

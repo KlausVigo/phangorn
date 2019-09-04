@@ -65,8 +65,7 @@ values}
 
 \item{gamma.type}{Indicates what type of gamma distribution to use. Options
 are "mean" approach of Yang 1994 (default), "quadrature" after the Laguerre
-quadrature approach of Felsenstein 2001 or "lognormal" after a lognormal
-quadrature approach.}
+quadrature approach of Felsenstein 2001.}
 }
 \value{
 \code{pml.fit} returns the log-likelihood.

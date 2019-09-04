@@ -13,6 +13,9 @@
 #' @param alpha Shape parameter of the gamma distribution.
 #' @param k Number of intervals of the discrete gamma distribution.
 #' @param inv Proportion of invariable sites.
+#' @param gamma.type Indicates what type of gamma distribution to use. Options
+#' are "mean" approach of Yang 1994 (default), "quadrature" after the Laguerre
+#' quadrature approach of Felsenstein 2001.
 #' @param edge.length Total edge length (sum of all edges in a tree).
 #' @param discrete logical wether to plot discrete (default) or continous pdf or
 #' cdf.
@@ -249,13 +252,13 @@ LaguerreQuad <- function(shape=1, ncats=4) {
 }
 
 # needs to be fixed
-#LogNormalQuad <- function(shape, ncats){
-#  s = shape
-#  m = -(s^2)/2
-#  pp <- gauss.quad.prob(ncats, dist="normal", mu=m, sigma=s)
-#  matrix(c(exp(pp$nodes/m), pp$weights), ncol=2L,
-#         dimnames = list(NULL, c("rate", "weight")))
-#}
+LogNormalQuad <- function(shape, ncats){
+  s = shape
+  m = -(s^2)/2
+  pp <- gauss.quad.prob(ncats, dist="normal", mu=m, sigma=s)
+  matrix(c(exp(pp$nodes/m), pp$weights), ncol=2L,
+         dimnames = list(NULL, c("rate", "weight")))
+}
 
 
 

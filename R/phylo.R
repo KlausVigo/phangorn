@@ -1216,8 +1216,8 @@ pml.fit4 <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #' @param Mkv indicate if Lewis' Mkv should be estimated.
 #' @param gamma.type Indicates what type of gamma distribution to use. Options
 #' are "mean" approach of Yang 1994 (default), "quadrature" after the Laguerre
-#' quadrature approach of Felsenstein 2001 or "lognormal" after a lognormal
-#' quadrature approach.
+#' quadrature approach of Felsenstein 2001.
+## or "lognormal" after a lognormal quadrature approach.
 #' @return \code{pml.fit} returns the log-likelihood.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{pml}, \link{pmlPart}, \link{pmlMix}}
@@ -1399,7 +1399,8 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #' details.
 #' @param gamma.type Indicates what type of gamma distribution to use. Options
 #' are "mean" approach of Yang 1994 (default), "quadrature" after the Laguerre
-#' quadrature approach of Felsenstein 2001 or "lognormal" after a lognormal
+#' quadrature approach of Felsenstein 2001.
+## or "lognormal" after a lognormal
 #' quadrature approach.
 #' @param object An object of class \code{pml}.
 #' @param optNni Logical value indicating whether toplogy gets optimized (NNI).
