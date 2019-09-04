@@ -5,19 +5,19 @@
 \alias{codon2dna}
 \title{Translate nucleic acid sequences into codons}
 \usage{
-dna2codon(x, code = 1, codonstart = 1, ambiguity = "---", ...)
+dna2codon(x, codonstart = 1, code = 1, ambiguity = "---", ...)
 
 codon2dna(x)
 }
 \arguments{
 \item{x}{An object containing sequences.}
 
-\item{code}{The ncbi genetic code number for translation (see details).
-By default the standard genetic code is used.}
-
 \item{codonstart}{an integer giving where to start the translation. This
 should be 1, 2, or 3, but larger values are accepted and have for effect to
 start the translation further within the sequence.}
+
+\item{code}{The ncbi genetic code number for translation (see details).
+By default the standard genetic code is used.}
 
 \item{ambiguity}{character for ambiguous character and no contrast is
 provided.}
