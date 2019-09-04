@@ -113,7 +113,7 @@ tstv_subs <- function(code=1, stop.codon=FALSE){
 
 
 phyDat.codon <- function (data, return.index = TRUE, ambiguity = "---",
-                          NA_as_ambiguous=TRUE, code=1, stopcodon="exlude"){
+                          NA_as_ambiguous=TRUE, code=1, stopcodon="exclude"){
   if(is.matrix(data)) nam <- row.names(data)
   else nam <- names(data)
   if (inherits(data,"DNAbin"))
