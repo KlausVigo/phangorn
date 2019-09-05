@@ -35,10 +35,9 @@
 #' @param rootseq A vector of length \code{l} containing the root sequence.
 #' If not provided, the root sequence is randomly generated.
 #' @param type Type of sequences ("DNA", "AA", "CODON" or "USER").
-#' @param model Model of evolution to employ, for example "WAG", "JTT",
-#'  "Dayhoff" or "LG".
-#'  For a full list of supported models, type \code{phangorn:::.aamodels} or
-#' \code{phangorn:::.dnamodels}.
+#' @param model Amino acid model of evolution to employ, for example "WAG",
+#' "JTT", "Dayhoff" or "LG". For a full list of supported models, type
+#' \code{phangorn:::.aamodels}. Ignored if type is not equal to "AA".
 #' @param levels A character vector of the different character tokens.
 #' Ignored unless type = "USER".
 #' @param rate A numerical value greater than zero giving the mutation rate
@@ -108,8 +107,14 @@ simSeq.phylo <- function(x, l = 1000, Q = NULL, bf = NULL, rootseq = NULL,
   }
 
   pt <- match.arg(type, c("DNA", "AA", "USER", "CODON"))
-  if (pt == "DNA")
+  if (pt == "DNA"){
     levels <- c("a", "c", "g", "t")
+    if (!is.null(extras) ) {
+      if (!is.na(existing[2]) & is.null(Q))
+        tstv <- eval(extras[[existing[2]]], parent.frame())
+        Q <- c(1, tstv, 1, 1, tstv, 1)
+    }
+  }
   if (pt == "AA")
     levels <- c("a", "r", "n", "d", "c", "q", "e", "g", "h", "i",
       "l", "k", "m", "f", "p", "s", "t", "w", "y", "v")
@@ -138,8 +143,6 @@ simSeq.phylo <- function(x, l = 1000, Q = NULL, bf = NULL, rootseq = NULL,
     if (is.null(levels)) stop("levels have to be supplied if type is USER")
 
   lbf <- length(levels)
-
-
   if (is.null(bf)) bf <- rep(1 / lbf, lbf)
   if (is.null(Q)) {
     if (type == "CODON") Q <- CodonQ(subs = .sub, syn = .syn, tstv = tstv,

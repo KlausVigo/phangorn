@@ -31,10 +31,9 @@ If not provided, the root sequence is randomly generated.}
 
 \item{type}{Type of sequences ("DNA", "AA", "CODON" or "USER").}
 
-\item{model}{Model of evolution to employ, for example "WAG", "JTT",
- "Dayhoff" or "LG".
- For a full list of supported models, type \code{phangorn:::.aamodels} or
-\code{phangorn:::.dnamodels}.}
+\item{model}{Amino acid model of evolution to employ, for example "WAG",
+"JTT", "Dayhoff" or "LG". For a full list of supported models, type
+\code{phangorn:::.aamodels}. Ignored if type is not equal to "AA".}
 
 \item{levels}{A character vector of the different character tokens.
 Ignored unless type = "USER".}
