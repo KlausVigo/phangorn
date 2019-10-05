@@ -103,8 +103,9 @@ bootstrap.pml <- function(x, bs = 100, trees = TRUE, multicore = FALSE,
   extras <- match.call(expand.dots = FALSE)$...
   rearr <- c("optNni", "rearrangement")
   tmp <- pmatch(names(extras), rearr)
+  tmp <- tmp[!is.na(tmp)]
   do_rearr <- FALSE
-  if(!is.na(tmp)){
+  if(length(tmp)>0){
     if(tmp==1){
       do_rearr <- extras$optNni
       if(is.name(do_rearr)) do_rearr <- as.logical(as.character(do_rearr))
