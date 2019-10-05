@@ -288,31 +288,31 @@ Laguerre <- function(x, shape, degree) {
 nChooseK <- function(n, k, log=FALSE) {
   nChooseK0 <- function(n, k) {
     if((n == k) || (k==0))
-      return(1);
-    m <- min(k, n-k);
-    prod(seq(from=n, to=(n-m+1), by=-1)/(seq(from=m, to=1, by=-1)));
+      return(1)
+    m <- min(k, n-k)
+    prod(seq(from=n, to=(n-m+1), by=-1)/(seq(from=m, to=1, by=-1)))
   }
   # Process the arguments
   if (is.logical(log)) {
     if (log == TRUE)
       log <- exp(1)
     else
-      log <- NULL;
+      log <- NULL
   }
   # Repeat n or k to make the of equal length.
-  nn <- length(n);
-  nk <- length(k);
+  nn <- length(n)
+  nk <- length(k)
   if (nn > nk) {
-    k <- rep(k, length.out=nn);
-    nk <- nn;
+    k <- rep(k, length.out=nn)
+    nk <- nn
   } else if (nn < nk) {
-    n <- rep(n, length.out=nk);
-    nn <- nk;
+    n <- rep(n, length.out=nk)
+    nn <- nk
   }
   if (is.null(log)) {
-    gamma(n+1) / (gamma(n-k+1) * gamma(k+1));
+    gamma(n+1) / (gamma(n-k+1) * gamma(k+1))
   } else {
-    (lgamma(n+1) - (lgamma(n-k+1) + lgamma(k+1))) / log(log);
+    (lgamma(n+1) - (lgamma(n-k+1) + lgamma(k+1))) / log(log)
   }
 }
 

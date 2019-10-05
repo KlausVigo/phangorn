@@ -2364,7 +2364,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     message("only one rate class, ignored optGamma")
   }
   if(Mkv==TRUE & optInv==TRUE){
-    optInv = FALSE
+    optInv <- FALSE
     message('cannot estimate invariant sites and Mkv model, ignored optInv')
   }
   shape <- object$shape
