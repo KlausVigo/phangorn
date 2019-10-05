@@ -252,13 +252,13 @@ LaguerreQuad <- function(shape=1, ncats=4) {
 }
 
 # needs to be fixed
-LogNormalQuad <- function(shape, ncats){
-  s = shape
-  m = -(s^2)/2
-  pp <- gauss.quad.prob(ncats, dist="normal", mu=m, sigma=s)
-  matrix(c(exp(pp$nodes/m), pp$weights), ncol=2L,
-         dimnames = list(NULL, c("rate", "weight")))
-}
+#LogNormalQuad <- function(shape, ncats){
+#  s = shape
+#  m = -(s^2)/2
+#  pp <- gauss.quad.prob(ncats, dist="normal", mu=m, sigma=s)
+#  matrix(c(exp(pp$nodes/m), pp$weights), ncol=2L,
+#         dimnames = list(NULL, c("rate", "weight")))
+#}
 
 
 
