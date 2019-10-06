@@ -329,8 +329,8 @@ rates_n_weights <- function(shape, k, gamma.type = "mean"){
     }
     if(gamma.type == "quadrature")
       rates.and.weights <- LaguerreQuad(shape=shape, k)
-    if(gamma.type == "lognormal")
-      rates.and.weights <- LogNormalQuad(shape=shape, k)
+#    if(gamma.type == "lognormal")
+#      rates.and.weights <- LogNormalQuad(shape=shape, k)
   }
   rates.and.weights
 }
