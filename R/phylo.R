@@ -1119,8 +1119,7 @@ pml.fit4 <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
       w <- (1 - inv) * w
       g <- g / (1 - inv)
     }
-    if (wMix > 0)
-      w <- (1 - wMix) * w
+    if (wMix > 0) w <- (1 - wMix) * w
     g <- g * rate
   }
 
@@ -1833,7 +1832,7 @@ optimRooted <- function(tree, data, eig = eig, w = w, g = g, bf = bf,
       #            }
     }
     tree$edge.length <- EL[tree$edge[, 2]]
-    ll2 <- pml.fit(tree, data, bf = bf, k = k, eig = eig, ll.0 = ll.0,
+    ll2 <- pml.fit4(tree, data, bf = bf, k = k, eig = eig, ll.0 = ll.0,
                    INV = INV, w = w, g = g)
     eps <- (ll - ll2) / ll2
 
@@ -2464,8 +2463,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                        rate = rate, ll.0 = ll.0, INV = INV,
                        control = pml.control(epsilon = 1e-07, maxit = 10,
                                              trace = trace - 1))
-#    if (trace > 0)
-#      cat("optimize edge weights: ", ll, "-->", max(res[[2]], ll), "\n")
+    if (trace > 0)
+      cat("optimize edge weights: ", ll, "-->", max(res[[2]], ll), "\n")
     if (res[[2]] > ll) {
       ll <- res[[2]]
       tree <- res[[1]]
