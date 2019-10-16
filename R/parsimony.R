@@ -545,7 +545,11 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
                                         trace = trace, method = method,
                                         rearrangements = rearrangements, ...)
     tree <- start
-    if(!is.binary(tree)) tree <- multi2di(tree)
+    if (!is.binary(tree)){
+      # should not be necessary
+      tree <- multi2di(tree)
+      if(method=="fitch") tree <- unroot(tree)
+    }
     data <- subset(data, tree$tip.label)
     attr(tree, "pscore") <- parsimony(tree, data, method = method, ...)
     mp <- attr(tree, "pscore")
