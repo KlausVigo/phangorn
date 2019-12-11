@@ -223,8 +223,3 @@ void distHamming(int *x, double *weight, int *nr, int *l, double *d){
     }
 }
 
-
-
-
-
-
