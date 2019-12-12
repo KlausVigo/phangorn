@@ -164,20 +164,14 @@ lowerBound <- function(x, cost = NULL) {
   contrast <- attr(x, "contrast")
   rownames(contrast) <- attr(x, "allLevels")
   colnames(contrast) <- attr(x, "levels")
-  attr(x, "weight") <- rep(1, nr)
-  attr(x, "index") <- NULL
+  nmax <- nrow(contrast)
+  z <- matrix(unlist(x, FALSE, FALSE), length(x), length(attr(x, "weight")),
+              byrow = TRUE)
+  states <- apply(z, 2, unique.default, nmax = nmax)
 
-  y <- as.character(x)
-  #    states <- apply(y, 2, unique.default) return type not known
-  states <- vector("list", ncol(y))
-  for (i in seq_len(ncol(y))) states[[i]] <- unique.default(y[, i])
-
-  singles <- which(rowSums(contrast) == 1) #
-  noinfo <- which(rowSums(contrast) == nc) #
+  singles <- which(rowSums(contrast) == 1)
+  noinfo <- which(rowSums(contrast) == nc)
   ambiguous <- which( (rowSums(contrast) > 1) & (rowSums(contrast) < nc))
-  singles <- names(singles)
-  noinfo <- names(noinfo)
-  ambiguous <- names(ambiguous)
 
   fun <- function(states, contrast, singles, noinfo, ambiguous) {
     if (length(states) == 1) return(0)

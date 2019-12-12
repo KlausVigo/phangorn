@@ -510,7 +510,6 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
   data <- subset(data, tree$tip.label)
   nr <- as.integer(attr(data, "nr"))
   inord <- getOrder(data)
-#  lb <- lowerBound(data)
   nTips <- m <- length(data)
 
   nr <- as.integer(attr(data, "nr"))
