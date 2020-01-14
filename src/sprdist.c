@@ -212,6 +212,10 @@ del_splitset (splitset split)
     for (i = split->size - 1; i >= 0; i--) del_bipartition (split->g_split[i]);
     free (split->g_split);
   }
+  if (split->s_split) {
+    for (i = split->size - 1; i >= 0; i--) del_bipartition (split->s_split[i]);
+    free (split->s_split);
+  }
   del_hungarian (split->h);
   free (split);
 }
