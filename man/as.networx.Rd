@@ -9,8 +9,7 @@
 \usage{
 as.networx(x, ...)
 
-\method{as.networx}{splits}(x, planar = FALSE, coord = c("none", "2D",
-  "3D"), ...)
+\method{as.networx}{splits}(x, planar = FALSE, coord = c("none", "2D", "3D"), ...)
 
 \method{as.networx}{phylo}(x, ...)
 }
@@ -45,7 +44,7 @@ set.seed(1)
 tree1 <- rtree(20, rooted=FALSE)
 sp <- as.splits(rNNI(tree1, n=10))
 net <- as.networx(sp)
-plot(net, "2D")
+plot(net)
 \dontrun{
 # also see example in consensusNet
 example(consensusNet)
