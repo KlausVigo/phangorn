@@ -309,7 +309,7 @@ circNetwork <- function(x, ord = NULL) {
 #' tree1 <- rtree(20, rooted=FALSE)
 #' sp <- as.splits(rNNI(tree1, n=10))
 #' net <- as.networx(sp)
-#' plot(net, "2D")
+#' plot(net)
 #' \dontrun{
 #' # also see example in consensusNet
 #' example(consensusNet)
@@ -484,17 +484,17 @@ as.networx.phylo <- function(x, ...) {
 #' bs <- bootstrap.phyDat(Laurasiatherian, FUN = function(x)nj(dist.hamming(x)),
 #'     bs=50)
 #' cnet <- consensusNet(bs, .3)
-#' plot(cnet, "2D")
+#' plot(cnet)
 #' \dontrun{
 #' library(rgl)
 #' open3d()
-#' plot(cnet, show.tip.label=FALSE, show.nodes=TRUE)
-#' plot(cnet, type = "2D", show.edge.label=TRUE)
+#' plot(cnet, type = "3D", show.tip.label=FALSE, show.nodes=TRUE)
+#' plot(cnet, type = "equal angle", show.edge.label=TRUE)
 #'
 #' tmpfile <- normalizePath(system.file("extdata/trees/RAxML_bootstrap.woodmouse", package="phangorn"))
 #' trees <- read.tree(tmpfile)
 #' cnet_woodmouse <- consensusNet(trees, .3)
-#' plot(cnet_woodmouse, type = "2D", show.edge.label=TRUE)
+#' plot(cnet_woodmouse, type = "equal angle", show.edge.label=TRUE)
 #' }
 #'
 #' @export consensusNet
@@ -950,7 +950,7 @@ edgeLabels <- function(xx, yy, zz = NULL, edge) {
 #' tree1 <- rtree(20, rooted=FALSE)
 #' sp <- as.splits(rNNI(tree1, n=10))
 #' net <- as.networx(sp)
-#' plot(net, "2D")
+#' plot(net)
 #' \dontrun{
 #' # also see example in consensusNet
 #' example(consensusNet)
@@ -958,7 +958,7 @@ edgeLabels <- function(xx, yy, zz = NULL, edge) {
 #' @importFrom igraph graph_from_adjacency_matrix vcount topo_sort layout_nicely
 #' @method plot networx
 #' @export
-plot.networx <- function(x, type = "3D", use.edge.length = TRUE,
+plot.networx <- function(x, type = "equal angle", use.edge.length = TRUE,
                          show.tip.label = TRUE, show.edge.label = FALSE,
                          edge.label = NULL, show.node.label = FALSE,
                          node.label = NULL, show.nodes = FALSE,
@@ -969,7 +969,7 @@ plot.networx <- function(x, type = "3D", use.edge.length = TRUE,
                          cex.edge.label = cex, col.node.label = tip.color,
                          col.edge.label = tip.color, font.node.label = font,
                          font.edge.label = font, ...) {
-  type <- match.arg(type, c("3D", "2D", "equal angle"))
+  type <- match.arg(type, c("equal angle", "3D", "2D"))
   if (use.edge.length == FALSE) x$edge.length[] <- 1
   nTips <- length(x$tip.label)
   conf <- attr(x$splits, "confidences")

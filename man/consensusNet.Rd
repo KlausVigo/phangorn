@@ -31,17 +31,17 @@ set.seed(1)
 bs <- bootstrap.phyDat(Laurasiatherian, FUN = function(x)nj(dist.hamming(x)),
     bs=50)
 cnet <- consensusNet(bs, .3)
-plot(cnet, "2D")
+plot(cnet)
 \dontrun{
 library(rgl)
 open3d()
-plot(cnet, show.tip.label=FALSE, show.nodes=TRUE)
-plot(cnet, type = "2D", show.edge.label=TRUE)
+plot(cnet, type = "3D", show.tip.label=FALSE, show.nodes=TRUE)
+plot(cnet, type = "equal angle", show.edge.label=TRUE)
 
 tmpfile <- normalizePath(system.file("extdata/trees/RAxML_bootstrap.woodmouse", package="phangorn"))
 trees <- read.tree(tmpfile)
 cnet_woodmouse <- consensusNet(trees, .3)
-plot(cnet_woodmouse, type = "2D", show.edge.label=TRUE)
+plot(cnet_woodmouse, type = "equal angle", show.edge.label=TRUE)
 }
 
 }
