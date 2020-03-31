@@ -33,15 +33,14 @@
 #' @examples
 #' discrete.gamma(1, 4)
 #'
+#' old.par <- par(no.readonly = TRUE)
 #' par(mfrow = c(2,1))
-#'
 #' plot_gamma_plus_inv(shape=2, discrete = FALSE, cdf=FALSE)
 #' plot_gamma_plus_inv(shape=2, append = TRUE, cdf=FALSE)
 #'
 #' plot_gamma_plus_inv(shape=2, discrete = FALSE)
 #' plot_gamma_plus_inv(shape=2, append = TRUE)
-#'
-#' par(mfrow = c(1,1))
+#' par(old.par)
 #'
 #' @keywords cluster
 #'

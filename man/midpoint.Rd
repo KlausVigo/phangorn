@@ -51,10 +51,12 @@ tree$node.label <- c("", round(runif(tree$Nnode-1), 3))
 tree2 <- midpoint(tree)
 tree3 <- pruneTree(tree, .5)
 
+old.par <- par(no.readonly = TRUE)
 par(mfrow = c(3,1))
 plot(tree, show.node.label=TRUE)
 plot(tree2, show.node.label=TRUE)
 plot(tree3, show.node.label=TRUE)
+par(old.par)
 
 }
 \seealso{

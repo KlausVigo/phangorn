@@ -53,11 +53,14 @@ strict_consensus <- consensus(bs)
 majority_consensus <- consensus(bs, p=.5)
 all_compat <- allCompat(bs)
 max_clade_cred <- maxCladeCred(bs)
+
+old.par <- par(no.readonly = TRUE)
 par(mfrow = c(2,2), mar = c(1,4,1,1))
 plot(strict_consensus, main="Strict consensus tree")
 plot(majority_consensus, main="Majority consensus tree")
 plot(all_compat, main="Majority consensus tree with compatible splits")
 plot(max_clade_cred, main="Maximum clade credibility tree")
+par(old.par)
 
 # compute clade credibility for trees given a prop.part object
 pp <- prop.part(bs)

@@ -23,8 +23,11 @@ with up to 10 tips. \code{allTrees} returns bifurcating trees.
 \examples{
 
 trees <- allTrees(5)
+
+old.par <- par(no.readonly = TRUE)
 par(mfrow = c(3,5))
 for(i in 1:15)plot(trees[[i]])
+par(old.par)
 
 }
 \seealso{
