@@ -11,8 +11,7 @@
 \usage{
 designTree(tree, method = "unrooted", sparse = FALSE, ...)
 
-nnls.tree(dm, tree, rooted = FALSE, trace = 1, weight = NULL,
-  balanced = FALSE)
+nnls.tree(dm, tree, rooted = FALSE, trace = 1, weight = NULL, balanced = FALSE)
 
 nnls.phylo(x, dm, rooted = FALSE, trace = 0, ...)
 

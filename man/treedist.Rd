@@ -24,8 +24,7 @@ wRF.dist(tree1, tree2 = NULL, normalize = FALSE, check.labels = TRUE,
 
 KF.dist(tree1, tree2 = NULL, check.labels = TRUE, rooted = FALSE)
 
-path.dist(tree1, tree2 = NULL, check.labels = TRUE,
-  use.weight = FALSE)
+path.dist(tree1, tree2 = NULL, check.labels = TRUE, use.weight = FALSE)
 }
 \arguments{
 \item{tree1}{A phylogenetic tree (class \code{phylo}) or vector of trees (an

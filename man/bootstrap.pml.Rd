@@ -9,11 +9,11 @@
 bootstrap.pml(x, bs = 100, trees = TRUE, multicore = FALSE,
   mc.cores = NULL, ...)
 
-bootstrap.phyDat(x, FUN, bs = 100, multicore = FALSE,
-  mc.cores = NULL, jumble = TRUE, ...)
+bootstrap.phyDat(x, FUN, bs = 100, multicore = FALSE, mc.cores = NULL,
+  jumble = TRUE, ...)
 
-plotBS(tree, BStrees, type = "unrooted", bs.col = "black",
-  bs.adj = NULL, p = 50, frame = "none", ...)
+plotBS(tree, BStrees, type = "unrooted", bs.col = "black", bs.adj = NULL,
+  p = 50, frame = "none", ...)
 }
 \arguments{
 \item{x}{an object of class \code{pml} or \code{phyDat}.}

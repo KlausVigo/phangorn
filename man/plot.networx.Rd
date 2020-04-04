@@ -4,15 +4,15 @@
 \alias{plot.networx}
 \title{plot phylogenetic networks}
 \usage{
-\method{plot}{networx}(x, type = "3D", use.edge.length = TRUE,
+\method{plot}{networx}(x, type = "equal angle", use.edge.length = TRUE,
   show.tip.label = TRUE, show.edge.label = FALSE, edge.label = NULL,
   show.node.label = FALSE, node.label = NULL, show.nodes = FALSE,
   tip.color = "black", edge.color = "black", edge.width = 3,
   edge.lty = 1, split.color = NULL, split.width = NULL,
-  split.lty = NULL, font = 3, cex = par("cex"),
-  cex.node.label = cex, cex.edge.label = cex,
-  col.node.label = tip.color, col.edge.label = tip.color,
-  font.node.label = font, font.edge.label = font, ...)
+  split.lty = NULL, font = 3, cex = par("cex"), cex.node.label = cex,
+  cex.edge.label = cex, col.node.label = tip.color,
+  col.edge.label = tip.color, font.node.label = font,
+  font.edge.label = font, ...)
 }
 \arguments{
 \item{x}{an object of class \code{"networx"}}
@@ -90,7 +90,7 @@ set.seed(1)
 tree1 <- rtree(20, rooted=FALSE)
 sp <- as.splits(rNNI(tree1, n=10))
 net <- as.networx(sp)
-plot(net, "2D")
+plot(net)
 \dontrun{
 # also see example in consensusNet
 example(consensusNet)

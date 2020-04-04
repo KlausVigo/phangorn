@@ -4,9 +4,9 @@
 \alias{lento}
 \title{Lento plot}
 \usage{
-lento(obj, xlim = NULL, ylim = NULL, main = "Lento plot",
-  sub = NULL, xlab = NULL, ylab = NULL, bipart = TRUE,
-  trivial = FALSE, col = rgb(0, 0, 0, 0.5), ...)
+lento(obj, xlim = NULL, ylim = NULL, main = "Lento plot", sub = NULL,
+  xlab = NULL, ylab = NULL, bipart = TRUE, trivial = FALSE,
+  col = rgb(0, 0, 0, 0.5), ...)
 }
 \arguments{
 \item{obj}{an object of class phylo, multiPhylo or splits}

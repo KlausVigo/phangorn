@@ -59,8 +59,7 @@ acgt2ry(obj)
 
 \method{as.AAbin}{phyDat}(x, ...)
 
-write.phyDat(x, file, format = "phylip", colsep = "", nbcol = -1,
-  ...)
+write.phyDat(x, file, format = "phylip", colsep = "", nbcol = -1, ...)
 
 read.phyDat(file, format = "phylip", type = "DNA", ...)
 
@@ -70,8 +69,7 @@ baseFreq(obj, freq = FALSE, all = FALSE, drop.unused.levels = FALSE)
 
 \method{[}{phyDat}(x, i, j, ..., drop = FALSE)
 
-\method{unique}{phyDat}(x, incomparables = FALSE, identical = TRUE,
-  ...)
+\method{unique}{phyDat}(x, incomparables = FALSE, identical = TRUE, ...)
 
 removeUndeterminedSites(x, ...)
 

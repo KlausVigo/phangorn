@@ -52,7 +52,7 @@ cat("3 5",
     "No305     ATRA-",
     "No304     ATAYX",
     "No306     ATAGA",
-    file = "exdna.txt", sep = "\\n")
+    file = "exdna.txt", sep = "\n")
 (ex.dna <- read.dna("exdna.txt", format = "sequential", as.character=TRUE))
 dat <- phyDat(ex.dna, "USER", levels=unique(as.vector(ex.dna)))
 dist.p(dat)

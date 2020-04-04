@@ -10,8 +10,8 @@ multiphyDat2pmlPart(x, rooted = FALSE, ...)
 
 pmlPart2multiPhylo(x)
 
-pmlPart(formula, object, control = pml.control(epsilon = 1e-08, maxit =
-  10, trace = 1), model = NULL, rooted = FALSE, ...)
+pmlPart(formula, object, control = pml.control(epsilon = 1e-08, maxit = 10,
+  trace = 1), model = NULL, rooted = FALSE, ...)
 }
 \arguments{
 \item{x}{an object of class \code{pmlPart}}

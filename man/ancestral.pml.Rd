@@ -12,8 +12,7 @@ ancestral.pml(object, type = "marginal", return = "prob")
 ancestral.pars(tree, data, type = c("MPR", "ACCTRAN"), cost = NULL,
   return = "prob")
 
-pace(tree, data, type = c("MPR", "ACCTRAN"), cost = NULL,
-  return = "prob")
+pace(tree, data, type = c("MPR", "ACCTRAN"), cost = NULL, return = "prob")
 
 plotAnc(tree, data, i = 1, site.pattern = TRUE, col = NULL,
   cex.pie = par("cex"), pos = "bottomright", ...)

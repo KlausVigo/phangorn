@@ -10,11 +10,9 @@
 \usage{
 read.nexus.splits(file)
 
-write.nexus.splits(obj, file = "", weights = NULL, taxa = TRUE,
-  append = FALSE)
+write.nexus.splits(obj, file = "", weights = NULL, taxa = TRUE, append = FALSE)
 
-write.nexus.networx(obj, file = "", taxa = TRUE, splits = TRUE,
-  append = FALSE)
+write.nexus.networx(obj, file = "", taxa = TRUE, splits = TRUE, append = FALSE)
 
 read.nexus.networx(file, splits = TRUE)
 

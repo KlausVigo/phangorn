@@ -5,8 +5,8 @@
 \alias{fitch}
 \alias{random.addition}
 \alias{parsimony}
-\alias{sankoff}
 \alias{optim.parsimony}
+\alias{sankoff}
 \alias{pratchet}
 \title{Parsimony tree.}
 \usage{
@@ -24,8 +24,8 @@ optim.parsimony(tree, data, method = "fitch", cost = NULL, trace = 1,
   rearrangements = "SPR", ...)
 
 pratchet(data, start = NULL, method = "fitch", maxit = 1000,
-  minit = 10, k = 10, trace = 1, all = FALSE,
-  rearrangements = "SPR", perturbation = "ratchet", ...)
+  minit = 10, k = 10, trace = 1, all = FALSE, rearrangements = "SPR",
+  perturbation = "ratchet", ...)
 }
 \arguments{
 \item{tree}{tree to start the nni search from.}
