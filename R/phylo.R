@@ -107,7 +107,7 @@ subsChoice <- function(type = c("JC", "F81", "K80", "HKY", "TrNe", "TrN",
 optimGamma <- function(tree, data, shape = 1, k = 4, ...) {
   fn <- function(shape, tree, data, k, ...) pml.fit(tree, data, shape = shape,
       k = k, ...)
-  res <- optimize(f = fn, interval = c(0.1, 1000), lower = 0.1, upper = 1000,
+  res <- optimize(f = fn, interval = c(0.1, 100), lower = 0.1, upper = 1000,
     maximum = TRUE,  tol = .01, tree = tree, data = data, k = k, ...)
   res
 }
@@ -2177,8 +2177,9 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV,
 
 updateRates <- function(res, ll, rate, shape, k, inv, wMix, update="rate",
                         gamma.type = "mean"){
-  update <- match.arg(update, c("rate", "shape", "inv"))
+  if( is.infinite(res[[2]]) || is.nan(res[[2]])) return(NULL)
   if(res[[2]] < ll) return(NULL)
+  update <- match.arg(update, c("rate", "shape", "inv"))
   if(update=="rate") rate <- res[[1]]
   if(update=="shape") shape <- res[[1]]
   if(update=="inv") inv <- res[[1]]
@@ -2195,15 +2196,6 @@ updateRates <- function(res, ll, rate, shape, k, inv, wMix, update="rate",
     w <- (1 - wMix) * w
   g <- g * rate
 
-#  g <- discrete.gamma(shape, k)
-#  w <- rep(1 / k, k)
-#  if (inv > 0) {
-#    w <- (1 - inv) * w
-#    g <- g / (1 - inv)
-#  }
-#  if (wMix > 0)
-#    w <- (1 - wMix) * w
-#  g <- g * rate
   assign("g", g, envir = parent.frame(n = 1))
   assign("w", w, envir = parent.frame(n = 1))
   assign("inv", inv, envir = parent.frame(n = 1))
