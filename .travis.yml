@@ -1,9 +1,6 @@
-    # Sample .travis.yml for R projects from https://github.com/craigcitro/r-travis
+# Sample .travis.yml for R projects from https://github.com/craigcitro/r-travis
 
 language: r
-
-sudo: required
-
 
 r:
   - release
