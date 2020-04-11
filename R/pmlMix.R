@@ -153,25 +153,29 @@ optimMixInv <- function(object, inv = 0.01, omega, ...) {
 }
 
 
+
 optimMixRate <- function(fits, ll, weight, omega, rate = rep(1, length(fits))) {
   r <- length(fits)
-  rate0 <- rate[-r]
-
-  fn <- function(rate, fits, ll, weight, omega) {
-    r <-  length(fits)
-    rate <- c(rate, (1 - sum(rate * omega[-r])) / omega[r])
+  rate0 <- c(rate[1], diff(rate))
+  rate0[rate0 < 1e-8] <- 1e-8 # required by constrOptim
+  R <- matrix(0, r, r)
+  R[lower.tri(R, TRUE)] <- 1
+  fn <- function(rate, fits, ll, weight, omega, R) {
+    rate <- as.vector(R %*% rate)
+    r <-  length(rate)
     for (i in 1:r) fits[[i]] <- update(fits[[i]], rate = rate[i])
     for (i in 1:r) ll[, i] <- fits[[i]]$lv
     sum(weight * log(ll %*% omega))
   }
-  ui <- diag(r - 1)
-  ui <- rbind(-omega[-r], ui)
-  ci <- c(-1, rep(0, r - 1))
+  ui <- rbind(R, diag(4))
+  ci <- rep(0, 2 * r)
+  # Maybe constrain rates * omega
   res <- constrOptim(rate0, fn, grad = NULL, ui = ui, ci = ci, mu = 1e-04,
-    control = list(fnscale = -1), method = "Nelder-Mead", outer.iterations = 50,
-    outer.eps = 1e-05, fits = fits, ll = ll, weight = weight, omega = omega)
+                     control = list(fnscale = -1), method = "Nelder-Mead",
+                     outer.iterations = 50, outer.eps = 1e-05, fits = fits,
+                     ll = ll, weight = weight, omega = omega, R=R)
   rate <- res[[1]]
-  res[[1]] <- c(rate, (1 - sum(rate * omega[-r])) / omega[r])
+  res[[1]] <- as.vector(R %*% rate)
   res
 }
 
@@ -385,7 +389,6 @@ pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
     pl0 <- ll[, -i, drop = FALSE] %*% omega[-i]
     fits[[i]] <- update(fits[[i]], llMix = pl0, wMix = omega[i])
   }
-
   if (MixRate) rate <- rep(1, r)
   dnds <- NULL
   CODON <- FALSE
@@ -452,8 +455,7 @@ pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
     iter1 <- 0
 
     if (AllQ) {
-      newQ <- optimMixQ(fits, Q = fits[[1]]$Q,
-        omega = omega)[[1]]
+      newQ <- optimMixQ(fits, Q = fits[[1]]$Q, omega = omega)[[1]]
       for (i in seq_len(m)) fits[[i]] <- update(fits[[i]], Q = newQ)
     }
     if (AllBf) {
@@ -497,9 +499,19 @@ pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
 
     while (abs(eps1) > 0.001 & iter1 < 3) {
       if (MixRate) {
-        rate <- optimMixRate(fits, ll, weight, omega, rate)[[1]]
-        for (i in 1:r) fits[[i]] <- update(fits[[i]], rate = rate[i])
-        for (i in 1:r) ll[, i] <- fits[[i]]$lv
+        res <- optimMixRate(fits, ll, weight, omega, rate)
+        if(res[[2]] > ll1){
+          rate <- res[[1]]
+          blub <- sum(rate * omega)
+          rate <- rate / blub
+          tree <- fits[[1]]$tree
+          tree$edge.length <- tree$edge.length * blub
+          for (i in 1:r) fits[[i]] <- update(fits[[i]], tree = tree,
+                                             rate = rate[i])
+          for (i in 1:r) ll[, i] <- fits[[i]]$lv
+          if (trace > 0) cat("optimize rates: ", ll1, "-->", res[[2]], "\n")
+          ll1 <- res[[2]]
+        }
       }
       for (i in 1:r) {
         pl0 <- ll[, -i, drop = FALSE] %*% omega[-i]
@@ -515,15 +527,13 @@ pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
                             trace - 1), llMix = pl0, wMix = omega[i])
         }
         ll[, i] <- fits[[i]]$lv
-
         res <- optW(ll, weight, omega)
         omega <- res$p
-
         if (MixRate) {
           blub <- sum(rate * omega)
           rate <- rate / blub
           tree <- fits[[1]]$tree
-          tree$edge.length <-   tree$edge.length * blub
+          tree$edge.length <- tree$edge.length * blub
           for (i in 1:r) fits[[i]] <- update(fits[[i]], tree = tree,
               rate = rate[i])
           for (i in 1:r) ll[, i] <- fits[[i]]$lv
@@ -541,7 +551,7 @@ pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
         blub <- sum(rate * omega)
         rate <- rate / blub
         tree <- fits[[1]]$tree
-        tree$edge.length <-   tree$edge.length * blub
+        tree$edge.length <- tree$edge.length * blub
         for (i in 1:r) fits[[i]] <- update(fits[[i]], tree = tree,
             rate = rate[i])
         if (trace > 0) print(rate)
