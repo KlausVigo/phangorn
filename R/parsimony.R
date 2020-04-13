@@ -86,7 +86,7 @@ sankoff.quartet <- function(dat, cost, p, l, weight) {
 #' @rdname parsimony
 #' @export
 parsimony <- function(tree, data, method = "fitch", ...) {
-  if (class(data)[1] != "phyDat") stop("data must be of class phyDat")
+  if (!inherits(data, "phyDat")) stop("data must be of class phyDat")
   if (method == "sankoff") result <- sankoff(tree, data, ...)
   if (method == "fitch") result <- fitch(tree, data, ...)
   result
@@ -642,7 +642,7 @@ optim.sankoff <- function(tree, data, cost = NULL, trace = 1, ...) {
   if (is.rooted(tree)) tree <- unroot(tree)
   if (is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise")
     tree <- reorder(tree, "postorder")
-  if (class(data)[1] != "phyDat") stop("data must be of class phyDat")
+  if (!inherits(data, "phyDat")) stop("data must be of class phyDat")
   addTaxa <- FALSE
   mapping <- map_duplicates(data)
   if (!is.null(mapping)) {

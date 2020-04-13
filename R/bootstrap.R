@@ -215,7 +215,7 @@ bootstrap.phyDat <- function(x, FUN, bs = 100, multicore = FALSE,
       res <- lapply(BS, fitPar, x, ...)
     }
   }
-  if (class(res[[1]]) == "phylo") {
+  if (inherits(res[[1]], "phylo")) {
     class(res) <- "multiPhylo"
     res <- .compressTipLabel(res) # save memory
   }

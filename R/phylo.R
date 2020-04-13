@@ -275,7 +275,7 @@ vcov.pml <- function(object, ...) {
   FI <- score(object, FALSE)[[2]]
   l <- dim(FI)[1]
   res <- try(solve(FI))
-  if (class(res) == "try-error") {
+  if (inherits(res, "try-error")) {
     cat("Covariance is ill-conditioned !! \n")
     res <- solve(FI + diag(l) * 1e-8)
   }
@@ -1560,7 +1560,8 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
         (nodeHeight(tree)[1:nTips] - nh)
     }
   }
-  if (class(data)[1] != "phyDat") stop("data must be of class phyDat")
+#  if ( class(data)[1] != "phyDat") stop("data must be of class phyDat")
+  if (!inherits(data, "phyDat")) stop("data must be of class phyDat")
   if (is.null(tree$edge.length)) stop("tree must have edge weights")
   if (any(is.na(match(tree$tip.label, attr(data, "names")))))
     stop("tip labels are not in data")
