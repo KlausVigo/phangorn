@@ -151,9 +151,10 @@ rNNI <- function(tree, moves = 1, n = length(moves)) {
   k <- length(na.omit(match(tree$edge[, 2], tree$edge[, 1])))
 
   k_nni <- function(tree, ch, pvector, moves = 1L) {
-    if (nb.tip == 1) return(tree)
+    if (nb.tip < (4L - is.rooted(tree))) return(tree)
     for (i in seq_len(moves)) {
-      p2 <- sample(edges, 1)
+      if(length(edges)>1) p2 <- sample(edges, 1)
+      else p2 <- edges
       p1 <- pvector[p2]
       ind1 <- ch[[p1]]
       v1 <- ind1[ind1 != p2][1]
@@ -176,16 +177,14 @@ rNNI <- function(tree, moves = 1, n = length(moves)) {
     attr(tree, "order") <- "postorder"
     tree
   }
-
   edge    <- tree$edge
   parent  <- edge[, 1]
   child   <- edge[, 2]
-  nb.tip  <- as.integer(length(tree$tip.label))
+  nb.tip  <- Ntip(tree)
   pvector <- integer(max(edge)) # parents
   pvector[child] <- parent
   ch <- Children(tree)
   edges <- child[child %in% parent]
-
   if (n == 1) {
     trees <- tree
     if (moves > 0) {
