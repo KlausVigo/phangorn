@@ -282,6 +282,7 @@ rSPR <- function(tree, moves = 1, n = length(moves), k = NULL) {
 
 
 kSPR <- function(tree, k = NULL) {
+  if (Ntip(tree) < (4L - is.rooted(tree))) return(tree)
   l <- length(tree$tip.label)
   root <- getRoot(tree)
   distN <- dn(tree)[-c(1:l), -c(1:l)]
@@ -304,9 +305,6 @@ kSPR <- function(tree, k = NULL) {
       sample(c(1, 2), 1), root)
   if (s1 == 2) res <- oneOf4(tree, ind[2], ind[1], sample(c(1, 2), 1),
       sample(c(1, 2), 1), root)
-#  res <- reroot2(res, root)
-#  reorderPruning(res)
-#  reroot(res, root, FALSE)
   res
 }
 
@@ -314,8 +312,6 @@ kSPR <- function(tree, k = NULL) {
 oneOf4 <- function(tree, ind1, ind2, from = 1, to = 1, root) {
   if (!is.binary(tree))
     stop("Sorry, trees must be binary!")
-#  tree <- reroot2(tree, ind2)
-#  browser()#
   tree <- reroot(tree, ind2, FALSE)
   kids1 <- Children(tree, ind1)
   anc <- Ancestors(tree, ind1, "all")
@@ -335,9 +331,6 @@ oneOf4 <- function(tree, ind1, ind2, from = 1, to = 1, root) {
   tree$edge <- edge
   attr(tree, "order") <- NULL
   tree <- reroot(tree, root, FALSE)
-#  reorderPruning(tree)
-  #  reorder(tree)
-#  reorder(tree, "postorder")
   tree
 }
 
