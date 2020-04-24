@@ -8,9 +8,9 @@ fit0 <- pml(tree, X, k=4)
 fit1 <- update(fit0, rate=.5)
 fit2 <- update(fit0, rate=2)
 
-weights0 <- 1000*exp(fit0$site)
-weights1 <- 1000*exp(fit1$site)
-weights2 <- 1000*exp(fit2$site)
+weights0 <- 1000*exp(fit0$siteLik)
+weights1 <- 1000*exp(fit1$siteLik)
+weights2 <- 1000*exp(fit2$siteLik)
 
 
 W <- cbind(weights0, weights1, weights2)
@@ -37,7 +37,7 @@ test_that("transition rate optimisation works properly", {
 
     fit0 <- pml(tree, X, k=4)
     fit1 <- pml(tree, X, k=4, Q=Q)
-    weights1 <- 1000*exp(fit1$site)
+    weights1 <- 1000*exp(fit1$siteLik)
     Y <- X
     attr(Y, "weight") <- weights1
     fit1 <- pml(tree, Y, k=4, Q=Q)
@@ -56,7 +56,7 @@ test_that("transition rate optimisation works properly", {
 
     # unlinked parameter
     # TODO more complicated models
-    # weights0 <- 1000*exp(fit0$site)
+    # weights0 <- 1000*exp(fit0$siteLik)
     sp <- pmlPart( ~ Q, fit0, weight=W, control = pml.control(trace=0))
     expect_equal(logLik(sp)[1], logLik(fit1)[1]*3, tolerance=5e-4 )
     expect_equal(Q, sp$fits[[1]]$Q, tolerance=5e-4)
@@ -71,7 +71,7 @@ test_that("base frequency optimisation works properly", {
 
     fit0 <- pml(tree, X, k=4)
     fit1 <- pml(tree, X, k=4, bf=bf)
-    weights1 <- 1000*exp(fit1$site)
+    weights1 <- 1000*exp(fit1$siteLik)
     Y <- X
     attr(Y, "weight") <- weights1
     fit1 <- pml(tree, Y, k=4, bf=bf)
@@ -90,7 +90,7 @@ test_that("base frequency optimisation works properly", {
 
     # unlinked parameter
     # TODO more complicated models
-    # weights0 <- 1000*exp(fit0$site)
+    # weights0 <- 1000*exp(fit0$siteLik)
     sp <- pmlPart( ~ bf, fit0, weight=W, control = pml.control(trace=0))
     expect_equal(logLik(sp)[1], logLik(fit1)[1]*3, tolerance=5e-4 )
     expect_equal(bf, sp$fits[[1]]$bf, tolerance=5e-4)
@@ -104,7 +104,7 @@ test_that("shape parameter optimisation works properly", {
 
     fit0 <- pml(tree, X, k=4)
     fit1 <- pml(tree, X, k=4, shape=shape)
-    weights1 <- 1000*exp(fit1$site)
+    weights1 <- 1000*exp(fit1$siteLik)
     Y <- X
 
     attr(Y, "weight") <- weights1
@@ -125,7 +125,7 @@ test_that("shape parameter optimisation works properly", {
 
     # unlinked parameter
     # TODO more complicated models
-    # weights0 <- 1000*exp(fit0$site)
+    # weights0 <- 1000*exp(fit0$siteLik)
     sp <- pmlPart( ~ shape, fit0, weight=W, control=pml.control(trace=0))
     expect_equal(logLik(sp)[1], logLik(fit1)[1]*3, tolerance=5e-4 )
     expect_equal(shape, sp$fits[[1]]$shape, tolerance=5e-4)
@@ -139,7 +139,7 @@ test_that("Invariant sites optimisation works properly", {
 
     fit0 <- pml(tree, X, k=4)
     fit1 <- pml(tree, X, k=4, inv=inv)
-    weights1 <- 1000*exp(fit1$site)
+    weights1 <- 1000*exp(fit1$siteLik)
     Y <- X
     attr(Y, "weight") <- weights1
     fit1 <- pml(tree, Y, k=4, inv=inv)
@@ -158,7 +158,7 @@ test_that("Invariant sites optimisation works properly", {
 
     # unlinked parameter
     # TODO more complicated models
-    # weights0 <- 1000*exp(fit0$site)
+    # weights0 <- 1000*exp(fit0$siteLik)
     sp <- pmlPart( ~ inv, fit0, weight=W, control = pml.control(trace=0))
     expect_equal(logLik(sp)[1], logLik(fit1)[1]*3, tolerance=5e-4 )
     expect_equal(inv, sp$fits[[1]]$inv, tolerance=5e-5)
@@ -171,9 +171,9 @@ test_that("Linked parameters optimisation works properly", {
     Z <- X
 
     fit0 <- pml(tree, X, k=4)
-    weights0 <- 1000*exp(fit0$site)
-    weights1 <- 1000*exp(update(fit0, rate=.5)$site)
-    weights2 <- 1000*exp(update(fit0, tree=tree2)$site)
+    weights0 <- 1000*exp(fit0$siteLik)
+    weights1 <- 1000*exp(update(fit0, rate=.5)$siteLik)
+    weights2 <- 1000*exp(update(fit0, tree=tree2)$siteLik)
 
     attr(Z, "weight") <- weights0 + weights1 + weights2
     W <- cbind(weights0, weights1, weights2)

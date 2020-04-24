@@ -3,7 +3,7 @@ context("Mixture models")
 X <- allSitePattern(5)
 tree <- read.tree(text = "((t1:0.3,t2:0.3):0.1,(t3:0.3,t4:0.3):0.1,t5:0.5);")
 fit <- pml(tree,X, k=4)
-weights <- 1000*exp(fit$site)
+weights <- 1000*exp(fit$siteLik)
 
 ll0 <- sum(weights*log(weights/sum(weights)))
 

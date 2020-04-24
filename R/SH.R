@@ -63,7 +63,7 @@ SH.test <- function(..., B = 10000, data = NULL, weight = NULL) {
     weight <- attr(data, "weight")
     lw <- length(weight)
     siteLik <- matrix(0, lw, k)
-    for (i in 1:k) siteLik[, i] <- update(fits[[i]], data = data)$site
+    for (i in 1:k) siteLik[, i] <- update(fits[[i]], data = data)$siteLik
     ntree <- k
     Lalpha <- drop(crossprod(siteLik, weight))
     Talpha <- max(Lalpha) - Lalpha

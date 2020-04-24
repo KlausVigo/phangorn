@@ -165,7 +165,7 @@ optimPartEdge <- function(object, ...) {
   while (eps > 0.001 & k < 50) {
     if (scalep == 1) {
       for (i in 1:n) {
-        lv <- drop(exp(object[[i]]$site))
+        lv <- drop(exp(object[[i]]$siteLik))
         dl[(cnr[i] + 1):cnr[i + 1], ] <- dl(object[[i]], TRUE) / lv
       }
       sc <- colSums(weight * dl)
@@ -540,7 +540,7 @@ pmlCluster.fit <- function(formula, fit, weight, p = 4, part = NULL,
         fits[[i]] <- optim.pml(fits[[i]], PartNni, PartBf,
           PartQ, PartInv, PartGamma, PartEdge, PartRate,
           control = pml.control(epsilon = 1e-8, maxit = 3, trace - 1))
-        lls[, i] <- update(fits[[i]], data = dat)$site
+        lls[, i] <- update(fits[[i]], data = dat)$siteLik
         Gtrees[[i]] <- fits[[i]]$tree
       }
     }
@@ -592,7 +592,7 @@ pmlCluster.fit <- function(formula, fit, weight, p = 4, part = NULL,
       for (i in 1:p) fits[[i]] <- update(fits[[i]], tree = tree,
           rate = rate[i] * ratemult)
     }
-    for (i in 1:p) lls[, i] <- update(fits[[i]], data = dat)$site
+    for (i in 1:p) lls[, i] <- update(fits[[i]], data = dat)$siteLik
     trees[[m]] <- Gtrees
     LL <- t(weight) %*% lls
     # choose partitions which change

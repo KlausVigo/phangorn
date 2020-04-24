@@ -8,9 +8,9 @@ tree2 <- read.tree(text = "((t1:0.5,t2:0.1):0.1,(t3:0.5,t4:0.1):0.1,t5:0.5);")
 fit1 <- pml(tree1,X)
 fit2 <- pml(tree2,X)
 
-attr(X, "weight") <- 1000*exp(fit1$site)
+attr(X, "weight") <- 1000*exp(fit1$siteLik)
 Y <- X
-attr(Y, "weight") <- 1000*exp(fit2$site)
+attr(Y, "weight") <- 1000*exp(fit2$siteLik)
 
 fit1 <- update(fit1, data=X)
 fit2 <- update(fit2, data=Y)
