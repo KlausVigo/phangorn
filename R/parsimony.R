@@ -171,7 +171,7 @@ lowerBound <- function(x, cost = NULL) {
   z <- matrix(unlist(x, FALSE, FALSE), length(x), length(attr(x, "weight")),
               byrow = TRUE)
   states <- apply(z, 2, unique.default, nmax = nmax)
-
+  if(inherits(states, "matrix"))states <- asplit(states, 2)
   singles <- which(rowSums(contrast) == 1)
   noinfo <- which(rowSums(contrast) == nc)
   ambiguous <- which( (rowSums(contrast) > 1) & (rowSums(contrast) < nc))
