@@ -634,13 +634,21 @@ print.phyDat <- function (x, ...){
 }
 
 
-# in C++ to replace aggregate or use of distinct from dplyr / data.table
-aggr <- function(weight, ind){
-  res <- numeric(max(ind))
-  for(i in seq_along(weight))
-    res[ind[i]] <- res[ind[i]] + weight[i]
-  res
+## @export
+summary.phyDat <- function (x, ...){
+  nc  <- attr(x, "nc")
+  nseq <- length(x)
+  nchar <- sum(attr(x,"weight"))
+  unique_sites <- attr(x, "nr")
+  tmp <- logical(unique_sites)
+  for(i in 2:nseq) tmp <- tmp | (x[[1]] != x[[i]])
+  const_sites <- sum(attr(x, "weight")[tmp==0])
+  list(nseq=nseq, nchar=nchar, unique_sites=unique_sites, const_sites=const_sites)
 }
+#
+# constant sites
+# parsimony uniformative sites
+#
 
 
 # data has to be a data.frame in cbind.phyDat
@@ -945,11 +953,6 @@ map_duplicates <-  function(x, dist=TRUE, ...){
   res
 }
 
-
-#duplicated_phyDat <- function(x, ...){
-#    tmp <- map_duplicates(x)[,1]
-#    getCols(x, setdiff(names(x), tmp))
-#}
 
 
 #' @rdname phyDat
