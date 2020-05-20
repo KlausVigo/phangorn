@@ -22,8 +22,6 @@
 \alias{as.data.frame.phyDat}
 \alias{as.DNAbin.phyDat}
 \alias{as.AAbin.phyDat}
-\alias{write.phyDat}
-\alias{read.phyDat}
 \alias{baseFreq}
 \alias{subset.phyDat}
 \alias{[.phyDat}
@@ -59,10 +57,6 @@ acgt2ry(obj)
 
 \method{as.AAbin}{phyDat}(x, ...)
 
-write.phyDat(x, file, format = "phylip", colsep = "", nbcol = -1, ...)
-
-read.phyDat(file, format = "phylip", type = "DNA", ...)
-
 baseFreq(obj, freq = FALSE, all = FALSE, drop.unused.levels = FALSE)
 
 \method{subset}{phyDat}(x, subset, select, site.pattern = TRUE, ...)
@@ -95,19 +89,6 @@ genlight2phyDat(x, ambiguity = NA)
 \item{obj}{as object of class phyDat}
 
 \item{allLevels}{return original data.}
-
-\item{file}{A file name.}
-
-\item{format}{File format of the sequence alignment (see details).  Several
-popular formats are supported: "phylip", "interleaved", "sequential",
-"clustal", "fasta" or "nexus", or any unambiguous abbreviation of these.}
-
-\item{colsep}{a character used to separate the columns (a single space by
-default).}
-
-\item{nbcol}{a numeric specifying the number of columns per row (-1 by
-default); may be negative implying that the nucleotides are printed on a
-single line.}
 
 \item{freq}{logical, if 'TRUE', frequencies or counts are returned otherwise
 proportions}
@@ -160,13 +141,6 @@ example for specifying "USER" defined data formats in the vignette
 \code{allSitePattern} returns all possible site patterns and can be useful
 in simulation studies. For further details see the vignette
 phangorn-specials.
-
-\code{write.phyDat} calls the function write.dna or write.nexus.data and
-\code{read.phyDat} calls the function \code{read.dna}, \code{read.aa} or
-\code{read.nexus.data} see for more details over there.
-
-You may import data directly with \code{\link[ape]{read.dna}} or
-\code{\link[ape]{read.nexus.data}} and convert the data to class phyDat.
 
 The generic function \code{c} can be used to to combine sequences and
 \code{unique} to get all unique sequences or unique haplotypes.

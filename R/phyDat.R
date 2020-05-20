@@ -271,13 +271,6 @@ phyDat.AA <- function (data, return.index = TRUE){
 #' in simulation studies. For further details see the vignette
 #' phangorn-specials.
 #'
-#' \code{write.phyDat} calls the function write.dna or write.nexus.data and
-#' \code{read.phyDat} calls the function \code{read.dna}, \code{read.aa} or
-#' \code{read.nexus.data} see for more details over there.
-#'
-#' You may import data directly with \code{\link[ape]{read.dna}} or
-#' \code{\link[ape]{read.nexus.data}} and convert the data to class phyDat.
-#'
 #' The generic function \code{c} can be used to to combine sequences and
 #' \code{unique} to get all unique sequences or unique haplotypes.
 #'
@@ -293,15 +286,6 @@ phyDat.AA <- function (data, return.index = TRUE){
 #' @param type Type of sequences ("DNA", "AA", "CODON" or "USER").
 #' @param levels Level attributes.
 #' @param return.index If TRUE returns a index of the site patterns.
-#' @param file A file name.
-#' @param format File format of the sequence alignment (see details).  Several
-#' popular formats are supported: "phylip", "interleaved", "sequential",
-#' "clustal", "fasta" or "nexus", or any unambiguous abbreviation of these.
-#' @param colsep a character used to separate the columns (a single space by
-#' default).
-#' @param nbcol a numeric specifying the number of columns per row (-1 by
-#' default); may be negative implying that the nucleotides are printed on a
-#' single line.
 #' @param n Number of sequences.
 #' @param names Names of sequences.
 #' @param subset a subset of taxa.
@@ -516,7 +500,6 @@ acgt2ry <- function(obj){
 
 #' @rdname phyDat
 #' @export
-# replace as.character.phyDat weniger Zeilen, works also for codons
 as.character.phyDat <- function (x, allLevels=TRUE, ...){
   nr <- attr(x, "nr")
 #  nc <- attr(x, "nc")
@@ -747,91 +730,6 @@ cbind.phyDat <- function(..., gaps="-", compress=TRUE){
 #' @export c.phyDat
 #' @export
 c.phyDat <- cbind.phyDat
-
-
-#' @rdname phyDat
-#' @export
-write.phyDat <- function(x, file, format="phylip", colsep = "", nbcol=-1, ...){
-  formats <- c("phylip", "nexus", "interleaved", "sequential", "fasta")
-  format <- match.arg(tolower(format), formats)
-  if(format=="nexus"){
-    type <- attr(x, "type")
-    if(type=="DNA") write.nexus.data(as.list(as.data.frame(x)), file,
-                                     format = "dna",...)
-    else write.nexus.data(as.list(as.data.frame(x)), file,
-                          format = "protein", ...)
-  }
-  else{
-    if(format=="phylip") format <- "interleaved"
-    write.dna(as.character(x), file, format=format, colsep = colsep,
-              nbcol=nbcol, ...)
-  }
-}
-
-
-
-read.fasta.user <- function (file, skip = 0, nlines = 0,
-                             comment.char = "#", seq.names = NULL){
-  getTaxaNames <- function(x) {
-    x <- sub("^ +", "", x)
-    x <- sub(" +$", "", x)
-    x <- sub("^['\"]", "", x)
-    x <- sub("['\"]$", "", x)
-    x
-  }
-
-  X <- scan(file = file, what = character(), sep = "\n", quiet = TRUE,
-            skip = skip, nlines = nlines, comment.char = comment.char)
-
-  start <- grep("^ {0,}>", X)
-  taxa <- X[start]
-  n <- length(taxa)
-  obj <- vector("list", n)
-  if (is.null(seq.names)) {
-    taxa <- sub("^ {0,}>", "", taxa)
-    seq.names <- getTaxaNames(taxa)
-  }
-  start <- c(start, length(X) + 1)
-  for (i in 1:n) obj[[i]] <- unlist(strsplit(gsub(" ",
-                      "", X[(start[i] + 1):(start[i + 1] - 1)]), NULL))
-  names(obj) <- seq.names
-  obj <- lapply(obj, tolower)
-  obj
-}
-
-
-#' @rdname phyDat
-#' @export
-read.phyDat <- function(file, format="phylip", type="DNA", ...){
-
-  formats <- c("phylip", "nexus", "interleaved", "sequential", "fasta",
-               "clustal")
-  format <- match.arg(tolower(format), formats)
-
-  if(format=="nexus") data <- read.nexus.data(file, ...)
-  else {
-    if(format=="phylip") format <- "sequential" #"interleaved"
-    if (type == "DNA" || type == "CODON"){
-      data <- read.dna(file, format, as.character = TRUE, ...)
-    }
-    if (type == "AA") data <- read.aa(file, format=format, ...)
-    if (type == "USER"){
-      if(format=="fasta")
-        data <- read.fasta.user(file)
-      else data <- read.dna(file, format, as.character = TRUE)
-      extras <- match.call(expand.dots = FALSE)$...
-      extras <- lapply(extras, eval)
-      return(phyDat(data, type, levels=extras$levels,
-              ambiguity = extras$ambiguity, contrast = extras$contrast))
-    }
-    # raus
-  }
-  if(is.list(data)){
-    ll <- lengths(data)
-    if(!all(ll == ll[[1]])) stop("sequences have different length")
-  }
-  phyDat(data, type, return.index = TRUE)
-}
 
 
 #' @rdname phyDat
