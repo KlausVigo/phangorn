@@ -1,5 +1,3 @@
-context("simSeq")
-
 test_that("compare to seq-gen", {
     # Hypothesis:
     #   phangorn::simSeq and seq-gen generate alignments

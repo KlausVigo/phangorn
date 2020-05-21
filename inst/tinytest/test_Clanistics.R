@@ -1,5 +1,3 @@
-context("Clanistics")
-
 tree <- rtree(10)
 x <- simSeq(tree, l=5, type="USER", levels = c("red", "violet", "blue"))
 

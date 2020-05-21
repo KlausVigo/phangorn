@@ -1,5 +1,3 @@
-context("tree_rearrangement")
-
 set.seed(42)
 tree_u <- rtree(100, rooted=FALSE)
 tree_r <- rtree(100)

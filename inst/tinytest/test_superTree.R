@@ -1,5 +1,3 @@
-context("superTree")
-
 tree <- rtree(50, rooted=FALSE)
 
 trees_simple <- nni(tree)

@@ -1,5 +1,3 @@
-context("Test conversions")
-
 ## generate data
 set.seed(1)
 tree <- rtree(10, FALSE)

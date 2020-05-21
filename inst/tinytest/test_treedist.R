@@ -1,5 +1,3 @@
-context("treedist")
-
 ## generate data
 library(ape)
 set.seed(42)

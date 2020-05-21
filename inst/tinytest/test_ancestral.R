@@ -1,5 +1,3 @@
-context("ancestral")
-
 tree <- read.tree(text="((t1:1,t2:1):1,(t3:1,t4:1):1);")
 dat <- matrix( c("a", "a",
                  "a", "t",

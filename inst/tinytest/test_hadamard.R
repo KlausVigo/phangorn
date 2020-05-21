@@ -1,5 +1,3 @@
-context("Hadamard conjugation")
-
 v <- 1:8
 data(yeast)
 dm <- dist.hamming(yeast)

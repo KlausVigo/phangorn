@@ -1,5 +1,3 @@
-context("codon")
-
 # use lysin data & tree ?
 tree <- read.tree(text = "(((t1:.1,t2:.1):.1,t3:.2):.1,(t4:.1,t5:.1):.2);")
 set.seed(1)

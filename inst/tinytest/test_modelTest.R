@@ -1,5 +1,3 @@
-context("modelTest")
-
 X <- allSitePattern(4)
 attr(X, "type") <- "DNA"
 tree <- read.tree(text = "((t1:0.2,t2:0.3):0.1,t3:0.2,t4:0.3);")

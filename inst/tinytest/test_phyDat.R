@@ -1,4 +1,3 @@
-context("conversion_and_subsetting")
 # to test: phyDat.codon,
 data(Laurasiatherian)
 data(chloroplast)

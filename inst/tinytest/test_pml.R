@@ -1,5 +1,3 @@
-context("likelihood")
-
 treeU1 <- read.tree(text = "((t1:.1,t2:.1):.1,t3:.2,(t4:.1,t5:.1):.3);")
 # edge length changed
 treeU2 <- read.tree(text = "((t1:.15,t2:.15):.05,t3:.2,(t4:.1,t5:.1):.3);")

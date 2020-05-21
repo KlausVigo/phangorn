@@ -1,5 +1,3 @@
-context("mast")
-
 ## generate data
 set.seed(42)
 tree1 <- rtree(100)

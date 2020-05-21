@@ -1,5 +1,3 @@
-context("Mixture models")
-
 X <- allSitePattern(5)
 tree <- read.tree(text = "((t1:0.3,t2:0.3):0.1,(t3:0.3,t4:0.3):0.1,t5:0.5);")
 fit <- pml(tree,X, k=4)

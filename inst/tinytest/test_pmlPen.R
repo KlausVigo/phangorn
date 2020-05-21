@@ -1,5 +1,3 @@
-context("penalized likelihood")
-
 X <- allSitePattern(5)
 attr(X, "index") <- NULL
 tree1 <- read.tree(text = "((t1:0.1,t2:0.5):0.1,(t3:0.1,t4:0.5):0.1,t5:0.5);")

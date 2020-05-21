@@ -1,5 +1,3 @@
-context("treeManipulation")
-
 set.seed(42)
 tree <- rtree(100, rooted=FALSE)
 tree2 <- root(tree, 1, resolve.root = TRUE)

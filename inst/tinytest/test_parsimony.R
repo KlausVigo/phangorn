@@ -1,5 +1,3 @@
-context("parsimony")
-
 data(yeast)
 all_trees <- allTrees(8, tip.label = names(yeast))
 

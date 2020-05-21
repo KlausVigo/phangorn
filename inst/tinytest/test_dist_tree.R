@@ -1,5 +1,3 @@
-context("dist_tree")
-
 data(Laurasiatherian)
 dm <- dist.ml(Laurasiatherian)
 
