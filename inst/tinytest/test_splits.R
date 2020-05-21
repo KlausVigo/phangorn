@@ -12,9 +12,6 @@ Mat <- as.Matrix(tree2spl)
 trees <- nni(tree)
 
 test_that("splits", {
-    ## skip on CRAN
-    skip_on_cran()
-
     ## check classes
     expect_s3_class(as.splits(trees), "splits")
     expect_s3_class(tree2spl, "splits")
@@ -45,9 +42,6 @@ test_that("splits", {
 
 
 test_that("networx ", {
-    ## skip on CRAN
-    skip_on_cran()
-
     net1 <- neighborNet(dm)
     write.nexus.networx(net1, "tmp.nex")
     net2 <- read.nexus.networx("tmp.nex")
@@ -72,8 +66,6 @@ test_that("networx ", {
 
 
 test_that("consensusNet", {
-    ## skip on CRAN
-    skip_on_cran()
     set.seed(1)
     bs <- bootstrap.phyDat(Laurasiatherian,
                            FUN = function(x)nj(dist.hamming(x)), bs=50)

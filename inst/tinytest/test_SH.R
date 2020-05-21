@@ -10,7 +10,6 @@ X <- sapply(fits, function(x)x$siteLik)
 weight <- attr(dat, "weight")
 
 test_that("SH-test works properly", {
-    skip_on_cran()
     tmp <- SH.test(fits[[1]], fits[[2]])
     expect_gt(tmp[1,"p-value"], 0)
     expect_lt(tmp[2,"p-value"], 0.05)

@@ -1,8 +1,6 @@
 context("simSeq")
 
 test_that("compare to seq-gen", {
-
-    skip_on_cran()
     # Hypothesis:
     #   phangorn::simSeq and seq-gen generate alignments
     #   with approximately the same number of mutations

@@ -74,7 +74,6 @@ test_that("Distance between known trees matches calculation by hand", {
 # test that RF and wRF give same values for trees with every edge = 1
 ############################
 test_that("When each tree has unit branch lengths, RF = wRF", {
-  skip_on_cran()
   expect_equal(
     max(
       # test some random numbers of tips between 10 and 500
@@ -104,8 +103,6 @@ test_that("When each tree has unit branch lengths, RF = wRF", {
 # test sprdist from leomrtns
 #############################
 test_that("SPR distance", {
-    ## check spr dist
-    skip_on_cran()
     set.seed(123)
     tree1 <- rtree(100, rooted = FALSE)
     tree2 <- rSPR(tree1, 1)

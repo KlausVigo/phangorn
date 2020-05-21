@@ -12,7 +12,6 @@ set.seed(42)
 Y <- simSeq(tree, l=500, type = "AA", model="WAG")
 
 test_that("modelTest works properly", {
-    skip_on_cran()
     MT <- modelTest(X, tree = tree,
                 control = pml.control(epsilon = 1e-08, maxit = 10, trace = 0))
     expect_equal(MT$Model[which.min(MT$BIC)], "F81+G")

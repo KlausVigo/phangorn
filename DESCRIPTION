@@ -38,8 +38,7 @@ Imports:
     Rcpp (>= 0.12.0)
 LinkingTo: Rcpp
 Suggests:
-    testthat,
-    vdiffr,     
+    tinytest,
     seqinr,
     xtable,
     rgl,

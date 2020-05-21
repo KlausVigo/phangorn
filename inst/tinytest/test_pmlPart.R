@@ -19,7 +19,6 @@ colnames(W) <- c("g1", "g2", "g3")
 
 # rate
 test_that("rate optimisation works properly", {
-    skip_on_cran()
     sp <- pmlPart(edge ~ rate, fit0, weight=W, control = pml.control(trace=0))
     expect_equal( sp$fits[[1]]$rate / sp$fits[[2]]$rate , 2, tolerance = 1e-5)
     expect_equal( sp$fits[[1]]$rate / sp$fits[[3]]$rate , 0.5, tolerance = 1e-5)
@@ -31,8 +30,6 @@ test_that("rate optimisation works properly", {
 
 # Q
 test_that("transition rate optimisation works properly", {
-    skip_on_cran()
-
     Q <- c(6:1)
 
     fit0 <- pml(tree, X, k=4)
@@ -65,8 +62,6 @@ test_that("transition rate optimisation works properly", {
 
 # bf
 test_that("base frequency optimisation works properly", {
-    skip_on_cran()
-
     bf <- (1:4)/10
 
     fit0 <- pml(tree, X, k=4)
@@ -98,8 +93,6 @@ test_that("base frequency optimisation works properly", {
 
 # Gamma
 test_that("shape parameter optimisation works properly", {
-    skip_on_cran()
-
     shape <- 2
 
     fit0 <- pml(tree, X, k=4)
@@ -133,8 +126,6 @@ test_that("shape parameter optimisation works properly", {
 
 # Invariant sites
 test_that("Invariant sites optimisation works properly", {
-    skip_on_cran()
-
     inv <- .2
 
     fit0 <- pml(tree, X, k=4)
@@ -167,7 +158,6 @@ test_that("Invariant sites optimisation works properly", {
 
 # linked parameters
 test_that("Linked parameters optimisation works properly", {
-    skip_on_cran()
     Z <- X
 
     fit0 <- pml(tree, X, k=4)

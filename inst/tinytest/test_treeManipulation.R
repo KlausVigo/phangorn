@@ -73,7 +73,6 @@ test_that("add.tips", {
 
 
 test_that("plotBS", {
-  skip_on_cran()
   set.seed(1)
   data("Laurasiatherian")
   bs <- bootstrap.phyDat(Laurasiatherian,

@@ -10,7 +10,6 @@ dat <- phyDat(c(t1="a", t2="a",t3="t",t4="t"), type="USER",
               levels=c("a","c","g","t"))
 
 test_that("parsimony works properly", {
-##    skip_on_cran()
     expect_that(fitch(tree1, dat), equals(1))
     expect_that(fitch(tree2, dat), equals(2))
     expect_that(fitch(trees, dat), equals(c(1,2)))
@@ -20,7 +19,6 @@ test_that("parsimony works properly", {
 })
 
 test_that("bab works properly", {
-    skip_on_cran()
 #    all_trees <- allTrees(8, tip.label = names(yeast))
     all_pars <- fitch(all_trees, yeast)
     bab_tree <- bab(yeast, trace=0)
@@ -28,7 +26,6 @@ test_that("bab works properly", {
 })
 
 test_that("rearrangements works properly", {
-    skip_on_cran()
     tree <- all_trees[[1]]
     start <- fitch(tree, yeast)
     bab_tree <- bab(yeast, trace=0)
@@ -41,7 +38,6 @@ test_that("rearrangements works properly", {
 
 
 test_that("tree length works properly", {
-    skip_on_cran()
     tree <- nj(dist.hamming(yeast))
     pscore <- fitch(tree, yeast)
     tree1 <- acctran(tree, yeast)
@@ -54,7 +50,6 @@ test_that("tree length works properly", {
 
 
 test_that("tree length works properly", {
-    skip_on_cran()
     ra_tree <- random.addition(yeast)
     ratchet_tree <- pratchet(yeast, start=ra_tree, trace=0)
     expect_gte(attr(ra_tree, "pscore"), attr(ratchet_tree, "pscore"))

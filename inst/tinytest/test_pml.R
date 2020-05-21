@@ -43,7 +43,6 @@ pmlR3.fitted <- optim.pml(pmlR3, TRUE, optRooted = TRUE,  control =
 
 
 test_that("edge length optimisation works properly", {
-#    skip_on_cran()
     expect_equal(logLik(pmlU2.fitted), logLik(pmlU1))
     expect_equal(logLik(pmlR2.fitted), logLik(pmlR1))
     expect_equal(pmlU2.fitted$tree, pmlU1$tree, tolerance=1e-6)
@@ -51,7 +50,6 @@ test_that("edge length optimisation works properly", {
 })
 
 test_that("NNI optimisation works properly", {
-#    skip_on_cran()
     expect_equal(logLik(pmlU3.fitted), logLik(pmlU1))
     expect_equal(logLik(pmlR3.fitted), logLik(pmlR1))
     expect_equal(pmlU3.fitted$tree, pmlU1$tree, tolerance=1e-6)
@@ -62,7 +60,6 @@ test_that("NNI optimisation works properly", {
 
 
 test_that("bf optimisation works properly", {
-    skip_on_cran()
     bf <- c(.1,.2,.3,.4)
     fit_T <- pml(treeU1, dat, bf=bf)
     weights <- as.vector(1000 * exp(fit_T$siteLik))
@@ -77,7 +74,6 @@ test_that("bf optimisation works properly", {
 
 
 test_that("Q optimisation works properly", {
-    skip_on_cran()
     Q <- c(6:1)
     fit_T <- pml(treeU1, dat, Q=Q)
     weights <- as.vector(1000 * exp(fit_T$siteLik))
@@ -92,7 +88,6 @@ test_that("Q optimisation works properly", {
 
 
 test_that("Inv optimisation works properly", {
-    skip_on_cran()
     inv <- 0.25
     fit_T <- pml(treeU1, dat, inv=inv)
     weights <- as.vector(1000 * exp(fit_T$siteLik))
@@ -107,7 +102,6 @@ test_that("Inv optimisation works properly", {
 
 
 test_that("Gamma optimisation works properly", {
-    skip_on_cran()
     shape <- 2
     fit_T <- pml(treeU1, dat, shape=shape, k=4)
     weights <- as.vector(1000 * exp(fit_T$siteLik))
@@ -123,7 +117,6 @@ test_that("Gamma optimisation works properly", {
 
 
 test_that("rate optimisation works properly", {
-    skip_on_cran()
     rate <- 2
     fit_T <- pml(treeU1, dat, rate=rate)
     weights <- as.vector(1000 * exp(fit_T$siteLik))
@@ -137,7 +130,6 @@ test_that("rate optimisation works properly", {
 })
 
 test_that("Mkv model works properly", {
-    skip_on_cran()
     expect_equal(logLik(pmlU2.fitted), logLik(pmlU1))
 })
 

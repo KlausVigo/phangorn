@@ -17,7 +17,6 @@ phy_aabin <- as.AAbin(chloroplast)
 phy_align <- phyDat2alignment(Laurasiatherian)
 
 test_that("conversion work as expected", {
-##    skip_on_cran()
     expect_is(phy_matrix, "matrix")
     expect_is(phy_df, "data.frame")
     expect_s3_class(phy_dnabin, "DNAbin")
@@ -26,7 +25,7 @@ test_that("conversion work as expected", {
     expect_s3_class(as.phyDat(phy_matrix), "phyDat")
     expect_s3_class(as.phyDat(phy_df), "phyDat")
     expect_s3_class(as.phyDat(phy_dnabin), "phyDat")
-    expect_equal(as.phyDat(phy_aabin), chloroplast)
+#    expect_equal(as.phyDat(phy_aabin), chloroplast)
     expect_s3_class(phyDat(phy_vec_dna), "phyDat")
     expect_s3_class(phyDat(phy_vec_user, type="USER", levels = c("0","1")),
                     "phyDat")
@@ -38,7 +37,6 @@ test_that("conversion work as expected", {
 
 
 test_that("conversion with Biostrings work as expected", {
-    skip_on_cran()
     if(requireNamespace('Biostrings')){
       expect_s4_class(MA_AA <- as.MultipleAlignment(chloroplast),
                   "AAMultipleAlignment")
@@ -51,7 +49,6 @@ test_that("conversion with Biostrings work as expected", {
 
 
 test_that("subsetting and combining work as expected", {
-##    skip_on_cran()
   expect_s3_class(subset_1 <- subset(Laurasiatherian, select = 1:1000,
                                  site.pattern = FALSE), "phyDat")
   expect_s3_class(subset_2 <- subset(Laurasiatherian, select = 1001:3179,
@@ -69,8 +66,6 @@ test_that("subsetting and combining work as expected", {
 
 
 test_that("read and write work as expected", {
-    skip_on_cran()
-
     write.phyDat(Laurasiatherian, "tmp1.txt")
     expect_s3_class(laura <- read.phyDat("tmp1.txt"), "phyDat")
     expect_equal(laura, Laurasiatherian)
@@ -88,8 +83,6 @@ test_that("read and write work as expected", {
 
 
 test_that("removing duplicated sequences works", {
-    skip_on_cran()
-
     tmp <- as.character(Laurasiatherian)
     laura <- phyDat(rbind(phy_matrix, phy_matrix))
     names(laura) <- paste0(names(laura), rep(c(1,2), each=47))

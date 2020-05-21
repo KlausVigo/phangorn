@@ -15,13 +15,10 @@ fit_F3x4 <- pml(tree, dat_1, bf="F3x4")
 fit_GY <- pml(tree, dat_1, bf="empirical")
 
 test_that("dn/ds optimisation works properly", {
-    skip_on_cran()
-
     fit_GY_opt <- optim.pml(fit_GY, model="codon1",
                             control=pml.control(trace=0))
     expect_lt(fit_GY_opt$dnds, 1)
     expect_gt(fit_GY_opt$tstv, 1)
-
 #    fit_selection <- codonTest(tree, dat_4, control=pml.control(trace=0))
 })
 
@@ -31,7 +28,6 @@ dat_codon <- dna2codon(as.phyDat(woodmouse))
 tree <- NJ(dist.ml(dat_codon))
 
 test_that("M0, M1a optimisation works properly", {
-  skip_on_cran()
     fit_codon <- codonTest(tree, dat_codon, model = c("M0", "M1a"),
                        control = pml.control(maxit = 20))
     expect_s3_class(fit_codon, "codonTest")

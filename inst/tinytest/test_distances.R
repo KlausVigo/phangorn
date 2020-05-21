@@ -16,7 +16,6 @@ fun <- function(s) - 3/4 * log(1 - 4/3 * s)
 data(woodmouse)
 
 test_that("dist.ml works properly", {
-#    skip_on_cran()
     expect_that(dist.logDet(X), is_a("dist"))
     expect_that(dist.hamming(X), is_a("dist"))
     expect_that(dist.ml(X), is_a("dist"))
@@ -39,7 +38,6 @@ test_that("dist.ml works properly", {
 
 
 test_that("read/write of distances works", {
-    skip_on_cran()
     # phylip
     dm <- as.dist(dm)
     writeDist(dm, "dm.txt")
