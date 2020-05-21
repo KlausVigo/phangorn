@@ -9,7 +9,7 @@
 pml.control(epsilon = 1e-08, maxit = 10, trace = 1)
 
 pml(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
-  rate = 1, model = NULL, gamma.type = "mean", ...)
+  rate = 1, model = NULL, site.rate = "gamma", ...)
 
 optim.pml(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   optInv = FALSE, optGamma = FALSE, optEdge = TRUE, optRate = FALSE,
@@ -44,10 +44,9 @@ optim.pml(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
 \item{model}{allows to choose an amino acid models or nucleotide model, see
 details.}
 
-\item{gamma.type}{Indicates what type of gamma distribution to use. Options
-are "mean" approach of Yang 1994 (default), "quadrature" after the Laguerre
-quadrature approach of Felsenstein 2001.
-quadrature approach.}
+\item{site.rate}{Indicates what type of gamma distribution to use. Options
+are "gamma" approach of Yang 1994 (default), "quadrature" after the Laguerre
+quadrature approach of Felsenstein 2001.}
 
 \item{\dots}{Further arguments passed to or from other methods.}
 

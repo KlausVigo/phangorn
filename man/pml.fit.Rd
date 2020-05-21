@@ -20,7 +20,7 @@ pml.fit(tree, data, bf = rep(1/length(levels), length(levels)), shape = 1,
   k = 1, Q = rep(1, length(levels) * (length(levels) - 1)/2),
   levels = attr(data, "levels"), inv = 0, rate = 1, g = NULL,
   w = NULL, eig = NULL, INV = NULL, ll.0 = NULL, llMix = NULL,
-  wMix = 0, ..., site = FALSE, Mkv = FALSE, gamma.type = "mean")
+  wMix = 0, ..., site = FALSE, Mkv = FALSE, site.rate = "gamma")
 }
 \arguments{
 \item{data}{An alignment, object of class \code{phyDat}.}
@@ -62,8 +62,8 @@ values}
 
 \item{Mkv}{indicate if Lewis' Mkv should be estimated.}
 
-\item{gamma.type}{Indicates what type of gamma distribution to use. Options
-are "mean" approach of Yang 1994 (default), "quadrature" after the Laguerre
+\item{site.rate}{Indicates what type of gamma distribution to use. Options
+are "gamma" approach of Yang 1994 (default), "quadrature" after the Laguerre
 quadrature approach of Felsenstein 2001.}
 }
 \value{

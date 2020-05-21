@@ -13,9 +13,10 @@
 #' @param alpha Shape parameter of the gamma distribution.
 #' @param k Number of intervals of the discrete gamma distribution.
 #' @param inv Proportion of invariable sites.
-#' @param gamma.type Indicates what type of gamma distribution to use. Options
-#' are "mean" approach of Yang 1994 (default), "quadrature" after the Laguerre
-#' quadrature approach of Felsenstein 2001.
+#' @param site.rate Indicates what type of gamma distribution to use. Options
+#' are "gamma" (Yang 1994) and "gamma_quadrature" using Laguerre quadrature
+#' approach of Felsenstein (2001)
+## or "free_rate" "gamma_unbiased".
 #' @param edge.length Total edge length (sum of all edges in a tree).
 #' @param discrete logical wether to plot discrete (default) or continous pdf or
 #' cdf.
@@ -65,7 +66,7 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
                                 append=FALSE, xlab = "x",
                                 ylab=ifelse(cdf, "F(x)", "f(x)"), xlim=NULL,
                                 verticals=FALSE, edge.length=NULL,
-                                gamma.type="mean", ...){
+                                site.rate="gamma", ...){
 
   l <- max(lengths(list(shape, k, inv)))
   if(l>1){
@@ -75,8 +76,8 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
     verticals <- rep_len(verticals, l)
   }
 
-  gw <-  function(shape, k, inv, gamma.type){
-    gw <- rates_n_weights(shape, k, gamma.type)
+  gw <-  function(shape, k, inv, site.rate){
+    gw <- rates_n_weights(shape, k, site.rate)
     g <- gw[, 1]
     w <- gw[, 2]
     if (inv > 0){
@@ -86,7 +87,7 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
     cbind(w=w, g=g)
   }
 
-  g <- mapply(function(shape, k, inv) max(gw(shape, k, inv, gamma.type)[,"g"]),
+  g <- mapply(function(shape, k, inv) max(gw(shape, k, inv, site.rate)[,"g"]),
               shape, k, inv) %>% max()
 
   if(is.null(xlim)) xlim <- c(-0.25, 1.25 * g)
@@ -106,8 +107,8 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
   }
 
   step_GpI <- function(alpha=1, k=4, inv=0, edge.length=NULL,
-                       gamma.type="mean"){
-    rw <- rates_n_weights(alpha, k, gamma.type)
+                       site.rate="gamma"){
+    rw <- rates_n_weights(alpha, k, site.rate)
     g <- rw[, 1]
     w <- rw[, 2]
     if (inv > 0) w <- c(inv, (1 - inv) * w)
@@ -119,18 +120,18 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
 
   plot_cdf_discrete <- function(shape=1, inv=0, k=4, verticals=FALSE,
                                 append=FALSE, ylab=ylab, xlim=xlim,
-                                edge.length=edge.length, gamma.type="mean",
+                                edge.length=edge.length, site.rate="gamma",
                                 ...){
     sf <- step_GpI(shape, inv, k=k, edge.length=edge.length,
-                   gamma.type = gamma.type)
+                   site.rate = site.rate)
     if(append) plot(sf, verticals=verticals, add=TRUE, xlim=xlim, ...)
     else plot(sf, verticals=verticals, ylab=ylab, xlim=xlim, ...)
   }
 
   plot_density_discrete <- function(shape=1, inv=0, k=4, append=FALSE,
                                     xlab=xlab, ylab=ylab, xlim=xlim,
-                                    gamma.type="mean", ...){
-    g_w <- gw(shape, k, inv, gamma.type)
+                                    site.rate="gamma", ...){
+    g_w <- gw(shape, k, inv, site.rate)
     g <- g_w[, "g"]
     w <- g_w[, "w"]
     if(!append) plot(g, w, xlim = xlim, ylim=c(0, 1), type="n",
@@ -141,14 +142,14 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
 
   plot_cdf_continuos <- function(shape=1, inv=0, k=4, verticals=FALSE,
                                  append=FALSE, ylab=ylab, xlim=xlim,
-                                 gamma.type="mean",...){
+                                 site.rate="gamma",...){
     if(inv==0){
       if(!append) plot(function(x)cdf_fun(x, shape, inv), xlim[1], xlim[2],
                        ylim=c(0, 1), xlab=xlab, ylab=ylab, ...)
       else plot(function(x)cdf_fun(x, shape, inv), add=TRUE, ...)
     }
     else{
-      g_w <- gw(shape, k, inv, gamma.type)
+      g_w <- gw(shape, k, inv, site.rate)
       g <- g_w[, "g"]
       w <- g_w[, "w"]
       if(!append) plot(g, w, xlim = xlim, #c(-.5, 1.25 * max(g)),
@@ -182,12 +183,12 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
       if(discrete){
         plot_cdf_discrete(shape[i], inv[i], k[i], verticals = verticals[i],
                           append = append, ylab = ylab, xlim=xlim,
-                          edge.length=edge.length, gamma.type=gamma.type, ...)
+                          edge.length=edge.length, site.rate=site.rate, ...)
       }
       else{
         plot_cdf_continuos(shape[i], inv[i], k[i], verticals = verticals[i],
                            append = append, ylab = ylab, xlim=xlim,
-                           gamma.type=gamma.type,...)
+                           site.rate=site.rate,...)
       }
     }
     else{
@@ -195,7 +196,7 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
 
         plot_density_discrete(shape[i], inv[i], k[i], append=append,
                               xlab=xlab, ylab=ylab, xlim=xlim,
-                              gamma.type=gamma.type, ...)
+                              site.rate=site.rate, ...)
       }
       else{
         plot_density_continuous(shape[i], inv[i], k[i], append=append,
@@ -227,7 +228,7 @@ plotRates <- function(obj, cdf.color="blue", main="cdf", ...){
   plot_gamma_plus_inv(k=obj$k, shape=obj$shape, inv=obj$inv, append=TRUE,
                       xlim = xlim,
                       edge.length=sum(el), verticals=TRUE, col=cdf.color,
-                      gamma.type=obj$gamma.type, ...)
+                      site.rate=obj$site.rate, ...)
 }
 
 
@@ -266,7 +267,9 @@ findRoots <- function(shape, ncats) {
   # bins roots normalized to 1 of the General Laguerre Polynomial (GLP)
   coeff  <- integer(ncats + 1)
   for (i in 0:ncats) {
-    coeff[i + 1] <- (-1)^i*nChooseK(ncats + shape, ncats - i)/factorial(i)
+#    coeff[i + 1] <- (-1)^i*nChooseK(ncats + shape, ncats - i)/factorial(i)
+    coeff[i + 1] <- (-1)^i * exp(lchoose(ncats + shape, ncats - i) - lfactorial(i))
+#    print(c(coeff[i + 1] - tmp))
   }
   return(sort(Re(polyroot(coeff))))
 }
@@ -276,7 +279,8 @@ findRoots <- function(shape, ncats) {
 Laguerre <- function(x, shape, degree) {
   y <- 0
   for (i in 0:degree) {
-    y <- y + (-1)^i*choose(degree + shape, degree - i)*x^i/factorial(i)
+    y <- y + (-1)^i * x^i *
+         exp(lchoose(degree + shape, degree - i) - lfactorial(i))
   }
   return(y)
 }
@@ -284,53 +288,84 @@ Laguerre <- function(x, shape, degree) {
 
 #Took this from R.basic -- the C version did not work when LaguerreQuad was
 #called internally. Adding this function fixed this issue (JMB 9-29-2016).
-nChooseK <- function(n, k, log=FALSE) {
-  nChooseK0 <- function(n, k) {
-    if((n == k) || (k==0))
-      return(1)
-    m <- min(k, n-k)
-    prod(seq(from=n, to=(n-m+1), by=-1)/(seq(from=m, to=1, by=-1)))
-  }
+#nChooseK <- function(n, k, log=FALSE) {
+#  nChooseK0 <- function(n, k) {
+#    if((n == k) || (k==0))
+#      return(1)
+#    m <- min(k, n-k)
+#    prod(seq(from=n, to=(n-m+1), by=-1)/(seq(from=m, to=1, by=-1)))
+#  }
   # Process the arguments
-  if (is.logical(log)) {
-    if (log == TRUE)
-      log <- exp(1)
-    else
-      log <- NULL
-  }
+#  if (is.logical(log)) {
+#    if (log == TRUE)
+#      log <- exp(1)
+#    else
+#      log <- NULL
+#  }
   # Repeat n or k to make the of equal length.
-  nn <- length(n)
-  nk <- length(k)
-  if (nn > nk) {
-    k <- rep(k, length.out=nn)
-    nk <- nn
-  } else if (nn < nk) {
-    n <- rep(n, length.out=nk)
-    nn <- nk
-  }
-  if (is.null(log)) {
-    gamma(n+1) / (gamma(n-k+1) * gamma(k+1))
-  } else {
-    (lgamma(n+1) - (lgamma(n-k+1) + lgamma(k+1))) / log(log)
-  }
-}
+#  nn <- length(n)
+#  nk <- length(k)
+#  if (nn > nk) {
+#    k <- rep(k, length.out=nn)
+#    nk <- nn
+#  } else if (nn < nk) {
+#    n <- rep(n, length.out=nk)
+#    nn <- nk
+#  }
+#  if (is.null(log)) {
+#    gamma(n+1) / (gamma(n-k+1) * gamma(k+1))
+#  } else {
+#    (lgamma(n+1) - (lgamma(n-k+1) + lgamma(k+1))) / log(log)
+#  }
+#}
 
 
-rates_n_weights <- function(shape, k, gamma.type = "mean"){
+rates_n_weights <- function(shape, k, site.rate = "gamma"){
+  site.rate <- match.arg(site.rate, c("gamma", "gamma_unbiased",
+                                      "gamma_quadrature"))
   if(k==1) rates.and.weights <- matrix(c(1,1), ncol=2L,
                                   dimnames = list(NULL, c("rate", "weight")))
   else{
-    if(gamma.type == "mean"){
+    if(site.rate == "gamma"){
       g <- discrete.gamma(shape, k=k)
       w <- rep(1 / k, k)
       rates.and.weights <- matrix( c(g, w), ncol=2L,
                           dimnames = list(NULL, c("rate", "weight")))
     }
-    if(gamma.type == "quadrature")
+    if(site.rate == "gamma_unbiased"){
+      rates.and.weights <- discrete.gamma.2(alpha=shape, k=k)
+    }
+    if(site.rate == "gamma_quadrature")
       rates.and.weights <- LaguerreQuad(shape=shape, k)
-#    if(gamma.type == "lognormal")
+#    if(site.rate == "lognormal")
 #      rates.and.weights <- LogNormalQuad(shape=shape, k)
   }
   rates.and.weights
 }
+
+
+discrete.gamma.2 <- function(alpha, k){
+  if (k == 1) return(list(w=1, g=1))
+  bin <- c(rep(0, k), 1)
+  quants <- rep(0, k+1)
+  quants[k+1] <- 1
+  for(i in 2:k){
+    old_bin <- bin[i-1]
+    fun <- function(x, k, alpha, old_bin){
+      quants <- qgamma(c(old_bin, x), shape = alpha, rate = alpha)
+      tmp <- diff(pgamma(quants * alpha, alpha + 1)) * (1 / (x-old_bin))
+      abs( (x - old_bin) * tmp - 1/k )
+    }
+    res <- optimize(fun, k=k, alpha=alpha, old_bin=old_bin,
+                    interval=c(old_bin, 1), tol = .Machine$double.eps^0.5)
+    bin[i] <- res$minimum
+  }
+  w <- diff(bin)
+  quants <- qgamma( bin[seq_len(k)], shape = alpha, rate = alpha)
+  g <- diff(c(pgamma(quants * alpha, alpha + 1), 1)) * (1/w)
+  matrix(c(g, w), ncol=2L, dimnames = list(NULL, c("rate", "weight")))
+}
+
+
+# free_rate <- function(k) nur optimisieren
 

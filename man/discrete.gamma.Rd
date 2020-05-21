@@ -11,7 +11,7 @@ discrete.gamma(alpha, k)
 plot_gamma_plus_inv(shape = 1, inv = 0, k = 4, discrete = TRUE,
   cdf = TRUE, append = FALSE, xlab = "x", ylab = ifelse(cdf, "F(x)",
   "f(x)"), xlim = NULL, verticals = FALSE, edge.length = NULL,
-  gamma.type = "mean", ...)
+  site.rate = "gamma", ...)
 
 plotRates(obj, cdf.color = "blue", main = "cdf", ...)
 }
@@ -42,9 +42,9 @@ or density / probability function.}
 
 \item{edge.length}{Total edge length (sum of all edges in a tree).}
 
-\item{gamma.type}{Indicates what type of gamma distribution to use. Options
-are "mean" approach of Yang 1994 (default), "quadrature" after the Laguerre
-quadrature approach of Felsenstein 2001.}
+\item{site.rate}{Indicates what type of gamma distribution to use. Options
+are "gamma" (Yang 1994) and "gamma_quadrature" using Laguerre quadrature
+approach of Felsenstein (2001)}
 
 \item{\dots}{Further arguments passed to or from other methods.}
 
