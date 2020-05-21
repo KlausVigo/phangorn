@@ -1,4 +1,5 @@
-test_that("compare to seq-gen", {
+# compare to seq-gen
+
     # Hypothesis:
     #   phangorn::simSeq and seq-gen generate alignments
     #   with approximately the same number of mutations
@@ -97,7 +98,7 @@ test_that("compare to seq-gen", {
     p_value <- test$p.value
 
     # Expect distributions not to be similar
-    expect_gt(p_value, 0.05)
+    expect_true(p_value > 0.05)
 
 
     ############################################################################
@@ -132,7 +133,7 @@ test_that("compare to seq-gen", {
         # be different.
         p_value1[i] <- test$p.value
     }
-    expect_gt(mean(p_value1), 0.05)
+    expect_true(mean(p_value1) > 0.05)
 
     for(i in 1:100){
         x <- simSeq(fit)
@@ -147,6 +148,5 @@ test_that("compare to seq-gen", {
         # be different.
         p_value2[i] <- test$p.value
     }
-    expect_gt(mean(p_value2), 0.05)
+    expect_true(mean(p_value2) > 0.05)
 
-})

@@ -1,8 +1,7 @@
 data(Laurasiatherian)
 dm <- dist.ml(Laurasiatherian)
 
-
-test_that("check nnls functions", {
+# check nnls functions
     tree_nj <- NJ(dm)
     tree_unj <- UNJ(dm)
     tree_nnls_unj <- nnls.phylo(tree_unj, dm)
@@ -17,4 +16,3 @@ test_that("check nnls functions", {
     expect_false(all.equal(tree_wpgma, tree_nnls_wpgma))
     expect_equal(tree_unj, tree_nnls_unj)
     expect_false(all.equal(tree_nj, tree_nnls_nj))
-})

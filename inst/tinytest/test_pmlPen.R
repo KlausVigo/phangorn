@@ -21,7 +21,7 @@ Z <- cbind(X,Y)
 fit3 <- update(fit1, data=Z)
 fit3 <- optim.pml(fit3, control = pml.control(trace = 0))
 
-test_that("penalized partition models work as expected", {
-    expect_equal(pp0$logLik[1], fit1$logLik + fit2$logLik) #, tolerance = 0.002)
-    expect_equal(ppInf$logLik[1], fit3$logLik, tolerance = 1e-5)
-})
+# test penalized partition model
+expect_equal(pp0$logLik[1], fit1$logLik + fit2$logLik) #, tolerance = 0.002)
+expect_equal(ppInf$logLik[1], fit3$logLik, tolerance = 1e-5)
+

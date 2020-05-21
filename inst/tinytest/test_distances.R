@@ -13,10 +13,10 @@ fun <- function(s) - 3/4 * log(1 - 4/3 * s)
 
 data(woodmouse)
 
-test_that("dist.ml works properly", {
-    expect_that(dist.logDet(X), is_a("dist"))
-    expect_that(dist.hamming(X), is_a("dist"))
-    expect_that(dist.ml(X), is_a("dist"))
+# rest dist.ml
+    expect_true(inherits(dist.logDet(X), "dist"))
+    expect_true(inherits(dist.hamming(X), "dist"))
+    expect_true(inherits(dist.ml(X), "dist"))
     expect_equal(as.matrix(dist.ml(X, k=4, shape=.5)), dm)
     expect_equal(as.matrix(dist.ml(Y)), as.matrix(fun(dist.hamming(Y))))
     expect_equivalent(dist.dna(woodmouse, "JC", pairwise.deletion = FALSE),
@@ -32,10 +32,9 @@ test_that("dist.ml works properly", {
     expect_equivalent( dist.dna(woodmouse, "N", pairwise.deletion = TRUE),
                        dist.hamming(woodmouse, exclude="pairwise",
                                     ratio = FALSE))
-})
 
 
-test_that("read/write of distances works", {
+# test read/write of distances
     # phylip
     dm <- as.dist(dm)
     writeDist(dm, "dm.txt")
@@ -46,7 +45,7 @@ test_that("read/write of distances works", {
     writeDist(dm, "dm.txt", format="nexus", upper=FALSE)
     expect_equal(dm, readDist("dm.txt", format="nexus"))
     unlink("dm.txt")
-})
+
 
 
 

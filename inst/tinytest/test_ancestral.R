@@ -10,7 +10,7 @@ fit <- pml(tree, dna)
 
 
 # dna tests differs from other data types as it may returns ambiguous data
-test_that("test ancestral dna", {
+# test ancestral generics
     test.ml1 <- ancestral.pml(fit, type = "ml")
     test.ml2 <- ancestral.pml(fit, type = "ml", return = "phyDat")
     test1 <- ancestral.pars(tree, dna, "MPR", return = "prob")
@@ -19,5 +19,4 @@ test_that("test ancestral dna", {
     test4 <- ancestral.pars(tree, dna, "ACCTRAN", return = "phyDat")
     expect_equal(as.character(test2), as.character(test4))
     expect_equal(as.character(test.ml2), as.character(test2))
-})
 

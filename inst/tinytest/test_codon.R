@@ -8,25 +8,25 @@ dat_3 <- simSeq(tree, l=500, type = "CODON", dnds=3, tstv=2)
 
 dat_4 <- c(dat_1, dat_2, dat_3)
 
-fit_F1x4 <- pml(tree, dat_1, bf="F1x4")
-fit_F3x4 <- pml(tree, dat_1, bf="F3x4")
-fit_GY <- pml(tree, dat_1, bf="empirical")
+# fit_F1x4 <- pml(tree, dat_1, bf="F1x4")
+# fit_F3x4 <- pml(tree, dat_1, bf="F3x4")
+# fit_GY <- pml(tree, dat_1, bf="empirical")
 
-test_that("dn/ds optimisation works properly", {
-    fit_GY_opt <- optim.pml(fit_GY, model="codon1",
-                            control=pml.control(trace=0))
-    expect_lt(fit_GY_opt$dnds, 1)
-    expect_gt(fit_GY_opt$tstv, 1)
-#    fit_selection <- codonTest(tree, dat_4, control=pml.control(trace=0))
-})
+# test dn/ds optimisation works properly
+# fit_GY_opt <- optim.pml(fit_GY, model="codon1",
+#                            control=pml.control(trace=0))
+# expect_lt(fit_GY_opt$dnds, 1)
+# expect_gt(fit_GY_opt$tstv, 1)
+# fit_selection <- codonTest(tree, dat_4, control=pml.control(trace=0))
+
 
 library(ape)
 data(woodmouse)
 dat_codon <- dna2codon(as.phyDat(woodmouse))
 tree <- NJ(dist.ml(dat_codon))
 
-test_that("M0, M1a optimisation works properly", {
-    fit_codon <- codonTest(tree, dat_codon, model = c("M0", "M1a"),
+# test M0, M1a optimisation works properly
+fit_codon <- codonTest(tree, dat_codon, model = c("M0", "M1a"),
                        control = pml.control(maxit = 20))
-    expect_s3_class(fit_codon, "codonTest")
-})
+expect_true(inherits(fit_codon, "codonTest"))
+

@@ -9,12 +9,9 @@ rownames(x) <- c("A", "B", "C", "D")
 X <- phyDat(x, type="USER", levels = c("A", "B", "C", "D"))
 
 
-test_that("speciesTree", {
-    ## check speciesTree
-    st1 <- coalSpeciesTree(TR)
-    st2 <- coalSpeciesTree(TR, X=X)
-    st3 <- coalSpeciesTree(TR, sTree = start_tree)
-    expect_equal(st1, st2)
-    expect_equal(st1, st3)
-})
-
+## check speciesTree
+st1 <- coalSpeciesTree(TR)
+st2 <- coalSpeciesTree(TR, X=X)
+st3 <- coalSpeciesTree(TR, sTree = start_tree)
+expect_equal(st1, st2)
+expect_equal(st1, st3)

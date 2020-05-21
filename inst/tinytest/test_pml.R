@@ -40,24 +40,21 @@ pmlR3.fitted <- optim.pml(pmlR3, TRUE, optRooted = TRUE,  control =
                               pml.control(epsilon=1e-10, trace=0))
 
 
-test_that("edge length optimisation works properly", {
+# test edge length optimisation
     expect_equal(logLik(pmlU2.fitted), logLik(pmlU1))
     expect_equal(logLik(pmlR2.fitted), logLik(pmlR1))
     expect_equal(pmlU2.fitted$tree, pmlU1$tree, tolerance=1e-6)
 #    expect_equal(pmlR2.fitted$tree, pmlR1$tree, tolerance=5e-5)
-})
 
-test_that("NNI optimisation works properly", {
+# test NNI optimisation
     expect_equal(logLik(pmlU3.fitted), logLik(pmlU1))
     expect_equal(logLik(pmlR3.fitted), logLik(pmlR1))
     expect_equal(pmlU3.fitted$tree, pmlU1$tree, tolerance=1e-6)
     expect_equal(storage.mode(pmlU3.fitted$tree$edge), "integer")
 #    expect_equal(pmlR3.fitted$tree, pmlR1$tree, tolerance=5e-6)
-})
 
 
-
-test_that("bf optimisation works properly", {
+# test bf optimisation
     bf <- c(.1,.2,.3,.4)
     fit_T <- pml(treeU1, dat, bf=bf)
     weights <- as.vector(1000 * exp(fit_T$siteLik))
@@ -68,10 +65,9 @@ test_that("bf optimisation works properly", {
                         control = pml.control(epsilon=1e-10, trace=0))
     expect_equal(logLik(fit.bf), logLik(pml(treeU1, dat_tmp, bf=bf)))
     expect_equal(bf, fit.bf$bf, tolerance=5e-4)
-})
 
 
-test_that("Q optimisation works properly", {
+# test Q optimisation
     Q <- c(6:1)
     fit_T <- pml(treeU1, dat, Q=Q)
     weights <- as.vector(1000 * exp(fit_T$siteLik))
@@ -82,10 +78,9 @@ test_that("Q optimisation works properly", {
                        control = pml.control(epsilon=1e-10, trace=0))
     expect_equal(logLik(fit.Q), logLik(pml(treeU1, dat_tmp, Q=Q)))
     expect_equal(Q, fit.Q$Q, tolerance=5e-4)
-})
 
 
-test_that("Inv optimisation works properly", {
+# test Inv optimisation
     inv <- 0.25
     fit_T <- pml(treeU1, dat, inv=inv)
     weights <- as.vector(1000 * exp(fit_T$siteLik))
@@ -96,10 +91,9 @@ test_that("Inv optimisation works properly", {
                          control = pml.control(epsilon=1e-10, trace=0))
     expect_equal(logLik(fit.Inv), logLik(pml(treeU1, dat_tmp, inv=inv)))
     expect_equal(inv, fit.Inv$inv, tolerance=5e-4)
-})
 
 
-test_that("Gamma optimisation works properly", {
+# test Gamma optimisation
     shape <- 2
     fit_T <- pml(treeU1, dat, shape=shape, k=4)
     weights <- as.vector(1000 * exp(fit_T$siteLik))
@@ -111,10 +105,9 @@ test_that("Gamma optimisation works properly", {
     expect_equal(logLik(fit.Gamma),
                  logLik(pml(treeU1, dat_tmp, shape=shape, k=4)))
     expect_equal(shape, fit.Gamma$shape, tolerance=5e-4)
-})
 
 
-test_that("rate optimisation works properly", {
+# test rate optimisation
     rate <- 2
     fit_T <- pml(treeU1, dat, rate=rate)
     weights <- as.vector(1000 * exp(fit_T$siteLik))
@@ -125,9 +118,8 @@ test_that("rate optimisation works properly", {
                           control = pml.control(epsilon=1e-10, trace=0))
     expect_equal(logLik(fit.rate), logLik(pml(treeU1, dat_tmp, rate=rate)))
     expect_equal(rate, fit.rate$rate, tolerance=5e-4)
-})
 
-test_that("Mkv model works properly", {
+
+# test Mkv model
     expect_equal(logLik(pmlU2.fitted), logLik(pmlU1))
-})
 

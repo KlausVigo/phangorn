@@ -9,7 +9,7 @@ set.seed(42)
 # tree <- read.tree(text = "((t1:0.2,t2:0.3):0.1,t3:0.2);")
 Y <- simSeq(tree, l=500, type = "AA", model="WAG")
 
-test_that("modelTest works properly", {
+# test modelTest
     MT <- modelTest(X, tree = tree,
                 control = pml.control(epsilon = 1e-08, maxit = 10, trace = 0))
     expect_equal(MT$Model[which.min(MT$BIC)], "F81+G")
@@ -17,4 +17,3 @@ test_that("modelTest works properly", {
     MT_AA <- modelTest(Y, tree = tree, model=c("JTT", "WAG"), FREQ = TRUE,
             control = pml.control(epsilon = 1e-08, maxit = 10, trace = 0))
     expect_equal(MT_AA$Model[which.min(MT_AA$BIC)], "WAG")
-})

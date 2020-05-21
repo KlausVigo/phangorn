@@ -15,51 +15,46 @@ W <- cbind(weights0, weights1, weights2)
 colnames(W) <- c("g1", "g2", "g3")
 
 
-# rate
-test_that("rate optimisation works properly", {
-    sp <- pmlPart(edge ~ rate, fit0, weight=W, control = pml.control(trace=0))
-    expect_equal( sp$fits[[1]]$rate / sp$fits[[2]]$rate , 2, tolerance = 1e-5)
-    expect_equal( sp$fits[[1]]$rate / sp$fits[[3]]$rate , 0.5, tolerance = 1e-5)
-})
+# test_that rate optimisation works properly
+sp <- pmlPart(edge ~ rate, fit0, weight=W, control = pml.control(trace=0))
+expect_equal( sp$fits[[1]]$rate / sp$fits[[2]]$rate , 2, tolerance = 1e-5)
+expect_equal( sp$fits[[1]]$rate / sp$fits[[3]]$rate , 0.5, tolerance = 1e-5)
+
 
 # nni
 
 
+# test_that transition rate optimisation works properly
+Q <- c(6:1)
 
-# Q
-test_that("transition rate optimisation works properly", {
-    Q <- c(6:1)
+fit0 <- pml(tree, X, k=4)
+fit1 <- pml(tree, X, k=4, Q=Q)
+weights1 <- 1000*exp(fit1$siteLik)
+Y <- X
+attr(Y, "weight") <- weights1
 
-    fit0 <- pml(tree, X, k=4)
-    fit1 <- pml(tree, X, k=4, Q=Q)
-    weights1 <- 1000*exp(fit1$siteLik)
-    Y <- X
-    attr(Y, "weight") <- weights1
-    fit1 <- pml(tree, Y, k=4, Q=Q)
+fit1 <- pml(tree, Y, k=4, Q=Q)
+weights0 <- weights1
+weights2 <- weights1
 
-    weights0 <- weights1
-    weights2 <- weights1
+W <- cbind(weights0, weights1, weights2)
+colnames(W) <- c("g1", "g2", "g3")
 
-    W <- cbind(weights0, weights1, weights2)
-    colnames(W) <- c("g1", "g2", "g3")
+# linked parameter
 
-    # linked parameter
+sp <- pmlPart(edge + Q ~ ., fit0, weight=W, control = pml.control(trace=0))
+expect_equal(logLik(sp)[1], logLik(fit1)[1]*3, tolerance=5e-4 )
+expect_equal(Q, sp$fits[[1]]$Q, tolerance=5e-4)
 
-    sp <- pmlPart(edge + Q ~ ., fit0, weight=W, control = pml.control(trace=0))
-    expect_equal(logLik(sp)[1], logLik(fit1)[1]*3, tolerance=5e-4 )
-    expect_equal(Q, sp$fits[[1]]$Q, tolerance=5e-4)
-
-    # unlinked parameter
-    # TODO more complicated models
-    # weights0 <- 1000*exp(fit0$siteLik)
+# unlinked parameter
+# TODO more complicated models
+# weights0 <- 1000*exp(fit0$siteLik)
     sp <- pmlPart( ~ Q, fit0, weight=W, control = pml.control(trace=0))
     expect_equal(logLik(sp)[1], logLik(fit1)[1]*3, tolerance=5e-4 )
     expect_equal(Q, sp$fits[[1]]$Q, tolerance=5e-4)
-})
 
 
-# bf
-test_that("base frequency optimisation works properly", {
+# test_that base frequency optimisation works properly
     bf <- (1:4)/10
 
     fit0 <- pml(tree, X, k=4)
@@ -87,10 +82,9 @@ test_that("base frequency optimisation works properly", {
     sp <- pmlPart( ~ bf, fit0, weight=W, control = pml.control(trace=0))
     expect_equal(logLik(sp)[1], logLik(fit1)[1]*3, tolerance=5e-4 )
     expect_equal(bf, sp$fits[[1]]$bf, tolerance=5e-4)
-})
 
 # Gamma
-test_that("shape parameter optimisation works properly", {
+# test_that shape parameter optimisation works properly
     shape <- 2
 
     fit0 <- pml(tree, X, k=4)
@@ -120,10 +114,9 @@ test_that("shape parameter optimisation works properly", {
     sp <- pmlPart( ~ shape, fit0, weight=W, control=pml.control(trace=0))
     expect_equal(logLik(sp)[1], logLik(fit1)[1]*3, tolerance=5e-4 )
     expect_equal(shape, sp$fits[[1]]$shape, tolerance=5e-4)
-})
 
 # Invariant sites
-test_that("Invariant sites optimisation works properly", {
+# test_that Invariant sites optimisation works properly
     inv <- .2
 
     fit0 <- pml(tree, X, k=4)
@@ -151,11 +144,11 @@ test_that("Invariant sites optimisation works properly", {
     sp <- pmlPart( ~ inv, fit0, weight=W, control = pml.control(trace=0))
     expect_equal(logLik(sp)[1], logLik(fit1)[1]*3, tolerance=5e-4 )
     expect_equal(inv, sp$fits[[1]]$inv, tolerance=5e-5)
-})
+
 
 
 # linked parameters
-test_that("Linked parameters optimisation works properly", {
+# test_that Linked parameters optimisation works properly
     Z <- X
 
     fit0 <- pml(tree, X, k=4)
@@ -169,8 +162,8 @@ test_that("Linked parameters optimisation works properly", {
     fit_Z <- update(fit0, data=Z)
     fit_Z <- optim.pml(fit_Z, model="GTR", rearrangement="NNI", optGamma=TRUE,
                    optInv=TRUE, control=pml.control(trace=0))
-    sp <- pmlPart(edge + bf + Q + shape + inv + nni ~ ., fit_Z, weight=W)
+    sp <- pmlPart(edge + bf + Q + shape + inv + nni ~ ., fit_Z, weight=W,
+                  control = pml.control(trace=0))
 
     expect_equal(sp$logLik[[1]], fit_Z$logLik, tolerance = 1e-5)
-})
 
