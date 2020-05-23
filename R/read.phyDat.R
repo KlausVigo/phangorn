@@ -31,11 +31,12 @@ read.fasta.user <- function (file, skip = 0, nlines = 0,
 
 #' Import and export sequence alignments
 #'
-#' These functions read and write sequence alignments. Internally
+#' These functions read and write sequence alignments.
 #'
-#' \code{write.phyDat} calls the function write.dna or write.nexus.data and
-#' \code{read.phyDat} calls the function \code{read.dna}, \code{read.aa} or
-#' \code{read.nexus.data} see for more details over there.
+#' \code{write.phyDat} calls the function \code{\link[ape]{write.dna}} or
+#' \code{\link[ape]{write.nexus.data}} and \code{read.phyDat} calls the function
+#' \code{\link[ape]{read.dna}}, \code{read.aa} or \code{read.nexus.data}, so see
+#' for more details over there.
 #'
 #' You may import data directly with \code{\link[ape]{read.dna}} or
 #' \code{\link[ape]{read.nexus.data}} and convert the data to class phyDat.
@@ -57,6 +58,10 @@ read.fasta.user <- function (file, skip = 0, nlines = 0,
 #' Phylip (Phylogeny Inference Package) version 3.5c. Department of Genetics,
 #' University of Washington.
 #' \url{http://evolution.genetics.washington.edu/phylip/phylip.html}
+#' @examples
+#' fdir <- system.file("extdata/trees", package = "phangorn")
+#' primates <- read.phyDat(file.path(fdir, "primates.dna"),
+#'                         format = "interleaved")
 #' @keywords IO
 #' @rdname read.phyDat
 #' @export
