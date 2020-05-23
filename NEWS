@@ -16,6 +16,8 @@ OTHER CHANGES
 
     o new contributors: Brian, Jeremy and Mike
 
+    o tests are now done by tinytest, dropped dependencies on testthat, vdiffr
+
 
      CHANGES in PHANGORN VERSION 2.5.4
 
