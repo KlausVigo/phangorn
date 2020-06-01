@@ -8,6 +8,8 @@ NEW FEATURES
 
 OTHER CHANGES
 
+    o conversion between alignment formats is fast and more memory efficient
+
     o changed R dependencies to 3.6.0 mainly to supply nicer palettes via
 
       hcl.colors()
