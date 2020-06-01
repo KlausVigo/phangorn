@@ -16,7 +16,7 @@ fitch(tree, data, site = "pscore")
 
 random.addition(data, method = "fitch")
 
-parsimony(tree, data, method = "fitch", ...)
+parsimony(tree, data, method = "fitch", cost = NULL, ...)
 
 sankoff(tree, data, cost = NULL, site = "pscore")
 
@@ -36,10 +36,10 @@ pratchet(data, start = NULL, method = "fitch", maxit = 1000,
 
 \item{method}{one of 'fitch' or 'sankoff'.}
 
+\item{cost}{A cost matrix for the transitions between two states.}
+
 \item{...}{Further arguments passed to or from other methods (e.g.
 model="sankoff" and cost matrix).}
-
-\item{cost}{A cost matrix for the transitions between two states.}
 
 \item{trace}{defines how much information is printed during optimisation.}
 
