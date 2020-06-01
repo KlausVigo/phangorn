@@ -116,8 +116,10 @@ simSeq.phylo <- function(x, l = 1000, Q = NULL, bf = NULL, rootseq = NULL,
     }
   }
   if (pt == "AA")
-    levels <- c("a", "r", "n", "d", "c", "q", "e", "g", "h", "i",
-      "l", "k", "m", "f", "p", "s", "t", "w", "y", "v")
+    levels <- c("A", "R", "N", "D", "C", "Q", "E", "G", "H", "I", "L", "K",
+                "M", "F", "P", "S", "T", "W", "Y", "V")
+#    c("a", "r", "n", "d", "c", "q", "e", "g", "h", "i",
+#      "l", "k", "m", "f", "p", "s", "t", "w", "y", "v")
   if (pt == "CODON") {
     .syn <- synonymous_subs(code=code)
     .sub <- tstv_subs(code=code)
@@ -150,11 +152,11 @@ simSeq.phylo <- function(x, l = 1000, Q = NULL, bf = NULL, rootseq = NULL,
   x <- reorder(x)
   edge <- x$edge
   nNodes <- max(edge)
-  res <- matrix(NA, l, nNodes)
+  res <- matrix(NA, nNodes, l)
   parent <- as.integer(edge[, 1])
   child <- as.integer(edge[, 2])
   root <- as.integer(parent[!match(parent, child, 0)][1])
-  res[, root] <- rootseq
+  res[root, ] <- rootseq
   tl <- x$edge.length
   for (i in seq_along(tl)) {
     from <- parent[i]
@@ -163,23 +165,21 @@ simSeq.phylo <- function(x, l = 1000, Q = NULL, bf = NULL, rootseq = NULL,
     # avoid numerical problems for larger P and small t
     if (any(P < 0)) P[P < 0] <- 0
     for (j in 1:m) {
-      ind <- res[, from] == levels[j]
-      res[ind, to] <- sample(levels, sum(ind), replace = TRUE, prob = P[, j])
+      ind <- res[from, ] == levels[j]
+      res[to, ind] <- sample(levels, sum(ind), replace = TRUE, prob = P[, j])
     }
   }
   k <- length(x$tip.label)
   label <- c(x$tip.label, as.character( (k + 1):nNodes))
-  colnames(res) <- label
-  if (!ancestral) res <- res[, x$tip.label, drop = FALSE]
-  if (pt == "DNA") return(phyDat.DNA(as.data.frame(res,
-      stringsAsFactors = FALSE), return.index = TRUE))
-  if (pt == "AA") return(phyDat.AA(as.data.frame(res, stringsAsFactors = FALSE),
-      return.index = TRUE))
-  if (pt == "USER") return(phyDat.default(as.data.frame(res,
-      stringsAsFactors = FALSE), levels = levels, return.index = TRUE))
+  rownames(res) <- label
+  if (!ancestral) res <- res[x$tip.label, , drop = FALSE]
+  if (pt == "DNA") return(phyDat.DNA(res, return.index = TRUE))
+  if (pt == "AA") return(phyDat.AA(res, return.index = TRUE))
+  if (pt == "USER") return(phyDat.default(res, levels = levels,
+                                          return.index = TRUE))
   if (pt == "CODON") {
-    res <- apply(res, 2, function(x) unlist(strsplit(x, "")))
-    return(phyDat.codon(as.data.frame(res, stringsAsFactors = FALSE)))
+    res <- t(apply(res, 1, function(x) unlist(strsplit(x, ""))))
+    return(phyDat.codon(res))
   }
 }
 

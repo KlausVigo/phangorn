@@ -83,6 +83,7 @@ extern SEXP _phangorn_p2dna(SEXP, SEXP);
 extern SEXP _phangorn_threshStateC(SEXP, SEXP);
 extern SEXP _phangorn_node_height_cpp(SEXP, SEXP, SEXP);
 extern SEXP _phangorn_cophenetic_cpp(SEXP, SEXP, SEXP, SEXP);
+extern SEXP grpDupAtomMat(SEXP, SEXP, SEXP);
 
 static const R_CMethodDef CEntries[] = {
     {"ACCTRAN2",         (DL_FUNC) &ACCTRAN2,          6},
@@ -151,6 +152,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_phangorn_threshStateC",     (DL_FUNC) &_phangorn_threshStateC, 2},
     {"_phangorn_node_height_cpp",     (DL_FUNC) &_phangorn_node_height_cpp, 3},
     {"_phangorn_cophenetic_cpp",     (DL_FUNC) &_phangorn_cophenetic_cpp, 4},
+    {"grpDupAtomMat", (DL_FUNC) &grpDupAtomMat, 3},
     {NULL, NULL, 0}
 };
 

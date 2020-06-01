@@ -66,7 +66,6 @@ read.fasta.user <- function (file, skip = 0, nlines = 0,
 #' @rdname read.phyDat
 #' @export
 read.phyDat <- function(file, format="phylip", type="DNA", ...){
-
   formats <- c("phylip", "nexus", "interleaved", "sequential", "fasta",
                "clustal")
   format <- match.arg(tolower(format), formats)

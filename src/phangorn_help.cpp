@@ -33,7 +33,6 @@ List allDescCPP(IntegerMatrix orig, int nTips) {
 }
 
 
-// replacement for bipart maybe more error tolerant and slightly slower
 // import: edge matrix, number of tips
 // export: Descendants(x, 1:max(x$edge), "all")
 // [[Rcpp::export]]

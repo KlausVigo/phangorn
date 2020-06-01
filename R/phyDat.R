@@ -1,259 +1,6 @@
 #
 # Data structures for ML and MP
 #
-fast.table <- function (data) {
-  if(!is.data.frame(data))
-    data <- as.data.frame(data, stringsAsFactors = FALSE)
-  da <- do.call("paste", c(data, sep = "\r"))
-  ind <- !duplicated(da)
-  levels <- da[ind]
-  cat <- factor(da, levels = levels)
-  nl <- length(levels(cat))
-  bin <- (as.integer(cat) - 1)
-  pd <- nl
-  bin <- bin[!is.na(bin)]
-  if (length(bin)) bin <- bin + 1
-  y <- tabulate(bin, pd)
-  result <- list(index = bin, weights = y, data = data[ind, ])
-  result
-}
-
-
-phyDat.default <- function (data, levels = NULL, return.index = TRUE,
-                  contrast = NULL, ambiguity = "?", compress=TRUE, ...){
-  if (is.matrix(data))
-    nam <- row.names(data)
-  else nam <- names(data)
-  if(is.null(nam))stop("data object must contain taxa names")
-  if(inherits(data, "character") | inherits(data, "numeric"))
-    data <- as.matrix(data)
-  if (inherits(data, "DNAbin"))
-    data <- as.character(data)
-  if (is.matrix(data))
-    data <- as.data.frame(t(data), stringsAsFactors = FALSE)
-  # new 4.4.2016 bug fix (reported by Eli Levy Karin)
-  #  if (is.vector(data) && !is.list(data))data = as.data.frame(data,
-  #  stringsAsFactors = FALSE)
-  else data <- as.data.frame(data, stringsAsFactors = FALSE)
-
-  if(length(data[[1]])==1) compress <- FALSE
-  if(compress){
-    ddd <- fast.table(data)
-    data <- ddd$data
-    weight <- ddd$weight
-    index <- ddd$index
-  }
-  else{
-    p <- length(data[[1]])
-    weight <- rep(1, p)
-    index <- 1:p
-  }
-  q <- length(data)
-  p <- length(data[[1]])
-#  tmp <- vector("list", q)
-  if (!is.null(contrast)) {
-    levels <- colnames(contrast)
-    all.levels <- rownames(contrast)
-    rownames(contrast) <- NULL
-  }
-  else {
-    if (is.null(levels))
-      stop("Either argument levels or contrast has to be supplied")
-    l <- length(levels)
-    contrast <- diag(l)
-    all.levels <- levels
-    if (!is.null(ambiguity)) {
-      all.levels <- c(all.levels, ambiguity)
-      k <- length(ambiguity)
-      if (k > 0)
-        contrast <- rbind(contrast, matrix(1, k, l))
-    }
-  }
-#  d <- dim(data)
-  att <- attributes(data)
-  data <- lapply(data, match, all.levels)
-  attributes(data) <- att
-
-  row.names(data) <- as.character(1:p)
-  data <- na.omit(data)
-  aaa <- match(index, attr(data, "na.action"))
-
-  if(!is.null(attr(data, "na.action"))) warning("Found unknown characters (not supplied in levels). Deleted sites with with unknown states.")
-
-  index <- index[is.na(aaa)]
-  index <- match(index, unique(index))
-  rn <- as.numeric(rownames(data))
-  attr(data, "na.action") <- NULL
-  weight <- weight[rn]
-  p <- dim(data)[1]
-  names(data) <- nam
-  attr(data, "row.names") <- NULL
-  attr(data, "weight") <- weight
-  attr(data, "nr") <- p
-  attr(data, "nc") <- length(levels)
-  if (return.index)
-    attr(data, "index") <- index
-  attr(data, "levels") <- levels
-  attr(data, "allLevels") <- all.levels
-  attr(data, "type") <- "USER"
-  attr(data, "contrast") <- contrast
-  class(data) <- "phyDat"
-  data
-}
-
-
-phyDat.DNA <- function (data, return.index = TRUE){
-  if (is.matrix(data))
-    nam <- row.names(data)
-  else nam <- names(data)
-  if (inherits(data,"DNAbin"))
-    data <- as.character(data)
-  if(inherits(data, "character")) data <- as.matrix(data)
-  if (is.matrix(data))
-    data <- as.data.frame(t(data), stringsAsFactors = FALSE)
-  else data <- as.data.frame(data, stringsAsFactors = FALSE)
-
-  data <- data.frame(tolower(as.matrix(data)), stringsAsFactors = FALSE)
-
-  ac <- c("a", "c", "g", "t", "u", "m", "r", "w", "s", "y",
-          "k", "v", "h", "d", "b", "n", "?", "-")
-  AC <- matrix(c(c(1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1),
-                 c(0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1),
-                 c(0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1),
-                 c(0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1)),
-               18, 4, dimnames = list(NULL, c("a", "c", "g", "t")))
-
-  compress <- TRUE
-  if(length(data[[1]])==1) compress <- FALSE
-  if(compress){
-    ddd <- fast.table(data)
-    data <- ddd$data
-    weight <- ddd$weight
-    index <- ddd$index
-  }
-  else{
-    p <- length(data[[1]])
-    weight <- rep(1, p)
-    index <- 1:p
-  }
-#  q <- length(data)
-  p <- length(data[[1]])
-#  d <- dim(data)
-  att <- attributes(data)
-
-  data <- lapply(data, match, ac)
-#  data <- match(unlist(data), ac)
-#  attr(data, "dim") <- d
-#  data <- as.data.frame(data, stringsAsFactors=FALSE)
-  attributes(data) <- att
-  row.names(data) <- as.character(1:p)
-  data <- na.omit(data)
-  rn <- as.numeric(rownames(data))
-
-  if(!is.null(attr(data, "na.action"))) warning("Found unknown characters. Deleted sites with with unknown states.")
-
-  aaa <- match(index, attr(data, "na.action"))
-  index <- index[is.na(aaa)]
-  index <- match(index, unique(index))
-  rn <- as.numeric(rownames(data))
-  attr(data, "na.action") <- NULL
-
-  weight <- weight[rn]
-  p <- dim(data)[1]
-  names(data) <- nam
-  attr(data, "row.names") <- NULL
-  attr(data, "weight") <- weight
-  attr(data, "nr") <- p
-  attr(data, "nc") <- 4
-  if (return.index)
-    attr(data, "index") <- index
-  attr(data, "levels") <- c("a", "c", "g", "t")
-  attr(data, "allLevels") <- ac
-  attr(data, "type") <- "DNA"
-  attr(data, "contrast") <- AC
-  class(data) <- "phyDat"
-  data
-}
-
-
-phyDat.AA <- function (data, return.index = TRUE){
-  if(is.matrix(data)) nam <- row.names(data)
-  else nam <- names(data)
-  # AAbin
-  if (inherits(data,"AAbin"))
-    data <- as.character(data)
-  if(inherits(data, "character")) data <- as.matrix(data)
-  if (is.matrix(data))
-    data <- as.data.frame(t(data), stringsAsFactors = FALSE)
-  else data <- as.data.frame(data, stringsAsFactors = FALSE)
-
-  data <- data.frame(tolower(as.matrix(data)), stringsAsFactors = FALSE)
-
-  aa <- c("a", "r", "n", "d", "c", "q", "e", "g", "h", "i",
-    "l", "k", "m", "f", "p", "s", "t", "w", "y", "v")
-  aa2 <- c("a", "r", "n", "d", "c", "q", "e", "g", "h", "i",
-    "l", "k", "m", "f", "p", "s", "t", "w", "y", "v", "b",
-    "z", "x", "-", "?")
-  AA <- diag(20)
-  AA <- rbind(AA, matrix(0, 5, 20))
-  AA[21, 3] <- AA[21, 4] <- 1 # Aspartate or Asparagine
-  AA[22, 6] <- AA[22, 7] <- 1 #
-  AA[23:25, ] <- 1
-  dimnames(AA) <- list(aa2, aa)
-  compress <- TRUE
-  if(length(data[[1]])==1) compress <- FALSE
-  if(compress){
-    ddd <- fast.table(data)
-    data <- ddd$data
-    weight <- ddd$weight
-    index <- ddd$index
-    }
-  else{
-    p <- length(data[[1]])
-    weight <- rep(1, p)
-    index <- 1:p
-  }
-  q <- length(data)
-  p <- length(data[[1]])
-#  tmp <- vector("list", q)
-
-#  d <- dim(data)
-  att <- attributes(data)
-
-  data <- lapply(data, match, aa2)
-  # data <- match(unlist(data), aa2)
-  # attr(data, "dim") <- d
-  # data <- as.data.frame(data, stringsAsFactors=FALSE)
-  attributes(data) <- att
-
-  row.names(data) <- as.character(1:p)
-  data <- na.omit(data)
-  rn <- as.numeric(rownames(data))
-
-  if(!is.null(attr(data, "na.action"))) warning("Found unknown characters. Deleted sites with with unknown states.")
-
-  aaa <- match(index, attr(data, "na.action"))
-  index <- index[is.na(aaa)]
-  index <- match(index, unique(index))
-  rn <- as.numeric(rownames(data))
-  attr(data, "na.action") <- NULL
-  weight <- weight[rn]
-  p <- dim(data)[1]
-  names(data) <- nam
-  attr(data, "row.names") <- NULL
-  attr(data, "weight") <- weight
-  attr(data, "nr") <- p
-  attr(data, "nc") <- 20
-  if (return.index)
-    attr(data, "index") <- index
-  attr(data, "levels") <- aa
-  attr(data, "allLevels") <- aa2
-  attr(data, "type") <- "AA"
-  attr(data, "contrast") <- AA
-  class(data) <- "phyDat"
-  data
-}
-
 
 
 #' Conversion among Sequence Formats
@@ -628,45 +375,20 @@ summary.phyDat <- function (x, ...){
   const_sites <- sum(attr(x, "weight")[tmp==0])
   list(nseq=nseq, nchar=nchar, unique_sites=unique_sites, const_sites=const_sites)
 }
-#
-# constant sites
-# parsimony uniformative sites
-#
 
 
-# data has to be a data.frame in cbind.phyDat
-fast.table2 <- function (data){
-  if(!is.data.frame(data))
-    data <- as.data.frame(data, stringsAsFactors = FALSE)
-  da <- do.call("paste", data)
-  ind <- !duplicated(da)
-  levels <- da[ind]
-  cat <- factor(da, levels = levels)
-#  nl <- length(levels)
-  bin <- (as.integer(cat) - 1L)
-  bin <- bin[!is.na(bin)]
-  if (length(bin)) bin <- bin + 1L
-  result <- list(index = bin, pos = ind)
-  result
-}
-
-
-# @rdname phyDat
 #' @export cbind.phyDat
 #' @export
 cbind.phyDat <- function(..., gaps="-", compress=TRUE){
   object <- as.list(substitute(list(...)))[-1]
   x <- list(...)
   n <- length(x)
-  if (n == 1)
-    return(x[[1]])
-#  type <- attr(x[[1]], "type")
+  if (n == 1) return(x[[1]])
+  #  type <- attr(x[[1]], "type")
   nr <- numeric(n)
-
   ATTR <- attributes(x[[1]])
-
   nr[1] <- sum(attr(x[[1]], "weight"))
-#  levels <- attr(x[[1]], "levels")
+  #  levels <- attr(x[[1]], "levels")
   allLevels <- attr(x[[1]], "allLevels")
   gapsInd <- match(gaps, allLevels)
   snames <- vector("list", n)
@@ -686,14 +408,11 @@ cbind.phyDat <- function(..., gaps="-", compress=TRUE){
   wvec <- cumsum(wvec)
   snames <- unique(unlist(snames))
   weight <- numeric(vec[n+1])
-
   index <- numeric(wvec[n+1])
-
   ATTR$names <- snames
   ATTR$nr <- vec[n+1]
-
   tmp <- matrix(gapsInd, vec[n+1], length(snames),
-          dimnames = list(NULL, snames))
+                dimnames = list(NULL, snames))
   tmp <- as.data.frame(tmp)
   add.index <- TRUE
   for(i in 1:n){
@@ -702,9 +421,11 @@ cbind.phyDat <- function(..., gaps="-", compress=TRUE){
     weight[(vec[i]+1):vec[i+1]] <- attr(x[[i]], "weight")
   }
   if(compress){
-    ddd <- fast.table2(tmp)
-    tmp <- tmp[ddd$pos, ]
-    weight <- aggregate(weight, by=list(ddd$index), FUN=sum)$x
+    dindex <- grp_duplicated(as.matrix(tmp), MARGIN=1)
+    attr(dindex, "nlevels") <- NULL
+    weight <- aggregate(weight, by=list(dindex), FUN=sum)$x
+    pos <- which(!duplicated(dindex))
+    tmp <- tmp[pos,]
   }
   if(any(sapply(x, function(x)is.null(attr(x, "index"))))) add.index <- FALSE
   if(add.index  & compress){
@@ -712,9 +433,9 @@ cbind.phyDat <- function(..., gaps="-", compress=TRUE){
       tmp2 <- attr(x[[i]], "index")
       if(!is.null(tmp2)){
         if(is.data.frame(tmp2))index[(wvec[i]+1):wvec[i+1]] <-
-            ddd$index[(vec[i]+1):vec[i+1]][tmp2[,1]]
+            dindex[(vec[i]+1):vec[i+1]][tmp2[,1]]
         else index[(wvec[i]+1):wvec[i+1]] <-
-                ddd$index[(vec[i]+1):vec[i+1]][tmp2]
+            dindex[(vec[i]+1):vec[i+1]][tmp2]
       }
       else add.index <- FALSE
     }
@@ -725,6 +446,7 @@ cbind.phyDat <- function(..., gaps="-", compress=TRUE){
   attributes(tmp) <- ATTR
   tmp
 }
+
 
 # @rdname phyDat
 #' @export c.phyDat
@@ -898,12 +620,11 @@ removeParsUninfoSites <- function(data){
 #' @export
 allSitePattern <- function(n, levels=c("a", "c", "g", "t"), names=NULL){
   l <- length(levels)
-  X <- vector("list", n)
-  if(is.null(names))names(X) <- paste0("t", 1:n)
-  else names(X) <- names
+  X <- matrix(NA_integer_, n, l^n)
+  if(is.null(names))rownames(X) <- paste0("t", 1:n)
+  else rownames(X) <- names
   for(i in 1:n)
-    X[[i]] <- rep(rep(levels, each=l^(i-1)), l^(n-i))
-  X <- as.data.frame(X)
+    X[i, ] <- rep(rep(levels, each=l^(i-1)), l^(n-i))
   phyDat.default(X, levels, compress=FALSE, return.index=FALSE)
 }
 

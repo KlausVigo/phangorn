@@ -13,7 +13,7 @@ fun <- function(s) - 3/4 * log(1 - 4/3 * s)
 
 data(woodmouse)
 
-# rest dist.ml
+# test dist.ml
     expect_true(inherits(dist.logDet(X), "dist"))
     expect_true(inherits(dist.hamming(X), "dist"))
     expect_true(inherits(dist.ml(X), "dist"))
