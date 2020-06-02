@@ -74,19 +74,17 @@ read.phyDat <- function(file, format="phylip", type="DNA", ...){
   else {
     if(format=="phylip") format <- "sequential" #"interleaved"
     if (type == "DNA" || type == "CODON"){
-      data <- read.dna(file, format, as.character = TRUE, ...)
+      data <- read.dna(file, format, as.character = (format!="fasta"), ...)
     }
     if (type == "AA") data <- read.aa(file, format=format, ...)
     if (type == "USER"){
-      if(format=="fasta")
-        data <- read.fasta.user(file)
+      if(format=="fasta") data <- read.fasta.user(file)
       else data <- read.dna(file, format, as.character = TRUE)
       extras <- match.call(expand.dots = FALSE)$...
       extras <- lapply(extras, eval)
       return(phyDat(data, type, levels=extras$levels,
                     ambiguity = extras$ambiguity, contrast = extras$contrast))
     }
-    # raus
   }
   if(is.list(data)){
     ll <- lengths(data)
