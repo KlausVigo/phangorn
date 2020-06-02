@@ -124,9 +124,7 @@ compressSites <- function(data) {
   l <- length(lev)
   nr <- attr(data, "nr")
   nc <- length(data)
-
   data <- unlist(data, FALSE, FALSE)
-
   attr(data, "dim") <- c(nr, nc)
   uni <- match(lev, LEV)
   fun <- function(x, uni) {
@@ -134,16 +132,18 @@ compressSites <- function(data) {
     res <- if (any(is.na(match(u, uni)))) return(x)
     match(x, u)
   }
-  data <- t(apply(data, 1, fun, uni))
-  ddd <- fast.table(data)
-  data <- ddd$data
-  class(data) <- "list"
-  attrData$weight <- tapply(attrData$weight, ddd$index, sum)
+  data <- apply(data, 1, fun, uni)
+  index <- grp_duplicated(data, MARGIN=2L)
+  pos <- which(!duplicated(index))
+  ntaxa <- nrow(data)
+  res <- vector("list", ntaxa)
+  for(i in seq_len(ntaxa)) res[[i]] <- data[i, pos]
+  attrData$weight <- tapply(attrData$weight, index, sum)
   attrData$index <- NULL
   attrData$nr <- length(attrData$weight)
   attrData$compressed <- TRUE
-  attributes(data) <- attrData
-  data
+  attributes(res) <- attrData
+  res
 }
 
 
