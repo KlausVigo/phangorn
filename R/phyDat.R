@@ -480,13 +480,23 @@ phylo <- function(edge, tip, edge.length=NULL){
   }
 
 
-getCols <- function (data, cols){
+getCols <- function (data, cols, compress=TRUE){
   attrib <- attributes(data)
+  if(inherits(attr(data, "index"), "data.frame")) compress <- FALSE
   attr(data, "class") <- "list"
   data <- data[cols]
   if (is.character(cols))
     attrib$names <- cols
   else attrib$names <- attrib$names[cols]
+  if(compress){
+    index <- grp_duplicated( matrix(unlist(data), attrib$nr, length(data)))
+    attrib$nr <- attr(index, "nlevels")
+    attr(index, "nlevels") <- NULL
+    pos <- which(!duplicated(index))
+    if(is.null(attrib$index)) attrib$index <-index
+    else attrib$index <- index[attrib$index]
+    for(i in seq_len(length(data))) data[[i]] <- data[[i]][pos]
+  }
   attributes(data) <- attrib
   attr(data, "class") <- "phyDat"
   data
@@ -523,7 +533,7 @@ getRows <- function (data, rows, site.pattern = TRUE){
 #' @rdname phyDat
 #' @method subset phyDat
 #' @export
-subset.phyDat <- function (x, subset, select, site.pattern = TRUE,...){
+subset.phyDat <- function (x, subset, select, site.pattern = TRUE, ...){
   if (!missing(subset)){
     if(is.numeric(subset) & any(subset>length(x))) stop("subscript out of bounds")
     x <- getCols(x, subset)
