@@ -563,7 +563,7 @@ subset.phyDat <- function (x, subset, select, site.pattern = TRUE, ...){
 
 #' @rdname phangorn-internal
 #' @export
-map_duplicates <-  function(x, dist=TRUE, ...){
+map_duplicates <-  function(x, dist=length(x)<500, ...){
   labels <- names(x)
   if(dist){
     y <- as.matrix(dist.hamming(x, FALSE))

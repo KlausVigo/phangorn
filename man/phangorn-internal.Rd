@@ -13,7 +13,7 @@ threshStateC(x, thresholds)
 
 coords(obj, dim = "3D")
 
-map_duplicates(x, dist = TRUE, ...)
+map_duplicates(x, dist = length(x) < 500, ...)
 
 pmlPen(object, lambda, ...)
 }
