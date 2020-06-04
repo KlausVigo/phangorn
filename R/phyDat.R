@@ -480,7 +480,7 @@ phylo <- function(edge, tip, edge.length=NULL){
   }
 
 
-getCols <- function (data, cols, compress=TRUE){
+getCols <- function (data, cols, compress=FALSE){
   attrib <- attributes(data)
   if(inherits(attr(data, "index"), "data.frame")) compress <- FALSE
   attr(data, "class") <- "list"
