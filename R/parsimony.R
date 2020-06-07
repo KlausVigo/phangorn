@@ -162,7 +162,7 @@ parsinfo <- function(x) {
   low <- up
   low[up > (nstates - eps)] <- nstates - 1
   ind <- which( (up > (1+eps))  & (up < (nstates-eps)) )
-  low[ind] <- lowerBound(getRows( x, ind ))
+  if(length(ind)>0) low[ind] <- lowerBound(getRows( x, ind ))
   ind <- which(low == up)
   cbind(ind, low[ind])
 }
