@@ -61,7 +61,7 @@ mast <- function(x, y, tree = TRUE, rooted = TRUE) {
       if (length(tmp) > length(res)) res <- tmp
     }
   }
-  if (tree) res <- drop.tip(x, setdiff(x$tip.label, res))
+  if (tree) res <- keep.tip(x, res) # drop.tip(x, setdiff(x$tip.label, res))
   res
 }
 
@@ -69,10 +69,10 @@ mast <- function(x, y, tree = TRUE, rooted = TRUE) {
 mast.fit <- function(x, y) {
   y <- reorder(y, "postorder")
 
+  nTips <- length(x$tip.label)
   po1 <- c(x$edge[, 2], x$edge[nrow(x$edge), 1])
   po2 <- c(y$edge[, 2], y$edge[nrow(y$edge), 1])
 
-  nTips <- length(x$tip.label)
   # vielleicht ausserhalb
   p_vec_1 <- Ancestors(x, 1L:max(x$edge))  # nTips
   p_vec_2 <- Ancestors(y, 1L:max(y$edge))  # nTips
@@ -88,28 +88,44 @@ mast.fit <- function(x, y) {
     m[cbind(i, p_vec_2[[i]])] <- c(i)
     m[cbind(p_vec_1[[i]], i)] <- c(i)
   }
+  L <- lengths(m)
 
+  po1 <- po1[po1>nTips]
+  po2 <- po2[po2>nTips]
   for (i in po1) {
+    l1 <- CH1[[i]][1]
+    r1 <- CH1[[i]][2]
     for (j in po2) {
-      if (i > nTips & j > nTips) {
-        l1 <- CH1[[i]][1]
-        r1 <- CH1[[i]][2]
         l2 <- CH2[[j]][1]
         r2 <- CH2[[j]][2]
         mm <- c(m[[l1, l2]], m[[r1, r2]])
-        if (length(m[[l1, r2]]) + length(m[[r1, l2]]) > length(mm))
+        ll <- L[l1, l2] + L[r1, r2]
+        if (L[l1, r2] + L[r1, l2] > ll){
           mm <- c(m[[l1, r2]], m[[r1, l2]])
-        if (length(m[[i, l2]]) > length(mm))
+          ll <- L[l1, r2] + L[r1, l2]
+        }
+        if (L[i, l2] > ll){
           mm <- m[[i, l2]]
-        if (length(m[[i, r2]]) > length(mm))
+          ll <-  L[i, l2]
+        }
+        if (L[i, r2] > ll){
           mm <- m[[i, r2]]
-        if (length(m[[l1, j]]) > length(mm))
+          ll <- L[i, r2]
+        }
+        if (L[l1, j] > ll){
           mm <- m[[l1, j]]
-        if (length(m[[r1, j]]) > length(mm))
+          ll <- L[l1, j]
+        }
+        if (L[r1, j] > ll){
           mm <- m[[r1, j]]
-        if (!is.null(mm)) m[[i, j]] <- mm
-      }
+          ll <- L[r1, j]
+        }
+        if (!is.null(mm)){
+          m[[i, j]] <- mm
+          L[i,j] <- ll
+        }
     }
   }
   x$tip.label[m[[i, j]]]
 }
+
