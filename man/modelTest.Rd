@@ -87,7 +87,8 @@ selection of best-fit models of protein evolution. . \emph{Bioinformatics}
 \bold{27}: 1164-1165
 }
 \seealso{
-\code{\link{pml}}, \code{\link{anova}}, \code{\link[stats]{AIC}}
+\code{\link{pml}}, \code{\link{anova}}, \code{\link[stats]{AIC}},
+\code{\link{codonTest}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

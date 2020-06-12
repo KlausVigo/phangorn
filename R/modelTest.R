@@ -36,7 +36,8 @@ aic.weights <- function(aic) {
 #' data and the calls to allow get the estimated models, e.g. as a starting
 #' point for further analysis (see example).
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{pml}}, \code{\link{anova}}, \code{\link[stats]{AIC}}
+#' @seealso \code{\link{pml}}, \code{\link{anova}}, \code{\link[stats]{AIC}},
+#' \code{\link{codonTest}}
 #' @references Burnham, K. P. and Anderson, D. R (2002) \emph{Model selection
 #' and multimodel inference: a practical information-theoretic approach}. 2nd
 #' ed. Springer, New York
@@ -91,6 +92,7 @@ modelTest <- function(object, tree = NULL, model = c("JC", "F81", "K80", "HKY",
       "TIM1e", "TIM1", "TIM2e", "TIM2", "TIM3e", "TIM3", "TVMe", "TVM",
       "SYM", "GTR")
   if (attr(data, "type") == "AA") type <- .aamodels
+  if (attr(data, "type") == "USER") type <- "JC"
 
   if ( (length(model) == 1) && model == "all") model <- type
   model <- match.arg(model, type, TRUE)
