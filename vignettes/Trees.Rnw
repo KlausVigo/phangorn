@@ -6,6 +6,31 @@
 
 \usepackage{times}
 \usepackage{hyperref}
+\usepackage{amsmath}
+
+\usepackage{xcolor}  % for color definitions
+\usepackage{sectsty} % to modify heading colors
+\usepackage{fancyhdr}
+
+% colorschemes similar to the logo
+\definecolor{greentext}{RGB}{45,96,42}
+\definecolor{lightgreentext}{RGB}{174,215,149}
+%\definecolor{bluetext}{RGB}{0,101,165}
+\definecolor{graytext}{RGB}{80,80,80}
+
+\hypersetup{
+  pdfborder={0 0 0}
+ , colorlinks=true
+ , urlcolor=blue
+ , linkcolor=greentext
+ , linktoc=all
+ , citecolor=blue
+}
+
+\sectionfont{\color{greentext}}
+\subsectionfont{\color{greentext}}
+\subsubsectionfont{\color{greentext}}
+
 
 
 \begin{document}

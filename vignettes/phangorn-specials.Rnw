@@ -14,6 +14,7 @@
 \usepackage{sectsty} % to modify heading colors
 \usepackage{fancyhdr}
 
+\definecolor{greentext}{RGB}{45,96,42}
 \definecolor{bluetext}{RGB}{0,101,165}
 \definecolor{graytext}{RGB}{80,80,80}
 
@@ -21,16 +22,14 @@
   pdfborder={0 0 0}
  , colorlinks=true
  , urlcolor=blue
- , linkcolor=bluetext
+ , linkcolor=greentext
  , linktoc=all
  , citecolor=blue
 }
 
-\sectionfont{\color{bluetext}}
-\subsectionfont{\color{bluetext}}
-\subsubsectionfont{\color{bluetext}}
-
-
+\sectionfont{\color{greentext}}
+\subsectionfont{\color{greentext}}
+\subsubsectionfont{\color{greentext}}
 
 
 \newcommand{\Rfunction}[1]{{\texttt{#1}}}
