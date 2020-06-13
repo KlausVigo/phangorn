@@ -626,6 +626,36 @@ removeParsUninfoSites <- function(data){
 }
 
 
+
+removeParsimonyUninfomativeSites <- function(data, recursive=TRUE){
+  dup_list <- NULL
+  addTaxa <- FALSE
+  tmp <- TRUE
+  star_tree <- FALSE
+  while (tmp) {
+    nam <- names(data)
+    data <- removeParsUninfoSites(data)
+    p0 <- attr(data, "p0")
+    if(!recursive) return(data)
+    if (attr(data, "nr") == 0) {
+      star_tree <- TRUE
+      break()
+      tmp <- FALSE
+    }
+    # unique sequences
+    dup <- map_duplicates(data)
+    if (!is.null(dup)) {
+      dup_list <- c(list(dup), dup_list)
+      addTaxa <- TRUE
+      data <- subset(data, setdiff(names(data), dup[, 1]))
+    }
+    else break() # tmp <- FALSE
+  }
+  attr(data, "duplicated") <- dup_list
+  data
+}
+
+
 #' @rdname phyDat
 #' @export
 allSitePattern <- function(n, levels=c("a", "c", "g", "t"), names=NULL){
