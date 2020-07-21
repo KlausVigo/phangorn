@@ -5,7 +5,7 @@ date: "`r format(Sys.time(), '%B %d, %Y')`"
 bibliography: phangorn.bib
 output: rmarkdown::html_vignette
 vignette: >
-   %\VignetteIndexEntry{IntertwiningTreesAndNetworks}
+   %\VignetteIndexEntry{Intertwining phylogenetic trees and networks: R Example Script}
    %\VignetteEngine{knitr::rmarkdown}
    %\usepackage[utf8]{inputenc}
 ---
