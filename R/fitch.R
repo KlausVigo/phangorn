@@ -212,7 +212,7 @@ indexNNI2 <- function(tree) {
 
 # nr statt data uebergeben, fitchQuartet ohne weight
 # weniger Speicher 2 Zeilen weinger
-fitch.nni <- function(tree, data, ...) {
+fitch.nni <- function(tree, data) {  # , ...
   nTips <- as.integer(length(tree$tip.label)) # auskommentieren?
   INDEX <- indexNNI2(tree)
   nr <- attr(data, "nr")
@@ -263,36 +263,50 @@ optim.fitch <- function(tree, data, trace = 1, rearrangements = "SPR", ...) {
   #        if(rt)tree <- ptree(tree, data)
   #    attr(tree, "pscore") <- pscore + p0
   #    tree
-
   rt <- FALSE
 
+#  New
+  data <- removeParsimonyUninfomativeSites(data, recursive=TRUE)
   dup_list <- NULL
   addTaxa <- FALSE
-  tmp <- TRUE
   star_tree <- FALSE
-  # recursive remove parsimonious uniformative sites and
-  # identical sequences
-  while (tmp) {
-    nam <- names(data)
-    data <- removeParsUninfoSites(data)
-    p0 <- attr(data, "p0")
-    if (attr(data, "nr") == 0) {
-      star_tree <- TRUE
-      break()
-      tmp <- FALSE
-    }
-    # unique sequences
-    dup <- map_duplicates(data)
-    if (!is.null(dup)) {
-      tree <- drop.tip(tree, dup[, 1])
-      if(length(tree$tip.label) > 2) tree <- unroot(tree)
-      tree <- reorder(tree, "postorder")
-      dup_list <- c(list(dup), dup_list)
-      addTaxa <- TRUE
-      data <- subset(data, setdiff(names(data), dup[, 1]))
-    }
-    else break() # tmp <- FALSE
+  if(!is.null(attr(data, "dup_list"))){
+    dup_list <- attr(data, "dup_list")
+    addTaxa <- TRUE
+    if(attr(data, "nr") == 0) star_tree <- TRUE
   }
+  tree <- keep.tip(tree, names(data))
+  if(length(tree$tip.label) > 2) tree <- unroot(tree)
+  tree <- reorder(tree, "postorder")
+  p0 <- attr(data, "p0")
+
+#  dup_list <- NULL
+#  addTaxa <- FALSE
+#  tmp <- TRUE
+#  star_tree <- FALSE
+#  # recursive remove parsimonious uniformative sites and
+#  # identical sequences
+#  while (tmp) {
+#    nam <- names(data)
+#    data <- removeParsUninfoSites(data)
+#    p0 <- attr(data, "p0")
+#    if (attr(data, "nr") == 0) {
+#      star_tree <- TRUE
+#      break()
+#      tmp <- FALSE
+#    }
+#    # unique sequences
+#    dup <- map_duplicates(data)
+#    if (!is.null(dup)) {
+#      tree <- drop.tip(tree, dup[, 1])
+#      if(length(tree$tip.label) > 2) tree <- unroot(tree)
+#      tree <- reorder(tree, "postorder")
+#      dup_list <- c(list(dup), dup_list)
+#      addTaxa <- TRUE
+#      data <- subset(data, setdiff(names(data), dup[, 1]))
+#    }
+#    else break() # tmp <- FALSE
+#  }
 
   nr <- attr(data, "nr")
   nTips <- as.integer(length(tree$tip.label))
@@ -326,7 +340,7 @@ optim.fitch <- function(tree, data, trace = 1, rearrangements = "SPR", ...) {
   if(nTips < 4) iter <- FALSE
   pscore <- fast.fitch(tree, nr)
   while (iter) {
-    res <- fitch.nni(tree, dat, ...)
+    res <- fitch.nni(tree, dat)
     tree <- res$tree
     if (trace > 1) cat("optimize topology: ", pscore + p0, "-->",
         res$pscore + p0, "\n")
@@ -465,31 +479,46 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
   nTips <- length(data)
   if (nTips < 4) return(stree(nTips, tip.label = names(data)))
 
+  #  New
+  data <- removeParsimonyUninfomativeSites(data, recursive=TRUE)
   dup_list <- NULL
   addTaxa <- FALSE
-  tmp <- TRUE
   star_tree <- FALSE
-  while (tmp) {
-    nam <- names(data)
-    data <- removeParsUninfoSites(data)
-    p0 <- attr(data, "p0")
-    if (attr(data, "nr") == 0) {
-      star_tree <- FALSE
-      break()
-      tmp <- FALSE
-    }
-    # unique sequences
-    dup <- map_duplicates(data)
-    if (!is.null(dup)) {
-      dup_list <- c(list(dup), dup_list)
-      addTaxa <- TRUE
-      data <- subset(data, setdiff(names(data), dup[, 1]))
-    }
-    else tmp <- FALSE
+  if(!is.null(attr(data, "dup_list"))){
+    dup_list <- attr(data, "dup_list")
+    addTaxa <- TRUE
+    if(attr(data, "nr") == 0) star_tree <- TRUE
   }
+  p0 <- attr(data, "p0")
+
+
+#  dup_list <- NULL
+#  addTaxa <- FALSE
+#  tmp <- TRUE
+#  star_tree <- FALSE
+#  while (tmp) {
+#    nam <- names(data)
+#    data <- removeParsUninfoSites(data)
+#    p0 <- attr(data, "p0")
+#    if (attr(data, "nr") == 0) {
+#      star_tree <- FALSE
+#      break()
+#      tmp <- FALSE
+#    }
+#    # unique sequences
+#    dup <- map_duplicates(data)
+#    if (!is.null(dup)) {
+#      dup_list <- c(list(dup), dup_list)
+#      addTaxa <- TRUE
+#      data <- subset(data, setdiff(names(data), dup[, 1]))
+#    }
+#    else tmp <- FALSE
+#  }
+
   # star tree
   #  if(attr(data, "nr") == 0) return(stree(nTips, tip.label = names(data)))
   nTips <- length(data)
+  nam <- names(data)
   if (nTips < 4L  || star_tree) {
     if (star_tree) tree <- stree(length(nam), tip.label = nam)
     else tree <- stree(nTips, tip.label = names(data))

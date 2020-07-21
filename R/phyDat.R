@@ -627,7 +627,7 @@ removeParsUninfoSites <- function(data){
 
 
 
-removeParsimonyUninfomativeSites <- function(data, recursive=TRUE){
+removeParsimonyUninfomativeSites <- function(data, recursive=FALSE){
   dup_list <- NULL
   addTaxa <- FALSE
   tmp <- TRUE
