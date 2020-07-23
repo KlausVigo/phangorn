@@ -147,23 +147,18 @@ compressSites <- function(data) {
 }
 
 
-# parsinfo <- function(x) {
-#  low <- lowerBound(x)
-#  up <- upperBound(x)
-#  ind <- which(low == up)
-#  cbind(ind, low[ind])
-#}
-
-
-parsinfo <- function(x) {
+parsinfo <- function(x, exact=TRUE) {
   nstates <- attr(x, "nc")
   up <- upperBound(x)
   eps <- 1e-8
   low <- up
   low[up > (nstates - eps)] <- nstates - 1
-  ind <- which( (up > (1+eps))  & (up < (nstates-eps)) )
-  if(length(ind)>0) low[ind] <- lowerBound(getRows( x, ind ))
-  ind <- which(low == up)
+  if(exact){
+    ind <- which( (up > (1+eps))  & (up < (nstates-eps)) )
+    if(length(ind)>0) low[ind] <- lowerBound(getRows( x, ind ))
+    ind <- which(low == up)
+  }
+  else ind <- which(up < (1+eps) )
   cbind(ind, low[ind])
 }
 

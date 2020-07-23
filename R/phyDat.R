@@ -479,6 +479,22 @@ phylo <- function(edge, tip, edge.length=NULL){
   res
   }
 
+compress.phyDat <- function(data){
+  attrib <- attributes(data)
+  attr(data, "class") <- "list"
+  index <- grp_duplicated( matrix(unlist(data), attrib$nr, length(data)))
+  attrib$nr <- attr(index, "nlevels")
+  attr(index, "nlevels") <- NULL
+  pos <- which(!duplicated(index))
+  attrib$weight <- tapply(attrib$weight, index, sum)
+  if(is.null(attrib$index)) attrib$index <-index
+  else attrib$index <- index[attrib$index]
+  for(i in seq_len(length(data))) data[[i]] <- data[[i]][pos]
+  attributes(data) <- attrib
+  attr(data, "class") <- "phyDat"
+  data
+}
+
 
 getCols <- function (data, cols, compress=FALSE){
   attrib <- attributes(data)
@@ -612,9 +628,9 @@ removeUndeterminedSites <- function(x, ...){
 }
 
 
-removeParsUninfoSites <- function(data){
+removeParsUninfoSites <- function(data, exact=TRUE){
   nr <- attr(data, "nr")
-  pis <- parsinfo(data)
+  pis <- parsinfo(data, exact)
   if (length(pis) > 0){
     p0 <- sum(attr(data, "weight")[pis[, 1]] * pis[, 2])
     data <- getRows(data, c(1:nr)[-pis[, 1]], TRUE)
@@ -627,14 +643,14 @@ removeParsUninfoSites <- function(data){
 
 
 
-removeParsimonyUninfomativeSites <- function(data, recursive=FALSE){
+removeParsimonyUninfomativeSites <- function(data, recursive=FALSE, exact=TRUE){
   dup_list <- NULL
   addTaxa <- FALSE
   tmp <- TRUE
   star_tree <- FALSE
   while (tmp) {
     nam <- names(data)
-    data <- removeParsUninfoSites(data)
+    data <- removeParsUninfoSites(data, exact)
     p0 <- attr(data, "p0")
     if(!recursive) return(data)
     if (attr(data, "nr") == 0) {
