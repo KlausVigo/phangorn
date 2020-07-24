@@ -292,6 +292,8 @@ sprdist <- function(tree1, tree2) {
   # OBS: SPR distance works w/ incompatible splits only, but it needs common
   # cherries (to replace by single leaf)
   spr <- .Call("C_sprdist", bp1, bp2, lt1)
+  tmp <- .Call("C_sprdist", bp2, bp1, lt1)[1]
+  spr[1] <- min(spr[1], tmp)
   names(spr) <- c("spr", "spr_extra", "rf", "hdist")
   spr
 }
@@ -320,7 +322,8 @@ SPR1 <- function(trees) {
   for (i in 1:(l - 1)) {
     bp <- BP[[i]]
     for (j in (i + 1):l) {
-      SPR[k] <-  .Call("C_sprdist", bp, BP[[j]], nTips)[1]
+      SPR[k] <-  min( .Call("C_sprdist", bp, BP[[j]], nTips)[1],
+                      .Call("C_sprdist", BP[[j]], bp, nTips)[1])
       k <- k + 1
     }
   }
@@ -357,7 +360,9 @@ SPR2 <- function(tree, trees) {
   l <- length(trees)
   SPR <- numeric(l)
   for (i in 1:l) {
-    SPR[i] <- .Call("C_sprdist", bp, fun(trees[[i]], nTips), nTips)[1]
+    bpi <- fun(trees[[i]], nTips)
+    SPR[i] <- min(.Call("C_sprdist", bp, bpi, nTips)[1],
+                  .Call("C_sprdist", bpi, bp, nTips)[1])
   }
   if (!is.null(names(trees))) names(SPR) <- names(trees)
   return(SPR)
