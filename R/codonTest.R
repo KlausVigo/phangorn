@@ -68,7 +68,7 @@ codonTest <- function(tree, object, model = c("M0", "M1a", "M2a"),
                       frequencies = "F3x4", opt_freq=FALSE, codonstart = 1,
                       control=pml.control(maxit = 20), ...){
   if (attr(object, "type") == "DNA")
-    object <- dna2codon(object, codonstart = codonstart)
+    object <- dna2codon(object, codonstart = codonstart, ...)
   if (is.null(tree$edge.length)) tree <- nnls.phylo(tree, dist.ml(object))
   if (!("M0" %in% model)) model <- c("M0", model)
   trace <- control$trace
