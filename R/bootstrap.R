@@ -6,7 +6,7 @@ candidate.tree <- function(x){
   }
   else{
     tree <- random.addition(x)
-    tree <- optim.parsimony(tree, x)
+    tree <- optim.parsimony(tree, x, trace=0)
     tree <- multi2di(tree)
     tree <- unroot(tree)
     tree <- acctran(tree, x)
