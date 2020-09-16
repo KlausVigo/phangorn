@@ -11,7 +11,7 @@ superTree(tree, method = "MRP", rooted = FALSE, trace = 0,
 \item{tree}{an object of class \code{multiPhylo}}
 
 \item{method}{An argument defining which algorithm is used to optimize the
-tree.  Possible are "MRP", "NNI", and "SPR".}
+tree.  Possible are "MRP", "RF", and "SPR".}
 
 \item{rooted}{should the resulting supertrees be rooted.}
 

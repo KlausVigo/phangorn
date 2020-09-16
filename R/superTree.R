@@ -122,7 +122,7 @@ dist.superTree <- function(tree, trace = 0, fun, start = NULL,
 #'
 #' @param tree an object of class \code{multiPhylo}
 #' @param method An argument defining which algorithm is used to optimize the
-#' tree.  Possible are "MRP", "NNI", and "SPR".
+#' tree.  Possible are "MRP", "RF", and "SPR".
 #' @param rooted should the resulting supertrees be rooted.
 #' @param trace defines how much information is printed during optimization.
 #' @param start a starting tree can be supplied.
