@@ -70,6 +70,7 @@ dist.hamming <- function(x, ratio = TRUE, exclude = "none"){
     index <- con[x[[1]]]
     for (i in 2:l) index <- index & con[x[[i]]]
     index <- which(index)
+    if(length(index)==0) warning('each site contains at least one ambiguous state, try exclude = "pairwise"')
     x <- subset(x, select = index)
   }
   weight <- attr(x, "weight")
@@ -141,6 +142,7 @@ dist.ml <- function(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
     index <- con[x[[1]]]
     for (i in 2:l) index <- index & con[x[[i]]]
     index <- which(index)
+    if(length(index)==0) warning('each site contains at least one ambiguous state, try exclude = "pairwise"')
     x <- subset(x, select = index)
   }
   nc <- as.integer(attr(x, "nc"))
@@ -186,19 +188,28 @@ dist.ml <- function(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
       if (exclude == "pairwise")
         w0[index] <- 0.0
       ind <- w0 > 0
-
-      old.el <- 1 - (sum(w0[wshared]) / sum(w0))
+# more error checking
+      sum_shared <- sum(w0[wshared])
+      sum_w <- sum(w0)
+      if(sum_w == 0){
+        d[pos] <- NA_real_
+        v[pos] <- NA_real_
+      } else if(sum_shared == sum_w){
+        d[pos] <- 0
+        v[pos] <- NA_real_
+      } else {
+      #1 - (sum(w0[wshared]) / sum(w0))
+      old.el <- 1 - sum_shared / sum_w
       if (old.el > eps)
         old.el <- 10
       else old.el <- fun(old.el)
-
       for (lk in 1:k) tmp2[[lk]] <- tmp[ind, , drop = FALSE]
-      # FS0 verwenden!!!
       res <- .Call("FS5", eig, nc, as.double(old.el), w, g, tmp2,
         as.integer(k), as.integer(sum(ind)),
         w0[ind], ll.0, PACKAGE = "phangorn")
       d[pos] <- res[1] # res[[1]]
       v[pos] <- res[2] # res[[2]]
+      }
       pos <- pos + 1
     }
   }
