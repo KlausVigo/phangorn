@@ -99,7 +99,7 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt = 0, cex = 1,
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{plot.phylo}}, \code{\link{plot.networx}}, \code{\link{jitter}}
 #' @references densiTree is inspired from the great
-#' \href{https://www.cs.auckland.ac.nz/~remco/DensiTree}{DensiTree} program of Remco
+#' \href{https://www.cs.auckland.ac.nz/~remco/DensiTree/}{DensiTree} program of Remco
 #' Bouckaert.
 #'
 #' Remco R. Bouckaert (2010) DensiTree: making sense of sets of phylogenetic

@@ -98,7 +98,7 @@ densiTree(BinindaEmondsEtAl2007, type="phylogram", col="red")
 }
 \references{
 densiTree is inspired from the great
-\href{https://www.cs.auckland.ac.nz/~remco/DensiTree}{DensiTree} program of Remco
+\href{https://www.cs.auckland.ac.nz/~remco/DensiTree/}{DensiTree} program of Remco
 Bouckaert.
 
 Remco R. Bouckaert (2010) DensiTree: making sense of sets of phylogenetic

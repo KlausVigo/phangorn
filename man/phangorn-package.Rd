@@ -24,7 +24,7 @@ vignette (to display type \code{vignette('Trees')}) gives an introduction in
 phylogenetic analysis with phangorn. The second vignette (phangorn-special)
 covers more advanced feature like defining special character spaces and
 things which fit nowhere else.  More information on \bold{phangorn} can be
-found on \url{http://www.phangorn.org}.
+found on \url{https://www.phangorn.org/}.
 }
 \references{
 Schliep K.P. (2011) phangorn: Phylogenetic analysis in R.
