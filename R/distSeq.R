@@ -85,30 +85,15 @@ dist.hamming <- function(x, ratio = TRUE, exclude = "none"){
         k <- k + 1
       }
     }
-
   }
-
-  if (nc > 31) {
-    k <- 1
-    for (i in 1:(l - 1)) {
-      X <- contrast[x[[i]], , drop = FALSE]
-      for (j in (i + 1):l) {
-        d[k] <- sum(weight *
-                      (rowSums(X * contrast[x[[j]], , drop = FALSE]) == 0))
-        k <- k + 1
-      }
-    }
-  } # end if
-  else {
-    nr <- attr(x, "nr")
-    if (exclude == "pairwise") ind <- which(con[unlist(x)] == FALSE)
-    x <- prepareDataFitch(x)
-    if (exclude == "pairwise") x[ind] <- as.integer(2L^nc - 1L)
-    res <- .C("distHamming", as.integer(x), as.double(weight),
-      as.integer(nr), as.integer(l), as.double(d), PACKAGE = "phangorn")
-    d <- res[[5]]
+  if (exclude == "pairwise"){
+    contrast[!con, ] <- 1L
+    attr(x, "contrast") <- contrast
   }
-
+  ub <- upperBound(x)
+  x <- subset(x, select=ub>0)
+  f <- init_fitch(x, FALSE, TRUE, m=1L)
+  d <- f$hamming_dist()
   if (ratio) {
     if (exclude == "pairwise") d <- d / W
     else d <- d / sum(weight)

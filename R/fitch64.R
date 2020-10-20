@@ -187,58 +187,6 @@ drop_node_2 <- function(x, i, check.binary = FALSE, check.root = TRUE,
 }
 
 
-# @export
-dist.hamming2 <- function(x, ratio = TRUE, exclude = "none"){
-  if(inherits(x, "DNAbin") | inherits(x, "AAbin")) x <- as.phyDat(x)
-  if (!inherits(x, "phyDat"))
-    stop("x must be of class phyDat")
-  l <- length(x)
-
-  contrast <- attr(x, "contrast")
-  nc <- as.integer(attr(x, "nc"))
-  con <- rowSums(contrast > 0) < 2
-  if (exclude == "all") {
-    index <- con[x[[1]]]
-    for (i in 2:l) index <- index & con[x[[i]]]
-    index <- which(index)
-    x <- subset(x, select = index)
-  }
-  weight <- attr(x, "weight")
-  d <- numeric( (l * (l - 1)) / 2)
-  if (exclude == "pairwise") {
-    k <- 1
-    W <- numeric(l * (l - 1) / 2)
-    for (i in 1:(l - 1)) {
-      tmp <- con[x[[i]]]
-      for (j in (i + 1):l) {
-        W[k] <- sum(weight[tmp & con[ x[[j]] ] ])
-        k <- k + 1
-      }
-    }
-  }
-  if (exclude == "pairwise"){
-    contrast[!con, ] <- 1L
-    attr(x, "contrast") <- contrast
-  }
-  ub <- phangorn:::upperBound(x)
-  x <- subset(x, select=ub>0)
-  f <- init_fitch(x, FALSE, TRUE, m=1L)
-  d <- f$hamming_dist()
-  if (ratio) {
-    if (exclude == "pairwise") d <- d / W
-    else d <- d / sum(weight)
-  }
-  attr(d, "Size") <- l
-  if (is.list(x))
-    attr(d, "Labels") <- names(x)
-  else attr(d, "Labels") <- colnames(x)
-  attr(d, "Diag") <- FALSE
-  attr(d, "Upper") <- FALSE
-  attr(d, "call") <- match.call()
-  attr(d, "method") <- "hamming"
-  class(d) <- "dist"
-  return(d)
-}
 
 
 #indexNNI2
