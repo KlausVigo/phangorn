@@ -8,13 +8,16 @@
  *
  */
 
-# define USE_RINTERNALS
+#define USE_RINTERNALS
+//#define both_non_NA(a,b) (!ISNA(a) && !ISNA(b))
+
 
 #include <R.h>
-// #include <R_ext/Lapack.h>
 #include <Rinternals.h>
 #include <Rmath.h>
-//#include <math.h>
+
+
+
 
 
 // off-diagonal
@@ -84,10 +87,24 @@ void pwIndex(int *left, int* right, int *l, int *n, double *w, double *res){
         }
     }
 
+void pwIndex2(int *left, int* right, int* pos, int *l, int *n, double *w, double *res){
+    int i, k, li, ri;
+//    k=0;
+    for (i = 0; i < *l; i++){
+        li = pos[left[i]-1L];
+        ri = pos[right[i]-1L];
+        if(li > 0 && ri > 0) {
+            k = give_index2(li, ri, *n);
+            res[k] += w[i];
+        }
+    }
+}
+
 
 
 SEXP PWI(SEXP LEFT, SEXP RIGHT, SEXP L, SEXP N, SEXP W, SEXP LI){
     int i, li=INTEGER(LI)[0];
+    int count=0;
     SEXP res;
     PROTECT(res = allocVector(REALSXP, li));
     for(i = 0; i < li; i++)REAL(res)[i] = 0.0;
@@ -95,6 +112,17 @@ SEXP PWI(SEXP LEFT, SEXP RIGHT, SEXP L, SEXP N, SEXP W, SEXP LI){
     UNPROTECT(1);
     return(res);
 }
+
+SEXP PWI2(SEXP LEFT, SEXP RIGHT, SEXP POS, SEXP L, SEXP N, SEXP W, SEXP LI){
+    int i, li=INTEGER(LI)[0];
+    SEXP res;
+    PROTECT(res = allocVector(REALSXP, li));
+    for(i = 0; i < li; i++)REAL(res)[i] = 0.0;
+    pwIndex2(INTEGER(LEFT), INTEGER(RIGHT), INTEGER(POS), INTEGER(L), INTEGER(N), REAL(W), REAL(res));
+    UNPROTECT(1);
+    return(res);
+}
+
 
 
 
@@ -210,6 +238,7 @@ void out(double *d, double *r, int *n, int *k, int *l){
 
 
 // hamming distance
+
 void distHamming(int *x, double *weight, int *nr, int *l, double *d){
     int i, j, k, m;
     k = 0L;
