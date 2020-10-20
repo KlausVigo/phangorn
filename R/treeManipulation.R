@@ -406,23 +406,6 @@ addOneTree <- function(tree, subtree, i, node) {
 }
 
 
-#reorderPruning <- function(x, ...) {
-#  edge <- x$edge
-#  parents <- as.integer(edge[, 1])
-#  child <- as.integer(edge[, 2])
-#  root <- as.integer(parents[!match(parents, child, 0)][1])  # unique out
-#  if (length(root) > 2)
-#    stop("more than 1 root found")
-#  n <- length(parents)
-#  m <- max(edge)  # edge  parents
-#  neworder <- .C("C_reorder", parents, child, as.integer(n), as.integer(m),
-#    integer(n), as.integer(root - 1L), PACKAGE = "phangorn")[[5]]
-#  x$edge <- edge[neworder, ]
-#  x$edge.length <- x$edge.length[neworder]
-#  attr(x, "order") <- "pruningwise"
-#  x
-#}
-
 
 #' Add tips to a tree
 #'
