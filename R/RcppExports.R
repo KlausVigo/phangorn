@@ -17,6 +17,10 @@ allDescCPP <- function(orig, nTips) {
     .Call(`_phangorn_allDescCPP`, orig, nTips)
 }
 
+countCycle_cpp <- function(M) {
+    .Call(`_phangorn_countCycle_cpp`, M)
+}
+
 bipartCPP <- function(orig, nTips) {
     .Call(`_phangorn_bipartCPP`, orig, nTips)
 }

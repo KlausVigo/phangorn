@@ -33,6 +33,26 @@ List allDescCPP(IntegerMatrix orig, int nTips) {
 }
 
 
+//replaces void countCycle(int *M, int *l, int *m, int *res){
+// [[Rcpp::export]]
+int countCycle_cpp(IntegerMatrix M){
+  int j, tmp;
+  int l = M.nrow();
+  int m = M.ncol();
+  int res=0L;
+  for (int i=0; i<l; i++) {
+    tmp = 0;
+    if(M[i] != M[i + (m -1) * l])tmp++;
+    for (j=1; j<m; j++) {
+      if(M[i + (j-1)* l] != M[i + j * l])tmp++;
+    }
+    if(tmp>2L) res += tmp;
+  }
+  return(res);
+}
+
+
+
 // import: edge matrix, number of tips
 // export: Descendants(x, 1:max(x$edge), "all")
 // [[Rcpp::export]]

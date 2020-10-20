@@ -24,4 +24,6 @@ NumericVector cophenetic_cpp(IntegerMatrix edge, NumericVector edge_length,
 
 IntegerVector threshStateC(NumericVector x, NumericVector thresholds);
 
+int countCycles_cpp(IntegerMatrix M);
+
 #endif

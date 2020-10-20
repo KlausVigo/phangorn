@@ -1,7 +1,7 @@
 /*
  * phangorn.c
  *
- * (c) 2008-2019  Klaus Schliep (klaus.schliep@gmail.com)
+ * (c) 2008-2020  Klaus Schliep (klaus.schliep@gmail.com)
  *
  *
  * This code may be distributed under the GNU GPL
@@ -15,7 +15,7 @@
 #include <Rinternals.h>
 
 
-
+/*
 void countCycle(int *M, int *l, int *m, int *res){
     int j, i, tmp;
     res[0]=0L;
@@ -41,7 +41,7 @@ void countCycle2(int *M, int *l, int *m, int *res){
         res[i]=tmp;
     }
 }
-
+*/
 
 // C++
 SEXP rowMax(SEXP sdat, SEXP sn, SEXP sk){

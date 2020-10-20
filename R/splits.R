@@ -138,13 +138,13 @@ optCycle <- function(splits, tree) {
 
   M <- as.matrix(splits)
 
-  l <- as.integer(nrow(M))
+#  l <- as.integer(nrow(M))
   m <- as.integer(ncol(M))
 
   tmp <- tree$edge[, 2]
   tmp <- tmp[tmp <= m]
-
-  start <- .C("countCycle", M[, tmp], l, m, integer(1))[[4]]
+#  start <- .C("countCycle", M[, tmp], l, m, integer(1))[[4]]
+  start <- countCycle_cpp(M[, tmp])
   best <- start
   eps <- 1
   if (eps > 0) {
@@ -152,7 +152,8 @@ optCycle <- function(splits, tree) {
       tmptree <- rotate(tree, nodes[i])
       tmp <- tmptree$edge[, 2]
       tmp <- tmp[tmp <= m]
-      tmpC <- .C("countCycle", M[, tmp], l, m, integer(1))[[4]]
+#      tmpC <- .C("countCycle", M[, tmp], l, m, integer(1))[[4]]
+      tmpC <- countCycle_cpp(M[, tmp])
       if (tmpC < best) {
         best <- tmpC
         tree <- tmptree
@@ -164,14 +165,14 @@ optCycle <- function(splits, tree) {
 }
 
 
-countCycles <- function(splits, tree = NULL, ord = NULL) {
-  M <- as.matrix(splits)
-  l <- as.integer(nrow(M))
-  m <- as.integer(ncol(M))
-  if (!is.null(tree)) ord  <- getOrdering(tree)
-  res <- .C("countCycle2", M[, ord], l, m, integer(l))[[4]]
-  res
-}
+#countCycles <- function(splits, tree = NULL, ord = NULL) {
+#  M <- as.matrix(splits)
+#  l <- as.integer(nrow(M))
+#  m <- as.integer(ncol(M))
+#  if (!is.null(tree)) ord  <- getOrdering(tree)
+#  res <- .C("countCycle2", M[, ord], l, m, integer(l))[[4]]
+#  res
+#}
 
 
 #' @rdname as.splits
