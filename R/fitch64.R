@@ -9,7 +9,7 @@
 #  @export
 init_fitch <- function(obj, parsinfo=FALSE, order=FALSE, m=4L, ...){
 #  p0 <- 0
-  if(parsinfo) obj <- phangorn:::removeParsimonyUninfomativeSites(obj, ...)
+  if(parsinfo) obj <- removeParsimonyUninfomativeSites(obj, ...)
   if(is.null(attr(obj, "p0"))) attr(obj, "p0") <- 0
 #    p0 <- as.integer(round(attr(obj, "p0")))
   attr(obj, "nSeq") <- length(obj) # add lengths
@@ -75,9 +75,9 @@ fitch_new <- function(tree, data, site = "pscore"){
   NULL
 }
 
-
-# @export
-random.addition_cpp <- function (data, method = "fitch")
+#' @rdname parsimony
+#' @export
+random.addition <- function (data, method = "fitch")
 {
   label <- names(data)
   nTips <- as.integer(length(label))
@@ -95,9 +95,9 @@ random.addition_cpp <- function (data, method = "fitch")
     f$prep_spr(edge)
     score <- f$pscore_vec(edge[,2] + 2 * nTips, i)
     nt <- which.min(score)
-    tree <- phangorn:::addOne(tree, i, nt)
+    tree <- addOne(tree, i, nt)
   }
-#  attr(tree, "pscore") <- f$get_pscore(tree$edge)
+  attr(tree, "pscore") <- f$get_pscore(tree$edge)
   tree
 }
 
@@ -109,13 +109,13 @@ fitch_spr <- function (tree, f)
 #  f <- init_fitch(data, FALSE, FALSE, m=4L)
   for (i in 1:nTips) {
 # remove tips
-    treetmp <- phangorn:::dropTip(tree, i)
+    treetmp <- dropTip(tree, i)
     edge <- treetmp$edge
     f$prep_spr(edge)
     score <- f$pscore_vec(edge[,2] + 2 * nTips, i)
     nt <- which.min(score)
 #    print(nt)
-    tree <- phangorn:::addOne(treetmp, i, nt)
+    tree <- addOne(treetmp, i, nt)
   }
 #  attr(tree, "pscore") <- f$get_pscore(tree$edge)
   tree
@@ -159,7 +159,7 @@ drop_node <- function(x, i, check.binary = FALSE, check.root = TRUE,
          all.ch = NULL) {
   desc_i <- Descendants(x, i, "all")
   p_i <- Ancestors(x, i, "parent")
-  x <- phangorn:::reroot(x, p_i, switch_root=FALSE)
+  x <- reroot(x, p_i, switch_root=FALSE)
   edge <- x$edge
   ind_desc <- match(desc_i, edge[,2])
   ind_i <- match(i, edge[, 2])
@@ -174,7 +174,7 @@ drop_node_2 <- function(x, i, check.binary = FALSE, check.root = TRUE,
                       all.ch = NULL) {
 #  desc_i <- Descendants(x, i, "all")
   p_i <- Ancestors(x, i, "parent")
-  x <- phangorn:::reroot(x, p_i, switch_root=FALSE)
+  x <- reroot(x, p_i, switch_root=FALSE)
   edge <- x$edge
   ind_v <- logical(nrow(edge))
   ind_w <- logical(max(edge))
@@ -201,7 +201,7 @@ indexNNI_fitch <- function(tree) {
 
   pvector <- integer(max(parent))
   pvector[child] <- parent
-  cvector <- Children(tree) # phangorn:::allChildren
+  cvector <- Children(tree) # allChildren
   #     a         d
   #      \       /
   #       e-----f       d is closest to root, f is root from subtree a,b,c
@@ -229,13 +229,13 @@ indexNNI_fitch <- function(tree) {
 
 #'  @export
 nni2 <- function(x){
-  # INDEX <- phangorn:::indexNNI2(x)
+  # INDEX <- indexNNI2(x)
   INDEX <- indexNNI_fitch(x)[, 1:4]
   INDEX <- rbind(INDEX[, c(1, 3, 2, 4)], INDEX[, c(2, 3, 1, 4)])
   l <- nrow(INDEX)
   res <- vector("list", l)
-  #  for(i in seq_len(l)) res[[i]] <- phangorn:::changeEdge(x, INDEX[c(2, 3), i])
-  for(i in seq_len(l)) res[[i]] <- phangorn:::changeEdge(x, INDEX[i, c(2, 3)])
+  #  for(i in seq_len(l)) res[[i]] <- changeEdge(x, INDEX[c(2, 3), i])
+  for(i in seq_len(l)) res[[i]] <- changeEdge(x, INDEX[i, c(2, 3)])
   class(res) <- "multiPhylo"
   res
 }
@@ -259,7 +259,7 @@ fitch_nni <- function(tree, f) {
   while (length(candidates)>0) {
     pscore <- M[candidates]
     ind <- which.min(pscore)
-    tree2 <- phangorn:::changeEdge(tree, INDEX[candidates[ind], c(2, 3)])
+    tree2 <- changeEdge(tree, INDEX[candidates[ind], c(2, 3)])
     #    test <- sum(f$sitewise_pscore(tree2$edge) * f$get_weight)
     test <- f$pscore(tree2$edge)
     if (test >= p0)
@@ -295,7 +295,7 @@ optim_fitch <- function(tree, data, trace = 1, rearrangements = "NNI", ...) {
   rt <- FALSE
 
   #  New
-  data <- phangorn:::removeParsimonyUninfomativeSites(data, recursive=TRUE)
+  data <- removeParsimonyUninfomativeSites(data, recursive=TRUE)
 
   dup_list <- NULL
   addTaxa <- FALSE

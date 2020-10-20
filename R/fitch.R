@@ -86,48 +86,6 @@ fnodesNew5 <- function(EDGE, nTips, nr, m = as.integer(max(EDGE) + 1L)) {
 }
 
 
-#' @rdname parsimony
-#' @export
-random.addition <- function(data, method = "fitch") {
-  label <- names(data)
-  nTips <- as.integer(length(label))
-  remaining <- as.integer(sample(nTips))
-  tree <- structure(list(edge = structure(c(rep(nTips + 1L, 3), remaining[1:3]),
-    .Dim = c(3L, 2L)), tip.label = label, Nnode = 1L), .Names =
-    c("edge", "tip.label", "Nnode"), class = "phylo", order = "postorder")
-  remaining <- remaining[-c(1:3)]
-
-  if (nTips == 3L) return(tree)
-
-  nr <- attr(data, "nr")
-  storage.mode(nr) <- "integer"
-#  n <- length(data) #- 1L
-
-  data <- subset(data, select = order(attr(data, "weight"), decreasing = TRUE))
-  data <- prepareDataFitch(data)
-  weight <- attr(data, "weight")
-
-  m <- nr * (2L * nTips - 2L)
-
-  on.exit(.C("fitch_free"))
-  .C("fitch_init", as.integer(data), as.integer(nTips * nr), as.integer(m),
-    as.double(weight), as.integer(nr))
-
-  storage.mode(weight) <- "double"
-
-  for (i in remaining) {
-    edge <- tree$edge[, 2]
-    score <- fnodesNew5(tree$edge, nTips, nr)[edge]
-    score <- .Call("FITCHTRIP3", as.integer(i), as.integer(nr),
-      as.integer(edge), as.double(score), as.double(Inf))
-    res <- min(score)
-    nt <- which.min(score)
-    tree <- addOne(tree, i, nt)
-  }
-  attr(tree, "pscore") <- res
-  tree
-}
-
 
 fast.fitch <- function(tree,  nr, ps = TRUE) {
   node <- tree$edge[, 1]
