@@ -47,7 +47,7 @@
 .PlotNetworxEnv <- new.env()
 
 
-# loadModule("Fitch_mod", TRUE)
+loadModule("Fitch_mod", TRUE)
 
 # .onLoad  <- function(libname, pkgname) {
 #    library.dynam("phangorn", pkgname, libname)

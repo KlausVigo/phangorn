@@ -2,13 +2,17 @@
 
 NEW FEATURES
 
+    o rewritten fitch algorithm to be more memory effiecent and faster
+
     o add Laguerre quadrature as option for discrete rate classes
 
     o add different genetic codes for codon models.
 
 OTHER CHANGES
 
-    o conversion between alignment formats is faster and more memory efficient
+    o conversion between alignment formats is faster and more memory efficient,
+
+      allowing the handling of larger datasets
 
     o changed R dependencies to 3.6.0 mainly to supply nicer palettes via
 
