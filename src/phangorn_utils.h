@@ -26,4 +26,6 @@ IntegerVector threshStateC(NumericVector x, NumericVector thresholds);
 
 int countCycles_cpp(IntegerMatrix M);
 
+std::vector<int> getIndex(IntegerVector left, IntegerVector right, int n);
+
 #endif

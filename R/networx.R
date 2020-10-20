@@ -42,14 +42,14 @@ allCircularSplits <- function(k, labels = NULL) {
 }
 
 
-getIndex <- function(left, right, n) {
-  if (n < max(left) | n < max(right)) stop("Error")
-  left <- as.integer(left)
-  right <- as.integer(right)
-  ll <- length(left)
-  lr <- length(right)
-  .C("giveIndex", left, right, ll, lr, as.integer(n), integer(ll * lr))[[6]] + 1
-}
+#getIndex <- function(left, right, n) {
+#  if (n < max(left) | n < max(right)) stop("Error")
+#  left <- as.integer(left)
+#  right <- as.integer(right)
+#  ll <- length(left)
+#  lr <- length(right)
+#  .C("giveIndex", left, right, ll, lr, as.integer(n), integer(ll * lr))[[6]] + 1
+#}
 
 
 splits2design <- function(obj, weight = NULL) {
@@ -328,7 +328,6 @@ getOrdering <- function(x, opt=TRUE) {
   tree <- as.phylo(x, TRUE)
   tree <- reorder(tree)
   if(opt) tree <- optCycle(x, tree)
-#  tree <- as.phylo(x)
   nTips <- length(tree$tip.label)
   ord <- reorder(tree)$edge[, 2]
   ord <- ord[ord <= nTips]

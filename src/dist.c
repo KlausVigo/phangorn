@@ -42,7 +42,7 @@ int give_index2(int i, int j, int n)
 }
 
 
-
+/*
 void giveIndex(int *left, int* right, int *ll, int *lr, int *n, int *res){
     int i, j, k;
     k=0;
@@ -65,7 +65,7 @@ void giveIndex2(int *left, int* right, int *ll, int *lr, int *n, int *res){
              }
         }
     }
-
+*/
 
 
 
@@ -236,19 +236,4 @@ void out(double *d, double *r, int *n, int *k, int *l){
     }
 }
 
-
-// hamming distance
-
-void distHamming(int *x, double *weight, int *nr, int *l, double *d){
-    int i, j, k, m;
-    k = 0L;
-    for(i = 0; i< (*l-1L); i++){
-        for(j = (i+1L); j < (*l); j++){
-             for(m=0; m<(*nr); m++){
-                 if(!(x[i*(*nr) + m] & x[j*(*nr) + m])) d[k] += weight[m];
-                 }
-             k++;
-        }
-    }
-}
 

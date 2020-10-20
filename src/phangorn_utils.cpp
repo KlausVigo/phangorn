@@ -4,6 +4,12 @@ using namespace Rcpp;
 
 #define DINDEX(i, j) n*(i - 1) - i * (i - 1)/2 + j - i - 1
 
+int give_index3(int i, int j, int n)
+{
+  if (i > j) return(DINDEX(j, i));
+  else return(DINDEX(i, j));
+}
+
 
 //library(tools)
 //package_native_routine_registration_skeleton("package-root-directory")
@@ -49,6 +55,21 @@ int countCycle_cpp(IntegerMatrix M){
     if(tmp>2L) res += tmp;
   }
   return(res);
+}
+
+
+// [[Rcpp::export]]
+std::vector<int> getIndex(IntegerVector left, IntegerVector right, int n){
+  int k;
+  std::vector<int> res;
+  for (int i = 0; i < left.size(); i++){
+    for (int j = 0; j < right.size(); j++){
+      k = give_index3(left[i], right[j], n);
+      res.push_back(k);
+      k++;
+    }
+  }
+  return res;
 }
 
 
@@ -185,11 +206,6 @@ NumericVector node_height_cpp(IntegerVector edge1, IntegerVector edge2,
 /*
 Fast cophenetic distance
 */
-int give_index3(int i, int j, int n)
-{
-    if (i > j) return(DINDEX(j, i));
-    else return(DINDEX(i, j));
-}
 
 
 void copheneticHelpCpp(std::vector<int> left, std::vector<int> right, int h, NumericVector nh, int nTips, NumericVector dm){
