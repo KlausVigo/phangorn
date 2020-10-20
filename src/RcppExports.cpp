@@ -62,6 +62,30 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// countCycle2_cpp
+IntegerVector countCycle2_cpp(IntegerMatrix M);
+RcppExport SEXP _phangorn_countCycle2_cpp(SEXP MSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerMatrix >::type M(MSEXP);
+    rcpp_result_gen = Rcpp::wrap(countCycle2_cpp(M));
+    return rcpp_result_gen;
+END_RCPP
+}
+// out_cpp
+IntegerVector out_cpp(NumericVector d, NumericVector r, int n);
+RcppExport SEXP _phangorn_out_cpp(SEXP dSEXP, SEXP rSEXP, SEXP nSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type d(dSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type r(rSEXP);
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    rcpp_result_gen = Rcpp::wrap(out_cpp(d, r, n));
+    return rcpp_result_gen;
+END_RCPP
+}
 // getIndex
 std::vector<int> getIndex(IntegerVector left, IntegerVector right, int n);
 RcppExport SEXP _phangorn_getIndex(SEXP leftSEXP, SEXP rightSEXP, SEXP nSEXP) {
@@ -181,7 +205,6 @@ RcppExport void fitch_init(void *, void *, void *, void *, void *);
 RcppExport void fitchQuartet(void *, void *, void *, void *, void *, void *, void *);
 RcppExport void fitchTriplet(void *, void *, void *, void *, void *);
 RcppExport void fitchTripletACC4(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
-RcppExport void out(void *, void *, void *, void *, void *);
 RcppExport SEXP AddOnes(SEXP, SEXP, SEXP, SEXP, SEXP);
 RcppExport SEXP C_rowMin(SEXP, SEXP, SEXP);
 RcppExport SEXP C_sprdist(SEXP, SEXP, SEXP);
@@ -227,6 +250,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_phangorn_preorder", (DL_FUNC) &_phangorn_preorder, 2},
     {"_phangorn_allDescCPP", (DL_FUNC) &_phangorn_allDescCPP, 2},
     {"_phangorn_countCycle_cpp", (DL_FUNC) &_phangorn_countCycle_cpp, 1},
+    {"_phangorn_countCycle2_cpp", (DL_FUNC) &_phangorn_countCycle2_cpp, 1},
+    {"_phangorn_out_cpp", (DL_FUNC) &_phangorn_out_cpp, 3},
     {"_phangorn_getIndex", (DL_FUNC) &_phangorn_getIndex, 3},
     {"_phangorn_bipartCPP", (DL_FUNC) &_phangorn_bipartCPP, 2},
     {"_phangorn_bipCPP", (DL_FUNC) &_phangorn_bipCPP, 2},
@@ -245,7 +270,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"fitchQuartet",     (DL_FUNC) &fitchQuartet,      7},
     {"fitchTriplet",     (DL_FUNC) &fitchTriplet,      5},
     {"fitchTripletACC4", (DL_FUNC) &fitchTripletACC4, 11},
-    {"out",              (DL_FUNC) &out,               5},
     {"AddOnes",             (DL_FUNC) &AddOnes,              5},
     {"C_rowMin",            (DL_FUNC) &C_rowMin,             3},
     {"C_sprdist",           (DL_FUNC) &C_sprdist,            3},

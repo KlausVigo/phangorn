@@ -165,14 +165,15 @@ optCycle <- function(splits, tree) {
 }
 
 
-#countCycles <- function(splits, tree = NULL, ord = NULL) {
-#  M <- as.matrix(splits)
+countCycles <- function(splits, tree = NULL, ord = NULL) {
+  M <- as.matrix(splits)
 #  l <- as.integer(nrow(M))
 #  m <- as.integer(ncol(M))
-#  if (!is.null(tree)) ord  <- getOrdering(tree)
+  if (!is.null(tree)) ord  <- getOrdering(tree)
 #  res <- .C("countCycle2", M[, ord], l, m, integer(l))[[4]]
-#  res
-#}
+  res <- countCycle2_cpp(M[, ord])
+  res
+}
 
 
 #' @rdname as.splits

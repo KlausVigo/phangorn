@@ -216,7 +216,7 @@ SEXP dist2spectra(SEXP dm, SEXP nx, SEXP ns) {
     return(result);
 }
 
-
+/*
 // speed up some code for NJ
 void out(double *d, double *r, int *n, int *k, int *l){
     int i, j;
@@ -235,5 +235,5 @@ void out(double *d, double *r, int *n, int *k, int *l){
         }
     }
 }
-
+*/
 

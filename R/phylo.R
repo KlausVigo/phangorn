@@ -397,7 +397,7 @@ df_freq_codon <- function(bf) {
 #' @rdname pml.fit
 #' @export
 pml.free <- function() {
-  .C("ll_free")
+  .Call("ll_free2")
   #    rm(.INV, .iind, envir = parent.frame())
 }
 
@@ -408,7 +408,7 @@ pml.init <- function(data, k = 1L) {
   nTips <- length(data)
   nr <- attr(data, "nr")
   nc <- attr(data, "nc")
-  .C("ll_init", as.integer(nr), as.integer(nTips), as.integer(nc),
+  .Call("ll_init2", as.integer(nr), as.integer(nTips), as.integer(nc),
     as.integer(k))
 }
 
@@ -1051,8 +1051,8 @@ update.pml <- function(object, ...) {
 
   data <- subset(data, tree$tip.label)
 
-  on.exit(.C("ll_free"))
-  .C("ll_init", nr, nTips, nc, as.integer(k))
+  on.exit(.Call("ll_free2"))
+  .Call("ll_init2", nr, nTips, nc, as.integer(k))
   tmp <- pml.fit(tree, data, bf, shape = shape, k = k, Q = Q,
     levels = attr(data, "levels"), inv = inv, rate = rate, g = g, w = w,
     eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, wMix = wMix,
@@ -1603,8 +1603,8 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   nr <- as.integer(attr(data, "nr"))
   nc <- as.integer(attr(data, "nc"))
 
-  on.exit(.C("ll_free"))
-  .C("ll_init", nr, nTips, nc, as.integer(k))
+  on.exit(.Call("ll_free2"))
+  .Call("ll_init2", nr, nTips, nc, as.integer(k))
   tmp <- pml.fit(tree, data, bf, shape = shape, k = k, Q = Q,
     levels = attr(data, "levels"), inv = inv, rate = rate, g = g, w = w,
     eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, wMix = wMix, site = TRUE,

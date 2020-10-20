@@ -75,17 +75,18 @@ getOrderingNN <- function(x) {
   DM <- DM_C <- DM_V <- d
 
   while (lCL > 1) {
-    i <- 0
-    j <- 0
+#    i <- 0
+#    j <- 0
     DM <- distC(d, CL)
 
     l <- nrow(DM)
     if (l > 2) {
       r <- rowSums(DM) / (l - 2)
-      tmp <- .C("out", as.double(DM), as.double(r), as.integer(l),
-        as.integer(i), as.integer(j), PACKAGE = "phangorn")
-      e1 <- tmp[[4]]
-      e2 <- tmp[[5]]
+      tmp <- out_cpp(DM, r, l)
+#      tmp <- .C("out", as.double(DM), as.double(r), as.integer(l),
+#        as.integer(i), as.integer(j), PACKAGE = "phangorn")
+      e1 <- tmp[1]
+      e2 <- tmp[2]
     }
     else {
       e1 <- 1
@@ -189,18 +190,19 @@ getOrderingNN2 <- function(x) {
   DM_C <- DM_V <- DM <- d
   z <- 0
   while (lCL > 1) {
-    i <- 0
-    j <- 0
+#    i <- 0
+#    j <- 0
     z <- z + 1
 
     l <- nrow(DM)
     # compute Q_D from D_C
     if (l > 2) {
       r <- rowSums(DM) / (l - 2)
-      tmp <- .C("out", as.double(DM), as.double(r), as.integer(l),
-        as.integer(i), as.integer(j), PACKAGE = "phangorn")
-      e1 <- tmp[[4]]
-      e2 <- tmp[[5]]
+      tmp <- out_cpp(DM, r, l)
+#      tmp <- .C("out", as.double(DM), as.double(r), as.integer(l),
+#        as.integer(i), as.integer(j), PACKAGE = "phangorn")
+      e1 <- tmp[1]
+      e2 <- tmp[2]
     }
     else {
       e1 <- 1

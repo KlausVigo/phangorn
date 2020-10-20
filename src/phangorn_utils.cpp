@@ -57,6 +57,48 @@ int countCycle_cpp(IntegerMatrix M){
   return(res);
 }
 
+// [[Rcpp::export]]
+IntegerVector countCycle2_cpp(IntegerMatrix M){
+  int tmp;
+  int l = M.nrow();
+  int m = M.ncol();
+  IntegerVector res(l);
+  for (int i=0; i<l; i++) {
+    tmp = 0L;
+    if(M[i] != M[i + (m -1) * l])tmp=1L;
+    for (int j=1; j<m; j++) {
+      if(M[i + (j-1L)* l] != M[i + j * l])tmp++;
+    }
+    res[i]=tmp;
+  }
+  return(res);
+}
+
+
+
+// speed up some code for NJ
+// [[Rcpp::export]]
+IntegerVector out_cpp(NumericVector d, NumericVector r, int n){
+  int i, j, k, l;
+  double res, tmp;
+  k=1;
+  l=2;
+  IntegerVector xx = IntegerVector::create(1, 2);
+  res = d[1] - r[0] - r[1];
+  for(i = 0; i < (n-1); i++){
+    for(j = i+1; j < n; j++){
+      tmp = d[i*n+j] - r[i] - r[j];
+      if(tmp<res){
+        xx[0]=i+1;
+        xx[1]=j+1;
+        res = tmp;
+      }
+    }
+  }
+  return(xx);
+}
+
+
 
 // [[Rcpp::export]]
 std::vector<int> getIndex(IntegerVector left, IntegerVector right, int n){

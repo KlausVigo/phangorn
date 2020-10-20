@@ -21,6 +21,18 @@ countCycle_cpp <- function(M) {
     .Call(`_phangorn_countCycle_cpp`, M)
 }
 
+countCycle2_cpp <- function(M) {
+    .Call(`_phangorn_countCycle2_cpp`, M)
+}
+
+out_cpp <- function(d, r, n) {
+    .Call(`_phangorn_out_cpp`, d, r, n)
+}
+
+getIndex <- function(left, right, n) {
+    .Call(`_phangorn_getIndex`, left, right, n)
+}
+
 bipartCPP <- function(orig, nTips) {
     .Call(`_phangorn_bipartCPP`, orig, nTips)
 }

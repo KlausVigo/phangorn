@@ -207,12 +207,13 @@ UNJ <- function(x){
   w <- rep(1, l)
   while (l > 2) {
     r <- rowSums(d) / (l - 2)
-    i <- 0
-    j <- 0
-    tmp <- .C("out", as.double(d), as.double(r), as.integer(l), as.integer(i),
-              as.integer(j))
-    e2 <- tmp[[5]]
-    e1 <- tmp[[4]]
+#    i <- 0
+#    j <- 0
+    tmp <- out_cpp(d, r, l)
+#    tmp <- .C("out", as.double(d), as.double(r), as.integer(l), as.integer(i),
+#              as.integer(j))
+    e2 <- tmp[2]
+    e1 <- tmp[1]
     l1 <- d[e1, e2] / 2 + sum( (d[e1, -c(e1, e2)] - d[e2, -c(e1, e2)]) *
                                 w[-c(e1, e2)]) / (2 * (n - w[e1] - w[e2]))
     l2 <- d[e1, e2] / 2 + sum( (d[e2, -c(e1, e2)] - d[e1, -c(e1, e2)]) *
