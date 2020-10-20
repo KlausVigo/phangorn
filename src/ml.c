@@ -35,10 +35,6 @@ const double LOG_SCALE_EPS = -22.18070977791824915926;
 static double *LL;  //, *WEIGHTS;
 static int *SCM; //, *XXX;
 
-void ll_free(){
-    free(LL);
-    free(SCM);
-}
 
 SEXP ll_free2(){
     free(LL);
@@ -46,18 +42,6 @@ SEXP ll_free2(){
     return R_NilValue;
 }
 
-/*
-LL likelihood for internal edges
-SCM scaling coefficients
-nNodes, nTips, kmax
-*/
-void ll_init(int *nr, int *nTips, int *nc, int *k)
-{
-    int i;
-    LL = (double *) calloc(*nr * *nc * *k * *nTips, sizeof(double));
-    SCM = (int *) calloc(*nr * *k * *nTips, sizeof(int));  // * 2L
-    for(i =0; i < (*nr * *k * *nTips); i++) SCM[i] = 0L;
-}
 
 SEXP ll_init2(SEXP nr, SEXP nTips, SEXP nc, SEXP k)
 {
@@ -69,7 +53,25 @@ SEXP ll_init2(SEXP nr, SEXP nTips, SEXP nc, SEXP k)
     return R_NilValue;
 }
 
+/*
+LL likelihood for internal edges
+SCM scaling coefficients
+nNodes, nTips, kmax
 
+void ll_init(int *nr, int *nTips, int *nc, int *k)
+{
+    int i;
+    LL = (double *) calloc(*nr * *nc * *k * *nTips, sizeof(double));
+    SCM = (int *) calloc(*nr * *k * *nTips, sizeof(int));  // * 2L
+    for(i =0; i < (*nr * *k * *nTips); i++) SCM[i] = 0L;
+}
+
+
+void ll_free(){
+    free(LL);
+    free(SCM);
+}
+*/
 
 
 // in C++ ??
