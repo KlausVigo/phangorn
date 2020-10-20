@@ -104,6 +104,31 @@ List allChildrenCPP(const IntegerMatrix orig) {
     return wrap(out);
 }
 
+//library(tools)
+//package_native_routine_registration_skeleton("package-root-directory")
+// [[Rcpp::export]]
+List allSiblingsCPP(const IntegerMatrix & edge) {
+  IntegerVector parent = edge( _, 0);
+  int m = max(parent), l, left, right;
+  int root = min(parent);
+  List ch = allChildrenCPP(edge);
+  std::vector< std::vector<int> > out(m); //max(edge)
+  for(int h = root-1L; h<m; h++){
+    IntegerVector tmp_ch = ch[h];
+    l = tmp_ch.size();
+    if(l>0){
+      for(int j=0; j<l; j++){
+        left = tmp_ch[j];
+        for(int k=0; k<l; k++) {
+          right = tmp_ch[k];
+          if(left != right) out[left-1L].push_back(right);
+        }
+      }
+    }
+  }
+  return wrap(out);
+}
+
 
 
 // [[Rcpp::export]]
