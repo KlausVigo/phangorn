@@ -64,7 +64,7 @@ std::vector<int> getIndex(IntegerVector left, IntegerVector right, int n){
   std::vector<int> res;
   for (int i = 0; i < left.size(); i++){
     for (int j = 0; j < right.size(); j++){
-      k = give_index3(left[i], right[j], n);
+      k = give_index3(left[i], right[j], n) + 1L;
       res.push_back(k);
       k++;
     }
