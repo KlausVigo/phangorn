@@ -1,7 +1,7 @@
 /*
  * ml.c
  *
- * (c) 2008-2019  Klaus Schliep (klaus.schliep@gmail.com)
+ * (c) 2008-2020  Klaus Schliep (klaus.schliep@gmail.com)
  *
  *
  * This code may be distributed under the GNU GPL
@@ -40,6 +40,11 @@ void ll_free(){
     free(SCM);
 }
 
+SEXP ll_free2(){
+    free(LL);
+    free(SCM);
+    return R_NilValue;
+}
 
 /*
 LL likelihood for internal edges
@@ -53,6 +58,18 @@ void ll_init(int *nr, int *nTips, int *nc, int *k)
     SCM = (int *) calloc(*nr * *k * *nTips, sizeof(int));  // * 2L
     for(i =0; i < (*nr * *k * *nTips); i++) SCM[i] = 0L;
 }
+
+SEXP ll_init2(SEXP nr, SEXP nTips, SEXP nc, SEXP k)
+{
+    int nrx = INTEGER(nr)[0], nTipsx = INTEGER(nTips)[0], ncx = INTEGER(nc)[0], kx = INTEGER(k)[0];
+    int i;
+    LL = (double *) calloc(nrx * ncx * kx * nTipsx, sizeof(double));
+    SCM = (int *) calloc(nrx * kx * nTipsx, sizeof(int));  // * 2L
+    for(i =0; i < (nrx * kx * nTipsx); i++) SCM[i] = 0L;
+    return R_NilValue;
+}
+
+
 
 
 // in C++ ??
