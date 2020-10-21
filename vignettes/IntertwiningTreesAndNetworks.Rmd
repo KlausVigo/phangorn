@@ -266,7 +266,7 @@ all_data_boot <- read.tree(file.path(fdir, "RAxML_bootstrap.3moles"))
 There are several option plotting a co-phylogeny. In the following we use the 
 `cophylo` function of the `phytools` package. 
 
-[comment]: # ({r cophylo, fig.width=7, fig.height=7})
+
 ```
 library(phytools)
 par(mfrow=c(2,1))
