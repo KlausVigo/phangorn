@@ -11,6 +11,33 @@ int give_index3(int i, int j, int n)
 }
 
 
+// [[Rcpp::export]]
+NumericVector fhm_new(NumericVector v, int n){
+  unsigned int l, i, j;
+  unsigned int start, step, num_splits;
+  unsigned int max_n = (unsigned int)n;
+  double vi, vj;
+  num_splits = (1 << n);
+  step = 1;
+  for(int l = 0; l < max_n; l++){
+    start = 0L;
+    while(start < (num_splits-1L)){
+      for(i = start; i < (start + step); i++){
+        j = i + step;
+        vi = v[i];
+        vj = v[j];
+        v[i] = vi + vj;
+        v[j] = vi - vj;
+      }
+      start = start + 2*step;
+    }
+    step *= 2;
+  }
+  return v;
+}
+
+
+
 //library(tools)
 //package_native_routine_registration_skeleton("package-root-directory")
 

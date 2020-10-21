@@ -124,32 +124,6 @@ SEXP PWI2(SEXP LEFT, SEXP RIGHT, SEXP POS, SEXP L, SEXP N, SEXP W, SEXP LI){
 }
 
 
-
-
-void C_fhm(double *v, int *n){
-    unsigned int level, i, j;
-    unsigned int start, step, num_splits;
-    unsigned int max_n = (unsigned int)*n;
-    double vi, vj;
-    num_splits = (1 << (*n));
-    step = 1;
-    for(level = 0; level < max_n; level++){
-        start = 0;
-        while(start < (num_splits-1)){
-            for(i = start; i < (start + step); i++){
-                j = i + step;
-                vi = v[i];
-                vj = v[j];
-                v[i] = vi + vj;
-                v[j] = vi - vj;
-            }
-            start = start + 2*step;
-        }
-        step *= 2;
-    }
-}
-
-
 void distance_hadamard(double *d, int n) {
     unsigned int num_splits;
     unsigned int x, r, nr, p, b, e;

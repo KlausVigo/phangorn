@@ -146,7 +146,7 @@ hadamard <- function(x) {
 fhm <- function(v) {
   n <- length(v)
   n <- log2(n)
-  res <- .C("C_fhm", v = as.double(v), n = as.integer(n))$v #
+  res <- .Call("_phangorn_fhm_new", v = as.double(v), n = as.integer(n))
   res
 }
 
