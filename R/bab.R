@@ -167,7 +167,7 @@ pBound <- function(x, UB) {
 #' @export bab
 bab <- function(data, tree = NULL, trace = 1, ...) {
   if (!is.null(tree)) data <- subset(data, tree$tip.label)
-  pBound <- TRUE
+  pBound <- FALSE
 
   nTips <- length(data)
   if (nTips < 4) return(stree(nTips, tip.label = names(data)))
@@ -267,14 +267,13 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
   while (npsc > 0) {
     a <- PSC[npsc, 1]
     b <- PSC[npsc, 2]
+    blub <- PSC[npsc, 3]
     PSC <- PSC[-npsc, , drop = FALSE]
     npsc <- npsc - 1L
     tmpTree <- trees[[a]][[b]]
     edge <- tmpTree[, 2] + 2 * nTips
-#browser()
-    blub <- f$pscore(tmpTree)
-    f$prep_spr(tmpTree)
 
+    f$prep_spr(tmpTree)
     score <- f$pscore_vec(edge, as.integer(inord[a + 1L]))
     score <- score + blub
 
@@ -283,8 +282,8 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
       if ((a + 1L) < nTips) {
         ind <- (1:L[a])[score <= bound]
         trees[[a + 1]][seq_along(ind)] <- .Call("AddOnes", tmpTree,
-                                                as.integer(inord[a + 1L]), as.integer(ind), as.integer(L[a]),
-                                                as.integer(M[a]), PACKAGE = "phangorn")
+                as.integer(inord[a + 1L]), as.integer(ind), as.integer(L[a]),
+                as.integer(M[a]), PACKAGE = "phangorn")
         l <- length(ind)
         # os <- order(score[ind], decreasing=TRUE)
         os <- seq_len(l)
