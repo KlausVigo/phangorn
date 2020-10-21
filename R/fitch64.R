@@ -37,8 +37,9 @@ init_fitch <- function(obj, parsinfo=FALSE, order=FALSE, m=4L, ...){
 }
 
 
-# @export
-fitch_new <- function(tree, data, site = "pscore"){
+#' @rdname parsimony
+#' @export
+fitch <- function(tree, data, site = "pscore"){
   tree <- reorder(tree, "postorder")
   nr <- attr(data, "nr")
   fun <- function(tree, site="pscore"){
@@ -97,7 +98,7 @@ random.addition <- function (data, method = "fitch")
     nt <- which.min(score)
     tree <- addOne(tree, i, nt)
   }
-  attr(tree, "pscore") <- f$get_pscore(tree$edge)
+  attr(tree, "pscore") <- f$pscore(tree$edge)
   tree
 }
 
@@ -117,7 +118,7 @@ fitch_spr <- function (tree, f)
 #    print(nt)
     tree <- addOne(treetmp, i, nt)
   }
-#  attr(tree, "pscore") <- f$get_pscore(tree$edge)
+  attr(tree, "pscore") <- f$pscore(tree$edge)
   tree
 }
 
@@ -278,7 +279,7 @@ fitch_nni <- function(tree, f) {
 
 
 #'  @export
-optim_fitch <- function(tree, data, trace = 1, rearrangements = "NNI", ...) {
+optim.fitch <- function(tree, data, trace = 1, rearrangements = "NNI", ...) {
   if (!inherits(tree, "phylo")) stop("tree must be of class phylo")
   if (!is.binary(tree)) {
     tree <- multi2di(tree)
@@ -349,7 +350,7 @@ optim_fitch <- function(tree, data, trace = 1, rearrangements = "NNI", ...) {
     if (res$swap == 0) {
       if (rearrangements == "SPR") {
         tree2 <- fitch_spr(tree, f)
-        psc <- f$pscore(tree$edge)
+        psc <- f$pscore(tree2$edge)
         if (trace > 1) cat("optimize topology (SPR): ", pscore, "-->",
                            psc , "\n")
         if (pscore < psc + 1e-6) iter <- FALSE
