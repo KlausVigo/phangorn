@@ -86,12 +86,12 @@ sankoff.quartet <- function(dat, cost, p, l, weight) {
 #' @rdname parsimony
 #' @export
 ## parsimony <- function(tree, data, cost=NULL, method = NULL)
-parsimony <- function(tree, data, method = "fitch", cost=NULL, ...) {
+parsimony <- function(tree, data, method = "fitch", cost=NULL, site = "pscore"){
   if (!inherits(data, "phyDat")) stop("data must be of class phyDat")
   method <- match.arg(method, c("fitch", "sankoff"))
   if(!any(is.binary(tree)) || !is.null(cost)) method <- "sankoff"
-  if (method == "sankoff") result <- sankoff(tree, data, cost=cost, ...)
-  if (method == "fitch") result <- fitch(tree, data, ...)
+  if (method == "sankoff") result <- sankoff(tree, data, cost=cost, site = site)
+  if (method == "fitch") result <- fitch(tree, data, site = site)
   result
 }
 

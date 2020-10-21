@@ -13,7 +13,6 @@ using namespace Rcpp;
 
 
 // Examples from Dirk to find minimum dist
-// [[Rcpp::export]]
 double vecmin(NumericVector x) {
   // Rcpp supports STL-style iterators
   NumericVector::iterator it = std::min_element(x.begin(), x.end());
@@ -21,7 +20,6 @@ double vecmin(NumericVector x) {
   return *it;
 }
 
-// [[Rcpp::export]]
 int vecminInd(NumericVector x) {
   // Rcpp supports STL-style iterators
   NumericVector::iterator it = std::min_element(x.begin(), x.end());
@@ -641,6 +639,7 @@ double pscore(Fitch* obj, const IntegerMatrix & orig){
   double pars = 0;
 
   int nSeq = obj->nSeq;
+  int p0 = obj->p0;
 
   IntegerVector anc = orig( _, 0);
   IntegerVector desc = orig( _, 1);
@@ -722,6 +721,7 @@ double pscore(Fitch* obj, const IntegerMatrix & orig){
       pars += popcnt64(tmp);
     }
   }
+  pars += p0;
   return(pars);
 }
 

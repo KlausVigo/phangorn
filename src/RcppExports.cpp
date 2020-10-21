@@ -5,28 +5,6 @@
 
 using namespace Rcpp;
 
-// vecmin
-double vecmin(NumericVector x);
-RcppExport SEXP _phangorn_vecmin(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(vecmin(x));
-    return rcpp_result_gen;
-END_RCPP
-}
-// vecminInd
-int vecminInd(NumericVector x);
-RcppExport SEXP _phangorn_vecminInd(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(vecminInd(x));
-    return rcpp_result_gen;
-END_RCPP
-}
 // preorder
 IntegerMatrix preorder(const IntegerMatrix& edge, int nTips);
 RcppExport SEXP _phangorn_preorder(SEXP edgeSEXP, SEXP nTipsSEXP) {
@@ -36,6 +14,18 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const IntegerMatrix& >::type edge(edgeSEXP);
     Rcpp::traits::input_parameter< int >::type nTips(nTipsSEXP);
     rcpp_result_gen = Rcpp::wrap(preorder(edge, nTips));
+    return rcpp_result_gen;
+END_RCPP
+}
+// fhm_new
+NumericVector fhm_new(NumericVector v, int n);
+RcppExport SEXP _phangorn_fhm_new(SEXP vSEXP, SEXP nSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type v(vSEXP);
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    rcpp_result_gen = Rcpp::wrap(fhm_new(v, n));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -199,22 +189,15 @@ END_RCPP
 
 RcppExport void ACCTRAN2(void *, void *, void *, void *, void *, void *);
 RcppExport void ACCTRAN3(void *, void *, void *, void *, void *, void *, void *, void *);
-RcppExport void C_fhm(void *, void *);
 RcppExport void fitch_free();
 RcppExport void fitch_init(void *, void *, void *, void *, void *);
-RcppExport void fitchQuartet(void *, void *, void *, void *, void *, void *, void *);
 RcppExport void fitchTriplet(void *, void *, void *, void *, void *);
 RcppExport void fitchTripletACC4(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
 RcppExport SEXP AddOnes(SEXP, SEXP, SEXP, SEXP, SEXP);
 RcppExport SEXP C_rowMin(SEXP, SEXP, SEXP);
 RcppExport SEXP C_sprdist(SEXP, SEXP, SEXP);
 RcppExport SEXP dist2spectra(SEXP, SEXP, SEXP);
-RcppExport SEXP FITCH(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-RcppExport SEXP FITCH345(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 RcppExport SEXP FITCHTRIP3(SEXP, SEXP, SEXP, SEXP, SEXP);
-RcppExport SEXP FNALL_NNI(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-RcppExport SEXP FNALL5(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-RcppExport SEXP FNALL6(SEXP, SEXP, SEXP, SEXP);
 RcppExport SEXP FS4(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 RcppExport SEXP FS5(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 RcppExport SEXP getd2PM(SEXP, SEXP, SEXP, SEXP);
@@ -245,9 +228,8 @@ RcppExport SEXP sankoffQuartet(SEXP, SEXP, SEXP, SEXP);
 RcppExport SEXP _rcpp_module_boot_Fitch_mod();
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_phangorn_vecmin", (DL_FUNC) &_phangorn_vecmin, 1},
-    {"_phangorn_vecminInd", (DL_FUNC) &_phangorn_vecminInd, 1},
     {"_phangorn_preorder", (DL_FUNC) &_phangorn_preorder, 2},
+    {"_phangorn_fhm_new", (DL_FUNC) &_phangorn_fhm_new, 2},
     {"_phangorn_allDescCPP", (DL_FUNC) &_phangorn_allDescCPP, 2},
     {"_phangorn_countCycle_cpp", (DL_FUNC) &_phangorn_countCycle_cpp, 1},
     {"_phangorn_countCycle2_cpp", (DL_FUNC) &_phangorn_countCycle2_cpp, 1},
@@ -264,22 +246,15 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rcpp_module_boot_Fitch_mod", (DL_FUNC) &_rcpp_module_boot_Fitch_mod, 0},
     {"ACCTRAN2",         (DL_FUNC) &ACCTRAN2,          6},
     {"ACCTRAN3",         (DL_FUNC) &ACCTRAN3,          8},
-    {"C_fhm",            (DL_FUNC) &C_fhm,             2},
     {"fitch_free",       (DL_FUNC) &fitch_free,        0},
     {"fitch_init",       (DL_FUNC) &fitch_init,        5},
-    {"fitchQuartet",     (DL_FUNC) &fitchQuartet,      7},
     {"fitchTriplet",     (DL_FUNC) &fitchTriplet,      5},
     {"fitchTripletACC4", (DL_FUNC) &fitchTripletACC4, 11},
     {"AddOnes",             (DL_FUNC) &AddOnes,              5},
     {"C_rowMin",            (DL_FUNC) &C_rowMin,             3},
     {"C_sprdist",           (DL_FUNC) &C_sprdist,            3},
     {"dist2spectra",        (DL_FUNC) &dist2spectra,         3},
-    {"FITCH",               (DL_FUNC) &FITCH,                8},
-    {"FITCH345",            (DL_FUNC) &FITCH345,             6},
     {"FITCHTRIP3",          (DL_FUNC) &FITCHTRIP3,           5},
-    {"FNALL_NNI",           (DL_FUNC) &FNALL_NNI,            7},
-    {"FNALL5",              (DL_FUNC) &FNALL5,               7},
-    {"FNALL6",              (DL_FUNC) &FNALL6,               4},
     {"FS4",                 (DL_FUNC) &FS4,                 14},
     {"FS5",                 (DL_FUNC) &FS5,                 10},
     {"getd2PM",             (DL_FUNC) &getd2PM,              4},

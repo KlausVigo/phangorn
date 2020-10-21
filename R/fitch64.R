@@ -1,17 +1,6 @@
-#'  Initialize data for Fitch parsimony
-#'
-#'  \code{init_fitch} creates the data structure used from the C++ backend.
-#'
-#'  @importFrom methods new
-#'  @param obj an alignemt, an object of class \code{phyDat}
-#'  @param parsinfo
-#'  @return a pointer to the C++ structure
-#  @export
 init_fitch <- function(obj, parsinfo=FALSE, order=FALSE, m=4L, ...){
-#  p0 <- 0
   if(parsinfo) obj <- removeParsimonyUninfomativeSites(obj, ...)
   if(is.null(attr(obj, "p0"))) attr(obj, "p0") <- 0
-#    p0 <- as.integer(round(attr(obj, "p0")))
   attr(obj, "nSeq") <- length(obj) # add lengths
 
   if(order){
@@ -46,14 +35,15 @@ fitch <- function(tree, data, site = "pscore"){
     if(site=="pscore") return(f$pscore(tree$edge))
     nr <- f$get_nr
     sites <- f$sitewise_pscore(tree$edge)
-    #    if(site=="site") return(sites[seq_len(nr)])
-    #    sum(sites * f$get_weight) + f$get_p0
     sites[seq_len(nr)]
   }
   fun2 <- function(tree, data, site) {
     data <- subset(data, tree$tip.label)
     f <- init_fitch(data, FALSE, FALSE, m=2L)
-    return(fun(tree, site = site))
+    if(site=="pscore") return(f$pscore(tree$edge))
+    nr <- f$get_nr
+    sites <- f$sitewise_pscore(tree$edge)
+    sites[seq_len(nr)]
   }
   if (inherits(tree, "multiPhylo")) {
     TL <- attr(tree, "TipLabel")
@@ -191,7 +181,6 @@ drop_node_2 <- function(x, i, check.binary = FALSE, check.root = TRUE,
 
 
 #indexNNI2
-#'  @export
 indexNNI_fitch <- function(tree) {
   parent <- tree$edge[, 1]
   child <- tree$edge[, 2]
@@ -228,7 +217,6 @@ indexNNI_fitch <- function(tree) {
 }
 
 
-#'  @export
 nni2 <- function(x){
   # INDEX <- indexNNI2(x)
   INDEX <- indexNNI_fitch(x)[, 1:4]
@@ -242,7 +230,6 @@ nni2 <- function(x){
 }
 
 
-#'  @export
 fitch_nni <- function(tree, f) {
   #  f <- init_fitch(obj, FALSE, FALSE, m=4L) #, order=FALSE)
   #  p0 <- sum(f$sitewise_pscore(tree$edge) * f$get_weight)
@@ -278,7 +265,6 @@ fitch_nni <- function(tree, f) {
 }
 
 
-#'  @export
 optim.fitch <- function(tree, data, trace = 1, rearrangements = "NNI", ...) {
   if (!inherits(tree, "phylo")) stop("tree must be of class phylo")
   if (!is.binary(tree)) {
