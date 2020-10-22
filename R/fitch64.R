@@ -317,7 +317,7 @@ optim.fitch <- function(tree, data, trace = 1, rearrangements = "NNI", ...) {
       tree
     }
     if(length(tree$tip.label) > 2) tree <- unroot(tree)
-    #    attr(tree, "pscore") <- pscore + p0
+    attr(tree, "pscore") <- pscore
     return(tree)
   })
 
