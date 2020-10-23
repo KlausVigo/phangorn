@@ -2,7 +2,11 @@ init_fitch <- function(obj, parsinfo=FALSE, order=FALSE, m=4L, ...){
   if(parsinfo) obj <- removeParsimonyUninfomativeSites(obj, ...)
   if(is.null(attr(obj, "p0"))) attr(obj, "p0") <- 0
   attr(obj, "nSeq") <- length(obj) # add lengths
-
+  if(is.null(attr(obj, "weight"))){
+    attr(obj, "weight") <- rep(1, length(obj[[1]]))
+    order <- FALSE
+  }
+  if(sum( abs (attr(obj, "weight") %% 1L) ) >1) order <- FALSE
   if(order){
     ord <- order(attr(obj, "weight"), decreasing = TRUE)
     obj <- subset(obj, select = ord) # inside C (1 less copy)
@@ -49,7 +53,7 @@ fitch <- function(tree, data, site = "pscore"){
     TL <- attr(tree, "TipLabel")
     if (!is.null(TL)) {
       data <- subset(data, TL)
-      f <- init_fitch(data, site=="pscore", site=="pscore", m=2L)
+      f <- init_fitch(data, FALSE, FALSE, m=2L)
       tree <- unclass(tree)
       res <- sapply(tree, function(x)fun(x, site=site))
     }
