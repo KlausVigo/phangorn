@@ -13,10 +13,10 @@ dat_4 <- c(dat_1, dat_2, dat_3)
 # fit_GY <- pml(tree, dat_1, bf="empirical")
 
 # test dn/ds optimisation works properly
-# fit_GY_opt <- optim.pml(fit_GY, model="codon1",
-#                            control=pml.control(trace=0))
-# expect_lt(fit_GY_opt$dnds, 1)
-# expect_gt(fit_GY_opt$tstv, 1)
+fit_GY_opt <- optim.pml(fit_GY, model="codon1",
+                        control=pml.control(trace=0))
+expect_true(fit_GY_opt$dnds < 1)
+expect_true(fit_GY_opt$tstv > 1)
 # fit_selection <- codonTest(tree, dat_4, control=pml.control(trace=0))
 
 
