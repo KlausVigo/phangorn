@@ -16,12 +16,12 @@ getOrder <- function(x) {
 
   nr <- attr(x, "nr")
   storage.mode(nr) <- "integer"
-  n <- length(x) #- 1L
+#  n <- length(x) #- 1L
 
   weight <- attr(x, "weight")
   storage.mode(weight) <- "double"
 
-  m <- nr * (2L * nTips - 2L)
+#  m <- nr * (2L * nTips - 2L)
   f <- init_fitch(x, FALSE, FALSE, m=4L)
 
   edge <- tree$edge
@@ -58,9 +58,9 @@ getOrder <- function(x) {
 
 
 pBound <- function(x, UB) {
-  tip <- names(x)
-  att <- attributes(x)
-  nc <- attr(x, "nc")
+#  tip <- names(x)
+#  att <- attributes(x)
+#  nc <- attr(x, "nc")
   nr <- attr(x, "nr")
   contrast <- attr(x, "contrast")
   rownames(contrast) <- attr(x, "allLevels")
@@ -72,7 +72,7 @@ pBound <- function(x, UB) {
   y <- as.character(x)
   singles <- attr(x, "levels")
   fun2 <- function(x, singles) all(x %in% singles)
-  fun1 <- function(x) {cumsum(!duplicated(x)) - 1L}
+  fun1 <- function(x) cumsum(!duplicated(x)) - 1L
 
   tmp <- apply(y, 2, fun2, singles)
   ind <- which(tmp)
