@@ -2,7 +2,11 @@
 
 NEW FEATURES
 
-    o rewritten fitch algorithm to be more memory effiecent and faster
+    o rewritten fitch algorithm to be more memory efficient and faster,
+
+      no limitation on the number of states
+
+    o dist.hamming may handle larger datasets and is faster
 
     o add Laguerre quadrature as option for discrete rate classes
 
