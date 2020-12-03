@@ -482,7 +482,7 @@ phylo <- function(edge, tip, edge.length=NULL){
 compress.phyDat <- function(data){
   attrib <- attributes(data)
   attr(data, "class") <- "list"
-  index <- grp_duplicated( matrix(unlist(data), attrib$nr, length(data)))
+  index <- grp_duplicated( matrix(unlist(data, use.names = FALSE), attrib$nr, length(data)))
   attrib$nr <- attr(index, "nlevels")
   attr(index, "nlevels") <- NULL
   pos <- which(!duplicated(index))
@@ -505,7 +505,7 @@ getCols <- function (data, cols, compress=FALSE){
     attrib$names <- cols
   else attrib$names <- attrib$names[cols]
   if(compress){
-    index <- grp_duplicated( matrix(unlist(data), attrib$nr, length(data)))
+    index <- grp_duplicated( matrix(unlist(data, use.names = FALSE), attrib$nr, length(data)))
     attrib$nr <- attr(index, "nlevels")
     attr(index, "nlevels") <- NULL
     pos <- which(!duplicated(index))
