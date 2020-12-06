@@ -340,6 +340,64 @@ void traverse(Fitch* obj, const IntegerMatrix & orig){
   }
 }
 
+
+void traversetwice(Fitch* obj, const IntegerMatrix & orig, int nni){
+  int i,j;
+  int states = obj->nStates;
+  int nBits = obj->nBits;
+  int nTips = obj->nSeq;
+  IntegerVector anc = orig( _, 0);
+  IntegerVector desc = orig( _, 1);
+
+  if(nni > 0) nni = nTips - 1;
+  else  nni = -1;
+
+  int blub = states * nBits;
+
+  int nl=desc.size();
+  int unrooted = nl % 2;
+  int l = nl;
+  if(unrooted == 1) nl = nl-1;
+
+  for(int k=0; k<nl; k+=2){
+    update_vector(obj->X[anc[k] - 1].data(), obj->X[desc[k] - 1].data(),
+                  obj->X[desc[k+1] - 1].data(), nBits, states);
+  }
+  if(unrooted == 1){
+    update_vector_single(obj->X[anc[nl] - 1].data(),
+                         obj->X[desc[nl] - 1].data(), nBits, states);
+    int a = desc[nl] -1;
+    int b = desc[nl-1] -1;
+    int c = desc[nl-2] -1;
+    update_vector(obj->X[a + 2*nTips].data(), obj->X[b].data(),
+                  obj->X[c].data(), nBits, states);
+    update_vector(obj->X[b + 2*nTips].data(), obj->X[a].data(),
+                  obj->X[c].data(), nBits, states);
+    update_vector(obj->X[c + 2*nTips].data(), obj->X[a].data(),
+                  obj->X[b].data(), nBits, states);
+  }
+
+  else{
+    int a = desc[nl-1] -1;
+    int b = desc[nl-2] -1;
+    update_vector_single(obj->X[a + 2*nTips].data(),
+                         obj->X[b].data(), nBits, states);
+    update_vector_single(obj->X[b + 2*nTips].data(),
+                         obj->X[a].data(), nBits, states);
+  }
+  nl -= 2;
+  for(int i=nl; i>0; i-=2){
+    int p = anc[i-1] -1;
+    int c1 = desc[i-1] -1;
+    int c2 = desc[i-2] -1;
+    if(c1 > nni)update_vector(obj->X[c1 + 2*nTips].data(), obj->X[p + 2*nTips].data(),
+       obj->X[c2].data(), nBits, states);
+    if(c1 > nni)update_vector(obj->X[c2 + 2*nTips].data(), obj->X[p + 2*nTips].data(),
+       obj->X[c1].data(), nBits, states);
+  }
+}
+
+
 void acctran_help(uint64_t * child, const uint64_t * parent,
                                   int nBits, int states){
   for (int i = 0; i < nBits; ++i){
@@ -367,7 +425,6 @@ void acctran_traverse(Fitch* obj, const IntegerMatrix & orig){
 
 
 
-
 void root_all_node(Fitch* obj, const IntegerMatrix orig)
 {
   int states = obj->nStates;
@@ -385,16 +442,19 @@ void root_all_node(Fitch* obj, const IntegerMatrix orig)
 }
 
 
+// traversetwice
 // needed for random.addition, SPR & TBR
 void prep_spr(Fitch* obj, IntegerMatrix orig){
-  int nSeq = obj->nSeq;
-  traverse(obj, orig);
-  IntegerMatrix M = preorder(orig, nSeq);
-  traverse(obj, M);
+//  int nSeq = obj->nSeq;
+  traversetwice(obj, orig, 0L);
+//  traverse(obj, orig);
+//  IntegerMatrix M = preorder(orig, nSeq);
+//  traverse(obj, M);
   root_all_node(obj, orig);
 }
 
 
+// traversetwice(obj, orig, 1L);
 void prep_nni(Fitch* obj, IntegerMatrix orig){
   int nSeq = obj->nSeq;
   traverse(obj, orig);
@@ -928,60 +988,6 @@ NumericVector pscore_acctran(Fitch* obj, const IntegerMatrix & orig){
   return(pars);
 }
 
-void traversetwice(Fitch* obj, const IntegerMatrix & orig){
-  int i,j;
-  int states = obj->nStates;
-  int nBits = obj->nBits;
-  int nTips = obj->nSeq;
-  IntegerVector anc = orig( _, 0);
-  IntegerVector desc = orig( _, 1);
-
-  int nni = -1;
-
-  int blub = states * nBits;
-
-  int nl=desc.size();
-  int unrooted = nl % 2;
-  int l = nl;
-  if(unrooted == 1) nl = nl-1;
-
-  for(int k=0; k<nl; k+=2){
-    update_vector(obj->X[anc[k] - 1].data(), obj->X[desc[k] - 1].data(),
-                  obj->X[desc[k+1] - 1].data(), nBits, states);
-  }
-  if(unrooted == 1){
-    update_vector_single(obj->X[anc[nl] - 1].data(),
-                         obj->X[desc[nl] - 1].data(), nBits, states);
-    int a = desc[nl] -1;
-    int b = desc[nl-1] -1;
-    int c = desc[nl-2] -1;
-    update_vector(obj->X[a + 2*nTips].data(), obj->X[b].data(),
-                  obj->X[c].data(), nBits, states);
-    update_vector(obj->X[b + 2*nTips].data(), obj->X[a].data(),
-                  obj->X[c].data(), nBits, states);
-    update_vector(obj->X[c + 2*nTips].data(), obj->X[a].data(),
-                  obj->X[b].data(), nBits, states);
-  }
-
-  else{
-    int a = desc[nl-1] -1;
-    int b = desc[nl-2] -1;
-    update_vector_single(obj->X[a + 2*nTips].data(),
-                         obj->X[b].data(), nBits, states);
-    update_vector_single(obj->X[b + 2*nTips].data(),
-                         obj->X[a].data(), nBits, states);
-  }
-  nl -= 2;
-  for(int i=nl; i>0; i-=2){
-    int p = anc[i-1] -1;
-    int c1 = desc[i-1] -1;
-    int c2 = desc[i-2] -1;
-    if(c1 > nni)update_vector(obj->X[c1 + 2*nTips].data(), obj->X[p + 2*nTips].data(),
-                  obj->X[c2].data(), nBits, states);
-    if(c1 > nni)update_vector(obj->X[c2 + 2*nTips].data(), obj->X[p + 2*nTips].data(),
-                  obj->X[c1].data(), nBits, states);
-  }
-}
 
 RCPP_MODULE(Fitch_mod) {
     using namespace Rcpp;
