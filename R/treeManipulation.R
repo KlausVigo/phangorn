@@ -242,6 +242,7 @@ pruneTree <- function(tree, ..., FUN = ">=") {
 # requires postorder
 # for internal use in fitch.spr
 # pos statt i
+#' @export
 dropTip <- function(x, i, check.binary = FALSE, check.root = TRUE) {
   edge <- x$edge
   root <- edge[nrow(edge), 1] #getRoot(x)
@@ -303,7 +304,7 @@ descAll <- function(x, node, nTips, ch) {
   desc(node, isInternal)
 }
 
-
+#' @export
 dropNode <- function(x, i, check.binary = FALSE, check.root = TRUE,
                      all.ch = NULL) {
   edge <- x$edge
@@ -322,6 +323,7 @@ dropNode <- function(x, i, check.binary = FALSE, check.root = TRUE,
   else edge <- edge[-ch, ]
   if (nrow(edge) < 3) return(NULL)
   ind <- which(edge[, 1] == pa)
+  sibs <- edge[ind, 2L]
   if (root == pa) {
     if (length(ind) == 1) {
       edge <- edge[-ind, ]
@@ -353,10 +355,10 @@ dropNode <- function(x, i, check.binary = FALSE, check.root = TRUE,
   y <- x
   y$edge <- edge2
   y$Nnode <- length(unique(edge2[, 1]))
-  list(x, y, pa)
+  list(x, y, pa, sibs)
 }
 
-
+# nur mit edge matrix
 # postorder remained tip in 1:nTips
 addOne <- function(tree, tip, i) {
   edge <- tree$edge
@@ -375,7 +377,7 @@ addOne <- function(tree, tip, i) {
   tree
 }
 
-
+# raus?
 addOneTree <- function(tree, subtree, i, node) {
   edge <- tree$edge
   parent <- edge[, 1]
