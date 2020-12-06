@@ -70,9 +70,8 @@ fitch <- function(tree, data, site = "pscore"){
   NULL
 }
 
-#' @rdname parsimony
-#' @export
-random.addition <- function (data, method = "fitch")
+
+random.addition_old <- function (data, method = "fitch")
 {
   label <- names(data)
   nTips <- as.integer(length(label))
@@ -97,20 +96,107 @@ random.addition <- function (data, method = "fitch")
 }
 
 
+random.addition2 <- function (data, method = "fitch")
+{
+  label <- names(data)
+  nTips <- as.integer(length(label))
+  if (nTips < 4L)
+    return(stree(nTips, tip.label = sample(label)))
+  remaining <- as.integer(sample(nTips))
+  tree <- structure(list(edge = structure(c(rep(nTips + 1L, 3), remaining[1:3]),
+                                          .Dim = c(3L, 2L)), tip.label = label,
+                         Nnode = 1L), .Names = c("edge", "tip.label", "Nnode"),
+                    class = "phylo", order = "postorder")
+  remaining <- remaining[-c(1:3)]
+  f <- init_fitch(data, order = TRUE, m=4L)
+  for (i in remaining) {
+    edge <- tree$edge
+    f$traverse(edge)
+    M <- preorder(edge, nTips)
+    f$traverse(M)
+    f$root_all_node(edge)
+    score <- f$pscore_vec(edge[,2] + 2 * nTips, i)
+    nt <- which.min(score)
+    tree <- addOne(tree, i, nt)
+  }
+  attr(tree, "pscore") <- f$pscore(tree$edge)
+  tree
+}
+
+
+#' @rdname parsimony
+#' @export
+random.addition <- function (data, method = "fitch")
+{
+  label <- names(data)
+  nTips <- as.integer(length(label))
+  if (nTips < 4L)
+    return(stree(nTips, tip.label = sample(label)))
+  remaining <- as.integer(sample(nTips))
+  tree <- structure(list(edge = structure(c(rep(nTips + 1L, 3),
+                         remaining[1:3]), .Dim = c(3L, 2L)), tip.label = label,
+                         Nnode = 1L), .Names = c("edge", "tip.label", "Nnode"),
+                    class = "phylo", order = "postorder")
+  remaining <- remaining[-c(1:3)]
+  f <- init_fitch(data, order = TRUE, m=4L)
+  for (i in remaining) {
+    edge <- tree$edge
+    f$traversetwice(edge, 0L)
+    f$root_all_node(edge)
+    score <- f$pscore_vec(edge[,2] + 2 * nTips, i)
+    nt <- which.min(score)
+    tree <- addOne(tree, i, nt)
+  }
+  attr(tree, "pscore") <- f$pscore(tree$edge)
+  tree
+}
+
+
 # so far only tips
-fitch_spr <- function (tree, f)
+#' @export
+fitch_spr <- function (tree, f, trace=0L)
 {
   nTips <- as.integer(length(tree$tip.label))
+  m <- max(tree$edge)
 #  f <- init_fitch(data, FALSE, FALSE, m=4L)
   for (i in 1:nTips) {
-# remove tips
+# remove tip
     treetmp <- dropTip(tree, i)
     edge <- treetmp$edge
     f$prep_spr(edge)
     score <- f$pscore_vec(edge[,2] + 2 * nTips, i)
     nt <- which.min(score)
-#    print(nt)
+# check if different
     tree <- addOne(treetmp, i, nt)
+  }
+
+  root <- getRoot(tree)
+  ch <- allChildren(tree)
+  for (i in (nTips + 1L):m) {
+    if (i != root) {
+      tmp <- dropNode(tree, i, all.ch = ch)
+      if (!is.null(tmp)) {
+#        browser()
+#        edge <- tmp[[1]]$edge[, 2]
+        blub <- f$pscore(tmp[[2]]$edge)
+#        blub <- fast.fitch(tmp[[2]], nr, TRUE)
+        f$prep_spr(tmp[[1]]$edge)
+#        score <- .Call("FNALL6", as.integer(nr), tmp[[1]]$edge[, 1], edge,
+#                       as.integer(m + 1L), PACKAGE = "phangorn")[edge] + blub
+        score <- f$pscore_vec(tmp[[1]]$edge[,2] + 2 * nTips, i)
+#        score <- .Call("FITCHTRIP3", as.integer(i), as.integer(nr),
+#                       as.integer(edge), as.double(score), as.double(minp))
+        nt <- which.min(score)
+
+        if(!(tmp[[1]]$edge[nt, 2L] %in% tmp[[4]]))
+#        if (min(score) < minp) {
+          tree <- addOneTree(tmp[[1]], tmp[[2]], nt, tmp[[3]])
+          minp <- min(score)
+          ch <- allChildren(tree)
+          if(trace) print(f$pscore(tree$edge))
+#        }
+      }
+    }
   }
   attr(tree, "pscore") <- f$pscore(tree$edge)
   tree
@@ -182,8 +268,6 @@ drop_node_2 <- function(x, i, check.binary = FALSE, check.root = TRUE,
 }
 
 
-
-
 #indexNNI2
 indexNNI_fitch <- function(tree) {
   parent <- tree$edge[, 1]
@@ -241,7 +325,8 @@ fitch_nni <- function(tree, f) {
   nTips <- as.integer(length(tree$tip.label))
   INDEX <- indexNNI_fitch(tree)
   l <- nrow(INDEX)
-  f$prep_nni(tree$edge)
+#  f$prep_nni(tree$edge)
+  f$traversetwice(tree$edge, 1L)
   M <- f$pscore_nni(INDEX[, 1L:4L])
   M <- M[, -1L] - M[, 1L]
   M <- as.vector(M)
@@ -268,7 +353,7 @@ fitch_nni <- function(tree, f) {
   list(tree = tree, pscore = p0, swap = swap)
 }
 
-
+#' @export
 optim.fitch <- function(tree, data, trace = 1, rearrangements = "NNI", ...) {
   if (!inherits(tree, "phylo")) stop("tree must be of class phylo")
   if (!is.binary(tree)) {
