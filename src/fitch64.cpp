@@ -90,7 +90,7 @@ IntegerMatrix preorder(const IntegerMatrix & edge, int nTips){
   IntegerVector parent = edge( _, 0);
   IntegerVector children = edge( _, 1);
   List ch = allSiblingsCPP(edge);
-  int p, n, k=0;
+  int p, k=0;
   int m = max(parent); // edge??
   int l = parent.size();
   int root = parent[l-1]; //bugfix
@@ -319,7 +319,6 @@ void update_vector_single(uint64_t * parent, const uint64_t * child,
 
 
 void traverse(Fitch* obj, const IntegerMatrix & orig){
-  int i,j;
   int states = obj->nStates;
   int nBits = obj->nBits;
 
@@ -342,7 +341,6 @@ void traverse(Fitch* obj, const IntegerMatrix & orig){
 
 
 void traversetwice(Fitch* obj, const IntegerMatrix & orig, int nni){
-  int i,j;
   int states = obj->nStates;
   int nBits = obj->nBits;
   int nTips = obj->nSeq;
@@ -352,11 +350,9 @@ void traversetwice(Fitch* obj, const IntegerMatrix & orig, int nni){
   if(nni > 0) nni = nTips - 1;
   else  nni = -1;
 
-  int blub = states * nBits;
-
   int nl=desc.size();
   int unrooted = nl % 2;
-  int l = nl;
+//  int l = nl;
   if(unrooted == 1) nl = nl-1;
 
   for(int k=0; k<nl; k+=2){
@@ -713,9 +709,6 @@ IntegerVector sitewise_pscore(Fitch* obj, const IntegerMatrix & orig){
   int nBits = obj->nBits;
   std::vector< std::vector<uint64_t> > vector = obj->X;
   IntegerVector pars(nBits * BIT_SIZE);
-  int score = 0;
-
-  int nSeq = obj->nSeq;
 
   IntegerVector anc = orig( _, 0);
   IntegerVector desc = orig( _, 1);
@@ -778,9 +771,6 @@ IntegerVector sitewise_pscore(Fitch* obj, const IntegerMatrix & orig){
 }
 
 
-
-
-
 double pscore(Fitch* obj, const IntegerMatrix & orig){
   int i,j;
   int states = obj->nStates;
@@ -788,7 +778,6 @@ double pscore(Fitch* obj, const IntegerMatrix & orig){
   std::vector< std::vector<uint64_t> > vector = obj->X;
   double pars = 0;
 
-  int nSeq = obj->nSeq;
   int p0 = obj->p0;
 
   IntegerVector anc = orig( _, 0);
@@ -883,7 +872,6 @@ NumericVector pscore_node(Fitch* obj, const IntegerMatrix & orig){
   std::vector< std::vector<uint64_t> > vector = obj->X;
   int nSeq = obj->nSeq;
   NumericVector pars(2 * nSeq);
-  int p0 = obj->p0;
 
   IntegerVector anc = orig( _, 0);
   IntegerVector desc = orig( _, 1);
@@ -974,7 +962,6 @@ NumericVector pscore_acctran(Fitch* obj, const IntegerMatrix & orig){
   int nBits = obj->nBits;
   int wBits = obj->wBits;
   NumericVector weight = obj->weight;
-  uint64_t * node_vec;
   int nSeq = obj->nSeq;
   NumericVector pars(2 * nSeq);
 

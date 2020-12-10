@@ -104,7 +104,6 @@ void pwIndex2(int *left, int* right, int* pos, int *l, int *n, double *w, double
 
 SEXP PWI(SEXP LEFT, SEXP RIGHT, SEXP L, SEXP N, SEXP W, SEXP LI){
     int i, li=INTEGER(LI)[0];
-    int count=0;
     SEXP res;
     PROTECT(res = allocVector(REALSXP, li));
     for(i = 0; i < li; i++)REAL(res)[i] = 0.0;
