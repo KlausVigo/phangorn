@@ -90,8 +90,8 @@ dist.hamming <- function(x, ratio = TRUE, exclude = "none"){
     contrast[!con, ] <- 1L
     attr(x, "contrast") <- contrast
   }
-  ub <- upperBound(x)
-  x <- subset(x, select=ub>0)
+#  ub <- upperBound(x)
+#  x <- subset(x, select=ub>0)
   f <- init_fitch(x, FALSE, TRUE, m=1L)
   d <- f$hamming_dist()
   if (ratio) {

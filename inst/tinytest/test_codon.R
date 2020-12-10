@@ -8,9 +8,9 @@ dat_3 <- simSeq(tree, l=500, type = "CODON", dnds=3, tstv=2)
 
 dat_4 <- c(dat_1, dat_2, dat_3)
 
-# fit_F1x4 <- pml(tree, dat_1, bf="F1x4")
-# fit_F3x4 <- pml(tree, dat_1, bf="F3x4")
-# fit_GY <- pml(tree, dat_1, bf="empirical")
+fit_F1x4 <- pml(tree, dat_1, bf="F1x4")
+fit_F3x4 <- pml(tree, dat_1, bf="F3x4")
+fit_GY <- pml(tree, dat_1, bf="empirical")
 
 # test dn/ds optimisation works properly
 fit_GY_opt <- optim.pml(fit_GY, model="codon1",

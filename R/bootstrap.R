@@ -1,17 +1,18 @@
 candidate.tree <- function(x){
-  if(attr(x, "nc") > 31){
-     dm <- dist.ml(x)
-     tree <- fastme.bal(dm, nni = TRUE, spr = FALSE, tbr = FALSE)
-     tree$edge.length[tree$edge.length<0] <- 1e-8
-  }
-  else{
+#  if(attr(x, "nc") > 31){
+#     dm <- dist.ml(x)
+#     tree <- fastme.bal(dm, nni = TRUE, spr = FALSE, tbr = FALSE)
+#     tree$edge.length[tree$edge.length<0] <- 1e-8
+#  }
+#  else{
     tree <- random.addition(x)
     tree <- optim.parsimony(tree, x, trace=0)
     tree <- multi2di(tree)
     tree <- unroot(tree)
+#    tree <- dist.ml(fit$data, bf=fit$bf, Q=fit$Q) %>% nnls.tree(tree=tree)
     tree <- acctran(tree, x)
     tree$edge.length <- tree$edge.length / sum(attr(x, "weight"))
-  }
+#  }
   tree
 }
 

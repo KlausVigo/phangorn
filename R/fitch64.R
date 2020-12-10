@@ -152,8 +152,6 @@ random.addition <- function (data, method = "fitch")
 }
 
 
-# so far only tips
-#' @export
 fitch_spr <- function (tree, f, trace=0L)
 {
   nTips <- as.integer(length(tree$tip.label))
@@ -169,32 +167,20 @@ fitch_spr <- function (tree, f, trace=0L)
 # check if different
     tree <- addOne(treetmp, i, nt)
   }
-
   root <- getRoot(tree)
   ch <- allChildren(tree)
   for (i in (nTips + 1L):m) {
     if (i != root) {
       tmp <- dropNode(tree, i, all.ch = ch)
       if (!is.null(tmp)) {
-#        browser()
-#        edge <- tmp[[1]]$edge[, 2]
-        blub <- f$pscore(tmp[[2]]$edge)
-#        blub <- fast.fitch(tmp[[2]], nr, TRUE)
         f$prep_spr(tmp[[1]]$edge)
-#        score <- .Call("FNALL6", as.integer(nr), tmp[[1]]$edge[, 1], edge,
-#                       as.integer(m + 1L), PACKAGE = "phangorn")[edge] + blub
         score <- f$pscore_vec(tmp[[1]]$edge[,2] + 2 * nTips, i)
-#        score <- .Call("FITCHTRIP3", as.integer(i), as.integer(nr),
-#                       as.integer(edge), as.double(score), as.double(minp))
         nt <- which.min(score)
-
-        if(!(tmp[[1]]$edge[nt, 2L] %in% tmp[[4]]))
-#        if (min(score) < minp) {
+        if(!(tmp[[1]]$edge[nt, 2L] %in% tmp[[4]])){
           tree <- addOneTree(tmp[[1]], tmp[[2]], nt, tmp[[3]])
-          minp <- min(score)
           ch <- allChildren(tree)
           if(trace) print(f$pscore(tree$edge))
-#        }
+        }
       }
     }
   }
@@ -353,7 +339,7 @@ fitch_nni <- function(tree, f) {
   list(tree = tree, pscore = p0, swap = swap)
 }
 
-#' @export
+
 optim.fitch <- function(tree, data, trace = 1, rearrangements = "NNI", ...) {
   if (!inherits(tree, "phylo")) stop("tree must be of class phylo")
   if (!is.binary(tree)) {
@@ -398,7 +384,7 @@ optim.fitch <- function(tree, data, trace = 1, rearrangements = "NNI", ...) {
   m <- nr * (2L * nTips - 2L)
   on.exit({
     if (addTaxa) {
-      if (rt) tree <- ptree(tree, data)
+      if (rt) tree <- acctran(tree, data)
       for (i in seq_along(dup_list)) {
         dup <- dup_list[[i]]
         tree <- add.tips(tree, dup[, 1], dup[, 2])

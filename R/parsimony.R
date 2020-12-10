@@ -674,7 +674,7 @@ optim.sankoff <- function(tree, data, cost = NULL, trace = 1, ...) {
   pscore <- fit.sankoff(tree, dat, cost, "pscore")
 
   on.exit({
-    if (rt) tree <- ptree(tree, data)
+    if (rt) tree <- acctran(tree, data)
     if (addTaxa) {
       if (rt) tree <- add.tips(tree, tips = mapping[, 1], where = mapping[, 2],
           edge.length = rep(0, nrow(mapping)))

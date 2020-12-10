@@ -242,7 +242,6 @@ pruneTree <- function(tree, ..., FUN = ">=") {
 # requires postorder
 # for internal use in fitch.spr
 # pos statt i
-#' @export
 dropTip <- function(x, i, check.binary = FALSE, check.root = TRUE) {
   edge <- x$edge
   root <- edge[nrow(edge), 1] #getRoot(x)
@@ -304,7 +303,7 @@ descAll <- function(x, node, nTips, ch) {
   desc(node, isInternal)
 }
 
-#' @export
+
 dropNode <- function(x, i, check.binary = FALSE, check.root = TRUE,
                      all.ch = NULL) {
   edge <- x$edge
