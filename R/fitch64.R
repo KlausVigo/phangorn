@@ -71,58 +71,6 @@ fitch <- function(tree, data, site = "pscore"){
 }
 
 
-random.addition_old <- function (data, method = "fitch")
-{
-  label <- names(data)
-  nTips <- as.integer(length(label))
-  if (nTips < 4L)
-    return(stree(nTips, tip.label = sample(label)))
-  remaining <- as.integer(sample(nTips))
-  tree <- structure(list(edge = structure(c(rep(nTips + 1L, 3),
-                    remaining[1:3]), .Dim = c(3L, 2L)), tip.label = label,
-                    Nnode = 1L), .Names = c("edge", "tip.label", "Nnode"),
-                    class = "phylo", order = "postorder")
-  remaining <- remaining[-c(1:3)]
-  f <- init_fitch(data, order = TRUE, m=4L)
-  for (i in remaining) {
-    edge <- tree$edge
-    f$prep_spr(edge)
-    score <- f$pscore_vec(edge[,2] + 2 * nTips, i)
-    nt <- which.min(score)
-    tree <- addOne(tree, i, nt)
-  }
-  attr(tree, "pscore") <- f$pscore(tree$edge)
-  tree
-}
-
-
-random.addition2 <- function (data, method = "fitch")
-{
-  label <- names(data)
-  nTips <- as.integer(length(label))
-  if (nTips < 4L)
-    return(stree(nTips, tip.label = sample(label)))
-  remaining <- as.integer(sample(nTips))
-  tree <- structure(list(edge = structure(c(rep(nTips + 1L, 3), remaining[1:3]),
-                                          .Dim = c(3L, 2L)), tip.label = label,
-                         Nnode = 1L), .Names = c("edge", "tip.label", "Nnode"),
-                    class = "phylo", order = "postorder")
-  remaining <- remaining[-c(1:3)]
-  f <- init_fitch(data, order = TRUE, m=4L)
-  for (i in remaining) {
-    edge <- tree$edge
-    f$traverse(edge)
-    M <- preorder(edge, nTips)
-    f$traverse(M)
-    f$root_all_node(edge)
-    score <- f$pscore_vec(edge[,2] + 2 * nTips, i)
-    nt <- which.min(score)
-    tree <- addOne(tree, i, nt)
-  }
-  attr(tree, "pscore") <- f$pscore(tree$edge)
-  tree
-}
-
 
 #' @rdname parsimony
 #' @export
