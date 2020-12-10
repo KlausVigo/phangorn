@@ -161,7 +161,7 @@ IntegerVector getAncAmb(Fitch* obj, int i){
     for (int j = 0; j < states; ++j){
       tmp = seq[j];
       for(int l=0; l<BIT_SIZE; ++l){
-        if( (tmp >> l) & 1ull ) res(i*BIT_SIZE+l) += xx[i];
+        if( (tmp >> l) & 1ull ) res(i*BIT_SIZE+l) += xx[j];
       }
     }
     seq += states;
