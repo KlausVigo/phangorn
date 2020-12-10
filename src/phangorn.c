@@ -15,33 +15,45 @@
 #include <Rinternals.h>
 
 
-/*
-void countCycle(int *M, int *l, int *m, int *res){
-    int j, i, tmp;
-    res[0]=0L;
-    for (i=0; i<*l; i++) {
-        tmp = 0;
-        if(M[i] != M[i + (*m -1) * *l])tmp++;
-        for (j=1; j<*m; j++) {
-            if(M[i + (j-1)* *l] != M[i + j * *l])tmp++;
+
+void addOne(int *edge, int *tip, int *ind, int *l, int *m, int *result){
+    int add = 1L, j=0L, p, k, i, l2=*l+2L, ei;
+    p = edge[*ind-1L];
+    k = edge[*ind-1L + *l];
+    for(i=0; i<*l; i++){
+        ei = edge[i];
+        if( (add==1L) && (ei==p) ){
+            result[j] = *m;
+            result[j+l2] = k;
+            j++;
+            result[j] = *m;
+            result[j+l2] = *tip;
+            j++;
+            add=0L;
         }
-        if(tmp>2L)res[0]+=tmp;
+        if(i== (*ind-1L)) result[j+l2] = *m;
+        else result[j+l2] = edge[i+ *l];
+        result[j] = edge[i];
+        j++;
     }
 }
 
 
-void countCycle2(int *M, int *l, int *m, int *res){
-    int j, i, tmp;
-    for (i=0; i<*l; i++) {
-        tmp = 0L;
-        if(M[i] != M[i + (*m -1) * *l])tmp=1L;
-        for (j=1; j<*m; j++) {
-            if(M[i + (j-1L)* *l] != M[i + j * *l])tmp++;
-        }
-        res[i]=tmp;
+SEXP AddOnes(SEXP edge, SEXP tip, SEXP ind, SEXP l, SEXP m){
+    R_len_t n = length(ind);
+    SEXP result, res;
+    PROTECT(res = allocVector(VECSXP, n));
+    for(int i=0; i<n; i++){
+        PROTECT(result = allocMatrix(INTSXP, INTEGER(l)[0]+2L, 2L));
+        addOne(INTEGER(edge), INTEGER(tip), &INTEGER(ind)[i], INTEGER(l), INTEGER(m), INTEGER(result));
+        SET_VECTOR_ELT(res, i, result);
+        UNPROTECT(1);
     }
+    UNPROTECT(1);
+    return(res);
 }
-*/
+
+
 
 // C++
 SEXP rowMax(SEXP sdat, SEXP sn, SEXP sk){

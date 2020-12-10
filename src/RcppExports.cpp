@@ -187,10 +187,6 @@ BEGIN_RCPP
 END_RCPP
 }
 
-RcppExport void ACCTRAN2(void *, void *, void *, void *, void *, void *);
-RcppExport void ACCTRAN3(void *, void *, void *, void *, void *, void *, void *, void *);
-RcppExport void fitchTriplet(void *, void *, void *, void *, void *);
-RcppExport void fitchTripletACC4(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
 RcppExport SEXP AddOnes(SEXP, SEXP, SEXP, SEXP, SEXP);
 RcppExport SEXP C_rowMin(SEXP, SEXP, SEXP);
 RcppExport SEXP C_sprdist(SEXP, SEXP, SEXP);
@@ -241,10 +237,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_phangorn_cophenetic_cpp", (DL_FUNC) &_phangorn_cophenetic_cpp, 4},
     {"_phangorn_threshStateC", (DL_FUNC) &_phangorn_threshStateC, 2},
     {"_rcpp_module_boot_Fitch_mod", (DL_FUNC) &_rcpp_module_boot_Fitch_mod, 0},
-    {"ACCTRAN2",         (DL_FUNC) &ACCTRAN2,          6},
-    {"ACCTRAN3",         (DL_FUNC) &ACCTRAN3,          8},
-    {"fitchTriplet",     (DL_FUNC) &fitchTriplet,      5},
-    {"fitchTripletACC4", (DL_FUNC) &fitchTripletACC4, 11},
     {"AddOnes",             (DL_FUNC) &AddOnes,              5},
     {"C_rowMin",            (DL_FUNC) &C_rowMin,             3},
     {"C_sprdist",           (DL_FUNC) &C_sprdist,            3},
