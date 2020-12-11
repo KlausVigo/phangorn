@@ -47,6 +47,7 @@ Suggests:
     Biostrings
 License: GPL (>= 2)
 VignetteBuilder: utils, knitr
+biocViews: Software, Technology, QualityControl
 URL: https://github.com/KlausVigo/phangorn
 BugReports: https://github.com/KlausVigo/phangorn/issues
 Repository: CRAN
