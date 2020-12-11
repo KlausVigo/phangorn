@@ -4,8 +4,8 @@
 %\VignetteEngine{Sweave}
 \documentclass[12pt]{article}
 
-%\usepackage{times}
-%\usepackage{hyperref}
+\usepackage{times}
+\usepackage{hyperref}
 
 \newcommand{\Rfunction}[1]{{\texttt{#1}}}
 \newcommand{\Robject}[1]{{\texttt{#1}}}
@@ -33,6 +33,7 @@
 
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 
 % Ross Ihakas extenstion for nicer representation
 \DefineVerbatimEnvironment{Sinput}{Verbatim} {xleftmargin=2em}
@@ -51,7 +52,7 @@ foo <- packageDescription("phangorn")
 
 \title{Ancestral sequence reconstruction with phangorn} % (Version \Sexpr{foo$Version})}
 \author{Klaus P. Schliep}
-%\author{\mref{mailto:klaus.schliep@gmail.com}{Klaus P. Schliep}}
+\author{\mref{mailto:klaus.schliep@gmail.com}{Klaus P. Schliep}}
 \date{\today{} | Package version \Sexpr{packageVersion("phangorn")}}
 \maketitle
 
