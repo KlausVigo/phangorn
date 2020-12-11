@@ -4,8 +4,8 @@
 %\VignetteEngine{Sweave}
 \documentclass[12pt]{article}
 
-\usepackage{times}
-\usepackage{hyperref}
+%\usepackage{times}
+%\usepackage{hyperref}
 
 \newcommand{\Rfunction}[1]{{\texttt{#1}}}
 \newcommand{\Robject}[1]{{\texttt{#1}}}
@@ -50,7 +50,8 @@ foo <- packageDescription("phangorn")
 
 
 \title{Ancestral sequence reconstruction with phangorn} % (Version \Sexpr{foo$Version})}
-\author{\mref{mailto:klaus.schliep@gmail.com}{Klaus P. Schliep}}
+\author{Klaus P. Schliep}
+%\author{\mref{mailto:klaus.schliep@gmail.com}{Klaus P. Schliep}}
 \date{\today{} | Package version \Sexpr{packageVersion("phangorn")}}
 \maketitle
 
@@ -165,6 +166,8 @@ title("Bayes")
 \caption{Ancestral reconstruction for fig.\ref{fig:Pars} the using the maximum likelihood and (empirical) Bayesian reconstruction.}\label{fig:MLB}
 \end{center}
 \end{figure}
+
+\clearpage
 
 \bibliographystyle{plain}
 \bibliography{phangorn}
