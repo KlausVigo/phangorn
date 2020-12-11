@@ -42,7 +42,6 @@ jobs:
 
       - uses: r-lib/actions/setup-tinytex@v1
       - run: tlmgr --version
-      tlmgr install psnfss
 
       - name: Query dependencies
         run: |
