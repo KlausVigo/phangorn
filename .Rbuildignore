@@ -3,3 +3,4 @@
 ^\.httr-oauth$
 ^\.TODO
 ^\.github$
+^revdep$
