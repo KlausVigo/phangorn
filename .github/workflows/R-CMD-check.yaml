@@ -42,7 +42,6 @@ jobs:
 
       - uses: r-lib/actions/setup-tinytex@v1
       - run: tlmgr --version
-      tlmgr install psnfss
 
       - name: Query dependencies
         run: |
@@ -77,7 +76,7 @@ jobs:
         run: |
           tinytex::install_tinytex()
           tinytex::tlmgr_update()
-          tinytex::tlmgr_install(c('standalone', 'xcolor', 'amsmath', 'graphics', 'fancyhdr', 'sectsty', 'psnfss', 'hyperref', 'times'))
+          tinytex::tlmgr_install(c('standalone', 'xcolor', 'amsmath', 'graphics', 'fancyhdr', 'sectsty', 'psnfss', 'ae', 'hyperref', 'times'))
         shell: Rscript {0}
 
       - name: Check
