@@ -42,6 +42,7 @@ jobs:
 
       - uses: r-lib/actions/setup-tinytex@v1
       - run: tlmgr --version
+      tlmgr install psnfss
 
       - name: Query dependencies
         run: |
@@ -72,6 +73,13 @@ jobs:
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
 
+      - name: Install texlibs
+        run: |
+          tinytex::install_tinytex()
+          tinytex::tlmgr_update()
+          tinytex::tlmgr_install(c('standalone', 'xcolor', 'amsmath', 'graphics', 'fancyhdr', 'sectsty', 'psnfss', 'hyperref', 'times'))
+        shell: Rscript {0}
+
       - name: Check
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
@@ -84,3 +92,14 @@ jobs:
         with:
           name: ${{ runner.os }}-r${{ matrix.config.r }}-results
           path: check
+
+      - name: Install dependencies
+        run: |
+          install.packages(c("remotes"))
+          remotes::install_deps(dependencies = TRUE)
+          remotes::install_cran("covr")
+        shell: Rscript {0}
+
+      - name: Test coverage
+        run: covr::codecov()
+        shell: Rscript {0}
