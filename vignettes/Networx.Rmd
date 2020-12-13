@@ -98,9 +98,10 @@ plot(cnet, "2D", show.edge.label=TRUE)
 
 The functions `read.nexus.networx` and `write.nexus.networx` can read and write nexus files for or from SplitsTree [@Huson2006]. Check-out the new vignette IntertwiningTreesAndNetworks for additional functions, examples, and advanced applications. 
 
-## References
+
 
 ## Session Infomation
 ```{r, eval=TRUE}
 sessionInfo()
 ```
+## References
