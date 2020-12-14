@@ -1,0 +1,233 @@
+---
+title: "Estimating phylogenetic trees with phangorn"
+author:
+- name: Klaus Schliep 
+  affiliation: Graz University of Technology
+  email: klaus.schliep@gmail.com
+package: phangorn
+bibliography: phangorn.bib
+output:
+  BiocStyle::html_document
+vignette: |
+  %\VignetteIndexEntry{"Estimating phylogenetic trees with phangorn"}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Introduction
+
+These notes should enable the user to estimate phylogenetic trees from alignment data with different methods using the _phangorn_  package [@Schliep2011] . Several functions of _package_ are also described in more detail in [@Paradis2012]. For more theoretical background on all the methods see e.g. [@Felsenstein2004][@Yang2006]. This document illustrates some of the `package` features to estimate phylogenetic trees using different reconstruction methods. Small adaptations to the scripts in section \@ref(appendix) should enable the user to perform phylogenetic analyses.
+
+# Getting started
+
+The first thing we have to do is to read in an alignment. Unfortunately there exists many different file formats that alignments can be stored in. The function `read.phyDat` is used to read in an alignment. There are several functions to read in alignments depending on the format of the data set (nexus, phylip, fasta) and the kind of data (amino acid or nucleotides) in the _ape_ package [@Paradis2018] and _phangorn_. The function `read.phyDat` calls these other functions and transform them into a `phyDat` object. For the specific parameter settings available look in the help files of the function `read.dna` (for phylip, fasta, clustal format), `read.nexus.data` for nexus files. For amino acid data additional `read.aa` is called.
+
+We start our analysis loading the _phangorn_ package and then reading in an alignment.
+
+```{r}
+library(ape)
+library(phangorn)
+fdir <- system.file("extdata/trees", package = "phangorn")
+primates <- read.phyDat(file.path(fdir, "primates.dna"),
+                        format = "interleaved")
+```
+
+# Distance based methods
+
+After reading in the alignment we can build a first tree with distance based methods. The function dist.dna from the ape package computes distances for many DNA substitution models. To use the function dist.dna we have to transform the data to class DNAbin. For amino acids the function `dist.ml` offers common substitution models (for example "WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa" or "mtREV24").
+
+After constructing a distance matrix we reconstruct a rooted tree with UPGMA and alternatively an unrooted tree using Neighbor Joining [@Saitou1987][@Studier1988]. More distance methods like `fastme` are available in the _ape_ package.
+```{r}
+dm  <- dist.ml(primates)
+treeUPGMA  <- upgma(dm)
+treeNJ  <- NJ(dm)
+```
+We can plot the trees treeUPGMA and treeNJ with the commands:
+```{r plot1, fig.cap="Rooted UPGMA tree.", echo=TRUE}
+plot(treeUPGMA, main="UPGMA")
+```
+```{r plot2, fig.cap="Unrooted NJ tree.", echo=TRUE}
+plot(treeNJ, "unrooted", main="NJ")
+```
+Distance based methods are very fast and we will use the UPGMA and NJ tree as starting trees for the maximum parsimony and maximum likelihood analyses.
+
+# Parsimony
+
+The function parsimony returns the parsimony score, that is the number of changes which are at least necessary to describe the data for a given tree. We can compare the parsimony score or the two trees we computed so far:
+```{r}
+parsimony(treeUPGMA, primates)
+parsimony(treeNJ, primates)
+```
+The function `optim.parsimony` performs tree rearrangements to find trees with a lower parsimony score. The tree rearrangement implemented are  nearest-neighbor interchanges (NNI) and subtree pruning and regrafting (SPR). The later one only works so far with the fitch algorithm. However is also a version of the parsimony ratchet [@Nixon1999] implemented, which is likely to find better trees than just doing NNI / SPR rearrangements.
+```{r}
+treePars  <- optim.parsimony(treeUPGMA, primates)
+treeRatchet  <- pratchet(primates, trace = 0)
+parsimony(c(treePars, treeRatchet), primates)
+```
+For small data sets it is also possible to find all most parsimonious trees using a branch and bound algorithm [@Hendy1982]. For data sets with more than 10 taxa this can take a long time and depends strongly on how tree like the data are.
+```{r}
+(trees <- bab(subset(primates,1:10)))
+```
+
+# Maximum likelihood
+The last method we will describe in this vignette is Maximum Likelihood (ML) as introduced by Felsenstein [@Felsenstein1981].
+We can easily compute the likelihood for a tree given the data
+```{r}
+fit = pml(treeNJ, data=primates)
+fit
+```
+The function `pml` returns an object of class `pml`. This object contains the data, the tree and many different parameters of the model like the likelihood. There are many generic functions for the class `pml` available, which allow the handling of these objects.
+```{r}
+methods(class="pml")
+```
+The object fit just estimated the likelihood for the tree it got supplied, but the branch length are not optimized for the Jukes-Cantor model yet, which can be done with the function `optim.pml`.
+```{r}
+fitJC  <- optim.pml(fit, TRUE)
+logLik(fitJC)
+```
+With the default values`pml` will estimate a Jukes-Cantor model. The function`update.pml` allows to change parameters. We will change the model to the GTR + $\Gamma(4)$ + I model and then optimize all the parameters.
+```{r}
+fitGTR <- update(fit, k=4, inv=0.2)
+fitGTR <- optim.pml(fitGTR, model="GTR", optInv=TRUE, optGamma=TRUE,
+    rearrangement = "NNI", control = pml.control(trace = 0))
+fitGTR
+```
+With the control parameters the thresholds for the fitting process can be changed. Here we want just to supress output during the fitting process. For larger trees the NNI rearrangements often get stuck in a local maximum. We added two stochastic algorithms to improve topology search. The first (set `rearrangement="stochastic"`) performs stochastic rearrangements similar as in [@Nguyen2015], which makes random NNI permutation to the tree, which than gets optimised to escape local optima. The second option (rearrangement="ratchet") perform the likelihood ratchet [@Vos2003].
+
+While these algorithms may find better trees they will also take more time.
+```{r}
+fitGTR <- optim.pml(fitGTR, model="GTR", optInv=TRUE, optGamma=TRUE,
+    rearrangement = "stochastic", control = pml.control(trace = 0))
+fitGTR
+```
+
+## Model selection
+We can compare nested models for the JC and GTR + $\Gamma(4)$ + I model using likelihood ratio statistic
+```{r}
+anova(fitJC, fitGTR)
+```
+with the Shimodaira-Hasegawa \cite{Shimodaira1999} test
+```{r}
+SH.test(fitGTR, fitJC)
+```
+or with the AIC
+```{r}
+AIC(fitJC)
+AIC(fitGTR)
+AICc(fitGTR)
+BIC(fitGTR)
+```
+An alternative is to use the function `modelTest`  to compare different nucleotide or protein models the AIC, AICc or BIC, similar to popular programs ModelTest and ProtTest [@Posada1998], [@Posada2008], [@Abascal2005].
+```{r, echo=FALSE}
+load("Trees.RData")
+```
+```{r, echo=TRUE, eval=FALSE}
+mt = modelTest(primates)
+```
+
+The results of `modelTest` is illustrated in following table:
+```{r, echo=FALSE}
+library(knitr)
+kable(mt, digits=2)
+```
+
+
+The thresholds for the optimization in `modelTest` are not as strict as for `optim.pml` and no tree rearrangements are performed. As `modelTest` computes and optimizes a lot of models it would be a waste of computer time not to save these results. The results are saved as call together with the optimized trees in an environment and this call can be evaluated to get a `pml` object back to use for further optimization or analysis.
+```{r, echo=TRUE}
+env <- attr(mt, "env")
+ls(envir=env)
+(fit <- eval(get("HKY+G+I", env), env))
+```
+At last we may want to apply bootstrap to test how well the edges of the tree are supported: 
+```{r, echo=TRUE, eval=FALSE}
+bs = bootstrap.pml(fitJC, bs=100, optNni=TRUE,
+    control = pml.control(trace = 0))
+```
+
+
+Now we can plot the tree with the bootstrap support values on the edges and also look at `consensusNet` to identify potential conflict.
+```{r plotBS, fig.cap="Tree with bootstrap support. Unrooted tree (midpoint rooted) with bootstrap support values.", echo=TRUE}
+plotBS(midpoint(fitJC$tree), bs, p = 50, type="p")
+```
+```{r ConsensusNet, fig.cap="ConsensusNet from the bootstrap sample.", echo=TRUE}
+cnet <- consensusNet(bs, p=0.2)
+plot(cnet, show.edge.label=TRUE)
+```
+
+
+Several analyses, e.g.`bootstrap` and `modelTest`, can be computationally demanding, but as nowadays most computers have several cores one can distribute the computations using the  _parallel_ package. However it is only possible to use this approach if R is running from command line ("X11"), but not using  a GUI (for example "Aqua" on Macs) and unfortunately the _parallel_ package does not work at all under Windows.
+
+\newpage
+
+# Appendix 
+## Standard scripts for nucleotide analysis
+Here we provide two standard scripts which can be adapted for the most common tasks.
+Most likely the arguments for `read.phyDat` have to be adapted to accommodate your file format. Both scripts assume that the  _parallel_ package works on your platform, see comments above.
+
+```{r, echo=TRUE, eval=FALSE}
+library(phangorn)
+file <- "myfile"
+dat <- read.phyDat(file)
+dm <- dist.ml(dat, "F81")
+tree <- NJ(dm)
+# as alternative for a starting tree:
+tree <- pratchet(dat)          # parsimony tree
+tree <- nnls.phylo(tree, dm)   # need edge weights
+
+
+# 1. alternative: quick and dirty: GTR + G
+fitStart <- pml(tree, dat, k=4)
+fit <- optim.pml(fitStart, model="GTR", optGamma=TRUE, rearrangement="stochastic")
+
+# 2. alternative: preper with modelTest
+mt <- modelTest(dat, tree=tree, multicore=TRUE)
+mt[order(mt$AICc),]
+# choose best model from the table according to AICc
+bestmodel <- mt$Model[which.min(mt$AICc)]
+
+env <- attr(mt, "env")
+fitStart <- eval(get("GTR+G+I", env), env)
+
+# or let R search the table
+fitStart <- eval(get(bestmodel, env), env)
+# equivalent to:   fitStart = eval(get("GTR+G+I", env), env)
+fit <- optim.pml(fitStart, rearrangement = "stochastic",
+    optGamma=TRUE, optInv=TRUE, model="GTR")
+bs <- bootstrap.pml(fit, bs=100, optNni=TRUE, multicore=TRUE)
+```
+
+\newpage
+## Standard scripts for amino acid analysis
+You can specify different several models build in which you can specify, e.g. "WAG", "JTT", "Dayhoff", "LG". Optimizing the rate matrix for amino acids is possible, but would take a long, a very long time and you will need to have a large alignment to estimate all the parameters. So make sure to set `optBf=FALSE` and `optQ=FALSE` in the function `optim.pml`, which is also the default.
+```{r, echo=TRUE, eval=FALSE}
+library(phangorn)
+file <- "myfile"
+dat <- read.phyDat(file, type = "AA")
+dm <- dist.ml(dat, model="JTT")
+tree <- NJ(dm)
+
+# parallel will only work safely from command line
+# and not at all windows
+(mt <- modelTest(dat, model=c("JTT", "LG", "WAG"),
+    multicore=TRUE))
+# run all available amino acid models
+(mt <- modelTest(dat, model="all", multicore=TRUE))
+
+fitStart <- eval(get(mt$Model[which.min(mt$BIC)], env), env)
+
+fitNJ <- pml(tree, dat, model="JTT", k=4, inv=.2)
+fit <- optim.pml(fitNJ, rearrangement = "stochastic",
+    optInv=TRUE, optGamma=TRUE)
+fit
+
+bs <- bootstrap.pml(fit, bs=100, optNni=TRUE, multicore=TRUE)
+```
+
+
+# Session info {.unnumbered}
+
+```{r sessionInfo, echo=FALSE}
+sessionInfo()
+```
+
+# References
