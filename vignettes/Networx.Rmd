@@ -34,13 +34,13 @@ tree <- nj(dist.hamming(yeast))
 par("mar" = rep(1, 4))
 tree <- plotBS(tree, bs, "phylogram")
 cnet <- consensusNet(bs, .3)
-plot(cnet, "2D", show.edge.label=TRUE)
+plot(cnet, show.edge.label=TRUE)
 ```
 
 In many cases, `consensusNet` will return more than two incompatible (competing) splits. This cannot be plotted as a planar (2-dimensional) graph. Such as situation requires a n-dimensional graph, where the maximum number of dimensions equals the maximum number of incompatible splits. For example, if we have three alternative incompatible splits: (A,B)|(C,D) vs. (A,C)|(B,D) vs. (A,D)|(B,C), we need a 3-dimensional graph to show all three alternatives. A nice way to get still a good impression of the network is to plot it in 3D. 
 
 ```{r, eval=FALSE}
-plot(cnet)
+plot(cnet, "3D")
 # rotate 3d plot
 play3d(spin3d(axis=c(0,1,0), rpm=6), duration=10)
 # create animated gif file 
@@ -59,7 +59,7 @@ The function `neighborNet` implements the popular method of @Bryant2004. The Nei
 dm <- dist.hamming(yeast)
 nnet <- neighborNet(dm)
 par("mar" = rep(1, 4))
-plot(nnet, "2D")
+plot(nnet)
 ```
 
 The advantage of Neighbor-Net is that it returns a circular split system which can be always displayed in a planar (2D) graph. The plots displayed in `phangorn` may (however) not be planar, but re-plotting can give you a planar graph. This unwanted behavior will be improved in future version. 
@@ -72,7 +72,7 @@ We can use the generic function `addConfidences` to add (branch) support values 
 ```{r, eval=TRUE}
 nnet <- addConfidences(nnet, tree)
 par("mar" = rep(1, 4))
-plot(nnet, "2D", show.edge.label=TRUE)
+plot(nnet, show.edge.label=TRUE)
 ```    
 
 Analogously, we can also add support values to a tree:
@@ -91,7 +91,7 @@ Given a distance matrix, we can estimate edge weights using non-negative Least-S
 ```{r, eval=TRUE}
 cnet <- nnls.networx(cnet, dm)
 par("mar" = rep(1, 4))
-plot(cnet, "2D", show.edge.label=TRUE)
+plot(cnet, show.edge.label=TRUE)
 ```
     
 ### Import and export networks, advanced functions for networx objects 
