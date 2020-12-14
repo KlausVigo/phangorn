@@ -21,8 +21,8 @@ candidate.tree <- function(x){
 #'
 #' \code{bootstrap.pml} performs (non-parametric) bootstrap analysis and
 #' \code{bootstrap.phyDat} produces a list of bootstrapped data sets.
-#' \code{plotBS} plots a phylogenetic tree with the with the bootstrap values
-#' assigned to the (internal) edges.
+#' \code{plotBS} plots a phylogenetic tree with the bootstrap values assigned
+#' to the (internal) edges.
 #'
 #' It is possible that the bootstrap is performed in parallel, with help of the
 #' multicore package. Unfortunately the multicore package does not work under
