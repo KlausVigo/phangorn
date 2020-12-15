@@ -4,32 +4,50 @@ author:
 - name: Klaus Schliep
   affiliation: Graz University of Technology
   email: klaus.schliep@gmail.com
-package: phangorn
+date: "`r Sys.Date()`"  
 bibliography: phangorn.bib
 output:
-  BiocStyle::html_document
-abstract: |
-  Description of your vignette
-vignette: |
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+vignette: >
   %\VignetteIndexEntry{Advanced features}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-# Intrduction
+```{r setup, echo=FALSE}
+# set global chunk options: images will be bigger
+knitr::opts_chunk$set(fig.width=6, fig.height=4)
+#, global.par=TRUE
+options(digits = 4)
+```
+
+### Table of content 
+1. [ Introduction ](#intro)
+2. [ User defined data formats ](#user)
+3. [ Markov models of character evolution ](#mk)
+4. [ Estimation of non-standard transition rate matrices ](#nstand) 
+5. [ Codon substitution models ](#codon)
+6. [ Generating trees ](#trees)
+7. [ Session info ](#session)
+8. [ References ](#ref)
+
+
+## <a name="intro"></a> 1. Introduction
 
 This document illustrates some of the _phangorn_ [@Schliep2011] specialized features which are useful but maybe not as well-known or just not (yet) described elsewhere. This is mainly interesting for someone who wants to explore different models or set up some simulation studies. We show how to construct data objects for different character states other than nucleotides or amino acids or how to set up different models to estimate transition rate.
 
 The vignette *Trees* describes in detail how to estimate phylogenies from nucleotide or amino acids.
 
 
-# User defined data formats
+## <a name="user"></a> 2. User defined data formats
 
 To better understand how to define our own data type it is useful to know a bit more about the internal representation of `phyDat` objects. The internal representation of `phyDat` object is very similar to `factor` objects.
 
 As an example we will show here several possibilities to define nucleotide data with gaps defined as a fifth state. Ignoring gaps or coding them as ambiguous sites - as it is done in most programs, also in phangorn as default - may be misleading (see [@Warnow2012]). When the number of gaps is low and the gaps are missing at random coding gaps as separate state may be not important.
 
-Let assume we have given a matrix where each row contains a character vector of a taxonomical unit:
+Let assume we have given a matrix where each row contains a character vector of a taxonomic unit:
 ```{r}
 library(phangorn)
 data = matrix(c("r","a","y","g","g","a","c","-","c","t","c","g",
@@ -73,7 +91,7 @@ Here we defined "n" as a state which can be any nucleotide but not a gap "-" and
 These data can be used in all functions available in _phangorn_ to compute distance matrices or perform parsimony and maximum likelihood analysis.
 
 
-# Markov models of character evolution
+## <a name="mk"></a> 3. Markov models of character evolution
 
 To model nucleotide substitutions across the edges of a tree T we can assign a transition matrix. In the case of nucleotides, with four character states, each 4 $\times$ 4 transition matrix has, at most, 12 free parameters.
 
@@ -90,8 +108,9 @@ Q =
 \beta\pi_A & \delta\pi_C & \ast & \eta\pi_T \\
 \gamma\pi_A &  \epsilon\pi_C & \eta\pi_G & \ast \\
 \end{pmatrix}
-(\#eq:GTR)
+(1)
 \end{equation}
+
 
 
 where we need to assign 6 paramters $\alpha, \dots, \eta$. The elements on the diagonal are chosen so that the rows sum to zero. The Jukes-Cantor (JC) [@Jukes1969] model can be derived as special case from the GTR model, for equal equilibrium frequencies $\pi_A = \pi_C = \pi_G = \pi_T = 0.25$ and equal rates set to $\alpha = \beta = \gamma = \delta = \eta$. Table \@ref(tab:models) lists all built-in nucleotide models in _phangorn_.
@@ -101,13 +120,14 @@ P(t) = (p_{ij}(t)) = e^{Qt}, \qquad \sum_j p_{ij}=1
 \]
 where $P(t)$ is the transition matrix spanning a period of time $t$.
 
-# Estimation of non-standard transition rate matrices 
+ 
+## <a name="nstand"></a> 4. Estimation of non-standard transition rate matrices 
 In the last section \@ref(user) we described how to set up user defined data formats. Now we describe how to estimate transition matrices with pml.
 
-Again for nucleotide data the most common models can be called directly in the `optim.pml` function (e.g. "JC69", "HKY", "GTR" to name a few). Table \@ref(tab:models) lists all the available nucleotide models, which can estimated directly in `optim.pml`. For amino acids several transition matrices are available ("WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24", "VT","RtREV", "HIVw", "HIVb", "FLU", "Blossum62", "Dayhoff\_DCMut" and "JTT-DCMut") or can be estimated with `optim.pml`. For example Mathews et al. (2010) [@Mathews2010] used this function to estimate a phytochrome amino acid transition matrix.
+Again for nucleotide data the most common models can be called directly in the `optim.pml` function (e.g. "JC69", "HKY", "GTR" to name a few). Table 2 lists all the available nucleotide models, which can estimated directly in `optim.pml`. For amino acids several transition matrices are available ("WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24", "VT","RtREV", "HIVw", "HIVb", "FLU", "Blossum62", "Dayhoff\_DCMut" and "JTT-DCMut") or can be estimated with `optim.pml`. For example Mathews et al. (2010) [@Mathews2010] used this function to estimate a phytochrome amino acid transition matrix.
 
 
-We will now show how to estimate a rate matrix with different transition ($\alpha$) and transversion ratio ($\beta$) and a fixed rate to the gap state ($\gamma$) - a kind of Kimura two-parameter model (K81) for nucleotide data with gaps as fifth state (see table \ref{gaps}).
+We will now show how to estimate a rate matrix with different transition ($\alpha$) and transversion ratio ($\beta$) and a fixed rate to the gap state ($\gamma$) - a kind of Kimura two-parameter model (K81) for nucleotide data with gaps as fifth state (see table 1).
 
 
   | a        | c        | g        | t        | - 
@@ -117,7 +137,7 @@ c | $\beta$  |          |          |          |
 g | $\alpha$ | $\beta$  |          |          |
 t | $\beta$  | $\alpha$ | $\beta$  |          | 
 - | $\gamma$ | $\gamma$ | $\gamma$ | $\gamma$ | 
-: (\#tab:rate) Rate matrix. Rate matrix with 3 parameters to optimize.
+: Tab 1. Rate matrix with 3 parameters to optimize.
 
 
 If we want to fit a non-standard transition rate matrices, we have to tell `optim.pml`, which transitions in Q get the same rate.
@@ -137,7 +157,7 @@ Here are some conventions how the models are estimated:
 
 
 If a model is supplied the base frequencies bf and rate matrix Q are optimised according to the model (nucleotides) or the adequate rate matrix and frequencies are chosen (for amino acids).
-If optQ=TRUE and neither a model or subs are supplied than a symmetric (optBf=FALSE) or reversible model (optBf=TRUE, i.e. the GTR for nucleotides) is estimated.  This can be slow if the there are many character states, e.g. for amino acids.
+If optQ=TRUE and neither a model or subs are supplied than a symmetric (optBf=FALSE) or reversible model (optBf=TRUE, i.e. the GTR for nucleotides) is estimated.  This can be slow if the there are many character states, e.g. for amino acids. Table 2 shows how parameters are optimized and number of parameters to estimate. The elements of the vector subs correspond to $\alpha, \dots, \eta$ in equation (1)
 
 
  model | optQ | optBf | subs | df 
@@ -165,11 +185,10 @@ If optQ=TRUE and neither a model or subs are supplied than a symmetric (optBf=FA
          TVM | TRUE | TRUE | $c(1, 2, 3, 4, 2, 0)$ | 7 
          SYM | TRUE | FALSE | $c(1, 2, 3, 4, 5, 0)$ | 5 
          GTR | TRUE | TRUE | $c(1, 2, 3, 4, 5, 0)$ | 8 
-        
-: (\#tab:models) DNA models available in phangorn. This table shows how parameters are optimized and number of parameters to estimate. The elements of the vector subs correspond to $\alpha, \dots, \eta$ in equation \@ref(eq:GTR)
+: Tab 2. DNA models available in phangorn. 
 
 
-# Codon substitution models
+## <a name="codon"></a> 5. Codon substitution models
 A special case of the transition rates are codon models._phangorn_ now offers the possibility to estimate the $d_N/d_S$ ratio (sometimes called ka/ks), for an overview see [@Yang2014]. These functions extend the option to estimates the $d_N/d_S$ ratio for pairwise sequence comparison as it is available through the function `kaks` in _seqinr_. The transition rate between between codon $i$ and $j$ is defined as follows:
 \begin{eqnarray}
 q_{ij}=\left\{
@@ -212,7 +231,8 @@ One can estimate the codon frequencies setting the option to `optBf=TRUE` in `op
 
 The "YN98" model [@Yang1998] is similar to the "codon1", but additional optimizes the codon frequencies.
 
-# Generating trees
+
+## <a name="trees"></a> 6. Generating trees
 _phangorn_ has several functions to generate tree topologies, which may are interesting for simulation studies. `allTrees` computes all possible bifurcating tree topologies either rooted or unrooted for up to 10 taxa. One has to keep in mind that the number of trees is growing exponentially, use `howmanytrees` from _ape_ as a reminder.
 
 ```{r}
@@ -228,12 +248,11 @@ nni(trees[[1]])
 `rNNI` and `rSPR` generate trees which are a defined number of NNI (nearest neighbor interchange) or SPR (subtree pruning and regrafting) away.
 
 
-
-# Session info {.unnumbered}
+## <a name="session"></a> 7. Session info
 
 ```{r sessionInfo, echo=FALSE}
 sessionInfo()
 ```
 
-# References
+## <a name="ref"></a> 8. References
 

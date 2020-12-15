@@ -42,7 +42,7 @@ Suggests:
     seqinr,
     xtable,
     rgl,
-    BiocStyle,
+    prettydoc,
     knitr,
     rmarkdown,
     magick,

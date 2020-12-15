@@ -4,21 +4,36 @@ author:
 - name: Klaus Schliep 
   affiliation: Graz University of Technology
   email: klaus.schliep@gmail.com
-package: phangorn
+date: "`r Sys.Date()`"
 bibliography: phangorn.bib
 output:
-  BiocStyle::html_document
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
 vignette: |
   %\VignetteIndexEntry{"Estimating phylogenetic trees with phangorn"}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-# Introduction
+### Table of content 
+1. [ Introduction ](#intro)
+2. [ Getting started ](#start)
+3. [ Distance based methods ](#dist)
+4. [ Parsimony ](#pars) 
+5. [ Maximum likelihood ](#ml)
+6. [ Model selection ](#model)
+7. [ Appendix ](#appendix)
+8. [ Session info ](#session)
+9. [ References ](#ref)
+
+
+
+## <a name="intro"></a> 1. Introduction
 
 These notes should enable the user to estimate phylogenetic trees from alignment data with different methods using the _phangorn_  package [@Schliep2011] . Several functions of _package_ are also described in more detail in [@Paradis2012]. For more theoretical background on all the methods see e.g. [@Felsenstein2004][@Yang2006]. This document illustrates some of the `package` features to estimate phylogenetic trees using different reconstruction methods. Small adaptations to the scripts in section \@ref(appendix) should enable the user to perform phylogenetic analyses.
 
-# Getting started
+## <a name="start"></a> 2. Getting started
 
 The first thing we have to do is to read in an alignment. Unfortunately there exists many different file formats that alignments can be stored in. The function `read.phyDat` is used to read in an alignment. There are several functions to read in alignments depending on the format of the data set (nexus, phylip, fasta) and the kind of data (amino acid or nucleotides) in the _ape_ package [@Paradis2018] and _phangorn_. The function `read.phyDat` calls these other functions and transform them into a `phyDat` object. For the specific parameter settings available look in the help files of the function `read.dna` (for phylip, fasta, clustal format), `read.nexus.data` for nexus files. For amino acid data additional `read.aa` is called.
 
@@ -32,7 +47,7 @@ primates <- read.phyDat(file.path(fdir, "primates.dna"),
                         format = "interleaved")
 ```
 
-# Distance based methods
+## <a name="dist"></a> 3. Distance based methods
 
 After reading in the alignment we can build a first tree with distance based methods. The function dist.dna from the ape package computes distances for many DNA substitution models. To use the function dist.dna we have to transform the data to class DNAbin. For amino acids the function `dist.ml` offers common substitution models (for example "WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa" or "mtREV24").
 
@@ -51,7 +66,7 @@ plot(treeNJ, "unrooted", main="NJ")
 ```
 Distance based methods are very fast and we will use the UPGMA and NJ tree as starting trees for the maximum parsimony and maximum likelihood analyses.
 
-# Parsimony
+## <a name="pars"></a> 4. Parsimony
 
 The function parsimony returns the parsimony score, that is the number of changes which are at least necessary to describe the data for a given tree. We can compare the parsimony score or the two trees we computed so far:
 ```{r}
@@ -69,7 +84,7 @@ For small data sets it is also possible to find all most parsimonious trees usin
 (trees <- bab(subset(primates,1:10)))
 ```
 
-# Maximum likelihood
+## <a name="ml"></a> 5. Maximum likelihood
 The last method we will describe in this vignette is Maximum Likelihood (ML) as introduced by Felsenstein [@Felsenstein1981].
 We can easily compute the likelihood for a tree given the data
 ```{r}
@@ -101,7 +116,7 @@ fitGTR <- optim.pml(fitGTR, model="GTR", optInv=TRUE, optGamma=TRUE,
 fitGTR
 ```
 
-## Model selection
+## <a name="model"></a> 6. Model selection
 We can compare nested models for the JC and GTR + $\Gamma(4)$ + I model using likelihood ratio statistic
 ```{r}
 anova(fitJC, fitGTR)
@@ -159,8 +174,8 @@ Several analyses, e.g.`bootstrap` and `modelTest`, can be computationally demand
 
 \newpage
 
-# Appendix 
-## Standard scripts for nucleotide analysis
+## <a name="appendix"></a> 7. Appendix 
+### Standard scripts for nucleotide analysis
 Here we provide two standard scripts which can be adapted for the most common tasks.
 Most likely the arguments for `read.phyDat` have to be adapted to accommodate your file format. Both scripts assume that the  _parallel_ package works on your platform, see comments above.
 
@@ -197,7 +212,7 @@ bs <- bootstrap.pml(fit, bs=100, optNni=TRUE, multicore=TRUE)
 ```
 
 \newpage
-## Standard scripts for amino acid analysis
+### Standard scripts for amino acid analysis
 You can specify different several models build in which you can specify, e.g. "WAG", "JTT", "Dayhoff", "LG". Optimizing the rate matrix for amino acids is possible, but would take a long, a very long time and you will need to have a large alignment to estimate all the parameters. So make sure to set `optBf=FALSE` and `optQ=FALSE` in the function `optim.pml`, which is also the default.
 ```{r, echo=TRUE, eval=FALSE}
 library(phangorn)
@@ -224,10 +239,10 @@ bs <- bootstrap.pml(fit, bs=100, optNni=TRUE, multicore=TRUE)
 ```
 
 
-# Session info {.unnumbered}
+## <a name="session"></a> 8 Session info {.unnumbered}
 
 ```{r sessionInfo, echo=FALSE}
 sessionInfo()
 ```
 
-# References
+## <a name="ref"></a> 9. References
