@@ -19,7 +19,7 @@ NumericVector fhm_new(NumericVector v, int n){
   double vi, vj;
   num_splits = (1 << n);
   step = 1;
-  for(int l = 0; l < max_n; l++){
+  for(l = 0; l < max_n; l++){
     start = 0L;
     while(start < (num_splits-1L)){
       for(i = start; i < (start + step); i++){
@@ -106,10 +106,10 @@ IntegerVector countCycle2_cpp(IntegerMatrix M){
 // speed up some code for NJ
 // [[Rcpp::export]]
 IntegerVector out_cpp(NumericVector d, NumericVector r, int n){
-  int i, j, k, l;
+  int i, j; //, k, l;
   double res, tmp;
-  k=1;
-  l=2;
+//  k=1;
+//  l=2;
   IntegerVector xx = IntegerVector::create(1, 2);
   res = d[1] - r[0] - r[1];
   for(i = 0; i < (n-1); i++){
