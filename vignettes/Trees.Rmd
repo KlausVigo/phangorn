@@ -11,7 +11,7 @@ output:
     theme: cayman
     highlight: github
 vignette: |
-  %\VignetteIndexEntry{"Estimating phylogenetic trees with phangorn"}
+  %\VignetteIndexEntry{Estimating phylogenetic trees with phangorn}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
