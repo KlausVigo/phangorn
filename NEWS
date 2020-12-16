@@ -24,9 +24,9 @@ OTHER CHANGES
 
     o lots of small improvements to especially for codon models
 
-    o new contributors: Brian, Jeremy and Mike
-
     o tests are now done by tinytest, dropped dependencies on testthat, vdiffr
+
+    o all vignettes are now based on Rmarkdown
 
 
      CHANGES in PHANGORN VERSION 2.5.4
