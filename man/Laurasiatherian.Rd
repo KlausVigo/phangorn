@@ -5,7 +5,7 @@
 \alias{Laurasiatherian}
 \title{Laurasiatherian data (AWCMEE)}
 \source{
-Data have been taken from \url{http://www.allanwilsoncentre.ac.nz/}
+Data have been taken from \url{http://www.allanwilsoncentre.ac.nz}
 and were converted to R format by \email{klaus.schliep@gmail.com}.
 }
 \description{
