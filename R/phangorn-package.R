@@ -26,7 +26,7 @@ NULL
 #'
 #' @name Laurasiatherian
 #' @docType data
-#' @source Data have been taken from \url{http://www.allanwilsoncentre.ac.nz/}
+#' @source Data have been taken from \url{http://www.allanwilsoncentre.ac.nz}
 #' and were converted to R format by \email{klaus.schliep@gmail.com}.
 #' @keywords datasets
 #' @examples
@@ -59,7 +59,7 @@ NULL
 #' phylogenetic analysis with phangorn. The second vignette (phangorn-special)
 #' covers more advanced feature like defining special character spaces and
 #' things which fit nowhere else.  More information on \bold{phangorn} can be
-#' found on \url{https://www.phangorn.org/}.
+#' found on \url{https://www.phangorn.org}.
 #'
 #'
 #' @name phangorn-package

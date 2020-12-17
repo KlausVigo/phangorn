@@ -3,7 +3,7 @@
 #' \code{mast} computes the maximum agreement subtree (MAST).
 #'
 #' The code is derived from the code example in Valiente (2009).
-## for the original code see \url{http://www.cs.upc.edu/~valiente/comput-biol/}.
+## for the original code see \url{https://www.cs.upc.edu/~valiente/comput-biol/}.
 #' The version for the unrooted trees is much slower.
 #'
 #' @param x a tree, i.e. an object of class \code{phylo}.
