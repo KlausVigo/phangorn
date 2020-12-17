@@ -20,16 +20,9 @@ bibentry(bibtype = "Article",
     journal = "Methods in Ecology and Evolution",
     volume = "8",
     number = "10",
-    issn = "2041-210X",
     doi = "10.1111/2041-210X.12760",
     pages = "1212--1220",
     keywords = "exploratory data analysis, networks, phangorn, R, trees",
     year = "2017",
     textVersion = "Schliep, K., Potts, A. J., Morrison, D. A., Grimm, G. W. (2017), Intertwining phylogenetic trees and networks. Methods in Ecology and Evolution, 8: 1212--1220. doi: 10.1111/2041-210X.12760"
 )
-
-
-
-
-
-

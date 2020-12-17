@@ -724,7 +724,7 @@ constSitePattern <- function(n, levels=c("a", "c", "g", "t"), names=NULL){
 #' \url{https://www.ncbi.nlm.nih.gov/blast/fasta.shtml} Felsenstein, J. (1993)
 #' Phylip (Phylogeny Inference Package) version 3.5c. Department of Genetics,
 #' University of Washington.
-#' \url{http://evolution.genetics.washington.edu/phylip/phylip.html}
+#' \url{https://evolution.genetics.washington.edu/phylip/phylip.html}
 #' @keywords IO
 #' @export read.aa
 read.aa <- function (file, format = "interleaved", skip = 0, nlines = 0,
