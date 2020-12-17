@@ -74,7 +74,7 @@ Approach}. Oxford University Press, Oxford
 
 Sergei L. Kosakovsky Pond, Simon D. W. Frost, Spencer V. Muse (2005) HyPhy:
 hypothesis testing using phylogenies, \emph{Bioinformatics}, \bold{21(5)}:
-676--679, https://doi.org/10.1093/bioinformatics/bti079
+676--679, doi:10.1093/bioinformatics/bti079
 
 Nielsen, R., and Z. Yang. (1998) Likelihood models for detecting positively
 selected amino acid sites and applications to the HIV-1 envelope gene.

@@ -56,7 +56,7 @@ primates <- read.phyDat(file.path(fdir, "primates.dna"),
 \url{https://www.ncbi.nlm.nih.gov/blast/fasta.shtml} Felsenstein, J. (1993)
 Phylip (Phylogeny Inference Package) version 3.5c. Department of Genetics,
 University of Washington.
-\url{http://evolution.genetics.washington.edu/phylip/phylip.html}
+\url{https://evolution.genetics.washington.edu/phylip/phylip.html}
 }
 \seealso{
 \code{\link[ape]{read.dna}}, \code{\link[ape]{read.GenBank}},
