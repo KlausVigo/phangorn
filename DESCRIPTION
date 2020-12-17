@@ -17,13 +17,13 @@ Authors@R: c(person("Klaus", "Schliep", email="klaus.schliep@gmail.com", role = 
   person("Brian", "O'Meara", role=c("ctb")),
   person("Long", "Qu", role=c("ctb")))
 Maintainer: Klaus Schliep <klaus.schliep@gmail.com>
-Description: Package contains methods for estimation of phylogenetic trees and
+Description: Allows for estimation of phylogenetic trees and
     networks using Maximum Likelihood, Maximum Parsimony, distance methods and
-    Hadamard conjugation. Allows to compare trees, models selection and offers
-    visualizations for trees and split networks. 
+    Hadamard conjugation. Offers methods for tree comparison, model selection and for
+    visualization of trees and split networks. 
 Depends:
     R (>= 3.6.0),
-    ape (>= 5.0)
+    ape (>= 5.4)
 Imports:
     quadprog,
     igraph (>= 1.0),
