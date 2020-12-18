@@ -10,6 +10,8 @@ output:
   prettydoc::html_pretty:
     theme: cayman
     highlight: github
+    toc: true
+    toc_depth: 2
 vignette: |
   %\VignetteIndexEntry{Ancestral Sequence Reconstruction}
   %\VignetteEngine{knitr::rmarkdown}
@@ -24,20 +26,11 @@ options(digits = 4)
 ```   
 
 
-### Table of content 
-1. [ Introduction ](#intro)
-2. [ Parsimony reconstructions ](#pars)
-3. [ Likelihood reconstructions ](#ml)
-4. [ Session info ](#session)
-5. [ References ](#ref)
-
-
-
-## <a name="intro"></a> 1. Introduction
+# Introduction
 
 These notes describe the ancestral sequence reconstruction using the _phangorn_ package [@Schliep2011]. _phangorn_ provides several methods to estimate ancestral character states with either Maximum Parsimony (MP) or Maximum Likelihood (ML). For more background on all the methods see e.g. [@Felsenstein2004] or [@Yang2006].
 
-## <a name="pars"></a> 2. Parsimony reconstructions 
+# Parsimony reconstructions 
 To reconstruct ancestral sequences we first load some data and reconstruct a tree:
 ```{r}
 library(phangorn)
@@ -83,7 +76,7 @@ title("ACCTRAN")
 ```
 
 
-## <a name="ml"></a> 3. Likelihood reconstructions
+# Likelihood reconstructions
 
 _phangorn_ also offers the possibility to estimate ancestral states using a ML.
 The advantages of ML over parsimony is that the reconstruction accounts for different edge lengths.
@@ -116,10 +109,10 @@ plotAnc(tree, anc.bayes, 17)
 title("Bayes")
 ```
 
-## <a name="session"></a> 4. Session info 
+# Session info 
 
 ```{r sessionInfo, echo=FALSE}
 sessionInfo()
 ```
 
-## <a name="ref"></a> 5. References 
+# References 

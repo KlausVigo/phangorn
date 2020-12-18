@@ -10,6 +10,8 @@ output:
   prettydoc::html_pretty:
     theme: cayman
     highlight: github
+    toc: true
+    toc_depth: 2
 vignette: >
   %\VignetteIndexEntry{Advanced features}
   %\VignetteEngine{knitr::rmarkdown}
@@ -23,25 +25,15 @@ knitr::opts_chunk$set(fig.width=6, fig.height=4)
 options(digits = 4)
 ```
 
-### Table of content 
-1. [ Introduction ](#intro)
-2. [ User defined data formats ](#user)
-3. [ Markov models of character evolution ](#mk)
-4. [ Estimation of non-standard transition rate matrices ](#nstand) 
-5. [ Codon substitution models ](#codon)
-6. [ Generating trees ](#trees)
-7. [ Session info ](#session)
-8. [ References ](#ref)
 
-
-## <a name="intro"></a> 1. Introduction
+# Introduction
 
 This document illustrates some of the _phangorn_ [@Schliep2011] specialized features which are useful but maybe not as well-known or just not (yet) described elsewhere. This is mainly interesting for someone who wants to explore different models or set up some simulation studies. We show how to construct data objects for different character states other than nucleotides or amino acids or how to set up different models to estimate transition rate.
 
 The vignette *Trees* describes in detail how to estimate phylogenies from nucleotide or amino acids.
 
 
-## <a name="user"></a> 2. User defined data formats
+# User defined data formats
 
 To better understand how to define our own data type it is useful to know a bit more about the internal representation of `phyDat` objects. The internal representation of `phyDat` object is very similar to `factor` objects.
 
@@ -91,7 +83,7 @@ Here we defined "n" as a state which can be any nucleotide but not a gap "-" and
 These data can be used in all functions available in _phangorn_ to compute distance matrices or perform parsimony and maximum likelihood analysis.
 
 
-## <a name="mk"></a> 3. Markov models of character evolution
+# Markov models of character evolution
 
 To model nucleotide substitutions across the edges of a tree T we can assign a transition matrix. In the case of nucleotides, with four character states, each 4 $\times$ 4 transition matrix has, at most, 12 free parameters.
 
@@ -121,7 +113,7 @@ P(t) = (p_{ij}(t)) = e^{Qt}, \qquad \sum_j p_{ij}=1
 where $P(t)$ is the transition matrix spanning a period of time $t$.
 
  
-## <a name="nstand"></a> 4. Estimation of non-standard transition rate matrices 
+# Estimation of non-standard transition rate matrices 
 In the last section \@ref(user) we described how to set up user defined data formats. Now we describe how to estimate transition matrices with pml.
 
 Again for nucleotide data the most common models can be called directly in the `optim.pml` function (e.g. "JC69", "HKY", "GTR" to name a few). Table 2 lists all the available nucleotide models, which can estimated directly in `optim.pml`. For amino acids several transition matrices are available ("WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24", "VT","RtREV", "HIVw", "HIVb", "FLU", "Blossum62", "Dayhoff\_DCMut" and "JTT-DCMut") or can be estimated with `optim.pml`. For example Mathews et al. (2010) [@Mathews2010] used this function to estimate a phytochrome amino acid transition matrix.
@@ -188,7 +180,7 @@ If optQ=TRUE and neither a model or subs are supplied than a symmetric (optBf=FA
 : Tab 2. DNA models available in phangorn. 
 
 
-## <a name="codon"></a> 5. Codon substitution models
+# Codon substitution models
 A special case of the transition rates are codon models._phangorn_ now offers the possibility to estimate the $d_N/d_S$ ratio (sometimes called ka/ks), for an overview see [@Yang2014]. These functions extend the option to estimates the $d_N/d_S$ ratio for pairwise sequence comparison as it is available through the function `kaks` in _seqinr_. The transition rate between between codon $i$ and $j$ is defined as follows:
 \begin{eqnarray}
 q_{ij}=\left\{
@@ -232,7 +224,7 @@ One can estimate the codon frequencies setting the option to `optBf=TRUE` in `op
 The "YN98" model [@Yang1998] is similar to the "codon1", but additional optimizes the codon frequencies.
 
 
-## <a name="trees"></a> 6. Generating trees
+# Generating trees
 _phangorn_ has several functions to generate tree topologies, which may are interesting for simulation studies. `allTrees` computes all possible bifurcating tree topologies either rooted or unrooted for up to 10 taxa. One has to keep in mind that the number of trees is growing exponentially, use `howmanytrees` from _ape_ as a reminder.
 
 ```{r}
@@ -248,11 +240,11 @@ nni(trees[[1]])
 `rNNI` and `rSPR` generate trees which are a defined number of NNI (nearest neighbor interchange) or SPR (subtree pruning and regrafting) away.
 
 
-## <a name="session"></a> 7. Session info
+# Session info
 
 ```{r sessionInfo, echo=FALSE}
 sessionInfo()
 ```
 
-## <a name="ref"></a> 8. References
+# References
 
