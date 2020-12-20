@@ -578,6 +578,7 @@ subset.phyDat <- function (x, subset, select, site.pattern = TRUE, ...){
 
 
 #' @rdname phangorn-internal
+#' @importFrom fastmatch fmatch
 #' @export
 map_duplicates <-  function(x, dist=length(x)<500, ...){
   labels <- names(x)
@@ -591,8 +592,8 @@ map_duplicates <-  function(x, dist=length(x)<500, ...){
   else ind <- duplicated(x)
   res <- NULL
   if(any(ind)){
-    if(dist) ind2 <- match(z[ind], z)
-    else ind2 <- match(x[ind], x)
+    if(dist) ind2 <- fmatch(z[ind], z)
+    else ind2 <- fmatch(x[ind], x)
     res <- data.frame(duplicates=labels[ind], where=labels[ind2],
                       stringsAsFactors = FALSE)
   }
