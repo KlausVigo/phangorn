@@ -582,33 +582,58 @@ subset.phyDat <- function (x, subset, select, site.pattern = TRUE, ...){
 #' @export
 map_duplicates <-  function(x, dist=length(x)<500, ...){
   labels <- names(x)
+  nr <- attr(x, "nr")
+
   if(dist){
     y <- as.matrix(dist.hamming(x, FALSE))
     l <- nrow(y)
-    z <- character(l)
-    for(i in seq_len(l)) z[i] <- paste( round(y[i, ], 8), collapse="_")
-    ind <- duplicated(z)
+#    z <- character(l)
+#    for(i in seq_len(l)) z[i] <- paste( round(y[i, ], 8), collapse="_")
+    ind <- duplicated(y)
   }
   else ind <- duplicated(x)
   res <- NULL
   if(any(ind)){
-    if(dist) ind2 <- fmatch(z[ind], z)
-    else ind2 <- fmatch(x[ind], x)
-    res <- data.frame(duplicates=labels[ind], where=labels[ind2],
-                      stringsAsFactors = FALSE)
+    ind2 <- grp_duplicated( matrix(unlist(x, recursive = FALSE, use.names = FALSE), nr, length(labels)), MARGIN=2)
+    if(dist) ind2 <- grp_duplicated(y)
+    ind2 <- ind2[ind]
+    res <- data.frame(duplicates=labels[ind], where=labels[!ind][ind2], stringsAsFactors = FALSE)
   }
   res
 }
-
 
 
 #' @rdname phyDat
 #' @method unique phyDat
 #' @export
 unique.phyDat <- function(x, incomparables=FALSE, identical=TRUE, ...){
-  if(identical) return(getCols(x, !duplicated(x)))
-  tmp <- map_duplicates(x)[,1]
-  getCols(x, setdiff(names(x), tmp))
+  tmp <- map_duplicates(x, !identical)
+  if (!is.null(tmp)) {
+    x <- getCols(x, setdiff(names(x), tmp[, 1]))
+    attr(x, "duplicated") <- list(tmp)
+  }
+  x
+}
+
+
+addTaxa <- function(tree, dup_list) {
+  fun <- function(x, dup_list){
+    for (i in seq_along(dup_list)) {
+      dup <- dup_list[[i]]
+      x <- add.tips(x, dup[, 1], dup[, 2])
+    }
+    x
+  }
+  if(inherits(tree, "phylo")) return(fun(tree, dup_list))
+  if(inherits(tree, "multiPhylo")){
+    trees <- .uncompressTipLabel(tree)
+    trees <- unclass(trees)
+    trees <- lapply(trees, fun, dup_list)
+    class(trees) <- "multiPhylo"
+    trees <- .compressTipLabel(trees)
+    return(trees)
+  }
+  NULL
 }
 
 

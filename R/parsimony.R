@@ -493,65 +493,38 @@ optim.parsimony <- function(tree, data, method = "fitch", cost = NULL,
 }
 
 
-## @param return return only best tree(s) or trees from each run.
 
 #' @rdname parsimony
 #' @export
-# perturbation="ratchet", "stochastic"
 pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
-                     minit = 10, k = 10, trace = 1, all = FALSE,
-                     rearrangements = "SPR", perturbation = "ratchet", ...) {
-  search_history <- c(FALSE, FALSE)
-  # search_history <- c(FALSE, FALSE)
-  # return="single",
-  # if (return=="single") all <- FALSE
-  # if(return=="best") all <- TRUE
-  # if(return=="all" | return=="history"){
-  #  all <- TRUE
-  #  search_history <- c(TRUE, TRUE)
-  #}
-  # c("single", "best", "all", "history") needs better names
-
+                         minit = 10, k = 10, trace = 1, all = FALSE,
+                         rearrangements = "SPR", perturbation = "ratchet", ...) {
   eps <- 1e-08
-  # if(method=="fitch" && (is.null(attr(data, "compressed")) ||
-  #    attr(data, "compressed") == FALSE))
-  #      data <- compressSites(data)
   trace <- trace - 1
-  uniquetree <- function(trees) {
-    k <- 1
-    res <- trees[[1]]
-    result <- list()
-    result[[1]] <- res
-    k <- 2
-    trees <- trees[-1]
-    while (length(trees) > 0) {
-      class(trees) <- "multiPhylo"
-      rf <- suppressMessages( RF.dist(res, trees, FALSE) )
-      if (any(rf == 0)) trees <- trees[-which(rf == 0)]
-      if (length(trees) > 0) {
-        res <- trees[[1]]
-        result[[k]] <- res
-        k <- k + 1
-        trees <- trees[-1]
-      }
-    }
-    result
-  }
-  if (search_history[1]) start_trees <- list()
-  if (search_history[2]) search_trees <- list()
+
+  start_trees <- vector("list", maxit)
+  search_trees <- vector("list", maxit)
   tree <- NULL
   mp <- Inf
+
+  # remove parsimony uniformative sie or duplicates
+  if(perturbation == "ratchet") weight <- attr(data, "weight")
+  if(method=="fitch"){
+    data <- removeParsimonyUninfomativeSites(data, recursive=TRUE)
+  }
+  else data <- unique(data)
+
   if (perturbation != "random_addition"){
     if(is.null(start)) start <- optim.parsimony(nj(dist.hamming(data)), data,
-                                        trace = trace, method = method,
-                                        rearrangements = rearrangements, ...)
+                                                trace = trace-1, method = method, rearrangements = rearrangements, ...)
     tree <- start
+    label <- intersect(tree$tip.label, names(data))
     if (!is.binary(tree)){
-      # should not be necessary, if unique sequences are used
       tree <- multi2di(tree)
       if(method=="fitch") tree <- unroot(tree)
     }
-    data <- subset(data, tree$tip.label)
+    data <- subset(data, label)
+    tree <- keep.tip(tree, label)
     attr(tree, "pscore") <- parsimony(tree, data, method = method, ...)
     mp <- attr(tree, "pscore")
     if (trace >= 0)
@@ -559,77 +532,76 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
   }
   FUN <- function(data, tree, method, rearrangements, ...)
     optim.parsimony(tree, data = data, method = method,
-      rearrangements = rearrangements, ...)
-  result <- list()
-  result[[1]] <- tree
+                    rearrangements = rearrangements, ...)
+
+  result <- tree
   on.exit({
-    if (!all) result <- tree
-    else class(result) <- "multiPhylo"
+    if (!all && inherits(result, "multiPhylo")) result <- result[[1]]
+    if(!is.null(attr(data, "duplicated")))
+      result <- addTaxa(result, attr(data, "duplicated"))
+    #    else class(result) <- "multiPhylo"
     if (length(result) == 1) result <- result[[1]]
-#    if(return=="all"){
-#      all <- FALSE
-#      class(search_trees) <- "multiPhylo"
-#      search_trees <- .compressTipLabel(search_trees)
-#      result <- search_trees
-#    }
-#    if (return=="history"){
-#      class(start_trees) <- "multiPhylo"
-#      class(search_trees) <- "multiPhylo"
-#      start_trees <- .compressTipLabel(start_trees)
-#      search_trees <- .compressTipLabel(search_trees)
-#      result <- list(best = result,
-#                     start_trees = start_trees, search_trees = search_trees)
-#    }
+    env <- new.env()
+    start_trees <- start_trees[seq_len(i)]
+    search_trees <- search_trees[seq_len(i)]
+    class(start_trees) <- "multiPhylo"
+    class(search_trees) <- "multiPhylo"
+    start_trees <- .compressTipLabel(start_trees)
+    search_trees <- .compressTipLabel(search_trees)
+    assign("start_trees", start_trees, envir=env)
+    assign("search_trees", search_trees, envir=env)
+    if(perturbation == "ratchet") {
+      if(!is.null(attr(data, "duplicated")))
+        start_trees <-addTaxa(start_trees, attr(data, "duplicated"))
+      spl <- as.splits(start_trees)
+      result <- addConfidences(result, spl)
+      if (inherits(result, "multiPhylo")) result <- .compressTipLabel(result)
+    }
+    # for ratchet assign bs values
+    attr(result, "env") <- env
     return(result)
   })
   kmax <- 1
   nTips <- length(tree$tip.label)
   for (i in seq_len(maxit)) {
     if (perturbation == "ratchet") {
+      # sample and subset data
+      # bstree
       bstrees <- bootstrap.phyDat(data, FUN, tree = tree, bs = 1,
-        trace = trace, method = method, rearrangements = rearrangements, ...)
-      trees <- lapply(bstrees, optim.parsimony, data, trace = trace,
-        method = method, rearrangements = rearrangements, ...)
-      if (search_history[1]) start_trees[[i]] <- bstrees[[1]]
-      if (search_history[2]) search_trees[[i]] <- trees[[1]]
+                                  trace = trace, method = method, rearrangements = rearrangements, ...)
+      trees <- optim.parsimony(bstrees[[1]], data, trace = trace,
+                               method = method, rearrangements = rearrangements, ...)
+      start_trees[[i]] <- bstrees[[1]]
+      search_trees[[i]] <- trees
     }
     if (perturbation == "stochastic") {
       treeNNI <- rNNI(tree, floor(nTips / 2))
       trees <- optim.parsimony(treeNNI, data, trace = trace, method = method,
-        rearrangements = rearrangements, ...)
-      trees <- list(trees)
-      if (search_history[1]) start_trees[[i]] <- treeNNI
-      if (search_history[2]) search_trees[[i]] <- trees[[1]]
+                               rearrangements = rearrangements, ...)
+      start_trees[[i]] <- treeNNI
+      search_trees[[i]] <- trees
     }
     if (perturbation == "random_addition") {
       treeRA <- random.addition(data)
       trees <- optim.parsimony(treeRA, data, trace = trace, method = method,
-        rearrangements = rearrangements, ...)
-      trees <- list(trees)
-      if (search_history[1]) start_trees[[i]] <- treeRA
-      if (search_history[2]) search_trees[[i]] <- trees[[1]]
+                               rearrangements = rearrangements, ...)
+      start_trees[[i]] <- treeRA
+      search_trees[[i]] <- trees
     }
-    if (inherits(result, "phylo")) m <- 1
-    else m <- length(result)
-    if (m > 0) trees[2:(1 + m)] <- result[1:m]
-    pscores <- sapply(trees, function(data) attr(data, "pscore"))
+    pscores <- attr(trees, "pscore")
     mp1 <- min(pscores)
-    if ( (mp1 + eps) < mp) kmax <- 1
-    else kmax <- kmax + 1
-    mp <- mp1
-
+    if ( (mp1 + eps) < mp) {
+      kmax <- 1
+      result <- trees
+      mp <- mp1
+    }
+    else{
+      kmax <- kmax + 1
+      if( all && (mp1 < (mp + eps)) && all(RF.dist(trees, result) > 0))
+        result <- c(result, trees)
+    }
     if (trace >= 0)
       print(paste("Best pscore so far:", mp))
-    ind <- which(pscores < mp + eps)
-    if (length(ind) == 1) {
-      result <- trees[ind]
-      tree <- result[[1]]
-    }
-    else {
-      result <- uniquetree(trees[ind])
-      l <- length(result)
-      tree <- result[[sample(l, 1)]]
-    }
     if ( (kmax >= k) && (i >= minit)) break()
   } # for
 }  # pratchet
