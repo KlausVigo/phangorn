@@ -660,13 +660,15 @@ removeParsUninfoSites <- function(data, exact=TRUE){
   if (length(pis) > 0){
     p0 <- sum(attr(data, "weight")[pis[, 1]] * pis[, 2])
     data <- getRows(data, c(1:nr)[-pis[, 1]], TRUE)
+    if(is.null(attr(data, "informative")))
+      attr(data, "informative") <- seq_len(nr)[-pis[, 1]]
+    else attr(data, "informative") <- attr(data, "informative")[-pis[, 1]]
   }
   else p0 <- 0
   if(length(attr(data, "p0"))) p0 <- p0 + attr(data, "p0")
-  attr(data, "p0") <-  p0
+  attr(data, "p0") <- p0
   data
 }
-
 
 
 removeParsimonyUninfomativeSites <- function(data, recursive=FALSE, exact=TRUE){
@@ -677,7 +679,6 @@ removeParsimonyUninfomativeSites <- function(data, recursive=FALSE, exact=TRUE){
   while (tmp) {
     nam <- names(data)
     data <- removeParsUninfoSites(data, exact)
-    p0 <- attr(data, "p0")
     if(!recursive) return(data)
     if (attr(data, "nr") == 0) {
       star_tree <- TRUE

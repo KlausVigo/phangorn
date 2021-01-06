@@ -508,9 +508,14 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
   mp <- Inf
 
   # remove parsimony uniformative sie or duplicates
-  if(perturbation == "ratchet") weight <- attr(data, "weight")
+  if(perturbation == "ratchet"){
+    weight <- attr(data, "weight")
+    v <- rep(seq_along(weight), weight)
+    w <- logical(length(weight))
+  }
   if(method=="fitch"){
     data <- removeParsimonyUninfomativeSites(data, recursive=TRUE)
+    if(perturbation == "ratchet") w[attr(data, "informative")] <- TRUE
   }
   else data <- unique(data)
 
@@ -552,7 +557,7 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
     assign("search_trees", search_trees, envir=env)
     if(perturbation == "ratchet") {
       if(!is.null(attr(data, "duplicated")))
-        start_trees <-addTaxa(start_trees, attr(data, "duplicated"))
+        start_trees <- addTaxa(start_trees, attr(data, "duplicated"))
       spl <- as.splits(start_trees)
       result <- addConfidences(result, spl)
       if (inherits(result, "multiPhylo")) result <- .compressTipLabel(result)
@@ -565,13 +570,19 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
   nTips <- length(tree$tip.label)
   for (i in seq_len(maxit)) {
     if (perturbation == "ratchet") {
-      # sample and subset data
-      # bstree
-      bstrees <- bootstrap.phyDat(data, FUN, tree = tree, bs = 1,
-                                  trace = trace, method = method, rearrangements = rearrangements, ...)
-      trees <- optim.parsimony(bstrees[[1]], data, trace = trace,
-                               method = method, rearrangements = rearrangements, ...)
-      start_trees[[i]] <- bstrees[[1]]
+      # sample and subset more efficient than in bootstrap.phyDat
+      bsw <- tabulate(sample(v, replace = TRUE), length(weight))[w]
+      bs_ind <- which(bsw > 0)
+      bs_data <- getRows(data, bs_ind)
+      attr(bs_data, "weight") <- bsw[bs_ind]
+      if(length(bs_ind) > 0)bstrees <- optim.parsimony(tree, bs_data,
+          trace = trace, method = method, rearrangements = rearrangements, ...)
+      else bstrees <- stree(length(data), tip.label = names(data))
+#      bstrees <- bootstrap.phyDat(data, FUN, tree = tree, bs = 1,
+#         trace = trace, method = method, rearrangements = rearrangements, ...)
+      trees <- optim.parsimony(bstrees, data, trace = trace,
+                        method = method, rearrangements = rearrangements, ...)
+      start_trees[[i]] <- bstrees
       search_trees[[i]] <- trees
     }
     if (perturbation == "stochastic") {
