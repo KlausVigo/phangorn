@@ -699,14 +699,12 @@ addConfidences.phylo <- function(x, y, ...) {
 }
 
 
-#' @rdname addConfidences
 #' @export
 addConfidences.multiPhylo <- function(x, y, ...) {
   x <- .uncompressTipLabel(x)
   x <- unclass(x)
   x <- lapply(x, addConfidences, y)
   class(x) <- "multiPhylo"
-#  .compressTipLabel(x)
   x
 }
 
