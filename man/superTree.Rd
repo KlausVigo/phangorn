@@ -45,7 +45,8 @@ so far and assume that all trees share the same set of taxa.
 
 data(Laurasiatherian)
 set.seed(1)
-bs <- bootstrap.phyDat(Laurasiatherian, FUN = function(x)upgma(dist.hamming(x)), bs=50)
+bs <- bootstrap.phyDat(Laurasiatherian,
+                       FUN = function(x) upgma(dist.hamming(x)), bs=50)
 
 mrp_st <- superTree(bs)
 plot(mrp_st)
