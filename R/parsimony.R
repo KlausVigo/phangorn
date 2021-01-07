@@ -515,7 +515,8 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
   }
   if(method=="fitch"){
     data <- removeParsimonyUninfomativeSites(data, recursive=TRUE)
-    if(perturbation == "ratchet") w[attr(data, "informative")] <- TRUE
+    if(!is.null(attr(data, "informative"))) w[attr(data, "informative")] <- TRUE
+    else w[] <- TRUE
   }
   else data <- unique(data)
 
