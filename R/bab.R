@@ -297,8 +297,8 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
         ind <- which(score == ms)
         tmp <- vector("list", length(ind))
         tmp[seq_along(ind)] <- .Call("AddOnes", tmpTree,
-                                     as.integer(inord[a + 1L]), as.integer(ind),
-                                     as.integer(L[a]), as.integer(M[a]), PACKAGE = "phangorn")
+                      as.integer(inord[a + 1L]), as.integer(ind),
+                      as.integer(L[a]), as.integer(M[a]), PACKAGE = "phangorn")
         if (ms < bound) {
           bound <- ms
           if (trace) cat("upper bound:", bound + p0, "\n")

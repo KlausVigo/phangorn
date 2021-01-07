@@ -522,7 +522,7 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
 
   if (perturbation != "random_addition"){
     if(is.null(start)) start <- optim.parsimony(nj(dist.hamming(data)), data,
-                                                trace = trace-1, method = method, rearrangements = rearrangements, ...)
+        trace = trace-1, method = method, rearrangements = rearrangements, ...)
     tree <- start
     label <- intersect(tree$tip.label, names(data))
     if (!is.binary(tree)){

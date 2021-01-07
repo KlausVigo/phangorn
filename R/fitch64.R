@@ -195,8 +195,8 @@ drop_node_2 <- function(x, i, check.binary = FALSE, check.root = TRUE,
   ind_w <- logical(max(edge))
   ind_w[i] <- TRUE
   for(i in rev(seq_len(nrow(edge)))) if(ind_w[edge[i, 1]]==TRUE){
-    ind_v[i]=TRUE
-    ind_w[edge[i, 2]]=TRUE
+    ind_v[i] <- TRUE
+    ind_w[edge[i, 2]] <- TRUE
   }
   edge[ind_v,]
 }

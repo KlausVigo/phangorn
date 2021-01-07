@@ -21,8 +21,8 @@ read.fasta.user <- function (file, skip = 0, nlines = 0,
     seq.names <- getTaxaNames(taxa)
   }
   start <- c(start, length(X) + 1)
-  for (i in 1:n) obj[[i]] <- unlist(strsplit(gsub(" ",
-                                                  "", X[(start[i] + 1):(start[i + 1] - 1)]), NULL))
+  for (i in 1:n) obj[[i]] <- unlist(strsplit(gsub(" ", "",
+                                  X[(start[i] + 1):(start[i + 1] - 1)]), NULL))
   names(obj) <- seq.names
   obj <- lapply(obj, tolower)
   obj

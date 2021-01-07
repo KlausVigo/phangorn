@@ -4,7 +4,8 @@ dm <- dist.hamming(yeast)
 # RY-coding
 yeast_ry <- acgt2ry(yeast)
 # delete ambiguous states
-# dat4 <- phyDat(as.character(yeast), type="USER", levels=c("a","c", "g", "t"), ambiguity=NULL)
+# dat4 <- phyDat(as.character(yeast), type="USER", levels=c("a","c", "g", "t"),
+#                ambiguity=NULL)
 # fit4 <- h4st(dat4)
 
 # test Hadamard conjugation
