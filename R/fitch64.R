@@ -33,6 +33,7 @@ init_fitch <- function(obj, parsinfo=FALSE, order=FALSE, m=4L, ...){
 #' @rdname parsimony
 #' @export
 fitch <- function(tree, data, site = "pscore"){
+  if(any(!is.binary(tree))) tree <- multi2di(tree)
   tree <- reorder(tree, "postorder")
   nr <- attr(data, "nr")
   fun <- function(tree, site="pscore"){
