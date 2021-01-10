@@ -87,7 +87,7 @@ random.addition <- function (data, method = "fitch")
                          Nnode = 1L), .Names = c("edge", "tip.label", "Nnode"),
                     class = "phylo", order = "postorder")
   remaining <- remaining[-c(1:3)]
-  f <- init_fitch(data, order = TRUE, m=4L)
+  f <- init_fitch(data, parsinfo = TRUE, order = TRUE, m=4L)
   for (i in remaining) {
     edge <- tree$edge
     f$traversetwice(edge, 0L)
