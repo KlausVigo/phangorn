@@ -1,14 +1,14 @@
-     CHANGES in PHANGORN VERSION 2.6.0
+     CHANGES in PHANGORN VERSION 2.6.2
 
 NEW FEATURES
 
-    o rewritten fitch algorithm to be more memory efficient and faster,
+    o rewritten fitch algorithm to be more memory efficient, hopefully faster
 
-      no limitation on the number of states
+      and without limitation on the number of states
 
-    o dist.hamming may handle larger datasets and is faster
+    o dist.hamming may handle larger datasets and can be faster
 
-    o add Laguerre quadrature as option for discrete rate classes
+    o add Laguerre quadrature as option for discrete rate classes (experimental)
 
     o additional genetic codes for codon models.
 
@@ -66,7 +66,9 @@ NEW FEATURES
 
      o broom type tidy function for several objects to easier compare models
 
-     o new "equal_angle" layout for 2D-networks (now the default)
+     o new "equal_angle" layout for 2D-networks (now the default), gives usually
+
+       nicer layout of phylogenetic networks
 
      o tiplabels, nodelabels, edgelabels from ape work for plot.networx if
 
