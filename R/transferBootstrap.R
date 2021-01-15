@@ -1,11 +1,12 @@
 ## include in addConfidences, plotBS etc
 transferBootstrap <- function(tree, bstree){
+  if(!inherits(bstree, "multiPhylo")) stop("bstrees needs to be of class multiPhylo!")
   bstree <- .uncompressTipLabel(bstree)
   bstree <- .compressTipLabel(bstree, tree$tip.label)
   bstree <- reorder(bstree, "postorder")
   l <- Ntip(tree)
-  bp <- phangorn:::bipart(tree)
-  bp <- phangorn:::SHORTwise(bp, l, TRUE)
+  bp <- bipart(tree)
+  bp <- SHORTwise(bp, l, TRUE)
   not_cherry <- lengths(bp) != 2
   res <- numeric(length(bp))
   for(i in 1:length(bstree)){
