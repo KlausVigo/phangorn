@@ -29,6 +29,10 @@ getIndex <- function(left, right, n) {
     .Call(`_phangorn_getIndex`, left, right, n)
 }
 
+Transfer_Index <- function(bp, orig, l) {
+    .Call(`_phangorn_Transfer_Index`, bp, orig, l)
+}
+
 bipartCPP <- function(orig, nTips) {
     .Call(`_phangorn_bipartCPP`, orig, nTips)
 }

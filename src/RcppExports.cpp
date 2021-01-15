@@ -89,6 +89,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// Transfer_Index
+double Transfer_Index(const IntegerVector bp, const IntegerMatrix orig, int l);
+RcppExport SEXP _phangorn_Transfer_Index(SEXP bpSEXP, SEXP origSEXP, SEXP lSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const IntegerVector >::type bp(bpSEXP);
+    Rcpp::traits::input_parameter< const IntegerMatrix >::type orig(origSEXP);
+    Rcpp::traits::input_parameter< int >::type l(lSEXP);
+    rcpp_result_gen = Rcpp::wrap(Transfer_Index(bp, orig, l));
+    return rcpp_result_gen;
+END_RCPP
+}
 // bipartCPP
 List bipartCPP(IntegerMatrix orig, int nTips);
 RcppExport SEXP _phangorn_bipartCPP(SEXP origSEXP, SEXP nTipsSEXP) {
@@ -228,6 +241,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_phangorn_countCycle2_cpp", (DL_FUNC) &_phangorn_countCycle2_cpp, 1},
     {"_phangorn_out_cpp", (DL_FUNC) &_phangorn_out_cpp, 3},
     {"_phangorn_getIndex", (DL_FUNC) &_phangorn_getIndex, 3},
+    {"_phangorn_Transfer_Index", (DL_FUNC) &_phangorn_Transfer_Index, 3},
     {"_phangorn_bipartCPP", (DL_FUNC) &_phangorn_bipartCPP, 2},
     {"_phangorn_bipCPP", (DL_FUNC) &_phangorn_bipCPP, 2},
     {"_phangorn_allChildrenCPP", (DL_FUNC) &_phangorn_allChildrenCPP, 1},

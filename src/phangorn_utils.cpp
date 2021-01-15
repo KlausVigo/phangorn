@@ -142,6 +142,46 @@ std::vector<int> getIndex(IntegerVector left, IntegerVector right, int n){
 }
 
 
+// transfer bootstrap
+// [[Rcpp::export]]
+double Transfer_Index(const IntegerVector bp, const IntegerMatrix orig, int l) {
+  IntegerVector parent = orig( _, 0);
+  IntegerVector children = orig( _, 1);
+  int m = max(parent), tmp, ei, ni;
+  int p = bp.size();
+  int lmp = l - p;
+  int best = p - 1;
+  double result;
+  IntegerVector l0(m+1);
+  IntegerVector l1(m+1);
+  for(int i = 0; i<l; i++) l0[i] = 1;
+  for(int i = 0; i<p; i++){
+    l0[bp[i]] = 0;
+    l1[bp[i]] = 1;
+  }
+  int node = parent[0];
+  for(int i = 0; i<parent.size(); i++){
+    ni = parent[i];
+    ei = children[i];
+    l0[ni] += l0[ei];
+    l1[ni] += l1[ei];
+    if(ni != node){
+      tmp = std::min((p - l1[node]) + l0[node], (lmp - l0[node]) + l1[node]);
+      best = std::min(best, tmp);
+      if(best == 1){
+        result = 1.0 - (best / (p-1.0));
+        return(result);
+      }
+      node = ni;
+    }
+  }
+  tmp = std::min((p - l1[node]) + l0[node], (lmp - l0[node]) + l1[node]);
+  best = std::min(best, tmp);
+  result = 1.0 - (best / (p-1.0));
+  return(result);
+}
+
+
 
 // import: edge matrix, number of tips
 // export: Descendants(x, 1:max(x$edge), "all")
