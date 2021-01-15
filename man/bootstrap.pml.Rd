@@ -13,7 +13,7 @@ bootstrap.phyDat(x, FUN, bs = 100, multicore = FALSE, mc.cores = NULL,
   jumble = TRUE, ...)
 
 plotBS(tree, BStrees, type = "unrooted", bs.col = "black", bs.adj = NULL,
-  p = 50, frame = "none", ...)
+  digits = 3, p = 0, frame = "none", ...)
 }
 \arguments{
 \item{x}{an object of class \code{pml} or \code{phyDat}.}
@@ -45,6 +45,8 @@ on UNIX-alike systems.}
 
 \item{bs.adj}{one or two numeric values specifying the horizontal and
 vertical justification of the bootstrap labels.}
+
+\item{digits}{integer indicating the number of decimal places.}
 
 \item{p}{only plot support values higher than this percentage number
 (default is 80).}

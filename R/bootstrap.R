@@ -46,6 +46,7 @@ candidate.tree <- function(x){
 #' @param bs.col color of bootstrap support labels.
 #' @param bs.adj one or two numeric values specifying the horizontal and
 #' vertical justification of the bootstrap labels.
+#' @param digits integer indicating the number of decimal places.
 #' @param p only plot support values higher than this percentage number
 #' (default is 80).
 #' @param frame a character string specifying the kind of frame to be printed
@@ -256,7 +257,7 @@ checkLabels <- function(tree, tip) {
 #' @rdname bootstrap.pml
 #' @export
 plotBS <- function(tree, BStrees, type = "unrooted", bs.col = "black",
-                   bs.adj = NULL, p = 50, frame = "none", ...) {
+                   bs.adj = NULL, digits=3, p = 0, frame = "none", ...) {
   type <- match.arg(type, c("phylogram", "cladogram", "fan", "unrooted",
                             "radial", "none"))
   if (hasArg(BStrees)) {
@@ -271,18 +272,7 @@ plotBS <- function(tree, BStrees, type = "unrooted", bs.col = "black",
     x <- tree$node.label
   }
   if(type=="none") return( tree )
-
-#  if (type == "phylogram" | type == "cladogram") {
-#    if (!is.rooted(tree) & !is.null(tree$edge.length)) {
-#      tree2 <- midpoint(tree)
-#    } else {
-#      tree2 <- tree
-#    }
-#    plot(tree2, type = type, ...)
-#  }
-#  else {
     plot(tree, type = type, ...)
-#  }
 
   label <- c(rep(0, length(tree$tip.label)), x)
   ind <- get("last_plot.phylo", envir = .PlotPhyloEnv)$edge[ ,2 ]
@@ -290,15 +280,12 @@ plotBS <- function(tree, BStrees, type = "unrooted", bs.col = "black",
     root <- getRoot(tree)
     label <- c(rep(0, length(tree$tip.label)), x)
     label[root] <- 0
-#    ind2 <- matchEdges(tree2, tree)
-#    label <- label[ind2]
     ind <- which(label > p)
-    #        browser()
     if (is.null(bs.adj)) {
       bs.adj <- c(1, 1)
     }
     if (length(ind) > 0) {
-      if(is.numeric(label)) label <- round(label)
+      if(is.numeric(label)) label <- round(label, digits = digits)
       nodelabels(
         text = label[ind], node = ind,
         frame = frame, col = bs.col, adj = bs.adj, ...
