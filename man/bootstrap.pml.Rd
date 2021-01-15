@@ -76,12 +76,12 @@ nicely from the command line ("X11").
 
 \dontrun{
 data(Laurasiatherian)
-dm <- dist.logDet(Laurasiatherian)
+dm <- dist.hamming(Laurasiatherian)
 tree <- NJ(dm)
 # NJ
 set.seed(123)
 NJtrees <- bootstrap.phyDat(Laurasiatherian,
-     FUN=function(x)NJ(dist.logDet(x)), bs=100)
+     FUN=function(x)NJ(dist.hamming(x)), bs=100)
 treeNJ <- plotBS(tree, NJtrees, "phylogram")
 
 # Maximum likelihood
