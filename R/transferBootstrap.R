@@ -1,4 +1,4 @@
-## include in addConfidences, plotBS etc
+## include in addConfidences, plotBS etc.
 transferBootstrap <- function(tree, bstree){
   if(!inherits(bstree, "multiPhylo")) stop("bstrees needs to be of class multiPhylo!")
   bstree <- .uncompressTipLabel(bstree)
@@ -15,7 +15,7 @@ transferBootstrap <- function(tree, bstree){
      bptmp <- SHORTwise(bptmp, l, TRUE)
      ind <- fmatch(bp, bptmp)
      res[!is.na(ind)] <- res[!is.na(ind)] + 1
-     # check cherries
+     # cherries can be check outside
      ind <- which(is.na(ind) & not_cherry)
      for(i in ind) res[i] <- res[i] + Transfer_Index(bp[[i]], tmp$edge, l)
   }
@@ -47,9 +47,8 @@ transfer_index <- function(bp, edge, l){
       node <- ni
     }
   }
-  tmp <- min(abs(p - l1[node]) + l0[node], abs(lmp - l0[node]) + l1[node])
+  tmp <- min((p - l1[node]) + l0[node], (lmp - l0[node]) + l1[node])
   best <- min(best, tmp)
-  if(best==0) print("Yeah2")
   return(1 - (best / (p-1)))
 }
 
