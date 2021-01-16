@@ -2,6 +2,13 @@
 
 NEW FEATURES
 
+    o transfer bootstrap (Lemoine et al. 2018)
+
+
+     CHANGES in PHANGORN VERSION 2.6.2
+
+NEW FEATURES
+
     o rewritten fitch algorithm to be more memory efficient, hopefully faster
 
       and without limitation on the number of states
