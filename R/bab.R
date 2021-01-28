@@ -234,11 +234,9 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
 
   f <- init_fitch(data, m=4L)
 
-  if (trace)
-    print(paste("lower bound:", p0 + mms0[1]))
+  if (trace > 1) print(paste("lower bound:", p0 + mms0[1]))
   bound <- f$pscore(tree$edge)
-  if (trace)
-    print(paste("upper bound:", bound + p0))
+  if (trace > 1) print(paste("upper bound:", bound + p0))
 
   startTree <- structure(list(edge = structure(c(rep(nTips + 1L, 3),
         as.integer(inord)[1:3]), .Dim = c(3L, 2L)), tip.label = tree$tip.label,
