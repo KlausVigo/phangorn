@@ -46,8 +46,7 @@ The formula is generally of the form \code{edge + bf + Q ~ rate + shape +
 partitions, on the right the parameter which are optimized specific to each
 partition. The parameters available are \code{"nni", "bf", "Q", "inv",
 "shape", "edge", "rate"}.  Each parameters can be used only once in the
-formula.  \code{"rate"} and \code{"nni"} are only available for the right
-side of the formula.
+formula.  \code{"rate"} is only available for the right side of the formula.
 
 For partitions with different edge weights, but same topology, \code{pmlPen}
 can try to find more parsimonious models (see example).
