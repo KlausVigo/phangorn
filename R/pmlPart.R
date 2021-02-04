@@ -347,6 +347,7 @@ pmlPart <- function(formula, object, control = pml.control(epsilon = 1e-8,
   PartRate <- !is.na(optPart[7])
 
   if (PartNni) PartEdge <- TRUE
+  if(AllNNI) AllEdge <- TRUE
 
   if (inherits(object, "multiphyDat")) {
     if (AllNNI || AllEdge) object <- do.call(cbind.phyDat, object@seq)
@@ -364,6 +365,29 @@ pmlPart <- function(formula, object, control = pml.control(epsilon = 1e-8,
 
   p <- length(fits)
   #   if(length(model)<p) model = rep(model, length = p)
+
+  if (AllQ) {
+    Q <- fits[[1]]$Q
+    for (i in 1:p) fits[[i]] <- update(fits[[i]], Q = Q)
+  }
+  if (AllBf) {
+    bf <- fits[[1]]$bf
+    for (i in 1:p) fits[[i]] <- update(fits[[i]], bf = bf)
+  }
+  if (AllInv) {
+    inv <- fits[[1]]$inv
+    for (i in 1:p) fits[[i]] <- update(fits[[i]], inv = inv)
+  }
+  if (AllGamma) {
+    shape <- fits[[1]]$shape
+    for (i in 1:p) fits[[i]] <- update(fits[[i]], shape = shape)
+  }
+  if (AllEdge || AllNNI) {
+    tree <- fits[[1]]$tree
+    tree$edge.length <- pmax(tree$edge.length, 1e-6)
+    for (i in 1:p) fits[[i]] <- update(fits[[i]], tree = tree)
+  }
+
 
   m <- 1
   logLik <- 0
