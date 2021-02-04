@@ -2387,11 +2387,11 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   if (optEdge) {
     # check if non-negative least-squares is better for start of
     # optimisation
-    treetmp <- nnls.phylo(tree, dist.ml(data))
-    treetmp$edge.length[treetmp$edge.length < 1e-8] <- 1e-8
-    tmplogLik <- pml.fit(treetmp, data, bf, k = k, inv = inv, g = g, w = w,
-      eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, wMix = wMix)
-    if (tmplogLik > ll) tree <- treetmp
+#    treetmp <- nnls.phylo(tree, dist.ml(data))
+#    treetmp$edge.length[treetmp$edge.length < 1e-8] <- 1e-8
+#    tmplogLik <- pml.fit(treetmp, data, bf, k = k, inv = inv, g = g, w = w,
+#      eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, wMix = wMix)
+#    if (tmplogLik > ll) tree <- treetmp
     res <- optimEdge(tree, data, eig = eig, w = w, g = g, bf = bf, rate = rate,
       ll.0 = ll.0, INV = INV,
       control <- pml.control(epsilon = 1e-07, maxit = 5, trace = trace))
