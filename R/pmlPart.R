@@ -348,7 +348,7 @@ pmlPart <- function(formula, object, control = pml.control(epsilon = 1e-8,
 
   if (PartNni) PartEdge <- TRUE
   if(AllNNI) AllEdge <- TRUE
-
+  if(AllNNI) if(Ntip(fits[[1]]$tree) <  (3 + !rooted)) AllNNI <- FALSE
   if (inherits(object, "multiphyDat")) {
     if (AllNNI || AllEdge) object <- do.call(cbind.phyDat, object@seq)
     else fits <- multiphyDat2pmlPart(object, rooted = rooted, ...)
