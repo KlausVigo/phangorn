@@ -147,7 +147,10 @@ dl <- function(x, transform = TRUE) {
 # add control and change edge
 optimPartEdge <- function(object, ...) {
   tree <- object[[1]]$tree
-  theta <- object[[1]]$tree$edge.length
+  theta <- tree$edge.length
+  theta <- pmax(theta, 1e-8)
+  tree$edge.length <- theta
+  tmptree <- tree
   n <- length(object)
   l <- length(theta)
   nrv <- numeric(n)
@@ -158,6 +161,7 @@ optimPartEdge <- function(object, ...) {
   for (i in 1:n) weight[(cnr[i] + 1):cnr[i + 1]] <- attr(object[[i]]$data,
       "weight")
   ll0 <- 0
+  for (i in 1:n) object[[i]] <- update(object[[i]], tree = tree)
   for (i in 1:n) ll0 <- ll0 + object[[i]]$logLik
   eps <- 1
   scalep <- 1
@@ -173,8 +177,9 @@ optimPartEdge <- function(object, ...) {
       # add small ridge penalty for numerical stability
     }
     thetaNew <- log(theta) + scalep * solve(F, sc)
-    tree$edge.length <- as.numeric(exp(thetaNew))
-    for (i in 1:n) object[[i]] <- update(object[[i]], tree = tree)
+    thetaNew <- pmax(thetaNew, log(1e-8))
+    tmptree$edge.length <- as.numeric(exp(thetaNew))
+    for (i in 1:n) object[[i]] <- update(object[[i]], tree = tmptree)
     ll1 <- 0
     for (i in 1:n) ll1 <- ll1 + object[[i]]$logLik
     eps <- ll1 - ll0
@@ -184,11 +189,16 @@ optimPartEdge <- function(object, ...) {
       thetaNew <- log(theta)
       ll1 <- ll0
     }
-    else scalep <- 1
+    else {
+      scalep <- 1
+      tree <- tmptree
+    }
     theta <- exp(thetaNew)
+    theta <- pmax(theta, 1e-8)
     ll0 <- ll1
     k <- k + 1
   }
+  for (i in 1:n) object[[i]] <- update(object[[i]], tree = tree)
   object
 }
 
