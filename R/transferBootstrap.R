@@ -9,7 +9,7 @@ transferBootstrap <- function(tree, bstree){
   bp <- SHORTwise(bp, l, TRUE)
   not_cherry <- lengths(bp) != 2
   res <- numeric(length(bp))
-  for(i in 1:length(bstree)){
+  for(i in seq_along(bstree)){
      tmp <- bstree[[i]]
      bptmp <- bipart(tmp)
      bptmp <- SHORTwise(bptmp, l, TRUE)
@@ -36,7 +36,7 @@ transfer_index <- function(bp, edge, l){
   l1[bp] <- 1
   l0[seq_len(l)[-bp]] <- 1
   node <- edge[1,1]
-  for(i in 1:nrow(edge)){
+  for(i in seq_len(nrow(edge))){
     ni <- edge[i, 1]
     ei <- edge[i, 2]
     l0[ni] <- l0[ni] + l0[ei]
