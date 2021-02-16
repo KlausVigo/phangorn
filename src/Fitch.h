@@ -80,7 +80,7 @@ std::vector< std::vector<uint64_t> > readFitch(const List &xlist,
              IntegerMatrix contr, int nSeq, int nChar, int nStates,
              int nBits, int m);
 
-IntegerMatrix preorder(const IntegerMatrix & edge, int nTips);
+// IntegerMatrix preorder(const IntegerMatrix & edge, int nTips);
 
 
 class Fitch {

@@ -80,12 +80,12 @@ std::vector< std::vector<uint64_t> > readFitch(const List &xlist, IntegerMatrix 
 
 
 
-
+/*
 // needs improvement for rooted trees (TODO)
 // assumes postorder ordering (for the root node)
 // no singeltons, only binary trees (but maybe rooted)
 // traverse (postorder) and than this, down or up
-// [[Rcpp::export]]
+//// [[Rcpp::export]]
 IntegerMatrix preorder(const IntegerMatrix & edge, int nTips){
   IntegerVector parent = edge( _, 0);
   IntegerVector children = edge( _, 1);
@@ -126,7 +126,7 @@ IntegerMatrix preorder(const IntegerMatrix & edge, int nTips){
   out(_,1) = right;
   return out;
 }
-
+*/
 
 IntegerMatrix getAnc(Fitch* obj, int i){
   int states = obj->nStates;
@@ -450,14 +450,15 @@ void prep_spr(Fitch* obj, IntegerMatrix orig){
 }
 
 
-// traversetwice(obj, orig, 1L);
+/*
+ *  traversetwice(obj, orig, 1L);
 void prep_nni(Fitch* obj, IntegerMatrix orig){
   int nSeq = obj->nSeq;
   traverse(obj, orig);
   IntegerMatrix M = preorder(orig, nSeq);
   traverse(obj, M);
 }
-
+*/
 
 // generic, TODO: bitcount, 2x2, 4x4
 double pscore_vector(const uint64_t* x, const uint64_t* y, const NumericVector weight,
@@ -985,7 +986,7 @@ RCPP_MODULE(Fitch_mod) {
         .property("get_weight", &Fitch::getWeight)
         .property("get_p0", &Fitch::getP0)
         .method("prep_spr", &prep_spr)
-        .method("prep_nni", &prep_nni)
+//        .method("prep_nni", &prep_nni)
         .method("pscore_nni", &pscore_nni)
         .method("pscore", &pscore)
         .method("pscore_vec", &pscore_vec)
