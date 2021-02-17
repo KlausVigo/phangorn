@@ -3,7 +3,6 @@
 \name{bootstrap.pml}
 \alias{bootstrap.pml}
 \alias{bootstrap.phyDat}
-\alias{plotBS}
 \title{Bootstrap}
 \usage{
 bootstrap.pml(x, bs = 100, trees = TRUE, multicore = FALSE,
@@ -11,9 +10,6 @@ bootstrap.pml(x, bs = 100, trees = TRUE, multicore = FALSE,
 
 bootstrap.phyDat(x, FUN, bs = 100, multicore = FALSE, mc.cores = NULL,
   jumble = TRUE, ...)
-
-plotBS(tree, BStrees, type = "unrooted", bs.col = "black", bs.adj = NULL,
-  digits = 3, p = 0, frame = "none", ...)
 }
 \arguments{
 \item{x}{an object of class \code{pml} or \code{phyDat}.}
@@ -33,27 +29,6 @@ on UNIX-alike systems.}
 \item{FUN}{the function to estimate the trees.}
 
 \item{jumble}{logical, jumble the order of the sequences.}
-
-\item{tree}{The tree on which edges the bootstrap values are plotted.}
-
-\item{BStrees}{a list of trees (object of class "multiPhylo").}
-
-\item{type}{the type of tree to plot, so far "cladogram", "phylogram" and
-"unrooted" are supported.}
-
-\item{bs.col}{color of bootstrap support labels.}
-
-\item{bs.adj}{one or two numeric values specifying the horizontal and
-vertical justification of the bootstrap labels.}
-
-\item{digits}{integer indicating the number of decimal places.}
-
-\item{p}{only plot support values higher than this percentage number
-(default is 80).}
-
-\item{frame}{a character string specifying the kind of frame to be printed
-around the bootstrap values. This must be one of "none" (the default),
-"rect" or "circle".}
 }
 \value{
 \code{bootstrap.pml} returns an object of class \code{multi.phylo}
@@ -110,6 +85,10 @@ add.scale.bar()
 Felsenstein J. (1985) Confidence limits on phylogenies. An
 approach using the bootstrap. \emph{Evolution} \bold{39}, 783--791
 
+Lemoine, F., Entfellner, J. B. D., Wilkinson, E., Correia, D., Felipe, M. D.,
+De Oliveira, T., & Gascuel, O. (2018). Renewing Felsenstein’s phylogenetic
+bootstrap in the era of big data. \emph{Nature}, \bold{556(7702)}, 452--456.
+
 Penny D. and Hendy M.D. (1985) Testing methods evolutionary tree
 construction. \emph{Cladistics} \bold{1}, 266--278
 
@@ -118,7 +97,7 @@ trees. \emph{Molecular Biology and Evolution} \bold{3}, 403--417
 }
 \seealso{
 \code{\link{optim.pml}}, \code{\link{pml}},
-\code{\link{plot.phylo}},
+\code{\link{plot.phylo}}, \code{\link{maxCladeCred}}
 \code{\link{nodelabels}},\code{\link{consensusNet}} and
 \code{\link{SOWH.test}} for parametric bootstrap
 }

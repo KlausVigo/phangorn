@@ -39,19 +39,6 @@ candidate.tree <- function(x){
 #' @param \dots further parameters used by \code{optim.pml} or
 #' \code{plot.phylo}.
 #' @param FUN the function to estimate the trees.
-#' @param tree The tree on which edges the bootstrap values are plotted.
-#' @param BStrees a list of trees (object of class "multiPhylo").
-#' @param type the type of tree to plot, so far "cladogram", "phylogram" and
-#' "unrooted" are supported.
-#' @param bs.col color of bootstrap support labels.
-#' @param bs.adj one or two numeric values specifying the horizontal and
-#' vertical justification of the bootstrap labels.
-#' @param digits integer indicating the number of decimal places.
-#' @param p only plot support values higher than this percentage number
-#' (default is 80).
-#' @param frame a character string specifying the kind of frame to be printed
-#' around the bootstrap values. This must be one of "none" (the default),
-#' "rect" or "circle".
 #' @return \code{bootstrap.pml} returns an object of class \code{multi.phylo}
 #' or a list where each element is an object of class \code{pml}. \code{plotBS}
 #' returns silently a tree, i.e. an object of class \code{phylo} with the
@@ -59,11 +46,15 @@ candidate.tree <- function(x){
 #' if not supplied the tree with labels supplied in the \code{node.label} slot.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{optim.pml}}, \code{\link{pml}},
-#' \code{\link{plot.phylo}},
+#' \code{\link{plot.phylo}}, \code{\link{maxCladeCred}}
 #' \code{\link{nodelabels}},\code{\link{consensusNet}} and
 #' \code{\link{SOWH.test}} for parametric bootstrap
 #' @references Felsenstein J. (1985) Confidence limits on phylogenies. An
 #' approach using the bootstrap. \emph{Evolution} \bold{39}, 783--791
+#'
+#' Lemoine, F., Entfellner, J. B. D., Wilkinson, E., Correia, D., Felipe, M. D.,
+#' De Oliveira, T., & Gascuel, O. (2018). Renewing Felsenstein’s phylogenetic
+#' bootstrap in the era of big data. \emph{Nature}, \bold{556(7702)}, 452--456.
 #'
 #' Penny D. and Hendy M.D. (1985) Testing methods evolutionary tree
 #' construction. \emph{Cladistics} \bold{1}, 266--278
@@ -254,18 +245,81 @@ checkLabels <- function(tree, tip) {
 }
 
 
-#' @rdname bootstrap.pml
+#' Plotting trees with bootstrap values
+#'
+#' \code{plotBS} plots a phylogenetic tree with the bootstrap values assigned
+#' to the (internal) edges. It can also used to assign bootstrap values to a
+#' phylogenetic tree.
+#'
+#' \code{plotBS} can either assign the classical Felsenstein’s bootstrap
+#' proportions (FBP) (Felsenstein (1985), Hendy & Penny (1985))  or the
+#' transfer bootstrap expectation (TBE) of Lemoine et al. (2018). Using the
+#' option \code{type=="n"} just assigns the bootstrap values and return the tree
+#' without plotting it.
+#'
+#' @param tree The tree on which edges the bootstrap values are plotted.
+#' @param BStrees a list of trees (object of class "multiPhylo").
+#' @param type the type of tree to plot, so far "cladogram", "phylogram" and
+#' "unrooted" are supported.
+#' @param method either "FBP" the classical bootstrap (default) or "TBE"
+#' (transfer bootstrap)
+#' @param bs.col color of bootstrap support labels.
+#' @param bs.adj one or two numeric values specifying the horizontal and
+#' vertical justification of the bootstrap labels.
+#' @param digits integer indicating the number of decimal places.
+#' @param p only plot support values higher than this percentage number
+#' (default is 0).
+#' @param \dots further parameters used by \code{plot.phylo}.
+#' @param frame a character string specifying the kind of frame to be printed
+#' around the bootstrap values. This must be one of "none" (the default),
+#' "rect" or "circle".
+#' @return \code{plotBS} returns silently a tree, i.e. an object of class
+#' \code{phylo} with the bootstrap values as node labels. The argument
+#' \code{BStrees} is optional and if not supplied the labels supplied
+#' in the \code{node.label} slot will be used.
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
+#' @seealso  \code{\link{plot.phylo}}, \code{\link{maxCladeCred}}
+#' \code{\link{nodelabels}},\code{\link{consensusNet}}
+#' @references Felsenstein J. (1985) Confidence limits on phylogenies. An
+#' approach using the bootstrap. \emph{Evolution} \bold{39}, 783--791
+#'
+#' Lemoine, F., Entfellner, J. B. D., Wilkinson, E., Correia, D., Felipe, M. D.,
+#' De Oliveira, T., & Gascuel, O. (2018). Renewing Felsenstein’s phylogenetic
+#' bootstrap in the era of big data. \emph{Nature}, \bold{556(7702)}, 452--456.
+#'
+#' Penny D. and Hendy M.D. (1985) Testing methods evolutionary tree
+#' construction. \emph{Cladistics} \bold{1}, 266--278
+#'
+#' Penny D. and Hendy M.D. (1986) Estimating the reliability of evolutionary
+#' trees. \emph{Molecular Biology and Evolution} \bold{3}, 403--417
+#' @examples
+#' fdir <- system.file("extdata/trees", package = "phangorn")
+#' # RAxML best-known tree with bipartition support (from previous analysis)
+#' raxml.tree <- read.tree(file.path(fdir,"RAxML_bipartitions.woodmouse"))
+#' # RAxML bootstrap trees (from previous analysis)
+#' raxml.bootstrap <- read.tree(file.path(fdir,"RAxML_bootstrap.woodmouse"))
+#' par(mfrow=c(1,2))
+#' plotBS(raxml.tree,  raxml.bootstrap, "p")
+#' plotBS(raxml.tree,  raxml.bootstrap, "p", "TBE")
 #' @export
-plotBS <- function(tree, BStrees, type = "unrooted", bs.col = "black",
+plotBS <- function(tree, BStrees, type = "unrooted",
+                   method="FBP", bs.col = "black",
                    bs.adj = NULL, digits=3, p = 0, frame = "none", ...) {
   type <- match.arg(type, c("phylogram", "cladogram", "fan", "unrooted",
                             "radial", "none"))
+  method <- match.arg(method, c("FBP", "TBE"))
   if (hasArg(BStrees)) {
-    BStrees <- .uncompressTipLabel(BStrees) # check if needed
-    if (any(is.rooted(BStrees))) BStrees <- unroot(BStrees)
-    x <- prop.clades(tree, BStrees)
-    x <- (x / length(BStrees)) * 100
-    tree$node.label <- x
+    if(method=="FBP"){
+      BStrees <- .uncompressTipLabel(BStrees) # check if needed
+      if (any(is.rooted(BStrees))) BStrees <- unroot(BStrees)
+      x <- prop.clades(tree, BStrees)
+      x <- (x / length(BStrees)) * 100
+      tree$node.label <- x
+    }
+    else {
+      tree <- transferBootstrap(tree, BStrees)
+      x <- tree$node.label * 100
+    }
   }
   else {
     if (is.null(tree$node.label)) stop("You need to supply 'trees' or the tree needs support-values as node.label")
@@ -335,7 +389,7 @@ plotBS <- function(tree, BStrees, type = "unrooted", bs.col = "black",
 #' credibility or a numeric vector of clade credibilities for each tree.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{consensus}}, \code{\link{consensusNet}},
-#' \code{\link{prop.part}}
+#' \code{\link{prop.part}}, \code{\link{bootstrap.pml}}, \code{\link{plotBS}}
 #' @keywords cluster
 #' @importFrom fastmatch fmatch
 #' @examples
