@@ -14,7 +14,7 @@ acctran(tree, data)
 
 fitch(tree, data, site = "pscore")
 
-random.addition(data, method = "fitch")
+random.addition(data, tree = NULL, method = "fitch")
 
 parsimony(tree, data, method = "fitch", cost = NULL, site = "pscore")
 

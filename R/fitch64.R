@@ -75,18 +75,34 @@ fitch <- function(tree, data, site = "pscore"){
 
 #' @rdname parsimony
 #' @export
-random.addition <- function (data, method = "fitch")
+random.addition <- function (data, tree=NULL, method = "fitch")
 {
   label <- names(data)
   nTips <- as.integer(length(label))
   if (nTips < 4L)
     return(stree(nTips, tip.label = sample(label)))
-  remaining <- as.integer(sample(nTips))
-  tree <- structure(list(edge = structure(c(rep(nTips + 1L, 3),
-                         remaining[1:3]), .Dim = c(3L, 2L)), tip.label = label,
-                         Nnode = 1L), .Names = c("edge", "tip.label", "Nnode"),
-                    class = "phylo", order = "postorder")
-  remaining <- remaining[-c(1:3)]
+  if(!is.null(tree)){
+    if(!is.binary(tree)) tree <- multi2di(tree)
+    if(!is.null(tree$edge.length)) tree$edge.length <- NULL
+    tree <- reorder(tree, "postorder")
+    tips <- Ntip(tree)
+    edge <- tree$edge
+    edge[edge>tips] <- edge[edge>tips] + as.integer(nTips - tips)
+    tree$edge <- edge
+    remaining <- sample(setdiff(label, tree$tip.label))
+    tree$tip.label <- c(tree$tip.label, remaining)
+    tree <- checkLabels(tree, label)
+    remaining <- match(remaining, label)
+  }
+
+  else{
+    remaining <- as.integer(sample(nTips))
+    tree <- structure(list(edge = structure(c(rep(nTips + 1L, 3),
+                        remaining[1:3]), .Dim = c(3L, 2L)), tip.label = label,
+                        Nnode = 1L), .Names = c("edge", "tip.label", "Nnode"),
+                        class = "phylo", order = "postorder")
+    remaining <- remaining[-c(1:3)]
+  }
   f <- init_fitch(data, parsinfo = TRUE, order = TRUE, m=4L)
   for (i in remaining) {
     edge <- tree$edge
