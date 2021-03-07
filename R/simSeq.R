@@ -61,13 +61,16 @@
 #' data <- simSeq(fit)
 #' }
 #'
+#'
 #' tree <- rtree(5)
 #' plot(tree)
 #' nodelabels()
 #'
 #' # Example for simple DNA alignment
-#' data <- simSeq(tree, l = 10, type="DNA", bf=c(.1,.2,.3,.4), Q=1:6)
+#' data <- simSeq(tree, l = 10, type="DNA", bf=c(.1,.2,.3,.4), Q=1:6,
+#'                ancestral=TRUE)
 #' as.character(data)
+#'
 #'
 #' # Example to simulate discrete Gamma rate variation
 #' rates <- discrete.gamma(1,4)
