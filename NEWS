@@ -1,15 +1,19 @@
-     CHANGES in PHANGORN VERSION 2.6.2
+    CHANGES in PHANGORN VERSION 2.6.0
 
 NEW FEATURES
 
     o transfer bootstrap (Lemoine et al. 2018)
 
+    o pratchet saves trees visited during search, which can be used as
 
-     CHANGES in PHANGORN VERSION 2.6.2
+      (approximate) bootstrap values
+
+
+     CHANGES in PHANGORN VERSION 2.6.0
 
 NEW FEATURES
 
-    o rewritten fitch algorithm to be more memory efficient, hopefully faster
+    o rewritten fitch algorithm to be more memory efficient, often faster
 
       and without limitation on the number of states
 
@@ -34,6 +38,8 @@ OTHER CHANGES
     o tests are now done by tinytest, dropped dependencies on testthat, vdiffr
 
     o all vignettes are now based on Rmarkdown
+
+    o pmlPart and pmlMix are a bit more robust
 
 
      CHANGES in PHANGORN VERSION 2.5.4
