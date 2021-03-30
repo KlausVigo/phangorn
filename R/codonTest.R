@@ -27,7 +27,7 @@
 #' start the translation further within the sequence.
 #' @param control a list of parameters for controlling the fitting process.
 #' @param ... further arguments passed to or from other methods.
-#' @return A list whith an element called summary containing a data.frame with
+#' @return A list with an element called summary containing a data.frame with
 #' the log-likelihood, number of estimated parameters, etc. of all tested
 #' models. An object called posterior which contains the posterior probability
 #' for the rate class for each sites and the estimates of the defined models.

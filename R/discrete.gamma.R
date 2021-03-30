@@ -18,15 +18,15 @@
 #' approach of Felsenstein (2001)
 ## or "free_rate" "gamma_unbiased".
 #' @param edge.length Total edge length (sum of all edges in a tree).
-#' @param discrete logical wether to plot discrete (default) or continous pdf or
+#' @param discrete logical whether to plot discrete (default) or continuous pdf or
 #' cdf.
-#' @param cdf logical wether to plot the cummulative distribution function
+#' @param cdf logical whether to plot the cumulative distribution function
 #' or density / probability function.
 #' @param append logical; if TRUE only add to an existing plot.
 #' @param xlab a label for the x axis, defaults to a description of x.
 #' @param ylab a label for the y axis, defaults to a description of y.
 #' @param xlim the x limits of the plot.
-#' @param verticals ogical; if TRUE, draw vertical lines at steps.
+#' @param verticals logical; if TRUE, draw vertical lines at steps.
 #' @param \dots Further arguments passed to or from other methods.
 #' @return \code{discrete.gamma} returns a matrix.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}

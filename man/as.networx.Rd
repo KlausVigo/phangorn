@@ -5,7 +5,7 @@
 \alias{networx}
 \alias{as.networx.splits}
 \alias{as.networx.phylo}
-\title{Conversion among phylogenetic network 0bjects}
+\title{Conversion among phylogenetic network objects}
 \usage{
 as.networx(x, ...)
 

@@ -48,7 +48,7 @@ read.fasta.user <- function (file, skip = 0, nlines = 0,
 #' "clustal", "fasta" or "nexus", or any unambiguous abbreviation of these.
 #' @param type Type of sequences ("DNA", "AA", "CODON" or "USER").
 #' @param ... further arguments passed to or from other methods.
-#' @return \code{read.phyDat} retuns an object of class phyDat,
+#' @return \code{read.phyDat} returns an object of class phyDat,
 #' \code{write.phyDat} write an alignment to a file.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link[ape]{read.dna}}, \code{\link[ape]{read.GenBank}},

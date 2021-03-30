@@ -31,7 +31,7 @@ default); may be negative implying that the nucleotides are printed on a
 single line.}
 }
 \value{
-\code{read.phyDat} retuns an object of class phyDat,
+\code{read.phyDat} returns an object of class phyDat,
 \code{write.phyDat} write an alignment to a file.
 }
 \description{

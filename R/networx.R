@@ -273,7 +273,7 @@ circNetwork <- function(x, ord = NULL) {
 }
 
 
-#' Conversion among phylogenetic network 0bjects
+#' Conversion among phylogenetic network objects
 #'
 #' \code{as.networx} convert \code{splits} objects into a \code{networx}
 #' object. And most important there exists a generic \code{plot} function to
