@@ -53,10 +53,11 @@ All the ancestral reconstructions for parsimony are based on the fitch algorithm
 
 The `seqLogo` function from the _seqLogo_ package from Bioconductor provides a neat way to show proportions of a nucleotides of ancestral states (see figure 1).
 
-```{r seqLogo, fig.cap="Fig 1. Ancestral reconstruction for a node."}
+```{r seqLogo, fig.cap="Fig 1. Ancestral reconstruction for a node.", eval=FALSE}
 library(seqLogo)
 seqLogo( t(subset(anc.mpr, getRoot(tree), 1:20)[[1]]), ic.scale=FALSE)
 ```
+![](seqLogo.png)
 
 You may need to install _seqLogo_ before
 ```{r, eval=FALSE}
