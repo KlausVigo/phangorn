@@ -436,9 +436,8 @@ ptree <- function(tree, data, return = "prob") {
       X / rs
     }
     contrast <- att$contrast
-    for(i in seq_len(nTip))res[[i]] <- contrast[data[[i]], ]
-    for(i in (nTip+1):m)
-      res[[i]] <- f$getAnc(i)[1:nr, ]
+    for(i in seq_len(nTip)) res[[i]] <- contrast[data[[i]], , drop=FALSE]
+    for(i in (nTip+1):m) res[[i]] <- f$getAnc(i)[1:nr, , drop=FALSE]
     res <- lapply(res, fun)
   }
   attributes(res) <- att
