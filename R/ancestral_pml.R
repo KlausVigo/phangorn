@@ -419,13 +419,6 @@ ptree <- function(tree, data, return = "prob") {
     res[1:nTip] <- data[1:nTip]
     if(type=="DNA"){
       for(i in (nTip+1):m)
-        res[[i]] <- f$getAnc(i)[1:nr]
-    }
-  }
-  if(return == "phyDat"){
-    res[1:nTip] <- data[1:nTip]
-    if(type=="DNA"){
-      for(i in (nTip+1):m)
         res[[i]] <- f$getAncAmb(i)[1:nr]
     }
     else stop("This is only for nucleotide equences supported so far")
@@ -439,6 +432,10 @@ ptree <- function(tree, data, return = "prob") {
     for(i in seq_len(nTip))res[[i]] <- contrast[data[[i]], ]
     for(i in (nTip+1):m)
       res[[i]] <- f$getAnc(i)[1:nr, ]
+    # following line added by @dwbapst 04/06/21
+       # fun expects matrices to do rowsums, but we hand it a list of vectors
+       # so to minimally impact code, I just make each vector a row (which seems to be intent of original code)
+    res <- lapply(res, matrix, nrow = 1)  
     res <- lapply(res, fun)
   }
   attributes(res) <- att
