@@ -1,61 +1,100 @@
 Package: phangorn
 Title: Phylogenetic Reconstruction and Analysis
-Version: 2.6.3.0
-Authors@R: c(person("Klaus", "Schliep", email="klaus.schliep@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0003-2941-0161")), 
-  person("Emmanuel", "Paradis", role = c("aut"), comment = c(ORCID = "0000-0003-3092-2199")), 
-  person("Leonardo", "de Oliveira Martins", role = c("aut"), comment = c(ORCID = "0000-0001-5247-1320")), 
-  person("Alastair", "Potts", role = c("aut")), 
-  person("Tim W.", "White", role = c("aut")),
-  person("Cyrill", "Stachniss", role = c("ctb")),
-  person("Michelle", "Kendall", email="m.kendall@imperial.ac.uk", role = c("ctb")), 
-  person("Keren", "Halabi", role = c("ctb")),
-  person("Richel", "Bilderbeek", role = c("ctb")),
-  person("Kristin", "Winchell", role = c("ctb")), 
-  person("Liam", "Revell", role = c("ctb")),
-  person("Mike", "Gilchrist", role=c("ctb")),
-  person("Jeremy", "Beaulieu", role=c("ctb")),
-  person("Brian", "O'Meara", role=c("ctb")),
-  person("Long", "Qu", role=c("ctb")))
+Version: 2.6.3
+Authors@R: 
+    c(person(given = "Klaus",
+             family = "Schliep",
+             role = c("aut", "cre"),
+             email = "klaus.schliep@gmail.com",
+             comment = c(ORCID = "0000-0003-2941-0161")),
+      person(given = "Emmanuel",
+             family = "Paradis",
+             role = "aut",
+             comment = c(ORCID = "0000-0003-3092-2199")),
+      person(given = "Leonardo",
+             family = "de Oliveira Martins",
+             role = "aut",
+             comment = c(ORCID = "0000-0001-5247-1320")),
+      person(given = "Alastair",
+             family = "Potts",
+             role = "aut"),
+      person(given = "Tim W.",
+             family = "White",
+             role = "aut"),
+      person(given = "Cyrill",
+             family = "Stachniss",
+             role = "ctb"),
+      person(given = "Michelle",
+             family = "Kendall",
+             role = "ctb",
+             email = "m.kendall@imperial.ac.uk"),
+      person(given = "Keren",
+             family = "Halabi",
+             role = "ctb"),
+      person(given = "Richel",
+             family = "Bilderbeek",
+             role = "ctb"),
+      person(given = "Kristin",
+             family = "Winchell",
+             role = "ctb"),
+      person(given = "Liam",
+             family = "Revell",
+             role = "ctb"),
+      person(given = "Mike",
+             family = "Gilchrist",
+             role = "ctb"),
+      person(given = "Jeremy",
+             family = "Beaulieu",
+             role = "ctb"),
+      person(given = "Brian",
+             family = "O'Meara",
+             role = "ctb"),
+      person(given = "Long",
+             family = "Qu",
+             role = "ctb"))
 Maintainer: Klaus Schliep <klaus.schliep@gmail.com>
-Description: Allows for estimation of phylogenetic trees and networks using 
-    Maximum Likelihood, Maximum Parsimony, distance methods and Hadamard 
-    conjugation. Offers methods for tree comparison, model selection and
-    visualization of phylogenetic networks as described in Schliep et al. (2017)
-    <doi:10.1111/2041-210X.12760>. 
-Depends:
-    R (>= 3.6.0),
-    ape (>= 5.4)
-Imports:
-    quadprog,
-    igraph (>= 1.0),
-    Matrix,
-    parallel,
-    methods,
-    utils,
-    stats,
-    graphics,
-    grDevices,
-    fastmatch,
-    magrittr,
-    Rcpp (>= 1.0.4)
-LinkingTo: Rcpp
-Suggests:
-    tinytest,
-    seqinr,
-    xtable,
-    rgl,
-    prettydoc,
-    knitr,
-    rmarkdown,
-    magick,
-    seqLogo,
-    Biostrings
+Description: Allows for estimation of phylogenetic trees and networks
+    using Maximum Likelihood, Maximum Parsimony, distance methods and
+    Hadamard conjugation. Offers methods for tree comparison, model
+    selection and visualization of phylogenetic networks as described in
+    Schliep et al. (2017) <doi:10.1111/2041-210X.12760>.
 License: GPL (>= 2)
-VignetteBuilder: utils, knitr
-biocViews: Software, Technology, QualityControl
 URL: https://github.com/KlausVigo/phangorn
 BugReports: https://github.com/KlausVigo/phangorn/issues
-Repository: CRAN
+Depends:
+    ape (>= 5.4),
+    R (>= 3.6.0)
+Imports:
+    fastmatch,
+    graphics,
+    grDevices,
+    igraph (>= 1.0),
+    magrittr,
+    Matrix,
+    methods,
+    parallel,
+    quadprog,
+    Rcpp (>= 1.0.4),
+    stats,
+    utils
+Suggests:
+    Biostrings,
+    knitr,
+    magick,
+    prettydoc,
+    rgl,
+    rmarkdown,
+    seqinr,
+    seqLogo,
+    tinytest,
+    xtable
+LinkingTo: 
+    Rcpp
+VignetteBuilder: 
+    knitr,
+    utils
+biocViews: Software, Technology, QualityControl
 Encoding: UTF-8
-RoxygenNote: 7.1.1
+Repository: CRAN
 Roxygen: list(old_usage = TRUE)
+RoxygenNote: 7.1.1
