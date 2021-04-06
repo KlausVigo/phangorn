@@ -436,6 +436,7 @@ ptree <- function(tree, data, return = "prob") {
        # fun expects matrices to do rowsums, but we hand it a list of vectors
        # so to minimally impact code, I just make each vector a row (which seems to be intent of original code)
     res <- lapply(res, matrix, nrow = 1)  
+    #
     res <- lapply(res, fun)
   }
   attributes(res) <- att
