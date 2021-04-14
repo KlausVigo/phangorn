@@ -177,8 +177,8 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
   dup_list <- NULL
   addTaxa <- FALSE
   star_tree <- FALSE
-  if(!is.null(attr(data, "dup_list"))){
-    dup_list <- attr(data, "dup_list")
+  if(!is.null(attr(data, "duplicated"))){
+    dup_list <- attr(data, "duplicated")
     addTaxa <- TRUE
     if(attr(data, "nr") == 0) star_tree <- TRUE
   }
