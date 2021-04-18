@@ -129,7 +129,7 @@ write.nexus.splits <- function(obj, file = "", weights = NULL, taxa = TRUE,
                                append = FALSE) {
   taxa.labels <- attr(obj, "labels")
   ntaxa <- length(taxa.labels)
-  obj <- oneWise(obj, ntaxa)
+  obj <- ONEwise(obj)
   ind <- which(lengths(obj) == ntaxa)
   if (length(ind)) obj <- obj[-ind]
   nsplits <- length(obj)

@@ -125,9 +125,9 @@ matchSplits <- function(x, y, as.in = TRUE) {
     stop("x and y have different labels!")
   nTips <- length(tiplabel)
   y <- changeOrder(y, tiplabel)
-  y <- SHORTwise(y, nTips)
-  if (as.in) return(match(SHORTwise(x, nTips), y, nomatch = 0L) > 0L)
-  match(SHORTwise(x, nTips), y)
+  y <- SHORTwise(y) #, nTips)
+  if (as.in) return(match(SHORTwise(x), y, nomatch = 0L) > 0L)
+  match(SHORTwise(x), y)
 }
 
 
@@ -212,7 +212,7 @@ c.splits <- function(..., recursive = FALSE) {
 #' @export
 unique.splits <- function(x, incomparables = FALSE, unrooted = TRUE, ...) {
   nTips <- length(attr(x, "labels"))
-  x <- SHORTwise(x, nTips)
+  x <- SHORTwise(x)
   x[!duplicated(x)]
 }
 
@@ -260,6 +260,9 @@ as.splits.phylo <- function(x, ...) {
 #' @method as.splits multiPhylo
 #' @export
 as.splits.multiPhylo <- function(x, ...) {
+  if (hasArg(trivial))
+    trivial <- list(...)$trivial
+  else trivial <- TRUE
   lx <-  length(x)
   x <- unroot(x)
   splits <- prop.part(x)
@@ -269,10 +272,13 @@ as.splits.multiPhylo <- function(x, ...) {
   lab <- attr(splits, "labels")
   attr(splits, "labels") <- attr(splits, "number") <- NULL
   l <- length(lab)
-  splitTips <- vector("list", l)
-  for (i in 1:l) splitTips[[i]] <- i
-  result <- c(splitTips, splits)
-  attr(result, "weights") <- c(rep(lx, l), weights)
+  if(trivial){
+    splitTips <- vector("list", l)
+    for (i in 1:l) splitTips[[i]] <- i
+    result <- c(splitTips, splits)
+    attr(result, "weights") <- c(rep(lx, l), weights)
+  }
+  else attr(result, "weights") <- weights
   attr(result, "confidences") <- attr(result, "weights") / lx
   attr(result, "summary") <- list(confidences = "ratio", ntrees = lx,
                                   clades = FALSE)
@@ -332,7 +338,7 @@ as.phylo.splits <- function(x, check=TRUE,...){
 splits2phylo <- function(x){
   labels <- attr(x, "labels")
   nTips <- length(labels)
-  x <- SHORTwise(x, nTips, TRUE)
+  x <- SHORTwise(x)
   l <- lengths(x)
   x <- x[order(l)]
   x <- x[lengths(x) > 1]
@@ -366,7 +372,7 @@ compatibleSplits <- function(x) {
   x <- postprocess.splits(x)
   labels <- attr(x, "labels")
   nTips <- length(labels)
-  x <- SHORTwise(x, nTips)
+  x <- SHORTwise(x)
 #  x <- x[lengths(x)>1]
   dm <- as.matrix(compatible(x))
   rs <- rowSums(dm)
@@ -388,7 +394,7 @@ postprocess.splits <- function (x)
   #  w <- attr(x, "number")
   tmp <- attributes(x)
   labels <- attr(x, "labels")
-  x <- SHORTwise(x, length(labels))
+  x <- SHORTwise(x)
   drop <- duplicated(x)
   if (any(drop)) {
     W <- ifelse (is.null(tmp$weights), FALSE, TRUE)

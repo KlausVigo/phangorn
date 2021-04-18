@@ -1,6 +1,6 @@
 Package: phangorn
 Title: Phylogenetic Reconstruction and Analysis
-Version: 2.6.3
+Version: 2.6.3.0
 Authors@R: 
     c(person(given = "Klaus",
              family = "Schliep",
@@ -62,7 +62,7 @@ License: GPL (>= 2)
 URL: https://github.com/KlausVigo/phangorn
 BugReports: https://github.com/KlausVigo/phangorn/issues
 Depends:
-    ape (>= 5.4),
+    ape (>= 5.5),
     R (>= 3.6.0)
 Imports:
     fastmatch,

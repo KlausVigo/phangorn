@@ -434,7 +434,7 @@ maxCladeCred <- function(x, tree = TRUE, part = NULL, rooted = TRUE) {
     pp <- part
   }
   pplabel <- attr(pp, "labels")
-  if (!rooted) pp <- oneWise(pp)
+  if (!rooted) pp <- ONEwise(pp)
   x <- .uncompressTipLabel(x)
   class(x) <- NULL
   m <- max(attr(pp, "number"))
@@ -445,7 +445,7 @@ maxCladeCred <- function(x, tree = TRUE, part = NULL, rooted = TRUE) {
     tmp <- checkLabels(x[[i]], pplabel)
     if (!rooted) tmp <- unroot(tmp)
     ppi <- prop.part(tmp) # trees[[i]]
-    if (!rooted) ppi <- oneWise(ppi)
+    if (!rooted) ppi <- ONEwise(ppi)
     indi <- fmatch(ppi, pp)
     if (any(is.na(indi))) {
       res[i] <- -Inf
@@ -496,7 +496,7 @@ cladeMatrix <- function(x, rooted = FALSE) {
   if (!rooted) x <- unroot(x)
   pp <- prop.part(x)
   pplabel <- attr(pp, "labels")
-  if (!rooted) pp <- oneWise(pp)
+  if (!rooted) pp <- ONEwise(pp)
   x <- .uncompressTipLabel(x)
   nnodes <- Nnode(x)
   class(x) <- NULL
@@ -512,7 +512,7 @@ cladeMatrix <- function(x, rooted = FALSE) {
   k <- 1
   for (i in 1:l) {
     ppi <- prop.part(x[[i]])
-    if (!rooted) ppi <- oneWise(ppi)
+    if (!rooted) ppi <- ONEwise(ppi)
     indi <- sort(fmatch(ppi, pp))
     ivec[from[i]:to[i]] <- indi
   }

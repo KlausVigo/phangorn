@@ -561,7 +561,7 @@ nnls.splits <- function(x, dm, trace = 0) {
   dm <- dm[labels, labels]
   y <- dm[lower.tri(dm)]
 
-  x <- SHORTwise(x, k)
+  x <- SHORTwise(x) #, k) # use ape version
   l <- lengths(x)
   if (any(l == 0)) x <- x[-which(l == 0)]
 

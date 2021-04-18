@@ -5,14 +5,19 @@ transferBootstrap <- function(tree, bstree){
   bstree <- .compressTipLabel(bstree, tree$tip.label)
   bstree <- reorder(bstree, "postorder")
   l <- Ntip(tree)
-  bp <- bipart(tree)
-  bp <- SHORTwise(bp, l, TRUE)
+#  bp <- bipart(tree)
+#  bp <- phangorn:::SHORTwise(bp, l, TRUE)
+  bp <- prop.part(tree)
+  bp <- SHORTwise(bp)[-1]
   not_cherry <- lengths(bp) != 2
   res <- numeric(length(bp))
   for(i in seq_along(bstree)){
      tmp <- bstree[[i]]
-     bptmp <- bipart(tmp)
-     bptmp <- SHORTwise(bptmp, l, TRUE)
+#     bptmp <- bipart(tmp)
+#     bptmp <- phangorn:::SHORTwise(bptmp, l, TRUE)
+     bptmp <- prop.part(tmp)
+     bptmp <- SHORTwise(bptmp)[-1]
+
      ind <- fmatch(bp, bptmp)
      res[!is.na(ind)] <- res[!is.na(ind)] + 1
      # cherries can be check outside

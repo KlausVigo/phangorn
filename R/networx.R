@@ -77,7 +77,7 @@ addEdge <- function(network, desc, spl) {
   child <- edge[, 2]
   nTips <- length(network$tip.label)
 
-  desc2 <- SHORTwise(desc, nTips)
+  desc2 <- SHORTwise(desc) #, nTips)
   split <- desc2[spl]
 
   index <- network$splitIndex
@@ -154,7 +154,7 @@ circNetwork <- function(x, ord = NULL) {
   res <- stree(nTips, tip.label = attr(x, "labels"))
   res$edge[, 2] <- ord
   res$edge.length <- NULL
-  x <- SHORTwise(x, nTips)
+  x <- SHORTwise(x) #, nTips)
   spRes <- as.splits(res)[res$edge[, 2]]
   index <- match(spRes, x)
 
@@ -165,7 +165,7 @@ circNetwork <- function(x, ord = NULL) {
     index <- match(spRes, x)
   }
 
-  l <- lengths(oneWise(x, nTips))
+  l <- lengths(ONEwise(x))
   l2 <- lengths(x)
 
   #    dm <- as.matrix(compatible2(x))
@@ -346,7 +346,7 @@ addTrivialSplits <- function(obj) {
   STree <- stree(nTips, tip.label = attr(obj, "labels"))
   STree$edge.length <- NULL
   spRes <- as.splits(STree)[STree$edge[, 2]]
-  tmpIndex <- match(spRes, SHORTwise(obj, nTips))
+  tmpIndex <- match(spRes, SHORTwise(obj))
   if (any(is.na(tmpIndex))) {
     l.na <- sum(is.na(tmpIndex))
     obj <- c(obj, spRes[is.na(tmpIndex)])
@@ -376,7 +376,7 @@ as.networx.splits <- function(x, planar = FALSE, coord = c("none", "2D", "3D"),
   label <- attr(x, "label")
   x <- addTrivialSplits(x)
   nTips <- length(label)
-  x <- oneWise(x, nTips)
+  x <- ONEwise(x)
   l <- lengths(x)
   if (any(l == nTips)) x <- x[l != nTips] # get rid of trivial splits
   l <- lengths(x)
@@ -524,9 +524,9 @@ createLabel <- function(x, y, label_y, type = "edge", nomatch = NA) {
   nTips <- length(tiplabel)
 
   spl_y <- changeOrder(spl_y, tiplabel)
-  spl_y <- SHORTwise(spl_y, nTips)
+  spl_y <- SHORTwise(spl_y)
 
-  ind <- match(SHORTwise(spl_x, nTips), spl_y)
+  ind <- match(SHORTwise(spl_x), spl_y)
   pos <-  which(!is.na(ind))
 
   res <- rep(nomatch, length(spl_x))
@@ -651,9 +651,10 @@ addConfidences.splits <- function(x, y, scaler = 1, ...) {
   }
 
   spl <- as.splits(y)
+# postprocess.proppart
   spl <- changeOrder(spl, tiplabel)
-  spl <- oneWise(spl, nTips)
-  ind <- match(oneWise(x, nTips), spl)
+  spl <- SHORTwise(spl)
+  ind <- match(SHORTwise(x), spl)
   #    pos <-  which(ind > nTips)
   pos <-  which(!is.na(ind))
   confidences <- rep(NA_real_, length(x)) # numeric(length(x))  #character
@@ -685,7 +686,7 @@ addConfidences.phylo <- function(x, y, ...) {
     as.is <- list(...)$as.is
   else as.is <- TRUE
   nTips <- length(x$tip.label)
-  spl <- as.splits(x) %>% oneWise(nTips = nTips)
+  spl <- as.splits(x) %>% ONEwise()
   conf <- attr(addConfidences(spl, y), "confidences")
   l <- lengths(spl)
   if (is.character(conf)) as.is <- TRUE
@@ -775,7 +776,7 @@ coords.equal.angle <- function(obj) {
   if (is.null(attr(obj, "order")) || (attr(obj, "order") == "postorder"))
     obj <- reorder.networx(obj)
   spl <- obj$splits
-  spl <- SHORTwise(spl, length(obj$tip.label))
+  spl <- SHORTwise(spl) #, length(obj$tip.label))
   l <- length(obj$edge.length)
 #  ind1 <- which(!duplicated(obj$splitIndex))
   n <- max(obj$edge)

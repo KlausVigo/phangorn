@@ -24,7 +24,7 @@ expect_equal(length(c_spl) , 3L*length(tree2spl))
 expect_equal(length(unique(c_spl)) , length(tree2spl))
 expect_equal(length(distinct.splits(c_spl)) , length(tree2spl))
 spl <- allCircularSplits(6)
-spl <- phangorn:::oneWise(spl, 6)
+spl <- ONEwise(spl)
 write.nexus.splits(spl, "tmp.nex")
 spl2 <- read.nexus.splits("tmp.nex")
 attr(spl2, "splitlabels") <- NULL
