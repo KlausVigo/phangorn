@@ -507,7 +507,8 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
   search_trees <- vector("list", maxit)
   tree <- NULL
   mp <- Inf
-
+  # TODO use rooted trees if cost is not symmetric
+  ROOTED=FALSE
   # remove parsimony uniformative sie or duplicates
   if(method=="fitch"){
     weight <- attr(data, "weight")
@@ -518,6 +519,19 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
     else w[] <- TRUE
   }
   else data <- unique(data)
+
+  star_tree <- ifelse(attr(data, "nr") == 0, TRUE, FALSE)
+  add_taxa <- ifelse(is.null(attr(data, "duplicated")), FALSE, TRUE)
+  nTips <- length(data)
+  # check for trivial trees
+  if (nTips < (3L + !ROOTED)  || star_tree) {
+    nam <- names(data)
+    if (star_tree) tree <- stree(length(nam), tip.label = nam)
+    else tree <- stree(nTips, tip.label = nam)
+    if(add_taxa) tree <- addTaxa(tree, attr(data, "duplicated"))
+    if(!ROOTED) tree <- unroot(tree)
+    return(tree)
+  }
 
   if (perturbation != "random_addition"){
     if(is.null(start)) start <- optim.parsimony(fastme.ols(dist.hamming(data)),

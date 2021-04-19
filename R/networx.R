@@ -16,6 +16,7 @@ allCircularSplits <- function(k, labels = NULL) {
     tmp <- (1L:y) + x
     tmp %% (k + 1L) + tmp %/% (k + 1L)
   }
+
   k <- as.integer(k)
   l <- (k - 1L) %/% 2L
   res <- vector("list", k * (k - 1L) / 2)
@@ -32,8 +33,8 @@ allCircularSplits <- function(k, labels = NULL) {
       m <- k %/% 2
       res[(ind + 1):(ind + m)] <- lapply(0L:(m - 1L), fun, m)
     }
-
   }
+  res <- lapply(res, sort)
   if (is.null(labels)) labels <- as.character(1:k)
   attr(res, "labels") <- labels
   attr(res, "cycle") <- 1:k

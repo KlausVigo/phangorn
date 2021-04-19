@@ -324,15 +324,18 @@ optim.fitch <- function(tree, data, trace = 1, rearrangements = "NNI", ...) {
   #  New
   data <- removeParsimonyUninfomativeSites(data, recursive=TRUE)
 
-  dup_list <- NULL
-  addTaxa <- FALSE
-  star_tree <- FALSE
-
-  if(!is.null(attr(data, "duplicated"))){
-    dup_list <- attr(data, "duplicated")
-    addTaxa <- TRUE
-    if(attr(data, "nr") == 0) star_tree <- TRUE
+  star_tree <- ifelse(attr(data, "nr") == 0, TRUE, FALSE)
+  add_taxa <- ifelse(is.null(attr(data, "duplicated")), FALSE, TRUE)
+  nTips <- length(data)
+  if (nTips < 4L  || star_tree) {
+    nam <- names(data)
+    if (star_tree) tree <- stree(length(nam), tip.label = nam)
+    else tree <- stree(nTips, tip.label = nam)
+    if(add_taxa) tree <- addTaxa(tree, attr(data, "duplicated"))
+    tree <- unroot(tree)
+    return(tree)
   }
+
   tree <- keep.tip(tree, names(data))
   if(length(tree$tip.label) > 2) tree <- unroot(tree)
   tree <- reorder(tree, "postorder")
@@ -348,15 +351,8 @@ optim.fitch <- function(tree, data, trace = 1, rearrangements = "NNI", ...) {
 
   m <- nr * (2L * nTips - 2L)
   on.exit({
-    if (addTaxa) {
-      if (rt) tree <- acctran(tree, data)
-      for (i in seq_along(dup_list)) {
-        dup <- dup_list[[i]]
-        tree <- add.tips(tree, dup[, 1], dup[, 2])
-      }
-      tree
-    }
-    if(length(tree$tip.label) > 2) tree <- unroot(tree)
+    if (add_taxa) tree <- addTaxa(tree, attr(data, "duplicated"))
+    tree <- unroot(tree)
     attr(tree, "pscore") <- pscore
     return(tree)
   })

@@ -618,6 +618,11 @@ unique.phyDat <- function(x, incomparables=FALSE, identical=TRUE, ...){
 
 addTaxa <- function(tree, dup_list) {
   fun <- function(x, dup_list){
+    if(Ntip(x)==1L){
+      dup <- dup_list[[1]][,1]
+      x <- add.tips(x, dup, rep(2, length(dup)))
+      dup_list[[1]] <- NULL
+    }
     for (i in seq_along(dup_list)) {
       dup <- dup_list[[i]]
       x <- add.tips(x, dup[, 1], dup[, 2])
@@ -673,7 +678,6 @@ removeParsUninfoSites <- function(data, exact=TRUE){
 
 removeParsimonyUninfomativeSites <- function(data, recursive=FALSE, exact=TRUE){
   dup_list <- NULL
-  addTaxa <- FALSE
   tmp <- TRUE
   star_tree <- FALSE
   while (tmp) {
@@ -689,7 +693,6 @@ removeParsimonyUninfomativeSites <- function(data, recursive=FALSE, exact=TRUE){
     dup <- map_duplicates(data)
     if (!is.null(dup)) {
       dup_list <- c(list(dup), dup_list)
-      addTaxa <- TRUE
       data <- subset(data, setdiff(names(data), dup[, 1]))
     }
     else break() # tmp <- FALSE
