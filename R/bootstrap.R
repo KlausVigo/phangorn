@@ -434,7 +434,9 @@ maxCladeCred <- function(x, tree = TRUE, part = NULL, rooted = TRUE) {
     pp <- part
   }
   pplabel <- attr(pp, "labels")
-  if (!rooted) pp <- ONEwise(pp)
+  if (!rooted){
+    pp <- postprocess.prop.part(pp, method="SHORTwise")
+  }
   x <- .uncompressTipLabel(x)
   class(x) <- NULL
   m <- max(attr(pp, "number"))
@@ -445,7 +447,7 @@ maxCladeCred <- function(x, tree = TRUE, part = NULL, rooted = TRUE) {
     tmp <- checkLabels(x[[i]], pplabel)
     if (!rooted) tmp <- unroot(tmp)
     ppi <- prop.part(tmp) # trees[[i]]
-    if (!rooted) ppi <- ONEwise(ppi)
+    if (!rooted) ppi <- SHORTwise(ppi)
     indi <- fmatch(ppi, pp)
     if (any(is.na(indi))) {
       res[i] <- -Inf
@@ -474,7 +476,7 @@ allCompat <- function(x) {
   x <- unroot(x)
   l <- length(x)
   spl <- prop.part(x)
-  spl <- postprocess.prop.part(spl)
+  spl <- postprocess.prop.part(spl, method = "SHORTwise")
   spl <- as.splits(spl)
   w <- attr(spl, "weights")
   ind <- (w / l) > 0.5
