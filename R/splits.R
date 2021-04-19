@@ -266,7 +266,7 @@ as.splits.multiPhylo <- function(x, ...) {
   lx <-  length(x)
   x <- unroot(x)
   splits <- prop.part(x)
-  splits <- postprocess.prop.part(splits)
+  splits <- postprocess.prop.part(splits, method="SHORTwise")
   class(splits) <- "list"
   weights <- attr(splits, "number")
   lab <- attr(splits, "labels")
