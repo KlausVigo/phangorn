@@ -177,13 +177,12 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
   dup_list <- NULL
   addTaxa <- FALSE
   star_tree <- FALSE
+  if(attr(data, "nr") == 0) star_tree <- TRUE
   if(!is.null(attr(data, "duplicated"))){
     dup_list <- attr(data, "duplicated")
     addTaxa <- TRUE
-    if(attr(data, "nr") == 0) star_tree <- TRUE
   }
   p0 <- attr(data, "p0")
-
 
   nTips <- length(data)
   nam <- names(data)
@@ -194,6 +193,7 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
       dup <- dup_list[[i]]
       tree <- add.tips(tree, dup[, 1], dup[, 2])
     }
+    tree <- unroot(tree)
     return(tree)
   }
 
