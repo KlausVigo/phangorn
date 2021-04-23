@@ -1,4 +1,4 @@
-candidate.tree <- function(x){
+candidate.tree <- function(x, eps = 1e-8){
 #  if(attr(x, "nc") > 31){
 #     dm <- dist.ml(x)
 #     tree <- fastme.bal(dm, nni = TRUE, spr = FALSE, tbr = FALSE)
@@ -12,6 +12,7 @@ candidate.tree <- function(x){
 #    tree <- dist.ml(fit$data, bf=fit$bf, Q=fit$Q) %>% nnls.tree(tree=tree)
     tree <- acctran(tree, x)
     tree$edge.length <- tree$edge.length / sum(attr(x, "weight"))
+    tree$edge.length <- pmax(eps, tree$edge.length)
 #  }
   tree
 }
