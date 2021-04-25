@@ -124,7 +124,7 @@ plot(Nnet,"2D")
 
 ```
 
-### Interwining trees and network functions                         
+### Intertwining trees and network functions                         
 ### 1A: 
 Identification of edge bundles (in black) in a neighbour-net (NN) network that correspond to branches (labelled 1-12) in a tree (a maximum likelihood tree, in this case). 
 
@@ -209,7 +209,7 @@ plot(obj,"2D",show.edge.label=T, edge.color=edge.col, col.edge.label = "blue")
 
 
 ### 
-There are four possible data patterns in phylogenetic reconstruction: (1) patterns that are well supported in the network and appear in the bootstapped trees; (2) patterns that are well supported by (part of) the data/network but do not appear in the optimised trees, i.e. they are incompatible with the tree; (3) patterns that are weakly supported by the network but appear in the optimised trees anyway, i.e. they are compatible with the tree. 
+There are four possible data patterns in phylogenetic reconstruction: (1) patterns that are well supported in the network and appear in the bootstrapped trees; (2) patterns that are well supported by (part of) the data/network but do not appear in the optimised trees, i.e. they are incompatible with the tree; (3) patterns that are weakly supported by the network but appear in the optimised trees anyway, i.e. they are compatible with the tree. 
 
 Here we demonstrate these patterns by showing the relationships between splits weights, from a NeighborNet splits graph, bootstrap bipartitions support and bootstrap percentages plotted on the optimised tree for a dataset of @Wang2012. 
 

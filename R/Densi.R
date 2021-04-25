@@ -62,7 +62,7 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt = 0, cex = 1,
 #' This should avoid too many unnecessary crossings of edges.
 #' Trees should be rooted, other wise the output may not be visually pleasing.
 #' \code{jitter} shifts trees a bit so that they are not exactly on top of each other.
-#' If \code{amount == 0}, it is ignored. If \code{random=TRUE} the result of the perputation is
+#' If \code{amount == 0}, it is ignored. If \code{random=TRUE} the result of the permutation is
 #' \code{runif(n, -amount, amount)}, otherwise \code{seq(-amount, amount, length=n)}, where \code{n <- length(x)}.
 #' @param x an object of class \code{multiPhylo}.
 #' @param type a character string specifying the type of phylogeny, so far

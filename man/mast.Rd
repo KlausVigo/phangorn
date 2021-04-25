@@ -11,7 +11,7 @@ mast(x, y, tree = TRUE, rooted = TRUE)
 
 \item{y}{a tree, i.e. an object of class \code{phylo}.}
 
-\item{tree}{a logicical, if TRUE returns a tree other wise the tip labels
+\item{tree}{a logical, if TRUE returns a tree other wise the tip labels
 of the the maximum agreement subtree.}
 
 \item{rooted}{logical if TRUE treats trees as rooted otherwise unrooted.}

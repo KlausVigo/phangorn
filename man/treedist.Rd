@@ -53,7 +53,7 @@ Robinson-Foulds distance}
 \description{
 \code{treedist} computes different tree distance methods and \code{RF.dist}
 the Robinson-Foulds or symmetric distance. The Robinson-Foulds distance only
-depends on the toplogy of the trees. If edge weights should be considered
+depends on the topology of the trees. If edge weights should be considered
 \code{wRF.dist} calculates the weighted RF distance (Robinson & Foulds
 1981). and \code{KF.dist} calculates the branch score distance (Kuhner &
 Felsenstein 1994).  \code{path.dist} computes the path difference metric as

@@ -26,7 +26,7 @@ data(Laurasiatherian)
 data(yeast)
 ```
 ## consensusNet
-A consensusNet [@Holland2004] is a generalization of a consensus tree. Instead of only representing splits (taxon bipartitions) occurring in at least 50% of the trees in a bootstrap or MCMC sample one can use a lower threshold and explore competing splits. Note that, in its basic implementation used here, the consensusNet edge lengths are proportional to the frequence of the corresponding splits in the provided list of trees. 
+A consensusNet [@Holland2004] is a generalization of a consensus tree. Instead of only representing splits (taxon bipartitions) occurring in at least 50% of the trees in a bootstrap or MCMC sample one can use a lower threshold and explore competing splits. Note that, in its basic implementation used here, the consensusNet edge lengths are proportional to the frequency of the corresponding splits in the provided list of trees. 
 
 The input for `consensusNet` is a list of trees i.e. an object of class `multiPhylo`.
 ```{r, eval=TRUE}
@@ -103,7 +103,7 @@ The functions `read.nexus.networx` and `write.nexus.networx` can read and write 
 
 
 
-## Session Infomation
+## Session Information
 ```{r, eval=TRUE}
 sessionInfo()
 ```

@@ -8,7 +8,7 @@
 #'
 #' @param x a tree, i.e. an object of class \code{phylo}.
 #' @param y a tree, i.e. an object of class \code{phylo}.
-#' @param tree a logicical, if TRUE returns a tree other wise the tip labels
+#' @param tree a logical, if TRUE returns a tree other wise the tip labels
 #' of the the maximum agreement subtree.
 #' @param rooted logical if TRUE treats trees as rooted otherwise unrooted.
 #' @return \code{mast} returns a vector of the tip labels in the MAST.

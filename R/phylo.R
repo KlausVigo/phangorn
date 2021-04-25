@@ -1308,7 +1308,7 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #' Base frequencies in \code{pml} can be supplied in different ways.
 #' For amino acid they are usually defined through specifying a model, so the
 #' argument bf does not need to be specified. Otherwise if \code{bf=NULL},
-#' each state is given equal probabilty. It can be a numeric vector given the
+#' each state is given equal probability. It can be a numeric vector given the
 #' frequencies. Last but not least \code{bf} can be string "equal", "empirical"
 #' and for codon models additionally "F3x4".
 #'
@@ -1367,7 +1367,7 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #' quadrature approach of Felsenstein 2001.
 ## or "lognormal" after a lognormal
 #' @param object An object of class \code{pml}.
-#' @param optNni Logical value indicating whether toplogy gets optimized (NNI).
+#' @param optNni Logical value indicating whether topology gets optimized (NNI).
 #' @param optBf Logical value indicating whether base frequencies gets
 #' optimized.
 #' @param optQ Logical value indicating whether rate matrix gets optimized.

@@ -105,7 +105,7 @@ Q =
 
 
 
-where we need to assign 6 paramters $\alpha, \dots, \eta$. The elements on the diagonal are chosen so that the rows sum to zero. The Jukes-Cantor (JC) [@Jukes1969] model can be derived as special case from the GTR model, for equal equilibrium frequencies $\pi_A = \pi_C = \pi_G = \pi_T = 0.25$ and equal rates set to $\alpha = \beta = \gamma = \delta = \eta$. Table \@ref(tab:models) lists all built-in nucleotide models in _phangorn_.
+where we need to assign 6 parameters $\alpha, \dots, \eta$. The elements on the diagonal are chosen so that the rows sum to zero. The Jukes-Cantor (JC) [@Jukes1969] model can be derived as special case from the GTR model, for equal equilibrium frequencies $\pi_A = \pi_C = \pi_G = \pi_T = 0.25$ and equal rates set to $\alpha = \beta = \gamma = \delta = \eta$. Table \@ref(tab:models) lists all built-in nucleotide models in _phangorn_.
 The transition probabilities which describe the probabilities of change from character $i$ to $j$ in time $t$, are given by the corresponding entries of the matrix exponential
 \[
 P(t) = (p_{ij}(t)) = e^{Qt}, \qquad \sum_j p_{ij}=1
@@ -218,7 +218,7 @@ There are several ways to estimate the codon frequencies $\pi_j$. The simplest m
 (=1/61). A second is to use the empirical codon frequencies, either computed using `baseFreq` or using
 the argument `bf="empirical"` in `pml`. Last but not least the frequencies can be derived from the
 base frequencies at each codon position, the F3x4 model is set by the argument `bf="F3x4"`.
-One can estimate the codon frequencies setting the option to `optBf=TRUE` in `optim.pml`. As the convergence of the 60 parameters the convergence is likely slow set the maximal iterations to a higher value than the default (e.g. `control = pml.control(maxit=50)`). Similar parameters of the F3x4 can also estmated using ML `optF3x4=TRUE` instead.
+One can estimate the codon frequencies setting the option to `optBf=TRUE` in `optim.pml`. As the convergence of the 60 parameters the convergence is likely slow set the maximal iterations to a higher value than the default (e.g. `control = pml.control(maxit=50)`). Similar parameters of the F3x4 can also estimated using ML `optF3x4=TRUE` instead.
 
 
 The "YN98" model [@Yang1998] is similar to the "codon1", but additional optimizes the codon frequencies.

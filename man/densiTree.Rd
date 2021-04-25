@@ -72,7 +72,7 @@ and if the input trees have different labels a mrp.supertree as a backbone.
 This should avoid too many unnecessary crossings of edges.
 Trees should be rooted, other wise the output may not be visually pleasing.
 \code{jitter} shifts trees a bit so that they are not exactly on top of each other.
-If \code{amount == 0}, it is ignored. If \code{random=TRUE} the result of the perputation is
+If \code{amount == 0}, it is ignored. If \code{random=TRUE} the result of the permutation is
 \code{runif(n, -amount, amount)}, otherwise \code{seq(-amount, amount, length=n)}, where \code{n <- length(x)}.
 }
 \examples{
