@@ -508,7 +508,7 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
   tree <- NULL
   mp <- Inf
   # TODO use rooted trees if cost is not symmetric
-  ROOTED=FALSE
+  ROOTED <- FALSE
   # remove parsimony uniformative sie or duplicates
   if(method=="fitch"){
     weight <- attr(data, "weight")
