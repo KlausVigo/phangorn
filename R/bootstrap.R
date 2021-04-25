@@ -499,7 +499,7 @@ cladeMatrix <- function(x, rooted = FALSE) {
   if (!rooted) x <- unroot(x)
   pp <- prop.part(x)
   pplabel <- attr(pp, "labels")
-  if (!rooted) pp <- ONEwise(pp)
+  if (!rooted) pp <- SHORTwise(pp)
   x <- .uncompressTipLabel(x)
   nnodes <- Nnode(x)
   class(x) <- NULL
@@ -515,7 +515,7 @@ cladeMatrix <- function(x, rooted = FALSE) {
   k <- 1
   for (i in 1:l) {
     ppi <- prop.part(x[[i]])
-    if (!rooted) ppi <- ONEwise(ppi)
+    if (!rooted) ppi <- SHORTwise(ppi)
     indi <- sort(fmatch(ppi, pp))
     ivec[from[i]:to[i]] <- indi
   }
