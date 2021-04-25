@@ -1,3 +1,14 @@
+    CHANGES in PHANGORN VERSION 2.7.0
+
+BUG FIXES
+
+    o several bug fixes, e.g. which called bootstrap.pml and pratchet to crash
+
+OTHER CHANGES
+
+    o internal functions for handling bipartitions have been harmonized with ape
+
+
     CHANGES in PHANGORN VERSION 2.6.0
 
 NEW FEATURES
