@@ -8,6 +8,8 @@ OTHER CHANGES
 
     o internal functions for handling bipartitions have been harmonized with ape
 
+      and some functions like maxCladeCred are faster
+
 
     CHANGES in PHANGORN VERSION 2.6.0
 

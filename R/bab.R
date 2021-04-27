@@ -301,7 +301,7 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
   }
   for (i in seq_along(result)) {
     result[[i]] <- structure(list(edge = result[[i]], Nnode = nTips - 2L),
-                             .Names = c("edge", "Nnode"), class = "phylo", order = "postorder")
+              .Names = c("edge", "Nnode"), class = "phylo", order = "postorder")
   }
   attr(result, "TipLabel") <- tree$tip.label
   #    attr(result, "visited") = blub
