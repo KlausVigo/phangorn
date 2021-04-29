@@ -13,8 +13,9 @@ plotBS(tree, BStrees, type = "unrooted", method = "FBP",
 
 \item{BStrees}{a list of trees (object of class "multiPhylo").}
 
-\item{type}{the type of tree to plot, so far "cladogram", "phylogram" and
-"unrooted" are supported.}
+\item{type}{the type of tree to plot, one of "phylogram", "cladogram", "fan",
+"unrooted", "radial" or "none". If type is "none" the tree is returned with
+the bootstrap values assigned to the node labels.}
 
 \item{method}{either "FBP" the classical bootstrap (default) or "TBE"
 (transfer bootstrap)}

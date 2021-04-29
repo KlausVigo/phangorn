@@ -260,8 +260,9 @@ checkLabels <- function(tree, tip) {
 #'
 #' @param tree The tree on which edges the bootstrap values are plotted.
 #' @param BStrees a list of trees (object of class "multiPhylo").
-#' @param type the type of tree to plot, so far "cladogram", "phylogram" and
-#' "unrooted" are supported.
+#' @param type the type of tree to plot, one of "phylogram", "cladogram", "fan",
+#' "unrooted", "radial" or "none". If type is "none" the tree is returned with
+#' the bootstrap values assigned to the node labels.
 #' @param method either "FBP" the classical bootstrap (default) or "TBE"
 #' (transfer bootstrap)
 #' @param bs.col color of bootstrap support labels.
