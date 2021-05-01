@@ -117,7 +117,7 @@ TVMe, TVM, SYM and GTR.  These models are specified as in Posada (2008).
 
 So far 17 amino acid models are supported ("WAG", "JTT", "LG", "Dayhoff",
 "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24", "VT","RtREV", "HIVw", "HIVb",
-"FLU", "Blossum62", "Dayhoff_DCMut" and "JTT_DCMut") and additionally rate
+"FLU", "Blosum62", "Dayhoff_DCMut" and "JTT_DCMut") and additionally rate
 matrices and amino acid frequencies can be supplied.
 
 It is also possible to estimate codon models (e.g. YN98), for details see

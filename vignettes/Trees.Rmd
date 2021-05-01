@@ -89,7 +89,7 @@ The object fit just estimated the likelihood for the tree it got supplied, but t
 fitJC  <- optim.pml(fit, TRUE)
 logLik(fitJC)
 ```
-With the default values`pml` will estimate a Jukes-Cantor model. The function`update.pml` allows to change parameters. We will change the model to the GTR + $\Gamma(4)$ + I model and then optimize all the parameters.
+With the default values`pml` will estimate a Jukes-Cantor model. The generic function `update` allows to change parameters. We will change the model to the GTR + $\Gamma(4)$ + I model and then optimize all the parameters.
 ```{r}
 fitGTR <- update(fit, k=4, inv=0.2)
 fitGTR <- optim.pml(fitGTR, model="GTR", optInv=TRUE, optGamma=TRUE,
@@ -217,6 +217,7 @@ tree <- NJ(dm)
 # run all available amino acid models
 (mt <- modelTest(dat, model="all", multicore=TRUE))
 
+env <- attr(mt, "env")
 fitStart <- eval(get(mt$Model[which.min(mt$BIC)], env), env)
 
 fitNJ <- pml(tree, dat, model="JTT", k=4, inv=.2)

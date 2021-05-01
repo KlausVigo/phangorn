@@ -50,7 +50,7 @@ AA sequences to compute distances under different substitution models.
 \details{
 So far 17 amino acid models are supported ("WAG", "JTT", "LG", "Dayhoff",
 "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24", "VT","RtREV", "HIVw", "HIVb",
-"FLU", "Blossum62", "Dayhoff_DCMut" and "JTT_DCMut") and additional rate
+"FLU", "Blosum62", "Dayhoff_DCMut" and "JTT_DCMut") and additional rate
 matrices and frequencies can be supplied.
 
 The "F81" model uses empirical base frequencies, the "JC69" equal base
