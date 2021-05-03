@@ -96,27 +96,6 @@ parsimony <- function(tree, data, method = "fitch", cost=NULL, site = "pscore"){
 }
 
 
-prepareDataFitch <- function(data) {
-  lev <- attr(data, "levels")
-  l <- length(lev)
-  nr <- attr(data, "nr")
-  nc <- length(data)
-  contrast <- attr(data, "contrast")
-  tmp <- contrast %*% 2L^c(0L:(l - 1L))
-  tmp <- as.integer(tmp)
-  attrData <- attributes(data)
-  nam <- attrData$names
-  attrData$names <- NULL
-  data <- unlist(data, FALSE, FALSE)
-  X <- tmp[data]
-  attributes(X) <- attrData
-  attr(X, "dim") <- c(nr, nc)
-  dimnames(X) <- list(NULL, nam)
-  class(X) <- NULL
-  X
-}
-
-
 compressSites <- function(data) {
   attrData <- attributes(data)
   lev <- attr(data, "levels")
