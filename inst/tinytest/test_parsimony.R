@@ -51,5 +51,6 @@ expect_equal(sum(tree2$edge.length), fitch(tree2,dat))
 ra_tree <- random.addition(yeast)
 ratchet_tree <- pratchet(yeast, start=ra_tree, trace=0)
 expect_true(attr(ra_tree, "pscore") >= attr(ratchet_tree, "pscore"))
-
+trivial_tree <- pratchet(dat)
+expect_true(inherits(trivial_tree, "phylo"))
 
