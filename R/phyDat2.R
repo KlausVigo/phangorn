@@ -92,6 +92,10 @@ phyDat.default <- function (data, levels = NULL, return.index = TRUE,
     nam <- row.names(data)
   else nam <- names(data)
   if(is.null(nam))stop("data object must contain taxa names")
+  if(inherits(data, "factor")){
+    if(is.null(levels)) levels <- levels(data)
+    data <- as.matrix(data)
+  }
   if(inherits(data, "list")) data <- as.data.frame(data)
   if(inherits(data, "data.frame")) data <- t(as.matrix(data))
   if(inherits(data, "character") | inherits(data, "numeric"))
