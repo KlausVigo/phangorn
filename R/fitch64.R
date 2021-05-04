@@ -278,7 +278,7 @@ fitch_nni <- function(tree, f) {
   l <- nrow(INDEX)
 #  f$prep_nni(tree$edge)
   f$traversetwice(tree$edge, 1L)
-  M <- f$pscore_nni(INDEX[, 1L:4L])
+  M <- f$pscore_nni(INDEX[, 1L:4L, drop=FALSE])
   M <- M[, -1L] - M[, 1L]
   M <- as.vector(M)
   INDEX <- rbind(INDEX[, c(1, 3, 2, 4, 5, 6)], INDEX[, c(2, 3, 1, 4, 5, 6)])
