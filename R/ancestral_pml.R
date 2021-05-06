@@ -361,6 +361,7 @@ plotAnc <- function(tree, data, i = 1, site.pattern = TRUE, col = NULL,
 
 
 acctran2 <- function(tree, data) {
+  if(!is.binary(tree)) tree <- multi2di(tree)
   tree <- reorder(tree, "postorder")
   edge <- tree$edge
   f <- init_fitch(data, FALSE, FALSE, m=2L)
