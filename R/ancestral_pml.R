@@ -367,7 +367,7 @@ acctran2 <- function(tree, data) {
   f <- init_fitch(data, FALSE, FALSE, m=2L)
   psc_node <- f$pscore_node(edge)
   tmp <- reorder(tree)$edge
-  tmp <- tmp[tmp[,2]>Ntip(tree),]
+  tmp <- tmp[tmp[,2]>Ntip(tree), ,drop=FALSE]
   f$traverse(edge)
   if(length(tmp)>0)f$acctran_traverse(tmp)
   psc <- f$pscore_acctran(edge)
