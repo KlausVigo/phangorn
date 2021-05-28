@@ -364,6 +364,7 @@ acctran2 <- function(tree, data) {
   if(!is.binary(tree)) tree <- multi2di(tree)
   tree <- reorder(tree, "postorder")
   edge <- tree$edge
+  data <- subset(data, tree$tip.label)
   f <- init_fitch(data, FALSE, FALSE, m=2L)
   psc_node <- f$pscore_node(edge)
   tmp <- reorder(tree)$edge
