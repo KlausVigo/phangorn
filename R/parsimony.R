@@ -489,15 +489,16 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
   # TODO use rooted trees if cost is not symmetric
   ROOTED <- FALSE
   # remove parsimony uniformative sie or duplicates
-  if(method=="fitch"){
-    weight <- attr(data, "weight")
-    v <- rep(seq_along(weight), weight)
-    w <- logical(length(weight))
-    data <- removeParsimonyUninfomativeSites(data, recursive=TRUE)
-    if(!is.null(attr(data, "informative"))) w[attr(data, "informative")] <- TRUE
-    else w[] <- TRUE
-  }
+  #{
+  weight <- attr(data, "weight")
+  v <- rep(seq_along(weight), weight)
+  w <- logical(length(weight))
+  # check for symmetric or
+  if(method=="fitch") data <- removeParsimonyUninfomativeSites(data, recursive=TRUE)
   else data <- unique(data)
+  if(!is.null(attr(data, "informative"))) w[attr(data, "informative")] <- TRUE
+  else w[] <- TRUE
+  #}
 
   star_tree <- ifelse(attr(data, "nr") == 0, TRUE, FALSE)
   add_taxa <- ifelse(is.null(attr(data, "duplicated")), FALSE, TRUE)
