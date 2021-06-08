@@ -687,7 +687,7 @@ addConfidences.phylo <- function(x, y, ...) {
     as.is <- list(...)$as.is
   else as.is <- TRUE
   nTips <- length(x$tip.label)
-  spl <- as.splits(x) %>% ONEwise()
+  spl <- as.splits(x) %>% SHORTwise()
   conf <- attr(addConfidences(spl, y), "confidences")
   l <- lengths(spl)
   if (is.character(conf)) as.is <- TRUE
