@@ -93,7 +93,7 @@
 #' @rdname phyDat
 #' @export
 phyDat <- function (data, type="DNA", levels=NULL, return.index = TRUE, ...){
-  if (inherits(data, "DNAbin")) type <- "DNA"
+#  if (inherits(data, "DNAbin")) type <- "DNA"
   pt <- match.arg(type, c("DNA", "AA", "CODON", "USER"))
   if(pt=="DNA") dat <- phyDat.DNA(data, return.index=return.index, ...)
   if(pt=="AA") dat <- phyDat.AA(data, return.index=return.index, ...)
