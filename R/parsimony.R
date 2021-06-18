@@ -537,8 +537,8 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
   result <- tree
   on.exit({
     if (!all && inherits(result, "multiPhylo")) result <- result[[1]]
-    if(!is.null(attr(data, "duplicated")))
-      result <- addTaxa(result, attr(data, "duplicated"))
+#    if(!is.null(attr(data, "duplicated")))
+#      result <- addTaxa(result, attr(data, "duplicated"))
     #    else class(result) <- "multiPhylo"
     if (length(result) == 1) result <- result[[1]]
     env <- new.env()
