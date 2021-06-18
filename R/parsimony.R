@@ -533,8 +533,10 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
   FUN <- function(data, tree, method, rearrangements, ...)
     optim.parsimony(tree, data = data, method = method,
                     rearrangements = rearrangements, ...)
-
   result <- tree
+  if(!is.null(attr(data, "duplicated"))){
+    result <- addTaxa(result, attr(data, "duplicated"))
+  }
   on.exit({
     if (!all && inherits(result, "multiPhylo")) result <- result[[1]]
 #    if(!is.null(attr(data, "duplicated")))
