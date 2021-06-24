@@ -404,7 +404,6 @@ sprMove <- function(tree, m) {
 
     newroot <- cv[[ch]] # [ 1]
     newroot <- newroot[newroot > nTips][1]
-#    tree <- reroot2(tree, newroot)
     tree <- reroot(tree, newroot, FALSE)
     edge <- tree$edge
     parent <- tree$edge[, 1]
@@ -425,7 +424,6 @@ sprMove <- function(tree, m) {
     newroot <- cp[cp != ch]
 
     newroot <- newroot[newroot > nTips][1]
-#    tree <- reroot2(tree, newroot)
     tree <- reroot(tree, newroot, FALSE)
     edge <- tree$edge
     parent <- tree$edge[, 1]

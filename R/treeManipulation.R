@@ -20,16 +20,6 @@ getRoot <- function(tree) {
 }
 
 
-#reroot2 <- function(tree, node) {
-#  if (node == getRoot(tree)) return(tree)
-#  anc <- Ancestors(tree, node, "all")
-#  l <- length(anc)
-#  ind <- match(c(node, anc[-l]), tree$edge[, 2])
-#  tree$edge[ind, c(1, 2)] <- tree$edge[ind, c(2, 1)]
-#  reorderPruning(tree)
-#}
-
-# seems to work now
 reroot <- function (tree, node, switch_root=TRUE) {
   root <- getRoot(tree)
   if (node == root)
