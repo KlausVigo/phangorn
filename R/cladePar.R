@@ -26,17 +26,20 @@
 #'
 #' @export cladePar
 cladePar <- function(tree, node, edge.color = "red", tip.color = edge.color,
-                    edge.width = 1, edge.lty = 1, x = NULL, plot = FALSE, ...) {
+                    edge.width = 1, edge.lty = "solid", x = NULL, plot = FALSE, ...) {
   if (is.null(x)) {
     m <- max(tree$edge)
     x <- list(
       edge = data.frame(
         color = rep("black", m), width = rep(1, m),
-        lty = rep(1, m), stringsAsFactors = FALSE
-      ),
+        lty = rep("solid", m)),
       tip = rep("black", length(tree$tip.label))
     )
   }
+
+  lty_str <- c("blank", "solid", "dashed", "dotted", "dotdash", "longdash", "twodash")
+  if(is.numeric(edge.lty)) edge.lty <- lty_str[edge.lty + 1]
+
   ind <- Descendants(tree, node, "all")
   x$edge$color[ind] <- edge.color
   x$edge$width[ind] <- edge.width

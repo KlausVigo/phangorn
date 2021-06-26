@@ -5,7 +5,7 @@
 \title{Utility function to plot.phylo}
 \usage{
 cladePar(tree, node, edge.color = "red", tip.color = edge.color,
-  edge.width = 1, edge.lty = 1, x = NULL, plot = FALSE, ...)
+  edge.width = 1, edge.lty = "solid", x = NULL, plot = FALSE, ...)
 }
 \arguments{
 \item{tree}{an object of class phylo.}
