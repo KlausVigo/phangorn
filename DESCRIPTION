@@ -93,7 +93,7 @@ LinkingTo:
 VignetteBuilder: 
     knitr,
     utils
-biocViews: Software, Technology, QualityControl
+
 Encoding: UTF-8
 Repository: CRAN
 Roxygen: list(old_usage = TRUE)
