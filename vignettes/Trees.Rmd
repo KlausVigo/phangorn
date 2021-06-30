@@ -24,7 +24,7 @@ These notes should enable the user to estimate phylogenetic trees from alignment
 
 # Getting started
 
-The first thing we have to do is to read in an alignment. Unfortunately there exists many different file formats that alignments can be stored in. The function `read.phyDat` is used to read in an alignment. There are several functions to read in alignments depending on the format of the data set (nexus, phylip, fasta) and the kind of data (amino acid or nucleotides) in the _ape_ package [@Paradis2018] and _phangorn_. The function `read.phyDat` calls these other functions and transform them into a `phyDat` object. For the specific parameter settings available look in the help files of the function `read.dna` (for phylip, fasta, clustal format), `read.nexus.data` for nexus files. For amino acid data additional `read.aa` is called.
+The first thing we have to do is to read in an alignment. Unfortunately there exists many different file formats that alignments can be stored in. The function `read.phyDat` is used to read in an alignment. There are several functions to read in alignments depending on the format of the data set ("nexus", "phylip", "fasta") and the kind of data (amino acid or nucleotides) in the _ape_ package [@Paradis2018] and _phangorn_. The function `read.phyDat` calls these other functions and transform them into a `phyDat` object. For the specific parameter settings available look in the help files of the function `read.dna` (for phylip, fasta, clustal format), `read.nexus.data` for nexus files. For amino acid data additional `read.aa` is called.
 
 We start our analysis loading the _phangorn_ package and then reading in an alignment.
 
@@ -53,8 +53,27 @@ plot(treeUPGMA, main="UPGMA")
 ```{r plot2, fig.cap="Unrooted NJ tree.", echo=TRUE}
 plot(treeNJ, "unrooted", main="NJ")
 ```
-Distance based methods are very fast and we will use the UPGMA and NJ tree as starting trees for the maximum parsimony and maximum likelihood analyses.
 
+## Bootstrap
+
+To run the bootstrap we need to first write a function which computes a tree from 
+an alignment. So we first need to compute a distance matrix and afterwards compute the tree.
+This function we can than give to the `bootstrap.phyDat` function.
+```{r bootstrap_dist, echo=TRUE}
+fun <- function(x) upgma(dist.ml(x))
+bs_upgma <- bootstrap.phyDat(primates,  fun)
+```
+With the new syntax of R 4.1 this can be written a bit shorter:
+```{r bootstrap_dist_new, echo=TRUE, eval=FALSE}
+bs_upgma <- bootstrap.phyDat(primates,  \(x){dist.ml(x) |> upgma})
+```
+Finally we can plot the tree with bootstrap values added: 
+```{r plot_bs, fig.cap="Rooted UPGMA tree.", echo=TRUE}
+plotBS(treeUPGMA, bs_upgma, main="UPGMA")
+```
+
+Distance based methods are very fast and we will use the UPGMA and NJ tree as starting trees for the maximum parsimony and maximum likelihood analyses.
+  
 # Parsimony
 
 The function parsimony returns the parsimony score, that is the number of changes which are at least necessary to describe the data for a given tree. We can compare the parsimony score or the two trees we computed so far:
@@ -62,13 +81,37 @@ The function parsimony returns the parsimony score, that is the number of change
 parsimony(treeUPGMA, primates)
 parsimony(treeNJ, primates)
 ```
-The function `optim.parsimony` performs tree rearrangements to find trees with a lower parsimony score. The tree rearrangement implemented are  nearest-neighbor interchanges (NNI) and subtree pruning and regrafting (SPR). The later one only works so far with the fitch algorithm. However is also a version of the parsimony ratchet [@Nixon1999] implemented, which is likely to find better trees than just doing NNI / SPR rearrangements.
+The function `optim.parsimony` performs tree rearrangements to find trees with a lower parsimony score. The tree rearrangement implemented are  nearest-neighbor interchanges (NNI) and subtree pruning and regrafting (SPR).  The later one only works so far with the fitch algorithm. 
+
+
 ```{r}
 treePars  <- optim.parsimony(treeUPGMA, primates)
+```
+However is also a version of the parsimony ratchet [@Nixon1999] implemented, which is likely to find better trees than just doing NNI / SPR rearrangements.
+The current implementation 
+
+1. Create a bootstrap data set $D_b$ from the original data set.
+2. Take the current best tree and perform tree rearrangements on $D_b$ and save bootstrap  tree as $T_b$. 
+3. Use $T_b$ and perform  tree rearrangements on the original data set. If this trees has a 
+   lower parsimony score than the currently best tree replace it. 
+4. Iterate 1:3 until either a given number of iteration is reached or no improvements have been recorded for a number of iterations. 
+
+
+```{r pratchet}
 treeRatchet  <- pratchet(primates, trace = 0)
 parsimony(c(treePars, treeRatchet), primates)
 ```
-For small data sets it is also possible to find all most parsimonious trees using a branch and bound algorithm [@Hendy1982]. For data sets with more than 10 taxa this can take a long time and depends strongly on how tree like the data are.
+Next we assign branch length to the tree. The branch length are proportional to the number of substitutions / site.
+```{r}
+treeRatchet  <- acctran(treeRatchet, primates)
+```
+The parsimony ratchet implicitly performs a bootstrap analysis (step 1). We make use of this and store the trees which where visited. This allows us to add bootstrap support values to the tree. 
+```{r}
+plotBS(midpoint(treeRatchet), type="phylogram")
+```
+
+## Branch and bound
+For data sets with few species it is also possible to find all most parsimonious trees using a branch and bound algorithm [@Hendy1982]. For data sets with more than 10 taxa this can take a long time and depends strongly on how tree like the data are. And for more than 20-30 taxa this will take almost forever.  
 ```{r}
 (trees <- bab(subset(primates,1:10)))
 ```
@@ -142,6 +185,8 @@ env <- attr(mt, "env")
 ls(envir=env)
 (fit <- eval(get("HKY+G+I", env), env))
 ```
+
+## Bootstrap
 At last we may want to apply bootstrap to test how well the edges of the tree are supported: 
 ```{r, echo=TRUE, eval=FALSE}
 bs = bootstrap.pml(fitJC, bs=100, optNni=TRUE,
@@ -159,8 +204,23 @@ plot(cnet, show.edge.label=TRUE)
 ```
 
 
-Several analyses, e.g.`bootstrap` and `modelTest`, can be computationally demanding, but as nowadays most computers have several cores one can distribute the computations using the  _parallel_ package. However it is only possible to use this approach if R is running from command line ("X11"), but not using  a GUI (for example "Aqua" on Macs) and unfortunately the _parallel_ package does not work at all under Windows.
 
+## Molecular dating with a strict clock 
+We implemented a strict clock as described in [@Felsenstein2004], p. ???.  
+So far the starting tree needs to be ultrametric, so we use the UPGMA tree. 
+When we optimise the tree with `optim.pml` we have to make sure set we set
+`optRooted = TRUE`!
+```{r, echo=TRUE, cache=TRUE}
+fit_strict <- pml(treeUPGMA, data=primates, k=4, bf=baseFreq(primates))
+fit_strict <- optim.pml(fit_strict, model="GTR", optRooted = TRUE, 
+                        rearrangement = "NNI", optGamma = TRUE, optInv = TRUE, 
+                        control = pml.control(trace = 0))
+```
+```{r}
+plot(fit_strict)
+```
+
+Several analyses, e.g.`bootstrap` and `modelTest`, can be computationally demanding, but as nowadays most computers have several cores one can distribute the computations using the  _parallel_ package. However it is only possible to use this approach if R is running from command line ("X11"), but not using  a GUI (for example "Aqua" on Macs) and unfortunately the _parallel_ package does not work at all under Windows.
 \newpage
 
 # Appendix 
@@ -183,7 +243,7 @@ tree <- nnls.phylo(tree, dm)   # need edge weights
 fitStart <- pml(tree, dat, k=4)
 fit <- optim.pml(fitStart, model="GTR", optGamma=TRUE, rearrangement="stochastic")
 
-# 2. alternative: preper with modelTest
+# 2. alternative: prepare with modelTest
 mt <- modelTest(dat, tree=tree, multicore=TRUE)
 mt[order(mt$AICc),]
 # choose best model from the table according to AICc
