@@ -980,7 +980,10 @@ plot.networx <- function(x, type = "equal angle", use.edge.length = TRUE,
                          col.edge.label = tip.color, font.node.label = font,
                          font.edge.label = font, ...) {
   type <- match.arg(type, c("equal angle", "3D", "2D"))
-  if (use.edge.length == FALSE) x$edge.length[] <- 1
+  if (use.edge.length == FALSE){
+    x$edge.length[] <- 1
+    attr(x$splits, "weight") <- rep(1, length(x$splits))
+  }
   nTips <- length(x$tip.label)
   conf <- attr(x$splits, "confidences")
   index <- x$splitIndex
