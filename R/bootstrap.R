@@ -320,7 +320,7 @@ plotBS <- function(tree, BStrees, type = "unrooted",
     }
     else {
       tree <- transferBootstrap(tree, BStrees)
-      x <- tree$node.label * 100
+      x <- tree$node.label
     }
   }
   else {
