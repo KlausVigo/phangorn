@@ -116,10 +116,8 @@ ancestral.pml <- function(object, type = "marginal", return = "prob") {
 
   pos <- ind2[match(seq_len(ncol(contrast)), ind2[, 2]), 1]
   nco <- as.integer(dim(contrast)[1])
-  for (i in 1:l) dat[i, (nTips + 1):m] <- .Call("LogLik2", data, P[i, ], nr, nc,
-      node, edge, nTips, mNodes, contrast, nco,
-      PACKAGE = "phangorn"
-    )
+  for (i in 1:l) dat[i, (nTips + 1):m] <- .Call('LogLik2', data, P[i, ], nr, nc,
+      node, edge, nTips, mNodes, contrast, nco)
 
   parent <- tree$edge[, 1]
   child <- tree$edge[, 2]
@@ -261,10 +259,8 @@ mpr.help <- function(tree, data, cost = NULL) {
   node <- as.integer(node - 1L)
   edge <- as.integer(edge - 1L)
 
-  res <- .Call("sankoffMPR", datf, datp, as.numeric(cost), as.integer(nr),
-    as.integer(nc), node, edge,
-    PACKAGE = "phangorn"
-  )
+  res <- .Call('sankoffMPR', datf, datp, as.numeric(cost), as.integer(nr),
+    as.integer(nc), node, edge)
   root <- getRoot(tree)
   res[[root]] <- datf[[root]]
   res

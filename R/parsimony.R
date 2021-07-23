@@ -3,13 +3,12 @@
 #
 rowMin <- function(X) {
   d <- dim(X)
-  .Call("C_rowMin", X, as.integer(d[1]), as.integer(d[2]), PACKAGE = "phangorn")
+  .Call('C_rowMin', X, as.integer(d[1]), as.integer(d[2]))
 }
 
 
 sankoff.quartet <- function(dat, cost, p, l, weight) {
-  erg <- .Call("sankoffQuartet", sdat = dat, sn = p, scost = cost,
-    sk = l, PACKAGE = "phangorn")
+  erg <- .Call('sankoffQuartet', sdat = dat, sn = p, scost = cost, sk = l)
   sum(weight * erg)
 }
 
@@ -339,11 +338,10 @@ fit.sankoff <- function(tree, data, cost,
   edge <- as.integer(edge - 1)
   mNodes <- as.integer(max(node) + 1)
   tips <- as.integer( (seq_along(tree$tip.label)) - 1)
-  res <- .Call("sankoff3", dat, as.numeric(cost), as.integer(nr),
-    as.integer(nc), node, edge, mNodes, tips, PACKAGE = "phangorn")
+  res <- .Call('sankoff3', dat, as.numeric(cost), as.integer(nr),
+    as.integer(nc), node, edge, mNodes, tips)
   root <- getRoot(tree)
-  erg <- .Call("C_rowMin", res[[root]], as.integer(nr), as.integer(nc),
-    PACKAGE = "phangorn")
+  erg <- .Call('C_rowMin', res[[root]], as.integer(nr), as.integer(nc))
   if (returnData == "site") return(erg)
   pscore <- sum(weight * erg)
   result <- pscore
@@ -364,8 +362,8 @@ pnodes <- function(tree, data, cost) {
   nc <- ncol(data[[1]])
   node <- as.integer(node - 1)
   edge <- as.integer(edge - 1)
-  .Call("pNodes", data, as.numeric(cost), as.integer(nr), as.integer(nc),
-    node, edge, PACKAGE = "phangorn")
+  .Call('pNodes', data, as.numeric(cost), as.integer(nr), as.integer(nc),
+    node, edge)
 }
 
 

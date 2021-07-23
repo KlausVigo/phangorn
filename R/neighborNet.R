@@ -83,8 +83,6 @@ getOrderingNN <- function(x) {
     if (l > 2) {
       r <- rowSums(DM) / (l - 2)
       tmp <- out_cpp(DM, r, l)
-#      tmp <- .C("out", as.double(DM), as.double(r), as.integer(l),
-#        as.integer(i), as.integer(j), PACKAGE = "phangorn")
       e1 <- tmp[1]
       e2 <- tmp[2]
     }

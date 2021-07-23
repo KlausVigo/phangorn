@@ -50,12 +50,11 @@ fit.sankoffNew <- function(tree, data, cost, returnData = c("pscore", "site",
   edge <- as.integer(edge - 1)
   nTips <- as.integer(length(tree$tip.label))
   mNodes <- as.integer(max(node) + 1)
-  res <- .Call("sankoff3B", dat, as.numeric(cost), as.integer(nr),
+  res <- .Call('sankoff3B', dat, as.numeric(cost), as.integer(nr),
     as.integer(nc), node, edge, mNodes, nTips, as.double(contr),
-    as.integer(nrow(contr)), PACKAGE = "phangorn")
+    as.integer(nrow(contr)))
   root <- getRoot(tree)
-  erg <- .Call("C_rowMin", res[[root]], as.integer(nr), as.integer(nc),
-    PACKAGE = "phangorn")
+  erg <- .Call('C_rowMin', res[[root]], as.integer(nr), as.integer(nc))
   if (returnData == "site") return(erg)
   pscore <- sum(weight * erg)
   result <- pscore

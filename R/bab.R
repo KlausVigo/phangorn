@@ -270,9 +270,9 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
     if (ms <= bound) {
       if ((a + 1L) < nTips) {
         ind <- (1:L[a])[score <= bound]
-        trees[[a + 1]][seq_along(ind)] <- .Call("AddOnes", tmpTree,
+        trees[[a + 1]][seq_along(ind)] <- .Call('AddOnes', tmpTree,
                 as.integer(inord[a + 1L]), as.integer(ind), as.integer(L[a]),
-                as.integer(M[a]), PACKAGE = "phangorn")
+                as.integer(M[a]))
         l <- length(ind)
         # os <- order(score[ind], decreasing=TRUE)
         os <- seq_len(l)
@@ -285,9 +285,9 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
       else {
         ind <- which(score == ms)
         tmp <- vector("list", length(ind))
-        tmp[seq_along(ind)] <- .Call("AddOnes", tmpTree,
+        tmp[seq_along(ind)] <- .Call('AddOnes', tmpTree,
                       as.integer(inord[a + 1L]), as.integer(ind),
-                      as.integer(L[a]), as.integer(M[a]), PACKAGE = "phangorn")
+                      as.integer(L[a]), as.integer(M[a]))
         if (ms < bound) {
           bound <- ms
           if (trace) cat("upper bound:", bound + p0, "\n")

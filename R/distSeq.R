@@ -176,8 +176,8 @@ dist.ml <- function(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
   tmp2 <- vector("list", k)
   for (i in 1:(l - 1)) {
     for (j in (i + 1):l) {
-      w0 <- .Call("PWI", as.integer(x[[i]]), as.integer(x[[j]]),
-        nr, n, weight, li, PACKAGE = "phangorn")
+      w0 <- .Call('PWI', as.integer(x[[i]]), as.integer(x[[j]]),
+                  nr, n, weight, li)
       if (exclude == "pairwise")
         w0[index] <- 0.0
       ind <- w0 > 0
@@ -197,9 +197,8 @@ dist.ml <- function(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
         old.el <- 10
       else old.el <- fun(old.el)
       for (lk in 1:k) tmp2[[lk]] <- tmp[ind, , drop = FALSE]
-      res <- .Call("FS5", eig, nc, as.double(old.el), w, g, tmp2,
-        as.integer(k), as.integer(sum(ind)),
-        w0[ind], ll.0, PACKAGE = "phangorn")
+      res <- .Call('FS5', eig, nc, as.double(old.el), w, g, tmp2,
+        as.integer(k), as.integer(sum(ind)), w0[ind], ll.0)
       d[pos] <- res[1] # res[[1]]
       v[pos] <- res[2] # res[[2]]
       }
@@ -284,9 +283,8 @@ dist.ml2 <- function(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
   tmp2 <- vector("list", k)
   for (i in 1:(l - 1)) {
     for (j in (i + 1):l) {
-      w0 <- .Call("PWI2", as.integer(x[[i]]), as.integer(x[[j]]),
-                  as.integer(unique_contrast),
-                  nr, n, weight, li, PACKAGE = "phangorn")
+      w0 <- .Call('PWI2', as.integer(x[[i]]), as.integer(x[[j]]),
+                  as.integer(unique_contrast), nr, n, weight, li)
       ind <- w0 > 0
       # more error checking
       sum_shared <- sum(w0[wshared])
@@ -304,9 +302,8 @@ dist.ml2 <- function(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
           old.el <- 10
         else old.el <- fun(old.el)
         for (lk in 1:k) tmp2[[lk]] <- tmp[ind, , drop = FALSE]
-        res <- .Call("FS5", eig, nc, as.double(old.el), w, g, tmp2,
-                     as.integer(k), as.integer(sum(ind)),
-                     w0[ind], ll.0, PACKAGE = "phangorn")
+        res <- .Call('FS5', eig, nc, as.double(old.el), w, g, tmp2,
+                     as.integer(k), as.integer(sum(ind)), w0[ind], ll.0)
         d[pos] <- res[1] # res[[1]]
         v[pos] <- res[2] # res[[2]]
       }

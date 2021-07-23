@@ -715,7 +715,7 @@ pml.move <- function(EDGE, el, data, g, w, eig, k, nTips, bf) {
 bip <- function(x) {
   x <- reorder(x, "postorder")
   nTips <- as.integer(length(x$tip.label))
-  res <- .Call("_phangorn_bipCPP", PACKAGE = "phangorn", x$edge, nTips)
+  res <- .Call("_phangorn_bipCPP", x$edge, nTips)
   attr(res, "labels") <- x$tip.label
   res
 }
@@ -724,7 +724,7 @@ bip <- function(x) {
 bipart <- function(x) {
   x <- reorder(x, "postorder")
   nTips <- as.integer(length(x$tip.label))
-  res <- .Call("_phangorn_bipartCPP", PACKAGE = "phangorn", x$edge, nTips)
+  res <- .Call('_phangorn_bipartCPP', x$edge, nTips)
   attr(res, "labels") <- x$tip.label
   res
 }

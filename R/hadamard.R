@@ -204,8 +204,7 @@ distanceHadamard <- function(dm, eps = 0.001) {
   ns <- 2^(n - 1)
   if (n > 23)
     stop("Hadamard conjugation works only efficient for n < 24")
-  result <- .Call("dist2spectra", dm, as.integer(n), as.integer(ns),
-    PACKAGE = "phangorn")
+  result <- .Call('dist2spectra', dm, as.integer(n), as.integer(ns))
   weights <- -fhm(result) / 2^(n - 2)
 
   if (eps > 0) {
