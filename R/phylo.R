@@ -122,6 +122,28 @@ optimInv <- function(tree, data, inv = 0.01, INV = NULL, ll.0 = NULL, ...) {
 }
 
 
+optimFreeRate <- function(tree, data, g = c(.25, .75, 1, 2), k=4, w=w, ...) {
+  g0 <- c(g[1], diff(g))
+  g0[g0 < 1e-8] <- 1e-8 # required by constrOptim
+  R <- matrix(0, k, k)
+  R[lower.tri(R, TRUE)] <- 1
+  fn <- function(g0, tree, data, R, w, k, ...) {
+    g_new <- as.vector(R %*% g0)
+    pml.fit(tree, data, g=g_new, w=w, k=k, ...)
+  }
+  ui <- rbind(R, diag(k))
+  ci <- rep(0, 2 * k)
+  # Maybe constrain rates * omega
+  res <- constrOptim(g0, fn, grad = NULL, ui = ui, ci = ci, mu = 1e-04,
+                     control = list(fnscale = -1), method = "Nelder-Mead",
+                     outer.iterations = 100, outer.eps = 1e-08, tree = tree,
+                     data = data, R = R, w = w, k=k, ...)
+  rate <- res[[1]]
+  res[[1]] <- as.vector(R %*% rate)
+  res
+}
+
+
 # changed to c(-10,10) from c(-5,5)
 optimRate <- function(tree, data, rate = 1, ...) {
   fn <- function(rate, tree, data, ...)
@@ -1195,7 +1217,7 @@ pml.fit4 <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #' @param Mkv indicate if Lewis' Mkv should be estimated.
 #' @param site.rate Indicates what type of gamma distribution to use. Options
 #' are "gamma" approach of Yang 1994 (default), "quadrature" after the Laguerre
-#' quadrature approach of Felsenstein 2001.
+#' quadrature approach of Felsenstein 2001 and "freerate" .
 ## or "lognormal" after a lognormal quadrature approach.
 #' @return \code{pml.fit} returns the log-likelihood.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
@@ -1364,7 +1386,7 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #' details.
 #' @param site.rate Indicates what type of gamma distribution to use. Options
 #' are "gamma" approach of Yang 1994 (default), "quadrature" after the Laguerre
-#' quadrature approach of Felsenstein 2001.
+#' quadrature approach of Felsenstein 2001 or "freerate".
 ## or "lognormal" after a lognormal
 #' @param object An object of class \code{pml}.
 #' @param optNni Logical value indicating whether topology gets optimized (NNI).
@@ -1573,10 +1595,15 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     Q <- rep(1, length(levels) * (length(levels) - 1) / 2)
   m <- 1
   eig <- edQt(bf = bf, Q = Q)
-
-  rw <- rates_n_weights(shape, k, site.rate)
-  g <- rw[, 1]
-  w <- rw[, 2]
+  if(site.rate=="free_rate"){
+    w <- rep(1/k, k)
+    g <- rep(1, k)
+  }
+  else{
+    rw <- rates_n_weights(shape, k, site.rate)
+    g <- rw[, 1]
+    w <- rw[, 2]
+  }
   if (inv > 0){
     w <- (1 - inv) * w
     g <- g / (1 - inv)
@@ -2166,7 +2193,7 @@ updateRates <- function(res, ll, rate, shape, k, inv, wMix, update="rate",
 #' @export
 optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                       optInv = FALSE, optGamma = FALSE, optEdge = TRUE,
-                      optRate = FALSE,  optRooted = FALSE, #optF3x4 = FALSE,
+                      optRate = FALSE, optRooted = FALSE, #optF3x4 = FALSE,
                       control = pml.control(epsilon = 1e-8, maxit = 10,
                                             trace = 1L), model = NULL,
                       rearrangement = ifelse(optNni, "NNI", "none"),
@@ -2188,8 +2215,14 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   wMix <- object$wMix
   llMix <- object$llMix
   Mkv <- object$Mkv
-#  Mkv <- FALSE
   site.rate <- object$site.rate
+  optFreeRate <- FALSE
+  if(site.rate=="free_rate"){
+    if(optGamma){
+      optFreeRate <- TRUE
+      optGamma <- FALSE
+    }
+  }
   if (is.null(llMix)) llMix <- 0
   if (!is.null(extras)) {
     names(extras) <- pmla[pmatch(names(extras), pmla)]
@@ -2503,6 +2536,21 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         cat("optimize shape parameter: ", ll, "-->", max(res[[2]], ll), "\n")
       updateRates(res, ll, rate, shape, k, inv, wMix, update="shape",
                   site.rate=site.rate)
+    }
+    if (optFreeRate) {
+      # bis jetzt w nicht optimiert!
+      res <- optimFreeRate(tree, data, g = g, k = k, w = w, inv = inv,
+                           INV = INV, bf = bf, eig = eig,
+                           ll.0 = ll.0, rate = rate)
+      if(res[[2]] > ll){
+        g0 <- res[[1]]
+        blub <- sum(g0 * w)
+        g <- g0 / blub
+        tree$edge.length <- tree$edge.length * blub
+        if (trace > 0) cat("optimize free rate parameters: ", ll, "-->",
+                           max(res[[2]], ll), "\n")
+        ll <- res[[2]]
+      }
     }
     if (optRate) {
       res <- optimRate(tree, data, rate = rate, inv = inv,
