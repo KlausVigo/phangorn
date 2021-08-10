@@ -1,7 +1,7 @@
 /*
  * ml.c
  *
- * (c) 2008-2020  Klaus Schliep (klaus.schliep@gmail.com)
+ * (c) 2008-2021  Klaus Schliep (klaus.schliep@gmail.com)
  *
  *
  * This code may be distributed under the GNU GPL
@@ -56,25 +56,9 @@ SEXP ll_init2(SEXP nr, SEXP nTips, SEXP nc, SEXP k)
 /*
 LL likelihood for internal edges
 SCM scaling coefficients
-nNodes, nTips, kmax
-
-void ll_init(int *nr, int *nTips, int *nc, int *k)
-{
-    int i;
-    LL = (double *) calloc(*nr * *nc * *k * *nTips, sizeof(double));
-    SCM = (int *) calloc(*nr * *k * *nTips, sizeof(int));  // * 2L
-    for(i =0; i < (*nr * *k * *nTips); i++) SCM[i] = 0L;
-}
-
-
-void ll_free(){
-    free(LL);
-    free(SCM);
-}
 */
 
 
-// in C++ ??
 void matm(int *x, double *contrast, int *nr, int *nc, int *nco, double *result){
     int i, j;
     for(i = 0; i < (*nr); i++){
@@ -113,7 +97,6 @@ void scaleMatrix(double *X, int *nr, int *nc, int *result){
 
 
 // contrast to full dense matrix
-// zwei Versionen *= und new
 void matp(int *x, double *contrast, double *P, int *nr, int *nc, int *nrs, double *result){
     int i, j;
     double *tmp;
@@ -136,16 +119,13 @@ void rowMinScale(int *dat, int n,  int k, int *res){
     }
 }
 
-// Ziel etwas schneller
+
 void getP(double *eva, double *ev, double *evi, int m, double el, double w, double *result){
     int i, j, h;
-    double res; //tmp[m],
+    double res;
     double *tmp;
-//    tmp = (double *) malloc(m * sizeof(double));
     tmp = (double *) R_alloc(m, sizeof(double));
-// el = 0 return identity
     for(i = 0; i < m; i++) tmp[i] = exp(eva[i] * w * el);
-// eva *= tmp???
     for(i = 0; i < m; i++){
         for(j = 0; j < m; j++){
             res = 0.0;
@@ -153,9 +133,8 @@ void getP(double *eva, double *ev, double *evi, int m, double el, double w, doub
             result[i+j*m] = res;
         }
     }
-//    free(tmp);  // ausserhalb
 }
-// 64 * 3 + 4     16 + 64 * 2
+
 
 SEXP getPM(SEXP eig, SEXP nc, SEXP el, SEXP w){
     R_len_t i, j, nel, nw, k;
@@ -232,13 +211,10 @@ void lll3(SEXP dlist, double *eva, double *eve, double *evei, double *el, double
     P = (double *) R_alloc(*nc * *nc, sizeof(double));
     for(j=0; j < *nr; j++) scaleTmp[j] = 0L;
     for(i = 0; i < n; i++) {
-// entweder P matrix erstellen, openMP ??
-// temp Vectoren vermeiden
         getP(eva, eve, evei, *nc, el[i], g, P);
         ei = edge[i];
         if(ni != node[i]){
 // test for node[i+1]
-// temp Vectoren vermeiden
             if(ni>0)scaleMatrix(&ans[ni * rc], nr, nc, &SC[ni * *nr]); // (ni-nTips)
             ni = node[i];
             for(j=0; j < *nr; j++) SC[j + ni * *nr] = 0L;
