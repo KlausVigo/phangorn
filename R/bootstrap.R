@@ -460,6 +460,7 @@ maxCladeCred <- function(x, tree = TRUE, part = NULL, rooted = TRUE) {
   if (tree) {
     k <- which.max(res)
     tr <- x[[k]]
+    tr <- addConfidences(tr, pp)
     attr(tr, "clade.credibility") <- res[k]
     return(tr)
   }
@@ -477,9 +478,9 @@ mcc <- maxCladeCred
 allCompat <- function(x) {
   x <- unroot(x)
   l <- length(x)
-  spl <- prop.part(x)
-  spl <- postprocess.prop.part(spl, method = "SHORTwise")
-  spl <- as.splits(spl)
+  pp <- prop.part(x)
+  pp <- postprocess.prop.part(pp, method = "SHORTwise")
+  spl <- as.splits(pp)
   w <- attr(spl, "weights")
   ind <- (w / l) > 0.5
   res <- spl[ind]
@@ -490,7 +491,8 @@ allCompat <- function(x) {
     if(all(compatible2(res, spl[i]) == 0)) res <- c(res, spl[i])
   }
   tree <- as.phylo(res, FALSE)
-#  tree$edge.length <- NULL
+  tree$edge.length <- NULL
+  tree <- addConfidences(tree, pp)
   tree
 }
 
