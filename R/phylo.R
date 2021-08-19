@@ -597,12 +597,12 @@ phangornParseFormula <- function(model) {
 
 #' @rdname pml
 #' @export
-pml.control <- function(epsilon = 1e-08, maxit = 10, trace = 1) {
+pml.control <- function(epsilon = 1e-08, maxit = 10, trace = 1, tau = 1e-8) {
   if (!is.numeric(epsilon) || epsilon <= 0)
     stop("value of 'epsilon' must be > 0")
   if (!is.numeric(maxit) || maxit <= 0)
     stop("maximum number of iterations must be > 0")
-  list(epsilon = epsilon, maxit = maxit, trace = trace)
+  list(epsilon = epsilon, maxit = maxit, trace = trace, tau = tau)
 }
 
 
@@ -1665,13 +1665,31 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
 }
 
 
+minEdge <- function(tree, tau){
+  if(any(tree$edge.length < tau)){
+    nTip <- Ntip(tree)
+    ind <- seq_len(nTip)
+    nh <- nodeHeight(tree)[ind]
+    tree$edge.length[tree$edge.length < tau] <- tau
+    el <- numeric(max(tree$edge))
+    el[tree$edge[,2]] <- tree$edge.length
+    nh2 <- nodeHeight(tree)[ind]
+    el[ind] <- el[ind] + (nh2 - nh)
+    tree$edge.length <- el[tree$edge[,2]]
+  }
+  tree
+}
+
+
 optimRooted <- function(tree, data, eig = eig, w = w, g = g, bf = bf,
                         rate = rate, ll.0 = ll.0, INV = INV,
                         control = pml.control(epsilon = 1e-08, maxit = 25,
                                               trace = 0), ...) {
-  tree$edge.length[tree$edge.length < 1e-08] <- 1e-08 # nicht richtig
+#  tree$edge.length[tree$edge.length < 1e-08] <- 1e-08 # nicht richtig
+
   nTips <- as.integer(length(tree$tip.label))
   k <- length(w)
+  tau <- control$tau
 
   # optimising rooted triplets
   optRoot0 <- function(t, tree, data, g, w, eig, bf, ll.0, k) {
@@ -1683,6 +1701,7 @@ optimRooted <- function(tree, data, eig = eig, w = w, g = g, bf = bf,
     loglik
   }
   # optim edges leading to the root
+  # add tau == t ???
   optRoot2 <- function(t, tree, data, g, w, eig, bf, ll.0, k) {
     tree$edge.length <- tree$edge.length + t   # c(el1+t, el2-t)
     loglik <- pml.fit4(tree, data, bf = bf, g = g, w = w, eig = eig, INV = INV,
@@ -1690,14 +1709,21 @@ optimRooted <- function(tree, data, eig = eig, w = w, g = g, bf = bf,
     loglik
   }
   # scale whole tree
-  scaleEdges <- function(t = 1, trace = 0, tree, data, ...) {
+  scaleEdges <- function(tree, data, tau = 1e-8, ...) { #t = 1, trace = 0,
     fn <- function(t, tree, data, ...) {
       tree$edge.length <- tree$edge.length * t
       pml.fit4(tree, data, ...)
     }
-    optimize(f = fn, interval = c(0.25, 4), tree = tree, data = data, ...,
+    min_scaler <- max(.25, tau / min(tree$edge.length) )
+    min_scaler <- min(min_scaler, 1)
+    if(min_scaler>1) browser()
+    optimize(f = fn, interval = c(min_scaler, 4), tree = tree, data = data, ...,
       maximum = TRUE, tol = .00001)
   }
+  # ensure that each edge is at least tau long
+  # tips have the same height
+  tree <- minEdge(tree, tau)
+
   parent <- tree$edge[, 1]
   child <- tree$edge[, 2]
 
@@ -1738,13 +1764,14 @@ optimRooted <- function(tree, data, eig = eig, w = w, g = g, bf = bf,
   EL <- numeric(max(tree$edge))
   EL[tree$edge[, 2]] <- tree$edge.length
 
-  eps0 <- 1e-8
-
-  tmp <- scaleEdges(t, trace = 0, tree, data, bf = bf, k = k, ll.0 = ll.0,
-    eig = eig, w = w, g = g)
-  #    if(control$trace>2)cat("scale", tmp[[2]], "\n")
-  t <- tmp[[1]]
-  tree$edge.length <- tree$edge.length * t
+#  eps0 <- tau
+  if(is.ultrametric(tree)){
+    tmp <- scaleEdges(tree, data, tau = tau, bf = bf, k = k, ll.0 = ll.0,
+      eig = eig, w = w, g = g)
+    #    if(control$trace>2)cat("scale", tmp[[2]], "\n")
+    t <- tmp[[1]]
+    tree$edge.length <- tree$edge.length * t
+  }
   el <- tree$edge.length
   EL[tree$edge[, 2]] <- tree$edge.length
   ll2 <- pml.fit4(tree, data, bf = bf,  k = k, eig = eig, INV = INV,
@@ -1763,8 +1790,7 @@ optimRooted <- function(tree, data, eig = eig, w = w, g = g, bf = bf,
 
     tmptree$edge <- cbind(rootNode, children)
     tmptree$edge.length <- kidsEl
-
-    t <- optimize(f = optRoot2, interval = c(1e-8, 3), tmptree, data = data,
+    t <- optimize(f = optRoot2, interval = c(tau, 3), tmptree, data = data,
                   k = k, g = g, w = w, eig = eig, bf = bf, ll.0 = ll.0,
                   maximum = TRUE)
     optRoot2(t[[1]], tmptree, data = data, k = k, g = g, w = w, eig = eig,
@@ -1799,7 +1825,7 @@ optimRooted <- function(tree, data, eig = eig, w = w, g = g, bf = bf,
 
       t0 <- optRoot0(0, tmptree, data, g, w, eig, bf, ll.0, k)
 
-      t <- optimize(f = optRoot0, interval = c(-minEl + eps0, maxEl - eps0),
+      t <- optimize(f = optRoot0, interval = c(-minEl + tau, maxEl - tau),
         tmptree, data = data, g = g, w = w, eig = eig, bf = bf,
         ll.0 = ll.0, k = k, maximum = TRUE)
       # if(control$trace>2) cat("edge", t[[2]], "\n")
@@ -2272,6 +2298,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   if (length(tree$tip.label) < (2 + !optRooted)) {
     stop("rooted / unrooted tree needs at least 2 / 3 tips")
   }
+  is_ultrametric <- FALSE
+  timetree <- FALSE
   if (is.rooted(tree)) {
     if (optRooted == FALSE && optEdge == TRUE) {
       tree <- unroot(tree)
@@ -2279,31 +2307,41 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       tree <- reorder(tree, "postorder")
       warning("I unrooted the tree", call. = FALSE)
     }
+    else{
+      is_ultrametric <- is.ultrametric(tree, option=2)
+      if(!is_ultrametric) timetree <- TRUE
+    }
   }
   if (is.null(attr(tree, "order")) || attr(tree, "order") ==
     "cladewise")
     tree <- reorder(tree, "postorder")
+# if optEdge
   if (any(tree$edge.length < 1e-08)) {
-    tree$edge.length[tree$edge.length < 1e-08] <- 1e-08
+# minEdge
     if (optRooted) {
+      tree <- minEdge(tree, tau)
       # ensure tree is ultrametric
-      nTips <- as.integer(length(tree$tip.label))
-      ind <- match(as.integer(1:nTips), tree$edge[, 2])
-      tree$edge.length[ind] <- tree$edge.length[ind] +
-        nodeHeight(tree)[1:nTips]
+      if(is_ultrametric){
+        nTips <- as.integer(length(tree$tip.label))
+        ind <- match(seq_len(nTips), tree$edge[, 2])
+        tree$edge.length[ind] <- tree$edge.length[ind] +
+          nodeHeight(tree)[seq_len(nTips)]
+      }
     }
+    else tree$edge.length[tree$edge.length < 1e-08] <- 1e-08
     object <- update.pml(object, tree = tree)
   }
-  if (optEdge & optRate) {
+  if (optEdge & optRate & !timetree) {
     warning("You can't optimise edges and rates at the same time, only edges are optimised!", call. = FALSE)
     optRate <- FALSE
   }
   if (optRooted) {
     optEdge <- FALSE
     if (!is.rooted(tree)) stop("tree must be rooted")
-    if (!is.ultrametric(tree, option=2)) stop("Tree must be ultrametric!")
+#    if (!is.ultrametric(tree, option=2)) stop("Tree must be ultrametric!")
   }
   trace <- control$trace
+  tau <- control$tau
   data <- subset(data, tree$tip.label)
   type <- attr(data, "type")
   if (type == "AA") {
@@ -2443,7 +2481,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     res <- optimRooted(tree, data, eig = eig, w = w, g = g, bf = bf,
                        rate = rate, ll.0 = ll.0, INV = INV,
                        control = pml.control(epsilon = 1e-07, maxit = 10,
-                                             trace = trace - 1))
+                                             trace = trace - 1, tau = tau))
     if (trace > 0)
       cat("optimize edge weights: ", ll, "-->", max(res[[2]], ll), "\n")
     if (res[[2]] > ll) {
@@ -2578,7 +2616,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       res <- optimRooted(tree, data, eig = eig, w = w, g = g, bf = bf,
                          rate = rate, ll.0 = ll.0, INV = INV,
                          control = pml.control(epsilon = 1e-07, maxit = 10,
-                                               trace = trace - 1))
+                                               trace = trace - 1, tau = tau))
 #      if (trace > 0)
 #        cat("optimize edge weights: ", ll, "-->", max(res[[2]], ll), "\n")
       if (res[[2]] > ll) {
@@ -2606,7 +2644,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
           swap <- swap + tmp$swap
           res <- optimRooted(tmp$tree, data, eig = eig, w = w, g = g, bf = bf,
             rate = rate, ll.0 = ll.0, INV = INV, control = pml.control(
-              epsilon = 1e-08, maxit = 5, trace = trace - 1))
+              epsilon = 1e-08, maxit = 5, trace = trace - 1, tau = tau))
           tree <- res$tree
           ll2 <- res$logLik
         }
