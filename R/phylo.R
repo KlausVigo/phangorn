@@ -2318,7 +2318,6 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     tree <- reorder(tree, "postorder")
 # if optEdge
   if (any(tree$edge.length < 1e-08)) {
-# minEdge
     if (optRooted) {
       tree <- minEdge(tree, tau)
       # ensure tree is ultrametric
@@ -2461,18 +2460,9 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   pml.init(data, k)
 
   if (optEdge) {
-    # check if non-negative least-squares is better for start of
-    # optimisation
-#    treetmp <- nnls.phylo(tree, dist.ml(data))
-#    treetmp$edge.length[treetmp$edge.length < 1e-8] <- 1e-8
-#    tmplogLik <- pml.fit(treetmp, data, bf, k = k, inv = inv, g = g, w = w,
-#      eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, wMix = wMix)
-#    if (tmplogLik > ll) tree <- treetmp
     res <- optimEdge(tree, data, eig = eig, w = w, g = g, bf = bf, rate = rate,
       ll.0 = ll.0, INV = INV,
       control <- pml.control(epsilon = 1e-07, maxit = 5, trace = trace))
-#    if (trace > 0)
-#      cat("optimize edge weights: ", ll, "-->", max(res[[2]], ll), "\n")
     if (res[[2]] > ll) {
       ll <- res[[2]]
       tree <- res[[1]]
@@ -2482,9 +2472,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     res <- optimRooted(tree, data, eig = eig, w = w, g = g, bf = bf,
                        rate = rate, ll.0 = ll.0, INV = INV,
                        control = pml.control(epsilon = 1e-07, maxit = 10,
-                                             trace = trace - 1, tau = tau))
-    if (trace > 0)
-      cat("optimize edge weights: ", ll, "-->", max(res[[2]], ll), "\n")
+                                             trace = trace, tau = tau))
     if (res[[2]] > ll) {
       ll <- res[[2]]
       tree <- res[[1]]
@@ -2605,9 +2593,6 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                        rate = rate, ll.0 = ll.0,
                        control = pml.control(epsilon = 1e-08, maxit = 5,
                                              trace = trace))
-#      if (trace > 0)
-#        cat("optimize edge weights: ", ll, "-->", max(res[[2]], ll),
-#          "\n")
       if (res[[2]] > ll) {
         ll <- res[[2]]
         tree <- res[[1]]
@@ -2617,9 +2602,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       res <- optimRooted(tree, data, eig = eig, w = w, g = g, bf = bf,
                          rate = rate, ll.0 = ll.0, INV = INV,
                          control = pml.control(epsilon = 1e-07, maxit = 10,
-                                               trace = trace - 1, tau = tau))
-#      if (trace > 0)
-#        cat("optimize edge weights: ", ll, "-->", max(res[[2]], ll), "\n")
+                                               trace = trace, tau = tau))
       if (res[[2]] > ll) {
         ll <- res[[2]]
         tree <- res[[1]]
