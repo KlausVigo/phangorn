@@ -6,7 +6,7 @@
 \alias{optim.pml}
 \title{Likelihood of a tree.}
 \usage{
-pml.control(epsilon = 1e-08, maxit = 10, trace = 1)
+pml.control(epsilon = 1e-08, maxit = 10, trace = 1, tau = 1e-08)
 
 pml(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   rate = 1, model = NULL, site.rate = "gamma", ...)
@@ -24,6 +24,8 @@ optim.pml(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
 \item{maxit}{Maximum number of iterations (see details).}
 
 \item{trace}{Show output during optimization (see details).}
+
+\item{tau}{minimal edge length.}
 
 \item{tree}{A phylogenetic \code{tree}, object of class \code{phylo}.}
 
@@ -46,7 +48,7 @@ details.}
 
 \item{site.rate}{Indicates what type of gamma distribution to use. Options
 are "gamma" approach of Yang 1994 (default), "quadrature" after the Laguerre
-quadrature approach of Felsenstein 2001.}
+quadrature approach of Felsenstein 2001 or "freerate".}
 
 \item{\dots}{Further arguments passed to or from other methods.}
 

@@ -1411,6 +1411,7 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #' @param epsilon Stop criterion for optimisation (see details).
 #' @param maxit Maximum number of iterations (see details).
 #' @param trace Show output during optimization (see details).
+#' @param tau minimal edge length.
 #' @return \code{pml} or \code{optim.pml} return a list of class \code{pml},
 #' some are useful for further computations like \item{tree}{the phylogenetic
 #' tree.} \item{data}{the alignment.} \item{logLik}{Log-likelihood of the

@@ -64,7 +64,7 @@ values}
 
 \item{site.rate}{Indicates what type of gamma distribution to use. Options
 are "gamma" approach of Yang 1994 (default), "quadrature" after the Laguerre
-quadrature approach of Felsenstein 2001.}
+quadrature approach of Felsenstein 2001 and "freerate" .}
 }
 \value{
 \code{pml.fit} returns the log-likelihood.

@@ -224,7 +224,7 @@ pruneTree <- function(tree, ..., FUN = ">=") {
   bs <- rep(TRUE, m)
   bs[ (nTips + 1):m] <- sapply(as.numeric(as.character(tree$node)), FUN, ...)
   tree$edge.length[!bs[tree$edge[, 2]]] <- 0
-
+  attr(tree, "order") <- NULL
   reorder(di2multi(tree), "postorder")
 }
 
