@@ -2278,6 +2278,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
 
   data <- object$data
   addTaxa <- FALSE
+  trace <- control$trace
+  tau <- control$tau
 
   if (optNni) {
     mapping <- map_duplicates(data)
@@ -2340,8 +2342,6 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     if (!is.rooted(tree)) stop("tree must be rooted")
 #    if (!is.ultrametric(tree, option=2)) stop("Tree must be ultrametric!")
   }
-  trace <- control$trace
-  tau <- control$tau
   data <- subset(data, tree$tip.label)
   type <- attr(data, "type")
   if (type == "AA") {
