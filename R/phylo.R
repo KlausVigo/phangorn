@@ -2321,7 +2321,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
 # if optEdge
   if (any(tree$edge.length < 1e-08)) {
     if (optRooted) {
-      tree <- minEdge(tree, tau)
+      tree <- minEdge(tree, control$tau)
       # ensure tree is ultrametric
       if(is_ultrametric){
         nTips <- as.integer(length(tree$tip.label))
