@@ -1758,6 +1758,7 @@ optimRooted <- function(tree, data, eig = eig, w = w, g = g, bf = bf,
 
   ll <- pml.fit4(tree, data, bf = bf,  k = k, eig = eig, ll.0 = ll.0, INV = INV,
                  w = w, g = g)
+  start.ll <- ll
   #    if(control$trace>2)cat("ll", ll, "\n")
   eps <- 10
   iter <- 1
@@ -1850,6 +1851,8 @@ optimRooted <- function(tree, data, eig = eig, w = w, g = g, bf = bf,
     ll <- ll2
     iter <- iter + 1
   }
+  if (control$trace > 0)
+    cat("optimize edge weights: ", start.ll, "-->", ll, "\n")
   list(tree = tree, logLik = ll, c(eps = eps, iter = iter))
 }
 
@@ -2269,6 +2272,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       optEdge <- TRUE
       ratchet <- TRUE
     }
+    if(optRooted == TRUE) stop("Combination of rearrangement = 'stochastic' and optRooted=TRUE is not possible!")
   }
   if (optRatchet2 == TRUE) {
     optNni <- TRUE
@@ -2608,6 +2612,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         tree <- res[[1]]
       }
     }
+    epsR <- 1e-8
     if (optNni) {
       swap <- 0
       iter <- 1
@@ -2615,23 +2620,26 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         if (optEdge) {
           tmp <- pml.nni(tree, data, w = w, g = g, eig = eig, bf = bf,
             ll.0 = ll.0, ll = ll, INV = INV, ...)
-          swap <- swap + tmp$swap
           res <- optimEdge(tmp$tree, data, eig = eig, w = w, g = g, bf = bf,
             rate = rate, ll.0 = ll.0, control = pml.control(
               epsilon = 1e-08, maxit = 3, trace = 0))
-          ll2 <- res[[2]]
-          tree <- res[[1]]
+          ll2 <- res$logLik
         }
         else {
           tmp <- rooted.nni(tree, data, eig = eig, w = w, g = g, bf = bf,
             rate = rate, ll.0 = ll.0, INV = INV, ...)
-          swap <- swap + tmp$swap
           res <- optimRooted(tmp$tree, data, eig = eig, w = w, g = g, bf = bf,
             rate = rate, ll.0 = ll.0, INV = INV, control = pml.control(
               epsilon = 1e-08, maxit = 5, trace = trace - 1, tau = tau))
-          tree <- res$tree
           ll2 <- res$logLik
         }
+        if(ll2 > (ll + epsR))
+          tree <- res$tree
+        else {
+          tmp$swap <- 0
+          ll2 <- ll
+        }
+        swap <- swap + tmp$swap
         if (trace > 0)
           cat("optimize topology: ", ll, "-->", ll2, "\n")
         ll <- ll2
@@ -2647,7 +2655,6 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       if (swap == 0)
         optNni <- FALSE
     }
-    epsR <- 1e-8
     if ( (ratchet == TRUE) && (optNni == FALSE)) {
       maxR <- ratchet.par$iter
       maxit <- ratchet.par$maxit
