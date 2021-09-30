@@ -186,7 +186,7 @@ double Transfer_Index(const IntegerVector bp, const IntegerMatrix orig, int l) {
 // import: edge matrix, number of tips
 // export: Descendants(x, 1:max(x$edge), "all")
 // [[Rcpp::export]]
-List bipartCPP(IntegerMatrix orig, int nTips) {
+std::vector< std::vector<int> > bipartCPP(IntegerMatrix orig, int nTips) {
     IntegerVector parent = orig( _, 0);
     IntegerVector children = orig( _, 1);
     int m = max(parent), j=0;
@@ -205,7 +205,7 @@ List bipartCPP(IntegerMatrix orig, int nTips) {
     for(int i=0; i<nnode; ++i){
         sort(out[i].begin(), out[i].end());
     }
-    return wrap(out);    // return the list
+    return out;    // return the list
 }
 
 
@@ -236,6 +236,37 @@ std::vector< std::vector<int> > bipCPP(IntegerMatrix orig, int nTips) {
     }
     return out;    // return the list
 }
+
+
+// [[Rcpp::export]]
+int bip_shared(SEXP tree1, SEXP tree2, int nTips){
+  List M1 = tree1;
+  List M2 = tree2;
+  IntegerMatrix E1 = M1["edge"];
+  IntegerMatrix E2 = M2["edge"];
+
+  std::vector< std::vector<int> > bp1 = bipartCPP(E1, nTips);
+  std::vector< std::vector<int> > bp2 = bipartCPP(E2, nTips);
+
+  std::sort(bp1.begin(), bp1.end());
+  std::sort(bp2.begin(), bp2.end());
+
+  int shared=0;
+  for(auto i=0, j=0; i<bp1.size(), j<bp2.size(); ){
+    if(bp1[i]==bp2[j]) {
+      shared++;
+      i++;
+      j++;
+    }
+    else {
+      if(bp1[i] < bp2[j]) i++;
+      else j++;
+    }
+  }
+  return shared;
+}
+
+
 
 
 // shorter and easier to understand replacement of C function

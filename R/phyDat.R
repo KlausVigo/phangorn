@@ -384,6 +384,9 @@ cbind.phyDat <- function(..., gaps="-", compress=TRUE){
   x <- list(...)
   n <- length(x)
   if (n == 1) return(x[[1]])
+
+  types <- sapply(x, function(x)attr(x, "type"))
+#  if(length(unique(types))>1) stop("All alignments need to have the same type!")
   #  type <- attr(x[[1]], "type")
   nr <- numeric(n)
   ATTR <- attributes(x[[1]])
@@ -714,13 +717,22 @@ allSitePattern <- function(n, levels=c("a", "c", "g", "t"), names=NULL){
 }
 
 
-constSitePattern <- function(n, levels=c("a", "c", "g", "t"), names=NULL){
-  l <- length(levels)
+##constSitePattern <- function(n, levels=c("a", "c", "g", "t"), names=NULL){
+constSitePattern <- function(n, names=NULL, type="DNA", levels=NULL){
+  if(type=="DNA"){
+    levels <- c("a", "c", "g", "t")
+    l <- 4L
+  } else if(type=="AA"){
+    levels <- c("A", "R", "N", "D", "C", "Q", "E", "G", "H", "I", "L", "K", "M", "F",
+      "P", "S", "T", "W", "Y", "V")
+    l <- 20L
+  }
+  else l <- length(levels)
   X <- matrix(0, l, n)
   X <- matrix(rep(levels, each=n), n, l)
-  if(is.null(names))rownames(X) <- paste0("t", 1:n)
+  if(is.null(names)) rownames(X) <- paste0("t", seq_len(n))
   else rownames(X) <- names
-  phyDat.default(X, levels)
+  phyDat(type, type=type, levels=levels)
 }
 
 

@@ -37,6 +37,10 @@ bipCPP <- function(orig, nTips) {
     .Call(`_phangorn_bipCPP`, orig, nTips)
 }
 
+bip_shared <- function(tree1, tree2, nTips) {
+    .Call(`_phangorn_bip_shared`, tree1, tree2, nTips)
+}
+
 allChildrenCPP <- function(orig) {
     .Call(`_phangorn_allChildrenCPP`, orig)
 }
