@@ -732,7 +732,7 @@ constSitePattern <- function(n, names=NULL, type="DNA", levels=NULL){
   X <- matrix(rep(levels, each=n), n, l)
   if(is.null(names)) rownames(X) <- paste0("t", seq_len(n))
   else rownames(X) <- names
-  phyDat(type, type=type, levels=levels)
+  phyDat(X, type=type, levels=levels)
 }
 
 
