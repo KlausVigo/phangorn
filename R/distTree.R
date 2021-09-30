@@ -660,7 +660,7 @@ designAll <- function(n, add.split = FALSE) {
 designStar <- function(n, sparse = TRUE) {
   #    res=NULL
   #    for(i in 1:(n-1)) res = rbind(res,cbind(matrix(0,(n-i),i-1),1,diag(n-i)))
-  res <- stree(n) %>% as.splits %>% splits2design
+  res <- stree(n) |> as.splits() |> splits2design()
   if (!sparse) return(as.matrix(res))
   res
 }

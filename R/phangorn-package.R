@@ -26,8 +26,8 @@ NULL
 #'
 #' @name Laurasiatherian
 #' @docType data
-#' @source Data have been taken from \url{http://www.allanwilsoncentre.ac.nz/}
-#' and were converted to R format by \email{klaus.schliep@gmail.com}.
+#' @source Data have been taken from the former repository of the Allan Wilson
+#' Centre and were converted to R format by \email{klaus.schliep@gmail.com}.
 #' @keywords datasets
 #' @examples
 #'

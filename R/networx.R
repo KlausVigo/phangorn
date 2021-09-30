@@ -687,7 +687,7 @@ addConfidences.phylo <- function(x, y, ...) {
     as.is <- list(...)$as.is
   else as.is <- TRUE
   nTips <- length(x$tip.label)
-  spl <- as.splits(x) %>% SHORTwise()
+  spl <- as.splits(x) |> SHORTwise()
   conf <- attr(addConfidences(spl, y), "confidences")
   l <- lengths(spl)
   if (is.character(conf)) as.is <- TRUE
@@ -766,7 +766,7 @@ spl2angle <- function(x) {
   if (!is.null(attr(x, "cycle"))) ord <- attr(x, "cycle")
   x <- changeOrder(x, attr(x, "labels")[ord])
   y <- lapply(x, function(x, l) (x - 1) / l * 360, l = l)
-  angle <- vapply(y, circ.mean, 0) %>% deg2rad()
+  angle <- vapply(y, circ.mean, 0) |> deg2rad()
   # angle <- ((vapply(x, sum, 0) / lengths(x) - 1) / l ) * 2*pi
   # kreis2kart(attr(x, "weight"), angle)
   angle

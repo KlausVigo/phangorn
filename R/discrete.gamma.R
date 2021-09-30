@@ -88,7 +88,7 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
   }
 
   g <- mapply(function(shape, k, inv) max(gw(shape, k, inv, site.rate)[,"g"]),
-              shape, k, inv) %>% max()
+              shape, k, inv) |> max()
 
   if(is.null(xlim)) xlim <- c(-0.25, 1.25 * g)
 

@@ -52,7 +52,6 @@ Authors@R:
       person(given = "Long",
              family = "Qu",
              role = "ctb"))
-Maintainer: Klaus Schliep <klaus.schliep@gmail.com>
 Description: Allows for estimation of phylogenetic trees and networks
     using Maximum Likelihood, Maximum Parsimony, distance methods and
     Hadamard conjugation. Offers methods for tree comparison, model
@@ -63,13 +62,12 @@ URL: https://github.com/KlausVigo/phangorn
 BugReports: https://github.com/KlausVigo/phangorn/issues
 Depends:
     ape (>= 5.5),
-    R (>= 3.6.0)
+    R (>= 4.1.0)
 Imports:
     fastmatch,
     graphics,
     grDevices,
     igraph (>= 1.0),
-    magrittr,
     Matrix,
     methods,
     parallel,
@@ -97,4 +95,4 @@ biocViews: Software, Technology, QualityControl
 Encoding: UTF-8
 Repository: CRAN
 Roxygen: list(old_usage = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2

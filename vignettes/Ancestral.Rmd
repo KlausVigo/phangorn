@@ -37,7 +37,7 @@ library(phangorn)
 fdir <- system.file("extdata/trees", package = "phangorn")
 primates <- read.phyDat(file.path(fdir, "primates.dna"),
                         format = "interleaved")
-tree <- pratchet(primates, trace=0) %>% acctran(primates)
+tree <- pratchet(primates, trace=0) |> acctran(primates)
 parsimony(tree, primates)
 ```
 
