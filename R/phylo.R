@@ -1509,27 +1509,12 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     eval(extras[[existing[4]]], parent.frame()))
 
   if (!inherits(tree, "phylo")) stop("tree must be of class phylo")
-  #    if(is.null(tree$edge.length)){
-  #        warning("tree has no edge length, used nnls.phylo to assign them")
-  #        tree <- nnls.phylo(tree, dist.ml(data))
-  #    }
+  if (is.null(tree$edge.length)) stop("tree must have edge weights")
   if (any(duplicated(tree$tip.label))) stop("tree must have unique labels!")
   nTips <- as.integer(length(tree$tip.label))
-  if (is.null(attr(tree, "order")) || attr(tree, "order") ==
-    "cladewise")
-     tree <- reorder(tree, "postorder")
-  if (any(tree$edge.length < 0)) {
-    if(is.rooted(tree)) nh <- nodeHeight(tree)[1:nTips]
-    tree$edge.length[tree$edge.length < 0] <- 1e-08
-    message("negative edges length changed to 0!")
-    if(is.rooted(tree)){
-      ind <- match(as.integer(1:nTips), tree$edge[, 2])
-      tree$edge.length[ind] <- tree$edge.length[ind] +
-        (nodeHeight(tree)[1:nTips] - nh)
-    }
-  }
+  tree <- reorder(tree, "postorder")
+  if (any(tree$edge.length < 0)) tree <- minEdge(tree)
   if (!inherits(data, "phyDat")) stop("data must be of class phyDat")
-  if (is.null(tree$edge.length)) stop("tree must have edge weights")
   if (any(is.na(match(tree$tip.label, attr(data, "names")))))
     stop("tip labels are not in data")
   data <- subset(data, tree$tip.label) # needed
