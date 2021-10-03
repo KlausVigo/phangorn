@@ -618,10 +618,9 @@ fs <- function(old.el, eig, parent.dat, child.dat, weight, g = g,
   eve <- eig[[2]]
   dad <- .Call("getDAD", parent.dat, child.dat, P, nr, nc)
   X <- .Call("getPrep", dad, child.dat, eig[[2]], evi, nr, nc)
-  .Call("FS4", eig, as.integer(length(bf)), as.double(old.el),
-    as.double(w), as.double(g), X, child.dat, dad, as.integer(length(w)),
-    as.integer(length(weight)), as.double(weight),
-    as.double(ll.0), as.integer(getA), as.integer(getB))
+  .Call("FS4", eig, as.integer(length(bf)), as.double(old.el), as.double(w),
+    as.double(g), unlist(X), child.dat, dad, as.integer(length(w)), nr,
+    as.double(weight), as.double(ll.0), as.integer(getA), as.integer(getB))
 }
 
 

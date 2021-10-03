@@ -197,7 +197,7 @@ dist.ml <- function(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
         old.el <- 10
       else old.el <- fun(old.el)
       for (lk in 1:k) tmp2[[lk]] <- tmp[ind, , drop = FALSE]
-      res <- .Call('FS5', eig, nc, as.double(old.el), w, g, tmp2,
+      res <- .Call('FS5', eig, nc, as.double(old.el), w, g, unlist(tmp2),
         as.integer(k), as.integer(sum(ind)), w0[ind], ll.0)
       d[pos] <- res[1] # res[[1]]
       v[pos] <- res[2] # res[[2]]
@@ -302,7 +302,8 @@ dist.ml2 <- function(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
           old.el <- 10
         else old.el <- fun(old.el)
         for (lk in 1:k) tmp2[[lk]] <- tmp[ind, , drop = FALSE]
-        res <- .Call('FS5', eig, nc, as.double(old.el), w, g, tmp2,
+# tmp2 <- tmp[rep(ind, k)] , , drop=FALSE]
+        res <- .Call('FS5', eig, nc, as.double(old.el), w, g, unlist(tmp2),
                      as.integer(k), as.integer(sum(ind)), w0[ind], ll.0)
         d[pos] <- res[1] # res[[1]]
         v[pos] <- res[2] # res[[2]]

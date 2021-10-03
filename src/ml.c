@@ -486,24 +486,10 @@ SEXP getPrep(SEXP dad, SEXP child, SEXP eve, SEXP evi, SEXP nr, SEXP nc){
         }
     UNPROTECT(1); //RESULT
     return(RESULT);
-    }
-
-
-void NR55(double *eva, int nc, double el, double *w, double *g, SEXP X, int ld, int nr, double *f, double *res){
-    int i, j, k;
-    double *tmp;
-    tmp = (double *) R_alloc(nc, sizeof(double));
-    for(k=0; k<nr; k++) res[k] = 0.0;
-    for(j=0;j<ld;j++){
-//       for(i=0; i<nc ;i++) tmp[i] = w[j] * (eva[i] * g[j]  * el) * exp(eva[i] * g[j] * el);
-        for(i=0; i<nc ;i++) tmp[i] = (eva[i] * g[j]  * el) * exp(eva[i] * g[j] * el);
-        F77_CALL(dgemv)(transa, &nr, &nc, &w[j], REAL(VECTOR_ELT(X, j)), &nr, tmp, &ONE, &one, res, &ONE);
-        }
-    for(i=0; i<nr ;i++) res[i]/=f[i];
 }
 
 
-void NR555(double *eva, int nc, double el, double *w, double *g, SEXP X, int ld, int nr, double *f, double *res){
+void NR_d2f(double *eva, int nc, double el, double *w, double *g, double *X, int ld, int nr, double *f, double *res){
     int i, j, k;
     double *tmp;
     tmp = (double *) R_alloc(nc, sizeof(double));
@@ -512,27 +498,13 @@ void NR555(double *eva, int nc, double el, double *w, double *g, SEXP X, int ld,
 
     for(j=0;j<ld;j++){
         for(i=0; i<nc ;i++) tmp[i] = (eva[i] * g[j]) * exp(eva[i] * g[j] * el);
-        F77_CALL(dgemv)(transa, &nr, &nc, &w[j], REAL(VECTOR_ELT(X, j)), &nr, tmp, &ONE, &one, res, &ONE);
+        F77_CALL(dgemv)(transa, &nr, &nc, &w[j], &X[j*(nr*nc)], &nr, tmp, &ONE, &one, res, &ONE);
         }
     for(i=0; i<nr ;i++) res[i]/=f[i];
 }
 
-// tmp ausserhalb
-void NR66(double *eva, int nc, double el, double *w, double *g, SEXP X, int ld, int nr, double *res){
-    int i, j;
-    double *tmp; //*res,  *dF,
 
-    tmp = (double *) R_alloc(nc, sizeof(double));
-
-    for(j=0;j<ld;j++){
-        for(i=0; i<nc ;i++) tmp[i] = exp(eva[i] * g[j] * el);
-        // alpha = w[j]
-        F77_CALL(dgemv)(transa, &nr, &nc, &w[j], REAL(VECTOR_ELT(X, j)), &nr, tmp, &ONE, &one, res, &ONE);
-    }
-}
-
-
-void NR77(double *eva, int nc, double el, double *w, double *g, double *X, int ld, int nr, double *f, double *res){
+void NR_df(double *eva, int nc, double el, double *w, double *g, double *X, int ld, int nr, double *f, double *res){
     int i, j, k;
     double *tmp;
     tmp = (double *) R_alloc(nc, sizeof(double));
@@ -547,7 +519,7 @@ void NR77(double *eva, int nc, double el, double *w, double *g, double *X, int l
 
 
 // tmp ausserhalb?
-void NR88(double *eva, int nc, double el, double *w, double *g, double *X, int ld, int nr, double *res){
+void NR_f(double *eva, int nc, double el, double *w, double *g, double *X, int ld, int nr, double *res){
     int i, j;
     double *tmp; //*res,  *dF,
     tmp = (double *) R_alloc(nc, sizeof(double));
@@ -618,6 +590,7 @@ SEXP getM3(SEXP dad, SEXP child, SEXP P, SEXP nr, SEXP nc){
         PROTECT(TMP = allocMatrix(REALSXP, nrx, ncx));
         tmp = REAL(TMP);
         matprod(REAL(VECTOR_ELT(child, i)), nrx, ncx, REAL(VECTOR_ELT(P, i)), ncx, ncx, tmp);
+//        F77_CALL(dgemm)(transa, transb, &nrx, &ncx, &ncx, &one, REAL(VECTOR_ELT(child, i)), &nrx, REAL(VECTOR_ELT(P, i)), &ncx, &zero, tmp, &nrx);
         daddy = REAL(VECTOR_ELT(dad, i));
         for(j=0; j<(ncx * nrx); j++) tmp[j]*=daddy[j];
         SET_VECTOR_ELT(RESULT, i, TMP);
@@ -627,144 +600,10 @@ SEXP getM3(SEXP dad, SEXP child, SEXP P, SEXP nr, SEXP nc){
     return(RESULT);
     }
 
-// SEXP basefreq,
-SEXP FS4(SEXP eig, SEXP nc, SEXP el, SEXP w, SEXP g, SEXP X, SEXP dad, SEXP child, SEXP ld, SEXP nr,
-         SEXP weight, SEXP f0, SEXP retA, SEXP retB)
-{
-    SEXP RESULT, EL, P;
-    double *tmp, *f, *wgt=REAL(weight), edle, ledle, newedle, eps=10, *eva=REAL(VECTOR_ELT(eig,0));
-    double ll, lll, delta=0.0, scalep = 1.0, *ws=REAL(w), *gs=REAL(g), l1=0.0, l0=0.0;
-    double y;
-    int i, k=0, ncx=INTEGER(nc)[0], nrx=INTEGER(nr)[0];
-    tmp = (double *) R_alloc(nrx, sizeof(double));
-    f = (double *) R_alloc(nrx, sizeof(double));
-    PROTECT(RESULT = allocVector(VECSXP, 4));
-    edle = REAL(el)[0];
-
-    for(i=0; i<nrx; i++)f[i] = REAL(f0)[i];
-    NR66(eva, ncx, edle, ws, gs, X, INTEGER(ld)[0], nrx, f); // ncx-1L !!!
-    for(i=0; i<nrx ;i++) l0 += wgt[i] * log(f[i]);
-
-    while ( (eps > 1e-05) &&  (k < 5) ) {
-        if(scalep>0.6){
-            NR55(eva, ncx-1L, edle, ws, gs, X, INTEGER(ld)[0], nrx, f, tmp);
-            ll=0.0;
-            lll=0.0;
-            for(i=0; i<nrx ;i++){
-                y = wgt[i]*tmp[i];
-                ll+=y;
-                lll+=y*tmp[i];
-            }
-            delta = ((ll/lll) < 3) ? (ll/lll) : 3;
-        } // end if
-        ledle = log(edle) + scalep * delta;
-        newedle = exp(ledle);
-// some error handling avoid too big small edges & too big steps
-        if (newedle > 10.0) newedle = 10.0;
-        if (newedle < 1e-8) newedle = edle/2;
-        if (newedle < 1e-8) newedle = 1e-8; // 1e-8 phyML
-
-        for(i=0; i<nrx; i++)f[i] = REAL(f0)[i];
-        NR66(eva, ncx, newedle, ws, gs, X, INTEGER(ld)[0], nrx, f);
-        l1 = 0.0;
-        for(i=0; i<nrx ;i++) l1 += wgt[i] * log(f[i]); // + log
-        eps = l1 - l0;
-// some error handling
-        if (eps < 0 || ISNAN(eps)) {
-            if (ISNAN(eps))eps = 0;
-            else {
-                scalep = scalep/2.0;
-                eps = 1.0;
-            }
-            newedle = edle;
-            l1 = l0;
-        }
-        else scalep = 1.0;
-        edle=newedle;
-        l0 = l1;
-        k ++;
-    }
-    PROTECT(EL = ScalarReal(edle));
-    PROTECT(P = getPM(eig, nc, EL, g));
-    SET_VECTOR_ELT(RESULT, 0, EL);
-    if(INTEGER(retA)[0]>0L)SET_VECTOR_ELT(RESULT, 1, getM3(child, dad, P, nr, nc));
-    if(INTEGER(retB)[0]>0L)SET_VECTOR_ELT(RESULT, 2, getM3(dad, child, P, nr, nc));
-// add variance ??
-    SET_VECTOR_ELT(RESULT, 3, ScalarReal(l1));
-    UNPROTECT(3);
-    return (RESULT);
-}
-
-//, SEXP basefreq
-SEXP FS5(SEXP eig, SEXP nc, SEXP el, SEXP w, SEXP g, SEXP X, SEXP ld, SEXP nr, SEXP weight, SEXP f0)
-{
-    SEXP RESULT; // EL, P;
-    double *tmp, *f, *wgt=REAL(weight), edle, ledle, newedle, eps=10, *eva=REAL(VECTOR_ELT(eig,0));
-    double ll, lll, delta=0.0, scalep = 1.0, *ws=REAL(w), *gs=REAL(g), l1=0.0, l0=0.0;
-    double y;
-    int i, k=0, ncx=INTEGER(nc)[0], nrx=INTEGER(nr)[0];
-    tmp = (double *) R_alloc(nrx, sizeof(double));
-    f = (double *) R_alloc(nrx, sizeof(double));
-    PROTECT(RESULT = allocVector(REALSXP, 3));
-    edle = REAL(el)[0];
-
-    for(i=0; i<nrx; i++)f[i] = REAL(f0)[i]; //memcpy
-    NR66(eva, ncx, edle, ws, gs, X, INTEGER(ld)[0], nrx, f); // ncx-1L !!!
-    for(i=0; i<nrx ;i++) l0 += wgt[i] * log(f[i]);
-
-    while ( (eps > 1e-05) &&  (k < 10) ) {
-        if(scalep>0.6){
-            NR55(eva, ncx-1L, edle, ws, gs, X, INTEGER(ld)[0], nrx, f, tmp);
-            ll=0.0;
-            lll=0.0;
-            for(i=0; i<nrx ;i++){
-                y = wgt[i]*tmp[i];
-                ll+=y;
-                lll+=y*tmp[i];
-            }
-            delta = ((ll/lll) < 3) ? (ll/lll) : 3;
-        } // end if
-        ledle = log(edle) + scalep * delta;
-        newedle = exp(ledle);
-// some error handling avoid too big small edges & too big steps
-        if (newedle > 10.0) newedle = 10.0;
-//        if (newedle < 1e-8) newedle = edle/2;
-        if (newedle < 1e-8) newedle = 1e-8; // 1e-8 phyML
-
-        for(i=0; i<nrx; i++)f[i] = REAL(f0)[i];
-        NR66(eva, ncx, newedle, ws, gs, X, INTEGER(ld)[0], nrx, f);
-        l1 = 0.0;
-        for(i=0; i<nrx ;i++) l1 += wgt[i] * log(f[i]); // + log
-        eps = l1 - l0;
-// some error handling
-        if (eps < 0 || ISNAN(eps)) {
-            if (ISNAN(eps))eps = 0;
-            else {
-                scalep = scalep/2.0;
-                eps = 1.0;
-            }
-            newedle = edle;
-            l1 = l0;
-        }
-        else scalep = 1.0;
-        edle=newedle;
-        l0 = l1;
-        k ++;
-    }
-// variance
-    NR555(eva, ncx-1L, edle, ws, gs, X, INTEGER(ld)[0], nrx, f, tmp);
-    lll=0.0;
-    for(i=0; i<nrx ;i++) lll+=wgt[i]*tmp[i]*tmp[i];
-    REAL(RESULT)[0] = edle;
-    REAL(RESULT)[1] = 1.0 / lll;  // variance
-    REAL(RESULT)[2] = l0; //l0
-    UNPROTECT(1);
-    return (RESULT);
-}
 
 
 void fs3(double *eva, int nc, double el, double *w, double *g, double *X, int ld, int nr, double *weight,
-   double *f0, double *res)
+         double *f0, double *res)
 {
     double *tmp, *f, edle, ledle, newedle, eps=10;
     double ll=0.0, lll, delta=0.0, scalep = 1.0, l1=0.0, l0=0.0;
@@ -775,12 +614,12 @@ void fs3(double *eva, int nc, double el, double *w, double *g, double *X, int ld
     edle = el; //REAL(el)[0];
 
     for(i=0; i<nr; i++)f[i] = f0[i];
-    NR88(eva, nc, edle, w, g, X, ld, nr, f); // nc-1L !!!
+    NR_f(eva, nc, edle, w, g, X, ld, nr, f); // nc-1L !!!
     for(i=0; i<nr ;i++) l0 += weight[i] * log(f[i]);
 
     while ( (eps > 1e-05) &&  (k < 10) ) {
         if(scalep>0.6){
-            NR77(eva, nc-1L, edle, w, g, X, ld, nr, f, tmp);
+            NR_df(eva, nc-1L, edle, w, g, X, ld, nr, f, tmp);
             ll=0.0;
             lll=0.0;
             for(i=0; i<nr ;i++){
@@ -792,16 +631,16 @@ void fs3(double *eva, int nc, double el, double *w, double *g, double *X, int ld
         } // end if
         ledle = log(edle) + scalep * delta;
         newedle = exp(ledle);
-// some error handling avoid too big small edges & too big steps
+        // some error handling avoid too big small edges & too big steps
         if (newedle > 10.0) newedle = 10.0;
         if (newedle < 1e-8) newedle = 1e-8; // 1e-8 phyML
 
         for(i=0; i<nr; i++)f[i] = f0[i];
-        NR88(eva, nc, newedle, w, g, X, ld, nr, f);
+        NR_f(eva, nc, newedle, w, g, X, ld, nr, f);
         l1 = 0.0;
         for(i=0; i<nr ;i++) l1 += weight[i] * log(f[i]);
         eps = l1 - l0;
-// some error handling
+        // some error handling
         if (eps < 0 || ISNAN(eps)) {
             if (ISNAN(eps))eps = 0;
             else {
@@ -816,14 +655,55 @@ void fs3(double *eva, int nc, double el, double *w, double *g, double *X, int ld
         l0 = l1;
         k ++;
     }
-// variance n
-//   NR555(eva, ncx-1L, edle, ws, gs, X, INTEGER(ld)[0], nrx, f, tmp);
-//   lll=0.0;
-//   for(i=0; i<nrx ;i++) lll+=wgt[i]*tmp[i]*tmp[i];
+    // variance n
+    NR_d2f(eva, nc-1L, edle, w, g, X, ld, nr, f, tmp);
+    lll=0.0;
+    for(i=0; i<nr ;i++) lll+=weight[i]*tmp[i]*tmp[i];
     res[0] = edle;
-    res[1] = ll;
+    res[1] = 1.0 / lll;
     res[2] = l0; //l0
-// return res[3] = 1 or 0 for success
+    // return res[3] = 1 or 0 for success
+}
+
+
+// in fs()
+SEXP FS4(SEXP eig, SEXP nc, SEXP el, SEXP w, SEXP g, SEXP X, SEXP dad, SEXP child, SEXP ld, SEXP nr,
+         SEXP weight, SEXP f0, SEXP retA, SEXP retB)
+{
+    SEXP RESULT, EL, P;
+    double *tmp, *wgt=REAL(weight), edle, ledle, newedle, *eva=REAL(VECTOR_ELT(eig,0));
+    int ncx=INTEGER(nc)[0], nrx=INTEGER(nr)[0];
+    tmp = (double *) R_alloc(3L, sizeof(double));
+    PROTECT(RESULT = allocVector(VECSXP, 4));
+    edle = REAL(el)[0];
+    // void fs3(double *eva, int nc, double el, double *w, double *g, double *X, int ld, int nr, double *weight,
+    //double *f0, double *res)
+    fs3(eva, ncx, edle, REAL(w), REAL(g), REAL(X), INTEGER(ld)[0], nrx, wgt, REAL(f0), tmp);
+
+    PROTECT(EL = ScalarReal(tmp[0]));
+    PROTECT(P = getPM(eig, nc, EL, g));
+    SET_VECTOR_ELT(RESULT, 0, EL);
+    if(INTEGER(retA)[0]>0L)SET_VECTOR_ELT(RESULT, 1, getM3(child, dad, P, nr, nc));
+    if(INTEGER(retB)[0]>0L)SET_VECTOR_ELT(RESULT, 2, getM3(dad, child, P, nr, nc));
+// add variance ??
+    SET_VECTOR_ELT(RESULT, 3, ScalarReal(tmp[2]));
+    UNPROTECT(3);
+    return (RESULT);
+}
+
+// in dist.ml
+SEXP FS5(SEXP eig, SEXP nc, SEXP el, SEXP w, SEXP g, SEXP X, SEXP ld, SEXP nr, SEXP weight, SEXP f0)
+{
+    SEXP RESULT; // EL, P;
+    double *wgt=REAL(weight), *eva=REAL(VECTOR_ELT(eig,0));
+    int ncx=INTEGER(nc)[0], nrx=INTEGER(nr)[0];
+    PROTECT(RESULT = allocVector(REALSXP, 3));
+    double edle = REAL(el)[0];
+// void fs3(double *eva, int nc, double el, double *w, double *g, double *X, int ld, int nr, double *weight,
+//double *f0, double *res)
+    fs3(eva, ncx, edle, REAL(w), REAL(g), REAL(X), INTEGER(ld)[0], nrx, wgt, REAL(f0), REAL(RESULT));
+    UNPROTECT(1);
+    return (RESULT);
 }
 
 
