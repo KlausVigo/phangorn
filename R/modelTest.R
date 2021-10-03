@@ -86,7 +86,9 @@ modelTest <- function(object, tree = NULL, model = c("JC", "F81", "K80", "HKY",
     if (is.null(tree))
       tree <- object$tree
   }
-
+  if(!identical(sort(names(data)), sort(tree$tip.label))){
+    stop("Labels in tree and data differ!")
+  }
   if (attr(data, "type") == "DNA") type <- c("JC", "F81", "K80", "HKY", "TrNe",
       "TrN", "TPM1", "K81", "TPM1u", "TPM2", "TPM2u", "TPM3", "TPM3u",
       "TIM1e", "TIM1", "TIM2e", "TIM2", "TIM3e", "TIM3", "TVMe", "TVM",
@@ -100,11 +102,11 @@ modelTest <- function(object, tree = NULL, model = c("JC", "F81", "K80", "HKY",
   env <- new.env()
   assign("data", data, envir = env)
 
-  if (is.null(tree))
-    tree <- NJ(dist.hamming(data))
-  else {
-    if (length(tree$tip.label) > 3) tree <- nnls.phylo(tree, dist.ml(data))
-    # may need something faster for trees > 500 taxa
+  if (is.null(tree)) tree <- candidate.tree(data)
+  if (is.null(tree$tip.label)){
+      tree <- acctran(tree, x)
+      tree$edge.length <- tree$edge.length / sum(attr(x, "weight"))
+      tree <- minEdge(tree, tau=1e-8)
   }
   trace <- control$trace
   control$trace <- trace - 1
