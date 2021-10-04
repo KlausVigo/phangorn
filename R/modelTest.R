@@ -104,8 +104,8 @@ modelTest <- function(object, tree = NULL, model = c("JC", "F81", "K80", "HKY",
 
   if (is.null(tree)) tree <- candidate.tree(data)
   if (is.null(tree$tip.label)){
-      tree <- acctran(tree, x)
-      tree$edge.length <- tree$edge.length / sum(attr(x, "weight"))
+      tree <- acctran(tree, data)
+      tree$edge.length <- tree$edge.length / sum(attr(data, "weight"))
       tree <- minEdge(tree, tau=1e-8)
   }
   trace <- control$trace
