@@ -33,7 +33,6 @@ candidate.tree <- function(x, rooted=FALSE, eps = 1e-8, ...){
     tree <- unroot(tree)
     tree <- acctran(tree, x)
     tree$edge.length <- tree$edge.length / sum(attr(x, "weight"))
-#    tree$edge.length <- pmax(eps, tree$edge.length)
   }
   minEdge(tree, tau=eps)
 }
