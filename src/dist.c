@@ -1,14 +1,13 @@
 /*
  * dist.c
  *
- * (c) 2008-2019 Klaus Schliep (klaus.schliep@gmail.com)
+ * (c) 2008-2021 Klaus Schliep (klaus.schliep@gmail.com)
  *
  *
  * This code may be distributed under the GNU GPL
  *
  */
 
-#define USE_RINTERNALS
 //#define both_non_NA(a,b) (!ISNA(a) && !ISNA(b))
 
 

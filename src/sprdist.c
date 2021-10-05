@@ -8,8 +8,6 @@
  *
  */
 
-# define USE_RINTERNALS
-
 #include <Rmath.h>
 #include <math.h>
 #include <R.h>

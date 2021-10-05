@@ -7,14 +7,15 @@
  * This code may be distributed under the GNU GPL
  *
  */
-
-# define USE_RINTERNALS
+#define USE_FC_LEN_T
 
 #include <Rmath.h>
-//#include <math.h>
 #include <R.h>
-#include <R_ext/Lapack.h>
 #include <Rinternals.h>
+#include <R_ext/BLAS.h>
+#ifndef FCONE
+# define FCONE
+#endif
 
 
 #define LINDEX(i, k) (i - ntips - 1L) * (nr * nc) + k * ntips * (nr * nc)
@@ -23,14 +24,14 @@
 // index for scaling matrix SCM
 #define LINDEX3(i, j) (i - *ntips - 1L) * *nr + j * *ntips * *nr  //nr statt *nr
 
-char *transa = "N", *transb = "N";
+//char *transa = "N", *transb = "N";
 double one = 1.0, zero = 0.0;
 int ONE = 1L;
 const double ScaleEPS = 1.0/4294967296.0;
 const double ScaleMAX = 4294967296.0;
 const double LOG_SCALE_EPS = -22.18070977791824915926;
 
-// 2^64 = 18446744073709551616
+// 2^64 = 18446744073709551616{R_ext/Lapack.h
 
 static double *LL;  //, *WEIGHTS;
 static int *SCM; //, *XXX;
@@ -101,7 +102,7 @@ void matp(int *x, double *contrast, double *P, int *nr, int *nc, int *nrs, doubl
     int i, j;
     double *tmp;
     tmp = (double *) R_alloc((*nc) *(*nrs), sizeof(double));
-    F77_CALL(dgemm)(transa, transb, nrs, nc, nc, &one, contrast, nrs, P, nc, &zero, tmp, nrs);
+    F77_CALL(dgemm)("N", "N", nrs, nc, nc, &one, contrast, nrs, P, nc, &zero, tmp, nrs FCONE FCONE);
     for(i = 0; i < (*nr); i++){
         for(j = 0; j < (*nc); j++) result[i + j*(*nr)] = tmp[x[i] - 1L + j*(*nrs)];
     }
@@ -185,18 +186,18 @@ void lll(SEXP dlist, double *eva, double *eve, double *evei, double *el, double 
             if(ei < nTips)
                 matp(INTEGER(VECTOR_ELT(dlist, ei)), contrast, P, nr, nc, &nco, &ans[ni * rc]);
             else
-                F77_CALL(dgemm)(transa, transb, nr, nc, nc, &one, &ans[(ei-nTips) * rc], nr, P, nc, &zero, &ans[ni * rc], nr);
+                F77_CALL(dgemm)("N", "N", nr, nc, nc, &one, &ans[(ei-nTips) * rc], nr, P, nc, &zero, &ans[ni * rc], nr FCONE FCONE);
         }
         else {
             if(ei < nTips)
                 matp(INTEGER(VECTOR_ELT(dlist, ei)), contrast, P, nr, nc, &nco, rtmp);
             else
-                F77_CALL(dgemm)(transa, transb, nr, nc, nc, &one, &ans[(ei-nTips) * rc], nr, P, nc, &zero, rtmp, nr);
+                F77_CALL(dgemm)("N", "N", nr, nc, nc, &one, &ans[(ei-nTips) * rc], nr, P, nc, &zero, rtmp, nr FCONE FCONE);
             for(j=0; j < rc; j++) ans[ni * rc + j] *= rtmp[j];
         }
     }
     scaleMatrix(&ans[ni * rc], nr, nc, scaleTmp);
-    F77_CALL(dgemv)(transa, nr, nc, &one, &ans[ni * rc], nr, bf, &ONE, &zero, TMP, &ONE);
+    F77_CALL(dgemv)("N", nr, nc, &one, &ans[ni * rc], nr, bf, &ONE, &zero, TMP, &ONE FCONE);
 }
 
 
@@ -221,7 +222,7 @@ void lll3(SEXP dlist, double *eva, double *eve, double *evei, double *el, double
             if(ei < nTips)
                 matp(INTEGER(VECTOR_ELT(dlist, ei)), contrast, P, nr, nc, &nco, &ans[ni * rc]);
             else{
-                F77_CALL(dgemm)(transa, transb, nr, nc, nc, &one, &ans[(ei-nTips) * rc], nr, P, nc, &zero, &ans[ni * rc], nr);
+                F77_CALL(dgemm)("N", "N", nr, nc, nc, &one, &ans[(ei-nTips) * rc], nr, P, nc, &zero, &ans[ni * rc], nr FCONE FCONE);
                 for(j=0; j < *nr; j++) SC[ni * *nr + j] = SC[(ei-nTips) * *nr + j];
             }
         }
@@ -229,7 +230,7 @@ void lll3(SEXP dlist, double *eva, double *eve, double *evei, double *el, double
             if(ei < nTips)
                 matp(INTEGER(VECTOR_ELT(dlist, ei)), contrast, P, nr, nc, &nco, rtmp);
             else{
-                F77_CALL(dgemm)(transa, transb, nr, nc, nc, &one, &ans[(ei-nTips) * rc], nr, P, nc, &zero, rtmp, nr);
+                F77_CALL(dgemm)("N", "N", nr, nc, nc, &one, &ans[(ei-nTips) * rc], nr, P, nc, &zero, rtmp, nr FCONE FCONE);
                 for(j=0; j < *nr; j++) SC[ni * *nr + j] += SC[(ei-nTips) * *nr + j];
             }
             for(j=0; j < rc; j++) ans[ni * rc + j] *= rtmp[j];
@@ -238,7 +239,7 @@ void lll3(SEXP dlist, double *eva, double *eve, double *evei, double *el, double
     scaleMatrix(&ans[ni * rc], nr, nc, &SC[ni * *nr]);
     for(j=0; j < *nr; j++) scaleTmp[j] = SC[ni * *nr + j];
 
-    F77_CALL(dgemv)(transa, nr, nc, &one, &ans[ni * rc], nr, bf, &ONE, &zero, TMP, &ONE);
+    F77_CALL(dgemv)("N", nr, nc, &one, &ans[ni * rc], nr, bf, &ONE, &zero, TMP, &ONE FCONE);
 }
 
 
@@ -300,24 +301,24 @@ SEXP PML4(SEXP dlist, SEXP EL, SEXP W, SEXP G, SEXP NR, SEXP NC, SEXP K, SEXP ei
 
 void moveLL5(double *LL, double *child, double *P, int *nr, int *nc, double *tmp){
     int j;
-    F77_CALL(dgemm)(transa, transb, nr, nc, nc, &one, child, nr, P, nc, &zero, tmp, nr);
+    F77_CALL(dgemm)("N", "N", nr, nc, nc, &one, child, nr, P, nc, &zero, tmp, nr FCONE FCONE);
     for(j=0; j<(*nc * *nr); j++) LL[j]/=tmp[j];
-    F77_CALL(dgemm)(transa, transb, nr, nc, nc, &one, LL, nr, P, nc, &zero, tmp, nr);
+    F77_CALL(dgemm)("N", "N", nr, nc, nc, &one, LL, nr, P, nc, &zero, tmp, nr FCONE FCONE);
     for(j=0; j<(*nc * *nr); j++) child[j] *= tmp[j];
 }
 
 
 // dad / child * P
 void helpDADI(double *dad, double *child, double *P, int nr, int nc, double *res){
-    F77_CALL(dgemm)(transa, transb, &nr, &nc, &nc, &one, child, &nr, P, &nc, &zero, res, &nr);
+    F77_CALL(dgemm)("N", "N", &nr, &nc, &nc, &one, child, &nr, P, &nc, &zero, res, &nr FCONE FCONE);
     for(int j=0; j<(nc * nr); j++) dad[j]/=res[j];
 }
 
 
 // braucht Addition skalierte Werte
 void helpPrep(double *dad, double *child, double *eve, double *evi, int nr, int nc, double *tmp, double *res){
-    F77_CALL(dgemm)(transa, transb, &nr, &nc, &nc, &one, child, &nr, eve, &nc, &zero, res, &nr);
-    F77_CALL(dgemm)(transa, transb, &nr, &nc, &nc, &one, dad, &nr, evi, &nc, &zero, tmp, &nr);
+    F77_CALL(dgemm)("N", "N", &nr, &nc, &nc, &one, child, &nr, eve, &nc, &zero, res, &nr FCONE FCONE);
+    F77_CALL(dgemm)("N", "N", &nr, &nc, &nc, &one, dad, &nr, evi, &nc, &zero, tmp, &nr FCONE FCONE);
     for(int j=0; j<(nc * nr); j++) res[j]*=tmp[j];
 }
 
@@ -352,7 +353,7 @@ SEXP getDAD2(SEXP dad, SEXP child, SEXP contrast, SEXP P, SEXP nr, SEXP nc, SEXP
 
 void helpPrep2(double *dad, int *child, double *contrast, double *evi, int nr, int nc, int nrs, double *res){
     int i, j;
-    F77_CALL(dgemm)(transa, transb, &nr, &nc, &nc, &one, dad, &nr, evi, &nc, &zero, res, &nr);
+    F77_CALL(dgemm)("N", "N", &nr, &nc, &nc, &one, dad, &nr, evi, &nc, &zero, res, &nr FCONE FCONE);
     for(i = 0; i < nr; i++){
         for(j = 0; j < nc; j++) res[i + j*nr] *= contrast[child[i] - 1L + j*nrs];
     }
@@ -377,7 +378,7 @@ SEXP getPrep2(SEXP dad, SEXP child, SEXP contrast, SEXP evi, SEXP nr, SEXP nc, S
 
 // child *= (dad * P)
 void goDown(double *dad, double *child, double *P, int nr, int nc, double *res){
-    F77_CALL(dgemm)(transa, transb, &nr, &nc, &nc, &one, dad, &nr, P, &nc, &zero, res, &nr);
+    F77_CALL(dgemm)("N", "N", &nr, &nc, &nc, &one, dad, &nr, P, &nc, &zero, res, &nr FCONE FCONE);
     for(int j=0; j<(nc * nr); j++) child[j]*=res[j];
 }
 
@@ -450,7 +451,7 @@ void ExtractScale(int ch, int k, int *nr, int *ntips, double *res){
 // in getDad
 // dad / child * P
 void helpDAD(double *dad, double *child, double *P, int nr, int nc, double *res){
-    F77_CALL(dgemm)(transa, transb, &nr, &nc, &nc, &one, child, &nr, P, &nc, &zero, res, &nr);
+    F77_CALL(dgemm)("N", "N", &nr, &nc, &nc, &one, child, &nr, P, &nc, &zero, res, &nr FCONE FCONE);
     for(int j=0; j<(nc * nr); j++) res[j]=dad[j]/res[j];
 }
 
@@ -498,7 +499,7 @@ void NR_d2f(double *eva, int nc, double el, double *w, double *g, double *X, int
 
     for(j=0;j<ld;j++){
         for(i=0; i<nc ;i++) tmp[i] = (eva[i] * g[j]) * exp(eva[i] * g[j] * el);
-        F77_CALL(dgemv)(transa, &nr, &nc, &w[j], &X[j*(nr*nc)], &nr, tmp, &ONE, &one, res, &ONE);
+        F77_CALL(dgemv)("N", &nr, &nc, &w[j], &X[j*(nr*nc)], &nr, tmp, &ONE, &one, res, &ONE FCONE);
         }
     for(i=0; i<nr ;i++) res[i]/=f[i];
 }
@@ -512,7 +513,7 @@ void NR_df(double *eva, int nc, double el, double *w, double *g, double *X, int 
     int nrc = (nc+1L) * nr;
     for(j=0;j<ld;j++){
         for(i=0; i<nc ;i++) tmp[i] = (eva[i] * g[j]  * el) * exp(eva[i] * g[j] * el);
-        F77_CALL(dgemv)(transa, &nr, &nc, &w[j], &X[j*nrc], &nr, tmp, &ONE, &one, res, &ONE);
+        F77_CALL(dgemv)("N", &nr, &nc, &w[j], &X[j*nrc], &nr, tmp, &ONE, &one, res, &ONE FCONE);
         }
     for(i=0; i<nr ;i++) res[i]/=f[i];
 }
@@ -526,7 +527,7 @@ void NR_f(double *eva, int nc, double el, double *w, double *g, double *X, int l
     for(j=0;j<ld;j++){
         for(i=0; i<nc ;i++) tmp[i] = exp(eva[i] * g[j] * el);
         // alpha = w[j]
-        F77_CALL(dgemv)(transa, &nr, &nc, &w[j], &X[j*nr*nc], &nr, tmp, &ONE, &one, res, &ONE);
+        F77_CALL(dgemv)("N", &nr, &nc, &w[j], &X[j*nr*nc], &nr, tmp, &ONE, &one, res, &ONE FCONE);
     }
 }
 
@@ -556,15 +557,15 @@ SEXP LogLik2(SEXP dlist, SEXP P, SEXP nr, SEXP nc, SEXP node, SEXP edge, SEXP nT
             if(ei < nt)
                matp(INTEGER(VECTOR_ELT(dlist, ei)), REAL(contrast), REAL(VECTOR_ELT(P, i)), INTEGER(nr), INTEGER(nc), INTEGER(nco), res);
             else
-               F77_CALL(dgemm)(transa, transb, &nrx, &ncx, &ncx, &one, REAL(VECTOR_ELT(ans, ei-nt)), &nrx,
-                   REAL(VECTOR_ELT(P, i)), &ncx, &zero, res, &nrx);
+               F77_CALL(dgemm)("N", "N", &nrx, &ncx, &ncx, &one, REAL(VECTOR_ELT(ans, ei-nt)), &nrx,
+                   REAL(VECTOR_ELT(P, i)), &ncx, &zero, res, &nrx FCONE FCONE);
             }
         else {
             if(ei < nt)
                 matp(INTEGER(VECTOR_ELT(dlist, ei)), REAL(contrast), REAL(VECTOR_ELT(P, i)), INTEGER(nr), INTEGER(nc), INTEGER(nco), rtmp);
             else
-                F77_CALL(dgemm)(transa, transb, &nrx, &ncx, &ncx, &one, REAL(VECTOR_ELT(ans, ei-nt)), &nrx,
-                    REAL(VECTOR_ELT(P, i)), &ncx, &zero, rtmp, &nrx);
+                F77_CALL(dgemm)("N", "N", &nrx, &ncx, &ncx, &one, REAL(VECTOR_ELT(ans, ei-nt)), &nrx,
+                    REAL(VECTOR_ELT(P, i)), &ncx, &zero, rtmp, &nrx FCONE FCONE);
             for(j=0; j < (nrx*ncx); j++) res[j] *= rtmp[j];
         }
     }
@@ -576,7 +577,7 @@ SEXP LogLik2(SEXP dlist, SEXP P, SEXP nr, SEXP nc, SEXP node, SEXP edge, SEXP nT
 // raus
 void matprod(double *x, int nrx, int ncx, double *y, int nry, int ncy, double *z)
 {
-    F77_CALL(dgemm)(transa, transb, &nrx, &ncy, &ncx, &one, x, &nrx, y, &nry, &zero, z, &nrx);
+    F77_CALL(dgemm)("N", "N", &nrx, &ncy, &ncx, &one, x, &nrx, y, &nry, &zero, z, &nrx FCONE FCONE);
 }
 
 
@@ -590,7 +591,7 @@ SEXP getM3(SEXP dad, SEXP child, SEXP P, SEXP nr, SEXP nc){
         PROTECT(TMP = allocMatrix(REALSXP, nrx, ncx));
         tmp = REAL(TMP);
         matprod(REAL(VECTOR_ELT(child, i)), nrx, ncx, REAL(VECTOR_ELT(P, i)), ncx, ncx, tmp);
-//        F77_CALL(dgemm)(transa, transb, &nrx, &ncx, &ncx, &one, REAL(VECTOR_ELT(child, i)), &nrx, REAL(VECTOR_ELT(P, i)), &ncx, &zero, tmp, &nrx);
+//        F77_CALL(dgemm)("N", "N", &nrx, &ncx, &ncx, &one, REAL(VECTOR_ELT(child, i)), &nrx, REAL(VECTOR_ELT(P, i)), &ncx, &zero, tmp, &nrx FCONE FCONE);
         daddy = REAL(VECTOR_ELT(dad, i));
         for(j=0; j<(ncx * nrx); j++) tmp[j]*=daddy[j];
         SET_VECTOR_ELT(RESULT, i, TMP);
@@ -603,20 +604,26 @@ SEXP getM3(SEXP dad, SEXP child, SEXP P, SEXP nr, SEXP nc){
 
 
 void fs3(double *eva, int nc, double el, double *w, double *g, double *X, int ld, int nr, double *weight,
-         double *f0, double *res)
+         double *f0, double *res) //, int mkv)
 {
+    int mkv=0;
     double *tmp, *f, edle, ledle, newedle, eps=10;
     double ll=0.0, lll, delta=0.0, scalep = 1.0, l1=0.0, l0=0.0;
-    double y;
-    int i, k=0;
+    double y, sum_wgt=0.0, p0=0.0;
+    int i, j, k=0;
     tmp = (double *) R_alloc(nr, sizeof(double));
     f = (double *) R_alloc(nr, sizeof(double));
     edle = el; //REAL(el)[0];
 
     for(i=0; i<nr; i++)f[i] = f0[i];
     NR_f(eva, nc, edle, w, g, X, ld, nr, f); // nc-1L !!!
-    for(i=0; i<nr ;i++) l0 += weight[i] * log(f[i]);
-
+    for(i=0; i<nr ;i++){
+      l0 += weight[i] * log(f[i]);
+      sum_wgt += weight[i];
+    }
+    if(mkv){
+      for(j=0; j<nc; j++)p0 += f[i];
+    }
     while ( (eps > 1e-05) &&  (k < 10) ) {
         if(scalep>0.6){
             NR_df(eva, nc-1L, edle, w, g, X, ld, nr, f, tmp);

@@ -1,15 +1,12 @@
 /*
  * dist.c
  *
- * (c) 2008-2019  Klaus Schliep (klaus.schliep@gmail.com)
+ * (c) 2008-2021  Klaus Schliep (klaus.schliep@gmail.com)
  *
  *
  * This code may be distributed under the GNU GPL
  *
  */
-
-
-# define USE_RINTERNALS
 
 #include <R.h>
 #include <Rinternals.h>
