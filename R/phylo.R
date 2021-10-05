@@ -635,8 +635,7 @@ optimEdge <- function(tree, data, eig = eig, w = w, g = g, bf = bf, rate = rate,
   oldtree <- tree
   k <- length(w)
   data <- subset(data, tree$tip.label)
-  loglik <- pml.fit4(tree, data, bf = bf, g = g, w = w, eig = eig, ll.0 = ll.0,
-                     k = k, ...)
+  loglik <- pml.fit4(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, ...)
   start.ll <- old.ll <- loglik
   contrast <- attr(data, "contrast")
   contrast2 <- contrast %*% eig[[2]]
@@ -676,8 +675,7 @@ optimEdge <- function(tree, data, eig = eig, w = w, g = g, bf = bf, rate = rate,
       as.double(ll.0))
     iter <- iter + 1
     treeP$edge.length <- EL[treeP$edge[, 2]]
-    newll <- pml.fit4(treeP, data, bf = bf, g = g, w = w, eig = eig,
-                      ll.0 = ll.0, k = k, ...)
+    newll <- pml.fit4(treeP, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, ...)
     eps <- (old.ll - newll) / newll
     if (eps < 0) return(list(tree=oldtree, logLik=old.ll))
     oldtree <- treeP
@@ -2338,7 +2336,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
 
   if (optEdge) {
     res <- opt_Edge(tree, data, rooted = optRooted, eig = eig, w = w, g = g,
-      bf = bf, rate = rate, ll.0 = ll.0, INV = INV, Mkv=Mkv,
+      bf = bf, inv=inv, rate = rate, ll.0 = ll.0, INV = INV, Mkv=Mkv,
       control <- pml.control(epsilon = 1e-07, maxit = 10, trace = trace))
     if (res[[2]] > ll) {
       ll <- res[[2]]
@@ -2456,7 +2454,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     }
     if (optEdge) {
       res <- opt_Edge(tree, data, rooted = optRooted, eig = eig, w = w, g = g,
-                       bf = bf, rate = rate, ll.0 = ll.0, Mkv=Mkv,
+                       bf = bf, inv=inv, rate = rate, ll.0 = ll.0, Mkv=Mkv,
                        control = pml.control(epsilon = 1e-08, maxit = 10,
                                              trace = trace))
       if (res[[2]] > ll) {
@@ -2467,7 +2465,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     epsR <- 1e-8
     if (optNni) {
       res <- opt_nni(tree, data, rooted=optRooted, iter_max=3, trace=trace,
-                     ll=ll, w = w, g = g, eig = eig, bf = bf,
+                     ll=ll, w = w, g = g, eig = eig, bf = bf, inv=inv,
                      ll.0 = ll.0, INV = INV, Mkv=Mkv, ...)
       ll <- res$logLik
       tree <- res$tree
@@ -2496,7 +2494,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
           llMix = llMix, wMix = wMix, site = FALSE, Mkv=Mkv)
 
         res <- opt_nni(tree2, data, rooted=optRooted, iter_max=25, trace=trace,
-                       ll=ll2, w = w, g = g, eig = eig, bf = bf,
+                       ll=ll2, w = w, g = g, eig = eig, bf = bf, inv=inv,
                        ll.0 = ll.0, INV = INV, Mkv=Mkv, ...)
         if (res$logLik > (ll + epsR)) {
           tree <- res$tree
