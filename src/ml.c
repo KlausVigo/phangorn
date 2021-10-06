@@ -24,14 +24,13 @@
 // index for scaling matrix SCM
 #define LINDEX3(i, j) (i - *ntips - 1L) * *nr + j * *ntips * *nr  //nr statt *nr
 
-//char *transa = "N", *transb = "N";
+
 double one = 1.0, zero = 0.0;
 int ONE = 1L;
 const double ScaleEPS = 1.0/4294967296.0;
 const double ScaleMAX = 4294967296.0;
 const double LOG_SCALE_EPS = -22.18070977791824915926;
 
-// 2^64 = 18446744073709551616{R_ext/Lapack.h
 
 static double *LL;  //, *WEIGHTS;
 static int *SCM; //, *XXX;
@@ -575,10 +574,10 @@ SEXP LogLik2(SEXP dlist, SEXP P, SEXP nr, SEXP nc, SEXP node, SEXP edge, SEXP nT
 }
 
 // raus
-void matprod(double *x, int nrx, int ncx, double *y, int nry, int ncy, double *z)
-{
-    F77_CALL(dgemm)("N", "N", &nrx, &ncy, &ncx, &one, x, &nrx, y, &nry, &zero, z, &nrx FCONE FCONE);
-}
+//void matprod(double *x, int nrx, int ncx, double *y, int nry, int ncy, double *z)
+//{
+//    F77_CALL(dgemm)("N", "N", &nrx, &ncy, &ncx, &one, x, &nrx, y, &nry, &zero, z, &nrx FCONE FCONE);
+//}
 
 
 SEXP getM3(SEXP dad, SEXP child, SEXP P, SEXP nr, SEXP nc){
@@ -590,8 +589,8 @@ SEXP getM3(SEXP dad, SEXP child, SEXP P, SEXP nr, SEXP nc){
     for(i=0; i<n; i++){
         PROTECT(TMP = allocMatrix(REALSXP, nrx, ncx));
         tmp = REAL(TMP);
-        matprod(REAL(VECTOR_ELT(child, i)), nrx, ncx, REAL(VECTOR_ELT(P, i)), ncx, ncx, tmp);
-//        F77_CALL(dgemm)("N", "N", &nrx, &ncx, &ncx, &one, REAL(VECTOR_ELT(child, i)), &nrx, REAL(VECTOR_ELT(P, i)), &ncx, &zero, tmp, &nrx FCONE FCONE);
+//        matprod(REAL(VECTOR_ELT(child, i)), nrx, ncx, REAL(VECTOR_ELT(P, i)), ncx, ncx, tmp);
+        F77_CALL(dgemm)("N", "N", &nrx, &ncx, &ncx, &one, REAL(VECTOR_ELT(child, i)), &nrx, REAL(VECTOR_ELT(P, i)), &ncx, &zero, tmp, &nrx FCONE FCONE);
         daddy = REAL(VECTOR_ELT(dad, i));
         for(j=0; j<(ncx * nrx); j++) tmp[j]*=daddy[j];
         SET_VECTOR_ELT(RESULT, i, TMP);
@@ -678,15 +677,12 @@ SEXP FS4(SEXP eig, SEXP nc, SEXP el, SEXP w, SEXP g, SEXP X, SEXP dad, SEXP chil
          SEXP weight, SEXP f0, SEXP retA, SEXP retB)
 {
     SEXP RESULT, EL, P;
-    double *tmp, *wgt=REAL(weight), edle, ledle, newedle, *eva=REAL(VECTOR_ELT(eig,0));
+    double *tmp, *wgt=REAL(weight), edle, *eva=REAL(VECTOR_ELT(eig,0));
     int ncx=INTEGER(nc)[0], nrx=INTEGER(nr)[0];
     tmp = (double *) R_alloc(3L, sizeof(double));
     PROTECT(RESULT = allocVector(VECSXP, 4));
     edle = REAL(el)[0];
-    // void fs3(double *eva, int nc, double el, double *w, double *g, double *X, int ld, int nr, double *weight,
-    //double *f0, double *res)
     fs3(eva, ncx, edle, REAL(w), REAL(g), REAL(X), INTEGER(ld)[0], nrx, wgt, REAL(f0), tmp);
-
     PROTECT(EL = ScalarReal(tmp[0]));
     PROTECT(P = getPM(eig, nc, EL, g));
     SET_VECTOR_ELT(RESULT, 0, EL);
@@ -706,8 +702,6 @@ SEXP FS5(SEXP eig, SEXP nc, SEXP el, SEXP w, SEXP g, SEXP X, SEXP ld, SEXP nr, S
     int ncx=INTEGER(nc)[0], nrx=INTEGER(nr)[0];
     PROTECT(RESULT = allocVector(REALSXP, 3));
     double edle = REAL(el)[0];
-// void fs3(double *eva, int nc, double el, double *w, double *g, double *X, int ld, int nr, double *weight,
-//double *f0, double *res)
     fs3(eva, ncx, edle, REAL(w), REAL(g), REAL(X), INTEGER(ld)[0], nrx, wgt, REAL(f0), REAL(RESULT));
     UNPROTECT(1);
     return (RESULT);
