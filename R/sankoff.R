@@ -7,32 +7,9 @@ prepareDataSankoffNew <- function(data) {
 }
 
 
-sankoffNew <- function(tree, data, cost = NULL, site = "pscore") {
-  if (!inherits(data, "phyDat"))
-    stop("data must be of class phyDat")
-  data <- prepareDataSankoffNew(data)
-  levels <- attr(data, "levels")
-  l <- length(levels)
-
-  if (is.null(cost)) {
-    cost <- matrix(1, l, l)
-    cost <- cost - diag(l)
-  }
-
-  l <- length(data)
-  if (inherits(tree, "phylo")) return(fit.sankoffNew(tree, data, cost,
-      returnData = site))
-  if (inherits(tree, "multiPhylo")) {
-    if (is.null(tree$TipLabel)) tree <- unclass(tree)
-    return(sapply(tree, fit.sankoffNew, data, cost, site))
-  }
-}
-
-
 fit.sankoffNew <- function(tree, data, cost, returnData = c("pscore", "site",
                                                             "data")) {
-  if (is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise")
-    tree <- reorder(tree, "postorder")
+  tree <- reorder(tree, "postorder")
   returnData <- match.arg(returnData)
   node <- tree$edge[, 1]
   edge <- tree$edge[, 2]
@@ -65,3 +42,23 @@ fit.sankoffNew <- function(tree, data, cost, returnData = c("pscore", "site",
   result
 }
 
+
+#' @rdname parsimony
+#' @export
+sankoff <- function(tree, data, cost = NULL, site = "pscore") {
+  if (!inherits(data, "phyDat"))
+    stop("data must be of class phyDat")
+  data <- prepareDataSankoffNew(data)
+  if (is.null(cost)) {
+    levels <- attr(data, "levels")
+    l <- length(levels)
+    cost <- matrix(1, l, l)
+    cost <- cost - diag(l)
+  }
+  if (inherits(tree, "phylo")) return(fit.sankoffNew(tree, data, cost,
+                                                     returnData = site))
+  if (inherits(tree, "multiPhylo")) {
+    if (is.null(tree$TipLabel)) tree <- unclass(tree)
+    return(sapply(tree, fit.sankoffNew, data, cost, site))
+  }
+}

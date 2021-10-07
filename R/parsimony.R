@@ -182,7 +182,7 @@ lowerBound <- function(x, cost = NULL) {
 upperBound <- function(x, cost = NULL) {
   tree <- stree(length(x), tip.label = names(x))
   if (is.null(cost)) cost <- 1 - diag(attr(x, "nc"))
-  sankoffNew(tree, x, cost = cost, site = "site")
+  sankoff(tree, x, cost = cost, site = "site")
 }
 
 
@@ -209,8 +209,8 @@ upperBound <- function(x, cost = NULL) {
 #' @rdname CI
 #' @export
 CI <- function(tree, data, cost = NULL, sitewise = FALSE) {
-  if (sitewise) pscore <- sankoffNew(tree, data, cost = cost, site = "site")
-  else pscore <- sankoffNew(tree, data, cost = cost)
+  if (sitewise) pscore <- sankoff(tree, data, cost = cost, site = "site")
+  else pscore <- sankoff(tree, data, cost = cost)
   weight <- attr(data, "weight")
   data <- subset(data, tree$tip.label)
   m <- lowerBound(data, cost = cost)
@@ -224,8 +224,8 @@ CI <- function(tree, data, cost = NULL, sitewise = FALSE) {
 #' @rdname CI
 #' @export
 RI <- function(tree, data, cost = NULL, sitewise = FALSE) {
-  if (sitewise) pscore <- sankoffNew(tree, data, cost = cost, site = "site")
-  else pscore <- sankoffNew(tree, data, cost = cost)
+  if (sitewise) pscore <- sankoff(tree, data, cost = cost, site = "site")
+  else pscore <- sankoff(tree, data, cost = cost)
   data <- subset(data, tree$tip.label)
   weight <- attr(data, "weight")
   m <- lowerBound(data, cost = cost)
@@ -245,21 +245,6 @@ RI <- function(tree, data, cost = NULL, sitewise = FALSE) {
 # Sankoff
 #
 
-# works only for nucleotides
-old2new.phyDat <- function(obj) {
-  att <- attributes(obj)
-  l <- length(obj)
-  contrast <- attr(obj, "contrast")
-  nr <- attr(obj, "nr")
-  X <- matrix(rep(rowSums(contrast), each = nr), nrow = nr)
-  res <- vector("list", l)
-  for (i in 1:l) {
-    tmp <- X - tcrossprod(obj[[i]], contrast)
-    res[[i]] <- unlist(apply(tmp, 1, function(x) which(x < 1e-6)[1]))
-  }
-  attributes(res) <- att
-  res
-}
 
 old2new.phyDat <- function(obj) {
   att <- attributes(obj)
@@ -296,34 +281,9 @@ prepareDataSankoff <- function(data) {
 }
 
 
-#' @rdname parsimony
-#' @export
-sankoff <- function(tree, data, cost = NULL, site = "pscore") {
-  if (!inherits(data, "phyDat"))
-    stop("data must be of class phyDat")
-  data <- prepareDataSankoff(data)
-  levels <- attr(data, "levels")
-  l <- length(levels)
-
-  if (is.null(cost)) {
-    cost <- matrix(1, l, l)
-    cost <- cost - diag(l)
-  }
-  for (i in seq_along(data)) storage.mode(data[[i]]) <- "double"
-  if (inherits(tree, "phylo")) return(fit.sankoff(tree, data, cost,
-      returnData = site))
-  if (inherits(tree, "multiPhylo")) {
-    if (is.null(tree$TipLabel)) tree <- unclass(tree)
-    return(sapply(tree, fit.sankoff, data, cost, site))
-  }
-}
-
-
 fit.sankoff <- function(tree, data, cost,
                         returnData = c("pscore", "site", "data")) {
-  if (is.null(attr(tree, "order")) || attr(tree, "order") ==
-    "cladewise")
-    tree <- reorder(tree, "postorder")
+  tree <- reorder(tree, "postorder")
   returnData <- match.arg(returnData)
   node <- tree$edge[, 1]
   edge <- tree$edge[, 2]
@@ -353,9 +313,7 @@ fit.sankoff <- function(tree, data, cost,
 
 
 pnodes <- function(tree, data, cost) {
-  if (is.null(attr(tree, "order")) || attr(tree, "order") ==
-    "cladewise")
-    tree <- reorder(tree, "postorder")
+  tree <- reorder(tree, "postorder")
   node <- tree$edge[, 1]
   edge <- tree$edge[, 2]
   nr <- nrow(data[[1]])
@@ -486,17 +444,15 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
   mp <- Inf
   # TODO use rooted trees if cost is not symmetric
   ROOTED <- FALSE
-  # remove parsimony uniformative sie or duplicates
-  #{
   weight <- attr(data, "weight")
   v <- rep(seq_along(weight), weight)
   w <- logical(length(weight))
+  # remove parsimony uniformative sites or duplicates
   # check for symmetric or
   if(method=="fitch") data <- removeParsimonyUninfomativeSites(data, recursive=TRUE)
   else data <- unique(data)
   if(!is.null(attr(data, "informative"))) w[attr(data, "informative")] <- TRUE
   else w[] <- TRUE
-  #}
 
   star_tree <- ifelse(attr(data, "nr") == 0, TRUE, FALSE)
   add_taxa <- ifelse(is.null(attr(data, "duplicated")), FALSE, TRUE)
@@ -610,22 +566,10 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
 }  # pratchet
 
 
-
-
-start_tree <- function(x, maxit = 1, trace = 0, ...) {
-  tree <- pratchet(x, maxit = maxit, trace = trace, ...)
-  ps <- attr(tree, "pscore")
-  tl <- ps / (sum(attr(x, "weight")) * Ntip(tree))
-  tree$edge.length <- rep(tl, nrow(tree$edge))
-  tree
-}
-
-
 optim.sankoff <- function(tree, data, cost = NULL, trace = 1, ...) {
   if (!inherits(tree, "phylo")) stop("tree must be of class phylo")
   if (is.rooted(tree)) tree <- unroot(tree)
-  if (is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise")
-    tree <- reorder(tree, "postorder")
+  tree <- reorder(tree, "postorder")
   if (!inherits(data, "phyDat")) stop("data must be of class phyDat")
   addTaxa <- FALSE
   mapping <- map_duplicates(data)

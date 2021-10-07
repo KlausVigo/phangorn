@@ -455,9 +455,7 @@ fn.quartet <- function(old.el, eig, bf, dat,  g = 1, w = 1, weight, ll.0) {
 
 
 rnodes <- function(tree, data, w, g, eig, bf) {
-  if (is.null(attr(tree, "order")) || attr(tree, "order") ==
-    "cladewise")
-    tree <- reorder(tree, "postorder")
+  tree <- reorder(tree, "postorder")
   data <- getCols(data, tree$tip.label)
   q <- length(tree$tip.label)
   node <- tree$edge[, 1]
@@ -625,8 +623,7 @@ fs <- function(old.el, eig, parent.dat, child.dat, weight, g = g,
 optimEdge <- function(tree, data, eig = eig, w = w, g = g, bf = bf, rate = rate,
                       ll.0 = ll.0, control = pml.control(epsilon = 1e-08,
                         maxit = 10, trace = 0), ...) {
-  if (is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise")
-    tree <- reorder(tree, "postorder")
+  tree <- reorder(tree, "postorder")
   nTips <- length(tree$tip.label)
   el <- tree$edge.length
   tree$edge.length[el < 1e-08] <- 1e-08
@@ -721,8 +718,7 @@ bipart <- function(x) {
 
 bipartition <- function(tree) {
   if (is.rooted(tree)) tree <- unroot(tree)
-  if (is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise")
-    tree <- reorder(tree, "postorder")
+  tree <- reorder(tree, "postorder")
   bp <- bip(tree)
   nTips <- length(tree$tip.label)
   l <- length(bp)
@@ -901,8 +897,7 @@ update.pml <- function(object, ...) {
   }
   if (is.na(existing[1])) tree <- object$tree
   else tree <- eval(extras[[existing[1]]], parent.frame())
-  if (is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise")
-    tree <- reorder(tree, "postorder")
+  tree <- reorder(tree, "postorder")
   if (is.na(existing[2])) {
     data <- object$data
     INV <- object$INV
@@ -1796,8 +1791,7 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV,
   tree$edge.length[tree$edge.length < 1e-08] <- 1e-08
   nTips <- as.integer(length(tree$tip.label))
   k <- length(w)
-  if (is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise")
-    tree <- reorder.phylo(tree, "postorder")
+  tree <- reorder.phylo(tree, "postorder")
   if (!is.rooted(tree)) stop("tree must be rooted")
 
   attr(tree, "order") <- NULL
