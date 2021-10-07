@@ -27,19 +27,20 @@ pratchet search is performed.}
 \details{
 This implementation is very slow and depending on the data may take very
 long time. In the worst case all (2n-5)!! possible trees have to be
-examined. For 10 species there are already 2027025 tip-labelled unrooted
-trees. It only uses some basic strategies to find a lower and upper bounds
-similar to penny from phylip. It uses a very basic heuristic approach of
-MinMax Squeeze (Holland et al. 2005) to improve the lower bound.  On the
-positive side \code{bab} is not like many other implementations restricted
-to binary or nucleotide data.
+examined, where n is the number of species / tips. For 10 species there are
+already 2027025 tip-labelled unrooted trees. It only uses some basic
+strategies to find a lower and upper bounds similar to penny from phylip.
+\code{bab} uses a very basic heuristic approach of MinMax Squeeze
+(Holland et al. 2005) to improve the lower bound.  On the positive side
+\code{bab} is not like many other implementations restricted to binary or
+nucleotide data.
 }
 \examples{
 
 data(yeast)
 dfactorial(11)
 # choose only the first two genes
-gene12 <- subset(yeast, , 1:3158, site.pattern=FALSE)
+gene12 <- yeast[, 1:3158]
 trees <- bab(gene12)
 
 }
