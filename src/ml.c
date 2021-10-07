@@ -616,13 +616,15 @@ void fs3(double *eva, int nc, double el, double *w, double *g, double *X, int ld
 
     for(i=0; i<nr; i++)f[i] = f0[i];
     NR_f(eva, nc, edle, w, g, X, ld, nr, f); // nc-1L !!!
+    if(mkv){
+      for(j=0; j<nc; j++)p0 += f[i];
+      for(i=0; i<nr ;i++) f[i] /= (1-p0);
+    }
     for(i=0; i<nr ;i++){
       l0 += weight[i] * log(f[i]);
       sum_wgt += weight[i];
     }
-    if(mkv){
-      for(j=0; j<nc; j++)p0 += f[i];
-    }
+
     while ( (eps > 1e-05) &&  (k < 10) ) {
         if(scalep>0.6){
             NR_df(eva, nc-1L, edle, w, g, X, ld, nr, f, tmp);
@@ -643,6 +645,10 @@ void fs3(double *eva, int nc, double el, double *w, double *g, double *X, int ld
 
         for(i=0; i<nr; i++)f[i] = f0[i];
         NR_f(eva, nc, newedle, w, g, X, ld, nr, f);
+        if(mkv){
+          for(j=0; j<nc; j++)p0 += f[i];
+          for(i=0; i<nr ;i++) f[i] /= (1-p0);
+        }
         l1 = 0.0;
         for(i=0; i<nr ;i++) l1 += weight[i] * log(f[i]);
         eps = l1 - l0;

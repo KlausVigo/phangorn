@@ -304,14 +304,6 @@ vcov.pml <- function(object, ...) {
 }
 
 
-getd2P <- function(el, eig = edQt(), g = 1.0) {
-  n <- length(eig$values)
-  res <- .Call("getd2PM", eig, as.integer(n), as.double(el), as.double(g))
-  attr(res, "dim") <- c(length(g), length(el))
-  res
-}
-
-
 getdP <- function(el, eig = edQt(), g = 1.0) {
   n <- length(eig$values)
   res <- .Call("getdPM", eig, as.integer(n), as.double(el), as.double(g))
@@ -324,15 +316,6 @@ getdP <- function(el, eig = edQt(), g = 1.0) {
 getdP2 <- function(el, eig = edQt(), g = 1.0) {
   n <- length(eig$values)
   res <- .Call("getdPM2", eig, as.integer(n), as.double(el), as.double(g))
-  attr(res, "dim") <- c(length(g), length(el))
-  res
-}
-
-
-# version without transformation
-getd2P2 <- function(el, eig = edQt(), g = 1.0) {
-  n <- length(eig$values)
-  res <- .Call("getd2PM2", eig, as.integer(n), as.double(el), as.double(g))
   attr(res, "dim") <- c(length(g), length(el))
   res
 }
