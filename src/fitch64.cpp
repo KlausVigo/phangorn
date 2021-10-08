@@ -461,7 +461,7 @@ void prep_nni(Fitch* obj, IntegerMatrix orig){
 */
 
 // generic, TODO: bitcount, 2x2, 4x4
-double pscore_vector(const uint64_t* x, const uint64_t* y, const NumericVector weight,
+double pscore_vector_generic(const uint64_t* x, const uint64_t* y, const NumericVector weight,
                      int nBits, int wBits, int states){
   double pscore = 0.0;
   uint64_t ones = ~0ull;
@@ -497,7 +497,7 @@ double pscore_vector_4x4(const uint64_t* x, const uint64_t* y, const NumericVect
   uint64_t tmp = 0ull;
   uint64_t orvand = 0;
   for (int i = 0; i < wBits; ++i){
-    orvand = (x[1] & y[1]) | (x[2] & y[2]) | (x[3] & y[3]) | (x[4] & y[4]);
+    orvand = (x[0] & y[0]) | (x[1] & y[1]) | (x[2] & y[2]) | (x[3] & y[3]);
     tmp = ~orvand & ones;
     if(tmp>0ull){
       for(int l=0; l<64; ++l){
@@ -508,7 +508,7 @@ double pscore_vector_4x4(const uint64_t* x, const uint64_t* y, const NumericVect
     y += states;
   }
   for (int i = wBits; i < nBits; ++i){
-    orvand = (x[1] & y[1]) | (x[2] & y[2]) | (x[3] & y[3]) | (x[4] & y[4]);
+    orvand = (x[0] & y[0]) | (x[1] & y[1]) | (x[2] & y[2]) | (x[3] & y[3]);
     tmp = ~orvand & ones;
     pscore += popcnt64(tmp);
     x += states;
@@ -525,7 +525,7 @@ double pscore_vector_2x2(const uint64_t* x, const uint64_t* y, const NumericVect
   uint64_t tmp = 0ull;
   uint64_t orvand = 0;
   for (int i = 0; i < wBits; ++i){
-    orvand = (x[1] & y[1]) | (x[2] & y[2]);
+    orvand = (x[0] & y[0]) | (x[1] & y[1]);
     tmp = ~orvand & ones;
     if(tmp>0ull){
       for(int l=0; l<64; ++l){
@@ -536,7 +536,7 @@ double pscore_vector_2x2(const uint64_t* x, const uint64_t* y, const NumericVect
     y += states;
   }
   for (int i = wBits; i < nBits; ++i){
-    orvand = (x[1] & y[1]) | (x[2] & y[2]);
+    orvand = (x[0] & y[0]) | (x[1] & y[1]);
     tmp = ~orvand & ones;
     pscore += popcnt64(tmp);
     x += states;
@@ -545,7 +545,7 @@ double pscore_vector_2x2(const uint64_t* x, const uint64_t* y, const NumericVect
   return(pscore);
 }
 
-double pscore_vector_test(const uint64_t* x, const uint64_t* y, const NumericVector weight,
+double pscore_vector(const uint64_t* x, const uint64_t* y, const NumericVector weight,
                    int nBits, int wBits, int states)
 {
   double res=0.0;
@@ -553,12 +553,10 @@ double pscore_vector_test(const uint64_t* x, const uint64_t* y, const NumericVec
     res=pscore_vector_4x4(x, y, weight, nBits, wBits, states);
   else if (states == 2)
     res=pscore_vector_2x2(x, y, weight, nBits, wBits, states);
-//  else
-//    res=pscore_vector_generic(x, y, weight, nBits, wBits, states);
+  else
+    res=pscore_vector_generic(x, y, weight, nBits, wBits, states);
   return(res);
 }
-
-
 
 
 int pscore_quartet(const uint64_t* a, const uint64_t* b, const uint64_t* c,
