@@ -105,7 +105,7 @@ void getdP2(double *eva, double *ev, double *evi, int m, double el, double w, do
     free(tmp);
 }
 
-
+/*
 void getd2P(double *eva, double *ev, double *evi, int m, double el, double w, double *result){
     int i, j, h;
     double res; //tmp[m],
@@ -138,7 +138,7 @@ void getd2P2(double *eva, double *ev, double *evi, int m, double el, double w, d
     }
     free(tmp);
 }
-
+*/
 
 SEXP getdPM(SEXP eig, SEXP nc, SEXP el, SEXP w){
     R_len_t i, j, nel, nw;
