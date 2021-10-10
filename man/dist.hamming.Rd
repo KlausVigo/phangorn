@@ -3,16 +3,12 @@
 \name{dist.hamming}
 \alias{dist.hamming}
 \alias{dist.ml}
-\alias{dist.ml2}
 \alias{dist.logDet}
 \title{Pairwise Distances from Sequences}
 \usage{
 dist.hamming(x, ratio = TRUE, exclude = "none")
 
 dist.ml(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
-  k = 1L, shape = 1, ...)
-
-dist.ml2(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
   k = 1L, shape = 1, ...)
 
 dist.logDet(x)
