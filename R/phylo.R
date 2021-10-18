@@ -505,24 +505,25 @@ score <- function(fit, transform = TRUE) {
 # wird noch in partition models verwendet
 optim.quartet <- function(old.el, eig, bf, dat, g = 1, w = 1, weight,
                           ll.0 = weight * 0, control = list(eps = 1e-08,
-                                        maxit = 5, trace = 0), llcomp = -Inf) {
+                          maxit = 5, trace = 0, tau=1e-8), llcomp = -Inf) {
   eps <- 1
   iter <- 0
   evi <- (t(eig[[3]]) * bf)
+  tau <- control$tau
   while (eps > control$eps && iter < control$maxit) {
     tmp <- fn.quartet(old.el = old.el, eig = eig, bf = bf, dat = dat,
       g = g, w = w, weight = weight, ll.0 = ll.0)
     old.ll <- tmp$ll
-    el1 <- fs(old.el[1], eig, tmp$res[, 1], dat[, 1], weight,
-      g = g, w = w, bf = bf, ll.0 = ll.0, evi, getA = TRUE, getB = FALSE)
-    el2 <- fs(old.el[2], eig, el1[[2]], dat[, 2], weight,
-      g = g, w = w, bf = bf, ll.0 = ll.0, evi, getA = TRUE, getB = FALSE)
-    el5 <- fs(old.el[5], eig, el2[[2]], tmp$res[, 2], weight,
-      g = g, w = w, bf = bf, ll.0 = ll.0, evi, getA = FALSE, getB = TRUE)
-    el3 <- fs(old.el[3], eig, el5[[3]], dat[, 3], weight,
-      g = g, w = w, bf = bf, ll.0 = ll.0, evi, getA = TRUE, getB = FALSE)
-    el4 <- fs(old.el[4], eig, el3[[2]], dat[, 4], weight,
-      g = g, w = w, bf = bf, ll.0 = ll.0, evi, getA = FALSE, getB = FALSE)
+    el1 <- fs(old.el[1], eig, tmp$res[, 1], dat[, 1], weight, g = g, w = w,
+              bf = bf, ll.0 = ll.0, evi, tau = tau, getA = TRUE, getB = FALSE)
+    el2 <- fs(old.el[2], eig, el1[[2]], dat[, 2], weight, g = g, w = w,
+              bf = bf, ll.0 = ll.0, evi, tau = tau, getA = TRUE, getB = FALSE)
+    el5 <- fs(old.el[5], eig, el2[[2]], tmp$res[, 2], weight, g = g, w = w,
+              bf = bf, ll.0 = ll.0, evi, tau = tau, getA = FALSE, getB = TRUE)
+    el3 <- fs(old.el[3], eig, el5[[3]], dat[, 3], weight, g = g, w = w,
+              bf = bf, ll.0 = ll.0, evi, tau = tau, getA = TRUE, getB = FALSE)
+    el4 <- fs(old.el[4], eig, el3[[2]], dat[, 4], weight, g = g, w = w,
+              bf = bf, ll.0 = ll.0, evi, tau = tau, getA = FALSE, getB = FALSE)
     old.el[1] <- el1[[1]]
     old.el[2] <- el2[[1]]
     old.el[3] <- el3[[1]]
@@ -588,8 +589,8 @@ pml.control <- function(epsilon = 1e-08, maxit = 10, trace = 1, tau = 1e-8) {
 }
 
 
-fs <- function(old.el, eig, parent.dat, child.dat, weight, g = g,
-               w = w, bf = bf, ll.0 = ll.0, evi, getA = TRUE, getB = TRUE) {
+fs <- function(old.el, eig, parent.dat, child.dat, weight, g = g, w = w,
+               bf = bf, ll.0 = ll.0, evi, tau=1e-8, getA = TRUE, getB = TRUE) {
   if (old.el < 1e-8) old.el <- 1e-8
   lg <- length(parent.dat)
   P <- getP(old.el, eig, g)
@@ -599,13 +600,14 @@ fs <- function(old.el, eig, parent.dat, child.dat, weight, g = g,
   X <- .Call("getPrep", dad, child.dat, eig[[2]], evi, nr, nc)
   .Call("FS4", eig, as.integer(length(bf)), as.double(old.el), as.double(w),
     as.double(g), unlist(X), child.dat, dad, as.integer(length(w)), nr,
-    as.double(weight), as.double(ll.0), as.integer(getA), as.integer(getB))
+    as.double(weight), as.double(ll.0), as.double(tau),
+    as.integer(getA), as.integer(getB))
 }
 
 
 optimEdge <- function(tree, data, eig = eig, w = w, g = g, bf = bf, rate = rate,
                       ll.0 = ll.0, control = pml.control(epsilon = 1e-08,
-                        maxit = 10, trace = 0), ...) {
+                        maxit = 10, trace = 0, tau=1e-8), ...) {
   tree <- reorder(tree, "postorder")
   nTips <- length(tree$tip.label)
   el <- tree$edge.length
@@ -621,10 +623,9 @@ optimEdge <- function(tree, data, eig = eig, w = w, g = g, bf = bf, rate = rate,
   weight <- attr(data, "weight")
   eps <- 1
   iter <- 0
-
   treeP <- tree
   tree <- reorder(tree)
-
+  tau <- control$tau
   child <- tree$edge[, 2]
   parent <- tree$edge[, 1]
   m <- max(tree$edge)
@@ -649,7 +650,7 @@ optimEdge <- function(tree, data, eig = eig, w = w, g = g, bf = bf, rate = rate,
       as.integer(anc0), eig, evi, EL, w, g, as.integer(nr),
       as.integer(nc), as.integer(nTips), as.double(contrast),
       as.double(contrast2), nco, data, as.double(weight),
-      as.double(ll.0))
+      as.double(ll.0), as.double(tau))
     iter <- iter + 1
     treeP$edge.length <- EL[treeP$edge[, 2]]
     newll <- pml.fit4(treeP, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, ...)
@@ -794,7 +795,7 @@ print.pml <- function(x, ...) {
 
 
 optEdgeMulti <- function(object, control = pml.control(epsilon = 1e-8,
-                           maxit = 10, trace = 1), ...) {
+                           maxit = 10, trace = 1, tau = 1e-8), ...) {
   tree <- object$tree
   theta <- object$tree$edge.length
   weight <- attr(object$data, "weight")
@@ -2098,7 +2099,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                       optInv = FALSE, optGamma = FALSE, optEdge = TRUE,
                       optRate = FALSE, optRooted = FALSE, #optF3x4 = FALSE,
                       control = pml.control(epsilon = 1e-8, maxit = 10,
-                                            trace = 1L), model = NULL,
+                          trace = 1L, tau = 1e-8), model = NULL,
                       rearrangement = ifelse(optNni, "NNI", "none"),
                       subs = NULL, ratchet.par = list(iter = 20L, maxit = 200L,
                       minit = 100L, prop = 1 / 2), ...) {
@@ -2179,7 +2180,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     }
   }
   tree <- reorder(tree, "postorder")
-  if (any(tree$edge.length < 1e-08)) {
+  if (any(tree$edge.length < tau)) {
     tree <- minEdge(tree, tau, is_ultrametric)
     object <- update.pml(object, tree = tree)
   }
@@ -2311,7 +2312,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   if (optEdge) {
     res <- opt_Edge(tree, data, rooted = optRooted, eig = eig, w = w, g = g,
       bf = bf, inv=inv, rate = rate, ll.0 = ll.0, INV = INV, Mkv=Mkv,
-      control <- pml.control(epsilon = 1e-07, maxit = 10, trace = trace))
+      control <- pml.control(epsilon = 1e-07, maxit = 10, trace = trace,
+                             tau = tau))
     if (res[[2]] > ll) {
       ll <- res[[2]]
       tree <- res[[1]]
@@ -2430,7 +2432,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       res <- opt_Edge(tree, data, rooted = optRooted, eig = eig, w = w, g = g,
                        bf = bf, inv=inv, rate = rate, ll.0 = ll.0, Mkv=Mkv,
                        control = pml.control(epsilon = 1e-08, maxit = 10,
-                                             trace = trace))
+                                             trace = trace, tau = tau))
       if (res[[2]] > ll) {
         ll <- res[[2]]
         tree <- res[[1]]
@@ -2438,12 +2440,14 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     }
     epsR <- 1e-8
     if (optNni) {
-      res <- opt_nni(tree, data, rooted=optRooted, iter_max=3, trace=trace,
+      res <- opt_nni(tree, data, rooted=optRooted, iter_max=5, trace=trace,
                      ll=ll, w = w, g = g, eig = eig, bf = bf, inv=inv,
-                     ll.0 = ll.0, INV = INV, Mkv=Mkv, ...)
+                     ll.0 = ll.0, INV = INV, Mkv=Mkv,
+                     control = list(eps=1e-08, maxit=3, trace=trace-1, tau=tau), ...)
       ll <- res$logLik
       tree <- res$tree
       swap <- res$swap
+      rounds <- 1
       if (swap == 0) optNni <- FALSE
     }
 #    if ( (ratchet == TRUE) && (optNni == FALSE)) {
@@ -2469,7 +2473,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
 
         res <- opt_nni(tree2, data, rooted=optRooted, iter_max=25, trace=trace,
                        ll=ll2, w = w, g = g, eig = eig, bf = bf, inv=inv,
-                       ll.0 = ll.0, INV = INV, Mkv=Mkv, ...)
+                       ll.0 = ll.0, INV = INV, Mkv=Mkv,
+                       control = list(eps=1e-08, maxit=5, trace=trace, tau=tau), ...)
         if (res$logLik > (ll + epsR)) {
           tree <- res$tree
           ll <- res$logLik
@@ -2566,7 +2571,7 @@ index2tree2 <- function(x, tree, root = length(tree$tip.label) + 1L) {
 optimQuartet <- function(tree, data, eig, w, g, bf, rate, ll.0, nTips,
                          weight, nr, nc, contrast, nco, inv=0, llcomp = -Inf,
                          control = pml.control(epsilon = 1e-08, maxit = 5,
-                                               trace = 0), ...) {
+                                               trace = 0, tau = 1e-8), ...) {
   el <- tree$edge.length
   tree$edge.length[el < 1e-08] <- 1e-08
   oldtree <- tree
@@ -2590,7 +2595,7 @@ optimQuartet <- function(tree, data, eig, w, g, bf, rate, ll.0, nTips,
   n <- length(tree$edge.length)
 
   ind.inv <- which(ll.0 > 0)
-
+  tau <- control$tau
   #    nr <- as.integer(length(weight))
   #    nc <- as.integer(length(bf))
   #    nco <- as.integer(nrow(contrast))
@@ -2603,7 +2608,7 @@ optimQuartet <- function(tree, data, eig, w, g, bf, rate, ll.0, nTips,
     EL <- .Call("optQrtt", as.integer(parent), as.integer(child), eig, evi,
       EL, w, g, as.integer(nr), as.integer(nc), as.integer(nTips),
       as.double(contrast), as.double(contrast2), nco, data,
-      as.double(weight),  as.double(ll.0))
+      as.double(weight),  as.double(ll.0), as.double(tau))
     iter <- iter + 1
     #        tree$edge.length <- EL[tree$edge[,2]]
     tree$edge.length <- EL  # [treeP$edge[,2]] # vormals treeP
@@ -2614,7 +2619,7 @@ optimQuartet <- function(tree, data, eig, w, g, bf, rate, ll.0, nTips,
     if ( (eps < 0) || (newll < llcomp))
       return(list(tree = oldtree, logLik = old.ll, c(eps, iter)))
     oldtree <- tree # vormals treeP
-    if (control$trace > 1) cat(old.ll, " -> ", newll, "\n")
+#    if (control$trace > 1) cat(old.ll, " -> ", newll, "\n")
     old.ll <- newll
     #        loli <- parent[1]
   }

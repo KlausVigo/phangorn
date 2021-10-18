@@ -603,7 +603,7 @@ SEXP getM3(SEXP dad, SEXP child, SEXP P, SEXP nr, SEXP nc){
 
 
 void fs3(double *eva, int nc, double el, double *w, double *g, double *X, int ld, int nr, double *weight,
-         double *f0, double *res) //, int mkv)
+         double *f0, double tau, double *res) //, int mkv)
 {
     int mkv=0;
     double *tmp, *f, edle, ledle, newedle, eps=10;
@@ -641,7 +641,7 @@ void fs3(double *eva, int nc, double el, double *w, double *g, double *X, int ld
         newedle = exp(ledle);
         // some error handling avoid too big small edges & too big steps
         if (newedle > 10.0) newedle = 10.0;
-        if (newedle < 1e-8) newedle = 1e-8; // 1e-8 phyML
+        if (newedle < tau) newedle = tau; // 1e-8 phyML
 
         for(i=0; i<nr; i++)f[i] = f0[i];
         NR_f(eva, nc, newedle, w, g, X, ld, nr, f);
@@ -680,7 +680,7 @@ void fs3(double *eva, int nc, double el, double *w, double *g, double *X, int ld
 
 // in fs()
 SEXP FS4(SEXP eig, SEXP nc, SEXP el, SEXP w, SEXP g, SEXP X, SEXP dad, SEXP child, SEXP ld, SEXP nr,
-         SEXP weight, SEXP f0, SEXP retA, SEXP retB)
+         SEXP weight, SEXP f0, SEXP tau, SEXP retA, SEXP retB)
 {
     SEXP RESULT, EL, P;
     double *tmp, *wgt=REAL(weight), edle, *eva=REAL(VECTOR_ELT(eig,0));
@@ -688,7 +688,7 @@ SEXP FS4(SEXP eig, SEXP nc, SEXP el, SEXP w, SEXP g, SEXP X, SEXP dad, SEXP chil
     tmp = (double *) R_alloc(3L, sizeof(double));
     PROTECT(RESULT = allocVector(VECSXP, 4));
     edle = REAL(el)[0];
-    fs3(eva, ncx, edle, REAL(w), REAL(g), REAL(X), INTEGER(ld)[0], nrx, wgt, REAL(f0), tmp);
+    fs3(eva, ncx, edle, REAL(w), REAL(g), REAL(X), INTEGER(ld)[0], nrx, wgt, REAL(f0), REAL(tau)[0], tmp);
     PROTECT(EL = ScalarReal(tmp[0]));
     PROTECT(P = getPM(eig, nc, EL, g));
     SET_VECTOR_ELT(RESULT, 0, EL);
@@ -701,14 +701,14 @@ SEXP FS4(SEXP eig, SEXP nc, SEXP el, SEXP w, SEXP g, SEXP X, SEXP dad, SEXP chil
 }
 
 // in dist.ml
-SEXP FS5(SEXP eig, SEXP nc, SEXP el, SEXP w, SEXP g, SEXP X, SEXP ld, SEXP nr, SEXP weight, SEXP f0)
+SEXP FS5(SEXP eig, SEXP nc, SEXP el, SEXP w, SEXP g, SEXP X, SEXP ld, SEXP nr, SEXP weight, SEXP f0, SEXP tau)
 {
     SEXP RESULT; // EL, P;
     double *wgt=REAL(weight), *eva=REAL(VECTOR_ELT(eig,0));
     int ncx=INTEGER(nc)[0], nrx=INTEGER(nr)[0];
     PROTECT(RESULT = allocVector(REALSXP, 3));
     double edle = REAL(el)[0];
-    fs3(eva, ncx, edle, REAL(w), REAL(g), REAL(X), INTEGER(ld)[0], nrx, wgt, REAL(f0), REAL(RESULT));
+    fs3(eva, ncx, edle, REAL(w), REAL(g), REAL(X), INTEGER(ld)[0], nrx, wgt, REAL(f0), REAL(tau)[0], REAL(RESULT));
     UNPROTECT(1);
     return (RESULT);
 }
@@ -717,12 +717,12 @@ SEXP FS5(SEXP eig, SEXP nc, SEXP el, SEXP w, SEXP g, SEXP X, SEXP ld, SEXP nr, S
 SEXP optE(SEXP PARENT, SEXP CHILD, SEXP ANC, SEXP eig, SEXP EVI, SEXP EL,
                   SEXP W, SEXP G, SEXP NR, SEXP NC, SEXP NTIPS, SEXP CONTRAST,
                   SEXP CONTRAST2, SEXP NCO,
-                  SEXP dlist, SEXP WEIGHT, SEXP F0){
+                  SEXP dlist, SEXP WEIGHT, SEXP F0, SEXP TAU){
     int i, k=length(W), h, j, n=length(PARENT), m, lEL=length(EL);
     int nc=INTEGER(NC)[0], nr=INTEGER(NR)[0], ntips=INTEGER(NTIPS)[0];
     int *parent=INTEGER(PARENT), *child=INTEGER(CHILD), *anc=INTEGER(ANC); //
-    int loli, nco =INTEGER(NCO)[0]; //=INTEGER(LOLI)[0]
-    double *weight=REAL(WEIGHT), *f0=REAL(F0), *w=REAL(W);
+    int loli, nco =INTEGER(NCO)[0]; //=INTEGEfs3R(LOLI)[0]
+    double *weight=REAL(WEIGHT), *f0=REAL(F0), *w=REAL(W), tau=REAL(TAU)[0];
     double *g=REAL(G), *evi=REAL(EVI), *contrast=REAL(CONTRAST), *contrast2=REAL(CONTRAST2);
     double *el; //=REAL(EL);
     double *eva, *eve, *evei, *tmp, *P;
@@ -785,7 +785,7 @@ SEXP optE(SEXP PARENT, SEXP CHILD, SEXP ANC, SEXP eig, SEXP EVI, SEXP EL,
             }
         }
     }
-    fs3(eva, nc, oldel, w, g, X, k, nr, weight, f0, res);
+    fs3(eva, nc, oldel, w, g, X, k, nr, weight, f0, tau, res);
     updateLL2(dlist, pa, ch, eva, eve, evei, res[0], g, nr,
         nc, ntips, contrast, nco, k, tmp, P);
         el[ch-1L] = res[0];
@@ -800,12 +800,12 @@ SEXP optE(SEXP PARENT, SEXP CHILD, SEXP ANC, SEXP eig, SEXP EVI, SEXP EL,
 SEXP optQrtt(SEXP PARENT, SEXP CHILD, SEXP eig, SEXP EVI, SEXP EL,
           SEXP W, SEXP G, SEXP NR, SEXP NC, SEXP NTIPS, SEXP CONTRAST,
           SEXP CONTRAST2, SEXP NCO,
-          SEXP dlist, SEXP WEIGHT, SEXP F0){
+          SEXP dlist, SEXP WEIGHT, SEXP F0, SEXP TAU){
     int i, k=length(W), h, j, m, lEL=length(EL);
     int nc=INTEGER(NC)[0], nr=INTEGER(NR)[0], ntips=INTEGER(NTIPS)[0];
     int *parent=INTEGER(PARENT), *child=INTEGER(CHILD), pa, ch;
     int nco =INTEGER(NCO)[0]; // loli,
-    double *weight=REAL(WEIGHT), *f0=REAL(F0), *w=REAL(W);
+    double *weight=REAL(WEIGHT), *f0=REAL(F0), *w=REAL(W), tau=REAL(TAU)[0];
     double *g=REAL(G), *evi=REAL(EVI), *contrast=REAL(CONTRAST), *contrast2=REAL(CONTRAST2);
     double *el, *X;
     double *eva, *eve, *evei, *tmp, *P;
@@ -855,7 +855,7 @@ SEXP optQrtt(SEXP PARENT, SEXP CHILD, SEXP eig, SEXP EVI, SEXP EL,
                 }
             }
         }
-        fs3(eva, nc, oldel, w, g, X, k, nr, weight, f0, res);
+        fs3(eva, nc, oldel, w, g, X, k, nr, weight, f0, tau, res);
 // go up
 // if i=2 go down
         if(m==2)updateLLQ(dlist, ch, pa, eva, eve, evei, res[0], g, nr,
