@@ -1,4 +1,3 @@
-# replaces fast.match & fast.match2
 grp_duplicated <- function(x, MARGIN = 1, factor=FALSE, fromLast = FALSE, ...)
 {
   ans <- .Call(grpDupAtomMat, x, as.integer(MARGIN), as.logical(fromLast))

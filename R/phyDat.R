@@ -555,7 +555,7 @@ getRows <- function (data, rows, site.pattern = TRUE){
 subset.phyDat <- function (x, subset, select, site.pattern = TRUE, ...){
   if (!missing(subset)){
     if(is.numeric(subset) & any(subset>length(x))) stop("subscript out of bounds")
-    x <- getCols(x, subset)
+    x <- getCols(x, subset, ...)
   }
   if (!missing(select)){
     w <- attr(x, "weight")
@@ -575,7 +575,7 @@ subset.phyDat <- function (x, subset, select, site.pattern = TRUE, ...){
 #' @rdname phyDat
 #' @export
 "[.phyDat" <- function(x, i, j, ..., drop=FALSE){
-   subset(x, subset = i, select = j, site.pattern=FALSE)
+   subset(x, subset = i, select = j, site.pattern=FALSE, compress=TRUE)
 }
 
 
