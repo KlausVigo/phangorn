@@ -22,7 +22,7 @@ fit.sankoffNew <- function(tree, data, cost, returnData = c("pscore", "site",
   nc <- attr(data, "nc")
   m <- length(edge) + 1
   dat <- vector(mode = "list", length = m)
-  dat[1:q] <- data[tree$tip.label]
+  dat[1:q] <- subset(data, tree$tip.label)
   node <- as.integer(node - 1)
   edge <- as.integer(edge - 1)
   nTips <- as.integer(length(tree$tip.label))
