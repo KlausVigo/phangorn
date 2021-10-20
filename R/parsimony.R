@@ -1,12 +1,6 @@
 #
 # Maximum Parsimony
 #
-rowMin <- function(X) {
-  d <- dim(X)
-  .Call('C_rowMin', X, as.integer(d[1]), as.integer(d[2]))
-}
-
-
 sankoff.quartet <- function(dat, cost, p, l, weight) {
   erg <- .Call('sankoffQuartet', sdat = dat, sn = p, scost = cost, sk = l)
   sum(weight * erg)
