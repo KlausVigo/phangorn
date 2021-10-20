@@ -575,7 +575,7 @@ subset.phyDat <- function (x, subset, select, site.pattern = TRUE, ...){
 #' @rdname phyDat
 #' @export
 "[.phyDat" <- function(x, i, j, ..., drop=FALSE){
-   subset(x, subset = i, select = j, site.pattern=FALSE, compress=TRUE)
+   subset(x, subset = i, select = j, site.pattern=FALSE, compress=FALSE)
 }
 
 
