@@ -57,10 +57,7 @@ getOrder <- function(x) {
 }
 
 
-pBound <- function(x, UB) {
-#  tip <- names(x)
-#  att <- attributes(x)
-#  nc <- attr(x, "nc")
+pBound <- function(x, UB, LB) {
   nr <- attr(x, "nr")
   contrast <- attr(x, "contrast")
   rownames(contrast) <- attr(x, "allLevels")
@@ -83,11 +80,10 @@ pBound <- function(x, UB) {
 
   UB <- UB[, ind, drop = FALSE]
   single_dis <- apply(y, 2, fun1)
-  # single_dis <- lowerBound
+  # single_dis <- LB
 
   nTips <- nrow(y)
   l <- length(weight0)
-
   res <- numeric(nTips)
 
   for (i in 1:(l - 1)) {
@@ -101,12 +97,15 @@ pBound <- function(x, UB) {
         #                dis <- pmax(dis, dis2)
         #                D2 <- dis[nTips] - (UB[, i] + UB[, j])
         if (dis[nTips] > dis2[nTips]) {
-          ub <- UB[, i] + UB[, j]
-          dis <- dis[nTips] - ub
-          d2 <- dis2[nTips] - dis2
-          dis <- pmax(dis, d2) - d2
+#          ub <- UB[, i] + UB[, j]
+#          dis <- dis[nTips] - ub
+#          d2 <- dis2[nTips] - dis2
+#          dis <- pmax(dis, d2) - d2
+        #  dis <- pmax(dis, dis2) - dis2
+          dis <- dis - dis2
           if (sum(dis[4:nTips]) > 0) {
             wmin <- min(weight0[i], weight0[j])
+            print(wmin)
             weight0[i] <- weight0[i] - wmin
             weight0[j] <- weight0[j] - wmin
             res <- res + dis * wmin
@@ -215,14 +214,14 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
 
   m <- nr * (2L * nTips - 2L)
 
-  mmsAmb <- 0
   mmsAmb <- TMP %*% weight
-  mmsAmb <- mmsAmb[nTips] - mmsAmb
+#  mmsAmb <- mmsAmb[nTips] - mmsAmb
   mms0 <- 0
-  if (pBound) mms0 <- pBound(dat_used, UB)
+  if (pBound) mms0 <- pBound(dat_used, UB, TMP)
   mms0 <- mms0 + mmsAmb
-  minPars <- mms0[1]
-  kPars <- 0
+  mms0 <- mms0[nTips] - mms0
+
+  mms0 <- c(mms0, 0)
 
   f <- init_fitch(data, m=4L)
 
@@ -251,7 +250,7 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
   Nnode <- 1L
   npsc <- 1
 
-  blub <- numeric(nTips)
+  visited <- numeric(nTips)
 
   result <- list()
   while (npsc > 0) {
@@ -265,8 +264,7 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
 
     f$prep_spr(tmpTree)
     score <- f$pscore_vec(edge, as.integer(inord[a + 1L]))
-    score <- score + blub
-
+    score <- score + blub + mms0[a + 1L]
     ms <- min(score)
     if (ms <= bound) {
       if ((a + 1L) < nTips) {
@@ -277,10 +275,10 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
         l <- length(ind)
         # os <- order(score[ind], decreasing=TRUE)
         os <- seq_len(l)
-        # in C pushback
-        PSC <- rbind(PSC, cbind(rep(a + 1, l), os, score[ind]))
+        # in C++ pushback
+        PSC <- rbind(PSC, cbind(rep(a + 1, l), os, score[ind] - mms0[a + 1L]))
         npsc <- npsc + l
-        blub[a] <- blub[a] + l
+        visited[a] <- visited[a] + l
         #  PSC = rbind(PSC, cbind(rep(a+1, l), os, score[ind][os] ))
       }
       else {
@@ -305,7 +303,7 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
               .Names = c("edge", "Nnode"), class = "phylo", order = "postorder")
   }
   attr(result, "TipLabel") <- tree$tip.label
-  #    attr(result, "visited") = blub
+  attr(result, "visited") <- visited
   class(result) <- "multiPhylo"
   if(add_taxa) result <- addTaxa(result, attr(data, "duplicated"))
   return(result)
