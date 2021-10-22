@@ -80,54 +80,6 @@ std::vector< std::vector<uint64_t> > readFitch(const List &xlist, IntegerMatrix 
 
 
 
-/*
-// needs improvement for rooted trees (TODO)
-// assumes postorder ordering (for the root node)
-// no singeltons, only binary trees (but maybe rooted)
-// traverse (postorder) and than this, down or up
-//// [[Rcpp::export]]
-IntegerMatrix preorder(const IntegerMatrix & edge, int nTips){
-  IntegerVector parent = edge( _, 0);
-  IntegerVector children = edge( _, 1);
-  List ch = allSiblingsCPP(edge);
-  int p, k=0;
-  int m = max(parent); // edge??
-  int l = parent.size();
-  int root = parent[l-1]; //bugfix
-  int not_rooted = l % 2;
-  std::vector<int> pvec(m+1);
-  for(int i=0; i<parent.size(); ++i){
-    pvec[children[i]] = parent[i];
-  }
-  IntegerVector left(2*l); // std::vector<int> left;
-  IntegerVector right(2*l); //std::vector<int> right;
-  int j=0;
-  for(int i=parent.size(); i>0; --i){
-    p=parent[i-1];
-    k=children[i-1];
-    std::vector<int> sibs = ch[k-1];
-    left[j] = k + 2 * nTips;
-    left[j+1] = k + 2 * nTips;
-    right[j] = sibs[0];
-
-    if(p==root){
-      if(not_rooted){
-        right[j+1] = sibs[1];
-      } else {
-        right[j+1] = sibs[0];
-      }
-    } else{
-        right[j+1] = p + 2 * nTips;
-    }
-    j+=2;
-  }
-  IntegerMatrix out (left.size(), 2);
-  out(_,0) = left;
-  out(_,1) = right;
-  return out;
-}
-*/
-
 IntegerMatrix getAnc(Fitch* obj, int i){
   int states = obj->nStates;
   int nBits = obj->nBits;
@@ -438,27 +390,12 @@ void root_all_node(Fitch* obj, const IntegerMatrix orig)
 }
 
 
-// traversetwice
 // needed for random.addition, SPR & TBR
 void prep_spr(Fitch* obj, IntegerMatrix orig){
-//  int nSeq = obj->nSeq;
   traversetwice(obj, orig, 0L);
-//  traverse(obj, orig);
-//  IntegerMatrix M = preorder(orig, nSeq);
-//  traverse(obj, M);
   root_all_node(obj, orig);
 }
 
-
-/*
- *  traversetwice(obj, orig, 1L);
-void prep_nni(Fitch* obj, IntegerMatrix orig){
-  int nSeq = obj->nSeq;
-  traverse(obj, orig);
-  IntegerMatrix M = preorder(orig, nSeq);
-  traverse(obj, M);
-}
-*/
 
 // generic, TODO: bitcount, 2x2, 4x4
 double pscore_vector_generic(const uint64_t* x, const uint64_t* y, const NumericVector weight,
