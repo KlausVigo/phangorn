@@ -143,6 +143,30 @@ optimFreeRate <- function(tree, data, g = c(.25, .75, 1, 2), k=4, w=w, ...) {
 }
 
 
+optWs <- function(tree, data, w = c(.25, .25, .25, .25), g=g, ...) {
+  k <- length(w)
+  nenner <- 1 / w[1]
+  eta <- log(w * nenner)
+  eta <- eta[-1]
+  fn <- function(eta, tree, data, g, k, ...) {
+    eta <- c(0, eta)
+    w_new <- exp(eta) / sum(exp(eta))
+    pml.fit(tree, data, g=g, w=w_new, k=k, ...)
+  }
+  if (k == 2) res <- optimize(f = fn, interval = c(-3, 3), lower = -3,
+                              upper = 3, maximum = TRUE,
+                              tol = .Machine$double.eps^0.25, tree = tree,
+                              data = data, g = g, k=k, ...)
+  else res <- optim(eta, fn = fn, method = "L-BFGS-B", lower = -5, upper = 5,
+                    control = list(fnscale = -1, maxit = 25), gr = NULL,
+                    tree = tree, data = data, g = g, k = k, ...)
+  w <- exp(c(0, res[[1]]))
+  w <- w / sum(w)
+  result <- list(par = w, value = res[[2]])
+  result
+}
+
+
 # changed to c(-10,10) from c(-5,5)
 optimRate <- function(tree, data, rate = 1, ...) {
   fn <- function(rate, tree, data, ...)
@@ -1647,8 +1671,6 @@ optimRooted <- function(tree, data, bf, g, w, eig, ll.0, INV=NULL,
     treeList[[i]] <- cbind(i, c(kids, pa))
   }
 
-#  browser()
-
   ll <- pml.fit4(tree, data, bf=bf, eig=eig, ll.0=ll.0, w=w, g=g, ...)
   start.ll <- ll
   eps <- 10
@@ -2312,7 +2334,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   if (optEdge) {
     res <- opt_Edge(tree, data, rooted = optRooted, eig = eig, w = w, g = g,
       bf = bf, inv=inv, rate = rate, ll.0 = ll.0, INV = INV, Mkv=Mkv,
-      control <- pml.control(epsilon = 1e-07, maxit = 10, trace = trace,
+      control = pml.control(epsilon = 1e-07, maxit = 10, trace = trace,
                              tau = tau))
     if (res[[2]] > ll) {
       ll <- res[[2]]
@@ -2385,6 +2407,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       if (trace > 0) cat("optimize rate matrix: ", ll, "-->", res[[2]], "\n")
       ll <- res[[2]]
     }
+    ### end sitewise
     if (optInv) {
       res <- optimInv(tree, data, inv = inv, INV = INV, Q = Q,
         bf = bf, eig = eig, k = k, shape = shape, rate = rate)
@@ -2406,19 +2429,40 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     }
     if (optFreeRate) {
       # bis jetzt w nicht optimiert!
+      tmp_ll <- ll
       res <- optimFreeRate(tree, data, g = g, k = k, w = w, inv = inv,
                            INV = INV, bf = bf, eig = eig,
                            ll.0 = ll.0, rate = rate)
+      scale <- function(tree, g, w){
+        blub <- sum(g * w)
+        g <- g / blub
+        tree$edge.length <- tree$edge.length * blub
+        list(tree=tree, g=g)
+      }
       if(res[[2]] > ll){
+        tmp_sc <- scale(tree, res[[1]], w)
         g0 <- res[[1]]
         blub <- sum(g0 * w)
         g <- g0 / blub
         tree$edge.length <- tree$edge.length * blub
-        if (trace > 0) cat("optimize free rate parameters: ", ll, "-->",
-                           max(res[[2]], ll), "\n")
+##        if (trace > 0) cat("optimize free rate parameters: ", ll, "-->",
+##                           max(res[[2]], ll), "\n")
         ll <- res[[2]]
       }
+      res2 <- optWs(tree, data, w = w, g=g, inv = inv,
+                    INV = INV, bf = bf, eig = eig,
+                    ll.0 = ll.0, rate = rate)
+      if(res2[[2]] > ll){
+        w <- res2[[1]]
+        blub <- sum(g * w)
+        g <- g / blub
+        tree$edge.length <- tree$edge.length * blub
+        ll <- res2[[2]]
+      }
+      if (trace > 0) cat("optimize free rate parameters: ", tmp_ll, "-->",
+                         ll, "\n")
     }
+    ### end sitewise
     if (optRate) {
       res <- optimRate(tree, data, rate = rate, inv = inv,
         INV = INV, Q = Q, bf = bf, eig = eig, k = k,
@@ -2489,8 +2533,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       ratchet <- FALSE
       rounds <- 1
     }
-    if (rounds > control$maxit) opti <- FALSE
-    if ( ( (ll1 - ll) / ll  < control$eps) && rounds > 2) # abs(ll1 - ll)
+#    if (rounds > control$maxit) opti <- FALSE
+    if ( (abs((ll1 - ll) / ll)  < control$eps) || rounds > control$maxit) # abs(ll1 - ll)
       opti <- FALSE
     rounds <- rounds + 1
     ll1 <- ll
@@ -2580,7 +2624,6 @@ optimQuartet <- function(tree, data, eig, w, g, bf, rate, ll.0, nTips,
                         ll.0 = ll.0, k = k, nTips = nTips, weight = weight,  inv = inv,
                         nr = nr, nc = nc, contrast = contrast, nco = nco)
   start.ll <- old.ll <- new.ll <- loglik
-  #    contrast <- attr(data, "contrast")
   contrast2 <- contrast %*% eig[[2]]
   evi <- (t(eig[[3]]) * bf)
   #    weight <- attr(data, "weight")

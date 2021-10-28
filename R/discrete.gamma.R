@@ -269,7 +269,6 @@ findRoots <- function(shape, ncats) {
   for (i in 0:ncats) {
 #    coeff[i + 1] <- (-1)^i*nChooseK(ncats + shape, ncats - i)/factorial(i)
     coeff[i + 1] <- (-1)^i * exp(lchoose(ncats + shape, ncats - i) - lfactorial(i))
-#    print(c(coeff[i + 1] - tmp))
   }
   return(sort(Re(polyroot(coeff))))
 }
@@ -322,7 +321,7 @@ Laguerre <- function(x, shape, degree) {
 
 rates_n_weights <- function(shape, k, site.rate = "gamma"){
   site.rate <- match.arg(site.rate, c("gamma", "gamma_unbiased",
-                                      "gamma_quadrature"))
+                                      "gamma_quadrature", "free_rate"))
   if(k==1) rates.and.weights <- matrix(c(1,1), ncol=2L,
                                   dimnames = list(NULL, c("rate", "weight")))
   else{
@@ -337,8 +336,12 @@ rates_n_weights <- function(shape, k, site.rate = "gamma"){
     }
     if(site.rate == "gamma_quadrature")
       rates.and.weights <- LaguerreQuad(shape=shape, k)
-#    if(site.rate == "lognormal")
-#      rates.and.weights <- LogNormalQuad(shape=shape, k)
+    if(site.rate == "free_rate"){
+      g <- rep(1, k)
+      w <- rep(1 / k, k)
+      rates.and.weights <- matrix( c(g, w), ncol=2L,
+                                   dimnames = list(NULL, c("rate", "weight")))
+    }
   }
   rates.and.weights
 }
