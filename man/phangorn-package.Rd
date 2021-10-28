@@ -2,37 +2,44 @@
 % Please edit documentation in R/phangorn-package.R
 \docType{package}
 \name{phangorn-package}
-\alias{phangorn-package}
 \alias{phangorn}
-\title{Phylogenetic analysis in R}
+\alias{phangorn-package}
+\title{phangorn: Phylogenetic Reconstruction and Analysis}
 \description{
-Phylogenetic analysis in R (Estimation of phylogenetic trees and networks
-using Maximum Likelihood, Maximum Parsimony, Distance methods & Hadamard
-conjugation)
+Allows for estimation of phylogenetic trees and networks using Maximum Likelihood, Maximum Parsimony, distance methods and Hadamard conjugation. Offers methods for tree comparison, model selection and visualization of phylogenetic networks as described in Schliep et al. (2017) <doi:10.1111/2041-210X.12760>.
 }
-\details{
-The complete list of functions can be displayed with \code{library(help =
-phangorn)}.
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/KlausVigo/phangorn}
+  \item Report bugs at \url{https://github.com/KlausVigo/phangorn/issues}
+}
 
-Further information is available in several vignettes. To show the available
-vignettes in an HTML browser type \code{browseVignettes("phangorn")}.
-\tabular{ll}{ \code{Trees} \tab Constructing phylogenetic trees (source,
-pdf) \cr \code{phangorn-specials} \tab Advanced features (source, pdf) \cr
-\code{Ancestral} \tab Ancestral sequence reconstruction (source, pdf) \cr
-\code{Networx} \tab Splits and Networx (source, html) \cr } The first
-vignette (to display type \code{vignette('Trees')}) gives an introduction in
-phylogenetic analysis with phangorn. The second vignette (phangorn-special)
-covers more advanced feature like defining special character spaces and
-things which fit nowhere else.  More information on \bold{phangorn} can be
-found on \url{https://www.phangorn.org/}.
-}
-\references{
-Schliep K.P. (2011) phangorn: Phylogenetic analysis in R.
-\emph{Bioinformatics}, 27(4) 592-593
 }
 \author{
-Klaus Schliep
+\strong{Maintainer}: Klaus Schliep \email{klaus.schliep@gmail.com} (\href{https://orcid.org/0000-0003-2941-0161}{ORCID})
 
-Maintainer: Klaus Schliep <klaus.schliep@gmail.com>
+Authors:
+\itemize{
+  \item Emmanuel Paradis (\href{https://orcid.org/0000-0003-3092-2199}{ORCID})
+  \item Leonardo de Oliveira Martins (\href{https://orcid.org/0000-0001-5247-1320}{ORCID})
+  \item Alastair Potts
+  \item Tim W. White
 }
-\keyword{package}
+
+Other contributors:
+\itemize{
+  \item Cyrill Stachniss [contributor]
+  \item Michelle Kendall \email{m.kendall@imperial.ac.uk} [contributor]
+  \item Keren Halabi [contributor]
+  \item Richel Bilderbeek [contributor]
+  \item Kristin Winchell [contributor]
+  \item Liam Revell [contributor]
+  \item Mike Gilchrist [contributor]
+  \item Jeremy Beaulieu [contributor]
+  \item Brian O'Meara [contributor]
+  \item Long Qu [contributor]
+}
+
+}
+\keyword{internal}
