@@ -2,17 +2,29 @@
 
 BUG FIXES
 
-    o
+    o Use USE_FC_LEN_T in the C prototypes of LAPACK functions to correspond to
+
+      code produced by gfortran >= 7. The mechanism was introduced in R 3.6.2
+
+      and is planned to make its use obligatory in R 4.2.0.
 
 NEW FEATURES
 
-    o
+    o free rate model
+
+    o Mkv model (so far only for rooted trees)
 
 OTHER CHANGES
+
+    o optim.pml has internally been reorganized to be easier to maintain and
+
+      extend.
 
     o trees constructed with allCompat, maxCladeCred now have support values
 
       stored in the node.labels
+
+    o switched from magrittr %>% to native pipe |> , no dependency on magrittr
 
 
     CHANGES in PHANGORN VERSION 2.7.1
