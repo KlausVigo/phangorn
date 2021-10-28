@@ -29,7 +29,8 @@ pmlU1 <- pml(treeU1, dat)
 pmlU2 <- pml(treeU2, dat)
 pmlU2.fitted <- optim.pml(pmlU2, control = pml.control(trace=0))
 pmlU3 <- pml(treeU3, dat)
-pmlU3.fitted <- optim.pml(pmlU3, TRUE, control = pml.control(trace=0))
+pmlU3.fitted <- optim.pml(pmlU3, TRUE, control =
+                              pml.control(epsilon=1e-10, trace=0))
 
 pmlR1 <- pml(treeR1, dat)
 pmlR2 <- pml(treeR2, dat)
@@ -48,7 +49,7 @@ pmlR3.fitted <- optim.pml(pmlR3, TRUE, optRooted = TRUE,  control =
 
 # test NNI optimisation
     expect_equal(logLik(pmlU3.fitted), logLik(pmlU1))
-    expect_equal(logLik(pmlR3.fitted), logLik(pmlR1))
+    expect_equal(logLik(pmlR3.fitted), logLik(pmlR1), tolerance = 1e-06)
     expect_equal(pmlU3.fitted$tree, pmlU1$tree, tolerance=1e-6)
     expect_equal(storage.mode(pmlU3.fitted$tree$edge), "integer")
 #    expect_equal(pmlR3.fitted$tree, pmlR1$tree, tolerance=5e-6)
