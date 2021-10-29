@@ -108,6 +108,15 @@ pmlR3.fitted <- optim.pml(pmlR3, TRUE, optRooted = TRUE,  control =
     expect_equal(shape, fit.Gamma$shape, tolerance=5e-4)
 
 
+# test free_rate
+    fit0 <- pml(treeU1, dat_tmp, k=4, site.rate = "free_rate")
+    fit.freerate <- optim.pml(fit0, optEdge=FALSE, optGamma = TRUE,
+                              control = pml.control(epsilon=1e-10, trace=0))
+    expect_equal(discrete.gamma(2,4), fit.freerate$g, tolerance=5e-4)
+    expect_equal(logLik(fit.freerate),
+                 logLik(pml(treeU1, dat_tmp, shape=shape, k=4)))
+
+
 # test rate optimisation
     rate <- 2
     fit_T <- pml(treeU1, dat, rate=rate)
