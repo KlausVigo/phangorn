@@ -143,7 +143,7 @@ optimFreeRate <- function(tree, data, g = c(.25, .75, 1, 2), k=4, w=w, ...) {
 }
 
 
-optWs <- function(tree, data, w = c(.25, .25, .25, .25), g=g, ...) {
+optimWs <- function(tree, data, w = c(.25, .25, .25, .25), g=g, ...) {
   k <- length(w)
   nenner <- 1 / w[1]
   eta <- log(w * nenner)
@@ -218,36 +218,6 @@ optimF3x4 <- function(tree, data, bf_codon = matrix(.25, 4, 3), trace = 0, ...) 
   bf_codon <- bf_codon / rep(colSums(bf_codon), each = 4)
   bf <- F3x4_freq(bf_codon)
   result <- list(bf = bf, loglik = res[[2]], bf_codon = bf_codon)
-  result
-}
-
-
-
-optimW <- function(fit, ...) {
-  w <- fit$w
-  g <- fit$g
-  siteLik <- fit$siteLik
-  k <- length(w)
-  l <- dim(siteLik[[1]])[1]
-  x <- matrix(0, l, k)
-  for (i in 1:k) x[, i] <- rowSums(siteLik[[i]])
-  weight <- fit$weight
-  nenner <- 1 / w[k]
-  eta <- log(w * nenner)
-  eta <- eta[-k]
-  fn <- function(eta, x, g, weight) {
-    eta <- c(eta, 0)
-    p <- exp(eta) / sum(exp(eta))
-    res <- x %*% p
-    res <- sum(weight * log(res))  * (1 + abs(sum(p * g) - 1))
-    res
-  }
-  res <- optim(eta, fn = fn, method = "Nelder-Mead",
-               control = list(fnscale = -1, reltol = 1e-12), gr = NULL, x = x,
-               g = g, weight = weight)
-  p <- exp(c(res$par, 0))
-  p <- p / sum(p)
-  result <- list(par = p, value = res$value)
   result
 }
 
@@ -2449,7 +2419,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
 ##                           max(res[[2]], ll), "\n")
         ll <- res[[2]]
       }
-      res2 <- optWs(tree, data, w = w, g=g, inv = inv,
+      res2 <- optimWs(tree, data, w = w, g=g, inv = inv,
                     INV = INV, bf = bf, eig = eig,
                     ll.0 = ll.0, rate = rate)
       if(res2[[2]] > ll){
