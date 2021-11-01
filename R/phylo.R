@@ -2310,9 +2310,9 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   rounds <- 1
   while (opti) {
     if (optBf) {
-      if (bf_choice=="F3x4") res <- optimF3x4(tree, data, bf_codon = bf_codon,
-            inv = inv, Q = Q, w = w, g = g, INV = INV, rate = rate, k = k,
-            llMix = llMix, Mkv=Mkv)
+      if (type=="CODON" && bf_choice=="F3x4") res <- optimF3x4(tree, data,
+            bf_codon = bf_codon, inv = inv, Q = Q, w = w, g = g, INV = INV,
+            rate = rate, k = k, llMix = llMix, Mkv=Mkv)
       else res <- optimBf(tree, data, bf = bf, inv = inv, Q = Q, w = w, g = g,
         INV = INV, rate = rate, k = k, llMix = llMix, Mkv=Mkv)
       if (trace > 0)
