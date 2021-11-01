@@ -1482,7 +1482,7 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   if (is.null(bf))
     bf <- rep(1 / length(levels), length(levels))
   if (is.character(bf)) {
-    bf_choice <- match.arg(bf, c("equal", "empirical", "F1x4", "F3x4", "F61"))
+    bf_choice <- match.arg(bf, c("equal", "empirical", "F1x4", "F3x4", "F61")) # , "estimated"
     if (bf_choice == "F3x4" & type != "CODON")
       stop("F3x4 not available for this data type")
     if (bf_choice == "F1x4" & type != "CODON")
@@ -2097,7 +2097,6 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                       minit = 100L, prop = 1 / 2), ...) {
   ratchet <- FALSE
   ratchet2 <- FALSE
-  optF3x4 <- FALSE
   if (rearrangement ==  "none") optNni <- FALSE
   if (rearrangement ==  "NNI") optNni <- TRUE
   if (rearrangement ==  "stochastic"){
@@ -2204,14 +2203,11 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     }
     bf_choice <- object$frequencies
     freq_df <- df_freq_codon(bf_choice)
-    if(bf_choice=="F3x4" & optBf) optF3x4 <- TRUE
-  }
-  if (optF3x4) {
-    if (type != "CODON") stop("optF3x4 needs codon data")
-    optBf <- FALSE
-    bf <- F3x4(data)
-    bf_codon <- bf_by_codon(data)
-    object <- update.pml(object, bf = bf)
+    if (bf_choice=="F3x4") {
+      bf <- F3x4(data)
+      bf_codon <- bf_by_codon(data)
+      object <- update.pml(object, bf = bf)
+    }
   }
   Q <- object$Q
   if (is.null(subs)) subs <- c(1:(length(Q) - 1), 0)
@@ -2314,7 +2310,10 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   rounds <- 1
   while (opti) {
     if (optBf) {
-      res <- optimBf(tree, data, bf = bf, inv = inv, Q = Q, w = w, g = g,
+      if (bf_choice=="F3x4") res <- optimF3x4(tree, data, bf_codon = bf_codon,
+            inv = inv, Q = Q, w = w, g = g, INV = INV, rate = rate, k = k,
+            llMix = llMix, Mkv=Mkv)
+      else res <- optimBf(tree, data, bf = bf, inv = inv, Q = Q, w = w, g = g,
         INV = INV, rate = rate, k = k, llMix = llMix, Mkv=Mkv)
       if (trace > 0)
         cat("optimize base frequencies: ", ll, "-->", max(res[[2]], ll), "\n")
@@ -2323,21 +2322,6 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         eig <- edQt(Q = Q, bf = bf)
         if (inv > 0) ll.0 <- as.matrix(INV %*% (bf * inv))
         if (wMix > 0) ll.0 <- ll.0 + llMix
-        ll <- res[[2]]
-      }
-    }
-    if (optF3x4) {
-      res <- optimF3x4(tree, data, bf_codon = bf_codon, inv = inv, Q = Q, w = w,
-        g = g, INV = INV, rate = rate, k = k, llMix = llMix, Mkv=Mkv)
-      if (trace > 0)
-        cat("optimize base frequencies: ", ll, "-->", max(res[[2]], ll), "\n")
-      if (res[[2]] > ll) {
-        bf <- res[[1]]
-        eig <- edQt(Q = Q, bf = bf)
-        if (inv > 0)
-          ll.0 <- as.matrix(INV %*% (bf * inv))
-        if (wMix > 0)
-          ll.0 <- ll.0 + llMix
         ll <- res[[2]]
       }
     }
