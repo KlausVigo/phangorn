@@ -76,8 +76,8 @@ pBound <- function(x, UB, LB) {
   if (length(ind) < 2) return(numeric(nTips))
 
   y <- y[, ind, drop = FALSE]
-  weight0 <- weight0[ind]
-
+#  weight0 <- weight0[ind]
+#  print(sum(weight0))
   UB <- UB[, ind, drop = FALSE]
   single_dis <- apply(y, 2, fun1)
   # single_dis <- LB
@@ -105,7 +105,6 @@ pBound <- function(x, UB, LB) {
           dis <- dis - dis2
           if (sum(dis[4:nTips]) > 0) {
             wmin <- min(weight0[i], weight0[j])
-            print(wmin)
             weight0[i] <- weight0[i] - wmin
             weight0[j] <- weight0[j] - wmin
             res <- res + dis * wmin
@@ -115,6 +114,7 @@ pBound <- function(x, UB, LB) {
       if(weight0[i] < 1e-6) break()
     }
   }
+#  print(sum(weight0))
   res
 }
 
@@ -167,7 +167,7 @@ pBound <- function(x, UB, LB) {
 #' @export bab
 bab <- function(data, tree = NULL, trace = 1, ...) {
   if (!is.null(tree)) data <- subset(data, tree$tip.label)
-  pBound <- FALSE
+  pBound <- TRUE
 
   nTips <- length(data)
   if (nTips < 4) return(stree(nTips, tip.label = names(data)))
@@ -266,7 +266,7 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
     score <- f$pscore_vec(edge, as.integer(inord[a + 1L]))
     score <- score + blub + mms0[a + 1L]
     ms <- min(score)
-    if (ms <= bound) {
+    if (ms < bound + .1) {
       if ((a + 1L) < nTips) {
         ind <- (1:L[a])[score <= bound]
         trees[[a + 1]][seq_along(ind)] <- .Call('AddOnes', tmpTree,
@@ -278,7 +278,7 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
         # in C++ pushback
         PSC <- rbind(PSC, cbind(rep(a + 1, l), os, score[ind] - mms0[a + 1L]))
         npsc <- npsc + l
-        visited[a] <- visited[a] + l
+        visited[a + 1] <- visited[a + 1] + l
         #  PSC = rbind(PSC, cbind(rep(a+1, l), os, score[ind][os] ))
       }
       else {
