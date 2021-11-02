@@ -29,14 +29,6 @@ using namespace Rcpp;
 // from Bit Twiddling Hacks by Sean Eron Anderson seander@cs.stanford.edu
 // count the number of bits set in v
 // fast if few bits set, what we assume
-static inline int bitCount32(uint32_t v){
-  int c;
-  for (c = 0; v; c++){
-    v &= v - 1; // clear the least significant bit set
-  }
-  return c;
-}
-
 static inline int bitCount64(uint64_t v){
   int c;
   for (c = 0; v; c++){
@@ -53,21 +45,11 @@ static inline int popcnt64(uint64_t x)
   return __builtin_popcountll(x);
 }
 
-static inline int popcnt32(uint32_t x)
-{
-  return __builtin_popcount(x);
-}
-
 #else
 
 static inline int popcnt64(uint64_t x)
 {
   return bitCount64(x);
-}
-
-static inline int popcnt32(uint32_t x)
-{
-  return bitCount32(x);
 }
 
 #endif
