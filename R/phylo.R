@@ -1,4 +1,3 @@
-# allow transition probs of zero (added o)
 optimQ <- function(tree, data, Q = rep(1, 6), subs = rep(1, length(Q)),
                    trace = 0, ...) {
   m <- length(Q)

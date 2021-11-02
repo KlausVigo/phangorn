@@ -1,7 +1,8 @@
 grp_duplicated <- function(x, MARGIN = 1, factor=FALSE, fromLast = FALSE, ...)
 {
   ans <- .Call(grpDupAtomMat, x, as.integer(MARGIN), as.logical(fromLast))
-  if(fromLast) ans[] <- (attr(ans, 'nlevels'):1L)[ans] # ensure the group ids agree with row/col index of result from "unique"
+  if(fromLast) ans[] <- (attr(ans, 'nlevels'):1L)[ans]
+  # ensure the group ids agree with row/col index of result from "unique"
   if(factor) {
     attr(ans, 'levels') <- as.character(seq_len(attr(ans, 'nlevels')))
     class(ans) <- 'factor'
@@ -86,7 +87,7 @@ phyDat.DNA <- function (data, return.index = TRUE, compress = TRUE){
 
 
 phyDat.default <- function (data, levels = NULL, return.index = TRUE,
-                            contrast = NULL, ambiguity = "?", compress=TRUE, ...){
+                        contrast = NULL, ambiguity = "?", compress=TRUE, ...){
   if (is.matrix(data))
     nam <- row.names(data)
   else nam <- names(data)
@@ -243,7 +244,8 @@ phyDat.codon <- function (data, return.index = TRUE, ambiguity = "---",
     data <- as.matrix(data)
     data <- tolower(data)
   }
-  if (inherits(data,"DNAbin") || inherits(data, "phyDat")) data <- as.character(data)
+  if (inherits(data,"DNAbin") || inherits(data, "phyDat"))
+    data <- as.character(data)
 
   data[data=="u"] <- "t"
   stopcodon <- match.arg(stopcodon, c("exclude", "include"))
