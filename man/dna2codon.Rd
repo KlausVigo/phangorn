@@ -56,8 +56,8 @@ corresponds to the code argument.
   25 \tab CandidateDivision.SR1+Gracilibacteria \cr
   26 \tab Pachysolen.tannophilus
 }
-Alignment gaps are simply and base ambiguities are currently ignored and
-sites containing these are deleted.
+Alignment gaps and ambiguities are currently ignored and sites containing
+these are deleted.
 }
 \examples{
 
