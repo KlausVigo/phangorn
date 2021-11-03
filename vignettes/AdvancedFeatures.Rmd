@@ -148,7 +148,7 @@ fit
 Here are some conventions how the models are estimated: 
 
 
-If a model is supplied the base frequencies bf and rate matrix Q are optimised according to the model (nucleotides) or the adequate rate matrix and frequencies are chosen (for amino acids).
+If a model is supplied the base frequencies bf and rate matrix Q are optimized according to the model (nucleotides) or the adequate rate matrix and frequencies are chosen (for amino acids).
 If optQ=TRUE and neither a model or subs are supplied than a symmetric (optBf=FALSE) or reversible model (optBf=TRUE, i.e. the GTR for nucleotides) is estimated.  This can be slow if the there are many character states, e.g. for amino acids. Table 2 shows how parameters are optimized and number of parameters to estimate. The elements of the vector subs correspond to $\alpha, \dots, \eta$ in equation (1)
 
 

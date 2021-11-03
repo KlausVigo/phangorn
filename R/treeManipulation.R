@@ -76,10 +76,10 @@ changeEdgeLength <- function(tree, edge, edge.length) {
 #' so far does not transform node.labels properly.
 #'
 
-#' @param tree an object of class \code{phylo}
+#' @param tree an object of class \code{phylo}.
 #' @param FUN a function evaluated on the nodelabels, result must be logical.
-#' @param node.labels are nodel labels 'support' values, 'label' or should be
-#' 'deleted'
+#' @param node.labels are node labels 'support' values (edges), 'label' or
+#' should labels get 'deleted'?
 #' @param \dots further arguments, passed to other methods.
 #' @return \code{pruneTree} and \code{midpoint} a tree. \code{getRoot} returns
 #' the root node.
@@ -406,7 +406,7 @@ addOneTree <- function(tree, subtree, i, node) {
 #' @param tree an object of class "phylo".
 #' @param tips a character vector containing the names of the tips.
 #' @param where an integer or character vector of the same length as tips giving
-#' the number of the node or tip of the tree x where the tree y is binded.
+#' the number of the node or tip of the tree where to add the new tips.
 #' @param edge.length optional numeric vector with edge length
 #' @return an object of class phylo
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}

@@ -74,7 +74,7 @@ ldfactorial <- function(x) {
 #' (binary, RY-coded) or 4-state (DNA/RNA) data. \code{write.nexus.splits}
 #' writes splits returned from \code{h2st} or
 #' \code{\link[phangorn]{distanceHadamard}} to a nexus file, which can be
-#' processed by Spectronet or Splitstree.
+#' processed by Spectronet or SplitsTree.
 #'
 #' @param x a vector of length \eqn{2^n}, where n is an integer.
 #' @param v a vector of length \eqn{2^n}, where n is an integer.
@@ -116,7 +116,7 @@ ldfactorial <- function(x) {
 #' lento(fit2)
 #'
 #' # write.nexus.splits(fit2, file = "test.nxs")
-#' # read this file into Spectronet or Splitstree to show the network
+#' # read this file into Spectronet or SplitsTree to show the network
 #' \dontrun{
 #' dat <- as.character(yeast)
 #' dat4 <- phyDat(dat, type="USER", levels=c("a","c", "g", "t"), ambiguity=NULL)

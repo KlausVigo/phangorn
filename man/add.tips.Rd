@@ -12,7 +12,7 @@ add.tips(tree, tips, where, edge.length = NULL)
 \item{tips}{a character vector containing the names of the tips.}
 
 \item{where}{an integer or character vector of the same length as tips giving
-the number of the node or tip of the tree x where the tree y is binded.}
+the number of the node or tip of the tree where to add the new tips.}
 
 \item{edge.length}{optional numeric vector with edge length}
 }

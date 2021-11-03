@@ -52,7 +52,7 @@
 #' data(woodmouse)
 #' dat_codon <- dna2codon(as.phyDat(woodmouse))
 #' tree <- NJ(dist.ml(dat_codon))
-#' # optimise the model the old way
+#' # optimize the model the old way
 #' fit <- pml(tree, dat_codon, bf="F3x4")
 #' M0 <- optim.pml(fit, model="codon1")
 #' # Now using the codonTest function

@@ -506,7 +506,7 @@ OTHER CHANGES
 
     o improvements to read.nexus.splits, write.nexus.splits to
 
-      be more consistant with splitstree
+      be more consistant with SplitsTree
 
     o splitsNetwork got an additional argument splits
 
@@ -931,7 +931,7 @@ BUG FIXES
 
 NEW FEATURES
 
-    o optim.pml allows to optimise rooted trees
+    o optim.pml allows to optimize rooted trees
 
 OTHER CHANGES
 

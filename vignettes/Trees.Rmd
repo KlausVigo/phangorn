@@ -139,7 +139,7 @@ fitGTR <- optim.pml(fitGTR, model="GTR", optInv=TRUE, optGamma=TRUE,
     rearrangement = "NNI", control = pml.control(trace = 0))
 fitGTR
 ```
-With the control parameters the thresholds for the fitting process can be changed. Here we want just to suppress output during the fitting process. For larger trees the NNI rearrangements often get stuck in a local maximum. We added two stochastic algorithms to improve topology search. The first (set `rearrangement="stochastic"`) performs stochastic rearrangements similar as in [@Nguyen2015], which makes random NNI permutation to the tree, which than gets optimised to escape local optima. The second option (rearrangement="ratchet") perform the likelihood ratchet [@Vos2003].
+With the control parameters the thresholds for the fitting process can be changed. Here we want just to suppress output during the fitting process. For larger trees the NNI rearrangements often get stuck in a local maximum. We added two stochastic algorithms to improve topology search. The first (set `rearrangement="stochastic"`) performs stochastic rearrangements similar as in [@Nguyen2015], which makes random NNI permutation to the tree, which than gets optimized to escape local optima. The second option (rearrangement="ratchet") perform the likelihood ratchet [@Vos2003].
 
 While these algorithms may find better trees they will also take more time.
 ```{r}
@@ -208,7 +208,7 @@ plot(cnet, show.edge.label=TRUE)
 ## Molecular dating with a strict clock 
 We implemented a strict clock as described in [@Felsenstein2004], p. ???.  
 So far the starting tree needs to be ultrametric, so we use the UPGMA tree. 
-When we optimise the tree with `optim.pml` we have to make sure set we set
+When we optimize the tree with `optim.pml` we have to make sure set we set
 `optRooted = TRUE`!
 ```{r, echo=TRUE, cache=TRUE}
 fit_strict <- pml(treeUPGMA, data=primates, k=4, bf=baseFreq(primates))
