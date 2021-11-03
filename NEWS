@@ -8,6 +8,12 @@ BUG FIXES
 
       and is planned to make its use obligatory in R 4.2.0.
 
+    o bug in dna2codon fixed.
+
+    o codon models (codonTest) most likely did not work properly for models
+
+      other than the standard code.
+
 NEW FEATURES
 
     o free rate model
