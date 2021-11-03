@@ -76,7 +76,7 @@ pBound <- function(x, UB, LB) {
   if (length(ind) < 2) return(numeric(nTips))
 
   y <- y[, ind, drop = FALSE]
-#  weight0 <- weight0[ind]
+  weight0 <- weight0[ind]
 #  print(sum(weight0))
   UB <- UB[, ind, drop = FALSE]
   single_dis <- apply(y, 2, fun1)
