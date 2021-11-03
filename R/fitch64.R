@@ -36,17 +36,15 @@ fitch <- function(tree, data, site = "pscore"){
   if(any(!is.binary(tree))) tree <- multi2di(tree)
   tree <- reorder(tree, "postorder")
   nr <- attr(data, "nr")
-  fun <- function(tree, site="pscore"){
+  fun <- function(tree, site="pscore", nr){
     if(site=="pscore") return(f$pscore(tree$edge))
-    nr <- f$get_nr
     sites <- f$sitewise_pscore(tree$edge)
     sites[seq_len(nr)]
   }
-  fun2 <- function(tree, data, site) {
+  fun2 <- function(tree, data, site, nr) {
     data <- subset(data, tree$tip.label)
     f <- init_fitch(data, FALSE, FALSE, m=2L)
     if(site=="pscore") return(f$pscore(tree$edge))
-    nr <- f$get_nr
     sites <- f$sitewise_pscore(tree$edge)
     sites[seq_len(nr)]
   }
@@ -56,17 +54,17 @@ fitch <- function(tree, data, site = "pscore"){
       data <- subset(data, TL)
       f <- init_fitch(data, FALSE, FALSE, m=2L)
       tree <- unclass(tree)
-      res <- sapply(tree, function(x)fun(x, site=site))
+      res <- sapply(tree, function(x)fun(x, site=site, nr=nr))
     }
     else{
-      res <- sapply(tree, fun2, data, site)
+      res <- sapply(tree, fun2, data, site, nr)
     }
     return(res)
   }
   if(inherits(tree, "phylo")) {
     data <- subset(data, tree$tip.label)
     f <- init_fitch(data, FALSE, FALSE, m=2L)
-    return(fun(tree, site))
+    return(fun(tree, site, nr))
   }
   NULL
 }

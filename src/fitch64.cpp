@@ -6,12 +6,13 @@
 // parallel for
 // simd
 
-using namespace Rcpp;
+//using namespace Rcpp;
 
 //Enable C++11, as we may want to have unsigned long long (uint64_t)
 // [[Rcpp::plugins(cpp11)]]
 
 
+/*
 // Examples from Dirk to find minimum dist
 double vecmin(NumericVector x) {
   // Rcpp supports STL-style iterators
@@ -26,7 +27,7 @@ int vecminInd(NumericVector x) {
   // we want the position (+1 in R)
   return it - x.begin();
 }
-
+*/
 
 
 std::vector< std::vector<uint64_t> > readFitch(const List &xlist, IntegerMatrix contr,
@@ -585,7 +586,7 @@ IntegerMatrix pscore_nni(Fitch* obj, IntegerMatrix & M){
 
 
 
-
+/*
 int get_quartet(Fitch* obj, IntegerVector & M){
   std::vector< std::vector<uint64_t> > X = obj->X;
   int states = obj->nStates;
@@ -596,7 +597,7 @@ int get_quartet(Fitch* obj, IntegerVector & M){
         weight, nBits, wBits, states);
   return(res);
 }
-
+*/
 
 NumericVector pscore_vec(Fitch* obj, IntegerVector & edge_to, int node_from){
   // std::vector<double> res;
@@ -916,12 +917,13 @@ RCPP_MODULE(Fitch_mod) {
     using namespace Rcpp;
     class_<Fitch>("Fitch")
         .constructor<RObject, int, int>("Default constructor")
-        .property("get_nr", &Fitch::getNR)
-        .property("get_nbits", &Fitch::getnBits)
-        .property("get_weight", &Fitch::getWeight)
-        .property("get_p0", &Fitch::getP0)
-        .method("prep_spr", &prep_spr)
+//        .property("get_nr", &Fitch::getNR)
+//        .property("get_nbits", &Fitch::getnBits)
+//        .property("get_weight", &Fitch::getWeight)
+//        .property("get_p0", &Fitch::getP0)
+//        .method("get_quartet", &get_quartet)
 //        .method("prep_nni", &prep_nni)
+        .method("prep_spr", &prep_spr)
         .method("pscore_nni", &pscore_nni)
         .method("pscore", &pscore)
         .method("pscore_vec", &pscore_vec)
@@ -935,7 +937,6 @@ RCPP_MODULE(Fitch_mod) {
         .method("getAnc", &getAnc)
         .method("getAncAmb", &getAncAmb)
         .method("traversetwice", &traversetwice)
-        .method("get_quartet", &get_quartet)
     ;
 }
 

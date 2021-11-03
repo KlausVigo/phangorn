@@ -720,8 +720,8 @@ SEXP optE(SEXP PARENT, SEXP CHILD, SEXP ANC, SEXP eig, SEXP EVI, SEXP EL,
                   SEXP dlist, SEXP WEIGHT, SEXP F0, SEXP TAU){
     int i, k=length(W), h, j, n=length(PARENT), m, lEL=length(EL);
     int nc=INTEGER(NC)[0], nr=INTEGER(NR)[0], ntips=INTEGER(NTIPS)[0];
-    int *parent=INTEGER(PARENT), *child=INTEGER(CHILD), *anc=INTEGER(ANC); //
-    int loli, nco =INTEGER(NCO)[0]; //=INTEGEfs3R(LOLI)[0]
+    int *parent=INTEGER(PARENT), *child=INTEGER(CHILD), *anc=INTEGER(ANC);
+    int loli, nco =INTEGER(NCO)[0];
     double *weight=REAL(WEIGHT), *f0=REAL(F0), *w=REAL(W), tau=REAL(TAU)[0];
     double *g=REAL(G), *evi=REAL(EVI), *contrast=REAL(CONTRAST), *contrast2=REAL(CONTRAST2);
     double *el; //=REAL(EL);
