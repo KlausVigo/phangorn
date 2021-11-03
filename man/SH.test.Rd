@@ -16,7 +16,7 @@ or a matrix containing the site-wise likelihoods in columns.}
 \item{data}{an object of class \code{"phyDat"}.}
 
 \item{weight}{if a matrix with site (log-)likelihoods is is supplied an
-optional vector containing the number of occurances of each site pattern.}
+optional vector containing the number of occurrences of each site pattern.}
 }
 \value{
 a numeric vector with the P-value associated with each tree given in

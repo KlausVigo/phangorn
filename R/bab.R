@@ -138,7 +138,7 @@ pBound <- function(x, UB, LB) {
 #' @param data an object of class phyDat.
 #' @param tree a phylogenetic tree an object of class phylo, otherwise a
 #' pratchet search is performed.
-#' @param trace defines how much information is printed during optimisation.
+#' @param trace defines how much information is printed during optimization.
 #' @param \dots Further arguments passed to or from other methods
 #' @return \code{bab} returns all most parsimonious trees in an object of class
 #' \code{multiPhylo}.

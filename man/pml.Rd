@@ -19,7 +19,7 @@ optim.pml(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   minit = 100L, prop = 1/2), ...)
 }
 \arguments{
-\item{epsilon}{Stop criterion for optimisation (see details).}
+\item{epsilon}{Stop criterion for optimization (see details).}
 
 \item{maxit}{Maximum number of iterations (see details).}
 

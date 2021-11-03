@@ -9,7 +9,7 @@
 #' @param B the number of bootstrap replicates.
 #' @param data an object of class \code{"phyDat"}.
 #' @param weight if a matrix with site (log-)likelihoods is is supplied an
-#' optional vector containing the number of occurances of each site pattern.
+#' optional vector containing the number of occurrences of each site pattern.
 #' @return a numeric vector with the P-value associated with each tree given in
 #' \code{...}.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}

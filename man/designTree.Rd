@@ -34,7 +34,7 @@ designSplits(x, splits = "all", ...)
 
 \item{rooted}{compute a "rooted" or "unrooted" tree.}
 
-\item{trace}{defines how much information is printed during optimisation.}
+\item{trace}{defines how much information is printed during optimization.}
 
 \item{weight}{vector of weights to be used in the fitting process.
 Weighted least squares is used with weights w, i.e., sum(w * e^2) is

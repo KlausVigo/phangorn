@@ -35,7 +35,7 @@ knitr::knit_hooks$set(small.mar=function(before, options, envir){
 
 *Description:* This script provides examples of the new functions available in the phangorn library to 'intertwine' trees and networks, i.e. compare trees and networks and data transferrance. It also provides a step-by-step guide for users new to R. 
 
-*Methodological advancement:* The major advancement in this phangorn update is the introduction of a generic network object with a wide range of related transfer and analysis functions. These new functions provide the first means to directly transfer information amongst a wide range of phylogenetic trees and networks, as well as means to visualize and further analyse this information. This should provide a platform for individuals to easily conduct tree-network comparisons and stimulate further function development by the community.
+*Methodological advancement:* The major advancement in this phangorn update is the introduction of a generic network object with a wide range of related transfer and analysis functions. These new functions provide the first means to directly transfer information amongst a wide range of phylogenetic trees and networks, as well as means to visualize and further analyze this information. This should provide a platform for individuals to easily conduct tree-network comparisons and stimulate further function development by the community.
 
 *What next?:* By implementing full network handling compatibility in R, and providing exemplar scripts (such as this) and [support](https://github.com/KlausVigo/phangorn), the scientific community now has an easy means to analyse and compare the results of phylogenetic trees vs. network approaches. We hope this will open a largely unexplored world to the general phylogenetic audience. 
 
@@ -116,7 +116,7 @@ plot(mrbayes.tree)
 nodelabels(mrbayes.tree$node.label, adj = c(1, 0), frame = "none")
 
 par(mfrow=c(1,1)) # Setting plot parameters
-# NeighbourNet
+# NeighborNet
 plot(Nnet,"2D")
 ## alternatively,
 # plot(Nnet,"2D")
@@ -125,7 +125,7 @@ plot(Nnet,"2D")
 
 ### Intertwining trees and network functions                         
 ### 1A: 
-Identification of edge bundles (in black) in a neighbour-net (NN) network that correspond to branches (labelled 1-12) in a tree (a maximum likelihood tree, in this case). 
+Identification of edge bundles (in black) in a neighbor-net (NN) network that correspond to branches (labelled 1-12) in a tree (a maximum likelihood tree, in this case). 
 
 ```{r, fig.width=7, fig.height=4, small.mar=TRUE} 
 # create a vector of labels for the network corresponding to edges in the tree
@@ -190,7 +190,7 @@ y <- plot(y,"2D",show.edge.label=TRUE, edge.color=edge.col)
 ```
 
 ### Extras...
-We can also compare the neighborNet with a consensusNet (Holland BR, Huber KT, Moulton V, Lockhart PJ,2004, Using consensus networks to visualize contradictory evidence for species phylogeny. Molecular Biology and Evolution, 21, 1459-1461). Furthermore, we can extract the support values from the consensus network, and place these on to the NeighbourNet (this is similar to the process explained in 1C above).
+We can also compare the neighborNet with a consensusNet (Holland BR, Huber KT, Moulton V, Lockhart PJ,2004, Using consensus networks to visualize contradictory evidence for species phylogeny. Molecular Biology and Evolution, 21, 1459-1461). Furthermore, we can extract the support values from the consensus network, and place these on to the NeighborNet (this is similar to the process explained in 1C above).
 ```{r, small.mar=TRUE}
 cnet <- consensusNet(raxml.bootstrap,prob=0.10)
 edge.col <- createLabel(cnet, Nnet, label="black", "edge", nomatch="grey")
@@ -208,9 +208,9 @@ plot(obj,"2D",show.edge.label=T, edge.color=edge.col, col.edge.label = "blue")
 
 
 ### 
-There are four possible data patterns in phylogenetic reconstruction: (1) patterns that are well supported in the network and appear in the bootstrapped trees; (2) patterns that are well supported by (part of) the data/network but do not appear in the optimised trees, i.e. they are incompatible with the tree; (3) patterns that are weakly supported by the network but appear in the optimised trees anyway, i.e. they are compatible with the tree. 
+There are four possible data patterns in phylogenetic reconstruction: (1) patterns that are well supported in the network and appear in the bootstrapped trees; (2) patterns that are well supported by (part of) the data/network but do not appear in the optimized trees, i.e. they are incompatible with the tree; (3) patterns that are weakly supported by the network but appear in the optimized trees anyway, i.e. they are compatible with the tree. 
 
-Here we demonstrate these patterns by showing the relationships between splits weights, from a NeighborNet splits graph, bootstrap bipartitions support and bootstrap percentages plotted on the optimised tree for a dataset of @Wang2012. 
+Here we demonstrate these patterns by showing the relationships between splits weights, from a NeighborNet splits graph, bootstrap bipartitions support and bootstrap percentages plotted on the optimized tree for a dataset of @Wang2012. 
 
 (An advanced user figure...)
 ```{r, fig.width=7, fig.height=6}

@@ -1328,7 +1328,7 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #' @param subs A (integer) vector same length as Q to specify the optimization
 #' of Q
 #' @param \dots Further arguments passed to or from other methods.
-#' @param epsilon Stop criterion for optimisation (see details).
+#' @param epsilon Stop criterion for optimization (see details).
 #' @param maxit Maximum number of iterations (see details).
 #' @param trace Show output during optimization (see details).
 #' @param tau minimal edge length.

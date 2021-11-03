@@ -13,7 +13,7 @@ bab(data, tree = NULL, trace = 1, ...)
 \item{tree}{a phylogenetic tree an object of class phylo, otherwise a
 pratchet search is performed.}
 
-\item{trace}{defines how much information is printed during optimisation.}
+\item{trace}{defines how much information is printed during optimization.}
 
 \item{\dots}{Further arguments passed to or from other methods}
 }

@@ -39,7 +39,7 @@ sankoff(tree, data, cost = NULL, site = "pscore")
 
 \item{cost}{A cost matrix for the transitions between two states.}
 
-\item{trace}{defines how much information is printed during optimisation.}
+\item{trace}{defines how much information is printed during optimization.}
 
 \item{rearrangements}{SPR or NNI rearrangements.}
 

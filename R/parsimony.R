@@ -30,7 +30,7 @@ sankoff.quartet <- function(dat, cost, p, l, weight) {
 #' @param method one of 'fitch' or 'sankoff'.
 #' @param cost A cost matrix for the transitions between two states.
 #' @param site return either 'pscore' or 'site' wise parsimony scores.
-#' @param trace defines how much information is printed during optimisation.
+#' @param trace defines how much information is printed during optimization.
 #' @param rearrangements SPR or NNI rearrangements.
 #' @param start a starting tree can be supplied.
 #' @param maxit maximum number of iterations in the ratchet.

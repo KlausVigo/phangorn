@@ -158,7 +158,7 @@ UNJ <- function(x){
 #' @param splits one of "all", "star".
 #' @param dm a distance matrix.
 #' @param rooted compute a "rooted" or "unrooted" tree.
-#' @param trace defines how much information is printed during optimisation.
+#' @param trace defines how much information is printed during optimization.
 #' @param \dots further arguments, passed to other methods.
 #' @param weight vector of weights to be used in the fitting process.
 #' Weighted least squares is used with weights w, i.e., sum(w * e^2) is
