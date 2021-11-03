@@ -204,13 +204,10 @@ nni2 <- function(x){
 
 
 fitch_nni <- function(tree, f) {
-  #  f <- init_fitch(obj, FALSE, FALSE, m=4L) #, order=FALSE)
-  #  p0 <- sum(f$sitewise_pscore(tree$edge) * f$get_weight)
   p0 <- f$pscore(tree$edge)
   nTips <- as.integer(length(tree$tip.label))
   INDEX <- indexNNI_fitch(tree)
   l <- nrow(INDEX)
-#  f$prep_nni(tree$edge)
   f$traversetwice(tree$edge, 1L)
   M <- f$pscore_nni(INDEX[, 1L:4L, drop=FALSE])
   M <- M[, -1L] - M[, 1L]
@@ -222,7 +219,6 @@ fitch_nni <- function(tree, f) {
     pscore <- M[candidates]
     ind <- which.min(pscore)
     tree2 <- changeEdge(tree, INDEX[candidates[ind], c(2, 3)])
-    #    test <- sum(f$sitewise_pscore(tree2$edge) * f$get_weight)
     test <- f$pscore(tree2$edge)
     if (test >= p0)
       candidates <- candidates[-ind]
