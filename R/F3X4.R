@@ -1,8 +1,8 @@
 
 # estimate codon frequencies based on the F3X4 method
 getF3X4codon_frequencies <- function(codon_data,
-                                     codon_alphabet = .CodonAlphabet,
-                                     nucleotide_alphabet = .nucleotideAlphabet){
+                              codon_alphabet = attr(codon_data, "levels"),
+                              nucleotide_alphabet = .nucleotideAlphabet){
   epirical_codon_frequenices <- baseFreq(codon_data)
   # get the position-wise nucleotide frequencies
   nuc_freq_by_pos <- matrix(0, nrow = length(nucleotide_alphabet), ncol = 3)
@@ -57,23 +57,25 @@ F3x4_freq <- function(M, CodonAlphabet = .CodonAlphabet,
 
 F3x4 <- function(x) {
   BF <- bf_by_codon(x)
-  F3x4_freq(BF)
+  codon_abc <- attr(x, "levels")
+  F3x4_freq(BF, CodonAlphabet = codon_abc)
 }
 
 
-F1x4_freq <- function(M, CodonAlphabet = .CodonAlphabet,
-                      nucleotideAlphabet = .nucleotideAlphabet) {
-  pos <- CodonAlphabet |> strsplit("") |> unlist() |>
-    match(nucleotideAlphabet) |> matrix(ncol = 3, byrow = TRUE)
-  codon_frequencies <- M[pos[, 1]] * M[pos[, 2]] * M[pos[, 3]]
-  codon_frequencies / sum(codon_frequencies)
-}
+#F1x4_freq <- function(M, CodonAlphabet = .CodonAlphabet,
+#                      nucleotideAlphabet = .nucleotideAlphabet) {
+#  pos <- CodonAlphabet |> strsplit("") |> unlist() |>
+#    match(nucleotideAlphabet) |> matrix(ncol = 3, byrow = TRUE)
+#  codon_frequencies <- M[pos[, 1]] * M[pos[, 2]] * M[pos[, 3]]
+#  codon_frequencies / sum(codon_frequencies)
+#}
 
 
 F1x4 <- function(x) {
   bf <- codon2dna(x) |> baseFreq()
   BF <- matrix(bf, 4, 3)
-  F3x4_freq(BF)
+  codon_abc <- attr(x, "levels")
+  F3x4_freq(BF, CodonAlphabet = codon_abc)
 }
 
 

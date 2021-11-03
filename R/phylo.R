@@ -25,7 +25,7 @@ optimQ <- function(tree, data, Q = rep(1, 6), subs = rep(1, length(Q)),
 
 
 CodonQ <- function(subs = .sub, syn = .syn, tstv = 1, dnds = 1) {
-  Q <- numeric(1830)
+  Q <- numeric(length(subs))
   Q[subs == 1] <- 1 # transversion
   Q[subs == 2] <- tstv # transition
   Q[syn == 1] <- Q[syn == 1] * dnds
