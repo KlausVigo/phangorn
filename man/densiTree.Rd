@@ -58,7 +58,7 @@ phylogeny and their corresponding labels.}
 
 \item{scale.bar}{a logical specifying whether add scale.bar to the plot.}
 
-\item{jitter}{allows to shift treees. a list with two arguments: the amount of
+\item{jitter}{allows to shift trees. a list with two arguments: the amount of
 jitter and random or equally spaced (see details below)}
 
 \item{\dots}{further arguments to be passed to plot.}

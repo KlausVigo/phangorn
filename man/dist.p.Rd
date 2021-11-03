@@ -30,7 +30,7 @@ The polymorphism p-distances (Potts et al. 2014) have been developed to
 analyse intra-individual variant polymorphism. For example, the widely used
 ribosomal internal transcribed spacer (ITS) region (e.g. Alvarez and Wendel,
 2003) consists of 100's to 1000's of units within array across potentially
-multiple nucleolus organising regions (Bailey et al., 2003; Goeker and
+multiple nucleolus organizing regions (Bailey et al., 2003; Goeker and
 Grimm, 2008). This can give rise to intra-individual site polymorphisms
 (2ISPs) that can be detected from direct-PCR sequencing or cloning . Clone
 consensus sequences (see Goeker and Grimm, 2008) can be analysed with this

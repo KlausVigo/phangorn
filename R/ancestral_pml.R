@@ -426,7 +426,7 @@ ptree <- function(tree, data, return = "prob") {
       for(i in (nTip+1):m)
         res[[i]] <- f$getAncAmb(i)[1:nr]
     }
-    else stop("This is only for nucleotide equences supported so far")
+    else stop("This is only for nucleotide sequences supported so far")
   }
   else {
     fun <- function(X) {

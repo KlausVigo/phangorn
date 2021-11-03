@@ -93,7 +93,7 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt = 0, cex = 1,
 #' @param label.offset a numeric giving the space between the nodes and the tips of the
 #' phylogeny and their corresponding labels.
 #' @param scale.bar a logical specifying whether add scale.bar to the plot.
-#' @param jitter allows to shift treees. a list with two arguments: the amount of
+#' @param jitter allows to shift trees. a list with two arguments: the amount of
 #' jitter and random or equally spaced (see details below)
 #' @param \dots further arguments to be passed to plot.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}

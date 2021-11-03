@@ -1257,7 +1257,7 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #' The topology search uses a nearest neighbor interchange (NNI) and the
 #' implementation is similar to phyML.  The option model in pml is only used
 #' for amino acid models.  The option model defines the nucleotide model which
-#' is getting optimised, all models which are included in modeltest can be
+#' is getting optimized, all models which are included in modeltest can be
 #' chosen. Setting this option (e.g. "K81" or "GTR") overrules options optBf
 #' and optQ.  Here is a overview how to estimate different phylogenetic models
 #' with \code{pml}: \tabular{lll}{ model \tab optBf \tab optQ \cr Jukes-Cantor
@@ -2175,7 +2175,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     object <- update.pml(object, tree = tree)
   }
   if (optEdge & optRate & !timetree) {
-    warning("You can't optimise edges and rates at the same time, only edges are optimised!", call. = FALSE)
+    warning("You can't optimize edges and rates at the same time, only edges are optimized!", call. = FALSE)
     optRate <- FALSE
   }
   if (optRooted) {
