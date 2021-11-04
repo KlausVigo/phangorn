@@ -46,7 +46,7 @@ bf_by_codon <- function(x) {
 }
 
 # return frequencies for all 61 states
-F3x4_freq <- function(M, CodonAlphabet = .CodonAlphabet,
+F3x4_freq <- function(M, CodonAlphabet,
                       nucleotideAlphabet = .nucleotideAlphabet) {
   pos <- CodonAlphabet |> strsplit("") |> unlist() |>
     match(nucleotideAlphabet) |> matrix(ncol = 3, byrow = TRUE)
