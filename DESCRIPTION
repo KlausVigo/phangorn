@@ -72,7 +72,7 @@ Imports:
     methods,
     parallel,
     quadprog,
-    Rcpp (>= 1.0.4),
+    Rcpp,
     stats,
     utils
 Suggests:
@@ -86,7 +86,7 @@ Suggests:
     seqLogo,
     tinytest,
     xtable
-LinkingTo: 
+LinkingTo:
     Rcpp
 VignetteBuilder: 
     knitr,
@@ -96,3 +96,4 @@ Encoding: UTF-8
 Repository: CRAN
 Roxygen: list(old_usage = TRUE)
 RoxygenNote: 7.1.2
+Language: en-US
