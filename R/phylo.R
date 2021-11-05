@@ -35,8 +35,7 @@ CodonQ <- function(subs, syn, tstv = 1, dnds = 1) {
 
 
 # needs no Q
-optimCodon <- function(tree, data, Q = rep(1, 1830), subs = rep(1, length(Q)),
-                       syn = rep(0, length(Q)), trace = 0L, ab = c(0, 0),
+optimCodon <- function(tree, data, Q, subs, syn, trace = 0L, ab = c(0, 0),
                        optK = TRUE, optW = TRUE, ...) {
   m <- length(Q)
   n <- 1L
@@ -2328,19 +2327,19 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       if (type == "CODON") {
         ab <- c(tstv, dnds)
         res <- switch(model,
-          YN98 = optimCodon(tree, data, Q = rep(1, 1830), subs = .sub,
+          YN98 = optimCodon(tree, data, Q = length(.sub), subs = .sub,
             syn = .syn, bf = bf, w = w, g = g, inv = inv,
             INV = INV, ll.0 = ll.0, rate = rate, k = k,
             ab = log(ab), optK = TRUE, optW = TRUE),
-          codon1 = optimCodon(tree, data, Q = rep(1, 1830), subs = .sub,
+          codon1 = optimCodon(tree, data, Q = length(.sub), subs = .sub,
             syn = .syn, bf = bf, w = w, g = g, inv = inv,
             INV = INV, ll.0 = ll.0, rate = rate, k = k,
             ab = log(ab), optK = TRUE, optW = TRUE),
-          codon2 = optimCodon(tree, data, Q = rep(1, 1830), subs = .sub,
+          codon2 = optimCodon(tree, data, Q = length(.sub), subs = .sub,
             syn = .syn, bf = bf, w = w, g = g, inv = inv,
             INV = INV, ll.0 = ll.0, rate = rate, k = k,
             ab = log(ab), optK = FALSE, optW = TRUE),
-          codon3 = optimCodon(tree, data, Q = rep(1, 1830), subs = .sub,
+          codon3 = optimCodon(tree, data, Q = length(.sub), subs = .sub,
             syn = .syn, bf = bf, w = w, g = g, inv = inv,
             INV = INV, ll.0 = ll.0, rate = rate, k = k,
             ab = log(ab), optK = TRUE, optW = FALSE))
