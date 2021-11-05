@@ -28,10 +28,11 @@ dat_codon_2 <- dna2codon(as.phyDat(woodmouse), code=2)
 tree <- NJ(dist.ml(dat_codon))
 
 # test M0, M1a optimisation works properly
-fit_codon <- codonTest(tree, dat_codon, model = c("M0", "M1a", "M2a"),
+fit_codon <- codonTest(tree, dat_codon, model = c("M0", "M1a"),
                        control = pml.control(maxit = 20))
 expect_true(inherits(fit_codon, "codonTest"))
 
-fit_codon_2 <- codonTest(tree, dat_codon_2, model = c("M0", "M1a"),
-                         opt_freq = TRUE, control = pml.control(maxit = 20))
-expect_true(inherits(fit_codon_2, "codonTest"))
+# M2a takes to long for rhub
+#fit_codon_2 <- codonTest(tree, dat_codon_2, model = c("M0", "M1a"),
+#                         opt_freq = TRUE, control = pml.control(maxit = 20))
+#expect_true(inherits(fit_codon_2, "codonTest"))
