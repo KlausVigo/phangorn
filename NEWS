@@ -28,13 +28,17 @@ OTHER CHANGES
 
       extend.
 
+    o pml.control got an additional argument tau which controls the minimal edge
+
+      length during optimisation.
+
     o trees constructed with allCompat, maxCladeCred now have support values
 
       stored in the node.labels
 
-    o switched from magrittr %>% to native pipe |> , dropped dependency on
+    o switched from magrittr %>% to the native pipe |>
 
-      magrittr
+      dropped dependency on magrittr
 
 
     CHANGES in PHANGORN VERSION 2.7.1
