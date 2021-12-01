@@ -189,7 +189,6 @@ indexNNI_fitch <- function(tree) {
 
 
 nni2 <- function(x){
-  # INDEX <- indexNNI2(x)
   INDEX <- indexNNI_fitch(x)[, 1:4]
   INDEX <- rbind(INDEX[, c(1, 3, 2, 4)], INDEX[, c(2, 3, 1, 4)])
   l <- nrow(INDEX)
