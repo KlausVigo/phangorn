@@ -156,11 +156,12 @@ bootstrap.pml <- function(x, bs = 100, trees = TRUE, multicore = FALSE,
     attr(data, "weight") <- weights[ind]
     fit <- update(fit, data = data)
     if(do_rearr){
-      if(is_ultrametric){
-        tree <- dist.ml(data, bf=fit$bf, Q=fit$Q) |> wpgma()
-      }
-      else tree <- candidate.tree(data)
-
+#      if(is_ultrametric){
+#        tree <- dist.ml(data, bf=fit$bf, Q=fit$Q) |> wpgma()
+#      }
+#      else tree <- candidate.tree(data)
+#      candidate.tree <- function(x, rooted=FALSE, eps = 1e-8, ...)
+      tree <- candidate.tree(data, rooted = is_ultrametric, bf=fit$bf, Q=fit$Q)
       fit <- update(fit, tree = tree)
     }
     fit <- optim.pml(fit, ...)
