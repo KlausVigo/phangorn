@@ -154,7 +154,7 @@ midpoint.phylo <- function(tree, node.labels = "support", ...) {
   tree$edge.length[tree$edge[, 2] == ind] <- maxdm
   ind <- c(ind, which.max(maxD1))
   maxdm <- maxdm + maxD1[ind[2]]
-  rn <- max(tree$edge) + 1
+  rn <- max(tree$edge) + 1L
   edge <- tree$edge
   el <- tree$edge.length
   children <- tree$edge[, 2]
@@ -178,6 +178,7 @@ midpoint.phylo <- function(tree, node.labels = "support", ...) {
     el[right[i]] <- eltmp
   }
   tree$edge.length <- el
+  storage.mode(edge) <- "integer"
   tree$edge <- edge
   tree$Nnode <- tree$Nnode + 1
   attr(tree, "order") <- NULL
@@ -669,7 +670,7 @@ Ancestors <- function(x, node, type = c("all", "parent")) {
   if (type == "parent")
     return(pvector[node])
   anc <- function(pvector, node) {
-    res <- numeric(0)
+    res <- integer(0)
     repeat {
       anc <- pvector[node]
       if (anc == 0) break
