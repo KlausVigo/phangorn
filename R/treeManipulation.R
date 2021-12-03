@@ -180,7 +180,7 @@ midpoint.phylo <- function(tree, node.labels = "support", ...) {
   tree$edge.length <- el
   storage.mode(edge) <- "integer"
   tree$edge <- edge
-  tree$Nnode <- tree$Nnode + 1
+  tree$Nnode <- tree$Nnode + 1L
   attr(tree, "order") <- NULL
   tree <- reroot(tree, rn)
   if (!is.null(tree$node.label)) {
