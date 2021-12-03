@@ -326,7 +326,7 @@ dropNode <- function(x, i, check.binary = FALSE, check.root = TRUE,
       if (newedge[1] == newroot) edge[n - 1, ] <- newedge
       else edge[n - 1, ] <- newedge[2:1]
       edge <- edge[-n, ]
-      x$Nnode <- length(unique(edge[, 1]))
+      x$Nnode <- as.integer(length(unique(edge[, 1])))
       edge[edge == newroot] <- root
       pa <- newroot
     }
@@ -338,13 +338,13 @@ dropNode <- function(x, i, check.binary = FALSE, check.root = TRUE,
     if (length(ind) == 1) {
       edge[nind, 2] <- edge[ind, 2]
       edge <- edge[-ind, ]
-      x$Nnode <- length(unique(edge[, 1]))
+      x$Nnode <- as.integer(length(unique(edge[, 1])))
     }
   }
   x$edge <- edge
   y <- x
   y$edge <- edge2
-  y$Nnode <- length(unique(edge2[, 1]))
+  y$Nnode <- as.integer(length(unique(edge2[, 1])))
   list(x, y, pa, sibs)
 }
 
@@ -363,7 +363,7 @@ addOne <- function(tree, tip, i) {
   else edge <- rbind(edge[1:(ind - 1), ], matrix(c(m, m, k, tip), 2, 2),
       edge[ind:l, ])
   tree$edge <- edge
-  tree$Nnode <- tree$Nnode + 1
+  tree$Nnode <- tree$Nnode + 1L
   tree
 }
 
@@ -431,7 +431,7 @@ add.tips <- function(tree, tips, where, edge.length = NULL) {
   }
   ind <- match(where, edge[, 2])
 
-  n_internal <- sum(unique(where) <= nTips)
+  n_internal <- as.integer(sum(unique(where) <= nTips))
   edge[edge > nTips] <- edge[edge > nTips] + nTips_new
   p_vec <- integer(max(edge) + n_internal)
   p_vec[edge[, 2]] <- edge[, 1]
@@ -587,7 +587,7 @@ allTrees <- function(n, rooted = FALSE, tip.label = NULL) {
     edge <- edges[[x]]
     edge <- edge[reorderRcpp(edge, n, n + 1L, 2L), ]
     tree <- list(edge = edge)
-    tree$Nnode <- n - 2L + rooted
+    tree$Nnode <- as.integer(n - 2L + rooted)
     attr(tree, "order") <- "postorder"
     class(tree) <- "phylo"
     trees[[x]] <- tree
