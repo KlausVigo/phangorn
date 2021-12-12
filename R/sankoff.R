@@ -20,11 +20,11 @@ fit.sankoffNew <- function(tree, data, cost, returnData = c("pscore", "site",
 
   q <- length(tree$tip.label)
   nc <- attr(data, "nc")
-  m <- length(edge) + 1
+  m <- length(edge) + 1L
   dat <- vector(mode = "list", length = m)
   dat[1:q] <- subset(data, tree$tip.label)
-  node <- as.integer(node - 1)
-  edge <- as.integer(edge - 1)
+  node <- as.integer(node - 1L)
+  edge <- as.integer(edge - 1L)
   nTips <- as.integer(length(tree$tip.label))
   mNodes <- as.integer(max(node) + 1)
   res <- .Call('sankoff3B', dat, as.numeric(cost), as.integer(nr),
