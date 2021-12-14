@@ -375,7 +375,7 @@ plotBS <- function(tree, BStrees, type = "unrooted",
     }
     ind2 <- which(label[ind] > p)
     if (length(ind2 > 0)) {
-      if(is.numeric(label)) label <- round(label)
+      if(is.numeric(label)) label <- round(label, digits = digits)
       edgelabels(label[ind][ind2], ind2,
         frame = frame,
         col = bs.col, adj = bs.adj, ...
