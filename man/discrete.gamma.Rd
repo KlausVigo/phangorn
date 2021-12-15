@@ -2,11 +2,14 @@
 % Please edit documentation in R/discrete.gamma.R
 \name{discrete.gamma}
 \alias{discrete.gamma}
+\alias{discrete.beta}
 \alias{plot_gamma_plus_inv}
 \alias{plotRates}
-\title{Discrete Gamma function}
+\title{Discrete Gamma and Beta distribution}
 \usage{
 discrete.gamma(alpha, k)
+
+discrete.beta(shape1, shape2, k)
 
 plot_gamma_plus_inv(shape = 1, inv = 0, k = 4, discrete = TRUE,
   cdf = TRUE, append = FALSE, xlab = "x", ylab = ifelse(cdf, "F(x)",
@@ -19,6 +22,8 @@ plotRates(obj, cdf.color = "blue", main = "cdf", ...)
 \item{alpha}{Shape parameter of the gamma distribution.}
 
 \item{k}{Number of intervals of the discrete gamma distribution.}
+
+\item{shape1, shape2}{non-negative parameters of the Beta distribution.}
 
 \item{shape}{Shape parameter of the gamma distribution.}
 
@@ -82,7 +87,7 @@ par(old.par)
 
 }
 \seealso{
-\code{\link{pml.fit}, \link{stepfun}}
+\code{\link{pml.fit}, \link{stepfun}, link{pgamma}, link{pbeta}},
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

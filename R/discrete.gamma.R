@@ -1,4 +1,4 @@
-#' Discrete Gamma function
+#' Discrete Gamma and Beta distribution
 #'
 #' \code{discrete.gamma} internally used for the likelihood computations in
 #' \code{pml} or \code{optim.pml}. It is useful to understand how it works
@@ -11,6 +11,7 @@
 #'
 #' @param shape Shape parameter of the gamma distribution.
 #' @param alpha Shape parameter of the gamma distribution.
+#' @param shape1,shape2 non-negative parameters of the Beta distribution.
 #' @param k Number of intervals of the discrete gamma distribution.
 #' @param inv Proportion of invariable sites.
 #' @param site.rate Indicates what type of gamma distribution to use. Options
@@ -30,7 +31,7 @@
 #' @param \dots Further arguments passed to or from other methods.
 #' @return \code{discrete.gamma} returns a matrix.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{pml.fit}, \link{stepfun}}
+#' @seealso \code{\link{pml.fit}, \link{stepfun}, link{pgamma}, link{pbeta}},
 #' @examples
 #' discrete.gamma(1, 4)
 #'
@@ -54,9 +55,15 @@ discrete.gamma <- function(alpha, k) {
 }
 
 
+#' @rdname discrete.gamma
+#' @importFrom stats dbeta qbeta
+#' @export
 discrete.beta <- function(shape1, shape2, k) {
-  qbeta( ( (0:(k - 1)) + .5) / k, shape1, shape2)
+  quants <- qbeta( (1:(k - 1)) / k, shape1, shape2)
+  diff(c(0, pbeta(quants, shape1 + 1, shape2), 1)) * k * shape1 /
+    (shape1 + shape2)
 }
+
 
 #' @rdname discrete.gamma
 #' @importFrom stats dgamma qgamma stepfun
