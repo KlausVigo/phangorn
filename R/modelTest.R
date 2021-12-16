@@ -278,11 +278,13 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
 }
 
 
+#' @importFrom generics tidy
+#' @export
+generics::tidy
 
-tidy <- function(x, ...) UseMethod("tidy")
 
-
-tidy.modelTest <- function(x) {
+#' @export
+tidy.modelTest <- function(x, ...) {
   env <- attr(x, "env")
   l <- nrow(x)
   k <- rep(1L, l)

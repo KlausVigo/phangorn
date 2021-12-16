@@ -65,6 +65,7 @@ Depends:
     R (>= 4.1.0)
 Imports:
     fastmatch,
+    generics,
     graphics,
     grDevices,
     igraph (>= 1.0),

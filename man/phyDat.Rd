@@ -22,7 +22,6 @@
 \alias{as.data.frame.phyDat}
 \alias{as.DNAbin.phyDat}
 \alias{as.AAbin.phyDat}
-\alias{baseFreq}
 \alias{subset.phyDat}
 \alias{[.phyDat}
 \alias{unique.phyDat}
@@ -57,8 +56,6 @@ acgt2ry(obj)
 
 \method{as.AAbin}{phyDat}(x, ...)
 
-baseFreq(obj, freq = FALSE, all = FALSE, drop.unused.levels = FALSE)
-
 \method{subset}{phyDat}(x, subset, select, site.pattern = TRUE, ...)
 
 \method{[}{phyDat}(x, i, j, ..., drop = FALSE)
@@ -89,15 +86,6 @@ genlight2phyDat(x, ambiguity = NA)
 \item{obj}{as object of class phyDat}
 
 \item{allLevels}{return original data.}
-
-\item{freq}{logical, if 'TRUE', frequencies or counts are returned otherwise
-proportions}
-
-\item{all}{all a logical; if all = TRUE, all counts of bases, ambiguous
-codes, missing data, and alignment gaps are returned as defined in the
-contrast.}
-
-\item{drop.unused.levels}{logical, drop unused levels}
 
 \item{subset}{a subset of taxa.}
 
@@ -155,8 +143,6 @@ class(Laurasiatherian)
 Laurasiatherian
 # base frequencies
 baseFreq(Laurasiatherian)
-baseFreq(Laurasiatherian, all=TRUE)
-baseFreq(Laurasiatherian, freq=TRUE)
 # subsetting phyDat objects
 # the first 5 sequences
 subset(Laurasiatherian, subset=1:5)
@@ -180,6 +166,7 @@ allSitePattern(5)
 }
 \seealso{
 \code{\link{DNAbin}}, \code{\link{as.DNAbin}},
+\code{\link{baseFreq}}, \code{\link{glance.phyDat}}
 \code{\link{read.dna}}, \code{\link{read.aa}}, \code{\link{read.nexus.data}}
 and the chapter 1 in the \code{vignette("phangorn-specials",
 package="phangorn")} and the example of \code{\link{pmlMix}} for the use of
