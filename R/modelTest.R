@@ -94,7 +94,7 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
   if (attr(data, "type") == "AA") type <- .aamodels
   if (attr(data, "type") == "USER") type <- "JC"
 
-  if ( is.null(model) || model == "all") model <- type
+  if ( is.null(model) || (length(model)==1 && model == "all") ) model <- type
   model <- match.arg(model, type, TRUE)
 
   env <- new.env()

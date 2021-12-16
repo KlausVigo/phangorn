@@ -56,7 +56,7 @@ discrete.gamma <- function(alpha, k) {
 
 
 #' @rdname discrete.gamma
-#' @importFrom stats dbeta qbeta
+#' @importFrom stats pbeta qbeta
 #' @export
 discrete.beta <- function(shape1, shape2, k) {
   quants <- qbeta( (1:(k - 1)) / k, shape1, shape2)
