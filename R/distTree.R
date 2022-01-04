@@ -233,7 +233,7 @@ designUnrooted <- function(tree, order = NULL) {
 
 
 designUltra <- function(tree, sparse = TRUE) {
-  if (is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise")
+  if (is.null(attr(tree, "order")) || attr(tree, "order") != "postorder")
     tree <- reorder(tree, "postorder")
   leri <- allChildren(tree)
   bp <- bip(tree)

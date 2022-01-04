@@ -1,5 +1,5 @@
 nodeHeight <- function(tree) {
-  if (is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise") {
+  if (is.null(attr(tree, "order")) || attr(tree, "order") != "postorder") {
     tree <- reorder(tree, "postorder")
   }
   node_height_cpp(as.integer(tree$edge[, 1]), as.integer(tree$edge[, 2]),

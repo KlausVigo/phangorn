@@ -2,7 +2,7 @@
 # tree distance functions
 #
 coph <- function(x, path = FALSE) {
-  if (is.null(attr(x, "order")) || attr(x, "order") == "cladewise")
+  if (is.null(attr(x, "order")) || attr(x, "order") != "postorder")
     x <- reorder(x, "postorder")
   el <- x$edge.length
   if (path) el <- rep(1.0, nrow(x$edge))

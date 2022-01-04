@@ -242,7 +242,7 @@ optim.fitch <- function(tree, data, trace = 1, rearrangements = "NNI", ...) {
     tree <- unroot(tree)
     attr(tree, "order") <- NULL
   }
-  if (is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise")
+  if (is.null(attr(tree, "order")) || attr(tree, "order") != "postorder")
     tree <- reorder(tree, "postorder")
   if (class(data)[1] != "phyDat") stop("data must be of class phyDat")
 

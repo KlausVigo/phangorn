@@ -68,8 +68,7 @@ ancestral.pml <- function(object, type = "marginal", return = "prob") {
   inv <- object$inv
   data <- getCols(object$data, tree$tip.label)
   data_type <- attr(data, "type")
-  if (is.null(attr(tree, "order")) || attr(tree, "order") ==
-    "cladewise") {
+  if (is.null(attr(tree, "order")) || attr(tree, "order") != "postorder") {
     tree <- reorder(tree, "postorder")
   }
   nTips <- length(tree$tip.label)

@@ -78,7 +78,7 @@ optimPartGamma <- function(object, shape = 1, ...) {
 dltmp <- function(fit, i = 1, transform = transform) {
   tree <- fit$tree
   data <- getCols(fit$data, tree$tip.label)
-  if (is.null(attr(tree, "order")) || attr(tree, "order") == "cladewise")
+  if (is.null(attr(tree, "order")) || attr(tree, "order") != "postorder")
     tree <- reorder(tree, "postorder")
   q <- length(tree$tip.label)
   node <- tree$edge[, 1]
