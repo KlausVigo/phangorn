@@ -1,7 +1,8 @@
 minEdge <- function(tree, tau=1e-8, enforce_ultrametric=FALSE){
   if(tau<0) stop("tau must be >= 0!")
-  if(any(tree$edge.length < tau)){
+  if(any(tree$edge.length < tau) || enforce_ultrametric){
     rooted <- is.rooted(tree)
+    if(enforce_ultrametric) rooted <- TRUE
     if(rooted){
       nTip <- Ntip(tree)
       ind <- seq_len(nTip)
