@@ -67,9 +67,8 @@ splits2design <- function(obj, weight = NULL) {
     if (p0[k] != 0) i[(p[k] + 1):p[k + 1]] <- getIndex(sp, l[-sp], m)
   }
   dims <- c(m * (m - 1) / 2, n)
-  sparseMatrix(i = i, p = p, x = 1.0, dims = dims)
+  sparseMatrix(i = i, p = p, dims = dims)
 }
-
 
 
 addEdge <- function(network, desc, spl) {
@@ -86,37 +85,18 @@ addEdge <- function(network, desc, spl) {
   if (is.null(ind) | (length(ind) == 0)) return(network)
   add <- TRUE
 
-  X <- as.matrix(desc2)
-  rsX <- rowSums(X)
-  z <- X %*% X[spl, ]
-  v <- which((rsX == z)[index] == TRUE)
+  v <- sort(match(split[[1]], edge[,2]))
 
-
-  # intersection of shortest pathes of both partitions
-  # best with similar to circNetwork with shortest_paths
-
-  while (add) {
-    tmp <- ind
-    for (i in ind) {
-      tmp2 <- which(compatible2(desc2[index][i], desc2[index]) == 1)
-      tmp <- union(tmp, tmp2)
-    }
-    if (identical(ind, tmp)) {
-      ind <- tmp
-      add <- FALSE
-    }
-    ind <- tmp
+  fromTo <- intersect(attr(desc, "cycle"), split[[1]])
+  fromTo <- parent[match(fromTo, child)]
+  g <- graph(t(edge), directed = FALSE)
+  ind <- NULL
+  for (i in 2:length(fromTo)) {
+    sptmp <- shortest_paths(g, fromTo[i - 1], fromTo[i],
+                            output = c("epath"))$epath[[1]]
+    ind <- c(ind, sptmp) # [-c(1, length(sptmp))])
   }
-
-
-  g <- graph(t(network$edge[ind, ]), directed = FALSE)
-  dec <- decompose(g, min.vertices = 2)
-
-  #    fromTo <- sort(match(split[[1]], attr(desc, "cycle")))
-  #    sptmp = shortest_paths(g, fromTo[i-1], fromTo[i],
-  #                           output=c("epath"))$epath[[1]]
-  #    sp2 = c(sp2, sptmp[-c(1, length(sptmp))])
-  #    sp0 = c(sp0, sptmp)
+  ind <- unique(ind)
 
   oldNodes <- unique(as.vector(edge[ind, ]))
   mNodes <- max(network$edge)
