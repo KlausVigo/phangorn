@@ -120,8 +120,8 @@ changeOrder <- function(x, labels) {
 ## @rdname as.splits
 #' @export
 matchSplits <- function(x, y, as.in = TRUE) {
-  tiplabel <- attr(x, "label")
-  if (any(is.na(match(tiplabel, attr(y, "label")))))
+  tiplabel <- attr(x, "labels")
+  if (any(is.na(match(tiplabel, attr(y, "labels")))))
     stop("x and y have different labels!")
   nTips <- length(tiplabel)
   y <- changeOrder(y, tiplabel)
@@ -131,46 +131,13 @@ matchSplits <- function(x, y, as.in = TRUE) {
 }
 
 
-optCycle <- function(splits, tree) {
-  tips <- tree$tip.label
-  tree <- reorder(tree)
-  nodes <- sort(unique(tree$edge[, 1]))
 
+countCycles <- function(splits, ord = NULL) {
   M <- as.matrix(splits)
-
-#  l <- as.integer(nrow(M))
-  m <- as.integer(ncol(M))
-
-  tmp <- tree$edge[, 2]
-  tmp <- tmp[tmp <= m]
-#  start <- .C("countCycle", M[, tmp], l, m, integer(1))[[4]]
-  start <- countCycle_cpp(M[, tmp])
-  best <- start
-  eps <- 1
-  if (eps > 0) {
-    for (i in seq_along(nodes)) {
-      tmptree <- rotate(tree, nodes[i])
-      tmp <- tmptree$edge[, 2]
-      tmp <- tmp[tmp <= m]
-#      tmpC <- .C("countCycle", M[, tmp], l, m, integer(1))[[4]]
-      tmpC <- countCycle_cpp(M[, tmp])
-      if (tmpC < best) {
-        best <- tmpC
-        tree <- tmptree
-      }
-    }
-    eps <- start - best
+  if(is.null(ord)){
+    ord <- attr(splits, "cycle")
+    if(is.null(ord)) ord <- seq_along(attr(splits, "labels"))
   }
-  tree
-}
-
-
-countCycles <- function(splits, tree = NULL, ord = NULL) {
-  M <- as.matrix(splits)
-#  l <- as.integer(nrow(M))
-#  m <- as.integer(ncol(M))
-  if (!is.null(tree)) ord  <- getOrdering(tree)
-#  res <- .C("countCycle2", M[, ord], l, m, integer(l))[[4]]
   res <- countCycle2_cpp(M[, ord])
   res
 }

@@ -305,22 +305,10 @@ as.networx <- function(x, ...) {
 }
 
 
-getOrdering <- function(x, opt=TRUE) {
-  tree <- as.phylo(x, TRUE)
-  tree <- reorder(tree)
-  if(opt) tree <- optCycle(x, tree)
-  nTips <- length(tree$tip.label)
-  ord <- reorder(tree)$edge[, 2]
-  ord <- ord[ord <= nTips]
-  ind <- which(ord == 1L)
-  if (ind > 1) ord <- c(ord[ind:nTips], ord[c(1:(ind - 1L))])
-  ord
-}
-
 
 #' @export
 addTrivialSplits <- function(obj) {
-  label <- attr(obj, "label")
+  label <- attr(obj, "labels")
   nTips <- length(label)
   weight <- attr(obj, "weights")
   if (is.null(weight)) weight <- rep(1, length(obj))
@@ -340,7 +328,7 @@ addTrivialSplits <- function(obj) {
 
 #' @export
 removeTrivialSplits <- function(obj) {
-  nTips <- length(attr(obj, "label"))
+  nTips <- length(attr(obj, "labels"))
   l <- lengths(obj)
   ind <- which( (l == 0L) | (l == 1L) | (l == nTips) | (l == (nTips - 1L)))
   obj[-ind]
@@ -354,7 +342,7 @@ removeTrivialSplits <- function(obj) {
 #' @export
 as.networx.splits <- function(x, planar = FALSE, coord = c("none", "2D", "3D"),
                               ...) {
-  label <- attr(x, "label")
+  label <- attr(x, "labels")
   x <- addTrivialSplits(x)
   nTips <- length(label)
   x <- ONEwise(x)
@@ -370,7 +358,8 @@ as.networx.splits <- function(x, planar = FALSE, coord = c("none", "2D", "3D"),
   if (!is.null(attr(x, "cycle"))) {
     c.ord <- attr(x, "cycle")
   }
-  else c.ord <- getOrdering(x)
+  else c.ord <- cophenetic(x) |> getOrderingNN()
+
   attr(x, "cycle") <- c.ord
   # check for star tree
   if(length(x)==nTips) return(as.phylo(x))
@@ -501,7 +490,7 @@ createLabel <- function(x, y, label_y, type = "edge", nomatch = NA) {
   spl_y <- as.splits(y)
   if (inherits(y, "phylo", TRUE) == 1) spl_y <- spl_y[y$edge[, 2]]
 
-  tiplabel <- attr(spl_x, "label")
+  tiplabel <- attr(spl_x, "labels")
   nTips <- length(tiplabel)
 
   spl_y <- changeOrder(spl_y, tiplabel)
@@ -613,7 +602,7 @@ addConfidences.splits <- function(x, y, scaler = 1, ...) {
     add <- list(...)$add
   else add <- FALSE
 
-  tiplabel <- attr(x, "label")
+  tiplabel <- attr(x, "labels")
   nTips <- length(tiplabel)
   #    x = addTrivialSplits(x)
   if (inherits(y, "phylo")) {
