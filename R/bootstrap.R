@@ -510,7 +510,7 @@ allCompat <- function(x) {
   w <- attr(spl, "weights")
   ord <- order(w, decreasing = TRUE)
   for(i in ord){
-    if(all(compatible2(res, spl[i]) == 0)) res <- c(res, spl[i])
+    if(all(compatible(res, spl[i]) == 0)) res <- c(res, spl[i])
   }
   tree <- as.phylo(res, FALSE)
   tree$edge.length <- NULL

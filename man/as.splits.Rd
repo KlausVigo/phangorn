@@ -53,7 +53,7 @@ as.splits(x, ...)
 
 \method{as.splits}{bitsplits}(x, ...)
 
-compatible(obj)
+compatible(obj1, obj2 = NULL)
 }
 \arguments{
 \item{k}{number of taxa.}
@@ -79,7 +79,7 @@ vector.}
 
 \item{unrooted}{todo.}
 
-\item{obj}{an object of class splits.}
+\item{obj1, obj2}{an object of class splits.}
 }
 \value{
 \code{as.splits} returns an object of class splits, which is mainly

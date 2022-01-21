@@ -39,7 +39,7 @@ Rx <- function(d, x, CL) {
   res
 }
 
-
+# Formula 1
 reduc <- function(d, x, y, z) {
   u <- 2 / 3 * d[x, ] + d[y, ] / 3
   v <- 2 / 3 * d[z, ] + d[y, ] / 3
@@ -75,12 +75,11 @@ getOrderingNN <- function(x) {
   DM <- DM_C <- DM_V <- d
 
   while (lCL > 1) {
-#    i <- 0
-#    j <- 0
     DM <- distC(d, CL)
 
     l <- nrow(DM)
     if (l > 2) {
+#
       r <- rowSums(DM) / (l - 2)
       tmp <- out_cpp(DM, r, l)
       e1 <- tmp[1]
@@ -188,8 +187,6 @@ getOrderingNN2 <- function(x) {
   DM_C <- DM_V <- DM <- d
   z <- 0
   while (lCL > 1) {
-#    i <- 0
-#    j <- 0
     z <- z + 1
 
     l <- nrow(DM)
@@ -197,8 +194,6 @@ getOrderingNN2 <- function(x) {
     if (l > 2) {
       r <- rowSums(DM) / (l - 2)
       tmp <- out_cpp(DM, r, l)
-#      tmp <- .C("out", as.double(DM), as.double(r), as.integer(l),
-#        as.integer(i), as.integer(j), PACKAGE = "phangorn")
       e1 <- tmp[1]
       e2 <- tmp[2]
     }
@@ -231,6 +226,7 @@ getOrderingNN2 <- function(x) {
       rtmp2 <- Rx(d, CLtmp2, CL[-c(e1, e2)])
       if (ltmp > 2) rtmp2 <- rtmp2 / (ltmp - 2)
       DM3 <- d[CLtmp2, CLtmp2] - outer(rtmp2, rtmp2, "+")
+# DM3 formula 3 in Spillner et al.
       TMP2 <- DM3[1:n1, (n1 + 1):(n1 + n2)]
       blub <- which.min(TMP2)
 
@@ -345,7 +341,7 @@ neighborNet <-  function(x, ord = NULL) {
 
 
 removeNonsense <- function(obj) {
-  nTips <- length(attr(obj, "label"))
+  nTips <- length(attr(obj, "labels"))
   l <- lengths(obj)
   ind <- which( (l == 0L) | (l == nTips))
   obj <- obj[-ind]

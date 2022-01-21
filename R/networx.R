@@ -67,7 +67,7 @@ splits2design <- function(obj, weight = NULL) {
     if (p0[k] != 0) i[(p[k] + 1):p[k + 1]] <- getIndex(sp, l[-sp], m)
   }
   dims <- c(m * (m - 1) / 2, n)
-  sparseMatrix(i = i, p = p, dims = dims)
+  sparseMatrix(i = i, p = p, x=1, dims = dims)
 }
 
 
@@ -81,7 +81,7 @@ addEdge <- function(network, desc, spl) {
   split <- desc2[spl]
 
   index <- network$splitIndex
-  ind <- which(compatible2(split, desc2[index]) == 1)
+  ind <- which(compatible(split, desc2[index]) == 1)
   if (is.null(ind) | (length(ind) == 0)) return(network)
   add <- TRUE
 
@@ -149,15 +149,13 @@ circNetwork <- function(x, ord = NULL) {
   l <- lengths(ONEwise(x))
   l2 <- lengths(x)
 
-  #    dm <- as.matrix(compatible2(x))
-
   tmp <- countCycles(x, ord = ord)
   ind <- which(tmp == 2 & l2 > 1) # & l<nTips changed with ordering
 
   #    ind = ind[order(l[ind])]
   ind <- ind[order(l2[ind], decreasing = TRUE)]
 
-  dm2 <- as.matrix(compatible2(x, x[ind]))
+  dm2 <- as.matrix(compatible(x, x[ind]))
 
   X <- as.matrix(x)[, ord]
   Y <- X
@@ -372,7 +370,7 @@ as.networx.splits <- function(x, planar = FALSE, coord = c("none", "2D", "3D"),
     return(reorder(tmp))
   }
 
-  dm <- as.matrix(compatible2(x))
+  dm <- as.matrix(compatible(x))
   ll <- lengths(x)
   ind <- tmp$splitIndex     # match(sp, x)
   ind2 <- union(ind, which(ll == 0)) # which(duplicated(x))
