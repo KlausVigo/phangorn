@@ -92,8 +92,9 @@ addEdge <- function(network, desc, spl) {
   g <- graph(t(edge), directed = FALSE)
   ind <- NULL
   for (i in 2:length(fromTo)) {
-    sptmp <- shortest_paths(g, fromTo[i - 1], fromTo[i],
-                            output = c("epath"))$epath[[1]]
+    #sptmp <- shortest_paths(g, fromTo[i - 1], fromTo[i], output = c("epath"))$epath[[1]]
+    d <- all_shortest_paths(g, fromTo[i - 1], fromTo[i])$res
+    sptmp <- unlist( lapply(d, \(d) E(g, path=d)) )
     ind <- c(ind, sptmp) # [-c(1, length(sptmp))])
   }
   ind <- unique(ind)
@@ -334,7 +335,7 @@ removeTrivialSplits <- function(obj) {
 
 
 #' @rdname as.networx
-#' @importFrom igraph shortest_paths decompose
+#' @importFrom igraph shortest_paths all_shortest_paths decompose
 #' @importFrom Matrix spMatrix
 #' @method as.networx splits
 #' @export
