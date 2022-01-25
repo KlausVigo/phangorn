@@ -335,7 +335,7 @@ removeTrivialSplits <- function(obj) {
 
 
 #' @rdname as.networx
-#' @importFrom igraph shortest_paths all_shortest_paths decompose
+#' @importFrom igraph shortest_paths all_shortest_paths decompose E
 #' @importFrom Matrix spMatrix
 #' @method as.networx splits
 #' @export
