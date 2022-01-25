@@ -77,9 +77,8 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
                       FREQ = FALSE, k = 4,
                       control = pml.control(epsilon = 1e-08, maxit = 10,
                       trace = 1), multicore = FALSE, mc.cores = NULL) {
-  if (multicore && is.null(mc.cores)) {
-    mc.cores <- detectCores()
-  }
+  if(.Platform$OS.type=="windows") multicore <- FALSE
+  if (multicore && is.null(mc.cores)) mc.cores <- detectCores()
   if (inherits(object, "phyDat"))
     data <- object
   if (inherits(object, "pml")) {
