@@ -339,9 +339,9 @@ removeTrivialSplits <- function(obj) {
 #' @importFrom Matrix spMatrix
 #' @method as.networx splits
 #' @export
-as.networx.splits <- function(x, planar = FALSE, coord = c("none", "2D", "3D"),
-                              ...) {
+as.networx.splits <- function(x, planar = FALSE, coord = "none", ...) {
   label <- attr(x, "labels")
+  coord <- match.arg(coord, c("none", "equal angle", "3D", "2D"))
   x <- addTrivialSplits(x)
   nTips <- length(label)
   x <- ONEwise(x)
@@ -395,6 +395,7 @@ as.networx.splits <- function(x, planar = FALSE, coord = c("none", "2D", "3D"),
   coord <- match.arg(coord)
   vert <- switch(coord,
     "none" = NULL,
+    "equal angle" = coords.equal.angle(tmp),
     "2D" = coords(tmp, dim = "2D"),
     "3D" = coords(tmp, dim = "3D"))
   #    attr(tmp, "coords") <- coordinates
@@ -547,7 +548,7 @@ createLabel <- function(x, y, label_y, type = "edge", nomatch = NA) {
 #' nnet <- addConfidences(nnet, boot_trees)
 #'
 #' plot(tree, show.node.label=TRUE)
-#' plot(nnet, "2D", show.edge.label=TRUE)
+#' plot(nnet, show.edge.label=TRUE)
 #'
 #' @rdname addConfidences
 #' @export
@@ -873,7 +874,8 @@ edgeLabels <- function(xx, yy, zz = NULL, edge) {
 #' splits (e.g. splits.color) than for edges. These overwrite values edge.color.
 #'
 #' @param x an object of class \code{"networx"}
-#' @param type "3D" to plot using rgl or "2D" in the normal device.
+#' @param type "3D" to plot using rgl or "equal angle" and "2D" in the normal
+#' device.
 #' @param use.edge.length a logical indicating whether to use the edge weights
 #' of the network to draw the branches (the default) or not.
 #' @param show.tip.label a logical indicating whether to show the tip labels on
@@ -1201,7 +1203,7 @@ closest.node <- function(x, y, P) {
 #' data(yeast)
 #' dm <- dist.ml(yeast)
 #' nnet <- neighborNet(dm)
-#' plot(nnet, "2D")
+#' plot(nnet)
 #' identify(nnet) # click close to an edge
 #' }
 #' @importFrom graphics identify

@@ -78,9 +78,8 @@ fun.spr <- function(x, tree) sum(SPR.dist(x, tree))
 
 dist.superTree <- function(tree, trace = 0, fun, start = NULL,
                            multicore = FALSE, mc.cores = NULL) {
-  if (multicore && is.null(mc.cores)) {
-    mc.cores <- detectCores()
-  }
+  if(.Platform$OS.type=="windows") multicore <- FALSE
+  if (multicore && is.null(mc.cores)) mc.cores <- detectCores()
   if (is.null(start)) start <- superTree(tree, rooted = FALSE)
   if (inherits(start, "multiPhylo")) start <- start[[1]]
   best_tree <- unroot(start)

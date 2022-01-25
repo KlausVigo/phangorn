@@ -188,7 +188,7 @@ split2seq <- function(q) {
 #' dm <- as.matrix(dm)
 #' fit <- distanceHadamard(dm)
 #' lento(fit)
-#' plot(as.networx(fit), "2D")
+#' plot(as.networx(fit))
 #'
 #' @export distanceHadamard
 distanceHadamard <- function(dm, eps = 0.001) {

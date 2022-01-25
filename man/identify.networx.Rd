@@ -27,7 +27,7 @@ closest to the pointer. The network must be plotted beforehand.
 data(yeast)
 dm <- dist.ml(yeast)
 nnet <- neighborNet(dm)
-plot(nnet, "2D")
+plot(nnet)
 identify(nnet) # click close to an edge
 }
 }

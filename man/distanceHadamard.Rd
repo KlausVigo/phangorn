@@ -26,7 +26,7 @@ dm <- dist.hamming(yeast)
 dm <- as.matrix(dm)
 fit <- distanceHadamard(dm)
 lento(fit)
-plot(as.networx(fit), "2D")
+plot(as.networx(fit))
 
 }
 \references{

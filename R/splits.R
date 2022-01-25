@@ -35,7 +35,7 @@
 #' (sp <- as.splits(rtree(5)))
 #' write.nexus.splits(sp)
 #' spl <- allCircularSplits(5)
-#' plot(as.networx(spl), "2D")
+#' plot(as.networx(spl))
 #'
 #' @rdname as.splits
 #' @export

@@ -119,9 +119,8 @@ candidate.tree <- function(x, rooted=FALSE, eps = 1e-8, ...){
 #' @export
 bootstrap.pml <- function(x, bs = 100, trees = TRUE, multicore = FALSE,
                           mc.cores = NULL, ...) {
-  if (multicore && is.null(mc.cores)) {
-    mc.cores <- detectCores()
-  }
+  if(.Platform$OS.type=="windows") multicore <- FALSE
+  if (multicore && is.null(mc.cores)) mc.cores <- detectCores()
   extras <- match.call(expand.dots = FALSE)$...
   rearr <- c("optNni", "rearrangement")
   tmp <- pmatch(names(extras), rearr)
@@ -157,11 +156,6 @@ bootstrap.pml <- function(x, bs = 100, trees = TRUE, multicore = FALSE,
     attr(data, "weight") <- weights[ind]
     fit <- update(fit, data = data)
     if(do_rearr){
-#      if(is_ultrametric){
-#        tree <- dist.ml(data, bf=fit$bf, Q=fit$Q) |> wpgma()
-#      }
-#      else tree <- candidate.tree(data)
-#      candidate.tree <- function(x, rooted=FALSE, eps = 1e-8, ...)
       tree <- candidate.tree(data, rooted = is_ultrametric, bf=fit$bf, Q=fit$Q)
       fit <- update(fit, tree = tree)
     }
@@ -192,9 +186,8 @@ bootstrap.pml <- function(x, bs = 100, trees = TRUE, multicore = FALSE,
 #' @export
 bootstrap.phyDat <- function(x, FUN, bs = 100, multicore = FALSE,
                              mc.cores = NULL, jumble = TRUE, ...) {
-  if (multicore && is.null(mc.cores)) {
-    mc.cores <- detectCores()
-  }
+  if(.Platform$OS.type=="windows") multicore <- FALSE
+  if (multicore && is.null(mc.cores)) mc.cores <- detectCores()
   weight <- attr(x, "weight")
   v <- rep(seq_along(weight), weight)
   BS <- vector("list", bs)

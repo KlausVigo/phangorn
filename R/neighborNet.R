@@ -322,7 +322,7 @@ getOrderingNN2 <- function(x) {
 #' data(yeast)
 #' dm <- dist.ml(yeast)
 #' nnet <- neighborNet(dm)
-#' plot(nnet, "2D")
+#' plot(nnet)
 #'
 #' @export neighborNet
 neighborNet <-  function(x, ord = NULL) {

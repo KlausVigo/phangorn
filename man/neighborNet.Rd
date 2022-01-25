@@ -28,7 +28,7 @@ used to enforce a certain circular ordering.
 data(yeast)
 dm <- dist.ml(yeast)
 nnet <- neighborNet(dm)
-plot(nnet, "2D")
+plot(nnet)
 
 }
 \references{

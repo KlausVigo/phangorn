@@ -67,7 +67,7 @@ are separated with white-space. Comments in square brackets are ignored.
 (sp <- as.splits(rtree(5)))
 write.nexus.splits(sp)
 spl <- allCircularSplits(5)
-plot(as.networx(spl), "2D")
+plot(as.networx(spl))
 write.splits(spl, print.labels = FALSE)
 
 }

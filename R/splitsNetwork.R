@@ -39,7 +39,7 @@
 #' dm <- dist.ml(yeast)
 #' fit <- splitsNetwork(dm)
 #' net <- as.networx(fit)
-#' plot(net, "2D")
+#' plot(net)
 #' write.nexus.splits(fit)
 #'
 #' @export splitsNetwork

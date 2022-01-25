@@ -52,7 +52,7 @@ tree <- addConfidences(tree, boot_trees)
 nnet <- addConfidences(nnet, boot_trees)
 
 plot(tree, show.node.label=TRUE)
-plot(nnet, "2D", show.edge.label=TRUE)
+plot(nnet, show.edge.label=TRUE)
 
 }
 \references{

@@ -9,7 +9,7 @@
 \usage{
 as.networx(x, ...)
 
-\method{as.networx}{splits}(x, planar = FALSE, coord = c("none", "2D", "3D"), ...)
+\method{as.networx}{splits}(x, planar = FALSE, coord = "none", ...)
 
 \method{as.networx}{phylo}(x, ...)
 }

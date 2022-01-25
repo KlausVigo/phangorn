@@ -17,7 +17,8 @@
 \arguments{
 \item{x}{an object of class \code{"networx"}}
 
-\item{type}{"3D" to plot using rgl or "2D" in the normal device.}
+\item{type}{"3D" to plot using rgl or "equal angle" and "2D" in the normal
+device.}
 
 \item{use.edge.length}{a logical indicating whether to use the edge weights
 of the network to draw the branches (the default) or not.}
