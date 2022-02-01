@@ -1,14 +1,3 @@
-distC <- function(d, CL) {
-  l <- length(CL)
-  res <- matrix(0, l, l)
-  for (i in 1:(l - 1)) {
-    for (j in (i + 1):l)
-      res[i, j] <- mean.default(d[CL[[i]], CL[[j]]])
-  }
-  res + t(res)
-}
-
-
 updateDM <- function(DM, d, CL, j) {
   l <- length(CL)
   for (i in 1:l) {
@@ -59,120 +48,10 @@ reduc <- function(d, x, y, z) {
 }
 
 
-# computes ordering
-getOrderingNN <- function(x) {
-  x <- as.matrix(x)
-  labels <- attr(x, "Labels")
-  if (is.null(labels))
-    labels <- colnames(x)
-  d <- x # as.matrix(x)
-  l <- dim(d)[1]
-  CL <- vector("list", l)
-  CL[1:l] <- ORD <- 1:l
-  lCL <- length(CL)
-  ord <- CL
-
-  DM <- DM_C <- DM_V <- d
-
-  while (lCL > 1) {
-    DM <- distC(d, CL)
-
-    l <- nrow(DM)
-    if (l > 2) {
-#
-      r <- rowSums(DM) / (l - 2)
-      tmp <- out_cpp(DM, r, l)
-      e1 <- tmp[1]
-      e2 <- tmp[2]
-    }
-    else {
-      e1 <- 1
-      e2 <- 2
-    }
-    n1 <- length(CL[[e1]])
-    n2 <- length(CL[[e2]])
-    if (n1 == 1 & n2 == 1) {
-      newCL <- c(CL[[e1]], CL[[e2]])
-      newOrd <- newCL
-      CL <- c(CL[-c(e1, e2)], list(newCL))
-      ord <- c(ord[-c(e1, e2)], list(newCL))
-      lCL <- lCL - 1L
-    }
-    else {
-      CLtmp <- c(as.list(CL[[e1]]), as.list(CL[[e2]]), CL[-c(e1, e2)])
-      ltmp <- length(CLtmp)
-      DM2 <- distC(d, CLtmp)
-      if (ltmp > 2) rtmp <- rowSums(DM2) / (ltmp - 2)
-      DM2 <- DM2 - outer(rtmp, rtmp, "+")
-      # compute only this
-      TMP <- DM2[1:n1, (n1 + 1):(n1 + n2)]
-
-      blub <- which.min(TMP)
-      # print("blub")
-      if (n1 == 2 & n2 == 1) {
-        if (blub == 2) {
-          newCL <- c(CL[[e1]][1], CL[[e2]])
-          newOrd <-  c(ord[[e1]], ord[[e2]])
-          d <- reduc(d, CL[[e1]][1], CL[[e1]][2], CL[[e2]])
-        }
-        else {
-          newCL <- c(CL[[e2]], CL[[e1]][2])
-          newOrd <- c(ord[[e2]], ord[[e1]])
-          d <- reduc(d, CL[[e2]], CL[[e1]][1], CL[[e1]][2])
-        }
-
-
-      }
-      if (n1 == 1 & n2 == 2) {
-        if (blub == 1) {
-          newCL <- c(CL[[e1]], CL[[e2]][2])
-          newOrd <-  c(ord[[e1]], ord[[e2]])
-          d <- reduc(d, CL[[e1]], CL[[e2]][1], CL[[e2]][2])
-        }
-        else {
-          newCL <- c(CL[[e2]][1], CL[[e1]])
-          newOrd <- c(ord[[e2]], ord[[e1]])
-          d <- reduc(d, CL[[e2]][1], CL[[e2]][2], CL[[e1]])
-        }
-      }
-      if (n1 == 2 & n2 == 2) {
-        if (blub == 1) {
-          newCL <- c(CL[[e1]][2], CL[[e2]][2])
-          newOrd <-  c(rev(ord[[e1]]), ord[[e2]])
-          d <- reduc(d, CL[[e1]][2], CL[[e1]][1], CL[[e2]][1])
-          d <- reduc(d, CL[[e1]][2], CL[[e2]][1], CL[[e2]][2])
-        }
-        if (blub == 2) {
-          newCL <- c(CL[[e1]][1], CL[[e2]][2])
-          newOrd <-  c(ord[[e1]], ord[[e2]])
-          d <- reduc(d, CL[[e1]][1], CL[[e1]][2], CL[[e2]][1])
-          d <- reduc(d, CL[[e1]][1], CL[[e2]][1], CL[[e2]][2])
-        }
-        if (blub == 3) {
-          newCL <- c(CL[[e1]][2], CL[[e2]][1])
-          newOrd <-  c(rev(ord[[e1]]), rev(ord[[e2]]))
-          d <- reduc(d, CL[[e1]][2], CL[[e1]][1], CL[[e2]][2])
-          d <- reduc(d, CL[[e1]][2], CL[[e2]][2], CL[[e2]][1])
-        }
-        if (blub == 4) {
-          newCL <- c(CL[[e1]][1], CL[[e2]][1])
-          newOrd <-  c(ord[[e1]], rev(ord[[e2]]))
-          d <- reduc(d, CL[[e1]][1], CL[[e1]][2], CL[[e2]][2])
-          d <- reduc(d, CL[[e1]][1], CL[[e2]][2], CL[[e2]][1])
-        }
-      }
-      CL <- c(CL[-c(e1, e2)], list(newCL))
-      ord <- c(ord[-c(e1, e2)], list(newOrd))
-      lCL <- lCL - 1L
-    }
-  }
-  newOrd
-}
-
 
 # computes ordering O(n^2) statt O(n^3) !!!
 # needs debugging
-getOrderingNN2 <- function(x) {
+getOrderingNN <- function(x) {
   x <- as.matrix(x)
   labels <- attr(x, "Labels")
   if (is.null(labels))
@@ -241,7 +120,6 @@ getOrderingNN2 <- function(x) {
           newOrd <- c(ord[[e2]], ord[[e1]])
           d <- reduc(d, CL[[e2]], CL[[e1]][1], CL[[e1]][2])
         }
-
       }
       if (n1 == 1 & n2 == 2) {
         if (blub == 1) {
@@ -338,12 +216,3 @@ neighborNet <-  function(x, ord = NULL) {
   attr(spl, "cycle") <- 1:l
   as.networx(spl)
 }
-
-
-removeNonsense <- function(obj) {
-  nTips <- length(attr(obj, "labels"))
-  l <- lengths(obj)
-  ind <- which( (l == 0L) | (l == nTips))
-  obj <- obj[-ind]
-}
-
