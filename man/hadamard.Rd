@@ -57,7 +57,7 @@ lento(fit2)
 
 # write.nexus.splits(fit2, file = "test.nxs")
 # read this file into Spectronet or SplitsTree to show the network
-\dontrun{
+
 fit4 <- h4st(yeast)
 old.par <- par(no.readonly = TRUE)
 par(mfrow=c(3,1))
@@ -65,7 +65,6 @@ lento(fit4[[1]], main="Transversion")
 lento(fit4[[2]], main="Transition 1")
 lento(fit4[[3]], main="Transition 2")
 par(old.par)
-}
 
 }
 \references{
