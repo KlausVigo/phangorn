@@ -66,13 +66,14 @@ dist.hamming <- function(x, ratio = TRUE, exclude = "none"){
   contrast <- attr(x, "contrast")
   nc <- as.integer(attr(x, "nc"))
   con <- rowSums(contrast > 0) < 2
-  if (exclude == "all") {
-    index <- con[x[[1]]]
-    for (i in 2:l) index <- index & con[x[[i]]]
-    index <- which(index)
-    if(length(index)==0) warning('each site contains at least one ambiguous state, try exclude = "pairwise"')
-    x <- subset(x, select = index)
-  }
+  if (exclude == "all") x <- removeAmbiguousSites(x)
+#  {
+#    index <- con[x[[1]]]
+#    for (i in 2:l) index <- index & con[x[[i]]]
+#    index <- which(index)
+#    if(length(index)==0) warning('each site contains at least one ambiguous state, try exclude = "pairwise"')
+#    x <- subset(x, select = index)
+#  }
   weight <- attr(x, "weight")
   d <- numeric( (l * (l - 1)) / 2)
   if (exclude == "pairwise") {
@@ -90,8 +91,6 @@ dist.hamming <- function(x, ratio = TRUE, exclude = "none"){
     contrast[!con, ] <- 1L
     attr(x, "contrast") <- contrast
   }
-#  ub <- upperBound(x)
-#  x <- subset(x, select=ub>0)
   f <- init_fitch(x, FALSE, TRUE, m=1L)
   d <- f$hamming_dist()
   if (ratio) {
@@ -123,13 +122,14 @@ dist.ml <- function(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
   v <- numeric((l * (l - 1)) / 2)
   contrast <- attr(x, "contrast")
   con <- rowSums(contrast > 0) == 1
-  if (exclude == "all") {
-    index <- con[x[[1]]]
-    for (i in 2:l) index <- index & con[x[[i]]]
-    index <- which(index)
-    if(length(index)==0) warning('each site contains at least one ambiguous state, try exclude = "pairwise"')
-    x <- subset(x, select = index)
-  }
+  if (exclude == "all") x <- removeAmbiguousSites(x)
+#  {
+#    index <- con[x[[1]]]
+#    for (i in 2:l) index <- index & con[x[[i]]]
+#    index <- which(index)
+#    if(length(index)==0) warning('each site contains at least one ambiguous state, try exclude = "pairwise"')
+#    x <- subset(x, select = index)
+#  }
   unique_contrast <- grp_duplicated(contrast)
   if(exclude != "none"){
     pos_contrast <- rep(NA_integer_, length(unique_contrast))
@@ -348,7 +348,7 @@ write.nexus.dist <- function(x, file = "", append = FALSE, upper = FALSE,
 }
 
 
-
+# raus???
 RSS <- function(x, dm, trace = 0) {
   labels <- attr(x, "labels")
   dm <- as.matrix(dm)

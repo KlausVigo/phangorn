@@ -618,6 +618,21 @@ removeUndeterminedSites <- function(x, ...){
 }
 
 
+#' @rdname phyDat
+#' @export
+removeAmbiguousSites <- function(x){
+  contrast <- attr(x, "contrast")
+  nc <- as.integer(attr(x, "nc"))
+  con <- rowSums(contrast > 0) < 2
+  index <- con[x[[1]]]
+  for (i in 2:length(x)) index <- index & con[x[[i]]]
+  index <- which(index)
+  if(length(index)==0) stop('each site contains at least one ambiguous state!')
+  subset(x, select = index)
+}
+# add to dist.ml, dist.hamming, h4st
+
+
 removeParsUninfoSites <- function(data, exact=TRUE){
   nr <- attr(data, "nr")
   pis <- parsinfo(data, exact)

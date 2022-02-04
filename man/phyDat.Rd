@@ -25,6 +25,7 @@
 \alias{subset.phyDat}
 \alias{[.phyDat}
 \alias{unique.phyDat}
+\alias{removeAmbiguousSites}
 \alias{allSitePattern}
 \alias{genlight2phyDat}
 \alias{image.phyDat}
@@ -63,6 +64,8 @@ acgt2ry(obj)
 \method{unique}{phyDat}(x, incomparables = FALSE, identical = TRUE, ...)
 
 removeUndeterminedSites(x, ...)
+
+removeAmbiguousSites(x)
 
 allSitePattern(n, levels = c("a", "c", "g", "t"), names = NULL)
 
