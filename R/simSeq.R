@@ -96,6 +96,7 @@ simSeq <- function(x, ...)
 simSeq.phylo <- function(x, l = 1000, Q = NULL, bf = NULL, rootseq = NULL,
                          type = "DNA", model = NULL, levels = NULL, rate = 1,
                          ancestral = FALSE, code=1, ...) {
+  if(l<=0)stop("l must be greater than 0!")
   if (!is.null(model)) {
     model <- match.arg(model, .aamodels)
     getModelAA(model, bf = is.null(bf), Q = is.null(Q))
@@ -204,7 +205,7 @@ simSeq.pml <- function(x, ancestral = FALSE, ...) {
   type <- attr(x$data, "type")
   for (i in 1:n) {
     l <- sum(y == i)
-    res[[i]] <- simSeq(x$tree, l, Q = x$Q, bf = x$bf, type = type,
+    if(l > 0) res[[i]] <- simSeq(x$tree, l, Q = x$Q, bf = x$bf, type = type,
                        levels = levels, rate = g[i], ancestral = ancestral)
   }
   x <- call("c.phyDat", quote(res[[1]]))
