@@ -258,28 +258,16 @@ LaguerreQuad <- function(shape=1, ncats=4) {
                 dimnames = list(NULL, c("rate", "weight"))))
 }
 
-# needs to be fixed
-#LogNormalQuad <- function(shape, ncats){
-#  s = shape
-#  m = -(s^2)/2
-#  pp <- gauss.quad.prob(ncats, dist="normal", mu=m, sigma=s)
-#  matrix(c(exp(pp$nodes/m), pp$weights), ncol=2L,
-#         dimnames = list(NULL, c("rate", "weight")))
-#}
-
-
 
 findRoots <- function(shape, ncats) {
   # Determine rates based on Gamma's alpha and the number of bins
   # bins roots normalized to 1 of the General Laguerre Polynomial (GLP)
   coeff  <- integer(ncats + 1)
   for (i in 0:ncats) {
-#    coeff[i + 1] <- (-1)^i*nChooseK(ncats + shape, ncats - i)/factorial(i)
     coeff[i + 1] <- (-1)^i * exp(lchoose(ncats + shape, ncats - i) - lfactorial(i))
   }
   return(sort(Re(polyroot(coeff))))
 }
-
 
 
 Laguerre <- function(x, shape, degree) {
@@ -290,40 +278,6 @@ Laguerre <- function(x, shape, degree) {
   }
   return(y)
 }
-
-
-#Took this from R.basic -- the C version did not work when LaguerreQuad was
-#called internally. Adding this function fixed this issue (JMB 9-29-2016).
-#nChooseK <- function(n, k, log=FALSE) {
-#  nChooseK0 <- function(n, k) {
-#    if((n == k) || (k==0))
-#      return(1)
-#    m <- min(k, n-k)
-#    prod(seq(from=n, to=(n-m+1), by=-1)/(seq(from=m, to=1, by=-1)))
-#  }
-  # Process the arguments
-#  if (is.logical(log)) {
-#    if (log == TRUE)
-#      log <- exp(1)
-#    else
-#      log <- NULL
-#  }
-  # Repeat n or k to make the of equal length.
-#  nn <- length(n)
-#  nk <- length(k)
-#  if (nn > nk) {
-#    k <- rep(k, length.out=nn)
-#    nk <- nn
-#  } else if (nn < nk) {
-#    n <- rep(n, length.out=nk)
-#    nn <- nk
-#  }
-#  if (is.null(log)) {
-#    gamma(n+1) / (gamma(n-k+1) * gamma(k+1))
-#  } else {
-#    (lgamma(n+1) - (lgamma(n-k+1) + lgamma(k+1))) / log(log)
-#  }
-#}
 
 
 rates_n_weights <- function(shape, k, site.rate = "gamma"){
