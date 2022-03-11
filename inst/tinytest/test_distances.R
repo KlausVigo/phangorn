@@ -9,6 +9,7 @@ dm <- cophenetic(tree)
 Y <- phyDat(matrix(c("A", "C", "G", "T", "A", "C", "G", "A"), 2, 4,
                    dimnames=list(c("a", "b", NULL)), byrow=TRUE))
 
+bf <- c(.1,.2,.3,.4)
 fun <- function(s) - 3/4 * log(1 - 4/3 * s)
 
 data(woodmouse)
@@ -23,6 +24,13 @@ data(woodmouse)
                       dist.ml(woodmouse, exclude = "all"))
     expect_equivalent(dist.dna(woodmouse, "JC", pairwise.deletion = TRUE),
                       dist.ml(woodmouse, exclude = "pairwise"))
+    expect_equivalent(dist.dna(woodmouse, "F81", base.freq=bf,
+                               pairwise.deletion = FALSE),
+                      dist.ml(woodmouse, "F81", bf=bf, exclude = "all"))
+#  Check with Emmanuel
+#    expect_equivalent(dist.dna(woodmouse, "F81", base.freq=bf,
+#                               pairwise.deletion = TRUE),
+#                      dist.ml(woodmouse, "F81", bf=bf, exclude = "pairwise"))
     expect_equivalent( dist.dna(woodmouse, "raw"),
                        dist.hamming(woodmouse, exclude="all"))
     expect_equivalent( dist.dna(woodmouse, "raw", pairwise.deletion = TRUE),
@@ -45,7 +53,3 @@ data(woodmouse)
     writeDist(dm, "dm.txt", format="nexus", upper=FALSE)
     expect_equal(dm, readDist("dm.txt", format="nexus"))
     unlink("dm.txt")
-
-
-
-

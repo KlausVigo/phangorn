@@ -78,6 +78,10 @@ evolution. \emph{Molecular Biology and Evolution}, \bold{11}, 605--602.
 
 Jukes TH and Cantor CR (1969). \emph{Evolution of Protein Molecules}. New
 York: Academic Press. 21--132.
+
+McGuire, G., Prentice, M. J. and Wright, F. (1999). Improved error bounds for
+genetic distances from DNA sequences. \emph{Biometrics}, \bold{55},
+1064–1070.
 }
 \seealso{
 For more distance methods for nucleotide data see

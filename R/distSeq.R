@@ -36,6 +36,10 @@
 #'
 #' Jukes TH and Cantor CR (1969). \emph{Evolution of Protein Molecules}. New
 #' York: Academic Press. 21--132.
+#'
+#' McGuire, G., Prentice, M. J. and Wright, F. (1999). Improved error bounds for
+#' genetic distances from DNA sequences. \emph{Biometrics}, \bold{55},
+#' 1064–1070.
 #' @keywords cluster
 #' @examples
 #'
@@ -67,13 +71,6 @@ dist.hamming <- function(x, ratio = TRUE, exclude = "none"){
   nc <- as.integer(attr(x, "nc"))
   con <- rowSums(contrast > 0) < 2
   if (exclude == "all") x <- removeAmbiguousSites(x)
-#  {
-#    index <- con[x[[1]]]
-#    for (i in 2:l) index <- index & con[x[[i]]]
-#    index <- which(index)
-#    if(length(index)==0) warning('each site contains at least one ambiguous state, try exclude = "pairwise"')
-#    x <- subset(x, select = index)
-#  }
   weight <- attr(x, "weight")
   d <- numeric( (l * (l - 1)) / 2)
   if (exclude == "pairwise") {
@@ -115,21 +112,18 @@ dist.hamming <- function(x, ratio = TRUE, exclude = "none"){
 dist.ml <- function(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
                     k = 1L, shape = 1, ...){
   if(inherits(x, "DNAbin") | inherits(x, "AAbin")) x <- as.phyDat(x)
-  if (!inherits(x, "phyDat"))
-    stop("x must be of class phyDat")
+  if (!inherits(x, "phyDat")) stop("x must be of class phyDat")
   l <- length(x)
   d <- numeric((l * (l - 1)) / 2)
   v <- numeric((l * (l - 1)) / 2)
   contrast <- attr(x, "contrast")
   con <- rowSums(contrast > 0) == 1
-  if (exclude == "all") x <- removeAmbiguousSites(x)
-#  {
-#    index <- con[x[[1]]]
-#    for (i in 2:l) index <- index & con[x[[i]]]
-#    index <- which(index)
-#    if(length(index)==0) warning('each site contains at least one ambiguous state, try exclude = "pairwise"')
-#    x <- subset(x, select = index)
-#  }
+
+  if (exclude == "all" ) x <- removeAmbiguousSites(x)
+  ambig_sites <- hasAmbiguousSites(x)
+
+  model <- match.arg(model, c("JC69", "F81", .aamodels))
+
   unique_contrast <- grp_duplicated(contrast)
   if(exclude != "none"){
     pos_contrast <- rep(NA_integer_, length(unique_contrast))
@@ -140,7 +134,7 @@ dist.ml <- function(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
   }
   nc <- as.integer(attr(x, "nc"))
   nr <- as.integer(attr(x, "nr"))
-  model <- match.arg(model, c("JC69", "F81", .aamodels))
+
   if (!is.na(match(model, .aamodels)))
     getModelAA(model, bf = is.null(bf), Q = is.null(Q))
   if (is.null(bf) && model == "F81") bf <- baseFreq(x)
@@ -148,8 +142,21 @@ dist.ml <- function(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
     bf <- rep(1 / nc, nc)
   if (is.null(Q))
     Q <- rep(1, (nc - 1) * nc / 2L)
-
   bf <- as.double(bf)
+
+  if( (model == "JC69"  || model == "F81") && !ambig_sites && k==1){
+    d <- dist.hamming(x)
+    E <- .75
+    if(model == "F81") E <- 1 - sum(bf^2)
+    dist_jc <- function(d) -E * log(1- d/E )
+    var_jc <- function(d, n) d * (1-d) / (n * (1 - d / E)^2)
+    n <- sum(attr(x, "weight"))
+    attr(d, "variance") <- var_jc(d, n)
+    d <- dist_jc(d)
+    attr(d, "call") <- match.call()
+    attr(d, "method") <- model
+    return(d)
+  }
   eig <- edQt(Q = Q, bf = bf)
   pos <- 1
   k <- as.integer(k)
@@ -178,8 +185,7 @@ dist.ml <- function(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
     for (j in (i + 1):l) {
       w0 <- .Call('PWI', as.integer(x[[i]]), as.integer(x[[j]]),
                   nr, n, weight, li)
-      if (exclude == "pairwise")
-        w0[index] <- 0.0
+      if (exclude == "pairwise") w0[index] <- 0.0
       ind <- w0 > 0
 # more error checking
       sum_shared <- sum(w0[wshared])
@@ -213,6 +219,7 @@ dist.ml <- function(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
   attr(d, "Upper") <- FALSE
   attr(d, "call") <- match.call()
   attr(d, "variance") <- v
+  attr(d, "method") <- model
   class(d) <- "dist"
   return(d)
 }
