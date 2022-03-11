@@ -343,11 +343,11 @@ read.nexus.networx <- function(file, splits = TRUE) {
     if (length(x) == 2 * ntaxa) {
       TRANS <- matrix(x, ncol = 2, byrow = TRUE)
       TRANS[, 2] <- gsub("['\"]", "", TRANS[, 2])
-      TRANS <- list(node = as.numeric(TRANS[, 1]), label = TRANS[, 2])
+      TRANS <- list(node = as.integer(TRANS[, 1]), label = TRANS[, 2]) # data.frame??
     }
     else {
-      y <- as.numeric(x)
-      node <- numeric(ntaxa)
+      y <- as.integer(x)
+      node <- integer(ntaxa)
       label <- character(ntaxa)
       k <- 1
       for (i in seq_along(x)) {
@@ -382,20 +382,20 @@ read.nexus.networx <- function(file, splits = TRUE) {
   start <- edges[edges > max(dims, netStart)][1] + 1
   end <- semico[semico > start][1] - 1
   EDGE <- NULL
-  if (splits) EDGE <- matrix(0, nedges, 4, dimnames = list(NULL, c("id",
+  if (splits) EDGE <- matrix(0L, nedges, 4, dimnames = list(NULL, c("id",
       "vert_id_2", "vert_id_2", "splits_id")))
-  else EDGE <- matrix(0, nedges, 3, dimnames = list(NULL, c("id", "vert_id_2",
+  else EDGE <- matrix(0L, nedges, 3, dimnames = list(NULL, c("id", "vert_id_2",
       "vert_id_2")))
   j <- 1
   for (i in start:end) {
     tmp <- X[i]
     tmp <- gsub("\\,", "", tmp)
     tmp <- strsplit(tmp, "[[:space:]]")[[1]]
-    EDGE[j, 1] <- as.numeric(tmp[1])
-    EDGE[j, 2] <- as.numeric(tmp[2])
-    EDGE[j, 3] <- as.numeric(tmp[3])
+    EDGE[j, 1] <- as.integer(tmp[1])
+    EDGE[j, 2] <- as.integer(tmp[2])
+    EDGE[j, 3] <- as.integer(tmp[3])
     if (splits) {
-      EDGE[j, 4] <- as.numeric(sub("s=", "", tmp[4], ignore.case = TRUE))
+      EDGE[j, 4] <- as.integer(sub("s=", "", tmp[4], ignore.case = TRUE))
     }
     j <- j + 1
   }
