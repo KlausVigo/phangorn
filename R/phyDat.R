@@ -618,6 +618,18 @@ removeUndeterminedSites <- function(x, ...){
 }
 
 
+hasAmbiguousSites <- function(x){
+  contrast <- attr(x, "contrast")
+  nc <- as.integer(attr(x, "nc"))
+  con <- rowSums(contrast > 0) > 1
+  for (i in seq_along(x)) {
+    tmp <- con[x[[i]]]
+    if(any(tmp)) return(TRUE)
+  }
+  FALSE
+}
+
+
 #' @rdname phyDat
 #' @export
 removeAmbiguousSites <- function(x){
