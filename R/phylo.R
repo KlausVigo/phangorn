@@ -1760,7 +1760,7 @@ orderNNI <- function(tree, nTips) {
 rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV,
                        control = pml.control(epsilon = 1e-08, maxit = 25,
                                              trace = 0), ...) {
-  ind0 <- which(ll.0 > 0)
+#  ind0 <- which(ll.0 > 0)
   contrast <- attr(data, "contrast")
   tree$edge.length[tree$edge.length < 1e-08] <- 1e-08
   nTips <- as.integer(length(tree$tip.label))
@@ -2461,11 +2461,18 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
           tree2 <- checkLabels(tree2, tree$tip.label)
           tree2 <- reorder(tree2, "postorder")
         }
+        res <- opt_Edge(tree2, data, rooted = optRooted, eig = eig, w = w, g = g,
+                        bf = bf, inv=inv, rate = rate, ll.0 = ll.0, Mkv=Mkv,
+                        control = pml.control(epsilon = 1e-08, maxit = 10,
+                                              trace = trace, tau = tau))
+        ll2 <- res[[2]]
+        tree2 <- res[[1]]
+
         swap <- 1
-        ll2 <- pml.fit(tree2, data, bf, shape = shape, k = k, Q = Q,
-          levels = attr(data, "levels"), inv = inv, rate = rate,
-          g = g, w = w, eig = eig, INV = INV, ll.0 = ll.0,
-          llMix = llMix, wMix = wMix, site = FALSE, Mkv=Mkv)
+#        ll2 <- pml.fit(tree2, data, bf, shape = shape, k = k, Q = Q,
+#          levels = attr(data, "levels"), inv = inv, rate = rate,
+#          g = g, w = w, eig = eig, INV = INV, ll.0 = ll.0,
+#          llMix = llMix, wMix = wMix, site = FALSE, Mkv=Mkv)
 
         res <- opt_nni(tree2, data, rooted=optRooted, iter_max=25, trace=trace,
                        ll=ll2, w = w, g = g, eig = eig, bf = bf, inv=inv,
@@ -2578,7 +2585,6 @@ optimQuartet <- function(tree, data, eig, w, g, bf, rate, ll.0, nTips,
   start.ll <- old.ll <- new.ll <- loglik
   contrast2 <- contrast %*% eig[[2]]
   evi <- (t(eig[[3]]) * bf)
-  #    weight <- attr(data, "weight")
   eps <- 1
   iter <- 0
 
@@ -2591,9 +2597,6 @@ optimQuartet <- function(tree, data, eig, w, g, bf, rate, ll.0, nTips,
 
   ind.inv <- which(ll.0 > 0)
   tau <- control$tau
-  #    nr <- as.integer(length(weight))
-  #    nc <- as.integer(length(bf))
-  #    nco <- as.integer(nrow(contrast))
   lg <- k
   ScaleEPS <- 1.0 / 4294967296.0
   #    anc <- Ancestors(tree, 1:m, "parent")
@@ -2605,8 +2608,7 @@ optimQuartet <- function(tree, data, eig, w, g, bf, rate, ll.0, nTips,
       as.double(contrast), as.double(contrast2), nco, data,
       as.double(weight),  as.double(ll.0), as.double(tau))
     iter <- iter + 1
-    #        tree$edge.length <- EL[tree$edge[,2]]
-    tree$edge.length <- EL  # [treeP$edge[,2]] # vormals treeP
+    tree$edge.length <- EL  # [treeP$edge[,2]]
     newll <- pml.quartet(tree, data, bf = bf, g = g, w = w, eig = eig,
                          ll.0 = ll.0, k = k, nTips = nTips, weight = weight, inv = inv,
                          nr = nr, nc = nc, contrast = contrast, nco = nco)
@@ -2616,10 +2618,9 @@ optimQuartet <- function(tree, data, eig, w, g, bf, rate, ll.0, nTips,
     oldtree <- tree # vormals treeP
 #    if (control$trace > 1) cat(old.ll, " -> ", newll, "\n")
     old.ll <- newll
-    #        loli <- parent[1]
   }
   if (control$trace > 0) cat(start.ll, " -> ", newll, "\n")
-  list(tree = tree, logLik = newll, c(eps, iter)) # vormals treeP
+  list(tree = tree, logLik = newll, c(eps, iter))
 }
 
 
@@ -2628,7 +2629,7 @@ pml.quartet <- function(tree, data, bf = rep(.25, 4), k = 1, rate = 1, g, w,
                         inv=0, llMix = NULL,
                         wMix = 0, nTips, weight, nr, nc, contrast, nco, ...,
                         site = FALSE, Mkv=FALSE) {
-  # in C
+  # raus pos_ll.0
   if (is.null(ll.0)) {
     ll.0 <- numeric(nr)
   }
@@ -2643,9 +2644,9 @@ pml.quartet <- function(tree, data, bf = rep(.25, 4), k = 1, rate = 1, g, w,
     as.double(w), as.double(g), nr, nc, as.integer(k), eig,
     as.double(bf), node, edge, nTips, nco, contrast,
     N = as.integer(length(edge)))
-  # in C
+  # in C 1st line out
   if (inv > 0){
-    ind <- which(ll.0 > 0)
+    ind <- which(ll.0 > 0) # define outside
     siteLik[ind] <- log(exp(siteLik[ind]) + ll.0[ind])
   }
 #  if (!is.null(ll.0)) siteLik[ind] <- log(exp(siteLik[ind]) + ll.0[ind])
@@ -2776,19 +2777,6 @@ pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, ...) {
       loglik[indi] <- -Inf
     }
   }
-  #    trees <- vector("list", 2*m)
-  #    for(i in seq_along(loglik)){
-  #        ind = i
-  #        if( ind %% 2 ) swap.edge = c(2,4)
-  #        else swap.edge = c(1,4)
-  #        IND = index2edge(INDEX[(ind+1)%/%2,])
-  #        tree2 <- try(changeEdge(tree, IND[swap.edge], IND,
-  #                     edgeMatrix[ind,]) )
-  #        trees[[i]] <- tree2
-  #    }
-  #    class(trees) <- "multiPhylo"
-  #    trees <- .compressTipLabel(trees)
-  # , all=loglik
   list(tree = tree, loglik = ll, swap = swap, candidates = candidates)
 }
 
@@ -2816,7 +2804,8 @@ opt_nni <- function(tree, data, rooted, iter_max, trace, ll, ...){
       ll2 <- ll
     }
     swap <- swap + tmp$swap
-    if (trace > 0) cat(" optimize topology: ", ll, "-->", ll2, "\n")
+    if (trace > 0) cat(" optimize topology: ", ll, "-->", ll2, "\n",
+                       "NNI moves: ", tmp$swap, "\n")
     ll <- ll2
     iter <- iter + 1
     if (tmp$swap == 0) {
