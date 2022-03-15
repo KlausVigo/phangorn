@@ -355,27 +355,12 @@ write.nexus.dist <- function(x, file = "", append = FALSE, upper = FALSE,
 }
 
 
-# raus???
-RSS <- function(x, dm, trace = 0) {
-  labels <- attr(x, "labels")
-  dm <- as.matrix(dm)
-  dm <- dm[labels, labels]
-  y <- dm[lower.tri(dm)]
-  betahat <- attr(x, "weights")
-  X <- splits2design(x)
-  RSS <- sum((y - (X %*% betahat))^2)
-  RSS
-}
-
-
-
 #' @rdname writeDist
 #' @export
 readDist <- function(file, format="phylip") {
   format <- match.arg(format, c("phylip", "nexus"))
   if(format=="phylip") return(readPhylip(file))
   else return(read.nexus.dist(file))
-  NULL
 }
 
 
