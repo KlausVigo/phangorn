@@ -343,7 +343,7 @@ read.nexus.networx <- function(file, splits = TRUE) {
     if (length(x) == 2 * ntaxa) {
       TRANS <- matrix(x, ncol = 2, byrow = TRUE)
       TRANS[, 2] <- gsub("['\"]", "", TRANS[, 2])
-      TRANS <- list(node = as.integer(TRANS[, 1]), label = TRANS[, 2]) # data.frame??
+      TRANS <- data.frame(node = as.integer(TRANS[, 1]), label = TRANS[, 2])
     }
     else {
       y <- as.integer(x)
@@ -358,11 +358,9 @@ read.nexus.networx <- function(file, splits = TRUE) {
           k <- k + 1
         }
       }
-      TRANS <- list(node = node, label = label)
+      TRANS <- data.frame(node = node, label = label)
     }
   }
-
-
   vert <- grep("VERTICES", X, ignore.case = TRUE)
   start <- vert[vert > max(dims, netStart)][1] + 1
   end <- semico[semico > start][1] - 1
@@ -419,6 +417,24 @@ read.nexus.networx <- function(file, splits = TRUE) {
   edge <- EDGE[, c(2:3)]
   vert <- VERT[, c(2:3)]
 
+  if(length(TRANS$label) > sum(tabulate(edge)==1L)){
+    ntip <- length(TRANS$label) - sum(tabulate(edge)==1L)
+
+    if(!is.null(spl)){
+      nspl <- length(spl)
+      spl <- phangorn:::addTrivialSplits(spl)
+      ind <- unlist(spl[(nspl+1):length(spl)])
+      lab <- attr(spl, "labels")[ind]
+      pos <- match(lab, TRANS$label)
+    }
+    else{error("Problem")}
+    new_edges <- max(edge) + seq_along(ind)
+    edge <- rbind(edge, cbind(TRANS$node[pos], new_edges))
+    vert <- rbind( vert, vert[TRANS$node[pos], ])
+    if(!is.null(splitIndex))splitIndex <- c(splitIndex, (nspl+1):length(spl))
+    TRANS$node[pos] <- new_edges
+    el <- c(el, rep(0, ntip))
+  }
 
   if (translate.nodes) {
     oldLabel <- as.integer(TRANS$node)
