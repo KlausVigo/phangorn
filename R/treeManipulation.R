@@ -192,7 +192,7 @@ midpoint.phylo <- function(tree, node.labels = "support", ...) {
     tree$node.label <- node.label
   }
   attr(tree, "order") <- NULL
-  tree <- reorder(tree, "postorder")
+  tree <- reorder(tree)
   if (!is.null(oldtree$node.label)) {
     type <- match.arg(node.labels, c("support", "label", "delete"))
     if (type == "support") tree <- addConfidences.phylo(tree, oldtree)
@@ -219,14 +219,30 @@ midpoint.multiPhylo <- function(tree, node.labels = "support", ...) {
 #' @export
 pruneTree <- function(tree, ..., FUN = ">=") {
   if (is.null(tree$node)) stop("no node labels")
-  if (is.rooted(tree)) tree <- unroot(tree)
+  # if (is.rooted(tree)) tree <- unroot(tree)
+  has_edge.length <- !is.null(tree$edge.length)
+  tree <- reorder(tree)
+  if(has_edge.length){
+    tree <- minEdge(tree)
+    nh <- nodeHeight(tree)
+  }
+  else tree$edge.length <- rep(1,nrow(tree$edge))
   m <- max(tree$edge)
   nTips <- length(tree$tip.label)
   bs <- rep(TRUE, m)
   bs[ (nTips + 1):m] <- sapply(as.numeric(as.character(tree$node)), FUN, ...)
-  tree$edge.length[!bs[tree$edge[, 2]]] <- 0
+  if(has_edge.length){
+    for(i in seq_len(nrow(tree$edge))){
+      ei <- tree$edge[i,2]
+      if(!(is.na(bs[ei])) && !bs[ei]) nh[ei] <- nh[tree$edge[i,1]]
+    }
+    tree$edge.length <- nh[tree$edge[,1]] -  nh[tree$edge[,2]]
+  }
+  else tree$edge.length[!bs[tree$edge[, 2]]] <- 0
   attr(tree, "order") <- NULL
-  reorder(di2multi(tree), "postorder")
+  tree <- di2multi(tree)
+  if(!has_edge.length) tree$edge.length <- NULL
+  reorder(tree, "postorder")
 }
 
 
