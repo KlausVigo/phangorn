@@ -73,7 +73,7 @@ pBound <- function(x, UB, LB) {
 
   tmp <- apply(y, 2, fun2, singles)
   ind <- which(tmp)
-  if (length(ind) < 2) return(numeric(nTips))
+  if (length(ind) < 2) return(0)
 
   y <- y[, ind, drop = FALSE]
   weight0 <- weight0[ind]
