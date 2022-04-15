@@ -157,16 +157,16 @@ lowerBound <- function(x, cost = NULL) {
     states <- setdiff(states, noinfo) # get rid of "-", "?" in DNA
     if ( (length(states) == 0) | (length(states) == 1)) return(0)
     if (any(states %in% ambiguous)) {
-      n <- 0
+      n <- 0L
       contrast <- contrast[states, , drop = FALSE]
       while (nrow(contrast) > 0) {
         m <- which.max(colSums(contrast))
         contrast <- contrast[contrast[, m] == 0, , drop = FALSE]
-        n <- n + 1
+        n <- n + 1L
       }
-      return(n - 1)
+      return(n - 1L)
     }
-    else return(length(states) - 1)
+    else return(length(states) - 1L)
   }
   res <- sapply(states, fun, contrast, singles, noinfo, ambiguous)
   res
@@ -443,6 +443,7 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
   w <- logical(length(weight))
   # remove parsimony uniformative sites or duplicates
   # check for symmetric or
+  attr(data, "informative") <- NULL
   if(method=="fitch") data <- removeParsimonyUninfomativeSites(data, recursive=TRUE)
   else data <- unique(data)
   if(!is.null(attr(data, "informative"))) w[attr(data, "informative")] <- TRUE

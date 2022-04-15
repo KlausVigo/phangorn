@@ -43,6 +43,11 @@ allCircularSplits <- function(k, labels = NULL) {
 }
 
 
+degree <- function(x){
+  tabulate(x$edge)
+}
+
+
 #getIndex <- function(left, right, n) {
 #  if (n < max(left) | n < max(right)) stop("Error")
 #  left <- as.integer(left)
