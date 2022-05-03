@@ -26,6 +26,7 @@ nnin <- function(tree, n) {
   }
   tree1 <- reorder(tree1, "postorder")
   tree2 <- reorder(tree2, "postorder")
+  tree1$tip.label <- tree2$tip.label <- NULL
   result <- list(tree1, tree2)
   result
 }
@@ -126,22 +127,27 @@ one_nnin <- function(tree, n) {
 #'
 #' @rdname nni
 #' @export nni
-nni <- function(tree) {
+nni <- function(tree, ncores = 1) {
   tip.label <- tree$tip.label
   attr(tree, "order") <- NULL
   k <- min(tree$edge[, 1]) - 1
   n <- sum(tree$edge[, 2] > k)
   result <- vector("list", 2 * n)
   l <- 1
-  for (i in 1:n) {
-    tmp <- nnin(tree, i)
-    tmp[[1]]$tip.label <- tmp[[2]]$tip.label <- NULL
-    result[c(l, l + 1)] <- tmp
-    l <- l + 2
-  }
+  
+  result = Reduce('c', 
+    mclapply(
+          mc.cores = ncores,
+          seq(1,n),
+          function(i) {
+               nnin(tree, i)
+          }
+     ))
+
   attr(result, "TipLabel") <- tip.label
   class(result) <- "multiPhylo"
-  result
+
+  return(result)
 }
 
 
