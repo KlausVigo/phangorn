@@ -422,12 +422,12 @@ read.nexus.networx <- function(file, splits = TRUE) {
 
     if(!is.null(spl)){
       nspl <- length(spl)
-      spl <- phangorn:::addTrivialSplits(spl)
+      spl <- addTrivialSplits(spl)
       ind <- unlist(spl[(nspl+1):length(spl)])
       lab <- attr(spl, "labels")[ind]
       pos <- match(lab, TRANS$label)
     }
-    else{error("Problem")}
+    else{stop("Problem")}
     new_edges <- max(edge) + seq_along(ind)
     edge <- rbind(edge, cbind(TRANS$node[pos], new_edges))
     vert <- rbind( vert, vert[TRANS$node[pos], ])

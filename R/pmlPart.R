@@ -802,12 +802,10 @@ plot.pmlCluster <- function(x, which = c(1L:3L), caption =
 
 #' @export
 print.pmlPart <- function(x, ...) {
-  nc <- attr(x$fits[[1]]$data, "nc")
   levels <- attr(x$fits[[1]]$data, "levels")
   r <- length(x$fits)
   nc <- attr(x$fits[[1]]$data, "nc")
   k <- x$fits[[1]]$k
-
   lbf <- x$df["Bf", 2]
   bf <- matrix(0, lbf, nc)
   if (lbf > 1) dimnames(bf) <- list(1:r, levels)
