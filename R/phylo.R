@@ -2093,18 +2093,31 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                       rearrangement = ifelse(optNni, "NNI", "none"),
                       subs = NULL, ratchet.par = list(iter = 20L, maxit = 200L,
                       minit = 100L, prop = 1 / 2), ...) {
-  ratchet <- FALSE
-  ratchet2 <- FALSE
-  if (rearrangement ==  "none") optNni <- FALSE
-  if (rearrangement ==  "NNI") optNni <- TRUE
-  if (rearrangement ==  "stochastic"){
-    ratchet <- TRUE
-    optNni <- TRUE
-  }
-  if (rearrangement ==  "ratchet"){
-    ratchet2 <- TRUE
-    optNni <- TRUE
-  }
+#  ratchet <- FALSE
+#  ratchet2 <- FALSE
+#  ratchet3 <- FALSE
+  rearrangement <- match.arg(rearrangement,
+                        c("none", "NNI", "ratchet", "stochastic", "multi2di"))
+#  if (rearrangement ==  "none") optNni <- FALSE
+  optNni <- ifelse(rearrangement ==  "none", FALSE, TRUE)
+  perturbation <- ifelse(rearrangement %in%
+                        c("ratchet", "stochastic", "multi2di"), TRUE, FALSE)
+#  if (rearrangement == "NNI") optNni <- TRUE
+#  if (rearrangement == "stochastic"){
+#    ratchet <- TRUE
+#    perturbation <- TRUE
+#    optNni <- TRUE
+#  }
+#  if (rearrangement ==  "ratchet"){
+#    ratchet2 <- TRUE
+#    perturbation <- TRUE
+#    optNni <- TRUE
+#  }
+#  if (rearrangement ==  "multi2di"){
+#    ratchet3 <- TRUE
+#    perturbation <- TRUE
+#    optNni <- TRUE
+#  }
   extras <- match.call(expand.dots = FALSE)$...
   pmla <- c("wMix", "llMix")
   wMix <- object$wMix
@@ -2146,10 +2159,11 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       tree <- multi2di(tree)
     optEdge <- TRUE
   }
-  if (length(tree$tip.label) < (3 + !optRooted)) {
+  if (length(tree$tip.label) < (3 + !optRooted)) {  # + ratchet
     optNni <- FALSE
-    ratchet <- FALSE
-    ratchet2 <- FALSE
+#    ratchet <- FALSE
+#    ratchet2 <- FALSE
+    perturbation <- FALSE
   }
   if (length(tree$tip.label) < (2 + !optRooted)) {
     stop("rooted / unrooted tree needs at least 2 / 3 tips")
@@ -2359,7 +2373,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       if (trace > 0) cat("optimize rate matrix: ", ll, "-->", res[[2]], "\n")
       ll <- res[[2]]
     }
-    ### end sitewise
+    ### start sitewise
     if (optInv) {
       res <- optimInv(tree, data, inv = inv, INV = INV, Q = Q,
         bf = bf, eig = eig, k = k, shape = shape, rate = rate)
@@ -2446,20 +2460,35 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       rounds <- 1
       if (swap == 0) optNni <- FALSE
     }
+# if(perputation=TRUE)
 #    if ( (ratchet == TRUE) && (optNni == FALSE)) {
-    if ( ((ratchet == TRUE) || (ratchet2 == TRUE)) && (optNni == FALSE)) {
+# als eigene Funktion rausziehen
+#    if ( ((ratchet == TRUE) || (ratchet2 == TRUE)) && (optNni == FALSE)) {
+    if ( (perturbation == TRUE) && (optNni == FALSE)) {
       maxR <- ratchet.par$iter
       maxit <- ratchet.par$maxit
       kmax <- 1
       i <- 1
       while ((i < maxit)  && (kmax <= maxR)) {
-        if(ratchet == TRUE){
+#        if(ratchet == TRUE){
+        if(rearrangement == "stochastic"){
           tree2 <- rNNI(tree, moves = round(nTips * ratchet.par$prop), n = 1)
-        } else {
+        } else if(rearrangement == "ratchet"){
           tree2 <- bootstrap.phyDat(data, candidate.tree, bs = 1, rooted=optRooted,
                                     eps = tau, bf = bf, Q = Q, k = k, shape = shape)[[1]]
           tree2 <- checkLabels(tree2, tree$tip.label)
           tree2 <- reorder(tree2, "postorder")
+        } else if(rearrangement == "multi2di"){
+          tree2 <- di2multi(tree, tol=2*tau, tip2root=TRUE)
+          if(any(degree(tree2)>4)){
+            tree2 <- multi2di(tree2)
+            tree2 <- minEdge(tree2, tau)
+          }
+          #else return(list(tree, ll))
+          else{
+            i <- maxit
+            break()
+          }
         }
         res <- opt_Edge(tree2, data, rooted = optRooted, eig = eig, w = w, g = g,
                         bf = bf, inv=inv, rate = rate, ll.0 = ll.0, Mkv=Mkv,
@@ -2489,7 +2518,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         i <- i + 1
       }
       optNni <- TRUE
-      ratchet <- FALSE
+#      ratchet <- FALSE
+      perturbation <- FALSE
       rounds <- 1
     }
 #    if (rounds > control$maxit) opti <- FALSE
