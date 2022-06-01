@@ -1,3 +1,22 @@
+    CHANGES in PHANGORN VERSION 2.8.2
+
+BUG FIXES
+
+    o modelTest did not work if no tree was supplied
+
+NEW FEATURES
+
+    o some tidy functions: glance.phyDat, tidy.modelTest
+
+    o discrete.beta discretized beta distribution
+
+OTHER CHANGES
+
+    o dist.ml is a lot faster for the JC69 and F81 models if there are no
+
+      ambiguous sites present.
+
+
     CHANGES in PHANGORN VERSION 2.8.0
 
 BUG FIXES
