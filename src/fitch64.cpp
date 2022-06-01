@@ -341,7 +341,7 @@ void traversetwice(Fitch* obj, const IntegerMatrix & orig, int nni){
     int c2 = desc[i-2] -1;
     if(c1 > nni)update_vector(obj->X[c1 + 2*nTips].data(), obj->X[p + 2*nTips].data(),
        obj->X[c2].data(), nBits, states);
-    if(c1 > nni)update_vector(obj->X[c2 + 2*nTips].data(), obj->X[p + 2*nTips].data(),
+    if(c2 > nni)update_vector(obj->X[c2 + 2*nTips].data(), obj->X[p + 2*nTips].data(),
        obj->X[c1].data(), nBits, states);
   }
 }
