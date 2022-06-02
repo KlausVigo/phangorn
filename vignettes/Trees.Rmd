@@ -164,13 +164,18 @@ AIC(fitGTR)
 AICc(fitGTR)
 BIC(fitGTR)
 ```
-An alternative is to use the function `modelTest`  to compare different nucleotide or protein models the AIC, AICc or BIC, similar to popular programs ModelTest and ProtTest [@Posada1998], [@Posada2008], [@Abascal2005].
+An alternative is to use the function `modelTest`  to compare different nucleotide or protein models the AIC, AICc or BIC, similar to popular programs ModelTest and ProtTest [@Posada1998], [@Posada2008], [@Abascal2005]. By default available nucleotide or amino acid models available are compared. 
+```{r, echo=TRUE, eval=FALSE}
+mt <- modelTest(primates)
+```
+Here we can select only some common models:   
 ```{r, echo=FALSE}
 load("Trees.RData")
 ```
 ```{r, echo=TRUE, eval=FALSE}
-mt = modelTest(primates)
+mt <- modelTest(primates, model=c("JC", "F81", "K80", "HKY", "SYM", "GTR"))
 ```
+
 
 The results of `modelTest` is illustrated in following table:
 ```{r, echo=FALSE}
@@ -179,17 +184,16 @@ kable(mt, digits=2)
 ```
 
 
-The thresholds for the optimization in `modelTest` are not as strict as for `optim.pml` and no tree rearrangements are performed. As `modelTest` computes and optimizes a lot of models it would be a waste of computer time not to save these results. The results are saved as call together with the optimized trees in an environment and this call can be evaluated to get a `pml` object back to use for further optimization or analysis.
+The thresholds for the optimization in `modelTest` are not as strict as for `optim.pml` and no tree rearrangements are performed. As `modelTest` computes and optimizes a lot of models it would be a waste of computer time not to save these results. The results are saved as call together with the optimized trees in an environment and the function `as.pml` evaluates this call to get a `pml` object back to use for further optimization or analysis.
 ```{r, echo=TRUE}
-env <- attr(mt, "env")
-ls(envir=env)
-(fit <- eval(get("HKY+G+I", env), env))
+(fit <- as.pml(mt, "HKY+G+I"))
+(fit <- as.pml(mt, "BIC"))
 ```
 
 ## Bootstrap
 At last we may want to apply bootstrap to test how well the edges of the tree are supported: 
 ```{r, echo=TRUE, eval=FALSE}
-bs = bootstrap.pml(fitJC, bs=100, optNni=TRUE,
+bs <- bootstrap.pml(fitJC, bs=100, optNni=TRUE,
     control = pml.control(trace = 0))
 ```
 

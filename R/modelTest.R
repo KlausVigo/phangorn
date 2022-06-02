@@ -60,6 +60,8 @@ aic.weights <- function(aic) {
 #'                  "SYM", "GTR")))
 #'
 #' # some R magic
+#' (best_model <- as.pml(mT))
+#'
 #' env <- attr(mT, "env")
 #' ls(env=env)
 #' (F81 <- get("F81+G", env)) # a call
@@ -297,3 +299,27 @@ tidy.modelTest <- function(x, ...) {
   }
   data.frame(Model = x$Model, k = k, shape = shape, inv = inv)
 }
+
+
+#' @rdname pml
+#' @export
+as.pml <- function (x, ...)
+{
+  if (inherits(x, "pml"))
+    return(x)
+  UseMethod("as.pml")
+}
+
+
+#' @export
+as.pml.modelTest <- function(x, model="BIC", ...){
+  model <- match.arg(model, c("AIC", "AICc", "BIC", x$Model))
+  if(model %in% c("AIC", "AICc", "BIC")){
+    model <- x$Model[which.min(x[, model])]
+  }
+  env <- attr(x, "env")
+  best_model <- get(model, env)
+  eval(best_model, env)
+}
+
+

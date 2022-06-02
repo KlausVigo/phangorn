@@ -58,6 +58,8 @@ example(NJ)
                  "SYM", "GTR")))
 
 # some R magic
+(best_model <- as.pml(mT))
+
 env <- attr(mT, "env")
 ls(env=env)
 (F81 <- get("F81+G", env)) # a call
