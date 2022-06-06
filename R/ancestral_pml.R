@@ -207,12 +207,12 @@ fitchCoding2ambiguous2 <- function(x, type = "DNA") {
 
 #' @rdname ancestral.pml
 #' @export
-ancestral.pars <- function(tree, data, type = c("MPR", "ACCTRAN"), cost = NULL,
+ancestral.pars <- function(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"), cost = NULL,
                            return = "prob") {
   call <- match.call()
   type <- match.arg(type)
-  if (type == "ACCTRAN") {
-    res <- ptree(tree, data, return = return)
+  if (type == "ACCTRAN" || type=="POSTORDER") {
+    res <- ptree(tree, data, return = return, acctran=(type == "ACCTRAN"))
     attr(res, "call") <- call
   }
   if (type == "MPR") {
@@ -397,7 +397,7 @@ acctran <- function(tree, data) {
 }
 
 
-ptree <- function(tree, data, return = "prob") {
+ptree <- function(tree, data, return = "prob", acctran=TRUE) {
   tree <- reorder(tree, "postorder")
   edge <- tree$edge
   att <- attributes(data)
@@ -409,19 +409,19 @@ ptree <- function(tree, data, return = "prob") {
   f$traverse(edge)
   tmp <- reorder(tree)$edge
   tmp <- tmp[tmp[,2]>Ntip(tree),]
-  if(length(tmp)>0)f$acctran_traverse(tmp)
+  if(length(tmp)>0 && acctran==TRUE)f$acctran_traverse(tmp)
   res <- vector("list", m)
   att$names <- c(att$names, as.character((nTip+1):m))
+#  if(return == "phyDat"){
+#    res[1:nTip] <- data[1:nTip]
+#    if(type=="DNA"){
+#      for(i in (nTip+1):m)
+#        res[[i]] <- f$getAnc(i)[1:nr]
+#    }
+#  }
   if(return == "phyDat"){
-    res[1:nTip] <- data[1:nTip]
     if(type=="DNA"){
-      for(i in (nTip+1):m)
-        res[[i]] <- f$getAnc(i)[1:nr]
-    }
-  }
-  if(return == "phyDat"){
-    res[1:nTip] <- data[1:nTip]
-    if(type=="DNA"){
+      res[1:nTip] <- data[1:nTip]
       for(i in (nTip+1):m)
         res[[i]] <- f$getAncAmb(i)[1:nr]
     }
@@ -429,7 +429,7 @@ ptree <- function(tree, data, return = "prob") {
   }
   else {
     fun <- function(X) {
-      rs <- rowSums(X) # apply(X, 1, sum)
+      rs <- rowSums(X)
       X / rs
     }
     contrast <- att$contrast
