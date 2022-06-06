@@ -120,7 +120,6 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
     (FREQ & G & I))
   nseq <- sum(attr(data, "weight"))
 
-
   fitPar <- function(model, fit, G, I, k, FREQ) {
     m <- 1
     res <- matrix(NA, n, 6)
@@ -129,6 +128,7 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
     data.frame(c("Model", "df", "logLik", "AIC", "AICc", "BIC"))
     calls <- vector("list", n)
     trees <- vector("list", n)
+    if (trace > 0) print(model)
     fittmp <- optim.pml(fit, model = model, control = control)
     res[m, 1] <- model
     res[m, 2] <- fittmp$df
@@ -159,7 +159,7 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
       fitG <- update(fittmp, k = k)
       fitG <- optim.pml(fitG, model = model, optGamma = TRUE,
         control = control)
-      res[m, 1] <- paste0(model, "+G")
+      res[m, 1] <- paste0(model, "+G(", k, ")")
       res[m, 2] <- fitG$df
       res[m, 3] <- fitG$logLik
       res[m, 4] <- AIC(fitG)
@@ -174,7 +174,7 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
       fitGI <- update(fitI, k = k)
       fitGI <- optim.pml(fitGI, model = model, optGamma = TRUE,
         optInv = TRUE, control = control)
-      res[m, 1] <- paste0(model, "+G+I")
+      res[m, 1] <- paste0(model, "+G(", k, ")+I")
       res[m, 2] <- fitGI$df
       res[m, 3] <- fitGI$logLik
       res[m, 4] <- AIC(fitGI)
@@ -218,7 +218,7 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
       fitGF <- update(fitF, k = k, shape = fitG$shape)
       fitGF <- optim.pml(fitGF, model = model, optBf = TRUE,
         optGamma = TRUE, control = control)
-      res[m, 1] <- paste0(model, "+G+F")
+      res[m, 1] <- paste0(model, "+G(", k, ")+F")
       res[m, 2] <- fitGF$df
       res[m, 3] <- fitGF$logLik
       res[m, 4] <- AIC(fitGF)
@@ -233,7 +233,7 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
       fitGIF <- update(fitIF, k = k)
       fitGIF <- optim.pml(fitGIF, model = model, optBf = TRUE,
         optInv = TRUE, optGamma = TRUE, control = control)
-      res[m, 1] <- paste0(model, "+G+I+F")
+      res[m, 1] <- paste0(model, "+G(", k, ")+I+F")
       res[m, 2] <- fitGIF$df
       res[m, 3] <- fitGIF$logLik
       res[m, 4] <- AIC(fitGIF)
@@ -319,7 +319,9 @@ as.pml.modelTest <- function(x, model="BIC", ...){
   }
   env <- attr(x, "env")
   best_model <- get(model, env)
-  eval(best_model, env)
+  fit <- eval(best_model, env)
+  fit$model <- strsplit(model, "\\+")[[1]][1]
+  fit
 }
 
 

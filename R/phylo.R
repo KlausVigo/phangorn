@@ -780,9 +780,30 @@ getModelAA <- function(model, bf = TRUE, Q = TRUE) {
 }
 
 
+guess_model <- function(x){
+  model <- x$model
+  type <- attr(x$data, "type")
+  if(is.null(model)){
+    bf <- sd(x$bf)>0
+    Q <- sd(x$Q)>0
+    if(type=="DNA"){
+      if(bf==FALSE && Q==FALSE) model <- "JC"
+      if(bf==TRUE && Q==FALSE) model <- "F81"
+      if(bf==TRUE && Q==TRUE) model <- "GTR"
+    }
+    else if(bf==FALSE && Q==FALSE){ model <- "Mk"}
+    else {UNKNOWN}
+  }
+  if(x$k > 1) model <- paste0(model, "+G(", x$k, ")")
+  if(x$inv>0) model <- paste0(model, "+I")
+  model
+}
+
 #' @export
 print.pml <- function(x, ...) {
-  cat("\n loglikelihood:", x$logLik, "\n")
+  model <- guess_model(x)
+  cat("\nmodel:", model, "\n")
+  cat("\nloglikelihood:", x$logLik, "\n")
   w <- x$weight
   w <- w[w > 0]
   type <- attr(x$data, "type")
@@ -2166,10 +2187,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       tree <- multi2di(tree)
     optEdge <- TRUE
   }
-  if (length(tree$tip.label) < (3 + !optRooted)) {  # + ratchet
+  if (length(tree$tip.label) < (3 + !optRooted)) {
     optNni <- FALSE
-#    ratchet <- FALSE
-#    ratchet2 <- FALSE
     perturbation <- FALSE
   }
   if (length(tree$tip.label) < (2 + !optRooted)) {
