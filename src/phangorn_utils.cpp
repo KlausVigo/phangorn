@@ -252,7 +252,7 @@ int bip_shared(SEXP tree1, SEXP tree2, int nTips){
   std::sort(bp2.begin(), bp2.end());
 
   int shared=0;
-  for(auto i=0, j=0; i<bp1.size(), j<bp2.size(); ){
+  for(auto i=0U, j=0U; i<bp1.size(), j<bp2.size(); ){
     if(bp1[i]==bp2[j]) {
       shared++;
       i++;
