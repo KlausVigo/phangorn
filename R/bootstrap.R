@@ -393,7 +393,7 @@ plotBS <- function(tree, BStrees, type = "unrooted",
 #' If a list of partition is provided then the clade credibility is computed
 #' for the trees in x.
 #'
-#' \code{allCompat} returns a 50% majority rule consensus tree with added
+#' \code{allCompat} returns a 50\% majority rule consensus tree with added
 #' compatible splits similar to the option allcompat in MrBayes.
 #'
 #' @param x \code{x} is an object of class \code{multiPhylo} or \code{phylo}

@@ -38,7 +38,7 @@ edge length are performed.
 If a list of partition is provided then the clade credibility is computed
 for the trees in x.
 
-\code{allCompat} returns a 50% majority rule consensus tree with added
+\code{allCompat} returns a 50\% majority rule consensus tree with added
 compatible splits similar to the option allcompat in MrBayes.
 }
 \examples{
