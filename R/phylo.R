@@ -785,7 +785,8 @@ guess_model <- function(x){
   type <- attr(x$data, "type")
   if(is.null(model)){
     bf <- sd(x$bf)>0
-    Q <- sd(x$Q)>0
+    Q <- FALSE
+    if(length(Q)>1) Q <- sd(x$Q)>0
     if(type=="DNA"){
       if(bf==FALSE && Q==FALSE) model <- "JC"
       if(bf==TRUE && Q==FALSE) model <- "F81"
