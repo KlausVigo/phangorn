@@ -15,6 +15,10 @@ Y <- simSeq(tree, l=500, type = "AA", model="WAG")
                 multicore = TRUE, mc.cores = 2L)
     expect_equal(MT$Model[which.min(MT$BIC)], "F81+G(4)")
 
+    fitMT <- as.pml(MT)
+    expect_true(inherits(fitMT, "pml"))
+    expect_equal(fitMT$model, "F81")
+
     MT2 <- modelTest(X, tree = tree, model = c("JC", "F81", "K80", "HKY", "SYM",
           "GTR"), control = pml.control(epsilon = 1e-08, maxit = 10, trace = 0),
           multicore = TRUE, mc.cores = 2L)
