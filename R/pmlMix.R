@@ -317,7 +317,6 @@ optimMixEdge <- function(object, omega, trace = 1, ...) {
 #' #
 #' # simulation of mixture models
 #' #
-#' \dontrun{
 #' X <- allSitePattern(5)
 #' tree1 <- read.tree(text = "((t1:0.1,t2:0.5):0.1,(t3:0.1,t4:0.5):0.1,t5:0.5);")
 #' tree2 <- read.tree(text = "((t1:0.5,t2:0.1):0.1,(t3:0.5,t4:0.1):0.1,t5:0.5);")
@@ -341,7 +340,6 @@ optimMixEdge <- function(object, omega, trace = 1, ...) {
 #' fit.p <- pmlPen(fitMixEdge, .25)
 #' logLik(fit.p)
 #' AIC(fit.p, k=log(3000))
-#' }
 #' }
 #'
 #' @export pmlMix
