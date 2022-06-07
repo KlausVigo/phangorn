@@ -72,12 +72,7 @@ jobs:
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
 
-      - name: Install texlibs
-        run: |
-          tinytex::install_tinytex()
-          tinytex::tlmgr_update()
-          tinytex::tlmgr_install(c('standalone', 'xcolor', 'amsmath', 'graphics', 'fancyhdr', 'sectsty', 'psnfss', 'ae', 'hyperref', 'times'))
-        shell: Rscript {0}
+
 
       - name: Check
         env:
