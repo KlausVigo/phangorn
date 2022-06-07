@@ -1,0 +1,14 @@
+pandoc: 2.14.2
+pkgdown: 2.0.3
+pkgdown_sha: ~
+articles:
+  AdvancedFeatures: AdvancedFeatures.html
+  Ancestral: Ancestral.html
+  IntertwiningTreesAndNetworks: IntertwiningTreesAndNetworks.html
+  Networx: Networx.html
+  Trees: Trees.html
+last_built: 2022-06-07T13:52Z
+urls:
+  reference: http://klausvigo.github.io/phangorn/reference
+  article: http://klausvigo.github.io/phangorn/articles
+
