@@ -13,12 +13,12 @@ Y <- simSeq(tree, l=500, type = "AA", model="WAG")
     MT <- modelTest(X, tree = tree, I=FALSE,
                 control = pml.control(epsilon = 1e-08, maxit = 10, trace = 0),
                 multicore = TRUE, mc.cores = 2L)
-    expect_equal(MT$Model[which.min(MT$BIC)], "F81+G")
+    expect_equal(MT$Model[which.min(MT$BIC)], "F81+G(4)")
 
     MT2 <- modelTest(X, tree = tree, model = c("JC", "F81", "K80", "HKY", "SYM",
           "GTR"), control = pml.control(epsilon = 1e-08, maxit = 10, trace = 0),
           multicore = TRUE, mc.cores = 2L)
-    expect_equal(MT2$Model[which.min(MT2$BIC)], "F81+G")
+    expect_equal(MT2$Model[which.min(MT2$BIC)], "F81+G(4)")
 
     # amino acid models with FREQ
     MT_AA <- modelTest(Y, model=c("JTT", "WAG"), FREQ = TRUE,

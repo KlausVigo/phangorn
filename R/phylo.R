@@ -792,7 +792,7 @@ guess_model <- function(x){
       if(bf==TRUE && Q==TRUE) model <- "GTR"
     }
     else if(bf==FALSE && Q==FALSE){ model <- "Mk"}
-    else {UNKNOWN}
+    else {model <- "UNKNOWN"}
   }
   if(x$k > 1) model <- paste0(model, "+G(", x$k, ")")
   if(x$inv>0) model <- paste0(model, "+I")
