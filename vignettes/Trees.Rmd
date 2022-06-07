@@ -106,21 +106,21 @@ Next we assign branch length to the tree. The branch length are proportional to 
 treeRatchet  <- acctran(treeRatchet, primates)
 ```
 The parsimony ratchet implicitly performs a bootstrap analysis (step 1). We make use of this and store the trees which where visited. This allows us to add bootstrap support values to the tree. 
-```{r}
+```{r midpoint}
 plotBS(midpoint(treeRatchet), type="phylogram")
 ```
 
 ## Branch and bound
 For data sets with few species it is also possible to find all most parsimonious trees using a branch and bound algorithm [@Hendy1982]. For data sets with more than 10 taxa this can take a long time and depends strongly on how tree like the data are. And for more than 20-30 taxa this will take almost forever.  
-```{r}
+```{r bab}
 (trees <- bab(subset(primates,1:10)))
 ```
 
 # Maximum likelihood
 The last method we will describe in this vignette is Maximum Likelihood (ML) as introduced by Felsenstein [@Felsenstein1981].
 We can easily compute the likelihood for a tree given the data
-```{r}
-fit = pml(treeNJ, data=primates)
+```{r pml}
+fit <- pml(treeNJ, data=primates)
 fit
 ```
 The function `pml` returns an object of class `pml`. This object contains the data, the tree and many different parameters of the model like the likelihood. There are many generic functions for the class `pml` available, which allow the handling of these objects.
@@ -129,11 +129,11 @@ methods(class="pml")
 ```
 The object fit just estimated the likelihood for the tree it got supplied, but the branch length are not optimized for the Jukes-Cantor model yet, which can be done with the function `optim.pml`.
 ```{r}
-fitJC  <- optim.pml(fit, TRUE)
+fitJC  <- optim.pml(fit, rearrangement="NNI")
 logLik(fitJC)
 ```
 With the default values`pml` will estimate a Jukes-Cantor model. The generic function `update` allows to change parameters. We will change the model to the GTR + $\Gamma(4)$ + I model and then optimize all the parameters.
-```{r}
+```{r GTR+G+I}
 fitGTR <- update(fit, k=4, inv=0.2)
 fitGTR <- optim.pml(fitGTR, model="GTR", optInv=TRUE, optGamma=TRUE,
     rearrangement = "NNI", control = pml.control(trace = 0))
@@ -142,7 +142,7 @@ fitGTR
 With the control parameters the thresholds for the fitting process can be changed. Here we want just to suppress output during the fitting process. For larger trees the NNI rearrangements often get stuck in a local maximum. We added two stochastic algorithms to improve topology search. The first (set `rearrangement="stochastic"`) performs stochastic rearrangements similar as in [@Nguyen2015], which makes random NNI permutation to the tree, which than gets optimized to escape local optima. The second option (rearrangement="ratchet") perform the likelihood ratchet [@Vos2003].
 
 While these algorithms may find better trees they will also take more time.
-```{r}
+```{r stochastic}
 fitGTR <- optim.pml(fitGTR, model="GTR", optInv=TRUE, optGamma=TRUE,
     rearrangement = "stochastic", control = pml.control(trace = 0))
 fitGTR
@@ -150,15 +150,15 @@ fitGTR
 
 ## Model selection
 We can compare nested models for the JC and GTR + $\Gamma(4)$ + I model using likelihood ratio statistic
-```{r}
+```{r anova}
 anova(fitJC, fitGTR)
 ```
 with the Shimodaira-Hasegawa \cite{Shimodaira1999} test
-```{r}
+```{r SH_test}
 SH.test(fitGTR, fitJC)
 ```
 or with the AIC
-```{r}
+```{r AIC}
 AIC(fitJC)
 AIC(fitGTR)
 AICc(fitGTR)
@@ -185,7 +185,7 @@ kable(mt, digits=2)
 
 
 The thresholds for the optimization in `modelTest` are not as strict as for `optim.pml` and no tree rearrangements are performed. As `modelTest` computes and optimizes a lot of models it would be a waste of computer time not to save these results. The results are saved as call together with the optimized trees in an environment and the function `as.pml` evaluates this call to get a `pml` object back to use for further optimization or analysis.
-```{r, echo=TRUE}
+```{r as.pml, echo=TRUE}
 (fit <- as.pml(mt, "HKY+G+I"))
 (fit <- as.pml(mt, "BIC"))
 ```
@@ -251,13 +251,8 @@ fit <- optim.pml(fitStart, model="GTR", optGamma=TRUE, rearrangement="stochastic
 mt <- modelTest(dat, tree=tree, multicore=TRUE)
 mt[order(mt$AICc),]
 # choose best model from the table according to AICc
-bestmodel <- mt$Model[which.min(mt$AICc)]
+fitStart <- as.pml(mt, "AICc")
 
-env <- attr(mt, "env")
-fitStart <- eval(get("GTR+G+I", env), env)
-
-# or let R search the table
-fitStart <- eval(get(bestmodel, env), env)
 # equivalent to:   fitStart = eval(get("GTR+G+I", env), env)
 fit <- optim.pml(fitStart, rearrangement = "stochastic",
     optGamma=TRUE, optInv=TRUE, model="GTR")
@@ -281,8 +276,7 @@ tree <- NJ(dm)
 # run all available amino acid models
 (mt <- modelTest(dat, model="all", multicore=TRUE))
 
-env <- attr(mt, "env")
-fitStart <- eval(get(mt$Model[which.min(mt$BIC)], env), env)
+fitStart <- as.pml(mt)
 
 fitNJ <- pml(tree, dat, model="JTT", k=4, inv=.2)
 fit <- optim.pml(fitNJ, rearrangement = "stochastic",

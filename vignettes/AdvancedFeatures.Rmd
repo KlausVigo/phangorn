@@ -40,7 +40,7 @@ To better understand how to define our own data type it is useful to know a bit 
 As an example we will show here several possibilities to define nucleotide data with gaps defined as a fifth state. Ignoring gaps or coding them as ambiguous sites - as it is done in most programs, also in phangorn as default - may be misleading (see [@Warnow2012]). When the number of gaps is low and the gaps are missing at random coding gaps as separate state may be not important.
 
 Let assume we have given a matrix where each row contains a character vector of a taxonomic unit:
-```{r}
+```{r generate data}
 library(phangorn)
 data = matrix(c("r","a","y","g","g","a","c","-","c","t","c","g",
     "a","a","t","g","g","a","t","-","c","t","c","a",
@@ -49,19 +49,19 @@ data = matrix(c("r","a","y","g","g","a","c","-","c","t","c","g",
 data
 ```
 Normally we would transform this matrix into an phyDat object and gaps are handled as ambiguous character like "?".
-```{r}
+```{r dna}
 gapsdata1 = phyDat(data)
 gapsdata1
 ```
 Now we will define a "USER" defined object and have to supply a vector levels of the character states for the new data, in our case the for nucleotide states and the gap. Additional we can define ambiguous states which can be any of the states.
-```{r}
+```{r 5state}
 gapsdata2 = phyDat(data, type="USER", levels=c("a","c","g","t","-"),
     ambiguity = c("?", "n"))
 gapsdata2
 ```
 This is not yet what we wanted as two sites of our alignment, which contain the ambiguous characters "r" and "y", got deleted.
 To define ambiguous characters like "r" and "y" explicitly we have to supply a contrast matrix similar to contrasts for factors.
-```{r}
+```{r contrast}
 contrast = matrix(data = c(1,0,0,0,0,
     0,1,0,0,0,
     0,0,1,0,0,
@@ -137,9 +137,9 @@ The parameter vector subs accepts a vector of consecutive integers and at least 
 Negative values indicate that there is no direct transition is possible and the rate is set to zero.
 ```{r}
 library(ape)
-tree = unroot(rtree(3))
-fit = pml(tree, gapsdata3)
-fit = optim.pml(fit, optQ=TRUE, subs=c(1,0,1,2,1,0,2,1,2,2),
+tree <- unroot(rtree(3))
+fit <- pml(tree, gapsdata3)
+fit <- optim.pml(fit, optQ=TRUE, subs=c(1,0,1,2,1,0,2,1,2,2),
     control=pml.control(trace=0))
 fit
 ```
