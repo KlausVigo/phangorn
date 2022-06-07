@@ -58,7 +58,8 @@ Description: Allows for estimation of phylogenetic trees and networks
     selection and visualization of phylogenetic networks as described in
     Schliep et al. (2017) <doi:10.1111/2041-210X.12760>.
 License: GPL (>= 2)
-URL: https://github.com/KlausVigo/phangorn
+URL: https://github.com/KlausVigo/phangorn,
+    http://klausvigo.github.io/phangorn/
 BugReports: https://github.com/KlausVigo/phangorn/issues
 Depends:
     ape (>= 5.5),
