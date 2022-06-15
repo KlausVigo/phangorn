@@ -8,8 +8,6 @@ NEW FEATURES
 
     o some tidy functions: glance.phyDat, tidy.modelTest
 
-    o discrete.beta discretized beta distribution
-
 OTHER CHANGES
 
     o dist.ml is a lot faster for the JC69 and F81 models if there are no
