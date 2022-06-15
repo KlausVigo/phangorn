@@ -80,81 +80,133 @@ parameters.</p>
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
 <dd><p>So far only an object of class <code>modelTest</code>.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Further arguments passed to or from other methods.</p></dd>
+
+
 <dt>tree</dt>
 <dd><p>A phylogenetic <code>tree</code>, object of class <code>phylo</code>.</p></dd>
+
+
 <dt>data</dt>
 <dd><p>An alignment, object of class <code>phyDat</code>.</p></dd>
+
+
 <dt>bf</dt>
 <dd><p>Base frequencies (see details).</p></dd>
+
+
 <dt>Q</dt>
 <dd><p>A vector containing the lower triangular part of the rate matrix.</p></dd>
+
+
 <dt>inv</dt>
 <dd><p>Proportion of invariable sites.</p></dd>
+
+
 <dt>k</dt>
 <dd><p>Number of intervals of the discrete gamma distribution.</p></dd>
+
+
 <dt>shape</dt>
 <dd><p>Shape parameter of the gamma distribution.</p></dd>
+
+
 <dt>rate</dt>
 <dd><p>Rate.</p></dd>
+
+
 <dt>model</dt>
 <dd><p>allows to choose an amino acid models or nucleotide model, see
 details.</p></dd>
+
+
 <dt>site.rate</dt>
 <dd><p>Indicates what type of gamma distribution to use. Options
 are "gamma" approach of Yang 1994 (default), "quadrature" after the Laguerre
 quadrature approach of Felsenstein 2001 or "freerate".</p></dd>
+
+
 <dt>object</dt>
 <dd><p>An object of class <code>pml</code>.</p></dd>
+
+
 <dt>optNni</dt>
 <dd><p>Logical value indicating whether topology gets optimized (NNI).</p></dd>
+
+
 <dt>optBf</dt>
 <dd><p>Logical value indicating whether base frequencies gets
 optimized.</p></dd>
+
+
 <dt>optQ</dt>
 <dd><p>Logical value indicating whether rate matrix gets optimized.</p></dd>
+
+
 <dt>optInv</dt>
 <dd><p>Logical value indicating whether proportion of variable size
 gets optimized.</p></dd>
+
+
 <dt>optGamma</dt>
 <dd><p>Logical value indicating whether gamma rate parameter gets
 optimized.</p></dd>
+
+
 <dt>optEdge</dt>
 <dd><p>Logical value indicating the edge lengths gets optimized.</p></dd>
+
+
 <dt>optRate</dt>
 <dd><p>Logical value indicating the overall rate gets optimized.</p></dd>
+
+
 <dt>optRooted</dt>
 <dd><p>Logical value indicating if the edge lengths of a rooted
 tree get optimized.</p></dd>
+
+
 <dt>control</dt>
 <dd><p>A list of parameters for controlling the fitting process.</p></dd>
+
+
 <dt>rearrangement</dt>
 <dd><p>type of tree tree rearrangements to perform, one of
 "none", "NNI", "stochastic" or "ratchet"</p></dd>
+
+
 <dt>subs</dt>
 <dd><p>A (integer) vector same length as Q to specify the optimization
 of Q</p></dd>
+
+
 <dt>ratchet.par</dt>
 <dd><p>search parameter for stochastic search</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p><code>pml</code> or <code>optim.pml</code> return a list of class <code>pml</code>,
+    
+
+<p><code>pml</code> or <code>optim.pml</code> return a list of class <code>pml</code>,
 some are useful for further computations like</p>
 <dl><dt>tree</dt>
 <dd><p>the phylogenetic
 tree.</p></dd>
-<dt>data</dt>
+ <dt>data</dt>
 <dd><p>the alignment.</p></dd>
-<dt>logLik</dt>
+ <dt>logLik</dt>
 <dd><p>Log-likelihood of the
 tree.</p></dd>
-<dt>siteLik</dt>
+ <dt>siteLik</dt>
 <dd><p>Site log-likelihoods.</p></dd>
-<dt>weight</dt>
+ <dt>weight</dt>
 <dd><p>Weight of the
 site patterns.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -346,7 +398,7 @@ discrete morphological character data. <em>Systematic Biology</em> <b>50</b>,
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
     </footer></div>

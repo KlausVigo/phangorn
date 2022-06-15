@@ -78,26 +78,49 @@ to the (internal) edges.</p>
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
 <dd><p>an object of class <code>pml</code> or <code>phyDat</code>.</p></dd>
+
+
 <dt>bs</dt>
 <dd><p>number of bootstrap samples.</p></dd>
+
+
 <dt>trees</dt>
 <dd><p>return trees only (default) or whole <code>pml</code> objects.</p></dd>
+
+
 <dt>multicore</dt>
 <dd><p>logical, whether models should estimated in parallel.</p></dd>
+
+
 <dt>mc.cores</dt>
 <dd><p>The number of cores to use during bootstrap. Only supported
 on UNIX-alike systems.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>further parameters used by <code>optim.pml</code> or
 <code>plot.phylo</code>.</p></dd>
+
+
 <dt>FUN</dt>
 <dd><p>the function to estimate the trees.</p></dd>
+
+
 <dt>jumble</dt>
 <dd><p>logical, jumble the order of the sequences.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p><code>bootstrap.pml</code> returns an object of class <code>multi.phylo</code>or a list where each element is an object of class <code>pml</code>. <code>plotBS</code>returns silently a tree, i.e. an object of class <code>phylo</code> with the
+    
+
+<p><code>bootstrap.pml</code> returns an object of class <code>multi.phylo</code></p>
+
+
+<p>or a list where each element is an object of class <code>pml</code>. <code>plotBS</code></p>
+
+
+<p>returns silently a tree, i.e. an object of class <code>phylo</code> with the
 bootstrap values as node labels. The argument <code>BStrees</code> is optional and
 if not supplied the tree with labels supplied in the <code>node.label</code> slot.</p>
     </div>
@@ -175,7 +198,7 @@ trees. <em>Molecular Biology and Evolution</em> <b>3</b>, 403--417</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
     </footer></div>
