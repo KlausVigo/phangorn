@@ -7,3 +7,4 @@ src/*.dll
 .httr-oauth
 TODO
 docs
+vignettes/revdep/
