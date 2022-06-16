@@ -14,7 +14,7 @@ OTHER CHANGES
 
       ambiguous sites present.
 
-    o added a few helper function to simplified some workflows (e.g. modelTest)
+    o added a few helper function to simplifiy some workflows (e.g. modelTest)
 
 
     CHANGES in PHANGORN VERSION 2.8.0
