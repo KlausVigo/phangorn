@@ -271,17 +271,6 @@ anova.pml <- function(object, ...) {
     class = c("anova", "data.frame"))
 }
 
-# vcov.pml <- function(object, obs=FALSE,...){
-#    if(obs) FI = score4(object)[[2]]
-#    else FI = score(object,FALSE)[[2]]
-#    l = dim(FI)[1]
-#    res = try(solve(FI))
-#    if(class(res) == "try-error"){
-#        cat("Covariance is ill-conditioned !! \n")
-#        res = solve(FI + diag(l)* 1e-8)
-#        }
-#    res
-# }
 
 #' @export
 vcov.pml <- function(object, ...) {
