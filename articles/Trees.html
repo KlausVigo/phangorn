@@ -78,7 +78,7 @@
       Graz University of Technology<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2022-06-17</h4>
+            <h4 data-toc-skip class="date">2022-06-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/vignettes/Trees.Rmd" class="external-link"><code>vignettes/Trees.Rmd</code></a></small>
       <div class="d-none name"><code>Trees.Rmd</code></div>
@@ -268,23 +268,23 @@ Rooted UPGMA tree.
 <pre><code><span class="co">## </span>
 <span class="co">## model: GTR+G(4)+I </span>
 <span class="co">## </span>
-<span class="co">## loglikelihood: -2607.142 </span>
+<span class="co">## loglikelihood: -2606.75 </span>
 <span class="co">## </span>
 <span class="co">## unconstrained loglikelihood: -1230.335 </span>
-<span class="co">## Proportion of invariant sites: 0.005570506 </span>
+<span class="co">## Proportion of invariant sites: 0.00562857 </span>
 <span class="co">## Discrete gamma model</span>
 <span class="co">## Number of rate categories: 4 </span>
-<span class="co">## Shape parameter: 2.649418 </span>
+<span class="co">## Shape parameter: 2.701215 </span>
 <span class="co">## </span>
 <span class="co">## Rate matrix:</span>
-<span class="co">##            a           c           g          t</span>
-<span class="co">## a  0.0000000  0.96188626 84.72624835  0.6511675</span>
-<span class="co">## c  0.9618863  0.00000000  0.00459209 32.5986202</span>
-<span class="co">## g 84.7262483  0.00459209  0.00000000  1.0000000</span>
-<span class="co">## t  0.6511675 32.59862017  1.00000000  0.0000000</span>
+<span class="co">##            a            c            g         t</span>
+<span class="co">## a  0.0000000  0.809993516 75.174936272  0.648888</span>
+<span class="co">## c  0.8099935  0.000000000  0.004647498 29.027548</span>
+<span class="co">## g 75.1749363  0.004647498  0.000000000  1.000000</span>
+<span class="co">## t  0.6488880 29.027547743  1.000000000  0.000000</span>
 <span class="co">## </span>
 <span class="co">## Base frequencies:  </span>
-<span class="co">## 0.3964129 0.3787022 0.04027635 0.1846085</span></code></pre>
+<span class="co">## 0.3963754 0.378828 0.04027169 0.1845249</span></code></pre>
 <div class="section level3">
 <h3 id="model-selection">Model selection<a class="anchor" aria-label="anchor" href="#model-selection"></a>
 </h3>
@@ -294,28 +294,28 @@ Rooted UPGMA tree.
 <pre><code><span class="co">## Likelihood Ratio Test Table</span>
 <span class="co">##   Log lik. Df Df change Diff log lik. Pr(&gt;|Chi|)    </span>
 <span class="co">## 1  -3068.3 25                                       </span>
-<span class="co">## 2  -2607.1 35        10        922.31  &lt; 2.2e-16 ***</span>
+<span class="co">## 2  -2606.8 35        10        923.09  &lt; 2.2e-16 ***</span>
 <span class="co">## ---</span>
 <span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></code></pre>
 <p>with the Shimodaira-Hasegawa  test</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/SH.test.html">SH.test</a></span><span class="op">(</span><span class="va">fitGTR</span>, <span class="va">fitJC</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">##      Trees      ln L Diff ln L p-value</span>
-<span class="co">## [1,]     1 -2607.142    0.0000  0.5027</span>
-<span class="co">## [2,]     2 -3068.295  461.1534  0.0000</span></code></pre>
+<span class="co">## [1,]     1 -2606.750    0.0000  0.5007</span>
+<span class="co">## [2,]     2 -3068.295  461.5449  0.0000</span></code></pre>
 <p>or with the AIC</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">fitJC</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">## [1] 6186.59</span></code></pre>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">fitGTR</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## [1] 5284.283</span></code></pre>
+<pre><code><span class="co">## [1] 5283.5</span></code></pre>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/modelTest.html">AICc</a></span><span class="op">(</span><span class="va">fitGTR</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## [1] 5297.14</span></code></pre>
+<pre><code><span class="co">## [1] 5296.358</span></code></pre>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">BIC</a></span><span class="op">(</span><span class="va">fitGTR</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## [1] 5404.919</span></code></pre>
+<pre><code><span class="co">## [1] 5404.136</span></code></pre>
 <p>An alternative is to use the function <code>modelTest</code> to compare different nucleotide or protein models the AIC, AICc or BIC, similar to popular programs ModelTest and ProtTest <span class="citation">(D. Posada and Crandall 1998)</span>, <span class="citation">(David Posada 2008)</span>, <span class="citation">(Abascal, Zardoya, and Posada 2005)</span>. By default available nucleotide or amino acid models available are compared.</p>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modelTest.html">modelTest</a></span><span class="op">(</span><span class="va">primates</span><span class="op">)</span></code></pre></div>
