@@ -792,15 +792,15 @@ guess_model <- function(x){
 #' @export
 print.pml <- function(x, ...) {
   model <- guess_model(x)
-  cat("\nmodel:", model, "\n")
-  cat("\nloglikelihood:", x$logLik, "\n")
+  cat("model:", model, "\n")
+  cat("loglikelihood:", x$logLik, "\n")
   w <- x$weight
   w <- w[w > 0]
   type <- attr(x$data, "type")
   levels <- attr(x$data, "levels")
   nc <- attr(x$data, "nc")
   ll0 <- sum(w * log(w / sum(w)))
-  cat("\nunconstrained loglikelihood:", ll0, "\n")
+  cat("unconstrained loglikelihood:", ll0, "\n")
   if (x$inv > 0) cat("Proportion of invariant sites:", x$inv, "\n")
   if (x$k > 1) {
     cat("Discrete gamma model\n")
@@ -817,7 +817,7 @@ print.pml <- function(x, ...) {
     cat("\nBase frequencies:  \n")
     bf <- x$bf
     names(bf) <- levels
-    cat(bf, "\n")
+    print(bf) #cat(bf, "\n")
   }
   if (type == "CODON") {
     cat("dn/ds:", x$dnds, "\n")
@@ -833,7 +833,7 @@ print.pml <- function(x, ...) {
     cat("\nBase frequencies:  \n")
     bf <- x$bf
     names(bf) <- levels
-    cat(bf, "\n")
+    print(bf) #cat(bf, "\n")
   }
 }
 
