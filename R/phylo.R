@@ -429,8 +429,6 @@ rnodes <- function(tree, data, w, g, eig, bf) {
   dat <- vector(mode = "list", length = m * l)
   dim(dat) <- c(l, m)
   tmp <- length(data)
-  #    for(i in seq_along(w))dat[i,1:tmp]=new2old.phyDat(data) #
-  #    dat[1,1:tmp] <- data  vielleicht gebraucht
   el <- tree$edge.length
   P <- getP(el, eig, g)
   nr <- as.integer(attr(data, "nr"))
