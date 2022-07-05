@@ -1,8 +1,3 @@
-#
-# UPGMA, NJ, UNJ, nnls
-#
-
-
 #' UPGMA and WPGMA
 #'
 #' UPGMA and WPGMA clustering. Just a wrapper function around
@@ -155,18 +150,19 @@ UNJ <- function(x){
 #' @param x number of taxa.
 #' @param splits one of "all", "star".
 #' @param dm a distance matrix.
-#' @param rooted compute a "rooted" or "unrooted" tree.
+#' @param method compute an "unrooted", "ultrametric" or "tipdated" tree.
 #' @param trace defines how much information is printed during optimization.
 #' @param \dots further arguments, passed to other methods.
 #' @param weight vector of weights to be used in the fitting process.
 #' Weighted least squares is used with weights w, i.e., sum(w * e^2) is
 #' minimized.
 #' @param balanced use weights as in balanced fastME
+#' @param tip.dates a vector of sampling times associated to the tips of tree.
 #' @return \code{nnls.tree} return a tree, i.e. an object of class
 #' \code{phylo}.  \code{designTree} and \code{designSplits} a matrix, possibly
 #' sparse.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link[ape]{fastme}},
+#' @seealso \code{\link[ape]{fastme}}, \code{\link[ape]{rtt}},
 #' \code{\link[phangorn]{distanceHadamard}},
 #' \code{\link[phangorn]{splitsNetwork}}, \code{\link[phangorn]{upgma}}
 #' @keywords cluster
@@ -184,10 +180,11 @@ UNJ <- function(x){
 #'
 #' @rdname designTree
 #' @export
-designTree <- function(tree, method = "unrooted", sparse = FALSE, ...) {
+designTree <- function(tree, method = "unrooted", sparse = FALSE,
+                       tip.dates=NULL, ...) {
   if (!is.na(pmatch(method, "all")))
     method <- "unrooted"
-  METHOD <- c("unrooted", "rooted")
+  METHOD <- c("unrooted", "rooted", "tipdated")
   method <- pmatch(method, METHOD)
   if (is.na(method)) stop("invalid method")
   if (method == -1) stop("ambiguous method")
@@ -197,6 +194,8 @@ designTree <- function(tree, method = "unrooted", sparse = FALSE, ...) {
     if (sparse) X <- Matrix(X)
   }
   if (method == 2) X <- designUltra(tree, sparse = sparse, ...)
+  if(method == 3) X <- designTipDated(tree, tip.dates=tip.dates, sparse=sparse,
+                                      ...)
   X
 }
 
@@ -342,11 +341,32 @@ designUnrooted2 <- function(tree, sparse = TRUE) {
 }
 
 
+designTipDated <- function(tree, tip.dates, sparse = TRUE){
+  nTip <- Ntip(tree)
+  tmp <- function(n){
+    x1 <- rep(seq_len(n), each=n)
+    x2 <- rep(seq_len(n), n)
+    ind <- x1 < x2
+    sparseMatrix(i = rep(seq_len(sum(ind)), 2), j = c(x1[ind], x2[ind]))
+  }
+  tip.dates <- tip.dates - max(tip.dates)
+  x <- tmp(nTip) %*% tip.dates
+  nodes <- integer(tree$Nnode)
+  X <- designUltra(tree)
+  nodes <- attr(X, "nodes")
+  X <- cbind(X, x)
+  colnames(X) <- c(nodes, -1)
+  attr(X, "nodes") <- nodes
+  X
+}
+
+
 #' @rdname designTree
 #' @export
-nnls.tree <- function(dm, tree, rooted = FALSE, trace = 1, weight = NULL,
-                      balanced = FALSE) {
-  if (is.rooted(tree) & rooted == FALSE) {
+nnls.tree <- function(dm, tree, method = c("unrooted", "ultrametric", "tipdated"),
+                      trace = 1, weight = NULL, balanced = FALSE, tip.dates=NULL) {
+  method <- match.arg(method, c("unrooted", "ultrametric", "tipdated"))
+  if (is.rooted(tree) && method == "unrooted") {
     tree <- unroot(tree)
     warning("tree was rooted, I unrooted the tree!")
   }
@@ -361,8 +381,12 @@ nnls.tree <- function(dm, tree, rooted = FALSE, trace = 1, weight = NULL,
   dm <- dm[labels, labels]
   y <- dm[lower.tri(dm)]
   # computing the design matrix from the tree
-  if (rooted) X <- designUltra(tree)
-  else X <- designUnrooted2(tree)
+  X <- switch(method,
+              unrooted=designUnrooted2(tree),
+              ultrametric=designUltra(tree),
+              tipdated=designTipDated(tree, tip.dates))
+#  if (rooted) X <- designUltra(tree)
+#  else X <- designUnrooted2(tree)
 
   if (!is.null(weight)) {
     y <- y * sqrt(weight)
@@ -370,7 +394,7 @@ nnls.tree <- function(dm, tree, rooted = FALSE, trace = 1, weight = NULL,
   }
 
   lab <- attr(X, "nodes")
-
+  ll <- length(lab) + 1L
   # na.action
   if (any(is.na(y))) {
     ind <- which(is.na(y))
@@ -383,15 +407,20 @@ nnls.tree <- function(dm, tree, rooted = FALSE, trace = 1, weight = NULL,
   betahat <- as.vector(solve(Dmat, dvec))
   betahattmp <- betahat
   bhat <- numeric(max(tree$edge))
-  bhat[as.integer(lab)] <- betahat
+  if(method=="tipdated"){
+    nh <-  max(tip.dates) - tip.dates
+    rate <-  betahat[ll]
+    bhat[seq_len(Ntip(tree))] <- nh * rate
+    bhat[as.integer(lab)] <- betahat[-ll]  # * (1/rate)  [-ll]
+  }
+  else bhat[as.integer(lab)] <- betahat
   betahat <- bhat[tree$edge[, 1]] - bhat[tree$edge[, 2]]
 
   if (!any(betahat < 0)) {
-    #        if(!rooted){
     RSS <- sum((y - (X %*% betahattmp))^2)
     if (trace) print(paste("RSS:", RSS))
     attr(tree, "RSS") <- RSS
-    #        }
+    if(method=="tipdated") betahat <- betahat / rate
     tree$edge.length <- betahat
     return(tree)
   }
@@ -413,6 +442,11 @@ nnls.tree <- function(dm, tree, rooted = FALSE, trace = 1, weight = NULL,
   Aind[1, ] <- 2L
   Aind[2, ] <- as.integer(ind1)
   Aind[3, ] <- as.integer(ind2)
+  if(method == "tipdated"){
+    ind3 <- match(seq_len(Ntip(tree)), tree$edge[,2])
+    Amat[2, ind3] <- -nh  ## testen
+    Aind[3, ind3] <- length(lab) + 1L
+  }
 
   if (any(is.na(Aind))) {
     na_ind <- which(is.na(Aind), arr.ind = TRUE)
@@ -423,7 +457,7 @@ nnls.tree <- function(dm, tree, rooted = FALSE, trace = 1, weight = NULL,
   }
 
   betahat <- quadprog::solve.QP.compact(as.matrix(Dmat), as.vector(dvec), Amat,
-    Aind)$sol
+                                        Aind)$sol
 
 
   # quadratic programing solving
@@ -432,17 +466,25 @@ nnls.tree <- function(dm, tree, rooted = FALSE, trace = 1, weight = NULL,
   attr(tree, "RSS") <- RSS
 
   bhat <- numeric(max(tree$edge))
-  bhat[as.integer(lab)] <- betahat
+
+  if(method=="tipdated"){
+    rate <-  betahat[ll]
+    bhat[seq_len(Ntip(tree))] <- nh * rate
+    bhat[as.integer(lab)] <- betahat[-ll]
+  }
+  else  bhat[as.integer(lab)] <- betahat
   betahat <- bhat[tree$edge[, 1]] - bhat[tree$edge[, 2]]
+  if(method=="tipdated") betahat <- betahat / rate
   tree$edge.length <- betahat
   tree
 }
 
 
+
 #' @rdname designTree
 #' @export
-nnls.phylo <- function(x, dm, rooted = FALSE, trace = 0, ...) {
-  nnls.tree(dm, x, rooted, trace = trace, ...)
+nnls.phylo <- function(x, dm, method = "unrooted", trace = 0, ...) {
+  nnls.tree(dm, x, method, trace = trace, ...)
 }
 
 

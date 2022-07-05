@@ -9,11 +9,12 @@
 \alias{designSplits}
 \title{Compute a design matrix or non-negative LS}
 \usage{
-designTree(tree, method = "unrooted", sparse = FALSE, ...)
+designTree(tree, method = "unrooted", sparse = FALSE, tip.dates = NULL, ...)
 
-nnls.tree(dm, tree, rooted = FALSE, trace = 1, weight = NULL, balanced = FALSE)
+nnls.tree(dm, tree, method = c("unrooted", "ultrametric", "tipdated"),
+  trace = 1, weight = NULL, balanced = FALSE, tip.dates = NULL)
 
-nnls.phylo(x, dm, rooted = FALSE, trace = 0, ...)
+nnls.phylo(x, dm, method = "unrooted", trace = 0, ...)
 
 nnls.splits(x, dm, trace = 0)
 
@@ -32,8 +33,6 @@ designSplits(x, splits = "all", ...)
 
 \item{dm}{a distance matrix.}
 
-\item{rooted}{compute a "rooted" or "unrooted" tree.}
-
 \item{trace}{defines how much information is printed during optimization.}
 
 \item{weight}{vector of weights to be used in the fitting process.
@@ -45,6 +44,8 @@ minimized.}
 \item{x}{number of taxa.}
 
 \item{splits}{one of "all", "star".}
+
+\item{rooted}{compute a "rooted" or "unrooted" tree.}
 }
 \value{
 \code{nnls.tree} return a tree, i.e. an object of class
