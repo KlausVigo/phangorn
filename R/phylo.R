@@ -2165,6 +2165,12 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   trace <- control$trace
   tau <- control$tau
 
+  method <- "unrooted"
+  if(optRooted){
+    if(optRate) method <- "tipdated"
+    else "ultrametric"
+  }
+
   if (optNni) {
     mapping <- map_duplicates(data)
     if (!is.null(mapping)) {
@@ -2485,7 +2491,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         if(rearrangement == "stochastic"){
           tree2 <- rNNI(tree, moves = round(nTips * ratchet.par$prop), n = 1)
         } else if(rearrangement == "ratchet"){
-          tree2 <- bootstrap.phyDat(data, candidate.tree, bs = 1, rooted=optRooted,
+          tree2 <- bootstrap.phyDat(data, candidate_tree, bs = 1, method=method,
                                     eps = tau, bf = bf, Q = Q, k = k, shape = shape)[[1]]
           tree2 <- checkLabels(tree2, tree$tip.label)
           tree2 <- reorder(tree2, "postorder")

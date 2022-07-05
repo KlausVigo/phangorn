@@ -9,8 +9,8 @@ dm <- dist.ml(Laurasiatherian)
 
     tree_upgma <- upgma(dm)
     tree_wpgma <- wpgma(dm)
-    tree_nnls_upgma <- nnls.phylo(tree_upgma, dm, rooted=TRUE)
-    tree_nnls_wpgma <- nnls.phylo(tree_wpgma, dm, rooted=TRUE)
+    tree_nnls_upgma <- nnls.phylo(tree_upgma, dm, method="ultrametric")
+    tree_nnls_wpgma <- nnls.phylo(tree_wpgma, dm, method="ultrametric")
 
     expect_equal(tree_upgma, tree_nnls_upgma)
     expect_false(all.equal(tree_wpgma, tree_nnls_wpgma))

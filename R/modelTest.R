@@ -97,7 +97,7 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
   env <- new.env()
   assign("data", data, envir = env)
 
-  if (is.null(tree)) tree <- candidate.tree(data)
+  if (is.null(tree)) tree <- candidate_tree(data)
   if(!identical(sort(names(data)), sort(tree$tip.label))){
     stop("Labels in tree and data differ!")
   }
