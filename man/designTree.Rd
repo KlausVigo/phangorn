@@ -25,9 +25,11 @@ designSplits(x, splits = "all", ...)
 \arguments{
 \item{tree}{an object of class \code{phylo}}
 
-\item{method}{design matrix for an "unrooted" or "rooted" ultrametric tree.}
+\item{method}{compute an "unrooted", "ultrametric" or "tipdated" tree.}
 
 \item{sparse}{return a sparse design matrix.}
+
+\item{tip.dates}{a vector of sampling times associated to the tips of tree.}
 
 \item{\dots}{further arguments, passed to other methods.}
 
@@ -44,8 +46,6 @@ minimized.}
 \item{x}{number of taxa.}
 
 \item{splits}{one of "all", "star".}
-
-\item{rooted}{compute a "rooted" or "unrooted" tree.}
 }
 \value{
 \code{nnls.tree} return a tree, i.e. an object of class
@@ -72,7 +72,7 @@ tree2 <- nnls.tree(dm, tree)
 
 }
 \seealso{
-\code{\link[ape]{fastme}},
+\code{\link[ape]{fastme}}, \code{\link[ape]{rtt}},
 \code{\link[phangorn]{distanceHadamard}},
 \code{\link[phangorn]{splitsNetwork}}, \code{\link[phangorn]{upgma}}
 }
