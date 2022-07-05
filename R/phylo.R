@@ -2341,6 +2341,15 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   }
   rounds <- 1
   while (opti) {
+    if (optRate) {
+      res <- optimRate(tree, data, rate = rate, inv = inv,
+                       INV = INV, Q = Q, bf = bf, eig = eig, k = k,
+                       shape = shape, w = w, ll.0 = ll.0)
+      if (trace > 0)
+        cat("optimize rate: ", ll, "-->", max(res[[2]], ll), "\n")
+      updateRates(res, ll, rate, shape, k, inv, wMix, update="rate",
+                  site.rate=site.rate)
+    }
     if (optBf) {
       if (type=="CODON" && bf_choice=="F3x4") res <- optimF3x4(tree, data,
             bf_codon = bf_codon, inv = inv, Q = Q, w = w, g = g, INV = INV,
@@ -2449,15 +2458,6 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                          ll, "\n")
     }
     ### end sitewise
-    if (optRate) {
-      res <- optimRate(tree, data, rate = rate, inv = inv,
-        INV = INV, Q = Q, bf = bf, eig = eig, k = k,
-        shape = shape, w = w, ll.0 = ll.0)
-      if (trace > 0)
-        cat("optimize rate: ", ll, "-->", max(res[[2]], ll), "\n")
-      updateRates(res, ll, rate, shape, k, inv, wMix, update="rate",
-                  site.rate=site.rate)
-    }
     if (optEdge) {
       res <- opt_Edge(tree, data, rooted = optRooted, eig = eig, w = w, g = g,
                        bf = bf, inv=inv, rate = rate, ll.0 = ll.0, Mkv=Mkv,
