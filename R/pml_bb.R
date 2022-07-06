@@ -40,22 +40,30 @@ pml_bb <- function(x, model=NULL, rearrangement="stochastic",
   fit <- NULL
   type <- NULL
 
+  optRooted <- FALSE
+  optRate <- FALSE
+  if(method=="ultrametric" || method=="tip.dated") optRooted <- TRUE
+  if(method=="tip.dated") optRate <- TRUE
+
   if(inherits(x, "AAbin") || inherits(x, "DNAbin")) x <- as.phyDat(x)
   if(inherits(x, "modelTest")){
     mt <- x
     fit <- as.pml(x)
   }
+  if(is.null(start)) start <- candidate_tree(x, method=method)
   if(inherits(x, "phyDat")){
      if(is.null(model)){
        mt <- modelTest(x)
        fit <- as.pml(mt)
+       if(method=="ultrametric" || method=="tip.dated") fit <- update(fit, tree=start)
      }
      else {
        para <- split_model(x=model, type="DNA")
-       if(is.null(start)) start <- candidate_tree(x, method=method)
        fit <- pml(start, x, k=para$k)
      }
   }
+#  if(method=="ultrametric" || method=="tip.dated")
+  if(method=="tip.dated" && !is.null(attr(start, "rate"))) fit <- update(fit, rate=attr(start, "rate"))
   if(is.null(model)) model <- guess_model(fit)
   type <- attr(fit$data, "type")
   model_terms <- split_model(model, type)
@@ -63,12 +71,14 @@ pml_bb <- function(x, model=NULL, rearrangement="stochastic",
   #fit <- pml(fit, model=para$model, k=para$k)
 
   fit <- optim.pml(fit, model=model, optGamma=para$optGamma, optInv=para$optInv,
-            optBf=para$optBf, rearrangement = rearrangement)
+            optBf=para$optBf, rearrangement = rearrangement, optRate=optRate,
+            optRooted=optRooted)
 
   tree <- fit$tree
 
   if(bs > 1){
-    bs <- bootstrap.pml(fit, bs=bs, rearrangement="NNI", ...)
+    bs <- bootstrap.pml(fit, bs=bs, rearrangement="NNI", optRate=optRate,
+                        optRooted=optRooted, ...)
     tree <- plotBS(tree, bs, type="none")
   }
   list(fit=fit, modelTest=mt, bootstrap=bs, tree=tree)
