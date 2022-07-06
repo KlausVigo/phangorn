@@ -23,6 +23,7 @@ minEdge <- function(tree, tau=1e-8, enforce_ultrametric=FALSE){
 }
 
 
+#' @rdname phangorn-internal
 #' @export
 candidate_tree <- function(x, method=c("unrooted", "ultrametric", "tipdated"),
                            eps = 1e-8, tip.dates=NULL, ...){
