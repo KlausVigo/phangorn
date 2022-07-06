@@ -15,6 +15,7 @@ minEdge <- function(tree, tau=1e-8, enforce_ultrametric=FALSE){
       el[tree$edge[,2]] <- tree$edge.length
       nh2 <- nodeHeight(tree)[ind]
       el[ind] <- el[ind] + (nh2 - nh)
+      if(any(el < tau)) el[ind] <- el[ind] + tau - min(el)
       tree$edge.length <- el[tree$edge[,2]]
     }
   }
