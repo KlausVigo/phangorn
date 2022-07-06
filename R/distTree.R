@@ -474,7 +474,10 @@ nnls.tree <- function(dm, tree, method = c("unrooted", "ultrametric", "tipdated"
   }
   else  bhat[as.integer(lab)] <- betahat
   betahat <- bhat[tree$edge[, 1]] - bhat[tree$edge[, 2]]
-  if(method=="tipdated") betahat <- betahat / rate
+  if(method=="tipdated") {
+    betahat <- betahat / rate
+    attr(tree, "rate") <- rate
+  }
   tree$edge.length <- betahat
   tree
 }
