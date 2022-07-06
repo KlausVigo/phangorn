@@ -133,6 +133,7 @@ bootstrap.pml <- function(x, bs = 100, trees = TRUE, multicore = FALSE,
     fit
   }
   eval.success <- FALSE
+  if(method=="tipdated") do_rearr <- FALSE
   if (!eval.success & multicore) {
     res <- mclapply(BS, pmlPar, x, trees = trees, do_rearr = do_rearr, ...,
                     mc.cores = mc.cores)
