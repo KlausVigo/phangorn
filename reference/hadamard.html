@@ -61,13 +61,13 @@ Hadamard matrix H with a vector v using fast Hadamard multiplication.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">hadamard</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="fu">fhm</span><span class="op">(</span><span class="va">v</span><span class="op">)</span>
-
-<span class="fu">h4st</span><span class="op">(</span><span class="va">obj</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"c"</span>, <span class="st">"g"</span>, <span class="st">"t"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">h2st</span><span class="op">(</span><span class="va">obj</span>, eps <span class="op">=</span> <span class="fl">0.001</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">hadamard</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">fhm</span><span class="op">(</span><span class="va">v</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">h4st</span><span class="op">(</span><span class="va">obj</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"c"</span>, <span class="st">"g"</span>, <span class="st">"t"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">h2st</span><span class="op">(</span><span class="va">obj</span>, eps <span class="op">=</span> <span class="fl">0.001</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -133,10 +133,10 @@ Including hadamard conjugation, LogDet transforms, and maximum likelihood.
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="va">H</span> <span class="op">&lt;-</span> <span class="fu">hadamard</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">v</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span></span>
-<span class="r-in"><span class="va">H</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">v</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">H</span> <span class="op">&lt;-</span> <span class="fu">hadamard</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">v</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span></span></span>
+<span class="r-in"><span><span class="va">H</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">v</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [,1]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]   36</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   -4</span>
@@ -146,30 +146,30 @@ Including hadamard conjugation, LogDet transforms, and maximum likelihood.
 <span class="r-out co"><span class="r-pr">#&gt;</span> [6,]    0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [7,]    0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [8,]    0</span>
-<span class="r-in"><span class="fu">fhm</span><span class="op">(</span><span class="va">v</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">fhm</span><span class="op">(</span><span class="va">v</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]  36  -4  -8   0 -16   0   0   0</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">yeast</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># RY-coding</span></span>
-<span class="r-in"><span class="va">dat_ry</span> <span class="op">&lt;-</span> <span class="fu"><a href="phyDat.html">acgt2ry</a></span><span class="op">(</span><span class="va">yeast</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">yeast</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># RY-coding</span></span></span>
+<span class="r-in"><span><span class="va">dat_ry</span> <span class="op">&lt;-</span> <span class="fu"><a href="phyDat.html">acgt2ry</a></span><span class="op">(</span><span class="va">yeast</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Found unknown characters (not supplied in levels). Deleted sites with unknown states.</span>
-<span class="r-in"><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu">h2st</span><span class="op">(</span><span class="va">dat_ry</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="lento.html">lento</a></span><span class="op">(</span><span class="va">fit2</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu">h2st</span><span class="op">(</span><span class="va">dat_ry</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="lento.html">lento</a></span><span class="op">(</span><span class="va">fit2</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="hadamard-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># write.nexus.splits(fit2, file = "test.nxs")</span></span>
-<span class="r-in"><span class="co"># read this file into Spectronet or SplitsTree to show the network</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">fit4</span> <span class="op">&lt;-</span> <span class="fu">h4st</span><span class="op">(</span><span class="va">yeast</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">old.par</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>no.readonly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="lento.html">lento</a></span><span class="op">(</span><span class="va">fit4</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main<span class="op">=</span><span class="st">"Transversion"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="lento.html">lento</a></span><span class="op">(</span><span class="va">fit4</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>, main<span class="op">=</span><span class="st">"Transition 1"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="lento.html">lento</a></span><span class="op">(</span><span class="va">fit4</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>, main<span class="op">=</span><span class="st">"Transition 2"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># write.nexus.splits(fit2, file = "test.nxs")</span></span></span>
+<span class="r-in"><span><span class="co"># read this file into Spectronet or SplitsTree to show the network</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">fit4</span> <span class="op">&lt;-</span> <span class="fu">h4st</span><span class="op">(</span><span class="va">yeast</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">old.par</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>no.readonly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="lento.html">lento</a></span><span class="op">(</span><span class="va">fit4</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main<span class="op">=</span><span class="st">"Transversion"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="lento.html">lento</a></span><span class="op">(</span><span class="va">fit4</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>, main<span class="op">=</span><span class="st">"Transition 1"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="lento.html">lento</a></span><span class="op">(</span><span class="va">fit4</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>, main<span class="op">=</span><span class="st">"Transition 2"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="hadamard-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">old.par</span><span class="op">)</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">old.par</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -181,7 +181,7 @@ Including hadamard conjugation, LogDet transforms, and maximum likelihood.
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>

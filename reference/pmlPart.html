@@ -58,12 +58,12 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">multiphyDat2pmlPart</span><span class="op">(</span><span class="va">x</span>, rooted <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">pmlPart2multiPhylo</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="fu">pmlPart</span><span class="op">(</span><span class="va">formula</span>, <span class="va">object</span>, control <span class="op">=</span> <span class="fu"><a href="pml.control.html">pml.control</a></span><span class="op">(</span>epsilon <span class="op">=</span> <span class="fl">1e-08</span>, maxit <span class="op">=</span> <span class="fl">10</span>,
-  trace <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>, model <span class="op">=</span> <span class="cn">NULL</span>, rooted <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">multiphyDat2pmlPart</span><span class="op">(</span><span class="va">x</span>, rooted <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">pmlPart2multiPhylo</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">pmlPart</span><span class="op">(</span><span class="va">formula</span>, <span class="va">object</span>, control <span class="op">=</span> <span class="fu"><a href="pml.control.html">pml.control</a></span><span class="op">(</span>epsilon <span class="op">=</span> <span class="fl">1e-08</span>, maxit <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  trace <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>, model <span class="op">=</span> <span class="cn">NULL</span>, rooted <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -138,35 +138,35 @@ of a <code>pmlPart</code> object.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">yeast</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="dist.hamming.html">dist.logDet</a></span><span class="op">(</span><span class="va">yeast</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="NJ.html">NJ</a></span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="pml.html">pml</a></span><span class="op">(</span><span class="va">tree</span>,<span class="va">yeast</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">fits</span> <span class="op">&lt;-</span> <span class="fu"><a href="pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">yeast</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="dist.hamming.html">dist.logDet</a></span><span class="op">(</span><span class="va">yeast</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="NJ.html">NJ</a></span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="pml.html">pml</a></span><span class="op">(</span><span class="va">tree</span>,<span class="va">yeast</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fits</span> <span class="op">&lt;-</span> <span class="fu"><a href="pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> optimize edge weights:  -737063 --&gt; -734615.7 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> optimize edge weights:  -734615.7 --&gt; -734615.7 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> optimize edge weights:  -734615.7 --&gt; -734615.7 </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">weight</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs</a></span><span class="op">(</span><span class="op">~</span> <span class="va">index</span><span class="op">+</span><span class="va">genes</span>,<span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">yeast</span>, <span class="st">"index"</span><span class="op">)</span><span class="op">)</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">sp</span> <span class="op">&lt;-</span> <span class="fu">pmlPart</span><span class="op">(</span><span class="va">edge</span> <span class="op">~</span> <span class="va">rate</span> <span class="op">+</span> <span class="va">inv</span>, <span class="va">fits</span>, weight<span class="op">=</span><span class="va">weight</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> loglik: -61530.38 --&gt; -59834.28 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> loglik: -59834.28 --&gt; -59833.25 </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">weight</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs</a></span><span class="op">(</span><span class="op">~</span> <span class="va">index</span><span class="op">+</span><span class="va">genes</span>,<span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">yeast</span>, <span class="st">"index"</span><span class="op">)</span><span class="op">)</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">sp</span> <span class="op">&lt;-</span> <span class="fu">pmlPart</span><span class="op">(</span><span class="va">edge</span> <span class="op">~</span> <span class="va">rate</span> <span class="op">+</span> <span class="va">inv</span>, <span class="va">fits</span>, weight<span class="op">=</span><span class="va">weight</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> loglik: -61530.38 --&gt; -59834.29 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> loglik: -59834.29 --&gt; -59833.25 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> loglik: -59833.25 --&gt; -59833.25 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> loglik: -59833.25 --&gt; -59833.25 </span>
-<span class="r-in"><span class="va">sp</span></span>
+<span class="r-in"><span><span class="va">sp</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> loglikelihood: -59833.25 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> loglikelihood of partitions:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   -9827.497 -8159.023 -8056.933 -5237.677 -3809.733 -5503.277 -2752.2 -7200.052 -4632.422 -4654.434 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -9827.497 -8159.024 -8056.932 -5237.677 -3809.733 -5503.277 -2752.2 -7200.052 -4632.422 -4654.434 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> AIC:  119730.5  BIC:  119963.5 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Proportion of invariant sites: 0.4000186 0.3179491 0.4746818 0.4490167 0.4122198 0.2912354 0.2419222 0.3097913 0.4794289 0.3884323 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Proportion of invariant sites: 0.4000129 0.3179377 0.4746756 0.4490179 0.4122204 0.2912345 0.2419215 0.3097905 0.4794272 0.3884177 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Rates:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1.108045 0.9656481 0.8692464 0.8928373 0.8097529 1.266656 1.296088 1.212798 0.8425814 0.8275168 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.108058 0.9656371 0.8692633 0.8928421 0.8097406 1.266635 1.296066 1.212794 0.8425937 0.8275096 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Base frequencies:  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [,1] [,2] [,3] [,4]</span>
@@ -175,16 +175,16 @@ of a <code>pmlPart</code> object.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Rate matrix:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [,1] [,2] [,3] [,4] [,5] [,6]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]    1    1    1    1    1    1</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">sp2</span> <span class="op">&lt;-</span> <span class="fu">pmlPart</span><span class="op">(</span><span class="op">~</span> <span class="va">edge</span> <span class="op">+</span> <span class="va">inv</span>, <span class="va">fits</span>, weight<span class="op">=</span><span class="va">weight</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">sp2</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">sp2</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">sp3</span> <span class="op">&lt;-</span> <span class="fu"><a href="phangorn-internal.html">pmlPen</a></span><span class="op">(</span><span class="va">sp2</span>, lambda <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">sp3</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">sp2</span> <span class="op">&lt;-</span> <span class="fu">pmlPart</span><span class="op">(</span><span class="op">~</span> <span class="va">edge</span> <span class="op">+</span> <span class="va">inv</span>, <span class="va">fits</span>, weight<span class="op">=</span><span class="va">weight</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sp2</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">sp2</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">sp3</span> <span class="op">&lt;-</span> <span class="fu"><a href="phangorn-internal.html">pmlPen</a></span><span class="op">(</span><span class="va">sp2</span>, lambda <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">sp3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -196,7 +196,7 @@ of a <code>pmlPart</code> object.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>

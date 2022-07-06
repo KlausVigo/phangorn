@@ -64,10 +64,10 @@ from a sample of sequences.
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">baseFreq</span><span class="op">(</span><span class="va">obj</span>, freq <span class="op">=</span> <span class="cn">FALSE</span>, all <span class="op">=</span> <span class="cn">FALSE</span>, drop.unused.levels <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="co"># S3 method for phyDat</span>
-<span class="fu"><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">baseFreq</span><span class="op">(</span><span class="va">obj</span>, freq <span class="op">=</span> <span class="cn">FALSE</span>, all <span class="op">=</span> <span class="cn">FALSE</span>, drop.unused.levels <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for phyDat</span></span>
+<span><span class="fu"><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -113,24 +113,24 @@ contrast.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">chloroplast</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># base frequencies</span></span>
-<span class="r-in"><span class="fu">baseFreq</span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">chloroplast</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># base frequencies</span></span></span>
+<span class="r-in"><span><span class="fu">baseFreq</span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         a         c         g         t </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.3321866 0.1990791 0.2040652 0.2646691 </span>
-<span class="r-in"><span class="fu">baseFreq</span><span class="op">(</span><span class="va">Laurasiatherian</span>, all<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">baseFreq</span><span class="op">(</span><span class="va">Laurasiatherian</span>, all<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         a         c         g         t         u         m         r         w </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.3321866 0.1990791 0.2040652 0.2646691 0.0000000 0.0000000 0.0000000 0.0000000 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         s         y         k         v         h         d         b         n </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         ?         - </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.0000000 0.0000000 </span>
-<span class="r-in"><span class="fu">baseFreq</span><span class="op">(</span><span class="va">Laurasiatherian</span>, freq<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">baseFreq</span><span class="op">(</span><span class="va">Laurasiatherian</span>, freq<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     a     c     g     t </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 49633 29745 30490 39545 </span>
-<span class="r-in"><span class="fu">baseFreq</span><span class="op">(</span><span class="va">chloroplast</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">baseFreq</span><span class="op">(</span><span class="va">chloroplast</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           a           r           n           d           c           q </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.086702955 0.051669804 0.036230253 0.040435459 0.006650569 0.039678317 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           e           g           h           i           l           k </span>
@@ -139,10 +139,10 @@ contrast.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.024852664 0.051260539 0.048109192 0.054176557 0.051618646 0.021905951 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           y           v </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.031636245 0.072818613 </span>
-<span class="r-in"><span class="fu"><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   nseq nchar unique_site_pattern parsimony_informative_sites const_sites</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   47  3179                1605                        1400        1354</span>
-<span class="r-in"><span class="fu"><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance</a></span><span class="op">(</span><span class="va">chloroplast</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance</a></span><span class="op">(</span><span class="va">chloroplast</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   nseq nchar unique_site_pattern parsimony_informative_sites const_sites</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   19  5144                2775                        2032        2190</span>
 </code></pre></div>
@@ -156,7 +156,7 @@ contrast.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>

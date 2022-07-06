@@ -64,7 +64,7 @@ polymorphisms (2ISPs; e.g. "R") when calculating genetic distances.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">dist.p</span><span class="op">(</span><span class="va">x</span>, cost <span class="op">=</span> <span class="st">"polymorphism"</span>, ignore.indels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">dist.p</span><span class="op">(</span><span class="va">x</span>, cost <span class="op">=</span> <span class="st">"polymorphism"</span>, ignore.indels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -132,35 +132,35 @@ on the nuclear ribosomal cistron. <em>Systematic Biology</em>, <b>63</b>,
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">laura</span> <span class="op">&lt;-</span> <span class="fu">as.DNAbin</span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">dm</span> <span class="op">&lt;-</span> <span class="fu">dist.p</span><span class="op">(</span><span class="va">Laurasiatherian</span>, <span class="st">"polymorphism"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">########################################################</span></span>
-<span class="r-in"><span class="co"># Dealing with indel 2ISPs</span></span>
-<span class="r-in"><span class="co"># These can be coded using an "x" in the alignment. Note</span></span>
-<span class="r-in"><span class="co"># that as.character usage in the read.dna() function.</span></span>
-<span class="r-in"><span class="co">#########################################################</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"3 5"</span>,</span>
-<span class="r-in">    <span class="st">"No305     ATRA-"</span>,</span>
-<span class="r-in">    <span class="st">"No304     ATAYX"</span>,</span>
-<span class="r-in">    <span class="st">"No306     ATAGA"</span>,</span>
-<span class="r-in">    file <span class="op">=</span> <span class="st">"exdna.txt"</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">(</span><span class="va">ex.dna</span> <span class="op">&lt;-</span> <span class="fu">read.dna</span><span class="op">(</span><span class="st">"exdna.txt"</span>, format <span class="op">=</span> <span class="st">"sequential"</span>, as.character<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">laura</span> <span class="op">&lt;-</span> <span class="fu">as.DNAbin</span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">dm</span> <span class="op">&lt;-</span> <span class="fu">dist.p</span><span class="op">(</span><span class="va">Laurasiatherian</span>, <span class="st">"polymorphism"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">########################################################</span></span></span>
+<span class="r-in"><span><span class="co"># Dealing with indel 2ISPs</span></span></span>
+<span class="r-in"><span><span class="co"># These can be coded using an "x" in the alignment. Note</span></span></span>
+<span class="r-in"><span><span class="co"># that as.character usage in the read.dna() function.</span></span></span>
+<span class="r-in"><span><span class="co">#########################################################</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"3 5"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"No305     ATRA-"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"No304     ATAYX"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"No306     ATAGA"</span>,</span></span>
+<span class="r-in"><span>    file <span class="op">=</span> <span class="st">"exdna.txt"</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">(</span><span class="va">ex.dna</span> <span class="op">&lt;-</span> <span class="fu">read.dna</span><span class="op">(</span><span class="st">"exdna.txt"</span>, format <span class="op">=</span> <span class="st">"sequential"</span>, as.character<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       [,1] [,2] [,3] [,4] [,5]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> No305 "a"  "t"  "r"  "a"  "-" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> No304 "a"  "t"  "a"  "y"  "x" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> No306 "a"  "t"  "a"  "g"  "a" </span>
-<span class="r-in"><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">ex.dna</span>, <span class="st">"USER"</span>, levels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">as.vector</a></span><span class="op">(</span><span class="va">ex.dna</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">dist.p</span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">ex.dna</span>, <span class="st">"USER"</span>, levels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">as.vector</a></span><span class="op">(</span><span class="va">ex.dna</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">dist.p</span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       No305 No304</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> No304     4      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> No306     3     4</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="st">"exdna.txt"</span><span class="op">)</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="st">"exdna.txt"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -172,7 +172,7 @@ on the nuclear ribosomal cistron. <em>Systematic Biology</em>, <b>63</b>,
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>

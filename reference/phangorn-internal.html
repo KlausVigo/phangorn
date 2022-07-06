@@ -48,7 +48,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Internal phangorn Functions</h1>
-      <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/R/RcppExports.R" class="external-link"><code>R/RcppExports.R</code></a>, <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/R/networx.R" class="external-link"><code>R/networx.R</code></a>, <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/R/phangorn-package.R" class="external-link"><code>R/phangorn-package.R</code></a>, and 2 more</small>
+      <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/R/RcppExports.R" class="external-link"><code>R/RcppExports.R</code></a>, <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/R/candidate_tree.R" class="external-link"><code>R/candidate_tree.R</code></a>, <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/R/networx.R" class="external-link"><code>R/networx.R</code></a>, and 3 more</small>
       <div class="d-none name"><code>phangorn-internal.Rd</code></div>
     </div>
 
@@ -58,13 +58,16 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">threshStateC</span><span class="op">(</span><span class="va">x</span>, <span class="va">thresholds</span><span class="op">)</span>
-
-<span class="fu">coords</span><span class="op">(</span><span class="va">obj</span>, dim <span class="op">=</span> <span class="st">"3D"</span><span class="op">)</span>
-
-<span class="fu">map_duplicates</span><span class="op">(</span><span class="va">x</span>, dist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">500</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">pmlPen</span><span class="op">(</span><span class="va">object</span>, <span class="va">lambda</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">threshStateC</span><span class="op">(</span><span class="va">x</span>, <span class="va">thresholds</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">candidate_tree</span><span class="op">(</span><span class="va">x</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"unrooted"</span>, <span class="st">"ultrametric"</span>, <span class="st">"tipdated"</span><span class="op">)</span>,</span>
+<span>  eps <span class="op">=</span> <span class="fl">1e-08</span>, tip.dates <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">coords</span><span class="op">(</span><span class="va">obj</span>, dim <span class="op">=</span> <span class="st">"3D"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">map_duplicates</span><span class="op">(</span><span class="va">x</span>, dist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">500</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">pmlPen</span><span class="op">(</span><span class="va">object</span>, <span class="va">lambda</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
 
@@ -76,7 +79,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>

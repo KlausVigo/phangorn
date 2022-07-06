@@ -61,9 +61,9 @@ codon2dna transform the other way."><!-- mathjax --><script src="https://cdnjs.c
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">dna2codon</span><span class="op">(</span><span class="va">x</span>, codonstart <span class="op">=</span> <span class="fl">1</span>, code <span class="op">=</span> <span class="fl">1</span>, ambiguity <span class="op">=</span> <span class="st">"---"</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">codon2dna</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">dna2codon</span><span class="op">(</span><span class="va">x</span>, codonstart <span class="op">=</span> <span class="fl">1</span>, code <span class="op">=</span> <span class="fl">1</span>, ambiguity <span class="op">=</span> <span class="st">"---"</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">codon2dna</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -120,17 +120,17 @@ these are deleted.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "phyDat"</span>
-<span class="r-in"><span class="va">Laurasiatherian</span></span>
+<span class="r-in"><span><span class="va">Laurasiatherian</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 47 sequences with 3179 character and 1605 different site patterns.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> The states are a c g t </span>
-<span class="r-in"><span class="fu">dna2codon</span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">dna2codon</span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 47 sequences with 1059 character and 919 different site patterns.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> The states are aaa aac aag aat aca acc acg act aga agc agg agt ata atc atg att caa cac cag cat cca ccc ccg cct cga cgc cgg cgt cta ctc ctg ctt gaa gac gag gat gca gcc gcg gct gga ggc ggg ggt gta gtc gtg gtt tac tat tca tcc tcg tct tgc tgg tgt tta ttc ttg ttt </span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -142,7 +142,7 @@ these are deleted.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>

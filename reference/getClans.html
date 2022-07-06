@@ -61,18 +61,18 @@ and functions to quantify the fragmentation of trees.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">getClans</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span>
-
-<span class="fu">getSlices</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span>
-
-<span class="fu">getClips</span><span class="op">(</span><span class="va">tree</span>, all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="fu">getDiversity</span><span class="op">(</span><span class="va">tree</span>, <span class="va">x</span>, norm <span class="op">=</span> <span class="cn">TRUE</span>, var.names <span class="op">=</span> <span class="cn">NULL</span>, labels <span class="op">=</span> <span class="st">"new"</span><span class="op">)</span>
-
-<span class="co"># S3 method for clanistics</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">diversity</span><span class="op">(</span><span class="va">tree</span>, <span class="va">X</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">getClans</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">getSlices</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">getClips</span><span class="op">(</span><span class="va">tree</span>, all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">getDiversity</span><span class="op">(</span><span class="va">tree</span>, <span class="va">x</span>, norm <span class="op">=</span> <span class="cn">TRUE</span>, var.names <span class="op">=</span> <span class="cn">NULL</span>, labels <span class="op">=</span> <span class="st">"new"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for clanistics</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">diversity</span><span class="op">(</span><span class="va">tree</span>, <span class="va">X</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -205,10 +205,10 @@ Retention index <code><a href="CI.html">RI</a></code>, <code><a href="phyDat.htm
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">111</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu">rtree</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">getClans</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">111</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu">rtree</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">getClans</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       t3 t8 t2 t1 t5 t6 t9 t10 t4 t7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]  1  0  0  0  0  0  0   0  0  0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2,]  0  1  0  0  0  0  0   0  0  0</span>
@@ -244,12 +244,12 @@ Retention index <code><a href="CI.html">RI</a></code>, <code><a href="phyDat.htm
 <span class="r-out co"><span class="r-pr">#&gt;</span> [32,]  1  1  1  1  1  0  0   0  1  1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [33,]  1  1  1  1  1  1  0   0  1  1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [34,]  1  1  1  1  1  1  1   1  0  0</span>
-<span class="r-in"><span class="fu">getClips</span><span class="op">(</span><span class="va">tree</span>, all<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">getClips</span><span class="op">(</span><span class="va">tree</span>, all<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      t3 t8 t2 t1 t5 t6 t9 t10 t4 t7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  1  0  1  0  0  0  0   0  0  0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0  0  0  0  0  0  1   1  0  0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0  0  0  0  0  0  0   0  1  1</span>
-<span class="r-in"><span class="fu">getSlices</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">getSlices</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        t3 t8 t2 t1 t5 t6 t9 t10 t4 t7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [1,]  0  0  1  1  1  1  1   1  1  1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [2,]  0  1  0  1  1  1  1   1  1  1</span>
@@ -363,16 +363,16 @@ Retention index <code><a href="CI.html">RI</a></code>, <code><a href="phyDat.htm
 <span class="r-out co"><span class="r-pr">#&gt;</span> [110,]  1  0  0  1  1  1  0   0  1  1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [111,]  1  0  0  1  1  1  1   1  0  0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [112,]  1  1  1  1  1  1  0   0  0  0</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">trees</span> <span class="op">&lt;-</span> <span class="fu">rmtree</span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"violet"</span><span class="op">)</span>, <span class="fl">100</span>, <span class="cn">TRUE</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.5</span>,<span class="fl">.4</span>, <span class="fl">.1</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">   ncol<span class="op">=</span><span class="fl">5</span>, dimnames<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">'t'</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">20</span>, sep<span class="op">=</span><span class="st">""</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">'Var'</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, sep<span class="op">=</span><span class="st">"_"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">X</span>, type <span class="op">=</span> <span class="st">"USER"</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, ambiguity<span class="op">=</span><span class="st">"violet"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">trees</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="st">"u"</span>, tip.color <span class="op">=</span> <span class="va">X</span><span class="op">[</span><span class="va">trees</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">tip</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span>  <span class="co"># intruders are blue</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">trees</span> <span class="op">&lt;-</span> <span class="fu">rmtree</span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"violet"</span><span class="op">)</span>, <span class="fl">100</span>, <span class="cn">TRUE</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.5</span>,<span class="fl">.4</span>, <span class="fl">.1</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>   ncol<span class="op">=</span><span class="fl">5</span>, dimnames<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">'t'</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">20</span>, sep<span class="op">=</span><span class="st">""</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">'Var'</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, sep<span class="op">=</span><span class="st">"_"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">X</span>, type <span class="op">=</span> <span class="st">"USER"</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, ambiguity<span class="op">=</span><span class="st">"violet"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">trees</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="st">"u"</span>, tip.color <span class="op">=</span> <span class="va">X</span><span class="op">[</span><span class="va">trees</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">tip</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span>  <span class="co"># intruders are blue</span></span></span>
 <span class="r-plt img"><img src="getClans-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="op">(</span><span class="va">divTab</span> <span class="op">&lt;-</span> <span class="fu">getDiversity</span><span class="op">(</span><span class="va">trees</span>, <span class="va">x</span>, var.names<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="op">(</span><span class="va">divTab</span> <span class="op">&lt;-</span> <span class="fu">getDiversity</span><span class="op">(</span><span class="va">trees</span>, <span class="va">x</span>, var.names<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The variable names have changed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    tree variable    E clan # natives # intruder # unknown   E slice # intruder</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1     1    Var_1 0.8568636         9         10         1 1.0000000          7</span>
@@ -476,14 +476,14 @@ Retention index <code><a href="CI.html">RI</a></code>, <code><a href="phyDat.htm
 <span class="r-out co"><span class="r-pr">#&gt;</span> 48         1 1.0000000          6         1   NA   NA       5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 49         2 1.0000000          7         2   NA   NA       6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 50         1 1.0000000          7         1   NA   NA       7</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">divTab</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">divTab</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Variable Natives_only Intruder_only Clan Slice Melange</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    Var_1            0             0    0     0      10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2    Var_2            0             0    0     0      10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3    Var_3            0             0    0     0      10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4    Var_4            0             0    0     0      10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5    Var_5            0             0    0     0      10</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -495,7 +495,7 @@ Retention index <code><a href="CI.html">RI</a></code>, <code><a href="phyDat.htm
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>

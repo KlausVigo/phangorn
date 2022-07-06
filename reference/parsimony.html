@@ -76,22 +76,22 @@ starting trees.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">acctran</span><span class="op">(</span><span class="va">tree</span>, <span class="va">data</span><span class="op">)</span>
-
-<span class="fu">fitch</span><span class="op">(</span><span class="va">tree</span>, <span class="va">data</span>, site <span class="op">=</span> <span class="st">"pscore"</span><span class="op">)</span>
-
-<span class="fu">random.addition</span><span class="op">(</span><span class="va">data</span>, tree <span class="op">=</span> <span class="cn">NULL</span>, method <span class="op">=</span> <span class="st">"fitch"</span><span class="op">)</span>
-
-<span class="fu">parsimony</span><span class="op">(</span><span class="va">tree</span>, <span class="va">data</span>, method <span class="op">=</span> <span class="st">"fitch"</span>, cost <span class="op">=</span> <span class="cn">NULL</span>, site <span class="op">=</span> <span class="st">"pscore"</span><span class="op">)</span>
-
-<span class="fu">optim.parsimony</span><span class="op">(</span><span class="va">tree</span>, <span class="va">data</span>, method <span class="op">=</span> <span class="st">"fitch"</span>, cost <span class="op">=</span> <span class="cn">NULL</span>, trace <span class="op">=</span> <span class="fl">1</span>,
-  rearrangements <span class="op">=</span> <span class="st">"SPR"</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">pratchet</span><span class="op">(</span><span class="va">data</span>, start <span class="op">=</span> <span class="cn">NULL</span>, method <span class="op">=</span> <span class="st">"fitch"</span>, maxit <span class="op">=</span> <span class="fl">1000</span>,
-  minit <span class="op">=</span> <span class="fl">10</span>, k <span class="op">=</span> <span class="fl">10</span>, trace <span class="op">=</span> <span class="fl">1</span>, all <span class="op">=</span> <span class="cn">FALSE</span>, rearrangements <span class="op">=</span> <span class="st">"SPR"</span>,
-  perturbation <span class="op">=</span> <span class="st">"ratchet"</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">sankoff</span><span class="op">(</span><span class="va">tree</span>, <span class="va">data</span>, cost <span class="op">=</span> <span class="cn">NULL</span>, site <span class="op">=</span> <span class="st">"pscore"</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">acctran</span><span class="op">(</span><span class="va">tree</span>, <span class="va">data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">fitch</span><span class="op">(</span><span class="va">tree</span>, <span class="va">data</span>, site <span class="op">=</span> <span class="st">"pscore"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">random.addition</span><span class="op">(</span><span class="va">data</span>, tree <span class="op">=</span> <span class="cn">NULL</span>, method <span class="op">=</span> <span class="st">"fitch"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">parsimony</span><span class="op">(</span><span class="va">tree</span>, <span class="va">data</span>, method <span class="op">=</span> <span class="st">"fitch"</span>, cost <span class="op">=</span> <span class="cn">NULL</span>, site <span class="op">=</span> <span class="st">"pscore"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">optim.parsimony</span><span class="op">(</span><span class="va">tree</span>, <span class="va">data</span>, method <span class="op">=</span> <span class="st">"fitch"</span>, cost <span class="op">=</span> <span class="cn">NULL</span>, trace <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  rearrangements <span class="op">=</span> <span class="st">"SPR"</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">pratchet</span><span class="op">(</span><span class="va">data</span>, start <span class="op">=</span> <span class="cn">NULL</span>, method <span class="op">=</span> <span class="st">"fitch"</span>, maxit <span class="op">=</span> <span class="fl">1000</span>,</span>
+<span>  minit <span class="op">=</span> <span class="fl">10</span>, k <span class="op">=</span> <span class="fl">10</span>, trace <span class="op">=</span> <span class="fl">1</span>, all <span class="op">=</span> <span class="cn">FALSE</span>, rearrangements <span class="op">=</span> <span class="st">"SPR"</span>,</span>
+<span>  perturbation <span class="op">=</span> <span class="st">"ratchet"</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">sankoff</span><span class="op">(</span><span class="va">tree</span>, <span class="va">data</span>, cost <span class="op">=</span> <span class="cn">NULL</span>, site <span class="op">=</span> <span class="st">"pscore"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -190,28 +190,28 @@ Analysis. <em>Cladistics</em> <b>15</b>, 407-414</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="dist.hamming.html">dist.hamming</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="NJ.html">NJ</a></span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">parsimony</span><span class="op">(</span><span class="va">tree</span>, <span class="va">Laurasiatherian</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="dist.hamming.html">dist.hamming</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="NJ.html">NJ</a></span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">parsimony</span><span class="op">(</span><span class="va">tree</span>, <span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 9796</span>
-<span class="r-in"><span class="va">treeRA</span> <span class="op">&lt;-</span> <span class="fu">random.addition</span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">treeNNI</span> <span class="op">&lt;-</span> <span class="fu">optim.parsimony</span><span class="op">(</span><span class="va">tree</span>, <span class="va">Laurasiatherian</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">treeRA</span> <span class="op">&lt;-</span> <span class="fu">random.addition</span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">treeNNI</span> <span class="op">&lt;-</span> <span class="fu">optim.parsimony</span><span class="op">(</span><span class="va">tree</span>, <span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Final p-score 9715 after  11 nni operations </span>
-<span class="r-in"><span class="va">treeRatchet</span> <span class="op">&lt;-</span> <span class="fu">pratchet</span><span class="op">(</span><span class="va">Laurasiatherian</span>, start<span class="op">=</span><span class="va">tree</span>, maxit<span class="op">=</span><span class="fl">100</span>,</span>
-<span class="r-in">                        minit<span class="op">=</span><span class="fl">5</span>, k<span class="op">=</span><span class="fl">5</span>, trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># assign edge length</span></span>
-<span class="r-in"><span class="va">treeRatchet</span> <span class="op">&lt;-</span> <span class="fu">acctran</span><span class="op">(</span><span class="va">treeRatchet</span>, <span class="va">Laurasiatherian</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="midpoint.html">midpoint</a></span><span class="op">(</span><span class="va">treeRatchet</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">add.scale.bar</span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>, length<span class="op">=</span><span class="fl">100</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">treeRatchet</span> <span class="op">&lt;-</span> <span class="fu">pratchet</span><span class="op">(</span><span class="va">Laurasiatherian</span>, start<span class="op">=</span><span class="va">tree</span>, maxit<span class="op">=</span><span class="fl">100</span>,</span></span>
+<span class="r-in"><span>                        minit<span class="op">=</span><span class="fl">5</span>, k<span class="op">=</span><span class="fl">5</span>, trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># assign edge length</span></span></span>
+<span class="r-in"><span><span class="va">treeRatchet</span> <span class="op">&lt;-</span> <span class="fu">acctran</span><span class="op">(</span><span class="va">treeRatchet</span>, <span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="midpoint.html">midpoint</a></span><span class="op">(</span><span class="va">treeRatchet</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">add.scale.bar</span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>, length<span class="op">=</span><span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="parsimony-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">parsimony</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">tree</span>,<span class="va">treeNNI</span>, <span class="va">treeRatchet</span><span class="op">)</span>, <span class="va">Laurasiatherian</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">parsimony</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">tree</span>,<span class="va">treeNNI</span>, <span class="va">treeRatchet</span><span class="op">)</span>, <span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 9796 9715 9713</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -223,7 +223,7 @@ Analysis. <em>Cladistics</em> <b>15</b>, 407-414</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>

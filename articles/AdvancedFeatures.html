@@ -78,7 +78,7 @@
       Graz University of Technology<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2022-06-23</h4>
+            <h4 data-toc-skip class="date">2022-07-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/vignettes/AdvancedFeatures.Rmd" class="external-link"><code>vignettes/AdvancedFeatures.Rmd</code></a></small>
       <div class="d-none name"><code>AdvancedFeatures.Rmd</code></div>
@@ -99,65 +99,65 @@
 <p>As an example we will show here several possibilities to define nucleotide data with gaps defined as a fifth state. Ignoring gaps or coding them as ambiguous sites - as it is done in most programs, also in phangorn as default - may be misleading (see <span class="citation">(Warnow 2012)</span>). When the number of gaps is low and the gaps are missing at random coding gaps as separate state may be not important.</p>
 <p>Let assume we have given a matrix where each row contains a character vector of a taxonomic unit:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/KlausVigo/phangorn" class="external-link">phangorn</a></span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Loading required package: ape</span></code></pre>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/KlausVigo/phangorn" class="external-link">phangorn</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Loading required package: ape</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">data</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"r"</span>,<span class="st">"a"</span>,<span class="st">"y"</span>,<span class="st">"g"</span>,<span class="st">"g"</span>,<span class="st">"a"</span>,<span class="st">"c"</span>,<span class="st">"-"</span>,<span class="st">"c"</span>,<span class="st">"t"</span>,<span class="st">"c"</span>,<span class="st">"g"</span>,
-    <span class="st">"a"</span>,<span class="st">"a"</span>,<span class="st">"t"</span>,<span class="st">"g"</span>,<span class="st">"g"</span>,<span class="st">"a"</span>,<span class="st">"t"</span>,<span class="st">"-"</span>,<span class="st">"c"</span>,<span class="st">"t"</span>,<span class="st">"c"</span>,<span class="st">"a"</span>,
-    <span class="st">"a"</span>,<span class="st">"a"</span>,<span class="st">"t"</span>,<span class="st">"-"</span>,<span class="st">"g"</span>,<span class="st">"a"</span>,<span class="st">"c"</span>,<span class="st">"c"</span>,<span class="st">"c"</span>,<span class="st">"t"</span>,<span class="st">"?"</span>,<span class="st">"g"</span><span class="op">)</span>,
-    dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"t1"</span>, <span class="st">"t2"</span>, <span class="st">"t3"</span><span class="op">)</span>,<span class="cn">NULL</span><span class="op">)</span>, nrow<span class="op">=</span><span class="fl">3</span>, byrow<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="va">data</span></code></pre></div>
-<pre><code><span class="co">##    [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12]</span>
-<span class="co">## t1 "r"  "a"  "y"  "g"  "g"  "a"  "c"  "-"  "c"  "t"   "c"   "g"  </span>
-<span class="co">## t2 "a"  "a"  "t"  "g"  "g"  "a"  "t"  "-"  "c"  "t"   "c"   "a"  </span>
-<span class="co">## t3 "a"  "a"  "t"  "-"  "g"  "a"  "c"  "c"  "c"  "t"   "?"   "g"</span></code></pre>
+<code class="sourceCode R"><span><span class="va">data</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"r"</span>,<span class="st">"a"</span>,<span class="st">"y"</span>,<span class="st">"g"</span>,<span class="st">"g"</span>,<span class="st">"a"</span>,<span class="st">"c"</span>,<span class="st">"-"</span>,<span class="st">"c"</span>,<span class="st">"t"</span>,<span class="st">"c"</span>,<span class="st">"g"</span>,</span>
+<span>    <span class="st">"a"</span>,<span class="st">"a"</span>,<span class="st">"t"</span>,<span class="st">"g"</span>,<span class="st">"g"</span>,<span class="st">"a"</span>,<span class="st">"t"</span>,<span class="st">"-"</span>,<span class="st">"c"</span>,<span class="st">"t"</span>,<span class="st">"c"</span>,<span class="st">"a"</span>,</span>
+<span>    <span class="st">"a"</span>,<span class="st">"a"</span>,<span class="st">"t"</span>,<span class="st">"-"</span>,<span class="st">"g"</span>,<span class="st">"a"</span>,<span class="st">"c"</span>,<span class="st">"c"</span>,<span class="st">"c"</span>,<span class="st">"t"</span>,<span class="st">"?"</span>,<span class="st">"g"</span><span class="op">)</span>,</span>
+<span>    dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"t1"</span>, <span class="st">"t2"</span>, <span class="st">"t3"</span><span class="op">)</span>,<span class="cn">NULL</span><span class="op">)</span>, nrow<span class="op">=</span><span class="fl">3</span>, byrow<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">data</span></span></code></pre></div>
+<pre><code><span><span class="co">##    [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12]</span></span>
+<span><span class="co">## t1 "r"  "a"  "y"  "g"  "g"  "a"  "c"  "-"  "c"  "t"   "c"   "g"  </span></span>
+<span><span class="co">## t2 "a"  "a"  "t"  "g"  "g"  "a"  "t"  "-"  "c"  "t"   "c"   "a"  </span></span>
+<span><span class="co">## t3 "a"  "a"  "t"  "-"  "g"  "a"  "c"  "c"  "c"  "t"   "?"   "g"</span></span></code></pre>
 <p>Normally we would transform this matrix into an phyDat object and gaps are handled as ambiguous character like “?”.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">gapsdata1</span> <span class="op">=</span> <span class="fu"><a href="../reference/phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>
-<span class="va">gapsdata1</span></code></pre></div>
-<pre><code><span class="co">## 3 sequences with 12 character and 11 different site patterns.</span>
-<span class="co">## The states are a c g t</span></code></pre>
+<code class="sourceCode R"><span><span class="va">gapsdata1</span> <span class="op">=</span> <span class="fu"><a href="../reference/phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
+<span><span class="va">gapsdata1</span></span></code></pre></div>
+<pre><code><span><span class="co">## 3 sequences with 12 character and 11 different site patterns.</span></span>
+<span><span class="co">## The states are a c g t</span></span></code></pre>
 <p>Now we will define a “USER” defined object and have to supply a vector levels of the character states for the new data, in our case the for nucleotide states and the gap. Additional we can define ambiguous states which can be any of the states.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">gapsdata2</span> <span class="op">=</span> <span class="fu"><a href="../reference/phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">data</span>, type<span class="op">=</span><span class="st">"USER"</span>, levels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>,<span class="st">"c"</span>,<span class="st">"g"</span>,<span class="st">"t"</span>,<span class="st">"-"</span><span class="op">)</span>,
-    ambiguity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"?"</span>, <span class="st">"n"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning in phyDat.default(data, levels = levels, return.index = return.index, :</span>
-<span class="co">## Found unknown characters (not supplied in levels). Deleted sites with unknown</span>
-<span class="co">## states.</span></code></pre>
+<code class="sourceCode R"><span><span class="va">gapsdata2</span> <span class="op">=</span> <span class="fu"><a href="../reference/phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">data</span>, type<span class="op">=</span><span class="st">"USER"</span>, levels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>,<span class="st">"c"</span>,<span class="st">"g"</span>,<span class="st">"t"</span>,<span class="st">"-"</span><span class="op">)</span>,</span>
+<span>    ambiguity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"?"</span>, <span class="st">"n"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning in phyDat.default(data, levels = levels, return.index = return.index, :</span></span>
+<span><span class="co">## Found unknown characters (not supplied in levels). Deleted sites with unknown</span></span>
+<span><span class="co">## states.</span></span></code></pre>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">gapsdata2</span></code></pre></div>
-<pre><code><span class="co">## 3 sequences with 10 character and 9 different site patterns.</span>
-<span class="co">## The states are a c g t -</span></code></pre>
+<code class="sourceCode R"><span><span class="va">gapsdata2</span></span></code></pre></div>
+<pre><code><span><span class="co">## 3 sequences with 10 character and 9 different site patterns.</span></span>
+<span><span class="co">## The states are a c g t -</span></span></code></pre>
 <p>This is not yet what we wanted as two sites of our alignment, which contain the ambiguous characters “r” and “y”, got deleted. To define ambiguous characters like “r” and “y” explicitly we have to supply a contrast matrix similar to contrasts for factors.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">contrast</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,
-    <span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,
-    <span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">0</span>,
-    <span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>,
-    <span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">0</span>,
-    <span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>,
-    <span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,
-    <span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span>,
-    <span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>,
-    ncol <span class="op">=</span> <span class="fl">5</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames</a></span><span class="op">(</span><span class="va">contrast</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>,<span class="st">"c"</span>,<span class="st">"g"</span>,<span class="st">"t"</span>,<span class="st">"r"</span>,<span class="st">"y"</span>,<span class="st">"-"</span>,<span class="st">"n"</span>,<span class="st">"?"</span><span class="op">)</span>,
-    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"c"</span>, <span class="st">"g"</span>, <span class="st">"t"</span>, <span class="st">"-"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">contrast</span></code></pre></div>
-<pre><code><span class="co">##   a c g t -</span>
-<span class="co">## a 1 0 0 0 0</span>
-<span class="co">## c 0 1 0 0 0</span>
-<span class="co">## g 0 0 1 0 0</span>
-<span class="co">## t 0 0 0 1 0</span>
-<span class="co">## r 1 0 1 0 0</span>
-<span class="co">## y 0 1 0 1 0</span>
-<span class="co">## - 0 0 0 0 1</span>
-<span class="co">## n 1 1 1 1 0</span>
-<span class="co">## ? 1 1 1 1 1</span></code></pre>
+<code class="sourceCode R"><span><span class="va">contrast</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,</span>
+<span>    <span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,</span>
+<span>    <span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">0</span>,</span>
+<span>    <span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>,</span>
+<span>    <span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">0</span>,</span>
+<span>    <span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>,</span>
+<span>    <span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,</span>
+<span>    <span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span>,</span>
+<span>    <span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>,</span>
+<span>    ncol <span class="op">=</span> <span class="fl">5</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames</a></span><span class="op">(</span><span class="va">contrast</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>,<span class="st">"c"</span>,<span class="st">"g"</span>,<span class="st">"t"</span>,<span class="st">"r"</span>,<span class="st">"y"</span>,<span class="st">"-"</span>,<span class="st">"n"</span>,<span class="st">"?"</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"c"</span>, <span class="st">"g"</span>, <span class="st">"t"</span>, <span class="st">"-"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">contrast</span></span></code></pre></div>
+<pre><code><span><span class="co">##   a c g t -</span></span>
+<span><span class="co">## a 1 0 0 0 0</span></span>
+<span><span class="co">## c 0 1 0 0 0</span></span>
+<span><span class="co">## g 0 0 1 0 0</span></span>
+<span><span class="co">## t 0 0 0 1 0</span></span>
+<span><span class="co">## r 1 0 1 0 0</span></span>
+<span><span class="co">## y 0 1 0 1 0</span></span>
+<span><span class="co">## - 0 0 0 0 1</span></span>
+<span><span class="co">## n 1 1 1 1 0</span></span>
+<span><span class="co">## ? 1 1 1 1 1</span></span></code></pre>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">gapsdata3</span> <span class="op">=</span> <span class="fu"><a href="../reference/phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">data</span>, type<span class="op">=</span><span class="st">"USER"</span>, contrast<span class="op">=</span><span class="va">contrast</span><span class="op">)</span>
-<span class="va">gapsdata3</span></code></pre></div>
-<pre><code><span class="co">## 3 sequences with 12 character and 11 different site patterns.</span>
-<span class="co">## The states are a c g t -</span></code></pre>
+<code class="sourceCode R"><span><span class="va">gapsdata3</span> <span class="op">=</span> <span class="fu"><a href="../reference/phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">data</span>, type<span class="op">=</span><span class="st">"USER"</span>, contrast<span class="op">=</span><span class="va">contrast</span><span class="op">)</span></span>
+<span><span class="va">gapsdata3</span></span></code></pre></div>
+<pre><code><span><span class="co">## 3 sequences with 12 character and 11 different site patterns.</span></span>
+<span><span class="co">## The states are a c g t -</span></span></code></pre>
 <p>Here we defined “n” as a state which can be any nucleotide but not a gap “-” and “?” can be any state including a gap.</p>
 <p>These data can be used in all functions available in <em>phangorn</em> to compute distance matrices or perform parsimony and maximum likelihood analysis.</p>
 </div>
@@ -241,29 +241,27 @@ P(t) = (p_{ij}(t)) = e^{Qt}, \qquad \sum_j p_{ij}=1
 </table>
 <p>If we want to fit a non-standard transition rate matrices, we have to tell <code>optim.pml</code>, which transitions in Q get the same rate. The parameter vector subs accepts a vector of consecutive integers and at least one element has to be zero (these gets the reference rate of 1). Negative values indicate that there is no direct transition is possible and the rate is set to zero.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://ape-package.ird.fr/" class="external-link">ape</a></span><span class="op">)</span>
-<span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/root.html" class="external-link">unroot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/rtree.html" class="external-link">rtree</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span>
-<span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">pml</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">gapsdata3</span><span class="op">)</span>
-<span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, optQ<span class="op">=</span><span class="cn">TRUE</span>, subs<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span>,
-    control<span class="op">=</span><span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span>
-<span class="va">fit</span></code></pre></div>
-<pre><code><span class="co">## </span>
-<span class="co">## model: Mk </span>
-<span class="co">## </span>
-<span class="co">## loglikelihood: -33.01 </span>
-<span class="co">## </span>
-<span class="co">## unconstrained loglikelihood: -28.43 </span>
-<span class="co">## </span>
-<span class="co">## Rate matrix:</span>
-<span class="co">##           a         c         g         t      -</span>
-<span class="co">## a 0.000e+00 2.584e-06 1.000e+00 2.584e-06 0.6912</span>
-<span class="co">## c 2.584e-06 0.000e+00 2.584e-06 1.000e+00 0.6912</span>
-<span class="co">## g 1.000e+00 2.584e-06 0.000e+00 2.584e-06 0.6912</span>
-<span class="co">## t 2.584e-06 1.000e+00 2.584e-06 0.000e+00 0.6912</span>
-<span class="co">## - 6.912e-01 6.912e-01 6.912e-01 6.912e-01 0.0000</span>
-<span class="co">## </span>
-<span class="co">## Base frequencies:  </span>
-<span class="co">## 0.2 0.2 0.2 0.2 0.2</span></code></pre>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://ape-package.ird.fr/" class="external-link">ape</a></span><span class="op">)</span></span>
+<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/root.html" class="external-link">unroot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/rtree.html" class="external-link">rtree</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">pml</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">gapsdata3</span><span class="op">)</span></span>
+<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, optQ<span class="op">=</span><span class="cn">TRUE</span>, subs<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span>,</span>
+<span>    control<span class="op">=</span><span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">fit</span></span></code></pre></div>
+<pre><code><span><span class="co">## model: Mk </span></span>
+<span><span class="co">## loglikelihood: -33.01 </span></span>
+<span><span class="co">## unconstrained loglikelihood: -28.43 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Rate matrix:</span></span>
+<span><span class="co">##           a         c         g         t      -</span></span>
+<span><span class="co">## a 0.000e+00 2.584e-06 1.000e+00 2.584e-06 0.6912</span></span>
+<span><span class="co">## c 2.584e-06 0.000e+00 2.584e-06 1.000e+00 0.6912</span></span>
+<span><span class="co">## g 1.000e+00 2.584e-06 0.000e+00 2.584e-06 0.6912</span></span>
+<span><span class="co">## t 2.584e-06 1.000e+00 2.584e-06 0.000e+00 0.6912</span></span>
+<span><span class="co">## - 6.912e-01 6.912e-01 6.912e-01 6.912e-01 0.0000</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Base frequencies:  </span></span>
+<span><span class="co">##   a   c   g   t   - </span></span>
+<span><span class="co">## 0.2 0.2 0.2 0.2 0.2</span></span></code></pre>
 <p>Here are some conventions how the models are estimated:</p>
 <p>If a model is supplied the base frequencies bf and rate matrix Q are optimized according to the model (nucleotides) or the adequate rate matrix and frequencies are chosen (for amino acids). If optQ=TRUE and neither a model or subs are supplied than a symmetric (optBf=FALSE) or reversible model (optBf=TRUE, i.e. the GTR for nucleotides) is estimated. This can be slow if the there are many character states, e.g. for amino acids. Table 2 shows how parameters are optimized and number of parameters to estimate. The elements of the vector subs correspond to <span class="math inline">\(\alpha, \dots, \eta\)</span> in equation (1)</p>
 <table class="table">
@@ -456,26 +454,26 @@ q_{ij}=\left\{
 \end{eqnarray}\]</span> where <span class="math inline">\(\omega\)</span> is the <span class="math inline">\(d_N/d_S\)</span> ratio, <span class="math inline">\(\kappa\)</span> the transition transversion ratio and <span class="math inline">\(\pi_j\)</span> is the the equilibrium frequencies of codon <span class="math inline">\(j\)</span>. For <span class="math inline">\(\omega\sim1\)</span> the an amino acid change is neutral, for <span class="math inline">\(\omega &lt; 1\)</span> purifying selection and <span class="math inline">\(\omega &gt; 1\)</span> positive selection. There are four models available: “codon0”, where both parameter <span class="math inline">\(\kappa\)</span> and <span class="math inline">\(\omega\)</span> are fixed to 1, “codon1” where both parameters are estimated and “codon2” or “codon3” where <span class="math inline">\(\kappa\)</span> or <span class="math inline">\(\omega\)</span> is fixed to 1.</p>
 <p>We compute the <span class="math inline">\(d_N/d_S\)</span> for some sequences given a tree using the ML functions <code>pml</code> and <code>optim.pml</code>. First we have to transform the the nucleotide sequences into codons (so far the algorithms always takes triplets).</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/KlausVigo/phangorn" class="external-link">phangorn</a></span><span class="op">)</span>
-<span class="va">fdir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/trees"</span>, package <span class="op">=</span> <span class="st">"phangorn"</span><span class="op">)</span>
-<span class="va">primates</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read.phyDat.html">read.phyDat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">fdir</span>, <span class="st">"primates.dna"</span><span class="op">)</span>,
-                        format <span class="op">=</span> <span class="st">"interleaved"</span><span class="op">)</span>
-<span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NJ.html">NJ</a></span><span class="op">(</span><span class="fu"><a href="../reference/dist.hamming.html">dist.ml</a></span><span class="op">(</span><span class="va">primates</span><span class="op">)</span><span class="op">)</span>
-<span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dna2codon.html">dna2codon</a></span><span class="op">(</span><span class="va">primates</span><span class="op">)</span>
-<span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">pml</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">dat</span>, bf<span class="op">=</span><span class="st">"F3x4"</span><span class="op">)</span>
-<span class="va">fit0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, model<span class="op">=</span><span class="st">"codon0"</span>, control<span class="op">=</span><span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span>
-<span class="va">fit1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, model<span class="op">=</span><span class="st">"codon1"</span>, control<span class="op">=</span><span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span>
-<span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, model<span class="op">=</span><span class="st">"codon2"</span>, control<span class="op">=</span><span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span>
-<span class="va">fit3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, model<span class="op">=</span><span class="st">"codon3"</span>, control<span class="op">=</span><span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova</a></span><span class="op">(</span><span class="va">fit0</span>, <span class="va">fit2</span>, <span class="va">fit3</span>, <span class="va">fit1</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Likelihood Ratio Test Table</span>
-<span class="co">##   Log lik. Df Df change Diff log lik. Pr(&gt;|Chi|)    </span>
-<span class="co">## 1    -2867 34                                       </span>
-<span class="co">## 2    -2866 35         1             2       0.14    </span>
-<span class="co">## 3    -2522 35         0           688     &lt;2e-16 ***</span>
-<span class="co">## 4    -2521 36         1             2       0.20    </span>
-<span class="co">## ---</span>
-<span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></code></pre>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/KlausVigo/phangorn" class="external-link">phangorn</a></span><span class="op">)</span></span>
+<span><span class="va">fdir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/trees"</span>, package <span class="op">=</span> <span class="st">"phangorn"</span><span class="op">)</span></span>
+<span><span class="va">primates</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read.phyDat.html">read.phyDat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">fdir</span>, <span class="st">"primates.dna"</span><span class="op">)</span>,</span>
+<span>                        format <span class="op">=</span> <span class="st">"interleaved"</span><span class="op">)</span></span>
+<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NJ.html">NJ</a></span><span class="op">(</span><span class="fu"><a href="../reference/dist.hamming.html">dist.ml</a></span><span class="op">(</span><span class="va">primates</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dna2codon.html">dna2codon</a></span><span class="op">(</span><span class="va">primates</span><span class="op">)</span></span>
+<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">pml</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">dat</span>, bf<span class="op">=</span><span class="st">"F3x4"</span><span class="op">)</span></span>
+<span><span class="va">fit0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, model<span class="op">=</span><span class="st">"codon0"</span>, control<span class="op">=</span><span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">fit1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, model<span class="op">=</span><span class="st">"codon1"</span>, control<span class="op">=</span><span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, model<span class="op">=</span><span class="st">"codon2"</span>, control<span class="op">=</span><span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">fit3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, model<span class="op">=</span><span class="st">"codon3"</span>, control<span class="op">=</span><span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova</a></span><span class="op">(</span><span class="va">fit0</span>, <span class="va">fit2</span>, <span class="va">fit3</span>, <span class="va">fit1</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Likelihood Ratio Test Table</span></span>
+<span><span class="co">##   Log lik. Df Df change Diff log lik. Pr(&gt;|Chi|)    </span></span>
+<span><span class="co">## 1    -2867 34                                       </span></span>
+<span><span class="co">## 2    -2866 35         1             2       0.14    </span></span>
+<span><span class="co">## 3    -2522 35         0           688     &lt;2e-16 ***</span></span>
+<span><span class="co">## 4    -2521 36         1             2       0.20    </span></span>
+<span><span class="co">## ---</span></span>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre>
 <p>There are several ways to estimate the codon frequencies <span class="math inline">\(\pi_j\)</span>. The simplest model is to assume they have equal frequencies (=1/61). A second is to use the empirical codon frequencies, either computed using <code>baseFreq</code> or using the argument <code>bf="empirical"</code> in <code>pml</code>. Last but not least the frequencies can be derived from the base frequencies at each codon position, the F3x4 model is set by the argument <code>bf="F3x4"</code>. One can estimate the codon frequencies setting the option to <code>optBf=TRUE</code> in <code>optim.pml</code>. As the convergence of the 60 parameters the convergence is likely slow set the maximal iterations to a higher value than the default (e.g. <code>control = pml.control(maxit=50)</code>). Similar parameters of the F3x4 can also estimated using ML <code>optF3x4=TRUE</code> instead.</p>
 <p>The “YN98” model <span class="citation">(Yang and Nielsen 1998)</span> is similar to the “codon1”, but additional optimizes the codon frequencies.</p>
 </div>
@@ -484,51 +482,51 @@ q_{ij}=\left\{
 </h2>
 <p><em>phangorn</em> has several functions to generate tree topologies, which may are interesting for simulation studies. <code>allTrees</code> computes all possible bifurcating tree topologies either rooted or unrooted for up to 10 taxa. One has to keep in mind that the number of trees is growing exponentially, use <code>howmanytrees</code> from <em>ape</em> as a reminder.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">trees</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/allTrees.html">allTrees</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">5</span><span class="op">)</span>, mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span>
-<span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">15</span><span class="op">)</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">trees</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>, cex<span class="op">=</span><span class="fl">1</span>, type<span class="op">=</span><span class="st">"u"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">trees</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/allTrees.html">allTrees</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">5</span><span class="op">)</span>, mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">15</span><span class="op">)</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">trees</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>, cex<span class="op">=</span><span class="fl">1</span>, type<span class="op">=</span><span class="st">"u"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="AdvancedFeatures_files/figure-html/unnamed-chunk-3-1.png" width="576"></p>
 <p><code>nni</code> returns a list of all trees which are one nearest neighbor interchange away.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/nni.html">nni</a></span><span class="op">(</span><span class="va">trees</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## 4 phylogenetic trees</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/nni.html">nni</a></span><span class="op">(</span><span class="va">trees</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## 4 phylogenetic trees</span></span></code></pre>
 <p><code>rNNI</code> and <code>rSPR</code> generate trees which are a defined number of NNI (nearest neighbor interchange) or SPR (subtree pruning and regrafting) away.</p>
 </div>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<pre><code><span class="co">## R version 4.2.0 (2022-04-22)</span>
-<span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span>
-<span class="co">## Running under: Ubuntu 20.04.4 LTS</span>
-<span class="co">## </span>
-<span class="co">## Matrix products: default</span>
-<span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0</span>
-<span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0</span>
-<span class="co">## </span>
-<span class="co">## locale:</span>
-<span class="co">##  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       </span>
-<span class="co">##  [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   </span>
-<span class="co">##  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          </span>
-<span class="co">## [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   </span>
-<span class="co">## </span>
-<span class="co">## attached base packages:</span>
-<span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span>
-<span class="co">## </span>
-<span class="co">## other attached packages:</span>
-<span class="co">## [1] phangorn_2.9.0.9000 ape_5.6-2          </span>
-<span class="co">## </span>
-<span class="co">## loaded via a namespace (and not attached):</span>
-<span class="co">##  [1] Rcpp_1.0.8.3      highr_0.9         bslib_0.3.1       compiler_4.2.0   </span>
-<span class="co">##  [5] jquerylib_0.1.4   prettydoc_0.4.1   tools_4.2.0       digest_0.6.29    </span>
-<span class="co">##  [9] jsonlite_1.8.0    evaluate_0.15     memoise_2.0.1     nlme_3.1-157     </span>
-<span class="co">## [13] lattice_0.20-45   pkgconfig_2.0.3   rlang_1.0.2       Matrix_1.4-1     </span>
-<span class="co">## [17] fastmatch_1.1-3   igraph_1.3.2      cli_3.3.0         yaml_2.3.5       </span>
-<span class="co">## [21] parallel_4.2.0    pkgdown_2.0.4     xfun_0.31         fastmap_1.1.0    </span>
-<span class="co">## [25] stringr_1.4.0     knitr_1.39        desc_1.4.1        generics_0.1.2   </span>
-<span class="co">## [29] fs_1.5.2          sass_0.4.1        systemfonts_1.0.4 rprojroot_2.0.3  </span>
-<span class="co">## [33] grid_4.2.0        R6_2.5.1          textshaping_0.3.6 rmarkdown_2.14   </span>
-<span class="co">## [37] purrr_0.3.4       magrittr_2.0.3    codetools_0.2-18  htmltools_0.5.2  </span>
-<span class="co">## [41] quadprog_1.5-8    ragg_1.2.2        stringi_1.7.6     cachem_1.0.6</span></code></pre>
+<pre><code><span><span class="co">## R version 4.2.0 (2022-04-22)</span></span>
+<span><span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
+<span><span class="co">## Running under: Ubuntu 20.04.4 LTS</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Matrix products: default</span></span>
+<span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0</span></span>
+<span><span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## locale:</span></span>
+<span><span class="co">##  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       </span></span>
+<span><span class="co">##  [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   </span></span>
+<span><span class="co">##  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          </span></span>
+<span><span class="co">## [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## attached base packages:</span></span>
+<span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## other attached packages:</span></span>
+<span><span class="co">## [1] phangorn_2.9.0.9000 ape_5.6-2          </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## loaded via a namespace (and not attached):</span></span>
+<span><span class="co">##  [1] Rcpp_1.0.8.3      highr_0.9         bslib_0.3.1       compiler_4.2.0   </span></span>
+<span><span class="co">##  [5] jquerylib_0.1.4   prettydoc_0.4.1   tools_4.2.0       digest_0.6.29    </span></span>
+<span><span class="co">##  [9] jsonlite_1.8.0    evaluate_0.15     memoise_2.0.1     nlme_3.1-157     </span></span>
+<span><span class="co">## [13] lattice_0.20-45   pkgconfig_2.0.3   rlang_1.0.3       Matrix_1.4-1     </span></span>
+<span><span class="co">## [17] fastmatch_1.1-3   igraph_1.3.2      cli_3.3.0         yaml_2.3.5       </span></span>
+<span><span class="co">## [21] parallel_4.2.0    pkgdown_2.0.5     xfun_0.31         fastmap_1.1.0    </span></span>
+<span><span class="co">## [25] stringr_1.4.0     knitr_1.39        desc_1.4.1        generics_0.1.2   </span></span>
+<span><span class="co">## [29] fs_1.5.2          sass_0.4.1        systemfonts_1.0.4 rprojroot_2.0.3  </span></span>
+<span><span class="co">## [33] grid_4.2.0        R6_2.5.1          textshaping_0.3.6 rmarkdown_2.14   </span></span>
+<span><span class="co">## [37] purrr_0.3.4       magrittr_2.0.3    codetools_0.2-18  htmltools_0.5.2  </span></span>
+<span><span class="co">## [41] quadprog_1.5-8    ragg_1.2.2        stringi_1.7.6     cachem_1.0.6</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -570,7 +568,7 @@ Yang, Ziheng, and Rasmus Nielsen. 1998. <span>“Synonymous and Nonsynonymous Ra
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer>

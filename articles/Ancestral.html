@@ -78,7 +78,7 @@
       Graz University of Technology<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2022-06-23</h4>
+            <h4 data-toc-skip class="date">2022-07-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/vignettes/Ancestral.Rmd" class="external-link"><code>vignettes/Ancestral.Rmd</code></a></small>
       <div class="d-none name"><code>Ancestral.Rmd</code></div>
@@ -96,41 +96,41 @@
 </h2>
 <p>To reconstruct ancestral sequences we first load some data and reconstruct a tree:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/KlausVigo/phangorn" class="external-link">phangorn</a></span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Loading required package: ape</span></code></pre>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/KlausVigo/phangorn" class="external-link">phangorn</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Loading required package: ape</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fdir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/trees"</span>, package <span class="op">=</span> <span class="st">"phangorn"</span><span class="op">)</span>
-<span class="va">primates</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read.phyDat.html">read.phyDat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">fdir</span>, <span class="st">"primates.dna"</span><span class="op">)</span>,
-                        format <span class="op">=</span> <span class="st">"interleaved"</span><span class="op">)</span>
-<span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parsimony.html">pratchet</a></span><span class="op">(</span><span class="va">primates</span>, trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span> |&gt; <span class="fu"><a href="../reference/parsimony.html">acctran</a></span><span class="op">(</span><span class="va">primates</span><span class="op">)</span>
-<span class="fu"><a href="../reference/parsimony.html">parsimony</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">primates</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## [1] 746</span></code></pre>
+<code class="sourceCode R"><span><span class="va">fdir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/trees"</span>, package <span class="op">=</span> <span class="st">"phangorn"</span><span class="op">)</span></span>
+<span><span class="va">primates</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read.phyDat.html">read.phyDat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">fdir</span>, <span class="st">"primates.dna"</span><span class="op">)</span>,</span>
+<span>                        format <span class="op">=</span> <span class="st">"interleaved"</span><span class="op">)</span></span>
+<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parsimony.html">pratchet</a></span><span class="op">(</span><span class="va">primates</span>, trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/parsimony.html">acctran</a></span><span class="op">(</span><span class="va">primates</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/parsimony.html">parsimony</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 746</span></span></code></pre>
 <p>For parsimony analysis of the edge length represent the observed number of changes. Reconstructing ancestral states therefore defines also the edge lengths of a tree. However there can exist several equally parsimonious reconstructions or states can be ambiguous and therefore edge length can differ. “MPR” reconstructs the ancestral states for each (internal) node as if the tree would be rooted in that node. However the nodes are not independent of each other. If one chooses one state for a specific node, this can restrict the choice of neighboring nodes (figures 2 and 3). The function acctran (accelerated transformation) assigns edge length and internal nodes to the tree <span class="citation">(Swofford and Maddison 1987)</span>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">anc.acctran</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ancestral.pml.html">ancestral.pars</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">primates</span>, <span class="st">"ACCTRAN"</span><span class="op">)</span>
-<span class="va">anc.mpr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ancestral.pml.html">ancestral.pars</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">primates</span>, <span class="st">"MPR"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">anc.acctran</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ancestral.pml.html">ancestral.pars</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">primates</span>, <span class="st">"ACCTRAN"</span><span class="op">)</span></span>
+<span><span class="va">anc.mpr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ancestral.pml.html">ancestral.pars</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">primates</span>, <span class="st">"MPR"</span><span class="op">)</span></span></code></pre></div>
 <p>All the ancestral reconstructions for parsimony are based on the fitch algorithm and so far only bifurcating trees are allowed. However trees can get pruned afterwards using the function <code>multi2di</code> from <em>ape</em>.</p>
 <p>The <code>seqLogo</code> function from the <em>seqLogo</em> package from Bioconductor provides a neat way to show proportions of a nucleotides of ancestral states (see figure 1).</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">seqLogo</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/seqLogo/man/seqLogo.html" class="external-link">seqLogo</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">anc.mpr</span>, <span class="fu"><a href="../reference/midpoint.html">getRoot</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, ic.scale<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">seqLogo</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/seqLogo/man/seqLogo.html" class="external-link">seqLogo</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">anc.mpr</span>, <span class="fu"><a href="../reference/midpoint.html">getRoot</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, ic.scale<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="seqLogo.png"></p>
 <p>You may need to install <em>seqLogo</em> before</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
-<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu">install</span><span class="op">(</span><span class="st">"seqLogo"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu">install</span><span class="op">(</span><span class="st">"seqLogo"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/ancestral.pml.html">plotAnc</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">anc.mpr</span>, <span class="fl">17</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"MPR"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/ancestral.pml.html">plotAnc</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">anc.mpr</span>, <span class="fl">17</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"MPR"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="Ancestral_files/figure-html/MPR-1.png" alt="Fig 2. Ancestral reconstruction using MPR." width="576"><p class="caption">
 Fig 2. Ancestral reconstruction using MPR.
 </p>
 </div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/ancestral.pml.html">plotAnc</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">anc.acctran</span>, <span class="fl">17</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"ACCTRAN"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/ancestral.pml.html">plotAnc</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">anc.acctran</span>, <span class="fl">17</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"ACCTRAN"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="Ancestral_files/figure-html/ACCTRAN-1.png" alt="Fig 3. Ancestral reconstruction using ACCTRAN." width="576"><p class="caption">
 Fig 3. Ancestral reconstruction using ACCTRAN.
@@ -142,28 +142,28 @@ Fig 3. Ancestral reconstruction using ACCTRAN.
 </h2>
 <p><em>phangorn</em> also offers the possibility to estimate ancestral states using a ML. The advantages of ML over parsimony is that the reconstruction accounts for different edge lengths. So far only a marginal construction is implemented (see <span class="citation">(Yang 2006)</span>).</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">pml</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">primates</span><span class="op">)</span>
-<span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, model<span class="op">=</span><span class="st">"F81"</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">pml</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">primates</span><span class="op">)</span></span>
+<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, model<span class="op">=</span><span class="st">"F81"</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>We can assign the ancestral states according to the highest likelihood (“ml”): <span class="math display">\[
 P(x_r = A) =  \frac{L(x_r=A)}{\sum_{k \in \{A,C,G,T\}}L(x_r=k)}
 \]</span> and the highest posterior probability (“bayes”) criterion: <span class="math display">\[
 P(x_r=A) =  \frac{\pi_A L(x_r=A)}{\sum_{k \in \{A,C,G,T\}}\pi_k L(x_r=k)},
 \]</span> where <span class="math inline">\(L(x_r)\)</span> is the joint probability of states at the tips and the state at the root <span class="math inline">\(x_r\)</span> and <span class="math inline">\(\pi_i\)</span> are the estimated base frequencies of state <span class="math inline">\(i\)</span>. Both methods agree if all states (base frequencies) have equal probabilities.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">anc.ml</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ancestral.pml.html">ancestral.pml</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"ml"</span><span class="op">)</span>
-<span class="va">anc.bayes</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ancestral.pml.html">ancestral.pml</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"bayes"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">anc.ml</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ancestral.pml.html">ancestral.pml</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"ml"</span><span class="op">)</span></span>
+<span><span class="va">anc.bayes</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ancestral.pml.html">ancestral.pml</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"bayes"</span><span class="op">)</span></span></code></pre></div>
 <p>The differences of the two approaches for a specific site (17) are represented in the following figures.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/ancestral.pml.html">plotAnc</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">anc.ml</span>, <span class="fl">17</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"ML"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/ancestral.pml.html">plotAnc</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">anc.ml</span>, <span class="fl">17</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"ML"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="Ancestral_files/figure-html/plotML-1.png" alt="Fig 4. Ancestral reconstruction the using the maximum likelihood." width="576"><p class="caption">
 Fig 4. Ancestral reconstruction the using the maximum likelihood.
 </p>
 </div>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/ancestral.pml.html">plotAnc</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">anc.bayes</span>, <span class="fl">17</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"Bayes"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/ancestral.pml.html">plotAnc</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">anc.bayes</span>, <span class="fl">17</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"Bayes"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="Ancestral_files/figure-html/plotB-1.png" alt="Fig 5. Ancestral reconstruction using (empirical) Bayes." width="576"><p class="caption">
 Fig 5. Ancestral reconstruction using (empirical) Bayes.
@@ -173,38 +173,38 @@ Fig 5. Ancestral reconstruction using (empirical) Bayes.
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<pre><code><span class="co">## R version 4.2.0 (2022-04-22)</span>
-<span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span>
-<span class="co">## Running under: Ubuntu 20.04.4 LTS</span>
-<span class="co">## </span>
-<span class="co">## Matrix products: default</span>
-<span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0</span>
-<span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0</span>
-<span class="co">## </span>
-<span class="co">## locale:</span>
-<span class="co">##  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       </span>
-<span class="co">##  [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   </span>
-<span class="co">##  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          </span>
-<span class="co">## [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   </span>
-<span class="co">## </span>
-<span class="co">## attached base packages:</span>
-<span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span>
-<span class="co">## </span>
-<span class="co">## other attached packages:</span>
-<span class="co">## [1] phangorn_2.9.0.9000 ape_5.6-2          </span>
-<span class="co">## </span>
-<span class="co">## loaded via a namespace (and not attached):</span>
-<span class="co">##  [1] Rcpp_1.0.8.3      highr_0.9         bslib_0.3.1       compiler_4.2.0   </span>
-<span class="co">##  [5] jquerylib_0.1.4   prettydoc_0.4.1   tools_4.2.0       digest_0.6.29    </span>
-<span class="co">##  [9] jsonlite_1.8.0    evaluate_0.15     memoise_2.0.1     nlme_3.1-157     </span>
-<span class="co">## [13] lattice_0.20-45   pkgconfig_2.0.3   rlang_1.0.2       Matrix_1.4-1     </span>
-<span class="co">## [17] fastmatch_1.1-3   igraph_1.3.2      cli_3.3.0         yaml_2.3.5       </span>
-<span class="co">## [21] parallel_4.2.0    pkgdown_2.0.4     xfun_0.31         fastmap_1.1.0    </span>
-<span class="co">## [25] stringr_1.4.0     knitr_1.39        desc_1.4.1        generics_0.1.2   </span>
-<span class="co">## [29] fs_1.5.2          sass_0.4.1        systemfonts_1.0.4 rprojroot_2.0.3  </span>
-<span class="co">## [33] grid_4.2.0        R6_2.5.1          textshaping_0.3.6 rmarkdown_2.14   </span>
-<span class="co">## [37] purrr_0.3.4       magrittr_2.0.3    codetools_0.2-18  htmltools_0.5.2  </span>
-<span class="co">## [41] quadprog_1.5-8    ragg_1.2.2        stringi_1.7.6     cachem_1.0.6</span></code></pre>
+<pre><code><span><span class="co">## R version 4.2.0 (2022-04-22)</span></span>
+<span><span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
+<span><span class="co">## Running under: Ubuntu 20.04.4 LTS</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Matrix products: default</span></span>
+<span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0</span></span>
+<span><span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## locale:</span></span>
+<span><span class="co">##  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       </span></span>
+<span><span class="co">##  [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   </span></span>
+<span><span class="co">##  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          </span></span>
+<span><span class="co">## [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## attached base packages:</span></span>
+<span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## other attached packages:</span></span>
+<span><span class="co">## [1] phangorn_2.9.0.9000 ape_5.6-2          </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## loaded via a namespace (and not attached):</span></span>
+<span><span class="co">##  [1] Rcpp_1.0.8.3      highr_0.9         bslib_0.3.1       compiler_4.2.0   </span></span>
+<span><span class="co">##  [5] jquerylib_0.1.4   prettydoc_0.4.1   tools_4.2.0       digest_0.6.29    </span></span>
+<span><span class="co">##  [9] jsonlite_1.8.0    evaluate_0.15     memoise_2.0.1     nlme_3.1-157     </span></span>
+<span><span class="co">## [13] lattice_0.20-45   pkgconfig_2.0.3   rlang_1.0.3       Matrix_1.4-1     </span></span>
+<span><span class="co">## [17] fastmatch_1.1-3   igraph_1.3.2      cli_3.3.0         yaml_2.3.5       </span></span>
+<span><span class="co">## [21] parallel_4.2.0    pkgdown_2.0.5     xfun_0.31         fastmap_1.1.0    </span></span>
+<span><span class="co">## [25] stringr_1.4.0     knitr_1.39        desc_1.4.1        generics_0.1.2   </span></span>
+<span><span class="co">## [29] fs_1.5.2          sass_0.4.1        systemfonts_1.0.4 rprojroot_2.0.3  </span></span>
+<span><span class="co">## [33] grid_4.2.0        R6_2.5.1          textshaping_0.3.6 rmarkdown_2.14   </span></span>
+<span><span class="co">## [37] purrr_0.3.4       magrittr_2.0.3    codetools_0.2-18  htmltools_0.5.2  </span></span>
+<span><span class="co">## [41] quadprog_1.5-8    ragg_1.2.2        stringi_1.7.6     cachem_1.0.6</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -237,7 +237,7 @@ Yang, Ziheng. 2006. <em>Computational Molecular Evolution</em>. Oxford: Oxford U
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer>

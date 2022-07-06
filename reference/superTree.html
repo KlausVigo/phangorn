@@ -64,8 +64,8 @@ or SPR as criterion.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">superTree</span><span class="op">(</span><span class="va">tree</span>, method <span class="op">=</span> <span class="st">"MRP"</span>, rooted <span class="op">=</span> <span class="cn">FALSE</span>, trace <span class="op">=</span> <span class="fl">0</span>,
-  start <span class="op">=</span> <span class="cn">NULL</span>, multicore <span class="op">=</span> <span class="cn">FALSE</span>, mc.cores <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">superTree</span><span class="op">(</span><span class="va">tree</span>, method <span class="op">=</span> <span class="st">"MRP"</span>, rooted <span class="op">=</span> <span class="cn">FALSE</span>, trace <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  start <span class="op">=</span> <span class="cn">NULL</span>, multicore <span class="op">=</span> <span class="cn">FALSE</span>, mc.cores <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -138,20 +138,20 @@ trees. <em>Molecular Phylogenetics and Evolution</em>, <b>1</b>, 53-58.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">bs</span> <span class="op">&lt;-</span> <span class="fu"><a href="bootstrap.pml.html">bootstrap.phyDat</a></span><span class="op">(</span><span class="va">Laurasiatherian</span>,</span>
-<span class="r-in">                       FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="upgma.html">upgma</a></span><span class="op">(</span><span class="fu"><a href="dist.hamming.html">dist.hamming</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>, bs<span class="op">=</span><span class="fl">50</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">mrp_st</span> <span class="op">&lt;-</span> <span class="fu">superTree</span><span class="op">(</span><span class="va">bs</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mrp_st</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">bs</span> <span class="op">&lt;-</span> <span class="fu"><a href="bootstrap.pml.html">bootstrap.phyDat</a></span><span class="op">(</span><span class="va">Laurasiatherian</span>,</span></span>
+<span class="r-in"><span>                       FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="upgma.html">upgma</a></span><span class="op">(</span><span class="fu"><a href="dist.hamming.html">dist.hamming</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>, bs<span class="op">=</span><span class="fl">50</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">mrp_st</span> <span class="op">&lt;-</span> <span class="fu">superTree</span><span class="op">(</span><span class="va">bs</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mrp_st</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="superTree-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">rf_st</span> <span class="op">&lt;-</span> <span class="fu">superTree</span><span class="op">(</span><span class="va">bs</span>, method <span class="op">=</span> <span class="st">"RF"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">spr_st</span> <span class="op">&lt;-</span> <span class="fu">superTree</span><span class="op">(</span><span class="va">bs</span>, method <span class="op">=</span> <span class="st">"SPR"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">rf_st</span> <span class="op">&lt;-</span> <span class="fu">superTree</span><span class="op">(</span><span class="va">bs</span>, method <span class="op">=</span> <span class="st">"RF"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">spr_st</span> <span class="op">&lt;-</span> <span class="fu">superTree</span><span class="op">(</span><span class="va">bs</span>, method <span class="op">=</span> <span class="st">"SPR"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -163,7 +163,7 @@ trees. <em>Molecular Phylogenetics and Evolution</em>, <b>1</b>, 53-58.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>

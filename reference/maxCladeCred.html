@@ -61,11 +61,11 @@ sample of trees.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">maxCladeCred</span><span class="op">(</span><span class="va">x</span>, tree <span class="op">=</span> <span class="cn">TRUE</span>, part <span class="op">=</span> <span class="cn">NULL</span>, rooted <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="fu">mcc</span><span class="op">(</span><span class="va">x</span>, tree <span class="op">=</span> <span class="cn">TRUE</span>, part <span class="op">=</span> <span class="cn">NULL</span>, rooted <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="fu">allCompat</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">maxCladeCred</span><span class="op">(</span><span class="va">x</span>, tree <span class="op">=</span> <span class="cn">TRUE</span>, part <span class="op">=</span> <span class="cn">NULL</span>, rooted <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">mcc</span><span class="op">(</span><span class="va">x</span>, tree <span class="op">=</span> <span class="cn">TRUE</span>, part <span class="op">=</span> <span class="cn">NULL</span>, rooted <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">allCompat</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -116,34 +116,34 @@ compatible splits similar to the option allcompat in MrBayes.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">bs</span> <span class="op">&lt;-</span> <span class="fu"><a href="bootstrap.pml.html">bootstrap.phyDat</a></span><span class="op">(</span><span class="va">Laurasiatherian</span>,</span>
-<span class="r-in">  FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="fu"><a href="upgma.html">upgma</a></span><span class="op">(</span><span class="fu"><a href="dist.hamming.html">dist.hamming</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>, bs<span class="op">=</span><span class="fl">100</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">strict_consensus</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/seqLogo/man/pwm-class.html" class="external-link">consensus</a></span><span class="op">(</span><span class="va">bs</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">majority_consensus</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/seqLogo/man/pwm-class.html" class="external-link">consensus</a></span><span class="op">(</span><span class="va">bs</span>, p<span class="op">=</span><span class="fl">.5</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">all_compat</span> <span class="op">&lt;-</span> <span class="fu">allCompat</span><span class="op">(</span><span class="va">bs</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">max_clade_cred</span> <span class="op">&lt;-</span> <span class="fu">maxCladeCred</span><span class="op">(</span><span class="va">bs</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">old.par</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>no.readonly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span>, mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">strict_consensus</span>, main<span class="op">=</span><span class="st">"Strict consensus tree"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">majority_consensus</span>, main<span class="op">=</span><span class="st">"Majority consensus tree"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">all_compat</span>, main<span class="op">=</span><span class="st">"Majority consensus tree with compatible splits"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">max_clade_cred</span>, main<span class="op">=</span><span class="st">"Maximum clade credibility tree"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">bs</span> <span class="op">&lt;-</span> <span class="fu"><a href="bootstrap.pml.html">bootstrap.phyDat</a></span><span class="op">(</span><span class="va">Laurasiatherian</span>,</span></span>
+<span class="r-in"><span>  FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="fu"><a href="upgma.html">upgma</a></span><span class="op">(</span><span class="fu"><a href="dist.hamming.html">dist.hamming</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>, bs<span class="op">=</span><span class="fl">100</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">strict_consensus</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/seqLogo/man/pwm-class.html" class="external-link">consensus</a></span><span class="op">(</span><span class="va">bs</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">majority_consensus</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/seqLogo/man/pwm-class.html" class="external-link">consensus</a></span><span class="op">(</span><span class="va">bs</span>, p<span class="op">=</span><span class="fl">.5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">all_compat</span> <span class="op">&lt;-</span> <span class="fu">allCompat</span><span class="op">(</span><span class="va">bs</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">max_clade_cred</span> <span class="op">&lt;-</span> <span class="fu">maxCladeCred</span><span class="op">(</span><span class="va">bs</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">old.par</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>no.readonly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span>, mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">strict_consensus</span>, main<span class="op">=</span><span class="st">"Strict consensus tree"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">majority_consensus</span>, main<span class="op">=</span><span class="st">"Majority consensus tree"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">all_compat</span>, main<span class="op">=</span><span class="st">"Majority consensus tree with compatible splits"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">max_clade_cred</span>, main<span class="op">=</span><span class="st">"Maximum clade credibility tree"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="maxCladeCred-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">old.par</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># compute clade credibility for trees given a prop.part object</span></span>
-<span class="r-in"><span class="va">pp</span> <span class="op">&lt;-</span> <span class="fu">prop.part</span><span class="op">(</span><span class="va">bs</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="nni.html">rNNI</a></span><span class="op">(</span><span class="va">bs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="fl">20</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">maxCladeCred</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">bs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, tree<span class="op">=</span><span class="cn">FALSE</span>, part <span class="op">=</span> <span class="va">pp</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">old.par</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># compute clade credibility for trees given a prop.part object</span></span></span>
+<span class="r-in"><span><span class="va">pp</span> <span class="op">&lt;-</span> <span class="fu">prop.part</span><span class="op">(</span><span class="va">bs</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="nni.html">rNNI</a></span><span class="op">(</span><span class="va">bs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="fl">20</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">maxCladeCred</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">bs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, tree<span class="op">=</span><span class="cn">FALSE</span>, part <span class="op">=</span> <span class="va">pp</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]      -Inf -36.10917</span>
-<span class="r-in"><span class="co"># first value likely be -Inf</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span><span class="co"># first value likely be -Inf</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -155,7 +155,7 @@ compatible splits similar to the option allcompat in MrBayes.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>
