@@ -226,7 +226,7 @@ fit_strict <- optim.pml(fit_strict, model="GTR", optRooted = TRUE,
 plot(fit_strict)
 ```
 
-Additionally we can also estimate tipdated phylogenies. Now we use as an example a H3N2 virus data set from treetime [@treetime]. Additionally to the alignment we also need to read in data containing the dates of the tips. 
+With phangorn we also can estimate tipdated phylogenies. Here we use as an example a H3N2 virus data set from treetime [@treetime]. Additionally to the alignment we also need to read in data containing the dates of the tips. 
 ```{r}
 fdir <- system.file("extdata/trees", package = "phangorn")
 tmp <- read.csv(file.path(fdir,"H3N2_NA_20.csv"))
