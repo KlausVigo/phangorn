@@ -295,7 +295,7 @@ Rooted UPGMA tree.
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/SH.test.html">SH.test</a></span><span class="op">(</span><span class="va">fitGTR</span>, <span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##      Trees      ln L Diff ln L p-value</span></span>
-<span><span class="co">## [1,]     1 -2607.142    0.0000  0.5075</span></span>
+<span><span class="co">## [1,]     1 -2607.142    0.0000  0.4995</span></span>
 <span><span class="co">## [2,]     2 -3068.295  461.1532  0.0000</span></span></code></pre>
 <p>or with the AIC</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
@@ -650,7 +650,7 @@ For a ultrametric starting tree starting tree we can use an UPGMA or WPGMA tree.
 <div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit_strict</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Trees_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
-<p>Additionally we can also estimate tipdated phylogenies. Now we use as an example a H3N2 virus data set from treetime <span class="citation">(Sagulenko, Puller, and Neher 2018)</span>. Additionally to the alignment we also need to read in data containing the dates of the tips.</p>
+<p>With phangorn we also can estimate tipdated phylogenies. Here we use as an example a H3N2 virus data set from treetime <span class="citation">(Sagulenko, Puller, and Neher 2018)</span>. Additionally to the alignment we also need to read in data containing the dates of the tips.</p>
 <div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fdir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/trees"</span>, package <span class="op">=</span> <span class="st">"phangorn"</span><span class="op">)</span></span>
 <span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">fdir</span>,<span class="st">"H3N2_NA_20.csv"</span><span class="op">)</span><span class="op">)</span></span>
