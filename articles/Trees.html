@@ -295,7 +295,7 @@ Rooted UPGMA tree.
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/SH.test.html">SH.test</a></span><span class="op">(</span><span class="va">fitGTR</span>, <span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##      Trees      ln L Diff ln L p-value</span></span>
-<span><span class="co">## [1,]     1 -2607.142    0.0000  0.4995</span></span>
+<span><span class="co">## [1,]     1 -2607.142    0.0000  0.5073</span></span>
 <span><span class="co">## [2,]     2 -3068.295  461.1532  0.0000</span></span></code></pre>
 <p>or with the AIC</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
@@ -658,14 +658,12 @@ For a ultrametric starting tree starting tree we can use an UPGMA or WPGMA tree.
 <p>We use the internal function <code>candidate_tree</code> to compute a fast a starting tree with the constraints given by the dates. We than can use <code>optim.pml</code> to optimize the tree and parameters.</p>
 <div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html" class="external-link">setNames</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">$</span><span class="va">numdate_given</span>, <span class="va">tmp</span><span class="op">$</span><span class="va">name</span><span class="op">)</span></span>
-<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/phangorn-internal.html">candidate_tree</a></span><span class="op">(</span><span class="va">H3N2</span>, <span class="st">"tipdated"</span>, tip.dates<span class="op">=</span><span class="va">dates</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "RSS: 0.00060566658527098"</span></span></code></pre>
-<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fit_td</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">pml</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">H3N2</span>, rate<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">tree</span>, <span class="st">"rate"</span><span class="op">)</span><span class="op">)</span> </span>
+<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/phangorn-internal.html">candidate_tree</a></span><span class="op">(</span><span class="va">H3N2</span>, <span class="st">"tipdated"</span>, tip.dates<span class="op">=</span><span class="va">dates</span><span class="op">)</span></span>
+<span><span class="va">fit_td</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">pml</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">H3N2</span>, rate<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">tree</span>, <span class="st">"rate"</span><span class="op">)</span><span class="op">)</span> </span>
 <span><span class="va">fit_td</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit_td</span>, model<span class="op">=</span><span class="st">"GTR"</span>, rearrangement<span class="op">=</span><span class="st">"NNI"</span>, optRooted<span class="op">=</span><span class="cn">TRUE</span>, </span>
 <span>                    optRate<span class="op">=</span><span class="cn">TRUE</span>, control<span class="op">=</span><span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>And we last we plot the tree with a timescale.</p>
-<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tree_td</span> <span class="op">&lt;-</span> <span class="va">fit_td</span><span class="op">$</span><span class="va">tree</span></span>
 <span><span class="va">root_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">dates</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/node.depth.html" class="external-link">node.depth.edgelength</a></span><span class="op">(</span><span class="va">tree_td</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">tree_td</span>, show.tip.label <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -682,7 +680,7 @@ For a ultrametric starting tree starting tree we can use an UPGMA or WPGMA tree.
 <h3 id="standard-scripts-for-nucleotide-analysis">Standard scripts for nucleotide analysis<a class="anchor" aria-label="anchor" href="#standard-scripts-for-nucleotide-analysis"></a>
 </h3>
 <p>Here we provide two standard scripts which can be adapted for the most common tasks. Most likely the arguments for <code>read.phyDat</code> have to be adapted to accommodate your file format. Both scripts assume that the <em>parallel</em> package works on your platform, see comments above.</p>
-<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/KlausVigo/phangorn" class="external-link">phangorn</a></span><span class="op">)</span></span>
 <span><span class="va">file</span> <span class="op">&lt;-</span> <span class="st">"myfile"</span></span>
 <span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read.phyDat.html">read.phyDat</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span>
@@ -713,7 +711,7 @@ For a ultrametric starting tree starting tree we can use an UPGMA or WPGMA tree.
 <h3 id="standard-scripts-for-amino-acid-analysis">Standard scripts for amino acid analysis<a class="anchor" aria-label="anchor" href="#standard-scripts-for-amino-acid-analysis"></a>
 </h3>
 <p>You can specify different several models build in which you can specify, e.g. “WAG”, “JTT”, “Dayhoff”, “LG”. Optimizing the rate matrix for amino acids is possible, but would take a long, a very long time and you will need to have a large alignment to estimate all the parameters. So make sure to set <code>optBf=FALSE</code> and <code>optQ=FALSE</code> in the function <code>optim.pml</code>, which is also the default.</p>
-<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/KlausVigo/phangorn" class="external-link">phangorn</a></span><span class="op">)</span></span>
 <span><span class="va">file</span> <span class="op">&lt;-</span> <span class="st">"myfile"</span></span>
 <span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read.phyDat.html">read.phyDat</a></span><span class="op">(</span><span class="va">file</span>, type <span class="op">=</span> <span class="st">"AA"</span><span class="op">)</span></span>
