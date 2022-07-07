@@ -225,7 +225,32 @@ fit_strict <- optim.pml(fit_strict, model="GTR", optRooted = TRUE,
 ```{r}
 plot(fit_strict)
 ```
-While the loglikelihood is lower than for an unrooted tree, these trees use less parameters.  
+
+Additionally we can also estimate tipdated phylogenies. Now we use as an example a H3N2 virus data set from treetime [@treetime]. Additionally to the alignment we also need to read in data containing the dates of the tips. 
+```{r}
+fdir <- system.file("extdata/trees", package = "phangorn")
+tmp <- read.csv(file.path(fdir,"H3N2_NA_20.csv"))
+H3N2 <- read.phyDat(file.path(fdir,"H3N2_NA_20.fasta"), format="fasta")
+```
+We use the internal function `candidate_tree` to compute a fast a starting tree with the constraints given by the dates.
+We than can use `optim.pml` to optimize the tree and parameters.  
+```{r}
+dates <- setNames(tmp$numdate_given, tmp$name)
+tree <- candidate_tree(H3N2, "tipdated", tip.dates=dates)
+fit_td <- pml(tree, H3N2, rate=attr(tree, "rate")) 
+fit_td <- optim.pml(fit_td, model="GTR", rearrangement="NNI", optRooted=TRUE, 
+                    optRate=TRUE, control=pml.control(trace=0))
+```
+And we last we plot the tree with a timescale. 
+```{r}
+tree_td <- fit_td$tree
+root_time <- max(dates) - max(node.depth.edgelength(tree_td))
+plot(tree_td, show.tip.label = FALSE)
+axisPhylo(root.time = root_time, backward = FALSE)
+```
+
+While the loglikelihood is lower than for an unrooted tree, we have to keep in mind that rooted trees use less parameters.
+In unrooted trees we estimate one edge length parameter for each tree, for ultrametric trees we estimate only a parameter for each internal node and for tipdatedd trees we have one additional parameter for the rate. 
 
 \newpage
 
