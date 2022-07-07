@@ -418,7 +418,7 @@ nnls.tree <- function(dm, tree, method = c("unrooted", "ultrametric", "tipdated"
 
   if (!any(betahat < 0)) {
     RSS <- sum((y - (X %*% betahattmp))^2)
-    if (trace) print(paste("RSS:", RSS))
+    if (trace > 1) print(paste("RSS:", RSS))
     attr(tree, "RSS") <- RSS
     if(method=="tipdated") betahat <- betahat / rate
     tree$edge.length <- betahat
@@ -462,7 +462,7 @@ nnls.tree <- function(dm, tree, method = c("unrooted", "ultrametric", "tipdated"
 
   # quadratic programing solving
   RSS <- sum((y - (X %*% betahat))^2)
-  if (trace) print(paste("RSS:", RSS))
+  if (trace > 1) print(paste("RSS:", RSS))
   attr(tree, "RSS") <- RSS
 
   bhat <- numeric(max(tree$edge))
@@ -518,7 +518,7 @@ nnls.splits <- function(x, dm, trace = 0) {
 
   if (!any(betahat < 0)) {
     RSS <- sum((y - (X %*% betahat))^2)
-    if (trace) print(paste("RSS:", RSS))
+    if (trace > 1) print(paste("RSS:", RSS))
     attr(x, "RSS") <- RSS
     attr(x, "weights") <- betahat
     return(x)
@@ -537,7 +537,7 @@ nnls.splits <- function(x, dm, trace = 0) {
   ind <- (betahat > 1e-8) | int == 1
   x <- x[ind]
   attr(x, "weights") <- betahat[ind]
-  if (trace) print(paste("RSS:", RSS))
+  if (trace > 1) print(paste("RSS:", RSS))
   attr(x, "RSS") <- RSS
   x
 }
