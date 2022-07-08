@@ -16,7 +16,7 @@
 #' @param method Estimate "unrooted", "ultrametric" or "tiplabeled" tree.
 #' @param rearrangement Type of tree tree rearrangements to perform, one of
 #' "none", "NNI", "stochastic" or "ratchet"
-## @param start A starting tree can be supplied.
+#' @param start A starting tree can be supplied.
 #' @param \dots Further arguments passed to or from other methods.
 #' @return \code{pml_bb} returns a list. It contains an object of class
 #' \code{pml}, the best tree found so far and possibly objects of class
@@ -34,8 +34,7 @@
 #' @rdname pml_bb
 #' @export
 pml_bb <- function(x, model=NULL, rearrangement="stochastic",
-                   method="unrooted",
-                   bs=100, ...){ # start=NULL,
+                   method="unrooted", bs=100, start=NULL, ...){ #
   mt <- NULL
   fit <- NULL
   type <- NULL
