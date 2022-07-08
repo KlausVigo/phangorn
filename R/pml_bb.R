@@ -34,11 +34,13 @@
 #' @rdname pml_bb
 #' @export
 pml_bb <- function(x, model=NULL, rearrangement="stochastic",
-                   method=c("unrooted", "ultrametric", "tip.dated"),
+                   method="unrooted",
                    bs=100, ...){ # start=NULL,
   mt <- NULL
   fit <- NULL
   type <- NULL
+
+  method <- match.arg(method, c("unrooted", "ultrametric", "tip.dated"))
 
   optRooted <- FALSE
   optRate <- FALSE
@@ -66,11 +68,10 @@ pml_bb <- function(x, model=NULL, rearrangement="stochastic",
   if(method=="tip.dated" && !is.null(attr(start, "rate"))) fit <- update(fit, rate=attr(start, "rate"))
   if(is.null(model)) model <- guess_model(fit)
   type <- attr(fit$data, "type")
-  model_terms <- split_model(model, type)
-
+  para <- split_model(model, type)
   #fit <- pml(fit, model=para$model, k=para$k)
 
-  fit <- optim.pml(fit, model=model, optGamma=para$optGamma, optInv=para$optInv,
+  fit <- optim.pml(fit, model=para$model, optGamma=para$optGamma, optInv=para$optInv,
             optBf=para$optBf, rearrangement = rearrangement, optRate=optRate,
             optRooted=optRooted)
 
