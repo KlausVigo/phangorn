@@ -59,7 +59,7 @@ Description: Allows for estimation of phylogenetic trees and networks
     Schliep et al. (2017).
 License: GPL (>= 2)
 URL: https://github.com/KlausVigo/phangorn,
-    http://klausvigo.github.io/phangorn/
+    https://klausvigo.github.io/phangorn/
 BugReports: https://github.com/KlausVigo/phangorn/issues
 Depends:
     ape (>= 5.5),

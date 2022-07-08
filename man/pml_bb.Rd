@@ -5,7 +5,7 @@
 \title{Likelihood of a tree.}
 \usage{
 pml_bb(x, model = NULL, rearrangement = "stochastic",
-  method = c("unrooted", "ultrametric", "tip.dated"), bs = 100, ...)
+  method = "unrooted", bs = 100, start = NULL, ...)
 }
 \arguments{
 \item{x}{An alignment of class (either class \code{phyDat}, \code{DNAbin} or
@@ -20,6 +20,8 @@ pml_bb(x, model = NULL, rearrangement = "stochastic",
 \item{method}{Estimate "unrooted", "ultrametric" or "tiplabeled" tree.}
 
 \item{bs}{Number of bootstrap samples.}
+
+\item{start}{A starting tree can be supplied.}
 
 \item{\dots}{Further arguments passed to or from other methods.}
 }
