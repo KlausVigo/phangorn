@@ -519,8 +519,11 @@ optim.quartet <- function(old.el, eig, bf, dat, g = 1, w = 1, weight,
 
 
 #' @export
-plot.pml <- function(x, ...) plot.phylo(x$tree, ...)
-
+plot.pml <- function(x, ...){
+  plot.phylo(x$tree, ...)
+  if(is.rooted(x$tree)) axisPhylo()
+  else add.scale.bar()
+}
 
 phangornParseFormula <- function(model) {
 
