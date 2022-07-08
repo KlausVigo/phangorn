@@ -262,23 +262,23 @@ Rooted UPGMA tree.
 <span>    rearrangement <span class="op">=</span> <span class="st">"stochastic"</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fitGTR</span></span></code></pre></div>
 <pre><code><span><span class="co">## model: GTR+G(4)+I </span></span>
-<span><span class="co">## loglikelihood: -2606.75 </span></span>
+<span><span class="co">## loglikelihood: -2606.754 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -1230.335 </span></span>
-<span><span class="co">## Proportion of invariant sites: 0.005629143 </span></span>
+<span><span class="co">## Proportion of invariant sites: 0.005618416 </span></span>
 <span><span class="co">## Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.701265 </span></span>
+<span><span class="co">## Shape parameter: 2.700243 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
 <span><span class="co">##            a            c            g          t</span></span>
-<span><span class="co">## a  0.0000000  0.811532110 75.283485671  0.6487651</span></span>
-<span><span class="co">## c  0.8115321  0.000000000  0.004647422 29.0576219</span></span>
-<span><span class="co">## g 75.2834857  0.004647422  0.000000000  1.0000000</span></span>
-<span><span class="co">## t  0.6487651 29.057621900  1.000000000  0.0000000</span></span>
+<span><span class="co">## a  0.0000000  0.680276011 63.105365375  0.5288654</span></span>
+<span><span class="co">## c  0.6802760  0.000000000  0.005113966 24.3671827</span></span>
+<span><span class="co">## g 63.1053654  0.005113966  0.000000000  1.0000000</span></span>
+<span><span class="co">## t  0.5288654 24.367182737  1.000000000  0.0000000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##          a          c          g          t </span></span>
-<span><span class="co">## 0.39637537 0.37882803 0.04027169 0.18452490</span></span></code></pre>
+<span><span class="co">## 0.39640916 0.37873921 0.04029989 0.18455175</span></span></code></pre>
 <div class="section level3">
 <h3 id="model-selection">Model selection<a class="anchor" aria-label="anchor" href="#model-selection"></a>
 </h3>
@@ -288,28 +288,28 @@ Rooted UPGMA tree.
 <pre><code><span><span class="co">## Likelihood Ratio Test Table</span></span>
 <span><span class="co">##   Log lik. Df Df change Diff log lik. Pr(&gt;|Chi|)    </span></span>
 <span><span class="co">## 1  -3068.3 25                                       </span></span>
-<span><span class="co">## 2  -2606.8 35        10        923.09  &lt; 2.2e-16 ***</span></span>
+<span><span class="co">## 2  -2606.8 35        10        923.08  &lt; 2.2e-16 ***</span></span>
 <span><span class="co">## ---</span></span>
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre>
 <p>with the Shimodaira-Hasegawa  test</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/SH.test.html">SH.test</a></span><span class="op">(</span><span class="va">fitGTR</span>, <span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##      Trees      ln L Diff ln L p-value</span></span>
-<span><span class="co">## [1,]     1 -2606.750    0.0000  0.5001</span></span>
-<span><span class="co">## [2,]     2 -3068.295  461.5447  0.0000</span></span></code></pre>
+<span><span class="co">## [1,]     1 -2606.754     0.000  0.4981</span></span>
+<span><span class="co">## [2,]     2 -3068.295   461.541  0.0000</span></span></code></pre>
 <p>or with the AIC</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 6186.59</span></span></code></pre>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">fitGTR</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 5283.501</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 5283.508</span></span></code></pre>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/modelTest.html">AICc</a></span><span class="op">(</span><span class="va">fitGTR</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 5296.358</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 5296.365</span></span></code></pre>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">BIC</a></span><span class="op">(</span><span class="va">fitGTR</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 5404.137</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 5404.144</span></span></code></pre>
 <p>An alternative is to use the function <code>modelTest</code> to compare different nucleotide or protein models the AIC, AICc or BIC, similar to popular programs ModelTest and ProtTest <span class="citation">(D. Posada and Crandall 1998)</span>, <span class="citation">(David Posada 2008)</span>, <span class="citation">(Abascal, Zardoya, and Posada 2005)</span>. By default available nucleotide or amino acid models available are compared.</p>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modelTest.html">modelTest</a></span><span class="op">(</span><span class="va">primates</span><span class="op">)</span></span></code></pre></div>
