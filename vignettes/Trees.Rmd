@@ -250,7 +250,7 @@ axisPhylo(root.time = root_time, backward = FALSE)
 ```
 
 While the loglikelihood is lower than for an unrooted tree, we have to keep in mind that rooted trees use less parameters.
-In unrooted trees we estimate one edge length parameter for each tree, for ultrametric trees we estimate only a parameter for each internal node and for tipdatedd trees we have one additional parameter for the rate. 
+In unrooted trees we estimate one edge length parameter for each tree, for ultrametric trees we estimate only a parameter for each internal node and for tipdated trees we have one additional parameter for the rate. 
 
 \newpage
 
