@@ -12,7 +12,7 @@ Allows for estimation of phylogenetic trees and networks using Maximum Likelihoo
 Useful links:
 \itemize{
   \item \url{https://github.com/KlausVigo/phangorn}
-  \item \url{http://klausvigo.github.io/phangorn/}
+  \item \url{https://klausvigo.github.io/phangorn/}
   \item Report bugs at \url{https://github.com/KlausVigo/phangorn/issues}
 }
 
