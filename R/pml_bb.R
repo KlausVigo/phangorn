@@ -135,18 +135,3 @@ split_model <- function(x="GTR + G(4) + I", type="DNA"){
   }
   list(model=model, optFreq=optFreq, optInv=optInv, optGamma=optGamma, k=k)
 }
-
-
-
-rell <- function(x, B = 1000){
-  weight <- as.integer(attr(x, "weight"))
-  lw <- attr(x, "nr")
-  X <- matrix(NA_integer_, lw, B)
-  wvec <- rep( seq_len(lw), weight)
-  for (i in 1:B) X[,i] <- tabulate(sample(wvec, replace = TRUE), nbins = lw)
-  X
-}
-
-
-
-
