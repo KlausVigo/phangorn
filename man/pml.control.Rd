@@ -8,7 +8,7 @@
 pml.control(epsilon = 1e-08, maxit = 10, trace = 1, tau = 1e-08)
 
 ratchet.control(iter = 20L, maxit = 200L, minit = 100L, prop = 1/2,
-  rell = TRUE)
+  rell = TRUE, bs = 100L)
 }
 \arguments{
 \item{epsilon}{Stop criterion for optimization (see details).}
@@ -26,8 +26,10 @@ ratchet.control(iter = 20L, maxit = 200L, minit = 100L, prop = 1/2,
 \item{prop}{Only used if \code{rearrangement=stochstic}. How many NNI moves
 should be added to the tree in proportion of the number of taxa.´}
 
-\item{rell}{logical, if TRUE approximate boostrapping similar Minh et al.
+\item{rell}{logical, if TRUE approximate bootstraping similar Minh et al.
 (2013) is performed.}
+
+\item{bs}{number of approximate bootstrap samples.}
 }
 \value{
 A list with components named as the arguments for controlling the

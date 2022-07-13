@@ -21,8 +21,9 @@
 #' @param iter Number of iterations to stop if there is no change.
 #' @param prop Only used if \code{rearrangement=stochstic}. How many NNI moves
 #' should be added to the tree in proportion of the number of taxa.´
-#' @param rell logical, if TRUE approximate boostrapping similar Minh et al.
-#' (2013) is performed.
+## @param rell logical, if TRUE approximate bootstraping similar Minh et al.
+## (2013) is performed.
+## @param bs number of approximate bootstrap samples.
 #' @return A list with components named as the arguments for controlling the
 #' fitting process.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
@@ -45,7 +46,7 @@ pml.control <- function(epsilon = 1e-08, maxit = 10, trace = 1, tau = 1e-8) {
 #' @rdname pml.control
 #' @export
 ratchet.control <- function(iter = 20L, maxit = 200L, minit = 100L, prop = 1/2,
-                            rell = TRUE){
+                            rell = TRUE, bs=100L){
   if (!is.numeric(maxit) || maxit <= 0)
     stop("maximum number of iterations must be > 0")
   if (!is.numeric(minit) || minit <= 0)
@@ -54,5 +55,6 @@ ratchet.control <- function(iter = 20L, maxit = 200L, minit = 100L, prop = 1/2,
     stop("number of iterations must be > 0")
   if (!is.numeric(iter) || iter <= 0)
     stop("proportion of rearrangenemts must be > 0")
-  list(iter = iter, maxit = maxit, minit = minit, prop = prop, rell = rell)
+  list(iter = iter, maxit = maxit, minit = minit, prop = prop, rell = rell,
+       bs=bs)
 }

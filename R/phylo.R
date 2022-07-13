@@ -2081,9 +2081,9 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   ll1 <- ll0
   opti <- TRUE
   RELL <- NULL
-  if(ratchet.par$rell && perturbation){
-    RELL <- init_rell(data, B=100)
-  }
+#  if(ratchet.par$rell && perturbation){
+#    RELL <- init_rell(data, B=ratchet.par$bs)
+#  }
   nr <- as.integer(attr(data, "nr"))
   nc <- as.integer(attr(data, "nc"))
   nTips <- as.integer(length(tree$tip.label))
@@ -2696,7 +2696,7 @@ opt_Edge <- function(tree, data, rooted, ...){
 }
 
 
-init_rell <- function(x, B = 100){
+init_rell <- function(x, B = 100L){
   weight <- as.integer(attr(x, "weight"))
   lw <- attr(x, "nr")
   X <- matrix(NA_integer_, B, lw)
