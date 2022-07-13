@@ -64,7 +64,7 @@ fun <- function(x) upgma(dist.ml(x))
 bs_upgma <- bootstrap.phyDat(primates,  fun)
 ```
 With the new syntax of R 4.1 this can be written a bit shorter:
-```{r bootstrap_dist_new, echo=TRUE, eval=FALSE}
+```{r bootstrap_dist_new, echo=TRUE, eval=FALSE, cache=TRUE}
 bs_upgma <- bootstrap.phyDat(primates,  \(x){dist.ml(x) |> upgma})
 ```
 Finally we can plot the tree with bootstrap values added: 
@@ -133,7 +133,7 @@ fitJC  <- optim.pml(fit, rearrangement="NNI")
 logLik(fitJC)
 ```
 With the default values`pml` will estimate a Jukes-Cantor model. The generic function `update` allows to change parameters. We will change the model to the GTR + $\Gamma(4)$ + I model and then optimize all the parameters.
-```{r GTR+G+I}
+```{r GTR+G+I, cache=TRUE}
 fitGTR <- update(fit, k=4, inv=0.2)
 fitGTR <- optim.pml(fitGTR, model="GTR", optInv=TRUE, optGamma=TRUE,
     rearrangement = "NNI", control = pml.control(trace = 0))
@@ -142,7 +142,7 @@ fitGTR
 With the control parameters the thresholds for the fitting process can be changed. Here we want just to suppress output during the fitting process. For larger trees the NNI rearrangements often get stuck in a local maximum. We added two stochastic algorithms to improve topology search. The first (set `rearrangement="stochastic"`) performs stochastic rearrangements similar as in [@Nguyen2015], which makes random NNI permutation to the tree, which than gets optimized to escape local optima. The second option (rearrangement="ratchet") perform the likelihood ratchet [@Vos2003].
 
 While these algorithms may find better trees they will also take more time.
-```{r stochastic}
+```{r stochastic, cache=TRUE}
 fitGTR <- optim.pml(fitGTR, model="GTR", optInv=TRUE, optGamma=TRUE,
     rearrangement = "stochastic", control = pml.control(trace = 0))
 fitGTR
@@ -227,14 +227,14 @@ plot(fit_strict)
 ```
 
 With phangorn we also can estimate tipdated phylogenies. Here we use as an example a H3N2 virus data set from treetime [@treetime]. Additionally to the alignment we also need to read in data containing the dates of the tips. 
-```{r}
+```{r, tipdated data}
 fdir <- system.file("extdata/trees", package = "phangorn")
 tmp <- read.csv(file.path(fdir,"H3N2_NA_20.csv"))
 H3N2 <- read.phyDat(file.path(fdir,"H3N2_NA_20.fasta"), format="fasta")
 ```
 We use the internal function `candidate_tree` to compute a fast a starting tree with the constraints given by the dates.
 We than can use `optim.pml` to optimize the tree and parameters.  
-```{r}
+```{r, tipdated fit}
 dates <- setNames(tmp$numdate_given, tmp$name)
 tree <- candidate_tree(H3N2, "tipdated", tip.dates=dates)
 fit_td <- pml(tree, H3N2, rate=attr(tree, "rate")) 
@@ -242,7 +242,7 @@ fit_td <- optim.pml(fit_td, model="GTR", rearrangement="NNI", optRooted=TRUE,
                     optRate=TRUE, control=pml.control(trace=0))
 ```
 And we last we plot the tree with a timescale. 
-```{r}
+```{r, tipdated plot}
 tree_td <- fit_td$tree
 root_time <- max(dates) - max(node.depth.edgelength(tree_td))
 plot(tree_td, show.tip.label = FALSE)
