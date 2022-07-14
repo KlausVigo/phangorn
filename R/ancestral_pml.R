@@ -179,29 +179,9 @@ ancestral2phyDat <- function(x) {
 
 
 fitchCoding2ambiguous <- function(x, type = "DNA") {
-  y <- c(
-    1L, 2L, 4L, 8L, 8L, 3L, 5L, 9L, 6L, 10L, 12L, 7L, 11L, 13L,
-    14L, 15L, 15L, 15L
-  )
+  y <- c(1L, 2L, 4L, 8L, 8L, 3L, 5L, 9L, 6L, 10L, 12L, 7L, 11L, 13L,
+    14L, 15L, 15L, 15L)
   fmatch(x, y)
-}
-
-
-fitchCoding2ambiguous2 <- function(x, type = "DNA") {
-  y <- c(1L, 2L, 4L, 8L, 8L, 3L, 5L, 9L, 6L, 10L, 12L, 7L, 11L, 13L, 14L, 15L)
-  dna <- c(
-    "a", "c", "g", "t", "t", "m", "r", "w", "s", "y", "k", "v", "h",
-    "d", "b", "n"
-  )
-  rna <- c(
-    "a", "c", "g", "u", "u", "m", "r", "w", "s", "y", "k", "v", "h",
-    "d", "b", "n"
-  )
-  res <- switch(type,
-    "DNA" = dna[fmatch(x, y)],
-    "RNA" = rna[fmatch(x, y)]
-  )
-  res
 }
 
 
@@ -412,13 +392,6 @@ ptree <- function(tree, data, return = "prob", acctran=TRUE) {
   if(length(tmp)>0 && acctran==TRUE)f$acctran_traverse(tmp)
   res <- vector("list", m)
   att$names <- c(att$names, as.character((nTip+1):m))
-#  if(return == "phyDat"){
-#    res[1:nTip] <- data[1:nTip]
-#    if(type=="DNA"){
-#      for(i in (nTip+1):m)
-#        res[[i]] <- f$getAnc(i)[1:nr]
-#    }
-#  }
   if(return == "phyDat"){
     if(type=="DNA"){
       res[1:nTip] <- data[1:nTip]
