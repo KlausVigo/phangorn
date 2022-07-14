@@ -1,3 +1,12 @@
+    CHANGES in PHANGORN VERSION 2.9.1
+
+NEW FEATURES
+
+    o tipdated phylogenies estimation (was with limitations possible before,
+
+      but not documented)
+
+
     CHANGES in PHANGORN VERSION 2.9.0
 
 BUG FIXES
