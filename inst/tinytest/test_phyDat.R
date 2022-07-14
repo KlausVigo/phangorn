@@ -1,4 +1,4 @@
-# to test: phyDat.codon,
+# as.factor.phyDat
 data(Laurasiatherian)
 data(chloroplast)
 set.seed(42)
@@ -15,6 +15,9 @@ phy_dnabin <- as.DNAbin(Laurasiatherian)
 phy_aabin <- as.AAbin(chloroplast)
 phy_align <- phyDat2alignment(Laurasiatherian)
 
+phy_vec_factor <- factor(sample(4, 26, replace=TRUE), labels=c("a", "c", "g", "t"))
+names(phy_vec_factor) <- letters
+
 #test conversion work
 expect_true(inherits(phy_matrix, "matrix"))
 expect_true(inherits(phy_df, "data.frame"))
@@ -28,6 +31,7 @@ expect_true(inherits(as.phyDat(phy_dnabin), "phyDat"))
 expect_true(inherits(phyDat(phy_vec_dna), "phyDat"))
 expect_true(inherits(phyDat(phy_vec_user, type="USER", levels = c("0","1")),
                     "phyDat"))
+expect_true(inherits(as.phyDat(phy_vec_factor), "phyDat"))
 expect_true(inherits(as.phyDat(phy_dnabin), "phyDat"))
 expect_true(inherits(as.phyDat(phy_align), "phyDat"))
 expect_true(inherits(c2d <- codon2dna(codon_align), "phyDat"))
@@ -61,6 +65,13 @@ expect_error(subset(Laurasiatherian, 1:100), "subscript out of bounds")
 expect_true(inherits(lauraCbind2 <- cbind(subset_3, subset_4), "phyDat"))
 expect_equal(baseFreq(lauraCbind2), baseFreq(Laurasiatherian))
 
+ind <- sample(47, 10)
+expect_true(inherits(subset_5 <- subset(Laurasiatherian, ind), "phyDat"))
+expect_true(inherits(subset_6 <- Laurasiatherian[ind,], "phyDat"))
+expect_equal(subset_5, subset_6)
+expect_true(inherits(subset_7 <- subset(Laurasiatherian, ind, compress=TRUE),
+                     "phyDat"))
+expect_true(object.size(subset_7) <= object.size(subset_5))
 
 # test read and write
 write.phyDat(Laurasiatherian, "tmp1.txt")
