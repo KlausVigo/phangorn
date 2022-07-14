@@ -51,11 +51,7 @@
 #' subset(Laurasiatherian, subset=1:5, select=1:20, site.pattern = FALSE)
 #' # the first 5 site patterns (often more than 5 characters)
 #' subset(Laurasiatherian, select=1:5, site.pattern = TRUE)
-#' # transform into old ape format
-#' LauraChar <- as.character(Laurasiatherian)
-#' # and back
-#' Laura <- phyDat(LauraChar)
-#' all.equal(Laurasiatherian, Laura)
+#'
 #' # Compute all possible site patterns
 #' # for nucleotides there $4 ^ (number of tips)$ patterns
 #' allSitePattern(5)
