@@ -88,6 +88,19 @@ subset(Laurasiatherian, subset=1:5, select=1:20, site.pattern = FALSE)
 # the first 5 site patterns (often more than 5 characters)
 subset(Laurasiatherian, select=1:5, site.pattern = TRUE)
 
+x <- matrix(c("a", "a", "c", "g", "c", "t", "a", "g",
+              "a", "a", "c", "g", "g", "t", "a", "g",
+              "a", "a", "c", "c", "c", "t", "t", "g"), nrow=3, byrow = TRUE,
+            dimnames = list(c("t1", "t2", "t3"), 1:8))
+y <- phyDat(x)
+
+subset(y, 1:2)
+subset(y, 1:2, compress=TRUE)
+
+subset(y, select=1:3, site.pattern = FALSE) |> as.character()
+subset(y, select=1:3, site.pattern = TRUE) |> as.character()
+y[,1:3] # same as subset(y, select=1:3, site.pattern = FALSE)
+
 # Compute all possible site patterns
 # for nucleotides there $4 ^ (number of tips)$ patterns
 allSitePattern(5)
