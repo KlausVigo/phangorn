@@ -352,7 +352,7 @@ removeAmbiguousSites <- function(x){
   for (i in 2:length(x)) index <- index & con[x[[i]]]
   index <- which(index)
   if(length(index)==0) stop('each site contains at least one ambiguous state!')
-  subset(x, select = index)
+  subset(x, select = index, site.pattern = TRUE)
 }
 
 
@@ -390,7 +390,7 @@ removeParsimonyUninfomativeSites <- function(data, recursive=FALSE, exact=TRUE){
     dup <- map_duplicates(data)
     if (!is.null(dup)) {
       dup_list <- c(list(dup), dup_list)
-      data <- subset(data, setdiff(names(data), dup[, 1]))
+      data <- subset(data, setdiff(names(data), dup[, 1]), site.pattern=TRUE)
     }
     else break() # tmp <- FALSE
   }

@@ -9,7 +9,7 @@ init_fitch <- function(obj, parsinfo=FALSE, order=FALSE, m=4L, ...){
   if(sum( abs (attr(obj, "weight") %% 1L) ) >1) order <- FALSE
   if(order){
     ord <- order(attr(obj, "weight"), decreasing = TRUE)
-    obj <- subset(obj, select = ord) # inside C (1 less copy)
+    obj <- subset(obj, select = ord, site.pattern=TRUE)
   }
   weight <- attr(obj, "weight")
   l <- length(weight)
@@ -273,7 +273,7 @@ optim.fitch <- function(tree, data, trace = 1, rearrangements = "NNI", ...) {
   if(nTips < 5) rearrangements <- "NNI"
 
   data <- subset(data, tree$tip.label, order(attr(data, "weight"),
-                                             decreasing = TRUE))
+                                      decreasing = TRUE), site.pattern=TRUE)
   f <- init_fitch(data, FALSE, FALSE, m=4L)
 
   m <- nr * (2L * nTips - 2L)

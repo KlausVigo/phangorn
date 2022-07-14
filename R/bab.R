@@ -192,7 +192,7 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
   data <- compressSites(data)
 
   o <- order(attr(data, "weight"), decreasing = TRUE)
-  data <- subset(data, select = o)
+  data <- subset(data, select = o, site.pattern=TRUE)
 
   tree <- pratchet(data, start = tree, trace = trace - 1, ...)
 
