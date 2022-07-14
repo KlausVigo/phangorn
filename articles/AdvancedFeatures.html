@@ -78,7 +78,7 @@
       Graz University of Technology<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2022-07-13</h4>
+            <h4 data-toc-skip class="date">2022-07-14</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/vignettes/AdvancedFeatures.Rmd" class="external-link"><code>vignettes/AdvancedFeatures.Rmd</code></a></small>
       <div class="d-none name"><code>AdvancedFeatures.Rmd</code></div>
@@ -113,13 +113,13 @@
 <span><span class="co">## t3 "a"  "a"  "t"  "-"  "g"  "a"  "c"  "c"  "c"  "t"   "?"   "g"</span></span></code></pre>
 <p>Normally we would transform this matrix into an phyDat object and gaps are handled as ambiguous character like “?”.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">gapsdata1</span> <span class="op">=</span> <span class="fu"><a href="../reference/phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">gapsdata1</span> <span class="op">=</span> <span class="fu"><a href="../reference/as.phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
 <span><span class="va">gapsdata1</span></span></code></pre></div>
 <pre><code><span><span class="co">## 3 sequences with 12 character and 11 different site patterns.</span></span>
 <span><span class="co">## The states are a c g t</span></span></code></pre>
 <p>Now we will define a “USER” defined object and have to supply a vector levels of the character states for the new data, in our case the for nucleotide states and the gap. Additional we can define ambiguous states which can be any of the states.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">gapsdata2</span> <span class="op">=</span> <span class="fu"><a href="../reference/phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">data</span>, type<span class="op">=</span><span class="st">"USER"</span>, levels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>,<span class="st">"c"</span>,<span class="st">"g"</span>,<span class="st">"t"</span>,<span class="st">"-"</span><span class="op">)</span>,</span>
+<code class="sourceCode R"><span><span class="va">gapsdata2</span> <span class="op">=</span> <span class="fu"><a href="../reference/as.phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">data</span>, type<span class="op">=</span><span class="st">"USER"</span>, levels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>,<span class="st">"c"</span>,<span class="st">"g"</span>,<span class="st">"t"</span>,<span class="st">"-"</span><span class="op">)</span>,</span>
 <span>    ambiguity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"?"</span>, <span class="st">"n"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning in phyDat.default(data, levels = levels, return.index = return.index, :</span></span>
 <span><span class="co">## Found unknown characters (not supplied in levels). Deleted sites with unknown</span></span>
@@ -154,7 +154,7 @@
 <span><span class="co">## n 1 1 1 1 0</span></span>
 <span><span class="co">## ? 1 1 1 1 1</span></span></code></pre>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">gapsdata3</span> <span class="op">=</span> <span class="fu"><a href="../reference/phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">data</span>, type<span class="op">=</span><span class="st">"USER"</span>, contrast<span class="op">=</span><span class="va">contrast</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">gapsdata3</span> <span class="op">=</span> <span class="fu"><a href="../reference/as.phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">data</span>, type<span class="op">=</span><span class="st">"USER"</span>, contrast<span class="op">=</span><span class="va">contrast</span><span class="op">)</span></span>
 <span><span class="va">gapsdata3</span></span></code></pre></div>
 <pre><code><span><span class="co">## 3 sequences with 12 character and 11 different site patterns.</span></span>
 <span><span class="co">## The states are a c g t -</span></span></code></pre>
@@ -519,7 +519,7 @@ q_{ij}=\left\{
 <span><span class="co">##  [1] Rcpp_1.0.9        highr_0.9         bslib_0.3.1       compiler_4.2.0   </span></span>
 <span><span class="co">##  [5] jquerylib_0.1.4   prettydoc_0.4.1   tools_4.2.0       digest_0.6.29    </span></span>
 <span><span class="co">##  [9] jsonlite_1.8.0    evaluate_0.15     memoise_2.0.1     nlme_3.1-157     </span></span>
-<span><span class="co">## [13] lattice_0.20-45   pkgconfig_2.0.3   rlang_1.0.3       Matrix_1.4-1     </span></span>
+<span><span class="co">## [13] lattice_0.20-45   pkgconfig_2.0.3   rlang_1.0.4       Matrix_1.4-1     </span></span>
 <span><span class="co">## [17] fastmatch_1.1-3   igraph_1.3.2      cli_3.3.0         yaml_2.3.5       </span></span>
 <span><span class="co">## [21] parallel_4.2.0    pkgdown_2.0.5     xfun_0.31         fastmap_1.1.0    </span></span>
 <span><span class="co">## [25] stringr_1.4.0     knitr_1.39        desc_1.4.1        generics_0.1.3   </span></span>
