@@ -78,7 +78,7 @@
       Graz University of Technology<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2022-07-14</h4>
+            <h4 data-toc-skip class="date">2022-07-15</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/vignettes/Trees.Rmd" class="external-link"><code>vignettes/Trees.Rmd</code></a></small>
       <div class="d-none name"><code>Trees.Rmd</code></div>
@@ -264,17 +264,17 @@ Rooted UPGMA tree.
 <pre><code><span><span class="co">## model: GTR+G(4)+I </span></span>
 <span><span class="co">## loglikelihood: -2606.75 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -1230.335 </span></span>
-<span><span class="co">## Proportion of invariant sites: 0.005629897 </span></span>
+<span><span class="co">## Proportion of invariant sites: 0.005629198 </span></span>
 <span><span class="co">## Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.701588 </span></span>
+<span><span class="co">## Shape parameter: 2.701544 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
 <span><span class="co">##            a            c            g          t</span></span>
-<span><span class="co">## a  0.0000000  0.811029899 75.266219804  0.6495648</span></span>
-<span><span class="co">## c  0.8110299  0.000000000  0.004647331 29.0583418</span></span>
-<span><span class="co">## g 75.2662198  0.004647331  0.000000000  1.0000000</span></span>
-<span><span class="co">## t  0.6495648 29.058341806  1.000000000  0.0000000</span></span>
+<span><span class="co">## a  0.0000000  0.809675366 75.155393743  0.6490465</span></span>
+<span><span class="co">## c  0.8096754  0.000000000  0.004650669 29.0227528</span></span>
+<span><span class="co">## g 75.1553937  0.004650669  0.000000000  1.0000000</span></span>
+<span><span class="co">## t  0.6490465 29.022752807  1.000000000  0.0000000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##          a          c          g          t </span></span>
@@ -295,15 +295,15 @@ Rooted UPGMA tree.
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/SH.test.html">SH.test</a></span><span class="op">(</span><span class="va">fitGTR</span>, <span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##      Trees      ln L Diff ln L p-value</span></span>
-<span><span class="co">## [1,]     1 -2606.750    0.0000  0.5041</span></span>
-<span><span class="co">## [2,]     2 -3068.295  461.5448  0.0000</span></span></code></pre>
+<span><span class="co">## [1,]     1 -2606.750    0.0000  0.5008</span></span>
+<span><span class="co">## [2,]     2 -3068.295  461.5449  0.0000</span></span></code></pre>
 <p>or with the AIC</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 6186.59</span></span></code></pre>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">fitGTR</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 5283.501</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 5283.5</span></span></code></pre>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/modelTest.html">AICc</a></span><span class="op">(</span><span class="va">fitGTR</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 5296.358</span></span></code></pre>

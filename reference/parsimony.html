@@ -88,8 +88,8 @@ starting trees.</p>
 <span>  rearrangements <span class="op">=</span> <span class="st">"SPR"</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">pratchet</span><span class="op">(</span><span class="va">data</span>, start <span class="op">=</span> <span class="cn">NULL</span>, method <span class="op">=</span> <span class="st">"fitch"</span>, maxit <span class="op">=</span> <span class="fl">1000</span>,</span>
-<span>  minit <span class="op">=</span> <span class="fl">10</span>, k <span class="op">=</span> <span class="fl">10</span>, trace <span class="op">=</span> <span class="fl">1</span>, all <span class="op">=</span> <span class="cn">FALSE</span>, rearrangements <span class="op">=</span> <span class="st">"SPR"</span>,</span>
-<span>  perturbation <span class="op">=</span> <span class="st">"ratchet"</span>, <span class="va">...</span><span class="op">)</span></span>
+<span>  minit <span class="op">=</span> <span class="fl">100</span>, k <span class="op">=</span> <span class="fl">10</span>, trace <span class="op">=</span> <span class="fl">1</span>, all <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  rearrangements <span class="op">=</span> <span class="st">"SPR"</span>, perturbation <span class="op">=</span> <span class="st">"ratchet"</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">sankoff</span><span class="op">(</span><span class="va">tree</span>, <span class="va">data</span>, cost <span class="op">=</span> <span class="cn">NULL</span>, site <span class="op">=</span> <span class="st">"pscore"</span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -198,11 +198,15 @@ Analysis. <em>Cladistics</em> <b>15</b>, 407-414</p>
 <span class="r-in"><span><span class="fu">parsimony</span><span class="op">(</span><span class="va">tree</span>, <span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 9796</span>
 <span class="r-in"><span><span class="va">treeRA</span> <span class="op">&lt;-</span> <span class="fu">random.addition</span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">treeNNI</span> <span class="op">&lt;-</span> <span class="fu">optim.parsimony</span><span class="op">(</span><span class="va">tree</span>, <span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">treeSPR</span> <span class="op">&lt;-</span> <span class="fu">optim.parsimony</span><span class="op">(</span><span class="va">tree</span>, <span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Final p-score 9715 after  11 nni operations </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># lower number of iterations for the example (to run less than 5 seconds),</span></span></span>
+<span class="r-in"><span><span class="co"># keep default values (maxit, minit, k) or increase them for real life</span></span></span>
+<span class="r-in"><span><span class="co"># analyses.</span></span></span>
 <span class="r-in"><span><span class="va">treeRatchet</span> <span class="op">&lt;-</span> <span class="fu">pratchet</span><span class="op">(</span><span class="va">Laurasiatherian</span>, start<span class="op">=</span><span class="va">tree</span>, maxit<span class="op">=</span><span class="fl">100</span>,</span></span>
 <span class="r-in"><span>                        minit<span class="op">=</span><span class="fl">5</span>, k<span class="op">=</span><span class="fl">5</span>, trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># assign edge length</span></span></span>
+<span class="r-in"><span><span class="co"># assign edge length (number of substitutions)</span></span></span>
 <span class="r-in"><span><span class="va">treeRatchet</span> <span class="op">&lt;-</span> <span class="fu">acctran</span><span class="op">(</span><span class="va">treeRatchet</span>, <span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="midpoint.html">midpoint</a></span><span class="op">(</span><span class="va">treeRatchet</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -210,7 +214,7 @@ Analysis. <em>Cladistics</em> <b>15</b>, 407-414</p>
 <span class="r-plt img"><img src="parsimony-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">parsimony</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">tree</span>,<span class="va">treeNNI</span>, <span class="va">treeRatchet</span><span class="op">)</span>, <span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 9796 9715 9713</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in is.binary(tree):</span> object 'treeNNI' not found</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
