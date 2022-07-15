@@ -23,8 +23,8 @@ optim.parsimony(tree, data, method = "fitch", cost = NULL, trace = 1,
   rearrangements = "SPR", ...)
 
 pratchet(data, start = NULL, method = "fitch", maxit = 1000,
-  minit = 10, k = 10, trace = 1, all = FALSE, rearrangements = "SPR",
-  perturbation = "ratchet", ...)
+  minit = 100, k = 10, trace = 1, all = FALSE,
+  rearrangements = "SPR", perturbation = "ratchet", ...)
 
 sankoff(tree, data, cost = NULL, site = "pscore")
 }
@@ -88,10 +88,14 @@ dm <- dist.hamming(Laurasiatherian)
 tree <- NJ(dm)
 parsimony(tree, Laurasiatherian)
 treeRA <- random.addition(Laurasiatherian)
-treeNNI <- optim.parsimony(tree, Laurasiatherian)
+treeSPR <- optim.parsimony(tree, Laurasiatherian)
+
+# lower number of iterations for the example (to run less than 5 seconds),
+# keep default values (maxit, minit, k) or increase them for real life
+# analyses.
 treeRatchet <- pratchet(Laurasiatherian, start=tree, maxit=100,
                         minit=5, k=5, trace=0)
-# assign edge length
+# assign edge length (number of substitutions)
 treeRatchet <- acctran(treeRatchet, Laurasiatherian)
 
 plot(midpoint(treeRatchet))

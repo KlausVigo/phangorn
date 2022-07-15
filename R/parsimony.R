@@ -65,10 +65,14 @@ sankoff.quartet <- function(dat, cost, p, l, weight) {
 #' tree <- NJ(dm)
 #' parsimony(tree, Laurasiatherian)
 #' treeRA <- random.addition(Laurasiatherian)
-#' treeNNI <- optim.parsimony(tree, Laurasiatherian)
+#' treeSPR <- optim.parsimony(tree, Laurasiatherian)
+#'
+#' # lower number of iterations for the example (to run less than 5 seconds),
+#' # keep default values (maxit, minit, k) or increase them for real life
+#' # analyses.
 #' treeRatchet <- pratchet(Laurasiatherian, start=tree, maxit=100,
 #'                         minit=5, k=5, trace=0)
-#' # assign edge length
+#' # assign edge length (number of substitutions)
 #' treeRatchet <- acctran(treeRatchet, Laurasiatherian)
 #'
 #' plot(midpoint(treeRatchet))
@@ -427,7 +431,7 @@ optim.parsimony <- function(tree, data, method = "fitch", cost = NULL,
 #' @rdname parsimony
 #' @export
 pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
-                     minit = 10, k = 10, trace = 1, all = FALSE,
+                     minit = 100, k = 10, trace = 1, all = FALSE,
                      rearrangements = "SPR", perturbation = "ratchet", ...) {
   eps <- 1e-08
   trace <- trace - 1
