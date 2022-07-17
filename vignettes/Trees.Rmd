@@ -113,6 +113,7 @@ if(inherits(treeRatchet, "multiPhylo")){
 The parsimony ratchet implicitly performs a bootstrap analysis (step 1). We make use of this and store the trees which where visited. This allows us to add bootstrap support values to the tree. 
 ```{r midpoint}
 plotBS(midpoint(treeRatchet), type="phylogram")
+add.scale.bar()
 ```
 
 If treeRatchet is a list of tree, an object of class `multiPhylo` we can subset the i-th trees with `treeRatchet[[i]]`.
