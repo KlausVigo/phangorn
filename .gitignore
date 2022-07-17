@@ -8,3 +8,4 @@ src/*.dll
 TODO
 docs
 vignettes/revdep/
+vignettes/Parsimony_with_binary_data_cache

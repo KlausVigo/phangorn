@@ -1,0 +1,82 @@
+---
+title: "Parsimony with binary data"
+author:
+- name: Klaus Schliep
+  affiliation: Graz University of Technology
+  email: klaus.schliep@gmail.com
+date: "`r Sys.Date()`"  
+bibliography: phangorn.bib
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+    toc: true
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{Parsimony}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+Before we start we load some packages we will use in the following
+```{r}
+library(ape)
+library(phangorn)
+```
+
+## Preparing the data set
+
+If data are not sequence alignment an phyDat object then there are generic functions as.phyDat() in phangorn to transform a matrices and data.frames into phyDat objects. For example you can read in your data with `read.table()` or `read.csv()`, but you might need to transpose your data. For matrices `as.phyDat()` assumes that the entries each row belongs to one individual (taxa), but for `data.frame` each column. For binary data you can transform these with a command like (depending how you coded them), assuming the species names are stored in the row names and the states are given by "0" and "1" the following lines should work:
+```{r, eval=FALSE}
+data <- as.matrix(data)
+data_phyDat <- as.phyDat(data, type="USER", levels = c("0", "1"))
+```
+Often you also have missing data (e.g. -) which you want to code as ambiguous character. In this case your code may look like:
+```{r, eval=FALSE}
+as.phyDat(data, type="USER", levels = c("0", "1"), ambiguity="-")
+```
+or you code them as a seperate 3rd character. More information is avaiable in one of the vignettes (type `vignette("AdvancedFeatures", package = "phangorn")` in R).
+
+## Parsimony analysis
+
+We the following analysis we create a small dataset. 
+```{r}
+set.seed(42)
+data_phyDat <- simSeq(rcoal(50), type = "USER", levels=c("0", "1"))
+```
+
+
+The function `pratchet` infers a phylogeny optimizing SPR rearrangements and performing parsimony ratchet for escaping local optima.
+
+```{r, cache=TRUE}
+tree <- pratchet(data_phyDat, minit = 100, all=TRUE, trace=0)
+```
+Here we set the minimum iteration of the parsimony ratchet to 100 iterations. As the ratchet performed implicitly bootstrap resampling we already computed some branch support. The function may returns several best trees, but these trees have no branch length assigned to them. 
+```{r}
+tree <- acctran(tree, data_phyDat)
+tree <- di2multi(tree)
+```
+After assigning edge weights we prune away internal edges of length, so our trees may contain multifurcations. 
+Some trees might differ only between edges of length 0. 
+```{r}
+if(inherits(tree, "multiPhylo")){
+  tree <- unique(tree)
+}
+```
+Now we can plot the a tree. 
+```{r, fig.height=8}
+# plot the first of the first tree in case tree is a multiPhylo object 
+if(inherits(tree, "multiPhylo")){
+  plotBS(midpoint(tree[[1]]), type="phylogram", cex=.8)
+} else plotBS(midpoint(tree), type="phylogram", cex=.8)
+add.scale.bar()
+```
+
+And finally we can export the trees.
+```{r, eval=FALSE}
+write.tree(tree, "tree_parsimony.nwk")
+```

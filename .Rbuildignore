@@ -9,3 +9,5 @@
 ^pkgdown$
 ^vignettes/Trees_cache$
 ^vignettes/revdep$
+^vignettes/Parsimony_with_binary_data_cache$
+^vignettes/Parsimony_with_binary_data.*
