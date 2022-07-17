@@ -80,7 +80,7 @@ sankoff.quartet <- function(dat, cost, p, l, weight) {
 #' plot(midpoint(treeRatchet))
 #' add.scale.bar(0,0, length=100)
 #'
-#' parsimony(c(tree,treeNNI, treeRatchet), Laurasiatherian)
+#' parsimony(c(tree,treeSPR, treeRatchet), Laurasiatherian)
 #'
 #' @rdname parsimony
 #' @export
