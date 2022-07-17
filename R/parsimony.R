@@ -74,6 +74,8 @@ sankoff.quartet <- function(dat, cost, p, l, weight) {
 #'                         minit=5, k=5, trace=0)
 #' # assign edge length (number of substitutions)
 #' treeRatchet <- acctran(treeRatchet, Laurasiatherian)
+#' # remove edges of length 0
+#' treeRatchet <- di2multi(treeRatchet)
 #'
 #' plot(midpoint(treeRatchet))
 #' add.scale.bar(0,0, length=100)
@@ -431,7 +433,7 @@ optim.parsimony <- function(tree, data, method = "fitch", cost = NULL,
 #' @rdname parsimony
 #' @export
 pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
-                     minit = 100, k = 10, trace = 1, all = FALSE,
+                     minit = 100, k = 10, trace = 1, all = TRUE,
                      rearrangements = "SPR", perturbation = "ratchet", ...) {
   eps <- 1e-08
   trace <- trace - 1
