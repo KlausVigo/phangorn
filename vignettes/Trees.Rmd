@@ -81,7 +81,7 @@ The function parsimony returns the parsimony score, that is the number of change
 parsimony(treeUPGMA, primates)
 parsimony(treeNJ, primates)
 ```
-The function most users want to use infer phylogenies with MP is `pratchet`, an implementationof the parsimony ratchet [@Nixon1999]. This allows to escape local optima and find better trees than performing only NNI / SPR rearrangements.
+The function most users want to use infer phylogenies with MP is `pratchet`, an implementation of the parsimony ratchet [@Nixon1999]. This allows to escape local optima and find better trees than performing only NNI / SPR rearrangements.
 
 The current implementation is
 
@@ -96,18 +96,26 @@ The current implementation is
 treeRatchet  <- pratchet(primates, trace = 0, minit=100)
 parsimony(treeRatchet, primates)
 ```
-Next we assign branch length to the tree. The branch length are proportional to the number of substitutions.
+Here we set the minimum iteration of the parsimony ratchet to 100 iterations. As the ratchet performed implicitly bootstrap resampling we already computed some branch support, in out case with at least 100 bootstrap iterations. The function may returns several best trees, but these trees have no branch length assigned to them yet. 
 ```{r acctran}
 treeRatchet  <- acctran(treeRatchet, primates)
 ```
-And remove edge lengths which are zero. 
+After assigning edge weights we prune away internal edges of length, so our trees may contain multifurcations. 
 ```{r di2multi}
 treeRatchet  <- di2multi(treeRatchet)
+```
+Some trees might have differed only between edges of length 0. 
+```{r}
+if(inherits(treeRatchet, "multiPhylo")){
+  treeRatchet <- unique(treeRatchet)
+}
 ```
 The parsimony ratchet implicitly performs a bootstrap analysis (step 1). We make use of this and store the trees which where visited. This allows us to add bootstrap support values to the tree. 
 ```{r midpoint}
 plotBS(midpoint(treeRatchet), type="phylogram")
 ```
+
+If treeRatchet is a list of tree, an object of class `multiPhylo` we can subset the i-th trees with `treeRatchet[[i]]`.
 
 While in most cases `pratchet` will be enough to use, `phangorn` exports some function which might be useful.
 `random.addition` computes random addition and can be used to generate starting trees. The function `optim.parsimony` performs tree rearrangements to find trees with a lower parsimony score. The tree rearrangement implemented are  nearest-neighbor interchanges (NNI) and subtree pruning and regrafting (SPR). The later one only works so far with the fitch algorithm. 
