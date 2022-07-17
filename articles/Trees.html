@@ -182,17 +182,18 @@ Rooted UPGMA tree.
 <span><span class="op">}</span></span></code></pre></div>
 <p>The parsimony ratchet implicitly performs a bootstrap analysis (step 1). We make use of this and store the trees which where visited. This allows us to add bootstrap support values to the tree.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plotBS.html">plotBS</a></span><span class="op">(</span><span class="fu"><a href="../reference/midpoint.html">midpoint</a></span><span class="op">(</span><span class="va">treeRatchet</span><span class="op">)</span>, type<span class="op">=</span><span class="st">"phylogram"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plotBS.html">plotBS</a></span><span class="op">(</span><span class="fu"><a href="../reference/midpoint.html">midpoint</a></span><span class="op">(</span><span class="va">treeRatchet</span><span class="op">)</span>, type<span class="op">=</span><span class="st">"phylogram"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/add.scale.bar.html" class="external-link">add.scale.bar</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Trees_files/figure-html/midpoint-1.png" width="700"></p>
 <p>If treeRatchet is a list of tree, an object of class <code>multiPhylo</code> we can subset the i-th trees with <code>treeRatchet[[i]]</code>.</p>
 <p>While in most cases <code>pratchet</code> will be enough to use, <code>phangorn</code> exports some function which might be useful. <code>random.addition</code> computes random addition and can be used to generate starting trees. The function <code>optim.parsimony</code> performs tree rearrangements to find trees with a lower parsimony score. The tree rearrangement implemented are nearest-neighbor interchanges (NNI) and subtree pruning and regrafting (SPR). The later one only works so far with the fitch algorithm.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">treeRA</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parsimony.html">random.addition</a></span><span class="op">(</span><span class="va">primates</span><span class="op">)</span></span>
 <span><span class="va">treeSPR</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parsimony.html">optim.parsimony</a></span><span class="op">(</span><span class="va">treeRA</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Final p-score 746 after  2 nni operations</span></span></code></pre>
+<pre><code><span><span class="co">## Final p-score 746 after  1 nni operations</span></span></code></pre>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/parsimony.html">parsimony</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">treeRA</span>, <span class="va">treeSPR</span><span class="op">)</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 758 746</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 750 746</span></span></code></pre>
 <div class="section level3">
 <h3 id="branch-and-bound">Branch and bound<a class="anchor" aria-label="anchor" href="#branch-and-bound"></a>
 </h3>
@@ -278,21 +279,21 @@ Rooted UPGMA tree.
 <pre><code><span><span class="co">## model: GTR+G(4)+I </span></span>
 <span><span class="co">## loglikelihood: -2606.754 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -1230.335 </span></span>
-<span><span class="co">## Proportion of invariant sites: 0.005615407 </span></span>
+<span><span class="co">## Proportion of invariant sites: 0.005619456 </span></span>
 <span><span class="co">## Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.701708 </span></span>
+<span><span class="co">## Shape parameter: 2.700948 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
 <span><span class="co">##            a            c            g          t</span></span>
-<span><span class="co">## a  0.0000000  0.680157647 63.109342448  0.5292578</span></span>
-<span><span class="co">## c  0.6801576  0.000000000  0.005113636 24.3721941</span></span>
-<span><span class="co">## g 63.1093424  0.005113636  0.000000000  1.0000000</span></span>
-<span><span class="co">## t  0.5292578 24.372194095  1.000000000  0.0000000</span></span>
+<span><span class="co">## a  0.0000000  0.679966981 63.094620044  0.5290053</span></span>
+<span><span class="co">## c  0.6799670  0.000000000  0.005113738 24.3602564</span></span>
+<span><span class="co">## g 63.0946200  0.005113738  0.000000000  1.0000000</span></span>
+<span><span class="co">## t  0.5290053 24.360256391  1.000000000  0.0000000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##          a          c          g          t </span></span>
-<span><span class="co">## 0.39634219 0.37887400 0.04029799 0.18448583</span></span></code></pre>
+<span><span class="co">## 0.39639267 0.37875458 0.04029298 0.18455977</span></span></code></pre>
 <div class="section level3">
 <h3 id="model-selection">Model selection<a class="anchor" aria-label="anchor" href="#model-selection"></a>
 </h3>
@@ -309,8 +310,8 @@ Rooted UPGMA tree.
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/SH.test.html">SH.test</a></span><span class="op">(</span><span class="va">fitGTR</span>, <span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##      Trees      ln L Diff ln L p-value</span></span>
-<span><span class="co">## [1,]     1 -2606.754    0.0000  0.4997</span></span>
-<span><span class="co">## [2,]     2 -3068.295  461.5411  0.0000</span></span></code></pre>
+<span><span class="co">## [1,]     1 -2606.754    0.0000  0.5052</span></span>
+<span><span class="co">## [2,]     2 -3068.295  461.5409  0.0000</span></span></code></pre>
 <p>or with the AIC</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
@@ -320,7 +321,7 @@ Rooted UPGMA tree.
 <pre><code><span><span class="co">## [1] 5283.508</span></span></code></pre>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/modelTest.html">AICc</a></span><span class="op">(</span><span class="va">fitGTR</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 5296.365</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 5296.366</span></span></code></pre>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">BIC</a></span><span class="op">(</span><span class="va">fitGTR</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 5404.144</span></span></code></pre>
