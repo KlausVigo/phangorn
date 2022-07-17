@@ -56,10 +56,10 @@ expect_true(inherits(subset_2 <- subset(Laurasiatherian, select = 1001:3179,
                                  site.pattern = FALSE), "phyDat"))
 expect_true(inherits(lauraCbind1 <- cbind(subset_1, subset_2), "phyDat"))
 expect_equal(baseFreq(lauraCbind1), baseFreq(Laurasiatherian))
-expect_true(inherits(subset_3 <- subset(Laurasiatherian, select = 1:100),
-                     "phyDat"))
-expect_true(inherits(subset_4 <- subset(Laurasiatherian, select = 101:1605),
-                  "phyDat"))
+expect_true(inherits(subset_3 <- subset(Laurasiatherian, select = 1:100,
+                                        site.pattern = TRUE), "phyDat"))
+expect_true(inherits(subset_4 <- subset(Laurasiatherian, select = 101:1605,
+                                        site.pattern = TRUE), "phyDat"))
 expect_equal(subset_1, Laurasiatherian[, 1:1000])
 expect_error(subset(Laurasiatherian, 1:100), "subscript out of bounds")
 expect_true(inherits(lauraCbind2 <- cbind(subset_3, subset_4), "phyDat"))

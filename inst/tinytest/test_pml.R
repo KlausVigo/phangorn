@@ -19,7 +19,7 @@ dat <- allSitePattern(5)
 weights <- as.vector(1000 * exp(pml(treeR1, dat)$siteLik))
 attr(dat, "weight") <- weights
 
-dat_Mk <- subset(dat, select = -c(1,342,683, 1024))
+dat_Mk <- subset(dat, select = -c(1,342,683, 1024), site.pattern = TRUE)
 
 
 Q <- c(6:1)
