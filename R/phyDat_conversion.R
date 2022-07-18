@@ -9,13 +9,6 @@
 #' example for specifying "USER" defined data formats in the vignette
 #' "phangorn-specials".
 #'
-#' \code{allSitePattern} returns all possible site patterns and can be useful
-#' in simulation studies. For further details see the vignette
-#' phangorn-specials.
-#'
-#' The generic function \code{c} can be used to to combine sequences and
-#' \code{unique} to get all unique sequences or unique haplotypes.
-#'
 #' \code{acgt2ry} converts a \code{phyDat} object of nucleotides into an binary
 #' ry-coded dataset.
 #'

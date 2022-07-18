@@ -68,6 +68,16 @@ phangorn-specials.
 
 The generic function \code{c} can be used to to combine sequences and
 \code{unique} to get all unique sequences or unique haplotypes.
+
+\code{phyDat} stores identical columns of an alignment only once and keeps an
+index of the original positions. This saves memory and especially
+computations as these are usually need to be done only once for each site
+pattern.
+In the example below the matrix x in the example has 8 columns, but column 1
+and 2 and also 3 and 5 are identical. The \code{phyDat} object y has only 6
+site pattern. If argument \code{site.pattern=FALSE} the indexing behaves like
+on the original matrix x. \code{site.pattern=TRUE} can be useful inside
+functions.
 }
 \examples{
 
@@ -89,10 +99,10 @@ subset(Laurasiatherian, subset=1:5, select=1:20, site.pattern = FALSE)
 subset(Laurasiatherian, select=1:5, site.pattern = TRUE)
 
 x <- matrix(c("a", "a", "c", "g", "c", "t", "a", "g",
-              "a", "a", "c", "g", "g", "t", "a", "g",
+              "a", "a", "c", "g", "c", "t", "a", "g",
               "a", "a", "c", "c", "c", "t", "t", "g"), nrow=3, byrow = TRUE,
             dimnames = list(c("t1", "t2", "t3"), 1:8))
-y <- phyDat(x)
+(y <- phyDat(x))
 
 subset(y, 1:2)
 subset(y, 1:2, compress=TRUE)
@@ -107,7 +117,7 @@ allSitePattern(5)
 
 }
 \seealso{
-[DNAbin()], [as.DNAbin()],
+\code{link{phyDat}}, \code{link{DNAbin}}, \code{link{as.DNAbin()}},
 \code{\link{baseFreq}}, \code{\link{glance.phyDat}},
 \code{\link{read.dna}}, \code{\link{read.aa}}, \code{\link{read.nexus.data}}
 and the chapter 1 in the \code{vignette("phangorn-specials",
