@@ -394,9 +394,10 @@ ptree <- function(tree, data, return = "prob", acctran=TRUE) {
   att$names <- c(att$names, as.character((nTip+1):m))
   if(return == "phyDat"){
     if(type=="DNA"){
+      indx <- c(1, 2, 6, 3, 7, 9, 12, 4, 8, 10, 13, 11, 14, 15, 16)
       res[1:nTip] <- data[1:nTip]
       for(i in (nTip+1):m)
-        res[[i]] <- f$getAncAmb(i)[1:nr]
+        res[[i]] <- indx[f$getAncAmb(i)[1:nr]]
     }
     else stop("This is only for nucleotide sequences supported so far")
   }
