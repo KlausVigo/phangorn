@@ -51,9 +51,9 @@ If the argument node is missing the function is evaluated for all nodes.
 }
 \section{Functions}{
 \itemize{
-\item \code{allDescendants}: list all the descendant nodes of each node
-}}
+\item \code{allDescendants()}: list all the descendant nodes of each node
 
+}}
 \examples{
 
 tree <- rtree(10)

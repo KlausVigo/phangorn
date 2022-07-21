@@ -35,7 +35,8 @@ as.splits(x, ...)
 
 \method{as.Matrix}{splits}(x, ...)
 
-\method{print}{splits}(x, maxp = getOption("max.print"), zero.print = ".", one.print = "|", ...)
+\method{print}{splits}(x, maxp = getOption("max.print"), zero.print = ".",
+  one.print = "|", ...)
 
 \method{c}{splits}(..., recursive = FALSE)
 

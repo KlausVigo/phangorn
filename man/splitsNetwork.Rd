@@ -4,7 +4,8 @@
 \alias{splitsNetwork}
 \title{Phylogenetic Network}
 \usage{
-splitsNetwork(dm, splits = NULL, gamma = 0.1, lambda = 1e-06, weight = NULL)
+splitsNetwork(dm, splits = NULL, gamma = 0.1, lambda = 1e-06,
+  weight = NULL)
 }
 \arguments{
 \item{dm}{A distance matrix.}

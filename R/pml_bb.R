@@ -32,7 +32,7 @@
 #' tmp <- pml_bb(woodmouse)
 #'}
 #' @rdname pml_bb
-#' @export
+## @export
 pml_bb <- function(x, model=NULL, rearrangement="stochastic",
                    method="unrooted", bs=100, start=NULL, ...){ #
   mt <- NULL

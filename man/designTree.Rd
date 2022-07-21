@@ -9,7 +9,8 @@
 \alias{designSplits}
 \title{Compute a design matrix or non-negative LS}
 \usage{
-designTree(tree, method = "unrooted", sparse = FALSE, tip.dates = NULL, ...)
+designTree(tree, method = "unrooted", sparse = FALSE, tip.dates = NULL,
+  ...)
 
 nnls.tree(dm, tree, method = c("unrooted", "ultrametric", "tipdated"),
   trace = 1, weight = NULL, balanced = FALSE, tip.dates = NULL)

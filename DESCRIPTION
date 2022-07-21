@@ -97,5 +97,5 @@ biocViews: Software, Technology, QualityControl
 Encoding: UTF-8
 Repository: CRAN
 Roxygen: list(old_usage = TRUE)
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 Language: en-US
