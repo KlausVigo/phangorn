@@ -239,7 +239,9 @@ subset.phyDat <- function (x, subset, select, site.pattern = TRUE, ...){
   }
   if (!missing(select)){
     w <- attr(x, "weight")
-    if(site.pattern) if(any(select > length(w))) stop("subscript out of bounds")
+    if(site.pattern){
+      if(any(select > length(w))) stop("subscript out of bounds")
+    }
     else if(any(select > sum(w))) stop("subscript out of bounds")
     if(any(is.na(select))) return(NULL)
     x <- getRows(x, select, site.pattern=site.pattern)
