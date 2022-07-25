@@ -93,7 +93,9 @@ pmlR3.fitted <- optim.pml(pmlR3, TRUE, optRooted = TRUE,  control =
                          control = pml.control(epsilon=1e-10, trace=0))
     expect_equal(logLik(fit.Inv), logLik(pml(treeU1, dat_tmp, inv=inv)))
     expect_equal(inv, fit.Inv$inv, tolerance=5e-4)
-
+    fit.JC.I <- pml_bb(dat_tmp, model="JC+I")
+    expect_equal(logLik( fit.JC.I), logLik(pml(treeU1, dat_tmp, inv=inv)))
+    expect_equal(inv, fit.JC.I$inv, tolerance=5e-4)
 
 # test Gamma optimisation
     shape <- 2
@@ -107,6 +109,10 @@ pmlR3.fitted <- optim.pml(pmlR3, TRUE, optRooted = TRUE,  control =
     expect_equal(logLik(fit.Gamma),
                  logLik(pml(treeU1, dat_tmp, shape=shape, k=4)))
     expect_equal(shape, fit.Gamma$shape, tolerance=5e-4)
+    fit.JC.G4 <- pml_bb(dat_tmp, model="JC+G(4)")
+    expect_equal(logLik( fit.JC.G4),
+                 logLik(pml(treeU1, dat_tmp, shape=shape, k=4)))
+    expect_equal(shape, fit.JC.G4$shape, tolerance=5e-4)
 
 
 # test free_rate
