@@ -74,7 +74,7 @@ removeUndeterminedSites(x, ...)
 
 removeAmbiguousSites(x)
 
-allSitePattern(n, levels = c("a", "c", "g", "t"), names = NULL)</code></pre></div>
+allSitePattern(n, levels = NULL, names = NULL, type = "DNA")</code></pre></div>
     </div>
 
     <div class="section level2">
@@ -129,6 +129,10 @@ sequences are considered duplicates if distance between sequences is zero
 
 <dt>names</dt>
 <dd><p>Names of sequences.</p></dd>
+
+
+<dt>type</dt>
+<dd><p>Type of sequences ("DNA", "AA" or "USER").</p></dd>
 
 </dl></div>
     <div class="section level2">

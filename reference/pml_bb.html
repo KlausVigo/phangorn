@@ -73,8 +73,8 @@ maximum likelihood (ML).</p>
 
 
 <dt>model</dt>
-<dd><p>A string providing model (e.g. "GTR+G(4)+I") otherwise
-<code><a href="modelTest.html">modelTest</a></code> is called.</p></dd>
+<dd><p>A string providing model (e.g. "GTR+G(4)+I"). Not necessary if
+a modelTest object is supplied.</p></dd>
 
 
 <dt>rearrangement</dt>
@@ -83,11 +83,7 @@ maximum likelihood (ML).</p>
 
 
 <dt>method</dt>
-<dd><p>Estimate "unrooted", "ultrametric" or "tiplabeled" tree.</p></dd>
-
-
-<dt>bs</dt>
-<dd><p>Number of bootstrap samples.</p></dd>
+<dd><p>One of "unrooted", "ultrametric" or "tiplabeled".</p></dd>
 
 
 <dt>start</dt>
@@ -102,21 +98,19 @@ maximum likelihood (ML).</p>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p><code>pml_bb</code> returns a list. It contains an object of class
-<code>pml</code>, the best tree found so far and possibly objects of class
-<code>modelTest</code> and the bootstrapped trees.</p>
+<p><code>pml_bb</code> returns an object of class pml.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>It combines the <code>pml</code>, <code>optim.pml</code>, <code>modelTest</code> and
-<code>bootstrap.pml</code>. It first infers the best model, than optimizes this
-model and last but not least performs bootstrap analysis.</p>
-<p>Currently very experimental and likly to change.</p>
+    <p><code>pml_bb</code> is a convenience function combining <code>pml</code> and
+<code>optim.pml</code>. If no tree is supplied, the function will generate a
+starting tree. If a modelTest object is supplied the model will be chosen
+according to BIC.</p>
+<p>Currently very experimental and likely to change.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="pml.html">optim.pml</a></code>, <code><a href="bootstrap.pml.html">bootstrap.pml</a></code>,
-<code><a href="modelTest.html">modelTest</a></code>,</p></div>
+    <div class="dont-index"><p><code><a href="pml.html">optim.pml</a></code>, <code><a href="modelTest.html">modelTest</a></code>,</p></div>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
