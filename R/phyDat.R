@@ -426,7 +426,7 @@ allSitePattern <- function(n, levels=NULL, names=NULL, type="DNA"){
   for(i in 1:n)
     X[i, ] <- rep(rep(levels, each=l^(i-1)), l^(n-i))
   if(type=="DNA") return(phyDat.DNA(X, compress=FALSE, return.index=FALSE))
-  if(type=="AA") return(phyDat.AA(X, compress=FALSE, return.index=FALSE))
+  if(type=="AA") return(phyDat.AA(X, return.index=FALSE))
   phyDat.default(X, levels, compress=FALSE, return.index=FALSE)
 }
 
