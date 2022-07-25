@@ -204,8 +204,8 @@ designUnrooted <- function(tree, order = NULL) {
   if (inherits(tree, "phylo")) {
     if (is.rooted(tree)) tree <- unroot(tree)
     tree <- reorder(tree, "postorder")
-#    p <- as.matrix(as.splits(tree)[tree$edge[,2]])
-    p <- bipartition(tree)
+    p <- as.matrix(as.splits(tree)[tree$edge[,2]])
+#    p <- bipartition(tree)
   }
   if (inherits(tree, "splits")) p <- as.matrix(tree)
   if (!is.null(order))
