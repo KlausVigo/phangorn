@@ -11,35 +11,32 @@ pml_bb(x, model = NULL, rearrangement = "stochastic",
 \item{x}{An alignment of class (either class \code{phyDat}, \code{DNAbin} or
 \code{AAbin}) or an object of class \code{modelTest}.}
 
-\item{model}{A string providing model (e.g. "GTR+G(4)+I") otherwise
-\code{\link{modelTest}} is called.}
+\item{model}{A string providing model (e.g. "GTR+G(4)+I"). Not necessary if
+a modelTest object is supplied.}
 
 \item{rearrangement}{Type of tree tree rearrangements to perform, one of
 "none", "NNI", "stochastic" or "ratchet"}
 
-\item{method}{Estimate "unrooted", "ultrametric" or "tiplabeled" tree.}
-
-\item{bs}{Number of bootstrap samples.}
+\item{method}{One of "unrooted", "ultrametric" or "tiplabeled".}
 
 \item{start}{A starting tree can be supplied.}
 
 \item{\dots}{Further arguments passed to or from other methods.}
 }
 \value{
-\code{pml_bb} returns a list. It contains an object of class
-\code{pml}, the best tree found so far and possibly objects of class
-\code{modelTest} and the bootstrapped trees.
+\code{pml_bb} returns an object of class pml.
 }
 \description{
 \code{pml_bb} for pml black box infers a phylogentic tree infers a tree using
 maximum likelihood (ML).
 }
 \details{
-It combines the \code{pml}, \code{optim.pml}, \code{modelTest} and
-\code{bootstrap.pml}. It first infers the best model, than optimizes this
-model and last but not least performs bootstrap analysis.
+\code{pml_bb} is a convenience function combining \code{pml} and
+\code{optim.pml}. If no tree is supplied, the function will generate a
+starting tree. If a modelTest object is supplied the model will be chosen
+according to BIC.
 
-Currently very experimental and likly to change.
+Currently very experimental and likely to change.
 }
 \examples{
 
@@ -49,8 +46,7 @@ tmp <- pml_bb(woodmouse)
 }
 }
 \seealso{
-\code{\link{optim.pml}}, \code{\link{bootstrap.pml}},
-\code{\link{modelTest}},
+\code{\link{optim.pml}}, \code{\link{modelTest}},
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

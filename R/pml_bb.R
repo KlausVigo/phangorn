@@ -3,27 +3,25 @@
 #' \code{pml_bb} for pml black box infers a phylogentic tree infers a tree using
 #' maximum likelihood (ML).
 #'
-#' It combines the \code{pml}, \code{optim.pml}, \code{modelTest} and
-#' \code{bootstrap.pml}. It first infers the best model, than optimizes this
-#' model and last but not least performs bootstrap analysis.
+#' \code{pml_bb} is a convenience function combining \code{pml} and
+#' \code{optim.pml}. If no tree is supplied, the function will generate a
+#' starting tree. If a modelTest object is supplied the model will be chosen
+#' according to BIC.
 #'
-#' Currently very experimental and likly to change.
+#' Currently very experimental and likely to change.
 #' @param x An alignment of class (either class \code{phyDat}, \code{DNAbin} or
 #' \code{AAbin}) or an object of class \code{modelTest}.
-#' @param bs Number of bootstrap samples.
-#' @param model A string providing model (e.g. "GTR+G(4)+I") otherwise
-#' \code{\link{modelTest}} is called.
-#' @param method Estimate "unrooted", "ultrametric" or "tiplabeled" tree.
+## @param bs Number of bootstrap samples.
+#' @param model A string providing model (e.g. "GTR+G(4)+I"). Not necessary if
+#' a modelTest object is supplied.
+#' @param method One of "unrooted", "ultrametric" or "tiplabeled".
 #' @param rearrangement Type of tree tree rearrangements to perform, one of
 #' "none", "NNI", "stochastic" or "ratchet"
 #' @param start A starting tree can be supplied.
 #' @param \dots Further arguments passed to or from other methods.
-#' @return \code{pml_bb} returns a list. It contains an object of class
-#' \code{pml}, the best tree found so far and possibly objects of class
-#' \code{modelTest} and the bootstrapped trees.
+#' @return \code{pml_bb} returns an object of class pml.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{optim.pml}}, \code{\link{bootstrap.pml}},
-#' \code{\link{modelTest}},
+#' @seealso \code{\link{optim.pml}}, \code{\link{modelTest}},
 #' @keywords cluster
 #' @examples
 #'
@@ -32,13 +30,12 @@
 #' tmp <- pml_bb(woodmouse)
 #'}
 #' @rdname pml_bb
-## @export
+#' @export
 pml_bb <- function(x, model=NULL, rearrangement="stochastic",
-                   method="unrooted", bs=100, start=NULL, ...){ #
-  mt <- NULL
+         method="unrooted", bs=100, start=NULL, ...){
   fit <- NULL
   type <- NULL
-
+  tip.dates <- NULL
   method <- match.arg(method, c("unrooted", "ultrametric", "tip.dated"))
 
   optRooted <- FALSE
@@ -50,39 +47,39 @@ pml_bb <- function(x, model=NULL, rearrangement="stochastic",
   if(inherits(x, "modelTest")){
     mt <- x
     fit <- as.pml(x)
+    model <- x$Model[which.min(x[, "BIC"])]
   }
-  if(is.null(start)) start <- candidate_tree(x, method=method)
+  if(inherits(x, "pml")){
+    fit <- x
+    if(is.null(model)) model <- guess_model(fit)
+  }
+  if(is.null(start)) start <- candidate_tree(x, method=method, tip.dates = tip.dates)
   if(inherits(x, "phyDat")){
-     if(is.null(model)){
-       mt <- modelTest(x)
-       fit <- as.pml(mt)
-       if(method=="ultrametric" || method=="tip.dated") fit <- update(fit, tree=start)
-     }
-     else {
-       para <- split_model(x=model, type="DNA")
-       fit <- pml(start, x, k=para$k)
-     }
+    type <- attr(x, "type")
+    if(is.null(model)){
+      stop("Please supply a model!")
+    } else {
+      para <- split_model(x=model, type=type)
+      fit <- pml(start, x, k=para$k)
+    }
   }
-#  if(method=="ultrametric" || method=="tip.dated")
-  if(method=="tip.dated" && !is.null(attr(start, "rate"))) fit <- update(fit, rate=attr(start, "rate"))
-  if(is.null(model)) model <- guess_model(fit)
+  if(method=="tip.dated" && !is.null(attr(start, "rate")))
+    fit <- update(fit, rate=attr(start, "rate"))
+
   type <- attr(fit$data, "type")
   para <- split_model(model, type)
-  #fit <- pml(fit, model=para$model, k=para$k)
-
-  fit <- optim.pml(fit, model=para$model, optGamma=para$optGamma, optInv=para$optInv,
-            optBf=para$optBf, rearrangement = rearrangement, optRate=optRate,
-            optRooted=optRooted)
-
-  tree <- fit$tree
-
-  if(bs > 1){
-    bs <- bootstrap.pml(fit, bs=bs, rearrangement="NNI", optRate=optRate,
-                        optRooted=optRooted, ...)
-    tree <- plotBS(tree, bs, type="none")
+  if(type=="AA" && para$optFreq){
+    fit <- optim.pml(fit, model=para$model, optGamma=para$optGamma,
+                     optInv=para$optInv, optBf=TRUE, rearrangement=rearrangement,
+                     optRate=optRate, optRooted=optRooted, ...)
+  } else {
+    fit <- optim.pml(fit, model=para$model, optGamma=para$optGamma,
+                     optInv=para$optInv, rearrangement = rearrangement,
+                     optRate=optRate, optRooted=optRooted, ...)
   }
-  list(fit=fit, modelTest=mt, bootstrap=bs, tree=tree)
+  fit
 }
+
 
 
 ##  check models

@@ -66,8 +66,9 @@ pmlR3.fitted <- optim.pml(pmlR3, TRUE, optRooted = TRUE,  control =
                         control = pml.control(epsilon=1e-10, trace=0))
     expect_equal(logLik(fit.bf), logLik(pml(treeU1, dat_tmp, bf=bf)))
     expect_equal(bf, fit.bf$bf, tolerance=5e-4)
-
-
+    fit.F81 <- pml_bb(dat_tmp, model="F81")
+    expect_equal(logLik(fit.F81), logLik(pml(treeU1, dat_tmp, bf=bf)))
+    expect_equal(bf, fit.F81$bf, tolerance=5e-4)
 # test Q optimisation
     Q <- c(6:1)
     fit_T <- pml(treeU1, dat, Q=Q)
