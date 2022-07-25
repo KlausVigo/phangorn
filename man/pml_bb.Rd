@@ -5,7 +5,7 @@
 \title{Likelihood of a tree.}
 \usage{
 pml_bb(x, model = NULL, rearrangement = "stochastic",
-  method = "unrooted", bs = 100, start = NULL, ...)
+  method = "unrooted", start = NULL, ...)
 }
 \arguments{
 \item{x}{An alignment of class (either class \code{phyDat}, \code{DNAbin} or

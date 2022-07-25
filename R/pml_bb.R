@@ -11,7 +11,6 @@
 #' Currently very experimental and likely to change.
 #' @param x An alignment of class (either class \code{phyDat}, \code{DNAbin} or
 #' \code{AAbin}) or an object of class \code{modelTest}.
-## @param bs Number of bootstrap samples.
 #' @param model A string providing model (e.g. "GTR+G(4)+I"). Not necessary if
 #' a modelTest object is supplied.
 #' @param method One of "unrooted", "ultrametric" or "tiplabeled".
@@ -32,7 +31,7 @@
 #' @rdname pml_bb
 #' @export
 pml_bb <- function(x, model=NULL, rearrangement="stochastic",
-         method="unrooted", bs=100, start=NULL, ...){
+         method="unrooted", start=NULL, ...){
   fit <- NULL
   type <- NULL
   tip.dates <- NULL
