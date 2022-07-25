@@ -33,6 +33,7 @@
 #' @param identical if TRUE (default) sequences have to be identical, if FALSE
 #' sequences are considered duplicates if distance between sequences is zero
 #' (happens frequently with ambiguous sites).
+#' @param type Type of sequences ("DNA", "AA" or "USER").
 #' @param ... further arguments passed to or from other methods.
 #' @return The functions return an object of class \code{phyDat}.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
@@ -413,13 +414,19 @@ removeParsimonyUninfomativeSites <- function(data, recursive=FALSE, exact=TRUE){
 
 #' @rdname phyDat
 #' @export
-allSitePattern <- function(n, levels=c("a", "c", "g", "t"), names=NULL){
+allSitePattern <- function(n, levels=NULL, names=NULL, type="DNA"){
+  type <- match.arg(type, c("DNA", "AA", "USER"))
+  if(type=="DNA") levels <- c("a", "c", "g", "t")
+  if(type=="AA") levels <- c("A", "R", "N", "D", "C", "Q", "E", "G", "H", "I",
+                             "L", "K", "M", "F", "P", "S", "T", "W", "Y", "V")
   l <- length(levels)
   X <- matrix(NA_integer_, n, l^n)
   if(is.null(names))rownames(X) <- paste0("t", 1:n)
   else rownames(X) <- names
   for(i in 1:n)
     X[i, ] <- rep(rep(levels, each=l^(i-1)), l^(n-i))
+  if(type=="DNA") return(phyDat.DNA(X, compress=FALSE, return.index=FALSE))
+  if(type=="AA") return(phyDat.AA(X, compress=FALSE, return.index=FALSE))
   phyDat.default(X, levels, compress=FALSE, return.index=FALSE)
 }
 

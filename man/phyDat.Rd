@@ -24,7 +24,7 @@ removeUndeterminedSites(x, ...)
 
 removeAmbiguousSites(x)
 
-allSitePattern(n, levels = c("a", "c", "g", "t"), names = NULL)
+allSitePattern(n, levels = NULL, names = NULL, type = "DNA")
 }
 \arguments{
 \item{x}{An object containing sequences.}
@@ -54,6 +54,8 @@ sequences are considered duplicates if distance between sequences is zero
 \item{levels}{Level attributes.}
 
 \item{names}{Names of sequences.}
+
+\item{type}{Type of sequences ("DNA", "AA" or "USER").}
 }
 \value{
 The functions return an object of class \code{phyDat}.
