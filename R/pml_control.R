@@ -45,8 +45,8 @@ pml.control <- function(epsilon = 1e-08, maxit = 10, trace = 1, tau = 1e-8) {
 
 #' @rdname pml.control
 #' @export
-ratchet.control <- function(iter = 20L, maxit = 200L, minit = 100L, prop = 1/2){
-#                            , rell = TRUE, bs=100L){
+ratchet.control <- function(iter = 20L, maxit = 200L, minit = 25L, prop = 1/2,
+                            rell = FALSE, bs=100L){
   if (!is.numeric(maxit) || maxit <= 0)
     stop("maximum number of iterations must be > 0")
   if (!is.numeric(minit) || minit <= 0)
@@ -55,6 +55,5 @@ ratchet.control <- function(iter = 20L, maxit = 200L, minit = 100L, prop = 1/2){
     stop("number of iterations must be > 0")
   if (!is.numeric(iter) || iter <= 0)
     stop("proportion of rearrangenemts must be > 0")
-  list(iter = iter, maxit = maxit, minit = minit, prop = prop)
-       #, rell = rell, bs=bs)
+  list(iter=iter, maxit=maxit, minit = minit, prop = prop, rell = rell, bs=bs)
 }

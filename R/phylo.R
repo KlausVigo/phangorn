@@ -2081,9 +2081,9 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   ll1 <- ll0
   opti <- TRUE
   RELL <- NULL
-#  if(ratchet.par$rell && perturbation){
-#    RELL <- init_rell(data, B=ratchet.par$bs)
-#  }
+  if(ratchet.par$rell && perturbation){
+    RELL <- init_rell(data, B=ratchet.par$bs)
+  }
   nr <- as.integer(attr(data, "nr"))
   nc <- as.integer(attr(data, "nc"))
   nTips <- as.integer(length(tree$tip.label))
@@ -2296,9 +2296,11 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     if ( (perturbation == TRUE) && (optNni == FALSE)) {
       maxR <- ratchet.par$iter
       maxit <- ratchet.par$maxit
+      minit <- ratchet.par$minit
       kmax <- 1
       i <- 1
-      while ((i < maxit)  && (kmax <= maxR)) {
+#      while ((i < maxit)  && (kmax <= maxR) && (i < minit)) {
+      for(i in seq_len(maxit)){
         if(rearrangement == "stochastic"){
           tree2 <- rNNI(tree, moves = round(nTips * ratchet.par$prop), n = 1)
         } else if(rearrangement == "ratchet"){
@@ -2343,7 +2345,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         if(!is.null(RELL)) RELL <- res$RELL
         if (trace > 0) print(paste("Ratchet iteration ", i,
                                    ", best pscore so far:", ll))
-        i <- i + 1
+        # i <- i + 1
+        if ( (kmax >= maxR) && (i >= minit)) break()
       }
       optNni <- TRUE
       perturbation <- FALSE

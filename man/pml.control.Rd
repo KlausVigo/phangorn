@@ -7,7 +7,8 @@
 \usage{
 pml.control(epsilon = 1e-08, maxit = 10, trace = 1, tau = 1e-08)
 
-ratchet.control(iter = 20L, maxit = 200L, minit = 100L, prop = 1/2)
+ratchet.control(iter = 20L, maxit = 200L, minit = 25L, prop = 1/2,
+  rell = FALSE, bs = 100L)
 }
 \arguments{
 \item{epsilon}{Stop criterion for optimization (see details).}
