@@ -62,9 +62,10 @@ URL: https://github.com/KlausVigo/phangorn,
     https://klausvigo.github.io/phangorn/
 BugReports: https://github.com/KlausVigo/phangorn/issues
 Depends:
-    ape (>= 5.5),
+    ape (>= 5.6),
     R (>= 4.1.0)
 Imports:
+    digest,
     fastmatch,
     generics,
     graphics,
