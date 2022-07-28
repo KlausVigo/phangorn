@@ -1,5 +1,6 @@
 #include <Rcpp.h>
 using namespace Rcpp;
+#include <algorithm>    // std::set_difference, std::sort
 
 
 #define DINDEX(i, j) n*(i - 1) - i * (i - 1)/2 + j - i - 1
@@ -203,11 +204,49 @@ std::vector< std::vector<int> > bipartCPP(IntegerMatrix orig, int nTips) {
         else out[j].push_back(children[i]);
     }
     for(int i=0; i<nnode; ++i){
-        sort(out[i].begin(), out[i].end());
+      std::sort(out[i].begin(), out[i].end());
     }
     return out;    // return the list
 }
 
+
+// [[Rcpp::export]]
+std::vector< std::vector<int> > short_bipCPP(IntegerMatrix orig, int nTips) {
+//  bool even = (nTips % 2L) == 0;
+
+  int j=0;
+  std::vector< std::vector<int> > tmp=bipartCPP(orig, nTips);
+  std::vector< std::vector<int> > out(tmp.size()-1L) ;
+  std::vector<int> y;
+  std::vector<int> x=tmp[0];
+  size_t half = nTips / 2;
+  bool even = (nTips % 2 == 0);
+  for(auto i = 1U; i<tmp.size(); i++){
+    y = tmp[i];
+    if(y.size() < half){
+      out[j].insert( out[j].begin(), y.begin(), y.end() );
+    }
+    if(y.size() > half){
+      std::vector<int> z;
+      std::set_difference (x.begin(), x.end(), y.begin(), y.end(), inserter(z, begin(z)));
+      out[j].insert( out[j].begin(), z.begin(), z.end() );
+    }
+//    if((y.size() == half) && !even ){
+//      out[j].insert( out[j].begin(), y.begin(), y.end() );
+//    }
+    if((y.size() == half)){
+      if((y[0] > 1L)  && even){
+        std::vector<int> z;
+        std::set_difference (x.begin(), x.end(), y.begin(), y.end(), inserter(z, begin(z)));
+        out[j].insert( out[j].begin(), z.begin(), z.end() );
+      }
+      else out[j].insert( out[j].begin(), y.begin(), y.end() );
+    }
+    j++;
+  }
+  std::sort(out.begin(), out.end());
+  return out;
+}
 
 // replacement for bip maybe more error tolerant slightly slower
 // import: edge matrix, number of tips
@@ -232,7 +271,7 @@ std::vector< std::vector<int> > bipCPP(IntegerMatrix orig, int nTips) {
         else out[j].push_back(children[i]);
     }
     for(int i=0; i<m; ++i){
-        sort(out[i].begin(), out[i].end());
+      std::sort(out[i].begin(), out[i].end());
     }
     return out;    // return the list
 }
