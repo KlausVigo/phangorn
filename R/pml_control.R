@@ -21,14 +21,16 @@
 #' @param iter Number of iterations to stop if there is no change.
 #' @param prop Only used if \code{rearrangement=stochstic}. How many NNI moves
 #' should be added to the tree in proportion of the number of taxa.´
-## @param rell logical, if TRUE approximate bootstraping similar Minh et al.
-## (2013) is performed.
-## @param bs number of approximate bootstrap samples.
+#' @param rell logical, if TRUE approximate bootstraping similar Minh et al.
+#' (2013) is performed.
+#' @param bs number of approximate bootstrap samples.
 #' @return A list with components named as the arguments for controlling the
 #' fitting process.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{optim.pml}}
-#' @references Minh, B. Q., Nguyen, M. A. T., & von Haeseler, A. (2013). Ultrafast approximation for phylogenetic bootstrap. \emph{Molecular biology and evolution}, \bold{30(5)}, 1188-1195.
+#' @references Minh, B. Q., Nguyen, M. A. T., & von Haeseler, A. (2013).
+#' Ultrafast approximation for phylogenetic bootstrap. \emph{Molecular biology
+#' and evolution}, \bold{30(5)}, 1188-1195.
 #' @examples
 #' pml.control()
 #' pml.control(maxit=25)

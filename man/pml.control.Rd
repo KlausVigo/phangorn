@@ -25,6 +25,11 @@ ratchet.control(iter = 20L, maxit = 200L, minit = 25L, prop = 1/2,
 
 \item{prop}{Only used if \code{rearrangement=stochstic}. How many NNI moves
 should be added to the tree in proportion of the number of taxa.´}
+
+\item{rell}{logical, if TRUE approximate bootstraping similar Minh et al.
+(2013) is performed.}
+
+\item{bs}{number of approximate bootstrap samples.}
 }
 \value{
 A list with components named as the arguments for controlling the
@@ -49,7 +54,9 @@ pml.control()
 pml.control(maxit=25)
 }
 \references{
-Minh, B. Q., Nguyen, M. A. T., & von Haeseler, A. (2013). Ultrafast approximation for phylogenetic bootstrap. \emph{Molecular biology and evolution}, \bold{30(5)}, 1188-1195.
+Minh, B. Q., Nguyen, M. A. T., & von Haeseler, A. (2013).
+Ultrafast approximation for phylogenetic bootstrap. \emph{Molecular biology
+and evolution}, \bold{30(5)}, 1188-1195.
 }
 \seealso{
 \code{\link{optim.pml}}
