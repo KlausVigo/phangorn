@@ -5,7 +5,7 @@
 \title{Likelihood of a tree.}
 \usage{
 pml_bb(x, model = NULL, rearrangement = "stochastic",
-  method = "unrooted", start = NULL, ...)
+  method = "unrooted", start = NULL, tip.dates = NULL, ...)
 }
 \arguments{
 \item{x}{An alignment of class (either class \code{phyDat}, \code{DNAbin} or
@@ -20,6 +20,9 @@ a modelTest object is supplied.}
 \item{method}{One of "unrooted", "ultrametric" or "tiplabeled".}
 
 \item{start}{A starting tree can be supplied.}
+
+\item{tip.dates}{A named vector of sampling times associated to the tips /
+sequences.}
 
 \item{\dots}{Further arguments passed to or from other methods.}
 }
@@ -46,7 +49,7 @@ tmp <- pml_bb(woodmouse)
 }
 }
 \seealso{
-\code{\link{optim.pml}}, \code{\link{modelTest}},
+\code{\link{optim.pml}}, \code{\link{modelTest}}, \code{\link{rtt}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

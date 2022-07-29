@@ -17,10 +17,12 @@
 #' @param rearrangement Type of tree tree rearrangements to perform, one of
 #' "none", "NNI", "stochastic" or "ratchet"
 #' @param start A starting tree can be supplied.
+#' @param tip.dates A named vector of sampling times associated to the tips /
+#' sequences.
 #' @param \dots Further arguments passed to or from other methods.
 #' @return \code{pml_bb} returns an object of class pml.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{optim.pml}}, \code{\link{modelTest}},
+#' @seealso \code{\link{optim.pml}}, \code{\link{modelTest}}, \code{\link{rtt}}
 #' @keywords cluster
 #' @examples
 #'
@@ -31,16 +33,15 @@
 #' @rdname pml_bb
 #' @export
 pml_bb <- function(x, model=NULL, rearrangement="stochastic",
-         method="unrooted", start=NULL, ...){
+         method="unrooted", start=NULL, tip.dates=NULL, ...){
   fit <- NULL
   type <- NULL
-  tip.dates <- NULL
-  method <- match.arg(method, c("unrooted", "ultrametric", "tip.dated"))
+  method <- match.arg(method, c("unrooted", "ultrametric", "tipdated"))
 
   optRooted <- FALSE
   optRate <- FALSE
-  if(method=="ultrametric" || method=="tip.dated") optRooted <- TRUE
-  if(method=="tip.dated") optRate <- TRUE
+  if(method=="ultrametric" || method=="tipdated") optRooted <- TRUE
+  if(method=="tipdated") optRate <- TRUE
 
   if(inherits(x, "AAbin") || inherits(x, "DNAbin")) x <- as.phyDat(x)
   if(inherits(x, "modelTest")){
@@ -62,7 +63,7 @@ pml_bb <- function(x, model=NULL, rearrangement="stochastic",
       fit <- pml(start, x, k=para$k)
     }
   }
-  if(method=="tip.dated" && !is.null(attr(start, "rate")))
+  if(method=="tipdated" && !is.null(attr(start, "rate")))
     fit <- update(fit, rate=attr(start, "rate"))
 
   type <- attr(fit$data, "type")
