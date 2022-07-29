@@ -28,9 +28,11 @@ minEdge <- function(tree, tau=1e-8, enforce_ultrametric=FALSE){
 candidate_tree <- function(x, method=c("unrooted", "ultrametric", "tipdated"),
                            eps = 1e-8, tip.dates=NULL, ...){
   method <- match.arg(method, c("unrooted", "ultrametric", "tipdated"))
+  enforce_ultrametric <- FALSE
   if(method=="ultrametric"){
     dm <- dist.ml(x, ...)
     tree <- wpgma(dm)
+    enforce_ultrametric <- TRUE
   }
   if(method=="unrooted"){
     tree <- random.addition(x)
@@ -48,5 +50,5 @@ candidate_tree <- function(x, method=c("unrooted", "ultrametric", "tipdated"),
     tree <- rtt(tree, tip.dates[tree$tip.label])
     tree <- nnls.tree(dm, tree, method = "tipdated", tip.dates=tip.dates[tree$tip.label])
   }
-  minEdge(tree, tau=eps)
+  minEdge(tree, tau=eps, enforce_ultrametric=enforce_ultrametric)
 }

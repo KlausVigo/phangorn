@@ -41,6 +41,13 @@ pmlR3.fitted <- optim.pml(pmlR3, TRUE, optRooted = TRUE,  control =
                               pml.control(epsilon=1e-10, trace=0))
 
 
+# test input parameters
+# missing model
+expect_error(pml_bb(dat))
+# missing tip,dates
+expect_error(pml_bb(dat, model="GTR", method="tipdated"))
+
+## Parameter Optimisation
 # test edge length optimisation
     expect_equal(logLik(pmlU2.fitted), logLik(pmlU1))
     expect_equal(logLik(pmlR2.fitted), logLik(pmlR1))
