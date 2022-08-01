@@ -61,9 +61,10 @@ vcov.pml <- function(object, ...) {
 
 
 #' @export
-plot.pml <- function(x, ...){
+plot.pml <- function(x, type="phylogram", ...){
+  type <- match.arg(type, c("phylogram","cladogram", "fan", "unrooted", "radial", "tidy"))
   plot.phylo(x$tree, ...)
-  if(is.rooted(x$tree)) axisPhylo()
+  if(is.rooted(x$tree) & (type %in% c("phylogram","cladogram"))) axisPhylo()
   else add.scale.bar()
 }
 
