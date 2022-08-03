@@ -85,7 +85,7 @@ maximum likelihood approach. \emph{Journal of Molecular Evolution},
 \bold{17}, 368--376.
 }
 \seealso{
-\code{\link{pml}, \link{pmlPart}, \link{pmlMix}}
+\code{\link{pml}, \link{pml_bb}, \link{pmlPart}, \link{pmlMix}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

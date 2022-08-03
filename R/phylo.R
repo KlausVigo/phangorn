@@ -990,7 +990,7 @@ pml.fit4 <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 ## or "lognormal" after a lognormal quadrature approach.
 #' @return \code{pml.fit} returns the log-likelihood.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{pml}, \link{pmlPart}, \link{pmlMix}}
+#' @seealso \code{\link{pml}, \link{pml_bb}, \link{pmlPart}, \link{pmlMix}}
 #' @references Felsenstein, J. (1981) Evolutionary trees from DNA sequences: a
 #' maximum likelihood approach. \emph{Journal of Molecular Evolution},
 #' \bold{17}, 368--376.
@@ -1175,9 +1175,9 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #' tree.} \item{siteLik}{Site log-likelihoods.} \item{weight}{Weight of the
 #' site patterns.}
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{bootstrap.pml}}, \code{\link{modelTest}},
-#' \code{\link{pmlPart}}, \code{\link{pmlMix}}, \code{\link{plot.phylo}},
-#' \code{\link{SH.test}}, \code{\link{ancestral.pml}}
+#' @seealso \code{\link{pml_bb}}, \code{\link{bootstrap.pml}},
+#' \code{\link{modelTest}}, \code{\link{pmlPart}}, \code{\link{pmlMix}},
+#' \code{\link{plot.phylo}}, \code{\link{SH.test}}, \code{\link{ancestral.pml}}
 #' @references Felsenstein, J. (1981) Evolutionary trees from DNA sequences: a
 #' maximum likelihood approach. \emph{Journal of Molecular Evolution},
 #' \bold{17}, 368--376.
@@ -1970,7 +1970,11 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
 
   method <- "unrooted"
   if(optRooted){
-    if(optRate) method <- "tipdated"
+    if(optRate){
+      method <- "tipdated"
+      tip.dates <- node.depth.edgelength(tree)[seq_len(Ntip(tree))]
+      tip.dates <- tip.dates - min(tip.dates)
+    }
     else "ultrametric"
   }
 
@@ -2303,6 +2307,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       for(i in seq_len(maxit)){
         if(rearrangement == "stochastic"){
           tree2 <- rNNI(tree, moves = round(nTips * ratchet.par$prop), n = 1)
+#          if(method)
+
         } else if(rearrangement == "ratchet"){
           tree2 <- bootstrap.phyDat(data, candidate_tree, bs = 1, method=method,
                                     eps = tau, bf = bf, Q = Q, k = k, shape = shape)[[1]]

@@ -29,6 +29,10 @@
 #' \dontrun{
 #' data(woodmouse)
 #' tmp <- pml_bb(woodmouse)
+#'
+#' data(Laurasiatherian)
+#' mt <- modelTest(Laurasiatherian)
+#' fit <- pml_bb(mt)
 #'}
 #' @rdname pml_bb
 #' @export
@@ -53,7 +57,9 @@ pml_bb <- function(x, model=NULL, rearrangement="stochastic",
     fit <- x
     if(is.null(model)) model <- guess_model(fit)
   }
-  if(is.null(start)) start <- candidate_tree(x, method=method, tip.dates = tip.dates)
+  if(is.null(start)) start <- candidate_tree(x, method=method,
+                                             tip.dates = tip.dates, eps=1e-7)
+  # eps=1e-7 10 * tau
   if(inherits(x, "phyDat")){
     type <- attr(x, "type")
     if(is.null(model)){

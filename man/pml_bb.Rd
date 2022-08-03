@@ -46,6 +46,10 @@ Currently very experimental and likely to change.
 \dontrun{
 data(woodmouse)
 tmp <- pml_bb(woodmouse)
+
+data(Laurasiatherian)
+mt <- modelTest(Laurasiatherian)
+fit <- pml_bb(mt)
 }
 }
 \seealso{
