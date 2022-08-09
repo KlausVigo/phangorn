@@ -1891,7 +1891,7 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV, RELL=NULL,
     ll <- ll2
     iter <- iter + 1
   }
-  list(tree = tree, logLik = ll, iter = iter, swap = nchanges)
+  list(tree = tree, logLik = ll, iter = iter, swap = nchanges, RELL=RELL)
 }
 
 
@@ -1967,36 +1967,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   addTaxa <- FALSE
   trace <- control$trace
   tau <- control$tau
-
+# mit Zeile 2000 vereinheitlichen
   method <- "unrooted"
-  if(optRooted){
-    if(optRate){
-      method <- "tipdated"
-      tip.dates <- node.depth.edgelength(tree)[seq_len(Ntip(tree))]
-      tip.dates <- tip.dates - min(tip.dates)
-    }
-    else "ultrametric"
-  }
-
-  if (optNni) {
-    mapping <- map_duplicates(data)
-    if (!is.null(mapping)) {
-      orig.data <- data
-      addTaxa <- TRUE
-      tree2 <- drop.tip(tree, mapping[, 1])
-      tree <- reorder(tree2, "postorder")
-    }
-    if (!is.binary(tree))
-      tree <- multi2di(tree)
-    optEdge <- TRUE
-  }
-  if (length(tree$tip.label) < (3 + !optRooted)) {
-    optNni <- FALSE
-    perturbation <- FALSE
-  }
-  if (length(tree$tip.label) < (2 + !optRooted)) {
-    stop("rooted / unrooted tree needs at least 2 / 3 tips")
-  }
   is_ultrametric <- FALSE
   timetree <- FALSE
   if (is.rooted(tree)) {
@@ -2008,8 +1980,35 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     }
     else{
       is_ultrametric <- is.ultrametric(tree, option=2)
-      if(!is_ultrametric) timetree <- TRUE
+      if(!is_ultrametric) {
+        timetree <- TRUE
+        method <- "tipdated"
+        tip.dates <- node.depth.edgelength(tree)[seq_len(Ntip(tree))]
+        tip.dates <- tip.dates - min(tip.dates)
+      } else {
+        method <- "ultrametric"
+      }
     }
+  }
+  if (optNni) {
+    if(!timetree){
+      mapping <- map_duplicates(data)
+      if (!is.null(mapping)) {
+        orig.data <- data
+        addTaxa <- TRUE
+        tree <- drop.tip(tree, mapping[, 1])
+        tree <- reorder(tree, "postorder")
+      }
+    }
+    if (!is.binary(tree)) tree <- multi2di(tree)
+    optEdge <- TRUE
+  }
+  if (length(tree$tip.label) < (3 + !optRooted)) {
+    optNni <- FALSE
+    perturbation <- FALSE
+  }
+  if (length(tree$tip.label) < (2 + !optRooted)) {
+    stop("rooted / unrooted tree needs at least 2 / 3 tips")
   }
   tree <- reorder(tree, "postorder")
   if (any(tree$edge.length < tau)) {
@@ -2303,15 +2302,20 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       minit <- ratchet.par$minit
       kmax <- 1
       i <- 1
-#      while ((i < maxit)  && (kmax <= maxR) && (i < minit)) {
+      if((rearrangement == "stochastic" || rearrangement == "ratchet") && optRooted){
+        dm <- dist.ml(data, bf=bf, Q=Q, exclude = "pairwise")
+      }
       for(i in seq_len(maxit)){
         if(rearrangement == "stochastic"){
           tree2 <- rNNI(tree, moves = round(nTips * ratchet.par$prop), n = 1)
-#          if(method)
-
+          if(optRooted){
+             tree2 <- nnls.tree(dm, tree2, method = method,
+                                tip.dates=tip.dates[tree2$tip.label])
+          }
         } else if(rearrangement == "ratchet"){
           tree2 <- bootstrap.phyDat(data, candidate_tree, bs = 1, method=method,
-                                    eps = tau, bf = bf, Q = Q, k = k, shape = shape)[[1]]
+                        eps = tau, bf = bf, Q = Q, k = k, shape = shape,
+                        tip.dates=tip.dates)[[1]]
           tree2 <- checkLabels(tree2, tree$tip.label)
           tree2 <- reorder(tree2, "postorder")
         } else if(rearrangement == "multi2di"){
@@ -2340,7 +2344,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
 #        browser()
         res <- opt_nni(tree2, data, rooted=optRooted, iter_max=25, trace=trace,
                        ll=ll2, w = w, g = g, eig = eig, bf = bf, inv=inv,
-                       ll.0 = ll.0, INV = INV, Mkv=Mkv, RELL=RELL,
+                       rate=rate, ll.0 = ll.0, INV = INV, Mkv=Mkv, RELL=RELL,
                        control = list(eps=1e-08, maxit=5, trace=trace-1, tau=tau), ...)
         if (res$logLik > (ll + epsR)) {
           tree <- res$tree
@@ -2358,7 +2362,6 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       perturbation <- FALSE
       rounds <- 1
     }
-#    if (rounds > control$maxit) opti <- FALSE
     if ( (abs((ll1 - ll) / ll)  < control$eps) || rounds > control$maxit) # abs(ll1 - ll)
       opti <- FALSE
     rounds <- rounds + 1
