@@ -57,10 +57,10 @@ pml_bb <- function(x, model=NULL, rearrangement="stochastic",
     fit <- x
     if(is.null(model)) model <- guess_model(fit)
   }
-  if(is.null(start)) start <- candidate_tree(x, method=method,
-                                             tip.dates = tip.dates, eps=1e-7)
   # eps=1e-7 10 * tau
   if(inherits(x, "phyDat")){
+    if(is.null(start)) start <- candidate_tree(x, method=method,
+                                               tip.dates = tip.dates, eps=1e-7)
     type <- attr(x, "type")
     if(is.null(model)){
       stop("Please supply a model!")
@@ -68,10 +68,9 @@ pml_bb <- function(x, model=NULL, rearrangement="stochastic",
       para <- split_model(x=model, type=type)
       fit <- pml(start, x, k=para$k)
     }
+    if(method=="tipdated" && !is.null(attr(start, "rate")))
+      fit <- update(fit, rate=attr(start, "rate"))
   }
-  if(method=="tipdated" && !is.null(attr(start, "rate")))
-    fit <- update(fit, rate=attr(start, "rate"))
-
   type <- attr(fit$data, "type")
   para <- split_model(model, type)
   if(type=="AA" && para$optFreq){
