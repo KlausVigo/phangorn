@@ -96,7 +96,7 @@ The current implementation is
 treeRatchet  <- pratchet(primates, trace = 0, minit=100)
 parsimony(treeRatchet, primates)
 ```
-Here we set the minimum iteration of the parsimony ratchet to 100 iterations. As the ratchet performed implicitly bootstrap resampling we already computed some branch support, in out case with at least 100 bootstrap iterations. The function may returns several best trees, but these trees have no branch length assigned to them yet. 
+Here we set the minimum iteration of the parsimony ratchet to 100 iterations. As the ratchet performed implicitly bootstrap resampling we already computed some branch support, in out case with at least 100 bootstrap iterations. The paramter `trace=0` tells the function not write the current status to the console. The function may returns several best trees, but these trees have no branch length assigned to them yet. Now let's do this: 
 ```{r acctran}
 treeRatchet  <- acctran(treeRatchet, primates)
 ```
@@ -171,7 +171,7 @@ fitGTR
 ```
 Recently we added a new function `pml_bb` which hides a few steps from the user as long as only some standard phylogentic analysis are performed. 
 ```{r pml_bb, cache=TRUE}
-fitGTR <- pml_bb(primates, model="GTR+G(4)+I")
+fitGTR <- pml_bb(primates, model="GTR+G(4)+I", control = pml.control(trace = 0))
 fitGTR
 ```
 In this case it generates a starting tree, an `pml` object and optimizes the parameters given the model term using  `optim.pml`.
@@ -187,7 +187,8 @@ Here we can select only some common models:
 load("Trees.RData")
 ```
 ```{r, echo=TRUE, eval=TRUE, cache=TRUE}
-mt <- modelTest(primates, model=c("JC", "F81", "K80", "HKY", "SYM", "GTR"))
+mt <- modelTest(primates, model=c("JC", "F81", "K80", "HKY", "SYM", "GTR"), 
+                control = pml.control(trace = 0))
 ```
 The results of `modelTest` is illustrated in following table:
 ```{r, echo=FALSE}
@@ -201,7 +202,7 @@ To speed computations up the thresholds for the optimization in `modelTest` are 
 ```
 To simplify  the workflow we can give the result of modelTest to `pml_bb` function and optimize the parameters taking the best model according to BIC. 
 ```{r pml_bb_modelTest, cache=TRUE}
-fit_mt <- pml_bb(mt)
+fit_mt <- pml_bb(mt, control = pml.control(trace = 0))
 fit_mt
 ```
 
@@ -251,10 +252,12 @@ For a ultrametric starting tree starting tree we can use an UPGMA or WPGMA tree.
 When we optimize the tree with `optim.pml` we have to make sure set we set
 `optRooted = TRUE` and for tip-dated we need additionally set `optRate=TRUE`!
 ```{r, echo=TRUE, cache=TRUE}
-fit_strict <- pml(treeUPGMA, data=primates, k=4, bf=baseFreq(primates))
-fit_strict <- optim.pml(fit_strict, model="GTR", optRooted = TRUE, 
-                        rearrangement = "NNI", optGamma = TRUE, optInv = TRUE, 
-                        control = pml.control(trace = 0))
+#fit_strict <- pml(treeUPGMA, data=primates, k=4, bf=baseFreq(primates))
+#fit_strict <- optim.pml(fit_strict, model="GTR", optRooted = TRUE, 
+#                        rearrangement = "NNI", optGamma = TRUE, optInv = TRUE, 
+#                        control = pml.control(trace = 0))
+fit_strict <- pml_bb(primates, model="HKY+G(4)", method="ultrametric",
+                     control = pml.control(trace = 0))
 ```
 ```{r}
 plot(fit_strict)
@@ -266,14 +269,15 @@ fdir <- system.file("extdata/trees", package = "phangorn")
 tmp <- read.csv(file.path(fdir,"H3N2_NA_20.csv"))
 H3N2 <- read.phyDat(file.path(fdir,"H3N2_NA_20.fasta"), format="fasta")
 ```
-We use the internal function `candidate_tree` to compute a fast a starting tree with the constraints given by the dates.
-We than can use `optim.pml` to optimize the tree and parameters.  
-```{r, tipdated fit}
+We first process the sampling dates and create a named vector. The lubridate package [@lubridate] comes very handy dates in case one has to recode dates, e.g. days and months.    
+```{r, tipdated processing}
 dates <- setNames(tmp$numdate_given, tmp$name)
-tree <- candidate_tree(H3N2, "tipdated", tip.dates=dates)
-fit_td <- pml(tree, H3N2, rate=attr(tree, "rate")) 
-fit_td <- optim.pml(fit_td, model="GTR", rearrangement="NNI", optRooted=TRUE, 
-                    optRate=TRUE, control=pml.control(trace=0))
+head(dates)
+```
+Again we use the `pml_bb` function, which optimizes the tree given th constraints of the tip.dates vector. 
+```{r, tipdated fit}
+fit_td <- pml_bb(H3N2, model="GTR+G(4)", method="tipdated", tip.dates=dates, 
+               rearrangement="NNI", control = pml.control(trace = 0))
 ```
 And we last we plot the tree with a timescale. 
 ```{r, tipdated plot}
@@ -296,7 +300,7 @@ Most likely the arguments for `read.phyDat` have to be adapted to accommodate yo
 ```{r, echo=TRUE, eval=FALSE}
 library(phangorn)
 file <- "myfile"
-dat <- read.phyDat(file)
+dat <- read.phyDat(file, format="fasta")
 dm <- dist.ml(dat, "F81")
 tree <- NJ(dm)
 # as alternative for a starting tree:
@@ -304,17 +308,13 @@ tree <- pratchet(dat)          # parsimony tree
 tree <- nnls.phylo(tree, dm)   # need edge weights
 
 # 1. alternative: quick and dirty: GTR + G
-fitStart <- pml(tree, dat, k=4)
-fit <- optim.pml(fitStart, model="GTR", optGamma=TRUE, rearrangement="stochastic")
+(fit <- pml_bb(dat, model="GTR+G"))
 
 # 2. alternative: choose with modelTest
 mt <- modelTest(dat, tree=tree, multicore=TRUE)
 mt[order(mt$BIC),]
-# choose best model from the table according to BIC (default)
-fitStart <- as.pml(mt)
-# assume the model GTR + G + I
-fit <- optim.pml(fitStart, rearrangement = "stochastic",
-    optGamma=TRUE, optInv=TRUE, model="GTR")
+# chooses best model from the table according to BIC (default)
+fit <- pml_bb(mt)
 bs <- bootstrap.pml(fit, bs=100, optNni=TRUE, multicore=TRUE)
 ```
 
@@ -324,7 +324,7 @@ You can specify different several models build in which you can specify, e.g. "W
 ```{r, echo=TRUE, eval=FALSE}
 library(phangorn)
 file <- "myfile"
-dat <- read.phyDat(file, type = "AA")
+dat <- read.phyDat(file, type = "AA", format="fasta")
 dm <- dist.ml(dat, model="JTT")
 tree <- NJ(dm)
 
@@ -335,14 +335,13 @@ tree <- NJ(dm)
 # run all available amino acid models
 (mt <- modelTest(dat, model="all", multicore=TRUE))
 
-fitStart <- as.pml(mt)
-
-fitNJ <- pml(tree, dat, model="JTT", k=4, inv=.2)
-fit <- optim.pml(fitNJ, rearrangement = "stochastic",
-    optInv=TRUE, optGamma=TRUE)
-fit
-
+(fit <- pml_bb(mt))
+# non-parametric bootstrap
 bs <- bootstrap.pml(fit, bs=100, optNni=TRUE, multicore=TRUE)
+
+tree_ml <- plotBS(fit$tree, bs)
+# export the tree 
+write.tree(tree_ml, file="tree_ml.nwk")
 ```
 
 
