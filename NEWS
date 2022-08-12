@@ -6,9 +6,17 @@ NEW FEATURES
 
       but not documented)
 
+    o new function pml_bb, combining generation of starting trees, pml and
+
+      optim.pml and simplifying ML workflows.
+
 OTHER CHANGES
 
     o the default values of of pratchet changed
+
+    o improved vignettes
+
+
 
     CHANGES in PHANGORN VERSION 2.9.0
 
