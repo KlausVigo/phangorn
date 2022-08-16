@@ -252,10 +252,6 @@ For a ultrametric starting tree starting tree we can use an UPGMA or WPGMA tree.
 When we optimize the tree with `optim.pml` we have to make sure set we set
 `optRooted = TRUE` and for tip-dated we need additionally set `optRate=TRUE`!
 ```{r, echo=TRUE, cache=TRUE}
-#fit_strict <- pml(treeUPGMA, data=primates, k=4, bf=baseFreq(primates))
-#fit_strict <- optim.pml(fit_strict, model="GTR", optRooted = TRUE, 
-#                        rearrangement = "NNI", optGamma = TRUE, optInv = TRUE, 
-#                        control = pml.control(trace = 0))
 fit_strict <- pml_bb(primates, model="HKY+G(4)", method="ultrametric",
                      control = pml.control(trace = 0))
 ```
@@ -316,6 +312,10 @@ mt[order(mt$BIC),]
 # chooses best model from the table according to BIC (default)
 fit <- pml_bb(mt)
 bs <- bootstrap.pml(fit, bs=100, optNni=TRUE, multicore=TRUE)
+
+tree_ml <- plotBS(fit$tree, bs)
+# export the tree 
+write.tree(tree_ml, file="tree_ml.nwk")
 ```
 
 \newpage
@@ -325,13 +325,14 @@ You can specify different several models build in which you can specify, e.g. "W
 library(phangorn)
 file <- "myfile"
 dat <- read.phyDat(file, type = "AA", format="fasta")
+
+# compute a neighbor joining tree
 dm <- dist.ml(dat, model="JTT")
 tree <- NJ(dm)
 
-# parallel will only work safely from command line
-# and not at all windows
-(mt <- modelTest(dat, model=c("JTT", "LG", "WAG"),
-    multicore=TRUE))
+# parallel will only work safely from command line and not at all windows
+# Select specific models. 
+(mt <- modelTest(dat, model=c("JTT", "LG", "WAG"), multicore=TRUE))
 # run all available amino acid models
 (mt <- modelTest(dat, model="all", multicore=TRUE))
 
