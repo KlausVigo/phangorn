@@ -261,8 +261,9 @@ checkLabels <- function(tree, tip) {
 #' \code{BStrees} is optional and if not supplied the labels supplied
 #' in the \code{node.label} slot will be used.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso  \code{\link{plot.phylo}}, \code{\link{maxCladeCred}}
-#' \code{\link{nodelabels}}, \code{\link{consensus}}, \code{\link{consensusNet}}
+#' @seealso  \code{\link{transferBootstrap}}, \code{\link{plot.phylo}},
+#' \code{\link{maxCladeCred}}, \code{\link{nodelabels}},
+#' \code{\link{consensus}}, \code{\link{consensusNet}}
 #' @references Felsenstein J. (1985) Confidence limits on phylogenies. An
 #' approach using the bootstrap. \emph{Evolution} \bold{39}, 783--791
 #'
