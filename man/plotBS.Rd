@@ -79,8 +79,9 @@ Penny D. and Hendy M.D. (1986) Estimating the reliability of evolutionary
 trees. \emph{Molecular Biology and Evolution} \bold{3}, 403--417
 }
 \seealso{
-\code{\link{plot.phylo}}, \code{\link{maxCladeCred}}
-\code{\link{nodelabels}}, \code{\link{consensus}}, \code{\link{consensusNet}}
+\code{\link{transferBootstrap}}, \code{\link{plot.phylo}},
+\code{\link{maxCladeCred}}, \code{\link{nodelabels}},
+\code{\link{consensus}}, \code{\link{consensusNet}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}
