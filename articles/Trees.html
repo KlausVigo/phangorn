@@ -85,7 +85,7 @@
       Graz University of Technology<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2022-08-12</h4>
+            <h4 data-toc-skip class="date">2022-08-16</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/vignettes/Trees.Rmd" class="external-link"><code>vignettes/Trees.Rmd</code></a></small>
       <div class="d-none name"><code>Trees.Rmd</code></div>
@@ -176,7 +176,7 @@ Rooted UPGMA tree.
 <code class="sourceCode R"><span><span class="va">treeRatchet</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parsimony.html">pratchet</a></span><span class="op">(</span><span class="va">primates</span>, trace <span class="op">=</span> <span class="fl">0</span>, minit<span class="op">=</span><span class="fl">100</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/parsimony.html">parsimony</a></span><span class="op">(</span><span class="va">treeRatchet</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 746</span></span></code></pre>
-<p>Here we set the minimum iteration of the parsimony ratchet to 100 iterations. As the ratchet performed implicitly bootstrap resampling we already computed some branch support, in out case with at least 100 bootstrap iterations. The function may returns several best trees, but these trees have no branch length assigned to them yet.</p>
+<p>Here we set the minimum iteration of the parsimony ratchet to 100 iterations. As the ratchet performed implicitly bootstrap resampling we already computed some branch support, in out case with at least 100 bootstrap iterations. The paramter <code>trace=0</code> tells the function not write the current status to the console. The function may returns several best trees, but these trees have no branch length assigned to them yet. Now let’s do this:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">treeRatchet</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parsimony.html">acctran</a></span><span class="op">(</span><span class="va">treeRatchet</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
 <p>After assigning edge weights we prune away internal edges of length, so our trees may contain multifurcations.</p>
@@ -325,426 +325,37 @@ Rooted UPGMA tree.
 <span><span class="co">## 0.39720425 0.37833010 0.04017501 0.18429064</span></span></code></pre>
 <p>Recently we added a new function <code>pml_bb</code> which hides a few steps from the user as long as only some standard phylogentic analysis are performed.</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fitGTR</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">primates</span>, model<span class="op">=</span><span class="st">"GTR+G(4)+I"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## optimize edge weights:  -3154.442 --&gt; -3113.471 </span></span>
-<span><span class="co">## optimize base frequencies:  -3113.471 --&gt; -2944.267 </span></span>
-<span><span class="co">## optimize rate matrix:  -2944.267 --&gt; -2755.367 </span></span>
-<span><span class="co">## optimize invariant sites:  -2755.367 --&gt; -2755.367 </span></span>
-<span><span class="co">## optimize shape parameter:  -2755.367 --&gt; -2733.236 </span></span>
-<span><span class="co">## optimize edge weights:  -2733.236 --&gt; -2706.799 </span></span>
-<span><span class="co">##  optimize topology:  -2706.799 --&gt; -2706.577 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2706.577 --&gt; -2706.577 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  1 </span></span>
-<span><span class="co">## optimize base frequencies:  -2706.577 --&gt; -2677.371 </span></span>
-<span><span class="co">## optimize rate matrix:  -2677.371 --&gt; -2652.545 </span></span>
-<span><span class="co">## optimize invariant sites:  -2652.545 --&gt; -2652.433 </span></span>
-<span><span class="co">## optimize shape parameter:  -2652.433 --&gt; -2652.021 </span></span>
-<span><span class="co">## optimize edge weights:  -2652.021 --&gt; -2642.632 </span></span>
-<span><span class="co">##  optimize topology:  -2642.632 --&gt; -2642.632 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  0 </span></span>
-<span><span class="co">##  optimize topology:  -2649.539 --&gt; -2643.471 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2643.471 --&gt; -2642.631 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2642.631 --&gt; -2642.631 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  3 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  1 , best pscore so far: -2642.63138692341"</span></span>
-<span><span class="co">##  optimize topology:  -2684.045 --&gt; -2657.605 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2657.605 --&gt; -2649.134 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2649.134 --&gt; -2644.289 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2644.289 --&gt; -2642.632 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2642.632 --&gt; -2642.631 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  5 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  2 , best pscore so far: -2642.63138247401"</span></span>
-<span><span class="co">##  optimize topology:  -2650.07 --&gt; -2642.8 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2642.8 --&gt; -2642.631 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2642.631 --&gt; -2642.631 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  3 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  3 , best pscore so far: -2642.63137925109"</span></span>
-<span><span class="co">##  optimize topology:  -2666.295 --&gt; -2659.258 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2659.258 --&gt; -2653.419 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2653.419 --&gt; -2650.629 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2650.629 --&gt; -2644.367 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2644.367 --&gt; -2643.47 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2643.47 --&gt; -2642.631 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2642.631 --&gt; -2642.631 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  7 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  4 , best pscore so far: -2642.63135893994"</span></span>
-<span><span class="co">##  optimize topology:  -2652.023 --&gt; -2648.155 </span></span>
-<span><span class="co">##  NNI moves:  3 </span></span>
-<span><span class="co">##  optimize topology:  -2648.155 --&gt; -2647.068 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2647.068 --&gt; -2642.959 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2642.959 --&gt; -2642.959 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  5 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  5 , best pscore so far: -2642.63135893994"</span></span>
-<span><span class="co">##  optimize topology:  -2653.594 --&gt; -2647.231 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2647.231 --&gt; -2645.209 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2645.209 --&gt; -2642.98 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2642.98 --&gt; -2642.821 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2642.821 --&gt; -2642.657 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2642.657 --&gt; -2642.634 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  6 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  6 , best pscore so far: -2642.63135893994"</span></span>
-<span><span class="co">##  optimize topology:  -2707.717 --&gt; -2683.152 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2683.152 --&gt; -2658.67 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2658.67 --&gt; -2648.963 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2648.963 --&gt; -2642.633 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2642.633 --&gt; -2642.631 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  7 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  7 , best pscore so far: -2642.63135893994"</span></span>
-<span><span class="co">##  optimize topology:  -2669.044 --&gt; -2655.362 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2655.362 --&gt; -2650.971 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2650.971 --&gt; -2646.547 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2646.547 --&gt; -2644.286 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2644.286 --&gt; -2642.632 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2642.632 --&gt; -2642.631 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  6 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  8 , best pscore so far: -2642.63135893994"</span></span>
-<span><span class="co">##  optimize topology:  -2660.405 --&gt; -2655.1 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2655.1 --&gt; -2650.924 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2650.924 --&gt; -2650.924 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  3 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  9 , best pscore so far: -2642.63135893994"</span></span>
-<span><span class="co">##  optimize topology:  -2654.227 --&gt; -2649.888 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2649.888 --&gt; -2647.568 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2647.568 --&gt; -2643.158 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2643.158 --&gt; -2642.658 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2642.658 --&gt; -2642.634 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  5 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  10 , best pscore so far: -2642.63135893994"</span></span>
-<span><span class="co">##  optimize topology:  -2660.612 --&gt; -2655.931 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2655.931 --&gt; -2654.502 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2654.502 --&gt; -2652.155 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2652.155 --&gt; -2648.927 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2648.927 --&gt; -2644.603 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2644.603 --&gt; -2643.158 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2643.158 --&gt; -2642.985 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2642.985 --&gt; -2642.634 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2642.634 --&gt; -2642.632 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  8 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  11 , best pscore so far: -2642.63135893994"</span></span>
-<span><span class="co">##  optimize topology:  -2653.444 --&gt; -2648.918 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2648.918 --&gt; -2645.559 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2645.559 --&gt; -2643.828 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2643.828 --&gt; -2643.031 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2643.031 --&gt; -2642.856 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2642.856 --&gt; -2642.832 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  6 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  12 , best pscore so far: -2642.63135893994"</span></span>
-<span><span class="co">##  optimize topology:  -2653.761 --&gt; -2647.13 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2647.13 --&gt; -2643.651 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2643.651 --&gt; -2642.656 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2642.656 --&gt; -2642.634 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  5 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  13 , best pscore so far: -2642.63135893994"</span></span>
-<span><span class="co">##  optimize topology:  -2648.337 --&gt; -2645.526 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2645.526 --&gt; -2643.62 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2643.62 --&gt; -2642.8 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2642.8 --&gt; -2642.631 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2642.631 --&gt; -2642.631 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  5 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  14 , best pscore so far: -2642.63135893994"</span></span>
-<span><span class="co">##  optimize topology:  -2652.31 --&gt; -2651.148 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2651.148 --&gt; -2650.309 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2650.309 --&gt; -2650.309 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  2 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  15 , best pscore so far: -2642.63135893994"</span></span>
-<span><span class="co">##  optimize topology:  -2657.885 --&gt; -2651.959 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2651.959 --&gt; -2649.925 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2649.925 --&gt; -2648.878 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2648.878 --&gt; -2646.344 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2646.344 --&gt; -2642.98 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2642.98 --&gt; -2642.821 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2642.821 --&gt; -2642.657 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2642.657 --&gt; -2642.634 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  8 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  16 , best pscore so far: -2642.63135893994"</span></span>
-<span><span class="co">##  optimize topology:  -2688.472 --&gt; -2679.509 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2679.509 --&gt; -2679.509 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  2 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  17 , best pscore so far: -2642.63135893994"</span></span>
-<span><span class="co">##  optimize topology:  -2658 --&gt; -2648.98 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2648.98 --&gt; -2643.031 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2643.031 --&gt; -2642.856 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2642.856 --&gt; -2642.832 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  5 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  18 , best pscore so far: -2642.63135893994"</span></span>
-<span><span class="co">##  optimize topology:  -2667.874 --&gt; -2654.497 </span></span>
-<span><span class="co">##  NNI moves:  3 </span></span>
-<span><span class="co">##  optimize topology:  -2654.497 --&gt; -2647.36 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2647.36 --&gt; -2642.835 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2642.835 --&gt; -2642.83 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  6 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  19 , best pscore so far: -2642.63135893994"</span></span>
-<span><span class="co">##  optimize topology:  -2642.821 --&gt; -2642.657 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2642.657 --&gt; -2642.634 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  1 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  20 , best pscore so far: -2642.63135893994"</span></span>
-<span><span class="co">##  optimize topology:  -2662.567 --&gt; -2655.33 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2655.33 --&gt; -2649.169 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2649.169 --&gt; -2649.098 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2649.098 --&gt; -2649.098 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  5 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  21 , best pscore so far: -2642.63135893994"</span></span>
-<span><span class="co">##  optimize topology:  -2647.651 --&gt; -2643.711 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2643.711 --&gt; -2642.821 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2642.821 --&gt; -2642.652 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2642.652 --&gt; -2642.633 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  3 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  22 , best pscore so far: -2642.63135893994"</span></span>
-<span><span class="co">##  optimize topology:  -2670.304 --&gt; -2661.773 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2661.773 --&gt; -2657.019 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2657.019 --&gt; -2654.237 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2654.237 --&gt; -2654.102 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2654.102 --&gt; -2644.469 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2644.469 --&gt; -2642.959 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2642.959 --&gt; -2642.959 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  7 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  23 , best pscore so far: -2642.63135893994"</span></span>
-<span><span class="co">##  optimize topology:  -2664.83 --&gt; -2659.501 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2659.501 --&gt; -2649.329 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2649.329 --&gt; -2645.316 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2645.316 --&gt; -2643.679 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2643.679 --&gt; -2643.679 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  4 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  24 , best pscore so far: -2642.63135893994"</span></span>
-<span><span class="co">##  optimize topology:  -2654.416 --&gt; -2649.549 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2649.549 --&gt; -2644.603 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2644.603 --&gt; -2643.158 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2643.158 --&gt; -2642.985 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2642.985 --&gt; -2642.961 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  4 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  25 , best pscore so far: -2642.63135893994"</span></span>
-<span><span class="co">## optimize base frequencies:  -2642.631 --&gt; -2640.208 </span></span>
-<span><span class="co">## optimize rate matrix:  -2640.208 --&gt; -2631.472 </span></span>
-<span><span class="co">## optimize invariant sites:  -2631.472 --&gt; -2631.446 </span></span>
-<span><span class="co">## optimize shape parameter:  -2631.446 --&gt; -2631.427 </span></span>
-<span><span class="co">## optimize edge weights:  -2631.427 --&gt; -2627.207 </span></span>
-<span><span class="co">##  optimize topology:  -2627.207 --&gt; -2627.206 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  0 </span></span>
-<span><span class="co">## optimize base frequencies:  -2627.206 --&gt; -2626.948 </span></span>
-<span><span class="co">## optimize rate matrix:  -2626.948 --&gt; -2623.149 </span></span>
-<span><span class="co">## optimize invariant sites:  -2623.149 --&gt; -2623.144 </span></span>
-<span><span class="co">## optimize shape parameter:  -2623.144 --&gt; -2623.088 </span></span>
-<span><span class="co">## optimize edge weights:  -2623.088 --&gt; -2620.625 </span></span>
-<span><span class="co">## optimize base frequencies:  -2620.625 --&gt; -2620.543 </span></span>
-<span><span class="co">## optimize rate matrix:  -2620.543 --&gt; -2618.366 </span></span>
-<span><span class="co">## optimize invariant sites:  -2618.366 --&gt; -2618.361 </span></span>
-<span><span class="co">## optimize shape parameter:  -2618.361 --&gt; -2618.316 </span></span>
-<span><span class="co">## optimize edge weights:  -2618.316 --&gt; -2616.737 </span></span>
-<span><span class="co">## optimize base frequencies:  -2616.737 --&gt; -2616.695 </span></span>
-<span><span class="co">## optimize rate matrix:  -2616.695 --&gt; -2615.303 </span></span>
-<span><span class="co">## optimize invariant sites:  -2615.303 --&gt; -2615.3 </span></span>
-<span><span class="co">## optimize shape parameter:  -2615.3 --&gt; -2615.267 </span></span>
-<span><span class="co">## optimize edge weights:  -2615.267 --&gt; -2614.202 </span></span>
-<span><span class="co">## optimize base frequencies:  -2614.202 --&gt; -2614.181 </span></span>
-<span><span class="co">## optimize rate matrix:  -2614.181 --&gt; -2613.247 </span></span>
-<span><span class="co">## optimize invariant sites:  -2613.247 --&gt; -2613.246 </span></span>
-<span><span class="co">## optimize shape parameter:  -2613.246 --&gt; -2613.22 </span></span>
-<span><span class="co">## optimize edge weights:  -2613.22 --&gt; -2612.475 </span></span>
-<span><span class="co">## optimize base frequencies:  -2612.475 --&gt; -2612.464 </span></span>
-<span><span class="co">## optimize rate matrix:  -2612.464 --&gt; -2611.814 </span></span>
-<span><span class="co">## optimize invariant sites:  -2611.814 --&gt; -2611.813 </span></span>
-<span><span class="co">## optimize shape parameter:  -2611.813 --&gt; -2611.795 </span></span>
-<span><span class="co">## optimize edge weights:  -2611.795 --&gt; -2611.252 </span></span>
-<span><span class="co">## optimize base frequencies:  -2611.252 --&gt; -2611.245 </span></span>
-<span><span class="co">## optimize rate matrix:  -2611.245 --&gt; -2610.776 </span></span>
-<span><span class="co">## optimize invariant sites:  -2610.776 --&gt; -2610.775 </span></span>
-<span><span class="co">## optimize shape parameter:  -2610.775 --&gt; -2610.762 </span></span>
-<span><span class="co">## optimize edge weights:  -2610.762 --&gt; -2610.361 </span></span>
-<span><span class="co">## optimize base frequencies:  -2610.361 --&gt; -2610.356 </span></span>
-<span><span class="co">## optimize rate matrix:  -2610.356 --&gt; -2610.003 </span></span>
-<span><span class="co">## optimize invariant sites:  -2610.003 --&gt; -2610.003 </span></span>
-<span><span class="co">## optimize shape parameter:  -2610.003 --&gt; -2609.994 </span></span>
-<span><span class="co">## optimize edge weights:  -2609.994 --&gt; -2609.688 </span></span>
-<span><span class="co">## optimize base frequencies:  -2609.688 --&gt; -2609.685 </span></span>
-<span><span class="co">## optimize rate matrix:  -2609.685 --&gt; -2609.419 </span></span>
-<span><span class="co">## optimize invariant sites:  -2609.419 --&gt; -2609.419 </span></span>
-<span><span class="co">## optimize shape parameter:  -2609.419 --&gt; -2609.412 </span></span>
-<span><span class="co">## optimize edge weights:  -2609.412 --&gt; -2609.177 </span></span>
-<span><span class="co">## optimize base frequencies:  -2609.177 --&gt; -2609.175 </span></span>
-<span><span class="co">## optimize rate matrix:  -2609.175 --&gt; -2608.969 </span></span>
-<span><span class="co">## optimize invariant sites:  -2608.969 --&gt; -2608.969 </span></span>
-<span><span class="co">## optimize shape parameter:  -2608.969 --&gt; -2608.965 </span></span>
-<span><span class="co">## optimize edge weights:  -2608.965 --&gt; -2608.78 </span></span>
-<span><span class="co">## optimize base frequencies:  -2608.78 --&gt; -2608.779 </span></span>
-<span><span class="co">## optimize rate matrix:  -2608.779 --&gt; -2608.612 </span></span>
-<span><span class="co">## optimize invariant sites:  -2608.612 --&gt; -2608.612 </span></span>
-<span><span class="co">## optimize shape parameter:  -2608.612 --&gt; -2608.609 </span></span>
-<span><span class="co">## optimize edge weights:  -2608.609 --&gt; -2608.461</span></span></code></pre>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fitGTR</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">fitGTR</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">primates</span>, model<span class="op">=</span><span class="st">"GTR+G(4)+I"</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">fitGTR</span></span></code></pre></div>
 <pre><code><span><span class="co">## model: GTR+G(4)+I </span></span>
-<span><span class="co">## loglikelihood: -2608.461 </span></span>
+<span><span class="co">## loglikelihood: -2608.465 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -1230.335 </span></span>
-<span><span class="co">## Proportion of invariant sites: 0.005610031 </span></span>
+<span><span class="co">## Proportion of invariant sites: 0.005616768 </span></span>
 <span><span class="co">## Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.934936 </span></span>
+<span><span class="co">## Shape parameter: 2.934308 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
 <span><span class="co">##            a            c            g          t</span></span>
-<span><span class="co">## a  0.0000000  0.709003731 43.301505288  0.4483526</span></span>
-<span><span class="co">## c  0.7090037  0.000000000  0.002593154 18.0551852</span></span>
-<span><span class="co">## g 43.3015053  0.002593154  0.000000000  1.0000000</span></span>
-<span><span class="co">## t  0.4483526 18.055185185  1.000000000  0.0000000</span></span>
+<span><span class="co">## a  0.0000000  0.672829884 41.106487732  0.4207525</span></span>
+<span><span class="co">## c  0.6728299  0.000000000  0.004590307 17.1347944</span></span>
+<span><span class="co">## g 41.1064877  0.004590307  0.000000000  1.0000000</span></span>
+<span><span class="co">## t  0.4207525 17.134794410  1.000000000  0.0000000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
-<span><span class="co">##          a          c          g          t </span></span>
-<span><span class="co">## 0.39402625 0.37890921 0.04025759 0.18680695</span></span></code></pre>
+<span><span class="co">##         a         c         g         t </span></span>
+<span><span class="co">## 0.3939528 0.3788960 0.0402741 0.1868771</span></span></code></pre>
 <p>In this case it generates a starting tree, an <code>pml</code> object and optimizes the parameters given the model term using <code>optim.pml</code>.</p>
 <div class="section level3">
 <h3 id="model-selection">Model selection<a class="anchor" aria-label="anchor" href="#model-selection"></a>
 </h3>
 <p>Usually we will try to find the best fitting model beforehand. For this we use the function <code>modelTest</code> to compare different nucleotide or protein models the AIC, AICc or BIC, similar to popular programs ModelTest and ProtTest <span class="citation">(D. Posada and Crandall 1998)</span>, <span class="citation">(David Posada 2008)</span>, <span class="citation">(Abascal, Zardoya, and Posada 2005)</span>. By default available nucleotide or amino acid models available are compared.</p>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modelTest.html">modelTest</a></span><span class="op">(</span><span class="va">primates</span><span class="op">)</span></span></code></pre></div>
 <p>Here we can select only some common models:</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modelTest.html">modelTest</a></span><span class="op">(</span><span class="va">primates</span>, model<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"JC"</span>, <span class="st">"F81"</span>, <span class="st">"K80"</span>, <span class="st">"HKY"</span>, <span class="st">"SYM"</span>, <span class="st">"GTR"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "JC"</span></span>
-<span><span class="co">## [1] "JC+I"</span></span>
-<span><span class="co">## [1] "JC+G"</span></span>
-<span><span class="co">## [1] "JC+G+I"</span></span>
-<span><span class="co">## [1] "F81"</span></span>
-<span><span class="co">## [1] "F81+I"</span></span>
-<span><span class="co">## [1] "F81+G"</span></span>
-<span><span class="co">## [1] "F81+G+I"</span></span>
-<span><span class="co">## [1] "K80"</span></span>
-<span><span class="co">## [1] "K80+I"</span></span>
-<span><span class="co">## [1] "K80+G"</span></span>
-<span><span class="co">## [1] "K80+G+I"</span></span>
-<span><span class="co">## [1] "HKY"</span></span>
-<span><span class="co">## [1] "HKY+I"</span></span>
-<span><span class="co">## [1] "HKY+G"</span></span>
-<span><span class="co">## [1] "HKY+G+I"</span></span>
-<span><span class="co">## [1] "SYM"</span></span>
-<span><span class="co">## [1] "SYM+I"</span></span>
-<span><span class="co">## [1] "SYM+G"</span></span>
-<span><span class="co">## [1] "SYM+G+I"</span></span>
-<span><span class="co">## [1] "GTR"</span></span>
-<span><span class="co">## [1] "GTR+I"</span></span>
-<span><span class="co">## [1] "GTR+G"</span></span>
-<span><span class="co">## [1] "GTR+G+I"</span></span></code></pre>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modelTest.html">modelTest</a></span><span class="op">(</span><span class="va">primates</span>, model<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"JC"</span>, <span class="st">"F81"</span>, <span class="st">"K80"</span>, <span class="st">"HKY"</span>, <span class="st">"SYM"</span>, <span class="st">"GTR"</span><span class="op">)</span>, </span>
+<span>                control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>The results of <code>modelTest</code> is illustrated in following table:</p>
 <table class="table">
 <thead><tr class="header">
@@ -761,706 +372,351 @@ Rooted UPGMA tree.
 <tr class="odd">
 <td align="left">JC</td>
 <td align="right">25</td>
-<td align="right">-3068.42</td>
-<td align="right">6186.83</td>
+<td align="right">-3070.93</td>
+<td align="right">6191.86</td>
 <td align="right">0.00</td>
-<td align="right">6193.15</td>
+<td align="right">6198.17</td>
 <td align="right">0.00</td>
-<td align="right">6273.00</td>
+<td align="right">6278.03</td>
 </tr>
 <tr class="even">
 <td align="left">JC+I</td>
 <td align="right">26</td>
-<td align="right">-3062.63</td>
-<td align="right">6177.26</td>
+<td align="right">-3064.97</td>
+<td align="right">6181.93</td>
 <td align="right">0.00</td>
-<td align="right">6184.10</td>
+<td align="right">6188.78</td>
 <td align="right">0.00</td>
-<td align="right">6266.87</td>
+<td align="right">6271.55</td>
 </tr>
 <tr class="odd">
 <td align="left">JC+G(4)</td>
 <td align="right">26</td>
-<td align="right">-3066.92</td>
-<td align="right">6185.83</td>
+<td align="right">-3069.23</td>
+<td align="right">6190.46</td>
 <td align="right">0.00</td>
-<td align="right">6192.68</td>
+<td align="right">6197.31</td>
 <td align="right">0.00</td>
-<td align="right">6275.45</td>
+<td align="right">6280.07</td>
 </tr>
 <tr class="even">
 <td align="left">JC+G(4)+I</td>
 <td align="right">27</td>
-<td align="right">-3062.63</td>
-<td align="right">6179.27</td>
+<td align="right">-3064.97</td>
+<td align="right">6183.95</td>
 <td align="right">0.00</td>
-<td align="right">6186.68</td>
+<td align="right">6191.36</td>
 <td align="right">0.00</td>
-<td align="right">6272.33</td>
+<td align="right">6277.01</td>
 </tr>
 <tr class="odd">
 <td align="left">F81</td>
 <td align="right">28</td>
-<td align="right">-2918.17</td>
-<td align="right">5892.33</td>
+<td align="right">-2920.38</td>
+<td align="right">5896.76</td>
 <td align="right">0.00</td>
-<td align="right">5900.33</td>
+<td align="right">5904.76</td>
 <td align="right">0.00</td>
-<td align="right">5988.84</td>
+<td align="right">5993.27</td>
 </tr>
 <tr class="even">
 <td align="left">F81+I</td>
 <td align="right">29</td>
-<td align="right">-2909.12</td>
-<td align="right">5876.24</td>
+<td align="right">-2911.20</td>
+<td align="right">5880.40</td>
 <td align="right">0.00</td>
-<td align="right">5884.85</td>
+<td align="right">5889.02</td>
 <td align="right">0.00</td>
-<td align="right">5976.20</td>
+<td align="right">5980.36</td>
 </tr>
 <tr class="odd">
 <td align="left">F81+G(4)</td>
 <td align="right">29</td>
-<td align="right">-2912.56</td>
-<td align="right">5883.12</td>
+<td align="right">-2914.59</td>
+<td align="right">5887.17</td>
 <td align="right">0.00</td>
-<td align="right">5891.73</td>
+<td align="right">5895.79</td>
 <td align="right">0.00</td>
-<td align="right">5983.07</td>
+<td align="right">5987.13</td>
 </tr>
 <tr class="even">
 <td align="left">F81+G(4)+I</td>
 <td align="right">30</td>
-<td align="right">-2908.52</td>
-<td align="right">5877.04</td>
+<td align="right">-2910.56</td>
+<td align="right">5881.13</td>
 <td align="right">0.00</td>
-<td align="right">5886.29</td>
+<td align="right">5890.38</td>
 <td align="right">0.00</td>
-<td align="right">5980.44</td>
+<td align="right">5984.53</td>
 </tr>
 <tr class="odd">
 <td align="left">K80</td>
 <td align="right">26</td>
-<td align="right">-2952.94</td>
-<td align="right">5957.89</td>
+<td align="right">-2960.53</td>
+<td align="right">5973.07</td>
 <td align="right">0.00</td>
-<td align="right">5964.73</td>
+<td align="right">5979.92</td>
 <td align="right">0.00</td>
-<td align="right">6047.50</td>
+<td align="right">6062.68</td>
 </tr>
 <tr class="even">
 <td align="left">K80+I</td>
 <td align="right">27</td>
-<td align="right">-2944.51</td>
-<td align="right">5943.02</td>
+<td align="right">-2951.83</td>
+<td align="right">5957.65</td>
 <td align="right">0.00</td>
-<td align="right">5950.43</td>
+<td align="right">5965.07</td>
 <td align="right">0.00</td>
-<td align="right">6036.08</td>
+<td align="right">6050.72</td>
 </tr>
 <tr class="odd">
 <td align="left">K80+G(4)</td>
 <td align="right">27</td>
-<td align="right">-2944.76</td>
-<td align="right">5943.53</td>
+<td align="right">-2951.67</td>
+<td align="right">5957.34</td>
 <td align="right">0.00</td>
-<td align="right">5950.94</td>
+<td align="right">5964.75</td>
 <td align="right">0.00</td>
-<td align="right">6036.59</td>
+<td align="right">6050.40</td>
 </tr>
 <tr class="even">
 <td align="left">K80+G(4)+I</td>
 <td align="right">28</td>
-<td align="right">-2942.34</td>
-<td align="right">5940.68</td>
+<td align="right">-2949.37</td>
+<td align="right">5954.73</td>
 <td align="right">0.00</td>
-<td align="right">5948.68</td>
+<td align="right">5962.73</td>
 <td align="right">0.00</td>
-<td align="right">6037.19</td>
+<td align="right">6051.24</td>
 </tr>
 <tr class="odd">
 <td align="left">HKY</td>
 <td align="right">29</td>
-<td align="right">-2625.03</td>
-<td align="right">5308.07</td>
+<td align="right">-2632.66</td>
+<td align="right">5323.33</td>
 <td align="right">0.00</td>
-<td align="right">5316.68</td>
+<td align="right">5331.94</td>
 <td align="right">0.00</td>
-<td align="right">5408.02</td>
+<td align="right">5423.28</td>
 </tr>
 <tr class="even">
 <td align="left">HKY+I</td>
 <td align="right">30</td>
-<td align="right">-2621.27</td>
-<td align="right">5302.54</td>
+<td align="right">-2628.64</td>
+<td align="right">5317.27</td>
 <td align="right">0.00</td>
-<td align="right">5311.79</td>
+<td align="right">5326.53</td>
 <td align="right">0.00</td>
-<td align="right">5405.94</td>
+<td align="right">5420.68</td>
 </tr>
 <tr class="odd">
 <td align="left">HKY+G(4)</td>
 <td align="right">30</td>
-<td align="right">-2612.64</td>
-<td align="right">5285.28</td>
-<td align="right">0.18</td>
-<td align="right">5294.54</td>
-<td align="right">0.45</td>
-<td align="right">5388.68</td>
+<td align="right">-2620.55</td>
+<td align="right">5301.09</td>
+<td align="right">0.20</td>
+<td align="right">5310.34</td>
+<td align="right">0.48</td>
+<td align="right">5404.49</td>
 </tr>
 <tr class="even">
 <td align="left">HKY+G(4)+I</td>
 <td align="right">31</td>
-<td align="right">-2612.45</td>
-<td align="right">5286.89</td>
-<td align="right">0.08</td>
-<td align="right">5296.81</td>
-<td align="right">0.14</td>
-<td align="right">5393.74</td>
+<td align="right">-2620.34</td>
+<td align="right">5302.68</td>
+<td align="right">0.09</td>
+<td align="right">5312.60</td>
+<td align="right">0.16</td>
+<td align="right">5409.53</td>
 </tr>
 <tr class="odd">
 <td align="left">SYM</td>
 <td align="right">30</td>
-<td align="right">-2813.90</td>
-<td align="right">5687.79</td>
+<td align="right">-2820.38</td>
+<td align="right">5700.77</td>
 <td align="right">0.00</td>
-<td align="right">5697.05</td>
+<td align="right">5710.02</td>
 <td align="right">0.00</td>
-<td align="right">5791.19</td>
+<td align="right">5804.17</td>
 </tr>
 <tr class="even">
 <td align="left">SYM+I</td>
 <td align="right">31</td>
-<td align="right">-2811.73</td>
-<td align="right">5685.46</td>
+<td align="right">-2817.89</td>
+<td align="right">5697.77</td>
 <td align="right">0.00</td>
-<td align="right">5695.38</td>
+<td align="right">5707.69</td>
 <td align="right">0.00</td>
-<td align="right">5792.31</td>
+<td align="right">5804.62</td>
 </tr>
 <tr class="odd">
 <td align="left">SYM+G(4)</td>
 <td align="right">31</td>
-<td align="right">-2804.68</td>
-<td align="right">5671.36</td>
+<td align="right">-2811.27</td>
+<td align="right">5684.54</td>
 <td align="right">0.00</td>
-<td align="right">5681.28</td>
+<td align="right">5694.46</td>
 <td align="right">0.00</td>
-<td align="right">5778.20</td>
+<td align="right">5791.39</td>
 </tr>
 <tr class="even">
 <td align="left">SYM+G(4)+I</td>
 <td align="right">32</td>
-<td align="right">-2804.67</td>
-<td align="right">5673.34</td>
+<td align="right">-2811.26</td>
+<td align="right">5686.52</td>
 <td align="right">0.00</td>
-<td align="right">5683.95</td>
+<td align="right">5697.13</td>
 <td align="right">0.00</td>
-<td align="right">5783.63</td>
+<td align="right">5796.81</td>
 </tr>
 <tr class="odd">
 <td align="left">GTR</td>
 <td align="right">33</td>
-<td align="right">-2618.62</td>
-<td align="right">5303.24</td>
+<td align="right">-2626.37</td>
+<td align="right">5318.74</td>
 <td align="right">0.00</td>
-<td align="right">5314.57</td>
+<td align="right">5330.08</td>
 <td align="right">0.00</td>
-<td align="right">5416.98</td>
+<td align="right">5432.49</td>
 </tr>
 <tr class="even">
 <td align="left">GTR+I</td>
 <td align="right">34</td>
-<td align="right">-2613.58</td>
-<td align="right">5295.16</td>
+<td align="right">-2620.99</td>
+<td align="right">5309.97</td>
 <td align="right">0.00</td>
-<td align="right">5307.25</td>
+<td align="right">5322.06</td>
 <td align="right">0.00</td>
-<td align="right">5412.35</td>
+<td align="right">5427.16</td>
 </tr>
 <tr class="odd">
 <td align="left">GTR+G(4)</td>
 <td align="right">34</td>
-<td align="right">-2607.67</td>
-<td align="right">5283.33</td>
-<td align="right">0.47</td>
-<td align="right">5295.41</td>
-<td align="right">0.29</td>
-<td align="right">5400.52</td>
+<td align="right">-2615.79</td>
+<td align="right">5299.57</td>
+<td align="right">0.44</td>
+<td align="right">5311.65</td>
+<td align="right">0.25</td>
+<td align="right">5416.76</td>
 </tr>
 <tr class="even">
 <td align="left">GTR+G(4)+I</td>
 <td align="right">35</td>
-<td align="right">-2607.21</td>
-<td align="right">5284.43</td>
+<td align="right">-2615.28</td>
+<td align="right">5300.56</td>
 <td align="right">0.27</td>
-<td align="right">5297.29</td>
-<td align="right">0.11</td>
-<td align="right">5405.06</td>
+<td align="right">5313.42</td>
+<td align="right">0.10</td>
+<td align="right">5421.19</td>
 </tr>
 </tbody>
 </table>
 <p>To speed computations up the thresholds for the optimization in <code>modelTest</code> are not as strict as for <code>optim.pml</code> and no tree rearrangements are performed, which is the most time consuming part of the optimizing process. As <code>modelTest</code> computes and optimizes a lot of models it would be a waste of computer time not to save these results. The results are saved as call together with the optimized trees in an environment and the function <code>as.pml</code> evaluates this call to get a <code>pml</code> object back to use for further optimization or analysis.</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">as.pml</a></span><span class="op">(</span><span class="va">mt</span>, <span class="st">"HKY+G(4)+I"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## model: HKY+G(4)+I </span></span>
-<span><span class="co">## loglikelihood: -2612.447 </span></span>
+<span><span class="co">## loglikelihood: -2620.339 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -1230.335 </span></span>
-<span><span class="co">## Proportion of invariant sites: 0.002718899 </span></span>
+<span><span class="co">## Proportion of invariant sites: 0.003460033 </span></span>
 <span><span class="co">## Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.12756 </span></span>
+<span><span class="co">## Shape parameter: 2.207017 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
 <span><span class="co">##          a        c        g        t</span></span>
-<span><span class="co">## a  0.00000  1.00000 56.01621  1.00000</span></span>
-<span><span class="co">## c  1.00000  0.00000  1.00000 56.01621</span></span>
-<span><span class="co">## g 56.01621  1.00000  0.00000  1.00000</span></span>
-<span><span class="co">## t  1.00000 56.01621  1.00000  0.00000</span></span>
+<span><span class="co">## a  0.00000  1.00000 54.59661  1.00000</span></span>
+<span><span class="co">## c  1.00000  0.00000  1.00000 54.59661</span></span>
+<span><span class="co">## g 54.59661  1.00000  0.00000  1.00000</span></span>
+<span><span class="co">## t  1.00000 54.59661  1.00000  0.00000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##          a          c          g          t </span></span>
-<span><span class="co">## 0.42037291 0.36232981 0.04393129 0.17336599</span></span></code></pre>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<span><span class="co">## 0.42117410 0.36155003 0.04410078 0.17317508</span></span></code></pre>
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">as.pml</a></span><span class="op">(</span><span class="va">mt</span>, <span class="st">"BIC"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## model: HKY+G(4) </span></span>
-<span><span class="co">## loglikelihood: -2612.641 </span></span>
+<span><span class="co">## loglikelihood: -2620.545 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -1230.335 </span></span>
 <span><span class="co">## Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.145175 </span></span>
+<span><span class="co">## Shape parameter: 2.204425 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
 <span><span class="co">##          a        c        g        t</span></span>
-<span><span class="co">## a  0.00000  1.00000 51.44286  1.00000</span></span>
-<span><span class="co">## c  1.00000  0.00000  1.00000 51.44286</span></span>
-<span><span class="co">## g 51.44286  1.00000  0.00000  1.00000</span></span>
-<span><span class="co">## t  1.00000 51.44286  1.00000  0.00000</span></span>
+<span><span class="co">## a  0.00000  1.00000 50.36791  1.00000</span></span>
+<span><span class="co">## c  1.00000  0.00000  1.00000 50.36791</span></span>
+<span><span class="co">## g 50.36791  1.00000  0.00000  1.00000</span></span>
+<span><span class="co">## t  1.00000 50.36791  1.00000  0.00000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##          a          c          g          t </span></span>
-<span><span class="co">## 0.41934954 0.36289395 0.04390724 0.17384927</span></span></code></pre>
+<span><span class="co">## 0.42017958 0.36218400 0.04401668 0.17361975</span></span></code></pre>
 <p>To simplify the workflow we can give the result of modelTest to <code>pml_bb</code> function and optimize the parameters taking the best model according to BIC.</p>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fit_mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">mt</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## optimize edge weights:  -2612.641 --&gt; -2612.641 </span></span>
-<span><span class="co">## optimize base frequencies:  -2612.641 --&gt; -2612.641 </span></span>
-<span><span class="co">## optimize rate matrix:  -2612.641 --&gt; -2612.616 </span></span>
-<span><span class="co">## optimize shape parameter:  -2612.616 --&gt; -2612.615 </span></span>
-<span><span class="co">## optimize edge weights:  -2612.615 --&gt; -2612.592 </span></span>
-<span><span class="co">##  optimize topology:  -2612.592 --&gt; -2612.177 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2612.177 --&gt; -2612.177 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  1 </span></span>
-<span><span class="co">## optimize base frequencies:  -2612.177 --&gt; -2612.177 </span></span>
-<span><span class="co">## optimize rate matrix:  -2612.177 --&gt; -2612.16 </span></span>
-<span><span class="co">## optimize shape parameter:  -2612.16 --&gt; -2612.158 </span></span>
-<span><span class="co">## optimize edge weights:  -2612.158 --&gt; -2612.143 </span></span>
-<span><span class="co">##  optimize topology:  -2612.143 --&gt; -2612.143 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  0 </span></span>
-<span><span class="co">##  optimize topology:  -2620.794 --&gt; -2620.794 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  0 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  1 , best pscore so far: -2612.1428935185"</span></span>
-<span><span class="co">##  optimize topology:  -2620.107 --&gt; -2619.814 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2619.814 --&gt; -2619.814 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  1 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  2 , best pscore so far: -2612.1428935185"</span></span>
-<span><span class="co">##  optimize topology:  -2628.309 --&gt; -2622.038 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2622.038 --&gt; -2616.894 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2616.894 --&gt; -2614.827 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2614.827 --&gt; -2611.886 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2611.886 --&gt; -2611.886 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  6 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  3 , best pscore so far: -2611.88630977808"</span></span>
-<span><span class="co">##  optimize topology:  -2635.139 --&gt; -2634.095 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2634.095 --&gt; -2633.893 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2633.893 --&gt; -2633.893 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  2 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  4 , best pscore so far: -2611.88630977808"</span></span>
-<span><span class="co">##  optimize topology:  -2632.991 --&gt; -2624.982 </span></span>
-<span><span class="co">##  NNI moves:  3 </span></span>
-<span><span class="co">##  optimize topology:  -2624.982 --&gt; -2624.982 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  3 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  5 , best pscore so far: -2611.88630977808"</span></span>
-<span><span class="co">##  optimize topology:  -2629.602 --&gt; -2627.948 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2627.948 --&gt; -2627.948 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  1 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  6 , best pscore so far: -2611.88630977808"</span></span>
-<span><span class="co">##  optimize topology:  -2623.566 --&gt; -2621.572 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2621.572 --&gt; -2619.063 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2619.063 --&gt; -2619.063 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  2 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  7 , best pscore so far: -2611.88630977808"</span></span>
-<span><span class="co">##  optimize topology:  -2627.27 --&gt; -2623.357 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2623.357 --&gt; -2623.075 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2623.075 --&gt; -2623.075 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  2 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  8 , best pscore so far: -2611.88630977808"</span></span>
-<span><span class="co">##  optimize topology:  -2629.939 --&gt; -2628.319 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2628.319 --&gt; -2628.319 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  1 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  9 , best pscore so far: -2611.88630977808"</span></span>
-<span><span class="co">##  optimize topology:  -2629.811 --&gt; -2624.388 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2624.388 --&gt; -2624.388 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  2 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  10 , best pscore so far: -2611.88630977808"</span></span>
-<span><span class="co">##  optimize topology:  -2613.105 --&gt; -2612.251 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2612.251 --&gt; -2611.903 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2611.903 --&gt; -2611.903 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  2 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  11 , best pscore so far: -2611.88630977808"</span></span>
-<span><span class="co">##  optimize topology:  -2625.344 --&gt; -2622.696 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2622.696 --&gt; -2621.987 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2621.987 --&gt; -2620.525 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2620.525 --&gt; -2620.525 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  3 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  12 , best pscore so far: -2611.88630977808"</span></span>
-<span><span class="co">##  optimize topology:  -2645.072 --&gt; -2644.518 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2644.518 --&gt; -2644.518 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  1 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  13 , best pscore so far: -2611.88630977808"</span></span>
-<span><span class="co">##  optimize topology:  -2625.599 --&gt; -2622.602 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2622.602 --&gt; -2622.602 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  1 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  14 , best pscore so far: -2611.88630977808"</span></span>
-<span><span class="co">##  optimize topology:  -2630.404 --&gt; -2622.857 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2622.857 --&gt; -2621.233 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2621.233 --&gt; -2621.233 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  3 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  15 , best pscore so far: -2611.88630977808"</span></span>
-<span><span class="co">##  optimize topology:  -2640.435 --&gt; -2640.435 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  0 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  16 , best pscore so far: -2611.88630977808"</span></span>
-<span><span class="co">##  optimize topology:  -2627.854 --&gt; -2621.069 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2621.069 --&gt; -2618.722 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2618.722 --&gt; -2616.526 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2616.526 --&gt; -2616.526 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  4 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  17 , best pscore so far: -2611.88630977808"</span></span>
-<span><span class="co">##  optimize topology:  -2618.275 --&gt; -2618.274 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  0 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  18 , best pscore so far: -2611.88630977808"</span></span>
-<span><span class="co">##  optimize topology:  -2629.661 --&gt; -2623.979 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2623.979 --&gt; -2623.979 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  2 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  19 , best pscore so far: -2611.88630977808"</span></span>
-<span><span class="co">##  optimize topology:  -2624.996 --&gt; -2620.686 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2620.686 --&gt; -2620.686 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  2 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  20 , best pscore so far: -2611.88630977808"</span></span>
-<span><span class="co">##  optimize topology:  -2612.863 --&gt; -2612.283 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2612.283 --&gt; -2611.633 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2611.633 --&gt; -2611.633 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  2 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  21 , best pscore so far: -2611.63278251071"</span></span>
-<span><span class="co">##  optimize topology:  -2617.297 --&gt; -2616.507 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2616.507 --&gt; -2616.507 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  1 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  22 , best pscore so far: -2611.63278251071"</span></span>
-<span><span class="co">##  optimize topology:  -2624.439 --&gt; -2623.618 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2623.618 --&gt; -2623.618 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  1 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  23 , best pscore so far: -2611.63278251071"</span></span>
-<span><span class="co">##  optimize topology:  -2649.948 --&gt; -2628.021 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2628.021 --&gt; -2621.253 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2621.253 --&gt; -2621.253 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  3 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  24 , best pscore so far: -2611.63278251071"</span></span>
-<span><span class="co">##  optimize topology:  -2626.829 --&gt; -2619.712 </span></span>
-<span><span class="co">##  NNI moves:  3 </span></span>
-<span><span class="co">##  optimize topology:  -2619.712 --&gt; -2619.712 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  3 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  25 , best pscore so far: -2611.63278251071"</span></span>
-<span><span class="co">##  optimize topology:  -2624.312 --&gt; -2624.309 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2624.309 --&gt; -2624.309 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  1 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  26 , best pscore so far: -2611.63278251071"</span></span>
-<span><span class="co">##  optimize topology:  -2651.837 --&gt; -2647.004 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2647.004 --&gt; -2647.004 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  2 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  27 , best pscore so far: -2611.63278251071"</span></span>
-<span><span class="co">##  optimize topology:  -2625.975 --&gt; -2620.157 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2620.157 --&gt; -2617.371 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2617.371 --&gt; -2614.639 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2614.639 --&gt; -2614.639 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  3 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  28 , best pscore so far: -2611.63278251071"</span></span>
-<span><span class="co">##  optimize topology:  -2619.061 --&gt; -2613.864 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2613.864 --&gt; -2613.326 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2613.326 --&gt; -2613.326 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  3 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  29 , best pscore so far: -2611.63278251071"</span></span>
-<span><span class="co">##  optimize topology:  -2628.41 --&gt; -2622.253 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2622.253 --&gt; -2620.084 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2620.084 --&gt; -2618.525 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2618.525 --&gt; -2618.525 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  4 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  30 , best pscore so far: -2611.63278251071"</span></span>
-<span><span class="co">##  optimize topology:  -2628.363 --&gt; -2622.793 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2622.793 --&gt; -2618.908 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2618.908 --&gt; -2618.457 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2618.457 --&gt; -2618.305 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2618.305 --&gt; -2618.305 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  5 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  31 , best pscore so far: -2611.63278251071"</span></span>
-<span><span class="co">##  optimize topology:  -2621.856 --&gt; -2618.457 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2618.457 --&gt; -2618.305 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2618.305 --&gt; -2618.305 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  3 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  32 , best pscore so far: -2611.63278251071"</span></span>
-<span><span class="co">##  optimize topology:  -2626.25 --&gt; -2622.839 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2622.839 --&gt; -2622.839 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  2 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  33 , best pscore so far: -2611.63278251071"</span></span>
-<span><span class="co">##  optimize topology:  -2622.59 --&gt; -2620.16 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2620.16 --&gt; -2618.443 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2618.443 --&gt; -2618.443 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  2 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  34 , best pscore so far: -2611.63278251071"</span></span>
-<span><span class="co">##  optimize topology:  -2618.28 --&gt; -2613.588 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2613.588 --&gt; -2612.485 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2612.485 --&gt; -2612.485 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  4 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  35 , best pscore so far: -2611.63278251071"</span></span>
-<span><span class="co">##  optimize topology:  -2625.903 --&gt; -2622.445 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2622.445 --&gt; -2622.445 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  2 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  36 , best pscore so far: -2611.63278251071"</span></span>
-<span><span class="co">##  optimize topology:  -2648.637 --&gt; -2647.55 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2647.55 --&gt; -2647.55 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  1 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  37 , best pscore so far: -2611.63278251071"</span></span>
-<span><span class="co">##  optimize topology:  -2621.077 --&gt; -2613.864 </span></span>
-<span><span class="co">##  NNI moves:  2 </span></span>
-<span><span class="co">##  optimize topology:  -2613.864 --&gt; -2613.326 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2613.326 --&gt; -2613.326 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  3 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  38 , best pscore so far: -2611.63278251071"</span></span>
-<span><span class="co">##  optimize topology:  -2671.757 --&gt; -2670.849 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2670.849 --&gt; -2670.849 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  1 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  39 , best pscore so far: -2611.63278251071"</span></span>
-<span><span class="co">##  optimize topology:  -2622.982 --&gt; -2619.89 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2619.89 --&gt; -2619.589 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2619.589 --&gt; -2619.477 </span></span>
-<span><span class="co">##  NNI moves:  1 </span></span>
-<span><span class="co">##  optimize topology:  -2619.477 --&gt; -2619.477 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  3 </span></span>
-<span><span class="co">## [1] "Ratchet iteration  40 , best pscore so far: -2611.63278251071"</span></span>
-<span><span class="co">## optimize base frequencies:  -2611.633 --&gt; -2611.633 </span></span>
-<span><span class="co">## optimize rate matrix:  -2611.633 --&gt; -2611.619 </span></span>
-<span><span class="co">## optimize shape parameter:  -2611.619 --&gt; -2611.619 </span></span>
-<span><span class="co">## optimize edge weights:  -2611.619 --&gt; -2611.61 </span></span>
-<span><span class="co">##  optimize topology:  -2611.61 --&gt; -2611.61 </span></span>
-<span><span class="co">##  NNI moves:  0 </span></span>
-<span><span class="co">## NNI moves:  0 </span></span>
-<span><span class="co">## optimize base frequencies:  -2611.61 --&gt; -2611.609 </span></span>
-<span><span class="co">## optimize rate matrix:  -2611.609 --&gt; -2611.601 </span></span>
-<span><span class="co">## optimize shape parameter:  -2611.601 --&gt; -2611.601 </span></span>
-<span><span class="co">## optimize edge weights:  -2611.601 --&gt; -2611.595 </span></span>
-<span><span class="co">## optimize base frequencies:  -2611.595 --&gt; -2611.595 </span></span>
-<span><span class="co">## optimize rate matrix:  -2611.595 --&gt; -2611.591 </span></span>
-<span><span class="co">## optimize shape parameter:  -2611.591 --&gt; -2611.59 </span></span>
-<span><span class="co">## optimize edge weights:  -2611.59 --&gt; -2611.587 </span></span>
-<span><span class="co">## optimize base frequencies:  -2611.587 --&gt; -2611.587 </span></span>
-<span><span class="co">## optimize rate matrix:  -2611.587 --&gt; -2611.584 </span></span>
-<span><span class="co">## optimize shape parameter:  -2611.584 --&gt; -2611.584 </span></span>
-<span><span class="co">## optimize edge weights:  -2611.584 --&gt; -2611.582 </span></span>
-<span><span class="co">## optimize base frequencies:  -2611.582 --&gt; -2611.582 </span></span>
-<span><span class="co">## optimize rate matrix:  -2611.582 --&gt; -2611.58 </span></span>
-<span><span class="co">## optimize shape parameter:  -2611.58 --&gt; -2611.58 </span></span>
-<span><span class="co">## optimize edge weights:  -2611.58 --&gt; -2611.578 </span></span>
-<span><span class="co">## optimize base frequencies:  -2611.578 --&gt; -2611.578 </span></span>
-<span><span class="co">## optimize rate matrix:  -2611.578 --&gt; -2611.577 </span></span>
-<span><span class="co">## optimize shape parameter:  -2611.577 --&gt; -2611.577 </span></span>
-<span><span class="co">## optimize edge weights:  -2611.577 --&gt; -2611.576 </span></span>
-<span><span class="co">## optimize base frequencies:  -2611.576 --&gt; -2611.576 </span></span>
-<span><span class="co">## optimize rate matrix:  -2611.576 --&gt; -2611.575 </span></span>
-<span><span class="co">## optimize shape parameter:  -2611.575 --&gt; -2611.575 </span></span>
-<span><span class="co">## optimize edge weights:  -2611.575 --&gt; -2611.575 </span></span>
-<span><span class="co">## optimize base frequencies:  -2611.575 --&gt; -2611.575 </span></span>
-<span><span class="co">## optimize rate matrix:  -2611.575 --&gt; -2611.575 </span></span>
-<span><span class="co">## optimize shape parameter:  -2611.575 --&gt; -2611.575 </span></span>
-<span><span class="co">## optimize edge weights:  -2611.575 --&gt; -2611.574 </span></span>
-<span><span class="co">## optimize base frequencies:  -2611.574 --&gt; -2611.574 </span></span>
-<span><span class="co">## optimize rate matrix:  -2611.574 --&gt; -2611.574 </span></span>
-<span><span class="co">## optimize shape parameter:  -2611.574 --&gt; -2611.574 </span></span>
-<span><span class="co">## optimize edge weights:  -2611.574 --&gt; -2611.574 </span></span>
-<span><span class="co">## optimize base frequencies:  -2611.574 --&gt; -2611.574 </span></span>
-<span><span class="co">## optimize rate matrix:  -2611.574 --&gt; -2611.574 </span></span>
-<span><span class="co">## optimize shape parameter:  -2611.574 --&gt; -2611.574 </span></span>
-<span><span class="co">## optimize edge weights:  -2611.574 --&gt; -2611.574 </span></span>
-<span><span class="co">## optimize base frequencies:  -2611.574 --&gt; -2611.574 </span></span>
-<span><span class="co">## optimize rate matrix:  -2611.574 --&gt; -2611.574 </span></span>
-<span><span class="co">## optimize shape parameter:  -2611.574 --&gt; -2611.574 </span></span>
-<span><span class="co">## optimize edge weights:  -2611.574 --&gt; -2611.574</span></span></code></pre>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fit_mt</span></span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit_mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">mt</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">fit_mt</span></span></code></pre></div>
 <pre><code><span><span class="co">## model: HKY+G(4) </span></span>
-<span><span class="co">## loglikelihood: -2611.574 </span></span>
+<span><span class="co">## loglikelihood: -2612.412 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -1230.335 </span></span>
 <span><span class="co">## Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.070751 </span></span>
+<span><span class="co">## Shape parameter: 2.194109 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
 <span><span class="co">##          a        c        g        t</span></span>
-<span><span class="co">## a  0.00000  1.00000 56.55494  1.00000</span></span>
-<span><span class="co">## c  1.00000  0.00000  1.00000 56.55494</span></span>
-<span><span class="co">## g 56.55494  1.00000  0.00000  1.00000</span></span>
-<span><span class="co">## t  1.00000 56.55494  1.00000  0.00000</span></span>
+<span><span class="co">## a  0.00000  1.00000 55.41656  1.00000</span></span>
+<span><span class="co">## c  1.00000  0.00000  1.00000 55.41656</span></span>
+<span><span class="co">## g 55.41656  1.00000  0.00000  1.00000</span></span>
+<span><span class="co">## t  1.00000 55.41656  1.00000  0.00000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##          a          c          g          t </span></span>
-<span><span class="co">## 0.42086181 0.36226324 0.04378843 0.17308652</span></span></code></pre>
+<span><span class="co">## 0.42130449 0.36239522 0.04382645 0.17247384</span></span></code></pre>
 <p>We can compare nested models for the JC and GTR + <span class="math inline">\(\Gamma(4)\)</span> + I model using likelihood ratio statistic</p>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova</a></span><span class="op">(</span><span class="va">fitJC</span>, <span class="va">fitGTR</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Likelihood Ratio Test Table</span></span>
 <span><span class="co">##   Log lik. Df Df change Diff log lik. Pr(&gt;|Chi|)    </span></span>
 <span><span class="co">## 1  -3068.3 25                                       </span></span>
-<span><span class="co">## 2  -2608.5 35        10        919.67  &lt; 2.2e-16 ***</span></span>
+<span><span class="co">## 2  -2608.5 35        10        919.66  &lt; 2.2e-16 ***</span></span>
 <span><span class="co">## ---</span></span>
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre>
 <p>with the Shimodaira-Hasegawa  test</p>
-<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/SH.test.html">SH.test</a></span><span class="op">(</span><span class="va">fitGTR</span>, <span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##      Trees      ln L Diff ln L p-value</span></span>
-<span><span class="co">## [1,]     1 -2608.461    0.0000  0.5015</span></span>
-<span><span class="co">## [2,]     2 -3068.295  459.8339  0.0000</span></span></code></pre>
+<span><span class="co">## [1,]     1 -2608.465    0.0000  0.5041</span></span>
+<span><span class="co">## [2,]     2 -3068.295  459.8298  0.0000</span></span></code></pre>
 <p>or with the AIC</p>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 6186.59</span></span></code></pre>
-<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">fitGTR</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 5286.922</span></span></code></pre>
-<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<pre><code><span><span class="co">## [1] 5286.931</span></span></code></pre>
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/modelTest.html">AICc</a></span><span class="op">(</span><span class="va">fitGTR</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 5299.779</span></span></code></pre>
-<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
+<pre><code><span><span class="co">## [1] 5299.788</span></span></code></pre>
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">BIC</a></span><span class="op">(</span><span class="va">fitGTR</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 5407.558</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 5407.566</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="bootstrap-1">Bootstrap<a class="anchor" aria-label="anchor" href="#bootstrap-1"></a>
 </h3>
 <p>At last we may want to apply bootstrap to test how well the edges of the tree are supported:</p>
-<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bootstrap.pml.html">bootstrap.pml</a></span><span class="op">(</span><span class="va">fitJC</span>, bs<span class="op">=</span><span class="fl">100</span>, optNni<span class="op">=</span><span class="cn">TRUE</span>,</span>
 <span>    control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Now we can plot the tree with the bootstrap support values on the edges and also look at <code>consensusNet</code> to identify potential conflict.</p>
-<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotBS.html">plotBS</a></span><span class="op">(</span><span class="fu"><a href="../reference/midpoint.html">midpoint</a></span><span class="op">(</span><span class="va">fitJC</span><span class="op">$</span><span class="va">tree</span><span class="op">)</span>, <span class="va">bs</span>, p <span class="op">=</span> <span class="fl">50</span>, type<span class="op">=</span><span class="st">"p"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="Trees_files/figure-html/plotBS-1.png" alt="Tree with bootstrap support. Unrooted tree (midpoint rooted) with bootstrap support values." width="700"><p class="caption">
 Tree with bootstrap support. Unrooted tree (midpoint rooted) with bootstrap support values.
 </p>
 </div>
-<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cnet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/consensusNet.html">consensusNet</a></span><span class="op">(</span><span class="va">bs</span>, p<span class="op">=</span><span class="fl">0.2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cnet</span>, show.edge.label<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
@@ -1475,28 +731,43 @@ ConsensusNet from the bootstrap sample.
 </h3>
 <p>We implemented a strict clock as described in <span class="citation">(Felsenstein 2004)</span>, p. 266 allowing to infer ultrametric and tip-dated phylogenies. We need a starting tree that fulfills the assumptions, so either tree has to be ultrametric or the constraints given by the tip dates.<br>
 For a ultrametric starting tree starting tree we can use an UPGMA or WPGMA tree. When we optimize the tree with <code>optim.pml</code> we have to make sure set we set <code>optRooted = TRUE</code> and for tip-dated we need additionally set <code>optRate=TRUE</code>!</p>
-<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fit_strict</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">pml</a></span><span class="op">(</span><span class="va">treeUPGMA</span>, data<span class="op">=</span><span class="va">primates</span>, k<span class="op">=</span><span class="fl">4</span>, bf<span class="op">=</span><span class="fu"><a href="../reference/baseFreq.html">baseFreq</a></span><span class="op">(</span><span class="va">primates</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">fit_strict</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit_strict</span>, model<span class="op">=</span><span class="st">"GTR"</span>, optRooted <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span>                        rearrangement <span class="op">=</span> <span class="st">"NNI"</span>, optGamma <span class="op">=</span> <span class="cn">TRUE</span>, optInv <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span>                        control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#fit_strict &lt;- pml(treeUPGMA, data=primates, k=4, bf=baseFreq(primates))</span></span>
+<span><span class="co">#fit_strict &lt;- optim.pml(fit_strict, model="GTR", optRooted = TRUE, </span></span>
+<span><span class="co">#                        rearrangement = "NNI", optGamma = TRUE, optInv = TRUE, </span></span>
+<span><span class="co">#                        control = pml.control(trace = 0))</span></span>
+<span><span class="va">fit_strict</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">primates</span>, model<span class="op">=</span><span class="st">"HKY+G(4)"</span>, method<span class="op">=</span><span class="st">"ultrametric"</span>,</span>
+<span>                     control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit_strict</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Trees_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
 <p>With phangorn we also can estimate tipdated phylogenies. Here we use as an example a H3N2 virus data set from treetime <span class="citation">(Sagulenko, Puller, and Neher 2018)</span>. Additionally to the alignment we also need to read in data containing the dates of the tips.</p>
-<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fdir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/trees"</span>, package <span class="op">=</span> <span class="st">"phangorn"</span><span class="op">)</span></span>
 <span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">fdir</span>,<span class="st">"H3N2_NA_20.csv"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">H3N2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read.phyDat.html">read.phyDat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">fdir</span>,<span class="st">"H3N2_NA_20.fasta"</span><span class="op">)</span>, format<span class="op">=</span><span class="st">"fasta"</span><span class="op">)</span></span></code></pre></div>
-<p>We use the internal function <code>candidate_tree</code> to compute a fast a starting tree with the constraints given by the dates. We than can use <code>optim.pml</code> to optimize the tree and parameters.</p>
-<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
+<p>We first process the sampling dates and create a named vector. The lubridate package <span class="citation">(Grolemund and Wickham 2011)</span> comes very handy dates in case one has to recode dates, e.g. days and months.</p>
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html" class="external-link">setNames</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">$</span><span class="va">numdate_given</span>, <span class="va">tmp</span><span class="op">$</span><span class="va">name</span><span class="op">)</span></span>
-<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/phangorn-internal.html">candidate_tree</a></span><span class="op">(</span><span class="va">H3N2</span>, <span class="st">"tipdated"</span>, tip.dates<span class="op">=</span><span class="va">dates</span><span class="op">)</span></span>
-<span><span class="va">fit_td</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">pml</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">H3N2</span>, rate<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">tree</span>, <span class="st">"rate"</span><span class="op">)</span><span class="op">)</span> </span>
-<span><span class="va">fit_td</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit_td</span>, model<span class="op">=</span><span class="st">"GTR"</span>, rearrangement<span class="op">=</span><span class="st">"NNI"</span>, optRooted<span class="op">=</span><span class="cn">TRUE</span>, </span>
-<span>                    optRate<span class="op">=</span><span class="cn">TRUE</span>, control<span class="op">=</span><span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dates</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##               A/Hawaii/02/2013|KF789866|05/28/2013|USA|12_13|H3N2/1-1409 </span></span>
+<span><span class="co">##                                                                 2013.405 </span></span>
+<span><span class="co">##         A/Boston/DOA2_107/2012|CY148382|11/01/2012|USA|12_13|H3N2/1-1409 </span></span>
+<span><span class="co">##                                                                 2012.838 </span></span>
+<span><span class="co">##               A/Oregon/15/2009|GQ895004|06/25/2009|USA|08_09|H3N2/1-1409 </span></span>
+<span><span class="co">##                                                                 2009.482 </span></span>
+<span><span class="co">## A/Hong_Kong/H090_695_V10/2009|CY115546|07/10/2009|Hong_Kong||H3N2/8-1416 </span></span>
+<span><span class="co">##                                                                 2009.523 </span></span>
+<span><span class="co">##            A/New_York/182/2000|CY001279|02/18/2000|USA|99_00|H3N2/1-1409 </span></span>
+<span><span class="co">##                                                                 2000.134 </span></span>
+<span><span class="co">##        A/Canterbury/58/2000|CY009150|09/05/2000|New_Zealand||H3N2/8-1416 </span></span>
+<span><span class="co">##                                                                 2000.682</span></span></code></pre>
+<p>Again we use the <code>pml_bb</code> function, which optimizes the tree given th constraints of the tip.dates vector.</p>
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit_td</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">H3N2</span>, model<span class="op">=</span><span class="st">"GTR+G(4)"</span>, method<span class="op">=</span><span class="st">"tipdated"</span>, tip.dates<span class="op">=</span><span class="va">dates</span>, </span>
+<span>               rearrangement<span class="op">=</span><span class="st">"NNI"</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>And we last we plot the tree with a timescale.</p>
-<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tree_td</span> <span class="op">&lt;-</span> <span class="va">fit_td</span><span class="op">$</span><span class="va">tree</span></span>
 <span><span class="va">root_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">dates</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/node.depth.html" class="external-link">node.depth.edgelength</a></span><span class="op">(</span><span class="va">tree_td</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">tree_td</span>, show.tip.label <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -1513,10 +784,10 @@ For a ultrametric starting tree starting tree we can use an UPGMA or WPGMA tree.
 <h3 id="standard-scripts-for-nucleotide-analysis">Standard scripts for nucleotide analysis<a class="anchor" aria-label="anchor" href="#standard-scripts-for-nucleotide-analysis"></a>
 </h3>
 <p>Here we provide two standard scripts which can be adapted for the most common tasks. Most likely the arguments for <code>read.phyDat</code> have to be adapted to accommodate your file format. Both scripts assume that the <em>parallel</em> package works on your platform, see comments above.</p>
-<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/KlausVigo/phangorn" class="external-link">phangorn</a></span><span class="op">)</span></span>
 <span><span class="va">file</span> <span class="op">&lt;-</span> <span class="st">"myfile"</span></span>
-<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read.phyDat.html">read.phyDat</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span>
+<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read.phyDat.html">read.phyDat</a></span><span class="op">(</span><span class="va">file</span>, format<span class="op">=</span><span class="st">"fasta"</span><span class="op">)</span></span>
 <span><span class="va">dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dist.hamming.html">dist.ml</a></span><span class="op">(</span><span class="va">dat</span>, <span class="st">"F81"</span><span class="op">)</span></span>
 <span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NJ.html">NJ</a></span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span>
 <span><span class="co"># as alternative for a starting tree:</span></span>
@@ -1524,17 +795,13 @@ For a ultrametric starting tree starting tree we can use an UPGMA or WPGMA tree.
 <span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/designTree.html">nnls.phylo</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">dm</span><span class="op">)</span>   <span class="co"># need edge weights</span></span>
 <span></span>
 <span><span class="co"># 1. alternative: quick and dirty: GTR + G</span></span>
-<span><span class="va">fitStart</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">pml</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">dat</span>, k<span class="op">=</span><span class="fl">4</span><span class="op">)</span></span>
-<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fitStart</span>, model<span class="op">=</span><span class="st">"GTR"</span>, optGamma<span class="op">=</span><span class="cn">TRUE</span>, rearrangement<span class="op">=</span><span class="st">"stochastic"</span><span class="op">)</span></span>
+<span><span class="op">(</span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">dat</span>, model<span class="op">=</span><span class="st">"GTR+G"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># 2. alternative: choose with modelTest</span></span>
 <span><span class="va">mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modelTest.html">modelTest</a></span><span class="op">(</span><span class="va">dat</span>, tree<span class="op">=</span><span class="va">tree</span>, multicore<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">mt</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">mt</span><span class="op">$</span><span class="va">BIC</span><span class="op">)</span>,<span class="op">]</span></span>
-<span><span class="co"># choose best model from the table according to BIC (default)</span></span>
-<span><span class="va">fitStart</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">as.pml</a></span><span class="op">(</span><span class="va">mt</span><span class="op">)</span></span>
-<span><span class="co"># assume the model GTR + G + I</span></span>
-<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fitStart</span>, rearrangement <span class="op">=</span> <span class="st">"stochastic"</span>,</span>
-<span>    optGamma<span class="op">=</span><span class="cn">TRUE</span>, optInv<span class="op">=</span><span class="cn">TRUE</span>, model<span class="op">=</span><span class="st">"GTR"</span><span class="op">)</span></span>
+<span><span class="co"># chooses best model from the table according to BIC (default)</span></span>
+<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">mt</span><span class="op">)</span></span>
 <span><span class="va">bs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bootstrap.pml.html">bootstrap.pml</a></span><span class="op">(</span><span class="va">fit</span>, bs<span class="op">=</span><span class="fl">100</span>, optNni<span class="op">=</span><span class="cn">TRUE</span>, multicore<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div style="page-break-after: always;"></div>
 </div>
@@ -1542,10 +809,10 @@ For a ultrametric starting tree starting tree we can use an UPGMA or WPGMA tree.
 <h3 id="standard-scripts-for-amino-acid-analysis">Standard scripts for amino acid analysis<a class="anchor" aria-label="anchor" href="#standard-scripts-for-amino-acid-analysis"></a>
 </h3>
 <p>You can specify different several models build in which you can specify, e.g. “WAG”, “JTT”, “Dayhoff”, “LG”. Optimizing the rate matrix for amino acids is possible, but would take a long, a very long time and you will need to have a large alignment to estimate all the parameters. So make sure to set <code>optBf=FALSE</code> and <code>optQ=FALSE</code> in the function <code>optim.pml</code>, which is also the default.</p>
-<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/KlausVigo/phangorn" class="external-link">phangorn</a></span><span class="op">)</span></span>
 <span><span class="va">file</span> <span class="op">&lt;-</span> <span class="st">"myfile"</span></span>
-<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read.phyDat.html">read.phyDat</a></span><span class="op">(</span><span class="va">file</span>, type <span class="op">=</span> <span class="st">"AA"</span><span class="op">)</span></span>
+<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read.phyDat.html">read.phyDat</a></span><span class="op">(</span><span class="va">file</span>, type <span class="op">=</span> <span class="st">"AA"</span>, format<span class="op">=</span><span class="st">"fasta"</span><span class="op">)</span></span>
 <span><span class="va">dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dist.hamming.html">dist.ml</a></span><span class="op">(</span><span class="va">dat</span>, model<span class="op">=</span><span class="st">"JTT"</span><span class="op">)</span></span>
 <span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NJ.html">NJ</a></span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span>
 <span></span>
@@ -1556,14 +823,13 @@ For a ultrametric starting tree starting tree we can use an UPGMA or WPGMA tree.
 <span><span class="co"># run all available amino acid models</span></span>
 <span><span class="op">(</span><span class="va">mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modelTest.html">modelTest</a></span><span class="op">(</span><span class="va">dat</span>, model<span class="op">=</span><span class="st">"all"</span>, multicore<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">fitStart</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">as.pml</a></span><span class="op">(</span><span class="va">mt</span><span class="op">)</span></span>
+<span><span class="op">(</span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">mt</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># non-parametric bootstrap</span></span>
+<span><span class="va">bs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bootstrap.pml.html">bootstrap.pml</a></span><span class="op">(</span><span class="va">fit</span>, bs<span class="op">=</span><span class="fl">100</span>, optNni<span class="op">=</span><span class="cn">TRUE</span>, multicore<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">fitNJ</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">pml</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">dat</span>, model<span class="op">=</span><span class="st">"JTT"</span>, k<span class="op">=</span><span class="fl">4</span>, inv<span class="op">=</span><span class="fl">.2</span><span class="op">)</span></span>
-<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fitNJ</span>, rearrangement <span class="op">=</span> <span class="st">"stochastic"</span>,</span>
-<span>    optInv<span class="op">=</span><span class="cn">TRUE</span>, optGamma<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">fit</span></span>
-<span></span>
-<span><span class="va">bs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bootstrap.pml.html">bootstrap.pml</a></span><span class="op">(</span><span class="va">fit</span>, bs<span class="op">=</span><span class="fl">100</span>, optNni<span class="op">=</span><span class="cn">TRUE</span>, multicore<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">tree_ml</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plotBS.html">plotBS</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">tree</span>, <span class="va">bs</span><span class="op">)</span></span>
+<span><span class="co"># export the tree </span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/write.tree.html" class="external-link">write.tree</a></span><span class="op">(</span><span class="va">tree_ml</span>, file<span class="op">=</span><span class="st">"tree_ml.nwk"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -1614,6 +880,9 @@ Felsenstein, Joseph. 1981. <span>“Evolutionary Trees from DNA Sequences: A Max
 </div>
 <div id="ref-Felsenstein2004" class="csl-entry">
 ———. 2004. <em>Inferring Phylogenies</em>. Sunderland: Sinauer Associates.
+</div>
+<div id="ref-lubridate" class="csl-entry">
+Grolemund, Garrett, and Hadley Wickham. 2011. <span>“Dates and Times Made Easy with <span class="nocase">lubridate</span>.”</span> <em>Journal of Statistical Software</em> 40 (3): 1–25. <a href="https://www.jstatsoft.org/v40/i03/" class="external-link">https://www.jstatsoft.org/v40/i03/</a>.
 </div>
 <div id="ref-Hendy1982" class="csl-entry">
 Hendy, M. D., and D. Penny. 1982. <span>“Branch and Bound Algorithms to Determine Minimal Evolutionary Trees.”</span> <em>Math. Biosc.</em> 59: 277–90.
