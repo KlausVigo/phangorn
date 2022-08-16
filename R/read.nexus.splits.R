@@ -418,8 +418,7 @@ read.nexus.networx <- function(file, splits = TRUE) {
   vert <- VERT[, c(2:3)]
 
   if(length(TRANS$label) > sum(tabulate(edge)==1L)){
-    ntip <- length(TRANS$label) - sum(tabulate(edge)==1L)
-
+#    ntip <- length(TRANS$label) - sum(tabulate(edge)==1L)
     if(!is.null(spl)){
       nspl <- length(spl)
       spl <- addTrivialSplits(spl)
@@ -433,7 +432,7 @@ read.nexus.networx <- function(file, splits = TRUE) {
     vert <- rbind( vert, vert[TRANS$node[pos], ])
     if(!is.null(splitIndex))splitIndex <- c(splitIndex, (nspl+1):length(spl))
     TRANS$node[pos] <- new_edges
-    el <- c(el, rep(0, ntip))
+    el <- c(el, rep(0, length(new_edges)))
   }
 
   if (translate.nodes) {
