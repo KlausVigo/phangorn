@@ -14,7 +14,7 @@ transferBootstrap(tree, BStrees)
 \value{
 \code{plotBS} returns silently a tree, i.e. an object of class
 \code{phylo} with the bootstrap values as node labels. The argument
-\code{BStreess} is optional and if not supplied the labels supplied
+\code{BSTrees} is optional and if not supplied the labels supplied
 in the \code{node.label} slot will be used.
 }
 \description{

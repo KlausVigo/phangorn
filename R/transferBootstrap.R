@@ -8,7 +8,7 @@
 #' @param BStrees a list of trees (object of class "multiPhylo").
 #' @return \code{plotBS} returns silently a tree, i.e. an object of class
 #' \code{phylo} with the bootstrap values as node labels. The argument
-#' \code{BStreess} is optional and if not supplied the labels supplied
+#' \code{BSTrees} is optional and if not supplied the labels supplied
 #' in the \code{node.label} slot will be used.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso  \code{\link{plotBS}},
@@ -30,7 +30,7 @@
 #' plotBS(raxml.tree,  raxml.bootstrap, "p", "TBE")
 #' @export
 transferBootstrap <- function(tree, BStrees){
-  if(!inherits(BStrees, "multiPhylo")) stop("BStreess needs to be of class multiPhylo!")
+  if(!inherits(BStrees, "multiPhylo")) stop("BSTrees needs to be of class multiPhylo!")
   BStrees <- .uncompressTipLabel(BStrees)
   BStrees <- .compressTipLabel(BStrees, tree$tip.label)
   BStrees <- reorder(BStrees, "postorder")
@@ -49,7 +49,7 @@ transferBootstrap <- function(tree, BStrees){
      ind <- which(is.na(ind) & not_cherry)
      for(j in ind) res[j] <- res[j] + Transfer_Index(bp[[j]], tmp$edge, l)
   }
-  res <- res / length(BStreess) * 100
+  res <- res / length(BSTrees) * 100
   tree$node.label <- c(NA_real_, res)
   tree
 }
