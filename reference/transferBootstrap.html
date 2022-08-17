@@ -80,7 +80,7 @@ values to the (internal) edges.</p>
 
 <p><code>plotBS</code> returns silently a tree, i.e. an object of class
 <code>phylo</code> with the bootstrap values as node labels. The argument
-<code>BStreess</code> is optional and if not supplied the labels supplied
+<code>BSTrees</code> is optional and if not supplied the labels supplied
 in the <code>node.label</code> slot will be used.</p>
     </div>
     <div class="section level2">
@@ -108,13 +108,13 @@ phylogenetic bootstrap in the era of big data. <em>Nature</em>,
 <span class="r-in"><span><span class="va">raxml.bootstrap</span> <span class="op">&lt;-</span> <span class="fu">read.tree</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">fdir</span>,<span class="st">"RAxML_bootstrap.woodmouse"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">tree_tbe</span> <span class="op">&lt;-</span> <span class="fu">transferBootstrap</span><span class="op">(</span><span class="va">raxml.tree</span>,  <span class="va">raxml.bootstrap</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in transferBootstrap(raxml.tree, raxml.bootstrap):</span> object 'BStreess' not found</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in transferBootstrap(raxml.tree, raxml.bootstrap):</span> object 'BSTrees' not found</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="plotBS.html">plotBS</a></span><span class="op">(</span><span class="va">tree_tbe</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in plotBS(tree_tbe):</span> object 'tree_tbe' not found</span>
 <span class="r-in"><span><span class="co"># same as</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="plotBS.html">plotBS</a></span><span class="op">(</span><span class="va">raxml.tree</span>,  <span class="va">raxml.bootstrap</span>, <span class="st">"p"</span>, <span class="st">"TBE"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in transferBootstrap(tree, BStrees):</span> object 'BStreess' not found</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in transferBootstrap(tree, BStrees):</span> object 'BSTrees' not found</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
