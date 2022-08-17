@@ -49,7 +49,7 @@ transferBootstrap <- function(tree, BStrees){
      ind <- which(is.na(ind) & not_cherry)
      for(j in ind) res[j] <- res[j] + Transfer_Index(bp[[j]], tmp$edge, l)
   }
-  res <- res / length(BSTrees) * 100
+  res <- res / length(BStrees) * 100
   tree$node.label <- c(NA_real_, res)
   tree
 }
