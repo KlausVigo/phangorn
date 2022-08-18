@@ -116,15 +116,16 @@ rNNI <- function(tree, moves = 1, n = length(moves)) {
   k <- length(na.omit(match(tree$edge[, 2], tree$edge[, 1])))
 
   k_nni <- function(tree, ch, pvector, moves = 1L) {
-    if (nb.tip < (4L - is.rooted(tree))) return(tree)
+    if(length(edges)>1) p2_sample <- sample(edges, moves, replace=TRUE)
+    else p2_sample <- rep(edges, moves)
+    r2_sample <- sample(2, moves, replace=TRUE)
     for (i in seq_len(moves)) {
-      if(length(edges)>1) p2 <- sample(edges, 1)
-      else p2 <- edges
+      p2 <- p2_sample[i]
       p1 <- pvector[p2]
       ind1 <- ch[[p1]]
       v1 <- ind1[ind1 != p2][1]
       ind2 <- ch[[p2]]
-      r2 <- sample(2, 1)
+      r2 <- r2_sample[i]
       v2 <- ind2[r2]
       ind1[ind1 == v1] <- v2
       ind2[r2] <- v1
@@ -146,6 +147,7 @@ rNNI <- function(tree, moves = 1, n = length(moves)) {
   parent  <- edge[, 1]
   child   <- edge[, 2]
   nb.tip  <- Ntip(tree)
+  if (nb.tip < (4L - is.rooted(tree))) stop("Not enough edges for NNI rearrangements")
   pvector <- integer(max(edge))
   pvector[child] <- parent
   ch <- Children(tree)
@@ -159,6 +161,8 @@ rNNI <- function(tree, moves = 1, n = length(moves)) {
   }
   else {
     trees <- vector("list", n)
+    tip.label <- tree$tip.label
+    tree$tip.label <- NULL
     if (length(moves) == 1) moves <- rep(moves, n)
     for (j in seq_len(n)) {
       tmp <- tree
@@ -168,17 +172,15 @@ rNNI <- function(tree, moves = 1, n = length(moves)) {
       tmp$tip.label <- NULL
       trees[[j]] <- tmp
     }
-    attr(trees, "TipLabel") <- tree$tip.label
+    attr(trees, "TipLabel") <- tip.label
     class(trees) <- "multiPhylo"
   }
   trees
 }
 
 
+####  SPR  ####
 
-################################################################################
-# SPR
-################################################################################
 dn <- function(x) {
   #  if (!is.binary(x) ) x <- multi2di(x, random = FALSE)
   if (is.null(x$edge.length)) x$edge.length <- rep(1, nrow(x$edge))
