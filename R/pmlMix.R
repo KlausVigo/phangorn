@@ -370,8 +370,11 @@ pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
     fits <- fit$fits
     omega <- fit$omega
   }
-  if (inherits(fit, "list"))
+  if (inherits(fit, "list")){
     fits <- fit
+    m <- length(fits)
+    if(length(omega) != m) omega <- rep(1 / m, m)
+  }
   if (inherits(fit, "pml")) {
     fits <- vector("list", m)
     for (i in 1:m) fits[[i]] <- fit
