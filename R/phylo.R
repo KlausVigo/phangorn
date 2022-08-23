@@ -1543,7 +1543,7 @@ optimRooted <- function(tree, data, bf, g, w, eig, ll.0, INV=NULL,
       tmptree$edge.length <- c(kidsEl, maxEl)
 
       t0 <- optRoot0(0, tmptree, data, g, w, eig, bf, ll.0, ...)
-
+## Check this
       t <- optimize(f = optRoot0, interval = c(-minEl + tau, maxEl - tau),
         tmptree, data = data, g = g, w = w, eig = eig, bf = bf,
         ll.0 = ll.0, maximum = TRUE, ...)
@@ -2310,7 +2310,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
           tree2 <- rNNI(tree, moves = round(nTips * ratchet.par$prop), n = 1)
           if(optRooted){
              tree2 <- nnls.tree(dm, tree2, method = method,
-                                tip.dates=tip.dates[tree2$tip.label])
+                                tip.dates=tip.dates)
+             tree2 <- minEdge(tree2, 10*tau)
           }
         } else if(rearrangement == "ratchet"){
           tree2 <- bootstrap.phyDat(data, candidate_tree, bs = 1, method=method,
