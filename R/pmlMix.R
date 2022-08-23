@@ -9,9 +9,9 @@ optimMixQ <- function(object, Q = c(1, 1, 1, 1, 1, 1), omega, ...) {
     p <- length(weight)
     result <- numeric(p)
     for (i in 1:n) result <- result +
-        as.numeric(update(object[[i]], Q = Q, ...)$lv) * omega[i]
-    result <- sum(weight %*% log(result))
-    result
+        as.numeric(update(object[[i]], Q = Q)$lv) * omega[i]
+    res <- sum(weight * log(result))
+    res
   }
   res <- optim(par = Q, fn = fn, gr = NULL, method = "L-BFGS-B", lower = 0,
     upper = Inf, control = list(fnscale = -1, maxit = 25),
@@ -126,8 +126,8 @@ optimMixBf <- function(object, bf = c(.25, .25, .25, .25), omega, ...) {
     p <- length(weight)
     result <- numeric(p)
     for (i in seq_along(omega)) result <- result +
-        as.numeric(update(object[[i]], bf = bf, ...)$lv) * omega[i]
-    result <- sum(weight %*% log(result))
+        as.numeric(update(object[[i]], bf = bf)$lv) * omega[i]
+    result <- sum(weight * log(result))
     result
   }
   res <- optim(par = lbf, fn = fn, gr = NULL, method = "Nelder-Mead",
@@ -138,14 +138,14 @@ optimMixBf <- function(object, bf = c(.25, .25, .25, .25), omega, ...) {
 
 
 optimMixInv <- function(object, inv = 0.01, omega, ...) {
-  fn <- function(inv, object, omega, ...) {
-    weight <- object[[1]]$weight
+  fn <- function(inv, object, omega){ #, ...) {
+    weight <- as.vector(object[[1]]$weight)
     p <- length(weight)
     result <- numeric(p)
     for (i in seq_along(omega)) result <- result +
-        as.numeric(update(object, inv = inv, ...)$lv) * omega[i]
-    result <- sum(weight %*% log(result))
-    result
+        update(object[[i]], inv = inv)$lv * omega[i]
+    res <- sum(weight * log(result))
+    res
   }
   res <- optimize(f = fn, interval = c(0, 1), lower = 0, upper = 1,
                   maximum = TRUE, tol = .0001, object, omega = omega, ...)
@@ -165,7 +165,7 @@ optimMixRate <- function(fits, ll, weight, omega, rate = rep(1, length(fits))) {
     r <-  length(rate)
     for (i in 1:r) fits[[i]] <- update(fits[[i]], rate = rate[i])
     for (i in 1:r) ll[, i] <- fits[[i]]$lv
-    sum(weight * log(ll %*% omega))
+    sum(weight * log(ll * omega))
   }
   ui <- rbind(R, diag(4))
   ci <- rep(0, 2 * r)
@@ -191,6 +191,7 @@ optW <- function(ll, weight, omega, ...) {
     res <- sum(weight * log(ll %*% p))
     res
   }
+  start <- fn(eta, ll, weight)
   if (k == 2) res <- optimize(f = fn, interval = c(-3, 3), lower = -3,
                               upper = 3, maximum = TRUE,
                               tol = .Machine$double.eps^0.25, ll = ll,
@@ -200,7 +201,7 @@ optW <- function(ll, weight, omega, ...) {
                     ll = ll, weight = weight)
   p <- exp(c(0, res[[1]]))
   p <- p / sum(p)
-  result <- list(par = p, value = res[[2]])
+  result <- list(par = p, value = res[[2]], start=start)
   result
 }
 
