@@ -165,7 +165,7 @@ optimMixRate <- function(fits, ll, weight, omega, rate = rep(1, length(fits))) {
     r <-  length(rate)
     for (i in 1:r) fits[[i]] <- update(fits[[i]], rate = rate[i])
     for (i in 1:r) ll[, i] <- fits[[i]]$lv
-    sum(weight * log(ll * omega))
+    sum(weight * log(ll %*% omega))
   }
   ui <- rbind(R, diag(4))
   ci <- rep(0, 2 * r)
