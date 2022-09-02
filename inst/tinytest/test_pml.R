@@ -19,7 +19,7 @@ dat <- allSitePattern(5)
 weights <- as.vector(1000 * exp(pml(treeR1, dat)$siteLik))
 attr(dat, "weight") <- weights
 
-dat_Mk <- subset(dat, select = -c(1,342,683, 1024), site.pattern = TRUE)
+dat_Mkv <- subset(dat, select = -c(1,342,683, 1024), site.pattern = TRUE)
 
 
 Q <- c(6:1)
@@ -60,7 +60,6 @@ expect_error(pml_bb(dat, model="GTR", method="tipdated"))
     expect_equal(pmlU3.fitted$tree, pmlU1$tree, tolerance=1e-6)
     expect_equal(storage.mode(pmlU3.fitted$tree$edge), "integer")
 #    expect_equal(pmlR3.fitted$tree, pmlR1$tree, tolerance=5e-6)
-
 
 # test bf optimisation
     bf <- c(.1,.2,.3,.4)
@@ -145,5 +144,13 @@ expect_error(pml_bb(dat, model="GTR", method="tipdated"))
 
 
 # test Mkv model
-    expect_equal(logLik(pmlU2.fitted), logLik(pmlU1))
-
+    fit_Mk <- pml(treeR2, dat_Mkv)
+    fit_Mk <- optim.pml(fit_Mk, optRooted = TRUE)
+    fit_Mkv_1 <- pml(treeR2, dat_Mkv, model="Mkv")
+    fit_Mkv_1 <- optim.pml(fit_Mkv_1, optRooted = TRUE)
+    fit_Mkv_2 <- pml(treeR3, dat_Mkv, model="Mkv")
+    fit_Mkv_2 <- optim.pml(fit_Mkv_2, optRooted = TRUE, rearrangement = "NNI")
+    expect_equal(fit_Mkv_1$tree, treeR1, tolerance=1e-3)
+    expect_equal(fit_Mkv_2$tree, treeR1, tolerance=1e-3)
+    expect_true(sum(fit_Mk$tree$edge.length) > sum(fit_Mkv_1$tree$edge.length))
+    expect_true(sum(fit_Mk$tree$edge.length) > sum(fit_Mkv_2$tree$edge.length))
