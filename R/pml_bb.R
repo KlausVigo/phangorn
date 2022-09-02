@@ -93,10 +93,11 @@ split_model <- function(x="GTR + G(4) + I", type="DNA"){
   mods <- NULL
   if(type=="DNA") mods <- .dnamodels
   if(type=="AA") mods <- .aamodels
+  if(type=="USER") mods <- .usermodels
   #  if(type="USER") MK, MKv , SYM ER GTR
 
   m <- strsplit(x, "\\+")[[1]]
-  m <- trimws(m) |> toupper()
+  m <- trimws(m) # |> toupper()
 
   tmp <-  match(m, mods)
   if(all(is.na(tmp))) stop("Could not find model!")
