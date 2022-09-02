@@ -167,7 +167,7 @@ optimMixRate <- function(fits, ll, weight, omega, rate = rep(1, length(fits))) {
     for (i in 1:r) ll[, i] <- fits[[i]]$lv
     sum(weight * log(ll %*% omega))
   }
-  ui <- rbind(R, diag(4))
+  ui <- rbind(R, diag(r))
   ci <- rep(0, 2 * r)
   # Maybe constrain rates * omega
   res <- constrOptim(rate0, fn, grad = NULL, ui = ui, ci = ci, mu = 1e-04,
