@@ -277,6 +277,7 @@ std::vector< std::vector<int> > bipCPP(IntegerMatrix orig, int nTips) {
 }
 
 
+/*
 // [[Rcpp::export]]
 int bip_shared(SEXP tree1, SEXP tree2, int nTips){
   List M1 = tree1;
@@ -304,7 +305,7 @@ int bip_shared(SEXP tree1, SEXP tree2, int nTips){
   }
   return shared;
 }
-
+*/
 
 
 

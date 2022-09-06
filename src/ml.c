@@ -608,7 +608,7 @@ void fs3(double *eva, int nc, double el, double *w, double *g, double *X, int ld
     int mkv=0;
     double *tmp, *f, edle, ledle, newedle, eps=10;
     double ll=0.0, lll, delta=0.0, scalep = 1.0, l1=0.0, l0=0.0;
-    double y, sum_wgt=0.0, p0=0.0;
+    double y, p0=0.0; //sum_wgt=0.0,
     int i, j, k=0;
     tmp = (double *) R_alloc(nr, sizeof(double));
     f = (double *) R_alloc(nr, sizeof(double));
@@ -622,7 +622,7 @@ void fs3(double *eva, int nc, double el, double *w, double *g, double *X, int ld
     }
     for(i=0; i<nr ;i++){
       l0 += weight[i] * log(f[i]);
-      sum_wgt += weight[i];
+      //sum_wgt += weight[i];
     }
 
     while ( (eps > 1e-05) &&  (k < 10) ) {

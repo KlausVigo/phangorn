@@ -360,7 +360,7 @@ split_create_disagreement_list (splitset split)
 void
 split_disagreement_assign_match (splitset split)
 { /* also calculates split->hdist */
-  int g, s, max_n, sum = 0;
+  int g, s, max_n; //, sum = 0;
 
   if (split->n_g > split->n_s) max_n = split->n_g;
   else                         max_n = split->n_s;
@@ -376,7 +376,7 @@ split_disagreement_assign_match (splitset split)
   for (g = 0; g < max_n; g++) if ((g < split->n_g) && ( split->h->col_mate[g] < split->n_s)) { /* some matchings might be to dummy edges */
     bipartition_XOR (split->disagree[split->n_disagree], split->g_split[g], split->s_split[split->h->col_mate[g]], true); /* true means to calculate n_ones */
     bipartition_flip_to_smaller_set (split->disagree[split->n_disagree++]);
-    sum += split->disagree[split->n_disagree-1]->n_ones;
+    // sum += split->disagree[split->n_disagree-1]->n_ones;
   }
   if (split->match) { split->hdist = split->h->final_cost+split->h->initial_cost; split->match = false; }
 }
