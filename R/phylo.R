@@ -785,7 +785,7 @@ update.pml <- function(object, ...) {
     updateEig <- TRUE
   }
   type <- attr(object$data, "type")
-  model <- NULL
+#  model <- NULL
   if (type == "AA") {
     if (!is.na(existing[9])) {
       model <- match.arg(eval(extras[[existing[9]]], parent.frame()),
@@ -793,7 +793,7 @@ update.pml <- function(object, ...) {
       getModelAA(model, bf = is.na(existing[3]), Q = is.na(existing[4]))
       updateEig <- TRUE
     }
-    #        else model <- object$model
+    else model <- object$model
   }
   scaleQ <- FALSE
   if (type == "CODON") {
@@ -817,6 +817,22 @@ update.pml <- function(object, ...) {
       Q <- CodonQ(subs = .sub, syn = .syn, tstv = tstv,
                                dnds = dnds)
     }
+  }
+  if (type == "DNA") {
+    if (!is.na(existing[9])) {
+      model <- match.arg(eval(extras[[existing[9]]], parent.frame()),
+                         .dnamodels)
+    }
+    else model <- object$model
+  }
+  if (type == "USER") {
+    if (!is.na(existing[9])) {
+      model <- match.arg(eval(extras[[existing[9]]], parent.frame()),
+                         .usermodels)
+      if(model=="ORDERED") Q <- subsChoice_USER(model, nc)$Q
+      updateEig <- TRUE
+    }
+    else model <- object$model
   }
   if (is.na(existing[5])) inv <- object$inv
   else {
@@ -847,7 +863,7 @@ update.pml <- function(object, ...) {
   }
   else {
     eig <- object$eig
-    model <- object$model
+#    model <- object$model
   }
 
   rw <- rates_n_weights(shape, k, site.rate)
@@ -1976,7 +1992,9 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       optGamma <- FALSE
     }
   }
+  optModel <- FALSE
   if (is.null(model)) model <- object$model
+  else optModel <- TRUE
   if (is.null(llMix)) llMix <- 0
   if (!is.null(extras)) {
     names(extras) <- pmla[pmatch(names(extras), pmla)]
@@ -2170,8 +2188,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     }
     class(object) <- "pml"
 
-    extras <- pairlist(bf = bf, Q = Q, inv = inv, shape = shape,
-      rate = rate)[c(optBf, optQ, optInv, optGamma, optRate)]
+    extras <- pairlist(bf = bf, Q = Q, inv = inv, shape = shape, rate = rate,
+               model=model)[c(optBf, optQ, optInv, optGamma, optRate, optModel)]
     if (length(extras)) {
       existing <- !is.na(match(names(extras), names(call)))
       for (a in names(extras)[existing]) call[[a]] <- extras[[a]]
