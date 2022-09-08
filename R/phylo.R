@@ -68,10 +68,7 @@ optimCodon <- function(tree, data, Q, subs, syn, trace = 0L, ab = c(0, 0),
 }
 
 
-subsChoice <- function(type = c("JC", "F81", "K80", "HKY", "TrNe", "TrN",
-                                "TPM1", "K81", "TPM1u", "TPM2", "TPM2u", "TPM3",
-                                "TPM3u", "TIM1e", "TIM1", "TIM2e", "TIM2",
-                                "TIM3e", "TIM3", "TVMe", "TVM", "SYM", "GTR")) {
+subsChoice <- function(type = .dnamodels) {
   type <- match.arg(type)
   switch(type,
     JC = list(optQ = FALSE, optBf = FALSE,   subs = c(0, 0, 0, 0, 0, 0)),
@@ -97,6 +94,28 @@ subsChoice <- function(type = c("JC", "F81", "K80", "HKY", "TrNe", "TrN",
     TVM = list(optQ = TRUE, optBf = TRUE,    subs = c(1, 2, 3, 4, 2, 0)),
     SYM = list(optQ = TRUE, optBf = FALSE,   subs = c(1, 2, 3, 4, 5, 0)),
     GTR = list(optQ = TRUE, optBf = TRUE,    subs = c(1, 2, 3, 4, 5, 0))
+  )
+}
+
+
+subsChoice_USER <- function(type = .usermodels, nstates) {
+  nstates <- as.integer(nstates)
+  n <- (nstates * (nstates-1L)/2)
+  subs0 <- numeric(n)
+  subsSym <- c(seq_len(n-1), 0)
+  subsOrd <- rep(-1, n)
+  ind <- cumsum(c(1, (nstates-1):2))
+  subsOrd[ind] <- 0
+  Q_ord <- rep(0, n)
+  Q_ord[ind] <- 1
+  type <- match.arg(type)
+  switch(type,
+         ER = list(optQ = FALSE, optBf = FALSE, subs = subs0),
+         FREQ = list(optQ = FALSE, optBf = TRUE, subs = subs0),
+         SYM = list(optQ = TRUE, optBf = FALSE, subs = subsSym),
+         ORDERED = list(optQ = FALSE, optBf = FALSE, subs = subsOrd,
+                        Q=Q_ord),
+         GTR = list(optQ = TRUE, optBf = TRUE, subs = subsSym)
   )
 }
 
@@ -715,7 +734,7 @@ update.pml <- function(object, ...) {
   existing <- match(pmla, names(extras))
   updateEig <- FALSE
   updateRates <- FALSE
-  Mkv <- object$Mkv
+  ASC <- object$ASC
   site.rate <- object$site.rate
   type <- attr(object$data, "type")
   if(type=="CODON"){
@@ -887,7 +906,7 @@ update.pml <- function(object, ...) {
     weight = weight, g = g, w = w, eig = eig, data = data,
     model = model, INV = INV, ll.0 = ll.0, tree = tree,
     lv = tmp$resll, call = call, df = df, wMix = wMix,
-    llMix = llMix, Mkv=Mkv, site.rate=site.rate)
+    llMix = llMix, ASC=ASC, site.rate=site.rate)
   if (type == "CODON") {
     result$dnds <- dnds
     result$tstv <- tstv
@@ -901,7 +920,7 @@ update.pml <- function(object, ...) {
 ### this is the version we want to optimize
 pml.fit4 <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
                      inv = 0, g, w, eig, ll.0,
-                     llMix = NULL, wMix = 0, ..., site = FALSE, Mkv = FALSE,
+                     llMix = NULL, wMix = 0, ..., site = FALSE, ASC = FALSE,
                      site.rate = "gamma") {
   weight <- as.double(attr(data, "weight"))
   nr <- as.integer(attr(data, "nr"))
@@ -917,7 +936,7 @@ pml.fit4 <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #    INV <- Matrix(lli(data, tree), sparse = TRUE)
 #  if (inv > 0)
 #    ll.0 <- as.matrix(INV %*% (bf * inv))
-#  if (Mkv)
+#  if (ASC)
 #    ll.0 <- as.matrix(INV %*% bf)
 #  if (wMix > 0)
 #    ll.0 <- ll.0 + llMix
@@ -941,7 +960,7 @@ pml.fit4 <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
   if (wMix > 0) siteLik <- log(exp(siteLik) * (1 - wMix) + llMix)
   loglik <- sum(weight * siteLik)
   # neu
-  if (Mkv) {
+  if (ASC) {
     ind <- seq_len(nc)
     p0 <- sum(exp(siteLik[ind]))
     if(is.nan(log(1 - p0))) browser()
@@ -983,7 +1002,8 @@ pml.fit4 <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #' @param \dots Further arguments passed to or from other methods.
 #' @param site return the log-likelihood or vector of sitewise likelihood
 #' values
-#' @param Mkv indicate if Lewis' Mkv should be estimated.
+#' @param ASC ascertainment bias correction (ASC), allows to estimate models
+#' like Lewis' Mkv.
 #' @param site.rate Indicates what type of gamma distribution to use. Options
 #' are "gamma" approach of Yang 1994 (default), "quadrature" after the Laguerre
 #' quadrature approach of Felsenstein 2001 and "freerate" .
@@ -1003,7 +1023,7 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
                                                 (length(levels) - 1) / 2),
                     levels = attr(data, "levels"), inv = 0, rate = 1, g = NULL,
                     w = NULL, eig = NULL, INV = NULL, ll.0 = NULL, llMix = NULL,
-                    wMix = 0, ..., site = FALSE, Mkv = FALSE,
+                    wMix = 0, ..., site = FALSE, ASC = FALSE,
                     site.rate = "gamma") {
   weight <- as.double(attr(data, "weight"))
   nr <- as.integer(attr(data, "nr"))
@@ -1045,7 +1065,7 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
   if (inv > 0)
     ll.0 <- as.matrix(INV %*% (bf * inv))
 # Notwendig??
-  if (Mkv)
+  if (ASC)
     ll.0 <- as.matrix(INV %*% bf)
   if (wMix > 0)
     ll.0 <- ll.0 + llMix
@@ -1073,17 +1093,18 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
     lll[ind] <- lll[ind] + exp(log(ll.0[ind]) - sca[ind])
   }
   siteLik <- log(lll) + sca
+  resll2 <- exp(siteLik)
   # needs to change
   if (wMix > 0) siteLik <- log(exp(siteLik) * (1 - wMix) + llMix)
   loglik <- sum(weight * siteLik)
-  if (Mkv) {
+  if (ASC) {
     ind <- seq_len(nc)
     p0 <- sum(exp(log(lll[ind]) + sca[ind]))
     loglik <- loglik - sum(weight) * log(1 - p0)
   }
   if (!site) return(loglik)
   resll <- exp(resll)
-  return(list(loglik = loglik, siteLik = siteLik, resll = resll))
+  return(list(loglik = loglik, siteLik = siteLik, resll = resll, resll2 = resll2))
 }
 
 ### @param optF3x4 Logical value indicating if codon frequencies are estimated
@@ -1168,6 +1189,8 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #' @param subs A (integer) vector same length as Q to specify the optimization
 #' of Q
 #' @param x So far only an object of class \code{modelTest}.
+#' @param ASC ascertainment bias correction (ASC), allows to estimate models
+#' like Lewis' Mkv.
 #' @param \dots Further arguments passed to or from other methods.
 #' @return \code{pml} or \code{optim.pml} return a list of class \code{pml},
 #' some are useful for further computations like \item{tree}{the phylogenetic
@@ -1267,9 +1290,7 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #' @rdname pml
 #' @export pml
 pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
-                rate = 1, model = NULL, site.rate = "gamma", ...) {
-  Mkv <- FALSE
-  if (!is.null(model) && model == "Mkv") Mkv <- TRUE
+                rate = 1, model = NULL, site.rate = "gamma", ASC = FALSE, ...) {
   call <- match.call()
   extras <- match.call(expand.dots = FALSE)$...
   pmla <- c("wMix", "llMix", "dnds", "tstv")
@@ -1297,7 +1318,7 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   data <- subset(data, tree$tip.label) # needed
   levels <- attr(data, "levels")
   type <- attr(data, "type")
-  if (Mkv) {
+  if (ASC) {
     data <- cbind(constSitePattern(length(tree$tip.label),
                   names=tree$tip.label, levels=levels, type=type), data)
                 ##  compress=FALSE)
@@ -1370,7 +1391,7 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
 
   INV <- Matrix(lli(data, tree), sparse = TRUE)
   ll.0 <- as.matrix(INV %*% (bf * inv))
-  if(Mkv) ll.0 <- as.matrix(INV %*% rep(1, length(bf)))
+  if(ASC) ll.0 <- as.matrix(INV %*% rep(1, length(bf)))
 
   if (wMix > 0) ll.0 <- ll.0 + llMix
 
@@ -1382,7 +1403,7 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   tmp <- pml.fit(tree, data, bf, shape = shape, k = k, Q = Q,
     levels = attr(data, "levels"), inv = inv, rate = rate, g = g, w = w,
     eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, wMix = wMix, site = TRUE,
-    Mkv=Mkv)
+    ASC=ASC)
   df <- ifelse(is.ultrametric(tree), tree$Nnode, length(tree$edge.length))
 
   df <- switch(type,
@@ -1397,7 +1418,7 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     Q = Q, bf = bf, rate = rate, siteLik = tmp$siteLik, weight = weight,
     g = g, w = w, eig = eig, data = data, model = model, INV = INV,
     ll.0 = ll.0, tree = tree, lv = tmp$resll, call = call, df = df, wMix = wMix,
-    llMix = llMix, Mkv=Mkv, site.rate=site.rate) #
+    llMix = llMix, ASC=ASC, site.rate=site.rate) #
   if (type == "CODON") {
     result$dnds <- dnds
     result$tstv <- tstv
@@ -1943,7 +1964,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   pmla <- c("wMix", "llMix")
   wMix <- object$wMix
   llMix <- object$llMix
-  Mkv <- object$Mkv
+  ASC <- object$ASC
   site.rate <- object$site.rate
   optFreeRate <- FALSE
   if(site.rate=="free_rate"){
@@ -2059,23 +2080,33 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     optGamma <- FALSE
     message("only one rate class, ignored optGamma")
   }
-  if(Mkv==TRUE & optInv==TRUE){
+  if(ASC==TRUE & optInv==TRUE){
     optInv <- FALSE
     message('cannot estimate invariant sites and Mkv model, ignored optInv')
   }
   shape <- object$shape
   w <- object$w
   g <- object$g
+  nr <- as.integer(attr(data, "nr"))
+  nc <- as.integer(attr(data, "nc"))
   if (type == "DNA" & !is.null(model)) {
     tmp <- subsChoice(model)
     optQ <- tmp$optQ
-    if (!optQ)
-      Q <- rep(1, 6)
+    if (!optQ) Q <- rep(1, 6)
     optBf <- tmp$optBf
-    if (!optBf)
-      bf <- c(0.25, 0.25, 0.25, 0.25)
+    if (!optBf) bf <- c(0.25, 0.25, 0.25, 0.25)
     subs <- tmp$subs
   }
+  if (type == "USER" & !is.null(model)) {
+    tmp <- subsChoice_USER(model, nc)
+    optQ <- tmp$optQ
+    if (!optQ) Q <- rep(1, (nc*(nc-1L))/2)
+    optBf <- tmp$optBf
+    if (!optBf) bf <- rep(1 / nc, nc)
+    subs <- tmp$subs
+    if(model=="ORDERED") Q <- tmp$Q
+  }
+  object <- update.pml(object, bf = bf, Q=Q)
   ll0 <- object$logLik
   INV <- object$INV
   ll.0 <- object$ll.0
@@ -2087,14 +2118,12 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   if(ratchet.par$rell && perturbation){
     RELL <- init_rell(data, B=ratchet.par$bs)
   }
-  nr <- as.integer(attr(data, "nr"))
-  nc <- as.integer(attr(data, "nc"))
   nTips <- as.integer(length(tree$tip.label))
   on.exit({
     tmp <- pml.fit(tree, data, bf, shape = shape, k = k, Q = Q,
       levels = attr(data, "levels"), inv = inv, rate = rate,
       g = g, w = w, eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix,
-      wMix = wMix, site = TRUE, Mkv=Mkv)
+      wMix = wMix, site = TRUE, ASC=ASC)
     if (addTaxa) {
       tree <- add.tips(tree, tips = mapping[, 1], where = mapping[, 2],
         edge.length = rep(0, nrow(mapping)))
@@ -2114,7 +2143,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       weight = attr(data, "weight"),
       g = g, w = w, eig = eig, data = data, model = model,
       INV = INV, ll.0 = ll.0, tree = tree, lv = tmp$resll,
-      call = call, df = df, wMix = wMix, llMix = llMix, Mkv=Mkv,
+      call = call, df = df, wMix = wMix, llMix = llMix, ASC=ASC,
       site.rate=site.rate)
     if (type == "CODON") {
       object$dnds <- dnds
@@ -2147,7 +2176,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
 
   if (optEdge) {
     res <- opt_Edge(tree, data, rooted = optRooted, eig = eig, w = w, g = g,
-      bf = bf, inv=inv, rate = rate, ll.0 = ll.0, INV = INV, Mkv=Mkv,
+      bf = bf, inv=inv, rate = rate, ll.0 = ll.0, INV = INV, ASC=ASC,
       control = pml.control(epsilon = 1e-07, maxit = 10, trace = trace,
                              tau = tau))
     if (res[[2]] > ll) {
@@ -2169,9 +2198,9 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     if (optBf) {
       if (type=="CODON" && bf_choice=="F3x4") res <- optimF3x4(tree, data,
             bf_codon = bf_codon, inv = inv, Q = Q, w = w, g = g, INV = INV,
-            rate = rate, k = k, llMix = llMix, Mkv=Mkv)
+            rate = rate, k = k, llMix = llMix, ASC=ASC)
       else res <- optimBf(tree, data, bf = bf, inv = inv, Q = Q, w = w, g = g,
-        INV = INV, rate = rate, k = k, llMix = llMix, Mkv=Mkv)
+        INV = INV, rate = rate, k = k, llMix = llMix, ASC=ASC)
       if (trace > 0)
         cat("optimize base frequencies: ", ll, "-->", max(res[[2]], ll), "\n")
       if (res[[2]] > ll) {
@@ -2211,7 +2240,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       else{
         res <- optimQ(tree, data, Q = Q, subs = subs, bf = bf, w = w, g = g,
                       inv = inv, INV = INV, ll.0 = ll.0, rate = rate, k = k,
-                      Mkv=Mkv)
+                      ASC=ASC)
       }
       Q <- res[[1]]
       eig <- edQt(Q = Q, bf = bf)
@@ -2232,7 +2261,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     if (optGamma) {
       res <- optimGamma(tree, data, shape = shape, k = k, inv = inv, INV = INV,
                         Q = Q, bf = bf, eig = eig, ll.0 = ll.0, rate = rate,
-                        Mkv=Mkv)
+                        ASC=ASC)
       if (trace > 0)
         cat("optimize shape parameter: ", ll, "-->", max(res[[2]], ll), "\n")
       updateRates(res, ll, rate, shape, k, inv, wMix, update="shape",
@@ -2276,7 +2305,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     ### end sitewise
     if (optEdge) {
       res <- opt_Edge(tree, data, rooted = optRooted, eig = eig, w = w, g = g,
-                       bf = bf, inv=inv, rate = rate, ll.0 = ll.0, Mkv=Mkv,
+                       bf = bf, inv=inv, rate = rate, ll.0 = ll.0, ASC=ASC,
                        control = pml.control(epsilon = 1e-08, maxit = 10,
                                              trace = trace, tau = tau))
       if (res[[2]] > ll) {
@@ -2288,7 +2317,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     if (optNni) {
       res <- opt_nni(tree, data, rooted=optRooted, iter_max=5, trace=trace,
                      ll=ll, w = w, g = g, eig = eig, bf = bf, inv=inv,
-                     ll.0 = ll.0, INV = INV, Mkv=Mkv, RELL=NULL,
+                     ll.0 = ll.0, INV = INV, ASC=ASC, RELL=NULL,
                      control = list(eps=1e-08, maxit=3, trace=trace-1, tau=tau), ...)
       ll <- res$logLik
       tree <- res$tree
@@ -2332,7 +2361,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
           }
         }
         res <- opt_Edge(tree2, data, rooted=optRooted, eig=eig, w=w, g=g, bf=bf,
-                        inv=inv, rate=rate, ll.0=ll.0, Mkv=Mkv,
+                        inv=inv, rate=rate, ll.0=ll.0, ASC=ASC,
                         control = pml.control(epsilon = 1e-08, maxit = 10,
                                               trace = trace-1L, tau = tau))
         ll2 <- res[[2]]
@@ -2345,7 +2374,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
 #        browser()
         res <- opt_nni(tree2, data, rooted=optRooted, iter_max=25, trace=trace,
                        ll=ll2, w = w, g = g, eig = eig, bf = bf, inv=inv,
-                       rate=rate, ll.0 = ll.0, INV = INV, Mkv=Mkv, RELL=RELL,
+                       rate=rate, ll.0 = ll.0, INV = INV, ASC=ASC, RELL=RELL,
                        control = list(eps=1e-08, maxit=5, trace=trace-1, tau=tau), ...)
         if (res$logLik > (ll + epsR)) {
           tree <- res$tree
@@ -2498,7 +2527,7 @@ pml.quartet <- function(tree, data, bf = rep(.25, 4), k = 1, rate = 1, g, w,
                         eig, ll.0 = NULL, #ind.ll0 = NULL,
                         inv=0, llMix = NULL,
                         wMix = 0, nTips, weight, nr, nc, contrast, nco, ...,
-                        site = FALSE, Mkv=FALSE) {
+                        site = FALSE, ASC=FALSE) {
   # raus pos_ll.0
   if (is.null(ll.0)) {
     ll.0 <- numeric(nr)
@@ -2522,7 +2551,7 @@ pml.quartet <- function(tree, data, bf = rep(.25, 4), k = 1, rate = 1, g, w,
 #  if (!is.null(ll.0)) siteLik[ind] <- log(exp(siteLik[ind]) + ll.0[ind])
   if (wMix > 0) siteLik <- log(exp(siteLik) * (1 - wMix) + llMix)
   loglik <- sum(weight * siteLik)
-  if (Mkv) {
+  if (ASC) {
     ind <- seq_len(nc)
     p0 <- sum(exp(siteLik[ind]))
     loglik <- loglik - sum(weight) * log(1 - p0)

@@ -94,7 +94,6 @@ split_model <- function(x="GTR + G(4) + I", type="DNA"){
   if(type=="DNA") mods <- .dnamodels
   if(type=="AA") mods <- .aamodels
   if(type=="USER") mods <- .usermodels
-  #  if(type="USER") MK, MKv , SYM ER GTR
 
   m <- strsplit(x, "\\+")[[1]]
   m <- trimws(m) # |> toupper()
@@ -111,7 +110,7 @@ split_model <- function(x="GTR + G(4) + I", type="DNA"){
   optGamma <- FALSE
   k=1L
   optFreq <- FALSE
-
+  ASC <- FALSE
   if(length(m)>0){
     pos <- grep("G\\(", m)
     if(length(pos)==1){
@@ -136,5 +135,13 @@ split_model <- function(x="GTR + G(4) + I", type="DNA"){
       m <- m[-pos]
     }
   }
-  list(model=model, optFreq=optFreq, optInv=optInv, optGamma=optGamma, k=k)
+  if(length(m)>0){
+    pos <- grep("ASC", m)
+    if(length(pos)==1){
+      ASC <- TRUE
+      m <- m[-pos]
+    }
+  }
+  list(model=model, optFreq=optFreq, optInv=optInv, optGamma=optGamma, k=k,
+       ASC=ASC)
 }

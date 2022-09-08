@@ -9,7 +9,7 @@
 as.pml(x, ...)
 
 pml(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
-  rate = 1, model = NULL, site.rate = "gamma", ...)
+  rate = 1, model = NULL, site.rate = "gamma", ASC = FALSE, ...)
 
 optim.pml(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   optInv = FALSE, optGamma = FALSE, optEdge = TRUE, optRate = FALSE,
@@ -44,6 +44,9 @@ details.}
 \item{site.rate}{Indicates what type of gamma distribution to use. Options
 are "gamma" approach of Yang 1994 (default), "quadrature" after the Laguerre
 quadrature approach of Felsenstein 2001 or "freerate".}
+
+\item{ASC}{ascertainment bias correction (ASC), allows to estimate models
+like Lewis' Mkv.}
 
 \item{object}{An object of class \code{pml}.}
 
