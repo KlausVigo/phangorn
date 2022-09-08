@@ -1326,6 +1326,7 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   }
   weight <- attr(data, "weight")
   nr <- attr(data, "nr")
+  nc <- as.integer(attr(data, "nc"))
   if (type == "AA" & !is.null(model)) {
     model <- match.arg(model, .aamodels)
     getModelAA(model, bf = is.null(bf), Q = is.null(Q))
@@ -1335,6 +1336,10 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     .sub <- tstv_subs(code=attr(data, "code"))
     Q <- CodonQ(subs = .sub, syn = .syn, tstv = tstv, dnds = dnds)
     if(is.null(bf)) bf_choice <- "equal"
+  }
+  if(type=="USER" & !is.null(model)){
+    model <- match.arg(model, .usermodels)
+    if(model=="ORDERED") Q <- subsChoice_USER("ORDERED", nc)$Q
   }
   if (is.null(bf))
     bf <- rep(1 / length(levels), length(levels))
@@ -1394,9 +1399,7 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   if(ASC) ll.0 <- as.matrix(INV %*% rep(1, length(bf)))
 
   if (wMix > 0) ll.0 <- ll.0 + llMix
-
   nr <- as.integer(attr(data, "nr"))
-  nc <- as.integer(attr(data, "nc"))
 
   on.exit(.Call("ll_free2"))
   .Call("ll_init2", nr, nTips, nc, as.integer(k))
@@ -1973,6 +1976,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       optGamma <- FALSE
     }
   }
+  if (is.null(model)) model <- object$model
   if (is.null(llMix)) llMix <- 0
   if (!is.null(extras)) {
     names(extras) <- pmla[pmatch(names(extras), pmla)]
@@ -2070,6 +2074,40 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       object <- update.pml(object, bf = bf)
     }
   }
+  nr <- as.integer(attr(data, "nr"))
+  nc <- as.integer(attr(data, "nc"))
+  if (type == "DNA" & !is.null(model)) {
+    tmp <- subsChoice(model)
+    optQ <- tmp$optQ
+    if (!optQ) {
+      Q <- rep(1, 6)
+      object <- update.pml(object, Q = Q)
+    }
+    optBf <- tmp$optBf
+    if (!optBf){
+      bf <- c(0.25, 0.25, 0.25, 0.25)
+      object <- update.pml(object, bf = bf)
+    }
+    subs <- tmp$subs
+  }
+  if (type == "USER" & !is.null(model)) {
+    tmp <- subsChoice_USER(model, nc)
+    optQ <- tmp$optQ
+    if (!optQ){
+      Q <- rep(1, (nc*(nc-1L))/2)
+      object <- update.pml(object, Q = Q)
+    }
+    optBf <- tmp$optBf
+    if (!optBf){
+      bf <- rep(1 / nc, nc)
+      object <- update.pml(object, bf = bf)
+    }
+    subs <- tmp$subs
+    if(model=="ORDERED") {
+      Q <- tmp$Q
+      object <- update.pml(object, Q = Q)
+    }
+  }
   Q <- object$Q
   if (is.null(subs)) subs <- c(1:(length(Q) - 1), 0)
   bf <- object$bf
@@ -2087,26 +2125,6 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   shape <- object$shape
   w <- object$w
   g <- object$g
-  nr <- as.integer(attr(data, "nr"))
-  nc <- as.integer(attr(data, "nc"))
-  if (type == "DNA" & !is.null(model)) {
-    tmp <- subsChoice(model)
-    optQ <- tmp$optQ
-    if (!optQ) Q <- rep(1, 6)
-    optBf <- tmp$optBf
-    if (!optBf) bf <- c(0.25, 0.25, 0.25, 0.25)
-    subs <- tmp$subs
-  }
-  if (type == "USER" & !is.null(model)) {
-    tmp <- subsChoice_USER(model, nc)
-    optQ <- tmp$optQ
-    if (!optQ) Q <- rep(1, (nc*(nc-1L))/2)
-    optBf <- tmp$optBf
-    if (!optBf) bf <- rep(1 / nc, nc)
-    subs <- tmp$subs
-    if(model=="ORDERED") Q <- tmp$Q
-  }
-  object <- update.pml(object, bf = bf, Q=Q)
   ll0 <- object$logLik
   INV <- object$INV
   ll.0 <- object$ll.0
