@@ -73,7 +73,7 @@ pml or optim.pml."><meta property="og:image" content="https://klausvigo.github.i
 <span>  k <span class="op">=</span> <span class="fl">1</span>, Q <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">levels</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">levels</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>,</span>
 <span>  levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">data</span>, <span class="st">"levels"</span><span class="op">)</span>, inv <span class="op">=</span> <span class="fl">0</span>, rate <span class="op">=</span> <span class="fl">1</span>, g <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  w <span class="op">=</span> <span class="cn">NULL</span>, eig <span class="op">=</span> <span class="cn">NULL</span>, INV <span class="op">=</span> <span class="cn">NULL</span>, ll.0 <span class="op">=</span> <span class="cn">NULL</span>, llMix <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  wMix <span class="op">=</span> <span class="fl">0</span>, <span class="va">...</span>, site <span class="op">=</span> <span class="cn">FALSE</span>, Mkv <span class="op">=</span> <span class="cn">FALSE</span>, site.rate <span class="op">=</span> <span class="st">"gamma"</span><span class="op">)</span></span></code></pre></div>
+<span>  wMix <span class="op">=</span> <span class="fl">0</span>, <span class="va">...</span>, site <span class="op">=</span> <span class="cn">FALSE</span>, ASC <span class="op">=</span> <span class="cn">FALSE</span>, site.rate <span class="op">=</span> <span class="st">"gamma"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -151,8 +151,9 @@ pml or optim.pml."><meta property="og:image" content="https://klausvigo.github.i
 values</p></dd>
 
 
-<dt>Mkv</dt>
-<dd><p>indicate if Lewis' Mkv should be estimated.</p></dd>
+<dt>ASC</dt>
+<dd><p>ascertainment bias correction (ASC), allows to estimate models
+like Lewis' Mkv.</p></dd>
 
 
 <dt>site.rate</dt>

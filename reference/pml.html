@@ -67,7 +67,7 @@ parameters.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">as.pml</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">pml</span><span class="op">(</span><span class="va">tree</span>, <span class="va">data</span>, bf <span class="op">=</span> <span class="cn">NULL</span>, Q <span class="op">=</span> <span class="cn">NULL</span>, inv <span class="op">=</span> <span class="fl">0</span>, k <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  rate <span class="op">=</span> <span class="fl">1</span>, model <span class="op">=</span> <span class="cn">NULL</span>, site.rate <span class="op">=</span> <span class="st">"gamma"</span>, <span class="va">...</span><span class="op">)</span></span>
+<span>  rate <span class="op">=</span> <span class="fl">1</span>, model <span class="op">=</span> <span class="cn">NULL</span>, site.rate <span class="op">=</span> <span class="st">"gamma"</span>, ASC <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">optim.pml</span><span class="op">(</span><span class="va">object</span>, optNni <span class="op">=</span> <span class="cn">FALSE</span>, optBf <span class="op">=</span> <span class="cn">FALSE</span>, optQ <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  optInv <span class="op">=</span> <span class="cn">FALSE</span>, optGamma <span class="op">=</span> <span class="cn">FALSE</span>, optEdge <span class="op">=</span> <span class="cn">TRUE</span>, optRate <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -127,6 +127,11 @@ details.</p></dd>
 <dd><p>Indicates what type of gamma distribution to use. Options
 are "gamma" approach of Yang 1994 (default), "quadrature" after the Laguerre
 quadrature approach of Felsenstein 2001 or "freerate".</p></dd>
+
+
+<dt>ASC</dt>
+<dd><p>ascertainment bias correction (ASC), allows to estimate models
+like Lewis' Mkv.</p></dd>
 
 
 <dt>object</dt>
