@@ -79,6 +79,7 @@ Imports:
     stats,
     utils
 Suggests:
+    DiagrammeR, 
     Biostrings,
     knitr,
     magick,
