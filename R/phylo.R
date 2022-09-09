@@ -785,7 +785,7 @@ update.pml <- function(object, ...) {
     updateEig <- TRUE
   }
   type <- attr(object$data, "type")
-#  model <- NULL
+  model <- NULL
   if (type == "AA") {
     if (!is.na(existing[9])) {
       model <- match.arg(eval(extras[[existing[9]]], parent.frame()),
@@ -817,6 +817,7 @@ update.pml <- function(object, ...) {
       Q <- CodonQ(subs = .sub, syn = .syn, tstv = tstv,
                                dnds = dnds)
     }
+    model <- object$model
   }
   if (type == "DNA") {
     if (!is.na(existing[9])) {
