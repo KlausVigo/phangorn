@@ -2168,10 +2168,10 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     df <- ifelse(optRooted, tree$Nnode, length(tree$edge.length))
     dfQ <- ifelse(is.null(subs), length(unique(Q)) - 1, max(subs))
     df <- switch(type,
-      DNA = df + (k > 1) + optInv | (inv > 0) + length(unique(bf)) - 1 + dfQ,
-      AA = df + (k > 1) + optInv | (inv > 0) +  optBf * (length(unique(bf)) - 1),
-      CODON = df + (k > 1) + optInv | (inv > 0) + freq_df + (dnds != 1) + (tstv != 1),
-      USER = df + (k > 1) + optInv | (inv > 0) + length(unique(bf)) - 1 + dfQ)
+      DNA = df + (k > 1) + (optInv | (inv > 0)) + length(unique(bf)) - 1 + dfQ,
+      AA = df + (k > 1) + (optInv | (inv > 0)) +  optBf * (length(unique(bf)) - 1),
+      CODON = df + (k > 1) + (optInv | (inv > 0)) + freq_df + (dnds != 1) + (tstv != 1),
+      USER = df + (k > 1) + (optInv | (inv > 0)) + length(unique(bf)) - 1 + dfQ)
 
     object <- list(logLik = tmp$loglik, inv = inv, k = k, shape = shape,
       Q = Q, bf = bf, rate = rate, siteLik = tmp$siteLik,
