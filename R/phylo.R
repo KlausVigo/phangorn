@@ -866,7 +866,6 @@ update.pml <- function(object, ...) {
     eig <- object$eig
 #    model <- object$model
   }
-
   rw <- rates_n_weights(shape, k, site.rate)
   g <- rw[, 1]
   w <- rw[, 2]
@@ -2128,7 +2127,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     }
   }
   Q <- object$Q
-  if (is.null(subs)) subs <- c(1:(length(Q) - 1), 0)
+  if (is.null(subs) & optQ) subs <- c(seq_len(length(Q) - 1), 0)
   bf <- object$bf
   eig <- object$eig
   inv <- object$inv
@@ -2167,7 +2166,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       data <- orig.data
     }
     df <- ifelse(optRooted, tree$Nnode, length(tree$edge.length))
-    dfQ <- ifelse(is.null(subs), length(unique(Q)) - 1, max(sub))
+    dfQ <- ifelse(is.null(subs), length(unique(Q)) - 1, max(subs))
     df <- switch(type,
       DNA = df + (k > 1) + optInv | (inv > 0) + length(unique(bf)) - 1 + dfQ,
       AA = df + (k > 1) + optInv | (inv > 0) +  optBf * (length(unique(bf)) - 1),
