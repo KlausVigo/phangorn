@@ -19,8 +19,6 @@
 #' @param start A starting tree can be supplied.
 #' @param tip.dates A named vector of sampling times associated to the tips /
 #' sequences.
-#' @param ASC ascertainment bias correction (ASC), allows to estimate models
-#' like Lewis' Mkv.pml
 #' @param \dots Further arguments passed to or from other methods.
 #' @return \code{pml_bb} returns an object of class pml.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
@@ -39,7 +37,7 @@
 #' @rdname pml_bb
 #' @export
 pml_bb <- function(x, model=NULL, rearrangement="stochastic",
-         method="unrooted", start=NULL, tip.dates=NULL, ASC=FALSE, ...){
+         method="unrooted", start=NULL, tip.dates=NULL, ...){
   fit <- NULL
   type <- NULL
   method <- match.arg(method, c("unrooted", "ultrametric", "tipdated"))
@@ -68,7 +66,7 @@ pml_bb <- function(x, model=NULL, rearrangement="stochastic",
       stop("Please supply a model!")
     } else {
       para <- split_model(x=model, type=type)
-      fit <- pml(start, x, k=para$k, ASC=ASC)
+      fit <- pml(start, x, k=para$k, ASC=para$ASC)
     }
     if(method=="tipdated" && !is.null(attr(start, "rate")))
       fit <- update(fit, rate=attr(start, "rate"))

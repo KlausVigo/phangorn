@@ -152,7 +152,11 @@ expect_error(pml_bb(dat, model="GTR", method="tipdated"))
     fit_Mkv_2 <- pml(treeR3, dat_Mkv, ASC=TRUE)
     fit_Mkv_2 <- optim.pml(fit_Mkv_2, optRooted = TRUE, rearrangement = "NNI",
                            control=pml.control(trace=0))
+    fit_Mkv_3 <- pml_bb(dat_Mkv, "JC+ASC", method="ultrametric",
+                        rearrangement = "NNI", control=pml.control(trace=0))
     expect_equal(fit_Mkv_1$tree, treeR1, tolerance=1e-3)
     expect_equal(fit_Mkv_2$tree, treeR1, tolerance=1e-3)
+    expect_equal(fit_Mkv_3$tree, treeR1, tolerance=1e-3)
     expect_true(sum(fit_Mk$tree$edge.length) > sum(fit_Mkv_1$tree$edge.length))
     expect_true(sum(fit_Mk$tree$edge.length) > sum(fit_Mkv_2$tree$edge.length))
+    expect_true(sum(fit_Mk$tree$edge.length) > sum(fit_Mkv_3$tree$edge.length))
