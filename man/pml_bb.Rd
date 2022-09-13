@@ -5,7 +5,8 @@
 \title{Likelihood of a tree.}
 \usage{
 pml_bb(x, model = NULL, rearrangement = "stochastic",
-  method = "unrooted", start = NULL, tip.dates = NULL, ...)
+  method = "unrooted", start = NULL, tip.dates = NULL, ASC = FALSE,
+  ...)
 }
 \arguments{
 \item{x}{An alignment of class (either class \code{phyDat}, \code{DNAbin} or
@@ -23,6 +24,9 @@ a modelTest object is supplied.}
 
 \item{tip.dates}{A named vector of sampling times associated to the tips /
 sequences.}
+
+\item{ASC}{ascertainment bias correction (ASC), allows to estimate models
+like Lewis' Mkv.pml}
 
 \item{\dots}{Further arguments passed to or from other methods.}
 }
