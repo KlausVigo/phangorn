@@ -24,7 +24,7 @@ NumericVector cophenetic_cpp(IntegerMatrix edge, NumericVector edge_length,
 
 IntegerVector threshStateC(NumericVector x, NumericVector thresholds);
 
-int countCycles_cpp(IntegerMatrix M);
+int countCycle_cpp(IntegerMatrix M);
 
 std::vector<int> getIndex(IntegerVector left, IntegerVector right, int n);
 
