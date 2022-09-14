@@ -14,8 +14,8 @@ output:
     toc_depth: 2
 vignette: |
   %\VignetteIndexEntry{Estimating phylogenetic trees with phangorn}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
 ---
 
 # Introduction
@@ -105,7 +105,7 @@ After assigning edge weights we prune away internal edges of length, so our tree
 treeRatchet  <- di2multi(treeRatchet)
 ```
 Some trees might have differed only between edges of length 0. 
-```{r}
+```{r unique trees}
 if(inherits(treeRatchet, "multiPhylo")){
   treeRatchet <- unique(treeRatchet)
 }
@@ -116,7 +116,7 @@ plotBS(midpoint(treeRatchet), type="phylogram")
 add.scale.bar()
 ```
 
-If treeRatchet is a list of tree, an object of class `multiPhylo` we can subset the i-th trees with `treeRatchet[[i]]`.
+If `treeRatchet` is a list of trees, i.e. an object of class `multiPhylo`, we can subset the i-th trees with `treeRatchet[[i]]`.
 
 While in most cases `pratchet` will be enough to use, `phangorn` exports some function which might be useful.
 `random.addition` computes random addition and can be used to generate starting trees. The function `optim.parsimony` performs tree rearrangements to find trees with a lower parsimony score. The tree rearrangement implemented are  nearest-neighbor interchanges (NNI) and subtree pruning and regrafting (SPR). The later one only works so far with the fitch algorithm. 
@@ -127,6 +127,7 @@ parsimony(c(treeRA, treeSPR), primates)
 ```
 
 ## Branch and bound
+
 For data sets with few species it is also possible to find all most parsimonious trees using a branch and bound algorithm [@Hendy1982]. For data sets with more than 10 taxa this can take a long time and depends strongly on how tree like the data are. And for more than 20-30 taxa this will take almost forever.  
 ```{r bab}
 (trees <- bab(primates[1:10,]))
@@ -307,7 +308,7 @@ tree <- nnls.phylo(tree, dm)   # need edge weights
 (fit <- pml_bb(dat, model="GTR+G"))
 
 # 2. alternative: choose with modelTest
-mt <- modelTest(dat, tree=tree, multicore=TRUE)
+mt <- modelTest(dat, multicore=TRUE)
 mt[order(mt$BIC),]
 # chooses best model from the table according to BIC (default)
 fit <- pml_bb(mt)
