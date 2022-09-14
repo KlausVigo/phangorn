@@ -179,9 +179,54 @@ If optQ=TRUE and neither a model or subs are supplied than a symmetric (optBf=FA
          GTR | TRUE | TRUE | $c(1, 2, 3, 4, 5, 0)$ | 8 
 : Tab 2. DNA models available in phangorn. 
 
+## Predefined models for user defined data
+
+So far there are 4 models which are just a generalization from nucleotide models allowing different number of states. 
+ 
+ DNA | USER 
+-----|------
+  JC |   ER
+ F81 | FREQ
+ SYM |  SYM
+ GTR |  GTR
+: Tab 2: Build in models which are available for USER defined data.
+ 
+There is an additional model ORDERED, which assumes ordered characters and only allows to switch between neighboring states (fig. 3). 
+```{r, echo=FALSE}
+DiagrammeR::grViz("
+  digraph graph2 {
+  
+  graph [layout = dot, rankdir = LR]
+  
+  # node definitions with substituted label text
+  node [shape = oval]
+  a [label = 'a']
+  b [label = 'b']
+  c [label = 'c']
+  d [label = 'd']
+  e [label = 'e']
+  
+  a -> b -> c -> d -> e
+  e -> d -> c -> b -> a
+  }",
+  height = 100)
+```
+And table 3 show the corresponding rate matrix. 
+
+
+  | a | b | c | d | e 
+--|---|---|---|---|----
+a |   |   |   |   | 
+b | 1 |   |   |   | 
+c | 0 | 1 |   |   |
+d | 0 | 0 | 1 |   | 
+e | 0 | 0 | 0 | 1 | 
+: Tab 3: Rate matrix for "ORDERED" model with 5 states. 
+
 
 # Codon substitution models
-A special case of the transition rates are codon models._phangorn_ now offers the possibility to estimate the $d_N/d_S$ ratio (sometimes called ka/ks), for an overview see [@Yang2014]. These functions extend the option to estimates the $d_N/d_S$ ratio for pairwise sequence comparison as it is available through the function `kaks` in _seqinr_. The transition rate between between codon $i$ and $j$ is defined as follows:
+
+A special case of the transition rates are codon models. _phangorn_ now offers the possibility to estimate the $d_N/d_S$ ratio (sometimes called ka/ks), for an overview see [@Yang2014]. These functions extend the option to estimates the $d_N/d_S$ ratio for pairwise sequence comparison as it is available through the function `kaks` in _seqinr_. The transition rate between between codon $i$ and $j$ is defined as follows:
 \begin{eqnarray}
 q_{ij}=\left\{
     \begin{array}{l@{\quad}l}
@@ -193,48 +238,70 @@ q_{ij}=\left\{
     \end{array}
     \right. \nonumber
 \end{eqnarray}
-where $\omega$ is the $d_N/d_S$ ratio,  $\kappa$ the transition transversion ratio and $\pi_j$ is the the equilibrium frequencies of codon $j$.
-For $\omega\sim1$ the an amino acid change is neutral, for $\omega < 1$ purifying selection and  $\omega > 1$ positive selection.
-There are four models available:
-"codon0", where both parameter $\kappa$ and $\omega$ are fixed to 1, "codon1" where both parameters are estimated and "codon2" or "codon3" where $\kappa$ or $\omega$ is fixed to 1.
 
-We compute the $d_N/d_S$ for some sequences given a tree using the ML functions `pml` and `optim.pml`. First we have to transform the the nucleotide sequences into codons (so far the algorithms always takes triplets).
-```{r}
-library(phangorn)
+where $\omega$ is the $d_N/d_S$ ratio,  $\kappa$ the transition transversion ratio and $\pi_j$ is the the equilibrium frequencies of codon $j$. 
+For $\omega\sim1$ the an amino acid change is neutral, for $\omega < 1$ purifying selection and  $\omega > 1$ positive selection.
+
+
+Here we use data set from and follow loosely the example in [@Bielawski2005].
+We first read in an alignment and phylogenetic tree for 45 sequences of the
+nef Gene in the Human HIV-2 Genome using `read.phyDat` function.
+```{R read codon data}
 fdir <- system.file("extdata/trees", package = "phangorn")
-primates <- read.phyDat(file.path(fdir, "primates.dna"),
-                        format = "interleaved")
-tree <- NJ(dist.ml(primates))
-dat <- dna2codon(primates)
-fit <- pml(tree, dat, bf="F3x4")
-fit0 <- optim.pml(fit, model="codon0", control=pml.control(trace=0))
-fit1 <- optim.pml(fit, model="codon1", control=pml.control(trace=0))
-fit2 <- optim.pml(fit, model="codon2", control=pml.control(trace=0))
-fit3 <- optim.pml(fit, model="codon3", control=pml.control(trace=0))
-anova(fit0, fit2, fit3, fit1)
+hiv_2_nef <- read.phyDat(file.path(fdir, "seqfile.txt"), format="sequential")
+tree <- read.tree(file.path(fdir, "tree.txt"))
+```
+With the tree and data set we can estimate currently 3 different site models:
+
+1. The M0 model with a constant $\omega$, where $\omega$ estimates the average over all sites of the alignment. M0 does not allow for distinct $\omega$ and identify classes, therefore we will not retrieve any information regards positive selection.   
+2. The M1a or nearly neutral model estimates two different $\omega$ value classes ($\omega=1$ \& $\omega<1$). 
+3. The M2a or positive selection model estimates three different classes of $\omega$
+(negative selection $\omega<1$, neutral selection $\omega=1$, positive selection $\omega>1$).
+One can use a likelihood ratio test to compare the M1a and M2a to for positive selection. 
+
+```{R codonTest}
+cdn <- codonTest(tree, hiv_2_nef)
+cdn
+```
+                                                                
+Currently the choice of site models is limited to the three models mentioned above and are no branch models implemented so far. 
+
+We can identify sites under positive selection using the Na\"ive empirical Bayes (NEB) method of (Nielsen and Yang 1998):
+\[
+P(\omega|x_h) = \frac{P(X_h|\omega_i)p_i}{P(X_h)} =
+\frac{P(X_h|\omega_i)p_i}{\sum_j P(X_h|\omega_j)p_j}
+\]
+```{R plot codon}
+plot(cdn, "M1a")
+plot(cdn, "M2a")
 ```
 
-There are several ways to estimate the codon frequencies $\pi_j$. The simplest model is to assume they have equal frequencies
-(=1/61). A second is to use the empirical codon frequencies, either computed using `baseFreq` or using
-the argument `bf="empirical"` in `pml`. Last but not least the frequencies can be derived from the
-base frequencies at each codon position, the F3x4 model is set by the argument `bf="F3x4"`.
-One can estimate the codon frequencies setting the option to `optBf=TRUE` in `optim.pml`. As the convergence of the 60 parameters the convergence is likely slow set the maximal iterations to a higher value than the default (e.g. `control = pml.control(maxit=50)`). Similar parameters of the F3x4 can also estimated using ML `optF3x4=TRUE` instead.
-
-
-The "YN98" model [@Yang1998] is similar to the "codon1", but additional optimizes the codon frequencies.
+A lot if implementations differ in the way the codon frequencies are derived. The M0 model can be also estimated using `pml` and `optim.pml` functions. There are several ways to estimate the codon frequencies $\pi_j$. The simplest model is to assume they have equal frequencies (=1/61). A second is to use the empirical codon frequencies, either computed using `baseFreq` or using the argument `bf="empirical"` in `pml`. This is usually not really good as some codon are rare and have a high variance. One can estimate the frequencies from nucleotide frequencies with the F1x4 model. Last but not least the frequencies can be derived from the base frequencies at each codon position, the F3x4 model is set by the argument `bf="F3x4"`.
+``` 
+treeM0 <- cdn$estimates[["M0"]]$tree # tree with edge lengths
+M0 <- pml(tree, dna2codon(hiv_2_nef), bf="F3x4")
+M0 <- optim.pml(M0, model="codon1", control=pml.control(trace=0))
+M0
+```
+For the F3x4 model can optimize the codon frequencies setting the option to `optBf=TRUE` in `optim.pml`.
+```
+M0_opt <- optim.pml(M0, model="codon1", optBf=TRUE, control=pml.control(trace=0))
+M0_opt
+```
 
 
 # Generating trees
+
 _phangorn_ has several functions to generate tree topologies, which may are interesting for simulation studies. `allTrees` computes all possible bifurcating tree topologies either rooted or unrooted for up to 10 taxa. One has to keep in mind that the number of trees is growing exponentially, use `howmanytrees` from _ape_ as a reminder.
 
-```{r}
+```{r allTrees}
 trees <- allTrees(5)
 par(mfrow=c(3,5), mar=rep(0,4))
 for(i in 1:15)plot(trees[[i]], cex=1, type="u")
 ```
 
 `nni` returns a list of all trees which are one nearest neighbor interchange away.
-```{r}
+```{r nni}
 nni(trees[[1]])
 ```
 `rNNI` and `rSPR` generate trees which are a defined number of NNI (nearest neighbor interchange) or SPR (subtree pruning and regrafting) away.
