@@ -64,9 +64,9 @@ The functions return an object of class \code{phyDat}.
 These functions help to manipulate alignments of class phyDat.
 }
 \details{
-\code{allSitePattern} generatess all possible site patterns and can be useful
+\code{allSitePattern} generates all possible site patterns and can be useful
 in simulation studies. For further details see the vignette
-phangorn-specials.
+AdvancedFeatures.
 
 The generic function \code{c} can be used to to combine sequences and
 \code{unique} to get all unique sequences or unique haplotypes.

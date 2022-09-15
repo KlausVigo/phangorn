@@ -24,7 +24,7 @@ contrast.}
 \item{...}{further arguments passed to or from other methods.}
 }
 \value{
-\code{baseFreq} returna a named vector and \code{glance} a one row
+\code{baseFreq} returns a named vector and \code{glance} a one row
 \code{data.frame}.
 }
 \description{

@@ -13,7 +13,7 @@
 #' @param drop.unused.levels logical, drop unused levels
 #' @param ... further arguments passed to or from other methods.
 #'
-#' @return  \code{baseFreq} returna a named vector and \code{glance} a one row
+#' @return  \code{baseFreq} returns a named vector and \code{glance} a one row
 #' \code{data.frame}.
 #' @seealso \code{\link{phyDat}, \link{base.freq}, \link{glance}}
 #' @author Klaus Schliep
