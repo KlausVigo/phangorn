@@ -3,7 +3,8 @@
 
 #' Function to import and export splits and networks
 #'
-#' \code{read.nexus.splits}, \code{write.nexus.splits}, \code{read.nexus.networx}, \code{write.nexus.networx}
+#' \code{read.nexus.splits}, \code{write.nexus.splits},
+#' \code{read.nexus.networx}, \code{write.nexus.networx}
 #' can be used to import and export splits and networks with nexus format
 #' and allow to exchange these object with other software like SplitsTree.
 #' \code{write.splits} returns a human readable output.
@@ -23,8 +24,8 @@
 #' @return \code{write.nexus.splits} and \code{write.nexus.networx} write out
 #' the \code{splits} and \code{networx} object to read with
 #' other software like SplitsTree.
-#' \code{read.nexus.splits} and \code{read.nexus.networx} return an \code{splits}
-#' and \code{networx} object.
+#' \code{read.nexus.splits} and \code{read.nexus.networx} return an
+#' \code{splits} and \code{networx} object.
 #' @note \code{read.nexus.splits} reads in the splits block of a nexus file. It
 #' assumes that different co-variables are tab delimited and the bipartition
 #' are separated with white-space. Comments in square brackets are ignored.

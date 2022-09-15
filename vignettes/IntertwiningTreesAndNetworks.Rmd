@@ -143,10 +143,10 @@ edge.col[ is.na(edge.lab) ] <- "red"
 # or a simpler alternative...
 edge.col <- createLabel(Nnet, raxml.tree, "black", nomatch="red")
 
-x <- plot(Nnet, edge.label = edge.lab, show.edge.label = T, "2D", edge.color = edge.col,
-                  col.edge.label = "blue", cex=.7)
-# the above plot function returns an invisible networx object and this object also  
-# contains the colors for the edges.
+x <- plot(Nnet, edge.label = edge.lab, show.edge.label = T, "2D", 
+          edge.color = edge.col, col.edge.label = "blue", cex=.7)
+# the above plot function returns an invisible networx object and this object 
+# also contains the colors for the edges.
 
 ```
 
@@ -165,7 +165,8 @@ split.col[ !matchSplits(as.splits(x), as.splits(raxml.tree)) ] <- "red"
 split.col2 <- createLabel(x, raxml.tree, label="black", "split", nomatch="red")
 
 # Plotting in R
-out.x <- plot(x,"2D",show.edge.label=TRUE, split.color=split.col, col.edge.label = "blue")
+out.x <- plot(x,"2D",show.edge.label=TRUE, split.color=split.col, 
+              col.edge.label = "blue")
 ```
 
 Again we can write to SplitsTree for viewing...
@@ -226,30 +227,35 @@ attr(bs_splits, "weights")[] <- 1e-6
 # combine the splits from the bootstrap and neighbor net
 # and delete duplicates and add the confidence values
 # we get rid of trivial splits
-all_splits <- c(Nnet$splits, bs_splits) |> unique() |> removeTrivialSplits() |> addConfidences(bs_splits, scaler=100)
+all_splits <- c(Nnet$splits, bs_splits) |> unique() |> removeTrivialSplits() |> 
+  addConfidences(bs_splits, scaler=100)
 
 # For easier plotting we create a matrix with the confidences and 
 # weights as columns
-tab <- data.frame(SplitWeight = attr(all_splits, "weights"), Bootstrap=attr(all_splits, "confidences"), Tree=FALSE)
+tab <- data.frame(SplitWeight = attr(all_splits, "weights"), 
+                  Bootstrap=attr(all_splits, "confidences"), Tree=FALSE)
 # we add a logical variable pto indicate which splits are in the RAxML tree
-tab$Tree[matchSplits(tree_splits, all_splits, FALSE)] = TRUE
+tab$Tree[matchSplits(tree_splits, all_splits, FALSE)] <- TRUE
 
 tab[is.na(tab[,"Bootstrap"]),"Bootstrap"] <- 0
 tab[,"Bootstrap"] <- round(tab[,"Bootstrap"])
-rownames(tab) <- apply(as.matrix(all_splits, zero.print = ".", one.print = "|"), 1, paste0, collapse="")
+rownames(tab) <- apply(as.matrix(all_splits, zero.print = ".", one.print = "|"), 
+                       1, paste0, collapse="")
 tab[1:10,]
 
 col <- rep("blue", nrow(tab))
 col[tab[,"Bootstrap"]==0] <- "green"
 col[tab[,"SplitWeight"]==1e-6] <- "red"
 
-pch = rep(19, nrow(tab))
+pch <- rep(19, nrow(tab))
 pch[tab$Tree] <- 17
 
 par(mar=c(5.1, 4.1, 4.1, 8.1), xpd=TRUE)
 plot(tab[,"SplitWeight"], tab[,"Bootstrap"], log="x", col=col, pch=pch,  
      xlab="Split weight (log scale)", ylab="Bootstrap (%)")
-legend("topright", inset=c(-0.35,0), c("Pattern 1", "Pattern 2", "Pattern 3", "Pattern in the\nbest tree"), pch=c(19,19,19,17), col=c("blue", "green", "red", "black"), bty="n")
+legend("topright", inset=c(-0.35,0), c("Pattern 1", "Pattern 2", "Pattern 3", 
+                       "Pattern in the\nbest tree"), pch=c(19,19,19,17), 
+                       col=c("blue", "green", "red", "black"), bty="n")
 ```
 
 ### Figure 4
@@ -287,7 +293,8 @@ par(mfrow=c(2,2), mar = c(2,2,4,2))
 YCh <- plotBS(midpoint(YCh), YCh_boot, "phylogram", p=0, main = "YCh")
 mtG <- plotBS(midpoint(mtG), mtG_boot, "phylogram", p=0, main = "mtG")
 ncAI <- plotBS(midpoint(ncAI), ncAI_boot, "phylogram", p=0, main = "ncAI")
-all_data <- plotBS(midpoint(all_data), all_data_boot, "phylogram", p=0, main = "All data")
+all_data <- plotBS(midpoint(all_data), all_data_boot, "phylogram", p=0, 
+                   main = "All data")
 ```
 
 We can compare this with consensus network with the different bootstrap values for the different genes. 

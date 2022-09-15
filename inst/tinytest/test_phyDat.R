@@ -15,7 +15,8 @@ phy_dnabin <- as.DNAbin(Laurasiatherian)
 phy_aabin <- as.AAbin(chloroplast)
 phy_align <- phyDat2alignment(Laurasiatherian)
 
-phy_vec_factor <- factor(sample(4, 26, replace=TRUE), labels=c("a", "c", "g", "t"))
+phy_vec_factor <- factor(sample(4, 26, replace=TRUE),
+                         labels=c("a", "c", "g", "t"))
 names(phy_vec_factor) <- letters
 
 #test conversion work

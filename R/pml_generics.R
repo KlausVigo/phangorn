@@ -40,8 +40,8 @@ anova.pml <- function(object, ...) {
   dev <- c(NA, 2 * diff(DF[, 1]))
   ddf <- c(NA, diff(DF[, 2]))
   table <- data.frame(DF, ddf, dev, pchisq(dev, ddf, lower.tail = FALSE))
-  dimnames(table) <- list(seq_along(X), c("Log lik.", "Df",
-                                          "Df change", "Diff log lik.", "Pr(>|Chi|)"))
+  dimnames(table) <- list(seq_along(X), c("Log lik.", "Df", "Df change",
+                                          "Diff log lik.", "Pr(>|Chi|)"))
   structure(table, heading = "Likelihood Ratio Test Table",
             class = c("anova", "data.frame"))
 }
@@ -62,7 +62,8 @@ vcov.pml <- function(object, ...) {
 
 #' @export
 plot.pml <- function(x, type="phylogram", ...){
-  type <- match.arg(type, c("phylogram","cladogram", "fan", "unrooted", "radial", "tidy"))
+  type <- match.arg(type, c("phylogram","cladogram", "fan", "unrooted",
+                            "radial", "tidy"))
   plot.phylo(x$tree, ...)
   if(is.rooted(x$tree) & (type %in% c("phylogram","cladogram"))) axisPhylo()
   else add.scale.bar()

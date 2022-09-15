@@ -29,8 +29,8 @@ plotRates(obj, cdf.color = "blue", main = "cdf", ...)
 
 \item{inv}{Proportion of invariable sites.}
 
-\item{discrete}{logical whether to plot discrete (default) or continuous pdf or
-cdf.}
+\item{discrete}{logical whether to plot discrete (default) or continuous pdf
+or cdf.}
 
 \item{cdf}{logical whether to plot the cumulative distribution function
 or density / probability function.}

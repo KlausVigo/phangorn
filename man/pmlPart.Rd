@@ -78,7 +78,8 @@ AIC(sp3)
 
 }
 \seealso{
-\code{\link{pml}},\code{\link{pmlCluster}},\code{\link{pmlMix}},\code{\link{SH.test}}
+\code{\link{pml}},\code{\link{pmlCluster}},\code{\link{pmlMix}},
+\code{\link{SH.test}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

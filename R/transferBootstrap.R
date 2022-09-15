@@ -30,7 +30,8 @@
 #' plotBS(raxml.tree,  raxml.bootstrap, "p", "TBE")
 #' @export
 transferBootstrap <- function(tree, BStrees){
-  if(!inherits(BStrees, "multiPhylo")) stop("BSTrees needs to be of class multiPhylo!")
+  if(!inherits(BStrees, "multiPhylo"))
+    stop("BSTrees needs to be of class multiPhylo!")
   BStrees <- .uncompressTipLabel(BStrees)
   BStrees <- .compressTipLabel(BStrees, tree$tip.label)
   BStrees <- reorder(BStrees, "postorder")

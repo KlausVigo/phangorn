@@ -38,7 +38,8 @@ open3d()
 plot(cnet, type = "3D", show.tip.label=FALSE, show.nodes=TRUE)
 plot(cnet, type = "equal angle", show.edge.label=TRUE)
 
-tmpfile <- normalizePath(system.file("extdata/trees/RAxML_bootstrap.woodmouse", package="phangorn"))
+tmpfile <- normalizePath(system.file(
+              "extdata/trees/RAxML_bootstrap.woodmouse", package="phangorn"))
 trees <- read.tree(tmpfile)
 cnet_woodmouse <- consensusNet(trees, .3)
 plot(cnet_woodmouse, type = "equal angle", show.edge.label=TRUE)

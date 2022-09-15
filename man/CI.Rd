@@ -30,6 +30,7 @@ And the Retention Index is defined as
 \deqn{RI = \frac{MaxChanges - ObsChanges}{MaxChanges - MinChanges}}{RI = (MaxChanges - ObsChanges) / (MaxChanges - MinChanges)}
 }
 \seealso{
-\code{\link{parsimony}}, \code{\link{pratchet}}, \code{\link{fitch}},
-\code{\link{sankoff}}, \code{\link{bab}}, \code{\link{ancestral.pars}}
+\code{\link{parsimony}}, \code{\link{pratchet}},
+\code{\link{fitch}}, \code{\link{sankoff}}, \code{\link{bab}},
+\code{\link{ancestral.pars}}
 }

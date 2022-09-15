@@ -33,12 +33,14 @@ tips <- mast(tree1, tree2)
 
 }
 \references{
-G. Valiente (2009). \emph{Combinatorial Pattern Matching Algorithms in Computational Biology using Perl and R}. Taylor & Francis/CRC Press
+G. Valiente (2009). \emph{Combinatorial Pattern Matching Algorithms in
+Computational Biology using Perl and R}. Taylor & Francis/CRC Press
 }
 \seealso{
 \code{\link{SPR.dist}}
 }
 \author{
-Klaus Schliep \email{klaus.schliep@gmail.com} based on code of Gabriel Valiente
+Klaus Schliep \email{klaus.schliep@gmail.com} based on code of
+Gabriel Valiente
 }
 \keyword{cluster}

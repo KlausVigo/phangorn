@@ -96,7 +96,7 @@ The current implementation is
 treeRatchet  <- pratchet(primates, trace = 0, minit=100)
 parsimony(treeRatchet, primates)
 ```
-Here we set the minimum iteration of the parsimony ratchet to 100 iterations. As the ratchet performed implicitly bootstrap resampling we already computed some branch support, in out case with at least 100 bootstrap iterations. The paramter `trace=0` tells the function not write the current status to the console. The function may returns several best trees, but these trees have no branch length assigned to them yet. Now let's do this: 
+Here we set the minimum iteration of the parsimony ratchet to 100 iterations. As the ratchet performed implicitly bootstrap resampling we already computed some branch support, in out case with at least 100 bootstrap iterations. The parameter `trace=0` tells the function not write the current status to the console. The function may returns several best trees, but these trees have no branch length assigned to them yet. Now let's do this: 
 ```{r acctran}
 treeRatchet  <- acctran(treeRatchet, primates)
 ```

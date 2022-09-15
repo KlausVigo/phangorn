@@ -235,7 +235,8 @@ getRows <- function (data, rows, site.pattern = TRUE){
 #' @export
 subset.phyDat <- function (x, subset, select, site.pattern = TRUE, ...){
   if (!missing(subset)){
-    if(is.numeric(subset) & any(subset>length(x))) stop("subscript out of bounds")
+    if(is.numeric(subset) & any(subset>length(x)))
+        stop("subscript out of bounds")
     x <- getCols(x, subset, ...)
   }
   if (!missing(select)){

@@ -40,8 +40,8 @@ colours are recycled.}
 
 \item{cex}{a numeric value giving the factor scaling of the tip labels.}
 
-\item{font}{an integer specifying the type of font for the labels: 1 (plain text),
-2 (bold), 3 (italic, the default), or 4 (bold italic).}
+\item{font}{an integer specifying the type of font for the labels:
+1 (plain text), 2 (bold), 3 (italic, the default), or 4 (bold italic).}
 
 \item{tip.color}{color of the tip labels.}
 
@@ -53,8 +53,8 @@ labels: 0 (left-justification), 0.5 (centering), or 1 (right-justification).}
 \item{underscore}{a logical specifying whether the underscores in tip labels
 should be written as spaces (the default) or left as are (if TRUE).}
 
-\item{label.offset}{a numeric giving the space between the nodes and the tips of the
-phylogeny and their corresponding labels.}
+\item{label.offset}{a numeric giving the space between the nodes and the tips
+of the phylogeny and their corresponding labels.}
 
 \item{scale.bar}{a logical specifying whether add scale.bar to the plot.}
 
@@ -71,9 +71,11 @@ If no consensus tree is provided \code{densiTree} computes a consensus tree,
 and if the input trees have different labels a mrp.supertree as a backbone.
 This should avoid too many unnecessary crossings of edges.
 Trees should be rooted, other wise the output may not be visually pleasing.
-\code{jitter} shifts trees a bit so that they are not exactly on top of each other.
-If \code{amount == 0}, it is ignored. If \code{random=TRUE} the result of the permutation is
-\code{runif(n, -amount, amount)}, otherwise \code{seq(-amount, amount, length=n)}, where \code{n <- length(x)}.
+\code{jitter} shifts trees a bit so that they are not exactly on top of each
+other.
+If \code{amount == 0}, it is ignored. If \code{random=TRUE} the result of the
+permutation is \code{runif(n, -amount, amount)}, otherwise
+\code{seq(-amount, amount, length=n)}, where \code{n <- length(x)}.
 }
 \examples{
 
@@ -98,14 +100,15 @@ densiTree(BinindaEmondsEtAl2007, type="phylogram", col="red")
 }
 \references{
 densiTree is inspired from the great
-\href{https://www.cs.auckland.ac.nz/~remco/DensiTree/}{DensiTree} program of Remco
-Bouckaert.
+\href{https://www.cs.auckland.ac.nz/~remco/DensiTree/}{DensiTree} program of
+Remco Bouckaert.
 
 Remco R. Bouckaert (2010) DensiTree: making sense of sets of phylogenetic
 trees \emph{Bioinformatics}, \bold{26 (10)}, 1372-1373.
 }
 \seealso{
-\code{\link{plot.phylo}}, \code{\link{plot.networx}}, \code{\link{jitter}}
+\code{\link{plot.phylo}}, \code{\link{plot.networx}},
+\code{\link{jitter}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

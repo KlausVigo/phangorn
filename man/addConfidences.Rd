@@ -41,7 +41,8 @@ object.
 
 data(woodmouse)
 woodmouse <- phyDat(woodmouse)
-tmpfile <- normalizePath(system.file("extdata/trees/RAxML_bootstrap.woodmouse", package="phangorn"))
+tmpfile <- normalizePath(system.file(
+             "extdata/trees/RAxML_bootstrap.woodmouse", package="phangorn"))
 boot_trees <- read.tree(tmpfile)
 
 dm <- dist.ml(woodmouse)
@@ -56,9 +57,9 @@ plot(nnet, show.edge.label=TRUE)
 
 }
 \references{
-Schliep, K., Potts, A. J., Morrison, D. A. and Grimm, G. W. (2017),
-Intertwining phylogenetic trees and networks. \emph{Methods Ecol Evol}.
-\bold{8}, 1212--1220. doi:10.1111/2041-210X.12760
+Schliep, K., Potts, A. J., Morrison, D. A. and Grimm, G. W.
+(2017), Intertwining phylogenetic trees and networks.
+\emph{Methods Ecol Evol}.\bold{8}, 1212--1220. doi:10.1111/2041-210X.12760
 }
 \seealso{
 \code{\link{as.splits}}, \code{\link{as.networx}},

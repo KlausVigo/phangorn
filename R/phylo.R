@@ -216,7 +216,7 @@ optimBf <- function(tree, data, bf = c(.25, .25, .25, .25), trace = 0, ...) {
 
 
 # ML F3x4 model
-optimF3x4 <- function(tree, data, bf_codon = matrix(.25, 4, 3), trace = 0, ...) {
+optimF3x4 <- function(tree, data, bf_codon = matrix(.25, 4, 3), trace = 0, ...){
   l <- nrow(bf_codon)
   nenner <- 1 / bf_codon[l, ]
   lbf <- log(bf_codon * rep(nenner, each = 4))
@@ -1121,7 +1121,7 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
   }
   if (!site) return(loglik)
   resll <- exp(resll)
-  return(list(loglik = loglik, siteLik = siteLik, resll = resll, resll2 = resll2))
+  return(list(loglik=loglik, siteLik=siteLik, resll=resll, resll2=resll2))
 }
 
 ### @param optF3x4 Logical value indicating if codon frequencies are estimated
@@ -1361,7 +1361,7 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   if (is.null(bf))
     bf <- rep(1 / length(levels), length(levels))
   if (is.character(bf)) {
-    bf_choice <- match.arg(bf, c("equal", "empirical", "F1x4", "F3x4", "F61")) # , "estimated"
+    bf_choice <- match.arg(bf, c("equal", "empirical", "F1x4", "F3x4", "F61"))
     if (bf_choice == "F3x4" & type != "CODON")
       stop("F3x4 not available for this data type")
     if (bf_choice == "F1x4" & type != "CODON")
@@ -1713,7 +1713,7 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV, RELL=NULL,
   child2 <- orderNNI(tree, nTips)
 
   while (iter < 2) {
-    ll <- pml.fit4(tree, data, bf = bf, eig = eig, ll.0 = ll.0, w = w, g = g, ...)
+    ll <- pml.fit4(tree, data, bf=bf, eig=eig, ll.0=ll.0, w=w, g=g, ...)
     nh <- nodeHeight(tree)
     loli <- rootNode
     pa <- rootNode
@@ -2170,8 +2170,10 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     dfQ <- ifelse(is.null(subs), length(unique(Q)) - 1, max(subs))
     df <- switch(type,
       DNA = df + (k > 1) + (optInv | (inv > 0)) + length(unique(bf)) - 1 + dfQ,
-      AA = df + (k > 1) + (optInv | (inv > 0)) +  optBf * (length(unique(bf)) - 1),
-      CODON = df + (k > 1) + (optInv | (inv > 0)) + freq_df + (dnds != 1) + (tstv != 1),
+      AA = df + (k > 1) + (optInv | (inv > 0)) +
+           optBf * (length(unique(bf)) - 1),
+      CODON = df + (k > 1) + (optInv | (inv > 0)) + freq_df + (dnds != 1) +
+           (tstv != 1),
       USER = df + (k > 1) + (optInv | (inv > 0)) + length(unique(bf)) - 1 + dfQ)
 
     object <- list(logLik = tmp$loglik, inv = inv, k = k, shape = shape,
@@ -2354,7 +2356,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       res <- opt_nni(tree, data, rooted=optRooted, iter_max=5, trace=trace,
                      ll=ll, w = w, g = g, eig = eig, bf = bf, inv=inv,
                      ll.0 = ll.0, INV = INV, ASC=ASC, RELL=NULL,
-                     control = list(eps=1e-08, maxit=3, trace=trace-1, tau=tau), ...)
+                     control = list(eps=1e-08, maxit=3, trace=trace-1, tau=tau),
+                     ...)
       ll <- res$logLik
       tree <- res$tree
       swap <- res$swap
@@ -2411,7 +2414,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         res <- opt_nni(tree2, data, rooted=optRooted, iter_max=25, trace=trace,
                        ll=ll2, w = w, g = g, eig = eig, bf = bf, inv=inv,
                        rate=rate, ll.0 = ll.0, INV = INV, ASC=ASC, RELL=RELL,
-                       control = list(eps=1e-08, maxit=5, trace=trace-1, tau=tau), ...)
+                       control=list(eps=1e-08, maxit=5, trace=trace-1, tau=tau),
+                       ...)
         if (res$logLik > (ll + epsR)) {
           tree <- res$tree
           ll <- res$logLik
@@ -2428,7 +2432,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       perturbation <- FALSE
       rounds <- 1
     }
-    if ( (abs((ll1 - ll) / ll)  < control$eps) || rounds > control$maxit) # abs(ll1 - ll)
+    if ( (abs((ll1 - ll) / ll)  < control$eps) || rounds > control$maxit)
       opti <- FALSE
     rounds <- rounds + 1
     ll1 <- ll
@@ -2515,8 +2519,9 @@ optimQuartet <- function(tree, data, eig, w, g, bf, rate, ll.0, nTips,
   oldtree <- tree
   k <- length(w)
   loglik <- pml.quartet(tree, data, bf = bf, g = g, w = w, eig = eig,
-                        ll.0 = ll.0, k = k, nTips = nTips, weight = weight,  inv = inv,
-                        nr = nr, nc = nc, contrast = contrast, nco = nco)
+                        ll.0 = ll.0, k = k, nTips = nTips, weight = weight,
+                        inv = inv, nr = nr, nc = nc, contrast = contrast,
+                        nco = nco)
   start.ll <- old.ll <- new.ll <- loglik
   contrast2 <- contrast %*% eig[[2]]
   evi <- (t(eig[[3]]) * bf)
@@ -2545,8 +2550,9 @@ optimQuartet <- function(tree, data, eig, w, g, bf, rate, ll.0, nTips,
     iter <- iter + 1
     tree$edge.length <- EL  # [treeP$edge[,2]]
     newll <- pml.quartet(tree, data, bf = bf, g = g, w = w, eig = eig,
-                         ll.0 = ll.0, k = k, nTips = nTips, weight = weight, inv = inv,
-                         nr = nr, nc = nc, contrast = contrast, nco = nco)
+                         ll.0 = ll.0, k = k, nTips = nTips, weight = weight,
+                         inv = inv, nr = nr, nc = nc, contrast = contrast,
+                         nco = nco)
     eps <- (old.ll - newll) / newll
     if ( (eps < 0) || (newll < llcomp))
       return(list(tree = oldtree, logLik = old.ll, c(eps, iter)))
@@ -2649,8 +2655,8 @@ pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, RELL=NULL, ...) {
                         inv = inv,
                         nr = nr, nc = nc, contrast = contrast, nco = nco)
     #        new0 <- optimQuartet(tree0, data, eig=eig, w=w, g=g, bf=bf,
-    #                rate=rate, ll.0=ll.0, nTips=nTips,
-    #                weight=weight, nr=nr, nc=nc, contrast=contrast, nco=nco, inv=0,
+    #                rate=rate, ll.0=ll.0, nTips=nTips, weight=weight,
+    #                nr=nr, nc=nc, contrast=contrast, nco=nco, inv=0,
     #                control = list(epsilon = 1e-08, maxit = 3, trace=0))
     tree2 <- tree1 <- tree0
     tree1$edge[, 2] <- tree1$edge[ind1, 2]

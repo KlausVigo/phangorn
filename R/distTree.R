@@ -363,13 +363,10 @@ designTipDated <- function(tree, tip.dates, sparse = TRUE){
 
 #' @rdname designTree
 #' @export
-nnls.tree <- function(dm, tree, method = c("unrooted", "ultrametric", "tipdated"),
-                      trace = 1, weight = NULL, balanced = FALSE, tip.dates=NULL) {
+nnls.tree <- function(dm, tree, method=c("unrooted", "ultrametric", "tipdated"),
+                      trace=1, weight=NULL, balanced=FALSE, tip.dates=NULL) {
   method <- match.arg(method, c("unrooted", "ultrametric", "tipdated"))
-  if (is.rooted(tree) && method == "unrooted") {
-    tree <- unroot(tree)
-    warning("tree was rooted, I unrooted the tree!")
-  }
+  if (is.rooted(tree) && method == "unrooted") tree <- unroot(tree)
   tree <- reorder(tree, "postorder")
   if (balanced) {
     if (!is.binary(tree)) stop("tree must be binary")

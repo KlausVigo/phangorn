@@ -32,7 +32,8 @@ identify(nnet) # click close to an edge
 }
 }
 \seealso{
-\code{\link[phangorn]{plot.networx}}, \code{\link[graphics]{identify}}
+\code{\link[phangorn]{plot.networx}},
+  \code{\link[graphics]{identify}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

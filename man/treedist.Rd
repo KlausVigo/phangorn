@@ -62,8 +62,9 @@ described in Steel and Penny 1993).
 al. 2008, de Oliveira Martins 2016).
 }
 \details{
-The Robinson-Foulds distance between two trees \eqn{T_1} and \eqn{T_2} with
-\eqn{n} tips is defined as (following the notation Steel and Penny 1993):
+The Robinson-Foulds distance between two trees \eqn{T_1} and
+\eqn{T_2} with \eqn{n} tips is defined as (following the notation Steel and
+Penny 1993):
 \deqn{d(T_1, T_2) = i(T_1) + i(T_2) - 2v_s(T_1, T_2)} where \eqn{i(T_1)}
 denotes the number of internal edges and \eqn{v_s(T_1, T_2)} denotes the
 number of internal splits shared by the two trees. The normalized

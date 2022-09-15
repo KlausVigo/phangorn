@@ -115,7 +115,7 @@ expect_error(pml_bb(dat, model="GTR", method="tipdated"))
     expect_equal(logLik(fit.Gamma),
                  logLik(pml(treeU1, dat_tmp, shape=shape, k=4)))
     expect_equal(shape, fit.Gamma$shape, tolerance=5e-4)
-    fit.JC.G4 <- pml_bb(dat_tmp, model="JC+G(4)", control = pml.control(trace=0))
+    fit.JC.G4 <- pml_bb(dat_tmp, model="JC+G(4)", control=pml.control(trace=0))
     expect_equal(logLik( fit.JC.G4),
                  logLik(pml(treeU1, dat_tmp, shape=shape, k=4)))
     expect_equal(shape, fit.JC.G4$shape, tolerance=5e-4)

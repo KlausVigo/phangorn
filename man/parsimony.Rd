@@ -114,9 +114,10 @@ Nixon, K. (1999) The Parsimony Ratchet, a New Method for Rapid Parsimony
 Analysis. \emph{Cladistics} \bold{15}, 407-414
 }
 \seealso{
-\code{\link{bab}}, \code{\link{CI}}, \code{\link{RI}}, \code{\link{ancestral.pml}},
-\code{\link{nni}}, \code{\link{NJ}}, \code{\link{pml}}, \code{\link{getClans}}
-,\code{\link{ancestral.pars}}, \code{\link{bootstrap.pml}}
+\code{\link{bab}}, \code{\link{CI}}, \code{\link{RI}},
+\code{\link{ancestral.pml}}, \code{\link{nni}}, \code{\link{NJ}},
+\code{\link{pml}}, \code{\link{getClans}}, \code{\link{ancestral.pars}},
+\code{\link{bootstrap.pml}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

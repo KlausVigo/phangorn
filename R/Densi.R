@@ -61,9 +61,11 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt = 0, cex = 1,
 #' and if the input trees have different labels a mrp.supertree as a backbone.
 #' This should avoid too many unnecessary crossings of edges.
 #' Trees should be rooted, other wise the output may not be visually pleasing.
-#' \code{jitter} shifts trees a bit so that they are not exactly on top of each other.
-#' If \code{amount == 0}, it is ignored. If \code{random=TRUE} the result of the permutation is
-#' \code{runif(n, -amount, amount)}, otherwise \code{seq(-amount, amount, length=n)}, where \code{n <- length(x)}.
+#' \code{jitter} shifts trees a bit so that they are not exactly on top of each
+#' other.
+#' If \code{amount == 0}, it is ignored. If \code{random=TRUE} the result of the
+#' permutation is \code{runif(n, -amount, amount)}, otherwise
+#' \code{seq(-amount, amount, length=n)}, where \code{n <- length(x)}.
 #' @param x an object of class \code{multiPhylo}.
 #' @param type a character string specifying the type of phylogeny, so far
 #' "cladogram" (default) or "phylogram" are supported.
@@ -82,25 +84,26 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt = 0, cex = 1,
 #' @param width edge width.
 #' @param lty line type.
 #' @param cex a numeric value giving the factor scaling of the tip labels.
-#' @param font an integer specifying the type of font for the labels: 1 (plain text),
-#'  2 (bold), 3 (italic, the default), or 4 (bold italic).
+#' @param font an integer specifying the type of font for the labels:
+#' 1 (plain text), 2 (bold), 3 (italic, the default), or 4 (bold italic).
 #' @param tip.color color of the tip labels.
 #' @param adj a numeric specifying the justification of the text strings of the
 #' labels: 0 (left-justification), 0.5 (centering), or 1 (right-justification).
 #' @param srt a numeric giving how much the labels are rotated in degrees.
 #' @param underscore a logical specifying whether the underscores in tip labels
 #' should be written as spaces (the default) or left as are (if TRUE).
-#' @param label.offset a numeric giving the space between the nodes and the tips of the
-#' phylogeny and their corresponding labels.
+#' @param label.offset a numeric giving the space between the nodes and the tips
+#' of the phylogeny and their corresponding labels.
 #' @param scale.bar a logical specifying whether add scale.bar to the plot.
 #' @param jitter allows to shift trees. a list with two arguments: the amount of
 #' jitter and random or equally spaced (see details below)
 #' @param \dots further arguments to be passed to plot.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{plot.phylo}}, \code{\link{plot.networx}}, \code{\link{jitter}}
+#' @seealso \code{\link{plot.phylo}}, \code{\link{plot.networx}},
+#' \code{\link{jitter}}
 #' @references densiTree is inspired from the great
-#' \href{https://www.cs.auckland.ac.nz/~remco/DensiTree/}{DensiTree} program of Remco
-#' Bouckaert.
+#' \href{https://www.cs.auckland.ac.nz/~remco/DensiTree/}{DensiTree} program of
+#' Remco Bouckaert.
 #'
 #' Remco R. Bouckaert (2010) DensiTree: making sense of sets of phylogenetic
 #' trees \emph{Bioinformatics}, \bold{26 (10)}, 1372-1373.

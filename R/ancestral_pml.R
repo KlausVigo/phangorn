@@ -187,8 +187,8 @@ fitchCoding2ambiguous <- function(x, type = "DNA") {
 
 #' @rdname ancestral.pml
 #' @export
-ancestral.pars <- function(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"), cost = NULL,
-                           return = "prob") {
+ancestral.pars <- function(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"),
+                           cost = NULL, return = "prob") {
   call <- match.call()
   type <- match.arg(type)
   if (type == "ACCTRAN" || type=="POSTORDER") {

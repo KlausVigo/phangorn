@@ -19,8 +19,8 @@
 #' approach of Felsenstein (2001)
 ## or "free_rate" "gamma_unbiased".
 #' @param edge.length Total edge length (sum of all edges in a tree).
-#' @param discrete logical whether to plot discrete (default) or continuous pdf or
-#' cdf.
+#' @param discrete logical whether to plot discrete (default) or continuous pdf
+#' or cdf.
 #' @param cdf logical whether to plot the cumulative distribution function
 #' or density / probability function.
 #' @param append logical; if TRUE only add to an existing plot.
@@ -264,7 +264,8 @@ findRoots <- function(shape, ncats) {
   # bins roots normalized to 1 of the General Laguerre Polynomial (GLP)
   coeff  <- integer(ncats + 1)
   for (i in 0:ncats) {
-    coeff[i + 1] <- (-1)^i * exp(lchoose(ncats + shape, ncats - i) - lfactorial(i))
+    coeff[i + 1] <- (-1)^i * exp(lchoose(ncats + shape, ncats - i) -
+                                   lfactorial(i))
   }
   return(sort(Re(polyroot(coeff))))
 }

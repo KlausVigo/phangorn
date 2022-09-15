@@ -261,7 +261,8 @@ as.splits.prop.part <- function(x, ...) {
     attr(x, "weights") <- rep(1, length(x))
   else {
     attr(x, "weights") <- attr(x, "number")
-    if( is.integer(attr(x, "number")) )attr(x, "confidences") <- attr(x, "number") / attr(x, "number")[1]
+    if( is.integer(attr(x, "number")) )
+      attr(x, "confidences") <- attr(x, "number") / attr(x, "number")[1]
   }
   class(x) <- c("splits", "prop.part")
   x

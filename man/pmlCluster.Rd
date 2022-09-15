@@ -74,7 +74,8 @@ Phylogenetic Analyses. \emph{Molecular Biology and Evolution}, \bold{29(6)},
 1695-1701
 }
 \seealso{
-\code{\link{pml}},\code{\link{pmlPart}},\code{\link{pmlMix}},\code{\link{SH.test}}
+\code{\link{pml}},\code{\link{pmlPart}},\code{\link{pmlMix}},
+\code{\link{SH.test}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

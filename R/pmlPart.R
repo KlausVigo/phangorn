@@ -297,7 +297,8 @@ plot.pmlPart <- function(x, ...) {
 #' \code{"pmlPart"}}
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso
-#' \code{\link{pml}},\code{\link{pmlCluster}},\code{\link{pmlMix}},\code{\link{SH.test}}
+#' \code{\link{pml}},\code{\link{pmlCluster}},\code{\link{pmlMix}},
+#' \code{\link{SH.test}}
 #' @keywords cluster
 #' @examples
 #'
@@ -696,7 +697,8 @@ pmlCluster.fit <- function(formula, fit, weight, p = 4, part = NULL,
 #' during the optimization.} \item{fits}{fits for the final partitions}
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso
-#' \code{\link{pml}},\code{\link{pmlPart}},\code{\link{pmlMix}},\code{\link{SH.test}}
+#' \code{\link{pml}},\code{\link{pmlPart}},\code{\link{pmlMix}},
+#' \code{\link{SH.test}}
 #' @references K. P. Schliep (2009). Some Applications of statistical
 #' phylogenetics (PhD Thesis)
 #'

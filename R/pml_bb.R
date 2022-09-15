@@ -75,8 +75,8 @@ pml_bb <- function(x, model=NULL, rearrangement="stochastic",
   para <- split_model(model, type)
   if(type=="AA" && para$optFreq){
     fit <- optim.pml(fit, model=para$model, optGamma=para$optGamma,
-                     optInv=para$optInv, optBf=TRUE, rearrangement=rearrangement,
-                     optRate=optRate, optRooted=optRooted, ...)
+                  optInv=para$optInv, optBf=TRUE, rearrangement=rearrangement,
+                  optRate=optRate, optRooted=optRooted, ...)
   } else {
     fit <- optim.pml(fit, model=para$model, optGamma=para$optGamma,
                      optInv=para$optInv, rearrangement = rearrangement,
@@ -108,7 +108,7 @@ split_model <- function(x="GTR + G(4) + I", type="DNA"){
 
   optInv <- FALSE
   optGamma <- FALSE
-  k=1L
+  k <- 1L
   optFreq <- FALSE
   ASC <- FALSE
   if(length(m)>0){
