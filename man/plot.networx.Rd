@@ -75,8 +75,8 @@ labels.}
 \item{\dots}{Further arguments passed to or from other methods.}
 }
 \description{
-So far not all parameters behave the same on the the \code{rgl} \code{"3D"} and
-basic graphic \code{"2D"} device.
+So far not all parameters behave the same on the the \code{rgl} \code{"3D"}
+and basic graphic \code{"2D"} device.
 }
 \details{
 Often it is easier and safer to supply vectors of graphical parameters for

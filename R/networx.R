@@ -48,17 +48,7 @@ degree <- function(x){
 }
 
 
-#getIndex <- function(left, right, n) {
-#  if (n < max(left) | n < max(right)) stop("Error")
-#  left <- as.integer(left)
-#  right <- as.integer(right)
-#  ll <- length(left)
-#  lr <- length(right)
-#  .C("giveIndex", left, right, ll, lr, as.integer(n), integer(ll * lr))[[6]] + 1
-#}
-
-
-splits2design <- function(obj, weight = NULL) {
+splits2design <- function(obj, weight = NULL, x=TRUE) {
   labels <- attr(obj, "labels")
   m <- length(labels)
   n <- length(obj)
@@ -72,7 +62,8 @@ splits2design <- function(obj, weight = NULL) {
     if (p0[k] != 0) i[(p[k] + 1):p[k + 1]] <- getIndex(sp, l[-sp], m)
   }
   dims <- c(m * (m - 1) / 2, n)
-  sparseMatrix(i = i, p = p, x=1, dims = dims)
+  if(x) return(sparseMatrix(i = i, p = p, x=1, dims = dims) )
+  sparseMatrix(i = i, p = p, dims = dims)
 }
 
 
@@ -97,7 +88,6 @@ addEdge <- function(network, desc, spl) {
   g <- graph(t(edge), directed = FALSE)
   ind <- NULL
   for (i in 2:length(fromTo)) {
-    #sptmp <- shortest_paths(g, fromTo[i - 1], fromTo[i], output = c("epath"))$epath[[1]]
     d <- all_shortest_paths(g, fromTo[i - 1], fromTo[i])$res
     sptmp <- unlist( lapply(d, \(d) E(g, path=d)) )
     ind <- c(ind, sptmp) # [-c(1, length(sptmp))])
@@ -465,7 +455,8 @@ as.networx.phylo <- function(x, ...) {
 #' plot(cnet, type = "3D", show.tip.label=FALSE, show.nodes=TRUE)
 #' plot(cnet, type = "equal angle", show.edge.label=TRUE)
 #'
-#' tmpfile <- normalizePath(system.file("extdata/trees/RAxML_bootstrap.woodmouse", package="phangorn"))
+#' tmpfile <- normalizePath(system.file(
+#'               "extdata/trees/RAxML_bootstrap.woodmouse", package="phangorn"))
 #' trees <- read.tree(tmpfile)
 #' cnet_woodmouse <- consensusNet(trees, .3)
 #' plot(cnet_woodmouse, type = "equal angle", show.edge.label=TRUE)
@@ -534,15 +525,16 @@ createLabel <- function(x, y, label_y, type = "edge", nomatch = NA) {
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{as.splits}}, \code{\link{as.networx}},
 #' \code{\link{RF.dist}}, \code{\link{plot.phylo}}
-#' @references Schliep, K., Potts, A. J., Morrison, D. A. and Grimm, G. W. (2017),
-#' Intertwining phylogenetic trees and networks. \emph{Methods Ecol Evol}.
-#' \bold{8}, 1212--1220. doi:10.1111/2041-210X.12760
+#' @references Schliep, K., Potts, A. J., Morrison, D. A. and Grimm, G. W.
+#' (2017), Intertwining phylogenetic trees and networks.
+#' \emph{Methods Ecol Evol}.\bold{8}, 1212--1220. doi:10.1111/2041-210X.12760
 #' @keywords cluster
 #' @examples
 #'
 #' data(woodmouse)
 #' woodmouse <- phyDat(woodmouse)
-#' tmpfile <- normalizePath(system.file("extdata/trees/RAxML_bootstrap.woodmouse", package="phangorn"))
+#' tmpfile <- normalizePath(system.file(
+#'              "extdata/trees/RAxML_bootstrap.woodmouse", package="phangorn"))
 #' boot_trees <- read.tree(tmpfile)
 #'
 #' dm <- dist.ml(woodmouse)
@@ -872,8 +864,8 @@ edgeLabels <- function(xx, yy, zz = NULL, edge) {
 
 #' plot phylogenetic networks
 #'
-#' So far not all parameters behave the same on the the \code{rgl} \code{"3D"} and
-#' basic graphic \code{"2D"} device.
+#' So far not all parameters behave the same on the the \code{rgl} \code{"3D"}
+#' and basic graphic \code{"2D"} device.
 #'
 #' Often it is easier and safer to supply vectors of graphical parameters for
 #' splits (e.g. splits.color) than for edges. These overwrite values edge.color.
@@ -1202,7 +1194,8 @@ closest.node <- function(x, y, P) {
 #' @param \dots further arguments to be passed to or from other methods.
 #' @return \code{identify.networx} returns a splits object.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link[phangorn]{plot.networx}}, \code{\link[graphics]{identify}}
+#' @seealso \code{\link[phangorn]{plot.networx}},
+#'   \code{\link[graphics]{identify}}
 #' @examples
 #' \dontrun{
 #' data(yeast)
