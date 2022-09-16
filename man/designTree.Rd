@@ -13,7 +13,8 @@ designTree(tree, method = "unrooted", sparse = FALSE, tip.dates = NULL,
   ...)
 
 nnls.tree(dm, tree, method = c("unrooted", "ultrametric", "tipdated"),
-  trace = 1, weight = NULL, balanced = FALSE, tip.dates = NULL)
+  rooted = NULL, trace = 1, weight = NULL, balanced = FALSE,
+  tip.dates = NULL)
 
 nnls.phylo(x, dm, method = "unrooted", trace = 0, ...)
 
@@ -35,6 +36,8 @@ designSplits(x, splits = "all", ...)
 \item{\dots}{further arguments, passed to other methods.}
 
 \item{dm}{a distance matrix.}
+
+\item{rooted}{compute a "ultrametric" or "unrooted" tree (better use method).}
 
 \item{trace}{defines how much information is printed during optimization.}
 

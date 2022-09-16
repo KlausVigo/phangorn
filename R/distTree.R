@@ -145,12 +145,12 @@ UNJ <- function(x){
 #' computes a contrast matrix if the method is "rooted".
 #'
 #' @param tree an object of class \code{phylo}
-#' @param method design matrix for an "unrooted" or "rooted" ultrametric tree.
 #' @param sparse return a sparse design matrix.
 #' @param x number of taxa.
 #' @param splits one of "all", "star".
 #' @param dm a distance matrix.
 #' @param method compute an "unrooted", "ultrametric" or "tipdated" tree.
+#' @param rooted compute a "ultrametric" or "unrooted" tree (better use method).
 #' @param trace defines how much information is printed during optimization.
 #' @param \dots further arguments, passed to other methods.
 #' @param weight vector of weights to be used in the fitting process.
