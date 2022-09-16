@@ -379,6 +379,7 @@ acctran <- function(tree, data) {
 
 ptree <- function(tree, data, return = "prob", acctran=TRUE) {
   tree <- reorder(tree, "postorder")
+  data <- subset(data, tree$tip.label)
   edge <- tree$edge
   att <- attributes(data)
   nr <- att$nr
