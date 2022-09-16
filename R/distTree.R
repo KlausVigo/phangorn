@@ -364,7 +364,7 @@ designTipDated <- function(tree, tip.dates, sparse = TRUE){
 #' @rdname designTree
 #' @export
 nnls.tree <- function(dm, tree, method=c("unrooted", "ultrametric", "tipdated"),
-                      trace=1, weight=NULL, balanced=FALSE, tip.dates=NULL) {
+          rooted=NULL, trace=1, weight=NULL, balanced=FALSE, tip.dates=NULL) {
   method <- match.arg(method, c("unrooted", "ultrametric", "tipdated"))
   if (is.rooted(tree) && method == "unrooted") tree <- unroot(tree)
   tree <- reorder(tree, "postorder")
@@ -378,6 +378,10 @@ nnls.tree <- function(dm, tree, method=c("unrooted", "ultrametric", "tipdated"),
   dm <- dm[labels, labels]
   y <- dm[lower.tri(dm)]
   # computing the design matrix from the tree
+  if(!is.null(rooted)){
+    if(isTRUE(rooted)) method <- "ultrametric"
+    if(isFALSE(rooted)) method <- "unrooted"
+  }
   X <- switch(method,
               unrooted=designUnrooted2(tree),
               ultrametric=designUltra(tree),
