@@ -119,8 +119,8 @@ colours are recycled.</p></dd>
 
 
 <dt>font</dt>
-<dd><p>an integer specifying the type of font for the labels: 1 (plain text),
-2 (bold), 3 (italic, the default), or 4 (bold italic).</p></dd>
+<dd><p>an integer specifying the type of font for the labels:
+1 (plain text), 2 (bold), 3 (italic, the default), or 4 (bold italic).</p></dd>
 
 
 <dt>tip.color</dt>
@@ -142,8 +142,8 @@ should be written as spaces (the default) or left as are (if TRUE).</p></dd>
 
 
 <dt>label.offset</dt>
-<dd><p>a numeric giving the space between the nodes and the tips of the
-phylogeny and their corresponding labels.</p></dd>
+<dd><p>a numeric giving the space between the nodes and the tips
+of the phylogeny and their corresponding labels.</p></dd>
 
 
 <dt>scale.bar</dt>
@@ -165,21 +165,24 @@ jitter and random or equally spaced (see details below)</p></dd>
 and if the input trees have different labels a mrp.supertree as a backbone.
 This should avoid too many unnecessary crossings of edges.
 Trees should be rooted, other wise the output may not be visually pleasing.
-<code>jitter</code> shifts trees a bit so that they are not exactly on top of each other.
-If <code>amount == 0</code>, it is ignored. If <code>random=TRUE</code> the result of the permutation is
-<code>runif(n, -amount, amount)</code>, otherwise <code>seq(-amount, amount, length=n)</code>, where <code>n &lt;- length(x)</code>.</p>
+<code>jitter</code> shifts trees a bit so that they are not exactly on top of each
+other.
+If <code>amount == 0</code>, it is ignored. If <code>random=TRUE</code> the result of the
+permutation is <code>runif(n, -amount, amount)</code>, otherwise
+<code>seq(-amount, amount, length=n)</code>, where <code>n &lt;- length(x)</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>densiTree is inspired from the great
-<a href="https://www.cs.auckland.ac.nz/~remco/DensiTree/" class="external-link">DensiTree</a> program of Remco
-Bouckaert.</p>
+<a href="https://www.cs.auckland.ac.nz/~remco/DensiTree/" class="external-link">DensiTree</a> program of
+Remco Bouckaert.</p>
 <p>Remco R. Bouckaert (2010) DensiTree: making sense of sets of phylogenetic
 trees <em>Bioinformatics</em>, <b>26 (10)</b>, 1372-1373.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code>plot.phylo</code>, <code><a href="plot.networx.html">plot.networx</a></code>, <code><a href="https://rdrr.io/r/base/jitter.html" class="external-link">jitter</a></code></p></div>
+    <div class="dont-index"><p><code>plot.phylo</code>, <code><a href="plot.networx.html">plot.networx</a></code>,
+<code><a href="https://rdrr.io/r/base/jitter.html" class="external-link">jitter</a></code></p></div>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>

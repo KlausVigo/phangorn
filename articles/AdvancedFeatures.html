@@ -76,8 +76,8 @@
 
 
 
-
-<div class="row">
+<script src="AdvancedFeatures_files/htmlwidgets-1.5.4/htmlwidgets.js"></script><script src="AdvancedFeatures_files/viz-1.8.2/viz.js"></script><link href="AdvancedFeatures_files/DiagrammeR-styles-0.2/styles.css" rel="stylesheet">
+<script src="AdvancedFeatures_files/grViz-binding-1.0.9/grViz.js"></script><div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Advanced features</h1>
                         <h4 data-toc-skip class="author">Klaus Schliep</h4>
@@ -85,7 +85,7 @@
       Graz University of Technology<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2022-09-13</h4>
+            <h4 data-toc-skip class="date">2022-09-16</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/vignettes/AdvancedFeatures.Rmd" class="external-link"><code>vignettes/AdvancedFeatures.Rmd</code></a></small>
       <div class="d-none name"><code>AdvancedFeatures.Rmd</code></div>
@@ -109,7 +109,7 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/KlausVigo/phangorn" class="external-link">phangorn</a></span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Loading required package: ape</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">data</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"r"</span>,<span class="st">"a"</span>,<span class="st">"y"</span>,<span class="st">"g"</span>,<span class="st">"g"</span>,<span class="st">"a"</span>,<span class="st">"c"</span>,<span class="st">"-"</span>,<span class="st">"c"</span>,<span class="st">"t"</span>,<span class="st">"c"</span>,<span class="st">"g"</span>,</span>
+<code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"r"</span>,<span class="st">"a"</span>,<span class="st">"y"</span>,<span class="st">"g"</span>,<span class="st">"g"</span>,<span class="st">"a"</span>,<span class="st">"c"</span>,<span class="st">"-"</span>,<span class="st">"c"</span>,<span class="st">"t"</span>,<span class="st">"c"</span>,<span class="st">"g"</span>,</span>
 <span>    <span class="st">"a"</span>,<span class="st">"a"</span>,<span class="st">"t"</span>,<span class="st">"g"</span>,<span class="st">"g"</span>,<span class="st">"a"</span>,<span class="st">"t"</span>,<span class="st">"-"</span>,<span class="st">"c"</span>,<span class="st">"t"</span>,<span class="st">"c"</span>,<span class="st">"a"</span>,</span>
 <span>    <span class="st">"a"</span>,<span class="st">"a"</span>,<span class="st">"t"</span>,<span class="st">"-"</span>,<span class="st">"g"</span>,<span class="st">"a"</span>,<span class="st">"c"</span>,<span class="st">"c"</span>,<span class="st">"c"</span>,<span class="st">"t"</span>,<span class="st">"?"</span>,<span class="st">"g"</span><span class="op">)</span>,</span>
 <span>    dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"t1"</span>, <span class="st">"t2"</span>, <span class="st">"t3"</span><span class="op">)</span>,<span class="cn">NULL</span><span class="op">)</span>, nrow<span class="op">=</span><span class="fl">3</span>, byrow<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
@@ -120,13 +120,13 @@
 <span><span class="co">## t3 "a"  "a"  "t"  "-"  "g"  "a"  "c"  "c"  "c"  "t"   "?"   "g"</span></span></code></pre>
 <p>Normally we would transform this matrix into an phyDat object and gaps are handled as ambiguous character like “?”.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">gapsdata1</span> <span class="op">=</span> <span class="fu"><a href="../reference/as.phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">gapsdata1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
 <span><span class="va">gapsdata1</span></span></code></pre></div>
 <pre><code><span><span class="co">## 3 sequences with 12 character and 11 different site patterns.</span></span>
 <span><span class="co">## The states are a c g t</span></span></code></pre>
 <p>Now we will define a “USER” defined object and have to supply a vector levels of the character states for the new data, in our case the for nucleotide states and the gap. Additional we can define ambiguous states which can be any of the states.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">gapsdata2</span> <span class="op">=</span> <span class="fu"><a href="../reference/as.phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">data</span>, type<span class="op">=</span><span class="st">"USER"</span>, levels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>,<span class="st">"c"</span>,<span class="st">"g"</span>,<span class="st">"t"</span>,<span class="st">"-"</span><span class="op">)</span>,</span>
+<code class="sourceCode R"><span><span class="va">gapsdata2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">data</span>, type<span class="op">=</span><span class="st">"USER"</span>, levels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>,<span class="st">"c"</span>,<span class="st">"g"</span>,<span class="st">"t"</span>,<span class="st">"-"</span><span class="op">)</span>,</span>
 <span>    ambiguity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"?"</span>, <span class="st">"n"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning in phyDat.default(data, levels = levels, return.index = return.index, :</span></span>
 <span><span class="co">## Found unknown characters (not supplied in levels). Deleted sites with unknown</span></span>
@@ -137,7 +137,7 @@
 <span><span class="co">## The states are a c g t -</span></span></code></pre>
 <p>This is not yet what we wanted as two sites of our alignment, which contain the ambiguous characters “r” and “y”, got deleted. To define ambiguous characters like “r” and “y” explicitly we have to supply a contrast matrix similar to contrasts for factors.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">contrast</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,</span>
+<code class="sourceCode R"><span><span class="va">contrast</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,</span>
 <span>    <span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,</span>
 <span>    <span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">0</span>,</span>
 <span>    <span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>,</span>
@@ -147,7 +147,7 @@
 <span>    <span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span>,</span>
 <span>    <span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>,</span>
 <span>    ncol <span class="op">=</span> <span class="fl">5</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames</a></span><span class="op">(</span><span class="va">contrast</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>,<span class="st">"c"</span>,<span class="st">"g"</span>,<span class="st">"t"</span>,<span class="st">"r"</span>,<span class="st">"y"</span>,<span class="st">"-"</span>,<span class="st">"n"</span>,<span class="st">"?"</span><span class="op">)</span>,</span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames</a></span><span class="op">(</span><span class="va">contrast</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>,<span class="st">"c"</span>,<span class="st">"g"</span>,<span class="st">"t"</span>,<span class="st">"r"</span>,<span class="st">"y"</span>,<span class="st">"-"</span>,<span class="st">"n"</span>,<span class="st">"?"</span><span class="op">)</span>,</span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"c"</span>, <span class="st">"g"</span>, <span class="st">"t"</span>, <span class="st">"-"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">contrast</span></span></code></pre></div>
 <pre><code><span><span class="co">##   a c g t -</span></span>
@@ -161,7 +161,7 @@
 <span><span class="co">## n 1 1 1 1 0</span></span>
 <span><span class="co">## ? 1 1 1 1 1</span></span></code></pre>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">gapsdata3</span> <span class="op">=</span> <span class="fu"><a href="../reference/as.phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">data</span>, type<span class="op">=</span><span class="st">"USER"</span>, contrast<span class="op">=</span><span class="va">contrast</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">gapsdata3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">data</span>, type<span class="op">=</span><span class="st">"USER"</span>, contrast<span class="op">=</span><span class="va">contrast</span><span class="op">)</span></span>
 <span><span class="va">gapsdata3</span></span></code></pre></div>
 <pre><code><span><span class="co">## 3 sequences with 12 character and 11 different site patterns.</span></span>
 <span><span class="co">## The states are a c g t -</span></span></code></pre>
@@ -444,11 +444,97 @@ P(t) = (p_{ij}(t)) = e^{Qt}, \qquad \sum_j p_{ij}=1
 </tr>
 </tbody>
 </table>
+<div class="section level3">
+<h3 id="predefined-models-for-user-defined-data">Predefined models for user defined data<a class="anchor" aria-label="anchor" href="#predefined-models-for-user-defined-data"></a>
+</h3>
+<p>So far there are 4 models which are just a generalization from nucleotide models allowing different number of states. In many cases only the equal rates (ER) model will be apropriate.</p>
+<table class="table">
+<caption>Tab 2: Build in models which are available for USER defined data.</caption>
+<thead><tr class="header">
+<th>DNA</th>
+<th>USER</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>JC</td>
+<td>ER</td>
+</tr>
+<tr class="even">
+<td>F81</td>
+<td>FREQ</td>
+</tr>
+<tr class="odd">
+<td>SYM</td>
+<td>SYM</td>
+</tr>
+<tr class="even">
+<td>GTR</td>
+<td>GTR</td>
+</tr>
+</tbody>
+</table>
+<p>There is an additional model ORDERED, which assumes ordered characters and only allows to switch between neighboring states.</p>
+<div id="htmlwidget-b75c96e8dd8c12ad984b" style="width:576px;height:100px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b75c96e8dd8c12ad984b">{"x":{"diagram":"\n  digraph graph2 {\n  \n  graph [layout = dot, rankdir = LR]\n  \n  # node definitions with substituted label text\n  node [shape = oval]\n  a [label = \"a\"]\n  b [label = \"b\"]\n  c [label = \"c\"]\n  d [label = \"d\"]\n  e [label = \"e\"]\n  \n  a -> b -> c -> d -> e\n  e -> d -> c -> b -> a\n  }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script><p>And table 3 show the corresponding rate matrix.</p>
+<table class="table">
+<caption>Tab 3: Rate matrix for “ORDERED” model with 5 states.</caption>
+<thead><tr class="header">
+<th>a</th>
+<th>b</th>
+<th>c</th>
+<th>d</th>
+<th>e</th>
+<th></th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>a</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>b</td>
+<td>1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>c</td>
+<td>0</td>
+<td>1</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>d</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>e</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div class="section level2">
 <h2 id="codon-substitution-models">Codon substitution models<a class="anchor" aria-label="anchor" href="#codon-substitution-models"></a>
 </h2>
-<p>A special case of the transition rates are codon models._phangorn_ now offers the possibility to estimate the <span class="math inline">\(d_N/d_S\)</span> ratio (sometimes called ka/ks), for an overview see <span class="citation">(Yang 2014)</span>. These functions extend the option to estimates the <span class="math inline">\(d_N/d_S\)</span> ratio for pairwise sequence comparison as it is available through the function <code>kaks</code> in <em>seqinr</em>. The transition rate between between codon <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> is defined as follows: <span class="math display">\[\begin{eqnarray}
+<p>A special case of the transition rates are codon models. <em>phangorn</em> now offers the possibility to estimate the <span class="math inline">\(d_N/d_S\)</span> ratio (sometimes called ka/ks), for an overview see <span class="citation">(Yang 2014)</span>. These functions extend the option to estimates the <span class="math inline">\(d_N/d_S\)</span> ratio for pairwise sequence comparison as it is available through the function <code>kaks</code> in <em>seqinr</em>. The transition rate between between codon <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> is defined as follows: <span class="math display">\[\begin{eqnarray}
 q_{ij}=\left\{
     \begin{array}{l@{\quad}l}
          0 &amp; \textrm{if i and j differ in more than one position} \\
@@ -458,43 +544,76 @@ q_{ij}=\left\{
          \pi_j\omega\kappa &amp; \textrm{for non synonymous transition}
     \end{array}
     \right. \nonumber
-\end{eqnarray}\]</span> where <span class="math inline">\(\omega\)</span> is the <span class="math inline">\(d_N/d_S\)</span> ratio, <span class="math inline">\(\kappa\)</span> the transition transversion ratio and <span class="math inline">\(\pi_j\)</span> is the the equilibrium frequencies of codon <span class="math inline">\(j\)</span>. For <span class="math inline">\(\omega\sim1\)</span> the an amino acid change is neutral, for <span class="math inline">\(\omega &lt; 1\)</span> purifying selection and <span class="math inline">\(\omega &gt; 1\)</span> positive selection. There are four models available: “codon0”, where both parameter <span class="math inline">\(\kappa\)</span> and <span class="math inline">\(\omega\)</span> are fixed to 1, “codon1” where both parameters are estimated and “codon2” or “codon3” where <span class="math inline">\(\kappa\)</span> or <span class="math inline">\(\omega\)</span> is fixed to 1.</p>
-<p>We compute the <span class="math inline">\(d_N/d_S\)</span> for some sequences given a tree using the ML functions <code>pml</code> and <code>optim.pml</code>. First we have to transform the the nucleotide sequences into codons (so far the algorithms always takes triplets).</p>
+\end{eqnarray}\]</span></p>
+<p>where <span class="math inline">\(\omega\)</span> is the <span class="math inline">\(d_N/d_S\)</span> ratio, <span class="math inline">\(\kappa\)</span> the transition transversion ratio and <span class="math inline">\(\pi_j\)</span> is the the equilibrium frequencies of codon <span class="math inline">\(j\)</span>. For <span class="math inline">\(\omega\sim1\)</span> the an amino acid change is neutral, for <span class="math inline">\(\omega &lt; 1\)</span> purifying selection and <span class="math inline">\(\omega &gt; 1\)</span> positive selection.</p>
+<p>Here we use data set from and follow loosely the example in <span class="citation">(Bielawski and Yang 2005)</span>. We first read in an alignment and phylogenetic tree for 45 sequences of the nef Gene in the Human HIV-2 Genome using <code>read.phyDat</code> function.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/KlausVigo/phangorn" class="external-link">phangorn</a></span><span class="op">)</span></span>
-<span><span class="va">fdir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/trees"</span>, package <span class="op">=</span> <span class="st">"phangorn"</span><span class="op">)</span></span>
-<span><span class="va">primates</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read.phyDat.html">read.phyDat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">fdir</span>, <span class="st">"primates.dna"</span><span class="op">)</span>,</span>
-<span>                        format <span class="op">=</span> <span class="st">"interleaved"</span><span class="op">)</span></span>
-<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NJ.html">NJ</a></span><span class="op">(</span><span class="fu"><a href="../reference/dist.hamming.html">dist.ml</a></span><span class="op">(</span><span class="va">primates</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dna2codon.html">dna2codon</a></span><span class="op">(</span><span class="va">primates</span><span class="op">)</span></span>
-<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">pml</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">dat</span>, bf<span class="op">=</span><span class="st">"F3x4"</span><span class="op">)</span></span>
-<span><span class="va">fit0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, model<span class="op">=</span><span class="st">"codon0"</span>, control<span class="op">=</span><span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">fit1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, model<span class="op">=</span><span class="st">"codon1"</span>, control<span class="op">=</span><span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, model<span class="op">=</span><span class="st">"codon2"</span>, control<span class="op">=</span><span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">fit3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, model<span class="op">=</span><span class="st">"codon3"</span>, control<span class="op">=</span><span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova</a></span><span class="op">(</span><span class="va">fit0</span>, <span class="va">fit2</span>, <span class="va">fit3</span>, <span class="va">fit1</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Likelihood Ratio Test Table</span></span>
-<span><span class="co">##   Log lik. Df Df change Diff log lik. Pr(&gt;|Chi|)    </span></span>
-<span><span class="co">## 1    -2867 34                                       </span></span>
-<span><span class="co">## 2    -2866 35         1             2       0.14    </span></span>
-<span><span class="co">## 3    -2522 35         0           688     &lt;2e-16 ***</span></span>
-<span><span class="co">## 4    -2521 36         1             2       0.20    </span></span>
-<span><span class="co">## ---</span></span>
-<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre>
-<p>There are several ways to estimate the codon frequencies <span class="math inline">\(\pi_j\)</span>. The simplest model is to assume they have equal frequencies (=1/61). A second is to use the empirical codon frequencies, either computed using <code>baseFreq</code> or using the argument <code>bf="empirical"</code> in <code>pml</code>. Last but not least the frequencies can be derived from the base frequencies at each codon position, the F3x4 model is set by the argument <code>bf="F3x4"</code>. One can estimate the codon frequencies setting the option to <code>optBf=TRUE</code> in <code>optim.pml</code>. As the convergence of the 60 parameters the convergence is likely slow set the maximal iterations to a higher value than the default (e.g. <code>control = pml.control(maxit=50)</code>). Similar parameters of the F3x4 can also estimated using ML <code>optF3x4=TRUE</code> instead.</p>
-<p>The “YN98” model <span class="citation">(Yang and Nielsen 1998)</span> is similar to the “codon1”, but additional optimizes the codon frequencies.</p>
+<code class="sourceCode R"><span><span class="va">fdir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/trees"</span>, package <span class="op">=</span> <span class="st">"phangorn"</span><span class="op">)</span></span>
+<span><span class="va">hiv_2_nef</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read.phyDat.html">read.phyDat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">fdir</span>, <span class="st">"seqfile.txt"</span><span class="op">)</span>, format<span class="op">=</span><span class="st">"sequential"</span><span class="op">)</span></span>
+<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html" class="external-link">read.tree</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">fdir</span>, <span class="st">"tree.txt"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>With the tree and data set we can estimate currently 3 different site models:</p>
+<ol style="list-style-type: decimal">
+<li>The M0 model with a constant <span class="math inline">\(\omega\)</span>, where <span class="math inline">\(\omega\)</span> estimates the average over all sites of the alignment. M0 does not allow for distinct <span class="math inline">\(\omega\)</span> and identify classes, therefore we will not retrieve any information regards positive selection.<br>
+</li>
+<li>The M1a or nearly neutral model estimates two different <span class="math inline">\(\omega\)</span> value classes (<span class="math inline">\(\omega=1\)</span> &amp; <span class="math inline">\(\omega&lt;1\)</span>).</li>
+<li>The M2a or positive selection model estimates three different classes of <span class="math inline">\(\omega\)</span> (negative selection <span class="math inline">\(\omega&lt;1\)</span>, neutral selection <span class="math inline">\(\omega=1\)</span>, positive selection <span class="math inline">\(\omega&gt;1\)</span>). One can use a likelihood ratio test to compare the M1a and M2a to for positive selection.</li>
+</ol>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cdn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/codonTest.html">codonTest</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">hiv_2_nef</span><span class="op">)</span></span>
+<span><span class="va">cdn</span></span></code></pre></div>
+<pre><code><span><span class="co">##   model Frequencies  estimate logLik  df   AIC   BIC  dnds_0 dnds_1 dnds_2</span></span>
+<span><span class="co">## 1    M0        F3x4 empirical  -9773  98 19741 20087 0.50486     NA     NA</span></span>
+<span><span class="co">## 2   M1a        F3x4 empirical  -9313  99 18824 19168 0.06282      1     NA</span></span>
+<span><span class="co">## 3   M2a        F3x4 empirical  -9244 101 18689 19040 0.05551      1  2.469</span></span>
+<span><span class="co">##      p_0    p_1    p_2  tstv</span></span>
+<span><span class="co">## 1 1.0000     NA     NA 4.418</span></span>
+<span><span class="co">## 2 0.5564 0.4436     NA 4.364</span></span>
+<span><span class="co">## 3 0.5227 0.3617 0.1156 4.849</span></span></code></pre>
+<p>Currently the choice of site models is limited to the three models mentioned above and are no branch models implemented so far.</p>
+<p>We can identify sites under positive selection using the Na"ive empirical Bayes (NEB) method of (Nielsen and Yang 1998): <span class="math display">\[
+P(\omega|x_h) = \frac{P(X_h|\omega_i)p_i}{P(X_h)} =
+\frac{P(X_h|\omega_i)p_i}{\sum_j P(X_h|\omega_j)p_j}
+\]</span></p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cdn</span>, <span class="st">"M1a"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="AdvancedFeatures_files/figure-html/plot%20codon-1.png" width="576"></p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cdn</span>, <span class="st">"M2a"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="AdvancedFeatures_files/figure-html/plot%20codon-2.png" width="576"></p>
+<p>A lot if implementations differ in the way the codon frequencies are derived. The M0 model can be also estimated using <code>pml</code> and <code>optim.pml</code> functions. There are several ways to estimate the codon frequencies <span class="math inline">\(\pi_j\)</span>. The simplest model is to assume they have equal frequencies (=1/61). A second is to use the empirical codon frequencies, either computed using <code>baseFreq</code> or using the argument <code>bf="empirical"</code> in <code>pml</code>. This is usually not really good as some codon are rare and have a high variance. One can estimate the frequencies from nucleotide frequencies with the F1x4 model. Last but not least the frequencies can be derived from the base frequencies at each codon position, the F3x4 model is set by the argument <code>bf="F3x4"</code>.</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">treeM0</span> <span class="op">&lt;-</span> <span class="va">cdn</span><span class="op">$</span><span class="va">estimates</span><span class="op">[[</span><span class="st">"M0"</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">tree</span> <span class="co"># tree with edge lengths</span></span>
+<span><span class="va">M0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">pml</a></span><span class="op">(</span><span class="va">treeM0</span>, <span class="fu"><a href="../reference/dna2codon.html">dna2codon</a></span><span class="op">(</span><span class="va">hiv_2_nef</span><span class="op">)</span>, bf<span class="op">=</span><span class="st">"F3x4"</span><span class="op">)</span></span>
+<span><span class="va">M0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">M0</span>, model<span class="op">=</span><span class="st">"codon1"</span>, control<span class="op">=</span><span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">M0</span></span></code></pre></div>
+<pre><code><span><span class="co">## model: codon1 </span></span>
+<span><span class="co">## loglikelihood: -9773 </span></span>
+<span><span class="co">## unconstrained loglikelihood: -1372 </span></span>
+<span><span class="co">## dn/ds: 0.5049 </span></span>
+<span><span class="co">## ts/tv: 4.418 </span></span>
+<span><span class="co">## Freq: F3x4</span></span></code></pre>
+<p>For the F3x4 model can optimize the codon frequencies setting the option to <code>optBf=TRUE</code> in <code>optim.pml</code>.</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">M0_opt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">M0</span>, model<span class="op">=</span><span class="st">"codon1"</span>, optBf<span class="op">=</span><span class="cn">TRUE</span>, control<span class="op">=</span><span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">M0_opt</span></span></code></pre></div>
+<pre><code><span><span class="co">## model: codon1 </span></span>
+<span><span class="co">## loglikelihood: -9668 </span></span>
+<span><span class="co">## unconstrained loglikelihood: -1372 </span></span>
+<span><span class="co">## dn/ds: 0.51 </span></span>
+<span><span class="co">## ts/tv: 4.581 </span></span>
+<span><span class="co">## Freq: F3x4</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="generating-trees">Generating trees<a class="anchor" aria-label="anchor" href="#generating-trees"></a>
 </h2>
 <p><em>phangorn</em> has several functions to generate tree topologies, which may are interesting for simulation studies. <code>allTrees</code> computes all possible bifurcating tree topologies either rooted or unrooted for up to 10 taxa. One has to keep in mind that the number of trees is growing exponentially, use <code>howmanytrees</code> from <em>ape</em> as a reminder.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trees</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/allTrees.html">allTrees</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">5</span><span class="op">)</span>, mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">15</span><span class="op">)</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">trees</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>, cex<span class="op">=</span><span class="fl">1</span>, type<span class="op">=</span><span class="st">"u"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="AdvancedFeatures_files/figure-html/unnamed-chunk-3-1.png" width="576"></p>
+<p><img src="AdvancedFeatures_files/figure-html/allTrees-1.png" width="576"></p>
 <p><code>nni</code> returns a list of all trees which are one nearest neighbor interchange away.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/nni.html">nni</a></span><span class="op">(</span><span class="va">trees</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 4 phylogenetic trees</span></span></code></pre>
 <p><code>rNNI</code> and <code>rSPR</code> generate trees which are a defined number of NNI (nearest neighbor interchange) or SPR (subtree pruning and regrafting) away.</p>
@@ -523,22 +642,27 @@ q_{ij}=\left\{
 <span><span class="co">## [1] phangorn_2.9.0.9000 ape_5.6-2          </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] Rcpp_1.0.9        highr_0.9         bslib_0.4.0       compiler_4.2.1   </span></span>
-<span><span class="co">##  [5] jquerylib_0.1.4   prettydoc_0.4.1   tools_4.2.1       digest_0.6.29    </span></span>
-<span><span class="co">##  [9] jsonlite_1.8.0    evaluate_0.16     memoise_2.0.1     nlme_3.1-157     </span></span>
-<span><span class="co">## [13] lattice_0.20-45   pkgconfig_2.0.3   rlang_1.0.5       Matrix_1.4-1     </span></span>
-<span><span class="co">## [17] fastmatch_1.1-3   igraph_1.3.4      cli_3.4.0         yaml_2.3.5       </span></span>
-<span><span class="co">## [21] parallel_4.2.1    pkgdown_2.0.6     xfun_0.33         fastmap_1.1.0    </span></span>
-<span><span class="co">## [25] stringr_1.4.1     knitr_1.40        desc_1.4.2        generics_0.1.3   </span></span>
-<span><span class="co">## [29] fs_1.5.2          sass_0.4.2        systemfonts_1.0.4 rprojroot_2.0.3  </span></span>
-<span><span class="co">## [33] grid_4.2.1        R6_2.5.1          textshaping_0.3.6 rmarkdown_2.16   </span></span>
-<span><span class="co">## [37] purrr_0.3.4       magrittr_2.0.3    codetools_0.2-18  htmltools_0.5.3  </span></span>
-<span><span class="co">## [41] quadprog_1.5-8    ragg_1.2.2        stringi_1.7.8     cachem_1.0.6</span></span></code></pre>
+<span><span class="co">##  [1] Rcpp_1.0.9         highr_0.9          RColorBrewer_1.1-3 bslib_0.4.0       </span></span>
+<span><span class="co">##  [5] compiler_4.2.1     jquerylib_0.1.4    prettydoc_0.4.1    tools_4.2.1       </span></span>
+<span><span class="co">##  [9] digest_0.6.29      jsonlite_1.8.0     evaluate_0.16      memoise_2.0.1     </span></span>
+<span><span class="co">## [13] nlme_3.1-157       lattice_0.20-45    pkgconfig_2.0.3    rlang_1.0.5       </span></span>
+<span><span class="co">## [17] Matrix_1.4-1       fastmatch_1.1-3    igraph_1.3.4       rstudioapi_0.14   </span></span>
+<span><span class="co">## [21] cli_3.4.0          yaml_2.3.5         parallel_4.2.1     pkgdown_2.0.6     </span></span>
+<span><span class="co">## [25] xfun_0.33          fastmap_1.1.0      DiagrammeR_1.0.9   stringr_1.4.1     </span></span>
+<span><span class="co">## [29] knitr_1.40         htmlwidgets_1.5.4  desc_1.4.2         generics_0.1.3    </span></span>
+<span><span class="co">## [33] fs_1.5.2           sass_0.4.2         systemfonts_1.0.4  rprojroot_2.0.3   </span></span>
+<span><span class="co">## [37] grid_4.2.1         glue_1.6.2         R6_2.5.1           textshaping_0.3.6 </span></span>
+<span><span class="co">## [41] rmarkdown_2.16     purrr_0.3.4        magrittr_2.0.3     codetools_0.2-18  </span></span>
+<span><span class="co">## [45] htmltools_0.5.3    quadprog_1.5-8     ragg_1.2.2         stringi_1.7.8     </span></span>
+<span><span class="co">## [49] visNetwork_2.1.0   cachem_1.0.6</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Bielawski2005" class="csl-entry">
+Bielawski, Joseph P., and Ziheng Yang. 2005. <span>“Maximum Likelihood Methods for Detecting Adaptive Protein Evolution.”</span> In <em>Statistical Methods in Molecular Evolution</em>, 103–24. New York, NY: Springer New York. <a href="https://doi.org/10.1007/0-387-27733-1_5" class="external-link">https://doi.org/10.1007/0-387-27733-1_5</a>.
+</div>
 <div id="ref-Jukes1969" class="csl-entry">
 Jukes, Thomas H., and Charles R. Cantor. 1969. <span>“{CHAPTER} 24 - Evolution of Protein Molecules.”</span> In <em>Mammalian Protein Metabolism</em>, edited by H. N. Munro, 21–132. Academic Press.
 </div>
@@ -556,9 +680,6 @@ Warnow, Tandy. 2012. <span>“Standard Maximum Likelihood Analyses of Alignments
 </div>
 <div id="ref-Yang2014" class="csl-entry">
 Yang, Ziheng. 2014. <em>Molecular Evolution: A Statistical Approach</em>. Oxford: Oxford University Press.
-</div>
-<div id="ref-Yang1998" class="csl-entry">
-Yang, Ziheng, and Rasmus Nielsen. 1998. <span>“Synonymous and Nonsynonymous Rate Variation in Nuclear Genes of Mammals.”</span> <em>Journal of Molecular Evolution</em> 46 (4): 409–18. <a href="https://doi.org/10.1007/PL00006320" class="external-link">https://doi.org/10.1007/PL00006320</a>.
 </div>
 </div>
 </div>
