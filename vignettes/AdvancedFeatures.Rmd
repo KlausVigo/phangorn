@@ -191,29 +191,7 @@ So far there are 4 models which are just a generalization from nucleotide models
  GTR |  GTR
 : Tab 2: Build in models which are available for USER defined data.
  
-There is an additional model ORDERED, which assumes ordered characters and only allows to switch between neighboring states. 
-
-
-```{r, echo=FALSE}
-DiagrammeR::grViz("
-  digraph graph2 {
-  
-  graph [layout = dot, rankdir = LR]
-  
-  # node definitions with substituted label text
-  node [shape = oval]
-  a [label = 'a']
-  b [label = 'b']
-  c [label = 'c']
-  d [label = 'd']
-  e [label = 'e']
-  
-  a -> b -> c -> d -> e
-  e -> d -> c -> b -> a
-  }",
-  height = 100)
-```
-And table 3 show the corresponding rate matrix. 
+There is an additional model ORDERED, which assumes ordered characters and only allows to switch between neighboring states. Table 3 show the corresponding rate matrix. 
 
 
   | a | b | c | d | e 
