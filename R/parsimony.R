@@ -435,7 +435,7 @@ optim.parsimony <- function(tree, data, method = "fitch", cost = NULL,
 #' @rdname parsimony
 #' @export
 pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
-                     minit = 100, k = 10, trace = 1, all = TRUE,
+                     minit = 100, k = 10, trace = 1, all = FALSE,
                      rearrangements = "SPR", perturbation = "ratchet", ...) {
   eps <- 1e-08
   trace <- trace - 1

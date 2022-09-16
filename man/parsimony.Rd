@@ -23,8 +23,8 @@ optim.parsimony(tree, data, method = "fitch", cost = NULL, trace = 1,
   rearrangements = "SPR", ...)
 
 pratchet(data, start = NULL, method = "fitch", maxit = 1000,
-  minit = 100, k = 10, trace = 1, all = TRUE, rearrangements = "SPR",
-  perturbation = "ratchet", ...)
+  minit = 100, k = 10, trace = 1, all = FALSE,
+  rearrangements = "SPR", perturbation = "ratchet", ...)
 
 sankoff(tree, data, cost = NULL, site = "pscore")
 }
