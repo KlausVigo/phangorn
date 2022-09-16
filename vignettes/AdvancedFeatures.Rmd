@@ -192,7 +192,8 @@ So far there are 4 models which are just a generalization from nucleotide models
 : Tab 2: Build in models which are available for USER defined data.
  
 There is an additional model ORDERED, which assumes ordered characters and only allows to switch between neighboring states. 
-<!-- your comment 
+
+
 ```{r, echo=FALSE}
 DiagrammeR::grViz("
   digraph graph2 {
@@ -213,7 +214,7 @@ DiagrammeR::grViz("
   height = 100)
 ```
 And table 3 show the corresponding rate matrix. 
--->
+
 
   | a | b | c | d | e 
 --|---|---|---|---|----
@@ -260,7 +261,7 @@ With the tree and data set we can estimate currently 3 different site models:
 (negative selection $\omega<1$, neutral selection $\omega=1$, positive selection $\omega>1$).
 One can use a likelihood ratio test to compare the M1a and M2a to for positive selection. 
 
-```{R codonTest, cache=TRUE}
+```{R codonTest}
 cdn <- codonTest(tree, hiv_2_nef)
 cdn
 ```
@@ -273,17 +274,16 @@ P(\omega|x_h) = \frac{P(X_h|\omega_i)p_i}{P(X_h)} =
 \frac{P(X_h|\omega_i)p_i}{\sum_j P(X_h|\omega_j)p_j}
 \]
 
-<!-- 
 ```{R plot codon}
 plot(cdn, "M1a")
 plot(cdn, "M2a")
 ```
--->
 
 A lot if implementations differ in the way the codon frequencies are derived. The M0 model can be also estimated using `pml` and `optim.pml` functions. There are several ways to estimate the codon frequencies $\pi_j$. The simplest model is to assume they have equal frequencies (=1/61). A second is to use the empirical codon frequencies, either computed using `baseFreq` or using the argument `bf="empirical"` in `pml`. This is usually not really good as some codon are rare and have a high variance. One can estimate the frequencies from nucleotide frequencies with the F1x4 model. Last but not least the frequencies can be derived from the base frequencies at each codon position, the F3x4 model is set by the argument `bf="F3x4"`.
+
 ```{r M0}
 treeM0 <- cdn$estimates[["M0"]]$tree # tree with edge lengths
-M0 <- pml(tree, dna2codon(hiv_2_nef), bf="F3x4")
+M0 <- pml(treeM0, dna2codon(hiv_2_nef), bf="F3x4")
 M0 <- optim.pml(M0, model="codon1", control=pml.control(trace=0))
 M0
 ```
