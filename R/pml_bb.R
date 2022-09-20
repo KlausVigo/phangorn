@@ -91,7 +91,7 @@ pml_bb <- function(x, model=NULL, rearrangement="stochastic",
 #' @export pml
 split_model <- function(x="GTR + G(4) + I", type="DNA"){
   mods <- NULL
-  site_model <- NULL
+  site_model <- "gamma"
   if(type=="DNA") mods <- .dnamodels
   if(type=="AA") mods <- .aamodels
   if(type=="USER") mods <- .usermodels
@@ -115,7 +115,6 @@ split_model <- function(x="GTR + G(4) + I", type="DNA"){
   if(length(m)>0){
     pos <- grep("G\\(", m)
     if(length(pos)==1){
-      site_model <- "gamma"
       optGamma <- TRUE
       k_tmp <- sub("G\\(", "", m[pos])
       k_tmp <- sub("\\)", "", k_tmp)

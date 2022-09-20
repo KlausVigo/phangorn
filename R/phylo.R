@@ -649,7 +649,10 @@ guess_model <- function(x){
     else if(bf==FALSE && Q==FALSE){ model <- "Mk"}
     else {model <- "UNKNOWN"}
   }
-  if(x$k > 1) model <- paste0(model, "+G(", x$k, ")")
+  if(x$k > 1) {
+    if(x$site.rate=="free_rate") model <- paste0(model, "+R(", x$k, ")")
+    else model <- paste0(model, "+G(", x$k, ")")
+  }
   if(x$inv>0) model <- paste0(model, "+I")
   model
 }
@@ -1394,8 +1397,7 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     w <- (1 - inv) * w
     g <- g / (1 - inv)
   }
-  if (wMix > 0)
-    w <- (1 - wMix) * w
+  if (wMix > 0) w <- (1 - wMix) * w
   g <- g * rate
 
   inv0 <- inv
@@ -1438,7 +1440,7 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     Q = Q, bf = bf, rate = rate, siteLik = tmp$siteLik, weight = weight,
     g = g, w = w, eig = eig, data = data, model = model, INV = INV,
     ll.0 = ll.0, tree = tree, lv = tmp$resll, call = call, df = df, wMix = wMix,
-    llMix = llMix, ASC=ASC, site.rate=site.rate) #
+    llMix = llMix, ASC=ASC, site.rate=site.rate)
   if (type == "CODON") {
     result$dnds <- dnds
     result$tstv <- tstv
@@ -1485,7 +1487,7 @@ optimRooted <- function(tree, data, bf, g, w, eig, ll.0, INV=NULL,
   }
   # ensure that each edge is at least tau long
   # tips have the same height
-  tree <- minEdge(tree, tau)
+  tree <- minEdge(tree, tau) # 2*tau??
 
   parent <- tree$edge[, 1]
   child <- tree$edge[, 2]
