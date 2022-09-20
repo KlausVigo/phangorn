@@ -66,7 +66,7 @@ pml_bb <- function(x, model=NULL, rearrangement="stochastic",
       stop("Please supply a model!")
     } else {
       para <- split_model(x=model, type=type)
-      fit <- pml(start, x, k=para$k, ASC=para$ASC)
+      fit <- pml(start, x, k=para$k, ASC=para$ASC, site.rate = para$site_model)
     }
     if(method=="tipdated" && !is.null(attr(start, "rate")))
       fit <- update(fit, rate=attr(start, "rate"))
@@ -91,6 +91,7 @@ pml_bb <- function(x, model=NULL, rearrangement="stochastic",
 #' @export pml
 split_model <- function(x="GTR + G(4) + I", type="DNA"){
   mods <- NULL
+  site_model <- NULL
   if(type=="DNA") mods <- .dnamodels
   if(type=="AA") mods <- .aamodels
   if(type=="USER") mods <- .usermodels
@@ -114,8 +115,20 @@ split_model <- function(x="GTR + G(4) + I", type="DNA"){
   if(length(m)>0){
     pos <- grep("G\\(", m)
     if(length(pos)==1){
+      site_model <- "gamma"
       optGamma <- TRUE
       k_tmp <- sub("G\\(", "", m[pos])
+      k_tmp <- sub("\\)", "", k_tmp)
+      k <- as.integer(k_tmp)
+      m <- m[-pos]
+    }
+  }
+  if(length(m)>0){
+    pos <- grep("R\\(", m)
+    if(length(pos)==1){
+      site_model <- "free_rate"
+      optGamma <- TRUE
+      k_tmp <- sub("R\\(", "", m[pos])
       k_tmp <- sub("\\)", "", k_tmp)
       k <- as.integer(k_tmp)
       m <- m[-pos]
@@ -143,5 +156,5 @@ split_model <- function(x="GTR + G(4) + I", type="DNA"){
     }
   }
   list(model=model, optFreq=optFreq, optInv=optInv, optGamma=optGamma, k=k,
-       ASC=ASC)
+       ASC=ASC, site_model=site_model)
 }
