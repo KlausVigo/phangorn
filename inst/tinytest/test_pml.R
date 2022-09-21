@@ -128,7 +128,7 @@ expect_error(pml_bb(dat, model="GTR", method="tipdated"))
 #    expect_equal(discrete.gamma(2,4), fit.freerate$g, tolerance=1e-4)
     expect_equal(logLik(fit.freerate),
                  logLik(pml(treeU1, dat_tmp, shape=shape, k=4)))
-    expect_equal(guess_model(fit.freerate), "JC+R(4)")
+    expect_equal(phangorn:::guess_model(fit.freerate), "JC+R(4)")
 
 # test rate optimisation
     rate <- 2
