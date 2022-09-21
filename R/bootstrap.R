@@ -286,7 +286,7 @@ checkLabels <- function(tree, tip) {
 #' plotBS(raxml.tree,  raxml.bootstrap, "p")
 #' plotBS(raxml.tree,  raxml.bootstrap, "p", "TBE")
 #' @export
-plotBS <- function(tree, BStrees, type = "unrooted",
+plotBS <- function(tree, BStrees, type = "phylogram",
                    method="FBP", bs.col = "black",
                    bs.adj = NULL, digits=3, p = 0, frame = "none", ...) {
   type <- match.arg(type, c("phylogram", "cladogram", "fan", "unrooted",

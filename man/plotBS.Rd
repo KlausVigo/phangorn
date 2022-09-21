@@ -4,7 +4,7 @@
 \alias{plotBS}
 \title{Plotting trees with bootstrap values}
 \usage{
-plotBS(tree, BStrees, type = "unrooted", method = "FBP",
+plotBS(tree, BStrees, type = "phylogram", method = "FBP",
   bs.col = "black", bs.adj = NULL, digits = 3, p = 0, frame = "none",
   ...)
 }
