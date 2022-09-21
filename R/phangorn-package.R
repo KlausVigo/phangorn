@@ -66,3 +66,32 @@ NULL
 
 
 
+#' Morphological characters of Mites (Schäffer et al. 2010)
+#'
+#' Matrix for morphological characters and character states for 12 species of
+#' mites.
+#'
+#' @name mites
+#' @docType data
+#' @references Schäffer, S., Pfingstl, T., Koblmüller, S., Winkler, K. A.,
+#' Sturmbauer, C., & Krisper, G. (2010). Phylogenetic analysis of European
+#' Scutovertex mites (Acari, Oribatida, Scutoverticidae) reveals paraphyly and
+#' cryptic diversity: a molecular genetic and morphological approach.
+#' \emph{Molecular Phylogenetics and Evolution}, \bold{55(2)}, 677--688.
+#' @keywords datasets
+#' @examples
+#' data(mites)
+#' str(mites)
+#' # transform matrix to a phyDat object
+#' mites_pd <- phyDat(mites, type="USER", levels=0:7)
+#' # infer all maximum parsimony trees
+#' trees <- bab(mites_pd)
+#' # For larger data sets you might use pratchet instead bab
+#' # trees <- pratchet(mites_pd, minit=200, trace=0, all=TRUE)
+#' # build consensus tree
+#' ctree <- root(consensus(trees, p=.5), outgroup = "C._cymba",
+#'               resolve.root=TRUE, edgelabel=TRUE)
+#' plotBS(ctree, trees)
+#' cnet <- consensusNet(trees)
+#' plot(cnet)
+NULL
