@@ -40,6 +40,11 @@ starting tree. If a modelTest object is supplied the model will be chosen
 according to BIC.
 
 Currently very experimental and likely to change.
+
+\code{tip.dates} should be a named vector of sampling times, in any time
+unit, with time increasing toward the present. For example, this may be in
+units of “days since study start” or “years since 10,000 BCE”, but not
+“millions of yearsago”.
 }
 \examples{
 
