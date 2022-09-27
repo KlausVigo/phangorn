@@ -1025,8 +1025,8 @@ pml.fit4 <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #' @param ASC ascertainment bias correction (ASC), allows to estimate models
 #' like Lewis' Mkv.
 #' @param site.rate Indicates what type of gamma distribution to use. Options
-#' are "gamma" approach of Yang 1994 (default), "quadrature" after the Laguerre
-#' quadrature approach of Felsenstein 2001 and "freerate" .
+#' are "gamma" approach of Yang 1994 (default), "gamma_quadrature" after the
+#' Laguerre quadrature approach of Felsenstein 2001 and "freerate".
 ## or "lognormal" after a lognormal quadrature approach.
 #' @return \code{pml.fit} returns the log-likelihood.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
@@ -1186,8 +1186,8 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #' @param model allows to choose an amino acid models or nucleotide model, see
 #' details.
 #' @param site.rate Indicates what type of gamma distribution to use. Options
-#' are "gamma" approach of Yang 1994 (default), "quadrature" after the Laguerre
-#' quadrature approach of Felsenstein 2001 or "freerate".
+#' are "gamma" approach of Yang 1994 (default), ""gamma_quadrature"" after the
+#' Laguerre quadrature approach of Felsenstein 2001 or "freerate".
 ## or "lognormal" after a lognormal
 #' @param object An object of class \code{pml}.
 #' @param optNni Logical value indicating whether topology gets optimized (NNI).
