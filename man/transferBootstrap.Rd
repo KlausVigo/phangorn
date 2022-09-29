@@ -41,7 +41,7 @@ phylogenetic bootstrap in the era of big data. \emph{Nature},
 \bold{556(7702)}, 452--456.
 }
 \seealso{
-\code{\link{plotBS}},
+\code{\link{plotBS}}, \code{\link{maxCladeCred}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

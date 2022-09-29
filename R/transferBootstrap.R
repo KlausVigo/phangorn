@@ -11,7 +11,7 @@
 #' \code{BSTrees} is optional and if not supplied the labels supplied
 #' in the \code{node.label} slot will be used.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso  \code{\link{plotBS}},
+#' @seealso  \code{\link{plotBS}}, \code{\link{maxCladeCred}}
 #' @references Lemoine, F., Entfellner, J. B. D., Wilkinson, E., Correia, D.,
 #' Felipe, M. D., De Oliveira, T., & Gascuel, O. (2018). Renewing Felsenstein’s
 #' phylogenetic bootstrap in the era of big data. \emph{Nature},
