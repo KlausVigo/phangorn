@@ -50,6 +50,7 @@ candidate_tree <- function(x, method=c("unrooted", "ultrametric", "tipdated"),
     tree <- rtt(tree, tip.dates[tree$tip.label])
     tree <- nnls.tree(dm, tree, method = "tipdated",
                       tip.dates=tip.dates[tree$tip.label])
+    tree$tip.dates <- tip.dates[tree$tip.label]
   }
   minEdge(tree, tau=eps, enforce_ultrametric=enforce_ultrametric)
 }
