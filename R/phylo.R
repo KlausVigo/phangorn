@@ -1135,7 +1135,7 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #'
 #' \code{pml} computes the likelihood of a phylogenetic tree given a sequence
 #' alignment and a model. \code{optim.pml} optimizes the different model
-#' parameters.
+#' parameters. For a more user-friendly interface see \code{\link{optim.bb}}.
 #'
 #' Base frequencies in \code{pml} can be supplied in different ways.
 #' For amino acid they are usually defined through specifying a model, so the
@@ -1456,7 +1456,7 @@ optimRooted <- function(tree, data, bf, g, w, eig, ll.0, INV=NULL,
                                               trace = 0), ...) {
   nTips <- as.integer(length(tree$tip.label))
   k <- length(w)
-  tau <- control$tau
+  tau <- control$tau / 2
 
   # optimising rooted triplets
   optRoot0 <- function(t, tree, data, g, w, eig, bf, ll.0, ...) {
@@ -1487,7 +1487,7 @@ optimRooted <- function(tree, data, bf, g, w, eig, ll.0, INV=NULL,
   }
   # ensure that each edge is at least tau long
   # tips have the same height
-  tree <- minEdge(tree, tau) # 2*tau??
+  tree <- minEdge(tree, 2*tau)
 
   parent <- tree$edge[, 1]
   child <- tree$edge[, 2]
@@ -1586,10 +1586,13 @@ optimRooted <- function(tree, data, bf, g, w, eig, ll.0, INV=NULL,
       tmptree$edge.length <- c(kidsEl, maxEl)
 
       t0 <- optRoot0(0, tmptree, data, g, w, eig, bf, ll.0, ...)
-## Check this
-      t <- optimize(f = optRoot0, interval = c(-minEl + tau, maxEl - tau),
+
+## Additional check
+      if(c(-minEl + tau < maxEl - tau)) {
+        t <- optimize(f = optRoot0, interval = c(-minEl + tau, maxEl - tau),
         tmptree, data = data, g = g, w = w, eig = eig, bf = bf,
         ll.0 = ll.0, maximum = TRUE, ...)
+      }
       # if(control$trace>2) cat("edge", t[[2]], "\n")
       if (!is.nan(t[[2]]) & t[[2]] > ll2) {
         optRoot0(t[[1]], tmptree, data = data, g = g, w = w, eig = eig, bf = bf,
