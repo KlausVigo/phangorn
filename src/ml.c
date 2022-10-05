@@ -36,7 +36,7 @@ static double *LL;  //, *WEIGHTS;
 static int *SCM; //, *XXX;
 
 
-SEXP ll_free2(){
+SEXP ll_free2(void){
     free(LL);
     free(SCM);
     return R_NilValue;
