@@ -428,6 +428,48 @@ double pscore_vector_generic(const uint64_t* x, const uint64_t* y, const Numeric
 }
 
 
+
+// generic
+// 0 different, 1 identical, 2: y in x, 3: x in y, 4: ambiguous
+int equal_vector_generic(const uint64_t* x, const uint64_t* y,
+                             int nBits, int states){
+  uint64_t ones = ~0ull;
+  uint64_t tmp = 0ull;
+  const uint64_t* left=x;
+  const uint64_t* right=y;
+  for (int i = 0; i < nBits; ++i){
+    uint64_t orvand = 0;
+    for (int j = 0; j < states; ++j) orvand |= (left[j] & right[j]);
+    tmp = ~orvand & ones;
+    if(tmp>0ull){
+      return 0;
+    }
+    left += states;
+    right += states;
+  }
+  int x1 = 0;
+  int y1 = 0;
+  for (int i = 0; i < nBits; ++i){
+    uint64_t orvand = 0;
+    for (int j = 0; j < states; ++j){
+      orvand = (x[j] & y[j]);
+      if(x[j] != orvand) x1 += 1;
+      if(y[j] != orvand) y1 += 1;
+    }
+    x += states;
+    y += states;
+  }
+  int res = 0;
+  if( (x1==0) & (y1==0) ) res=1;
+  if( (x1==0) & (y1>0) ) res=2;
+  if( (x1>0) & (y1==0) ) res=3;
+  if( (x1>0) & (y1>0) ) res=4;
+  return(res);
+}
+
+
+
+
 double pscore_vector_4x4(const uint64_t* x, const uint64_t* y, const NumericVector weight,
                      int nBits, int wBits, int states){
   double pscore = 0.0;
@@ -638,6 +680,27 @@ NumericVector hamming_dist(Fitch* obj){
       ans[ij++] = pscore_vector(X[i].data(), X[j].data(), weight, nBits, wBits, states);
   return(ans);
 }
+
+
+IntegerVector equal_dist(Fitch* obj){
+  int i, j;
+  size_t  ij;
+  int states = obj->nStates;
+  int nBits = obj->nBits;
+  int nTips = obj->nSeq;
+  R_xlen_t N;
+  N = (R_xlen_t)nTips * (nTips-1)/2;
+  std::vector< std::vector<uint64_t> > X = obj->X;
+  IntegerVector ans(N);
+  ij = 0;
+  i=0;
+  j=1;
+  for(j = 0 ; j < (nTips-1L) ; j++)
+    for(i = j+1; i < nTips ; i++)
+      ans[ij++] = equal_vector_generic(X[i].data(), X[j].data(), nBits, states);
+  return(ans);
+}
+
 
 
 IntegerVector sitewise_pscore(Fitch* obj, const IntegerMatrix & orig){
@@ -933,6 +996,7 @@ RCPP_MODULE(Fitch_mod) {
         .method("traverse", &traverse)
         .method("sitewise_pscore", &sitewise_pscore)
         .method("hamming_dist", &hamming_dist)
+        .method("equal_dist", &equal_dist)
         .method("root_all_node", &root_all_node)
         .method("getAnc", &getAnc)
         .method("getAncAmb", &getAncAmb)
