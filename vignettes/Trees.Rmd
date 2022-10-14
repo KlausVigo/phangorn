@@ -1,7 +1,7 @@
 ---
 title: "Estimating phylogenetic trees with phangorn"
 author:
-- name: Klaus Schliep 
+- name: Klaus Schliep, Iris Bardel-Kahr
   affiliation: Graz University of Technology
   email: klaus.schliep@gmail.com
 date: "`r Sys.Date()`"
@@ -120,7 +120,7 @@ If `treeRatchet` is a list of trees, i.e. an object of class `multiPhylo`, we ca
 
 While in most cases `pratchet` will be enough to use, `phangorn` exports some function which might be useful.
 `random.addition` computes random addition and can be used to generate starting trees. The function `optim.parsimony` performs tree rearrangements to find trees with a lower parsimony score. The tree rearrangement implemented are  nearest-neighbor interchanges (NNI) and subtree pruning and regrafting (SPR). The later one only works so far with the fitch algorithm. 
-```{r}
+```{r, random addition}
 treeRA <- random.addition(primates)
 treeSPR  <- optim.parsimony(treeRA, primates)
 parsimony(c(treeRA, treeSPR), primates)
@@ -134,6 +134,38 @@ For data sets with few species it is also possible to find all most parsimonious
 ```
 
 # Maximum likelihood
+
+## Model selection
+
+Usually we will try to find the best fitting model beforehand. For this we use the function `modelTest` to compare different nucleotide or protein models the AIC, AICc or BIC, similar to popular programs ModelTest and ProtTest [@Posada1998], [@Posada2008], [@Abascal2005]. By default available nucleotide or amino acid models available are compared. 
+```{r, echo=TRUE, eval=FALSE}
+mt <- modelTest(primates)
+```
+Here we can select only some common models:   
+```{r, echo=FALSE}
+load("Trees.RData")
+```
+```{r, echo=TRUE, eval=TRUE, cache=TRUE}
+mt <- modelTest(primates, model=c("JC", "F81", "K80", "HKY", "SYM", "GTR"), 
+                control = pml.control(trace = 0))
+```
+The results of `modelTest` is illustrated in following table:
+```{r, echo=FALSE}
+library(knitr)
+kable(mt, digits=2)
+```
+To speed computations up the thresholds for the optimization in `modelTest` are not as strict as for `optim.pml` and no tree rearrangements are performed, which is the most time consuming part of the optimizing process. As `modelTest` computes and optimizes a lot of models it would be a waste of computer time not to save these results. The results are saved as call together with the optimized trees in an environment and the function `as.pml` evaluates this call to get a `pml` object back to use for further optimization or analysis.
+```{r as.pml, echo=TRUE}
+(fit <- as.pml(mt, "HKY+G(4)+I"))
+(fit <- as.pml(mt, "BIC"))
+```
+To simplify  the workflow we can give the result of modelTest to `pml_bb` function and optimize the parameters taking the best model according to BIC. 
+```{r pml_bb_modelTest, cache=TRUE}
+fit_mt <- pml_bb(mt, control = pml.control(trace = 0))
+fit_mt
+```
+
+## Maximum likelihood by hand
 
 The last method we will describe in this vignette is Maximum Likelihood (ML) as introduced by Felsenstein [@Felsenstein1981]. We can compute the likelihood for a tree given the data
 ```{r pml}
@@ -177,37 +209,8 @@ fitGTR
 ```
 In this case it generates a starting tree, an `pml` object and optimizes the parameters given the model term using  `optim.pml`.
 
-## Model selection
 
-Usually we will try to find the best fitting model beforehand. For this we use the function `modelTest` to compare different nucleotide or protein models the AIC, AICc or BIC, similar to popular programs ModelTest and ProtTest [@Posada1998], [@Posada2008], [@Abascal2005]. By default available nucleotide or amino acid models available are compared. 
-```{r, echo=TRUE, eval=FALSE}
-mt <- modelTest(primates)
-```
-Here we can select only some common models:   
-```{r, echo=FALSE}
-load("Trees.RData")
-```
-```{r, echo=TRUE, eval=TRUE, cache=TRUE}
-mt <- modelTest(primates, model=c("JC", "F81", "K80", "HKY", "SYM", "GTR"), 
-                control = pml.control(trace = 0))
-```
-The results of `modelTest` is illustrated in following table:
-```{r, echo=FALSE}
-library(knitr)
-kable(mt, digits=2)
-```
-To speed computations up the thresholds for the optimization in `modelTest` are not as strict as for `optim.pml` and no tree rearrangements are performed, which is the most time consuming part of the optimizing process. As `modelTest` computes and optimizes a lot of models it would be a waste of computer time not to save these results. The results are saved as call together with the optimized trees in an environment and the function `as.pml` evaluates this call to get a `pml` object back to use for further optimization or analysis.
-```{r as.pml, echo=TRUE}
-(fit <- as.pml(mt, "HKY+G(4)+I"))
-(fit <- as.pml(mt, "BIC"))
-```
-To simplify  the workflow we can give the result of modelTest to `pml_bb` function and optimize the parameters taking the best model according to BIC. 
-```{r pml_bb_modelTest, cache=TRUE}
-fit_mt <- pml_bb(mt, control = pml.control(trace = 0))
-fit_mt
-```
-
-
+## Model comparison
 
 We can compare nested models for the JC and GTR + $\Gamma(4)$ + I model using likelihood ratio statistic
 ```{r anova}
