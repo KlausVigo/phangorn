@@ -50,9 +50,41 @@ expect_true( cor(Q_est, 6:1) > .999)
 fit <- pml(tree, X, k=4, bf=(1:4)/10)
 weights <- 1000*exp(fit$siteLik)
 attr(X, "weight") <- weights
-fit <- pml(tree, X, k=4, bf=(1:4)/10)
 fits <- list()
 for(i in 1:4) fits[[i]] <-  pml(tree, X, rate=rates[i])
 fitMixture <- pmlMix(bf ~ ., fits, m=4, control=pml.control(trace=0))
 bf_est <- fitMixture$fits[[1]]$bf
 expect_true( cor(bf_est, (1:4)/10) > .999)
+
+
+# test base frequency optimization works properly
+fit1 <- pml(tree, X, bf=(1:4)/10)
+fit2 <- pml(tree, X, bf=(4:1)/10)
+weights <- 500*exp(fit1$siteLik) + 500*exp(fit2$siteLik)
+attr(X, "weight") <- weights
+fits <- list()
+for(i in 1:2) fits[[i]] <- pml(tree, X)
+fitMixture <- pmlMix( ~ bf, fits, m=2, control=pml.control(trace=0))
+bf1_est <- fitMixture$fits[[1]]$bf
+bf2_est <- fitMixture$fits[[2]]$bf
+if(bf1_est[1] < bf1_est[2]) {
+  expect_true( cor(bf1_est, (1:4)/10) > .999)
+} else expect_true( cor(bf1_est, (4:1)/10) > .999)
+
+
+
+# test invariant site optimization works properly
+#rates <- discrete.gamma(1,2)
+fit1 <- pml(tree, X, inv=.3)
+weights <- 1000*exp(fit1$siteLik)
+attr(X, "weight") <- weights
+fits <- list()
+for(i in 1:2) fits[[i]] <- pml(tree, X)
+fitMixture <- pmlMix(inv ~ ., fits, m=2, control=pml.control(trace=0))
+inv1_est <- fitMixture$fits[[1]]$inv
+inv2_est <- fitMixture$fits[[2]]$inv
+expect_equal( inv1_est, .3, 1e-3)
+expect_equal( inv2_est, .3, 1e-3)
+
+
+

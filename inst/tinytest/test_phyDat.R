@@ -79,14 +79,20 @@ write.phyDat(Laurasiatherian, "tmp1.txt")
 expect_true(inherits(laura <- read.phyDat("tmp1.txt"), "phyDat"))
 expect_equal(laura, Laurasiatherian)
 unlink("tmp1.txt")
+
+write.phyDat(Laurasiatherian, "tmp1.nex", format = "nexus")
+expect_true(inherits(laura <- read.phyDat("tmp1.nex", format="nexus"), "phyDat"))
+expect_equal(laura, Laurasiatherian)
+unlink("tmp1.nex")
+
 write.phyDat(chloroplast, "tmp2.txt")
 expect_true(inherits(chloro <- read.phyDat("tmp2.txt", type="AA"), "phyDat"))
-# expect_equal(chloro, chloroplast) # changed to toupper
+expect_equal(chloro, chloroplast) # changed to toupper
 unlink("tmp2.txt")
 write.phyDat(chloroplast, "tmp.fas", format="fasta")
 expect_true(inherits(chloro_fas <- read.phyDat("tmp.fas", type="AA",
                                               format = "fasta"), "phyDat"))
-# expect_equal(chloro_fas, chloroplast) # changed to toupper
+expect_equal(chloro_fas, chloroplast) # changed to toupper
 unlink("tmp.fas")
 
 
