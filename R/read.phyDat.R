@@ -70,7 +70,10 @@ read.phyDat <- function(file, format="phylip", type="DNA", ...){
                "clustal")
   format <- match.arg(tolower(format), formats)
 
-  if(format=="nexus") data <- read.nexus.data(file, ...)
+  types <- c("DNA", "AA", "CODON", "USER", "STANDARD")
+  type <- match.arg(toupper(type), types)
+
+  if(format=="nexus")  data <- read.nexus.data(file, ...)
   else {
     if(format=="phylip") format <- "sequential" #"interleaved"
     if (type == "DNA" || type == "CODON"){
@@ -80,15 +83,22 @@ read.phyDat <- function(file, format="phylip", type="DNA", ...){
     if (type == "USER"){
       if(format=="fasta") data <- read.fasta.user(file)
       else data <- read.dna(file, format, as.character = TRUE)
-      extras <- match.call(expand.dots = FALSE)$...
-      extras <- lapply(extras, eval)
-      return(phyDat(data, type, levels=extras$levels,
-                    ambiguity = extras$ambiguity, contrast = extras$contrast))
     }
   }
   if(is.list(data)){
     ll <- lengths(data)
     if(!all(ll == ll[[1]])) stop("sequences have different length")
+  }
+  if(type=="STANDARD"){
+    contrast <- rbind(diag(11), 1)
+    dimnames(contrast) <- list( c(0:9, "-", "?"), c(0:9, "-"))
+    return(phyDat(data, type="USER", contrast=contrast))
+  }
+  if(type=="USER"){
+    extras <- match.call(expand.dots = FALSE)$...
+    extras <- lapply(extras, eval)
+    return(phyDat(data, type, levels=extras$levels,
+                ambiguity = extras$ambiguity, contrast = extras$contrast))
   }
   phyDat(data, type, return.index = TRUE)
 }
@@ -109,8 +119,10 @@ write.phyDat <- function(x, file, format="phylip", colsep = "", nbcol=-1, ...){
     type <- attr(x, "type")
     if(type=="DNA") write.nexus.data(as.list(as.data.frame(x)), file,
                                      format = "dna",...)
-    else write.nexus.data(as.list(as.data.frame(x)), file,
+    else if(type=="AA")write.nexus.data(as.list(as.data.frame(x)), file,
                           format = "protein", ...)
+    else write.nexus.data(as.list(as.data.frame(x)), file,
+                          format = "standard", ...)
   }
   else{
     if(format=="phylip") format <- "interleaved"
