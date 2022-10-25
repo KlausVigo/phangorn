@@ -68,7 +68,7 @@ to the (internal) edges.</p>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">bootstrap.pml</span><span class="op">(</span><span class="va">x</span>, bs <span class="op">=</span> <span class="fl">100</span>, trees <span class="op">=</span> <span class="cn">TRUE</span>, multicore <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  mc.cores <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
+<span>  mc.cores <span class="op">=</span> <span class="cn">NULL</span>, tip.dates <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">bootstrap.phyDat</span><span class="op">(</span><span class="va">x</span>, <span class="va">FUN</span>, bs <span class="op">=</span> <span class="fl">100</span>, multicore <span class="op">=</span> <span class="cn">FALSE</span>, mc.cores <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  jumble <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
@@ -95,6 +95,11 @@ to the (internal) edges.</p>
 <dt>mc.cores</dt>
 <dd><p>The number of cores to use during bootstrap. Only supported
 on UNIX-alike systems.</p></dd>
+
+
+<dt>tip.dates</dt>
+<dd><p>A named vector of sampling times associated to the
+tips/sequences. Leave empty if not estimating tip dated phylogenies.</p></dd>
 
 
 <dt>...</dt>
