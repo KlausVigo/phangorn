@@ -2624,7 +2624,6 @@ index2edge <- function(x, root) {
 pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, wMix, llMix,
                     RELL=NULL, ...) {
   k <- length(w)
-  browser()
   INDEX <-  indexNNI3(tree)
   tmpl <- pml.fit4(tree, data, bf=bf, g=g, w=w, eig=eig, inv=inv,
                    ll.0=ll.0, k=k, wMix=wMix, llMix=llMix, ...)
