@@ -71,7 +71,8 @@ maxCladeCred(c(tree, bs[[1]]), tree=FALSE, part = pp)
 }
 \seealso{
 \code{\link{consensus}}, \code{\link{consensusNet}},
-\code{\link{prop.part}}, \code{\link{bootstrap.pml}}, \code{\link{plotBS}}
+\code{\link{prop.part}}, \code{\link{bootstrap.pml}}, \code{\link{plotBS}},
+\code{\link{transferBootstrap}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

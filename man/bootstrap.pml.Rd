@@ -6,7 +6,7 @@
 \title{Bootstrap}
 \usage{
 bootstrap.pml(x, bs = 100, trees = TRUE, multicore = FALSE,
-  mc.cores = NULL, ...)
+  mc.cores = NULL, tip.dates = NULL, ...)
 
 bootstrap.phyDat(x, FUN, bs = 100, multicore = FALSE, mc.cores = NULL,
   jumble = TRUE, ...)
@@ -22,6 +22,9 @@ bootstrap.phyDat(x, FUN, bs = 100, multicore = FALSE, mc.cores = NULL,
 
 \item{mc.cores}{The number of cores to use during bootstrap. Only supported
 on UNIX-alike systems.}
+
+\item{tip.dates}{A named vector of sampling times associated to the
+tips/sequences. Leave empty if not estimating tip dated phylogenies.}
 
 \item{\dots}{further parameters used by \code{optim.pml} or
 \code{plot.phylo}.}

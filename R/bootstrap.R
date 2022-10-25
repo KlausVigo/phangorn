@@ -17,6 +17,8 @@
 #' @param mc.cores The number of cores to use during bootstrap. Only supported
 #' on UNIX-alike systems.
 #' @param jumble logical, jumble the order of the sequences.
+#' @param tip.dates	 A named vector of sampling times associated to the
+#' tips/sequences. Leave empty if not estimating tip dated phylogenies.
 #' @param \dots further parameters used by \code{optim.pml} or
 #' \code{plot.phylo}.
 #' @param FUN the function to estimate the trees.
@@ -77,9 +79,10 @@
 #' @rdname bootstrap.pml
 #' @export
 bootstrap.pml <- function(x, bs = 100, trees = TRUE, multicore = FALSE,
-                          mc.cores = NULL, ...) {
+                          mc.cores = NULL, tip.dates=NULL, ...) {
   if(.Platform$OS.type=="windows") multicore <- FALSE
-  if (multicore && is.null(mc.cores)) mc.cores <- detectCores()
+  if (multicore && is.null(mc.cores)) mc.cores <- min(detectCores()-1L, 4L)
+  if(mc.cores < 2L) multicore <- FALSE
   if(is.rooted(x$tree)){
     if(is.ultrametric(x$tree)) method <- "ultrametric"
     else method <- "tipdated"
@@ -121,7 +124,8 @@ bootstrap.pml <- function(x, bs = 100, trees = TRUE, multicore = FALSE,
     attr(data, "weight") <- weights[ind]
     fit <- update(fit, data = data)
     if(do_rearr){
-      tree <- candidate_tree(data, method=method, bf=fit$bf, Q=fit$Q)
+      tree <- candidate_tree(data, method=method, bf=fit$bf, Q=fit$Q,
+                             tip.dates = tip.dates)
       fit <- update(fit, tree = tree)
     }
     fit <- optim.pml(fit, ...)
@@ -373,7 +377,8 @@ plotBS <- function(tree, BStrees, type = "phylogram",
 #' credibility or a numeric vector of clade credibilities for each tree.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{consensus}}, \code{\link{consensusNet}},
-#' \code{\link{prop.part}}, \code{\link{bootstrap.pml}}, \code{\link{plotBS}}
+#' \code{\link{prop.part}}, \code{\link{bootstrap.pml}}, \code{\link{plotBS}},
+#' \code{\link{transferBootstrap}}
 #' @keywords cluster
 #' @importFrom fastmatch fmatch
 #' @examples
