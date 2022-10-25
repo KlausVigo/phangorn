@@ -82,7 +82,7 @@ bootstrap.pml <- function(x, bs = 100, trees = TRUE, multicore = FALSE,
                           mc.cores = NULL, tip.dates=NULL, ...) {
   if(.Platform$OS.type=="windows") multicore <- FALSE
   if (multicore && is.null(mc.cores)) mc.cores <- min(detectCores()-1L, 4L)
-  if(mc.cores < 2L) multicore <- FALSE
+  if(multicore && mc.cores < 2L) multicore <- FALSE
   if(is.rooted(x$tree)){
     if(is.ultrametric(x$tree)) method <- "ultrametric"
     else method <- "tipdated"
