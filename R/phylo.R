@@ -2363,8 +2363,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                      ll=ll, w = w, g = g, eig = eig, bf = bf, inv=inv,
                      ll.0 = ll.0, INV = INV, llMix = llMix, wMix=wMix, ASC=ASC,
                      RELL=NULL,
-                     control = list(eps=1e-08, maxit=3, trace=trace-1, tau=tau),
-                     ...)
+                     control = list(eps=1e-08, maxit=3, trace=trace-1, tau=tau))
       ll <- res$logLik
       tree <- res$tree
       swap <- res$swap
@@ -2423,8 +2422,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                        ll=ll2, w = w, g = g, eig = eig, bf = bf, inv=inv,
                        rate=rate, ll.0 = ll.0, INV = INV, llMix = llMix,
                        wMix=wMix, ASC=ASC, RELL=RELL,
-                       control=list(eps=1e-08, maxit=5, trace=trace-1, tau=tau),
-                       ...)
+                       control=list(eps=1e-08, maxit=5, trace=trace-1, tau=tau))
         if (res$logLik > (ll + epsR)) {
           tree <- res$tree
           ll <- res$logLik
