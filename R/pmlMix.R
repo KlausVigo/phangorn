@@ -370,6 +370,7 @@ pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
   AllEdge <- !is.na(optAll[6])
   AllRate <- !is.na(optAll[7])
   MixNni <- !is.na(optPart[1])
+  if(MixNni) MixEdge <- TRUE
   MixBf <- !is.na(optPart[2])
   MixQ <- !is.na(optPart[3])
   MixInv <- !is.na(optPart[4])
