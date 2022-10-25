@@ -2,6 +2,7 @@
 ^\.Rproj\.user$
 ^\.httr-oauth$
 ^\.TODO
+^\.to_do.txt
 ^\.github$
 ^revdep$
 ^_pkgdown\.yml$
