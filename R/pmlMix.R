@@ -1,3 +1,12 @@
+logLik_pmlMix <- function(fits, weight, omega){
+  res <- NULL
+  for(i in 1:length(omega)){
+    res <- fits[[1]]$ll.0 * omega[i]
+  }
+  sum(log(res)*weight)
+}
+
+
 optimMixQ <- function(object, Q = c(1, 1, 1, 1, 1, 1), omega, ...) {
   l <- length(Q)
   Q <- Q[-l]
@@ -180,7 +189,7 @@ optimMixRate <- function(fits, ll, weight, omega, rate = rep(1, length(fits))) {
 }
 
 
-optW <- function(ll, weight, omega, ...) {
+optW <- function(ll, weight, omega, eps=1e-8, ...) {
   k <- length(omega)
   nenner <- 1 / omega[1]
   eta <- log(omega * nenner)
@@ -201,7 +210,9 @@ optW <- function(ll, weight, omega, ...) {
                     ll = ll, weight = weight)
   p <- exp(c(0, res[[1]]))
   p <- p / sum(p)
-  result <- list(par = p, value = res[[2]], start=start)
+  if(((res[[2]] - start) / abs(start)) < eps) {
+    result <- list(par = omega, value = start, start=start)
+  } else  result <- list(par = p, value = res[[2]], start=start)
   result
 }
 
@@ -220,7 +231,7 @@ optimMixEdge <- function(object, omega, trace = 1, ...) {
   iter <- 0
   scalep <- 1
   if (trace > 0) cat(ll0)
-  while (abs(eps) > .001 & iter < 10) {
+  while (abs(eps) > .0001 & iter < 10) {
     dl <- matrix(0, p, q)
     for (i in 1:n) dl <- dl + dl(object[[i]], TRUE) * omega[i]
     dl <- dl / lv1
@@ -467,7 +478,7 @@ pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
     if (AllInv) {
       newInv <- optimMixInv(fits, inv = fits[[1]]$inv,
         omega = omega)
-      for (i in seq_len(m)) fits[[i]] <- update(fits[[i]], Inv = newInv)
+      for (i in seq_len(m)) fits[[i]] <- update(fits[[i]], inv = newInv)
     }
     if (AllRate) {
       newrate <- optimAllRate(fits, rate=1, omega)
@@ -519,6 +530,7 @@ pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
           pl0 <- ll[, -i, drop = FALSE] %*% omega[-i]
           fits[[i]] <- update(fits[[i]], llMix = pl0, wMix = omega[i])
         }
+        if(trace >0) cat("logLik optim.pml start:", sum(weight * log(ll %*% omega)), "\n")
         for (i in 1:r) {
           pl0 <- ll[, -i, drop = FALSE] %*% omega[-i]
           fits[[i]] <- optim.pml(fits[[i]], optNni = MixNni, optBf = MixBf,
@@ -527,23 +539,37 @@ pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
                             control = pml.control(epsilon = 1e-8, maxit = 3,
                             trace - 1), llMix = pl0, wMix = omega[i])
           ll[, i] <- fits[[i]]$lv
-          res <- optW(ll, weight, omega)
-          omega <- res$p
+
+          if(trace >0) cat("logLik optim.pml", i, ": ", sum(weight * log(ll %*% omega)), "\n")
+#          res <- optW(ll, weight, omega)
+#          omega <- res$p
           if (MixRate) {
             blub <- sum(rate * omega)
             rate <- rate / blub
             tree <- fits[[1]]$tree
             tree$edge.length <- tree$edge.length * blub
-            for (i in 1:r){
-              fits[[i]] <- update(fits[[i]], tree = tree, rate = rate[i])
-              ll[, i] <- fits[[i]]$lv
+            for (j in 1:r){
+              fits[[j]] <- update(fits[[j]], tree = tree, rate = rate[j])
+              ll[, j] <- fits[[j]]$lv
             }
           }
-          for (i in 1:r) {
-            pl0 <- ll[, -i, drop = FALSE] %*% omega[-i]
-            fits[[i]] <- update(fits[[i]], llMix = pl0, wMix = omega[i])
-          }
+#          for (j in 1:r) {
+#            pl0 <- ll[, -j, drop = FALSE] %*% omega[-j]
+#            fits[[j]] <- update(fits[[j]], llMix = pl0, wMix = omega[j])
+#          }
         }
+        res <- optW(ll, weight, omega)
+        omega <- res$p
+#        for (j in 1:r){
+#          fits[[j]] <- update(fits[[j]], tree = tree, rate = rate[j])
+#          ll[, j] <- fits[[j]]$lv
+#        }
+        for (j in 1:r) {
+          pl0 <- ll[, -j, drop = FALSE] %*% omega[-j]
+          fits[[j]] <- update(fits[[j]], llMix = pl0, wMix = omega[j])
+        }
+
+
         ll2 <- sum(weight * log(ll %*% omega))
         eps1 <- llold - ll2
         iter1 <- iter1 + 1
@@ -597,7 +623,7 @@ print.pmlMix <- function(x, ...) {
   dimnames(Q) <- list(1:r, NULL)
 
   rate <- numeric(r)
-  inv <- x$fits[[1]]$inv
+  inv <- numeric(r) # x$fits[[1]]$inv
   shape <- numeric(r)
 
   for (i in 1:r) {
@@ -605,12 +631,13 @@ print.pmlMix <- function(x, ...) {
     Q[i, ] <- x$fits[[i]]$Q
     rate[i] <- x$fits[[i]]$rate
     shape[i] <- x$fits[[i]]$shape
+    inv[i] <- x$fits[[i]]$inv
   }
   cat("\nloglikelihood:", x$logLik, "\n")
   cat("\nunconstrained loglikelihood:", ll0, "\n")
   cat("AIC: ", AIC(x), " BIC: ", AIC(x, k = log(nr)), "\n\n")
   cat("\nposterior:", x$omega, "\n")
-  if (inv > 0) cat("Proportion of invariant sites:", inv, "\n")
+  if (any(inv > 0)) cat("Proportion of invariant sites:", inv, "\n")
   cat("\nRates:\n")
   cat(rate, "\n")
   if (length(bf) < 21) {

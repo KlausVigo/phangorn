@@ -90,7 +90,7 @@ site patterns.}
 \description{
 \code{pml} computes the likelihood of a phylogenetic tree given a sequence
 alignment and a model. \code{optim.pml} optimizes the different model
-parameters.
+parameters. For a more user-friendly interface see \code{\link{optim.bb}}.
 }
 \details{
 Base frequencies in \code{pml} can be supplied in different ways.
