@@ -1102,7 +1102,7 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
   # nr statt length(weight)
   lll <- resll - sca
   lll <- exp(lll)
-  lll <- (lll %*% w)
+  lll <- as.vector(lll %*% w)
   if (inv > 0){
     ind <- which(ll.0 > 0) # automatic in INV gespeichert
     lll[ind] <- lll[ind] + exp(log(ll.0[ind]) - sca[ind])
