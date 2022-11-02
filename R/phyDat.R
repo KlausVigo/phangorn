@@ -415,11 +415,16 @@ removeParsimonyUninfomativeSites <- function(data, recursive=FALSE, exact=TRUE){
 
 #' @rdname phyDat
 #' @export
-allSitePattern <- function(n, levels=NULL, names=NULL, type="DNA"){
-  type <- match.arg(type, c("DNA", "AA", "USER"))
+allSitePattern <- function(n, levels=NULL, names=NULL, type="DNA", code=1){
+  type <- match.arg(type, c("DNA", "AA", "CODON", "USER"))
   if(type=="DNA") levels <- c("a", "c", "g", "t")
   if(type=="AA") levels <- c("A", "R", "N", "D", "C", "Q", "E", "G", "H", "I",
                              "L", "K", "M", "F", "P", "S", "T", "W", "Y", "V")
+  if(type=="CODON"){
+    tmp <- .CODON[, as.character(code)]
+    levels <- rownames(.CODON)
+    levels <- levels[tmp != "*"]
+  }
   l <- length(levels)
   X <- matrix(NA_integer_, n, l^n)
   if(is.null(names))rownames(X) <- paste0("t", 1:n)
@@ -428,7 +433,12 @@ allSitePattern <- function(n, levels=NULL, names=NULL, type="DNA"){
     X[i, ] <- rep(rep(levels, each=l^(i-1)), l^(n-i))
   if(type=="DNA") return(phyDat.DNA(X, compress=FALSE, return.index=FALSE))
   if(type=="AA") return(phyDat.AA(X, return.index=FALSE))
-  phyDat.default(X, levels, compress=FALSE, return.index=FALSE)
+  res <- phyDat.default(X, levels, compress=FALSE, return.index=FALSE)
+  if(type=="CODON"){
+    attr(res, "type") <- "CODON"
+    attr(res, "code") <- code
+  }
+  res
 }
 
 
