@@ -117,7 +117,7 @@ optimAllRate <- function(object, rate = 1, omega, ...) {
     sum(weight %*% log(result))
   }
   res <- optimize(f = fn, c(0.01, 10), object = object, omega = omega,
-                  weight = weight, lower = 0, upper = 100, maximum = TRUE)
+                  weight = weight, lower = 0.01, upper = 10, maximum = TRUE)
   res
 }
 
