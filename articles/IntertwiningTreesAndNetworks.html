@@ -80,9 +80,10 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Intertwining phylogenetic trees and networks: R Example Script</h1>
-                        <h4 data-toc-skip class="author">Klaus Schliep, Alastair Potts, David Morrison and Guido Grimm</h4>
+                        <h4 data-toc-skip class="author">Klaus Schliep,
+Alastair Potts, David Morrison and Guido Grimm</h4>
             
-            <h4 data-toc-skip class="date">October 25, 2022</h4>
+            <h4 data-toc-skip class="date">November 03, 2022</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/vignettes/IntertwiningTreesAndNetworks.Rmd" class="external-link"><code>vignettes/IntertwiningTreesAndNetworks.Rmd</code></a></small>
       <div class="d-none name"><code>IntertwiningTreesAndNetworks.Rmd</code></div>
@@ -90,9 +91,24 @@
 
     
     
-<p><em>Description:</em> This script provides examples of the new functions available in the phangorn library to ‘intertwine’ trees and networks, i.e. compare trees and networks and data transferrance. It also provides a step-by-step guide for users new to R.</p>
-<p><em>Methodological advancement:</em> The major advancement in this phangorn update is the introduction of a generic network object with a wide range of related transfer and analysis functions. These new functions provide the first means to directly transfer information amongst a wide range of phylogenetic trees and networks, as well as means to visualize and further analyze this information. This should provide a platform for individuals to easily conduct tree-network comparisons and stimulate further function development by the community.</p>
-<p><em>What next?:</em> By implementing full network handling compatibility in R, and providing exemplar scripts (such as this) and <a href="https://github.com/KlausVigo/phangorn" class="external-link">support</a>, the scientific community now has an easy means to analyse and compare the results of phylogenetic trees vs. network approaches. We hope this will open a largely unexplored world to the general phylogenetic audience.</p>
+<p><em>Description:</em> This script provides examples of the new
+functions available in the phangorn library to ‘intertwine’ trees and
+networks, i.e. compare trees and networks and data transferrance. It
+also provides a step-by-step guide for users new to R.</p>
+<p><em>Methodological advancement:</em> The major advancement in this
+phangorn update is the introduction of a generic network object with a
+wide range of related transfer and analysis functions. These new
+functions provide the first means to directly transfer information
+amongst a wide range of phylogenetic trees and networks, as well as
+means to visualize and further analyze this information. This should
+provide a platform for individuals to easily conduct tree-network
+comparisons and stimulate further function development by the
+community.</p>
+<p><em>What next?:</em> By implementing full network handling
+compatibility in R, and providing exemplar scripts (such as this) and <a href="https://github.com/KlausVigo/phangorn" class="external-link">support</a>, the scientific
+community now has an easy means to analyse and compare the results of
+phylogenetic trees vs. network approaches. We hope this will open a
+largely unexplored world to the general phylogenetic audience.</p>
 <div class="section level3">
 <h3 id="installing-r">Installing R<a class="anchor" aria-label="anchor" href="#installing-r"></a>
 </h3>
@@ -100,7 +116,8 @@
 <li>Download R<br>
 Select the nearest mirror to your location at <a href="https://cran.r-project.org/mirrors.html" class="external-link uri">https://cran.r-project.org/mirrors.html</a><br>
 </li>
-<li>Select your operating system and download the relevant installation file.<br>
+<li>Select your operating system and download the relevant installation
+file.<br>
 </li>
 <li>Install R following the instructions.</li>
 </ol>
@@ -109,7 +126,8 @@ Select the nearest mirror to your location at <a href="https://cran.r-project.or
 <h3 id="installing-the-phangorn-library">Installing the phangorn library<a class="anchor" aria-label="anchor" href="#installing-the-phangorn-library"></a>
 </h3>
 <p>Open R and run the two lines of code below in the command line.<br>
-(You will need to select a region from which to download the library)</p>
+(You will need to select a region from which to download the
+library)</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"phangorn"</span>, dependencies<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co"># install latest development version needs devtools</span></span>
@@ -127,14 +145,23 @@ Select the nearest mirror to your location at <a href="https://cran.r-project.or
 <div class="section level3">
 <h3 id="set-the-working-directory">Set the working directory<a class="anchor" aria-label="anchor" href="#set-the-working-directory"></a>
 </h3>
-<p>This is often a major stumbling block for new R users. You need to specify where in your folder structure you wish to work. i.e, where are the files stored that you wish to input?</p>
-<p>This is done using the <code><a href="https://rdrr.io/r/base/getwd.html" class="external-link">setwd()</a></code> function, e.g. <code>setwd("C:/TreesNetworks/Example Files")</code>.</p>
-<p>We now set it to the folder of the phangorn package, which contains the files we want to load for this example.</p>
+<p>This is often a major stumbling block for new R users. You need to
+specify where in your folder structure you wish to work. i.e, where are
+the files stored that you wish to input?</p>
+<p>This is done using the <code><a href="https://rdrr.io/r/base/getwd.html" class="external-link">setwd()</a></code> function,
+e.g. <code>setwd("C:/TreesNetworks/Example Files")</code>.</p>
+<p>We now set it to the folder of the phangorn package, which contains
+the files we want to load for this example.</p>
 </div>
 <div class="section level3">
 <h3 id="read-in-the-example-file-datasets">Read in the example file datasets:<a class="anchor" aria-label="anchor" href="#read-in-the-example-file-datasets"></a>
 </h3>
-<p>This example files are based on the woodmouse dataset available in the ape library. Ultimately, this dataset is from this study: Michaux, J. R., Magnanou, E., Paradis, E., Nieberding, C. and Libois, R. (2003) Mitochondrial phylogeography of the Woodmouse (<em>Apodemus sylvaticus</em>) in the Western Palearctic region. Molecular Ecology, 12, 685-697.)</p>
+<p>This example files are based on the woodmouse dataset available in
+the ape library. Ultimately, this dataset is from this study: Michaux,
+J. R., Magnanou, E., Paradis, E., Nieberding, C. and Libois, R. (2003)
+Mitochondrial phylogeography of the Woodmouse (<em>Apodemus
+sylvaticus</em>) in the Western Palearctic region. Molecular Ecology,
+12, 685-697.)</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## automatically set the correct working directory for the examples below</span></span>
 <span><span class="co"># setwd(system.file("extdata/trees", package = "phangorn"))</span></span>
@@ -196,7 +223,9 @@ Select the nearest mirror to your location at <a href="https://cran.r-project.or
 <div class="section level3">
 <h3 id="a">1A:<a class="anchor" aria-label="anchor" href="#a"></a>
 </h3>
-<p>Identification of edge bundles (in black) in a neighbor-net (NN) network that correspond to branches (labelled 1-12) in a tree (a maximum likelihood tree, in this case).</p>
+<p>Identification of edge bundles (in black) in a neighbor-net (NN)
+network that correspond to branches (labelled 1-12) in a tree (a maximum
+likelihood tree, in this case).</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create a vector of labels for the network corresponding to edges in the tree</span></span>
 <span><span class="va">edge.lab</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/addConfidences.html">createLabel</a></span><span class="op">(</span><span class="va">Nnet</span>, <span class="va">raxml.tree</span>, <span class="va">raxml.tree</span><span class="op">$</span><span class="va">edge</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>, <span class="st">"edge"</span><span class="op">)</span></span>
@@ -223,7 +252,10 @@ Select the nearest mirror to your location at <a href="https://cran.r-project.or
 <div class="section level3">
 <h3 id="b">1B:<a class="anchor" aria-label="anchor" href="#b"></a>
 </h3>
-<p>Bootstrap support for all branches (branch labels) in the ML tree mapped on the corresponding edge bundles of the NN network. The edges in the network which are not found as ML tree branches are highlighted in red.</p>
+<p>Bootstrap support for all branches (branch labels) in the ML tree
+mapped on the corresponding edge bundles of the NN network. The edges in
+the network which are not found as ML tree branches are highlighted in
+red.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># the scaler argument multiplies the confidence values. This is useful to switch</span></span>
 <span><span class="co"># confidences values between total, percentage or ratios.   </span></span>
@@ -248,7 +280,11 @@ Select the nearest mirror to your location at <a href="https://cran.r-project.or
 <div class="section level3">
 <h3 id="c">1C:<a class="anchor" aria-label="anchor" href="#c"></a>
 </h3>
-<p>Frequencies of bipartitions found in the bootstrap pseudoreplicates mapped on the corresponding edge bundles of the NN network using a threshold of 10% (i.e. any edge is labelled that occurs in at least 100 of the 1000 ML-BS pseudoreplicates). Edge bundles not found in the ML tree are labelled using grey edges.</p>
+<p>Frequencies of bipartitions found in the bootstrap pseudoreplicates
+mapped on the corresponding edge bundles of the NN network using a
+threshold of 10% (i.e. any edge is labelled that occurs in at least 100
+of the 1000 ML-BS pseudoreplicates). Edge bundles not found in the ML
+tree are labelled using grey edges.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/addConfidences.html">addConfidences</a></span><span class="op">(</span><span class="va">Nnet</span>, <span class="fu"><a href="../reference/as.splits.html">as.splits</a></span><span class="op">(</span><span class="va">raxml.bootstrap</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">edge.col</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/addConfidences.html">createLabel</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">raxml.tree</span>, label<span class="op">=</span><span class="st">"black"</span>, <span class="st">"edge"</span>, nomatch<span class="op">=</span><span class="st">"grey"</span><span class="op">)</span></span>
@@ -262,7 +298,12 @@ Select the nearest mirror to your location at <a href="https://cran.r-project.or
 <div class="section level3">
 <h3 id="extras">Extras…<a class="anchor" aria-label="anchor" href="#extras"></a>
 </h3>
-<p>We can also compare the neighborNet with a consensusNet (Holland BR, Huber KT, Moulton V, Lockhart PJ,2004, Using consensus networks to visualize contradictory evidence for species phylogeny. Molecular Biology and Evolution, 21, 1459-1461). Furthermore, we can extract the support values from the consensus network, and place these on to the NeighborNet (this is similar to the process explained in 1C above).</p>
+<p>We can also compare the neighborNet with a consensusNet (Holland BR,
+Huber KT, Moulton V, Lockhart PJ,2004, Using consensus networks to
+visualize contradictory evidence for species phylogeny. Molecular
+Biology and Evolution, 21, 1459-1461). Furthermore, we can extract the
+support values from the consensus network, and place these on to the
+NeighborNet (this is similar to the process explained in 1C above).</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cnet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/consensusNet.html">consensusNet</a></span><span class="op">(</span><span class="va">raxml.bootstrap</span>,prob<span class="op">=</span><span class="fl">0.10</span><span class="op">)</span></span>
 <span><span class="va">edge.col</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/addConfidences.html">createLabel</a></span><span class="op">(</span><span class="va">cnet</span>, <span class="va">Nnet</span>, label<span class="op">=</span><span class="st">"black"</span>, <span class="st">"edge"</span>, nomatch<span class="op">=</span><span class="st">"grey"</span><span class="op">)</span></span>
@@ -282,8 +323,18 @@ Select the nearest mirror to your location at <a href="https://cran.r-project.or
 </div>
 <div class="section level3">
 <h3 id="section"></h3>
-<p>There are four possible data patterns in phylogenetic reconstruction: (1) patterns that are well supported in the network and appear in the bootstrapped trees; (2) patterns that are well supported by (part of) the data/network but do not appear in the optimized trees, i.e. they are incompatible with the tree; (3) patterns that are weakly supported by the network but appear in the optimized trees anyway, i.e. they are compatible with the tree.</p>
-<p>Here we demonstrate these patterns by showing the relationships between splits weights, from a NeighborNet splits graph, bootstrap bipartitions support and bootstrap percentages plotted on the optimized tree for a dataset of <span class="citation">Wang, Braun, and Kimball (2012)</span>.</p>
+<p>There are four possible data patterns in phylogenetic reconstruction:
+(1) patterns that are well supported in the network and appear in the
+bootstrapped trees; (2) patterns that are well supported by (part of)
+the data/network but do not appear in the optimized trees, i.e. they are
+incompatible with the tree; (3) patterns that are weakly supported by
+the network but appear in the optimized trees anyway, i.e. they are
+compatible with the tree.</p>
+<p>Here we demonstrate these patterns by showing the relationships
+between splits weights, from a NeighborNet splits graph, bootstrap
+bipartitions support and bootstrap percentages plotted on the optimized
+tree for a dataset of <span class="citation">Wang, Braun, and Kimball
+(2012)</span>.</p>
 <p>(An advanced user figure…)</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Nnet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read.nexus.splits.html">read.nexus.networx</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">fdir</span>,<span class="st">"RAxML_distances.Wang.nxs"</span><span class="op">)</span><span class="op">)</span></span>
@@ -352,7 +403,9 @@ Select the nearest mirror to your location at <a href="https://cran.r-project.or
 <span><span class="va">mtG_boot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html" class="external-link">read.tree</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">fdir</span>, <span class="st">"RAxML_bootstrap.mtG"</span><span class="op">)</span><span class="op">)</span> </span>
 <span><span class="va">ncAI_boot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html" class="external-link">read.tree</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">fdir</span>, <span class="st">"RAxML_bootstrap.AIs"</span><span class="op">)</span><span class="op">)</span> </span>
 <span><span class="va">all_data_boot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html" class="external-link">read.tree</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">fdir</span>, <span class="st">"RAxML_bootstrap.3moles"</span><span class="op">)</span><span class="op">)</span> </span></code></pre></div>
-<p>There are several option plotting a co-phylogeny. In the following we use the <code>cophylo</code> function of the <code>phytools</code> package.</p>
+<p>There are several option plotting a co-phylogeny. In the following we
+use the <code>cophylo</code> function of the <code>phytools</code>
+package.</p>
 <pre><code><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/liamrevell/phytools" class="external-link">phytools</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu">cophylo</span><span class="op">(</span><span class="va">YCh</span>, <span class="va">mtG</span><span class="op">)</span> </span>
@@ -361,7 +414,9 @@ Select the nearest mirror to your location at <a href="https://cran.r-project.or
 <span><span class="va">obj</span> <span class="op">&lt;-</span>  <span class="fu">cophylo</span><span class="op">(</span><span class="va">ncAI</span>, <span class="va">all_data</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">obj</span>, mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.1</span>,<span class="fl">.1</span>,<span class="fl">2</span>,<span class="fl">.1</span><span class="op">)</span>,scale.bar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.005</span>,<span class="fl">.05</span><span class="op">)</span>, ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">.2</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"C. ncAI                              D. All data"</span><span class="op">)</span></span></code></pre>
-<p><img src="cophylo.png"> Unfortunately this function does not (yet) offer to add confidences to some splits, but we can do this easily with more basic plot functions.</p>
+<p><img src="cophylo.png"> Unfortunately this function does not (yet)
+offer to add confidences to some splits, but we can do this easily with
+more basic plot functions.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span>, mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">4</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">YCh</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plotBS.html">plotBS</a></span><span class="op">(</span><span class="fu"><a href="../reference/midpoint.html">midpoint</a></span><span class="op">(</span><span class="va">YCh</span><span class="op">)</span>, <span class="va">YCh_boot</span>, <span class="st">"phylogram"</span>, p<span class="op">=</span><span class="fl">0</span>, main <span class="op">=</span> <span class="st">"YCh"</span><span class="op">)</span></span>
@@ -370,7 +425,8 @@ Select the nearest mirror to your location at <a href="https://cran.r-project.or
 <span><span class="va">all_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plotBS.html">plotBS</a></span><span class="op">(</span><span class="fu"><a href="../reference/midpoint.html">midpoint</a></span><span class="op">(</span><span class="va">all_data</span><span class="op">)</span>, <span class="va">all_data_boot</span>, <span class="st">"phylogram"</span>, p<span class="op">=</span><span class="fl">0</span>, </span>
 <span>                   main <span class="op">=</span> <span class="st">"All data"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="IntertwiningTreesAndNetworks_files/figure-html/unnamed-chunk-12-1.png" width="576"></p>
-<p>We can compare this with consensus network with the different bootstrap values for the different genes.</p>
+<p>We can compare this with consensus network with the different
+bootstrap values for the different genes.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">cn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/consensusNet.html">consensusNet</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">YCh</span>, <span class="va">mtG</span>, <span class="va">ncAI</span><span class="op">)</span><span class="op">)</span></span>
@@ -380,10 +436,16 @@ Select the nearest mirror to your location at <a href="https://cran.r-project.or
 <p><img src="IntertwiningTreesAndNetworks_files/figure-html/unnamed-chunk-13-1.png" width="576"></p>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Schliep2017" class="csl-entry">
-Schliep, Klaus, Alastair J. Potts, David A. Morrison, and Guido W. Grimm. 2017. <span>“Intertwining Phylogenetic Trees and Networks.”</span> <em>Methods in Ecology and Evolution</em> 8 (10): 1212–20.
+Schliep, Klaus, Alastair J. Potts, David A. Morrison, and Guido W.
+Grimm. 2017. <span>“Intertwining Phylogenetic Trees and
+Networks.”</span> <em>Methods in Ecology and Evolution</em> 8 (10):
+1212–20.
 </div>
 <div id="ref-Wang2012" class="csl-entry">
-Wang, Ning, Edward L. Braun, and Rebecca T. Kimball. 2012. <span>“Testing Hypotheses about the Sister Group of the Passeriformes Using an Independent 30-Locus Data Set.”</span> <em>Molecular Biology and Evolution</em> 29 (2): 737–50. <a href="https://doi.org/10.1093/molbev/msr230" class="external-link">https://doi.org/10.1093/molbev/msr230</a>.
+Wang, Ning, Edward L. Braun, and Rebecca T. Kimball. 2012.
+<span>“Testing Hypotheses about the Sister Group of the Passeriformes
+Using an Independent 30-Locus Data Set.”</span> <em>Molecular Biology
+and Evolution</em> 29 (2): 737–50. <a href="https://doi.org/10.1093/molbev/msr230" class="external-link">https://doi.org/10.1093/molbev/msr230</a>.
 </div>
 </div>
 </div>

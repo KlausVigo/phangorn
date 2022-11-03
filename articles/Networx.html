@@ -80,9 +80,10 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Splits and Networx</h1>
-                        <h4 data-toc-skip class="author">Klaus Schliep</h4>
+                        <h4 data-toc-skip class="author">Klaus
+Schliep</h4>
             
-            <h4 data-toc-skip class="date">October 25, 2022</h4>
+            <h4 data-toc-skip class="date">November 03, 2022</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/vignettes/Networx.Rmd" class="external-link"><code>vignettes/Networx.Rmd</code></a></small>
       <div class="d-none name"><code>Networx.Rmd</code></div>
@@ -90,9 +91,21 @@
 
     
     
-<p>This tutorial gives a basic introduction for constructing phylogenetic networks and adding parameters to trees or networx objects using <a href="https://cran.r-project.org/package=phangorn" class="external-link">phangorn</a> <span class="citation">(Schliep 2011)</span> in R. Splits graphs or phylogenetic networks are a useful way to display conflicting data or to summarize different trees. Here, we present two popular networks, consensus networks <span class="citation">(Holland et al. 2004)</span> and Neighbor-Net <span class="citation">(Bryant and Moulton 2004)</span>.<br>
-Trees or networks are often missing either edge weights or edge support values. We show how to improve a tree/networx object by adding support values or estimating edge weights using non-negative Least-Squares (nnls).</p>
-<p>We first load the phangorn package and a few data sets we use in this vignette.</p>
+<p>This tutorial gives a basic introduction for constructing
+phylogenetic networks and adding parameters to trees or networx objects
+using <a href="https://cran.r-project.org/package=phangorn" class="external-link">phangorn</a>
+<span class="citation">(Schliep 2011)</span> in R. Splits graphs or
+phylogenetic networks are a useful way to display conflicting data or to
+summarize different trees. Here, we present two popular networks,
+consensus networks <span class="citation">(Holland et al. 2004)</span>
+and Neighbor-Net <span class="citation">(Bryant and Moulton
+2004)</span>.<br>
+Trees or networks are often missing either edge weights or edge support
+values. We show how to improve a tree/networx object by adding support
+values or estimating edge weights using non-negative Least-Squares
+(nnls).</p>
+<p>We first load the phangorn package and a few data sets we use in this
+vignette.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/KlausVigo/phangorn" class="external-link">phangorn</a></span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Loading required package: ape</span></span></code></pre>
@@ -102,8 +115,15 @@ Trees or networks are often missing either edge weights or edge support values. 
 <div class="section level2">
 <h2 id="consensusnet">consensusNet<a class="anchor" aria-label="anchor" href="#consensusnet"></a>
 </h2>
-<p>A consensusNet <span class="citation">(Holland et al. 2004)</span> is a generalization of a consensus tree. Instead of only representing splits (taxon bipartitions) occurring in at least 50% of the trees in a bootstrap or MCMC sample one can use a lower threshold and explore competing splits. Note that, in its basic implementation used here, the consensusNet edge lengths are proportional to the frequency of the corresponding splits in the provided list of trees.</p>
-<p>The input for <code>consensusNet</code> is a list of trees i.e. an object of class <code>multiPhylo</code>.</p>
+<p>A consensusNet <span class="citation">(Holland et al. 2004)</span> is
+a generalization of a consensus tree. Instead of only representing
+splits (taxon bipartitions) occurring in at least 50% of the trees in a
+bootstrap or MCMC sample one can use a lower threshold and explore
+competing splits. Note that, in its basic implementation used here, the
+consensusNet edge lengths are proportional to the frequency of the
+corresponding splits in the provided list of trees.</p>
+<p>The input for <code>consensusNet</code> is a list of trees i.e. an
+object of class <code>multiPhylo</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">bs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bootstrap.pml.html">bootstrap.phyDat</a></span><span class="op">(</span><span class="va">yeast</span>, FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/nj.html" class="external-link">nj</a></span><span class="op">(</span><span class="fu"><a href="../reference/dist.hamming.html">dist.hamming</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>, </span>
@@ -116,7 +136,14 @@ Trees or networks are often missing either edge weights or edge support values. 
 <code class="sourceCode R"><span><span class="va">cnet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/consensusNet.html">consensusNet</a></span><span class="op">(</span><span class="va">bs</span>, <span class="fl">.3</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cnet</span>, show.edge.label<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Networx_files/figure-html/unnamed-chunk-2-2.png" width="700"></p>
-<p>In many cases, <code>consensusNet</code> will return more than two incompatible (competing) splits. This cannot be plotted as a planar (2-dimensional) graph. Such as situation requires a n-dimensional graph, where the maximum number of dimensions equals the maximum number of incompatible splits. For example, if we have three alternative incompatible splits: (A,B)|(C,D) vs. (A,C)|(B,D) vs. (A,D)|(B,C), we need a 3-dimensional graph to show all three alternatives. A nice way to get still a good impression of the network is to plot it in 3D.</p>
+<p>In many cases, <code>consensusNet</code> will return more than two
+incompatible (competing) splits. This cannot be plotted as a planar
+(2-dimensional) graph. Such as situation requires a n-dimensional graph,
+where the maximum number of dimensions equals the maximum number of
+incompatible splits. For example, if we have three alternative
+incompatible splits: (A,B)|(C,D) vs. (A,C)|(B,D) vs. (A,D)|(B,C), we
+need a 3-dimensional graph to show all three alternatives. A nice way to
+get still a good impression of the network is to plot it in 3D.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cnet</span>, <span class="st">"3D"</span><span class="op">)</span></span>
 <span><span class="co"># rotate 3d plot</span></span>
@@ -131,19 +158,35 @@ Trees or networks are often missing either edge weights or edge support values. 
 <div class="section level2">
 <h2 id="neighbornet">neighborNet<a class="anchor" aria-label="anchor" href="#neighbornet"></a>
 </h2>
-<p>The function <code>neighborNet</code> implements the popular method of <span class="citation">Bryant and Moulton (2004)</span>. The Neighbor-Net algorithm is essentially a 2D-version of the Neighbor joining algorithm. The Neighbour-net is computed in two steps: the first computes a circular ordering of the taxa in the data set; the second step involves the estimation of edge weights using non-negative Least-Squares (nnls).</p>
+<p>The function <code>neighborNet</code> implements the popular method
+of <span class="citation">Bryant and Moulton (2004)</span>. The
+Neighbor-Net algorithm is essentially a 2D-version of the Neighbor
+joining algorithm. The Neighbour-net is computed in two steps: the first
+computes a circular ordering of the taxa in the data set; the second
+step involves the estimation of edge weights using non-negative
+Least-Squares (nnls).</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dist.hamming.html">dist.hamming</a></span><span class="op">(</span><span class="va">yeast</span><span class="op">)</span></span>
 <span><span class="va">nnet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/neighborNet.html">neighborNet</a></span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"mar"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nnet</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Networx_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
-<p>The advantage of Neighbor-Net is that it returns a circular split system which can be always displayed in a planar (2D) graph. The plots displayed in <code>phangorn</code> may (however) not be planar, but re-plotting can give you a planar graph. This unwanted behavior will be improved in future version. The rendering of the <code>networx</code> is done using the the fantastic igraph package <span class="citation">(Csardi and Nepusz 2006)</span>.</p>
+<p>The advantage of Neighbor-Net is that it returns a circular split
+system which can be always displayed in a planar (2D) graph. The plots
+displayed in <code>phangorn</code> may (however) not be planar, but
+re-plotting can give you a planar graph. This unwanted behavior will be
+improved in future version. The rendering of the <code>networx</code> is
+done using the the fantastic igraph package <span class="citation">(Csardi and Nepusz 2006)</span>.</p>
 </div>
 <div class="section level2">
 <h2 id="adding-support-values">Adding support values<a class="anchor" aria-label="anchor" href="#adding-support-values"></a>
 </h2>
-<p>We can use the generic function <code>addConfidences</code> to add (branch) support values from a tree, i.e. an object of class <code>phylo</code> to a <code>networx</code>, <code>splits</code> or <code>phylo</code> object. The Neighbor-Net object we computed above provides no support values. We can add the support values from the tree we computed to the splits (edges) shared by both objects.</p>
+<p>We can use the generic function <code>addConfidences</code> to add
+(branch) support values from a tree, i.e. an object of class
+<code>phylo</code> to a <code>networx</code>, <code>splits</code> or
+<code>phylo</code> object. The Neighbor-Net object we computed above
+provides no support values. We can add the support values from the tree
+we computed to the splits (edges) shared by both objects.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nnet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/addConfidences.html">addConfidences</a></span><span class="op">(</span><span class="va">nnet</span>, <span class="va">tree</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"mar"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
@@ -161,16 +204,28 @@ Trees or networks are often missing either edge weights or edge support values. 
 <div class="section level2">
 <h2 id="estimating-edge-weights-nnls">Estimating edge weights (nnls)<a class="anchor" aria-label="anchor" href="#estimating-edge-weights-nnls"></a>
 </h2>
-<p>Consensus networks, on the other hand, provide primarily information about support values corresponding to a split, but no information about the actual difference between the taxon bipartitions defined by that split. For example, one may be interested how the alternative support values correspond with the actual genetic distance between the involved taxa. Given a distance matrix, we can estimate edge weights using non-negative Least-Squares, and plot them onto the consensusNet splits graph.</p>
+<p>Consensus networks, on the other hand, provide primarily information
+about support values corresponding to a split, but no information about
+the actual difference between the taxon bipartitions defined by that
+split. For example, one may be interested how the alternative support
+values correspond with the actual genetic distance between the involved
+taxa. Given a distance matrix, we can estimate edge weights using
+non-negative Least-Squares, and plot them onto the consensusNet splits
+graph.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cnet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/designTree.html">nnls.networx</a></span><span class="op">(</span><span class="va">cnet</span>, <span class="va">dm</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"mar"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cnet</span>, show.edge.label<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Networx_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
 <div class="section level3">
-<h3 id="import-and-export-networks-advanced-functions-for-networx-objects">Import and export networks, advanced functions for networx objects<a class="anchor" aria-label="anchor" href="#import-and-export-networks-advanced-functions-for-networx-objects"></a>
+<h3 id="import-and-export-networks-advanced-functions-for-networx-objects">Import and export networks, advanced functions for networx
+objects<a class="anchor" aria-label="anchor" href="#import-and-export-networks-advanced-functions-for-networx-objects"></a>
 </h3>
-<p>The functions <code>read.nexus.networx</code> and <code>write.nexus.networx</code> can read and write nexus files for or from SplitsTree <span class="citation">(Huson and Bryant 2006)</span>. Check-out the new vignette IntertwiningTreesAndNetworks for additional functions, examples, and advanced applications.</p>
+<p>The functions <code>read.nexus.networx</code> and
+<code>write.nexus.networx</code> can read and write nexus files for or
+from SplitsTree <span class="citation">(Huson and Bryant 2006)</span>.
+Check-out the new vignette IntertwiningTreesAndNetworks for additional
+functions, examples, and advanced applications.</p>
 </div>
 </div>
 <div class="section level2">
@@ -178,7 +233,7 @@ Trees or networks are often missing either edge weights or edge support values. 
 </h2>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## R version 4.2.1 (2022-06-23)</span></span>
+<pre><code><span><span class="co">## R version 4.2.2 (2022-10-31)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
 <span><span class="co">## Running under: Ubuntu 20.04.5 LTS</span></span>
 <span><span class="co">## </span></span>
@@ -199,36 +254,47 @@ Trees or networks are often missing either edge weights or edge support values. 
 <span><span class="co">## [1] phangorn_2.10.0.900 ape_5.6-2          </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] Rcpp_1.0.9        highr_0.9         bslib_0.4.0       compiler_4.2.1   </span></span>
-<span><span class="co">##  [5] jquerylib_0.1.4   prettydoc_0.4.1   tools_4.2.1       digest_0.6.30    </span></span>
-<span><span class="co">##  [9] jsonlite_1.8.3    evaluate_0.17     memoise_2.0.1     nlme_3.1-157     </span></span>
-<span><span class="co">## [13] lattice_0.20-45   pkgconfig_2.0.3   rlang_1.0.6       Matrix_1.4-1     </span></span>
+<span><span class="co">##  [1] Rcpp_1.0.9        highr_0.9         bslib_0.4.0       compiler_4.2.2   </span></span>
+<span><span class="co">##  [5] jquerylib_0.1.4   prettydoc_0.4.1   tools_4.2.2       digest_0.6.30    </span></span>
+<span><span class="co">##  [9] jsonlite_1.8.3    evaluate_0.17     memoise_2.0.1     nlme_3.1-160     </span></span>
+<span><span class="co">## [13] lattice_0.20-45   pkgconfig_2.0.3   rlang_1.0.6       Matrix_1.5-1     </span></span>
 <span><span class="co">## [17] fastmatch_1.1-3   igraph_1.3.5      cli_3.4.1         yaml_2.3.6       </span></span>
-<span><span class="co">## [21] parallel_4.2.1    pkgdown_2.0.6     xfun_0.34         fastmap_1.1.0    </span></span>
+<span><span class="co">## [21] parallel_4.2.2    pkgdown_2.0.6     xfun_0.34         fastmap_1.1.0    </span></span>
 <span><span class="co">## [25] stringr_1.4.1     knitr_1.40        desc_1.4.2        generics_0.1.3   </span></span>
 <span><span class="co">## [29] fs_1.5.2          sass_0.4.2        systemfonts_1.0.4 rprojroot_2.0.3  </span></span>
-<span><span class="co">## [33] grid_4.2.1        R6_2.5.1          textshaping_0.3.6 rmarkdown_2.17   </span></span>
+<span><span class="co">## [33] grid_4.2.2        R6_2.5.1          textshaping_0.3.6 rmarkdown_2.17   </span></span>
 <span><span class="co">## [37] purrr_0.3.5       magrittr_2.0.3    codetools_0.2-18  htmltools_0.5.3  </span></span>
-<span><span class="co">## [41] quadprog_1.5-8    ragg_1.2.3        stringi_1.7.8     cachem_1.0.6</span></span></code></pre>
+<span><span class="co">## [41] quadprog_1.5-8    ragg_1.2.4        stringi_1.7.8     cachem_1.0.6</span></span></code></pre>
 </div>
 <div class="section level2 unnumbered">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Bryant2004" class="csl-entry">
-Bryant, David, and Vincent Moulton. 2004. <span>“<span>Neighbor-Net</span>: An Agglomerative Method for the Construction of Phylogenetic Networks.”</span> <em>Molecular Biology and Evolution</em> 21 (2): 255–65. <a href="https://doi.org/10.1093/molbev/msh018" class="external-link">https://doi.org/10.1093/molbev/msh018</a>.
+Bryant, David, and Vincent Moulton. 2004.
+<span>“<span>Neighbor-Net</span>: An Agglomerative Method for the
+Construction of Phylogenetic Networks.”</span> <em>Molecular Biology and
+Evolution</em> 21 (2): 255–65. <a href="https://doi.org/10.1093/molbev/msh018" class="external-link">https://doi.org/10.1093/molbev/msh018</a>.
 </div>
 <div id="ref-Csardi2006" class="csl-entry">
-Csardi, Gabor, and Tamas Nepusz. 2006. <span>“The Igraph Software Package for Complex Network Research.”</span> <em>InterJournal</em> Complex Systems: 1695. <a href="https://igraph.org/" class="external-link">https://igraph.org/</a>.
+Csardi, Gabor, and Tamas Nepusz. 2006. <span>“The Igraph Software
+Package for Complex Network Research.”</span> <em>InterJournal</em>
+Complex Systems: 1695. <a href="https://igraph.org/" class="external-link">https://igraph.org/</a>.
 </div>
 <div id="ref-Holland2004" class="csl-entry">
-Holland, Barbara R., Katharina T. Huber, Vincent Moulton, and Peter J. Lockhart. 2004. <span>“Using Consensus Networks to Visualize Contradictory Evidence for Species Phylogeny.”</span> <em>Molecular Biology and Evolution</em> 21 (7): 1459–61. <a href="https://doi.org/10.1093/molbev/msh145" class="external-link">https://doi.org/10.1093/molbev/msh145</a>.
+Holland, Barbara R., Katharina T. Huber, Vincent Moulton, and Peter J.
+Lockhart. 2004. <span>“Using Consensus Networks to Visualize
+Contradictory Evidence for Species Phylogeny.”</span> <em>Molecular
+Biology and Evolution</em> 21 (7): 1459–61. <a href="https://doi.org/10.1093/molbev/msh145" class="external-link">https://doi.org/10.1093/molbev/msh145</a>.
 </div>
 <div id="ref-Huson2006" class="csl-entry">
-Huson, D. H., and D. Bryant. 2006. <span>“Application of Phylogenetic Networks in Evolutionary Studies.”</span> <em>Molecular Biology and Evolution</em> 23 (2): 254–67.
+Huson, D. H., and D. Bryant. 2006. <span>“Application of Phylogenetic
+Networks in Evolutionary Studies.”</span> <em>Molecular Biology and
+Evolution</em> 23 (2): 254–67.
 </div>
 <div id="ref-Schliep2011" class="csl-entry">
-Schliep, Klaus Peter. 2011. <span>“Phangorn: Phylogenetic Analysis in <span>R</span>.”</span> <em>Bioinformatics</em> 27 (4): 592–93. <a href="https://doi.org/10.1093/bioinformatics/btq706" class="external-link">https://doi.org/10.1093/bioinformatics/btq706</a>.
+Schliep, Klaus Peter. 2011. <span>“Phangorn: Phylogenetic Analysis in
+<span>R</span>.”</span> <em>Bioinformatics</em> 27 (4): 592–93. <a href="https://doi.org/10.1093/bioinformatics/btq706" class="external-link">https://doi.org/10.1093/bioinformatics/btq706</a>.
 </div>
 </div>
 </div>

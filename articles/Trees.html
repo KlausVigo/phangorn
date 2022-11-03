@@ -80,12 +80,14 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Estimating phylogenetic trees with phangorn</h1>
-                        <h4 data-toc-skip class="author">Klaus Schliep, Iris Bardel-Kahr</h4>
+                        <h4 data-toc-skip class="author">Klaus Schliep,
+Iris Bardel-Kahr</h4>
             <address class="author_afil">
-      Graz University of Technology<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
+      Graz University of
+Technology<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2022-10-25</h4>
+            <h4 data-toc-skip class="date">2022-11-03</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/vignettes/Trees.Rmd" class="external-link"><code>vignettes/Trees.Rmd</code></a></small>
       <div class="d-none name"><code>Trees.Rmd</code></div>
@@ -96,13 +98,35 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>These notes should enable the user to estimate phylogenetic trees from alignment data with different methods using the <em>phangorn</em> package <span class="citation">(Schliep 2011)</span> . Several functions of <em>package</em> are also described in more detail in <span class="citation">(Paradis 2012)</span>. For more theoretical background on all the methods see e.g. <span class="citation">(Felsenstein 2004)</span><span class="citation">(Yang 2006)</span>. This document illustrates some of the <code>package</code> features to estimate phylogenetic trees using different reconstruction methods. Small adaptations to the scripts in section @ref(appendix) should enable the user to perform phylogenetic analyses.</p>
+<p>These notes should enable the user to estimate phylogenetic trees
+from alignment data with different methods using the <em>phangorn</em>
+package <span class="citation">(Schliep 2011)</span> . Several functions
+of <em>package</em> are also described in more detail in <span class="citation">(Paradis 2012)</span>. For more theoretical background
+on all the methods see e.g. [<span class="citation">Felsenstein
+(2004)</span>]<span class="citation">(Yang 2006)</span>. This document
+illustrates some of the <code>package</code> features to estimate
+phylogenetic trees using different reconstruction methods. Small
+adaptations to the scripts in section @ref(appendix) should enable the
+user to perform phylogenetic analyses.</p>
 </div>
 <div class="section level2">
 <h2 id="getting-started">Getting started<a class="anchor" aria-label="anchor" href="#getting-started"></a>
 </h2>
-<p>The first thing we have to do is to read in an alignment. Unfortunately there exists many different file formats that alignments can be stored in. The function <code>read.phyDat</code> is used to read in an alignment. There are several functions to read in alignments depending on the format of the data set (“nexus”, “phylip”, “fasta”) and the kind of data (amino acid or nucleotides) in the <em>ape</em> package <span class="citation">(Paradis and Schliep 2019)</span> and <em>phangorn</em>. The function <code>read.phyDat</code> calls these other functions and transform them into a <code>phyDat</code> object. For the specific parameter settings available look in the help files of the function <code>read.dna</code> (for phylip, fasta, clustal format), <code>read.nexus.data</code> for nexus files. For amino acid data additional <code>read.aa</code> is called.</p>
-<p>We start our analysis loading the <em>phangorn</em> package and then reading in an alignment.</p>
+<p>The first thing we have to do is to read in an alignment.
+Unfortunately there exists many different file formats that alignments
+can be stored in. The function <code>read.phyDat</code> is used to read
+in an alignment. There are several functions to read in alignments
+depending on the format of the data set (“nexus”, “phylip”, “fasta”) and
+the kind of data (amino acid or nucleotides) in the <em>ape</em> package
+<span class="citation">(Paradis and Schliep 2019)</span> and
+<em>phangorn</em>. The function <code>read.phyDat</code> calls these
+other functions and transform them into a <code>phyDat</code> object.
+For the specific parameter settings available look in the help files of
+the function <code>read.dna</code> (for phylip, fasta, clustal format),
+<code>read.nexus.data</code> for nexus files. For amino acid data
+additional <code>read.aa</code> is called.</p>
+<p>We start our analysis loading the <em>phangorn</em> package and then
+reading in an alignment.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://ape-package.ird.fr/" class="external-link">ape</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/KlausVigo/phangorn" class="external-link">phangorn</a></span><span class="op">)</span></span>
@@ -113,8 +137,18 @@
 <div class="section level2">
 <h2 id="distance-based-methods">Distance based methods<a class="anchor" aria-label="anchor" href="#distance-based-methods"></a>
 </h2>
-<p>After reading in the alignment we can build a first tree with distance based methods. The function dist.dna from the ape package computes distances for many DNA substitution models. To use the function dist.dna we have to transform the data to class DNAbin. For amino acids the function <code>dist.ml</code> offers common substitution models (for example “WAG”, “JTT”, “LG”, “Dayhoff”, “cpREV”, “mtmam”, “mtArt”, “MtZoa” or “mtREV24”).</p>
-<p>After constructing a distance matrix we reconstruct a rooted tree with UPGMA and alternatively an unrooted tree using Neighbor Joining <span class="citation">(Saitou and Nei 1987)</span><span class="citation">(Studier and Keppler 1988)</span>. More distance methods like <code>fastme</code> are available in the <em>ape</em> package.</p>
+<p>After reading in the alignment we can build a first tree with
+distance based methods. The function dist.dna from the ape package
+computes distances for many DNA substitution models. To use the function
+dist.dna we have to transform the data to class DNAbin. For amino acids
+the function <code>dist.ml</code> offers common substitution models (for
+example “WAG”, “JTT”, “LG”, “Dayhoff”, “cpREV”, “mtmam”, “mtArt”,
+“MtZoa” or “mtREV24”).</p>
+<p>After constructing a distance matrix we reconstruct a rooted tree
+with UPGMA and alternatively an unrooted tree using Neighbor Joining
+[<span class="citation">Saitou and Nei (1987)</span>]<span class="citation">(Studier and Keppler 1988)</span>. More distance
+methods like <code>fastme</code> are available in the <em>ape</em>
+package.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dm</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dist.hamming.html">dist.ml</a></span><span class="op">(</span><span class="va">primates</span><span class="op">)</span></span>
 <span><span class="va">treeUPGMA</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/upgma.html">upgma</a></span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span>
@@ -137,7 +171,10 @@ Unrooted NJ tree.
 <div class="section level3">
 <h3 id="bootstrap">Bootstrap<a class="anchor" aria-label="anchor" href="#bootstrap"></a>
 </h3>
-<p>To run the bootstrap we need to first write a function which computes a tree from an alignment. So we first need to compute a distance matrix and afterwards compute the tree. This function we can than give to the <code>bootstrap.phyDat</code> function.</p>
+<p>To run the bootstrap we need to first write a function which computes
+a tree from an alignment. So we first need to compute a distance matrix
+and afterwards compute the tree. This function we can than give to the
+<code>bootstrap.phyDat</code> function.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="../reference/upgma.html">upgma</a></span><span class="op">(</span><span class="fu"><a href="../reference/dist.hamming.html">dist.ml</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">bs_upgma</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bootstrap.pml.html">bootstrap.phyDat</a></span><span class="op">(</span><span class="va">primates</span>,  <span class="va">fun</span><span class="op">)</span></span></code></pre></div>
@@ -151,35 +188,53 @@ Unrooted NJ tree.
 Rooted UPGMA tree.
 </p>
 </div>
-<p>Distance based methods are very fast and we will use the UPGMA and NJ tree as starting trees for the maximum parsimony and maximum likelihood analyses.</p>
+<p>Distance based methods are very fast and we will use the UPGMA and NJ
+tree as starting trees for the maximum parsimony and maximum likelihood
+analyses.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="parsimony">Parsimony<a class="anchor" aria-label="anchor" href="#parsimony"></a>
 </h2>
-<p>The function parsimony returns the parsimony score, that is the number of changes which are at least necessary to describe the data for a given tree. We can compare the parsimony score or the two trees we computed so far:</p>
+<p>The function parsimony returns the parsimony score, that is the
+number of changes which are at least necessary to describe the data for
+a given tree. We can compare the parsimony score or the two trees we
+computed so far:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/parsimony.html">parsimony</a></span><span class="op">(</span><span class="va">treeUPGMA</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 751</span></span></code></pre>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/parsimony.html">parsimony</a></span><span class="op">(</span><span class="va">treeNJ</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 746</span></span></code></pre>
-<p>The function most users want to use infer phylogenies with MP is <code>pratchet</code>, an implementation of the parsimony ratchet <span class="citation">(Nixon 1999)</span>. This allows to escape local optima and find better trees than performing only NNI / SPR rearrangements.</p>
+<p>The function most users want to use infer phylogenies with MP is
+<code>pratchet</code>, an implementation of the parsimony ratchet <span class="citation">(Nixon 1999)</span>. This allows to escape local optima
+and find better trees than performing only NNI / SPR rearrangements.</p>
 <p>The current implementation is</p>
 <ol style="list-style-type: decimal">
-<li>Create a bootstrap data set <span class="math inline">\(D_b\)</span> from the original data set.</li>
+<li>Create a bootstrap data set <span class="math inline">\(D_b\)</span>
+from the original data set.</li>
 <li>Take the current best tree and perform tree rearrangements on <span class="math inline">\(D_b\)</span> and save bootstrap tree as <span class="math inline">\(T_b\)</span>.</li>
-<li>Use <span class="math inline">\(T_b\)</span> and perform tree rearrangements on the original data set. If this trees has a lower parsimony score than the currently best tree replace it.</li>
-<li>Iterate 1:3 until either a given number of iteration is reached or no improvements have been recorded for a number of iterations.</li>
+<li>Use <span class="math inline">\(T_b\)</span> and perform tree
+rearrangements on the original data set. If this trees has a lower
+parsimony score than the currently best tree replace it.</li>
+<li>Iterate 1:3 until either a given number of iteration is reached or
+no improvements have been recorded for a number of iterations.</li>
 </ol>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">treeRatchet</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parsimony.html">pratchet</a></span><span class="op">(</span><span class="va">primates</span>, trace <span class="op">=</span> <span class="fl">0</span>, minit<span class="op">=</span><span class="fl">100</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/parsimony.html">parsimony</a></span><span class="op">(</span><span class="va">treeRatchet</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 746</span></span></code></pre>
-<p>Here we set the minimum iteration of the parsimony ratchet to 100 iterations. As the ratchet performed implicitly bootstrap resampling we already computed some branch support, in out case with at least 100 bootstrap iterations. The parameter <code>trace=0</code> tells the function not write the current status to the console. The function may returns several best trees, but these trees have no branch length assigned to them yet. Now let’s do this:</p>
+<p>Here we set the minimum iteration of the parsimony ratchet to 100
+iterations. As the ratchet performed implicitly bootstrap resampling we
+already computed some branch support, in out case with at least 100
+bootstrap iterations. The parameter <code>trace=0</code> tells the
+function not write the current status to the console. The function may
+returns several best trees, but these trees have no branch length
+assigned to them yet. Now let’s do this:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">treeRatchet</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parsimony.html">acctran</a></span><span class="op">(</span><span class="va">treeRatchet</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
-<p>After assigning edge weights we prune away internal edges of length, so our trees may contain multifurcations.</p>
+<p>After assigning edge weights we prune away internal edges of length,
+so our trees may contain multifurcations.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">treeRatchet</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/multi2di.html" class="external-link">di2multi</a></span><span class="op">(</span><span class="va">treeRatchet</span><span class="op">)</span></span></code></pre></div>
 <p>Some trees might have differed only between edges of length 0.</p>
@@ -187,24 +242,39 @@ Rooted UPGMA tree.
 <code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">inherits</a></span><span class="op">(</span><span class="va">treeRatchet</span>, <span class="st">"multiPhylo"</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="va">treeRatchet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">treeRatchet</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<p>The parsimony ratchet implicitly performs a bootstrap analysis (step 1). We make use of this and store the trees which where visited. This allows us to add bootstrap support values to the tree.</p>
+<p>The parsimony ratchet implicitly performs a bootstrap analysis (step
+1). We make use of this and store the trees which where visited. This
+allows us to add bootstrap support values to the tree.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotBS.html">plotBS</a></span><span class="op">(</span><span class="fu"><a href="../reference/midpoint.html">midpoint</a></span><span class="op">(</span><span class="va">treeRatchet</span><span class="op">)</span>, type<span class="op">=</span><span class="st">"phylogram"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/add.scale.bar.html" class="external-link">add.scale.bar</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Trees_files/figure-html/midpoint-1.png" width="700"></p>
-<p>If <code>treeRatchet</code> is a list of trees, i.e. an object of class <code>multiPhylo</code>, we can subset the i-th trees with <code>treeRatchet[[i]]</code>.</p>
-<p>While in most cases <code>pratchet</code> will be enough to use, <code>phangorn</code> exports some function which might be useful. <code>random.addition</code> computes random addition and can be used to generate starting trees. The function <code>optim.parsimony</code> performs tree rearrangements to find trees with a lower parsimony score. The tree rearrangement implemented are nearest-neighbor interchanges (NNI) and subtree pruning and regrafting (SPR). The later one only works so far with the fitch algorithm.</p>
+<p>If <code>treeRatchet</code> is a list of trees, i.e. an object of
+class <code>multiPhylo</code>, we can subset the i-th trees with
+<code>treeRatchet[[i]]</code>.</p>
+<p>While in most cases <code>pratchet</code> will be enough to use,
+<code>phangorn</code> exports some function which might be useful.
+<code>random.addition</code> computes random addition and can be used to
+generate starting trees. The function <code>optim.parsimony</code>
+performs tree rearrangements to find trees with a lower parsimony score.
+The tree rearrangement implemented are nearest-neighbor interchanges
+(NNI) and subtree pruning and regrafting (SPR). The later one only works
+so far with the fitch algorithm.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">treeRA</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parsimony.html">random.addition</a></span><span class="op">(</span><span class="va">primates</span><span class="op">)</span></span>
 <span><span class="va">treeSPR</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parsimony.html">optim.parsimony</a></span><span class="op">(</span><span class="va">treeRA</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Final p-score 750 after  2 nni operations</span></span></code></pre>
+<pre><code><span><span class="co">## Final p-score 746 after  1 nni operations</span></span></code></pre>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/parsimony.html">parsimony</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">treeRA</span>, <span class="va">treeSPR</span><span class="op">)</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 753 750</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 750 746</span></span></code></pre>
 <div class="section level3">
 <h3 id="branch-and-bound">Branch and bound<a class="anchor" aria-label="anchor" href="#branch-and-bound"></a>
 </h3>
-<p>For data sets with few species it is also possible to find all most parsimonious trees using a branch and bound algorithm <span class="citation">(Hendy and Penny 1982)</span>. For data sets with more than 10 taxa this can take a long time and depends strongly on how tree like the data are. And for more than 20-30 taxa this will take almost forever.</p>
+<p>For data sets with few species it is also possible to find all most
+parsimonious trees using a branch and bound algorithm <span class="citation">(Hendy and Penny 1982)</span>. For data sets with more
+than 10 taxa this can take a long time and depends strongly on how tree
+like the data are. And for more than 20-30 taxa this will take almost
+forever.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">trees</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bab.html">bab</a></span><span class="op">(</span><span class="va">primates</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,<span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 1 phylogenetic tree</span></span></code></pre>
@@ -216,14 +286,22 @@ Rooted UPGMA tree.
 <div class="section level3">
 <h3 id="model-selection">Model selection<a class="anchor" aria-label="anchor" href="#model-selection"></a>
 </h3>
-<p>Usually we will try to find the best fitting model beforehand. For this we use the function <code>modelTest</code> to compare different nucleotide or protein models the AIC, AICc or BIC, similar to popular programs ModelTest and ProtTest <span class="citation">(D. Posada and Crandall 1998)</span>, <span class="citation">(David Posada 2008)</span>, <span class="citation">(Abascal, Zardoya, and Posada 2005)</span>. By default available nucleotide or amino acid models available are compared.</p>
+<p>Usually we will try to find the best fitting model beforehand. For
+this we use the function <code>modelTest</code> to compare different
+nucleotide or protein models the AIC, AICc or BIC, similar to popular
+programs ModelTest and ProtTest <span class="citation">(D. Posada and
+Crandall 1998)</span>, <span class="citation">(David Posada
+2008)</span>, <span class="citation">(Abascal, Zardoya, and Posada
+2005)</span>. By default available nucleotide or amino acid models
+available are compared.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modelTest.html">modelTest</a></span><span class="op">(</span><span class="va">primates</span><span class="op">)</span></span></code></pre></div>
 <p>Here we can select only some common models:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modelTest.html">modelTest</a></span><span class="op">(</span><span class="va">primates</span>, model<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"JC"</span>, <span class="st">"F81"</span>, <span class="st">"K80"</span>, <span class="st">"HKY"</span>, <span class="st">"SYM"</span>, <span class="st">"GTR"</span><span class="op">)</span>, </span>
 <span>                control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>The results of <code>modelTest</code> is illustrated in following table:</p>
+<p>The results of <code>modelTest</code> is illustrated in following
+table:</p>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Model</th>
@@ -359,12 +437,12 @@ Rooted UPGMA tree.
 <tr class="odd">
 <td align="left">HKY</td>
 <td align="right">29</td>
-<td align="right">-2625.03</td>
-<td align="right">5308.07</td>
+<td align="right">-2625.04</td>
+<td align="right">5308.08</td>
 <td align="right">0.00</td>
-<td align="right">5316.68</td>
+<td align="right">5316.69</td>
 <td align="right">0.00</td>
-<td align="right">5408.02</td>
+<td align="right">5408.03</td>
 </tr>
 <tr class="even">
 <td align="left">HKY+I</td>
@@ -372,9 +450,9 @@ Rooted UPGMA tree.
 <td align="right">-2621.27</td>
 <td align="right">5302.54</td>
 <td align="right">0.00</td>
-<td align="right">5311.79</td>
+<td align="right">5311.80</td>
 <td align="right">0.00</td>
-<td align="right">5405.94</td>
+<td align="right">5405.95</td>
 </tr>
 <tr class="odd">
 <td align="left">HKY+G(4)</td>
@@ -382,7 +460,7 @@ Rooted UPGMA tree.
 <td align="right">-2612.64</td>
 <td align="right">5285.28</td>
 <td align="right">0.18</td>
-<td align="right">5294.54</td>
+<td align="right">5294.53</td>
 <td align="right">0.45</td>
 <td align="right">5388.68</td>
 </tr>
@@ -439,18 +517,18 @@ Rooted UPGMA tree.
 <tr class="odd">
 <td align="left">GTR</td>
 <td align="right">33</td>
-<td align="right">-2618.63</td>
-<td align="right">5303.25</td>
+<td align="right">-2618.64</td>
+<td align="right">5303.28</td>
 <td align="right">0.00</td>
-<td align="right">5314.58</td>
+<td align="right">5314.61</td>
 <td align="right">0.00</td>
-<td align="right">5416.99</td>
+<td align="right">5417.02</td>
 </tr>
 <tr class="even">
 <td align="left">GTR+I</td>
 <td align="right">34</td>
 <td align="right">-2613.58</td>
-<td align="right">5295.16</td>
+<td align="right">5295.17</td>
 <td align="right">0.00</td>
 <td align="right">5307.25</td>
 <td align="right">0.00</td>
@@ -478,72 +556,84 @@ Rooted UPGMA tree.
 </tr>
 </tbody>
 </table>
-<p>To speed computations up the thresholds for the optimization in <code>modelTest</code> are not as strict as for <code>optim.pml</code> and no tree rearrangements are performed, which is the most time consuming part of the optimizing process. As <code>modelTest</code> computes and optimizes a lot of models it would be a waste of computer time not to save these results. The results are saved as call together with the optimized trees in an environment and the function <code>as.pml</code> evaluates this call to get a <code>pml</code> object back to use for further optimization or analysis.</p>
+<p>To speed computations up the thresholds for the optimization in
+<code>modelTest</code> are not as strict as for <code>optim.pml</code>
+and no tree rearrangements are performed, which is the most time
+consuming part of the optimizing process. As <code>modelTest</code>
+computes and optimizes a lot of models it would be a waste of computer
+time not to save these results. The results are saved as call together
+with the optimized trees in an environment and the function
+<code>as.pml</code> evaluates this call to get a <code>pml</code> object
+back to use for further optimization or analysis.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">as.pml</a></span><span class="op">(</span><span class="va">mt</span>, <span class="st">"HKY+G(4)+I"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## model: HKY+G(4)+I </span></span>
-<span><span class="co">## loglikelihood: -2612.446 </span></span>
+<span><span class="co">## loglikelihood: -2612.447 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -1230.335 </span></span>
-<span><span class="co">## Proportion of invariant sites: 0.002714078 </span></span>
+<span><span class="co">## Proportion of invariant sites: 0.002713457 </span></span>
 <span><span class="co">## Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.127173 </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Rate matrix:</span></span>
-<span><span class="co">##         a       c       g       t</span></span>
-<span><span class="co">## a  0.0000  1.0000 56.0274  1.0000</span></span>
-<span><span class="co">## c  1.0000  0.0000  1.0000 56.0274</span></span>
-<span><span class="co">## g 56.0274  1.0000  0.0000  1.0000</span></span>
-<span><span class="co">## t  1.0000 56.0274  1.0000  0.0000</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Base frequencies:  </span></span>
-<span><span class="co">##          a          c          g          t </span></span>
-<span><span class="co">## 0.42045475 0.36231049 0.04393437 0.17330038</span></span></code></pre>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="op">(</span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">as.pml</a></span><span class="op">(</span><span class="va">mt</span>, <span class="st">"BIC"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## model: HKY+G(4) </span></span>
-<span><span class="co">## loglikelihood: -2612.641 </span></span>
-<span><span class="co">## unconstrained loglikelihood: -1230.335 </span></span>
-<span><span class="co">## Discrete gamma model</span></span>
-<span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.145033 </span></span>
+<span><span class="co">## Shape parameter: 2.127379 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
 <span><span class="co">##          a        c        g        t</span></span>
-<span><span class="co">## a  0.00000  1.00000 51.44474  1.00000</span></span>
-<span><span class="co">## c  1.00000  0.00000  1.00000 51.44474</span></span>
-<span><span class="co">## g 51.44474  1.00000  0.00000  1.00000</span></span>
-<span><span class="co">## t  1.00000 51.44474  1.00000  0.00000</span></span>
+<span><span class="co">## a  0.00000  1.00000 56.00907  1.00000</span></span>
+<span><span class="co">## c  1.00000  0.00000  1.00000 56.00907</span></span>
+<span><span class="co">## g 56.00907  1.00000  0.00000  1.00000</span></span>
+<span><span class="co">## t  1.00000 56.00907  1.00000  0.00000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##          a          c          g          t </span></span>
-<span><span class="co">## 0.41942278 0.36287786 0.04387752 0.17382183</span></span></code></pre>
-<p>To simplify the workflow we can give the result of modelTest to <code>pml_bb</code> function and optimize the parameters taking the best model according to BIC.</p>
+<span><span class="co">## 0.42039503 0.36233070 0.04391318 0.17336109</span></span></code></pre>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="op">(</span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">as.pml</a></span><span class="op">(</span><span class="va">mt</span>, <span class="st">"BIC"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## model: HKY+G(4) </span></span>
+<span><span class="co">## loglikelihood: -2612.64 </span></span>
+<span><span class="co">## unconstrained loglikelihood: -1230.335 </span></span>
+<span><span class="co">## Discrete gamma model</span></span>
+<span><span class="co">## Number of rate categories: 4 </span></span>
+<span><span class="co">## Shape parameter: 2.144612 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Rate matrix:</span></span>
+<span><span class="co">##          a        c        g        t</span></span>
+<span><span class="co">## a  0.00000  1.00000 51.45829  1.00000</span></span>
+<span><span class="co">## c  1.00000  0.00000  1.00000 51.45829</span></span>
+<span><span class="co">## g 51.45829  1.00000  0.00000  1.00000</span></span>
+<span><span class="co">## t  1.00000 51.45829  1.00000  0.00000</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Base frequencies:  </span></span>
+<span><span class="co">##          a          c          g          t </span></span>
+<span><span class="co">## 0.41945260 0.36283653 0.04386997 0.17384089</span></span></code></pre>
+<p>To simplify the workflow we can give the result of modelTest to
+<code>pml_bb</code> function and optimize the parameters taking the best
+model according to BIC.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">mt</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fit_mt</span></span></code></pre></div>
 <pre><code><span><span class="co">## model: HKY+G(4) </span></span>
-<span><span class="co">## loglikelihood: -2611.865 </span></span>
+<span><span class="co">## loglikelihood: -2611.573 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -1230.335 </span></span>
 <span><span class="co">## Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.069865 </span></span>
+<span><span class="co">## Shape parameter: 2.070041 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
 <span><span class="co">##          a        c        g        t</span></span>
-<span><span class="co">## a  0.00000  1.00000 55.10242  1.00000</span></span>
-<span><span class="co">## c  1.00000  0.00000  1.00000 55.10242</span></span>
-<span><span class="co">## g 55.10242  1.00000  0.00000  1.00000</span></span>
-<span><span class="co">## t  1.00000 55.10242  1.00000  0.00000</span></span>
+<span><span class="co">## a  0.00000  1.00000 56.56196  1.00000</span></span>
+<span><span class="co">## c  1.00000  0.00000  1.00000 56.56196</span></span>
+<span><span class="co">## g 56.56196  1.00000  0.00000  1.00000</span></span>
+<span><span class="co">## t  1.00000 56.56196  1.00000  0.00000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##          a          c          g          t </span></span>
-<span><span class="co">## 0.42086312 0.36217478 0.04380668 0.17315542</span></span></code></pre>
+<span><span class="co">## 0.42089027 0.36225081 0.04381149 0.17304743</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="maximum-likelihood-by-hand">Maximum likelihood by hand<a class="anchor" aria-label="anchor" href="#maximum-likelihood-by-hand"></a>
 </h3>
-<p>The last method we will describe in this vignette is Maximum Likelihood (ML) as introduced by Felsenstein <span class="citation">(Felsenstein 1981)</span>. We can compute the likelihood for a tree given the data</p>
+<p>The last method we will describe in this vignette is Maximum
+Likelihood (ML) as introduced by Felsenstein <span class="citation">(Felsenstein 1981)</span>. We can compute the
+likelihood for a tree given the data</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">pml</a></span><span class="op">(</span><span class="va">treeNJ</span>, data<span class="op">=</span><span class="va">primates</span><span class="op">)</span></span>
 <span><span class="va">fit</span></span></code></pre></div>
@@ -561,12 +651,19 @@ Rooted UPGMA tree.
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##    a    c    g    t </span></span>
 <span><span class="co">## 0.25 0.25 0.25 0.25</span></span></code></pre>
-<p>The function <code>pml</code> returns an object of class <code>pml</code>. This object contains the data, the tree and many different parameters of the model like the likelihood. There are many generic functions for the class <code>pml</code> available, which allow the handling of these objects.</p>
+<p>The function <code>pml</code> returns an object of class
+<code>pml</code>. This object contains the data, the tree and many
+different parameters of the model like the likelihood. There are many
+generic functions for the class <code>pml</code> available, which allow
+the handling of these objects.</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/methods.html" class="external-link">methods</a></span><span class="op">(</span>class<span class="op">=</span><span class="st">"pml"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] AICc   anova  BIC    logLik plot   print  simSeq update vcov  </span></span>
 <span><span class="co">## see '?methods' for accessing help and source code</span></span></code></pre>
-<p>The object fit just estimated the likelihood for the tree it got supplied, but the branch length are not optimized for the Jukes-Cantor <span class="citation">(Jukes and Cantor 1969)</span> model yet, which can be done with the function <code>optim.pml</code>.</p>
+<p>The object fit just estimated the likelihood for the tree it got
+supplied, but the branch length are not optimized for the Jukes-Cantor
+<span class="citation">(Jukes and Cantor 1969)</span> model yet, which
+can be done with the function <code>optim.pml</code>.</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fitJC</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, rearrangement<span class="op">=</span><span class="st">"NNI"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## optimize edge weights:  -3074.952 --&gt; -3068.417 </span></span>
@@ -583,7 +680,12 @@ Rooted UPGMA tree.
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik</a></span><span class="op">(</span><span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 'log Lik.' -3068.295 (df=25)</span></span></code></pre>
-<p>With the default values <code>pml</code> will estimate a Jukes-Cantor model. That means equal base frequencies and all transition rates are equal. The generic function <code>update</code> allows to change parameters manually. This is not what we usually want to do. However we might want to supply a different tree or change the number of rate categories.</p>
+<p>With the default values <code>pml</code> will estimate a Jukes-Cantor
+model. That means equal base frequencies and all transition rates are
+equal. The generic function <code>update</code> allows to change
+parameters manually. This is not what we usually want to do. However we
+might want to supply a different tree or change the number of rate
+categories.</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fitF81</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/update.html" class="external-link">update</a></span><span class="op">(</span><span class="va">fitJC</span>, k<span class="op">=</span><span class="fl">4</span>, inv<span class="op">=</span><span class="fl">0.2</span>, bf<span class="op">=</span><span class="fu"><a href="../reference/baseFreq.html">baseFreq</a></span><span class="op">(</span><span class="va">primates</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fitF81</span></span></code></pre></div>
@@ -605,7 +707,10 @@ Rooted UPGMA tree.
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##          a          c          g          t </span></span>
 <span><span class="co">## 0.37480751 0.40160148 0.03911303 0.18447798</span></span></code></pre>
-<p>In the line above we changed the th model a (discrete) rate across site model with 4 rate categories (using the default shape parameter of 1), to 0.2 invariant sites and and supply empirical base frequencies.</p>
+<p>In the line above we changed the th model a (discrete) rate across
+site model with 4 rate categories (using the default shape parameter of
+1), to 0.2 invariant sites and and supply empirical base
+frequencies.</p>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fitGTR</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fitF81</span>, model<span class="op">=</span><span class="st">"GTR"</span>, optInv<span class="op">=</span><span class="cn">TRUE</span>, optGamma<span class="op">=</span><span class="cn">TRUE</span>,</span>
 <span>    rearrangement <span class="op">=</span> <span class="st">"NNI"</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
@@ -628,100 +733,119 @@ Rooted UPGMA tree.
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##          a          c          g          t </span></span>
 <span><span class="co">## 0.39400006 0.37871449 0.04037283 0.18691262</span></span></code></pre>
-<p>We will change the model to the GTR + <span class="math inline">\(\Gamma(4)\)</span> + I model and then optimize all the parameters.</p>
-<p>With the control parameters the thresholds for the fitting process can be changed. Here we want just to suppress output during the fitting process. For larger trees the NNI rearrangements often get stuck in a local maximum. We added two stochastic algorithms to improve topology search. The first (set <code>rearrangement="stochastic"</code>) performs stochastic rearrangements similar as in <span class="citation">(Nguyen et al. 2015)</span>, which makes random NNI permutation to the tree, which than gets optimized to escape local optima. The second option (rearrangement=“ratchet”) perform the likelihood ratchet <span class="citation">(Vos 2003)</span>.</p>
-<p>While these algorithms may find better trees they will also take more time.</p>
+<p>We will change the model to the GTR + <span class="math inline">\(\Gamma(4)\)</span> + I model and then optimize all
+the parameters.</p>
+<p>With the control parameters the thresholds for the fitting process
+can be changed. Here we want just to suppress output during the fitting
+process. For larger trees the NNI rearrangements often get stuck in a
+local maximum. We added two stochastic algorithms to improve topology
+search. The first (set <code>rearrangement="stochastic"</code>) performs
+stochastic rearrangements similar as in <span class="citation">(Nguyen
+et al. 2015)</span>, which makes random NNI permutation to the tree,
+which than gets optimized to escape local optima. The second option
+(rearrangement=“ratchet”) perform the likelihood ratchet <span class="citation">(Vos 2003)</span>.</p>
+<p>While these algorithms may find better trees they will also take more
+time.</p>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fitGTR</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fitGTR</span>, model<span class="op">=</span><span class="st">"GTR"</span>, optInv<span class="op">=</span><span class="cn">TRUE</span>, optGamma<span class="op">=</span><span class="cn">TRUE</span>,</span>
 <span>    rearrangement <span class="op">=</span> <span class="st">"stochastic"</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fitGTR</span></span></code></pre></div>
 <pre><code><span><span class="co">## model: GTR+G(4)+I </span></span>
-<span><span class="co">## loglikelihood: -2607.143 </span></span>
+<span><span class="co">## loglikelihood: -2608.105 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -1230.335 </span></span>
-<span><span class="co">## Proportion of invariant sites: 0.005538225 </span></span>
+<span><span class="co">## Proportion of invariant sites: 0.00545896 </span></span>
 <span><span class="co">## Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.648587 </span></span>
+<span><span class="co">## Shape parameter: 2.587343 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
-<span><span class="co">##            a            c            g          t</span></span>
-<span><span class="co">## a  0.0000000  0.759793199 66.870010912  0.4898427</span></span>
-<span><span class="co">## c  0.7597932  0.000000000  0.003460126 25.7293615</span></span>
-<span><span class="co">## g 66.8700109  0.003460126  0.000000000  1.0000000</span></span>
-<span><span class="co">## t  0.4898427 25.729361519  1.000000000  0.0000000</span></span>
+<span><span class="co">##            a            c            g         t</span></span>
+<span><span class="co">## a   0.000000  1.962706065 1.813946e+02  1.747603</span></span>
+<span><span class="co">## c   1.962706  0.000000000 3.246113e-03 69.653614</span></span>
+<span><span class="co">## g 181.394562  0.003246113 0.000000e+00  1.000000</span></span>
+<span><span class="co">## t   1.747603 69.653614148 1.000000e+00  0.000000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##          a          c          g          t </span></span>
-<span><span class="co">## 0.39629794 0.37883023 0.04025814 0.18461369</span></span></code></pre>
-<p>Recently we added a new function <code>pml_bb</code> which hides a few steps from the user as long as only some standard phylogentic analysis are performed.</p>
+<span><span class="co">## 0.39720425 0.37833010 0.04017501 0.18429064</span></span></code></pre>
+<p>Recently we added a new function <code>pml_bb</code> which hides a
+few steps from the user as long as only some standard phylogentic
+analysis are performed.</p>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fitGTR</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">primates</span>, model<span class="op">=</span><span class="st">"GTR+G(4)+I"</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fitGTR</span></span></code></pre></div>
 <pre><code><span><span class="co">## model: GTR+G(4)+I </span></span>
-<span><span class="co">## loglikelihood: -2608.463 </span></span>
+<span><span class="co">## loglikelihood: -2608.461 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -1230.335 </span></span>
-<span><span class="co">## Proportion of invariant sites: 0.005612608 </span></span>
+<span><span class="co">## Proportion of invariant sites: 0.005623458 </span></span>
 <span><span class="co">## Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.935 </span></span>
+<span><span class="co">## Shape parameter: 2.935091 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
 <span><span class="co">##            a            c            g          t</span></span>
-<span><span class="co">## a  0.0000000  0.709163593 43.295136337  0.4483486</span></span>
-<span><span class="co">## c  0.7091636  0.000000000  0.002810798 18.0524984</span></span>
-<span><span class="co">## g 43.2951363  0.002810798  0.000000000  1.0000000</span></span>
-<span><span class="co">## t  0.4483486 18.052498388  1.000000000  0.0000000</span></span>
+<span><span class="co">## a  0.0000000  0.707295460 43.192609841  0.4472095</span></span>
+<span><span class="co">## c  0.7072955  0.000000000  0.002097628 18.0131761</span></span>
+<span><span class="co">## g 43.1926098  0.002097628  0.000000000  1.0000000</span></span>
+<span><span class="co">## t  0.4472095 18.013176127  1.000000000  0.0000000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##          a          c          g          t </span></span>
-<span><span class="co">## 0.39399166 0.37892286 0.04025614 0.18682934</span></span></code></pre>
-<p>In this case it generates a starting tree, an <code>pml</code> object and optimizes the parameters given the model term using <code>optim.pml</code>.</p>
+<span><span class="co">## 0.39403076 0.37885389 0.04028248 0.18683288</span></span></code></pre>
+<p>In this case it generates a starting tree, an <code>pml</code> object
+and optimizes the parameters given the model term using
+<code>optim.pml</code>.</p>
 </div>
 <div class="section level3">
 <h3 id="model-comparison">Model comparison<a class="anchor" aria-label="anchor" href="#model-comparison"></a>
 </h3>
-<p>We can compare nested models for the JC and GTR + <span class="math inline">\(\Gamma(4)\)</span> + I model using likelihood ratio statistic</p>
+<p>We can compare nested models for the JC and GTR + <span class="math inline">\(\Gamma(4)\)</span> + I model using likelihood
+ratio statistic</p>
 <div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova</a></span><span class="op">(</span><span class="va">fitJC</span>, <span class="va">fitGTR</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Likelihood Ratio Test Table</span></span>
 <span><span class="co">##   Log lik. Df Df change Diff log lik. Pr(&gt;|Chi|)    </span></span>
 <span><span class="co">## 1  -3068.3 25                                       </span></span>
-<span><span class="co">## 2  -2608.5 35        10        919.66  &lt; 2.2e-16 ***</span></span>
+<span><span class="co">## 2  -2608.5 35        10        919.67  &lt; 2.2e-16 ***</span></span>
 <span><span class="co">## ---</span></span>
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre>
-<p>with the Shimodaira-Hasegawa  test</p>
+<p>with the Shimodaira-Hasegawa test</p>
 <div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/SH.test.html">SH.test</a></span><span class="op">(</span><span class="va">fitGTR</span>, <span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##      Trees      ln L Diff ln L p-value</span></span>
-<span><span class="co">## [1,]     1 -2608.463    0.0000  0.5025</span></span>
-<span><span class="co">## [2,]     2 -3068.295  459.8317  0.0000</span></span></code></pre>
+<span><span class="co">## [1,]     1 -2608.461    0.0000  0.5018</span></span>
+<span><span class="co">## [2,]     2 -3068.295  459.8338  0.0000</span></span></code></pre>
 <p>or with the AIC</p>
 <div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 6186.59</span></span></code></pre>
 <div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">fitGTR</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 5286.927</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 5286.923</span></span></code></pre>
 <div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/modelTest.html">AICc</a></span><span class="op">(</span><span class="va">fitGTR</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 5299.784</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 5299.78</span></span></code></pre>
 <div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">BIC</a></span><span class="op">(</span><span class="va">fitGTR</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 5407.563</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 5407.558</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="bootstrap-1">Bootstrap<a class="anchor" aria-label="anchor" href="#bootstrap-1"></a>
 </h3>
-<p>At last we may want to apply bootstrap to test how well the edges of the tree are supported:</p>
+<p>At last we may want to apply bootstrap to test how well the edges of
+the tree are supported:</p>
 <div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bootstrap.pml.html">bootstrap.pml</a></span><span class="op">(</span><span class="va">fitJC</span>, bs<span class="op">=</span><span class="fl">100</span>, optNni<span class="op">=</span><span class="cn">TRUE</span>,</span>
 <span>    control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>Now we can plot the tree with the bootstrap support values on the edges and also look at <code>consensusNet</code> to identify potential conflict.</p>
+<p>Now we can plot the tree with the bootstrap support values on the
+edges and also look at <code>consensusNet</code> to identify potential
+conflict.</p>
 <div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotBS.html">plotBS</a></span><span class="op">(</span><span class="fu"><a href="../reference/midpoint.html">midpoint</a></span><span class="op">(</span><span class="va">fitJC</span><span class="op">$</span><span class="va">tree</span><span class="op">)</span>, <span class="va">bs</span>, p <span class="op">=</span> <span class="fl">50</span>, type<span class="op">=</span><span class="st">"p"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="Trees_files/figure-html/plotBS-1.png" alt="Tree with bootstrap support. Unrooted tree (midpoint rooted) with bootstrap support values." width="700"><p class="caption">
-Tree with bootstrap support. Unrooted tree (midpoint rooted) with bootstrap support values.
+Tree with bootstrap support. Unrooted tree (midpoint rooted) with
+bootstrap support values.
 </p>
 </div>
 <div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
@@ -732,25 +856,44 @@ Tree with bootstrap support. Unrooted tree (midpoint rooted) with bootstrap supp
 ConsensusNet from the bootstrap sample.
 </p>
 </div>
-<p>Several analyses, e.g.<code>bootstrap</code> and <code>modelTest</code>, can be computationally demanding, but as nowadays most computers have several cores one can distribute the computations using the <em>parallel</em> package. However it is only possible to use this approach if R is running from command line (“X11”), but not using a GUI (for example “Aqua” on Macs) and unfortunately the <em>parallel</em> package does not work at all under Windows.</p>
+<p>Several analyses, e.g.<code>bootstrap</code> and
+<code>modelTest</code>, can be computationally demanding, but as
+nowadays most computers have several cores one can distribute the
+computations using the <em>parallel</em> package. However it is only
+possible to use this approach if R is running from command line (“X11”),
+but not using a GUI (for example “Aqua” on Macs) and unfortunately the
+<em>parallel</em> package does not work at all under Windows.</p>
 </div>
 <div class="section level3">
-<h3 id="molecular-dating-with-a-strict-clock-for-ultrametric-and-tipdated-phylogenies">Molecular dating with a strict clock for ultrametric and tipdated phylogenies<a class="anchor" aria-label="anchor" href="#molecular-dating-with-a-strict-clock-for-ultrametric-and-tipdated-phylogenies"></a>
+<h3 id="molecular-dating-with-a-strict-clock-for-ultrametric-and-tipdated-phylogenies">Molecular dating with a strict clock for ultrametric and tipdated
+phylogenies<a class="anchor" aria-label="anchor" href="#molecular-dating-with-a-strict-clock-for-ultrametric-and-tipdated-phylogenies"></a>
 </h3>
-<p>We implemented a strict clock as described in <span class="citation">(Felsenstein 2004)</span>, p. 266 allowing to infer ultrametric and tip-dated phylogenies. We need a starting tree that fulfills the assumptions, so either tree has to be ultrametric or the constraints given by the tip dates.<br>
-For a ultrametric starting tree starting tree we can use an UPGMA or WPGMA tree. When we optimize the tree with <code>optim.pml</code> we have to make sure set we set <code>optRooted = TRUE</code> and for tip-dated we need additionally set <code>optRate=TRUE</code>!</p>
+<p>We implemented a strict clock as described in <span class="citation">(Felsenstein 2004)</span>, p. 266 allowing to infer
+ultrametric and tip-dated phylogenies. We need a starting tree that
+fulfills the assumptions, so either tree has to be ultrametric or the
+constraints given by the tip dates.<br>
+For a ultrametric starting tree starting tree we can use an UPGMA or
+WPGMA tree. When we optimize the tree with <code>optim.pml</code> we
+have to make sure set we set <code>optRooted = TRUE</code> and for
+tip-dated we need additionally set <code>optRate=TRUE</code>!</p>
 <div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_strict</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">primates</span>, model<span class="op">=</span><span class="st">"HKY+G(4)"</span>, method<span class="op">=</span><span class="st">"ultrametric"</span>,</span>
 <span>                     control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit_strict</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Trees_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
-<p>With phangorn we also can estimate tipdated phylogenies. Here we use as an example a H3N2 virus data set from treetime <span class="citation">(Sagulenko, Puller, and Neher 2018)</span>. Additionally to the alignment we also need to read in data containing the dates of the tips.</p>
+<p>With phangorn we also can estimate tipdated phylogenies. Here we use
+as an example a H3N2 virus data set from treetime <span class="citation">(Sagulenko, Puller, and Neher 2018)</span>.
+Additionally to the alignment we also need to read in data containing
+the dates of the tips.</p>
 <div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fdir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/trees"</span>, package <span class="op">=</span> <span class="st">"phangorn"</span><span class="op">)</span></span>
 <span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">fdir</span>,<span class="st">"H3N2_NA_20.csv"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">H3N2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read.phyDat.html">read.phyDat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">fdir</span>,<span class="st">"H3N2_NA_20.fasta"</span><span class="op">)</span>, format<span class="op">=</span><span class="st">"fasta"</span><span class="op">)</span></span></code></pre></div>
-<p>We first process the sampling dates and create a named vector. The lubridate package <span class="citation">(Grolemund and Wickham 2011)</span> comes very handy dates in case one has to recode dates, e.g. days and months.</p>
+<p>We first process the sampling dates and create a named vector. The
+lubridate package <span class="citation">(Grolemund and Wickham
+2011)</span> comes very handy dates in case one has to recode dates,
+e.g. days and months.</p>
 <div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html" class="external-link">setNames</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">$</span><span class="va">numdate_given</span>, <span class="va">tmp</span><span class="op">$</span><span class="va">name</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dates</span><span class="op">)</span></span></code></pre></div>
@@ -766,7 +909,8 @@ For a ultrametric starting tree starting tree we can use an UPGMA or WPGMA tree.
 <span><span class="co">##                                                                 2000.134 </span></span>
 <span><span class="co">##        A/Canterbury/58/2000|CY009150|09/05/2000|New_Zealand||H3N2/8-1416 </span></span>
 <span><span class="co">##                                                                 2000.682</span></span></code></pre>
-<p>Again we use the <code>pml_bb</code> function, which optimizes the tree given th constraints of the tip.dates vector.</p>
+<p>Again we use the <code>pml_bb</code> function, which optimizes the
+tree given th constraints of the tip.dates vector.</p>
 <div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_td</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">H3N2</span>, model<span class="op">=</span><span class="st">"GTR+G(4)"</span>, method<span class="op">=</span><span class="st">"tipdated"</span>, tip.dates<span class="op">=</span><span class="va">dates</span>, </span>
 <span>               rearrangement<span class="op">=</span><span class="st">"NNI"</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -777,7 +921,11 @@ For a ultrametric starting tree starting tree we can use an UPGMA or WPGMA tree.
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">tree_td</span>, show.tip.label <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/axisPhylo.html" class="external-link">axisPhylo</a></span><span class="op">(</span>root.time <span class="op">=</span> <span class="va">root_time</span>, backward <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Trees_files/figure-html/tipdated%20plot-1.png" width="700"></p>
-<p>While the loglikelihood is lower than for an unrooted tree, we have to keep in mind that rooted trees use less parameters. In unrooted trees we estimate one edge length parameter for each tree, for ultrametric trees we estimate only a parameter for each internal node and for tipdated trees we have one additional parameter for the rate.</p>
+<p>While the loglikelihood is lower than for an unrooted tree, we have
+to keep in mind that rooted trees use less parameters. In unrooted trees
+we estimate one edge length parameter for each tree, for ultrametric
+trees we estimate only a parameter for each internal node and for
+tipdated trees we have one additional parameter for the rate.</p>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
@@ -787,7 +935,11 @@ For a ultrametric starting tree starting tree we can use an UPGMA or WPGMA tree.
 <div class="section level3">
 <h3 id="standard-scripts-for-nucleotide-analysis">Standard scripts for nucleotide analysis<a class="anchor" aria-label="anchor" href="#standard-scripts-for-nucleotide-analysis"></a>
 </h3>
-<p>Here we provide two standard scripts which can be adapted for the most common tasks. Most likely the arguments for <code>read.phyDat</code> have to be adapted to accommodate your file format. Both scripts assume that the <em>parallel</em> package works on your platform, see comments above.</p>
+<p>Here we provide two standard scripts which can be adapted for the
+most common tasks. Most likely the arguments for
+<code>read.phyDat</code> have to be adapted to accommodate your file
+format. Both scripts assume that the <em>parallel</em> package works on
+your platform, see comments above.</p>
 <div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/KlausVigo/phangorn" class="external-link">phangorn</a></span><span class="op">)</span></span>
 <span><span class="va">file</span> <span class="op">&lt;-</span> <span class="st">"myfile"</span></span>
@@ -816,7 +968,12 @@ For a ultrametric starting tree starting tree we can use an UPGMA or WPGMA tree.
 <div class="section level3">
 <h3 id="standard-scripts-for-amino-acid-analysis">Standard scripts for amino acid analysis<a class="anchor" aria-label="anchor" href="#standard-scripts-for-amino-acid-analysis"></a>
 </h3>
-<p>You can specify different several models build in which you can specify, e.g. “WAG”, “JTT”, “Dayhoff”, “LG”. Optimizing the rate matrix for amino acids is possible, but would take a long, a very long time and you will need to have a large alignment to estimate all the parameters. So make sure to set <code>optBf=FALSE</code> and <code>optQ=FALSE</code> in the function <code>optim.pml</code>, which is also the default.</p>
+<p>You can specify different several models build in which you can
+specify, e.g. “WAG”, “JTT”, “Dayhoff”, “LG”. Optimizing the rate matrix
+for amino acids is possible, but would take a long, a very long time and
+you will need to have a large alignment to estimate all the parameters.
+So make sure to set <code>optBf=FALSE</code> and <code>optQ=FALSE</code>
+in the function <code>optim.pml</code>, which is also the default.</p>
 <div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/KlausVigo/phangorn" class="external-link">phangorn</a></span><span class="op">)</span></span>
 <span><span class="va">file</span> <span class="op">&lt;-</span> <span class="st">"myfile"</span></span>
@@ -844,7 +1001,7 @@ For a ultrametric starting tree starting tree we can use an UPGMA or WPGMA tree.
 <div class="section level2">
 <h2 class="unnumbered" id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<pre><code><span><span class="co">## R version 4.2.1 (2022-06-23)</span></span>
+<pre><code><span><span class="co">## R version 4.2.2 (2022-10-31)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
 <span><span class="co">## Running under: Ubuntu 20.04.5 LTS</span></span>
 <span><span class="co">## </span></span>
@@ -865,75 +1022,106 @@ For a ultrametric starting tree starting tree we can use an UPGMA or WPGMA tree.
 <span><span class="co">## [1] knitr_1.40          phangorn_2.10.0.900 ape_5.6-2          </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] Rcpp_1.0.9        highr_0.9         bslib_0.4.0       compiler_4.2.1   </span></span>
-<span><span class="co">##  [5] jquerylib_0.1.4   prettydoc_0.4.1   tools_4.2.1       digest_0.6.30    </span></span>
-<span><span class="co">##  [9] jsonlite_1.8.3    evaluate_0.17     memoise_2.0.1     nlme_3.1-157     </span></span>
-<span><span class="co">## [13] lattice_0.20-45   pkgconfig_2.0.3   rlang_1.0.6       Matrix_1.4-1     </span></span>
+<span><span class="co">##  [1] Rcpp_1.0.9        highr_0.9         bslib_0.4.0       compiler_4.2.2   </span></span>
+<span><span class="co">##  [5] jquerylib_0.1.4   prettydoc_0.4.1   tools_4.2.2       digest_0.6.30    </span></span>
+<span><span class="co">##  [9] jsonlite_1.8.3    evaluate_0.17     memoise_2.0.1     nlme_3.1-160     </span></span>
+<span><span class="co">## [13] lattice_0.20-45   pkgconfig_2.0.3   rlang_1.0.6       Matrix_1.5-1     </span></span>
 <span><span class="co">## [17] fastmatch_1.1-3   igraph_1.3.5      cli_3.4.1         yaml_2.3.6       </span></span>
-<span><span class="co">## [21] parallel_4.2.1    pkgdown_2.0.6     xfun_0.34         fastmap_1.1.0    </span></span>
+<span><span class="co">## [21] parallel_4.2.2    pkgdown_2.0.6     xfun_0.34         fastmap_1.1.0    </span></span>
 <span><span class="co">## [25] stringr_1.4.1     desc_1.4.2        generics_0.1.3    fs_1.5.2         </span></span>
-<span><span class="co">## [29] sass_0.4.2        systemfonts_1.0.4 rprojroot_2.0.3   grid_4.2.1       </span></span>
+<span><span class="co">## [29] sass_0.4.2        systemfonts_1.0.4 rprojroot_2.0.3   grid_4.2.2       </span></span>
 <span><span class="co">## [33] R6_2.5.1          textshaping_0.3.6 rmarkdown_2.17    purrr_0.3.5      </span></span>
 <span><span class="co">## [37] magrittr_2.0.3    codetools_0.2-18  htmltools_0.5.3   quadprog_1.5-8   </span></span>
-<span><span class="co">## [41] ragg_1.2.3        stringi_1.7.8     cachem_1.0.6</span></span></code></pre>
+<span><span class="co">## [41] ragg_1.2.4        stringi_1.7.8     cachem_1.0.6</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Abascal2005" class="csl-entry">
-Abascal, Federico, Rafael Zardoya, and David Posada. 2005. <span>“ProtTest: Selection of Best-Fit Models of Protein Evolution.”</span> <em>Bioinformatics</em> 21 (9): 2104–5. <a href="https://doi.org/10.1093/bioinformatics/bti263" class="external-link">https://doi.org/10.1093/bioinformatics/bti263</a>.
+Abascal, Federico, Rafael Zardoya, and David Posada. 2005.
+<span>“ProtTest: Selection of Best-Fit Models of Protein
+Evolution.”</span> <em>Bioinformatics</em> 21 (9): 2104–5. <a href="https://doi.org/10.1093/bioinformatics/bti263" class="external-link">https://doi.org/10.1093/bioinformatics/bti263</a>.
 </div>
 <div id="ref-Felsenstein1981" class="csl-entry">
-Felsenstein, Joseph. 1981. <span>“Evolutionary Trees from DNA Sequences: A Maxumum Likelihood Approach.”</span> <em>Journal of Molecular Evolution</em> 17: 368–76.
+Felsenstein, Joseph. 1981. <span>“Evolutionary Trees from DNA Sequences:
+A Maxumum Likelihood Approach.”</span> <em>Journal of Molecular
+Evolution</em> 17: 368–76.
 </div>
 <div id="ref-Felsenstein2004" class="csl-entry">
-———. 2004. <em>Inferring Phylogenies</em>. Sunderland: Sinauer Associates.
+———. 2004. <em>Inferring Phylogenies</em>. Sunderland: Sinauer
+Associates.
 </div>
 <div id="ref-lubridate" class="csl-entry">
-Grolemund, Garrett, and Hadley Wickham. 2011. <span>“Dates and Times Made Easy with <span class="nocase">lubridate</span>.”</span> <em>Journal of Statistical Software</em> 40 (3): 1–25. <a href="https://www.jstatsoft.org/v40/i03/" class="external-link">https://www.jstatsoft.org/v40/i03/</a>.
+Grolemund, Garrett, and Hadley Wickham. 2011. <span>“Dates and Times
+Made Easy with <span class="nocase">lubridate</span>.”</span>
+<em>Journal of Statistical Software</em> 40 (3): 1–25. <a href="https://www.jstatsoft.org/v40/i03/" class="external-link">https://www.jstatsoft.org/v40/i03/</a>.
 </div>
 <div id="ref-Hendy1982" class="csl-entry">
-Hendy, M. D., and D. Penny. 1982. <span>“Branch and Bound Algorithms to Determine Minimal Evolutionary Trees.”</span> <em>Math. Biosc.</em> 59: 277–90.
+Hendy, M. D., and D. Penny. 1982. <span>“Branch and Bound Algorithms to
+Determine Minimal Evolutionary Trees.”</span> <em>Math. Biosc.</em> 59:
+277–90.
 </div>
 <div id="ref-Jukes1969" class="csl-entry">
-Jukes, Thomas H., and Charles R. Cantor. 1969. <span>“{CHAPTER} 24 - Evolution of Protein Molecules.”</span> In <em>Mammalian Protein Metabolism</em>, edited by H. N. Munro, 21–132. Academic Press.
+Jukes, Thomas H., and Charles R. Cantor. 1969. <span>“{CHAPTER} 24 -
+Evolution of Protein Molecules.”</span> In <em>Mammalian Protein
+Metabolism</em>, edited by H. N. Munro, 21–132. Academic Press.
 </div>
 <div id="ref-Nguyen2015" class="csl-entry">
-Nguyen, Lam-Tung, Heiko A. Schmidt, Arndt von Haeseler, and Bui Quang Minh. 2015. <span>“IQ-TREE: A Fast and Effective Stochastic Algorithm for Estimating Maximum-Likelihood Phylogenies.”</span> <em>Molecular Biology and Evolution</em> 32 (1): 268–74. <a href="https://doi.org/10.1093/molbev/msu300" class="external-link">https://doi.org/10.1093/molbev/msu300</a>.
+Nguyen, Lam-Tung, Heiko A. Schmidt, Arndt von Haeseler, and Bui Quang
+Minh. 2015. <span>“IQ-TREE: A Fast and Effective Stochastic Algorithm
+for Estimating Maximum-Likelihood Phylogenies.”</span> <em>Molecular
+Biology and Evolution</em> 32 (1): 268–74. <a href="https://doi.org/10.1093/molbev/msu300" class="external-link">https://doi.org/10.1093/molbev/msu300</a>.
 </div>
 <div id="ref-Nixon1999" class="csl-entry">
-Nixon, K. 1999. <span>“The Parsimony Ratchet, a New Method for Rapid Rarsimony Analysis.”</span> <em>Cladistics</em> 15: 407–14.
+Nixon, K. 1999. <span>“The Parsimony Ratchet, a New Method for Rapid
+Rarsimony Analysis.”</span> <em>Cladistics</em> 15: 407–14.
 </div>
 <div id="ref-Paradis2012" class="csl-entry">
-Paradis, Emmanuel. 2012. <em>Analysis of Phylogenetics and Evolution with r</em>. Second. New York: Springer.
+Paradis, Emmanuel. 2012. <em>Analysis of Phylogenetics and Evolution
+with r</em>. Second. New York: Springer.
 </div>
 <div id="ref-Paradis2018" class="csl-entry">
-Paradis, Emmanuel, and Klaus Schliep. 2019. <span>“Ape 5.0: An Environment for Modern Phylogenetics and Evolutionary Analyses in r.”</span> <em>Bioinformatics</em> 35 (3): 526–28. <a href="https://doi.org/10.1093/bioinformatics/bty633" class="external-link">https://doi.org/10.1093/bioinformatics/bty633</a>.
+Paradis, Emmanuel, and Klaus Schliep. 2019. <span>“Ape 5.0: An
+Environment for Modern Phylogenetics and Evolutionary Analyses in
+r.”</span> <em>Bioinformatics</em> 35 (3): 526–28. <a href="https://doi.org/10.1093/bioinformatics/bty633" class="external-link">https://doi.org/10.1093/bioinformatics/bty633</a>.
 </div>
 <div id="ref-Posada2008" class="csl-entry">
-Posada, David. 2008. <span>“<span class="nocase">jModelTest</span>: Phylogenetic Model Averaging.”</span> <em>Molecular Biology and Evolution</em> 25 (7): 1253–56. <a href="https://doi.org/10.1093/molbev/msn083" class="external-link">https://doi.org/10.1093/molbev/msn083</a>.
+Posada, David. 2008. <span>“<span class="nocase">jModelTest</span>:
+Phylogenetic Model Averaging.”</span> <em>Molecular Biology and
+Evolution</em> 25 (7): 1253–56. <a href="https://doi.org/10.1093/molbev/msn083" class="external-link">https://doi.org/10.1093/molbev/msn083</a>.
 </div>
 <div id="ref-Posada1998" class="csl-entry">
-Posada, D., and K. A. Crandall. 1998. <span>“<span>MODELTEST</span>: Testing the Model of <span>DNA</span> Substitution.”</span> <em>Bioinformatics</em> 14 (9): 817–18.
+Posada, D., and K. A. Crandall. 1998. <span>“<span>MODELTEST</span>:
+Testing the Model of <span>DNA</span> Substitution.”</span>
+<em>Bioinformatics</em> 14 (9): 817–18.
 </div>
 <div id="ref-treetime" class="csl-entry">
-Sagulenko, Pavel, Vadim Puller, and Richard A Neher. 2018. <span>“TreeTime: Maximum-Likelihood Phylodynamic Analysis.”</span> <em>Virus Evolution</em> 4 (1): vex042.
+Sagulenko, Pavel, Vadim Puller, and Richard A Neher. 2018.
+<span>“TreeTime: Maximum-Likelihood Phylodynamic Analysis.”</span>
+<em>Virus Evolution</em> 4 (1): vex042.
 </div>
 <div id="ref-Saitou1987" class="csl-entry">
-Saitou, N., and M. Nei. 1987. <span>“The Neighbor-Joining Method - a New Method for Reconstructing Phylogenetic Trees.”</span> <em>Molecular Biology and Evolution</em> 4 (4): 406–25.
+Saitou, N., and M. Nei. 1987. <span>“The Neighbor-Joining Method - a New
+Method for Reconstructing Phylogenetic Trees.”</span> <em>Molecular
+Biology and Evolution</em> 4 (4): 406–25.
 </div>
 <div id="ref-Schliep2011" class="csl-entry">
-Schliep, Klaus Peter. 2011. <span>“Phangorn: Phylogenetic Analysis in <span>R</span>.”</span> <em>Bioinformatics</em> 27 (4): 592–93. <a href="https://doi.org/10.1093/bioinformatics/btq706" class="external-link">https://doi.org/10.1093/bioinformatics/btq706</a>.
+Schliep, Klaus Peter. 2011. <span>“Phangorn: Phylogenetic Analysis in
+<span>R</span>.”</span> <em>Bioinformatics</em> 27 (4): 592–93. <a href="https://doi.org/10.1093/bioinformatics/btq706" class="external-link">https://doi.org/10.1093/bioinformatics/btq706</a>.
 </div>
 <div id="ref-Studier1988" class="csl-entry">
-Studier, J. A., and K. J. Keppler. 1988. <span>“A Note on the Neighbor-Joining Algorithm of Saitou and Nei.”</span> <em>Molecular Biology and Evolution</em> 5 (6): 729–31.
+Studier, J. A., and K. J. Keppler. 1988. <span>“A Note on the
+Neighbor-Joining Algorithm of Saitou and Nei.”</span> <em>Molecular
+Biology and Evolution</em> 5 (6): 729–31.
 </div>
 <div id="ref-Vos2003" class="csl-entry">
-Vos, R. A. 2003. <span>“Accelerated Likelihood Surface Exploration: The Likelihood Ratchet.”</span> <em>Systematic Biology</em> 52 (3): 368–73.
+Vos, R. A. 2003. <span>“Accelerated Likelihood Surface Exploration: The
+Likelihood Ratchet.”</span> <em>Systematic Biology</em> 52 (3): 368–73.
 </div>
 <div id="ref-Yang2006" class="csl-entry">
-Yang, Ziheng. 2006. <em>Computational Molecular Evolution</em>. Oxford: Oxford University Press.
+Yang, Ziheng. 2006. <em>Computational Molecular Evolution</em>. Oxford:
+Oxford University Press.
 </div>
 </div>
 </div>
