@@ -74,7 +74,7 @@ removeUndeterminedSites(x, ...)
 
 removeAmbiguousSites(x)
 
-allSitePattern(n, levels = NULL, names = NULL, type = "DNA")</code></pre></div>
+allSitePattern(n, levels = NULL, names = NULL, type = "DNA", code = 1)</code></pre></div>
     </div>
 
     <div class="section level2">
@@ -134,6 +134,11 @@ sequences are considered duplicates if distance between sequences is zero
 <dt>type</dt>
 <dd><p>Type of sequences ("DNA", "AA" or "USER").</p></dd>
 
+
+<dt>code</dt>
+<dd><p>The ncbi genetic code number for translation.
+By default the standard genetic code is used.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -161,7 +166,7 @@ functions.</p>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code>link{phyDat}</code>, <code>link{DNAbin}</code>, <code>link{as.DNAbin()}</code>,
-<code><a href="baseFreq.html">baseFreq</a></code>, <code><a href="baseFreq.html">glance.phyDat</a></code>,
+<code><a href="baseFreq.html">baseFreq</a></code>, <code><a href="baseFreq.html">glance.phyDat</a></code>, <code><a href="dna2codon.html">dna2codon</a></code>,
 <code>read.dna</code>, <code><a href="read.aa.html">read.aa</a></code>, <code>read.nexus.data</code>
 and the chapter 1 in the <code>vignette("phangorn-specials",
 package="phangorn")</code> and the example of <code><a href="pmlMix.html">pmlMix</a></code> for the use of
