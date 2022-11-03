@@ -38,7 +38,7 @@
 #' @return The functions return an object of class \code{phyDat}.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{link{phyDat}}, \code{link{DNAbin}}, \code{link{as.DNAbin()}},
-#' \code{\link{baseFreq}}, \code{\link{glance.phyDat}},
+#' \code{\link{baseFreq}}, \code{\link{glance.phyDat}}, \code{\link{dna2codon}},
 #' \code{\link{read.dna}}, \code{\link{read.aa}}, \code{\link{read.nexus.data}}
 #' and the chapter 1 in the \code{vignette("phangorn-specials",
 #' package="phangorn")} and the example of \code{\link{pmlMix}} for the use of
@@ -414,6 +414,8 @@ removeParsimonyUninfomativeSites <- function(data, recursive=FALSE, exact=TRUE){
 
 
 #' @rdname phyDat
+#' @param code The ncbi genetic code number for translation.
+#' By default the standard genetic code is used.
 #' @export
 allSitePattern <- function(n, levels=NULL, names=NULL, type="DNA", code=1){
   type <- match.arg(type, c("DNA", "AA", "CODON", "USER"))

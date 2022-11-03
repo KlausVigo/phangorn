@@ -24,7 +24,7 @@ removeUndeterminedSites(x, ...)
 
 removeAmbiguousSites(x)
 
-allSitePattern(n, levels = NULL, names = NULL, type = "DNA")
+allSitePattern(n, levels = NULL, names = NULL, type = "DNA", code = 1)
 }
 \arguments{
 \item{x}{An object containing sequences.}
@@ -56,6 +56,9 @@ sequences are considered duplicates if distance between sequences is zero
 \item{names}{Names of sequences.}
 
 \item{type}{Type of sequences ("DNA", "AA" or "USER").}
+
+\item{code}{The ncbi genetic code number for translation.
+By default the standard genetic code is used.}
 }
 \value{
 The functions return an object of class \code{phyDat}.
@@ -120,7 +123,7 @@ allSitePattern(5)
 }
 \seealso{
 \code{link{phyDat}}, \code{link{DNAbin}}, \code{link{as.DNAbin()}},
-\code{\link{baseFreq}}, \code{\link{glance.phyDat}},
+\code{\link{baseFreq}}, \code{\link{glance.phyDat}}, \code{\link{dna2codon}},
 \code{\link{read.dna}}, \code{\link{read.aa}}, \code{\link{read.nexus.data}}
 and the chapter 1 in the \code{vignette("phangorn-specials",
 package="phangorn")} and the example of \code{\link{pmlMix}} for the use of
