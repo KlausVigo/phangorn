@@ -2209,6 +2209,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       class(bs) <- "multiPhylo"
       bs <- .compressTipLabel(bs)
       object$bs <- bs
+      spl <- as.splits(bs)
+      object$tree <- addConfidences(object$tree, spl)
     }
     pml.free()
     return(object)
