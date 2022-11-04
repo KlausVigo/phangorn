@@ -125,7 +125,8 @@ pBound <- function(x, UB, LB) {
 #' \code{bab} finds all most parsimonious trees.
 #'
 #' This implementation is very slow and depending on the data may take very
-#' long time. In the worst case all (2n-5)!! possible trees have to be
+#' long time. In the worst case all
+#' \eqn{(2n-5)!! = 1 \times 3 \times 5 \times \ldots \times (2n-5)}{1 * 3 * 5 * ... * (2n-5)}  possible trees have to be
 #' examined, where n is the number of species / tips. For 10 species there are
 #' already 2027025 tip-labelled unrooted trees. It only uses some basic
 #' strategies to find a lower and upper bounds similar to penny from phylip.
