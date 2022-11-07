@@ -48,10 +48,10 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/AdvancedFeatures.html">Advanced features</a>
+    <a class="dropdown-item" href="../articles/AdvancedFeatures.html">03 Advanced features</a>
     <a class="dropdown-item" href="../articles/Ancestral.html">Ancestral Sequence Reconstruction</a>
     <a class="dropdown-item" href="../articles/IntertwiningTreesAndNetworks.html">Intertwining phylogenetic trees and networks: R Example Script</a>
-    <a class="dropdown-item" href="../articles/Networx.html">Splits and Networx</a>
+    <a class="dropdown-item" href="../articles/Networx.html">05 Splits and Networx</a>
     <a class="dropdown-item" href="../articles/Trees.html">01 Estimating phylogenetic trees with phangorn</a>
   </div>
 </li>
@@ -272,10 +272,10 @@ works with the fitch algorithm.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">treeRA</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parsimony.html">random.addition</a></span><span class="op">(</span><span class="va">primates</span><span class="op">)</span></span>
 <span><span class="va">treeSPR</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parsimony.html">optim.parsimony</a></span><span class="op">(</span><span class="va">treeRA</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Final p-score 746 after  0 nni operations</span></span></code></pre>
+<pre><code><span><span class="co">## Final p-score 746 after  1 nni operations</span></span></code></pre>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/parsimony.html">parsimony</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">treeRA</span>, <span class="va">treeSPR</span><span class="op">)</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 746 746</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 750 746</span></span></code></pre>
 <div class="section level3">
 <h3 id="branch-and-bound">Branch and bound<a class="anchor" aria-label="anchor" href="#branch-and-bound"></a>
 </h3>
@@ -450,10 +450,10 @@ table:</p>
 <tr class="odd">
 <td align="left">HKY</td>
 <td align="right">29</td>
-<td align="right">-2625.03</td>
+<td align="right">-2625.04</td>
 <td align="right">5308.07</td>
 <td align="right">0.00</td>
-<td align="right">5316.68</td>
+<td align="right">5316.69</td>
 <td align="right">0.00</td>
 <td align="right">5408.03</td>
 </tr>
@@ -463,7 +463,7 @@ table:</p>
 <td align="right">-2621.27</td>
 <td align="right">5302.54</td>
 <td align="right">0.00</td>
-<td align="right">5311.79</td>
+<td align="right">5311.80</td>
 <td align="right">0.00</td>
 <td align="right">5405.94</td>
 </tr>
@@ -475,7 +475,7 @@ table:</p>
 <td align="right">0.18</td>
 <td align="right">5294.54</td>
 <td align="right">0.45</td>
-<td align="right">5388.68</td>
+<td align="right">5388.69</td>
 </tr>
 <tr class="even">
 <td align="left">HKY+G(4)+I</td>
@@ -525,37 +525,37 @@ table:</p>
 <td align="right">0.00</td>
 <td align="right">5683.95</td>
 <td align="right">0.00</td>
-<td align="right">5783.63</td>
+<td align="right">5783.64</td>
 </tr>
 <tr class="odd">
 <td align="left">GTR</td>
 <td align="right">33</td>
-<td align="right">-2618.58</td>
-<td align="right">5303.17</td>
+<td align="right">-2618.62</td>
+<td align="right">5303.25</td>
 <td align="right">0.00</td>
-<td align="right">5314.50</td>
+<td align="right">5314.58</td>
 <td align="right">0.00</td>
-<td align="right">5416.91</td>
+<td align="right">5416.99</td>
 </tr>
 <tr class="even">
 <td align="left">GTR+I</td>
 <td align="right">34</td>
-<td align="right">-2613.57</td>
-<td align="right">5295.15</td>
+<td align="right">-2613.58</td>
+<td align="right">5295.16</td>
 <td align="right">0.00</td>
-<td align="right">5307.23</td>
+<td align="right">5307.24</td>
 <td align="right">0.00</td>
-<td align="right">5412.33</td>
+<td align="right">5412.35</td>
 </tr>
 <tr class="odd">
 <td align="left">GTR+G(4)</td>
 <td align="right">34</td>
-<td align="right">-2607.66</td>
+<td align="right">-2607.67</td>
 <td align="right">5283.33</td>
 <td align="right">0.47</td>
 <td align="right">5295.41</td>
 <td align="right">0.29</td>
-<td align="right">5400.51</td>
+<td align="right">5400.52</td>
 </tr>
 <tr class="even">
 <td align="left">GTR+G(4)+I</td>
@@ -565,7 +565,7 @@ table:</p>
 <td align="right">0.27</td>
 <td align="right">5297.29</td>
 <td align="right">0.11</td>
-<td align="right">5405.07</td>
+<td align="right">5405.06</td>
 </tr>
 </tbody>
 </table>
@@ -603,41 +603,41 @@ conducted.</p>
 <span><span class="co">## unconstrained loglikelihood: -1230.335 </span></span>
 <span><span class="co">## Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.062553 </span></span>
+<span><span class="co">## Shape parameter: 2.064566 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
 <span><span class="co">##         a       c       g       t</span></span>
-<span><span class="co">## a  0.0000  1.0000 56.3292  1.0000</span></span>
-<span><span class="co">## c  1.0000  0.0000  1.0000 56.3292</span></span>
-<span><span class="co">## g 56.3292  1.0000  0.0000  1.0000</span></span>
-<span><span class="co">## t  1.0000 56.3292  1.0000  0.0000</span></span>
+<span><span class="co">## a  0.0000  1.0000 56.3281  1.0000</span></span>
+<span><span class="co">## c  1.0000  0.0000  1.0000 56.3281</span></span>
+<span><span class="co">## g 56.3281  1.0000  0.0000  1.0000</span></span>
+<span><span class="co">## t  1.0000 56.3281  1.0000  0.0000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##          a          c          g          t </span></span>
-<span><span class="co">## 0.42090184 0.36231332 0.04379315 0.17299169</span></span></code></pre>
+<span><span class="co">## 0.42087562 0.36231887 0.04380297 0.17300254</span></span></code></pre>
 <p>We can also use <code>pml_bb</code> with a defined model to infer a
 phylogenetic tree.</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fitGTR</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">primates</span>, model<span class="op">=</span><span class="st">"GTR+G(4)+I"</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fitGTR</span></span></code></pre></div>
 <pre><code><span><span class="co">## model: GTR+G(4)+I </span></span>
-<span><span class="co">## loglikelihood: -2608.476 </span></span>
+<span><span class="co">## loglikelihood: -2608.463 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -1230.335 </span></span>
-<span><span class="co">## Proportion of invariant sites: 0.005599414 </span></span>
+<span><span class="co">## Proportion of invariant sites: 0.00562401 </span></span>
 <span><span class="co">## Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.938205 </span></span>
+<span><span class="co">## Shape parameter: 2.93679 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
-<span><span class="co">##            a            c            g          t</span></span>
-<span><span class="co">## a  0.0000000  0.626327415 38.155963184  0.3838503</span></span>
-<span><span class="co">## c  0.6263274  0.000000000  0.001188325 15.9144355</span></span>
-<span><span class="co">## g 38.1559632  0.001188325  0.000000000  1.0000000</span></span>
-<span><span class="co">## t  0.3838503 15.914435473  1.000000000  0.0000000</span></span>
+<span><span class="co">##            a            c            g         t</span></span>
+<span><span class="co">## a  0.0000000  0.705826191 43.090631384  0.445799</span></span>
+<span><span class="co">## c  0.7058262  0.000000000  0.002000292 17.968003</span></span>
+<span><span class="co">## g 43.0906314  0.002000292  0.000000000  1.000000</span></span>
+<span><span class="co">## t  0.4457990 17.968002831  1.000000000  0.000000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##          a          c          g          t </span></span>
-<span><span class="co">## 0.39383943 0.37903429 0.04026547 0.18686081</span></span></code></pre>
+<span><span class="co">## 0.39386622 0.37907148 0.04027363 0.18678867</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="bootstrap-1">Bootstrap<a class="anchor" aria-label="anchor" href="#bootstrap-1"></a>
