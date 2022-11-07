@@ -1,5 +1,5 @@
 ---
-title: "Advanced features"
+title: "03 Advanced features"
 author:
 - name: Klaus Schliep
   affiliation: Graz University of Technology
@@ -13,7 +13,7 @@ output:
     toc: true
     toc_depth: 2
 vignette: >
-  %\VignetteIndexEntry{Advanced features}
+  %\VignetteIndexEntry{03 Advanced features}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

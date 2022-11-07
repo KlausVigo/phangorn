@@ -13,7 +13,7 @@ output:
     toc: true
     toc_depth: 2
 vignette: |
-  %\VignetteIndexEntry{Estimating phylogenetic trees with phangorn}
+  %\VignetteIndexEntry{01 Estimating phylogenetic trees with phangorn}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 ---
