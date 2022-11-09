@@ -6,17 +6,16 @@
 \title{Morphological characters of Mites (Schäffer et al. 2010)}
 \description{
 Matrix for morphological characters and character states for 12 species of
-mites.
+mites. See vignette '02_Phylogenetic trees from morphological data' for
+examples to import morphological data.
 }
 \examples{
 data(mites)
-str(mites)
-# transform matrix to a phyDat object
-mites_pd <- phyDat(mites, type="USER", levels=0:7)
+mites
 # infer all maximum parsimony trees
-trees <- bab(mites_pd)
+trees <- bab(mites)
 # For larger data sets you might use pratchet instead bab
-# trees <- pratchet(mites_pd, minit=200, trace=0, all=TRUE)
+# trees <- pratchet(mites, minit=200, trace=0, all=TRUE)
 # build consensus tree
 ctree <- root(consensus(trees, p=.5), outgroup = "C._cymba",
               resolve.root=TRUE, edgelabel=TRUE)
