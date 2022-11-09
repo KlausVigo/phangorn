@@ -27,11 +27,12 @@ Authors:
   \item Emmanuel Paradis (\href{https://orcid.org/0000-0003-3092-2199}{ORCID})
   \item Leonardo de Oliveira Martins (\href{https://orcid.org/0000-0001-5247-1320}{ORCID})
   \item Alastair Potts
-  \item Tim W. White
+  \item Iris Bardel-Kahr (\href{https://orcid.org/0000-0002-8950-834X}{ORCID})
 }
 
 Other contributors:
 \itemize{
+  \item Tim W. White [contributor]
   \item Cyrill Stachniss [contributor]
   \item Michelle Kendall \email{m.kendall@imperial.ac.uk} [contributor]
   \item Keren Halabi [contributor]
