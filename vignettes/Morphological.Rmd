@@ -1,0 +1,139 @@
+---
+title: "02 Phylogenetic trees from morphological data"
+author:
+- name: Iris Bardel-Kahr, Klaus Schliep
+  affiliation: University of Graz, Graz University of Technology
+  email: klaus.schliep@gmail.com
+date: "`r Sys.Date()`"
+bibliography: phangorn.bib
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+    toc: true
+    toc_depth: 2
+vignette: |
+  %\VignetteIndexEntry{02 Phylogenetic trees from morphological data}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r setup, echo=FALSE}
+# set global chunk options: images will be bigger
+knitr::opts_chunk$set(fig.width=6, fig.height=4)
+options(digits = 2)
+```
+
+In this vignette, we will show how to work with morphological data in _phangorn_ [@Schliep2011]. In most cases the different morphological characters or character states are encoded with the numbers 0:9 (or less, if there are less differences).
+Morphological data can come in different formats. The most common ones are **.csv** and **.nexus**.
+
+# Load packages
+
+We start by loading the _phangorn_ package and setting a random seed:
+```{r load packages}
+library(phangorn)
+set.seed(9)
+```
+
+# Load data
+
+The dataset we're using contains morphological data for 12 mite species, with 79 encoded characters [@schaffer2010phylogenetic]. 
+When reading in the _.csv_ file, `row.names = 1` uses the first column (species) as row names. To get a `phyDat` object, we have to convert the dataframe into a matrix with `as.matrix`. 
+``` {r load data}
+fdir <- system.file("extdata", package = "phangorn")
+mm <- read.csv(file.path(fdir, "mites.csv"), row.names = 1)
+mm_pd <- phyDat(as.matrix(mm), type = "USER", levels = 0:7)
+```
+The data can then be written into a _nexus_ file:
+```{r write nexus, eval=FALSE}
+write.phyDat(mm_pd, file.path(fdir, "mites.nex"), format = "nexus")
+```
+Reading in a _nexus_ file is even easier than reading in a _csv_ file:
+```{r, read nexus}
+mm_pd <- read.phyDat(file.path(fdir, "mites.nex"), format = "nexus", type = "STANDARD")
+```
+After reading in the _nexus_ file, we have the states 0:9, but the data only has the states 0:7. Here is one possibility to change the contrast matrix:
+``` {r contrast matrix}
+contrast <- matrix(data = c(1,0,0,0,0,0,0,0,0,
+    0,1,0,0,0,0,0,0,0,
+    0,0,1,0,0,0,0,0,0,
+    0,0,0,1,0,0,0,0,0,
+    0,0,0,0,1,0,0,0,0,
+    0,0,0,0,0,1,0,0,0,
+    0,0,0,0,0,0,1,0,0,
+    0,0,0,0,0,0,0,1,0,
+    0,0,0,0,0,0,0,0,1,
+    1,1,1,1,1,1,1,1,1),
+    ncol = 9, byrow = TRUE)
+dimnames(contrast) <- list(c(0:7,"-","?"),
+    c(0:7, "-"))
+contrast
+mm_pd <- phyDat(mm_pd, type="USER", contrast=contrast)
+```
+Now that we have our data, we can start the analyses.
+
+# Parsimony
+
+For morphological data, one of the most frequently used approaches to conduct phylogenetic trees is maximum parsimony (MP). `pratchet` (as already described in _01 Estimating phylogenetic trees with phangorn_) implements the parsimony ratchet [@Nixon1999]. To create a starting tree, we can use the function `random.addition`:
+```{r random addition}
+mm_start <- random.addition(mm_pd)
+```
+This tree can then be given to `pratchet`:
+```{r pratchet, cache=TRUE}
+mm_tree <- pratchet(mm_pd, start = mm_start, minit = 1000, maxit = 10000,
+                    all = TRUE, trace = 0)
+mm_tree
+```
+With `all=TRUE` we get all (in this case 19) trees with lowest parsimony score in a `multiPhylo` object. Since we we did a minimum of 1000 iterations, we already have some edge support. Now we can assign the edge lengths.
+```{r edge lengths}
+mm_tree <- acctran(mm_tree, mm_pd)
+```
+
+## Root trees
+
+If we want our unrooted trees to be rooted, we have the possibility to use `midpoint` to perform midpoint rooting. Rooting the trees with a specific species (we chose _C. cymba_ here) can be done with the function `root` from the _ape_ package [@Paradis2018]. To save the correct node labels (edge support), it's important to set `edgelabel=TRUE`.
+
+``` {r root trees, message=FALSE}
+mm_tree_rooted <- root(mm_tree, outgroup = "C._cymba", resolve.root = TRUE,
+                       edgelabel = TRUE)
+```
+
+## Plot trees
+
+With `plotBS`, we can either plot all of the trees with their respective edge support, or we can subset to only get a certain tree. It is also possible to save the plots as _.pdf_ (or various other formats, e.g. svg, png, tiff) file. `digits` is an argument to determine the number of digits shown for the bootstrap values.
+```{r plot trees, eval=FALSE}
+# plot all trees
+plotBS(mm_tree_rooted, digits = 2)
+
+# subsetting for tree nr. 9
+plotBS(mm_tree_rooted[[9]], digits = 2)
+
+# save plot as pdf
+pdf(file = "mm_rooted.pdf")
+plotBS(mm_tree_rooted, digits = 2)
+dev.off()
+```
+
+## Consensus tree
+
+To look at the consensus tree of our 19 trees, we can use the `consensus` function from _ape_.
+```{r consensus tree}
+# unrooted tree
+mm_cons <- consensus(mm_tree)
+
+# rooted tree
+mm_cons_root <- consensus(mm_tree_rooted, rooted = TRUE)
+```
+```{r plot cons tree, fig.cap="Rooted and unrooted consensus tree of the mites dataset with MP."}
+par(mfrow=c(1,2))
+plot(mm_cons, main="Unrooted consensus tree")
+plot(mm_cons_root, main="Rooted consensus tree")
+```
+
+# Session info
+
+```{r sessionInfo, echo=FALSE}
+sessionInfo()
+```
+
+# References
