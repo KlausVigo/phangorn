@@ -37,6 +37,7 @@ primates <- read.phyDat(file.path(fdir, "primates.dna"),
 ```
 As a starting tree, we calculate a neighbor joining tree:
 ```{r nj tree}
+dm <- dist.ml(primates)
 treeNJ  <- NJ(dm)
 ```
 ```{r pml}
@@ -95,7 +96,7 @@ BIC(fitGTR)
 
 ## Bootstrap
 At last we may want to apply standard bootstrap to test how well the edges of the tree are supported. This has already been shown in the vignette _01 Estimating phylogenetic trees with phangorn_. 
-```{r, echo=TRUE, eval=FALSE}
+```{r, echo=TRUE, eval=TRUE, cache=TRUE}
 bs <- bootstrap.pml(fitJC, bs=100, optNni=TRUE,
     control = pml.control(trace = 0))
 ```
