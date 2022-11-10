@@ -1,0 +1,135 @@
+---
+title: "06 Maximum likelihood by hand"
+author:
+- name: Klaus Schliep, Iris Bardel-Kahr
+  affiliation: Graz University of Technology, University of Graz
+  email: klaus.schliep@gmail.com
+date: "`r Sys.Date()`"
+bibliography: phangorn.bib
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+    toc: true
+    toc_depth: 2
+vignette: |
+  %\VignetteIndexEntry{06 Maximum likelihood by hand}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r setup, echo=FALSE}
+# set global chunk options: images will be bigger
+knitr::opts_chunk$set(fig.width=8, fig.height=6)
+options(digits = 4)
+```
+
+# Maximum likelihood by hand
+
+With the function `pml_bb` from _phangorn_ [@Schliep2011] a lot of steps have become easier and shorter. If you want to have more control over all of the used parameters, it is also possible to use the older functions, e.g. `optim_pml`.
+The data is the same as in the vignette _01 Estimating phylogenetic trees with phangorn_:
+```{r load packages}
+library(ape)
+library(phangorn)
+fdir <- system.file("extdata/trees", package = "phangorn")
+primates <- read.phyDat(file.path(fdir, "primates.dna"),
+                        format = "interleaved")
+```
+As a starting tree, we calculate a neighbor joining tree:
+```{r nj tree}
+treeNJ  <- NJ(dm)
+```
+```{r pml}
+fit <- pml(treeNJ, data=primates)
+fit
+```
+The function `pml` returns an object of class `pml`. This object contains the data, the tree and many different parameters of the model like the likelihood. There are many generic functions for the class `pml` available, which allow the handling of these objects.
+```{r methods pml}
+methods(class="pml")
+```
+The object fit just estimated the likelihood for the tree it got supplied, but the branch length are not optimized for the Jukes-Cantor [@Jukes1969] model yet, which can be done with the function `optim.pml`.
+```{r optim.pml}
+fitJC  <- optim.pml(fit, rearrangement="NNI")
+logLik(fitJC)
+```
+With the default values `pml` will estimate a Jukes-Cantor model. That means equal base frequencies and all transition rates are equal. The generic function `update` allows to change parameters manually. This is not what we usually want to do. However we might want to supply a different tree or change the number of rate categories. 
+```{r F81+G+I, cache=TRUE}
+fitF81 <- update(fitJC, k=4, inv=0.2, bf=baseFreq(primates))
+fitF81
+```
+In the line above we changed the model to a (discrete) rate across site model with 4 rate categories (using the default shape parameter of 1), to 0.2 invariant sites and supply empirical base frequencies. 
+```{r GTR+G+I, cache=TRUE}
+fitGTR <- optim.pml(fitF81, model="GTR", optInv=TRUE, optGamma=TRUE,
+    rearrangement = "NNI", control = pml.control(trace = 0))
+fitGTR
+```
+We will change the model to the GTR + $\Gamma(4)$ + I model and then optimize all the parameters.
+
+With the control parameters the thresholds for the fitting process can be changed. Here we want just to suppress output during the fitting process. For larger trees the NNI rearrangements often get stuck in a local maximum. We added two stochastic algorithms to improve topology search. The first (set `rearrangement="stochastic"`) performs stochastic rearrangements similar as in [@Nguyen2015], which makes random NNI permutation to the tree, which than gets optimized to escape local optima. The second option (`rearrangement="ratchet"`) perform the likelihood ratchet [@Vos2003].
+
+While these algorithms may find better trees they will also take more time.
+```{r stochastic, cache=TRUE}
+fitGTR <- optim.pml(fitGTR, model="GTR", optInv=TRUE, optGamma=TRUE,
+    rearrangement = "stochastic", control = pml.control(trace = 0))
+fitGTR
+```
+
+## Model comparison
+
+We can compare nested models for the JC and GTR + $\Gamma(4)$ + I model using likelihood ratio statistic
+```{r anova}
+anova(fitJC, fitGTR)
+```
+with the Shimodaira-Hasegawa \cite{Shimodaira1999} test
+```{r SH_test}
+SH.test(fitGTR, fitJC)
+```
+or with the AIC
+```{r AIC}
+AIC(fitJC)
+AIC(fitGTR)
+AICc(fitGTR)
+BIC(fitGTR)
+```
+
+
+## Bootstrap
+At last we may want to apply standard bootstrap to test how well the edges of the tree are supported. This has already been shown in the vignette _01 Estimating phylogenetic trees with phangorn_. 
+```{r, echo=TRUE, eval=FALSE}
+bs <- bootstrap.pml(fitJC, bs=100, optNni=TRUE,
+    control = pml.control(trace = 0))
+```
+
+
+Now we can plot the tree with the bootstrap support values on the edges and also look at `consensusNet` to identify potential conflict.
+```{r plotBS, fig.cap="Tree with bootstrap support. Unrooted tree (midpoint rooted) with bootstrap support values.", echo=TRUE}
+plotBS(midpoint(fitJC$tree), bs, p = 50, type="p")
+```
+```{r ConsensusNet, fig.cap="ConsensusNet from the bootstrap sample.", echo=TRUE}
+cnet <- consensusNet(bs, p=0.2)
+plot(cnet, show.edge.label=TRUE)
+```
+
+# Generating trees
+
+_phangorn_ has several functions to generate tree topologies, which may are interesting for simulation studies. `allTrees` computes all possible bifurcating tree topologies either rooted or unrooted for up to 10 taxa. One has to keep in mind that the number of trees is growing exponentially, use `howmanytrees` from _ape_ as a reminder.
+
+```{r allTrees}
+trees <- allTrees(5)
+par(mfrow=c(3,5), mar=rep(0,4))
+for(i in 1:15)plot(trees[[i]], cex=1, type="u")
+```
+
+`nni` returns a list of all trees which are one nearest neighbor interchange away.
+```{r nni}
+nni(trees[[1]])
+```
+`rNNI` and `rSPR` generate trees which are a defined number of NNI (nearest neighbor interchange) or SPR (subtree pruning and regrafting) away.
+
+# Session info
+
+```{r sessionInfo, echo=FALSE}
+sessionInfo()
+```
+
+# References

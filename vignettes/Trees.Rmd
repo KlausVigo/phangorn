@@ -30,7 +30,7 @@ These notes should enable the user to estimate phylogenetic trees from alignment
 # Getting started
 
 The first thing we have to do is to read in an alignment. Unfortunately there exist many different file formats that alignments can be stored in. In most cases, the function `read.phyDat` is used to read in an alignment. In the _ape_ package [@Paradis2018] and _phangorn_, there are several functions to read in alignments, depending on the format of the data set ("nexus", "phylip", "fasta") and the kind of data (amino acid, nucleotides, morphological data). The function `read.phyDat` calls these other functions and transforms them into a `phyDat` object. For the specific parameter settings available look in the help files of the function `read.dna` (for phylip, fasta, clustal format), `read.nexus.data` for nexus files. For amino acid data additional `read.aa` is called. 
-Morphological data will be shown later in the vignette _02 Morphological data_.
+Morphological data will be shown later in the vignette _02 Phylogenetic trees from morphological data_.
 
 We start our analysis loading the _phangorn_ package and then reading in an alignment.
 
