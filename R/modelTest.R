@@ -112,6 +112,10 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
     (FREQ & G & I))
   nseq <- sum(attr(data, "weight"))
 
+  get_pars <- function(x, nseq){
+    c(x$df, x$logLik, AIC(x), AICc(x), AIC(x, k = log(nseq)))
+  }
+
   fitPar <- function(model, fit, G, I, k, FREQ) {
     m <- 1
     res <- matrix(NA, n, 6)
@@ -120,123 +124,156 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
     data.frame(c("Model", "df", "logLik", "AIC", "AICc", "BIC"))
     calls <- vector("list", n)
     trees <- vector("list", n)
-    if (trace > 0) print(model)
+#    if (trace > 0) print(model)
     fittmp <- optim.pml(fit, model = model, control = control)
     res[m, 1] <- model
-    res[m, 2] <- fittmp$df
-    res[m, 3] <- fittmp$logLik
-    res[m, 4] <- AIC(fittmp)
-    res[m, 5] <- AICc(fittmp)
-    res[m, 6] <- AIC(fittmp, k = log(nseq))
+    pars <- get_pars(fittmp, nseq)
+    res[m, 2:6] <- pars
+    if (trace > 0) cat(formatC(res[m,1], width=12),
+                       prettyNum(pars[-4], preserve.width="individual"), "\n")
+#    res[m, 2] <- fittmp$df
+#    res[m, 3] <- fittmp$logLik
+#    res[m, 4] <- AIC(fittmp)
+#    res[m, 5] <- AICc(fittmp)
+#    res[m, 6] <- AIC(fittmp, k = log(nseq))
     calls[[m]] <- fittmp$call
 
     trees[[m]] <- fittmp$tree
     m <- m + 1
     if (I) {
-      if (trace > 0) print(paste0(model, "+I"))
+#      if (trace > 0) print(paste0(model, "+I"))
       fitI <- optim.pml(fittmp, model = model, optInv = TRUE,
         control = control)
       res[m, 1] <- paste0(model, "+I")
-      res[m, 2] <- fitI$df
-      res[m, 3] <- fitI$logLik
-      res[m, 4] <- AIC(fitI)
-      res[m, 5] <- AICc(fitI)
-      res[m, 6] <- AIC(fitI, k = log(nseq))
+      pars <- get_pars(fitI, nseq)
+      res[m, 2:6] <- pars
+      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[-4], preserve.width="individual"),
+                         "\n")
+#      res[m, 2] <- fitI$df
+#      res[m, 3] <- fitI$logLik
+#      res[m, 4] <- AIC(fitI)
+#      res[m, 5] <- AICc(fitI)
+#      res[m, 6] <- AIC(fitI, k = log(nseq))
       calls[[m]] <- fitI$call
       trees[[m]] <- fitI$tree
       m <- m + 1
     }
     if (G) {
-      if (trace > 0) print(paste0(model, "+G"))
+#      if (trace > 0) print(paste0(model, "+G"))
       fitG <- update(fittmp, k = k)
       fitG <- optim.pml(fitG, model = model, optGamma = TRUE,
         control = control)
       res[m, 1] <- paste0(model, "+G(", k, ")")
-      res[m, 2] <- fitG$df
-      res[m, 3] <- fitG$logLik
-      res[m, 4] <- AIC(fitG)
-      res[m, 5] <- AICc(fitG)
-      res[m, 6] <- AIC(fitG, k = log(nseq))
+      pars <- get_pars(fitG, nseq)
+      res[m, 2:6] <- pars
+      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[-4], preserve.width="individual"),
+                         "\n")
+#      res[m, 2] <- fitG$df
+#      res[m, 3] <- fitG$logLik
+#      res[m, 4] <- AIC(fitG)
+#      res[m, 5] <- AICc(fitG)
+#      res[m, 6] <- AIC(fitG, k = log(nseq))
       calls[[m]] <- fitG$call
       trees[[m]] <- fitG$tree
       m <- m + 1
     }
     if (G & I) {
-      if (trace > 0) print(paste0(model, "+G+I"))
+#      if (trace > 0) print(paste0(model, "+G+I"))
       fitGI <- update(fitI, k = k)
       fitGI <- optim.pml(fitGI, model = model, optGamma = TRUE,
         optInv = TRUE, control = control)
       res[m, 1] <- paste0(model, "+G(", k, ")+I")
-      res[m, 2] <- fitGI$df
-      res[m, 3] <- fitGI$logLik
-      res[m, 4] <- AIC(fitGI)
-      res[m, 5] <- AICc(fitGI)
-      res[m, 6] <- AIC(fitGI, k = log(nseq))
+      pars <- get_pars(fitGI, nseq)
+      res[m, 2:6] <- pars
+      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[-4], preserve.width="individual"),
+                         "\n")
+#      res[m, 2] <- fitGI$df
+#      res[m, 3] <- fitGI$logLik
+#      res[m, 4] <- AIC(fitGI)
+#      res[m, 5] <- AICc(fitGI)
+#      res[m, 6] <- AIC(fitGI, k = log(nseq))
       calls[[m]] <- fitGI$call
       trees[[m]] <- fitGI$tree
       m <- m + 1
     }
     if (FREQ) {
-      if (trace > 0) print(paste0(model, "+F"))
+#      if (trace > 0) print(paste0(model, "+F"))
       fitF <- optim.pml(fittmp, model = model, optBf = TRUE,
         control = control)
       res[m, 1] <- paste0(model, "+F")
-      res[m, 2] <- fitF$df
-      res[m, 3] <- fitF$logLik
-      res[m, 4] <- AIC(fitF)
-      res[m, 5] <- AICc(fitF)
-      res[m, 6] <- AIC(fitF, k = log(nseq))
+      pars <- get_pars(fitF, nseq)
+      res[m, 2:6] <- pars
+      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[-4], preserve.width="individual"),
+                         "\n")
+#      res[m, 2] <- fitF$df
+#      res[m, 3] <- fitF$logLik
+#      res[m, 4] <- AIC(fitF)
+ #     res[m, 5] <- AICc(fitF)
+ #     res[m, 6] <- AIC(fitF, k = log(nseq))
       calls[[m]] <- fitF$call
       trees[[m]] <- fitF$tree
       m <- m + 1
     }
     if (FREQ & I) {
-      if (trace > 0) print(paste0(model, "+I+F"))
+#      if (trace > 0) print(paste0(model, "+I+F"))
       fitIF <- update(fitF, inv = fitI$inv)
       fitIF <- optim.pml(fitIF, model = model, optBf = TRUE, optInv = TRUE,
         control = control)
       res[m, 1] <- paste0(model, "+I+F")
-      res[m, 2] <- fitIF$df
-      res[m, 3] <- fitIF$logLik
-      res[m, 4] <- AIC(fitIF)
-      res[m, 5] <- AICc(fitIF)
-      res[m, 6] <- AIC(fitIF, k = log(nseq))
+      pars <- get_pars(fitIF, nseq)
+      res[m, 2:6] <- pars
+      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[-4], preserve.width="individual"),
+                         "\n")
+#      res[m, 2] <- fitIF$df
+#      res[m, 3] <- fitIF$logLik
+#      res[m, 4] <- AIC(fitIF)
+#      res[m, 5] <- AICc(fitIF)
+#      res[m, 6] <- AIC(fitIF, k = log(nseq))
       calls[[m]] <- fitIF$call
       trees[[m]] <- fitIF$tree
       m <- m + 1
     }
     if (FREQ & G) {
-      if (trace > 0) print(paste0(model, "+G+F"))
+#      if (trace > 0) print(paste0(model, "+G+F"))
       fitGF <- update(fitF, k = k, shape = fitG$shape)
       fitGF <- optim.pml(fitGF, model = model, optBf = TRUE,
         optGamma = TRUE, control = control)
       res[m, 1] <- paste0(model, "+G(", k, ")+F")
-      res[m, 2] <- fitGF$df
-      res[m, 3] <- fitGF$logLik
-      res[m, 4] <- AIC(fitGF)
-      res[m, 5] <- AICc(fitGF)
-      res[m, 6] <- AIC(fitGF, k = log(nseq))
+      pars <- get_pars(fitGF, nseq)
+      res[m, 2:6] <- pars
+      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[-4], preserve.width="individual"),
+                         "\n")
+#      res[m, 2] <- fitGF$df
+#      res[m, 3] <- fitGF$logLik
+#      res[m, 4] <- AIC(fitGF)
+#      res[m, 5] <- AICc(fitGF)
+#      res[m, 6] <- AIC(fitGF, k = log(nseq))
       calls[[m]] <- fitGF$call
       trees[[m]] <- fitGF$tree
       m <- m + 1
     }
     if (FREQ & G & I) {
-      if (trace > 0) print(paste0(model, "+G+I+F"))
+#      if (trace > 0) print(paste0(model, "+G+I+F"))
       fitGIF <- update(fitIF, k = k)
       fitGIF <- optim.pml(fitGIF, model = model, optBf = TRUE,
         optInv = TRUE, optGamma = TRUE, control = control)
       res[m, 1] <- paste0(model, "+G(", k, ")+I+F")
-      res[m, 2] <- fitGIF$df
-      res[m, 3] <- fitGIF$logLik
-      res[m, 4] <- AIC(fitGIF)
-      res[m, 5] <- AICc(fitGIF)
-      res[m, 6] <- AIC(fitGIF, k = log(nseq))
+      pars <- get_pars(fitGIF, nseq)
+      res[m, 2:6] <- pars
+      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[-4], preserve.width="individual"),
+                         "\n")
+#      res[m, 2] <- fitGIF$df
+#      res[m, 3] <- fitGIF$logLik
+#      res[m, 4] <- AIC(fitGIF)
+#      res[m, 5] <- AICc(fitGIF)
+#      res[m, 6] <- AIC(fitGIF, k = log(nseq))
       calls[[m]] <- fitGIF$call
       trees[[m]] <- fitGIF$tree
       m <- m + 1
     }
     list(res, trees, calls)
   }
+  if(trace & !multicore) cat("Model        df  logLik   AIC      BIC\n")
   eval.success <- FALSE
   if (!eval.success & multicore) {
     RES <- mclapply(model, fitPar, fit, G, I, k, FREQ, mc.cores = mc.cores)
