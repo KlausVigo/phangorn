@@ -2,3 +2,16 @@ url: https://klausvigo.github.io/phangorn/
 template:
   bootstrap: 5
 
+
+articles:
+- title: Main verbs
+  navbar: ~
+  contents:
+  - Trees
+  - Morphological
+  - AdvancedFeatures
+  - Ancestral
+  - Networx
+  - MLbyHand
+  - IntertwiningTreesAndNetworks
+
