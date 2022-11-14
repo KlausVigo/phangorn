@@ -40,7 +40,7 @@ baseFreq <- function(obj, freq=FALSE, all=FALSE, drop.unused.levels = FALSE){
   D <- diag(length(labels))
   for(i in 1:n)res <- res + colSums(D[obj[[i]],, drop=FALSE]*weight)
   names(res) <- labels
-  if(!all) res <- res[attr(obj, "levels")]
+  if(!all) res <- res[as.character( attr(obj, "levels") )]
   if(!freq)res <- res/sum(res)
   if(drop.unused.levels) return(res[res>0])
   res
