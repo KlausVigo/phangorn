@@ -26,7 +26,7 @@
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/Trees.html">01 Estimating phylogenetic trees with phangorn</a>
     <a class="dropdown-item" href="../articles/Morphological.html">02 Phylogenetic trees from morphological data</a>
-    <a class="dropdown-item" href="../articles/AdvancedFeatures.html">03 Advanced features</a>
+    <a class="dropdown-item" href="../articles/AdvancedFeatures.html">03 Markov models and transition rate matrices</a>
     <a class="dropdown-item" href="../articles/Ancestral.html">Ancestral Sequence Reconstruction</a>
     <a class="dropdown-item" href="../articles/Networx.html">05 Splits and Networx</a>
     <a class="dropdown-item" href="../articles/MLbyHand.html">06 Maximum likelihood by hand</a>
@@ -137,94 +137,94 @@ If the argument node is missing the function is evaluated for all nodes.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 13 12 11</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 13 12 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 14 13 12 11</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 15 14 12 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 14 13 12 11</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu">Children</span><span class="op">(</span><span class="va">tree</span>, <span class="fl">11</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 12 18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 12 10</span>
 <span class="r-in"><span><span class="fu">Descendants</span><span class="op">(</span><span class="va">tree</span>, <span class="fl">11</span>, <span class="st">"tips"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  1  2  3  4  5  6  7  8  9 10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu">Siblings</span><span class="op">(</span><span class="va">tree</span>, <span class="fl">3</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
 <span class="r-in"><span><span class="co"># Siblings of all nodes</span></span></span>
 <span class="r-in"><span><span class="fu">Siblings</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 14</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 17</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[6]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[5]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[8]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[7]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 19</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[8]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[9]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[10]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 12</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[11]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[12]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[13]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[14]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[15]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[16]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 15</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[14]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[15]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[16]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[17]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[18]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 16</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[19]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu">mrca.phylo</span><span class="op">(</span><span class="va">tree</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 13</span>
 <span class="r-in"><span><span class="fu">mrca.phylo</span><span class="op">(</span><span class="va">tree</span>, <span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"t1"</span>, <span class="st">"t2"</span>, <span class="st">"t3"</span><span class="op">)</span>, <span class="va">tree</span><span class="op">$</span><span class="va">tip</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 11</span>
 <span class="r-in"><span><span class="fu">mrca.phylo</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     t5 t10 t7 t8 t6 t4 t2 t1 t3 t9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t5   1  13 12 12 12 12 12 11 11 11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t10 13   2 12 12 12 12 12 11 11 11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t7  12  12  3 15 14 14 14 11 11 11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t8  12  12 15  4 14 14 14 11 11 11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t6  12  12 14 14  5 16 16 11 11 11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t4  12  12 14 14 16  6 17 11 11 11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t2  12  12 14 14 16 17  7 11 11 11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t1  11  11 11 11 11 11 11  8 18 18</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t3  11  11 11 11 11 11 11 18  9 19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t9  11  11 11 11 11 11 11 18 19 10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     t8 t7 t4 t9 t10 t6 t3 t2 t5 t1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t8   1 13 13 12  12 12 12 12 12 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t7  13  2 14 12  12 12 12 12 12 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t4  13 14  3 12  12 12 12 12 12 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t9  12 12 12  4  16 16 15 15 15 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t10 12 12 12 16   5 17 15 15 15 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t6  12 12 12 16  17  6 15 15 15 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t3  12 12 12 15  15 15  7 18 18 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t2  12 12 12 15  15 15 18  8 19 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t5  12 12 12 15  15 15 18 19  9 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t1  11 11 11 11  11 11 11 11 11 10</span>
 <span class="r-in"><span><span class="co"># same as mrca(tree), but faster for large trees</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

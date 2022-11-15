@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="phangorn">
-<title>03 Advanced features • phangorn</title>
+<title>03 Markov models and transition rate matrices • phangorn</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="03 Advanced features">
+<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="03 Markov models and transition rate matrices">
 <meta property="og:description" content="phangorn">
 <meta property="og:image" content="https://klausvigo.github.io/phangorn/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -50,7 +50,7 @@
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/Trees.html">01 Estimating phylogenetic trees with phangorn</a>
     <a class="dropdown-item" href="../articles/Morphological.html">02 Phylogenetic trees from morphological data</a>
-    <a class="dropdown-item" href="../articles/AdvancedFeatures.html">03 Advanced features</a>
+    <a class="dropdown-item" href="../articles/AdvancedFeatures.html">03 Markov models and transition rate matrices</a>
     <a class="dropdown-item" href="../articles/Ancestral.html">Ancestral Sequence Reconstruction</a>
     <a class="dropdown-item" href="../articles/Networx.html">05 Splits and Networx</a>
     <a class="dropdown-item" href="../articles/MLbyHand.html">06 Maximum likelihood by hand</a>
@@ -81,15 +81,15 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>03 Advanced features</h1>
-                        <h4 data-toc-skip class="author">Klaus
-Schliep</h4>
+      <img src="../logo.png" class="logo" alt=""><h1>03 Markov models and transition rate matrices</h1>
+                        <h4 data-toc-skip class="author">Klaus Schliep,
+Iris Bardel-Kahr</h4>
             <address class="author_afil">
-      Graz University of
-Technology<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
+      Graz University of Technology, University of
+Graz<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2022-11-14</h4>
+            <h4 data-toc-skip class="date">2022-11-15</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/vignettes/AdvancedFeatures.Rmd" class="external-link"><code>vignettes/AdvancedFeatures.Rmd</code></a></small>
       <div class="d-none name"><code>AdvancedFeatures.Rmd</code></div>
@@ -107,8 +107,10 @@ different models or set up some simulation studies. We show how to
 construct data objects for different character states other than
 nucleotides or amino acids or how to set up different models to estimate
 transition rate.</p>
-<p>The vignette <em>Trees</em> describes in detail how to estimate
-phylogenies from nucleotide or amino acids.</p>
+<p>The vignettes <em>01 Estimating phylogenetic trees with phangorn</em>
+and <em>02 Phylogenetic trees from morphological data</em> describe in
+detail how to estimate phylogenies from nucleotides, amino acids or
+morphological data.</p>
 </div>
 <div class="section level2">
 <h2 id="user-defined-data-formats">User defined data formats<a class="anchor" aria-label="anchor" href="#user-defined-data-formats"></a>
@@ -121,10 +123,10 @@ very similar to <code>factor</code> objects.</p>
 nucleotide data with gaps defined as a fifth state. Ignoring gaps or
 coding them as ambiguous sites - as it is done in most programs, also in
 phangorn as default - may be misleading (see <span class="citation">(Warnow 2012)</span>). When the number of gaps is low
-and the gaps are missing at random coding gaps as separate state may be
-not important.</p>
-<p>Let assume we have given a matrix where each row contains a character
-vector of a taxonomic unit:</p>
+and randomly distributed, coding gaps as separate state may be not
+important.</p>
+<p>Let’s assume we have given a matrix where each row contains a
+character vector of a taxonomic unit:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/KlausVigo/phangorn" class="external-link">phangorn</a></span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Loading required package: ape</span></span></code></pre>
@@ -138,17 +140,17 @@ vector of a taxonomic unit:</p>
 <span><span class="co">## t1 "r"  "a"  "y"  "g"  "g"  "a"  "c"  "-"  "c"  "t"   "c"   "g"  </span></span>
 <span><span class="co">## t2 "a"  "a"  "t"  "g"  "g"  "a"  "t"  "-"  "c"  "t"   "c"   "a"  </span></span>
 <span><span class="co">## t3 "a"  "a"  "t"  "-"  "g"  "a"  "c"  "c"  "c"  "t"   "?"   "g"</span></span></code></pre>
-<p>Normally we would transform this matrix into an phyDat object and
-gaps are handled as ambiguous character like “?”.</p>
+<p>Normally we would transform this matrix into a phyDat object and gaps
+are handled as ambiguous character (like “?”).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gapsdata1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
 <span><span class="va">gapsdata1</span></span></code></pre></div>
 <pre><code><span><span class="co">## 3 sequences with 12 character and 11 different site patterns.</span></span>
 <span><span class="co">## The states are a c g t</span></span></code></pre>
 <p>Now we will define a “USER” defined object and have to supply a
-vector levels of the character states for the new data, in our case the
-for nucleotide states and the gap. Additional we can define ambiguous
-states which can be any of the states.</p>
+vector of levels of the character states for the new data – in our case
+the four nucleotide states and the gap. Additionally we can define
+ambiguous states which can be any of the states.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gapsdata2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">data</span>, type<span class="op">=</span><span class="st">"USER"</span>, levels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>,<span class="st">"c"</span>,<span class="st">"g"</span>,<span class="st">"t"</span>,<span class="st">"-"</span><span class="op">)</span>,</span>
 <span>    ambiguity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"?"</span>, <span class="st">"n"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -159,8 +161,8 @@ states which can be any of the states.</p>
 <code class="sourceCode R"><span><span class="va">gapsdata2</span></span></code></pre></div>
 <pre><code><span><span class="co">## 3 sequences with 10 character and 9 different site patterns.</span></span>
 <span><span class="co">## The states are a c g t -</span></span></code></pre>
-<p>This is not yet what we wanted as two sites of our alignment, which
-contain the ambiguous characters “r” and “y”, got deleted. To define
+<p>This is not yet what we wanted, as two sites of our alignment - which
+contain the ambiguous characters “r” and “y” - got deleted. To define
 ambiguous characters like “r” and “y” explicitly we have to supply a
 contrast matrix similar to contrasts for factors.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
@@ -192,8 +194,8 @@ contrast matrix similar to contrasts for factors.</p>
 <span><span class="va">gapsdata3</span></span></code></pre></div>
 <pre><code><span><span class="co">## 3 sequences with 12 character and 11 different site patterns.</span></span>
 <span><span class="co">## The states are a c g t -</span></span></code></pre>
-<p>Here we defined “n” as a state which can be any nucleotide but not a
-gap “-” and “?” can be any state including a gap.</p>
+<p>Here we defined “n” as a state which can be any nucleotide, but not a
+gap. “-” and “?” can be any state including a gap.</p>
 <p>These data can be used in all functions available in
 <em>phangorn</em> to compute distance matrices or perform parsimony and
 maximum likelihood analysis.</p>
@@ -209,8 +211,8 @@ transition matrix has, at most, 12 free parameters.</p>
 change over time, and use fewer parameters. Time-reversible means that
 these models need not be directed in time, and the Markov property
 states that these models depend only on the current state. These models
-are used in analysis of phylogenies using maximum likelihood and MCMC,
-computing pairwise distances, as well in simulating sequence
+are used in analyses of phylogenies using maximum likelihood and MCMC,
+computing pairwise distances, as well as in simulating sequence
 evolution.</p>
 <p>We will now describe the General Time-Reversible (GTR) model <span class="citation">(Tavaré 1986)</span>. The parameters of the GTR model
 are the equilibrium frequencies <span class="math inline">\(\pi = (\pi_A
@@ -230,10 +232,9 @@ diagonal are chosen so that the rows sum to zero. The Jukes-Cantor (JC)
 derived as special case from the GTR model, for equal equilibrium
 frequencies <span class="math inline">\(\pi_A = \pi_C = \pi_G = \pi_T =
 0.25\)</span> and equal rates set to <span class="math inline">\(\alpha
-= \beta = \gamma = \delta = \eta\)</span>. Table @ref(tab:models) lists
-all built-in nucleotide models in <em>phangorn</em>. The transition
-probabilities which describe the probabilities of change from character
-<span class="math inline">\(i\)</span> to <span class="math inline">\(j\)</span> in time <span class="math inline">\(t\)</span>, are given by the corresponding entries
+= \beta = \gamma = \delta = \eta\)</span>. Table 2 lists all built-in
+nucleotide models in <em>phangorn</em>. The transition probabilities,
+which describe the probabilities of change from character <span class="math inline">\(i\)</span> to <span class="math inline">\(j\)</span> in time <span class="math inline">\(t\)</span>, are given by the corresponding entries
 of the matrix exponential <span class="math display">\[
 P(t) = (p_{ij}(t)) = e^{Qt}, \qquad \sum_j p_{ij}=1
 \]</span> where <span class="math inline">\(P(t)\)</span> is the
@@ -242,9 +243,9 @@ transition matrix spanning a period of time <span class="math inline">\(t\)</spa
 <div class="section level2">
 <h2 id="estimation-of-non-standard-transition-rate-matrices">Estimation of non-standard transition rate matrices<a class="anchor" aria-label="anchor" href="#estimation-of-non-standard-transition-rate-matrices"></a>
 </h2>
-<p>In the last section @ref(user) we described how to set up user
-defined data formats. Now we describe how to estimate transition
-matrices with pml.</p>
+<p>In the section <em>User defined data formats</em> we described how to
+set up user defined data formats. Now we describe how to estimate
+transition matrices with pml.</p>
 <p>Again for nucleotide data the most common models can be called
 directly in the <code>optim.pml</code> function (e.g. “JC69”, “HKY”,
 “GTR” to name a few). Table 2 lists all the available nucleotide models,
@@ -252,10 +253,9 @@ which can estimated directly in <code>optim.pml</code>. For amino acids
 several transition matrices are available (“WAG”, “JTT”, “LG”,
 “Dayhoff”, “cpREV”, “mtmam”, “mtArt”, “MtZoa”, “mtREV24”, “VT”,“RtREV”,
 “HIVw”, “HIVb”, “FLU”, “Blosum62”, “Dayhoff_DCMut” and “JTT-DCMut”) or
-can be estimated with <code>optim.pml</code>. For example Mathews et
-al. (2010) <span class="citation">(Mathews, Clements, and Beilstein
-2010)</span> used this function to estimate a phytochrome amino acid
-transition matrix.</p>
+can be estimated with <code>optim.pml</code>. For example <span class="citation">Mathews, Clements, and Beilstein (2010)</span> used
+this function to estimate a phytochrome amino acid transition
+matrix.</p>
 <p>We will now show how to estimate a rate matrix with different
 transition (<span class="math inline">\(\alpha\)</span>) and
 transversion ratio (<span class="math inline">\(\beta\)</span>) and a
@@ -315,12 +315,12 @@ model (K81) for nucleotide data with gaps as fifth state (see table
 </tr>
 </tbody>
 </table>
-<p>If we want to fit a non-standard transition rate matrices, we have to
-tell <code>optim.pml</code>, which transitions in Q get the same rate.
+<p>If we want to fit a non-standard transition rate matrix, we have to
+tell <code>optim.pml</code> which transitions in Q get the same rate.
 The parameter vector subs accepts a vector of consecutive integers and
-at least one element has to be zero (these gets the reference rate of
-1). Negative values indicate that there is no direct transition is
-possible and the rate is set to zero.</p>
+at least one element has to be zero (these get the reference rate of 1).
+Negative values indicate that there is no direct transition possible and
+the rate is set to zero.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://ape-package.ird.fr/" class="external-link">ape</a></span><span class="op">)</span></span>
 <span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/root.html" class="external-link">unroot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/rtree.html" class="external-link">rtree</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
@@ -347,10 +347,10 @@ possible and the rate is set to zero.</p>
 <p>If a model is supplied the base frequencies bf and rate matrix Q are
 optimized according to the model (nucleotides) or the adequate rate
 matrix and frequencies are chosen (for amino acids). If optQ=TRUE and
-neither a model or subs are supplied than a symmetric (optBf=FALSE) or
+neither a model nor subs are supplied then a symmetric (optBf=FALSE) or
 reversible model (optBf=TRUE, i.e. the GTR for nucleotides) is
 estimated. This can be slow if the there are many character states,
-e.g. for amino acids. Table 2 shows how parameters are optimized and
+e.g. for amino acids. Table 2 shows how parameters are optimized and the
 number of parameters to estimate. The elements of the vector subs
 correspond to <span class="math inline">\(\alpha, \dots, \eta\)</span>
 in equation (1)</p>
@@ -532,7 +532,7 @@ in equation (1)</p>
 </h3>
 <p>So far there are 4 models which are just a generalization from
 nucleotide models allowing different number of states. In many cases
-only the equal rates (ER) model will be apropriate.</p>
+only the equal rates (ER) model will be appropriate.</p>
 <table class="table">
 <caption>Tab 2: Build in models which are available for USER defined
 data.</caption>
@@ -623,7 +623,7 @@ show the corresponding rate matrix.</p>
 <p>A special case of the transition rates are codon models.
 <em>phangorn</em> now offers the possibility to estimate the <span class="math inline">\(d_N/d_S\)</span> ratio (sometimes called ka/ks),
 for an overview see <span class="citation">(Yang 2014)</span>. These
-functions extend the option to estimates the <span class="math inline">\(d_N/d_S\)</span> ratio for pairwise sequence
+functions extend the option to estimate the <span class="math inline">\(d_N/d_S\)</span> ratio for pairwise sequence
 comparison as it is available through the function <code>kaks</code> in
 <em>seqinr</em>. The transition rate between between codon <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> is defined as follows: <span class="math display">\[\begin{eqnarray}
 q_{ij}=\left\{
@@ -632,18 +632,18 @@ q_{ij}=\left\{
          \pi_j &amp; \textrm{for synonymous transversion} \\
          \pi_j\kappa &amp; \textrm{for synonymous transition} \\
          \pi_j\omega &amp; \textrm{for non-synonymous transversion} \\
-         \pi_j\omega\kappa &amp; \textrm{for non synonymous transition}
+         \pi_j\omega\kappa &amp; \textrm{for non-synonymous transition}
     \end{array}
     \right. \nonumber
 \end{eqnarray}\]</span></p>
 <p>where <span class="math inline">\(\omega\)</span> is the <span class="math inline">\(d_N/d_S\)</span> ratio, <span class="math inline">\(\kappa\)</span> the transition transversion ratio
 and <span class="math inline">\(\pi_j\)</span> is the the equilibrium
-frequencies of codon <span class="math inline">\(j\)</span>. For <span class="math inline">\(\omega\sim1\)</span> the an amino acid change is
+frequency of codon <span class="math inline">\(j\)</span>. For <span class="math inline">\(\omega\sim1\)</span> the amino acid change is
 neutral, for <span class="math inline">\(\omega &lt; 1\)</span>
 purifying selection and <span class="math inline">\(\omega &gt;
 1\)</span> positive selection.</p>
-<p>Here we use data set from and follow loosely the example in <span class="citation">(Bielawski and Yang 2005)</span>. We first read in an
-alignment and phylogenetic tree for 45 sequences of the nef Gene in the
+<p>Here we use a data set from and follow loosely the example in <span class="citation">Bielawski and Yang (2005)</span>. We first read in an
+alignment and phylogenetic tree for 45 sequences of the nef gene in the
 Human HIV-2 Genome using <code>read.phyDat</code> function.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fdir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/trees"</span>, package <span class="op">=</span> <span class="st">"phangorn"</span><span class="op">)</span></span>
@@ -653,8 +653,8 @@ Human HIV-2 Genome using <code>read.phyDat</code> function.</p>
 models:</p>
 <ol style="list-style-type: decimal">
 <li>The M0 model with a constant <span class="math inline">\(\omega\)</span>, where <span class="math inline">\(\omega\)</span> estimates the average over all
-sites of the alignment. M0 does not allow for distinct <span class="math inline">\(\omega\)</span> and identify classes, therefore we
-will not retrieve any information regards positive selection.<br>
+sites of the alignment. M0 does not allow for distinct <span class="math inline">\(\omega\)</span> and identifies classes, therefore
+we will not retrieve any information regarding positive selection.<br>
 </li>
 <li>The M1a or nearly neutral model estimates two different <span class="math inline">\(\omega\)</span> value classes (<span class="math inline">\(\omega=1\)</span> &amp; <span class="math inline">\(\omega&lt;1\)</span>).</li>
 <li>The M2a or positive selection model estimates three different
@@ -679,7 +679,8 @@ selection.</li>
 <p>Currently the choice of site models is limited to the three models
 mentioned above and are no branch models implemented so far.</p>
 <p>We can identify sites under positive selection using the Na"ive
-empirical Bayes (NEB) method of (Nielsen and Yang 1998): <span class="math display">\[
+empirical Bayes (NEB) method of <span class="citation">Yang and Nielsen
+(1998)</span>: <span class="math display">\[
 P(\omega|x_h) = \frac{P(X_h|\omega_i)p_i}{P(X_h)} =
 \frac{P(X_h|\omega_i)p_i}{\sum_j P(X_h|\omega_j)p_j}
 \]</span></p>
@@ -696,7 +697,7 @@ codon frequencies <span class="math inline">\(\pi_j\)</span>. The
 simplest model is to assume they have equal frequencies (=1/61). A
 second is to use the empirical codon frequencies, either computed using
 <code>baseFreq</code> or using the argument <code>bf="empirical"</code>
-in <code>pml</code>. This is usually not really good as some codon are
+in <code>pml</code>. This is usually not really good as some codons are
 rare and have a high variance. One can estimate the frequencies from
 nucleotide frequencies with the F1x4 model. Last but not least the
 frequencies can be derived from the base frequencies at each codon
@@ -724,29 +725,6 @@ option to <code>optBf=TRUE</code> in <code>optim.pml</code>.</p>
 <span><span class="co">## dn/ds: 0.51 </span></span>
 <span><span class="co">## ts/tv: 4.581 </span></span>
 <span><span class="co">## Freq: F3x4</span></span></code></pre>
-</div>
-<div class="section level2">
-<h2 id="generating-trees">Generating trees<a class="anchor" aria-label="anchor" href="#generating-trees"></a>
-</h2>
-<p><em>phangorn</em> has several functions to generate tree topologies,
-which may are interesting for simulation studies. <code>allTrees</code>
-computes all possible bifurcating tree topologies either rooted or
-unrooted for up to 10 taxa. One has to keep in mind that the number of
-trees is growing exponentially, use <code>howmanytrees</code> from
-<em>ape</em> as a reminder.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">trees</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/allTrees.html">allTrees</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">5</span><span class="op">)</span>, mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">15</span><span class="op">)</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">trees</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>, cex<span class="op">=</span><span class="fl">1</span>, type<span class="op">=</span><span class="st">"u"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="AdvancedFeatures_files/figure-html/allTrees-1.png" width="576"></p>
-<p><code>nni</code> returns a list of all trees which are one nearest
-neighbor interchange away.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/nni.html">nni</a></span><span class="op">(</span><span class="va">trees</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 4 phylogenetic trees</span></span></code></pre>
-<p><code>rNNI</code> and <code>rSPR</code> generate trees which are a
-defined number of NNI (nearest neighbor interchange) or SPR (subtree
-pruning and regrafting) away.</p>
 </div>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
@@ -821,6 +799,11 @@ Currents Tree of Life</em>.
 <div id="ref-Yang2014" class="csl-entry">
 Yang, Ziheng. 2014. <em>Molecular Evolution: A Statistical
 Approach</em>. Oxford: Oxford University Press.
+</div>
+<div id="ref-Yang1998" class="csl-entry">
+Yang, Ziheng, and Rasmus Nielsen. 1998. <span>“Synonymous and
+Nonsynonymous Rate Variation in Nuclear Genes of Mammals.”</span>
+<em>Journal of Molecular Evolution</em> 46 (4): 409–18. <a href="https://doi.org/10.1007/PL00006320" class="external-link">https://doi.org/10.1007/PL00006320</a>.
 </div>
 </div>
 </div>

@@ -50,7 +50,7 @@
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/Trees.html">01 Estimating phylogenetic trees with phangorn</a>
     <a class="dropdown-item" href="../articles/Morphological.html">02 Phylogenetic trees from morphological data</a>
-    <a class="dropdown-item" href="../articles/AdvancedFeatures.html">03 Advanced features</a>
+    <a class="dropdown-item" href="../articles/AdvancedFeatures.html">03 Markov models and transition rate matrices</a>
     <a class="dropdown-item" href="../articles/Ancestral.html">Ancestral Sequence Reconstruction</a>
     <a class="dropdown-item" href="../articles/Networx.html">05 Splits and Networx</a>
     <a class="dropdown-item" href="../articles/MLbyHand.html">06 Maximum likelihood by hand</a>
@@ -89,7 +89,7 @@ Bardel-Kahr, Klaus Schliep</h4>
 Technology<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2022-11-14</h4>
+            <h4 data-toc-skip class="date">2022-11-15</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/vignettes/Morphological.Rmd" class="external-link"><code>vignettes/Morphological.Rmd</code></a></small>
       <div class="d-none name"><code>Morphological.Rmd</code></div>
@@ -178,7 +178,10 @@ phylogenetic trees with phangorn</em>) implements the parsimony ratchet
 we can use the function <code>random.addition</code>:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mm_start</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parsimony.html">random.addition</a></span><span class="op">(</span><span class="va">mm_pd</span><span class="op">)</span></span></code></pre></div>
-<p>This tree can then be given to <code>pratchet</code>:</p>
+<p>This tree can then be given to <code>pratchet</code>. In the case of
+<em>unordered discrete</em> data (like we have here), the default
+<code>method="fitch"</code> should be used, so that the computation is
+not unnecessarily slowed down.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mm_tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parsimony.html">pratchet</a></span><span class="op">(</span><span class="va">mm_pd</span>, start <span class="op">=</span> <span class="va">mm_start</span>, minit <span class="op">=</span> <span class="fl">1000</span>, maxit <span class="op">=</span> <span class="fl">10000</span>,</span>
 <span>                    all <span class="op">=</span> <span class="cn">TRUE</span>, trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
@@ -241,7 +244,7 @@ values.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mm_cons</span>, main<span class="op">=</span><span class="st">"Unrooted consensus tree"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mm_cons_root</span>, main<span class="op">=</span><span class="st">"Rooted consensus tree"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="Morphological_files/figure-html/plot%20cons%20tree-1.png" alt="Rooted and unrooted consensus tree of the mites dataset with MP." width="576"><p class="caption">
+<img src="Morphological_files/figure-html/plot%20cons%20tree-1.png" alt="Rooted and unrooted consensus tree of the mites dataset with MP." width="768"><p class="caption">
 Rooted and unrooted consensus tree of the mites dataset with MP.
 </p>
 </div>
