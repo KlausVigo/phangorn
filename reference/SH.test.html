@@ -24,12 +24,12 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/Trees.html">01 Estimating phylogenetic trees with phangorn</a>
-    <a class="dropdown-item" href="../articles/Morphological.html">02 Phylogenetic trees from morphological data</a>
-    <a class="dropdown-item" href="../articles/AdvancedFeatures.html">03 Markov models and transition rate matrices</a>
+    <a class="dropdown-item" href="../articles/Trees.html">Estimating phylogenetic trees with phangorn</a>
+    <a class="dropdown-item" href="../articles/Morphological.html">Phylogenetic trees from morphological data</a>
+    <a class="dropdown-item" href="../articles/AdvancedFeatures.html">Markov models and transition rate matrices</a>
     <a class="dropdown-item" href="../articles/Ancestral.html">Ancestral Sequence Reconstruction</a>
-    <a class="dropdown-item" href="../articles/Networx.html">05 Splits and Networx</a>
-    <a class="dropdown-item" href="../articles/MLbyHand.html">06 Maximum likelihood by hand</a>
+    <a class="dropdown-item" href="../articles/Networx.html">Splits and Networx</a>
+    <a class="dropdown-item" href="../articles/MLbyHand.html">Maximum likelihood by hand</a>
     <a class="dropdown-item" href="../articles/IntertwiningTreesAndNetworks.html">Intertwining phylogenetic trees and networks: R Example Script</a>
   </div>
 </li>
@@ -127,7 +127,7 @@ Biology and Evolution</em>, <b>16</b>, 1114--1116.</p>
 <span class="r-in"><span><span class="co"># with pml objects as input</span></span></span>
 <span class="r-in"><span><span class="fu">SH.test</span><span class="op">(</span><span class="va">fit1</span>, <span class="va">fit2</span>, B<span class="op">=</span><span class="fl">1000</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      Trees      ln L Diff ln L p-value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]     1 -54290.26    0.0000   0.496</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]     1 -54290.26    0.0000   0.481</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,]     2 -54911.33  621.0767   0.000</span>
 <span class="r-in"><span><span class="co"># in real analysis use larger B, e.g. 10000</span></span></span>
 <span class="r-in"><span></span></span>
@@ -135,7 +135,7 @@ Biology and Evolution</em>, <b>16</b>, 1114--1116.</p>
 <span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">fit1</span><span class="op">$</span><span class="va">siteLik</span>, <span class="va">fit2</span><span class="op">$</span><span class="va">siteLik</span><span class="op">)</span>, ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">SH.test</span><span class="op">(</span><span class="va">X</span>, weight<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">Laurasiatherian</span>, <span class="st">"weight"</span><span class="op">)</span>, B<span class="op">=</span><span class="fl">1000</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      Trees      ln L Diff ln L p-value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]     1 -54290.26    0.0000   0.495</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]     1 -54290.26    0.0000   0.499</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,]     2 -54911.33  621.0767   0.000</span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span><span class="va">pmlPart</span><span class="op">)</span></span></span>
