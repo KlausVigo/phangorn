@@ -20,7 +20,7 @@ vignette: |
 
 ```{r setup, echo=FALSE}
 # set global chunk options: images will be bigger
-knitr::opts_chunk$set(fig.width=6, fig.height=4)
+knitr::opts_chunk$set(fig.width=8, fig.height=4)
 options(digits = 2)
 ```
 
@@ -37,7 +37,7 @@ set.seed(9)
 
 # Load data
 
-The dataset we're using contains morphological data for 12 mite species, with 79 encoded characters [@schaffer2010phylogenetic]. 
+The dataset we're using contains morphological data for 12 mite species, with 79 encoded characters [@schaffer2010phylogenetic].
 When reading in the _.csv_ file, `row.names = 1` uses the first column (species) as row names. To get a `phyDat` object, we have to convert the dataframe into a matrix with `as.matrix`. 
 ``` {r load data}
 fdir <- system.file("extdata", package = "phangorn")
@@ -78,7 +78,7 @@ For morphological data, one of the most frequently used approaches to conduct ph
 ```{r random addition}
 mm_start <- random.addition(mm_pd)
 ```
-This tree can then be given to `pratchet`:
+This tree can then be given to `pratchet`. In the case of _unordered discrete_ data (like we have here), the default `method="fitch"` should be used, so that the computation is not unnecessarily slowed down.
 ```{r pratchet, cache=TRUE}
 mm_tree <- pratchet(mm_pd, start = mm_start, minit = 1000, maxit = 10000,
                     all = TRUE, trace = 0)
