@@ -1,5 +1,5 @@
 ---
-title: "02 Phylogenetic trees from morphological data"
+title: "Phylogenetic trees from morphological data"
 author:
 - name: Iris Bardel-Kahr, Klaus Schliep
   affiliation: University of Graz, Graz University of Technology
@@ -13,14 +13,14 @@ output:
     toc: true
     toc_depth: 2
 vignette: |
-  %\VignetteIndexEntry{02 Phylogenetic trees from morphological data}
+  %\VignetteIndexEntry{Phylogenetic trees from morphological data}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 ---
 
 ```{r setup, echo=FALSE}
 # set global chunk options: images will be bigger
-knitr::opts_chunk$set(fig.width=8, fig.height=4)
+knitr::opts_chunk$set(fig.width=6, fig.height=4)
 options(digits = 2)
 ```
 
@@ -37,7 +37,7 @@ set.seed(9)
 
 # Load data
 
-The dataset we're using contains morphological data for 12 mite species, with 79 encoded characters [@schaffer2010phylogenetic].
+The dataset we're using contains morphological data for 12 mite species, with 79 encoded characters [@schaffer2010phylogenetic]. 
 When reading in the _.csv_ file, `row.names = 1` uses the first column (species) as row names. To get a `phyDat` object, we have to convert the dataframe into a matrix with `as.matrix`. 
 ``` {r load data}
 fdir <- system.file("extdata", package = "phangorn")
@@ -74,11 +74,11 @@ Now that we have our data, we can start the analyses.
 
 # Parsimony
 
-For morphological data, one of the most frequently used approaches to conduct phylogenetic trees is maximum parsimony (MP). `pratchet` (as already described in _01 Estimating phylogenetic trees with phangorn_) implements the parsimony ratchet [@Nixon1999]. To create a starting tree, we can use the function `random.addition`:
+For morphological data, one of the most frequently used approaches to conduct phylogenetic trees is maximum parsimony (MP). `pratchet` (as already described in _Estimating phylogenetic trees with phangorn_) implements the parsimony ratchet [@Nixon1999]. To create a starting tree, we can use the function `random.addition`:
 ```{r random addition}
 mm_start <- random.addition(mm_pd)
 ```
-This tree can then be given to `pratchet`. In the case of _unordered discrete_ data (like we have here), the default `method="fitch"` should be used, so that the computation is not unnecessarily slowed down.
+This tree can then be given to `pratchet`:
 ```{r pratchet, cache=TRUE}
 mm_tree <- pratchet(mm_pd, start = mm_start, minit = 1000, maxit = 10000,
                     all = TRUE, trace = 0)

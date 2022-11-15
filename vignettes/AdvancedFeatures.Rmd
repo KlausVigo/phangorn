@@ -1,5 +1,5 @@
 ---
-title: "03 Markov models and transition rate matrices"
+title: "Markov models and transition rate matrices"
 author:
 - name: Klaus Schliep, Iris Bardel-Kahr
   affiliation: Graz University of Technology, University of Graz
@@ -13,7 +13,7 @@ output:
     toc: true
     toc_depth: 2
 vignette: >
-  %\VignetteIndexEntry{03 Markov models and transition rate matrices}
+  %\VignetteIndexEntry{Markov models and transition rate matrices}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -30,7 +30,7 @@ options(digits = 4)
 
 This document illustrates some of the _phangorn_ [@Schliep2011] specialized features which are useful but maybe not as well-known or just not (yet) described elsewhere. This is mainly interesting for someone who wants to explore different models or set up some simulation studies. We show how to construct data objects for different character states other than nucleotides or amino acids or how to set up different models to estimate transition rate.
 
-The vignettes _01 Estimating phylogenetic trees with phangorn_ and _02 Phylogenetic trees from morphological data_ describe in detail how to estimate phylogenies from nucleotides, amino acids or morphological data.
+The vignettes _Estimating phylogenetic trees with phangorn_ and _Phylogenetic trees from morphological data_ describe in detail how to estimate phylogenies from nucleotides, amino acids or morphological data.
 
 
 # User defined data formats

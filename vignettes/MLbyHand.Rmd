@@ -1,5 +1,5 @@
 ---
-title: "06 Maximum likelihood by hand"
+title: "Maximum likelihood by hand"
 author:
 - name: Klaus Schliep, Iris Bardel-Kahr
   affiliation: Graz University of Technology, University of Graz
@@ -13,7 +13,7 @@ output:
     toc: true
     toc_depth: 2
 vignette: |
-  %\VignetteIndexEntry{06 Maximum likelihood by hand}
+  %\VignetteIndexEntry{Maximum likelihood by hand}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 ---
@@ -27,7 +27,7 @@ options(digits = 4)
 # Maximum likelihood by hand
 
 With the function `pml_bb` from _phangorn_ [@Schliep2011] a lot of steps have become easier and shorter. If you want to have more control over all of the used parameters, it is also possible to use the older functions, e.g. `optim_pml`.
-The data is the same as in the vignette _01 Estimating phylogenetic trees with phangorn_:
+The data is the same as in the vignette _Estimating phylogenetic trees with phangorn_:
 ```{r load packages}
 library(ape)
 library(phangorn)
@@ -95,7 +95,7 @@ BIC(fitGTR)
 
 
 ## Bootstrap
-At last we may want to apply standard bootstrap to test how well the edges of the tree are supported. This has already been shown in the vignette _01 Estimating phylogenetic trees with phangorn_. 
+At last we may want to apply standard bootstrap to test how well the edges of the tree are supported. This has already been shown in the vignette _Estimating phylogenetic trees with phangorn_. 
 ```{r, echo=TRUE, eval=TRUE, cache=TRUE}
 bs <- bootstrap.pml(fitJC, bs=100, optNni=TRUE,
     control = pml.control(trace = 0))
