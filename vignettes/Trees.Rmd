@@ -191,10 +191,9 @@ bs <- bootstrap.pml(fit_mt, bs=100, optNni=TRUE,
 ```
 
 Now we can plot the tree with the bootstrap support values on the edges and compare the standard bootstrap values to the ultrafast bootstrap values.
-```{r plotBS ultrafast bs, fig.cap="Unrooted tree (midpoint rooted) with ultrafast bootstrap support values.", echo=TRUE}
+```{r plotBS ultrafast bs, fig.cap="Unrooted tree (midpoint rooted) with ultrafast and standard bootstrap support values.", echo=TRUE, fig.show="hold", out.width="50%"}
 plotBS(midpoint(fit_mt$tree), p = .5, type="p", digits=2, main="Ultrafast bootstrap")
-```
-```{r plotBS std bs, fig.cap="Unrooted tree (midpoint rooted) with standard bootstrap support values.", echo=TRUE}
+
 plotBS(midpoint(fit_mt$tree), bs, p = 50, type="p", main="Standard bootstrap")
 ```
 
