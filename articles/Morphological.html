@@ -89,7 +89,7 @@ Bardel-Kahr, Klaus Schliep</h4>
 Technology<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2022-11-15</h4>
+            <h4 data-toc-skip class="date">2022-11-16</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/vignettes/Morphological.Rmd" class="external-link"><code>vignettes/Morphological.Rmd</code></a></small>
       <div class="d-none name"><code>Morphological.Rmd</code></div>
@@ -191,6 +191,18 @@ we can assign the edge lengths.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mm_tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parsimony.html">acctran</a></span><span class="op">(</span><span class="va">mm_tree</span>, <span class="va">mm_pd</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
+<h3 id="branch-and-bound">Branch and bound<a class="anchor" aria-label="anchor" href="#branch-and-bound"></a>
+</h3>
+<p>In the case of our mites-dataset with 12 sequences, it’s also
+possible to use the branch and bound algorithm <span class="citation">(Hendy and Penny 1982)</span> to find all most
+parsimonious trees. With bigger datasets it is definitely recommended to
+use <code>pratchet</code>.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mm_bab</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bab.html">bab</a></span><span class="op">(</span><span class="va">mm_pd</span>, trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="va">mm_bab</span></span></code></pre></div>
+<pre><code><span><span class="co">## 37 phylogenetic trees</span></span></code></pre>
+</div>
+<div class="section level3">
 <h3 id="root-trees">Root trees<a class="anchor" aria-label="anchor" href="#root-trees"></a>
 </h3>
 <p>If we want our unrooted trees to be rooted, we have the possibility
@@ -200,7 +212,7 @@ done with the function <code>root</code> from the <em>ape</em> package
 <span class="citation">(Paradis and Schliep 2019)</span>. To save the
 correct node labels (edge support), it’s important to set
 <code>edgelabel=TRUE</code>.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mm_tree_rooted</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/root.html" class="external-link">root</a></span><span class="op">(</span><span class="va">mm_tree</span>, outgroup <span class="op">=</span> <span class="st">"C._cymba"</span>, resolve.root <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                       edgelabel <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -213,7 +225,7 @@ tree. It is also possible to save the plots as <em>.pdf</em> (or various
 other formats, e.g. svg, png, tiff) file. <code>digits</code> is an
 argument to determine the number of digits shown for the bootstrap
 values.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># plot all trees</span></span>
 <span><span class="fu"><a href="../reference/plotBS.html">plotBS</a></span><span class="op">(</span><span class="va">mm_tree_rooted</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span></span>
@@ -228,23 +240,31 @@ values.</p>
 <div class="section level3">
 <h3 id="consensus-tree">Consensus tree<a class="anchor" aria-label="anchor" href="#consensus-tree"></a>
 </h3>
-<p>To look at the consensus tree of our 19 trees, we can use the
-<code>consensus</code> function from <em>ape</em>.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># unrooted tree</span></span>
+<p>To look at the consensus tree of our 19 trees from
+<code>pratchet</code>, or of our 37 most parsimonious trees from
+<code>bab</code>, we can use the <code>consensus</code> function from
+<em>ape</em>.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># unrooted pratchet tree</span></span>
 <span><span class="va">mm_cons</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/consensus.html" class="external-link">consensus</a></span><span class="op">(</span><span class="va">mm_tree</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># rooted tree</span></span>
-<span><span class="va">mm_cons_root</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/consensus.html" class="external-link">consensus</a></span><span class="op">(</span><span class="va">mm_tree_rooted</span>, rooted <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mm_cons</span>, main<span class="op">=</span><span class="st">"Unrooted consensus tree"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mm_cons_root</span>, main<span class="op">=</span><span class="st">"Rooted consensus tree"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># rooted pratchet tree</span></span>
+<span><span class="va">mm_cons_root</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/consensus.html" class="external-link">consensus</a></span><span class="op">(</span><span class="va">mm_tree_rooted</span>, rooted <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># branch and bound, we root the consensus tree in the same step</span></span>
+<span><span class="va">mm_bab_cons</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/root.html" class="external-link">root</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/consensus.html" class="external-link">consensus</a></span><span class="op">(</span><span class="va">mm_bab</span><span class="op">)</span>, outgroup <span class="op">=</span> <span class="st">"C._cymba"</span>,</span>
+<span>                    resolve.root <span class="op">=</span> <span class="cn">TRUE</span>, edgelabel <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mm_cons</span>, main<span class="op">=</span><span class="st">"Unrooted pratchet consensus tree"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mm_cons_root</span>, main<span class="op">=</span><span class="st">"Rooted pratchet consensus tree"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mm_bab_cons</span>, main<span class="op">=</span><span class="st">"Rooted bab consensus tree"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="Morphological_files/figure-html/plot%20cons%20tree-1.png" alt="Rooted and unrooted consensus tree of the mites dataset with MP." width="576"><p class="caption">
-Rooted and unrooted consensus tree of the mites dataset with MP.
+<img src="Morphological_files/figure-html/plot%20cons%20tree-1.png" alt="Unrooted and rooted consensus trees of the mites dataset with MP." width="33%"><img src="Morphological_files/figure-html/plot%20cons%20tree-2.png" alt="Unrooted and rooted consensus trees of the mites dataset with MP." width="33%"><img src="Morphological_files/figure-html/plot%20cons%20tree-3.png" alt="Unrooted and rooted consensus trees of the mites dataset with MP." width="33%"><p class="caption">
+Unrooted and rooted consensus trees of the mites dataset with MP.
 </p>
 </div>
+<p>We can clearly see that, as expected, the two rooted trees have the
+same topology.</p>
 </div>
 </div>
 <div class="section level2">
@@ -287,6 +307,11 @@ Rooted and unrooted consensus tree of the mites dataset with MP.
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Hendy1982" class="csl-entry">
+Hendy, M. D., and D. Penny. 1982. <span>“Branch and Bound Algorithms to
+Determine Minimal Evolutionary Trees.”</span> <em>Math. Biosc.</em> 59:
+277–90.
+</div>
 <div id="ref-Nixon1999" class="csl-entry">
 Nixon, K. 1999. <span>“The Parsimony Ratchet, a New Method for Rapid
 Rarsimony Analysis.”</span> <em>Cladistics</em> 15: 407–14.
