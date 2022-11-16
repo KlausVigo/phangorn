@@ -30,8 +30,8 @@ F3x4 <- function(x) {
 }
 
 
-F1x4 <- function(x) {
-  bf <- codon2dna(x) |> baseFreq()
+F1x4 <- function(x, bf=NULL) {
+  if(is.null(bf))bf <- codon2dna(x) |> baseFreq()
   BF <- matrix(bf, 4, 3)
   codon_abc <- attr(x, "levels")
   F3x4_freq(BF, CodonAlphabet = codon_abc)
