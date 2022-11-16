@@ -275,10 +275,10 @@ works with the fitch algorithm.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">treeRA</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parsimony.html">random.addition</a></span><span class="op">(</span><span class="va">primates</span><span class="op">)</span></span>
 <span><span class="va">treeSPR</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parsimony.html">optim.parsimony</a></span><span class="op">(</span><span class="va">treeRA</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Final p-score 746 after  0 nni operations</span></span></code></pre>
+<pre><code><span><span class="co">## Final p-score 746 after  1 nni operations</span></span></code></pre>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/parsimony.html">parsimony</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">treeRA</span>, <span class="va">treeSPR</span><span class="op">)</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 746 746</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 751 746</span></span></code></pre>
 <div class="section level3">
 <h3 id="branch-and-bound">Branch and bound<a class="anchor" aria-label="anchor" href="#branch-and-bound"></a>
 </h3>
@@ -454,9 +454,9 @@ table:</p>
 <td align="left">HKY</td>
 <td align="right">29</td>
 <td align="right">-2625.04</td>
-<td align="right">5308.08</td>
+<td align="right">5308.07</td>
 <td align="right">0.00</td>
-<td align="right">5316.69</td>
+<td align="right">5316.68</td>
 <td align="right">0.00</td>
 <td align="right">5408.03</td>
 </tr>
@@ -476,7 +476,7 @@ table:</p>
 <td align="right">-2612.64</td>
 <td align="right">5285.28</td>
 <td align="right">0.18</td>
-<td align="right">5294.53</td>
+<td align="right">5294.54</td>
 <td align="right">0.45</td>
 <td align="right">5388.68</td>
 </tr>
@@ -533,8 +533,8 @@ table:</p>
 <tr class="odd">
 <td align="left">GTR</td>
 <td align="right">33</td>
-<td align="right">-2618.62</td>
-<td align="right">5303.24</td>
+<td align="right">-2618.63</td>
+<td align="right">5303.25</td>
 <td align="right">0.00</td>
 <td align="right">5314.58</td>
 <td align="right">0.00</td>
@@ -546,19 +546,19 @@ table:</p>
 <td align="right">-2613.58</td>
 <td align="right">5295.16</td>
 <td align="right">0.00</td>
-<td align="right">5307.24</td>
+<td align="right">5307.25</td>
 <td align="right">0.00</td>
 <td align="right">5412.35</td>
 </tr>
 <tr class="odd">
 <td align="left">GTR+G(4)</td>
 <td align="right">34</td>
-<td align="right">-2607.66</td>
-<td align="right">5283.32</td>
+<td align="right">-2607.67</td>
+<td align="right">5283.34</td>
 <td align="right">0.47</td>
-<td align="right">5295.41</td>
+<td align="right">5295.42</td>
 <td align="right">0.29</td>
-<td align="right">5400.51</td>
+<td align="right">5400.52</td>
 </tr>
 <tr class="even">
 <td align="left">GTR+G(4)+I</td>
@@ -602,45 +602,45 @@ conducted.</p>
 <code class="sourceCode R"><span><span class="va">fit_mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">mt</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fit_mt</span></span></code></pre></div>
 <pre><code><span><span class="co">## model: HKY+G(4) </span></span>
-<span><span class="co">## loglikelihood: -2611.573 </span></span>
+<span><span class="co">## loglikelihood: -2611.865 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -1230.335 </span></span>
 <span><span class="co">## Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.071379 </span></span>
+<span><span class="co">## Shape parameter: 2.071648 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
 <span><span class="co">##          a        c        g        t</span></span>
-<span><span class="co">## a  0.00000  1.00000 56.57268  1.00000</span></span>
-<span><span class="co">## c  1.00000  0.00000  1.00000 56.57268</span></span>
-<span><span class="co">## g 56.57268  1.00000  0.00000  1.00000</span></span>
-<span><span class="co">## t  1.00000 56.57268  1.00000  0.00000</span></span>
+<span><span class="co">## a  0.00000  1.00000 55.10506  1.00000</span></span>
+<span><span class="co">## c  1.00000  0.00000  1.00000 55.10506</span></span>
+<span><span class="co">## g 55.10506  1.00000  0.00000  1.00000</span></span>
+<span><span class="co">## t  1.00000 55.10506  1.00000  0.00000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##          a          c          g          t </span></span>
-<span><span class="co">## 0.42090043 0.36228735 0.04379758 0.17301464</span></span></code></pre>
+<span><span class="co">## 0.42087059 0.36218148 0.04378764 0.17316029</span></span></code></pre>
 <p>We can also use <code>pml_bb</code> with a defined model to infer a
 phylogenetic tree.</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fitGTR</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">primates</span>, model<span class="op">=</span><span class="st">"GTR+G(4)+I"</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fitGTR</span></span></code></pre></div>
 <pre><code><span><span class="co">## model: GTR+G(4)+I </span></span>
-<span><span class="co">## loglikelihood: -2608.462 </span></span>
+<span><span class="co">## loglikelihood: -2608.46 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -1230.335 </span></span>
-<span><span class="co">## Proportion of invariant sites: 0.005611772 </span></span>
+<span><span class="co">## Proportion of invariant sites: 0.005612214 </span></span>
 <span><span class="co">## Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.934118 </span></span>
+<span><span class="co">## Shape parameter: 2.935101 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
 <span><span class="co">##            a            c            g          t</span></span>
-<span><span class="co">## a  0.0000000  0.709901428 43.341612932  0.4489493</span></span>
-<span><span class="co">## c  0.7099014  0.000000000  0.003182103 18.0784392</span></span>
-<span><span class="co">## g 43.3416129  0.003182103  0.000000000  1.0000000</span></span>
-<span><span class="co">## t  0.4489493 18.078439207  1.000000000  0.0000000</span></span>
+<span><span class="co">## a  0.0000000  0.708850266 43.310591204  0.4483194</span></span>
+<span><span class="co">## c  0.7088503  0.000000000  0.003085846 18.0554953</span></span>
+<span><span class="co">## g 43.3105912  0.003085846  0.000000000  1.0000000</span></span>
+<span><span class="co">## t  0.4483194 18.055495347  1.000000000  0.0000000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##          a          c          g          t </span></span>
-<span><span class="co">## 0.39404106 0.37887867 0.04026175 0.18681851</span></span></code></pre>
+<span><span class="co">## 0.39401963 0.37890483 0.04025919 0.18681635</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="bootstrap-1">Bootstrap<a class="anchor" aria-label="anchor" href="#bootstrap-1"></a>
@@ -658,7 +658,7 @@ bootstrap values.</p>
 <span></span>
 <span><span class="fu"><a href="../reference/plotBS.html">plotBS</a></span><span class="op">(</span><span class="fu"><a href="../reference/midpoint.html">midpoint</a></span><span class="op">(</span><span class="va">fit_mt</span><span class="op">$</span><span class="va">tree</span><span class="op">)</span>, <span class="va">bs</span>, p <span class="op">=</span> <span class="fl">50</span>, type<span class="op">=</span><span class="st">"p"</span>, main<span class="op">=</span><span class="st">"Standard bootstrap"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="Trees_files/figure-html/plotBS%20ultrafast%20bs-1.png" alt="Unrooted tree (midpoint rooted) with ultrafast and standard bootstrap support values." width="50%"><img src="Trees_files/figure-html/plotBS%20ultrafast%20bs-2.png" alt="Unrooted tree (midpoint rooted) with ultrafast and standard bootstrap support values." width="50%"><p class="caption">
+<img src="Trees_files/figure-html/plotBS_ultrafast_bs-1.png" alt="Unrooted tree (midpoint rooted) with ultrafast and standard bootstrap support values." width="50%"><img src="Trees_files/figure-html/plotBS_ultrafast_bs-2.png" alt="Unrooted tree (midpoint rooted) with ultrafast and standard bootstrap support values." width="50%"><p class="caption">
 Unrooted tree (midpoint rooted) with ultrafast and standard bootstrap
 support values.
 </p>
@@ -703,7 +703,7 @@ For an ultrametric starting tree we can use an UPGMA or WPGMA tree.</p>
 <span>                     control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit_strict</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Trees_files/figure-html/plot%20strict%20primates-1.png" width="768"></p>
+<p><img src="Trees_files/figure-html/plot_strict_primates-1.png" width="768"></p>
 <p>With <em>phangorn</em> we also can estimate tipdated phylogenies.
 Here we use a H3N2 virus data set from <em>treetime</em> <span class="citation">(Sagulenko, Puller, and Neher 2018)</span> as an
 example. Additionally to the alignment we also need to read in data
@@ -776,16 +776,16 @@ tipdated trees we have one additional parameter for the rate.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##  [1] Rcpp_1.0.9        highr_0.9         bslib_0.4.1       compiler_4.2.2   </span></span>
-<span><span class="co">##  [5] jquerylib_0.1.4   prettydoc_0.4.1   tools_4.2.2       digest_0.6.30    </span></span>
-<span><span class="co">##  [9] jsonlite_1.8.3    evaluate_0.18     memoise_2.0.1     nlme_3.1-160     </span></span>
-<span><span class="co">## [13] lattice_0.20-45   pkgconfig_2.0.3   rlang_1.0.6       Matrix_1.5-1     </span></span>
-<span><span class="co">## [17] fastmatch_1.1-3   igraph_1.3.5      cli_3.4.1         yaml_2.3.6       </span></span>
-<span><span class="co">## [21] parallel_4.2.2    pkgdown_2.0.6     xfun_0.34         fastmap_1.1.0    </span></span>
-<span><span class="co">## [25] stringr_1.4.1     desc_1.4.2        generics_0.1.3    fs_1.5.2         </span></span>
-<span><span class="co">## [29] sass_0.4.2        systemfonts_1.0.4 rprojroot_2.0.3   grid_4.2.2       </span></span>
-<span><span class="co">## [33] R6_2.5.1          textshaping_0.3.6 rmarkdown_2.18    purrr_0.3.5      </span></span>
-<span><span class="co">## [37] magrittr_2.0.3    codetools_0.2-18  htmltools_0.5.3   quadprog_1.5-8   </span></span>
-<span><span class="co">## [41] ragg_1.2.4        stringi_1.7.8     cachem_1.0.6</span></span></code></pre>
+<span><span class="co">##  [5] jquerylib_0.1.4   tools_4.2.2       digest_0.6.30     jsonlite_1.8.3   </span></span>
+<span><span class="co">##  [9] evaluate_0.18     memoise_2.0.1     nlme_3.1-160      lattice_0.20-45  </span></span>
+<span><span class="co">## [13] pkgconfig_2.0.3   rlang_1.0.6       Matrix_1.5-1      fastmatch_1.1-3  </span></span>
+<span><span class="co">## [17] igraph_1.3.5      cli_3.4.1         yaml_2.3.6        parallel_4.2.2   </span></span>
+<span><span class="co">## [21] pkgdown_2.0.6     xfun_0.34         fastmap_1.1.0     stringr_1.4.1    </span></span>
+<span><span class="co">## [25] desc_1.4.2        generics_0.1.3    fs_1.5.2          sass_0.4.2       </span></span>
+<span><span class="co">## [29] systemfonts_1.0.4 rprojroot_2.0.3   grid_4.2.2        R6_2.5.1         </span></span>
+<span><span class="co">## [33] textshaping_0.3.6 rmarkdown_2.18    purrr_0.3.5       magrittr_2.0.3   </span></span>
+<span><span class="co">## [37] codetools_0.2-18  htmltools_0.5.3   quadprog_1.5-8    ragg_1.2.4       </span></span>
+<span><span class="co">## [41] stringi_1.7.8     cachem_1.0.6</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
