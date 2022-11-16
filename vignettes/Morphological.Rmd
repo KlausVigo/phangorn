@@ -89,6 +89,15 @@ With `all=TRUE` we get all (in this case 19) trees with lowest parsimony score i
 mm_tree <- acctran(mm_tree, mm_pd)
 ```
 
+## Branch and bound
+
+In the case of our mites-dataset with 12 sequences, it's also possible to use the branch and bound algorithm [@Hendy1982] to find all most parsimonious trees. With bigger datasets it is definitely recommended to use `pratchet`.
+
+``` {r bab}
+mm_bab <- bab(mm_pd, trace = 0)
+mm_bab
+```
+
 ## Root trees
 
 If we want our unrooted trees to be rooted, we have the possibility to use `midpoint` to perform midpoint rooting. Rooting the trees with a specific species (we chose _C. cymba_ here) can be done with the function `root` from the _ape_ package [@Paradis2018]. To save the correct node labels (edge support), it's important to set `edgelabel=TRUE`.
@@ -116,19 +125,24 @@ dev.off()
 
 ## Consensus tree
 
-To look at the consensus tree of our 19 trees, we can use the `consensus` function from _ape_.
+To look at the consensus tree of our 19 trees from `pratchet`, or of our 37 most parsimonious trees from `bab`, we can use the `consensus` function from _ape_.
 ```{r consensus tree}
-# unrooted tree
+# unrooted pratchet tree
 mm_cons <- consensus(mm_tree)
 
-# rooted tree
+# rooted pratchet tree
 mm_cons_root <- consensus(mm_tree_rooted, rooted = TRUE)
+
+# branch and bound, we root the consensus tree in the same step
+mm_bab_cons <- root(consensus(mm_bab), outgroup = "C._cymba",
+                    resolve.root = TRUE, edgelabel = TRUE)
 ```
-```{r plot cons tree, fig.cap="Rooted and unrooted consensus tree of the mites dataset with MP."}
-par(mfrow=c(1,2))
-plot(mm_cons, main="Unrooted consensus tree")
-plot(mm_cons_root, main="Rooted consensus tree")
+```{r plot cons tree, fig.cap="Unrooted and rooted consensus trees of the mites dataset with MP.", fig.show="hold", out.width="33%"}
+plot(mm_cons, main="Unrooted pratchet consensus tree")
+plot(mm_cons_root, main="Rooted pratchet consensus tree")
+plot(mm_bab_cons, main="Rooted bab consensus tree")
 ```
+We can clearly see that, as expected, the two rooted trees have the same topology.
 
 # Session info
 
