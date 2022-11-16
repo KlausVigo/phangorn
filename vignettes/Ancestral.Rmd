@@ -6,12 +6,7 @@ author:
   email: klaus.schliep@gmail.com
 date: "`r Sys.Date()`"
 bibliography: phangorn.bib
-output:
-  prettydoc::html_pretty:
-    theme: cayman
-    highlight: github
-    toc: true
-    toc_depth: 2
+output: rmarkdown::html_vignette
 vignette: |
   %\VignetteIndexEntry{Ancestral Sequence Reconstruction}
   %\VignetteEngine{knitr::rmarkdown}

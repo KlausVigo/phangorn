@@ -6,12 +6,7 @@ author:
   email: klaus.schliep@gmail.com
 date: "`r Sys.Date()`"
 bibliography: phangorn.bib
-output:
-  prettydoc::html_pretty:
-    theme: cayman
-    highlight: github
-    toc: true
-    toc_depth: 2
+output: rmarkdown::html_vignette
 vignette: |
   %\VignetteIndexEntry{Phylogenetic trees from morphological data}
   %\VignetteEncoding{UTF-8}
@@ -110,7 +105,7 @@ mm_tree_rooted <- root(mm_tree, outgroup = "C._cymba", resolve.root = TRUE,
 ## Plot trees
 
 With `plotBS`, we can either plot all of the trees with their respective edge support, or we can subset to only get a certain tree. It is also possible to save the plots as _.pdf_ (or various other formats, e.g. svg, png, tiff) file. `digits` is an argument to determine the number of digits shown for the bootstrap values.
-```{r plot trees, eval=FALSE}
+```{r plot_trees, eval=FALSE}
 # plot all trees
 plotBS(mm_tree_rooted, digits = 2)
 
@@ -137,7 +132,7 @@ mm_cons_root <- consensus(mm_tree_rooted, rooted = TRUE)
 mm_bab_cons <- root(consensus(mm_bab), outgroup = "C._cymba",
                     resolve.root = TRUE, edgelabel = TRUE)
 ```
-```{r plot cons tree, fig.cap="Unrooted and rooted consensus trees of the mites dataset with MP.", fig.show="hold", out.width="33%"}
+```{r plot_cons_tree, fig.cap="Unrooted and rooted consensus trees of the mites dataset with MP.", fig.show="hold", out.width="33%"}
 plot(mm_cons, main="Unrooted pratchet consensus tree")
 plot(mm_cons_root, main="Rooted pratchet consensus tree")
 plot(mm_bab_cons, main="Rooted bab consensus tree")

@@ -6,12 +6,7 @@ author:
   email: klaus.schliep@gmail.com
 date: "`r Sys.Date()`"
 bibliography: phangorn.bib
-output:
-  prettydoc::html_pretty:
-    theme: cayman
-    highlight: github
-    toc: true
-    toc_depth: 2
+output: rmarkdown::html_vignette
 vignette: |
   %\VignetteIndexEntry{Estimating phylogenetic trees with phangorn}
   %\VignetteEncoding{UTF-8}
@@ -191,7 +186,7 @@ bs <- bootstrap.pml(fit_mt, bs=100, optNni=TRUE,
 ```
 
 Now we can plot the tree with the bootstrap support values on the edges and compare the standard bootstrap values to the ultrafast bootstrap values.
-```{r plotBS ultrafast bs, fig.cap="Unrooted tree (midpoint rooted) with ultrafast and standard bootstrap support values.", echo=TRUE, fig.show="hold", out.width="50%"}
+```{r plotBS_ultrafast_bs, fig.cap="Unrooted tree (midpoint rooted) with ultrafast and standard bootstrap support values.", echo=TRUE, fig.show="hold", out.width="50%"}
 plotBS(midpoint(fit_mt$tree), p = .5, type="p", digits=2, main="Ultrafast bootstrap")
 
 plotBS(midpoint(fit_mt$tree), bs, p = 50, type="p", main="Standard bootstrap")
@@ -220,7 +215,7 @@ For an ultrametric starting tree we can use an UPGMA or WPGMA tree.
 fit_strict <- pml_bb(primates, model="HKY+G(4)", method="ultrametric",
                      control = pml.control(trace = 0))
 ```
-```{r plot strict primates}
+```{r plot_strict_primates}
 plot(fit_strict)
 ```
 

@@ -2,10 +2,7 @@
 title: "Splits and Networx"
 author: "Klaus Schliep"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
-output:
-  prettydoc::html_pretty:
-    theme: cayman
-    highlight: github
+output: rmarkdown::html_vignette
 bibliography: phangorn.bib
 vignette: >
    %\VignetteIndexEntry{Splits and Networx}

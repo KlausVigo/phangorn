@@ -12,3 +12,6 @@
 ^vignettes/revdep$
 ^vignettes/Parsimony_with_binary_data_cache$
 ^vignettes/Parsimony_with_binary_data.*
+^vignettes/Morphological_cache$
+^vignettes/MLbyHand_cache$
+^vignettes/AdvancedFeatures_cache$
