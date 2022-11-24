@@ -246,7 +246,7 @@ P(\omega|x_h) = \frac{P(X_h|\omega_i)p_i}{P(X_h)} =
 \frac{P(X_h|\omega_i)p_i}{\sum_j P(X_h|\omega_j)p_j}
 \]
 
-```{R plot codon}
+```{R plot_codon}
 plot(cdn, "M1a")
 plot(cdn, "M2a")
 ```
