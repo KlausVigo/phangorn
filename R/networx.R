@@ -903,6 +903,8 @@ edgeLabels <- function(xx, yy, zz = NULL, edge) {
 #' @param col.edge.label the colors used for the edge labels.
 #' @param font.node.label the font used for the node labels.
 #' @param font.edge.label the font used for the edge labels.
+#' @param underscore a logical specifying whether the underscores in tip labels
+#' should be written as spaces (the default) or left as are (if TRUE).
 #' @param \dots Further arguments passed to or from other methods.
 #' @rdname plot.networx
 #' @note The internal representation is likely to change.
@@ -945,7 +947,7 @@ plot.networx <- function(x, type = "equal angle", use.edge.length = TRUE,
                          cex = par("cex"), cex.node.label = cex,
                          cex.edge.label = cex, col.node.label = tip.color,
                          col.edge.label = tip.color, font.node.label = font,
-                         font.edge.label = font, ...) {
+                         font.edge.label = font, underscore = FALSE, ...) {
   type <- match.arg(type, c("equal angle", "3D", "2D"))
   if (use.edge.length == FALSE){
     x$edge.length[] <- 1
@@ -962,6 +964,10 @@ plot.networx <- function(x, type = "equal angle", use.edge.length = TRUE,
   }
   if (is.null(node.label)) node.label <- as.character(1:max(x$edge))
   if (show.tip.label) node.label[1:nTips] <- ""
+  if (show.tip.label){
+    if (is.expression(x$tip.label)) underscore <- TRUE
+    if (!underscore) x$tip.label <- gsub("_", " ", x$tip.label)
+  }
 
   lspl <- max(x$splitIndex)
   if (!is.null(split.color)) {
