@@ -1,7 +1,6 @@
 [![R-CMD-check](https://github.com/KlausVigo/phangorn/workflows/R-CMD-check/badge.svg)](https://github.com/KlausVigo/phangorn/actions)
 [![CRAN Status Badge](http://www.r-pkg.org/badges/version/phangorn)](https://cran.r-project.org/package=phangorn)
 [![CRAN Downloads](http://cranlogs.r-pkg.org/badges/phangorn)](https://cran.r-project.org/package=phangorn)
-[![Research software impact](http://depsy.org/api/package/cran/phangorn/badge.svg)](http://depsy.org/package/r/phangorn)
 [![codecov.io](https://codecov.io/github/KlausVigo/phangorn/coverage.svg?branch=master)](https://codecov.io/github/KlausVigo/phangorn?branch=master)
 
 # phangorn <img src='man/figures/logo.png' align="right" width="120" />
