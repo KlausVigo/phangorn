@@ -35,8 +35,7 @@ candidate_tree <- function(x, method=c("unrooted", "ultrametric", "tipdated"),
     enforce_ultrametric <- TRUE
   }
   if(method=="unrooted"){
-    tree <- random.addition(x)
-    tree <- optim.parsimony(tree, x, trace=0)
+    tree <- pratchet(x, maxit=10L, trace=0)
     tree <- multi2di(tree)
     tree <- unroot(tree)
     tree <- acctran(tree, x)
