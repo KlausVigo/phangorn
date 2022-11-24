@@ -89,7 +89,7 @@ Iris Bardel-Kahr</h4>
 Graz<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2022-11-16</h4>
+            <h4 data-toc-skip class="date">2022-11-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/vignettes/AdvancedFeatures.Rmd" class="external-link"><code>vignettes/AdvancedFeatures.Rmd</code></a></small>
       <div class="d-none name"><code>AdvancedFeatures.Rmd</code></div>
@@ -686,10 +686,10 @@ P(\omega|x_h) = \frac{P(X_h|\omega_i)p_i}{P(X_h)} =
 \]</span></p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cdn</span>, <span class="st">"M1a"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="AdvancedFeatures_files/figure-html/plot%20codon-1.png" width="576"></p>
+<p><img src="AdvancedFeatures_files/figure-html/plot_codon-1.png" width="576"></p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cdn</span>, <span class="st">"M2a"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="AdvancedFeatures_files/figure-html/plot%20codon-2.png" width="576"></p>
+<p><img src="AdvancedFeatures_files/figure-html/plot_codon-2.png" width="576"></p>
 <p>A lot if implementations differ in the way the codon frequencies are
 derived. The M0 model can be also estimated using <code>pml</code> and
 <code>optim.pml</code> functions. There are several ways to estimate the
@@ -731,11 +731,11 @@ option to <code>optBf=TRUE</code> in <code>optim.pml</code>.</p>
 </h2>
 <pre><code><span><span class="co">## R version 4.2.2 (2022-10-31)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
-<span><span class="co">## Running under: Ubuntu 20.04.5 LTS</span></span>
+<span><span class="co">## Running under: Ubuntu 22.04.1 LTS</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Matrix products: default</span></span>
-<span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0</span></span>
-<span><span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0</span></span>
+<span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3</span></span>
+<span><span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## locale:</span></span>
 <span><span class="co">##  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       </span></span>
@@ -755,9 +755,9 @@ option to <code>optBf=TRUE</code> in <code>optim.pml</code>.</p>
 <span><span class="co">##  [9] evaluate_0.18     memoise_2.0.1     nlme_3.1-160      lattice_0.20-45  </span></span>
 <span><span class="co">## [13] pkgconfig_2.0.3   rlang_1.0.6       Matrix_1.5-1      fastmatch_1.1-3  </span></span>
 <span><span class="co">## [17] igraph_1.3.5      cli_3.4.1         yaml_2.3.6        parallel_4.2.2   </span></span>
-<span><span class="co">## [21] pkgdown_2.0.6     xfun_0.34         fastmap_1.1.0     stringr_1.4.1    </span></span>
-<span><span class="co">## [25] knitr_1.40        desc_1.4.2        generics_0.1.3    fs_1.5.2         </span></span>
-<span><span class="co">## [29] sass_0.4.2        systemfonts_1.0.4 rprojroot_2.0.3   grid_4.2.2       </span></span>
+<span><span class="co">## [21] pkgdown_2.0.6     xfun_0.35         fastmap_1.1.0     stringr_1.4.1    </span></span>
+<span><span class="co">## [25] knitr_1.41        desc_1.4.2        generics_0.1.3    fs_1.5.2         </span></span>
+<span><span class="co">## [29] sass_0.4.4        systemfonts_1.0.4 rprojroot_2.0.3   grid_4.2.2       </span></span>
 <span><span class="co">## [33] R6_2.5.1          textshaping_0.3.6 rmarkdown_2.18    purrr_0.3.5      </span></span>
 <span><span class="co">## [37] magrittr_2.0.3    codetools_0.2-18  htmltools_0.5.3   quadprog_1.5-8   </span></span>
 <span><span class="co">## [41] ragg_1.2.4        stringi_1.7.8     cachem_1.0.6</span></span></code></pre>
