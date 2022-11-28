@@ -168,7 +168,7 @@ plot.codonTest <- function(x, model = "M1a", col = hcl.colors(3), ...) {
   barplot(dat, col = rev(col[1:l]), space = 0, border = NA,
           legend.text = rownames(dat),
           ylim=c(0, 1.15), args.legend=list(horiz=TRUE, x="top",
-                         box.col = "white"), ...)
+                         box.col = "white", box.lty = 0), ...)
 }
 
 
