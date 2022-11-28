@@ -161,9 +161,14 @@ print.codonTest <- function(x, ...) print(x$summary)
 #' @export
 plot.codonTest <- function(x, model = "M1a", col = hcl.colors(3), ...) {
   dat <- t(x$posterior[[model]])
+  l <- nrow(dat)
   colnames(dat) <- seq_len(ncol(dat))
-  barplot(dat, col = col, space = 0, border = NA,
-          legend.text = prettyNum(x$estimates[[model]]$dnds), ...)
+  rownames(dat) <- prettyNum(x$estimates[[model]]$dnds, digits=3)
+  dat <- dat[l:1, ]
+  barplot(dat, col = rev(col[1:l]), space = 0, border = NA,
+          legend.text = rownames(dat),
+          ylim=c(0, 1.15), args.legend=list(horiz=TRUE, x="top",
+                         box.col = "white"), ...)
 }
 
 
