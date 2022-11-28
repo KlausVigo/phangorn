@@ -86,7 +86,6 @@ Suggests:
     Biostrings,
     knitr,
     magick,
-    prettydoc,
     rgl,
     rmarkdown,
     seqinr,
@@ -102,5 +101,5 @@ biocViews: Software, Technology, QualityControl
 Encoding: UTF-8
 Repository: CRAN
 Roxygen: list(old_usage = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.2
 Language: en-US
