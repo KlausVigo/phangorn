@@ -35,7 +35,7 @@ candidate_tree <- function(x, method=c("unrooted", "ultrametric", "tipdated"),
     enforce_ultrametric <- TRUE
   }
   if(method=="unrooted"){
-    tree <- pratchet(x, maxit=10L, trace=0)
+    tree <- pratchet(x, maxit=10L, trace=0, perturbation = "ratchet")
     tree <- multi2di(tree)
     tree <- unroot(tree)
     tree <- acctran(tree, x)
