@@ -29,7 +29,7 @@ Morphological data will be shown later in the vignette _Phylogenetic trees from 
 
 We start our analysis loading the _phangorn_ package and then reading in an alignment.
 
-```{r load packages}
+```{r load_packages}
 library(ape)
 library(phangorn)
 fdir <- system.file("extdata/trees", package = "phangorn")
@@ -43,7 +43,7 @@ After reading in the nucleotide alignment we can build a first tree with distanc
 The function `dist.ml` from _phangorn_ offers the substitution models "JC69" and "F81" for DNA, and also common substitution models for amino acids (e.g. "WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt", "MtZoa" or "mtREV24").
 
 After constructing a distance matrix, we reconstruct a rooted tree with UPGMA and alternatively an unrooted tree using Neighbor Joining [@Saitou1987; @Studier1988]. More distance methods like `fastme` are available in the _ape_ package.
-```{r distance calculation}
+```{r distance_calculation}
 dm  <- dist.ml(primates)
 treeUPGMA  <- upgma(dm)
 treeNJ  <- NJ(dm)
@@ -105,7 +105,7 @@ After assigning edge weights, we prune away internal edges of length `tol` (defa
 treeRatchet  <- di2multi(treeRatchet)
 ```
 Some trees might have differed only between edges of length 0. 
-```{r unique trees}
+```{r unique_trees}
 if(inherits(treeRatchet, "multiPhylo")){
   treeRatchet <- unique(treeRatchet)
 }
@@ -120,7 +120,7 @@ If `treeRatchet` is a list of trees, i.e. an object of class `multiPhylo`, we ca
 
 While in most cases `pratchet` will be enough to use, `phangorn` exports some function which might be useful.
 `random.addition` computes random addition and can be used to generate starting trees. The function `optim.parsimony` performs tree rearrangements to find trees with a lower parsimony score. The tree rearrangements implemented are nearest-neighbor interchanges (NNI) and subtree pruning and regrafting (SPR). The latter so far only works with the fitch algorithm. 
-```{r random addition}
+```{r random_addition}
 treeRA <- random.addition(primates)
 treeSPR  <- optim.parsimony(treeRA, primates)
 parsimony(c(treeRA, treeSPR), primates)
@@ -149,7 +149,7 @@ It's also possible to only select some common models:
 ```{r, echo=FALSE}
 load("Trees.RData")
 ```
-```{r mt selected, echo=TRUE, eval=TRUE, cache=TRUE}
+```{r mt_selected, echo=TRUE, eval=TRUE, cache=TRUE}
 mt <- modelTest(primates, model=c("JC", "F81", "K80", "HKY", "SYM", "GTR"), 
                 control = pml.control(trace = 0))
 ```
@@ -185,14 +185,25 @@ bs <- bootstrap.pml(fit_mt, bs=100, optNni=TRUE,
     control = pml.control(trace = 0))
 ```
 
-Now we can plot the tree with the bootstrap support values on the edges and compare the standard bootstrap values to the ultrafast bootstrap values.
-```{r plotBS_ultrafast_bs, fig.cap="Unrooted tree (midpoint rooted) with ultrafast and standard bootstrap support values.", echo=TRUE, fig.show="hold", out.width="50%"}
+Now we can plot the tree with the bootstrap support values on the edges and compare the standard bootstrap values to the ultrafast bootstrap values. With the function `plotBS` it is not only possible to plot these two, but also the transfer bootstraps [@Lemoine2018] which are especially useful for large data sets.
+```{r plotBS_ultrafast_bs, fig.cap="Unrooted tree (midpoint rooted) with ultrafast, standard and transfer bootstrap support values.", echo=TRUE, fig.show="hold", out.width="33%"}
 plotBS(midpoint(fit_mt$tree), p = .5, type="p", digits=2, main="Ultrafast bootstrap")
 
 plotBS(midpoint(fit_mt$tree), bs, p = 50, type="p", main="Standard bootstrap")
+
+plotBS(midpoint(fit_mt$tree), bs, p = 50, type="p", digits=0, method = "TBE", main="Transfer bootstrap")
 ```
 
-We can also look at `consensusNet` to identify potential conflict.
+If we want to assign the standard or transfer bootstrap values to the node labels in our tree instead of plotting it (e.g. to export the tree somewhere else), `plotBS` gives that option with `type = "n"`:
+``` {r assign_bs_values, eval=FALSE}
+# assigning standard bootstrap values to our tree; this is the default method
+tree_stdbs <- plotBS(fit_mt$tree, bs, type = "n")
+
+# assigning transfer bootstrap values to our tree
+tree_tfbs <- plotBS(fit_mt$tree, bs, type = "n", method = "TBE")
+```
+
+It is also possible to look at `consensusNet` to identify potential conflict.
 ```{r ConsensusNet, fig.cap="ConsensusNet from the standard bootstrap sample.", echo=TRUE}
 cnet <- consensusNet(bs, p=0.2)
 plot(cnet, show.edge.label=TRUE)
@@ -204,14 +215,21 @@ Several analyses, e.g.`bootstrap` and `modelTest`, can be computationally demand
 
 Now that we have our tree with bootstrap values, we can easily write it to a file in _Newick_-format:
 ``` {r write_tree, eval=FALSE}
-write.tree(fit_mt, "primates.tree")
+# tree with ultrafast bootstrap values
+write.tree(fit_mt$tree, "primates.tree")
+
+# tree with standard bootstrap values
+write.tree(tree_stdbs, "primates.tree")
+
+# tree with transfer bootstrap values
+write.tree(tree_tfbs, "primates.tree")
 ```
 
 ## Molecular dating with a strict clock for ultrametric and tipdated phylogenies
 
 We implemented a strict clock as described in [@Felsenstein2004], p. 266, allowing to infer ultrametric and tip-dated phylogenies. We need a starting tree that fulfills the assumptions, so either the tree has to be ultrametric, or the constraints given by the tip dates.  
 For an ultrametric starting tree we can use an UPGMA or WPGMA tree. 
-```{r strict primates, echo=TRUE, cache=TRUE}
+```{r strict_primates, echo=TRUE, cache=TRUE}
 fit_strict <- pml_bb(primates, model="HKY+G(4)", method="ultrametric",
                      control = pml.control(trace = 0))
 ```
@@ -220,23 +238,23 @@ plot(fit_strict)
 ```
 
 With _phangorn_ we also can estimate tipdated phylogenies. Here we use a H3N2 virus data set from _treetime_ [@treetime] as an example. Additionally to the alignment we also need to read in data containing the dates of the tips. 
-```{r tipdated data}
+```{r tipdated_data}
 fdir <- system.file("extdata/trees", package = "phangorn")
 tmp <- read.csv(file.path(fdir,"H3N2_NA_20.csv"))
 H3N2 <- read.phyDat(file.path(fdir,"H3N2_NA_20.fasta"), format="fasta")
 ```
 We first process the sampling dates and create a named vector. The _lubridate_ package [@lubridate] comes in very handy dates in case one has to recode dates, e.g. days and months.    
-```{r tipdated processing}
+```{r tipdated_processing}
 dates <- setNames(tmp$numdate_given, tmp$name)
 head(dates)
 ```
 Again we use the `pml_bb` function, which optimizes the tree given the constraints of the `tip.dates` vector. 
-```{r tipdated fit}
+```{r tipdated_fit}
 fit_td <- pml_bb(H3N2, model="GTR+G(4)", method="tipdated", tip.dates=dates, 
                rearrangement="NNI", control = pml.control(trace = 0))
 ```
 And at last we plot the tree with a timescale. 
-```{r tipdated plot}
+```{r tipdated_plot}
 tree_td <- fit_td$tree
 root_time <- max(dates) - max(node.depth.edgelength(tree_td))
 plot(tree_td, show.tip.label = FALSE)
