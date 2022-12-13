@@ -1,3 +1,20 @@
+    CHANGES in PHANGORN VERSION 2.11.0
+
+OTHER CHANGES
+
+    o Vignettes have been reorganised, rewritten and improved thanks to Iris.
+
+    o small improvements to plot.codonTest, plot.networx
+
+    o rell bootstrap values are now computed by default in optim.pml / pml_bb
+
+BUG FIXES
+
+    o fixed bug which caused warning on CRAN
+
+    o densiTree does not draw an empty plot any more
+
+
     CHANGES in PHANGORN VERSION 2.10.0
 
 NEW FEATURES
