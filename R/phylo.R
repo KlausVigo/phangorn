@@ -978,6 +978,7 @@ pml.fit4 <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
   }
 #  if (!is.null(ll.0)) siteLik[ind] <- log(exp(siteLik[ind]) + ll.0[ind])
 #  if (wMix > 0) siteLik <- log(exp(siteLik) * (1 - wMix) + llMix)
+  resll <- exp(siteLik)
   if (wMix > 0) siteLik <- log(exp(siteLik) * wMix + llMix)
   loglik <- sum(weight * siteLik)
   if (ASC) {
@@ -987,7 +988,7 @@ pml.fit4 <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
     loglik <- loglik - sum(weight) * log(1 - p0)
   }
   if (!site) return(loglik)
-  return(list(loglik = loglik, siteLik = siteLik)) # , resll=resll
+  return(list(loglik = loglik, siteLik = siteLik, resll=resll))
 }
 
 
@@ -1449,8 +1450,8 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   result
 }
 
-
-optimRooted <- function(tree, data, bf, g, w, eig, ll.0, INV=NULL,
+# removed INV=NULL
+optimRooted <- function(tree, data, bf, g, w, eig, ll.0,
                         control = pml.control(epsilon = 1e-08, maxit = 25,
                                               trace = 0), ...) {
   nTips <- as.integer(length(tree$tip.label))
@@ -2745,6 +2746,7 @@ pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, wMix, llMix,
 opt_nni <- function(tree, data, rooted, iter_max, trace, ll, RELL=NULL, ...){
   swap <- 0
   iter <- 0
+  llstart <- ll
   while (iter < iter_max) {
     if (!rooted) {
       tmp <- pml.nni(tree, data, ll=ll, RELL=RELL, ...)
@@ -2766,8 +2768,8 @@ opt_nni <- function(tree, data, rooted, iter_max, trace, ll, RELL=NULL, ...){
       ll2 <- ll
     }
     swap <- swap + tmp$swap
-    if (trace > 0) cat(" optimize topology: ", ll, "-->", ll2, "\n",
-                       "NNI moves: ", tmp$swap, "\n")
+    if (trace > 1) cat("optimize topology: ", ll, "-->", ll2,
+                       " NNI moves: ", tmp$swap, "\n")
     ll <- ll2
     iter <- iter + 1
     if (tmp$swap == 0) {
@@ -2775,7 +2777,8 @@ opt_nni <- function(tree, data, rooted, iter_max, trace, ll, RELL=NULL, ...){
       iter <- iter_max
     }
   }
-  if (trace > 0) cat("NNI moves: ", swap, "\n")
+  if (trace > 0) cat("optimize topology: ", llstart, "-->", ll2,
+                     " NNI moves: ", swap, "\n")
   res$iter <- iter
   res$swap <- swap
   res$RELL <- RELL
