@@ -89,7 +89,7 @@ Iris Bardel-Kahr</h4>
 Graz<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2022-12-02</h4>
+            <h4 data-toc-skip class="date">2022-12-14</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/vignettes/Trees.Rmd" class="external-link"><code>vignettes/Trees.Rmd</code></a></small>
       <div class="d-none name"><code>Trees.Rmd</code></div>
@@ -275,10 +275,10 @@ works with the fitch algorithm.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">treeRA</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parsimony.html">random.addition</a></span><span class="op">(</span><span class="va">primates</span><span class="op">)</span></span>
 <span><span class="va">treeSPR</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parsimony.html">optim.parsimony</a></span><span class="op">(</span><span class="va">treeRA</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Final p-score 746 after  0 nni operations</span></span></code></pre>
+<pre><code><span><span class="co">## Final p-score 746 after  1 nni operations</span></span></code></pre>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/parsimony.html">parsimony</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">treeRA</span>, <span class="va">treeSPR</span><span class="op">)</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 746 746</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 754 746</span></span></code></pre>
 <div class="section level3">
 <h3 id="branch-and-bound">Branch and bound<a class="anchor" aria-label="anchor" href="#branch-and-bound"></a>
 </h3>
@@ -602,45 +602,45 @@ conducted.</p>
 <code class="sourceCode R"><span><span class="va">fit_mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">mt</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fit_mt</span></span></code></pre></div>
 <pre><code><span><span class="co">## model: HKY+G(4) </span></span>
-<span><span class="co">## loglikelihood: -2611.573 </span></span>
+<span><span class="co">## loglikelihood: -2611.865 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -1230.335 </span></span>
 <span><span class="co">## Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.070573 </span></span>
+<span><span class="co">## Shape parameter: 2.069954 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
 <span><span class="co">##         a       c       g       t</span></span>
-<span><span class="co">## a  0.0000  1.0000 56.5779  1.0000</span></span>
-<span><span class="co">## c  1.0000  0.0000  1.0000 56.5779</span></span>
-<span><span class="co">## g 56.5779  1.0000  0.0000  1.0000</span></span>
-<span><span class="co">## t  1.0000 56.5779  1.0000  0.0000</span></span>
+<span><span class="co">## a  0.0000  1.0000 55.0956  1.0000</span></span>
+<span><span class="co">## c  1.0000  0.0000  1.0000 55.0956</span></span>
+<span><span class="co">## g 55.0956  1.0000  0.0000  1.0000</span></span>
+<span><span class="co">## t  1.0000 55.0956  1.0000  0.0000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##          a          c          g          t </span></span>
-<span><span class="co">## 0.42091620 0.36226367 0.04379954 0.17302059</span></span></code></pre>
+<span><span class="co">## 0.42078652 0.36225874 0.04380663 0.17314810</span></span></code></pre>
 <p>We can also use <code>pml_bb</code> with a defined model to infer a
 phylogenetic tree.</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fitGTR</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">primates</span>, model<span class="op">=</span><span class="st">"GTR+G(4)+I"</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fitGTR</span></span></code></pre></div>
 <pre><code><span><span class="co">## model: GTR+G(4)+I </span></span>
-<span><span class="co">## loglikelihood: -2608.46 </span></span>
+<span><span class="co">## loglikelihood: -2608.462 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -1230.335 </span></span>
-<span><span class="co">## Proportion of invariant sites: 0.005613569 </span></span>
+<span><span class="co">## Proportion of invariant sites: 0.005588429 </span></span>
 <span><span class="co">## Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.935524 </span></span>
+<span><span class="co">## Shape parameter: 2.934534 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
 <span><span class="co">##            a            c            g          t</span></span>
-<span><span class="co">## a  0.0000000  0.706703039 43.182886330  0.4470999</span></span>
-<span><span class="co">## c  0.7067030  0.000000000  0.001648658 17.9992633</span></span>
-<span><span class="co">## g 43.1828863  0.001648658  0.000000000  1.0000000</span></span>
-<span><span class="co">## t  0.4470999 17.999263253  1.000000000  0.0000000</span></span>
+<span><span class="co">## a  0.0000000  0.629469185 38.449901142  0.3861863</span></span>
+<span><span class="co">## c  0.6294692  0.000000000  0.001774866 16.0261752</span></span>
+<span><span class="co">## g 38.4499011  0.001774866  0.000000000  1.0000000</span></span>
+<span><span class="co">## t  0.3861863 16.026175220  1.000000000  0.0000000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##          a          c          g          t </span></span>
-<span><span class="co">## 0.39402986 0.37888562 0.04026189 0.18682263</span></span></code></pre>
+<span><span class="co">## 0.39385566 0.37904499 0.04025173 0.18684762</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="bootstrap-1">Bootstrap<a class="anchor" aria-label="anchor" href="#bootstrap-1"></a>
@@ -797,16 +797,17 @@ tipdated trees we have one additional parameter for the rate.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##  [1] Rcpp_1.0.9        highr_0.9         bslib_0.4.1       compiler_4.2.2   </span></span>
-<span><span class="co">##  [5] jquerylib_0.1.4   tools_4.2.2       digest_0.6.30     jsonlite_1.8.3   </span></span>
-<span><span class="co">##  [9] evaluate_0.18     memoise_2.0.1     nlme_3.1-160      lattice_0.20-45  </span></span>
-<span><span class="co">## [13] pkgconfig_2.0.3   rlang_1.0.6       Matrix_1.5-1      fastmatch_1.1-3  </span></span>
-<span><span class="co">## [17] igraph_1.3.5      cli_3.4.1         yaml_2.3.6        parallel_4.2.2   </span></span>
-<span><span class="co">## [21] pkgdown_2.0.6     xfun_0.35         fastmap_1.1.0     stringr_1.4.1    </span></span>
-<span><span class="co">## [25] desc_1.4.2        generics_0.1.3    fs_1.5.2          sass_0.4.4       </span></span>
-<span><span class="co">## [29] systemfonts_1.0.4 rprojroot_2.0.3   grid_4.2.2        R6_2.5.1         </span></span>
-<span><span class="co">## [33] textshaping_0.3.6 rmarkdown_2.18    purrr_0.3.5       magrittr_2.0.3   </span></span>
-<span><span class="co">## [37] codetools_0.2-18  htmltools_0.5.3   quadprog_1.5-8    ragg_1.2.4       </span></span>
-<span><span class="co">## [41] stringi_1.7.8     cachem_1.0.6</span></span></code></pre>
+<span><span class="co">##  [5] jquerylib_0.1.4   tools_4.2.2       digest_0.6.31     jsonlite_1.8.4   </span></span>
+<span><span class="co">##  [9] evaluate_0.18     memoise_2.0.1     lifecycle_1.0.3   nlme_3.1-160     </span></span>
+<span><span class="co">## [13] lattice_0.20-45   pkgconfig_2.0.3   rlang_1.0.6       Matrix_1.5-1     </span></span>
+<span><span class="co">## [17] fastmatch_1.1-3   igraph_1.3.5      cli_3.4.1         yaml_2.3.6       </span></span>
+<span><span class="co">## [21] parallel_4.2.2    pkgdown_2.0.6     xfun_0.35         fastmap_1.1.0    </span></span>
+<span><span class="co">## [25] stringr_1.5.0     desc_1.4.2        generics_0.1.3    fs_1.5.2         </span></span>
+<span><span class="co">## [29] vctrs_0.5.1       sass_0.4.4        systemfonts_1.0.4 rprojroot_2.0.3  </span></span>
+<span><span class="co">## [33] grid_4.2.2        glue_1.6.2        R6_2.5.1          textshaping_0.3.6</span></span>
+<span><span class="co">## [37] rmarkdown_2.18    purrr_0.3.5       magrittr_2.0.3    codetools_0.2-18 </span></span>
+<span><span class="co">## [41] htmltools_0.5.4   quadprog_1.5-8    ragg_1.2.4        stringi_1.7.8    </span></span>
+<span><span class="co">## [45] cachem_1.0.6</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
