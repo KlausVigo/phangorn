@@ -2442,7 +2442,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       perturbation <- FALSE
       rounds <- 1
     }
-    if ( (abs((ll1 - ll) / ll)  < control$eps) || rounds > control$maxit)
+    if ( perturbation==FALSE && ((abs((ll1 - ll) / ll)  < control$eps) || rounds > control$maxit))
       opti <- FALSE
     rounds <- rounds + 1
     ll1 <- ll
