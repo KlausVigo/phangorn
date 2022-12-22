@@ -227,7 +227,7 @@ write.tree(tree_tfbs, "primates.tree")
 
 ## Molecular dating with a strict clock for ultrametric and tipdated phylogenies
 
-We implemented a strict clock as described in [@Felsenstein2004], p. 266, allowing to infer ultrametric and tip-dated phylogenies. We need a starting tree that fulfills the assumptions, so either the tree has to be ultrametric, or the constraints given by the tip dates.  
+When we assume a "molecular clock" phylogenies can be used to infer divergence times [@Zuckerkandl1965]. We implemented a strict clock as described in [@Felsenstein2004], p. 266, allowing to infer ultrametric and tip-dated phylogenies. We need a starting tree that fulfills the assumptions, so either the tree has to be ultrametric, or the constraints given by the tip dates.  
 For an ultrametric starting tree we can use an UPGMA or WPGMA tree. 
 ```{r strict_primates, echo=TRUE, cache=TRUE}
 fit_strict <- pml_bb(primates, model="HKY+G(4)", method="ultrametric",
