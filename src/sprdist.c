@@ -14,11 +14,13 @@
 #include <Rinternals.h>
 #include <stdint.h>     /* standard integer types (int32_t typedef etc.) [C99]*/
 
+/*
+// changed after email from Prof. Ripley: CRAN packages failing in C23 mode
+#define true  1U //!< Boolean TRUE
+#define false 0U //!< Boolean FALSE
+*/
 
-#define true  1U /*!< Boolean TRUE  */
-#define false 0U /*!< Boolean FALSE */
-
-typedef unsigned char bool;
+typedef unsigned char boolean;
 typedef struct splitset_struct* splitset;
 typedef struct hungarian_struct* hungarian;
 typedef struct bipartition_struct* bipartition;
@@ -31,7 +33,7 @@ struct splitset_struct
   bipartition *g_split, *s_split, *agree, *disagree;
   bipartition prune;
   hungarian h; /* hungarian method for solving the assignment between edges */
-  bool match;  /*! \brief do we want to calculate the minimum cost assignment */
+  boolean match;  /*! \brief do we want to calculate the minimum cost assignment */
 };
 
 struct hungarian_struct
@@ -81,7 +83,7 @@ void split_remove_small_disagreement (splitset split);
 void split_minimize_subtrees (splitset split);
 void split_remove_redundant_bit (splitset split, int id);
 void split_replace_bit (splitset split, int to, int from);
-void split_new_size (splitset split, int size, bool update_bipartitions);
+void split_new_size (splitset split, int size, boolean update_bipartitions);
 void split_swap_position (bipartition *b, int i1, int i2);
 
 /* BELOW: Hungarian method for bipartite matching (assignment) */
@@ -106,22 +108,22 @@ void bipartition_set_lowlevel (bipartition bip, int i, int j);
 void bipartition_unset (bipartition bip, int position);
 void bipartition_unset_lowlevel (bipartition bip, int i, int j);
 void bipartition_copy (bipartition to, const bipartition from);
-void bipartition_OR (bipartition result, const bipartition b1, const bipartition b2, bool update_count);
-void bipartition_AND (bipartition result, const bipartition b1, const bipartition b2, bool update_count);
-void bipartition_ANDNOT (bipartition result, const bipartition b1, const bipartition b2, bool update_count);
-void bipartition_XOR (bipartition result, const bipartition b1, const bipartition b2, bool update_count);
-void bipartition_XORNOT (bipartition result, const bipartition b1, const bipartition b2, bool update_count);
+void bipartition_OR (bipartition result, const bipartition b1, const bipartition b2, boolean update_count);
+void bipartition_AND (bipartition result, const bipartition b1, const bipartition b2, boolean update_count);
+void bipartition_ANDNOT (bipartition result, const bipartition b1, const bipartition b2, boolean update_count);
+void bipartition_XOR (bipartition result, const bipartition b1, const bipartition b2, boolean update_count);
+void bipartition_XORNOT (bipartition result, const bipartition b1, const bipartition b2, boolean update_count);
 void bipartition_NOT (bipartition result, const bipartition bip);
 void bipartition_count_n_ones (const bipartition bip);
 void bipartition_to_int_vector (const bipartition b, int *id, int vecsize);
-bool bipartition_is_equal (const bipartition b1, const bipartition b2);
-bool bipartition_is_equal_bothsides (const bipartition b1, const bipartition b2);
-bool bipartition_is_larger (const bipartition b1, const bipartition b2);
+boolean bipartition_is_equal (const bipartition b1, const bipartition b2);
+boolean bipartition_is_equal_bothsides (const bipartition b1, const bipartition b2);
+boolean bipartition_is_larger (const bipartition b1, const bipartition b2);
 void bipartition_flip_to_smaller_set (bipartition bip);
-bool bipartition_is_bit_set (const bipartition bip, int position);
-bool bipartition_contains_bits (const bipartition b1, const bipartition b2);
+boolean bipartition_is_bit_set (const bipartition bip, int position);
+boolean bipartition_contains_bits (const bipartition b1, const bipartition b2);
 // void bipartition_print_to_stdout (const bipartition b1);
-void bipartition_replace_bit_in_vector (bipartition *bvec, int n_b, int to, int from, bool reduce);
+void bipartition_replace_bit_in_vector (bipartition *bvec, int n_b, int to, int from, boolean reduce);
 void bipartition_resize_vector (bipartition *bvec, int n_b);
 
 /*! \brief Main SPR calculation function, to be used within R */
@@ -165,7 +167,7 @@ new_splitset (int nleaves, int nsplits)
   split->n_g = split->n_s = split->size = nsplits;
   split->n_agree = split->n_disagree = 0;
   split->prune = NULL;
-  split->match = true; /* do we want to calculate the assignment matching cost (using hungarian() )? */
+  split->match = 1U; /* do we want to calculate the assignment matching cost (using hungarian() )? */
   split->spr = split->spr_extra = split->rf = split->hdist = 0;
 
   split->g_split = (bipartition*) malloc (split->size * sizeof (bipartition));
@@ -333,7 +335,7 @@ split_compress_agreement (splitset split)
   for (i = 0; i < split->n_agree; i++) if (split->agree[i]->n_ones == 2) { /* cherry in common, can be represented by just one leaf */
     bipartition_to_int_vector (split->agree[i], pair, 2);
     split_remove_redundant_bit (split, pair[1]);
-    split_new_size (split,split->agree[0]->n->bits - 1, false); /* false = do not recalculate every bipartition's last elem */
+    split_new_size (split,split->agree[0]->n->bits - 1, 0U); /* false = do not recalculate every bipartition's last elem */
     bipartition_resize_vector (split->agree, split->n_agree);
     for (j = 0; j < split->n_agree; j++) { /* minimize subtree size and remove single leaves */
       bipartition_flip_to_smaller_set (split->agree[j]); /* agree only */
@@ -351,7 +353,7 @@ split_create_disagreement_list (splitset split)
   int g, s;
 
   for (g = 0; g < split->n_g; g++) for (s = 0; s < split->n_s; s++) {
-    bipartition_XOR (split->disagree[g * split->n_s + s], split->g_split[g], split->s_split[s], true); /* true means to calculate n_ones */
+    bipartition_XOR (split->disagree[g * split->n_s + s], split->g_split[g], split->s_split[s], 1U); /* true means to calculate n_ones */
     bipartition_flip_to_smaller_set (split->disagree[g * split->n_s + s]);
   }
   split->n_disagree = split->n_g * split->n_s;
@@ -374,11 +376,11 @@ split_disagreement_assign_match (splitset split)
   /* if we do the matching below it becomes much faster, but we may miss the best prune subtrees in a few cases (do not compromise the algo) */
   split->n_disagree = 0;
   for (g = 0; g < max_n; g++) if ((g < split->n_g) && ( split->h->col_mate[g] < split->n_s)) { /* some matchings might be to dummy edges */
-    bipartition_XOR (split->disagree[split->n_disagree], split->g_split[g], split->s_split[split->h->col_mate[g]], true); /* true means to calculate n_ones */
+    bipartition_XOR (split->disagree[split->n_disagree], split->g_split[g], split->s_split[split->h->col_mate[g]], 1U); /* true means to calculate n_ones */
     bipartition_flip_to_smaller_set (split->disagree[split->n_disagree++]);
     // sum += split->disagree[split->n_disagree-1]->n_ones;
   }
-  if (split->match) { split->hdist = split->h->final_cost+split->h->initial_cost; split->match = false; }
+  if (split->match) { split->hdist = split->h->final_cost+split->h->initial_cost; split->match = 0U; }
 }
 
 void
@@ -394,7 +396,7 @@ split_find_small_disagreement (splitset split)
   for (d = 0; d < split->n_disagree; d++) for (a = 0; a < split->n_agree; a++) {
     if ((split->disagree[d]->n_ones == split->agree[a]->n_ones) ||
         (split->disagree[d]->n_ones == (split->agree[a]->n->bits - split->agree[a]->n_ones))) {
-      bipartition_XOR (dis, split->disagree[d], split->agree[a], true);
+      bipartition_XOR (dis, split->disagree[d], split->agree[a], 1U);
       if      (!dis->n_ones)               { bipartition_copy (split->prune, split->disagree[d]); d = split->n_disagree; a = split->n_agree; }
       else if (dis->n_ones == dis->n->bits) { bipartition_NOT (split->prune, split->disagree[d]); d = split->n_disagree; a = split->n_agree; }
     }
@@ -425,7 +427,7 @@ split_remove_small_disagreement (splitset split)
     }
   }
 
-  split_new_size (split,size - split->prune->n_ones, true);
+  split_new_size (split,size - split->prune->n_ones, 1U);
   if (index) free (index);
 }
 
@@ -460,13 +462,13 @@ split_replace_bit (splitset split, int to, int from)
 {
   if (from <= to) return;
   /*not needed for disagree[] */
-  bipartition_replace_bit_in_vector (split->agree,   split->n_agree, to, from, true);
-  bipartition_replace_bit_in_vector (split->g_split, split->n_g,     to, from, true);
-  bipartition_replace_bit_in_vector (split->s_split, split->n_s,     to, from, true);
+  bipartition_replace_bit_in_vector (split->agree,   split->n_agree, to, from, 1U);
+  bipartition_replace_bit_in_vector (split->g_split, split->n_g,     to, from, 1U);
+  bipartition_replace_bit_in_vector (split->s_split, split->n_s,     to, from, 1U);
 }
 
 void
-split_new_size (splitset split, int size, bool update_bipartitions)
+split_new_size (splitset split, int size, boolean update_bipartitions)
 {
   bipsize_resize (split->g_split[0]->n, size);
   bipsize_resize (split->s_split[0]->n, size);
@@ -847,7 +849,7 @@ bipartition_copy (bipartition to, const bipartition from)
 }
 
 void
-bipartition_OR (bipartition result, const bipartition b1, const bipartition b2, bool update_count)
+bipartition_OR (bipartition result, const bipartition b1, const bipartition b2, boolean update_count)
 {
   int i;
   for (i=0; i < result->n->ints; i++) result->bs[i] = b1->bs[i] | b2->bs[i];
@@ -857,7 +859,7 @@ bipartition_OR (bipartition result, const bipartition b1, const bipartition b2, 
 }
 
 void
-bipartition_AND (bipartition result, const bipartition b1, const bipartition b2, bool update_count)
+bipartition_AND (bipartition result, const bipartition b1, const bipartition b2, boolean update_count)
 {
   int i;
   for (i=0; i < result->n->ints; i++) result->bs[i] = b1->bs[i] & b2->bs[i];
@@ -867,7 +869,7 @@ bipartition_AND (bipartition result, const bipartition b1, const bipartition b2,
 }
 
 void
-bipartition_ANDNOT (bipartition result, const bipartition b1, const bipartition b2, bool update_count)
+bipartition_ANDNOT (bipartition result, const bipartition b1, const bipartition b2, boolean update_count)
 {
   int i;
   for (i=0; i < result->n->ints; i++) result->bs[i] = b1->bs[i] & (~b2->bs[i]);
@@ -877,7 +879,7 @@ bipartition_ANDNOT (bipartition result, const bipartition b1, const bipartition 
 }
 
 void
-bipartition_XOR (bipartition result, const bipartition b1, const bipartition b2, bool update_count)
+bipartition_XOR (bipartition result, const bipartition b1, const bipartition b2, boolean update_count)
 {
   int i;
   for (i=0; i < result->n->ints; i++) result->bs[i] = b1->bs[i] ^ b2->bs[i];
@@ -887,7 +889,7 @@ bipartition_XOR (bipartition result, const bipartition b1, const bipartition b2,
 }
 
 void
-bipartition_XORNOT (bipartition result, const bipartition b1, const bipartition b2, bool update_count)
+bipartition_XORNOT (bipartition result, const bipartition b1, const bipartition b2, boolean update_count)
 { /* equivalent to XOR followed by NOT */
   int i;
   for (i=0; i < result->n->ints; i++) result->bs[i] = b1->bs[i] ^ (~b2->bs[i]);
@@ -919,44 +921,44 @@ bipartition_count_n_ones (const bipartition bip)
   for (i=0; i < bip->n->ints; i++) for (j = bip->bs[i]; j; bip->n_ones++) j &= j - 1ULL;
 }
 
-bool
+boolean
 bipartition_is_equal (const bipartition b1, const bipartition b2)
 {
   int i;
-  if (b1->n_ones  != b2->n_ones)  return false;
-  if (b1->n->ints != b2->n->ints) return false;
-  for (i=0; i < b1->n->ints - 1; i++) if (b1->bs[i] != b2->bs[i]) return false;
+  if (b1->n_ones  != b2->n_ones)  return 0U;
+  if (b1->n->ints != b2->n->ints) return 0U;
+  for (i=0; i < b1->n->ints - 1; i++) if (b1->bs[i] != b2->bs[i]) return 0U;
   b1->bs[i] &= b1->n->mask; b2->bs[i] &= b2->n->mask; /* apply mask before comparing last elems */
-  if (b1->bs[i] != b2->bs[i]) return false;
-  return true;
+  if (b1->bs[i] != b2->bs[i]) return 0U;
+  return 1U;
 }
 
-bool
+boolean
 bipartition_is_equal_bothsides (const bipartition b1, const bipartition b2)
 {
   int i;
-  bool equal = true;
-  for (i=0; (i < b1->n->ints - 1) && (equal); i++) if (b1->bs[i] != b2->bs[i]) equal = false;
-  if ((equal) && ((b1->bs[i] & b1->n->mask) != (b2->bs[i] & b2->n->mask))) equal = false;
-  if (equal) return true; /* the biparitions are already the same, without flipping the bits */
+  boolean equal = 1U;
+  for (i=0; (i < b1->n->ints - 1) && (equal); i++) if (b1->bs[i] != b2->bs[i]) equal = 0U;
+  if ((equal) && ((b1->bs[i] & b1->n->mask) != (b2->bs[i] & b2->n->mask))) equal = 0U;
+  if (equal) return 1U; /* the biparitions are already the same, without flipping the bits */
   /* now we compare one bipartition with the complement of the other */
-  for (i=0; (i < b1->n->ints - 1); i++) if (b1->bs[i] != ~b2->bs[i]) return false;
-  if ((b1->bs[i] & b1->n->mask) != ((~b2->bs[i]) & b2->n->mask)) return false;
-  return true; /* they are the exact complement of one another */
+  for (i=0; (i < b1->n->ints - 1); i++) if (b1->bs[i] != ~b2->bs[i]) return 0U;
+  if ((b1->bs[i] & b1->n->mask) != ((~b2->bs[i]) & b2->n->mask)) return 0U;
+  return 1U; /* they are the exact complement of one another */
 }
 
-bool
+boolean
 bipartition_is_larger (const bipartition b1, const bipartition b2)
 {
   int i;
-  if (b1->n_ones > b2->n_ones) return true;
-  if (b1->n_ones < b2->n_ones) return false;
+  if (b1->n_ones > b2->n_ones) return 1U;
+  if (b1->n_ones < b2->n_ones) return 0U;
 
   for (i = b1->n->ints - 1; (i >= 0) && (b1->bs[i] == b2->bs[i]); i--); /* find position of distinct bipartition elem*/
 
-  if (i < 0) return false; /* identical bipartitions */
-  if (b1->bs[i] > b2->bs[i]) return true;
-  else return false;
+  if (i < 0) return 0U; /* identical bipartitions */
+  if (b1->bs[i] > b2->bs[i]) return 1U;
+  else return 0U;
 }
 
 void
@@ -975,20 +977,20 @@ bipartition_flip_to_smaller_set (bipartition bip)
   return;
 }
 
-bool
+boolean
 bipartition_is_bit_set (const bipartition bip, int position)
 {
-  if (bip->bs[(int)(position/BitStringSize)] & (1ULL << (int)(position%BitStringSize))) return true;
-  return false;
+  if (bip->bs[(int)(position/BitStringSize)] & (1ULL << (int)(position%BitStringSize))) return 1U;
+  return 0U;
 }
 
-bool
+boolean
 bipartition_contains_bits (const bipartition b1, const bipartition b2)
 { /* generalization of bipartition_is_bit_set(); b1 contains or not b2 */
   int i;
-  if (b1->n_ones < b2->n_ones) return false;
-  for (i=0; i < b1->n->ints; i++) if ((b2->bs[i]) && (b2->bs[i] != (b1->bs[i] & b2->bs[i]))) return false;
-  return true;
+  if (b1->n_ones < b2->n_ones) return 0U;
+  for (i=0; i < b1->n->ints; i++) if ((b2->bs[i]) && (b2->bs[i] != (b1->bs[i] & b2->bs[i]))) return 0U;
+  return 1U;
 }
 
 void
@@ -1013,7 +1015,7 @@ bipartition_print_to_stdout (const bipartition b1)
 */
 
 void
-bipartition_replace_bit_in_vector (bipartition *bvec, int n_b, int to, int from, bool reduce)
+bipartition_replace_bit_in_vector (bipartition *bvec, int n_b, int to, int from, boolean reduce)
 { /* copy info from position "from" to position "to" */
   int k, j = from%BitStringSize, i = from/BitStringSize, j2 = to%BitStringSize, i2 = to/BitStringSize;
 
