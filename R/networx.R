@@ -1044,7 +1044,7 @@ plotRGL <- function(coords, net, show.tip.label = TRUE, show.edge.label = FALSE,
   open3d <- rgl::open3d
   segments3d  <- rgl::segments3d
   spheres3d <- rgl::spheres3d
-  rgl.texts <- rgl::rgl.texts
+  texts3d <- rgl::texts3d
 
   edge <- net$edge
 
@@ -1067,10 +1067,10 @@ plotRGL <- function(coords, net, show.tip.label = TRUE, show.edge.label = FALSE,
   }
   if (show.tip.label) {
     if (is.null(net$translate))
-      rgl.texts(x[1:nTips] + 2.05 * radius, y[1:nTips], z[1:nTips],
+      texts3d(x[1:nTips] + 2.05 * radius, y[1:nTips], z[1:nTips],
                 net$tip.label, color = tip.color, cex = cex, font = font)
     else
-      rgl.texts(x[net$translate$node] + 2.05 * radius, y[net$translate$node],
+      texts3d(x[net$translate$node] + 2.05 * radius, y[net$translate$node],
         z[net$translate$node], net$tip.label, color = tip.color, cex = cex,
         font = font)
   }
@@ -1078,11 +1078,11 @@ plotRGL <- function(coords, net, show.tip.label = TRUE, show.edge.label = FALSE,
     ec <- edgeLabels(x, y, z, edge)
     if (is.null(edge.label)) edge.label <- net$splitIndex
     # else edge.label = net$splitIndex
-    rgl.texts(ec[, 1], ec[, 2], ec[, 3], edge.label, color = col.edge.label,
+    texts3d(ec[, 1], ec[, 2], ec[, 3], edge.label, color = col.edge.label,
       cex = cex.edge.label, font = font.edge.label)
   }
   if (show.node.label) {
-    rgl.texts(x, y, z, node.label, color = col.node.label, cex = cex.node.label,
+    texts3d(x, y, z, node.label, color = col.node.label, cex = cex.node.label,
       font = font.node.label)
   }
 }
