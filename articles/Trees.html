@@ -89,7 +89,7 @@ Iris Bardel-Kahr</h4>
 Graz<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2022-12-28</h4>
+            <h4 data-toc-skip class="date">2023-01-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/vignettes/Trees.Rmd" class="external-link"><code>vignettes/Trees.Rmd</code></a></small>
       <div class="d-none name"><code>Trees.Rmd</code></div>
@@ -275,10 +275,10 @@ works with the fitch algorithm.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">treeRA</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parsimony.html">random.addition</a></span><span class="op">(</span><span class="va">primates</span><span class="op">)</span></span>
 <span><span class="va">treeSPR</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parsimony.html">optim.parsimony</a></span><span class="op">(</span><span class="va">treeRA</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Final p-score 750 after  0 nni operations</span></span></code></pre>
+<pre><code><span><span class="co">## Final p-score 746 after  1 nni operations</span></span></code></pre>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/parsimony.html">parsimony</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">treeRA</span>, <span class="va">treeSPR</span><span class="op">)</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 750 750</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 754 746</span></span></code></pre>
 <div class="section level3">
 <h3 id="branch-and-bound">Branch and bound<a class="anchor" aria-label="anchor" href="#branch-and-bound"></a>
 </h3>
@@ -453,12 +453,12 @@ table:</p>
 <tr class="odd">
 <td align="left">HKY</td>
 <td align="right">29</td>
-<td align="right">-2625.04</td>
+<td align="right">-2625.03</td>
 <td align="right">5308.07</td>
 <td align="right">0.00</td>
 <td align="right">5316.68</td>
 <td align="right">0.00</td>
-<td align="right">5408.03</td>
+<td align="right">5408.02</td>
 </tr>
 <tr class="even">
 <td align="left">HKY+I</td>
@@ -476,7 +476,7 @@ table:</p>
 <td align="right">-2612.64</td>
 <td align="right">5285.28</td>
 <td align="right">0.18</td>
-<td align="right">5294.54</td>
+<td align="right">5294.53</td>
 <td align="right">0.45</td>
 <td align="right">5388.68</td>
 </tr>
@@ -536,9 +536,9 @@ table:</p>
 <td align="right">-2618.61</td>
 <td align="right">5303.22</td>
 <td align="right">0.00</td>
-<td align="right">5314.55</td>
+<td align="right">5314.56</td>
 <td align="right">0.00</td>
-<td align="right">5416.96</td>
+<td align="right">5416.97</td>
 </tr>
 <tr class="even">
 <td align="left">GTR+I</td>
@@ -553,7 +553,7 @@ table:</p>
 <tr class="odd">
 <td align="left">GTR+G(4)</td>
 <td align="right">34</td>
-<td align="right">-2607.67</td>
+<td align="right">-2607.66</td>
 <td align="right">5283.33</td>
 <td align="right">0.47</td>
 <td align="right">5295.41</td>
@@ -606,41 +606,41 @@ conducted.</p>
 <span><span class="co">## unconstrained loglikelihood: -1230.335 </span></span>
 <span><span class="co">## Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.070752 </span></span>
+<span><span class="co">## Shape parameter: 2.07082 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
-<span><span class="co">##          a        c        g        t</span></span>
-<span><span class="co">## a  0.00000  1.00000 56.56538  1.00000</span></span>
-<span><span class="co">## c  1.00000  0.00000  1.00000 56.56538</span></span>
-<span><span class="co">## g 56.56538  1.00000  0.00000  1.00000</span></span>
-<span><span class="co">## t  1.00000 56.56538  1.00000  0.00000</span></span>
+<span><span class="co">##         a       c       g       t</span></span>
+<span><span class="co">## a  0.0000  1.0000 56.5603  1.0000</span></span>
+<span><span class="co">## c  1.0000  0.0000  1.0000 56.5603</span></span>
+<span><span class="co">## g 56.5603  1.0000  0.0000  1.0000</span></span>
+<span><span class="co">## t  1.0000 56.5603  1.0000  0.0000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
-<span><span class="co">##          a          c          g          t </span></span>
-<span><span class="co">## 0.42089112 0.36228072 0.04379704 0.17303112</span></span></code></pre>
+<span><span class="co">##         a         c         g         t </span></span>
+<span><span class="co">## 0.4208767 0.3622643 0.0437961 0.1730629</span></span></code></pre>
 <p>We can also use <code>pml_bb</code> with a defined model to infer a
 phylogenetic tree.</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fitGTR</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">primates</span>, model<span class="op">=</span><span class="st">"GTR+G(4)+I"</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fitGTR</span></span></code></pre></div>
 <pre><code><span><span class="co">## model: GTR+G(4)+I </span></span>
-<span><span class="co">## loglikelihood: -2608.461 </span></span>
+<span><span class="co">## loglikelihood: -2608.463 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -1230.335 </span></span>
-<span><span class="co">## Proportion of invariant sites: 0.00562401 </span></span>
+<span><span class="co">## Proportion of invariant sites: 0.005613986 </span></span>
 <span><span class="co">## Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.934202 </span></span>
+<span><span class="co">## Shape parameter: 2.935952 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
 <span><span class="co">##            a            c            g          t</span></span>
-<span><span class="co">## a  0.0000000  0.706942525 43.169690019  0.4465485</span></span>
-<span><span class="co">## c  0.7069425  0.000000000  0.002136952 18.0021325</span></span>
-<span><span class="co">## g 43.1696900  0.002136952  0.000000000  1.0000000</span></span>
-<span><span class="co">## t  0.4465485 18.002132453  1.000000000  0.0000000</span></span>
+<span><span class="co">## a  0.0000000  0.709146763 43.328628331  0.4485234</span></span>
+<span><span class="co">## c  0.7091468  0.000000000  0.003491871 18.0537396</span></span>
+<span><span class="co">## g 43.3286283  0.003491871  0.000000000  1.0000000</span></span>
+<span><span class="co">## t  0.4485234 18.053739616  1.000000000  0.0000000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##          a          c          g          t </span></span>
-<span><span class="co">## 0.39399396 0.37888704 0.04027467 0.18684434</span></span></code></pre>
+<span><span class="co">## 0.39387648 0.37904502 0.04024802 0.18683047</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="bootstrap-1">Bootstrap<a class="anchor" aria-label="anchor" href="#bootstrap-1"></a>
