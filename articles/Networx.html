@@ -85,7 +85,7 @@
                         <h4 data-toc-skip class="author">Klaus
 Schliep</h4>
             
-            <h4 data-toc-skip class="date">January 09, 2023</h4>
+            <h4 data-toc-skip class="date">January 13, 2023</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/vignettes/Networx.Rmd" class="external-link"><code>vignettes/Networx.Rmd</code></a></small>
       <div class="d-none name"><code>Networx.Rmd</code></div>
@@ -96,9 +96,9 @@ Schliep</h4>
 <p>This tutorial gives a basic introduction for constructing
 phylogenetic networks and adding parameters to trees or networx objects
 using <a href="https://cran.r-project.org/package=phangorn" class="external-link">phangorn</a>
-<span class="citation">(Schliep 2011)</span> in R. Splits graphs or
-phylogenetic networks are a useful way to display conflicting data or to
-summarize different trees. Here, we present two popular networks,
+<span class="citation">(K. P. Schliep 2011)</span> in R. Splits graphs
+or phylogenetic networks are a useful way to display conflicting data or
+to summarize different trees. Here, we present two popular networks,
 consensus networks <span class="citation">(Holland et al. 2004)</span>
 and Neighbor-Net <span class="citation">(Bryant and Moulton
 2004)</span>.<br>
@@ -174,11 +174,10 @@ Least-Squares (nnls).</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nnet</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Networx_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
 <p>The advantage of Neighbor-Net is that it returns a circular split
-system which can be always displayed in a planar (2D) graph. The plots
-displayed in <code>phangorn</code> may (however) not be planar, but
-re-plotting can give you a planar graph. This unwanted behavior will be
-improved in future version. The rendering of the <code>networx</code> is
-done using the the fantastic igraph package <span class="citation">(Csardi and Nepusz 2006)</span>.</p>
+system which can be always displayed in a planar (2D) graph. The
+rendering of the <code>networx</code> is done using the the fantastic
+igraph package <span class="citation">(Csardi and Nepusz
+2006)</span>.</p>
 </div>
 <div class="section level2">
 <h2 id="adding-support-values">Adding support values<a class="anchor" aria-label="anchor" href="#adding-support-values"></a>
@@ -226,8 +225,8 @@ objects<a class="anchor" aria-label="anchor" href="#import-and-export-networks-a
 <p>The functions <code>read.nexus.networx</code> and
 <code>write.nexus.networx</code> can read and write nexus files for or
 from SplitsTree <span class="citation">(Huson and Bryant 2006)</span>.
-Check-out the new vignette IntertwiningTreesAndNetworks for additional
-functions, examples, and advanced applications.</p>
+Check-out the new vignette IntertwiningTreesAndNetworks <span class="citation">(K. Schliep et al. 2017)</span> for additional
+functions, examples, and advanced application.</p>
 </div>
 </div>
 <div class="section level2">
@@ -260,14 +259,14 @@ functions, examples, and advanced applications.</p>
 <span><span class="co">##  [5] jquerylib_0.1.4   tools_4.2.2       digest_0.6.31     jsonlite_1.8.4   </span></span>
 <span><span class="co">##  [9] evaluate_0.19     memoise_2.0.1     lifecycle_1.0.3   nlme_3.1-160     </span></span>
 <span><span class="co">## [13] lattice_0.20-45   pkgconfig_2.0.3   rlang_1.0.6       Matrix_1.5-1     </span></span>
-<span><span class="co">## [17] fastmatch_1.1-3   igraph_1.3.5      cli_3.5.0         yaml_2.3.6       </span></span>
+<span><span class="co">## [17] fastmatch_1.1-3   igraph_1.3.5      cli_3.6.0         yaml_2.3.6       </span></span>
 <span><span class="co">## [21] parallel_4.2.2    pkgdown_2.0.7     xfun_0.36         fastmap_1.1.0    </span></span>
 <span><span class="co">## [25] stringr_1.5.0     knitr_1.41        desc_1.4.2        generics_0.1.3   </span></span>
 <span><span class="co">## [29] fs_1.5.2          vctrs_0.5.1       sass_0.4.4        systemfonts_1.0.4</span></span>
 <span><span class="co">## [33] rprojroot_2.0.3   grid_4.2.2        glue_1.6.2        R6_2.5.1         </span></span>
-<span><span class="co">## [37] textshaping_0.3.6 rmarkdown_2.19    purrr_1.0.0       magrittr_2.0.3   </span></span>
+<span><span class="co">## [37] textshaping_0.3.6 rmarkdown_2.19    purrr_1.0.1       magrittr_2.0.3   </span></span>
 <span><span class="co">## [41] codetools_0.2-18  htmltools_0.5.4   quadprog_1.5-8    ragg_1.2.4       </span></span>
-<span><span class="co">## [45] stringi_1.7.8     cachem_1.0.6</span></span></code></pre>
+<span><span class="co">## [45] stringi_1.7.12    cachem_1.0.6</span></span></code></pre>
 </div>
 <div class="section level2 unnumbered">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -298,6 +297,12 @@ Evolution</em> 23 (2): 254–67.
 <div id="ref-Schliep2011" class="csl-entry">
 Schliep, Klaus Peter. 2011. <span>“Phangorn: Phylogenetic Analysis in
 <span>R</span>.”</span> <em>Bioinformatics</em> 27 (4): 592–93. <a href="https://doi.org/10.1093/bioinformatics/btq706" class="external-link">https://doi.org/10.1093/bioinformatics/btq706</a>.
+</div>
+<div id="ref-Schliep2017" class="csl-entry">
+Schliep, Klaus, Alastair J. Potts, David A. Morrison, and Guido W.
+Grimm. 2017. <span>“Intertwining Phylogenetic Trees and
+Networks.”</span> <em>Methods in Ecology and Evolution</em> 8 (10):
+1212–20.
 </div>
 </div>
 </div>
