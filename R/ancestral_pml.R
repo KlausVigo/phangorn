@@ -322,10 +322,9 @@ plotAnc <- function(tree, data, i = 1, site.pattern = TRUE, col = NULL,
     warning("Length of color vector differs from number of levels!")
   }
   BOTHlabels(
-    pie = y, XX = XX, YY = YY, adj = c(0.5, 0.5),
-    frame = "rect", pch = NULL, sel = seq_along(XX), thermo = NULL,
-    piecol = col, col = "black", bg = "lightblue", horiz = FALSE,
-    width = NULL, height = NULL, cex = cex.pie
+    pie = y, XX = XX, YY = YY, adj = c(0.5, 0.5), frame = "rect", pch = NULL,
+    sel = seq_along(XX), thermo = NULL, piecol = col, col = "black",
+    bg = "lightblue", horiz = FALSE, width = NULL, height = NULL, cex = cex.pie
   )
   if (!is.null(pos)) legend(pos, legend=levels, text.col = col)
 }
