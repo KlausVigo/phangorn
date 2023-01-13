@@ -62,8 +62,7 @@ par("mar" = rep(1, 4))
 plot(nnet)
 ```
 
-The advantage of Neighbor-Net is that it returns a circular split system which can be always displayed in a planar (2D) graph. The plots displayed in `phangorn` may (however) not be planar, but re-plotting can give you a planar graph. This unwanted behavior will be improved in future version. 
-The rendering of the `networx` is done using the the fantastic igraph package [@Csardi2006]. 
+The advantage of Neighbor-Net is that it returns a circular split system which can be always displayed in a planar (2D) graph. The rendering of the `networx` is done using the the fantastic igraph package [@Csardi2006]. 
 
 
 ## Adding support values
@@ -96,7 +95,7 @@ plot(cnet, show.edge.label=TRUE)
     
 ### Import and export networks, advanced functions for networx objects 
 
-The functions `read.nexus.networx` and `write.nexus.networx` can read and write nexus files for or from SplitsTree [@Huson2006]. Check-out the new vignette IntertwiningTreesAndNetworks for additional functions, examples, and advanced applications. 
+The functions `read.nexus.networx` and `write.nexus.networx` can read and write nexus files for or from SplitsTree [@Huson2006]. Check-out the new vignette IntertwiningTreesAndNetworks [@Schliep2017] for additional functions, examples, and advanced application. 
 
 
 
