@@ -10,7 +10,7 @@ maxCladeCred(x, tree = TRUE, part = NULL, rooted = TRUE)
 
 mcc(x, tree = TRUE, part = NULL, rooted = TRUE)
 
-allCompat(x)
+allCompat(x, rooted = FALSE)
 }
 \arguments{
 \item{x}{\code{x} is an object of class \code{multiPhylo} or \code{phylo}}
