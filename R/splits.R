@@ -293,9 +293,9 @@ as.prop.part.splits <- function(x, ...) {
 ## @rdname as.splits
 ## @method as.phylo splits
 #' @export
-as.phylo.splits <- function(x, check=TRUE,...){
+as.phylo.splits <- function(x, check=TRUE, rooted=FALSE, ...){
   if(check) x <- compatibleSplits(x)
-  phy <- splits2phylo(x)
+  phy <- splits2phylo(x, rooted=rooted)
   spl <- as.splits(phy)[phy$edge[,2]]
   ind <- matchSplits(spl, x, FALSE)
   phy$edge.length <- attr(x, "weights")[ind]
@@ -303,13 +303,15 @@ as.phylo.splits <- function(x, check=TRUE,...){
 }
 
 
-splits2phylo <- function(x){
+splits2phylo <- function(x, rooted=FALSE){
   labels <- attr(x, "labels")
   nTips <- length(labels)
-  x <- SHORTwise(x)
+  if(!rooted) x <- SHORTwise(x)
+  x <- x[lengths(x) > 1]
+  x <- x[lengths(x) < nTips]
+  # unique?
   l <- lengths(x)
   x <- x[order(l)]
-  x <- x[lengths(x) > 1]
   nNodes <- length(x) + 1L
   node_i <- as.integer( nNodes + nTips )
   edge <- matrix(0L, node_i - 1L, 2L)
