@@ -60,6 +60,7 @@ edge_length_matrix <- function(tree, trees, rooted=TRUE){
 ##' }
 ##' @seealso [ape::node.depth.edgelength][ape::consensus]
 ##' @keywords aplot
+##' @export
 add_edge_length <- function(tree, trees, fun=\(x)median(na.omit(x)),
                             rooted=TRUE){
   X <- edge_length_matrix(tree, trees, rooted)
@@ -103,12 +104,13 @@ add_edge_length <- function(tree, trees, fun=\(x)median(na.omit(x)),
 ##'                           tree <- plotBS(tree, trees, "phylogram")
 ##' Y <- get_CI(tree, trees)
 ##' tree <- plotBS(tree, trees, "phylogram")
-##' draw_ci(Y)
+##' draw_CI(Y)
 ##' }
 ##' @seealso [plot.phylo, plotBS]
 ##' @keywords aplot
+##' @rdname draw_CI
 ##' @export
-draw_ci <- function(CI, col95 = "#FF00004D", col50 = "#0000FF4D",
+draw_CI <- function(CI, col95 = "#FF00004D", col50 = "#0000FF4D",
                           height = 0.7, legend = TRUE, ...)
 {
   lastPP <- get("last_plot.phylo", envir = ape::.PlotPhyloEnv)
@@ -143,11 +145,12 @@ draw_ci <- function(CI, col95 = "#FF00004D", col50 = "#0000FF4D",
 }
 
 
-#' @rdname draw_ci
+#' @rdname draw_CI
 #' @export
-get_CI <- function(tree, trees, fun=\(x)median(na.omit(x)), fun=NULL){
+get_CI <- function(tree, trees,  fun=NULL){
   if(!is.rooted(tree) || !is.rooted(trees)) stop("Trees need to be rooted!")
   X <- edge_length_matrix(tree, trees, rooted)
-  fun <- function(x) quantile(na.omit(x), probs=c(.025,.25,.75,.975))
+  if(is.null(fun))fun <- function(x) quantile(na.omit(x),
+                                              probs=c(.025,.25,.75,.975))
   apply(X, 2, fun)
 }
