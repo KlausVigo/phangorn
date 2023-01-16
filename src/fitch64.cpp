@@ -682,27 +682,6 @@ NumericVector hamming_dist(Fitch* obj){
 }
 
 
-IntegerVector equal_dist(Fitch* obj){
-  int i, j;
-  size_t  ij;
-  int states = obj->nStates;
-  int nBits = obj->nBits;
-  int nTips = obj->nSeq;
-  R_xlen_t N;
-  N = (R_xlen_t)nTips * (nTips-1)/2;
-  std::vector< std::vector<uint64_t> > X = obj->X;
-  IntegerVector ans(N);
-  ij = 0;
-  i=0;
-  j=1;
-  for(j = 0 ; j < (nTips-1L) ; j++)
-    for(i = j+1; i < nTips ; i++)
-      ans[ij++] = equal_vector_generic(X[i].data(), X[j].data(), nBits, states);
-  return(ans);
-}
-
-
-
 IntegerVector sitewise_pscore(Fitch* obj, const IntegerMatrix & orig){
   int i,j;
   int states = obj->nStates;
@@ -996,7 +975,6 @@ RCPP_MODULE(Fitch_mod) {
         .method("traverse", &traverse)
         .method("sitewise_pscore", &sitewise_pscore)
         .method("hamming_dist", &hamming_dist)
-        .method("equal_dist", &equal_dist)
         .method("root_all_node", &root_all_node)
         .method("getAnc", &getAnc)
         .method("getAncAmb", &getAncAmb)
