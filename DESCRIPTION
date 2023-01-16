@@ -55,7 +55,16 @@ Authors@R:
              role = "ctb"),
       person(given = "Long",
              family = "Qu",
-             role = "ctb"))
+             role = "ctb"), 
+      person(given= "Joseph", 
+             family="Brown", 
+             role = "ctb", 
+             comment = c(ORCID = "0000-0002-3835-8062")),
+      person(given="Santiago", 
+             family="Claramunt", 
+             role = "ctb", 
+             comment = c(ORCID = "0000-0002-8926-5974"))
+             )
 Description: Allows for estimation of phylogenetic trees and networks
     using Maximum Likelihood, Maximum Parsimony, distance methods and
     Hadamard conjugation (Schliep 2011). Offers methods for tree comparison, 
@@ -101,5 +110,5 @@ biocViews: Software, Technology, QualityControl
 Encoding: UTF-8
 Repository: CRAN
 Roxygen: list(old_usage = TRUE)
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3
 Language: en-US

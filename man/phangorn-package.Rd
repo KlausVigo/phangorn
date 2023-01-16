@@ -43,6 +43,8 @@ Other contributors:
   \item Jeremy Beaulieu [contributor]
   \item Brian O'Meara [contributor]
   \item Long Qu [contributor]
+  \item Joseph Brown (\href{https://orcid.org/0000-0002-3835-8062}{ORCID}) [contributor]
+  \item Santiago Claramunt (\href{https://orcid.org/0000-0002-8926-5974}{ORCID}) [contributor]
 }
 
 }
