@@ -14,6 +14,8 @@ BUG FIXES
 
     o densiTree does not draw an empty plot any more
 
+    o Replace rgl.texts with texts3d, thanks to Duncan Murdoch
+
 
     CHANGES in PHANGORN VERSION 2.10.0
 
