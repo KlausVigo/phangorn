@@ -89,7 +89,7 @@ Iris Bardel-Kahr</h4>
 Graz<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2023-01-13</h4>
+            <h4 data-toc-skip class="date">2023-01-16</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/vignettes/MLbyHand.Rmd" class="external-link"><code>vignettes/MLbyHand.Rmd</code></a></small>
       <div class="d-none name"><code>MLbyHand.Rmd</code></div>
@@ -192,21 +192,21 @@ site model with 4 rate categories (using the default shape parameter of
 <pre><code><span><span class="co">## model: GTR+G(4)+I </span></span>
 <span><span class="co">## loglikelihood: -2610 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -1230 </span></span>
-<span><span class="co">## Proportion of invariant sites: 0.005846 </span></span>
+<span><span class="co">## Proportion of invariant sites: 0.005849 </span></span>
 <span><span class="co">## Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.89 </span></span>
+<span><span class="co">## Shape parameter: 2.891 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
-<span><span class="co">##        a         c         g      t</span></span>
-<span><span class="co">## a  0.000  1.211438 74.564568  1.025</span></span>
-<span><span class="co">## c  1.211  0.000000  0.006716 31.278</span></span>
-<span><span class="co">## g 74.565  0.006716  0.000000  1.000</span></span>
-<span><span class="co">## t  1.025 31.278075  1.000000  0.000</span></span>
+<span><span class="co">##         a         c         g       t</span></span>
+<span><span class="co">## a  0.0000  1.167756 71.834228  0.9845</span></span>
+<span><span class="co">## c  1.1678  0.000000  0.003703 30.1349</span></span>
+<span><span class="co">## g 71.8342  0.003703  0.000000  1.0000</span></span>
+<span><span class="co">## t  0.9845 30.134936  1.000000  0.0000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##       a       c       g       t </span></span>
-<span><span class="co">## 0.39401 0.37870 0.04036 0.18692</span></span></code></pre>
+<span><span class="co">## 0.39400 0.37871 0.04037 0.18691</span></span></code></pre>
 <p>We will change the model to the GTR + <span class="math inline">\(\Gamma(4)\)</span> + I model and then optimize all
 the parameters.</p>
 <p>With the control parameters the thresholds for the fitting process
@@ -228,21 +228,21 @@ time.</p>
 <pre><code><span><span class="co">## model: GTR+G(4)+I </span></span>
 <span><span class="co">## loglikelihood: -2607 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -1230 </span></span>
-<span><span class="co">## Proportion of invariant sites: 0.005628 </span></span>
+<span><span class="co">## Proportion of invariant sites: 0.005589 </span></span>
 <span><span class="co">## Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.701 </span></span>
+<span><span class="co">## Shape parameter: 2.639 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
-<span><span class="co">##         a         c         g       t</span></span>
-<span><span class="co">## a  0.0000  0.813968 75.447638  0.6515</span></span>
-<span><span class="co">## c  0.8140  0.000000  0.005043 29.1413</span></span>
-<span><span class="co">## g 75.4476  0.005043  0.000000  1.0000</span></span>
-<span><span class="co">## t  0.6515 29.141314  1.000000  0.0000</span></span>
+<span><span class="co">##         a        c        g       t</span></span>
+<span><span class="co">## a  0.0000  0.76546 70.34481  0.6043</span></span>
+<span><span class="co">## c  0.7655  0.00000  0.00317 27.3800</span></span>
+<span><span class="co">## g 70.3448  0.00317  0.00000  1.0000</span></span>
+<span><span class="co">## t  0.6043 27.37997  1.00000  0.0000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
-<span><span class="co">##       a       c       g       t </span></span>
-<span><span class="co">## 0.39644 0.37873 0.04028 0.18455</span></span></code></pre>
+<span><span class="co">##      a      c      g      t </span></span>
+<span><span class="co">## 0.3965 0.3787 0.0403 0.1846</span></span></code></pre>
 <div class="section level3">
 <h3 id="model-comparison">Model comparison<a class="anchor" aria-label="anchor" href="#model-comparison"></a>
 </h3>
@@ -253,15 +253,15 @@ ratio statistic</p>
 <pre><code><span><span class="co">## Likelihood Ratio Test Table</span></span>
 <span><span class="co">##   Log lik. Df Df change Diff log lik. Pr(&gt;|Chi|)    </span></span>
 <span><span class="co">## 1    -3068 25                                       </span></span>
-<span><span class="co">## 2    -2607 35        10           923     &lt;2e-16 ***</span></span>
+<span><span class="co">## 2    -2607 35        10           922     &lt;2e-16 ***</span></span>
 <span><span class="co">## ---</span></span>
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre>
 <p>with the Shimodaira-Hasegawa test</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/SH.test.html">SH.test</a></span><span class="op">(</span><span class="va">fitGTR</span>, <span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##      Trees  ln L Diff ln L p-value</span></span>
-<span><span class="co">## [1,]     1 -2607       0.0  0.5018</span></span>
-<span><span class="co">## [2,]     2 -3068     461.5  0.0000</span></span></code></pre>
+<span><span class="co">## [1,]     1 -2607       0.0  0.5039</span></span>
+<span><span class="co">## [2,]     2 -3068     461.2  0.0000</span></span></code></pre>
 <p>or with the AIC</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
@@ -271,10 +271,10 @@ ratio statistic</p>
 <pre><code><span><span class="co">## [1] 5284</span></span></code></pre>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/modelTest.html">AICc</a></span><span class="op">(</span><span class="va">fitGTR</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 5296</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 5297</span></span></code></pre>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">BIC</a></span><span class="op">(</span><span class="va">fitGTR</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 5404</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 5405</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="bootstrap">Bootstrap<a class="anchor" aria-label="anchor" href="#bootstrap"></a>
@@ -363,7 +363,7 @@ pruning and regrafting) away.</p>
 <span><span class="co">## [29] fs_1.5.2          vctrs_0.5.1       sass_0.4.4        systemfonts_1.0.4</span></span>
 <span><span class="co">## [33] rprojroot_2.0.3   grid_4.2.2        glue_1.6.2        R6_2.5.1         </span></span>
 <span><span class="co">## [37] textshaping_0.3.6 rmarkdown_2.19    purrr_1.0.1       magrittr_2.0.3   </span></span>
-<span><span class="co">## [41] codetools_0.2-18  htmltools_0.5.4   quadprog_1.5-8    ragg_1.2.4       </span></span>
+<span><span class="co">## [41] codetools_0.2-18  htmltools_0.5.4   quadprog_1.5-8    ragg_1.2.5       </span></span>
 <span><span class="co">## [45] stringi_1.7.12    cachem_1.0.6</span></span></code></pre>
 </div>
 <div class="section level2">
