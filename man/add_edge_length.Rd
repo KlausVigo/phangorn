@@ -36,7 +36,6 @@ tree_unrooted <- allCompat(trees, rooted=FALSE) |>
                  add_edge_length(trees, rooted=FALSE)
 plot(tree_ultra)
 plot(tree_unrooted)
-get
 }
 }
 \seealso{

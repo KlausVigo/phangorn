@@ -23,7 +23,7 @@ edge_length_matrix <- function(tree, trees, rooted=TRUE){
       tmp <- SHORTwise(tmp)
     }
     else l <- nodeHeight(trees[[i]])
-    ind <- match(tmp, bp)
+    ind <- fmatch(tmp, bp)
     nna <- !is.na(ind)
     res[i, ind[nna]] <- l[nna]
   }
@@ -56,7 +56,6 @@ edge_length_matrix <- function(tree, trees, rooted=TRUE){
 ##'                  add_edge_length(trees, rooted=FALSE)
 ##' plot(tree_ultra)
 ##' plot(tree_unrooted)
-##' get
 ##' }
 ##' @seealso [ape::node.depth.edgelength][ape::consensus]
 ##' @keywords aplot
@@ -91,7 +90,7 @@ add_edge_length <- function(tree, trees, fun=\(x)median(na.omit(x)),
 ##' should to be rooted, either ultrametric or tip dated.
 ##' @return NULL
 ##' @author Emmanuel Paradis, Santiago Claramunt, Joseph Brown, Klaus Schliep
-##' @importFrom graphics legend rect
+##' @importFrom graphics legend rect bxp boxplot
 ##' @importFrom stats median
 ##' @examples
 ##' \dontrun{
@@ -105,13 +104,15 @@ add_edge_length <- function(tree, trees, fun=\(x)median(na.omit(x)),
 ##' Y <- get_CI(tree, trees)
 ##' tree <- plotBS(tree, trees, "phylogram")
 ##' draw_CI(Y)
+##' plot(tree, direction="downwards")
+##' draw_bxp(tree, trees, boxwex=.7)
 ##' }
 ##' @seealso [plot.phylo, plotBS]
 ##' @keywords aplot
 ##' @rdname draw_CI
 ##' @export
 draw_CI <- function(CI, col95 = "#FF00004D", col50 = "#0000FF4D",
-                          height = 0.7, legend = TRUE, ...)
+                    height = 0.7, legend = TRUE, ...)
 {
   lastPP <- get("last_plot.phylo", envir = ape::.PlotPhyloEnv)
   direction <- lastPP$direction
@@ -144,13 +145,55 @@ draw_CI <- function(CI, col95 = "#FF00004D", col50 = "#0000FF4D",
   }
 }
 
+##' @rdname draw_CI
+##' @export
+draw_bxp <- function(tree, trees, ...)
+{
+  X <- edge_length_matrix(tree, trees, rooted=TRUE)
+  X <- X[, -c(1:Ntip(tree))]
+  tmp <- boxplot(X, plot=FALSE)
+  lastPP <- get("last_plot.phylo", envir = ape::.PlotPhyloEnv)
+  CI <- tmp$stats
+  out <- tmp$out
+  direction <- lastPP$direction
+  horizontal <- FALSE
+  if(direction=="rightwards" || direction=="leftwards"){
+    horizontal <- TRUE
+    if(direction=="rightwards"){
+      CI <- max(lastPP$xx) - CI
+      out <- max(lastPP$xx) - out
+    }
+    if(direction=="leftwards"){
+      CI <- min(lastPP$xx) + CI
+      out <- min(lastPP$xx) + out
+    }
+    Y <- lastPP$yy # - height / 2
+  }
+  else {
+    if(direction=="downwards") {
+      CI <- min(lastPP$yy) + CI
+      out <- min(lastPP$yy) + out
+    }
+    if(direction=="upwards"){
+      CI <- max(lastPP$yy) - CI
+      out <- max(lastPP$yy) - out
+    }
+    Y <- lastPP$xx #- height / 2
+  }
+  tmp$stats <- CI
+  tmp$out <- out
+  Y <- Y[-c(1:Ntip(tree))]
+  bxp(tmp, at=Y, horizontal=horizontal, add=TRUE, axes=FALSE, ...)
+}
+
 
 #' @rdname draw_CI
 #' @export
 get_CI <- function(tree, trees,  fun=NULL){
-  if(!is.rooted(tree) || !is.rooted(trees)) stop("Trees need to be rooted!")
-  X <- edge_length_matrix(tree, trees, rooted)
+  if(!is.rooted(tree) || !all(is.rooted(trees))) stop("Trees need to be rooted!")
+  X <- edge_length_matrix(tree, trees, rooted=TRUE)
   if(is.null(fun))fun <- function(x) quantile(na.omit(x),
                                               probs=c(.025,.25,.75,.975))
-  apply(X, 2, fun)
+  apply(X, 2, fun)[, -(seq_along(Ntip(tree)))]
 }
+

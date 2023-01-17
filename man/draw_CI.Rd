@@ -2,11 +2,14 @@
 % Please edit documentation in R/draw_CI.R
 \name{draw_CI}
 \alias{draw_CI}
+\alias{draw_bxp}
 \alias{get_CI}
 \title{Draw Confidences Intervals on Phylogenies}
 \usage{
 draw_CI(CI, col95 = "#FF00004D", col50 = "#0000FF4D", height = 0.7,
   legend = TRUE, ...)
+
+draw_bxp(tree, trees, ...)
 
 get_CI(tree, trees, fun = NULL)
 }
@@ -48,6 +51,8 @@ trees <- bootstrap.phyDat(Laurasiatherian,
 Y <- get_CI(tree, trees)
 tree <- plotBS(tree, trees, "phylogram")
 draw_CI(Y)
+plot(tree, direction="downwards")
+draw_bxp(tree, trees)
 }
 }
 \seealso{
