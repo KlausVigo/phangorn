@@ -70,30 +70,26 @@ add_edge_length <- function(tree, trees, fun=\(x)median(na.omit(x)),
 }
 
 
-
-
 ##' @title Draw Confidences Intervals on Phylogenies
-##' @description This is a low-level plotting command to draw the confidence
-##' intervals on the node of a tree as rectangles with coloured backgrounds.
-##' @param CI output from [chronosCI()] or a similar matrix.
+##' @description These are low-level plotting commands to draw the confidence
+##' intervals on the node of a tree as rectangles with coloured backgrounds or
+##' add boxplots to ultrametric or tipdated trees.
+##' @param tree a phylogenetic tree to which the confidences should be added.
+##' @param trees phylogenetic trees, i.e. an object of class `multiPhylo`
 ##' @param col95 colour used for the 95% intervals; by default: transparent
 ##' red.
 ##' @param col50 colour used for the 50% intervals; by default: transparent
 ##' blue.
 ##' @param height the height of the boxes.
 ##' @param legend a logical value.
-##' @param \dots arguments passed to [graphics::legend()]
-##' @details The matrix \code{CI} must have four rows and as many columns as the
-##' number of nodes of the tree. The first and fourth rows give the lower and
-##' upper bounds of the 95% confidence intervals. The second and third rows
-##' give the lower and upper bounds of the 50% confidence intervals. The Trees
-##' should to be rooted, either ultrametric or tip dated.
+##' @param \dots arguments passed to other functions, [graphics::legend()] or
+##' [graphics::bxp()].
+##' @details All trees should to be rooted, either ultrametric or tip dated.
 ##' @return NULL
 ##' @author Emmanuel Paradis, Santiago Claramunt, Joseph Brown, Klaus Schliep
 ##' @importFrom graphics legend rect bxp boxplot
 ##' @importFrom stats median
 ##' @examples
-##' \dontrun{
 ##' data("Laurasiatherian")
 ##' dm <- dist.hamming(Laurasiatherian)
 ##' tree <- upgma(dm)
@@ -101,24 +97,25 @@ add_edge_length <- function(tree, trees, fun=\(x)median(na.omit(x)),
 ##' trees <- bootstrap.phyDat(Laurasiatherian,
 ##'                           FUN=function(x)upgma(dist.hamming(x)), bs=100)
 ##'                           tree <- plotBS(tree, trees, "phylogram")
-##' Y <- get_CI(tree, trees)
 ##' tree <- plotBS(tree, trees, "phylogram")
-##' draw_CI(Y)
+##' add_bars(tree, trees)
 ##' plot(tree, direction="downwards")
-##' draw_bxp(tree, trees, boxwex=.7)
-##' }
+##' add_boxplot(tree, trees, boxwex=.7)
 ##' @seealso [plot.phylo, plotBS]
 ##' @keywords aplot
-##' @rdname draw_CI
+##' @rdname add_bars
 ##' @export
-draw_CI <- function(CI, col95 = "#FF00004D", col50 = "#0000FF4D",
+add_bars <- function(tree, trees, col95 = "#FF00004D", col50 = "#0000FF4D",
                     height = 0.7, legend = TRUE, ...)
 {
   lastPP <- get("last_plot.phylo", envir = ape::.PlotPhyloEnv)
   direction <- lastPP$direction
-  left_right <- FALSE
+  if(!is.rooted(tree) || !all(is.rooted(trees))) stop("Trees need to be rooted!")
+  X <- edge_length_matrix(tree, trees, rooted=TRUE)[, -(seq_along(Ntip(tree)))]
+  CI <- apply(X, 2, fun=\(x)quantile(na.omit(x), probs=c(.025,.25,.75,.975)))
+  horizontal <- FALSE
   if(direction=="rightwards" || direction=="leftwards"){
-    left_right <- TRUE
+    horizontal <- TRUE
     if(direction=="rightwards") CI <- max(lastPP$xx) - CI
     if(direction=="leftwards") CI <- min(lastPP$xx) + CI
     Y <- lastPP$yy - height / 2
@@ -132,11 +129,11 @@ draw_CI <- function(CI, col95 = "#FF00004D", col50 = "#0000FF4D",
   R <- CI[4, ]
   B <- Y[ - seq_len(lastPP$Ntip)]
   T <- B + height
-  if(left_right) graphics::rect(L, B, R, T, col = col95, border = NULL)
+  if(horizontal) graphics::rect(L, B, R, T, col = col95, border = NULL)
   else graphics::rect(B, L, T, R, col = col95, border = NULL)
   L <- CI[2, ]
   R <- CI[3, ]
-  if(left_right) graphics::rect(L, B, R, T, col = col50, border = NULL)
+  if(horizontal) graphics::rect(L, B, R, T, col = col50, border = NULL)
   else graphics::rect(B, L, T, R, col = col50, border = NULL)
   if (!identical(legend, FALSE)) {
     loc <- if (is.logical(legend)) "topleft" else legend
@@ -145,9 +142,9 @@ draw_CI <- function(CI, col95 = "#FF00004D", col50 = "#0000FF4D",
   }
 }
 
-##' @rdname draw_CI
+##' @rdname add_bars
 ##' @export
-draw_bxp <- function(tree, trees, ...)
+add_boxplot <- function(tree, trees, ...)
 {
   X <- edge_length_matrix(tree, trees, rooted=TRUE)
   X <- X[, -c(1:Ntip(tree))]
@@ -185,15 +182,3 @@ draw_bxp <- function(tree, trees, ...)
   Y <- Y[-c(1:Ntip(tree))]
   bxp(tmp, at=Y, horizontal=horizontal, add=TRUE, axes=FALSE, ...)
 }
-
-
-#' @rdname draw_CI
-#' @export
-get_CI <- function(tree, trees,  fun=NULL){
-  if(!is.rooted(tree) || !all(is.rooted(trees))) stop("Trees need to be rooted!")
-  X <- edge_length_matrix(tree, trees, rooted=TRUE)
-  if(is.null(fun))fun <- function(x) quantile(na.omit(x),
-                                              probs=c(.025,.25,.75,.975))
-  apply(X, 2, fun)[, -(seq_along(Ntip(tree)))]
-}
-
