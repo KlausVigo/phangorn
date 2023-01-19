@@ -16,8 +16,6 @@ is computed from.}
 \item{fun}{a function to compute the average (default is median).}
 
 \item{rooted}{the height of the boxes.}
-
-\item{\dots}{arguments passed to [graphics::legend()]}
 }
 \description{
 This command can infer some average edge lengths and assign
@@ -39,9 +37,10 @@ plot(tree_unrooted)
 }
 }
 \seealso{
-[ape::node.depth.edgelength][ape::consensus]
+\code{\link{node.depth.edgelength}}, \code{\link{consensus}},
+\code{\link{maxCladeCred}}
 }
 \author{
-Emmanuel Paradis, Santiago Claramunt, Joseph Brown, Klaus Schliep
+Klaus Schliep
 }
 \keyword{aplot}

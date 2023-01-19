@@ -39,9 +39,8 @@ edge_length_matrix <- function(tree, trees, rooted=TRUE){
 ##' is computed from.
 ##' @param fun a function to compute the average (default is median).
 ##' @param rooted the height of the boxes.
-##' @param \dots arguments passed to [graphics::legend()]
 ##' @return NULL
-##' @author Emmanuel Paradis, Santiago Claramunt, Joseph Brown, Klaus Schliep
+##' @author Klaus Schliep
 ##' @importFrom graphics legend rect
 ##' @examples
 ##' \dontrun{
@@ -57,7 +56,8 @@ edge_length_matrix <- function(tree, trees, rooted=TRUE){
 ##' plot(tree_ultra)
 ##' plot(tree_unrooted)
 ##' }
-##' @seealso [ape::node.depth.edgelength][ape::consensus]
+##' @seealso \code{\link{node.depth.edgelength}}, \code{\link{consensus}},
+##' \code{\link{maxCladeCred}}
 ##' @keywords aplot
 ##' @export
 add_edge_length <- function(tree, trees, fun=\(x)median(na.omit(x)),
@@ -82,8 +82,8 @@ add_edge_length <- function(tree, trees, fun=\(x)median(na.omit(x)),
 ##' blue.
 ##' @param height the height of the boxes.
 ##' @param legend a logical value.
-##' @param \dots arguments passed to other functions, [graphics::legend()] or
-##' [graphics::bxp()].
+##' @param \dots arguments passed to other functions, \code{\link{legend}} or
+##' \code{\link{bxp}}.
 ##' @details All trees should to be rooted, either ultrametric or tip dated.
 ##' @return NULL
 ##' @author Emmanuel Paradis, Santiago Claramunt, Joseph Brown, Klaus Schliep
@@ -98,21 +98,21 @@ add_edge_length <- function(tree, trees, fun=\(x)median(na.omit(x)),
 ##'                           FUN=function(x)upgma(dist.hamming(x)), bs=100)
 ##'                           tree <- plotBS(tree, trees, "phylogram")
 ##' tree <- plotBS(tree, trees, "phylogram")
-##' add_bars(tree, trees)
+##' add_ci(tree, trees)
 ##' plot(tree, direction="downwards")
 ##' add_boxplot(tree, trees, boxwex=.7)
-##' @seealso [plot.phylo, plotBS]
+##' @seealso \code{\link{plot.phylo}}, \code{\link{plotBS}}
 ##' @keywords aplot
-##' @rdname add_bars
+##' @rdname add_ci
 ##' @export
-add_bars <- function(tree, trees, col95 = "#FF00004D", col50 = "#0000FF4D",
+add_ci <- function(tree, trees, col95 = "#FF00004D", col50 = "#0000FF4D",
                     height = 0.7, legend = TRUE, ...)
 {
   lastPP <- get("last_plot.phylo", envir = ape::.PlotPhyloEnv)
   direction <- lastPP$direction
   if(!is.rooted(tree) || !all(is.rooted(trees))) stop("Trees need to be rooted!")
   X <- edge_length_matrix(tree, trees, rooted=TRUE)[, -(seq_along(Ntip(tree)))]
-  CI <- apply(X, 2, fun=\(x)quantile(na.omit(x), probs=c(.025,.25,.75,.975)))
+  CI <- apply(X, 2, FUN=\(x)quantile(na.omit(x), probs=c(.025,.25,.75,.975)))
   horizontal <- FALSE
   if(direction=="rightwards" || direction=="leftwards"){
     horizontal <- TRUE
@@ -142,7 +142,7 @@ add_bars <- function(tree, trees, col95 = "#FF00004D", col50 = "#0000FF4D",
   }
 }
 
-##' @rdname add_bars
+##' @rdname add_ci
 ##' @export
 add_boxplot <- function(tree, trees, ...)
 {
