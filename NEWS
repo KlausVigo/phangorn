@@ -2,7 +2,9 @@
 
 OTHER CHANGES
 
-    o Vignettes have been reorganised, rewritten and improved thanks to Iris.
+    o Vignettes have been reorganised, rewritten and vastly improved thanks to
+
+      Iris.
 
     o small improvements to plot.codonTest, plot.networx
 
@@ -15,6 +17,10 @@ BUG FIXES
     o densiTree does not draw an empty plot any more
 
     o Replace rgl.texts with texts3d, thanks to Duncan Murdoch
+
+    o changes in read.nexus.splits and read.nexus.networx to work with the
+
+      moving targets SplitsTree6/SplitsTreeCE
 
 
     CHANGES in PHANGORN VERSION 2.10.0

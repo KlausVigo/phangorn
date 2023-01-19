@@ -311,8 +311,14 @@ read.nexus.networx <- function(file, splits = TRUE) {
   X <- scan(file = file, what = "", sep = "\n", quiet = TRUE)
   semico <- grep(";", X)
   X <- gsub("\\[(.*?)\\]", "", X) # get rid of comments
-
   netStart <- grep("BEGIN NETWORK;", X, ignore.case = TRUE)
+  if(length(netStart)==0){
+    if(splits) {
+      warning("File does not contain network block, return only splits!")
+      return(spl)
+    }
+    else stop("File does not contain network block!")
+  }
   netEnd <- grep("END;", X, ignore.case = TRUE)
   netEnd <- netEnd[netEnd > netStart][1]
   dims <- grep("DIMENSION", X, ignore.case = TRUE)
