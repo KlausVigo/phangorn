@@ -48,6 +48,9 @@ read.nexus.splits <- function(file) {
   semico <- grep(";", X)
   X <- gsub("\\[(.*?)\\]", "", X) # get rid of comments
   i1 <- grep("TAXLABELS", X, ignore.case = TRUE)
+  sp <- grep("SPLITS;", X, ignore.case = TRUE)
+  i1 <- i1[i1 < sp]
+  if(length(i1)>1)i1 <- i1[length(i1)]
   taxlab <- ifelse(length(i1) > 0, TRUE, FALSE)
   if (taxlab) {
     end <- semico[semico >= i1][1]
@@ -57,7 +60,6 @@ read.nexus.splits <- function(file) {
     x <- x[nzchar(x)]
     x <- gsub("['\"]", "", x)
   }
-  sp <- grep("SPLITS;", X, ignore.case = TRUE)
   spEnd <- grep("END;", X, ignore.case = TRUE)
   spEnd <- spEnd[spEnd > sp][1]
   dims <- grep("DIMENSION", X, ignore.case = TRUE)
