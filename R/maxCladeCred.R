@@ -92,7 +92,7 @@ maxCladeCred <- function(x, tree = TRUE, part = NULL, rooted = TRUE) {
   if (tree) {
     k <- which.max(res)
     tr <- x[[k]]
-    tr <- addConfidences(tr, pp)
+    tr <- addConfidences(tr, pp, rooted=rooted)
     attr(tr, "clade.credibility") <- res[k]
     return(tr)
   }
@@ -105,64 +105,39 @@ maxCladeCred <- function(x, tree = TRUE, part = NULL, rooted = TRUE) {
 mcc <- maxCladeCred
 
 
-compatible_clades <- function(obj1, obj2) {
-  if (!inherits(obj1, "splits"))
-    stop("obj needs to be of class splits")
-  labels <- attr(obj1, "labels")
-  l <- length(labels)
-  n <- length(obj1)
-  bp1 <- as.matrix(obj1)
-
-  rs1 <- rowSums(bp1)
-
-  m <- length(obj2)
-  bp2 <- as.matrix(obj2)
-  labels2 <- attr(obj2, "labels")
-  bp2 <- bp2[, match(labels2, labels), drop = FALSE]
-
-  rs2 <- rowSums(bp2)
-
-  bp3 <- bp2
-  bp3[bp3[, 1] == 0L, ] <- 1L - bp3[bp3[, 1] == 0L, ]
-
-  res <- matrix(0L, n, m)
-
-  tmp1 <- tcrossprod(bp1, bp2)
-  tmp2 <- as.integer(!(tmp1==rs1))
-  tmp3 <- as.integer(!(tmp1==rs2))
-  res[(tmp1 * tmp2 * tmp3) > 0] <- 1L
-  return(res)
-}
-
-
 #' @rdname maxCladeCred
 #' @export
 allCompat <- function(x, rooted=FALSE) {
-  x <- unroot(x)
+  x <- .compressTipLabel(x)
+  if(!rooted) x <- unroot(x)
   l <- length(x)
+  nt <- Ntip(x[[1]])
   pp <- prop.part(x)
   if(!rooted) pp <- postprocess.prop.part(pp, method = "SHORTwise")
   spl <- as.splits(pp)
+  if(rooted) spl <- SHORTwise(spl)
+  ord <- order(attr(spl, "weights"), decreasing = TRUE)
+  spl <- spl[ord]
+  if(rooted){
+    ind <- duplicated(spl) | (lengths(spl)==1)
+    root_candidates <- spl[ind]
+    spl <- spl[!ind]
+  }
+  ll <- lengths(spl)
+  spl <- spl[ll>0]
   w <- attr(spl, "weights")
-  ind <- (w / l) > 0.5
+  ind <- (w / l) > 0.5 & (lengths(spl) > 1)
   res <- spl[ind]
   spl <- spl[!ind]
-  w <- attr(spl, "weights")
-  ord <- order(w, decreasing = TRUE)
-  for(i in ord){
-    if(rooted){
-      if(all(compatible_clades(res, spl[i]) == 0)) res <- c(res, spl[i])
-    }
-    else if(all(compatible(res, spl[i]) == 0)) res <- c(res, spl[i])
+  for(i in seq_along(spl)){
+    if(all(compatible(res, spl[i]) == 0)) res <- c(res, spl[i])
   }
   tree <- as.phylo(res, FALSE)
-  if(rooted){
-    ll <- lengths(res)
-    res <- res[ll < length(attr(res, "labels"))]
-    ind <- which.max(lengths(res))
-    tree <- root(tree, outgroup = res[[ind]], resolve.root = TRUE)
+  if(rooted && length(root_candidates)>0){
+    labels <- attr(x, "TipLabel")[root_candidates[[1]]]
+    tree <- root(tree, outgroup = labels, resolve.root = TRUE)
   }
   tree$edge.length <- NULL
-  tree <- addConfidences(tree, pp)
+  tree <- addConfidences(tree, pp, rooted=rooted)
   tree
 }
