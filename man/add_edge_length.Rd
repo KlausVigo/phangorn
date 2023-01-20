@@ -15,26 +15,27 @@ is computed from.}
 
 \item{fun}{a function to compute the average (default is median).}
 
-\item{rooted}{the height of the boxes.}
+\item{rooted}{rooted logical, if FALSE edge lengths is a function of the
+observed splits, if TRUE edge lengths are estimated from height for the
+observed clades.}
 }
 \description{
 This command can infer some average edge lengths and assign
 them from a (bootstrap/MCMC) sample.
 }
 \examples{
-\dontrun{
 data("Laurasiatherian")
-dm <- dist.hamming(Laurasiatherian)
 set.seed(123)
-trees <- bootstrap.phyDat(Laurasiatherian,
-                          FUN=function(x)upgma(dist.hamming(x)), bs=100)
-                          tree <- plotBS(tree, trees, "phylogram")
-tree_ultra <- allCompat(trees, rooted=TRUE) |> add_edge_length(trees)
-tree_unrooted <- allCompat(trees, rooted=FALSE) |>
-                 add_edge_length(trees, rooted=FALSE)
+trees_ultra <- bootstrap.phyDat(Laurasiatherian,
+                          FUN=function(x)upgma(dist.ml(x)), bs=100)
+trees_unrooted <- bootstrap.phyDat(Laurasiatherian,
+                          FUN=function(x)NJ(dist.ml(x)), bs=100)
+tree_ultra <- allCompat(trees_ultra, rooted=TRUE) |>
+              add_edge_length(trees_ultra)
+tree_unrooted <- allCompat(trees_unrooted, rooted=FALSE) |>
+                 add_edge_length(trees_unrooted, rooted=FALSE)
 plot(tree_ultra)
 plot(tree_unrooted)
-}
 }
 \seealso{
 \code{\link{node.depth.edgelength}}, \code{\link{consensus}},

@@ -3,7 +3,7 @@ edge_length_matrix <- function(tree, trees, rooted=TRUE){
   trees <- .uncompressTipLabel(trees) |> .compressTipLabel(ref=tree$tip.label)
   if(!rooted){
     trees <- di2multi(trees) |> unroot()
-    tree <- di2multi(tree) |> unroot()
+    tree <- unroot(tree)
   }
   else{
     if(!is.rooted(tree) || any(!is.rooted(trees))) stop("All trees need to be rooted!")
@@ -38,24 +38,25 @@ edge_length_matrix <- function(tree, trees, rooted=TRUE){
 ##' @param trees an object of class multiPhylo, where the average for the edges
 ##' is computed from.
 ##' @param fun a function to compute the average (default is median).
-##' @param rooted the height of the boxes.
+##' @param rooted rooted logical, if FALSE edge lengths is a function of the
+##' observed splits, if TRUE edge lengths are estimated from height for the
+##' observed clades.
 ##' @return NULL
 ##' @author Klaus Schliep
 ##' @importFrom graphics legend rect
 ##' @examples
-##' \dontrun{
 ##' data("Laurasiatherian")
-##' dm <- dist.hamming(Laurasiatherian)
 ##' set.seed(123)
-##' trees <- bootstrap.phyDat(Laurasiatherian,
-##'                           FUN=function(x)upgma(dist.hamming(x)), bs=100)
-##'                           tree <- plotBS(tree, trees, "phylogram")
-##' tree_ultra <- allCompat(trees, rooted=TRUE) |> add_edge_length(trees)
-##' tree_unrooted <- allCompat(trees, rooted=FALSE) |>
-##'                  add_edge_length(trees, rooted=FALSE)
+##' trees_ultra <- bootstrap.phyDat(Laurasiatherian,
+##'                           FUN=function(x)upgma(dist.ml(x)), bs=100)
+##' trees_unrooted <- bootstrap.phyDat(Laurasiatherian,
+##'                           FUN=function(x)NJ(dist.ml(x)), bs=100)
+##' tree_ultra <- allCompat(trees_ultra, rooted=TRUE) |>
+##'               add_edge_length(trees_ultra)
+##' tree_unrooted <- allCompat(trees_unrooted, rooted=FALSE) |>
+##'                  add_edge_length(trees_unrooted, rooted=FALSE)
 ##' plot(tree_ultra)
 ##' plot(tree_unrooted)
-##' }
 ##' @seealso \code{\link{node.depth.edgelength}}, \code{\link{consensus}},
 ##' \code{\link{maxCladeCred}}
 ##' @keywords aplot
