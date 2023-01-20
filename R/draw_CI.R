@@ -11,6 +11,7 @@ edge_length_matrix <- function(tree, trees, rooted=TRUE){
   fun <- function(x){
     el <- numeric(max(x$edge))
     el[x$edge[,2]] <- x$edge.length
+    el
   }
   bp <- bip(tree)
   if(!rooted) bp <- SHORTwise(bp)
@@ -63,6 +64,7 @@ edge_length_matrix <- function(tree, trees, rooted=TRUE){
 ##' @export
 add_edge_length <- function(tree, trees, fun=\(x)median(na.omit(x)),
                             rooted=TRUE){
+  if(!rooted) tree <- unroot(tree)
   X <- edge_length_matrix(tree, trees, rooted)
   nh <- apply(X, 2, fun)
   if(rooted) tree$edge.length <- nh[tree$edge[,1]] - nh[tree$edge[,2]]
