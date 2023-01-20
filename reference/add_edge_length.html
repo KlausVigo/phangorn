@@ -83,7 +83,9 @@ is computed from.</p></dd>
 
 
 <dt>rooted</dt>
-<dd><p>the height of the boxes.</p></dd>
+<dd><p>rooted logical, if FALSE edge lengths is a function of the
+observed splits, if TRUE edge lengths are estimated from height for the
+observed clades.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -98,19 +100,22 @@ is computed from.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"Laurasiatherian"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="dist.hamming.html">dist.hamming</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"Laurasiatherian"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">trees</span> <span class="op">&lt;-</span> <span class="fu"><a href="bootstrap.pml.html">bootstrap.phyDat</a></span><span class="op">(</span><span class="va">Laurasiatherian</span>,</span></span>
-<span class="r-in"><span>                          FUN<span class="op">=</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="fu"><a href="upgma.html">upgma</a></span><span class="op">(</span><span class="fu"><a href="dist.hamming.html">dist.hamming</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>, bs<span class="op">=</span><span class="fl">100</span><span class="op">)</span></span></span>
-<span class="r-in"><span>                          <span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="plotBS.html">plotBS</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">trees</span>, <span class="st">"phylogram"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tree_ultra</span> <span class="op">&lt;-</span> <span class="fu"><a href="maxCladeCred.html">allCompat</a></span><span class="op">(</span><span class="va">trees</span>, rooted<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">add_edge_length</span><span class="op">(</span><span class="va">trees</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tree_unrooted</span> <span class="op">&lt;-</span> <span class="fu"><a href="maxCladeCred.html">allCompat</a></span><span class="op">(</span><span class="va">trees</span>, rooted<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>                 <span class="fu">add_edge_length</span><span class="op">(</span><span class="va">trees</span>, rooted<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">trees_ultra</span> <span class="op">&lt;-</span> <span class="fu"><a href="bootstrap.pml.html">bootstrap.phyDat</a></span><span class="op">(</span><span class="va">Laurasiatherian</span>,</span></span>
+<span class="r-in"><span>                          FUN<span class="op">=</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="fu"><a href="upgma.html">upgma</a></span><span class="op">(</span><span class="fu"><a href="dist.hamming.html">dist.ml</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>, bs<span class="op">=</span><span class="fl">100</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">trees_unrooted</span> <span class="op">&lt;-</span> <span class="fu"><a href="bootstrap.pml.html">bootstrap.phyDat</a></span><span class="op">(</span><span class="va">Laurasiatherian</span>,</span></span>
+<span class="r-in"><span>                          FUN<span class="op">=</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="fu"><a href="NJ.html">NJ</a></span><span class="op">(</span><span class="fu"><a href="dist.hamming.html">dist.ml</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>, bs<span class="op">=</span><span class="fl">100</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tree_ultra</span> <span class="op">&lt;-</span> <span class="fu"><a href="maxCladeCred.html">allCompat</a></span><span class="op">(</span><span class="va">trees_ultra</span>, rooted<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>              <span class="fu">add_edge_length</span><span class="op">(</span><span class="va">trees_ultra</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tree_unrooted</span> <span class="op">&lt;-</span> <span class="fu"><a href="maxCladeCred.html">allCompat</a></span><span class="op">(</span><span class="va">trees_unrooted</span>, rooted<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>                 <span class="fu">add_edge_length</span><span class="op">(</span><span class="va">trees_unrooted</span>, rooted<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>no non-missing arguments to max; returning -Inf</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in seq_len(max(phy$edge)):</span> argument must be coercible to non-negative integer</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">tree_ultra</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="add_edge_length-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">tree_unrooted</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in plot(tree_unrooted):</span> object 'tree_unrooted' not found</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
