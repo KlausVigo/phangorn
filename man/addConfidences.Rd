@@ -4,6 +4,7 @@
 \alias{addConfidences}
 \alias{addConfidences.phylo}
 \alias{presenceAbsence}
+\alias{createLabel}
 \title{Compare splits and add support values to an object}
 \usage{
 addConfidences(x, y, ...)
@@ -11,6 +12,8 @@ addConfidences(x, y, ...)
 \method{addConfidences}{phylo}(x, y, rooted = FALSE, ...)
 
 presenceAbsence(x, y)
+
+createLabel(x, y, label_y, type = "edge", nomatch = NA)
 }
 \arguments{
 \item{x}{an object of class \code{splits}, \code{phylo} or \code{networx}}
@@ -21,6 +24,13 @@ or \code{networx}}
 \item{...}{Further arguments passed to or from other methods.}
 
 \item{rooted}{logial, if FALSE bipartitions are considered, if TRUE clades.}
+
+\item{label_y}{label of y matched on x. Will be usually of
+length(as.splits(x)).}
+
+\item{type}{should labels returned for edges (in \code{networx}) or splits.}
+
+\item{nomatch}{default value if no match between x and y is found.}
 }
 \value{
 The object \code{x} with added bootstrap / MCMC support values.

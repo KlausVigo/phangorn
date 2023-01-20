@@ -8,10 +8,10 @@
 #' or \code{networx}
 #' @param rooted logial, if FALSE bipartitions are considered, if TRUE clades.
 #' @param ...  Further arguments passed to or from other methods.
-# @param label_y label of y matched on x. Will be usually of
-# length(as.splits(x)).
-# @param type should labels returned for edges (in \code{networx}) or splits.
-# @param nomatch default value if no match between x and y is found.
+#' @param label_y label of y matched on x. Will be usually of
+#' length(as.splits(x)).
+#' @param type should labels returned for edges (in \code{networx}) or splits.
+#' @param nomatch default value if no match between x and y is found.
 #' @return The object \code{x} with added bootstrap / MCMC support values.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{as.splits}}, \code{\link{as.networx}},
@@ -175,29 +175,29 @@ presenceAbsence <- function(x, y) {
 }
 
 
-# @rdname addConfidences
-# @export
-#createLabel <- function(x, y, label_y, type = "edge", nomatch = NA) {
-#  spl_x <- as.splits(x)
-#  if (inherits(x, "phylo", TRUE) == 1) spl_x <- spl_x[x$edge[, 2]]
-#  spl_y <- as.splits(y)
-#  if (inherits(y, "phylo", TRUE) == 1) spl_y <- spl_y[y$edge[, 2]]
-#
-#  tiplabel <- attr(spl_x, "labels")
-#  nTips <- length(tiplabel)
-#
-#  spl_y <- changeOrder(spl_y, tiplabel)
-#  spl_y <- SHORTwise(spl_y)
-#
-#  ind <- match(SHORTwise(spl_x), spl_y)
-#  pos <-  which(!is.na(ind))
-#
-#  res <- rep(nomatch, length(spl_x))
-#
-#  if (length(label_y) == 1L) label_y <- rep(label_y, length(spl_y))
-#  res[pos] <- label_y[ind[pos]]
-#  if (type == "edge" && inherits(x, "networx")) {
-#    return(res[x$splitIndex])
-#  }
-#  res
-#}
+#' @rdname addConfidences
+#' @export
+createLabel <- function(x, y, label_y, type = "edge", nomatch = NA) {
+  spl_x <- as.splits(x)
+  if (inherits(x, "phylo", TRUE) == 1) spl_x <- spl_x[x$edge[, 2]]
+  spl_y <- as.splits(y)
+  if (inherits(y, "phylo", TRUE) == 1) spl_y <- spl_y[y$edge[, 2]]
+
+  tiplabel <- attr(spl_x, "labels")
+  nTips <- length(tiplabel)
+
+  spl_y <- changeOrder(spl_y, tiplabel)
+  spl_y <- SHORTwise(spl_y)
+
+  ind <- match(SHORTwise(spl_x), spl_y)
+  pos <-  which(!is.na(ind))
+
+  res <- rep(nomatch, length(spl_x))
+
+  if (length(label_y) == 1L) label_y <- rep(label_y, length(spl_y))
+  res[pos] <- label_y[ind[pos]]
+  if (type == "edge" && inherits(x, "networx")) {
+    return(res[x$splitIndex])
+  }
+  res
+}
