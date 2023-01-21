@@ -26,16 +26,12 @@ them from a (bootstrap/MCMC) sample.
 \examples{
 data("Laurasiatherian")
 set.seed(123)
-trees_ultra <- bootstrap.phyDat(Laurasiatherian,
-                          FUN=function(x)upgma(dist.ml(x)), bs=100)
-trees_unrooted <- bootstrap.phyDat(Laurasiatherian,
-                          FUN=function(x)NJ(dist.ml(x)), bs=100)
-tree_ultra <- allCompat(trees_ultra, rooted=TRUE) |>
+bs <- bootstrap.phyDat(Laurasiatherian,
+                FUN=function(x)upgma(dist.ml(x)), bs=100)
+tree_compat <- allCompat(bs, rooted=TRUE) |>
               add_edge_length(trees_ultra)
-tree_unrooted <- allCompat(trees_unrooted, rooted=FALSE) |>
-                 add_edge_length(trees_unrooted, rooted=FALSE)
-plot(tree_ultra)
-plot(tree_unrooted)
+plot(tree_compat)
+add_boxplot(tree_compat, bs)
 }
 \seealso{
 \code{\link{node.depth.edgelength}}, \code{\link{consensus}},
