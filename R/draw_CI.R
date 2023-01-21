@@ -51,7 +51,7 @@ edge_length_matrix <- function(tree, trees, rooted=TRUE){
 ##' bs <- bootstrap.phyDat(Laurasiatherian,
 ##'                 FUN=function(x)upgma(dist.ml(x)), bs=100)
 ##' tree_compat <- allCompat(bs, rooted=TRUE) |>
-##'               add_edge_length(trees_ultra)
+##'               add_edge_length(bs)
 ##' plot(tree_compat)
 ##' add_boxplot(tree_compat, bs)
 ##' @seealso \code{\link{node.depth.edgelength}}, \code{\link{consensus}},
