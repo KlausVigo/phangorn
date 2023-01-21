@@ -2109,8 +2109,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     optBf <- tmp$optBf
     if (!optBf){
       bf <- c(0.25, 0.25, 0.25, 0.25)
-      object <- update.pml(object, bf = bf)
-    }
+    } else bf <- baseFreq(data)
+    object <- update.pml(object, bf = bf)
     subs <- tmp$subs
   }
   if (type == "USER" & optModel) {
@@ -2169,6 +2169,14 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       tree <- add.tips(tree, tips = mapping[, 1], where = mapping[, 2],
         edge.length = rep(0, nrow(mapping)))
       data <- orig.data
+      if (!is.null(RELL)){
+        bs <- RELL$bs
+        for(i in seq_along(bs)){
+          bs[[i]] <- add.tips(bs[[i]], tips = mapping[, 1],
+                              where = mapping[, 2], edge.length = rep(0, nrow(mapping)))
+        }
+        RELL$bs <- bs
+      }
     }
     df <- ifelse(optRooted, tree$Nnode, length(tree$edge.length))
     dfQ <- ifelse(is.null(subs), length(unique(Q)) - 1, max(subs))
@@ -2384,7 +2392,14 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       }
       for(i in seq_len(maxit)){
         if(rearrangement == "stochastic"){
-          tree2 <- rNNI(tree, moves = round(nTips * ratchet.par$prop), n = 1)
+          tree2 <- di2multi(tree, tol = 10 * tau, tip2root = TRUE)
+          if (!is.binary(tree2)) {
+            tree2 <- multi2di(tree2)
+            if(!optRooted) tree2 <- unroot(tree2)
+            tree2 <- minEdge(tree2, tau)
+            tree2 <- reorder(tree2, "postorder")
+          }
+          tree2 <- rNNI(tree2, moves = round(nTips * ratchet.par$prop), n = 1)
           if(optRooted){
              tree2 <- nnls.tree(dm, tree2, method = method,
                                 tip.dates=tip.dates)
@@ -2397,10 +2412,12 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
           tree2 <- checkLabels(tree2, tree$tip.label)
           tree2 <- reorder(tree2, "postorder")
         } else if(rearrangement == "multi2di"){
-          tree2 <- di2multi(tree, tol=2*tau, tip2root=TRUE)
+          tree2 <- di2multi(tree, tol=10*tau, tip2root=TRUE)
           if(any(degree(tree2)>4)){
             tree2 <- multi2di(tree2)
+            if(!optRooted) tree2 <- unroot(tree2)
             tree2 <- minEdge(tree2, tau)
+            tree2 <- reorder(tree2, "postorder")
           }
           #else return(list(tree, ll))
           else{
