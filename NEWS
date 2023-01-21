@@ -16,7 +16,7 @@ BUG FIXES
 
     o densiTree does not draw an empty plot any more
 
-    o Replace rgl.texts with texts3d, thanks to Duncan Murdoch
+    o Replace rgl.texts with texts3d, oull reqiest by Duncan Murdoch (thanks)
 
     o changes in read.nexus.splits and read.nexus.networx to work with the
 
