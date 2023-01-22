@@ -233,8 +233,14 @@ With the tree and data set we can estimate currently 3 different site models:
 (negative selection $\omega<1$, neutral selection $\omega=1$, positive selection $\omega>1$).
 One can use a likelihood ratio test to compare the M1a and M2a to for positive selection. 
 
-```{R codonTest, cache=TRUE}
+```{R, echo=FALSE}
+load("AF.RData")
+```
+```{R codonTest, eval=FALSE}
 cdn <- codonTest(tree, hiv_2_nef)
+cdn
+```
+```{R codonTest_cheat, echo=FALSE}
 cdn
 ```
                                                                 
@@ -260,11 +266,13 @@ M0 <- optim.pml(M0, model="codon1", control=pml.control(trace=0))
 M0
 ```
 For the F3x4 model can optimize the codon frequencies setting the option to `optBf=TRUE` in `optim.pml`.
-```{r M0+F3x4}
+```{r M0+F3x4, eval=FALSE}
 M0_opt <- optim.pml(M0, model="codon1", optBf=TRUE, control=pml.control(trace=0))
 M0_opt
 ```
-
+```{r M0+F3x4_cheat, echo=FALSE}
+M0_opt
+```
 
 # Session info
 
