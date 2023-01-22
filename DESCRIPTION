@@ -1,6 +1,6 @@
 Package: phangorn
 Title: Phylogenetic Reconstruction and Analysis
-Version: 2.11.0
+Version: 2.11.1
 Authors@R: 
     c(person(given = "Klaus",
              family = "Schliep",
