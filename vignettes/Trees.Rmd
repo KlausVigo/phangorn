@@ -149,7 +149,7 @@ It's also possible to only select some common models:
 ```{r, echo=FALSE}
 load("Trees.RData")
 ```
-```{r mt_selected, echo=TRUE, eval=TRUE, cache=TRUE}
+```{r mt_selected, echo=TRUE, eval=FALSE}
 mt <- modelTest(primates, model=c("JC", "F81", "K80", "HKY", "SYM", "GTR"), 
                 control = pml.control(trace = 0))
 ```
@@ -172,9 +172,8 @@ fit_mt <- pml_bb(mt, control = pml.control(trace = 0))
 fit_mt
 ```
 We can also use `pml_bb` with a defined model to infer a phylogenetic tree.
-```{r pml_bb GTR, cache=TRUE}
-fitGTR <- pml_bb(primates, model="GTR+G(4)+I", control = pml.control(trace = 0))
-fitGTR
+```{r pml_bb GTR, eval=FALSE}
+fitGTR <- pml_bb(primates, model="GTR+G(4)+I")
 ```
 
 ## Bootstrap
@@ -231,7 +230,7 @@ When we assume a "molecular clock" phylogenies can be used to infer divergence t
 For an ultrametric starting tree we can use an UPGMA or WPGMA tree. 
 ```{r strict_primates, echo=TRUE, cache=TRUE}
 fit_strict <- pml_bb(primates, model="HKY+G(4)", method="ultrametric",
-                     control = pml.control(trace = 0))
+                     rearrangement="NNI", control = pml.control(trace = 0))
 ```
 ```{r plot_strict_primates}
 plot(fit_strict)
