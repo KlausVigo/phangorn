@@ -19,7 +19,8 @@
 #' @param tau minimal edge length.
 #' @param minit Minimum number of iterations.
 #' @param iter Number of iterations to stop if there is no change.
-#' @param prop Only used if \code{rearrangement=stochstic}. How many NNI moves
+#' @param statefreq take "empirical" or "estimate" state frequencies.
+#' @param prop Only used if \code{rearrangement=stochastic}. How many NNI moves
 #' should be added to the tree in proportion of the number of taxa.´
 #' @param rell logical, if TRUE approximate bootstraping similar Minh et al.
 #' (2013) is performed.
@@ -35,14 +36,17 @@
 #' pml.control()
 #' pml.control(maxit=25)
 #' @export
-pml.control <- function(epsilon = 1e-08, maxit = 10, trace = 1, tau = 1e-8) {
+pml.control <- function(epsilon = 1e-08, maxit = 10, trace = 1, tau = 1e-8,
+                        statefreq="empirical") {
   if (!is.numeric(epsilon) || epsilon <= 0)
     stop("value of 'epsilon' must be > 0")
   if (!is.numeric(maxit) || maxit <= 0)
     stop("maximum number of iterations must be > 0")
   if (!is.numeric(tau) || tau <= 0)
     stop("tau must be > 0")
-  list(epsilon = epsilon, maxit = maxit, trace = trace, tau = tau)
+  statefreq <- match.arg(statefreq, c("empirical", "estimated"))
+  list(epsilon = epsilon, maxit = maxit, trace = trace, tau = tau,
+       statefreq=statefreq)
 }
 
 #' @rdname pml.control

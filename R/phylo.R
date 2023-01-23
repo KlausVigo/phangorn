@@ -2131,6 +2131,10 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       object <- update.pml(object, Q = Q)
     }
   }
+  if(optBf && control$statefreq=="empirical" && type != "CODON"){
+    bf <- baseFreq(data)
+    object <- update.pml(object, bf = bf)
+  }
   Q <- object$Q
   if (is.null(subs) & optQ) subs <- c(seq_len(length(Q) - 1), 0)
   bf <- object$bf
@@ -2248,7 +2252,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       updateRates(res, ll, rate, shape, k, inv, wMix, update="rate",
                   site.rate=site.rate)
     }
-    if (optBf) {
+    if (optBf && control$statefreq=="estimated") {
       if (type=="CODON" && bf_choice=="F3x4") res <- optimF3x4(tree, data,
             bf_codon = bf_codon, inv = inv, Q = Q, w = w, g = g, INV = INV,
             rate = rate, k = k, llMix = llMix, ASC=ASC)
