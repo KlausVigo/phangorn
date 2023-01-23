@@ -2191,7 +2191,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       CODON = df + (k > 1) + (optInv | (inv > 0)) + freq_df + (dnds != 1) +
            (tstv != 1),
       USER = df + (k > 1) + (optInv | (inv > 0)) + length(unique(bf)) - 1 + dfQ)
-
+    names(bf) <- NULL
     object <- list(logLik = tmp$loglik, inv = inv, k = k, shape = shape,
       Q = Q, bf = bf, rate = rate, siteLik = tmp$siteLik,
       weight = attr(data, "weight"),
@@ -2205,7 +2205,6 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       object$frequencies <- bf_choice
     }
     class(object) <- "pml"
-
     extras <- pairlist(bf = bf, Q = Q, inv = inv, shape = shape, rate = rate,
                model=model)[c(optBf, optQ, optInv, optGamma, optRate, optModel)]
     if (length(extras)) {
