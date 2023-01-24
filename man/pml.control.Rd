@@ -5,7 +5,8 @@
 \alias{ratchet.control}
 \title{Auxiliary for Controlling Fitting}
 \usage{
-pml.control(epsilon = 1e-08, maxit = 10, trace = 1, tau = 1e-08)
+pml.control(epsilon = 1e-08, maxit = 10, trace = 1, tau = 1e-08,
+  statefreq = "empirical")
 
 ratchet.control(iter = 20L, maxit = 200L, minit = 50L, prop = 1/2,
   rell = TRUE, bs = 1000L)
@@ -19,11 +20,13 @@ ratchet.control(iter = 20L, maxit = 200L, minit = 50L, prop = 1/2,
 
 \item{tau}{minimal edge length.}
 
+\item{statefreq}{take "empirical" or "estimate" state frequencies.}
+
 \item{iter}{Number of iterations to stop if there is no change.}
 
 \item{minit}{Minimum number of iterations.}
 
-\item{prop}{Only used if \code{rearrangement=stochstic}. How many NNI moves
+\item{prop}{Only used if \code{rearrangement=stochastic}. How many NNI moves
 should be added to the tree in proportion of the number of taxa.´}
 
 \item{rell}{logical, if TRUE approximate bootstraping similar Minh et al.
