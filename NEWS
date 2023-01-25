@@ -4,11 +4,11 @@ NEW FEATURES
 
     o pml.control got an argument statefreq, which controls if "empirical"
 
-      or (ML) "estimated" state/base frequencies are used/computed. Might speed
+      or (ML) "estimated" state/base frequencies are used/computed. Speeds up
 
-      up modelTest and pml_bb/optim.pml. For large state space and smallish data
+      modelTest and pml_bb/optim.pml. For large state space (amino acids,
 
-      "estimated" used to be slow and sometimes not very reliable.
+      codons) and small datasets the "estimated" might not be very reliable.
 
 OTHER CHANGES
 
