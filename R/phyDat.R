@@ -99,11 +99,9 @@ cbind.phyDat <- function(..., gaps="-", compress=TRUE){
 
   types <- sapply(x, function(x)attr(x, "type"))
 # if(length(unique(types))>1) stop("All alignments need to have the same type!")
-  #  type <- attr(x[[1]], "type")
   nr <- numeric(n)
   ATTR <- attributes(x[[1]])
   nr[1] <- sum(attr(x[[1]], "weight"))
-  #  levels <- attr(x[[1]], "levels")
   allLevels <- attr(x[[1]], "allLevels")
   gapsInd <- match(gaps, allLevels)
   snames <- vector("list", n)
@@ -111,7 +109,6 @@ cbind.phyDat <- function(..., gaps="-", compress=TRUE){
   wvec <- numeric(n+1)
   objNames <- as.character(object)
   if(any(duplicated(objNames))) objNames <- paste0(objNames, 1:n)
-  #  tmp <- as.character(x[[1]])
 
   for(i in 1:n){
     snames[[i]] <- names(x[[i]])
@@ -160,6 +157,27 @@ cbind.phyDat <- function(..., gaps="-", compress=TRUE){
   ATTR$nr <- length(weight)
   attributes(tmp) <- ATTR
   tmp
+}
+
+
+# @rdname phyDat
+#' @export c.phyDat
+#' @export
+rbind.phyDat <- function(...){
+  x <- list(...)
+  types <- sapply(x, function(x)attr(x, "type"))
+  l <- sapply(x, function(x)sum(attr(x, "weight")))
+  if(any(l!=l[1]))stop("Alignments have different # of characters!")
+  if(any(types!=types[1]))stop("Alignments must have same type!")
+  nam <- sapply(x, names)
+  if(any(duplicated(nam)))stop("Duplicated names!")
+  m <- lengths(x)
+  mcs <- c(0, cumsum(m))
+  res <- matrix(NA_character_, sum(m), l[1])
+  for(i in 1:length(x)){
+    res[(mcs[i]+1):mcs[i+1], ] <- as.character(x[[i]])
+  }
+  phyDat(res, type=types[1])
 }
 
 
@@ -444,7 +462,6 @@ allSitePattern <- function(n, levels=NULL, names=NULL, type="DNA", code=1){
 }
 
 
-##constSitePattern <- function(n, levels=c("a", "c", "g", "t"), names=NULL){
 constSitePattern <- function(n, names=NULL, type="DNA", levels=NULL){
   if(type=="DNA"){
     levels <- c("a", "c", "g", "t")
