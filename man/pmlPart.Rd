@@ -6,17 +6,19 @@
 \alias{pmlPart}
 \title{Partition model.}
 \usage{
-multiphyDat2pmlPart(x, rooted = FALSE, ...)
+multiphyDat2pmlPart(x, method = "unrooted", tip.dates = NULL,
+  shared_tree = TRUE, ...)
 
 pmlPart2multiPhylo(x)
 
 pmlPart(formula, object, control = pml.control(epsilon = 1e-08, maxit = 10,
-  trace = 1), model = NULL, rooted = FALSE, ...)
+  trace = 1), model = NULL, method = "unrooted", ...)
 }
 \arguments{
 \item{x}{an object of class \code{pmlPart}}
 
-\item{rooted}{Are the gene trees rooted (ultrametric) or unrooted.}
+\item{method}{One of "unrooted", "ultrametric" or "tiplabeled". Only unrooted
+is properly supported right now.}
 
 \item{\dots}{Further arguments passed to or from other methods.}
 

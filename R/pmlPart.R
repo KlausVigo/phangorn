@@ -226,24 +226,42 @@ makePart <- function(fit, rooted, weight = ~index + genes) {
 
 #' @rdname pmlPart
 #' @export
-multiphyDat2pmlPart <- function(x, rooted = FALSE,  ...) {
-  shared_tree <- TRUE
+#multiphyDat2pmlPart <- function(x, rooted = FALSE,  ...) {
+#  shared_tree <- TRUE
+#  if (shared_tree) {
+#    concatenate_x <- do.call(cbind.phyDat, x@seq)
+#    dm <- dist.ml(concatenate_x)
+#    if (!rooted) tree <- NJ(dm)
+#    else tree <- upgma(dm)
+#  }
+#  else tree <- NULL
+#  fun <-  function(x, rooted = FALSE, tree, ...) {
+#    if (is.null(tree)) {
+#      dm <- dist.ml(x)
+#      if (!rooted) tree <- NJ(dm)
+#      else tree <- upgma(dm)
+#    }
+#    pml(tree, x, ...)
+#  }
+#  fits <- lapply(x@seq, fun, tree = tree, rooted = rooted, ...)
+#  fits
+#}
+#
+#
+multiphyDat2pmlPart <- function(x, method="unrooted", tip.dates=NULL,
+                                 shared_tree = TRUE, ...) {
   if (shared_tree) {
     concatenate_x <- do.call(cbind.phyDat, x@seq)
-    dm <- dist.ml(concatenate_x)
-    if (!rooted) tree <- NJ(dm)
-    else tree <- upgma(dm)
+    tree <- candidate_tree(concatenate_x, method=method, tip.dates=tip.dates)
   }
   else tree <- NULL
-  fun <-  function(x, rooted = FALSE, tree, ...) {
+  fun <-  function(x, method, tip.dates, tree, ...) {
     if (is.null(tree)) {
-      dm <- dist.ml(x)
-      if (!rooted) tree <- NJ(dm)
-      else tree <- upgma(dm)
+      tree <- candidate_tree(x, method=method, tip.dates=tip.dates)
     }
     pml(tree, x, ...)
   }
-  fits <- lapply(x@seq, fun, tree = tree, rooted = rooted, ...)
+  fits <- lapply(x@seq, fun, tree = tree, ...)
   fits
 }
 
@@ -288,7 +306,8 @@ plot.pmlPart <- function(x, ...) {
 #' @param control A list of parameters for controlling the fitting process.
 #' @param model A vector containing the models containing a model for each
 #' partition.
-#' @param rooted Are the gene trees rooted (ultrametric) or unrooted.
+#' @param method One of "unrooted", "ultrametric" or "tiplabeled". Only unrooted
+#' is properly supported right now.
 #' @param \dots Further arguments passed to or from other methods.
 #' @param x an object of class \code{pmlPart}
 #' @return \code{kcluster} returns a list with elements
@@ -325,7 +344,10 @@ plot.pmlPart <- function(x, ...) {
 #' @rdname pmlPart
 #' @export pmlPart
 pmlPart <- function(formula, object, control = pml.control(epsilon = 1e-8,
-                    maxit = 10, trace = 1), model = NULL, rooted = FALSE, ...) {
+                    maxit = 10, trace = 1), model = NULL, method="unrooted", ...) {
+  method <- match.arg(method, c("unrooted", "ultrametric", "tipdated"))
+  if(method=="unrooted") rooted <- FALSE
+  else rooted <- TRUE
   call <- match.call()
   form <- phangornParseFormula(formula)
   opt <- c("nni", "bf", "Q", "inv", "shape", "edge", "rate")
@@ -416,6 +438,7 @@ pmlPart <- function(formula, object, control = pml.control(epsilon = 1e-8,
 
   while (eps > epsilon & m < maxit) {
     loli <- 0
+    if (AllEdge) fits <- optimPartEdge(fits)
     if (any(c(PartNni, PartBf, PartInv, PartQ, PartGamma, PartEdge, PartRate))){
       for (i in 1:p) {
         fits[[i]] <- optim.pml(fits[[i]], optNni = PartNni, optBf = PartBf,
@@ -447,11 +470,11 @@ pmlPart <- function(formula, object, control = pml.control(epsilon = 1e-8,
       for (i in 1:p) fits[[i]] <- update(fits[[i]], shape = newGamma)
     }
     if (AllNNI) {
+      fits <- optimPartEdge(fits)
       fits <- optimPartNNI(fits, AllEdge)
       if (trace > 0) cat(attr(fits, "swap"), " NNI operations performed")
     }
-    if (AllEdge)
-      fits <- optimPartEdge(fits)
+    if (AllEdge) fits <- optimPartEdge(fits)
     if (PartRate) {
       tree <- fits[[1]]$tree
       rate <- numeric(p)

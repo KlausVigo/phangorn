@@ -4,7 +4,7 @@
 \name{threshStateC}
 \alias{threshStateC}
 \alias{candidate_tree}
-\alias{hash_phylo}
+\alias{hash}
 \alias{coords}
 \alias{phangorn-internal}
 \alias{map_duplicates}
@@ -16,7 +16,7 @@ threshStateC(x, thresholds)
 candidate_tree(x, method = c("unrooted", "ultrametric", "tipdated"),
   eps = 1e-08, tip.dates = NULL, ...)
 
-hash_phylo(x, ...)
+hash(x, ...)
 
 coords(obj, dim = "3D")
 
