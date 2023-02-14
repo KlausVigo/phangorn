@@ -209,6 +209,13 @@ std::vector< std::vector<int> > bipartCPP(IntegerMatrix orig, int nTips) {
     return out;    // return the list
 }
 
+// [[Rcpp::export]]
+std::vector< std::vector<int> > sorted_bipartCPP(IntegerMatrix orig, int nTips) {
+  std::vector< std::vector<int> > out=bipartCPP(orig, nTips);
+  std::sort(out.begin(), out.end());
+  return out;
+}
+
 
 // [[Rcpp::export]]
 std::vector< std::vector<int> > short_bipCPP(IntegerMatrix orig, int nTips) {

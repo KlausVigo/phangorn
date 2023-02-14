@@ -33,6 +33,10 @@ bipartCPP <- function(orig, nTips) {
     .Call(`_phangorn_bipartCPP`, orig, nTips)
 }
 
+sorted_bipartCPP <- function(orig, nTips) {
+    .Call(`_phangorn_sorted_bipartCPP`, orig, nTips)
+}
+
 short_bipCPP <- function(orig, nTips) {
     .Call(`_phangorn_short_bipCPP`, orig, nTips)
 }
