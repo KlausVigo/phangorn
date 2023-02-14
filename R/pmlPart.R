@@ -248,8 +248,8 @@ makePart <- function(fit, rooted, weight = ~index + genes) {
 #}
 #
 #
-multiphyDat2pmlPart <- function(x, method="unrooted", tip.dates=NULL,
-                                 shared_tree = TRUE, ...) {
+multiphyDat2pmlPart <- function(x, method="unrooted", tip.dates=NULL, ...) {
+  shared_tree <- TRUE
   if (shared_tree) {
     concatenate_x <- do.call(cbind.phyDat, x@seq)
     tree <- candidate_tree(concatenate_x, method=method, tip.dates=tip.dates)
@@ -308,6 +308,8 @@ plot.pmlPart <- function(x, ...) {
 #' partition.
 #' @param method One of "unrooted", "ultrametric" or "tiplabeled". Only unrooted
 #' is properly supported right now.
+#' @param tip.dates A named vector of sampling times associated to the
+#' tips/sequences. Leave empty if not estimating tip dated phylogenies.
 #' @param \dots Further arguments passed to or from other methods.
 #' @param x an object of class \code{pmlPart}
 #' @return \code{kcluster} returns a list with elements
