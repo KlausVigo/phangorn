@@ -438,7 +438,7 @@ pmlPart <- function(formula, object, control = pml.control(epsilon = 1e-8,
 
   while (eps > epsilon & m < maxit) {
     loli <- 0
-    if (AllEdge) fits <- optimPartEdge(fits)
+#    if (AllEdge) fits <- optimPartEdge(fits)
     if (any(c(PartNni, PartBf, PartInv, PartQ, PartGamma, PartEdge, PartRate))){
       for (i in 1:p) {
         fits[[i]] <- optim.pml(fits[[i]], optNni = PartNni, optBf = PartBf,
