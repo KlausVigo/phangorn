@@ -439,7 +439,7 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
                      rearrangements = "SPR", perturbation = "ratchet", ...) {
   eps <- 1e-08
   trace <- trace - 1
-
+  ref <- names(data)
   start_trees <- vector("list", maxit)
   search_trees <- vector("list", maxit)
   tree <- NULL
@@ -468,6 +468,7 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
     else tree <- stree(nTips, tip.label = nam)
     if(add_taxa) tree <- addTaxa(tree, attr(data, "duplicated"))
     if(!ROOTED) tree <- unroot(tree)
+    tree <- relabel(result, ref)
     return(tree)
   }
 
@@ -495,6 +496,8 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
   if(!is.null(attr(data, "duplicated"))){
     result <- addTaxa(result, attr(data, "duplicated"))
   }
+  result <- relabel(result, ref)
+  hr <- hash(result)
   on.exit({
     if (!all && inherits(result, "multiPhylo")) result <- result[[1]]
 #    if(!is.null(attr(data, "duplicated")))
@@ -548,6 +551,8 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
       p_trees <- addTaxa(p_trees, attr(data, "duplicated"))
       trees <- addTaxa(trees, attr(data, "duplicated"))
     }
+    trees <- relabel(trees, ref)
+    p_trees <- relabel(p_trees, ref)
     start_trees[[i]] <- p_trees
     search_trees[[i]] <- trees
     pscores <- attr(trees, "pscore")
@@ -556,12 +561,18 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
       kmax <- 1
       result <- trees
       tree <- trees
+      hr <- hash(trees)
       mp <- mp1
     }
     else{
       kmax <- kmax + 1
-      if( all && (mp1 < (mp + eps)) && all(RF.dist(trees, result) > 0))
-        result <- c(result, trees)
+      if( all && (mp1 < (mp + eps))){ # && all(RF.dist(trees, result) > 0)
+        ht <- hash(trees)
+        if(!(ht %in% hr)){
+          hr <- c(hr, ht)
+          result <- c(result, trees)
+        }
+      }
     }
     if (trace >= 0)
       print(paste("Best pscore so far:", mp))

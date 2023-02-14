@@ -106,6 +106,7 @@ print.splits <- function(x, maxp = getOption("max.print"),
 
 changeOrder <- function(x, labels) {
   oldL <- attr(x, "labels")
+  if(identical(oldL, labels)) return(x)
   ind <- match(oldL, labels)
   for (i in seq_along(x))
     x[[i]] <- sort(ind[x[[i]]])

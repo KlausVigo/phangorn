@@ -828,3 +828,18 @@ mrca2 <- function(phy, full = FALSE) {
   }
   M
 }
+
+
+relabel <- function(y, ref) {
+  label <- y$tip.label
+  if (identical(label, ref)) return(y)
+  if (length(label) != length(ref))
+    stop("one tree has a different number of tips")
+  ilab <- match(label, ref)
+  if (any(is.na(ilab)))
+    stop("one tree has different tip labels")
+  ie <- match(seq_along(ref), y$edge[, 2])
+  y$edge[ie, 2] <- ilab
+  y$tip.label <- ref
+  y
+}
