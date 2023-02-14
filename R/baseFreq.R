@@ -47,6 +47,15 @@ baseFreq <- function(obj, freq=FALSE, all=FALSE, drop.unused.levels = FALSE){
 }
 
 
+const_site <- function(x){
+  tmp <- lli(x)
+  ind <- which(rowSums(tmp)>1e-6)
+  sw <- sum(attr(x, "weight"))
+  weight <- attr(x, "weight")[ind]
+  # list(index=ind, weight=attr(x, "weight")[ind], M=tmp[ind,])
+  sum(weight)
+}
+
 #' @importFrom generics glance
 #' @export
 generics::glance
@@ -61,10 +70,7 @@ glance.phyDat <- function (x, ...){
   unique_sites <- attr(x, "nr")
   pis <- parsinfo(x)
   parsimony_informative_sites <- sum(attr(x, "weight")[-pis[, 1]])
-  tmp <- logical(unique_sites)
-  for(i in 2:nseq) tmp <- tmp | (x[[1]] != x[[i]])
-  const_sites <- sum(attr(x, "weight")[tmp==0])
   data.frame(nseq=nseq, nchar=nchar, unique_site_pattern=unique_sites,
              parsimony_informative_sites=parsimony_informative_sites,
-             const_sites=const_sites)
+             const_sites=const_site(x))
 }
