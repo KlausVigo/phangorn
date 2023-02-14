@@ -60,12 +60,13 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">multiphyDat2pmlPart</span><span class="op">(</span><span class="va">x</span>, rooted <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">multiphyDat2pmlPart</span><span class="op">(</span><span class="va">x</span>, method <span class="op">=</span> <span class="st">"unrooted"</span>, tip.dates <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  shared_tree <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">pmlPart2multiPhylo</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">pmlPart</span><span class="op">(</span><span class="va">formula</span>, <span class="va">object</span>, control <span class="op">=</span> <span class="fu"><a href="pml.control.html">pml.control</a></span><span class="op">(</span>epsilon <span class="op">=</span> <span class="fl">1e-08</span>, maxit <span class="op">=</span> <span class="fl">10</span>,</span>
-<span>  trace <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>, model <span class="op">=</span> <span class="cn">NULL</span>, rooted <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span>  trace <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>, model <span class="op">=</span> <span class="cn">NULL</span>, method <span class="op">=</span> <span class="st">"unrooted"</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -74,8 +75,9 @@
 <dd><p>an object of class <code>pmlPart</code></p></dd>
 
 
-<dt>rooted</dt>
-<dd><p>Are the gene trees rooted (ultrametric) or unrooted.</p></dd>
+<dt>method</dt>
+<dd><p>One of "unrooted", "ultrametric" or "tiplabeled". Only unrooted
+is properly supported right now.</p></dd>
 
 
 <dt>...</dt>
@@ -154,8 +156,8 @@ of a <code>pmlPart</code> object.</p>
 <span class="r-in"><span><span class="va">weight</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs</a></span><span class="op">(</span><span class="op">~</span> <span class="va">index</span><span class="op">+</span><span class="va">genes</span>,<span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">yeast</span>, <span class="st">"index"</span><span class="op">)</span><span class="op">)</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">sp</span> <span class="op">&lt;-</span> <span class="fu">pmlPart</span><span class="op">(</span><span class="va">edge</span> <span class="op">~</span> <span class="va">rate</span> <span class="op">+</span> <span class="va">inv</span>, <span class="va">fits</span>, weight<span class="op">=</span><span class="va">weight</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> loglik: -61530.38 --&gt; -59834.29 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> loglik: -59834.29 --&gt; -59833.25 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> loglik: -61530.38 --&gt; -59834.53 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> loglik: -59834.53 --&gt; -59833.25 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> loglik: -59833.25 --&gt; -59833.25 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> loglik: -59833.25 --&gt; -59833.25 </span>
 <span class="r-in"><span><span class="va">sp</span></span></span>
@@ -163,13 +165,13 @@ of a <code>pmlPart</code> object.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> loglikelihood: -59833.25 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> loglikelihood of partitions:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   -9827.497 -8159.024 -8056.932 -5237.677 -3809.733 -5503.277 -2752.2 -7200.052 -4632.422 -4654.434 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -9827.497 -8159.024 -8056.932 -5237.677 -3809.733 -5503.278 -2752.201 -7200.052 -4632.422 -4654.434 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> AIC:  119730.5  BIC:  119963.5 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Proportion of invariant sites: 0.4000129 0.3179377 0.4746756 0.4490179 0.4122204 0.2912345 0.2419215 0.3097905 0.4794272 0.3884177 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Proportion of invariant sites: 0.400013 0.3179343 0.4746806 0.4490181 0.4122212 0.2912353 0.2419224 0.309791 0.479427 0.3884142 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Rates:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1.108058 0.9656371 0.8692633 0.8928421 0.8097406 1.266635 1.296066 1.212794 0.8425937 0.8275096 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.108065 0.9656382 0.8692411 0.8928463 0.8097417 1.266639 1.296069 1.212799 0.8425989 0.8275112 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Base frequencies:  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [,1] [,2] [,3] [,4]</span>
