@@ -6,7 +6,7 @@ hash <- function (x, ...) UseMethod("hash")
 hash.phylo <- function(x, rooted=FALSE, ...){
   if(has.singles(x)) x <- collapse.singles(x)
   if(!rooted)x <- unroot(x)
-  if(rooted && !is.rooted(x)) error("x must be rooted")
+  if(rooted && !is.rooted(x)) stop("x must be rooted")
   x <- reorder(x, "postorder")
   nTips <- as.integer(length(x$tip.label))
   if(rooted){
