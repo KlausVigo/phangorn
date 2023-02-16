@@ -16,7 +16,7 @@ bibentry(bibtype = "Article",
 
 bibentry(bibtype = "Article",
     author = c(person("Klaus", "Schliep"), person("Alastair J.", "Potts"),
-                person("David A.", "Morrison"), person("Guido W.", "Grimm"))
+                person("David A.", "Morrison"), person("Guido W.", "Grimm")),
     title = "Intertwining phylogenetic trees and networks",
     journal = "Methods in Ecology and Evolution",
     volume = "8",
