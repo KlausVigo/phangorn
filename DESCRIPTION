@@ -55,6 +55,7 @@ Imports:
     stats,
     utils
 Suggests:
+    apex,
     Biostrings,
     knitr,
     magick,
