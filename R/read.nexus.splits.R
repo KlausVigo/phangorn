@@ -505,3 +505,52 @@ write.splits <- function(x, file = "", zero.print = ".", one.print = "|",
     cat("\n", paste(cx[i, ], collapse = ""), "\n", file = file, append = TRUE)
   }
 }
+
+
+read.nexus.charset <- function(file){
+  X <- scan(file = file, what = "", sep = "\n", quiet = TRUE)
+  X <- gsub("\\[(.*?)\\]", "", X)
+  setStart <- grep("BEGIN SETS;", X, ignore.case = TRUE)
+  if (length(setStart) == 0) return(NULL)
+  setEnd <- grep("END;", X, ignore.case = TRUE)
+  setEnd <- setEnd[setEnd > setStart][1]
+  X <- gsub(";", "", X)
+  tmp <- grep("Charset", X, ignore.case = TRUE)
+  if(length(tmp) == 0) return(NULL)
+  charset <- X[tmp]
+  charset <- gsub("charset ", "", charset, ignore.case = TRUE)
+  nam <- character(length(charset))
+  cset <- character(length(charset))
+  for(i in seq_along(charset)){
+    tmp <- strsplit(charset[i], "=")[[1]]
+    nam[i] <- trimws(tmp[1])
+    cset[i] <- trimws(tmp[2])
+  }
+  res <- vector("list", length(nam))
+  names(res) <- nam
+  for(i in seq_along(cset)){
+    tmp <- strsplit(cset[i], " ")[[1]]
+    for (j in tmp){
+      if(grepl("/", j)){
+        y123 <- as.numeric(strsplit(j, "/")[[1]])
+        y12 <-  as.numeric(strsplit(y123, "-")[[1]])
+        res[[i]] <- c(res[[i]], seq(y12[1], y12[2], y123[3]))
+      } else if(grepl("-", j)){
+        y12 <-  as.numeric(strsplit(j, "-")[[1]])
+        res[[i]] <- c(res[[i]], seq(y12[1], y12[2]))
+      } else res[[i]] <- c(res[[i]], j)
+    }
+  }
+  res
+}
+
+
+read.nexus.multiphyDat <- function(file, ...){
+  dat <- read.phyDat(file, format="nexus", ...)
+  genes <- read.nexus.charset(file)
+  if(is.null(genes)) stop(paste(file, "does not contain Charset!"))
+  seq <- lapply(genes, \(x, dat)dat[,x], dat)
+  names(seq) <- names(genes)
+  if(requireNamespace("apex"))seq <- new("multiphyDat", seq = seq, add.gaps = FALSE)
+  seq
+}
