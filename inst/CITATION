@@ -4,7 +4,7 @@ citHeader("Use 2011 to cite phangorn in a publication; 2017 for plotting phyloge
 
 bibentry(bibtype = "Article",
 	title = "phangorn: phylogenetic analysis in R",
-        author = personList(as.person("K.P. Schliep")),
+        author = c(person("Klaus", "Schliep")),
 	journal = "Bioinformatics",
   	year = "2011",
 	volume = "27",
@@ -15,7 +15,8 @@ bibentry(bibtype = "Article",
 
 
 bibentry(bibtype = "Article",
-    author = "Schliep, Klaus and Potts, Alastair J. and Morrison, David A. and Grimm, Guido W.",
+    author = c(person("Klaus", "Schliep"), person("Alastair J.", "Potts"),
+                person("David A.", "Morrison"), person("Guido W.", "Grimm"))
     title = "Intertwining phylogenetic trees and networks",
     journal = "Methods in Ecology and Evolution",
     volume = "8",
