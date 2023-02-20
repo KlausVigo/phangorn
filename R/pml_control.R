@@ -5,12 +5,28 @@
 #'
 #' \code{pml.control} controls the fitting process. \code{epsilon} and
 #' \code{maxit} are only defined for the most outer loop, this affects
-#' \code{pmlCluster}, \code{pmlPart} and \code{pmlMix}.  \code{epsilon} is
-#' defined as (logLik(k)-logLik(k+1))/logLik(k+1), this seems to be a good
-#' heuristics which works reasonably for small and large trees or alignments.
+#' \code{pmlCluster}, \code{pmlPart} and \code{pmlMix}. When
+#'
+#' \code{epsilon} is not an absolute difference between, but instead is
+#' defined as (logLik(k)-logLik(k+1))/logLik(k+1). This seems to be a good
+#' compromise and to work reasonably well for small and large trees or
+#' alignments.
+#'
 #' If \code{trace} is set to zero than no out put is shown, if functions are
 #' called internally than the trace is decreased by one, so a higher of trace
 #' produces more feedback.
+#'
+#' \code{statefreq} controls if base/state frequencies are optimized or
+#' empirical estimates are taken, when this applies. For some nucleotide models
+#' (e.g. JC, SYM) equal base frequencies and for amino acid models precomputed
+#' state frequencies are used, if not '+F' is specified.
+#'
+#' \code{epsilon} might be ignored if duplicated sequences in the alignment are
+#' observed. In this case the analysis is performed only on unique sequences and
+#' duplicated taxa are added to the tree with zero edge length. This may lead to
+#' multifurcations if there are three or more identical sequences. After
+#' optimization it is good practice to prune away edges of length \code{epsilon}
+#' using \code{di2multi}.
 #'
 ### @param control A list of parameters for controlling the fitting process.
 #' @param epsilon Stop criterion for optimization (see details).
