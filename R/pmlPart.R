@@ -249,9 +249,12 @@ makePart <- function(fit, rooted, weight = ~index + genes) {
 #
 #
 multiphyDat2pmlPart <- function(x, method="unrooted", tip.dates=NULL, ...) {
+  if(is.list(x) && all(sapply(x,inherits, "phyDat"))) seq  <- x
+  else if(inherits(x, "multiphyDat")) seq <- x@seq
+  else stop("x must be of class 'multiphyDat' or a list of 'phyDat' objects!")
   shared_tree <- TRUE
   if (shared_tree) {
-    concatenate_x <- do.call(cbind.phyDat, x@seq)
+    concatenate_x <- do.call(cbind.phyDat, seq)
     tree <- candidate_tree(concatenate_x, method=method, tip.dates=tip.dates)
   }
   else tree <- NULL
@@ -261,7 +264,7 @@ multiphyDat2pmlPart <- function(x, method="unrooted", tip.dates=NULL, ...) {
     }
     pml(tree, x, ...)
   }
-  fits <- lapply(x@seq, fun, tree = tree, ...)
+  fits <- lapply(seq, fun, tree = tree, ...)
   fits
 }
 
@@ -475,6 +478,7 @@ pmlPart <- function(formula, object, control = pml.control(epsilon = 1e-8,
       fits <- optimPartEdge(fits)
       fits <- optimPartNNI(fits, AllEdge)
       if (trace > 0) cat(attr(fits, "swap"), " NNI operations performed")
+      if(attr(fits, "swap") == 0) AllNNI <- FALSE
     }
     if (AllEdge) fits <- optimPartEdge(fits)
     if (PartRate) {
@@ -627,6 +631,7 @@ pmlCluster.fit <- function(formula, fit, weight, p = 4, part = NULL,
       df2 <- df2 + 1
     }
     if (AllNNI) {
+      fits <- optimPartEdge(fits)
       fits <- optimPartNNI(fits, AllEdge)
       if (trace > 0) cat(attr(fits, "swap"), " NNI operations performed")
       swap <- attr(fits, "swap")
@@ -933,7 +938,7 @@ optNNI <- function(fit, INDEX) {
 }
 
 
-optimPartNNI <- function(object, AllEdge = TRUE, ...) {
+optimPartNNI <- function(object, AllEdge = TRUE, trace=0, ...) {
   tree <- object[[1]]$tree
   INDEX <- indexNNI(tree)
   l <- length(object)
@@ -950,7 +955,7 @@ optimPartNNI <- function(object, AllEdge = TRUE, ...) {
 
   swap <- 0
   candidates <- loglik > loglik0
-
+browser()
   while (any(candidates)) {
     ind <- which.max(loglik)
     loglik[ind] <- -Inf
@@ -968,7 +973,7 @@ optimPartNNI <- function(object, AllEdge = TRUE, ...) {
 
     if (tmpll < loglik0)
       candidates[ind] <- FALSE
-    if (tmpll > loglik0) {
+    if (tmpll > loglik0 + 1e-8) {
 
       swap <- swap + 1
       tree <- tree2
@@ -985,7 +990,7 @@ optimPartNNI <- function(object, AllEdge = TRUE, ...) {
       }
       loglik0 <- 0
       for (i in 1:l) loglik0 <- loglik0 + logLik(object[[i]])
-      cat(loglik0, "\n")
+      if(trace>0) cat(loglik0, "\n")
     }
   }
   if (AllEdge) object <- optimPartEdge(object)
