@@ -254,10 +254,7 @@ fit_td <- pml_bb(H3N2, model="GTR+G(4)", method="tipdated", tip.dates=dates,
 ```
 And at last we plot the tree with a timescale. 
 ```{r tipdated_plot}
-tree_td <- fit_td$tree
-root_time <- max(dates) - max(node.depth.edgelength(tree_td))
-plot(tree_td, show.tip.label = FALSE)
-axisPhylo(root.time = root_time, backward = FALSE)
+plot(fit_td, show.tip.label = FALSE)
 ```
 
 While the loglikelihood is lower than for an unrooted tree, we have to keep in mind that rooted trees use less parameters.
