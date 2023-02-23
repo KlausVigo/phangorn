@@ -1,14 +1,26 @@
     CHANGES in PHANGORN VERSION 2.12.0
 
-NEW FEATURES
+OTHER CHANGES
 
     o pml.control got an argument statefreq, which controls if "empirical"
 
-      or (ML) "estimated" state/base frequencies are used/computed. Speeds up
+      or (ML) "estimated" state/base frequencies are used/computed. The change
 
-      modelTest and pml_bb/optim.pml. For large state space (amino acids,
+      of the default to "empirical" speeds up functions modelTest and
 
-      codons) and small datasets the "estimated" might not be very reliable.
+      pml_bb/optim.pml, but estimates will differ to previous versions, which
+
+      was implicitly using "estimated".
+
+      In cases where few specific transitions are observed (e.g. large state
+
+      space (amino acids, codons) and small datasets the "empirical" might be
+
+      more robust.
+
+    o some improvements to pmlPart
+
+    o nicer defaults for plot.pml
 
 
     CHANGES in PHANGORN VERSION 2.11.0
