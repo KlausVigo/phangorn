@@ -61,22 +61,6 @@ vcov.pml <- function(object, ...) {
 
 
 #' @export
-plot.pml <- function(x, type="phylogram", ...){
-  type <- match.arg(type, c("phylogram","cladogram", "fan", "unrooted",
-                            "radial", "tidy"))
-  plot.phylo(x$tree, type=type, ...)
-  if(is.rooted(x$tree) && (type %in% c("phylogram","cladogram"))){
-    if(!is.null(x$tip.dates) && x$method=="tipdated"){
-      root_time <- max(x$tip.dates) - max(node.depth.edgelength(x$tree))
-      axisPhylo(root.time = root_time, backward = FALSE)
-    }
-    else axisPhylo()
-  }
-  else add.scale.bar()
-}
-
-
-#' @export
 print.pml <- function(x, ...) {
   model <- guess_model(x)
   cat("model:", model, "\n")
