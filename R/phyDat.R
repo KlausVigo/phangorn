@@ -174,7 +174,7 @@ rbind.phyDat <- function(...){
   m <- lengths(x)
   mcs <- c(0, cumsum(m))
   res <- matrix(NA_character_, sum(m), l[1])
-  for(i in 1:length(x)){
+  for(i in seq_along(x)){
     res[(mcs[i]+1):mcs[i+1], ] <- as.character(x[[i]])
   }
   phyDat(res, type=types[1])

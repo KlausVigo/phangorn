@@ -2195,10 +2195,9 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     object <- list(logLik = tmp$loglik, inv = inv, k = k, shape = shape,
       Q = Q, bf = bf, rate = rate, siteLik = tmp$siteLik,
       weight = attr(data, "weight"),
-      g = g, w = w, eig = eig, data = data, model = model,
-      INV = INV, ll.0 = ll.0, tree = tree, lv = tmp$resll,
-      call = call, df = df, wMix = wMix, llMix = llMix, ASC=ASC,
-      site.rate=site.rate)
+      g = g, w = w, eig = eig, data = data, model = model, method=method,
+      INV = INV, ll.0 = ll.0, tree = tree, lv = tmp$resll, call = call, df = df,
+      wMix = wMix, llMix = llMix, ASC=ASC, site.rate=site.rate)
     if (type == "CODON") {
       object$dnds <- dnds
       object$tstv <- tstv

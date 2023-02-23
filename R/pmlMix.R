@@ -1,7 +1,7 @@
 logLik_pmlMix <- function(fits, weight, omega){
   res <- NULL
-  for(i in 1:length(omega)){
-    res <- fits[[1]]$ll.0 * omega[i]
+  for(i in seq_along(omega)){
+    res <- res + fits[[i]]$ll.0 * omega[i]
   }
   sum(log(res)*weight)
 }
