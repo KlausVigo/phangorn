@@ -87,6 +87,7 @@ pml_bb <- function(x, model=NULL, rearrangement="stochastic",
                      optInv=para$optInv, rearrangement = rearrangement,
                      optRate=optRate, optRooted=optRooted, ...)
   }
+  if(!is.null(tip.dates)) fit$tip.dates <- tip.dates
   fit
 }
 
