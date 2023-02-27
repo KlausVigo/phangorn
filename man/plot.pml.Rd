@@ -29,9 +29,9 @@ fit_td <- pml_bb(H3N2, model="JC", method="tipdated", tip.dates=dates,
                  rearrangement="none", control = pml.control(trace = 0))
 plot(fit_td, show.tip.label = FALSE)
 # Same as:
-root_time <- max(dates) - max(node.depth.edgelength(fit_td$tree))
-plot(fit_td$tree, show.tip.label = FALSE)
-axisPhylo(root.time = root_time, backward = FALSE)
+# root_time <- max(dates) - max(node.depth.edgelength(fit_td$tree))
+# plot(fit_td$tree, show.tip.label = FALSE)
+# axisPhylo(root.time = root_time, backward = FALSE)
 
 fit_unrooted <- pml_bb(H3N2, model="JC", rearrangement="none",
                        control = pml.control(trace = 0))

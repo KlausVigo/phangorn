@@ -1643,7 +1643,7 @@ orderNNI <- function(tree, nTips) {
 
 rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV, RELL=NULL,
                        control = pml.control(epsilon = 1e-08, maxit = 25,
-                                             trace = 0), ...) {
+                                             trace = 0), aLRT=FALSE, ...) {
 #  ind0 <- which(ll.0 > 0)
   contrast <- attr(data, "contrast")
   tree$edge.length[tree$edge.length < 1e-08] <- 1e-08
@@ -1928,7 +1928,6 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV, RELL=NULL,
           }
         }
       }
-
     }
     ll2 <- pml.fit4(tree, data, bf=bf, eig=eig, ll.0=ll.0, w=w, g=g, ...)
     eps <- (ll - ll2) / ll2
@@ -2642,7 +2641,7 @@ index2edge <- function(x, root) {
 
 
 pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, wMix, llMix,
-                    RELL=NULL, ...) {
+                    RELL=NULL, aLRT=FALSE, ...) {
   k <- length(w)
   INDEX <-  indexNNI3(tree)
   tmpl <- pml.fit4(tree, data, bf=bf, g=g, w=w, eig=eig, inv=inv,
@@ -2727,6 +2726,11 @@ pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, wMix, llMix,
   }
   swap <- 0
   eps0 <- 1e-6
+  if(aLRT) {
+    L <- matrix(loglik, nrow = 2L, byrow=TRUE)
+    return(list(ll=L, ll0=ll))
+  }
+# return loglik, loli for approx LRT
   candidates <- loglik > ll + eps0
   #    cat("candidates", sum(candidates), "\n")
   INDEX2 <- t(apply(INDEX, 1, index2edge, root = getRoot(tree)))
@@ -2762,7 +2766,8 @@ pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, wMix, llMix,
 }
 
 
-opt_nni <- function(tree, data, rooted, iter_max, trace, ll, RELL=NULL, ...){
+opt_nni <- function(tree, data, rooted, iter_max, trace, ll, RELL=NULL,
+                    aLRT=FALSE, ...){
   swap <- 0
   iter <- 0
   llstart <- ll

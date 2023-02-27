@@ -31,11 +31,11 @@ bs <- bootstrap.phyDat(Laurasiatherian,
 tree_compat <- allCompat(bs, rooted=TRUE) |>
               add_edge_length(bs)
 plot(tree_compat)
-add_boxplot(tree_compat, bs)
+add_boxplot(tree_compat, bs, boxwex=.7)
 }
 \seealso{
 \code{\link{node.depth.edgelength}}, \code{\link{consensus}},
-\code{\link{maxCladeCred}}
+\code{\link{maxCladeCred}}, \code{\link{add_boxplot}}
 }
 \author{
 Klaus Schliep

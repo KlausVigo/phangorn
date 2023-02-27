@@ -53,9 +53,9 @@ edge_length_matrix <- function(tree, trees, rooted=TRUE){
 ##' tree_compat <- allCompat(bs, rooted=TRUE) |>
 ##'               add_edge_length(bs)
 ##' plot(tree_compat)
-##' add_boxplot(tree_compat, bs)
+##' add_boxplot(tree_compat, bs, boxwex=.7)
 ##' @seealso \code{\link{node.depth.edgelength}}, \code{\link{consensus}},
-##' \code{\link{maxCladeCred}}
+##' \code{\link{maxCladeCred}}, \code{\link{add_boxplot}}
 ##' @keywords aplot
 ##' @export
 add_edge_length <- function(tree, trees, fun=\(x)median(na.omit(x)),
@@ -100,7 +100,8 @@ add_edge_length <- function(tree, trees, fun=\(x)median(na.omit(x)),
 ##' add_ci(tree, trees)
 ##' plot(tree, direction="downwards")
 ##' add_boxplot(tree, trees, boxwex=.7)
-##' @seealso \code{\link{plot.phylo}}, \code{\link{plotBS}}
+##' @seealso \code{\link{plot.phylo}}, \code{\link{plotBS}},
+##' \code{\link{add_edge_length}}
 ##' @keywords aplot
 ##' @rdname add_ci
 ##' @export
