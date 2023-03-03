@@ -12,12 +12,6 @@ OTHER CHANGES
 
       was implicitly using "estimated".
 
-      In cases where few specific transitions are observed (e.g. large state
-
-      space (amino acids, codons) and small datasets the "empirical" might be
-
-      more robust.
-
     o some improvements to pmlPart
 
     o nicer defaults for plot.pml
