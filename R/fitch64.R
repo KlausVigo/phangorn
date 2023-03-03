@@ -152,7 +152,8 @@ fitch_spr <- function (tree, f, trace=0L)
 }
 
 
-indexNNI_fitch <- function(tree) {
+indexNNI_fitch <- function(tree, offset=2L*Ntip(tree)) {
+  offset <- as.integer(offset)
   parent <- tree$edge[, 1]
   child <- tree$edge[, 2]
   ind <- child
@@ -168,18 +169,20 @@ indexNNI_fitch <- function(tree) {
   #       e-----f       d is closest to root, f is root from subtree a,b,c
   #      /       \
   #     b         c     c(a,b,c,d,e,f)
-
   k <- 1
   for (i in ind) {
     f <- pvector[i]
     ab <- cvector[[i]]
     ind1 <- cvector[[f]]
     cd <- ind1[ind1 != i]
+    ef <- c(i, f)
     if (pvector[f]){
-      cd <- c(cd, f + 2L * nTips)
-      ef <- c(i, f)
+      cd <- c(cd, f + offset)
     }
-    else ef <- c(i, cd[2])
+    #    else if(rooted) cd <- c(cd, NA_integer_)
+    #    else if(!rooted) ef <- c(i, cd[2])
+    #    else cd[2] <- f
+    if (length(cd)==1) cd <- c(cd, NA_integer_) # if trees are rooted
     edgeMatrix[k, ] <- c(ab, cd, ef)
     k <- k + 1
   }
