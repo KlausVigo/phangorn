@@ -220,8 +220,6 @@ fitch_nni <- function(tree, f) {
     ind <- which.min(pscore)
     tree2 <- changeEdge(tree, INDEX[candidates[ind], c(2, 3)])
     test <- f$pscore(tree2$edge)
-    if (test >= p0)
-      candidates <- candidates[-ind]
     if (test < p0) {
       p0 <- test
       swap <- swap + 1
@@ -229,6 +227,7 @@ fitch_nni <- function(tree, f) {
       indi <- which(INDEX[, 5] %in% INDEX[candidates[ind],])
       candidates <- setdiff(candidates, indi)
     }
+    else candidates <- candidates[-ind]
   }
   p0 <- f$pscore(tree$edge)
   list(tree = tree, pscore = p0, swap = swap)
