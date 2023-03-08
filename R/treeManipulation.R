@@ -46,10 +46,10 @@ reroot <- function (tree, node, switch_root=TRUE) {
 changeEdge <- function(tree, swap, edge = NULL, edge.length = NULL) {
   attr(tree, "order") <- NULL
   child <- tree$edge[, 2]
-  tmp <- numeric(max(child))
+  tmp <- integer(max(child))
   tmp[child] <- seq_along(child)
-  tree$edge[tmp[swap[1]], 2] <- swap[2]
-  tree$edge[tmp[swap[2]], 2] <- swap[1]
+  tree$edge[tmp[swap[1]], 2] <- as.integer(swap[2])
+  tree$edge[tmp[swap[2]], 2] <- as.integer(swap[1])
   if (!is.null(edge)) {
     tree$edge.length[tmp[edge]] <- edge.length
   }
