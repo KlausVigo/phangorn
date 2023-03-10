@@ -237,13 +237,11 @@ RcppExport SEXP optE(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP,
 RcppExport SEXP optQrtt(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 RcppExport SEXP PML0(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 RcppExport SEXP PML4(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-RcppExport SEXP pNodes(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 RcppExport SEXP PWI(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 RcppExport SEXP rowMax(SEXP, SEXP, SEXP);
-RcppExport SEXP sankoff3(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+RcppExport SEXP sankoff_nni_c(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 RcppExport SEXP sankoff3B(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 RcppExport SEXP sankoffMPR(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-RcppExport SEXP sankoffQuartet(SEXP, SEXP, SEXP, SEXP);
 RcppExport SEXP _rcpp_module_boot_Fitch_mod();
 
 static const R_CallMethodDef CallEntries[] = {
@@ -285,13 +283,11 @@ static const R_CallMethodDef CallEntries[] = {
     {"optQrtt",                    (DL_FUNC) &optQrtt,                    17},
     {"PML0",                       (DL_FUNC) &PML0,                       14},
     {"PML4",                       (DL_FUNC) &PML4,                       15},
-    {"pNodes",                     (DL_FUNC) &pNodes,                      6},
     {"PWI",                        (DL_FUNC) &PWI,                         6},
     {"rowMax",                     (DL_FUNC) &rowMax,                      3},
-    {"sankoff3",                   (DL_FUNC) &sankoff3,                    8},
+    {"sankoff_nni_c",              (DL_FUNC) &sankoff_nni_c,              10},
     {"sankoff3B",                  (DL_FUNC) &sankoff3B,                  10},
     {"sankoffMPR",                 (DL_FUNC) &sankoffMPR,                  7},
-    {"sankoffQuartet",             (DL_FUNC) &sankoffQuartet,              4},
     {NULL, NULL, 0}
 };
 

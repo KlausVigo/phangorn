@@ -219,29 +219,16 @@ mpr.help <- function(tree, data, cost = NULL) {
     cost <- matrix(1, l, l)
     cost <- cost - diag(l)
   }
-  weight <- attr(data, "weight")
-  p <- attr(data, "nr")
-  kl <- TRUE
-  i <- 1
   dat <- prepareDataSankoff(data)
-  for (i in seq_along(dat)) storage.mode(dat[[i]]) <- "double"
-  tmp <- fit.sankoff(tree, dat, cost, returnData = "data")
-  p0 <- tmp[[1]]
-  datf <- tmp[[2]]
-  datp <- pnodes(tree, datf, cost)
-
+  datp <- pnodes(tree, dat, cost)
   nr <- attr(data, "nr")
   nc <- attr(data, "nc")
-  node <- tree$edge[, 1]
-  edge <- tree$edge[, 2]
-
-  node <- as.integer(node - 1L)
-  edge <- as.integer(edge - 1L)
-
-  res <- .Call('sankoffMPR', datf, datp, as.numeric(cost), as.integer(nr),
-    as.integer(nc), node, edge)
+  node <- as.integer(tree$edge[, 1] - 1L)
+  edge <- as.integer(tree$edge[, 2] - 1L)
+  res <- .Call('sankoffMPR', datp, as.numeric(cost), as.integer(nr),
+    as.integer(nc), node, edge, as.integer(Nnode(tree)))
   root <- getRoot(tree)
-  res[[root]] <- datf[[root]]
+  res[[root]] <- datp[[root]]
   res
 }
 

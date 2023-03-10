@@ -1,12 +1,3 @@
-#
-# Maximum Parsimony
-#
-sankoff.quartet <- function(dat, cost, p, l, weight) {
-  erg <- .Call('sankoffQuartet', sdat = dat, sn = p, scost = cost, sk = l)
-  sum(weight * erg)
-}
-
-
 #' Parsimony tree.
 #'
 #'
@@ -23,8 +14,6 @@ sankoff.quartet <- function(dat, cost, p, l, weight) {
 #' binary trees.
 #'
 #' @aliases parsimony
-#' @aliases optim.parsimony sankoff fitch pratchet
-#' random.addition acctran
 #' @param data A object of class phyDat containing sequences.
 #' @param tree tree to start the nni search from.
 #' @param method one of 'fitch' or 'sankoff'.
@@ -242,12 +231,6 @@ RI <- function(tree, data, cost = NULL, sitewise = FALSE) {
 }
 
 
-
-#
-# Sankoff
-#
-
-
 old2new.phyDat <- function(obj) {
   att <- attributes(obj)
   l <- length(obj)
@@ -274,59 +257,6 @@ new2old.phyDat <- function(data) {
 }
 
 
-prepareDataSankoff <- function(data) {
-  contrast <- attr(data, "contrast")
-  contrast[contrast == 0] <- 1e+06
-  contrast[contrast == 1] <- 0
-  for (i in seq_along(data)) data[[i]] <- contrast[data[[i]], , drop = FALSE]
-  data
-}
-
-
-fit.sankoff <- function(tree, data, cost,
-                        returnData = c("pscore", "site", "data")) {
-  tree <- reorder(tree, "postorder")
-  returnData <- match.arg(returnData)
-  node <- tree$edge[, 1]
-  edge <- tree$edge[, 2]
-  weight <- attr(data, "weight")
-  nr <- attr(data, "nr")
-  q <- length(tree$tip.label)
-  nc <- attr(data, "nc")
-  m <- length(edge) + 1
-  dat <- vector(mode = "list", length = m)
-  dat[1:q] <- data[tree$tip.label]
-  node <- as.integer(node - 1)
-  edge <- as.integer(edge - 1)
-  mNodes <- as.integer(max(node) + 1)
-  tips <- as.integer( (seq_along(tree$tip.label)) - 1)
-  res <- .Call('sankoff3', dat, as.numeric(cost), as.integer(nr),
-    as.integer(nc), node, edge, mNodes, tips)
-  root <- getRoot(tree)
-  erg <- .Call('C_rowMin', res[[root]], as.integer(nr), as.integer(nc))
-  if (returnData == "site") return(erg)
-  pscore <- sum(weight * erg)
-  result <- pscore
-  if (returnData == "data") {
-    result <- list(pscore = pscore, dat = res)
-  }
-  result
-}
-
-
-pnodes <- function(tree, data, cost) {
-  tree <- reorder(tree, "postorder")
-  node <- tree$edge[, 1]
-  edge <- tree$edge[, 2]
-  nr <- nrow(data[[1]])
-  nc <- ncol(data[[1]])
-  node <- as.integer(node - 1)
-  edge <- as.integer(edge - 1)
-  .Call('pNodes', data, as.numeric(cost), as.integer(nr), as.integer(nc),
-    node, edge)
-}
-
-
 indexNNI <- function(tree) {
   parent <- tree$edge[, 1]
   child <- tree$edge[, 2]
@@ -339,7 +269,7 @@ indexNNI <- function(tree) {
   pvector[child] <- parent
   tips  <- !logical(max(parent))
   tips[parent] <-  FALSE
-  # wahrscheinlich schneller: cvector <- allCildren(tree)
+  # wahrscheinlich schneller: cvector <- allChildren(tree)
   cvector <- vector("list", max(parent))
   for (i in seq_along(parent)) cvector[[parent[i]]] <- c(cvector[[parent[i]]],
       child[i])
@@ -360,64 +290,6 @@ indexNNI <- function(tree) {
 }
 
 
-sankoff.nni <- function(tree, data, cost, ...) {
-  if (is.rooted(tree)) tree <- reorder(unroot(tree), "postorder")
-  INDEX <-  indexNNI(tree)
-  rootEdges <- attr(INDEX, "root")
-  if (!inherits(data, "phyDat"))
-    stop("data must be of class phyDat")
-  levels <- attr(data, "levels")
-  l <- length(levels)
-  weight <- attr(data, "weight")
-  p <- attr(data, "nr")
-  i <- 1
-  tmp <- fit.sankoff(tree, data, cost, returnData = "data")
-  p0 <- tmp[[1]]
-  datf <- tmp[[2]]
-  datp <- pnodes(tree, datf, cost)
-
-  parent <- tree$edge[, 1]
-  m <- dim(INDEX)[1]
-  k <- min(parent)
-  pscore <- numeric(2 * m)
-
-  for (i in 1:m) {
-    ei <- INDEX[i, ]
-    datn <- datf[ei[1:4]]
-    if (!(ei[5] %in% rootEdges)) datn[1] <- datp[ei[1]]
-    pscore[(2 * i) - 1] <- sankoff.quartet(datn[ c(1, 3, 2, 4)],
-      cost, p, l, weight)
-    pscore[(2 * i)] <- sankoff.quartet(datn[ c(1, 4, 3, 2)],
-      cost, p, l, weight)
-  }
-  swap <- 0
-  candidates <- pscore < p0
-  while (any(candidates)) {
-
-    ind <- which.min(pscore)
-    pscore[ind] <- Inf
-    if (ind %% 2) swap.edge <- c(2, 3)
-    else swap.edge <- c(2, 4)
-
-    tree2 <- changeEdge(tree, INDEX[(ind + 1) %/% 2, swap.edge])
-    test <- fit.sankoff(tree2, data, cost, "pscore")
-
-    if (test >= p0) candidates[ind] <- FALSE
-    if (test < p0) {
-      p0 <- test
-      swap <- swap + 1
-      tree <- tree2
-      candidates[ind] <- FALSE
-      indi <- which(rep(colSums(apply(INDEX, 1, match, INDEX[(ind + 1) %/% 2, ],
-        nomatch = 0)) > 0, each = 2))
-      candidates[indi] <- FALSE
-      pscore[indi] <- Inf
-    }
-  }
-  list(tree = tree, pscore = p0, swap = swap)
-}
-
-
 #' @rdname parsimony
 #' @export
 optim.parsimony <- function(tree, data, method = "fitch", cost = NULL,
@@ -428,8 +300,6 @@ optim.parsimony <- function(tree, data, method = "fitch", cost = NULL,
       cost = cost, trace = trace, ...)
   result
 }
-
-
 
 
 #' @rdname parsimony
@@ -579,55 +449,3 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
     if ( (kmax >= k) && (i >= minit)) break()
   } # for
 }  # pratchet
-
-
-optim.sankoff <- function(tree, data, cost = NULL, trace = 1, ...) {
-  if (!inherits(tree, "phylo")) stop("tree must be of class phylo")
-  if (is.rooted(tree)) tree <- unroot(tree)
-  tree <- reorder(tree, "postorder")
-  if (!inherits(data, "phyDat")) stop("data must be of class phyDat")
-  addTaxa <- FALSE
-  mapping <- map_duplicates(data)
-  if (!is.null(mapping)) {
-    addTaxa <- TRUE
-    tree2 <- drop.tip(tree, mapping[, 1])
-    tree2 <- unroot(tree2)
-    tree <- reorder(tree2, "postorder")
-  }
-
-  rt <- FALSE
-  dat <- prepareDataSankoff(data)
-  l <- attr(dat, "nc")
-  if (is.null(cost)) {
-    cost <- matrix(1, l, l)
-    cost <- cost - diag(l)
-  }
-
-
-  tree$edge.length <- NULL
-  swap <- 0
-  iter <- TRUE
-  pscore <- fit.sankoff(tree, dat, cost, "pscore")
-
-  on.exit({
-    if (rt) tree <- acctran(tree, data)
-    if (addTaxa) {
-      if (rt) tree <- add.tips(tree, tips = mapping[, 1], where = mapping[, 2],
-          edge.length = rep(0, nrow(mapping)))
-      else tree <- add.tips(tree, tips = mapping[, 1], where = mapping[, 2])
-    }
-    attr(tree, "pscore") <- pscore
-    return(tree)
-  })
-
-  while (iter) {
-    res <- sankoff.nni(tree, dat, cost, ...)
-    tree <- res$tree
-    if (trace > 1) cat("optimize topology: ", pscore, "-->", res$pscore, "\n")
-    pscore <- res$pscore
-    swap <- swap + res$swap
-    if (res$swap == 0) iter <- FALSE
-  }
-  if (trace > 0) cat("Final p-score", pscore, "after ", swap,
-                     "nni operations \n")
-}
