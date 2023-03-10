@@ -955,7 +955,6 @@ optimPartNNI <- function(object, AllEdge = TRUE, trace=0, ...) {
 
   swap <- 0
   candidates <- loglik > loglik0
-browser()
   while (any(candidates)) {
     ind <- which.max(loglik)
     loglik[ind] <- -Inf
