@@ -7,8 +7,8 @@
 \alias{random.addition}
 \alias{parsimony}
 \alias{optim.parsimony}
-\alias{sankoff}
 \alias{pratchet}
+\alias{sankoff}
 \title{Parsimony tree.}
 \usage{
 acctran(tree, data)

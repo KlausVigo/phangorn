@@ -56,14 +56,12 @@ sankoff <- function(tree, data, cost = NULL, site = "pscore") {
     cost <- cost - diag(l)
   }
   if (inherits(tree, "phylo")) return(fit.sankoff(tree, data, cost,
-                                                     returnData = site))
+                                                  returnData = site))
   if (inherits(tree, "multiPhylo")) {
     if (is.null(tree$TipLabel)) tree <- unclass(tree)
     return(sapply(tree, fit.sankoff, data, cost, site))
   }
 }
-
-
 
 
 # traverse the tree
@@ -109,27 +107,6 @@ pnodes <- function(tree, data, cost) {
                 as.double(contr), as.integer(nrow(contr)))
   res[seq_len(Ntip(tree))] <- new2old.phyDat(data)
   res
-}
-
-
-#' @rdname parsimony
-#' @export
-sankoff <- function(tree, data, cost = NULL, site = "pscore") {
-  if (!inherits(data, "phyDat"))
-    stop("data must be of class phyDat")
-  data <- prepareDataSankoff(data)
-  if (is.null(cost)) {
-    levels <- attr(data, "levels")
-    l <- length(levels)
-    cost <- matrix(1, l, l)
-    cost <- cost - diag(l)
-  }
-  if (inherits(tree, "phylo")) return(fit.sankoff(tree, data, cost,
-                                                     returnData = site))
-  if (inherits(tree, "multiPhylo")) {
-    if (is.null(tree$TipLabel)) tree <- unclass(tree)
-    return(sapply(tree, fit.sankoff, data, cost, site))
-  }
 }
 
 
