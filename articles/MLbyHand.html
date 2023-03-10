@@ -89,7 +89,7 @@ Iris Bardel-Kahr</h4>
 Graz<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2023-03-06</h4>
+            <h4 data-toc-skip class="date">2023-03-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/vignettes/MLbyHand.Rmd" class="external-link"><code>vignettes/MLbyHand.Rmd</code></a></small>
       <div class="d-none name"><code>MLbyHand.Rmd</code></div>
@@ -192,17 +192,17 @@ site model with 4 rate categories (using the default shape parameter of
 <pre><code><span><span class="co">## model: GTR+G(4)+I </span></span>
 <span><span class="co">## loglikelihood: -2611 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -1230 </span></span>
-<span><span class="co">## Proportion of invariant sites: 0.00698 </span></span>
+<span><span class="co">## Proportion of invariant sites: 0.006982 </span></span>
 <span><span class="co">## Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
 <span><span class="co">## Shape parameter: 3.082 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
 <span><span class="co">##         a         c         g       t</span></span>
-<span><span class="co">## a  0.0000  0.958581 64.385076  0.8181</span></span>
-<span><span class="co">## c  0.9586  0.000000  0.004736 24.9375</span></span>
-<span><span class="co">## g 64.3851  0.004736  0.000000  1.0000</span></span>
-<span><span class="co">## t  0.8181 24.937517  1.000000  0.0000</span></span>
+<span><span class="co">## a  0.0000  0.968407 65.042410  0.8276</span></span>
+<span><span class="co">## c  0.9684  0.000000  0.006153 25.1917</span></span>
+<span><span class="co">## g 65.0424  0.006153  0.000000  1.0000</span></span>
+<span><span class="co">## t  0.8276 25.191657  1.000000  0.0000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##       a       c       g       t </span></span>
@@ -234,11 +234,11 @@ time.</p>
 <span><span class="co">## Shape parameter: 2.994 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
-<span><span class="co">##         a         c         g     t</span></span>
-<span><span class="co">## a  0.0000  0.721784 74.092483  0.60</span></span>
-<span><span class="co">## c  0.7218  0.000000  0.003769 25.93</span></span>
-<span><span class="co">## g 74.0925  0.003769  0.000000  1.00</span></span>
-<span><span class="co">## t  0.6000 25.933394  1.000000  0.00</span></span>
+<span><span class="co">##         a         c         g       t</span></span>
+<span><span class="co">## a  0.0000  0.729544 74.898810  0.6077</span></span>
+<span><span class="co">## c  0.7295  0.000000  0.004589 26.2100</span></span>
+<span><span class="co">## g 74.8988  0.004589  0.000000  1.0000</span></span>
+<span><span class="co">## t  0.6077 26.209977  1.000000  0.0000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##       a       c       g       t </span></span>
@@ -260,7 +260,7 @@ ratio statistic</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/SH.test.html">SH.test</a></span><span class="op">(</span><span class="va">fitGTR</span>, <span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##      Trees  ln L Diff ln L p-value</span></span>
-<span><span class="co">## [1,]     1 -2608       0.0  0.5048</span></span>
+<span><span class="co">## [1,]     1 -2608       0.0  0.4976</span></span>
 <span><span class="co">## [2,]     2 -3068     460.5  0.0000</span></span></code></pre>
 <p>or with the AIC</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
