@@ -162,10 +162,10 @@ If the argument node is missing the function is evaluated for all nodes.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[5]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[6]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 18</span>
@@ -198,10 +198,10 @@ If the argument node is missing the function is evaluated for all nodes.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 13</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[16]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 17</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[17]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 16</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[18]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6</span>
@@ -214,17 +214,17 @@ If the argument node is missing the function is evaluated for all nodes.</p>
 <span class="r-in"><span><span class="fu">mrca.phylo</span><span class="op">(</span><span class="va">tree</span>, <span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"t1"</span>, <span class="st">"t2"</span>, <span class="st">"t3"</span><span class="op">)</span>, <span class="va">tree</span><span class="op">$</span><span class="va">tip</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 12</span>
 <span class="r-in"><span><span class="fu">mrca.phylo</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     t1 t7 t10 t2 t5 t3 t8 t4 t6 t9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t1   1 13  13 12 12 12 12 12 11 11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t7  13  2  14 12 12 12 12 12 11 11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t10 13 14   3 12 12 12 12 12 11 11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t2  12 12  12  4 15 15 15 15 11 11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t5  12 12  12 15  5 16 16 16 11 11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t3  12 12  12 15 16  6 17 17 11 11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t8  12 12  12 15 16 17  7 18 11 11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t4  12 12  12 15 16 17 18  8 11 11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t6  11 11  11 11 11 11 11 11  9 19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t9  11 11  11 11 11 11 11 11 19 10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     t3 t7 t9 t5 t1 t8 t6 t2 t10 t4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t3   1 13 13 12 12 12 12 12  11 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t7  13  2 14 12 12 12 12 12  11 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t9  13 14  3 12 12 12 12 12  11 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t5  12 12 12  4 16 15 15 15  11 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t1  12 12 12 16  5 15 15 15  11 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t8  12 12 12 15 15  6 17 17  11 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t6  12 12 12 15 15 17  7 18  11 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t2  12 12 12 15 15 17 18  8  11 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t10 11 11 11 11 11 11 11 11   9 19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t4  11 11 11 11 11 11 11 11  19 10</span>
 <span class="r-in"><span><span class="co"># same as mrca(tree), but faster for large trees</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
