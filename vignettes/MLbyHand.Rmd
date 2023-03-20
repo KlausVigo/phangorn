@@ -101,45 +101,9 @@ Now we can plot the tree with the bootstrap support values on the edges and also
 ```{r plotBS, fig.cap="Tree with bootstrap support. Unrooted tree (midpoint rooted) with bootstrap support values.", echo=TRUE}
 plotBS(midpoint(fitJC$tree), bs, p = 50, type="p")
 ```
-unroot
-Is it rally unroot?
-
 
 ```{r ConsensusNet, fig.cap="ConsensusNet from the bootstrap sample.", echo=TRUE}
-x <- unroot(bs)
-```
-
-
-prop.part
-```{r, eval=TRUE}
-splits <- prop.part(x)
-```
-
-postprocess.prop.part
-```{r, eval=TRUE}
-splits <- postprocess.prop.part(splits, method="SHORTwise")
-```
-
-
-
-```{r, eval=TRUE}
-spl <- as.splits(bs)
-```
-```{r, eval=TRUE}
-w <- attr(spl, "weights")
-l <- length(bs)
-ind <- (w / l) > .3
-spl <- spl[ind]
-```
-
-```{r, eval=TRUE}
-res <- as.networx(spl)
-```
-
-```{r, eval=TRUE}
 cnet <- consensusNet(bs, p=0.2)
-```
-```{r, eval=TRUE}
 plot(cnet, show.edge.label=TRUE)
 ```
 
