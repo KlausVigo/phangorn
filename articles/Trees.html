@@ -275,10 +275,10 @@ works with the fitch algorithm.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">treeRA</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parsimony.html">random.addition</a></span><span class="op">(</span><span class="va">primates</span><span class="op">)</span></span>
 <span><span class="va">treeSPR</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parsimony.html">optim.parsimony</a></span><span class="op">(</span><span class="va">treeRA</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Final p-score 746 after  2 nni operations</span></span></code></pre>
+<pre><code><span><span class="co">## Final p-score 750 after  0 nni operations</span></span></code></pre>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/parsimony.html">parsimony</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">treeRA</span>, <span class="va">treeSPR</span><span class="op">)</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 755 746</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 750 750</span></span></code></pre>
 <div class="section level3">
 <h3 id="branch-and-bound">Branch and bound<a class="anchor" aria-label="anchor" href="#branch-and-bound"></a>
 </h3>
