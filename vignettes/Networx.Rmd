@@ -30,16 +30,23 @@ The input for `consensusNet` is a list of trees i.e. an object of class `multiPh
 set.seed(1)
 bs <- bootstrap.phyDat(yeast, FUN = function(x)nj(dist.hamming(x)), 
     bs=100)
+```
+```{r, eval=TRUE}
 tree <- nj(dist.hamming(yeast))
 par("mar" = rep(1, 4))
 tree <- plotBS(tree, bs, "phylogram")
+```
+```{r, eval=TRUE}
 cnet <- consensusNet(bs, .3)
+```
+```{r, eval=TRUE}
 plot(cnet, show.edge.label=TRUE)
 ```
 
 In many cases, `consensusNet` will return more than two incompatible (competing) splits. This cannot be plotted as a planar (2-dimensional) graph. Such as situation requires a n-dimensional graph, where the maximum number of dimensions equals the maximum number of incompatible splits. For example, if we have three alternative incompatible splits: (A,B)|(C,D) vs. (A,C)|(B,D) vs. (A,D)|(B,C), we need a 3-dimensional graph to show all three alternatives. A nice way to get still a good impression of the network is to plot it in 3D. 
 
-```{r, eval=FALSE}
+```{r, eval=FALSE}sessionInfo()
+
 plot(cnet, "3D")
 # rotate 3d plot
 play3d(spin3d(axis=c(0,1,0), rpm=6), duration=10)
@@ -103,4 +110,5 @@ The functions `read.nexus.networx` and `write.nexus.networx` can read and write 
 ```{r, eval=TRUE}
 sessionInfo()
 ```
+
 ## References
