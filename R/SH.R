@@ -94,17 +94,21 @@ SH.test <- function(..., B = 10000, data = NULL, weight = NULL) {
 }
 
 
-SH.tmp <- function(siteLik, weight = NULL, B = 10000) {
+SH.tmp <- function(siteLik, weight = NULL, B = 10000, boot=NULL) {
   lw <- nrow(siteLik)
   if (is.null(weight)) weight <- rep(1, lw)
   ntree <- k <- ncol(siteLik)
   Lalpha <- drop(crossprod(siteLik, weight))
   Talpha <- max(Lalpha) - Lalpha
-  M <- matrix(NA, k, B)
-  wvec <- rep(1L:lw, weight)
-  for (i in 1:B) {
-    boot <- tabulate(sample(wvec, replace = TRUE), nbins = lw)
-    M[, i] <- crossprod(siteLik, boot)
+  if(is.null(boot)){
+    M <- matrix(NA, k, B)
+    wvec <- rep(1L:lw, weight)
+    for (i in 1:B) {
+      boot <- tabulate(sample(wvec, replace = TRUE), nbins = lw)
+      M[, i] <- crossprod(siteLik, boot)
+    }
+  } else {
+    M <- crossprod(siteLik, boot)
   }
   M <- M - rowMeans(M)
   S <- matrix(apply(M, 2, min), k, B, byrow = TRUE)
