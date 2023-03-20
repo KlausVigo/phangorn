@@ -55,7 +55,7 @@ double get_ps(double *dat, int n,  int k, double *weight){
 }
 
 
-void sankoff4(double *dat, int n, double *cost, int k, double *result){
+void sankoffNode(double *dat, int n, double *cost, int k, double *result){
     int i, j, h;
     double x, tmp;
     for(i = 0; i < n; i++){
@@ -90,17 +90,17 @@ double sankoffQuartet_new(SEXP dat, int n, double *cost, int k, double *weight,
   for(int j=0; j<(n*k); j++) res[j] = 0.0;
 //  if(pos1 < nTip) sankoffTips(INTEGER(VECTOR_ELT(dat, pos1)), contr, n, k, nrc, rtmp);
 //  else
-    sankoff4(REAL(VECTOR_ELT(dat,pos1)), n, cost, k, rtmp);
+    sankoffNode(REAL(VECTOR_ELT(dat,pos1)), n, cost, k, rtmp);
 //  if(pos2 < nTip) sankoffTips(INTEGER(VECTOR_ELT(dat,pos2)), contr, n, k, nrc, rtmp);
 //  else
-    sankoff4(REAL(VECTOR_ELT(dat,pos2)), n, cost, k, rtmp);
-  sankoff4(rtmp, n, cost, k, res);
+    sankoffNode(REAL(VECTOR_ELT(dat,pos2)), n, cost, k, rtmp);
+  sankoffNode(rtmp, n, cost, k, res);
 //  if(pos3 < nTip) sankoffTips(INTEGER(VECTOR_ELT(dat,pos3)), contr, n, k, nrc, res);
 //  else
-    sankoff4(REAL(VECTOR_ELT(dat,pos3)), n, cost, k, res);
+    sankoffNode(REAL(VECTOR_ELT(dat,pos3)), n, cost, k, res);
 //  if(pos4 < nTip) sankoffTips(INTEGER(VECTOR_ELT(dat,pos4)), contr, n, k, nrc, res);
 //  else
-    sankoff4(REAL(VECTOR_ELT(dat,pos4)), n, cost, k, res);
+    sankoffNode(REAL(VECTOR_ELT(dat,pos4)), n, cost, k, res);
   erg = get_ps(res, n, k, weight);
   return(erg);
 }
@@ -131,7 +131,7 @@ SEXP sankoff_nni_c(SEXP dat, SEXP sn, SEXP scost, SEXP sk, SEXP sweight,
 
 
 // sankoffNew
-SEXP sankoff3B(SEXP dlist, SEXP scost, SEXP nr, SEXP nc, SEXP node, SEXP edge, SEXP mNodes, SEXP tips, SEXP contrast, SEXP nrs){
+SEXP sankoff_c(SEXP dlist, SEXP scost, SEXP nr, SEXP nc, SEXP node, SEXP edge, SEXP mNodes, SEXP tips, SEXP contrast, SEXP nrs){
     R_len_t i, n = length(node); //, nt = length(tips);
     int nrx=INTEGER(nr)[0], ncx=INTEGER(nc)[0], mn=INTEGER(mNodes)[0], nrc = INTEGER(nrs)[0];
     int  ni, ei, j, *edges=INTEGER(edge), *nodes=INTEGER(node), ntips=INTEGER(tips)[0];
@@ -140,7 +140,7 @@ SEXP sankoff3B(SEXP dlist, SEXP scost, SEXP nr, SEXP nc, SEXP node, SEXP edge, S
     tmp = (double *) R_alloc(ncx * nrc, sizeof(double));
     for(j=0; j<(ncx * nrc); j++) tmp[j] = 0.0;
     cost = REAL(scost);
-    sankoff4(REAL(contrast), nrc, cost, ncx, tmp);
+    sankoffNode(REAL(contrast), nrc, cost, ncx, tmp);
 
     if(!isNewList(dlist)) error("'dlist' must be a list");
     ni = nodes[0];
@@ -153,7 +153,7 @@ SEXP sankoff3B(SEXP dlist, SEXP scost, SEXP nr, SEXP nc, SEXP node, SEXP edge, S
         ei = edges[i];
         if(ni == nodes[i]){
             if(ei < ntips) sankoffTips(INTEGER(VECTOR_ELT(dlist,ei)), tmp, nrx, ncx, nrc, res);
-            else sankoff4(REAL(VECTOR_ELT(dlist2,ei)), nrx, cost, ncx, res);
+            else sankoffNode(REAL(VECTOR_ELT(dlist2,ei)), nrx, cost, ncx, res);
             }
         else{
             SET_VECTOR_ELT(dlist2, ni, result);
@@ -163,7 +163,7 @@ SEXP sankoff3B(SEXP dlist, SEXP scost, SEXP nr, SEXP nc, SEXP node, SEXP edge, S
             for(j=0; j<(nrx * ncx); j++) res[j] = 0.0;
             ni = nodes[i];
             if(ei < ntips) sankoffTips(INTEGER(VECTOR_ELT(dlist,ei)), tmp, nrx, ncx, nrc, res);
-            else sankoff4(REAL(VECTOR_ELT(dlist2,ei)), nrx, cost, ncx, res);
+            else sankoffNode(REAL(VECTOR_ELT(dlist2,ei)), nrx, cost, ncx, res);
             }
     }
     SET_VECTOR_ELT(dlist2, ni, result);
@@ -192,10 +192,10 @@ SEXP sankoffMPR(SEXP dlist, SEXP scost, SEXP nr, SEXP nc, SEXP node, SEXP edge, 
       PROTECT(result = allocMatrix(REALSXP, nrx, ncx));
       res = REAL(result);
       for(i=0; i<(nrx * ncx); i++) res[i] = 0.0;
-      sankoff4(REAL(VECTOR_ELT(dlist,nodes[j]+nn)), nrx, cost, ncx, res); //nodes[j] + nnode
+      sankoffNode(REAL(VECTOR_ELT(dlist,nodes[j]+nn)), nrx, cost, ncx, res); //nodes[j] + nnode
     }
     ei = edges[j];
-    sankoff4(REAL(VECTOR_ELT(dlist,ei)), nrx, cost, ncx, res);
+    sankoffNode(REAL(VECTOR_ELT(dlist,ei)), nrx, cost, ncx, res);
   }
   SET_VECTOR_ELT(dlist2, n0, result);
   UNPROTECT(2);

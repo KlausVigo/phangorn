@@ -27,7 +27,7 @@ fit.sankoff <- function(tree, data, cost,
   edge <- as.integer(edge - 1L)
   nTips <- as.integer(length(tree$tip.label))
   mNodes <- as.integer(max(node) + 1)
-  res <- .Call('sankoff3B', dat, as.numeric(cost), as.integer(nr),
+  res <- .Call('sankoff_c', dat, as.numeric(cost), as.integer(nr),
     as.integer(nc), node, edge, mNodes, nTips, as.double(contr),
     as.integer(nrow(contr)))
   root <- getRoot(tree)
@@ -101,7 +101,7 @@ pnodes <- function(tree, data, cost) {
   edge_2 <- pnodes2(tree)
   EDGE <- rbind(tree$edge, edge_2)
   mNodes <- m
-  res <- .Call('sankoff3B', data, as.numeric(cost),
+  res <- .Call('sankoff_c', data, as.numeric(cost),
                 as.integer(nr), as.integer(nc), as.integer(EDGE[,1]-1L),
                 as.integer(EDGE[,2]-1L), m, nTips,
                 as.double(contr), as.integer(nrow(contr)))
