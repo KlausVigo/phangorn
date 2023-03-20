@@ -103,17 +103,25 @@ plotBS(midpoint(fitJC$tree), bs, p = 50, type="p")
 ```
 unroot
 Is it rally unroot?
+
+
 ```{r ConsensusNet, fig.cap="ConsensusNet from the bootstrap sample.", echo=TRUE}
 x <- unroot(bs)
 ```
+
+
 prop.part
 ```{r, eval=TRUE}
 splits <- prop.part(x)
 ```
+
 postprocess.prop.part
 ```{r, eval=TRUE}
 splits <- postprocess.prop.part(splits, method="SHORTwise")
 ```
+
+
+
 ```{r, eval=TRUE}
 spl <- as.splits(bs)
 ```
