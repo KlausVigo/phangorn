@@ -102,7 +102,7 @@ Now we can plot the tree with the bootstrap support values on the edges and also
 plotBS(midpoint(fitJC$tree), bs, p = 50, type="p")
 ```
 
-```{r ConsensusNet, fig.cap="ConsensusNet from the bootstrap sample.", echo=TRUE}
+```{r ConsensusNet, fig.cap="ConsensusNet from the bootstrap sample.", echo=TRUE, eval=FALSE}
 cnet <- consensusNet(bs, p=0.2)
 plot(cnet, show.edge.label=TRUE)
 ```
