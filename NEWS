@@ -8,13 +8,15 @@ OTHER CHANGES
 
       of the default to "empirical" speeds up functions modelTest and
 
-      pml_bb/optim.pml, but estimates will differ to previous versions, which
+      pml_bb/optim.pml. However estimates will differ to previous versions,
 
-      was implicitly using "estimated".
+      which were implicitly using "estimated".
 
     o some improvements to pmlPart
 
     o nicer defaults for plot.pml
+
+    o the sankoff algorithm has been rewritten
 
 
     CHANGES in PHANGORN VERSION 2.11.0
