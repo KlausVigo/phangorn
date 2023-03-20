@@ -30,16 +30,10 @@ The input for `consensusNet` is a list of trees i.e. an object of class `multiPh
 set.seed(1)
 bs <- bootstrap.phyDat(yeast, FUN = function(x)nj(dist.hamming(x)), 
     bs=100)
-```
-```{r, eval=TRUE}
 tree <- nj(dist.hamming(yeast))
 par("mar" = rep(1, 4))
 tree <- plotBS(tree, bs, "phylogram")
-```
-```{r, eval=TRUE}
 cnet <- consensusNet(bs, .3)
-```
-```{r, eval=TRUE}
 plot(cnet, show.edge.label=TRUE)
 ```
 
