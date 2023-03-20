@@ -102,6 +102,7 @@ Now we can plot the tree with the bootstrap support values on the edges and also
 plotBS(midpoint(fitJC$tree), bs, p = 50, type="p")
 ```
 unroot
+Is it rally unroot?
 ```{r ConsensusNet, fig.cap="ConsensusNet from the bootstrap sample.", echo=TRUE}
 x <- unroot(bs)
 ```
