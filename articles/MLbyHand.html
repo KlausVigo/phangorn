@@ -228,17 +228,17 @@ time.</p>
 <pre><code><span><span class="co">## model: GTR+G(4)+I </span></span>
 <span><span class="co">## loglikelihood: -2608 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -1230 </span></span>
-<span><span class="co">## Proportion of invariant sites: 0.007415 </span></span>
+<span><span class="co">## Proportion of invariant sites: 0.007252 </span></span>
 <span><span class="co">## Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.994 </span></span>
+<span><span class="co">## Shape parameter: 2.912 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
-<span><span class="co">##         a         c         g       t</span></span>
-<span><span class="co">## a  0.0000  0.727963 74.741646  0.6064</span></span>
-<span><span class="co">## c  0.7280  0.000000  0.004601 26.1493</span></span>
-<span><span class="co">## g 74.7416  0.004601  0.000000  1.0000</span></span>
-<span><span class="co">## t  0.6064 26.149282  1.000000  0.0000</span></span>
+<span><span class="co">##         a        c        g       t</span></span>
+<span><span class="co">## a  0.0000  0.75377 73.43159  0.5185</span></span>
+<span><span class="co">## c  0.7538  0.00000  0.00492 25.6234</span></span>
+<span><span class="co">## g 73.4316  0.00492  0.00000  1.0000</span></span>
+<span><span class="co">## t  0.5185 25.62341  1.00000  0.0000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##       a       c       g       t </span></span>
@@ -253,15 +253,15 @@ ratio statistic</p>
 <pre><code><span><span class="co">## Likelihood Ratio Test Table</span></span>
 <span><span class="co">##   Log lik. Df Df change Diff log lik. Pr(&gt;|Chi|)    </span></span>
 <span><span class="co">## 1    -3068 25                                       </span></span>
-<span><span class="co">## 2    -2608 35        10           921     &lt;2e-16 ***</span></span>
+<span><span class="co">## 2    -2608 35        10           920     &lt;2e-16 ***</span></span>
 <span><span class="co">## ---</span></span>
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre>
 <p>with the Shimodaira-Hasegawa test</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/SH.test.html">SH.test</a></span><span class="op">(</span><span class="va">fitGTR</span>, <span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##      Trees  ln L Diff ln L p-value</span></span>
-<span><span class="co">## [1,]     1 -2608       0.0  0.5048</span></span>
-<span><span class="co">## [2,]     2 -3068     460.5  0.0000</span></span></code></pre>
+<span><span class="co">## [1,]     1 -2608       0.0  0.4991</span></span>
+<span><span class="co">## [2,]     2 -3068     460.1  0.0000</span></span></code></pre>
 <p>or with the AIC</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
@@ -271,10 +271,10 @@ ratio statistic</p>
 <pre><code><span><span class="co">## [1] 5286</span></span></code></pre>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/modelTest.html">AICc</a></span><span class="op">(</span><span class="va">fitGTR</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 5298</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 5299</span></span></code></pre>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">BIC</a></span><span class="op">(</span><span class="va">fitGTR</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 5406</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 5407</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="bootstrap">Bootstrap<a class="anchor" aria-label="anchor" href="#bootstrap"></a>
