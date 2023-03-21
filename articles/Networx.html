@@ -85,7 +85,7 @@
                         <h4 data-toc-skip class="author">Klaus
 Schliep</h4>
             
-            <h4 data-toc-skip class="date">March 20, 2023</h4>
+            <h4 data-toc-skip class="date">March 21, 2023</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/vignettes/Networx.Rmd" class="external-link"><code>vignettes/Networx.Rmd</code></a></small>
       <div class="d-none name"><code>Networx.Rmd</code></div>
@@ -135,9 +135,14 @@ object of class <code>multiPhylo</code>.</p>
 <span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plotBS.html">plotBS</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">bs</span>, <span class="st">"phylogram"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Networx_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">bs</span></span></code></pre></div>
+<pre><code><span><span class="co">## 100 phylogenetic trees</span></span></code></pre>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">bs</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "multiPhylo"</span></span></code></pre>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cnet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/consensusNet.html">consensusNet</a></span><span class="op">(</span><span class="va">bs</span>, <span class="fl">.3</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cnet</span>, show.edge.label<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Networx_files/figure-html/unnamed-chunk-2-2.png" width="700"></p>
 <p>In many cases, <code>consensusNet</code> will return more than two
 incompatible (competing) splits. This cannot be plotted as a planar
 (2-dimensional) graph. Such as situation requires a n-dimensional graph,
@@ -146,26 +151,33 @@ incompatible splits. For example, if we have three alternative
 incompatible splits: (A,B)|(C,D) vs. (A,C)|(B,D) vs. (A,D)|(B,C), we
 need a 3-dimensional graph to show all three alternatives. A nice way to
 get still a good impression of the network is to plot it in 3D.</p>
-<p>```{r, eval=FALSE}sessionInfo()</p>
-<p>plot(cnet, “3D”) # rotate 3d plot play3d(spin3d(axis=c(0,1,0),
-rpm=6), duration=10) # create animated gif file
-movie3d(spin3d(axis=c(0,1,0), rpm=6), duration=10)</p>
-<pre><code>
-which will result in a spinning graph similar to this
-
-![rotatingNetworx](movie.gif)
-
-
-## neighborNet
-The function `neighborNet` implements the popular method of @Bryant2004. The Neighbor-Net algorithm is essentially a 2D-version of the Neighbor joining algorithm. The Neighbour-net is computed in two steps: the first computes a circular ordering of the taxa in the data set; the second step involves the estimation of edge weights using non-negative Least-Squares (nnls).    
-
-
-```r
-dm &lt;- dist.hamming(yeast)
-nnet &lt;- neighborNet(dm)
-par("mar" = rep(1, 4))
-plot(nnet)</code></pre>
-<p><img src="Networx_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cnet</span>, <span class="st">"3D"</span><span class="op">)</span></span>
+<span><span class="co"># rotate 3d plot</span></span>
+<span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/play3d.html" class="external-link">play3d</a></span><span class="op">(</span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/spin3d.html" class="external-link">spin3d</a></span><span class="op">(</span>axis<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span>, rpm<span class="op">=</span><span class="fl">6</span><span class="op">)</span>, duration<span class="op">=</span><span class="fl">10</span><span class="op">)</span></span>
+<span><span class="co"># create animated gif file </span></span>
+<span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/play3d.html" class="external-link">movie3d</a></span><span class="op">(</span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/spin3d.html" class="external-link">spin3d</a></span><span class="op">(</span>axis<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span>, rpm<span class="op">=</span><span class="fl">6</span><span class="op">)</span>, duration<span class="op">=</span><span class="fl">10</span><span class="op">)</span></span></code></pre></div>
+<p>which will result in a spinning graph similar to this</p>
+<div class="figure">
+<img src="movie.gif" alt=""><p class="caption">rotatingNetworx</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="neighbornet">neighborNet<a class="anchor" aria-label="anchor" href="#neighbornet"></a>
+</h2>
+<p>The function <code>neighborNet</code> implements the popular method
+of <span class="citation">Bryant and Moulton (2004)</span>. The
+Neighbor-Net algorithm is essentially a 2D-version of the Neighbor
+joining algorithm. The Neighbour-net is computed in two steps: the first
+computes a circular ordering of the taxa in the data set; the second
+step involves the estimation of edge weights using non-negative
+Least-Squares (nnls).</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dist.hamming.html">dist.hamming</a></span><span class="op">(</span><span class="va">yeast</span><span class="op">)</span></span>
+<span><span class="va">nnet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/neighborNet.html">neighborNet</a></span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"mar"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nnet</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Networx_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
 <p>The advantage of Neighbor-Net is that it returns a circular split
 system which can be always displayed in a planar (2D) graph. The
 rendering of the <code>networx</code> is done using the the fantastic
@@ -181,19 +193,19 @@ igraph package <span class="citation">(Csardi and Nepusz
 <code>phylo</code> object. The Neighbor-Net object we computed above
 provides no support values. We can add the support values from the tree
 we computed to the splits (edges) shared by both objects.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nnet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/addConfidences.html">addConfidences</a></span><span class="op">(</span><span class="va">nnet</span>, <span class="va">tree</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"mar"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nnet</span>, show.edge.label<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Networx_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
+<p><img src="Networx_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 <p>Analogously, we can also add support values to a tree:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tree2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nni.html">rNNI</a></span><span class="op">(</span><span class="va">tree</span>, <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="va">tree2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/addConfidences.html">addConfidences</a></span><span class="op">(</span><span class="va">tree2</span>, <span class="va">tree</span><span class="op">)</span></span>
 <span><span class="co"># several support values are missing</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"mar"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">tree2</span>, show.node.label<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Networx_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
+<p><img src="Networx_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="estimating-edge-weights-nnls">Estimating edge weights (nnls)<a class="anchor" aria-label="anchor" href="#estimating-edge-weights-nnls"></a>
@@ -206,11 +218,10 @@ values correspond with the actual genetic distance between the involved
 taxa. Given a distance matrix, we can estimate edge weights using
 non-negative Least-Squares, and plot them onto the consensusNet splits
 graph.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cnet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/designTree.html">nnls.networx</a></span><span class="op">(</span><span class="va">cnet</span>, <span class="va">dm</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"mar"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cnet</span>, show.edge.label<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Networx_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 <div class="section level3">
 <h3 id="import-and-export-networks-advanced-functions-for-networx-objects">Import and export networks, advanced functions for networx
 objects<a class="anchor" aria-label="anchor" href="#import-and-export-networks-advanced-functions-for-networx-objects"></a>
@@ -225,7 +236,7 @@ functions, examples, and advanced application.</p>
 <div class="section level2">
 <h2 id="session-information">Session Information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## R version 4.2.3 (2023-03-15)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
