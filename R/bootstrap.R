@@ -349,7 +349,7 @@ is_rooted.phylo <- function (phy)
 is_rooted.multiPhylo <- function(phy)
 {
   labs <- attr(phy, "TipLabel")
-  phy <- unclass(phy)
+  class(phy) <- NULL
   if (is.null(labs)) sapply(phy, is_rooted.phylo)
   else sapply(phy, .is_rooted_ape, ntips = length(labs))
 }
