@@ -33,14 +33,17 @@ bs <- bootstrap.phyDat(yeast, FUN = function(x)nj(dist.hamming(x)),
 tree <- nj(dist.hamming(yeast))
 par("mar" = rep(1, 4))
 tree <- plotBS(tree, bs, "phylogram")
+bs
+class(bs)
+```
+```{r, eval=FALSE}
 cnet <- consensusNet(bs, .3)
 plot(cnet, show.edge.label=TRUE)
 ```
 
 In many cases, `consensusNet` will return more than two incompatible (competing) splits. This cannot be plotted as a planar (2-dimensional) graph. Such as situation requires a n-dimensional graph, where the maximum number of dimensions equals the maximum number of incompatible splits. For example, if we have three alternative incompatible splits: (A,B)|(C,D) vs. (A,C)|(B,D) vs. (A,D)|(B,C), we need a 3-dimensional graph to show all three alternatives. A nice way to get still a good impression of the network is to plot it in 3D. 
 
-```{r, eval=FALSE}sessionInfo()
-
+```{r, eval=FALSE}
 plot(cnet, "3D")
 # rotate 3d plot
 play3d(spin3d(axis=c(0,1,0), rpm=6), duration=10)
@@ -88,7 +91,7 @@ plot(tree2, show.node.label=TRUE)
 
 Consensus networks, on the other hand, provide primarily information about support values corresponding to a split, but no information about the actual difference between the taxon bipartitions defined by that split. For example, one may be interested how the alternative support values correspond with the actual genetic distance between the involved taxa.
 Given a distance matrix, we can estimate edge weights using non-negative Least-Squares, and plot them onto the consensusNet splits graph. 
-```{r, eval=TRUE}
+```{r, eval=FALSE}
 cnet <- nnls.networx(cnet, dm)
 par("mar" = rep(1, 4))
 plot(cnet, show.edge.label=TRUE)
