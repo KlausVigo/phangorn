@@ -232,6 +232,7 @@ as.splits.multiPhylo <- function(x, ...) {
     trivial <- list(...)$trivial
   else trivial <- TRUE
   lx <-  length(x)
+  x <- .uncompressTipLabel(x)
   x <- unroot(x)
   splits <- prop.part(x)
   splits <- postprocess.prop.part(splits, method="SHORTwise")
