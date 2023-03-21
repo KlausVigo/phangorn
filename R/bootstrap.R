@@ -83,7 +83,7 @@ bootstrap.pml <- function(x, bs = 100, trees = TRUE, multicore = FALSE,
   if(.Platform$OS.type=="windows") multicore <- FALSE
   if (multicore && is.null(mc.cores)) mc.cores <- min(detectCores()-1L, 4L)
   if(multicore && mc.cores < 2L) multicore <- FALSE
-  if(is.rooted(x$tree)){
+  if(is_rooted(x$tree)){
     if(is.ultrametric(x$tree)) method <- "ultrametric"
     else method <- "tipdated"
   }
@@ -282,7 +282,7 @@ plotBS <- function(tree, BStrees, type = "phylogram",
   if (hasArg(BStrees)) {
     if(method=="FBP"){
       BStrees <- .uncompressTipLabel(BStrees) # check if needed
-      if (any(is.rooted(BStrees))) BStrees <- unroot(BStrees)
+      if (any(is_rooted(BStrees))) BStrees <- unroot(BStrees)
       x <- prop.clades(tree, BStrees)
       x <- (x / length(BStrees)) * 100
       tree$node.label <- x
@@ -332,6 +332,29 @@ plotBS <- function(tree, BStrees, type = "phylogram",
   }
   invisible(tree)
 }
+
+
+
+is_rooted <- function(phy) UseMethod("is_rooted")
+
+.is_rooted_ape <- function(phy, ntips)
+{
+  if (!is.null(phy$root.edge)) return(TRUE)
+  if (tabulate(phy$edge[, 1])[ntips + 1] > 2) FALSE else TRUE
+}
+
+is_rooted.phylo <- function (phy)
+  .is_rooted_ape(phy, length(phy$tip.label))
+
+is_rooted.multiPhylo <- function(phy)
+{
+  labs <- attr(phy, "TipLabel")
+  phy <- unclass(phy)
+  if (is.null(labs)) sapply(phy, is_rooted.phylo)
+  else sapply(phy, .is_rooted_ape, ntips = length(labs))
+}
+
+
 
 
 cladeMatrix <- function(x, rooted = FALSE) {

@@ -95,7 +95,6 @@ add_edge_length <- function(tree, trees, fun=\(x)median(na.omit(x)),
 ##' set.seed(123)
 ##' trees <- bootstrap.phyDat(Laurasiatherian,
 ##'                           FUN=function(x)upgma(dist.hamming(x)), bs=100)
-##'                           tree <- plotBS(tree, trees, "phylogram")
 ##' tree <- plotBS(tree, trees, "phylogram")
 ##' add_ci(tree, trees)
 ##' plot(tree, direction="downwards")
