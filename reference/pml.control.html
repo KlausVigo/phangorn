@@ -125,7 +125,7 @@ fitting process.</p>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p><code>pml.control</code> controls the fitting process. <code>epsilon</code> and
 <code>maxit</code> are only defined for the most outer loop, this affects
-<code>pmlCluster</code>, <code>pmlPart</code> and <code>pmlMix</code>. When</p>
+<code>pmlCluster</code>, <code>pmlPart</code> and <code>pmlMix</code>.</p>
 <p><code>epsilon</code> is not an absolute difference between, but instead is
 defined as (logLik(k)-logLik(k+1))/logLik(k+1). This seems to be a good
 compromise and to work reasonably well for small and large trees or
@@ -137,18 +137,21 @@ produces more feedback.</p>
 empirical estimates are taken, when this applies. For some nucleotide models
 (e.g. JC, SYM) equal base frequencies and for amino acid models precomputed
 state frequencies are used, if not '+F' is specified.</p>
-<p><code>epsilon</code> might be ignored if duplicated sequences in the alignment are
+<p><code>tau</code> might be ignored if duplicated sequences in the alignment are
 observed. In this case the analysis is performed only on unique sequences and
 duplicated taxa are added to the tree with zero edge length. This may lead to
 multifurcations if there are three or more identical sequences. After
-optimization it is good practice to prune away edges of length <code>epsilon</code>
-using <code>di2multi</code>.</p>
+optimization it is good practice to prune away edges of length <code>tau</code>
+using <code>di2multi</code>. See also Janzen et al. (2021)</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Minh, B. Q., Nguyen, M. A. T., &amp; von Haeseler, A. (2013).
 Ultrafast approximation for phylogenetic bootstrap. <em>Molecular biology
-and evolution</em>, <b>30(5)</b>, 1188-1195.</p>
+and evolution</em>, <b>30(5)</b>, 1188-1195.
+Janzen, T., Bokma, F.,Etienne,  R. S. (2021) Nucleotide Substitutions during
+Speciation may Explain Substitution Rate Variation,
+<em>Systematic Biology</em>, <b>71(5)</b>, 1244–1254.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
