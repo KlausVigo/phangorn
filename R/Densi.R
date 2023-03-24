@@ -3,15 +3,9 @@ getAges <- function(x) {
   height <- NULL
   if (inherits(x, "phylo")) height <- fun(x)
   if (inherits(x, "multiPhylo")) {
-    if (!is.null(attr(x, "TipLabel"))) {
-      x <- .uncompressTipLabel(x)
-      x <- unclass(x)
-      height <- vapply(x, fun, 0)
-    }
-    else {
-      x <- unclass(x)
-      height <- vapply(x, fun, 0)
-    }
+    if (!is.null(attr(x, "TipLabel"))) x <- .uncompressTipLabel(x)
+    x <- unclass(x)
+    height <- vapply(x, fun, 0)
   }
   height
 }
