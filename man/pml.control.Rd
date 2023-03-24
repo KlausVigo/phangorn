@@ -45,7 +45,7 @@ a \code{control} or \code{ratchet.par} argument.
 \details{
 \code{pml.control} controls the fitting process. \code{epsilon} and
 \code{maxit} are only defined for the most outer loop, this affects
-\code{pmlCluster}, \code{pmlPart} and \code{pmlMix}. When
+\code{pmlCluster}, \code{pmlPart} and \code{pmlMix}.
 
 \code{epsilon} is not an absolute difference between, but instead is
 defined as (logLik(k)-logLik(k+1))/logLik(k+1). This seems to be a good
@@ -61,12 +61,12 @@ empirical estimates are taken, when this applies. For some nucleotide models
 (e.g. JC, SYM) equal base frequencies and for amino acid models precomputed
 state frequencies are used, if not '+F' is specified.
 
-\code{epsilon} might be ignored if duplicated sequences in the alignment are
+\code{tau} might be ignored if duplicated sequences in the alignment are
 observed. In this case the analysis is performed only on unique sequences and
 duplicated taxa are added to the tree with zero edge length. This may lead to
 multifurcations if there are three or more identical sequences. After
-optimization it is good practice to prune away edges of length \code{epsilon}
-using \code{di2multi}.
+optimization it is good practice to prune away edges of length \code{tau}
+using \code{di2multi}. See also Janzen et al. (2021)
 }
 \examples{
 pml.control()
@@ -76,6 +76,9 @@ pml.control(maxit=25)
 Minh, B. Q., Nguyen, M. A. T., & von Haeseler, A. (2013).
 Ultrafast approximation for phylogenetic bootstrap. \emph{Molecular biology
 and evolution}, \bold{30(5)}, 1188-1195.
+Janzen, T., Bokma, F.,Etienne,  R. S. (2021) Nucleotide Substitutions during
+Speciation may Explain Substitution Rate Variation,
+\emph{Systematic Biology}, \bold{71(5)}, 1244–1254.
 }
 \seealso{
 \code{\link{optim.pml}}
