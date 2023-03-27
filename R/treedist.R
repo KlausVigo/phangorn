@@ -167,7 +167,7 @@ treedist <- function(tree1, tree2, check.labels = TRUE) {
 
   l <- length(tree1$tip.label)
 
-  if (!is.null(tree1$edge.length) & !is.null(tree2$edge.length)) {
+  if (!is.null(tree1$edge.length) && !is.null(tree2$edge.length)) {
     dv1 <- coph(tree1)
     dv2 <- coph(tree2)
     quadratic.path.difference <- sqrt(sum( (dv1 - dv2)^2))
@@ -177,7 +177,7 @@ treedist <- function(tree1, tree2, check.labels = TRUE) {
     sum(match(bp2, bp1, nomatch = 0L) == 0L)
 
   symmetric.difference <- RF # 2 * (p - sum(r1))
-  if (!is.null(tree1$edge.length) & !is.null(tree2$edge.length)) {
+  if (!is.null(tree1$edge.length) && !is.null(tree2$edge.length)) {
     w1 <- numeric(max(tree1$edge))
     w2 <- numeric(max(tree2$edge))
     w1[tree1$edge[, 2]] <- tree1$edge.length
@@ -397,7 +397,7 @@ wRF2 <- function(tree, trees, normalize = FALSE, check.labels = TRUE,
   }
   trees <- .uncompressTipLabel(trees)
 
-  if (rooted & any(!is.rooted(trees))) {
+  if (rooted && any(!is.rooted(trees))) {
     warning("some trees were rooted, unrooted all")
     rooted <- FALSE
   }
@@ -436,7 +436,7 @@ wRF2 <- function(tree, trees, normalize = FALSE, check.labels = TRUE,
   if (rooted) BP <- lapply(trees, fun3, nTips)
   else BP <- lapply(trees, fun2, nTips)
 
-  if (!rooted & is.rooted(tree)) tree <- unroot(tree)
+  if (!rooted && is.rooted(tree)) tree <- unroot(tree)
 
   bp <- bip(tree)
 
@@ -472,7 +472,7 @@ wRF1 <- function(trees, normalize = FALSE, check.labels = TRUE,
   if (check.labels) trees <- .compressTipLabel(trees)
   trees <- .uncompressTipLabel(trees)
 
-  if (rooted & any(!is.rooted(trees))) {
+  if (rooted && any(!is.rooted(trees))) {
     warning("some trees were rooted, unrooted all")
     rooted <- FALSE
   }
@@ -556,11 +556,11 @@ mRF2 <- function(tree, trees, normalize = FALSE, check.labels = TRUE,
   if (any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
   if (has.singles(tree)) tree <- collapse.singles(tree)
 
-  if (!rooted & any(is.rooted(trees))) {
+  if (!rooted && any(is.rooted(trees))) {
     warning("some trees were rooted, unrooted all")
     trees <- unroot(trees)
   }
-  if (!rooted & is.rooted(tree)) tree <- unroot(tree)
+  if (!rooted && is.rooted(tree)) tree <- unroot(tree)
   if (any(!is.binary(trees))) {
     message("Some trees are not binary. Result may not what you expect!")
   }
@@ -600,7 +600,7 @@ mRF <- function(trees, normalize = FALSE, rooted = FALSE) {
   l <- length(trees)
   RF <- numeric( (l * (l - 1)) / 2)
 
-  if (rooted & any(!is.rooted(trees))) {
+  if (rooted && any(!is.rooted(trees))) {
     warning("Some trees were rooted, unrooted all")
     rooted <- FALSE
   }
@@ -768,7 +768,7 @@ kf1 <- function(tree, trees, check.labels = TRUE, rooted = FALSE) {
   if (any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
   if (has.singles(tree)) tree <- collapse.singles(tree)
 
-  if (rooted & any(!is.rooted(trees))) {
+  if (rooted && any(!is.rooted(trees))) {
     warning("some trees were rooted, unrooted all")
     rooted <- FALSE
   }
@@ -803,7 +803,7 @@ kf1 <- function(tree, trees, check.labels = TRUE, rooted = FALSE) {
   if (rooted) BP <- lapply(trees, fun3, nTips)
   else BP <- lapply(trees, fun2, nTips)
 
-  if (!rooted & is.rooted(tree)) tree <- unroot(tree)
+  if (!rooted && is.rooted(tree)) tree <- unroot(tree)
   bp <- bip(tree)
   if (!rooted) bp <- SHORTwise(bp)
   bp <- sapply(bp, paste, collapse = "_")
@@ -834,11 +834,11 @@ kf2 <- function(trees, check.labels = TRUE, rooted = FALSE) {
   if (any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
 
   nTips <- length(trees[[1]]$tip.label)
-  if (rooted & any(!is.rooted(trees))) {
+  if (rooted && any(!is.rooted(trees))) {
     warning("some trees were rooted, unrooted all")
     rooted <- FALSE
   }
-  if (!rooted & any(is.rooted(trees))) {
+  if (!rooted && any(is.rooted(trees))) {
     trees <- unroot(trees)
   }
 
