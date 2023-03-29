@@ -89,7 +89,7 @@ Iris Bardel-Kahr</h4>
 Graz<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2023-03-24</h4>
+            <h4 data-toc-skip class="date">2023-03-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/vignettes/Trees.Rmd" class="external-link"><code>vignettes/Trees.Rmd</code></a></small>
       <div class="d-none name"><code>Trees.Rmd</code></div>
@@ -602,23 +602,23 @@ conducted.</p>
 <code class="sourceCode R"><span><span class="va">fit_mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">mt</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fit_mt</span></span></code></pre></div>
 <pre><code><span><span class="co">## model: HKY+G(4) </span></span>
-<span><span class="co">## loglikelihood: -2615.528 </span></span>
+<span><span class="co">## loglikelihood: -2615.014 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -1230.335 </span></span>
 <span><span class="co">## Model of rate heterogeneity: Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.260298 </span></span>
+<span><span class="co">## Shape parameter: 2.272992 </span></span>
 <span><span class="co">##        Rate Proportion</span></span>
-<span><span class="co">## 1 0.3224851       0.25</span></span>
-<span><span class="co">## 2 0.6801164       0.25</span></span>
-<span><span class="co">## 3 1.0753209       0.25</span></span>
-<span><span class="co">## 4 1.9220777       0.25</span></span>
+<span><span class="co">## 1 0.3238205       0.25</span></span>
+<span><span class="co">## 2 0.6812222       0.25</span></span>
+<span><span class="co">## 3 1.0755289       0.25</span></span>
+<span><span class="co">## 4 1.9194284       0.25</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
 <span><span class="co">##          a        c        g        t</span></span>
-<span><span class="co">## a  0.00000  1.00000 54.36296  1.00000</span></span>
-<span><span class="co">## c  1.00000  0.00000  1.00000 54.36296</span></span>
-<span><span class="co">## g 54.36296  1.00000  0.00000  1.00000</span></span>
-<span><span class="co">## t  1.00000 54.36296  1.00000  0.00000</span></span>
+<span><span class="co">## a  0.00000  1.00000 54.54198  1.00000</span></span>
+<span><span class="co">## c  1.00000  0.00000  1.00000 54.54198</span></span>
+<span><span class="co">## g 54.54198  1.00000  0.00000  1.00000</span></span>
+<span><span class="co">## t  1.00000 54.54198  1.00000  0.00000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##          a          c          g          t </span></span>
@@ -785,12 +785,12 @@ tipdated trees we have one additional parameter for the rate.</p>
 <span><span class="co">##  [5] jquerylib_0.1.4   tools_4.2.3       digest_0.6.31     jsonlite_1.8.4   </span></span>
 <span><span class="co">##  [9] evaluate_0.20     memoise_2.0.1     lifecycle_1.0.3   nlme_3.1-162     </span></span>
 <span><span class="co">## [13] lattice_0.20-45   pkgconfig_2.0.3   rlang_1.1.0       Matrix_1.5-3     </span></span>
-<span><span class="co">## [17] fastmatch_1.1-3   igraph_1.4.1      cli_3.6.0         yaml_2.3.7       </span></span>
-<span><span class="co">## [21] parallel_4.2.3    pkgdown_2.0.7     xfun_0.37         fastmap_1.1.1    </span></span>
+<span><span class="co">## [17] fastmatch_1.1-3   igraph_1.4.1      cli_3.6.1         yaml_2.3.7       </span></span>
+<span><span class="co">## [21] parallel_4.2.3    pkgdown_2.0.7     xfun_0.38         fastmap_1.1.1    </span></span>
 <span><span class="co">## [25] stringr_1.5.0     desc_1.4.2        generics_0.1.3    fs_1.6.1         </span></span>
 <span><span class="co">## [29] vctrs_0.6.1       sass_0.4.5        systemfonts_1.0.4 rprojroot_2.0.3  </span></span>
 <span><span class="co">## [33] grid_4.2.3        glue_1.6.2        R6_2.5.1          textshaping_0.3.6</span></span>
-<span><span class="co">## [37] rmarkdown_2.20    purrr_1.0.1       magrittr_2.0.3    codetools_0.2-19 </span></span>
+<span><span class="co">## [37] rmarkdown_2.21    purrr_1.0.1       magrittr_2.0.3    codetools_0.2-19 </span></span>
 <span><span class="co">## [41] htmltools_0.5.5   quadprog_1.5-8    ragg_1.2.5        stringi_1.7.12   </span></span>
 <span><span class="co">## [45] cachem_1.0.7</span></span></code></pre>
 </div>
