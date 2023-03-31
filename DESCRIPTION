@@ -67,7 +67,7 @@ Suggests:
     xtable
 LinkingTo:
     Rcpp
-Remotes: github::KlausVigo/ape
+Remotes: github::emmanuelparadis/ape
 VignetteBuilder: 
     knitr,
     utils
