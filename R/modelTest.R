@@ -75,12 +75,12 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
                       trace = 1), multicore = FALSE, mc.cores = NULL) {
   if(.Platform$OS.type=="windows") multicore <- FALSE
   if (multicore && is.null(mc.cores)) mc.cores <- detectCores()
-  if (inherits(object, "phyDat"))
-    data <- object
+  if(inherits(object, "DNAbin") || inherits(object, "AAbin"))
+    object <- as.phyDat(object)
+  if (inherits(object, "phyDat")) data <- object
   if (inherits(object, "pml")) {
     data <- object$data
-    if (is.null(tree))
-      tree <- object$tree
+    if (is.null(tree)) tree <- object$tree
   }
   if (attr(data, "type") == "DNA") type <- .dnamodels
   if (attr(data, "type") == "AA") type <- .aamodels

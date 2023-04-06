@@ -307,6 +307,8 @@ optim.parsimony <- function(tree, data, method = "fitch", cost = NULL,
 pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
                      minit = 100, k = 10, trace = 1, all = FALSE,
                      rearrangements = "SPR", perturbation = "ratchet", ...) {
+  if(inherits(data, "DNAbin") || inherits(data, "AAbin"))
+    data <- as.phyDat(data)
   eps <- 1e-08
   trace <- trace - 1
   ref <- names(data)
