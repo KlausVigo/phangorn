@@ -485,7 +485,6 @@ phangornParseFormula <- function(model) {
       model <- model[[2]]
     }
     unlist(rev(c(model.vars, model)))
-
   }
 
   if (!inherits(model, "formula"))
@@ -507,7 +506,6 @@ phangornParseFormula <- function(model) {
   }
   list(left = varsLHS, right = varsRHS)
 }
-
 
 
 fs <- function(old.el, eig, parent.dat, child.dat, weight, g = g, w = w,
@@ -855,8 +853,11 @@ update.pml <- function(object, ...) {
     shape <- eval(extras[[existing[7]]], parent.frame())
     updateRates <- TRUE
   }
-  rate <- ifelse(is.na(existing[8]), object$rate,
-    eval(extras[[existing[8]]], parent.frame()))
+  if (is.na(existing[8])) rate <- object$rate
+  else{
+    rate <- eval(extras[[existing[8]]], parent.frame())
+    updateRates <- TRUE
+  }
   wMix <- ifelse(is.na(existing[10]), object$wMix,
     eval(extras[[existing[10]]], parent.frame()))
   if (is.na(existing[11])) llMix <- object$llMix
@@ -871,16 +872,20 @@ update.pml <- function(object, ...) {
     eig <- object$eig
 #    model <- object$model
   }
-  rw <- rates_n_weights(shape, k, site.rate)
-  g <- rw[, 1]
-  w <- rw[, 2]
+  g <- object$g
+  w <- object$w
+  if(updateRates){
+    rw <- rates_n_weights(shape, k, site.rate)
+    g <- rw[, 1]
+    w <- rw[, 2]
 
-  if (inv > 0){
-    w <- (1 - inv) * w
-    g <- g / (1 - inv)
-  }
+    if (inv > 0){
+      w <- (1 - inv) * w
+      g <- g / (1 - inv)
+    }
 #  if (wMix > 0) w <- (1 - wMix) * w
-  g <- g * rate
+    g <- g * rate
+  }
 
   ll.0 <- as.matrix(INV %*% (bf * inv))
   if (wMix > 0) ll.0 <- ll.0 + llMix
@@ -1469,7 +1474,7 @@ optimRooted <- function(tree, data, bf, g, w, eig, ll.0,
   # optim edges leading to the root
   # add tau == t ???
   optRoot2 <- function(t, tree, data, g, w, eig, bf, ll.0, ...) {
-    tree$edge.length <- tree$edge.length + t   # c(el1+t, el2-t)
+    tree$edge.length <- tree$edge.length + t
     loglik <- pml.fit4(tree, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, ...)
     loglik
   }
@@ -1651,7 +1656,9 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV, RELL=NULL,
   k <- length(w)
   tree <- reorder.phylo(tree, "postorder")
   if (!is.rooted(tree)) stop("tree must be rooted")
-
+#  if(aLRT){
+#    support_quartet <- matrix(NA, max(tree$edge), 3)
+#  }
   attr(tree, "order") <- NULL
   weight <- attr(data, "weight")
   nr <- as.integer(attr(data, "nr"))
@@ -1679,6 +1686,7 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV, RELL=NULL,
     pml.fit4(tree, data, bf = bf, eig = eig, ll.0 = ll.0, w = w, g = g, ...)
   }
 
+##### eps should be tau
   getEL2 <- function(t, nh) {
     el <- numeric(5)
     eps <- 1e-6
@@ -1773,7 +1781,7 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV, RELL=NULL,
           }
           loli <- dad
         }
-
+# look into index.nni
         X1 <- index.nni(ch, cvector, anc, rootNode)
 
         if (loli != rootNode) {
@@ -1810,6 +1818,11 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV, RELL=NULL,
             ll.0 = ll.0, ..., method = "L-BFGS-B",
             lower = 1e-8, upper = 5, control = list(fnscale = -1))
           ind <- which.max(c(res1[[2]], res2[[2]], res3[[2]]))
+#          if(aLRT){
+#            # site like for SH.tmp
+#            support_quartet[child2[i], ] <- c(res1[[2]], res2[[2]], res3[[2]])
+#            ind <- 1 #  no rearrangements
+#          }
           if (control$trace > 2) cat("root", c(res1[[2]], res2[[2]],
               res3[[2]]), "\n")
 #          optRootU <- function(t, tree, data, bf, g, w, eig, ll.0, nh, ...) {
@@ -1866,6 +1879,10 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV, RELL=NULL,
             upper = 1 - 1e-4, control = list(fnscale = -1))
 
           ind <- which.max(c(res1[[2]], res2[[2]], res3[[2]]))
+#          if(aLRT){
+#            support_quartet[child2[i], ] <- c(res1[[2]], res2[[2]], res3[[2]])
+#            ind <- 1 #  no rearrangements
+#          }
           if (control$trace > 2) cat("edge", ch, ":", c(res1[[2]], res2[[2]],
               res3[[2]]), "\n")
           ll3 <- max(c(res1[[2]], res2[[2]], res3[[2]]))
@@ -1929,6 +1946,7 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV, RELL=NULL,
         }
       }
     }
+#    if(aLRT) return(support_quartet)
     ll2 <- pml.fit4(tree, data, bf=bf, eig=eig, ll.0=ll.0, w=w, g=g, ...)
     eps <- (ll - ll2) / ll2
     if (control$trace > 1) cat(ll, " -> ", ll2, "\n")
@@ -1978,6 +1996,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                       control = pml.control(), model = NULL,
                       rearrangement = ifelse(optNni, "NNI", "none"),
                       subs = NULL, ratchet.par = ratchet.control(), ...) {
+  aLRT <- FALSE
   rearrangement <- match.arg(rearrangement,
                         c("none", "NNI", "ratchet", "stochastic", "multi2di"))
   optNni <- ifelse(rearrangement ==  "none", FALSE, TRUE)
@@ -2438,7 +2457,6 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
 #          levels = attr(data, "levels"), inv = inv, rate = rate,
 #          g = g, w = w, eig = eig, INV = INV, ll.0 = ll.0,
 #          llMix = llMix, wMix = wMix, site = FALSE, Mkv=Mkv)
-#        browser()
         res <- opt_nni(tree2, data, rooted=optRooted, iter_max=25, trace=trace,
                        ll=ll2, w = w, g = g, eig = eig, bf = bf, inv=inv,
                        rate=rate, ll.0 = ll.0, INV = INV, llMix = llMix,
@@ -2460,8 +2478,18 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       perturbation <- FALSE
       rounds <- 1
     }
-    if ( perturbation==FALSE && ((abs((ll1 - ll) / ll)  < control$eps) || rounds > control$maxit))
+    if ( perturbation==FALSE &&
+         ((abs((ll1 - ll) / ll)  < control$eps) || rounds > control$maxit)){
+#      if(aLRT){
+#        support <-SH_quartet(tree, data, rooted=optRooted, iter_max=1, trace=trace,
+#                    ll=ll, w = w, g = g, eig = eig, bf = bf, inv=inv,
+#                    ll.0 = ll.0, INV = INV, llMix = llMix, wMix=wMix, ASC=ASC,
+#                    RELL=NULL,
+#                    control = list(eps=1e-08, maxit=3, trace=trace-1, tau=tau))
+#      }
       opti <- FALSE
+    }
+
     rounds <- rounds + 1
     ll1 <- ll
   }
@@ -2593,12 +2621,12 @@ optimQuartet <- function(tree, data, eig, w, g, bf, rate, ll.0, nTips,
 }
 
 
+# allow weight Matrix or return site likelihood
 pml.quartet <- function(tree, data, bf = rep(.25, 4), k = 1, rate = 1, g, w,
                         eig, ll.0 = NULL, #ind.ll0 = NULL,
                         inv=0, llMix = NULL,
                         wMix = 0, nTips, weight, nr, nc, contrast, nco, ...,
                         site = FALSE, ASC=FALSE) {
-  # raus pos_ll.0
   if (is.null(ll.0)) {
     ll.0 <- numeric(nr)
   }
@@ -2627,6 +2655,7 @@ pml.quartet <- function(tree, data, bf = rep(.25, 4), k = 1, rate = 1, g, w,
     p0 <- sum(exp(siteLik[ind]))
     loglik <- loglik - sum(weight) * log(1 - p0)
   }
+  if(site) return(siteLik)
   return(loglik)
 }
 
@@ -2656,6 +2685,11 @@ pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, wMix, llMix,
   nTips <- as.integer(length(tree$tip.label))
 
   m <- dim(INDEX)[1]
+#  if(aLRT){
+#    reference <- numeric(m)
+#    LM <- matrix(0, nr, 3)
+#    sh_max <- numeric(m)
+#  }
   loglik <- numeric(2 * m)
   edgeMatrix <- matrix(0L, 2 * m, 5)
 
@@ -2685,10 +2719,13 @@ pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, wMix, llMix,
                         ll.0 = ll.0, k = k, nTips = nTips, weight = weight,
                         inv = inv, nr = nr, nc = nc, contrast = contrast,
                         nco = nco, wMix=wMix, llMix=llMix, ...)
-    #        new0 <- optimQuartet(tree0, data, eig=eig, w=w, g=g, bf=bf,
-    #                rate=rate, ll.0=ll.0, nTips=nTips, weight=weight,
-    #                nr=nr, nc=nc, contrast=contrast, nco=nco, inv=0,
-    #                control = list(epsilon = 1e-08, maxit = 3, trace=0))
+#    if(aLRT){
+#      # not needed
+#      new0 <- optimQuartet(tree0, data, eig=eig, w=w, g=g, bf=bf,
+#                    rate=rate, ll.0=ll.0, nTips=nTips, weight=weight,
+#                    nr=nr, nc=nc, contrast=contrast, nco=nco, inv=0,
+#                    control = list(epsilon = 1e-08, maxit = 3, trace=0))
+#    }
     tree2 <- tree1 <- tree0
     tree1$edge[, 2] <- tree1$edge[ind1, 2]
     tree1$edge.length <- tree1$edge.length[ind1]
@@ -2705,8 +2742,15 @@ pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, wMix, llMix,
                          nc = nc, contrast = contrast, nco = nco, inv=inv,
                          llcomp = ll + 1e-8, wMix=wMix, llMix=llMix, ...)
     # new0$logLik+1e-8)
+#    if(aLRT){
+#      llt0 <- pml.quartet(tree0, data, bf = bf, g = g, w = w, eig = eig,
+#                          ll.0 = ll.0, k = k, nTips = nTips, weight = weight,
+#                          inv = inv, nr = nr, nc = nc, contrast = contrast,
+#                          nco = nco, wMix=wMix, llMix=llMix, ...)
+#    }
     loglik[(2 * i) - 1] <- new1$logLik
     loglik[(2 * i)] <- new2$logLik
+#    if(aLRT) reference[i] <- new0$logLik
     edgeMatrix[(2 * i) - 1, ] <- new1$tree$edge.length
     edgeMatrix[(2 * i), ] <- new2$tree$edge.length
 
@@ -2726,10 +2770,10 @@ pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, wMix, llMix,
   }
   swap <- 0
   eps0 <- 1e-6
-  if(aLRT) {
-    L <- matrix(loglik, nrow = 2L, byrow=TRUE)
-    return(list(ll=L, ll0=ll))
-  }
+#  if(aLRT) {
+#    L <- cbind(matrix(loglik, ncol = 2L, byrow=TRUE), reference)
+#    return(list(ll=L, ll0=ll))
+#  }
 # return loglik, loli for approx LRT
   candidates <- loglik > ll + eps0
   #    cat("candidates", sum(candidates), "\n")
@@ -2766,8 +2810,7 @@ pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, wMix, llMix,
 }
 
 
-opt_nni <- function(tree, data, rooted, iter_max, trace, ll, RELL=NULL,
-                    aLRT=FALSE, ...){
+opt_nni <- function(tree, data, rooted, iter_max, trace, ll, RELL=NULL, ...){
   swap <- 0
   iter <- 0
   llstart <- ll
@@ -2807,6 +2850,14 @@ opt_nni <- function(tree, data, rooted, iter_max, trace, ll, RELL=NULL,
   res$swap <- swap
   res$RELL <- RELL
   res
+}
+
+
+#  external
+SH_quartet <- function(tree, data, rooted, ll, ...){
+  if (rooted) tmp <- rooted.nni(tree, data, aLRT=TRUE, ...)
+  else tmp <- pml.nni(tree, data, ll=ll, aLRT=TRUE, ...)
+  tmp
 }
 
 
