@@ -89,7 +89,7 @@ Schliep</h4>
 Technology<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2023-04-06</h4>
+            <h4 data-toc-skip class="date">2023-04-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/vignettes/Ancestral.Rmd" class="external-link"><code>vignettes/Ancestral.Rmd</code></a></small>
       <div class="d-none name"><code>Ancestral.Rmd</code></div>
@@ -212,6 +212,90 @@ Fig 5. Ancestral reconstruction using (empirical) Bayes.
 </div>
 </div>
 <div class="section level2">
+<h2 id="fitting-for-discrete-comparative-data">Fitting for discrete comparative data<a class="anchor" aria-label="anchor" href="#fitting-for-discrete-comparative-data"></a>
+</h2>
+<p>Often have already a phylogeny and only want estimate the ancestral
+reconstruction for this tree. This is a common problem in phylogentic
+comparative methods and we can use the function <em>ace</em> in the ape
+<span class="citation">(Paradis and Schliep 2019)</span>,
+<em>fitDiscrete</em> in the geiger <span class="citation">(Pennell et
+al. 2014)</span> or <em>fitMK</em> in the phytools <span class="citation">(Revell 2012)</span> package. Here we want fit these
+models using <em>optim.pml</em>.</p>
+<p>First we load a tree and create some data.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"bird.orders"</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">18</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">x</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>,<span class="fl">22</span>,<span class="fl">23</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">bird.orders</span><span class="op">$</span><span class="va">tip.label</span></span>
+<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"USER"</span>, levels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>We than set up the <em>pml</em> object and optimize the model.
+Instead of optimizing the edge length we only optimize the rate.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">pml</a></span><span class="op">(</span><span class="va">bird.orders</span>, <span class="va">dat</span><span class="op">)</span></span>
+<span><span class="va">fit_ER</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, optEdge <span class="op">=</span> <span class="cn">FALSE</span>, optRate<span class="op">=</span><span class="cn">TRUE</span>, </span>
+<span>                    control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">fit_ER</span></span></code></pre></div>
+<pre><code><span><span class="co">## model: Mk </span></span>
+<span><span class="co">## loglikelihood: -16.47 </span></span>
+<span><span class="co">## unconstrained loglikelihood: 0 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Rate matrix:</span></span>
+<span><span class="co">##   0 1 2</span></span>
+<span><span class="co">## 0 0 1 1</span></span>
+<span><span class="co">## 1 1 0 1</span></span>
+<span><span class="co">## 2 1 1 0</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Base frequencies:  </span></span>
+<span><span class="co">##      0      1      2 </span></span>
+<span><span class="co">## 0.3333 0.3333 0.3333</span></span></code></pre>
+<p>We can also fit the symmetric (<em>model=“SYM”</em>) or ordered
+metristic model (<em>model=“ORDERED”</em>).</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit_SYM</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, optEdge <span class="op">=</span> <span class="cn">FALSE</span>, optRate<span class="op">=</span><span class="cn">TRUE</span>, model<span class="op">=</span><span class="st">"SYM"</span>, </span>
+<span>                    control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">fit_SYM</span></span></code></pre></div>
+<pre><code><span><span class="co">## model: SYM </span></span>
+<span><span class="co">## loglikelihood: -15.31 </span></span>
+<span><span class="co">## unconstrained loglikelihood: 0 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Rate matrix:</span></span>
+<span><span class="co">##           0      1         2</span></span>
+<span><span class="co">## 0 0.000e+00 0.2747 1.604e-06</span></span>
+<span><span class="co">## 1 2.747e-01 0.0000 1.000e+00</span></span>
+<span><span class="co">## 2 1.604e-06 1.0000 0.000e+00</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Base frequencies:  </span></span>
+<span><span class="co">##      0      1      2 </span></span>
+<span><span class="co">## 0.3333 0.3333 0.3333</span></span></code></pre>
+<p>We can compare the estimate with the one from <em>ace</em> from
+<em>ape</em>.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit_ace</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/ace.html" class="external-link">ace</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">bird.orders</span>, model<span class="op">=</span><span class="st">"SYM"</span>, type <span class="op">=</span> <span class="st">"d"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning in sqrt(diag(solve(h))): NaNs produced</span></span></code></pre>
+<p>The log-likelihood values differ slightly as in phangorn the values
+get multiplied by the state frequencies. Thus if we add
+<code>log(1/3)</code> as we have three states to ace estimate the two
+estimates are almost identical.</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit_SYM</span><span class="op">$</span><span class="va">logLik</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] -15.31</span></span></code></pre>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit_ace</span><span class="op">$</span><span class="va">loglik</span><span class="op">+</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] -15.31</span></span></code></pre>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">fit_SYM</span><span class="op">$</span><span class="va">logLik</span>, <span class="va">fit_ace</span><span class="op">$</span><span class="va">loglik</span><span class="op">+</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "Mean relative difference: 1.229e-07"</span></span></code></pre>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">anc_SYM</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ancestral.pml.html">ancestral.pml</a></span><span class="op">(</span><span class="va">fit_SYM</span>, <span class="st">"ml"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/ancestral.pml.html">plotAnc</a></span><span class="op">(</span><span class="va">bird.orders</span>, <span class="va">anc_SYM</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Ancestral_files/figure-html/SYM_reconstruction-1.png" width="576"></p>
+<p>More complicated models can be applied using defining the rate matrix
+as shown in the vignette <em>Markov models and transition rate
+matrices</em>. The “ARD” model is currently not available as
+<em>phangorn</em> only fits reversible models.</p>
+</div>
+<div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
 <pre><code><span><span class="co">## R version 4.2.3 (2023-03-15)</span></span>
@@ -239,7 +323,7 @@ Fig 5. Ancestral reconstruction using (empirical) Bayes.
 <span><span class="co">##  [5] jquerylib_0.1.4   tools_4.2.3       digest_0.6.31     jsonlite_1.8.4   </span></span>
 <span><span class="co">##  [9] evaluate_0.20     memoise_2.0.1     lifecycle_1.0.3   nlme_3.1-162     </span></span>
 <span><span class="co">## [13] lattice_0.20-45   pkgconfig_2.0.3   rlang_1.1.0       Matrix_1.5-3     </span></span>
-<span><span class="co">## [17] fastmatch_1.1-3   igraph_1.4.1      cli_3.6.1         yaml_2.3.7       </span></span>
+<span><span class="co">## [17] fastmatch_1.1-3   igraph_1.4.2      cli_3.6.1         yaml_2.3.7       </span></span>
 <span><span class="co">## [21] parallel_4.2.3    pkgdown_2.0.7     xfun_0.38         fastmap_1.1.1    </span></span>
 <span><span class="co">## [25] stringr_1.5.0     knitr_1.42        desc_1.4.2        generics_0.1.3   </span></span>
 <span><span class="co">## [29] fs_1.6.1          vctrs_0.6.1       sass_0.4.5        systemfonts_1.0.4</span></span>
@@ -255,6 +339,22 @@ Fig 5. Ancestral reconstruction using (empirical) Bayes.
 <div id="ref-Felsenstein2004" class="csl-entry">
 Felsenstein, Joseph. 2004. <em>Inferring Phylogenies</em>. Sunderland:
 Sinauer Associates.
+</div>
+<div id="ref-Paradis2018" class="csl-entry">
+Paradis, Emmanuel, and Klaus Schliep. 2019. <span>“Ape 5.0: An
+Environment for Modern Phylogenetics and Evolutionary Analyses in
+r.”</span> <em>Bioinformatics</em> 35 (3): 526–28. <a href="https://doi.org/10.1093/bioinformatics/bty633" class="external-link">https://doi.org/10.1093/bioinformatics/bty633</a>.
+</div>
+<div id="ref-Pennell2014" class="csl-entry">
+Pennell, M. W., J. M. Eastman, G. J. Slater, J. W. Brown, J. C. Uyeda,
+R. G. Fitzjohn, M. E. Alfaro, and L. J. Harmon. 2014. <span>“Geiger
+V2.0: An Expanded Suite of Methods for Fitting Macroevolutionary Models
+to Phylogenetic Trees.”</span> <em>Bioinformatics</em> 30: 2216–18. <a href="https://doi.org/10.1093/bioinformatics/btu181" class="external-link">https://doi.org/10.1093/bioinformatics/btu181</a>.
+</div>
+<div id="ref-Revell2012" class="csl-entry">
+Revell, Liam J. 2012. <span>“Phytools: An r Package for Phylogenetic
+Comparative Biology (and Other Things).”</span> <em>Methods in Ecology
+and Evolution</em> 3: 217–23.
 </div>
 <div id="ref-Schliep2011" class="csl-entry">
 Schliep, Klaus Peter. 2011. <span>“Phangorn: Phylogenetic Analysis in
