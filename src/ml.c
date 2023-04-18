@@ -86,8 +86,11 @@ void scaleMatrix(double *X, int *nr, int *nc, int *result){
     double tmp;
     for(i = 0; i < *nr; i++) {
         tmp = 0.0;
-        for(j = 0; j < *nc; j++) tmp += X[i + j* *nr];
-        while(tmp < ScaleEPS){
+        for(j = 0; j < *nc; j++){
+//          if(X[i + j* *nr] < 0.0) X[i + j* *nr] = 0.0;
+          tmp += X[i + j* *nr];
+        }
+        while(tmp < ScaleEPS && tmp > 0.0){
            for(j = 0; j < *nc; j++) X[i + j* *nr] *=ScaleMAX;
            result[i] +=1L;
            tmp *= ScaleMAX;
