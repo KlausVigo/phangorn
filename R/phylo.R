@@ -2461,7 +2461,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                        ll=ll2, w = w, g = g, eig = eig, bf = bf, inv=inv,
                        rate=rate, ll.0 = ll.0, INV = INV, llMix = llMix,
                        wMix=wMix, ASC=ASC, RELL=RELL,
-                       control=list(eps=1e-08, maxit=5, trace=trace-1, tau=tau))
+                       control=list(eps=1e-08, maxit=3, trace=trace-1, tau=tau))
         if (res$logLik > (ll + epsR)) {
           tree <- res$tree
           ll <- res$logLik
@@ -2680,7 +2680,7 @@ pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, wMix, llMix,
   weight <- as.numeric(attr(data, "weight"))
   contrast <- attr(data, "contrast")
   nco <- as.integer(dim(contrast)[1])
-  contrast2 <- contrast %*% eig[[2]]
+#  contrast2 <- contrast %*% eig[[2]]
   evi <- (t(eig[[3]]) * bf)
   nTips <- as.integer(length(tree$tip.label))
 
@@ -2844,6 +2844,10 @@ opt_nni <- function(tree, data, rooted, iter_max, trace, ll, RELL=NULL, ...){
       iter <- iter_max
     }
   }
+#
+  if (!rooted) res <- optimEdge(tmp$tree, data, ...)
+  else res <- optimRooted(tmp$tree, data, ...)
+  ll2 <- res$logLik
   if (trace > 0) cat("optimize topology: ", llstart, "-->", ll2,
                      " NNI moves: ", swap, "\n")
   res$iter <- iter
