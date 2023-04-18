@@ -7,6 +7,9 @@
 #' @param type a character string specifying the type of phylogeny to be drawn;
 #' it must be one of "phylogram" (the default), "cladogram", "fan", "unrooted",
 #' "radial", "tidy", or any unambiguous abbreviation of these.
+#' @param direction a character string specifying the direction of the tree.
+#' Four values are possible: "rightwards" (the default), "leftwards", "upwards",
+#' and "downwards".
 #' @param \dots further parameters to be passed to \code{plot.phylo}.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{plot.phylo}}, \code{\link{axisPhylo}},
@@ -25,22 +28,30 @@
 #' # root_time <- max(dates) - max(node.depth.edgelength(fit_td$tree))
 #' # plot(fit_td$tree, show.tip.label = FALSE)
 #' # axisPhylo(root.time = root_time, backward = FALSE)
+#' plot(fit_td, show.tip.label = FALSE, direction="up")
 #'
 #' fit_unrooted <- pml_bb(H3N2, model="JC", rearrangement="none",
 #'                        control = pml.control(trace = 0))
 #' plot(fit_unrooted, cex=.5)
 #'
 #' @export
-plot.pml <- function(x, type="phylogram", ...){
+plot.pml <- function(x, type="phylogram", direction = "rightwards", ...){
   type <- match.arg(type, c("phylogram","cladogram", "fan", "unrooted",
                             "radial", "tidy"))
-  plot.phylo(x$tree, type=type, ...)
+  plot.phylo(x$tree, type=type, direction=direction, ...)
   if(is.rooted(x$tree) && (type %in% c("phylogram","cladogram"))){
+    direction <- match.arg(direction, c("rightwards", "leftwards", "upwards",
+                                        "downwards"))
+    side <-   switch(direction,
+                     rightwards = 1,
+                     leftwards = 1,
+                     "upwards" = 2,
+                     "downwards" = 2)
     if(!is.null(x$tip.dates) && x$method=="tipdated"){
       root_time <- max(x$tip.dates) - max(node.depth.edgelength(x$tree))
-      axisPhylo(root.time = root_time, backward = FALSE)
+      axisPhylo(side, root.time = root_time, backward = FALSE)
     }
-    else axisPhylo()
+    else axisPhylo(side)
   }
   else add.scale.bar()
 }
