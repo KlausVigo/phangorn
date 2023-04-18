@@ -14,19 +14,20 @@
 #'
 #' If \code{trace} is set to zero than no out put is shown, if functions are
 #' called internally than the trace is decreased by one, so a higher of trace
-#' produces more feedback.
+#' produces more feedback. It can be useful to figure out how long an run will
+#' take and for debugging.
 #'
 #' \code{statefreq} controls if base/state frequencies are optimized or
 #' empirical estimates are taken, when this applies. For some nucleotide models
 #' (e.g. JC, SYM) equal base frequencies and for amino acid models precomputed
 #' state frequencies are used, if not '+F' is specified.
 #'
-#' \code{tau} might be ignored if duplicated sequences in the alignment are
+#' \code{tau} might be exactly zero if duplicated sequences in the alignment are
 #' observed. In this case the analysis is performed only on unique sequences and
 #' duplicated taxa are added to the tree with zero edge length. This may lead to
 #' multifurcations if there are three or more identical sequences. After
 #' optimization it is good practice to prune away edges of length \code{tau}
-#' using \code{di2multi}. See also Janzen et al. (2021)
+#' using \code{di2multi}. See also Janzen et al. (2021).
 #'
 ### @param control A list of parameters for controlling the fitting process.
 #' @param epsilon Stop criterion for optimization (see details).
@@ -44,10 +45,11 @@
 #' @return A list with components named as the arguments for controlling the
 #' fitting process.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{optim.pml}}
+#' @seealso \code{\link{pml_bb}}, \code{\link{optim.pml}}
 #' @references Minh, B. Q., Nguyen, M. A. T., & von Haeseler, A. (2013).
 #' Ultrafast approximation for phylogenetic bootstrap. \emph{Molecular biology
 #' and evolution}, \bold{30(5)}, 1188-1195.
+#'
 #' Janzen, T., Bokma, F.,Etienne,  R. S. (2021) Nucleotide Substitutions during
 #' Speciation may Explain Substitution Rate Variation,
 #' \emph{Systematic Biology}, \bold{71(5)}, 1244–1254.
