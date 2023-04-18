@@ -4,7 +4,7 @@
 \alias{plot.pml}
 \title{Plot phylogeny of a pml object}
 \usage{
-\method{plot}{pml}(x, type = "phylogram", ...)
+\method{plot}{pml}(x, type = "phylogram", direction = "rightwards", ...)
 }
 \arguments{
 \item{x}{an object of class \code{pml} or \code{phyDat}.}
@@ -12,6 +12,10 @@
 \item{type}{a character string specifying the type of phylogeny to be drawn;
 it must be one of "phylogram" (the default), "cladogram", "fan", "unrooted",
 "radial", "tidy", or any unambiguous abbreviation of these.}
+
+\item{direction}{a character string specifying the direction of the tree.
+Four values are possible: "rightwards" (the default), "leftwards", "upwards",
+and "downwards".}
 
 \item{\dots}{further parameters to be passed to \code{plot.phylo}.}
 }
@@ -32,6 +36,7 @@ plot(fit_td, show.tip.label = FALSE)
 # root_time <- max(dates) - max(node.depth.edgelength(fit_td$tree))
 # plot(fit_td$tree, show.tip.label = FALSE)
 # axisPhylo(root.time = root_time, backward = FALSE)
+plot(fit_td, show.tip.label = FALSE, direction="up")
 
 fit_unrooted <- pml_bb(H3N2, model="JC", rearrangement="none",
                        control = pml.control(trace = 0))
