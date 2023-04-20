@@ -324,19 +324,19 @@ void helpPrep(double *dad, double *child, double *eve, double *evi, int nr, int 
     for(int j=0; j<(nc * nr); j++) res[j]*=tmp[j];
 }
 
-
+/*
 void helpDAD2(double *dad, int *child, double *contrast, double *P, int nr, int nc, int nco, double *res){
     matp(child, contrast, P, &nr, &nc, &nco, res);
     for(int j=0; j<(nc * nr); j++) res[j]=dad[j]/res[j];
 }
-
+*/
 
 void helpDAD5(double *dad, int *child, double *contrast, double *P, int nr, int nc, int nco, double *res){
     matp(child, contrast, P, &nr, &nc, &nco, res);
     for(int j=0; j<(nc * nr); j++) dad[j]/=res[j];
 }
 
-
+/*
 SEXP getDAD2(SEXP dad, SEXP child, SEXP contrast, SEXP P, SEXP nr, SEXP nc, SEXP nco){
     R_len_t i, n=length(P);
     int ncx=INTEGER(nc)[0], nrx=INTEGER(nr)[0], nrs=INTEGER(nco)[0]; //, j
@@ -351,7 +351,7 @@ SEXP getDAD2(SEXP dad, SEXP child, SEXP contrast, SEXP P, SEXP nr, SEXP nc, SEXP
     UNPROTECT(1); //RESULT
     return(RESULT);
 }
-
+*/
 
 void helpPrep2(double *dad, int *child, double *contrast, double *evi, int nr, int nc, int nrs, double *res){
     int i, j;
@@ -361,7 +361,7 @@ void helpPrep2(double *dad, int *child, double *contrast, double *evi, int nr, i
     }
 }
 
-
+/*
 SEXP getPrep2(SEXP dad, SEXP child, SEXP contrast, SEXP evi, SEXP nr, SEXP nc, SEXP nco){
     R_len_t i, n=length(dad);
     int ncx=INTEGER(nc)[0], nrx=INTEGER(nr)[0], ncs=INTEGER(nco)[0];
@@ -376,7 +376,7 @@ SEXP getPrep2(SEXP dad, SEXP child, SEXP contrast, SEXP evi, SEXP nr, SEXP nc, S
     UNPROTECT(1);
     return(RESULT);
 }
-
+*/
 
 // child *= (dad * P)
 void goDown(double *dad, double *child, double *P, int nr, int nc, double *res){
@@ -575,12 +575,6 @@ SEXP LogLik2(SEXP dlist, SEXP P, SEXP nr, SEXP nc, SEXP node, SEXP edge, SEXP nT
     UNPROTECT(2); // result ans
     return(ans);
 }
-
-// raus
-//void matprod(double *x, int nrx, int ncx, double *y, int nry, int ncy, double *z)
-//{
-//    F77_CALL(dgemm)("N", "N", &nrx, &ncy, &ncx, &one, x, &nrx, y, &nry, &zero, z, &nrx FCONE FCONE);
-//}
 
 
 SEXP getM3(SEXP dad, SEXP child, SEXP P, SEXP nr, SEXP nc){
