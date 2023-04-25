@@ -530,6 +530,7 @@ optimEdge <- function(tree, data, eig = eig, w = w, g = g, bf = bf, rate = rate,
   tree <- reorder(tree, "postorder")
   nTips <- length(tree$tip.label)
   el <- tree$edge.length
+  tau <- control$tau
   tree$edge.length[el < tau] <- tau
   oldtree <- tree
   k <- length(w)
@@ -544,7 +545,6 @@ optimEdge <- function(tree, data, eig = eig, w = w, g = g, bf = bf, rate = rate,
   iter <- 0
   treeP <- tree
   tree <- reorder(tree)
-  tau <- control$tau
   child <- tree$edge[, 2]
   parent <- tree$edge[, 1]
   m <- max(tree$edge)
