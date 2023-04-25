@@ -530,7 +530,7 @@ optimEdge <- function(tree, data, eig = eig, w = w, g = g, bf = bf, rate = rate,
   tree <- reorder(tree, "postorder")
   nTips <- length(tree$tip.label)
   el <- tree$edge.length
-  tree$edge.length[el < 1e-08] <- 1e-08
+  tree$edge.length[el < tau] <- tau
   oldtree <- tree
   k <- length(w)
   data <- subset(data, tree$tip.label)

@@ -300,7 +300,8 @@ SEXP PML4(SEXP dlist, SEXP EL, SEXP W, SEXP G, SEXP NR, SEXP NC, SEXP K, SEXP ei
     return TMP;
 }
 
-
+//  LL /= (child P)
+//  child *= (LL *P)
 void moveLL5(double *LL, double *child, double *P, int *nr, int *nc, double *tmp){
     int j;
     F77_CALL(dgemm)("N", "N", nr, nc, nc, &one, child, nr, P, nc, &zero, tmp, nr FCONE FCONE);
@@ -614,7 +615,7 @@ void fs3(double *eva, int nc, double el, double *w, double *g, double *X, int ld
     for(i=0; i<nr; i++)f[i] = f0[i];
     NR_f(eva, nc, edle, w, g, X, ld, nr, f); // nc-1L !!!
     if(mkv){
-      for(j=0; j<nc; j++)p0 += f[i];
+      for(j=0; j<nr; j++)p0 += f[i];
       for(i=0; i<nr ;i++) f[i] /= (1-p0);
     }
     for(i=0; i<nr ;i++){
@@ -743,7 +744,6 @@ SEXP optE(SEXP PARENT, SEXP CHILD, SEXP ANC, SEXP eig, SEXP EVI, SEXP EL,
     evei = REAL(VECTOR_ELT(eig, 2));
 
     loli = parent[0];
-
     for(m = 0; m < n; m++){
         pa = parent[m];
         ch = child[m];
