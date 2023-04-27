@@ -200,10 +200,9 @@ upperBound <- function(x, cost = NULL) {
 #' @rdname CI
 #' @export
 CI <- function(tree, data, cost = NULL, sitewise = FALSE) {
-  if (sitewise) pscore <- sankoff(tree, data, cost = cost, site = "site")
-  else pscore <- sankoff(tree, data, cost = cost)
-  weight <- attr(data, "weight")
   data <- subset(data, tree$tip.label)
+  pscore <- sankoff(tree, data, cost, ifelse(sitewise, "site", "pscore"))
+  weight <- attr(data, "weight")
   m <- lowerBound(data, cost = cost)
   if (sitewise) {
     return( (m / pscore)[attr(data, "index")])
@@ -215,9 +214,8 @@ CI <- function(tree, data, cost = NULL, sitewise = FALSE) {
 #' @rdname CI
 #' @export
 RI <- function(tree, data, cost = NULL, sitewise = FALSE) {
-  if (sitewise) pscore <- sankoff(tree, data, cost = cost, site = "site")
-  else pscore <- sankoff(tree, data, cost = cost)
   data <- subset(data, tree$tip.label)
+  pscore <- sankoff(tree, data, cost, ifelse(sitewise, "site", "pscore"))
   weight <- attr(data, "weight")
   m <- lowerBound(data, cost = cost)
   g <- upperBound(data, cost = cost)
