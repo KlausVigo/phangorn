@@ -167,8 +167,10 @@ pBound <- function(x, UB, LB) {
 #'
 #' @export bab
 bab <- function(data, tree = NULL, trace = 1, ...) {
+  if(inherits(data, "DNAbin") | inherits(data, "AAbin")) data <- as.phyDat(data)
+  if (!inherits(data, "phyDat")) stop("data must be of class phyDat")
   if (!is.null(tree)) data <- subset(data, tree$tip.label)
-  pBound <- TRUE
+  pBound <- FALSE
 
   nTips <- length(data)
   if (nTips < 4) return(stree(nTips, tip.label = names(data)))
@@ -195,7 +197,7 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
   o <- order(attr(data, "weight"), decreasing = TRUE)
   data <- subset(data, select = o, site.pattern=TRUE)
 
-  tree <- pratchet(data, start = tree, trace = trace - 1, ...)
+  tree <- pratchet(data, start = tree, trace = trace - 1, maxit=10, ...)
 
   data <- subset(data, tree$tip.label)
   nr <- as.integer(attr(data, "nr"))
