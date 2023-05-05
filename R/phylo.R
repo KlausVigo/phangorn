@@ -657,7 +657,7 @@ guess_model <- function(x){
 }
 
 
-
+# needs to go in phangorn extra
 optEdgeMulti <- function(object, control = pml.control(epsilon = 1e-8,
                            maxit = 10, trace = 1, tau = 1e-8), ...) {
   tree <- object$tree
@@ -989,7 +989,7 @@ pml.fit4 <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
   if (ASC) {
     ind <- seq_len(nc)
     p0 <- sum(exp(siteLik[ind]))
-    if(is.nan(log(1 - p0))) browser()
+    if(p0 >= 1) stop("Error Mkv")
     loglik <- loglik - sum(weight) * log(1 - p0)
   }
   if (!site) return(loglik)
