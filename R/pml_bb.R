@@ -89,6 +89,12 @@ pml_bb <- function(x, model=NULL, rearrangement="stochastic",
     if(method=="tipdated" && !is.null(attr(start, "rate")))
       fit <- update(fit, rate=attr(start, "rate"))
   }
+  if(optRooted && !is.rooted(fit$tree)){
+    start <- candidate_tree(fit$data, method=method,
+                            tip.dates = tip.dates, eps=1e-7)
+    fit <- update(fit, tree=start)
+    if(method=="tipdated") fit <- update(fit, rate=attr(start, "rate"))
+  }
   type <- attr(fit$data, "type")
   para <- split_model(model, type)
   if(type=="AA" && para$optFreq){
