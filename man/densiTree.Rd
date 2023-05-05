@@ -8,7 +8,7 @@ densiTree(x, type = "cladogram", alpha = 1/length(x), consensus = NULL,
   direction = "rightwards", optim = FALSE, scaleX = FALSE, col = 1,
   width = 1, lty = 1, cex = 0.8, font = 3, tip.color = 1, adj = 0,
   srt = 0, underscore = FALSE, label.offset = 0, scale.bar = TRUE,
-  jitter = list(amount = 0, random = TRUE), ...)
+  jitter = list(amount = 0, random = TRUE), tip.dates = NULL, ...)
 }
 \arguments{
 \item{x}{an object of class \code{multiPhylo}.}
@@ -61,6 +61,8 @@ of the phylogeny and their corresponding labels.}
 \item{jitter}{allows to shift trees. a list with two arguments: the amount of
 jitter and random or equally spaced (see details below)}
 
+\item{tip.dates}{A named vector of sampling times associated with the tips.}
+
 \item{\dots}{further arguments to be passed to plot.}
 }
 \description{
@@ -108,7 +110,7 @@ trees \emph{Bioinformatics}, \bold{26 (10)}, 1372-1373.
 }
 \seealso{
 \code{\link{plot.phylo}}, \code{\link{plot.networx}},
-\code{\link{jitter}}
+\code{\link{jitter}}, \code{\link{rtt}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}
