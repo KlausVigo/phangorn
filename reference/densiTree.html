@@ -64,7 +64,7 @@
 <span>  direction <span class="op">=</span> <span class="st">"rightwards"</span>, optim <span class="op">=</span> <span class="cn">FALSE</span>, scaleX <span class="op">=</span> <span class="cn">FALSE</span>, col <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  width <span class="op">=</span> <span class="fl">1</span>, lty <span class="op">=</span> <span class="fl">1</span>, cex <span class="op">=</span> <span class="fl">0.8</span>, font <span class="op">=</span> <span class="fl">3</span>, tip.color <span class="op">=</span> <span class="fl">1</span>, adj <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  srt <span class="op">=</span> <span class="fl">0</span>, underscore <span class="op">=</span> <span class="cn">FALSE</span>, label.offset <span class="op">=</span> <span class="fl">0</span>, scale.bar <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  jitter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>amount <span class="op">=</span> <span class="fl">0</span>, random <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span>  jitter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>amount <span class="op">=</span> <span class="fl">0</span>, random <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, tip.dates <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -157,6 +157,10 @@ of the phylogeny and their corresponding labels.</p></dd>
 jitter and random or equally spaced (see details below)</p></dd>
 
 
+<dt>tip.dates</dt>
+<dd><p>A named vector of sampling times associated with the tips.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>further arguments to be passed to plot.</p></dd>
 
@@ -184,7 +188,7 @@ trees <em>Bioinformatics</em>, <b>26 (10)</b>, 1372-1373.</p>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code>plot.phylo</code>, <code><a href="plot.networx.html">plot.networx</a></code>,
-<code><a href="https://rdrr.io/r/base/jitter.html" class="external-link">jitter</a></code></p></div>
+<code><a href="https://rdrr.io/r/base/jitter.html" class="external-link">jitter</a></code>, <code>rtt</code></p></div>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
