@@ -12,11 +12,15 @@ OTHER CHANGES
 
       which were implicitly using "estimated".
 
-    o some improvements to pmlPart
+    o pml_bb roots the tree, if method is either ultrametric or tipdated. Fixes
 
-    o nicer defaults for plot.pml
+      problem when modelTest object was supplied.
 
-    o the sankoff algorithm has been rewritten
+    o some improvements to pmlPart.
+
+    o nicer defaults for plot.pml, mainly for rooted trees.
+
+    o the sankoff algorithm has been rewritten.
 
 
     CHANGES in PHANGORN VERSION 2.11.0
