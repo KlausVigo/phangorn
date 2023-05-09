@@ -6,7 +6,7 @@ edge_length_matrix <- function(tree, trees, rooted=TRUE){
     tree <- unroot(tree)
   }
   else{
-    if(!is_rooted(tree) || any(!is_rooted(trees))) stop("All trees need to be rooted!")
+    if(!is.rooted(tree) || any(!is.rooted(trees))) stop("All trees need to be rooted!")
   }
   fun <- function(x){
     el <- numeric(max(x$edge))
@@ -110,7 +110,7 @@ add_ci <- function(tree, trees, col95 = "#FF00004D", col50 = "#0000FF4D",
   lastPP <- get("last_plot.phylo", envir = ape::.PlotPhyloEnv)
   direction <- lastPP$direction
   trees <- .uncompressTipLabel(trees)
-  if(!is_rooted(tree) || !all(is_rooted(trees))) stop("All trees need to be rooted!")
+  if(!is.rooted(tree) || !all(is.rooted(trees))) stop("All trees need to be rooted!")
   X <- edge_length_matrix(tree, trees, rooted=TRUE)[, -(seq_along(Ntip(tree)))]
   CI <- apply(X, 2, FUN=\(x)quantile(na.omit(x), probs=c(.025,.25,.75,.975)))
   horizontal <- FALSE
