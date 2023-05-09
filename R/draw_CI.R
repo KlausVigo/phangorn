@@ -111,7 +111,7 @@ add_ci <- function(tree, trees, col95 = "#FF00004D", col50 = "#0000FF4D",
   direction <- lastPP$direction
   trees <- .uncompressTipLabel(trees)
   if(!is.rooted(tree) || !all(is.rooted(trees))) stop("All trees need to be rooted!")
-  X <- edge_length_matrix(tree, trees, rooted=TRUE)[, -(seq_along(Ntip(tree)))]
+  X <- edge_length_matrix(tree, trees, rooted=TRUE)[, -(seq_len(Ntip(tree)))]
   CI <- apply(X, 2, FUN=\(x)quantile(na.omit(x), probs=c(.025,.25,.75,.975)))
   horizontal <- FALSE
   if(direction=="rightwards" || direction=="leftwards"){
