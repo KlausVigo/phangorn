@@ -226,8 +226,7 @@ write.tree(tree_tfbs, "primates.tree")
 
 ## Molecular dating with a strict clock for ultrametric and tipdated phylogenies
 
-When we assume a "molecular clock" phylogenies can be used to infer divergence times [@Zuckerkandl1965]. We implemented a strict clock as described in [@Felsenstein2004], p. 266, allowing to infer ultrametric and tip-dated phylogenies. We need a starting tree that fulfills the assumptions, so either the tree has to be ultrametric, or the constraints given by the tip dates.  
-For an ultrametric starting tree we can use an UPGMA or WPGMA tree. 
+When we assume a "molecular clock" phylogenies can be used to infer divergence times [@Zuckerkandl1965]. We implemented a strict clock as described in [@Felsenstein2004], p. 266, allowing to infer ultrametric and tip-dated phylogenies. The function `pml_bb` ensures that the  tree is ultrametric, or the constraints given by the tip dates are fulfilled. That differs from the function `optim.pml` where th tree supplied to the function has to fulfill the constraints. In this case for an ultrametric starting tree we can use an UPGMA or WPGMA tree. 
 ```{r strict_primates, echo=TRUE, cache=TRUE}
 fit_strict <- pml_bb(primates, model="HKY+G(4)", method="ultrametric",
                      rearrangement="NNI", control = pml.control(trace = 0))
@@ -249,16 +248,20 @@ head(dates)
 ```
 Again we use the `pml_bb` function, which optimizes the tree given the constraints of the `tip.dates` vector. 
 ```{r tipdated_fit}
-fit_td <- pml_bb(H3N2, model="GTR+G(4)", method="tipdated", tip.dates=dates, 
+fit_td <- pml_bb(H3N2, model="HKY+I", method="tipdated", tip.dates=dates, 
                rearrangement="NNI", control = pml.control(trace = 0))
+fit_td
 ```
+While the loglikelihood is lower than for an unrooted tree, we have to keep in mind that rooted trees use less parameters.
+In unrooted trees we estimate one edge length parameter for each tree, for ultrametric trees we only estimate a parameter for each internal node and for tipdated trees we have one additional parameter for the rate. The rate is here comparable to the slope fo the tip-to-root regression in programs like *TempEst* [@TempEst].
+
+
+
 And at last we plot the tree with a timescale. 
 ```{r tipdated_plot}
-plot(fit_td, show.tip.label = FALSE)
+plot(fit_td, align.tip.label=TRUE)
 ```
 
-While the loglikelihood is lower than for an unrooted tree, we have to keep in mind that rooted trees use less parameters.
-In unrooted trees we estimate one edge length parameter for each tree, for ultrametric trees we only estimate a parameter for each internal node and for tipdated trees we have one additional parameter for the rate. 
 
 \newpage
 
