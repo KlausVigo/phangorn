@@ -89,7 +89,7 @@ Iris Bardel-Kahr</h4>
 Graz<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2023-05-08</h4>
+            <h4 data-toc-skip class="date">2023-05-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/vignettes/Trees.Rmd" class="external-link"><code>vignettes/Trees.Rmd</code></a></small>
       <div class="d-none name"><code>Trees.Rmd</code></div>
@@ -275,10 +275,10 @@ works with the fitch algorithm.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">treeRA</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parsimony.html">random.addition</a></span><span class="op">(</span><span class="va">primates</span><span class="op">)</span></span>
 <span><span class="va">treeSPR</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parsimony.html">optim.parsimony</a></span><span class="op">(</span><span class="va">treeRA</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Final p-score 746 after  1 nni operations</span></span></code></pre>
+<pre><code><span><span class="co">## Final p-score 746 after  0 nni operations</span></span></code></pre>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/parsimony.html">parsimony</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">treeRA</span>, <span class="va">treeSPR</span><span class="op">)</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 751 746</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 746 746</span></span></code></pre>
 <div class="section level3">
 <h3 id="branch-and-bound">Branch and bound<a class="anchor" aria-label="anchor" href="#branch-and-bound"></a>
 </h3>
@@ -602,23 +602,23 @@ conducted.</p>
 <code class="sourceCode R"><span><span class="va">fit_mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">mt</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fit_mt</span></span></code></pre></div>
 <pre><code><span><span class="co">## model: HKY+G(4) </span></span>
-<span><span class="co">## loglikelihood: -2615.314 </span></span>
+<span><span class="co">## loglikelihood: -2615.39 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -1230.335 </span></span>
 <span><span class="co">## Model of rate heterogeneity: Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.26881 </span></span>
+<span><span class="co">## Shape parameter: 2.432897 </span></span>
 <span><span class="co">##        Rate Proportion</span></span>
-<span><span class="co">## 1 0.3233814       0.25</span></span>
-<span><span class="co">## 2 0.6808590       0.25</span></span>
-<span><span class="co">## 3 1.0754608       0.25</span></span>
-<span><span class="co">## 4 1.9202988       0.25</span></span>
+<span><span class="co">## 1 0.3400010       0.25</span></span>
+<span><span class="co">## 2 0.6943509       0.25</span></span>
+<span><span class="co">## 3 1.0778238       0.25</span></span>
+<span><span class="co">## 4 1.8878242       0.25</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
 <span><span class="co">##          a        c        g        t</span></span>
-<span><span class="co">## a  0.00000  1.00000 53.05917  1.00000</span></span>
-<span><span class="co">## c  1.00000  0.00000  1.00000 53.05917</span></span>
-<span><span class="co">## g 53.05917  1.00000  0.00000  1.00000</span></span>
-<span><span class="co">## t  1.00000 53.05917  1.00000  0.00000</span></span>
+<span><span class="co">## a  0.00000  1.00000 53.22802  1.00000</span></span>
+<span><span class="co">## c  1.00000  0.00000  1.00000 53.22802</span></span>
+<span><span class="co">## g 53.22802  1.00000  0.00000  1.00000</span></span>
+<span><span class="co">## t  1.00000 53.22802  1.00000  0.00000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##          a          c          g          t </span></span>
@@ -703,10 +703,12 @@ phylogenies<a class="anchor" aria-label="anchor" href="#molecular-dating-with-a-
 <p>When we assume a “molecular clock” phylogenies can be used to infer
 divergence times <span class="citation">(Zuckerkandl and Pauling
 1965)</span>. We implemented a strict clock as described in <span class="citation">(Felsenstein 2004)</span>, p. 266, allowing to infer
-ultrametric and tip-dated phylogenies. We need a starting tree that
-fulfills the assumptions, so either the tree has to be ultrametric, or
-the constraints given by the tip dates.<br>
-For an ultrametric starting tree we can use an UPGMA or WPGMA tree.</p>
+ultrametric and tip-dated phylogenies. The function <code>pml_bb</code>
+ensures that the tree is ultrametric, or the constraints given by the
+tip dates are fulfilled. That differs from the function
+<code>optim.pml</code> where th tree supplied to the function has to
+fulfill the constraints. In this case for an ultrametric starting tree
+we can use an UPGMA or WPGMA tree.</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_strict</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">primates</span>, model<span class="op">=</span><span class="st">"HKY+G(4)"</span>, method<span class="op">=</span><span class="st">"ultrametric"</span>,</span>
 <span>                     rearrangement<span class="op">=</span><span class="st">"NNI"</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -743,17 +745,38 @@ e.g. days and months.</p>
 <p>Again we use the <code>pml_bb</code> function, which optimizes the
 tree given the constraints of the <code>tip.dates</code> vector.</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fit_td</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">H3N2</span>, model<span class="op">=</span><span class="st">"GTR+G(4)"</span>, method<span class="op">=</span><span class="st">"tipdated"</span>, tip.dates<span class="op">=</span><span class="va">dates</span>, </span>
-<span>               rearrangement<span class="op">=</span><span class="st">"NNI"</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>And at last we plot the tree with a timescale.</p>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit_td</span>, show.tip.label <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Trees_files/figure-html/tipdated_plot-1.png" width="768"></p>
+<code class="sourceCode R"><span><span class="va">fit_td</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">H3N2</span>, model<span class="op">=</span><span class="st">"HKY+I"</span>, method<span class="op">=</span><span class="st">"tipdated"</span>, tip.dates<span class="op">=</span><span class="va">dates</span>, </span>
+<span>               rearrangement<span class="op">=</span><span class="st">"NNI"</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">fit_td</span></span></code></pre></div>
+<pre><code><span><span class="co">## model: HKY+I </span></span>
+<span><span class="co">## loglikelihood: -3117.936 </span></span>
+<span><span class="co">## unconstrained loglikelihood: -2883.911 </span></span>
+<span><span class="co">## Proportion of invariant sites: 0.6862855 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Rate: 0.002488031 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Rate matrix:</span></span>
+<span><span class="co">##         a       c       g       t</span></span>
+<span><span class="co">## a 0.00000 1.00000 9.86553 1.00000</span></span>
+<span><span class="co">## c 1.00000 0.00000 1.00000 9.86553</span></span>
+<span><span class="co">## g 9.86553 1.00000 0.00000 1.00000</span></span>
+<span><span class="co">## t 1.00000 9.86553 1.00000 0.00000</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Base frequencies:  </span></span>
+<span><span class="co">##         a         c         g         t </span></span>
+<span><span class="co">## 0.3097759 0.1928617 0.2376819 0.2596805</span></span></code></pre>
 <p>While the loglikelihood is lower than for an unrooted tree, we have
 to keep in mind that rooted trees use less parameters. In unrooted trees
 we estimate one edge length parameter for each tree, for ultrametric
 trees we only estimate a parameter for each internal node and for
-tipdated trees we have one additional parameter for the rate.</p>
+tipdated trees we have one additional parameter for the rate. The rate
+is here comparable to the slope fo the tip-to-root regression in
+programs like <em>TempEst</em> <span class="citation">(Rambaut et al.
+2016)</span>.</p>
+<p>And at last we plot the tree with a timescale.</p>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit_td</span>, align.tip.label<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Trees_files/figure-html/tipdated_plot-1.png" width="768"></p>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
@@ -793,7 +816,7 @@ tipdated trees we have one additional parameter for the rate.</p>
 <span><span class="co">## [25] quadprog_1.5-8    fs_1.6.2          sass_0.4.6        memoise_2.0.1    </span></span>
 <span><span class="co">## [29] cli_3.6.1         pkgdown_2.0.7     magrittr_2.0.3    digest_0.6.31    </span></span>
 <span><span class="co">## [33] grid_4.3.0        lifecycle_1.0.3   nlme_3.1-162      vctrs_0.6.2      </span></span>
-<span><span class="co">## [37] evaluate_0.20     glue_1.6.2        codetools_0.2-19  ragg_1.2.5       </span></span>
+<span><span class="co">## [37] evaluate_0.21     glue_1.6.2        codetools_0.2-19  ragg_1.2.5       </span></span>
 <span><span class="co">## [41] rmarkdown_2.21    purrr_1.0.1       pkgconfig_2.0.3   tools_4.3.0      </span></span>
 <span><span class="co">## [45] htmltools_0.5.5</span></span></code></pre>
 </div>
@@ -866,6 +889,12 @@ Evolution</em> 25 (7): 1253–56. <a href="https://doi.org/10.1093/molbev/msn083
 Posada, D., and K. A. Crandall. 1998. <span>“<span>MODELTEST</span>:
 Testing the Model of <span>DNA</span> Substitution.”</span>
 <em>Bioinformatics</em> 14 (9): 817–18.
+</div>
+<div id="ref-TempEst" class="csl-entry">
+Rambaut, Andrew, Tommy T. Lam, Luiz Max Carvalho, and Oliver G. Pybus.
+2016. <span>“<span class="nocase">Exploring the temporal structure of
+heterochronous sequences using TempEst (formerly
+Path-O-Gen)</span>.”</span> <em>Virus Evolution</em> 2 (1). <a href="https://doi.org/10.1093/ve/vew007" class="external-link">https://doi.org/10.1093/ve/vew007</a>.
 </div>
 <div id="ref-treetime" class="csl-entry">
 Sagulenko, Pavel, Vadim Puller, and Richard A Neher. 2018.

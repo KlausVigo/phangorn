@@ -89,7 +89,7 @@ Iris Bardel-Kahr</h4>
 Graz<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2023-05-08</h4>
+            <h4 data-toc-skip class="date">2023-05-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/vignettes/MLbyHand.Rmd" class="external-link"><code>vignettes/MLbyHand.Rmd</code></a></small>
       <div class="d-none name"><code>MLbyHand.Rmd</code></div>
@@ -240,23 +240,23 @@ time.</p>
 <pre><code><span><span class="co">## model: GTR+G(4)+I </span></span>
 <span><span class="co">## loglikelihood: -2608 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -1230 </span></span>
-<span><span class="co">## Proportion of invariant sites: 0.007369 </span></span>
+<span><span class="co">## Proportion of invariant sites: 0.007413 </span></span>
 <span><span class="co">## Model of rate heterogeneity: Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.994 </span></span>
+<span><span class="co">## Shape parameter: 2.993 </span></span>
 <span><span class="co">##     Rate Proportion</span></span>
-<span><span class="co">## 1 0.0000   0.007369</span></span>
-<span><span class="co">## 2 0.3916   0.248158</span></span>
-<span><span class="co">## 3 0.7366   0.248158</span></span>
-<span><span class="co">## 4 1.0905   0.248158</span></span>
-<span><span class="co">## 5 1.8109   0.248158</span></span>
+<span><span class="co">## 1 0.0000   0.007413</span></span>
+<span><span class="co">## 2 0.3916   0.248147</span></span>
+<span><span class="co">## 3 0.7366   0.248147</span></span>
+<span><span class="co">## 4 1.0906   0.248147</span></span>
+<span><span class="co">## 5 1.8111   0.248147</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
 <span><span class="co">##         a         c         g       t</span></span>
-<span><span class="co">## a  0.0000  0.597011 61.295830  0.4797</span></span>
-<span><span class="co">## c  0.5970  0.000000  0.005095 21.4573</span></span>
-<span><span class="co">## g 61.2958  0.005095  0.000000  1.0000</span></span>
-<span><span class="co">## t  0.4797 21.457293  1.000000  0.0000</span></span>
+<span><span class="co">## a  0.0000  0.728955 74.816759  0.6069</span></span>
+<span><span class="co">## c  0.7290  0.000000  0.004583 26.1822</span></span>
+<span><span class="co">## g 74.8168  0.004583  0.000000  1.0000</span></span>
+<span><span class="co">## t  0.6069 26.182153  1.000000  0.0000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##       a       c       g       t </span></span>
@@ -278,7 +278,7 @@ ratio statistic</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/SH.test.html">SH.test</a></span><span class="op">(</span><span class="va">fitGTR</span>, <span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##      Trees  ln L Diff ln L p-value</span></span>
-<span><span class="co">## [1,]     1 -2608       0.0  0.5055</span></span>
+<span><span class="co">## [1,]     1 -2608       0.0  0.5039</span></span>
 <span><span class="co">## [2,]     2 -3068     460.5  0.0000</span></span></code></pre>
 <p>or with the AIC</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
@@ -383,7 +383,7 @@ pruning and regrafting) away.</p>
 <span><span class="co">## [25] xfun_0.39         quadprog_1.5-8    fs_1.6.2          sass_0.4.6       </span></span>
 <span><span class="co">## [29] memoise_2.0.1     cli_3.6.1         pkgdown_2.0.7     magrittr_2.0.3   </span></span>
 <span><span class="co">## [33] digest_0.6.31     grid_4.3.0        lifecycle_1.0.3   nlme_3.1-162     </span></span>
-<span><span class="co">## [37] vctrs_0.6.2       evaluate_0.20     glue_1.6.2        codetools_0.2-19 </span></span>
+<span><span class="co">## [37] vctrs_0.6.2       evaluate_0.21     glue_1.6.2        codetools_0.2-19 </span></span>
 <span><span class="co">## [41] ragg_1.2.5        rmarkdown_2.21    purrr_1.0.1       pkgconfig_2.0.3  </span></span>
 <span><span class="co">## [45] tools_4.3.0       htmltools_0.5.5</span></span></code></pre>
 </div>
