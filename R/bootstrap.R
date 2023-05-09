@@ -336,26 +336,24 @@ plotBS <- function(tree, BStrees, type = "phylogram",
 
 
 
-is_rooted <- function(phy) UseMethod("is_rooted")
+#is_rooted <- function(phy) UseMethod("is_rooted")
 
-.is_rooted_ape <- function(phy, ntips)
-{
-  if (!is.null(phy$root.edge)) return(TRUE)
-  if (tabulate(phy$edge[, 1])[ntips + 1] > 2) FALSE else TRUE
-}
+#.is_rooted_ape <- function(phy, ntips)
+#{
+#  if (!is.null(phy$root.edge)) return(TRUE)
+#  if (tabulate(phy$edge[, 1])[ntips + 1] > 2) FALSE else TRUE
+#}
 
-is_rooted.phylo <- function (phy)
-  .is_rooted_ape(phy, length(phy$tip.label))
+#is_rooted.phylo <- function (phy)
+#  .is_rooted_ape(phy, length(phy$tip.label))
 
-is_rooted.multiPhylo <- function(phy)
-{
-  labs <- attr(phy, "TipLabel")
-  class(phy) <- NULL
-  if (is.null(labs)) sapply(phy, is_rooted.phylo)
-  else sapply(phy, .is_rooted_ape, ntips = length(labs))
-}
-
-
+#is_rooted.multiPhylo <- function(phy)
+#{
+#  labs <- attr(phy, "TipLabel")
+#  class(phy) <- NULL
+#  if (is.null(labs)) sapply(phy, is_rooted.phylo)
+#  else sapply(phy, .is_rooted_ape, ntips = length(labs))
+#}
 
 
 cladeMatrix <- function(x, rooted = FALSE) {
