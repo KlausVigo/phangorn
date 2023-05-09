@@ -17,8 +17,9 @@ plotBS(tree, BStrees, type = "phylogram", method = "FBP",
 "unrooted", "radial" or "none". If type is "none" the tree is returned with
 the bootstrap values assigned to the node labels.}
 
-\item{method}{either "FBP" the classical bootstrap (default) or "TBE"
-(transfer bootstrap)}
+\item{method}{either "FBP" the classical bootstrap (default), "TBE"
+(transfer bootstrap) or "MCC" for assigning clade credibilities. In case of
+"MCC" all trees need to be rooted.}
 
 \item{bs.col}{color of bootstrap support labels.}
 

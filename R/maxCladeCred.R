@@ -23,7 +23,7 @@
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{consensus}}, \code{\link{consensusNet}},
 #' \code{\link{prop.part}}, \code{\link{bootstrap.pml}}, \code{\link{plotBS}},
-#' \code{\link{transferBootstrap}}
+#' \code{\link{transferBootstrap}}, \code{\link{add_edge_length}}
 #' @keywords cluster
 #' @importFrom fastmatch fmatch
 #' @examples

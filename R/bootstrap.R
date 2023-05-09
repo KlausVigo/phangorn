@@ -83,7 +83,7 @@ bootstrap.pml <- function(x, bs = 100, trees = TRUE, multicore = FALSE,
   if(.Platform$OS.type=="windows") multicore <- FALSE
   if (multicore && is.null(mc.cores)) mc.cores <- min(detectCores()-1L, 4L)
   if(multicore && mc.cores < 2L) multicore <- FALSE
-  if(is_rooted(x$tree)){
+  if(is.rooted(x$tree)){
     if(is.ultrametric(x$tree)) method <- "ultrametric"
     else method <- "tipdated"
   }
@@ -231,8 +231,9 @@ checkLabels <- function(tree, tip) {
 #' @param type the type of tree to plot, one of "phylogram", "cladogram", "fan",
 #' "unrooted", "radial" or "none". If type is "none" the tree is returned with
 #' the bootstrap values assigned to the node labels.
-#' @param method either "FBP" the classical bootstrap (default) or "TBE"
-#' (transfer bootstrap)
+#' @param method either "FBP" the classical bootstrap (default), "TBE"
+#' (transfer bootstrap) or "MCC" for assigning clade credibilities. In case of
+#' "MCC" all trees need to be rooted.
 #' @param bs.col color of bootstrap support labels.
 #' @param bs.adj one or two numeric values specifying the horizontal and
 #' vertical justification of the bootstrap labels.
@@ -282,7 +283,7 @@ plotBS <- function(tree, BStrees, type = "phylogram",
   if (hasArg(BStrees)) {
     if(method=="FBP"){
       BStrees <- .uncompressTipLabel(BStrees) # check if needed
-      if (any(is_rooted(BStrees))) BStrees <- unroot(BStrees)
+      if (any(is.rooted(BStrees))) BStrees <- unroot(BStrees)
       x <- prop.clades(tree, BStrees)
       x <- (x / length(BStrees)) * 100
       tree$node.label <- x
