@@ -91,6 +91,7 @@ print.pml <- function(x, ...) {
     row.names(rw) <- as.character(seq_len(nrow(rw)))
     print(rw)
   }
+  if(!is.null(x$method) && x$method == "tipdated") cat("\nRate:", x$rate, "\n")
   if (type == "AA") cat("Rate matrix:", x$model, "\n")
   if (type == "DNA") {
     cat("\nRate matrix:\n")
