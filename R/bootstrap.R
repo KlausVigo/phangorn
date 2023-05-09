@@ -86,9 +86,12 @@ bootstrap.pml <- function(x, bs = 100, trees = TRUE, multicore = FALSE,
   if(is.rooted(x$tree)){
     if(is.ultrametric(x$tree)) method <- "ultrametric"
     else method <- "tipdated"
+    optRooted <- TRUE
   }
-  else method <- "unrooted"
-
+  else {
+    method <- "unrooted"
+    optRooted <- FALSE
+  }
   extras <- match.call(expand.dots = FALSE)$...
   rearr <- c("optNni", "rearrangement")
   tmp <- pmatch(names(extras), rearr)
@@ -106,7 +109,9 @@ bootstrap.pml <- function(x, bs = 100, trees = TRUE, multicore = FALSE,
   tmp <- pmatch("optRooted", names(extras))
   if(!is.na(tmp)){
     is_ultrametric <- extras$optRooted
+    optRooted <- extras$optRooted
   }
+  else if(optRooted) extras <- append(extras, list(optRooted=TRUE))
   data <- x$data
   weight <- attr(data, "weight")
   v <- rep(seq_along(weight), weight)
@@ -128,7 +133,8 @@ bootstrap.pml <- function(x, bs = 100, trees = TRUE, multicore = FALSE,
                              tip.dates = tip.dates)
       fit <- update(fit, tree = tree)
     }
-    fit <- optim.pml(fit, ...)
+#    fit <- optim.pml(fit, ...)
+    fit <- do.call(optim.pml, append(list(object=fit), extras))
     if (trees) {
       tree <- fit$tree
       return(tree)
