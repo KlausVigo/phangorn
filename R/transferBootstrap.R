@@ -1,7 +1,7 @@
 ## include in addConfidences, plotBS etc.
 #' Transfer Bootstrap
 #'
-#' \code{transferBootstrap} assignes transfer bootstrap (Lemoine et al. 2018)
+#' \code{transferBootstrap} assigns transfer bootstrap (Lemoine et al. 2018)
 #' values to the (internal) edges.
 #'
 #' @param tree The tree on which edges the bootstrap values are plotted.
@@ -11,7 +11,8 @@
 #' \code{BSTrees} is optional and if not supplied the labels supplied
 #' in the \code{node.label} slot will be used.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso  \code{\link{plotBS}}, \code{\link{maxCladeCred}}
+#' @seealso  \code{\link{plotBS}}, \code{\link{maxCladeCred}},
+#' \code{\link{drawSupportOnEdges}}
 #' @references Lemoine, F., Entfellner, J. B. D., Wilkinson, E., Correia, D.,
 #' Felipe, M. D., De Oliveira, T., & Gascuel, O. (2018). Renewing Felsenstein’s
 #' phylogenetic bootstrap in the era of big data. \emph{Nature},
@@ -29,7 +30,7 @@
 #' # same as
 #' plotBS(raxml.tree,  raxml.bootstrap, "p", "TBE")
 #' @export
-transferBootstrap <- function(tree, BStrees){
+transferBootstrap <- function(tree, BStrees, phylo=TRUE){
   if(!inherits(BStrees, "multiPhylo"))
     stop("BSTrees needs to be of class multiPhylo!")
   BStrees <- .uncompressTipLabel(BStrees)
@@ -51,7 +52,9 @@ transferBootstrap <- function(tree, BStrees){
      for(j in ind) res[j] <- res[j] + Transfer_Index(bp[[j]], tmp$edge, l)
   }
   res <- res / length(BStrees) * 100
-  tree$node.label <- c(NA_real_, res)
+  res <- c(NA_real_, res)
+  if(!phylo) return(res)
+  tree$node.label <- res
   tree
 }
 

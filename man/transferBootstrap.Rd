@@ -4,7 +4,7 @@
 \alias{transferBootstrap}
 \title{Transfer Bootstrap}
 \usage{
-transferBootstrap(tree, BStrees)
+transferBootstrap(tree, BStrees, phylo = TRUE)
 }
 \arguments{
 \item{tree}{The tree on which edges the bootstrap values are plotted.}
@@ -18,7 +18,7 @@ transferBootstrap(tree, BStrees)
 in the \code{node.label} slot will be used.
 }
 \description{
-\code{transferBootstrap} assignes transfer bootstrap (Lemoine et al. 2018)
+\code{transferBootstrap} assigns transfer bootstrap (Lemoine et al. 2018)
 values to the (internal) edges.
 }
 \examples{
@@ -41,7 +41,8 @@ phylogenetic bootstrap in the era of big data. \emph{Nature},
 \bold{556(7702)}, 452--456.
 }
 \seealso{
-\code{\link{plotBS}}, \code{\link{maxCladeCred}}
+\code{\link{plotBS}}, \code{\link{maxCladeCred}},
+\code{\link{drawSupportOnEdges}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}
