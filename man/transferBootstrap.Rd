@@ -10,6 +10,9 @@ transferBootstrap(tree, BStrees, phylo = TRUE)
 \item{tree}{The tree on which edges the bootstrap values are plotted.}
 
 \item{BStrees}{a list of trees (object of class "multiPhylo").}
+
+\item{phylo}{Logical, return a phylogentic tree with support value or a
+vector of bootstrap values.}
 }
 \value{
 \code{plotBS} returns silently a tree, i.e. an object of class

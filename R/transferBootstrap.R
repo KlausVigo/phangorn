@@ -6,6 +6,8 @@
 #'
 #' @param tree The tree on which edges the bootstrap values are plotted.
 #' @param BStrees a list of trees (object of class "multiPhylo").
+#' @param phylo Logical, return a phylogentic tree with support value or a
+#' vector of bootstrap values.
 #' @return \code{plotBS} returns silently a tree, i.e. an object of class
 #' \code{phylo} with the bootstrap values as node labels. The argument
 #' \code{BSTrees} is optional and if not supplied the labels supplied
