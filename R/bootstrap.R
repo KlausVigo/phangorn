@@ -285,11 +285,14 @@ plotBS <- function(tree, BStrees, type = "phylogram",
                    bs.adj = NULL, digits=3, p = 0, frame = "none", ...) {
   type <- match.arg(type, c("phylogram", "cladogram", "fan", "unrooted",
                             "radial", "none"))
-  method <- match.arg(method, c("FBP", "TBE"))
+  if(inherits(tree, "pml")) tree <- tree$tree
+  method <- match.arg(method, c("FBP", "TBE", "MCC"))
   if (hasArg(BStrees)) {
-    if(method=="FBP"){
+    if(method=="FBP" || method=="MCC"){
       BStrees <- .uncompressTipLabel(BStrees) # check if needed
-      if (any(is.rooted(BStrees))) BStrees <- unroot(BStrees)
+      if(method=="MCC" && any(!is.rooted(BStrees)))
+        stop("All trees need to be rooted for method 'MCC'!")
+      if (method=="FBP" && any(is.rooted(BStrees))) BStrees <- unroot(BStrees)
       x <- prop.clades(tree, BStrees)
       x <- (x / length(BStrees)) * 100
       tree$node.label <- x
