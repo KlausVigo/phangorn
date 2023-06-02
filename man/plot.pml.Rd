@@ -20,7 +20,7 @@ and "downwards".}
 \item{\dots}{further parameters to be passed to \code{plot.phylo}.}
 }
 \description{
-\code{plot.pml} is a warapper around \code{plot.phylo} with different default
+\code{plot.pml} is a wrapper around \code{plot.phylo} with different default
 values for unrooted, ultrametric and tip dated phylogenies.
 }
 \examples{

@@ -1,6 +1,6 @@
 #' Plot phylogeny of a pml object
 #'
-#' \code{plot.pml} is a warapper around \code{plot.phylo} with different default
+#' \code{plot.pml} is a wrapper around \code{plot.phylo} with different default
 #' values for unrooted, ultrametric and tip dated phylogenies.
 #'
 #' @param x an object of class \code{pml} or \code{phyDat}.
