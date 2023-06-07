@@ -59,7 +59,7 @@ edge_length_matrix <- function(tree, trees, rooted=TRUE){
 ##' @keywords aplot
 ##' @export
 add_edge_length <- function(tree, trees, fun=\(x)median(na.omit(x)),
-                            rooted=TRUE){
+                            rooted=all(is.rooted(c(tree, trees)))){
   if(!rooted) tree <- unroot(tree)
   X <- edge_length_matrix(tree, trees, rooted)
   nh <- apply(X, 2, fun)

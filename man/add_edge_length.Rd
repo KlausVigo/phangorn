@@ -5,7 +5,7 @@
 \title{Assign and compute edge lengths from a sample of trees}
 \usage{
 add_edge_length(tree, trees, fun = function(x) median(na.omit(x)),
-  rooted = TRUE)
+  rooted = all(is.rooted(c(tree, trees))))
 }
 \arguments{
 \item{tree}{tree where edge lengths are assigned to.}
