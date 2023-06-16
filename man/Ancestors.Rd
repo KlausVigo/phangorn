@@ -24,7 +24,7 @@ mrca.phylo(x, node = NULL, full = FALSE)
 \arguments{
 \item{x}{a tree (a phylo object).}
 
-\item{node}{an integer or character vector (or skalar) corresponding to a
+\item{node}{an integer or character vector (or scalar) corresponding to a
 node ID}
 
 \item{type}{specify whether to return just direct children / parents or all}
