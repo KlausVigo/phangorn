@@ -688,7 +688,7 @@ char2pos <- function(x, node){
 #' @export
 #' @rdname Ancestors
 Ancestors <- function(x, node, type = c("all", "parent")) {
-  if(inherits(node, "character")) node <- char2pos(x, node)
+  if(!missing(node) && inherits(node, "character")) node <- char2pos(x, node)
   parents <- x$edge[, 1]
   child <- x$edge[, 2]
   pvector <- integer(max(x$edge)) # parents
@@ -741,7 +741,7 @@ allDescendants <- function(x) {
 #' @export
 Children <- function(x, node) {
   # return allChildren if node is missing
-  if(inherits(node, "character")) node <- char2pos(x, node)
+  if(!missing(node) && inherits(node, "character")) node <- char2pos(x, node)
   if (!missing(node) && length(node) == 1)
     return(x$edge[x$edge[, 1] == node, 2])
   allChildren(x)[node]
@@ -752,7 +752,7 @@ Children <- function(x, node) {
 #' @export
 Descendants <- function(x, node, type = c("tips", "children", "all")) {
   type <- match.arg(type)
-  if(inherits(node, "character")) node <- char2pos(x, node)
+  if(!missing(node) && inherits(node, "character")) node <- char2pos(x, node)
   if (type == "children") return(Children(x, node))
   if (type == "tips") return(bip(x)[node])
   # new version using Rcpp
@@ -779,7 +779,7 @@ Descendants <- function(x, node, type = c("tips", "children", "all")) {
 #' @export
 Siblings <- function(x, node, include.self = FALSE) {
   if (missing(node)) node <- as.integer(1:max(x$edge))
-  if(inherits(node, "character")) node <- char2pos(x, node)
+  if(!missing(node) && inherits(node, "character")) node <- char2pos(x, node)
   l <- length(node)
   if (l == 1) {
     v <- Children(x, Ancestors(x, node, "parent"))
@@ -813,7 +813,7 @@ Siblings <- function(x, node, include.self = FALSE) {
 #' @export
 mrca.phylo <- function(x, node = NULL, full = FALSE) {
   if (is.null(node)) return(mrca2(x, full = full))
-  if(inherits(node, "character")) node <- char2pos(x, node)
+  if(!missing(node) && inherits(node, "character")) node <- char2pos(x, node)
   return(getMRCA(x, node))
 }
 
