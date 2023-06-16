@@ -39,8 +39,8 @@ A list with components named as the arguments for controlling the
 fitting process.
 }
 \description{
-Auxiliary functions for \code{\link{optim.pml}} fitting. Use it to construct
-a \code{control} or \code{ratchet.par} argument.
+Auxiliary functions for providing \code{\link{optim.pml}, \link{pml_bb}}
+fitting. Use it to construct a \code{control} or \code{ratchet.par} argument.
 }
 \details{
 \code{pml.control} controls the fitting process. \code{epsilon} and

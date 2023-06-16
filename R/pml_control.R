@@ -1,7 +1,7 @@
 #' Auxiliary for Controlling Fitting
 #'
-#' Auxiliary functions for \code{\link{optim.pml}} fitting. Use it to construct
-#' a \code{control} or \code{ratchet.par} argument.
+#' Auxiliary functions for providing \code{\link{optim.pml}, \link{pml_bb}}
+#' fitting. Use it to construct a \code{control} or \code{ratchet.par} argument.
 #'
 #' \code{pml.control} controls the fitting process. \code{epsilon} and
 #' \code{maxit} are only defined for the most outer loop, this affects
