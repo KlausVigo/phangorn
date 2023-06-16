@@ -30,7 +30,7 @@ knitr::knit_hooks$set(small.mar=function(before, options, envir){
 
 
 
-*Description:* This script provides examples of the new functions available in the phangorn library to 'intertwine' trees and networks, i.e. compare trees and networks and data transferrance. It also provides a step-by-step guide for users new to R. 
+*Description:* This script provides examples of the new functions available in the phangorn library to 'intertwine' trees and networks, i.e. compare trees and networks and data transference. It also provides a step-by-step guide for users new to R. 
 
 *Methodological advancement:* The major advancement in this phangorn update is the introduction of a generic network object with a wide range of related transfer and analysis functions. These new functions provide the first means to directly transfer information amongst a wide range of phylogenetic trees and networks, as well as means to visualize and further analyze this information. This should provide a platform for individuals to easily conduct tree-network comparisons and stimulate further function development by the community.
 
