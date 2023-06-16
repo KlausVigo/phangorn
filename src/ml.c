@@ -248,7 +248,7 @@ void lll3(SEXP dlist, double *eva, double *eve, double *evei, double *el, double
 SEXP PML0(SEXP dlist, SEXP EL, SEXP G, SEXP NR, SEXP NC, SEXP K, SEXP eig, SEXP bf, SEXP node, SEXP edge, SEXP NTips, SEXP nco, SEXP contrast, SEXP N){
     int nr=INTEGER(NR)[0], nc=INTEGER(NC)[0], k=INTEGER(K)[0], i, indLL;
     int nTips = INTEGER(NTips)[0], *SC;
-    double *g=REAL(G), *tmp, logScaleEPS;
+    double *g=REAL(G), *tmp; //, logScaleEPS;
     SEXP TMP;
     double *eva, *eve, *evei;
     eva = REAL(VECTOR_ELT(eig, 0));
@@ -263,8 +263,8 @@ SEXP PML0(SEXP dlist, SEXP EL, SEXP G, SEXP NR, SEXP NC, SEXP K, SEXP eig, SEXP 
     for(i=0; i<k; i++){
         lll(dlist, eva, eve, evei, REAL(EL), g[i], &nr, &nc, INTEGER(node), INTEGER(edge), nTips, REAL(contrast), INTEGER(nco)[0], INTEGER(N)[0], &SC[nr * i], REAL(bf), &tmp[i*nr], &LL[indLL *i]);
     }
-    logScaleEPS = log(ScaleEPS);
-    for(i=0; i<(k*nr); i++) tmp[i] = logScaleEPS * SC[i] + log(tmp[i]);
+    // logScaleEPS = log(ScaleEPS);
+    for(i=0; i<(k*nr); i++) tmp[i] = LOG_SCALE_EPS * SC[i] + log(tmp[i]);
     UNPROTECT(1);
     return TMP;
 }
