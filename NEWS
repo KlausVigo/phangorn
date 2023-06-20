@@ -22,6 +22,10 @@ OTHER CHANGES
 
     o the sankoff algorithm has been rewritten.
 
+    o functions Descendants, Ancestors, Siblings, mrca.phy now also accept a
+
+      character vector for the node argument
+
 
     CHANGES in PHANGORN VERSION 2.11.0
 

@@ -286,6 +286,7 @@ plotBS <- function(tree, BStrees, type = "phylogram",
   type <- match.arg(type, c("phylogram", "cladogram", "fan", "unrooted",
                             "radial", "none"))
   if(inherits(tree, "pml")) tree <- tree$tree
+  if(!inherits(tree, "phylo")) stop("tree must be of class phylo!")
   method <- match.arg(method, c("FBP", "TBE", "MCC"))
   if (hasArg(BStrees)) {
     if(method=="FBP" || method=="MCC"){
