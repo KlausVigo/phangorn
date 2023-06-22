@@ -169,11 +169,11 @@ rbind.phyDat <- function(...){
   l <- sapply(x, function(x)sum(attr(x, "weight")))
   if(any(l!=l[1]))stop("Alignments have different # of characters!")
   if(any(types!=types[1]))stop("Alignments must have same type!")
-  nam <- sapply(x, names)
+  nam <- lapply(x, names) |> unlist()
   if(any(duplicated(nam)))stop("Duplicated names!")
   m <- lengths(x)
   mcs <- c(0, cumsum(m))
-  res <- matrix(NA_character_, sum(m), l[1])
+  res <- matrix(NA_character_, sum(m), l[1], dimnames=list(nam, NULL))
   for(i in seq_along(x)){
     res[(mcs[i]+1):mcs[i+1], ] <- as.character(x[[i]])
   }
