@@ -73,7 +73,9 @@ produces a consensus tree.</p>
 <span><span class="co"># S3 method for multiPhylo</span></span>
 <span><span class="fu">midpoint</span><span class="op">(</span><span class="va">tree</span>, node.labels <span class="op">=</span> <span class="st">"support"</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">pruneTree</span><span class="op">(</span><span class="va">tree</span>, <span class="va">...</span>, FUN <span class="op">=</span> <span class="st">"&gt;="</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">pruneTree</span><span class="op">(</span><span class="va">tree</span>, <span class="va">...</span>, FUN <span class="op">=</span> <span class="st">"&gt;="</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">keep.as.tip</span><span class="op">(</span><span class="va">tree</span>, <span class="va">labels</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -93,6 +95,10 @@ should labels get 'deleted'?</p></dd>
 
 <dt>FUN</dt>
 <dd><p>a function evaluated on the nodelabels, result must be logical.</p></dd>
+
+
+<dt>labels</dt>
+<dd><p>tip and node labels to keep as tip labels in the tree</p></dd>
 
 </dl></div>
     <div class="section level2">
