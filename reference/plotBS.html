@@ -66,9 +66,8 @@ phylogenetic tree. <code>add_support</code> adds support values to a plot.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plotBS</span><span class="op">(</span><span class="va">tree</span>, <span class="va">BStrees</span>, type <span class="op">=</span> <span class="st">"phylogram"</span>, method <span class="op">=</span> <span class="st">"FBP"</span>,</span>
-<span>  bs.col <span class="op">=</span> <span class="st">"black"</span>, bs.adj <span class="op">=</span> <span class="cn">NULL</span>, digits <span class="op">=</span> <span class="fl">3</span>, p <span class="op">=</span> <span class="fl">0</span>, frame <span class="op">=</span> <span class="st">"none"</span>,</span>
-<span>  tol <span class="op">=</span> <span class="fl">1e-06</span>, <span class="va">...</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plotBS</span><span class="op">(</span><span class="va">tree</span>, <span class="va">trees</span>, type <span class="op">=</span> <span class="st">"phylogram"</span>, method <span class="op">=</span> <span class="st">"FBP"</span>, bs.col <span class="op">=</span> <span class="st">"black"</span>,</span>
+<span>  bs.adj <span class="op">=</span> <span class="cn">NULL</span>, digits <span class="op">=</span> <span class="fl">3</span>, p <span class="op">=</span> <span class="fl">0</span>, frame <span class="op">=</span> <span class="st">"none"</span>, tol <span class="op">=</span> <span class="fl">1e-06</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">add_support</span><span class="op">(</span><span class="va">tree</span>, <span class="va">trees</span>, method <span class="op">=</span> <span class="st">"FBP"</span>, tol <span class="op">=</span> <span class="fl">1e-08</span>, scale <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  frame <span class="op">=</span> <span class="st">"none"</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
@@ -80,7 +79,7 @@ phylogenetic tree. <code>add_support</code> adds support values to a plot.</p>
 <dd><p>The tree on which edges the bootstrap values are plotted.</p></dd>
 
 
-<dt>BStrees</dt>
+<dt>trees</dt>
 <dd><p>a list of trees (object of class "multiPhylo").</p></dd>
 
 
@@ -128,6 +127,10 @@ significantly greater than zero.</p></dd>
 <dt>...</dt>
 <dd><p>further parameters used by <code>plot.phylo</code>.</p></dd>
 
+
+<dt>scale</dt>
+<dd><p>return ratio or percentage.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -135,7 +138,7 @@ significantly greater than zero.</p></dd>
 
 <p><code>plotBS</code> returns silently a tree, i.e. an object of class
 <code>phylo</code> with the bootstrap values as node labels. The argument
-<code>BStrees</code> is optional and if not supplied the labels supplied
+<code>trees</code> is optional and if not supplied the labels supplied
 in the <code>node.label</code> slot will be used.</p>
     </div>
     <div class="section level2">
