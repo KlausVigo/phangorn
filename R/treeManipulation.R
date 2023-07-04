@@ -866,6 +866,6 @@ keep.as.tip<- function(tree, labels){
   nodes_to_keep <- labels[!is.na(match(labels, tree$node.label))]
   tips_to_remove <-  Descendants(tree, nodes_to_keep) |> unlist() |> unique()
   tree_1 <- drop.tip(tree, tips_to_remove, subtree = TRUE)
-  tree_2 <- keep.tip(tree_1, tips_and_nodes_to_keep, collapse.singles=FALSE)
+  tree_2 <- keep.tip(tree_1, labels, collapse.singles=FALSE)
   tree_2
 }
