@@ -103,7 +103,7 @@ plotBS <- function(tree, BStrees, type = "phylogram", method="FBP",
   }
   else {
     if (is.null(tree$node.label)) stop("You need to supply 'trees' or the tree needs support-values as node.label")
-#    x <- tree$node.label
+    x <- tree$node.label
   }
   if(type=="none") return( tree )
   plot(tree, type = type, ...)
