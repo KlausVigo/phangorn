@@ -36,7 +36,7 @@ support <- function(tree, trees, method="FBP", tol=1e-8, scale=TRUE){
 #'
 #'
 #' @param tree The tree on which edges the bootstrap values are plotted.
-#' @param BStrees a list of trees (object of class "multiPhylo").
+#' @param trees a list of trees (object of class "multiPhylo").
 #' @param type the type of tree to plot, one of "phylogram", "cladogram", "fan",
 #' "unrooted", "radial" or "none". If type is "none" the tree is returned with
 #' the bootstrap values assigned to the node labels.
@@ -55,9 +55,10 @@ support <- function(tree, trees, method="FBP", tol=1e-8, scale=TRUE){
 #' "rect" or "circle".
 #' @param tol a numeric value giving the tolerance to consider a branch length
 #' significantly greater than zero.
+#' @param scale return ratio or percentage.
 #' @return \code{plotBS} returns silently a tree, i.e. an object of class
 #' \code{phylo} with the bootstrap values as node labels. The argument
-#' \code{BStrees} is optional and if not supplied the labels supplied
+#' \code{trees} is optional and if not supplied the labels supplied
 #' in the \code{node.label} slot will be used.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso  \code{\link{plot.phylo}}, \code{\link{add_ci}},
@@ -88,7 +89,7 @@ support <- function(tree, trees, method="FBP", tol=1e-8, scale=TRUE){
 #' plotBS(raxml.tree,  raxml.bootstrap, "p", "TBE")
 #' @rdname plotBS
 #' @export
-plotBS <- function(tree, BStrees, type = "phylogram", method="FBP",
+plotBS <- function(tree, trees, type = "phylogram", method="FBP",
                    bs.col = "black", bs.adj = NULL, digits=3, p = 0,
                    frame = "none", tol=1e-6, ...) {
   type <- match.arg(type, c("phylogram", "cladogram", "fan", "unrooted",
@@ -97,8 +98,8 @@ plotBS <- function(tree, BStrees, type = "phylogram", method="FBP",
   if(!inherits(tree, "phylo")) stop("tree must be of class phylo!")
   method <- match.arg(method, c("FBP", "TBE", "MCC"))
 
-  if (hasArg(BStrees)) {
-    x <-support(tree, BStrees, method="FBP", tol=tol)
+  if (hasArg(trees)) {
+    x <-support(tree, trees, method="FBP", tol=tol)
     tree$node.label <- x
   }
   else {

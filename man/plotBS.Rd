@@ -5,9 +5,8 @@
 \alias{add_support}
 \title{Plotting trees with bootstrap values}
 \usage{
-plotBS(tree, BStrees, type = "phylogram", method = "FBP",
-  bs.col = "black", bs.adj = NULL, digits = 3, p = 0, frame = "none",
-  tol = 1e-06, ...)
+plotBS(tree, trees, type = "phylogram", method = "FBP", bs.col = "black",
+  bs.adj = NULL, digits = 3, p = 0, frame = "none", tol = 1e-06, ...)
 
 add_support(tree, trees, method = "FBP", tol = 1e-08, scale = TRUE,
   frame = "none", ...)
@@ -15,7 +14,7 @@ add_support(tree, trees, method = "FBP", tol = 1e-08, scale = TRUE,
 \arguments{
 \item{tree}{The tree on which edges the bootstrap values are plotted.}
 
-\item{BStrees}{a list of trees (object of class "multiPhylo").}
+\item{trees}{a list of trees (object of class "multiPhylo").}
 
 \item{type}{the type of tree to plot, one of "phylogram", "cladogram", "fan",
 "unrooted", "radial" or "none". If type is "none" the tree is returned with
@@ -43,11 +42,13 @@ around the bootstrap values. This must be one of "none" (the default),
 significantly greater than zero.}
 
 \item{\dots}{further parameters used by \code{plot.phylo}.}
+
+\item{scale}{return ratio or percentage.}
 }
 \value{
 \code{plotBS} returns silently a tree, i.e. an object of class
 \code{phylo} with the bootstrap values as node labels. The argument
-\code{BStrees} is optional and if not supplied the labels supplied
+\code{trees} is optional and if not supplied the labels supplied
 in the \code{node.label} slot will be used.
 }
 \description{
