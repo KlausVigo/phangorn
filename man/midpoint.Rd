@@ -6,6 +6,7 @@
 \alias{midpoint.phylo}
 \alias{midpoint.multiPhylo}
 \alias{pruneTree}
+\alias{keep.as.tip}
 \title{Tree manipulation}
 \usage{
 getRoot(tree)
@@ -17,6 +18,8 @@ midpoint(tree, node.labels = "support", ...)
 \method{midpoint}{multiPhylo}(tree, node.labels = "support", ...)
 
 pruneTree(tree, ..., FUN = ">=")
+
+keep.as.tip(tree, labels)
 }
 \arguments{
 \item{tree}{an object of class \code{phylo}.}
@@ -27,6 +30,8 @@ should labels get 'deleted'?}
 \item{\dots}{further arguments, passed to other methods.}
 
 \item{FUN}{a function evaluated on the nodelabels, result must be logical.}
+
+\item{labels}{tip and node labels to keep as tip labels in the tree}
 }
 \value{
 \code{pruneTree} and \code{midpoint} a tree. \code{getRoot} returns

@@ -4,7 +4,7 @@
 \alias{transferBootstrap}
 \title{Transfer Bootstrap}
 \usage{
-transferBootstrap(tree, BStrees, phylo = TRUE)
+transferBootstrap(tree, BStrees, phylo = TRUE, scale = TRUE)
 }
 \arguments{
 \item{tree}{The tree on which edges the bootstrap values are plotted.}
@@ -13,6 +13,8 @@ transferBootstrap(tree, BStrees, phylo = TRUE)
 
 \item{phylo}{Logical, return a phylogentic tree with support value or a
 vector of bootstrap values.}
+
+\item{scale}{scale the values.}
 }
 \value{
 \code{plotBS} returns silently a tree, i.e. an object of class
