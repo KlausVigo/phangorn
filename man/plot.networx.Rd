@@ -12,7 +12,7 @@
   split.lty = NULL, font = 3, cex = par("cex"), cex.node.label = cex,
   cex.edge.label = cex, col.node.label = tip.color,
   col.edge.label = tip.color, font.node.label = font,
-  font.edge.label = font, underscore = FALSE, ...)
+  font.edge.label = font, underscore = FALSE, angle = 0, ...)
 }
 \arguments{
 \item{x}{an object of class \code{"networx"}}
@@ -74,6 +74,8 @@ labels.}
 
 \item{underscore}{a logical specifying whether the underscores in tip labels
 should be written as spaces (the default) or left as are (if TRUE).}
+
+\item{angle}{rotate the plot.}
 
 \item{\dots}{Further arguments passed to or from other methods.}
 }
