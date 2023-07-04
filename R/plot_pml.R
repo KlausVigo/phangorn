@@ -38,8 +38,10 @@
 plot.pml <- function(x, type="phylogram", direction = "rightwards", ...){
   type <- match.arg(type, c("phylogram","cladogram", "fan", "unrooted",
                             "radial", "tidy"))
-  plot.phylo(x$tree, type=type, direction=direction, ...)
-  if(is.rooted(x$tree) && (type %in% c("phylogram","cladogram"))){
+  tree <- x$tree
+  if(!is.rooted(tree) && (type != "unrooted") ) tree <- midpoint(tree)
+  plot.phylo(tree, type=type, direction=direction, ...)
+  if(is.rooted(tree) && (type %in% c("phylogram","cladogram"))){
     direction <- match.arg(direction, c("rightwards", "leftwards", "upwards",
                                         "downwards"))
     side <-   switch(direction,
@@ -54,4 +56,5 @@ plot.pml <- function(x, type="phylogram", direction = "rightwards", ...){
     else axisPhylo(side)
   }
   else add.scale.bar()
+  if(!is.null(x$bs)) add_support(tree, x$bs)
 }
