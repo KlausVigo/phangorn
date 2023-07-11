@@ -20,6 +20,8 @@ OTHER CHANGES
 
     o nicer defaults for plot.pml, mainly for rooted trees.
 
+    o plot.networx gets two additional arguments direction and angle.
+
     o the sankoff algorithm has been rewritten.
 
     o functions Descendants, Ancestors, Siblings, mrca.phy now also accept a

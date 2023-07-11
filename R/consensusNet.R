@@ -27,7 +27,7 @@
 #' bs <- bootstrap.phyDat(Laurasiatherian, FUN = function(x)nj(dist.hamming(x)),
 #'     bs=50)
 #' cnet <- consensusNet(bs, .3)
-#' plot(cnet)
+#' plot(cnet, angle=-60, direction="axial")
 #' \dontrun{
 #' library(rgl)
 #' open3d()
