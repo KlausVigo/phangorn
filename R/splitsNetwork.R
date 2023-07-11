@@ -51,7 +51,7 @@ splitsNetwork <- function(dm, splits = NULL, gamma = .1, lambda = 1e-6,
 
   if (!is.null(splits)) {
     tmp <- which(lengths(splits) == k)
-    splits <- splits[-tmp]
+    if(length(tmp)>0) splits <- splits[-tmp]
     lab <- attr(splits, "labels")
     dm <- dm[lab, lab]
   }

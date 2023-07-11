@@ -698,8 +698,10 @@ plot.networx <- function(x, type = "equal angle", use.edge.length = TRUE,
   nTips <- length(x$tip.label)
   conf <- attr(x$splits, "confidences")
   index <- x$splitIndex
-  if (is.null(edge.label) & !is.null(conf)) {
+  if(!is.null(edge.label) && is.numeric(edge.label)) edge.label <- prettyNum(edge.label)
+  if (is.null(edge.label) && !is.null(conf)) {
     conf <- conf[index]
+    if(is.numeric(conf)) conf <- prettyNum(conf)
     if (!is.null(x$translate)) conf[match(x$translate$node, x$edge[, 2])] <- ""
     else conf[x$edge[, 2] <= nTips] <- ""
     edge.label <- conf
