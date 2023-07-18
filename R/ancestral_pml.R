@@ -412,10 +412,10 @@ makeAncNodeLabel <- function(tree, ...){
   if(!is.null(tree$node.label)){
     node_label <- tree$node.label
     if(length(unique(node_label)) == Nnode(tree)) return(c(tree$tip.label, node_label))
-    else warning("Node labels are not unique, used makeNodeLabels(tree, ...) to create them!")
+    else message("Node labels are not unique, used makeNodeLabels(tree, ...) to create them!")
   }
-  nodel_label <- makeNodeLabel(tree, ...)
-  c(tree$tip.label, node_label)
+  tree <- makeNodeLabel(tree, ...)
+  c(tree$tip.label, tree$node.label)
 }
 
 #parsimony.plot <- function(tree, ...) {
