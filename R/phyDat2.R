@@ -176,7 +176,7 @@ phyDat.AA <- function (data, return.index = TRUE){
   }
   if(inherits(data, "character")){
     data <- as.matrix(data)
-    data <- toupper(data)
+#    data <- toupper(data)
   }
   aa <- c("A", "R", "N", "D", "C", "Q", "E", "G", "H", "I", "L", "K", "M", "F",
           "P", "S", "T", "W", "Y", "V")
@@ -217,6 +217,7 @@ phyDat.AA <- function (data, return.index = TRUE){
       #      ind_na[is.na(res[[i]])] <- TRUE
     }
   } else {
+    data <- toupper(data)
     for(i in seq_len(n)){
       res[[i]] <- match(data[i, ind], aa2)
       ind_na[is.na(res[[i]])] <- TRUE
