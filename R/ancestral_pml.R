@@ -2,7 +2,6 @@
 # ancestral sequences ML
 #
 
-
 #' Ancestral character reconstruction.
 #'
 #' Marginal reconstruction of the ancestral character states.
@@ -13,6 +12,9 @@
 #'
 #' With parsimony reconstruction one has to keep in mind that there will be
 #' often no unique solution.
+#'
+#' The functions use node labels if these are present and unique. Otherwise the
+#' function \code{ape::MakeNodeLabel} is used to create them.
 #'
 #' For further details see vignette("Ancestral").
 #'
@@ -31,7 +33,7 @@
 #' of class "phyDat", containing the ancestral states of all nodes.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{pml}}, \code{\link{parsimony}}, \code{\link[ape]{ace}},
-#' \code{\link[ape]{root}}
+#' \code{\link[ape]{root}}, \code{\link[ape]{makeNodeLabel}}
 #' @references Felsenstein, J. (2004). \emph{Inferring Phylogenies}. Sinauer
 #' Associates, Sunderland.
 #'
@@ -60,7 +62,7 @@
 #'
 #' @rdname ancestral.pml
 #' @export
-ancestral.pml <- function(object, type = "marginal", return = "prob") {
+ancestral.pml <- function(object, type = "marginal", return = "prob", ...) {
   call <- match.call()
   pt <- match.arg(type, c("marginal", "joint", "ml", "bayes"))
   tree <- object$tree
@@ -85,9 +87,10 @@ ancestral.pml <- function(object, type = "marginal", return = "prob") {
   dim(dat) <- c(l, m)
 
   x <- attributes(data)
-  label <- as.character(1:m)
-  nam <- tree$tip.label
-  label[seq_along(nam)] <- nam
+  label <- makeAncNodeLabel(tree, ...)
+#  label <- as.character(1:m)
+#  nam <- tree$tip.label
+#  label[seq_along(nam)] <- nam
   x[["names"]] <- label
   tmp <- length(data)
 
@@ -188,7 +191,7 @@ fitchCoding2ambiguous <- function(x, type = "DNA") {
 #' @rdname ancestral.pml
 #' @export
 ancestral.pars <- function(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"),
-                           cost = NULL, return = "prob") {
+                           cost = NULL, return = "prob", ...) {
   call <- match.call()
   type <- match.arg(type)
   if (type == "ACCTRAN" || type=="POSTORDER") {
@@ -233,7 +236,7 @@ mpr.help <- function(tree, data, cost = NULL) {
 }
 
 
-mpr <- function(tree, data, cost = NULL, return = "prob") {
+mpr <- function(tree, data, cost = NULL, return = "prob", ...) {
   data <- subset(data, tree$tip.label)
   att <- attributes(data)
   type <- att$type
@@ -242,9 +245,10 @@ mpr <- function(tree, data, cost = NULL, return = "prob") {
   res <- mpr.help(tree, data, cost)
   l <- length(tree$tip.label)
   m <- length(res)
-  label <- as.character(1:m)
-  nam <- tree$tip.label
-  label[seq_along(nam)] <- nam
+  label <- makeAncNodeLabel(tree, ...)
+#  label <- as.character(1:m)
+#  nam <- tree$tip.label
+#  label[seq_along(nam)] <- nam
   att[["names"]] <- label
   ntips <- length(tree$tip.label)
   contrast <- att$contrast
@@ -363,7 +367,7 @@ acctran <- function(tree, data) {
 }
 
 
-ptree <- function(tree, data, return = "prob", acctran=TRUE) {
+ptree <- function(tree, data, return = "prob", acctran=TRUE, ...) {
   tree <- reorder(tree, "postorder")
   data <- subset(data, tree$tip.label)
   edge <- tree$edge
@@ -378,7 +382,8 @@ ptree <- function(tree, data, return = "prob", acctran=TRUE) {
   tmp <- tmp[tmp[,2]>Ntip(tree),]
   if(length(tmp)>0 && acctran==TRUE)f$acctran_traverse(tmp)
   res <- vector("list", m)
-  att$names <- c(att$names, as.character((nTip+1):m))
+  att$names <- makeAncNodeLabel(tree, ...)
+#  att$names <- c(att$names, as.character((nTip+1):m))
   if(return == "phyDat"){
     if(type=="DNA"){
       indx <- c(1, 2, 6, 3, 7, 9, 12, 4, 8, 10, 13, 11, 14, 15, 16)
@@ -400,6 +405,17 @@ ptree <- function(tree, data, return = "prob", acctran=TRUE) {
   }
   attributes(res) <- att
   res
+}
+
+
+makeAncNodeLabel <- function(tree, ...){
+  if(!is.null(tree$node.label)){
+    node_label <- tree$node.label
+    if(length(unique(node_label)) == Nnode(tree)) return(c(tree$tip.label, node_label))
+    else warning("Node labels are not unique, used makeNodeLabels(tree, ...) to create them!")
+  }
+  nodel_label <- makeNodeLabel(tree, ...)
+  c(tree$tip.label, node_label)
 }
 
 #parsimony.plot <- function(tree, ...) {
