@@ -156,6 +156,7 @@ ancestral.pml <- function(object, type = "marginal", return = "prob", ...) {
   }
   attributes(result) <- x
   attr(result, "call") <- call
+  if(return=="prob") class(result) <- c("ancestral", "phyDat")
   result
 }
 
@@ -265,9 +266,10 @@ mpr <- function(tree, data, cost = NULL, return = "prob", ...) {
   if (return == "prob") {
     #        for(i in 1:ntips) res[[i]] <- contrast[data[[i]],,drop=FALSE]
     if (return == "prob") res <- lapply(res, fun)
+    attributes(res) <- att
+    class(res) <- c("ancestral", "phyDat")
   }
   #    else res[1:ntips] <- data[1:ntips]
-  attributes(res) <- att
   fun2 <- function(x) {
     x <- p2dna(x)
     fitchCoding2ambiguous(x)
@@ -297,10 +299,12 @@ plotAnc <- function(tree, data, i = 1, site.pattern = TRUE, col = NULL,
   xrad <- CEX * diff(par("usr")[1:2]) / 50
   levels <- attr(data, "levels")
   nc <- attr(data, "nc")
-  y <- matrix(unlist(y[]), ncol = nc, byrow = TRUE)
-  l <- dim(y)[1]
-  dat <- matrix(0, l, nc)
-  for (i in 1:l) dat[i, ] <- y[[i]]
+  if(inherits(data, "ancestral")){
+    y <- matrix(unlist(y[]), ncol = nc, byrow = TRUE)
+  } else y <- attr(data, "contrast")[unlist(y),]
+#  l <- dim(y)[1]
+#  dat <- matrix(0, l, nc)
+#  for (i in 1:l) dat[i, ] <- y[[i]]
   plot(tree, label.offset = 1.1 * xrad, plot = FALSE, ...)
   lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
   XX <- lastPP$xx
@@ -384,16 +388,8 @@ ptree <- function(tree, data, return = "prob", acctran=TRUE, ...) {
   res <- vector("list", m)
   att$names <- makeAncNodeLabel(tree, ...)
 #  att$names <- c(att$names, as.character((nTip+1):m))
-  if(return == "phyDat"){
-    if(type=="DNA"){
-      indx <- c(1, 2, 6, 3, 7, 9, 12, 4, 8, 10, 13, 11, 14, 15, 16)
-      res[1:nTip] <- data[1:nTip]
-      for(i in (nTip+1):m)
-        res[[i]] <- indx[f$getAncAmb(i)[1:nr]]
-    }
-    else stop("This is only for nucleotide sequences supported so far")
-  }
-  else {
+
+  if(return == "prob") {
     fun <- function(X) {
       rs <- rowSums(X)
       X / rs
@@ -402,8 +398,20 @@ ptree <- function(tree, data, return = "prob", acctran=TRUE, ...) {
     for(i in seq_len(nTip)) res[[i]] <- contrast[data[[i]], , drop=FALSE]
     for(i in (nTip+1):m) res[[i]] <- f$getAnc(i)[1:nr, , drop=FALSE]
     res <- lapply(res, fun)
+    attributes(res) <- att
+    class(res) <- c("ancestral", "phyDat")
   }
-  attributes(res) <- att
+  else {
+    if(type=="DNA"){
+      indx <- c(1, 2, 6, 3, 7, 9, 12, 4, 8, 10, 13, 11, 14, 15, 16)
+      res[1:nTip] <- data[1:nTip]
+      for(i in (nTip+1):m)
+        res[[i]] <- indx[f$getAncAmb(i)[1:nr]]
+      attributes(res) <- att
+    }
+    else stop("This is only for nucleotide sequences supported so far")
+  }
+#  attributes(res) <- att
   res
 }
 
