@@ -2,6 +2,8 @@
 % Please edit documentation in R/ancestral_pml.R
 \name{ancestral.pml}
 \alias{ancestral.pml}
+\alias{ancestral2phyDat}
+\alias{ancestral2df}
 \alias{ancestral.pars}
 \alias{pace}
 \alias{plotAnc}
@@ -9,13 +11,17 @@
 \usage{
 ancestral.pml(object, type = "marginal", return = "prob", ...)
 
+ancestral2phyDat(x)
+
+ancestral2df(x)
+
 ancestral.pars(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"),
   cost = NULL, return = "prob", ...)
 
 pace(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"), cost = NULL,
   return = "prob", ...)
 
-plotAnc(tree, data, i = 1, site.pattern = TRUE, col = NULL,
+plotAnc(tree, data, i = 1, site.pattern = FALSE, col = NULL,
   cex.pie = par("cex"), pos = "bottomright", ...)
 }
 \arguments{
@@ -26,6 +32,8 @@ plotAnc(tree, data, i = 1, site.pattern = TRUE, col = NULL,
 \item{return}{return a \code{phyDat} object or matrix of probabilities.}
 
 \item{\dots}{Further arguments passed to or from other methods.}
+
+\item{x}{an object of class ancestral.}
 
 \item{tree}{a tree, i.e. an object of class pml}
 
@@ -44,8 +52,12 @@ plotAnc(tree, data, i = 1, site.pattern = TRUE, col = NULL,
 \item{pos}{a character string defining the position of the legend}
 }
 \value{
-%A matrix containing the the estimates character states. An object
-of class "phyDat", containing the ancestral states of all nodes.
+An object of class ancestral containing the the estimates character
+states.
+For \code{return="phyDat"} an object  of class "phyDat", containing
+the ancestral states of all nodes. For nucleotide data this can contain
+ambiguous states. Apart from fitch parsimony the most likely states are
+returned.
 }
 \description{
 Marginal reconstruction of the ancestral character states.
@@ -66,6 +78,8 @@ For further details see vignette("Ancestral").
 \examples{
 
 example(NJ)
+# generate node labels to ensure plotting will work
+tree <- makeNodeLabel(tree)
 fit <- pml(tree, Laurasiatherian)
 anc.ml <- ancestral.pml(fit, type = "ml")
 anc.p <- ancestral.pars(tree, Laurasiatherian)

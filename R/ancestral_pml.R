@@ -28,9 +28,14 @@
 #' @param pos a character string defining the position of the legend
 #' @param cost A cost matrix for the transitions between two states.
 #' @param return return a \code{phyDat} object or matrix of probabilities.
+#' @param x an object of class ancestral.
 #' @param \dots Further arguments passed to or from other methods.
-#' @return %A matrix containing the the estimates character states. An object
-#' of class "phyDat", containing the ancestral states of all nodes.
+#' @return An object of class ancestral containing the the estimates character
+#' states.
+#' For \code{return="phyDat"} an object  of class "phyDat", containing
+#' the ancestral states of all nodes. For nucleotide data this can contain
+#' ambiguous states. Apart from fitch parsimony the most likely states are
+#' returned.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{pml}}, \code{\link{parsimony}}, \code{\link[ape]{ace}},
 #' \code{\link[ape]{root}}, \code{\link[ape]{makeNodeLabel}}
@@ -47,6 +52,8 @@
 #' @examples
 #'
 #' example(NJ)
+#' # generate node labels to ensure plotting will work
+#' tree <- makeNodeLabel(tree)
 #' fit <- pml(tree, Laurasiatherian)
 #' anc.ml <- ancestral.pml(fit, type = "ml")
 #' anc.p <- ancestral.pars(tree, Laurasiatherian)
@@ -166,20 +173,55 @@ ancestral.pml <- function(object, type = "marginal", return = "prob", ...) {
 # }
 
 
-# in mpr
+#' @rdname ancestral.pml
+#' @export
 ancestral2phyDat <- function(x) {
-  eps <- 1.0e-5
-  contr <- attr(x, "contrast")
-  # a bit too complicated
-  ind1 <- which(apply(contr, 1, function(x) sum(x > eps)) == 1L)
-  ind2 <- which(contr[ind1, ] > eps, arr.ind = TRUE)
-  #    pos <- ind2[match(as.integer(1L:ncol(contr)),  ind2[,2]),1]
-  pos <- ind2[match(seq_len(ncol(contr)), ind2[, 2]), 1]
-  # only first hit
-  res <- lapply(x, function(x, pos) pos[max.col(x)], pos)
+  type <- attr(x, "type")
+  #    else res[1:ntips] <- data[1:ntips]
+  fun2 <- function(x) {
+    x <- p2dna(x)
+    fitchCoding2ambiguous(x)
+  }
+  if (type == "DNA") {
+    res <- lapply(x, fun2)
+  }
+  else {
+    eps <- 1.0e-5
+    contr <- attr(x, "contrast")
+    # a bit too complicated
+    ind1 <- which(apply(contr, 1, function(x) sum(x > eps)) == 1L)
+    ind2 <- which(contr[ind1, ] > eps, arr.ind = TRUE)
+    #    pos <- ind2[match(as.integer(1L:ncol(contr)),  ind2[,2]),1]
+    pos <- ind2[match(seq_len(ncol(contr)), ind2[, 2]), 1]
+    # only first hit
+    res <- lapply(x, function(x, pos) pos[max.col(x)], pos)
+
+  }
   attributes(res) <- attributes(x)
+  class(res) <- "phyDat"
   return(res)
 }
+
+
+#' @rdname ancestral.pml
+#' @export
+ancestral2df <- function(x) {
+  stopifnot(inherits(x, "ancestral"))
+  lab <- names(x)
+  states <- attr(x, "levels")
+  nr <- attr(x, "nr")
+  nc <- attr(x, "nc")
+  pos <- seq_len(nr)
+  X <- unlist(x) |> array(c(nr, nc, length(x)),
+                          dimnames = list(Site=pos, attr(x, "levels"), Node=names(x)))
+
+  z1 <- apply(X, 2L, c)
+  ## z1 <- matrix(x, ncol = 2L, dimnames = list(NULL, dimnames(x)[[3]]))
+  z2 <- expand.grid(dimnames(X)[c(1,3)])
+  res <- data.frame(z2, z1)
+  return(res)
+}
+# TODO sort by site
 
 
 fitchCoding2ambiguous <- function(x, type = "DNA") {
@@ -292,9 +334,16 @@ mpr <- function(tree, data, cost = NULL, return = "prob", ...) {
 #' @param site.pattern logical, plot i-th site pattern or i-th site
 #' @importFrom grDevices hcl.colors
 #' @export
-plotAnc <- function(tree, data, i = 1, site.pattern = TRUE, col = NULL,
+plotAnc <- function(tree, data, i = 1, site.pattern = FALSE, col = NULL,
                     cex.pie = par("cex"), pos = "bottomright", ...) {
+  stopifnot(inherits(data, "phyDat"))
   y <- subset(data, select = i, site.pattern = site.pattern)
+  if(is.null(tree$node.label) || any(is.na(match(tree$node.label, names(y)))) ||
+     is.numeric(tree$node.label))
+    tree <- makeNodeLabel(tree)
+  if(any(is.na(match(c(tree$tip.label, tree$node.label), names(y)))))
+    stop("Tree needs nodelabel, which match the labels of the alignment!")
+  y <- y[c(tree$tip.label, tree$node.label),]
   CEX <- cex.pie
   xrad <- CEX * diff(par("usr")[1:2]) / 50
   levels <- attr(data, "levels")

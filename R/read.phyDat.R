@@ -114,6 +114,7 @@ read.phyDat <- function(file, format="phylip", type="DNA", ...){
 #' @export
 write.phyDat <- function(x, file, format="phylip", colsep = "", nbcol=-1, ...){
   formats <- c("phylip", "nexus", "interleaved", "sequential", "fasta")
+  if(inherits(x, "ancestral")) x <- ancestral2phyDat(x)
   format <- match.arg(tolower(format), formats)
   if(format=="nexus"){
     type <- attr(x, "type")
