@@ -53,7 +53,8 @@ plot.pml <- function(x, type="phylogram", direction = "rightwards", ...){
       root_time <- max(x$tip.dates) - max(node.depth.edgelength(x$tree))
       axisPhylo(side, root.time = root_time, backward = FALSE)
     }
-    else axisPhylo(side)
+    else if(x$method=="ultrametric") axisPhylo(side)
+    else add.scale.bar()
   }
   else add.scale.bar()
   if(!is.null(x$bs)) add_support(tree, x$bs)
