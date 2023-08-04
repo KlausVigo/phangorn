@@ -39,7 +39,7 @@ getTransition <- function(scheme, levels){
 #' tree <- makeNodeLabel(tree)
 #' anc.p <- ancestral.pars(tree, Laurasiatherian)
 #' # plot the third character
-#' plotAnc(tree, anc.ml, 3)
+#' plotAnc(tree, anc.p, 3)
 #'
 #' data(chloroplast)
 #' tree <- pratchet(chloroplast,  maxit=10, trace=0)
