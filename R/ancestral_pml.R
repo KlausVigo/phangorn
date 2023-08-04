@@ -1,7 +1,3 @@
-#
-# ancestral sequences ML
-#
-
 #' Ancestral character reconstruction.
 #'
 #' Marginal reconstruction of the ancestral character states.
@@ -22,15 +18,11 @@
 #' @param tree a tree, i.e. an object of class pml
 #' @param data an object of class phyDat
 #' @param type method used to assign characters to internal nodes, see details.
-#' @param i plots the i-th site pattern of the \code{data}.
-#' @param col a vector containing the colors for all possible states.
-#' @param cex.pie a numeric defining the size of the pie graphs
-#' @param pos a character string defining the position of the legend
 #' @param cost A cost matrix for the transitions between two states.
 #' @param return return a \code{phyDat} object or matrix of probabilities.
 #' @param x an object of class ancestral.
 #' @param \dots Further arguments passed to or from other methods.
-#' @return An object of class ancestral containing the the estimates character
+#' @return An object of class ancestral containing theestimated character
 #' states.
 #' For \code{return="phyDat"} an object  of class "phyDat", containing
 #' the ancestral states of all nodes. For nucleotide data this can contain
@@ -38,7 +30,8 @@
 #' returned.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{pml}}, \code{\link{parsimony}}, \code{\link[ape]{ace}},
-#' \code{\link[ape]{root}}, \code{\link[ape]{makeNodeLabel}}
+#' \code{\link{plotAnc}}, \code{\link[ape]{root}},
+#' \code{\link[ape]{makeNodeLabel}}
 #' @references Felsenstein, J. (2004). \emph{Inferring Phylogenies}. Sinauer
 #' Associates, Sunderland.
 #'
@@ -175,7 +168,7 @@ ancestral.pml <- function(object, type = "marginal", return = "prob", ...) {
 
 #' @rdname ancestral.pml
 #' @export
-ancestral2phyDat <- function(x) {
+as.phyDat.ancestral <- function(x, ...) {
   type <- attr(x, "type")
   #    else res[1:ntips] <- data[1:ntips]
   fun2 <- function(x) {
@@ -205,7 +198,7 @@ ancestral2phyDat <- function(x) {
 
 #' @rdname ancestral.pml
 #' @export
-ancestral2df <- function(x) {
+as.data.frame.ancestral <- function(x) {
   stopifnot(inherits(x, "ancestral"))
   lab <- names(x)
   states <- attr(x, "levels")
@@ -213,15 +206,13 @@ ancestral2df <- function(x) {
   nc <- attr(x, "nc")
   pos <- seq_len(nr)
   X <- unlist(x) |> array(c(nr, nc, length(x)),
-                          dimnames = list(Site=pos, attr(x, "levels"), Node=names(x)))
-
+                  dimnames = list(Site=pos, attr(x, "levels"), Node=names(x)))
   z1 <- apply(X, 2L, c)
-  ## z1 <- matrix(x, ncol = 2L, dimnames = list(NULL, dimnames(x)[[3]]))
   z2 <- expand.grid(dimnames(X)[c(1,3)])
   res <- data.frame(z2, z1)
-  return(res)
+  res <- data.frame(z2, z1)
+  res[order(res[,1], res[,2]), ]
 }
-# TODO sort by site
 
 
 fitchCoding2ambiguous <- function(x, type = "DNA") {
@@ -322,7 +313,7 @@ mpr <- function(tree, data, cost = NULL, return = "prob", ...) {
       attributes(res) <- att
     }
     else {
-      res <- ancestral2phyDat(res)
+      res <- as.phyDat.ancestral(res)
     }
     res[1:ntips] <- data
   }
@@ -330,54 +321,9 @@ mpr <- function(tree, data, cost = NULL, return = "prob", ...) {
 }
 
 
-#' @rdname ancestral.pml
-#' @param site.pattern logical, plot i-th site pattern or i-th site
-#' @importFrom grDevices hcl.colors
-#' @export
-plotAnc <- function(tree, data, i = 1, site.pattern = FALSE, col = NULL,
-                    cex.pie = par("cex"), pos = "bottomright", ...) {
-  stopifnot(inherits(data, "phyDat"))
-  y <- subset(data, select = i, site.pattern = site.pattern)
-  if(is.null(tree$node.label) || any(is.na(match(tree$node.label, names(y)))) ||
-     is.numeric(tree$node.label))
-    tree <- makeNodeLabel(tree)
-  if(any(is.na(match(c(tree$tip.label, tree$node.label), names(y)))))
-    stop("Tree needs nodelabel, which match the labels of the alignment!")
-  y <- y[c(tree$tip.label, tree$node.label),]
-  CEX <- cex.pie
-  xrad <- CEX * diff(par("usr")[1:2]) / 50
-  levels <- attr(data, "levels")
-  nc <- attr(data, "nc")
-  if(inherits(data, "ancestral")){
-    y <- matrix(unlist(y[]), ncol = nc, byrow = TRUE)
-  } else y <- attr(data, "contrast")[unlist(y),]
-#  l <- dim(y)[1]
-#  dat <- matrix(0, l, nc)
-#  for (i in 1:l) dat[i, ] <- y[[i]]
-  plot(tree, label.offset = 1.1 * xrad, plot = FALSE, ...)
-  lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
-  XX <- lastPP$xx
-  YY <- lastPP$yy
-  xrad <- CEX * diff(lastPP$x.lim * 1.1) / 50
-  par(new = TRUE)
-  plot(tree, label.offset = 1.1 * xrad, plot = TRUE, ...)
-  if (is.null(col)) col <-  hcl.colors(nc) #rainbow(nc)
-  if (length(col) != nc) {
-    warning("Length of color vector differs from number of levels!")
-  }
-  BOTHlabels(
-    pie = y, XX = XX, YY = YY, adj = c(0.5, 0.5), frame = "rect", pch = NULL,
-    sel = seq_along(XX), thermo = NULL, piecol = col, col = "black",
-    bg = "lightblue", horiz = FALSE, width = NULL, height = NULL, cex = cex.pie
-  )
-  if (!is.null(pos)) legend(pos, legend=levels, text.col = col)
-}
-
 #
 # ACCTRAN
 #
-
-
 acctran2 <- function(tree, data) {
   if(!is.binary(tree)) tree <- multi2di(tree)
   tree <- reorder(tree, "postorder")
@@ -469,7 +415,7 @@ makeAncNodeLabel <- function(tree, ...){
   if(!is.null(tree$node.label)){
     node_label <- tree$node.label
     if(length(unique(node_label)) == Nnode(tree)) return(c(tree$tip.label, node_label))
-    else message("Node labels are not unique, used makeNodeLabels(tree, ...) to create them!")
+    else message("Node labels are not unique, used makeNodeLabel(tree, ...) to create them!")
   }
   tree <- makeNodeLabel(tree, ...)
   c(tree$tip.label, tree$node.label)
