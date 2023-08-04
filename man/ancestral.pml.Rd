@@ -12,7 +12,7 @@ ancestral.pml(object, type = "marginal", return = "prob", ...)
 
 \method{as.phyDat}{ancestral}(x, ...)
 
-\method{as.data.frame}{ancestral}(x)
+\method{as.data.frame}{ancestral}(x, ...)
 
 ancestral.pars(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"),
   cost = NULL, return = "prob", ...)

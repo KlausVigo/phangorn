@@ -198,7 +198,7 @@ as.phyDat.ancestral <- function(x, ...) {
 
 #' @rdname ancestral.pml
 #' @export
-as.data.frame.ancestral <- function(x) {
+as.data.frame.ancestral <- function(x, ...) {
   stopifnot(inherits(x, "ancestral"))
   lab <- names(x)
   states <- attr(x, "levels")
