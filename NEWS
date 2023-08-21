@@ -28,6 +28,12 @@ OTHER CHANGES
 
       character vector for the node argument.
 
+    o plotAnc got an argument scheme allowing to use different color schemes.
+
+      Some default values changed to produce nicer plots are nicer out of the
+
+      box.
+
 
     CHANGES in PHANGORN VERSION 2.11.0
 
