@@ -182,25 +182,25 @@ UNJ <- function(x){
 #' @export
 designTree <- function(tree, method = "unrooted", sparse = FALSE,
                        tip.dates=NULL, ...) {
-  if (!is.na(pmatch(method, "all")))
-    method <- "unrooted"
-  METHOD <- c("unrooted", "rooted", "tipdated")
-  method <- pmatch(method, METHOD)
-  if (is.na(method)) stop("invalid method")
-  if (method == -1) stop("ambiguous method")
-  if (!is.rooted(tree) & method == 2) stop("tree has to be rooted")
-  if (method == 1) {
-    X <- designUnrooted(tree, ...)
-    if (sparse) X <- Matrix(X)
-  }
-  if (method == 2) X <- designUltra(tree, sparse = sparse, ...)
-  if(method == 3) X <- designTipDated(tree, tip.dates=tip.dates, sparse=sparse,
-                                      ...)
+  method <- match.arg(method,
+                      c("unrooted", "ultrametric", "rooted", "tipdated"))
+  if(method == "rooted") method <- "ultrametric"
+  #if (!is.na(pmatch(method, "all")))
+  #  method <- "unrooted"
+  #METHOD <- c("unrooted", "rooted", "tipdated")
+  #method <- pmatch(method, METHOD)
+  #if (is.na(method)) stop("invalid method")
+  #if (method == -1) stop("ambiguous method")
+  #if (!is.rooted(tree) & method == 2) stop("tree has to be rooted")
+  if(method == "unrooted") X <- designUnrooted(tree, sparse = sparse, ...)
+  if(method == "ultrametric") X <- designUltra(tree, sparse = sparse, ...)
+  if(method == "tipdated") X <- designTipDated(tree, tip.dates=tip.dates,
+                                               sparse=sparse, ...)
   X
 }
 
 
-designUnrooted <- function(tree, order = NULL) {
+designUnrooted <- function(tree, sparse=FALSE, order = NULL) {
   if (inherits(tree, "phylo")) {
     if (is.rooted(tree)) tree <- unroot(tree)
     tree <- reorder(tree, "postorder")
@@ -225,6 +225,7 @@ designUnrooted <- function(tree, order = NULL) {
   }
   if (inherits(tree, "phylo"))
     colnames(res) <- paste(tree$edge[, 1], tree$edge[, 2], sep = "<->")
+  if(sparse) res <- Matrix(res, sparse=TRUE)
   res
 }
 
@@ -342,6 +343,7 @@ designUnrooted2 <- function(tree, sparse = TRUE) {
 
 
 designTipDated <- function(tree, tip.dates, sparse = TRUE){
+  stopifnot(is.numeric(tip.dates), length(tip.dates) >= Ntip(tree))
   nTip <- Ntip(tree)
   tmp <- function(n){
     x1 <- rep(seq_len(n), each=n)
@@ -352,7 +354,7 @@ designTipDated <- function(tree, tip.dates, sparse = TRUE){
   tip.dates <- tip.dates - max(tip.dates)
   x <- tmp(nTip) %*% tip.dates
   nodes <- integer(tree$Nnode)
-  X <- designUltra(tree)
+  X <- designUltra(tree, sparse=sparse)
   nodes <- attr(X, "nodes")
   X <- cbind(X, x)
   colnames(X) <- c(nodes, -1)
