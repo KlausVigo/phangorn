@@ -6,10 +6,11 @@
 \title{Plotting trees with bootstrap values}
 \usage{
 plotBS(tree, trees, type = "phylogram", method = "FBP", bs.col = "black",
-  bs.adj = NULL, digits = 3, p = 0, frame = "none", tol = 1e-06, ...)
+  bs.adj = NULL, digits = 3, p = 0, frame = "none", tol = 1e-06,
+  sep = "/", ...)
 
 add_support(tree, trees, method = "FBP", tol = 1e-08, scale = TRUE,
-  frame = "none", ...)
+  frame = "none", digits = 3, sep = "/", ...)
 }
 \arguments{
 \item{tree}{The tree on which edges the bootstrap values are plotted.}
@@ -40,6 +41,8 @@ around the bootstrap values. This must be one of "none" (the default),
 
 \item{tol}{a numeric value giving the tolerance to consider a branch length
 significantly greater than zero.}
+
+\item{sep}{seperator between the different methods.}
 
 \item{\dots}{further parameters used by \code{plot.phylo}.}
 
