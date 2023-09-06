@@ -26,8 +26,9 @@ getTransition <- function(scheme, levels){
 #' @param col a vector containing the colors for all possible states.
 #' @param cex.pie a numeric defining the size of the pie graphs.
 #' @param pos a character string defining the position of the legend.
-#' @param scheme color scheme, for amino acids this can be "Ape_AA",
-#' "Clustal_AA", "Hydrophobicity_AA" and "Zappo_AA" are available.
+#' @param scheme a predefined color scheme. For amino acid options are "Ape_AA",
+#' "Zappo_AA", "Clustal", "Polarity" and "Transmembrane_tendency", for
+#' nucleotides "Ape_NT" and"RY_NT". Names can be abbreviated.
 #' @param \dots Further arguments passed to or from other methods.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{ancestral.pml}}, \code{\link[ape]{plot.phylo}}
@@ -47,7 +48,7 @@ getTransition <- function(scheme, levels){
 #' anc.ch <- ancestral.pars(tree, chloroplast)
 #' image(chloroplast[, 1:25])
 #' plotAnc(tree, anc.ch, 21, scheme="Ape_AA")
-#' plotAnc(tree, anc.ch, 21, scheme="Clustal_AA")
+#' plotAnc(tree, anc.ch, 21, scheme="Clustal")
 #' @importFrom grDevices hcl.colors
 #' @export
 plotAnc <- function(tree, data, i = 1, site.pattern = FALSE, col = NULL,
@@ -69,6 +70,8 @@ plotAnc <- function(tree, data, i = 1, site.pattern = FALSE, col = NULL,
     y <- matrix(unlist(y[]), ncol = nc, byrow = TRUE)
   } else y <- attr(data, "contrast")[unlist(y),]
   if(!is.null(scheme)){
+    scheme <- match.arg(scheme, c("Ape_AA", "Zappo_AA", "Clustal", "Polarity",
+                                  "Transmembrane_tendency", "Ape_NT", "RY_NT"))
     sc <- get(scheme, environment(pml))
     P <- getTransition(sc, levels)
     y <- y %*% P

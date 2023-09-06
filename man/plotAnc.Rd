@@ -22,8 +22,9 @@ plotAnc(tree, data, i = 1, site.pattern = FALSE, col = NULL,
 
 \item{pos}{a character string defining the position of the legend.}
 
-\item{scheme}{color scheme, for amino acids this can be "Ape_AA",
-"Clustal_AA", "Hydrophobicity_AA" and "Zappo_AA" are available.}
+\item{scheme}{a predefined color scheme. For amino acid options are "Ape_AA",
+"Zappo_AA", "Clustal", "Polarity" and "Transmembrane_tendency", for
+nucleotides "Ape_NT" and"RY_NT". Names can be abbreviated.}
 
 \item{\dots}{Further arguments passed to or from other methods.}
 }
@@ -51,7 +52,7 @@ tree <- makeNodeLabel(tree)
 anc.ch <- ancestral.pars(tree, chloroplast)
 image(chloroplast[, 1:25])
 plotAnc(tree, anc.ch, 21, scheme="Ape_AA")
-plotAnc(tree, anc.ch, 21, scheme="Clustal_AA")
+plotAnc(tree, anc.ch, 21, scheme="Clustal")
 }
 \seealso{
 \code{\link{ancestral.pml}}, \code{\link[ape]{plot.phylo}}

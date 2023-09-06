@@ -54,8 +54,6 @@ RY_NT <- list(properties = list(
   "-" = "-"),
   color=c("#FF00FF", "#00FFFF", "grey", "black"))
 
-
-
 Ape_AA <- list(properties = list(
   Hydrophobic = c("V", "I", "L", "F", "W", "Y", "M"),
   Small = c("P", "G", "A", "C"),
@@ -63,7 +61,7 @@ Ape_AA <- list(properties = list(
   color=c("red", "yellow", "blue"))
 
 # Properties + Conservation (Clustal X)
-Clustal_AA <- list(properties = list(
+Clustal <- list(properties = list(
   Hydrophobic = c("A", "I", "L", "M", "F", "W", "V"),
   Positive = c("K", "R"),
   Negative = c("E", "D"),
@@ -76,6 +74,13 @@ Clustal_AA <- list(properties = list(
            "#15a4a4", "#f08080")
 )
 
+
+Polarity <- list(properties = list(
+  "Non polar" = c("G", "A", "V", "L", "I", "F", "W", "M", "P"),
+  "Polar, uncharged" = c("S", "T", "C", "Y", "N", "Q"),
+  "Polar, acidic" = c("D", "E"),
+  "Polar, basic" = c("K", "R", "H")),
+  color = c("yellow", "green", "red", "blue"))
 
 # Physicochemical Properties
 Zappo_AA <- list(properties = list(
@@ -91,7 +96,7 @@ Zappo_AA <- list(properties = list(
 )
 
 
-Hydrophobicity_AA <- list(properties = list(
+Transmembrane_tendency <- list(properties = list(
   Lys = "K",
   Asp = "D",
   Glu = "E",
@@ -116,8 +121,6 @@ Hydrophobicity_AA <- list(properties = list(
            "#5000AE", "#5D00A1", "#6B0093", "#780086", "#860078", "#93006B",
            "#A1005D", "#AE0050", "#BB0043", "#C90035", "#D60028", "#E4001A",
            "#F1000D", "#FF0000"))
-
-
 
 
 # if rate g[i] is smaller than .gEps invariant site is increased by w[i]
