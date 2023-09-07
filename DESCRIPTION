@@ -66,8 +66,7 @@ Suggests:
     tinytest,
     xtable
 LinkingTo:
-    Rcpp, RcppArmadillo
-Remotes: github::emmanuelparadis/ape
+    Rcpp
 VignetteBuilder: 
     knitr,
     utils

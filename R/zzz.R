@@ -43,7 +43,7 @@
 .nucleotideAlphabet <- c("a", "c", "g", "t")
 
 Ape_NT <- list(properties = list(
-  a="a", g="g", c="c", t="t"), #"n", "-")),
+  a="a", g="g", c="c", t="t", n="n", "-"="-"),
   color=c("red", "yellow", "green", "blue", "grey", "black"))
 
 
