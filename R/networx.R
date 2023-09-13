@@ -646,6 +646,8 @@ rotate_matrix <- function(x, theta){
 #' @param underscore a logical specifying whether the underscores in tip labels
 #' should be written as spaces (the default) or left as are (if TRUE).
 #' @param angle rotate the plot.
+#' @param digits if edge labels are numerical a positive integer indicating how
+#' many significant digits are to be used.
 #' @param \dots Further arguments passed to or from other methods.
 #' @rdname plot.networx
 #' @note The internal representation is likely to change.
@@ -689,7 +691,7 @@ plot.networx <- function(x, type = "equal angle", use.edge.length = TRUE,
                          cex.edge.label = cex, col.node.label = tip.color,
                          col.edge.label = tip.color, font.node.label = font,
                          font.edge.label = font, underscore = FALSE,
-                         angle=0, ...) {
+                         angle=0, digits=3, ...) {
   type <- match.arg(type, c("equal angle", "3D", "2D"))
   if (use.edge.length == FALSE){
     x$edge.length[] <- 1
@@ -701,7 +703,7 @@ plot.networx <- function(x, type = "equal angle", use.edge.length = TRUE,
   if(!is.null(edge.label) && is.numeric(edge.label)) edge.label <- prettyNum(edge.label)
   if (is.null(edge.label) && !is.null(conf)) {
     conf <- conf[index]
-    if(is.numeric(conf)) conf <- prettyNum(conf)
+    if(is.numeric(conf)) conf <- prettyNum(format(conf, digits=digits))
     if (!is.null(x$translate)) conf[match(x$translate$node, x$edge[, 2])] <- ""
     else conf[x$edge[, 2] <= nTips] <- ""
     edge.label <- conf
@@ -893,9 +895,9 @@ plot2D <- function(coords, net, show.tip.label = TRUE, show.edge.label = FALSE,
       adj <- as.numeric(adj)
       ## `srt' takes only a single value, so can't vectorize this:
       ## (and need to 'elongate' these vectors:)
-      font <- rep(font, length.out = Ntip)
-      tip.color <- rep(tip.color, length.out = Ntip)
-      cex <- rep(cex, length.out = Ntip)
+      font <- rep(font, length.out = nTips)
+      tip.color <- rep(tip.color, length.out = nTips)
+      cex <- rep(cex, length.out = nTips)
       for (i in 1:length(label))
         text(xx[i], yy[i], label[i], font = font[i],
              cex = cex[i], srt = angle[i], adj = adj[i],
