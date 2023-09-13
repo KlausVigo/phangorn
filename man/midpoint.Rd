@@ -40,13 +40,16 @@ the root node.
 \description{
 \code{midpoint} performs midpoint rooting of a tree.  \code{pruneTree}
 produces a consensus tree.
-}
-\details{
 \code{pruneTree} prunes back a tree and produces a consensus tree, for trees
 already containing nodelabels.  It assumes that nodelabels are numerical or
 character that allows conversion to numerical, it uses
-as.numeric(as.character(tree$node.labels)) to convert them.  \code{midpoint}
-so far does not transform node.labels properly.
+as.numeric(as.character(tree$node.labels)) to convert them.
+\code{midpoint} by default assumes that node labels contain support values.
+This works if support values are computed from splits, but should be
+recomputed for clades.
+\code{keep.as.tip} takes a list of tips and/or node labels and returns a tree
+pruned to those. If node label, then it prunes all descendants of that node
+until that internal node becomes a tip.
 }
 \examples{
 
