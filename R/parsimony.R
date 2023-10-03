@@ -417,6 +417,7 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
       trees <- optim.parsimony(p_trees, data, trace = trace, method = method,
                                rearrangements = rearrangements, ...)
     }
+    curr_tree <- trees
     if(!is.null(attr(data, "duplicated"))){
       p_trees <- addTaxa(p_trees, attr(data, "duplicated"))
       trees <- addTaxa(trees, attr(data, "duplicated"))
@@ -430,7 +431,7 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
     if ( (mp1 + eps) < mp) {
       kmax <- 1
       result <- trees
-      tree <- trees
+      tree <- curr_tree
       hr <- hash(trees)
       mp <- mp1
     }
