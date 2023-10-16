@@ -89,7 +89,8 @@ plotAnc <- function(tree, data, i = 1, site.pattern = FALSE, col = NULL,
   xrad <- CEX * diff(lastPP$x.lim * 1.1) / 50
   par(new = TRUE)
   plot(tree, label.offset = 1.1 * xrad, plot = TRUE, ...)
-  if (is.null(col)) col <-  hcl.colors(nc) #rainbow(nc)
+  if (is.null(col)) col <- hcl.colors(nc) #rainbow(nc)
+  if(!is.null(names(col))) col <- col[attr(data, "levels")]
   if (length(col) != nc) {
     warning("Length of color vector differs from number of levels!")
   }
