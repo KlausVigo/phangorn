@@ -428,3 +428,23 @@ makeAncNodeLabel <- function(tree, ...){
 #  ind <- get("last_plot.phylo", envir = .PlotPhyloEnv)$edge[, 2]
 #  edgelabels(prettyNum(x[ind]), frame = "none")
 #}
+
+
+write.ancestral <- function(x, file="", ...){
+  l <- length(x)
+  nr <- attr(x, "nr")
+  nc <- attr(x, "nc")
+  index <- attr(x, "index")
+  nr <- length(index)
+  nam <- names(x)
+  X <- matrix(0, l*length(index), nc)
+  j <- 0
+  for(i in seq_len(l)){
+    X[(j+1):(j+nr), ] <- x[[i]][index, ]
+    j <- j + nr
+  }
+  res <- data.frame(Node=rep(nam, each=nr), X)
+  colnames(res) <- c("Node", attr(x, "levels"))
+  if (file == "") return(res)
+  else write.csv(res, file=file, ...)
+}
