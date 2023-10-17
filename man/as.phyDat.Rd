@@ -12,9 +12,12 @@
 \alias{as.phyDat}
 \alias{as.phyDat.factor}
 \alias{as.phyDat.DNAbin}
+\alias{as.phyDat.AAbin}
 \alias{as.phyDat.alignment}
 \alias{phyDat2alignment}
 \alias{as.phyDat.MultipleAlignment}
+\alias{as.phyDat.AAStringSet}
+\alias{as.phyDat.DNAStringSet}
 \alias{as.character.phyDat}
 \alias{as.data.frame.phyDat}
 \alias{as.DNAbin.phyDat}
@@ -30,11 +33,17 @@ as.phyDat(x, ...)
 
 \method{as.phyDat}{DNAbin}(x, ...)
 
+\method{as.phyDat}{AAbin}(x, ...)
+
 \method{as.phyDat}{alignment}(x, type = "DNA", ...)
 
 phyDat2alignment(x)
 
 \method{as.phyDat}{MultipleAlignment}(x, ...)
+
+\method{as.phyDat}{AAStringSet}(x, ...)
+
+\method{as.phyDat}{DNAStringSet}(x, ...)
 
 \method{as.MultipleAlignment}{phyDat}(x, ...)
 

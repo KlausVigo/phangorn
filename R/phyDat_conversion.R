@@ -87,6 +87,11 @@ as.phyDat.factor <- function(x, ...){
 #' @export
 as.phyDat.DNAbin <- function(x, ...) phyDat.DNA(x, ...)
 
+#' @rdname as.phyDat
+#' @method as.phyDat AAbin
+#' @export
+as.phyDat.AAbin <- function(x, ...) phyDat.AA(x, ...)
+
 
 #' @rdname as.phyDat
 #' @method as.phyDat alignment
@@ -134,6 +139,22 @@ as.phyDat.MultipleAlignment <- function(x, ...){
     return(res)
   }
   return(NULL)
+}
+
+
+#' @rdname as.phyDat
+#' @method as.phyDat AAStringSet
+#' @export
+as.phyDat.AAStringSet <- function(x, ...){
+  as.AAbin(x, ...)  |> as.phyDat()
+}
+
+
+#' @rdname as.phyDat
+#' @method as.phyDat DNAStringSet
+#' @export
+as.phyDat.DNAStringSet <- function(x, ...){
+  as.DNAbin(x, ...)  |> as.phyDat()
 }
 
 
