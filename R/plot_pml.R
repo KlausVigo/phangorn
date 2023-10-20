@@ -39,6 +39,8 @@ plot.pml <- function(x, type="phylogram", direction = "rightwards", ...){
   type <- match.arg(type, c("phylogram","cladogram", "fan", "unrooted",
                             "radial", "tidy"))
   tree <- x$tree
+  extras <- match.call(expand.dots = FALSE)$...
+  cex <- ifelse(is.null(extras$cex), par("cex"), extras$cex)
   if(!is.rooted(tree) && (type != "unrooted") ) tree <- midpoint(tree)
   plot.phylo(tree, type=type, direction=direction, ...)
   if(is.rooted(tree) && (type %in% c("phylogram","cladogram"))){
@@ -54,8 +56,8 @@ plot.pml <- function(x, type="phylogram", direction = "rightwards", ...){
       axisPhylo(side, root.time = root_time, backward = FALSE)
     }
     else if(x$method=="ultrametric") axisPhylo(side)
-    else add.scale.bar()
+    else add.scale.bar(cex=cex)
   }
-  else add.scale.bar()
-  if(!is.null(x$bs)) add_support(tree, x$bs)
+  else add.scale.bar(cex=cex)
+  if(!is.null(x$bs)) add_support(tree, x$bs, cex=cex)
 }
