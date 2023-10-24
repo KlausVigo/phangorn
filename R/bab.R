@@ -166,7 +166,7 @@ pBound <- function(x, UB, LB) {
 #' trees <- bab(gene12)
 #'
 #' @export bab
-bab <- function(data, tree = NULL, trace = 1, ...) {
+bab <- function(data, tree = NULL, trace = 0, ...) {
   if(inherits(data, "DNAbin") | inherits(data, "AAbin")) data <- as.phyDat(data)
   if (!inherits(data, "phyDat")) stop("data must be of class phyDat")
   if (!is.null(tree)) data <- subset(data, tree$tip.label)
