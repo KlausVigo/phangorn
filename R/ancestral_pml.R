@@ -200,18 +200,21 @@ as.phyDat.ancestral <- function(x, ...) {
 #' @export
 as.data.frame.ancestral <- function(x, ...) {
   stopifnot(inherits(x, "ancestral"))
-  lab <- names(x)
-  states <- attr(x, "levels")
+  l <- length(x)
   nr <- attr(x, "nr")
   nc <- attr(x, "nc")
-  pos <- seq_len(nr)
-  X <- unlist(x) |> array(c(nr, nc, length(x)),
-                  dimnames = list(Site=pos, attr(x, "levels"), Node=names(x)))
-  z1 <- apply(X, 2L, c)
-  z2 <- expand.grid(dimnames(X)[c(1,3)])
-  res <- data.frame(z2, z1)
-  res <- data.frame(z2, z1)
-  res[order(res[,1], res[,2]), ]
+  index <- attr(x, "index")
+  nr <- length(index)
+  nam <- names(x)
+  X <- matrix(0, l*length(index), nc)
+  j <- 0
+  for(i in seq_len(l)){
+    X[(j+1):(j+nr), ] <- x[[i]][index, ]
+    j <- j + nr
+  }
+  res <- data.frame(Site=rep(seq_len(nr), l), Node=rep(nam, each=nr), X)
+  colnames(res) <- c("Site", "Node", attr(x, "levels"))
+  res
 }
 
 
@@ -428,23 +431,3 @@ makeAncNodeLabel <- function(tree, ...){
 #  ind <- get("last_plot.phylo", envir = .PlotPhyloEnv)$edge[, 2]
 #  edgelabels(prettyNum(x[ind]), frame = "none")
 #}
-
-
-write.ancestral <- function(x, file="", ...){
-  l <- length(x)
-  nr <- attr(x, "nr")
-  nc <- attr(x, "nc")
-  index <- attr(x, "index")
-  nr <- length(index)
-  nam <- names(x)
-  X <- matrix(0, l*length(index), nc)
-  j <- 0
-  for(i in seq_len(l)){
-    X[(j+1):(j+nr), ] <- x[[i]][index, ]
-    j <- j + nr
-  }
-  res <- data.frame(Node=rep(nam, each=nr), X)
-  colnames(res) <- c("Node", attr(x, "levels"))
-  if (file == "") return(res)
-  else write.csv(res, file=file, ...)
-}
