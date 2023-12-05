@@ -87,7 +87,7 @@ par(old.par)
 
 }
 \seealso{
-\code{\link{pml.fit}, \link{stepfun}, link{pgamma}, link{pbeta}},
+\code{\link{pml.fit}, \link{stepfun}, \link{pgamma}, \link{pbeta}},
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}
