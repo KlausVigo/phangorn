@@ -88,9 +88,6 @@ ancestral.pml <- function(object, type = "marginal", return = "prob", ...) {
 
   x <- attributes(data)
   label <- makeAncNodeLabel(tree, ...)
-#  label <- as.character(1:m)
-#  nam <- tree$tip.label
-#  label[seq_along(nam)] <- nam
   x[["names"]] <- label
   tmp <- length(data)
 
@@ -113,14 +110,11 @@ ancestral.pml <- function(object, type = "marginal", return = "prob", ...) {
   contrast <- attr(data, "contrast")
   # proper format
   eps <- 1.0e-5
-  ind1 <- which(apply(contrast, 1, function(x) sum(x > eps)) == 1L)
-  ind2 <- which(contrast[ind1, ] > eps, arr.ind = TRUE)
-
-  pos <- ind2[match(seq_len(ncol(contrast)), ind2[, 2]), 1]
+  attr <- attributes(data)
+  pos <- match(attr$levels, attr$allLevels)
   nco <- as.integer(dim(contrast)[1])
   for (i in 1:l) dat[i, (nTips + 1):m] <- .Call('LogLik2', data, P[i, ], nr, nc,
       node, edge, nTips, mNodes, contrast, nco)
-
   parent <- tree$edge[, 1]
   child <- tree$edge[, 2]
   nTips <- min(parent) - 1
@@ -161,16 +155,11 @@ ancestral.pml <- function(object, type = "marginal", return = "prob", ...) {
 }
 
 
-# joint_reconstruction <- function(object){
-#
-# }
-
 
 #' @rdname ancestral.pml
 #' @export
 as.phyDat.ancestral <- function(x, ...) {
   type <- attr(x, "type")
-  #    else res[1:ntips] <- data[1:ntips]
   fun2 <- function(x) {
     x <- p2dna(x)
     fitchCoding2ambiguous(x)
@@ -181,14 +170,9 @@ as.phyDat.ancestral <- function(x, ...) {
   else {
     eps <- 1.0e-5
     contr <- attr(x, "contrast")
-    # a bit too complicated
-    ind1 <- which(apply(contr, 1, function(x) sum(x > eps)) == 1L)
-    ind2 <- which(contr[ind1, ] > eps, arr.ind = TRUE)
-    #    pos <- ind2[match(as.integer(1L:ncol(contr)),  ind2[,2]),1]
-    pos <- ind2[match(seq_len(ncol(contr)), ind2[, 2]), 1]
-    # only first hit
+    attr <- attributes(x)
+    pos <- match(attr$levels, attr$allLevels)
     res <- lapply(x, function(x, pos) pos[max.col(x)], pos)
-
   }
   attributes(res) <- attributes(x)
   class(res) <- "phyDat"
@@ -283,9 +267,6 @@ mpr <- function(tree, data, cost = NULL, return = "prob", ...) {
   l <- length(tree$tip.label)
   m <- length(res)
   label <- makeAncNodeLabel(tree, ...)
-#  label <- as.character(1:m)
-#  nam <- tree$tip.label
-#  label[seq_along(nam)] <- nam
   att[["names"]] <- label
   ntips <- length(tree$tip.label)
   contrast <- att$contrast
@@ -301,7 +282,7 @@ mpr <- function(tree, data, cost = NULL, return = "prob", ...) {
   for (i in (ntips + 1):m) res[[i]][] <- as.numeric(res[[i]] < RM)
   if (return == "prob") {
     #        for(i in 1:ntips) res[[i]] <- contrast[data[[i]],,drop=FALSE]
-    if (return == "prob") res <- lapply(res, fun)
+    res <- lapply(res, fun)
     attributes(res) <- att
     class(res) <- c("ancestral", "phyDat")
   }
@@ -316,6 +297,7 @@ mpr <- function(tree, data, cost = NULL, return = "prob", ...) {
       attributes(res) <- att
     }
     else {
+      attributes(res) <- att
       res <- as.phyDat.ancestral(res)
     }
     res[1:ntips] <- data
@@ -339,7 +321,7 @@ acctran2 <- function(tree, data) {
   f$traverse(edge)
   if(length(tmp)>0)f$acctran_traverse(tmp)
   psc <- f$pscore_acctran(edge)
-  el <- psc #[edge[,2]]
+  el <- psc
   parent <- unique(edge[,1])
   desc <- Descendants(tree, parent, "children")
   for(i in seq_along(parent)){
@@ -385,9 +367,15 @@ ptree <- function(tree, data, return = "prob", acctran=TRUE, ...) {
   if(length(tmp)>0 && acctran==TRUE)f$acctran_traverse(tmp)
   res <- vector("list", m)
   att$names <- makeAncNodeLabel(tree, ...)
-#  att$names <- c(att$names, as.character((nTip+1):m))
-
-  if(return == "prob") {
+  if(type=="DNA" && return != "prob"){
+    indx <- c(1, 2, 6, 3, 7, 9, 12, 4, 8, 10, 13, 11, 14, 15, 16)
+    res[1:nTip] <- data[1:nTip]
+    for(i in (nTip+1):m)
+      res[[i]] <- indx[f$getAncAmb(i)[1:nr]]
+    attributes(res) <- att
+    return(res)
+  }
+  else {
     fun <- function(X) {
       rs <- rowSums(X)
       X / rs
@@ -399,17 +387,10 @@ ptree <- function(tree, data, return = "prob", acctran=TRUE, ...) {
     attributes(res) <- att
     class(res) <- c("ancestral", "phyDat")
   }
-  else {
-    if(type=="DNA"){
-      indx <- c(1, 2, 6, 3, 7, 9, 12, 4, 8, 10, 13, 11, 14, 15, 16)
-      res[1:nTip] <- data[1:nTip]
-      for(i in (nTip+1):m)
-        res[[i]] <- indx[f$getAncAmb(i)[1:nr]]
-      attributes(res) <- att
-    }
-    else stop("This is only for nucleotide sequences supported so far")
+  if(return != "prob"){
+    res <- as.phyDat.ancestral(res)
+    class(res) <- "phyDat"
   }
-#  attributes(res) <- att
   res
 }
 
@@ -423,11 +404,3 @@ makeAncNodeLabel <- function(tree, ...){
   tree <- makeNodeLabel(tree, ...)
   c(tree$tip.label, tree$node.label)
 }
-
-#parsimony.plot <- function(tree, ...) {
-#  x <- numeric(max(tree$edge))
-#  x[tree$edge[, 2]] <- tree$edge.length
-#  plot(tree, ...)
-#  ind <- get("last_plot.phylo", envir = .PlotPhyloEnv)$edge[, 2]
-#  edgelabels(prettyNum(x[ind]), frame = "none")
-#}
