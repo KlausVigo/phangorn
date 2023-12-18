@@ -123,7 +123,7 @@ subsChoice_USER <- function(type = .usermodels, nstates) {
 optimGamma <- function(tree, data, shape = 1, k = 4, ...) {
   fn <- function(shape, tree, data, k, ...) pml.fit(tree, data, shape = shape,
       k = k, ...)
-  res <- optimize(f = fn, interval = c(0.1, 100), lower = 0.1, upper = 1000,
+  res <- optimize(f = fn, interval = c(0.1, 100), lower = 0.1, upper = 100,
     maximum = TRUE,  tol = .01, tree = tree, data = data, k = k, ...)
   res
 }
@@ -1479,14 +1479,14 @@ optimRooted <- function(tree, data, bf, g, w, eig, ll.0,
     loglik
   }
   # scale whole tree
-  scaleEdges <- function(tree, data, tau = 1e-8, ...) { #t = 1, trace = 0,
+  scaleEdges <- function(tree, data, tau = 1e-8, ...) {
     fn <- function(t, tree, data, ...) {
       tree$edge.length <- tree$edge.length * t
       pml.fit4(tree, data, ...)
     }
     min_scaler <- max(.25, tau / min(tree$edge.length) )
     min_scaler <- min(min_scaler, 1)
-    if(min_scaler>1) browser()
+#    if(min_scaler>1) browser()
     optimize(f = fn, interval = c(min_scaler, 4), tree = tree, data = data, ...,
       maximum = TRUE, tol = .00001)
   }
@@ -2002,6 +2002,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   optNni <- ifelse(rearrangement ==  "none", FALSE, TRUE)
   perturbation <- ifelse(rearrangement %in%
                         c("ratchet", "stochastic", "multi2di"), TRUE, FALSE)
+  if(rearrangement=="ratchet") fbs <- vector("list", ratchet.par$minit)
   extras <- match.call(expand.dots = FALSE)$...
   pmla <- c("wMix", "llMix")
   wMix <- object$wMix
@@ -2241,6 +2242,11 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       spl <- as.splits(bs)
       object$tree <- addConfidences(object$tree, spl)
     }
+    if(rearrangement=="ratchet"){
+      class(fbs) <- "multiPhylo"
+      object$abs <-  object$bs
+      object$bs <- fbs
+    }
     pml.free()
     return(object)
   })
@@ -2343,35 +2349,40 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     }
     if (optFreeRate) {
       # bis jetzt w nicht optimiert!
-      tmp_ll <- ll
-      res <- optimFreeRate(tree, data, g = g, k = k, w = w, inv = inv,
+      tmp_ll <- ll_fr <- ll
+      eps_fr <- 1e8
+      iter_fr <- 0
+      while(eps_fr > control$epsilon & iter_fr < 3){
+        res <- optimFreeRate(tree, data, g = g, k = k, w = w, inv = inv,
                            INV = INV, bf = bf, eig = eig,
                            ll.0 = ll.0, rate = rate)
-      scale <- function(tree, g, w){
-        blub <- sum(g * w)
-        g <- g / blub
-        tree$edge.length <- tree$edge.length * blub
-        list(tree=tree, g=g)
-      }
-      if(res[[2]] > ll){
-        tmp_sc <- scale(tree, res[[1]], w)
-        g0 <- res[[1]]
-        blub <- sum(g0 * w)
-        g <- g0 / blub
-        tree$edge.length <- tree$edge.length * blub
-##        if (trace > 0) cat("optimize free rate parameters: ", ll, "-->",
-##                           max(res[[2]], ll), "\n")
-        ll <- res[[2]]
-      }
-      res2 <- optimWs(tree, data, w = w, g=g, inv = inv,
-                    INV = INV, bf = bf, eig = eig,
-                    ll.0 = ll.0, rate = rate)
-      if(res2[[2]] > ll){
-        w <- res2[[1]]
-        blub <- sum(g * w)
-        g <- g / blub
-        tree$edge.length <- tree$edge.length * blub
-        ll <- res2[[2]]
+        scale <- function(tree, g, w){
+          blub <- sum(g * w)
+          g <- g / blub
+          tree$edge.length <- tree$edge.length * blub
+          list(tree=tree, g=g)
+        }
+        if(res[[2]] > ll){
+          tmp_sc <- scale(tree, res[[1]], w)
+          g0 <- res[[1]]
+          blub <- sum(g0 * w)
+          g <- g0 / blub
+          tree$edge.length <- tree$edge.length * blub
+          ll <- res[[2]]
+        }
+        res2 <- optimWs(tree, data, w = w, g=g, inv = inv,
+                      INV = INV, bf = bf, eig = eig,
+                      ll.0 = ll.0, rate = rate)
+        if(res2[[2]] > ll){
+          w <- res2[[1]]
+          blub <- sum(g * w)
+          g <- g / blub
+          tree$edge.length <- tree$edge.length * blub
+          ll <- res2[[2]]
+        }
+        eps_fr <- ll - ll_fr
+        ll_fr <- ll
+        iter_fr <- iter_fr+1
       }
       if (trace > 0) cat("optimize free rate parameters: ", tmp_ll, "-->",
                          ll, "\n")
@@ -2410,6 +2421,16 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       if((rearrangement == "stochastic" || rearrangement == "ratchet") && optRooted){
         dm <- dist.ml(data, bf=bf, Q=Q, exclude = "pairwise")
       }
+      ratchet_fun <- function(tree, data, ...){
+        weight <- attr(data, "weight")
+        v <- rep(seq_along(weight), weight)
+        attr(data, "weight") <- tabulate(sample(v, replace = TRUE), length(weight))
+
+        res <- opt_Edge(tree, data, ...)
+        ll2 <- res[[2]]
+        opt_nni(tree, data, iter_max=5, trace=0, ll=ll2, ...)$tree
+#        opt_nni(tree, data, ...)$tree
+      }
       for(i in seq_len(maxit)){
         if(rearrangement == "stochastic"){
           tree2 <- di2multi(tree, tol = 10 * tau, tip2root = TRUE)
@@ -2426,11 +2447,17 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
              tree2 <- minEdge(tree2, 10*tau)
           }
         } else if(rearrangement == "ratchet"){
-          tree2 <- bootstrap.phyDat(data, candidate_tree, bs = 1, method=method,
-                        eps = tau, bf = bf, Q = Q, k = k, shape = shape,
-                        tip.dates=tip.dates)[[1]]
-          tree2 <- checkLabels(tree2, tree$tip.label)
-          tree2 <- reorder(tree2, "postorder")
+          tree2 <- ratchet_fun(tree, data, rooted=optRooted, w = w, g = g,
+                               eig = eig, bf = bf, inv=inv,
+                               rate=rate, ll.0 = ll.0, INV = INV, llMix = llMix,
+                               wMix=wMix, ASC=ASC,
+                               control=list(eps=1e-08, maxit=3, trace=trace-1, tau=tau))
+          fbs[[i]] <- tree2
+#          tree2 <- bootstrap.phyDat(data, candidate_tree, bs = 1, method=method,
+#                        eps = tau, bf = bf, Q = Q, k = k, shape = shape,
+#                        tip.dates=tip.dates)[[1]]
+#          tree2 <- checkLabels(tree2, tree$tip.label)
+#          tree2 <- reorder(tree2, "postorder")
         } else if(rearrangement == "multi2di"){
           tree2 <- di2multi(tree, tol=10*tau, tip2root=TRUE)
           if(any(degree(tree2)>4)){
@@ -2595,8 +2622,6 @@ optimQuartet <- function(tree, data, eig, w, g, bf, rate, ll.0, nTips,
   tau <- control$tau
   lg <- k
   ScaleEPS <- 1.0 / 4294967296.0
-  #    anc <- Ancestors(tree, 1:m, "parent")
-  #    anc0 <- as.integer(c(0L, anc))
 
   while (eps > control$eps && iter < control$maxit) {
     EL <- .Call("optQrtt", as.integer(parent), as.integer(child), eig, evi,
@@ -2630,10 +2655,6 @@ pml.quartet <- function(tree, data, bf = rep(.25, 4), k = 1, rate = 1, g, w,
   if (is.null(ll.0)) {
     ll.0 <- numeric(nr)
   }
-#  if (is.null(ind.ll0)) {
-#    ind <- which(ll.0 > 0)
-#  }
-#  else ind <- ind.ll0
   node <- as.integer(tree$edge[, 1] - nTips - 1L) #    min(node))
   edge <- as.integer(tree$edge[, 2] - 1L)
 
@@ -2704,7 +2725,6 @@ pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, wMix, llMix,
     tree0 <- index2tree(INDEX[i, ], tree, nTips + 1L)
     ch <- ei[5]
     pa <- ei[6]
-
     # move up
     while (pa != loli) {
       tmpr <- match(loli, INDEX[, 5])
@@ -2736,7 +2756,6 @@ pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, wMix, llMix,
                          ll.0 = ll.0, nTips = nTips, weight = weight, nr = nr,
                          nc = nc, contrast = contrast, nco = nco, inv=inv,
                          llcomp = ll + 1e-8, wMix=wMix, llMix=llMix, ...)
-    # new0$logLik+1e-8)
     new2 <- optimQuartet(tree2, data, eig = eig, w = w, g = g, bf = bf,
                          ll.0 = ll.0, nTips = nTips, weight = weight, nr = nr,
                          nc = nc, contrast = contrast, nco = nco, inv=inv,
@@ -2825,7 +2844,7 @@ opt_nni <- function(tree, data, rooted, iter_max, trace, ll, RELL=NULL, ...){
     }
     if(!is.null(RELL)) RELL <- tmp$RELL
     ll2 <- res$logLik
-    if(length(ll2)==0) browser()
+#    if(length(ll2)==0) browser()
     if(ll2 > (ll + 1e-8))  # epsR
       tree <- res$tree
     else {
