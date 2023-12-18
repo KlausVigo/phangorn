@@ -67,12 +67,14 @@ found during the search.  \code{acctran} returns a tree with edge length
 according to the ACCTRAN criterion.
 }
 \description{
+\code{pratchet} implements the parsimony ratchet (Nixon, 1999) and is the
+preferred way to search for the best tree. For small trees \code{\link{bab}}
+to compute all most parsimonious trees
 \code{parsimony} returns the parsimony score of a tree using either the
-sankoff or the fitch algorithm. \code{optim.parsimony} tries to find the
-maximum parsimony tree using either Nearest Neighbor Interchange (NNI)
-rearrangements or sub tree pruning and regrafting (SPR). \code{pratchet}
-implements the parsimony ratchet (Nixon, 1999) and is the preferred way to
-search for the best tree.  \code{random.addition} can be used to produce
+sankoff or the fitch algorithm.
+\code{optim.parsimony} optimizes the topology using either Nearest Neighbor
+Interchange (NNI) rearrangements or sub tree pruning and regrafting (SPR) and
+is used inside \code{pratchet}. \code{random.addition} can be used to produce
 starting trees.
 }
 \details{
