@@ -156,7 +156,7 @@ circNetwork <- function(x, ord = NULL) {
   X <- as.matrix(x)[, ord]
   Y <- X
   rsY <- rowSums(Y)
-  X <- X[ind, ]
+  X <- X[ind, , drop=FALSE]
 
   for (k in seq_along(ind)) {
     Vstart <- ord[1]

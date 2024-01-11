@@ -10,7 +10,7 @@
 \title{Compute a design matrix or non-negative LS}
 \usage{
 designTree(tree, method = "unrooted", sparse = FALSE, tip.dates = NULL,
-  ...)
+  calibration = NULL, ...)
 
 nnls.tree(dm, tree, method = c("unrooted", "ultrametric", "tipdated"),
   rooted = NULL, trace = 1, weight = NULL, balanced = FALSE,
@@ -18,9 +18,9 @@ nnls.tree(dm, tree, method = c("unrooted", "ultrametric", "tipdated"),
 
 nnls.phylo(x, dm, method = "unrooted", trace = 0, ...)
 
-nnls.splits(x, dm, trace = 0)
+nnls.splits(x, dm, trace = 0, eps = 1e-08)
 
-nnls.networx(x, dm)
+nnls.networx(x, dm, eps = 1e-08)
 
 designSplits(x, splits = "all", ...)
 }
@@ -31,7 +31,11 @@ designSplits(x, splits = "all", ...)
 
 \item{sparse}{return a sparse design matrix.}
 
-\item{tip.dates}{a vector of sampling times associated to the tips of tree.}
+\item{tip.dates}{a named vector of sampling times associated to the tips of
+the tree.}
+
+\item{calibration}{a named vector of calibration times associated to nodes of
+the tree.}
 
 \item{\dots}{further arguments, passed to other methods.}
 
@@ -48,6 +52,8 @@ minimized.}
 \item{balanced}{use weights as in balanced fastME}
 
 \item{x}{number of taxa.}
+
+\item{eps}{minimum edge length (default s 1e-8).}
 
 \item{splits}{one of "all", "star".}
 }
