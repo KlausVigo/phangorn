@@ -74,9 +74,9 @@ title("ACCTRAN")
 
 # Likelihood reconstructions
 
-_phangorn_ also offers the possibility to estimate ancestral states using a ML.
+_phangorn_ also offers the possibility to estimate ancestral states using ML.
 The advantages of ML over parsimony is that the reconstruction accounts for different edge lengths.
-So far only a marginal construction is implemented (see [@Yang2006]).
+So far only a marginal construction is implemented (see [@Yang2006][@Koshi1996]) and no joint reconstruction [@Pupko2000].
 ```{r fit_ML}
 fit <- pml(tree, primates)
 fit <- optim.pml(fit, model="F81", control = pml.control(trace=0))
@@ -108,7 +108,7 @@ title("Bayes")
 # Fitting for discrete comparative data
 
 Often have already a phylogeny and only want estimate the ancestral reconstruction for this tree. 
-This is a common problem in phylogentic comparative methods and we can use the function *ace* in the ape [@Paradis2018], *fitDiscrete* in the geiger [@Pennell2014] or *fitMK* in the phytools [@Revell2012] package. Here we want fit these models using *optim.pml*.
+This is a common problem in phylogentic comparative methods and we can use the function *ace* in the ape [@Paradis2018], *fitDiscrete* in the geiger [@Pennell2014] or *fitMK* in the phytools [@Revell2012] package. Here we want to show how to fit these models using *optim.pml*.
 
 First we load a tree and create some data. 
 ```{r read_geospiza_data}
