@@ -68,16 +68,19 @@ according to the ACCTRAN criterion.
 }
 \description{
 \code{pratchet} implements the parsimony ratchet (Nixon, 1999) and is the
-preferred way to search for the best tree. For small trees \code{\link{bab}}
-to compute all most parsimonious trees
+preferred way to search for the best parsimony tree. For small number of taxa
+the function \code{\link{bab}} can be used to compute all most parsimonious
+trees.
+}
+\details{
 \code{parsimony} returns the parsimony score of a tree using either the
 sankoff or the fitch algorithm.
 \code{optim.parsimony} optimizes the topology using either Nearest Neighbor
 Interchange (NNI) rearrangements or sub tree pruning and regrafting (SPR) and
 is used inside \code{pratchet}. \code{random.addition} can be used to produce
-starting trees.
-}
-\details{
+starting trees and is an option for the argument perturbation in
+\code{pratchet}.
+
 The "SPR" rearrangements are so far only available for the "fitch" method,
 "sankoff" only uses "NNI". The "fitch" algorithm only works correct for
 binary trees.

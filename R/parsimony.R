@@ -1,8 +1,9 @@
 #' Parsimony tree.
 #'
 #' \code{pratchet} implements the parsimony ratchet (Nixon, 1999) and is the
-#' preferred way to search for the best tree. For small trees function
-#' \code{\link{bab}} can be used to compute all most parsimonious trees.
+#' preferred way to search for the best parsimony tree. For small number of taxa
+#' the function \code{\link{bab}} can be used to compute all most parsimonious
+#' trees.
 #'
 #' \code{parsimony} returns the parsimony score of a tree using either the
 #' sankoff or the fitch algorithm.
