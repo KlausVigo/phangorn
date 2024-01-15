@@ -510,7 +510,7 @@ constSitePattern <- function(n, names=NULL, type="DNA", levels=NULL){
 #'
 #' Felsenstein, J. (1993) Phylip (Phylogeny Inference Package) version 3.5c.
 #' Department of Genetics, University of Washington.
-#' \url{https://evolution.genetics.washington.edu/phylip/phylip.html}
+#' \url{https://phylipweb.github.io/phylip/}
 #' @keywords IO
 #' @export read.aa
 read.aa <- function (file, format = "interleaved", skip = 0, nlines = 0,
