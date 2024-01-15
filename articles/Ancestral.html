@@ -14,8 +14,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Ancestral Sequence Reconstruction">
 <meta property="og:description" content="phangorn">
@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">phangorn</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.12.0.900</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.0.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -89,7 +89,7 @@ Schliep</h4>
 Technology<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2023-08-04</h4>
+            <h4 data-toc-skip class="date">2024-01-15</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/vignettes/Ancestral.Rmd" class="external-link"><code>vignettes/Ancestral.Rmd</code></a></small>
       <div class="d-none name"><code>Ancestral.Rmd</code></div>
@@ -174,10 +174,12 @@ Fig 3. Ancestral reconstruction using ACCTRAN.
 <h2 id="likelihood-reconstructions">Likelihood reconstructions<a class="anchor" aria-label="anchor" href="#likelihood-reconstructions"></a>
 </h2>
 <p><em>phangorn</em> also offers the possibility to estimate ancestral
-states using a ML. The advantages of ML over parsimony is that the
+states using ML. The advantages of ML over parsimony is that the
 reconstruction accounts for different edge lengths. So far only a
-marginal construction is implemented (see <span class="citation">(Yang
-2006)</span>).</p>
+marginal construction is implemented (see [<span class="citation">Yang
+(2006)</span>]<span class="citation">(Koshi and Goldstein 1996)</span>)
+and no joint reconstruction <span class="citation">(Pupko et al.
+2000)</span>.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">pml</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">primates</span><span class="op">)</span></span>
 <span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, model<span class="op">=</span><span class="st">"F81"</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -225,8 +227,8 @@ reconstruction for this tree. This is a common problem in phylogentic
 comparative methods and we can use the function <em>ace</em> in the ape
 <span class="citation">(Paradis and Schliep 2019)</span>,
 <em>fitDiscrete</em> in the geiger <span class="citation">(Pennell et
-al. 2014)</span> or <em>fitMK</em> in the phytools <span class="citation">(Revell 2012)</span> package. Here we want fit these
-models using <em>optim.pml</em>.</p>
+al. 2014)</span> or <em>fitMK</em> in the phytools <span class="citation">(Revell 2012)</span> package. Here we want to show how
+to fit these models using <em>optim.pml</em>.</p>
 <p>First we load a tree and create some data.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"bird.orders"</span><span class="op">)</span></span>
@@ -304,9 +306,9 @@ matrices</em>. The “ARD” model is currently not available as
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<pre><code><span><span class="co">## R version 4.3.1 (2023-06-16)</span></span>
+<pre><code><span><span class="co">## R version 4.3.2 (2023-10-31)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
-<span><span class="co">## Running under: Ubuntu 22.04.2 LTS</span></span>
+<span><span class="co">## Running under: Ubuntu 22.04.3 LTS</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Matrix products: default</span></span>
 <span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
@@ -325,21 +327,21 @@ matrices</em>. The “ARD” model is currently not available as
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] phangorn_2.12.0.900 ape_5.7-1.2        </span></span>
+<span><span class="co">## [1] phangorn_3.0.0 ape_5.7-1     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] Matrix_1.5-4.1    jsonlite_1.8.7    highr_0.10        compiler_4.3.1   </span></span>
-<span><span class="co">##  [5] Rcpp_1.0.11       stringr_1.5.0     parallel_4.3.1    jquerylib_0.1.4  </span></span>
-<span><span class="co">##  [9] systemfonts_1.0.4 textshaping_0.3.6 yaml_2.3.7        fastmap_1.1.1    </span></span>
-<span><span class="co">## [13] lattice_0.21-8    R6_2.5.1          generics_0.1.3    igraph_1.5.0.1   </span></span>
-<span><span class="co">## [17] knitr_1.43        desc_1.4.2        rprojroot_2.0.3   bslib_0.5.0      </span></span>
-<span><span class="co">## [21] rlang_1.1.1       fastmatch_1.1-3   cachem_1.0.8      stringi_1.7.12   </span></span>
-<span><span class="co">## [25] xfun_0.39         quadprog_1.5-8    fs_1.6.3          sass_0.4.7       </span></span>
-<span><span class="co">## [29] memoise_2.0.1     cli_3.6.1         pkgdown_2.0.7     magrittr_2.0.3   </span></span>
-<span><span class="co">## [33] digest_0.6.33     grid_4.3.1        lifecycle_1.0.3   nlme_3.1-162     </span></span>
-<span><span class="co">## [37] vctrs_0.6.3       evaluate_0.21     glue_1.6.2        codetools_0.2-19 </span></span>
-<span><span class="co">## [41] ragg_1.2.5        rmarkdown_2.23    purrr_1.0.1       pkgconfig_2.0.3  </span></span>
-<span><span class="co">## [45] tools_4.3.1       htmltools_0.5.5</span></span></code></pre>
+<span><span class="co">##  [1] Matrix_1.6-1.1    jsonlite_1.8.8    highr_0.10        compiler_4.3.2   </span></span>
+<span><span class="co">##  [5] Rcpp_1.0.12       stringr_1.5.1     parallel_4.3.2    jquerylib_0.1.4  </span></span>
+<span><span class="co">##  [9] systemfonts_1.0.5 textshaping_0.3.7 yaml_2.3.8        fastmap_1.1.1    </span></span>
+<span><span class="co">## [13] lattice_0.21-9    R6_2.5.1          generics_0.1.3    igraph_1.6.0     </span></span>
+<span><span class="co">## [17] knitr_1.45        desc_1.4.3        bslib_0.6.1       rlang_1.1.3      </span></span>
+<span><span class="co">## [21] fastmatch_1.1-4   cachem_1.0.8      stringi_1.8.3     xfun_0.41        </span></span>
+<span><span class="co">## [25] quadprog_1.5-8    fs_1.6.3          sass_0.4.8        memoise_2.0.1    </span></span>
+<span><span class="co">## [29] cli_3.6.2         pkgdown_2.0.7     magrittr_2.0.3    digest_0.6.34    </span></span>
+<span><span class="co">## [33] grid_4.3.2        lifecycle_1.0.4   nlme_3.1-163      vctrs_0.6.5      </span></span>
+<span><span class="co">## [37] evaluate_0.23     glue_1.7.0        codetools_0.2-19  ragg_1.2.7       </span></span>
+<span><span class="co">## [41] rmarkdown_2.25    purrr_1.0.2       pkgconfig_2.0.3   tools_4.3.2      </span></span>
+<span><span class="co">## [45] htmltools_0.5.7</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -348,6 +350,11 @@ matrices</em>. The “ARD” model is currently not available as
 <div id="ref-Felsenstein2004" class="csl-entry">
 Felsenstein, Joseph. 2004. <em>Inferring Phylogenies</em>. Sunderland:
 Sinauer Associates.
+</div>
+<div id="ref-Koshi1996" class="csl-entry">
+Koshi, Jeffrey M., and Richard A. Goldstein. 1996. <span>“<span class="nocase">Probabilistic reconstruction of ancestral protein
+sequences</span>.”</span> <em>Journal of Molecular Evolution</em> 42
+(2): 313–20. <a href="https://doi.org/10.1007/BF02198858" class="external-link">https://doi.org/10.1007/BF02198858</a>.
 </div>
 <div id="ref-Paradis2018" class="csl-entry">
 Paradis, Emmanuel, and Klaus Schliep. 2019. <span>“Ape 5.0: An
@@ -359,6 +366,11 @@ Pennell, M. W., J. M. Eastman, G. J. Slater, J. W. Brown, J. C. Uyeda,
 R. G. Fitzjohn, M. E. Alfaro, and L. J. Harmon. 2014. <span>“Geiger
 V2.0: An Expanded Suite of Methods for Fitting Macroevolutionary Models
 to Phylogenetic Trees.”</span> <em>Bioinformatics</em> 30: 2216–18. <a href="https://doi.org/10.1093/bioinformatics/btu181" class="external-link">https://doi.org/10.1093/bioinformatics/btu181</a>.
+</div>
+<div id="ref-Pupko2000" class="csl-entry">
+Pupko, Tal, Itsik Pe, Ron Shamir, and Dan Graur. 2000. <span>“<span class="nocase">A Fast Algorithm for Joint Reconstruction of Ancestral
+Amino Acid Sequences</span>.”</span> <em>Molecular Biology and
+Evolution</em> 17 (6): 890–96. <a href="https://doi.org/10.1093/oxfordjournals.molbev.a026369" class="external-link">https://doi.org/10.1093/oxfordjournals.molbev.a026369</a>.
 </div>
 <div id="ref-Revell2012" class="csl-entry">
 Revell, Liam J. 2012. <span>“Phytools: An r Package for Phylogenetic
