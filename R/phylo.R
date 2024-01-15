@@ -124,7 +124,7 @@ optimGamma <- function(tree, data, shape = 1, k = 4, ...) {
   fn <- function(shape, tree, data, k, ...) pml.fit(tree, data, shape = shape,
       k = k, ...)
   res <- optimize(f = fn, interval = c(0.1, 100), lower = 0.1, upper = 100,
-    maximum = TRUE,  tol = .01, tree = tree, data = data, k = k, ...)
+    maximum = TRUE,  tol = .001, tree = tree, data = data, k = k, ...)
   res
 }
 
