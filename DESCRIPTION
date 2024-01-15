@@ -67,6 +67,7 @@ Suggests:
     xtable
 LinkingTo:
     Rcpp
+Remotes: github::KlausVigo/apex
 VignetteBuilder: 
     knitr,
     utils
