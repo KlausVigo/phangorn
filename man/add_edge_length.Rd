@@ -8,7 +8,8 @@ add_edge_length(tree, trees, fun = function(x) median(na.omit(x)),
   rooted = all(is.rooted(trees)))
 }
 \arguments{
-\item{tree}{tree where edge lengths are assigned to.}
+\item{tree}{a phylogenetic tree or splitnetwork where edge lengths are
+assigned to.}
 
 \item{trees}{an object of class multiPhylo, where the average for the edges
 is computed from.}

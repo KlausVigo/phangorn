@@ -1,5 +1,6 @@
 edge_length_matrix <- function(tree, trees, rooted=TRUE){
   if(!inherits(trees, "multiPhylo")) stop("Trees must be of class multiPhylo!")
+  if(inherits(tree, "networx")) rooted <- FALSE
   trees <- .uncompressTipLabel(trees) |> .compressTipLabel(ref=tree$tip.label)
   if(!rooted){
     trees <- unroot(trees)
@@ -13,7 +14,9 @@ edge_length_matrix <- function(tree, trees, rooted=TRUE){
     el[x$edge[,2]] <- x$edge.length
     el
   }
-  bp <- bip(tree)
+  if(inherits(tree, "networx")) bp <- tree$splits
+  else bp <- bip(tree)
+
   if(!rooted) bp <- SHORTwise(bp)
   m <- length(bp)
   res <- matrix(NA_real_, length(trees), m)
@@ -35,7 +38,8 @@ edge_length_matrix <- function(tree, trees, rooted=TRUE){
 ##' @title Assign and compute edge lengths from a sample of trees
 ##' @description This command can infer some average edge lengths and assign
 ##' them from a (bootstrap/MCMC) sample.
-##' @param tree tree where edge lengths are assigned to.
+##' @param tree a phylogenetic tree or splitnetwork where edge lengths are
+##' assigned to.
 ##' @param trees an object of class multiPhylo, where the average for the edges
 ##' is computed from.
 ##' @param fun a function to compute the average (default is median).
@@ -63,8 +67,14 @@ add_edge_length <- function(tree, trees, fun=\(x)median(na.omit(x)),
   if(!rooted) tree <- unroot(tree)
   X <- edge_length_matrix(tree, trees, rooted)
   nh <- apply(X, 2, fun)
-  if(rooted) tree$edge.length <- nh[tree$edge[,1]] - nh[tree$edge[,2]]
-  else tree$edge.length <- nh[tree$edge[,2]]
+  if(inherits(tree, "networx")){
+    tree$edge.length <- nh[tree$splitIndex]
+    attr(tree$splits, "weights") <- nh
+  }
+  else{
+    if(rooted) tree$edge.length <- nh[tree$edge[,1]] - nh[tree$edge[,2]]
+    else tree$edge.length <- nh[tree$edge[,2]]
+  }
   tree
 }
 
