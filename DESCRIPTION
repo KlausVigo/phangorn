@@ -55,7 +55,6 @@ Imports:
     stats,
     utils
 Suggests:
-    apex,
     Biostrings,
     knitr,
     magick,
@@ -76,5 +75,5 @@ biocViews: Software, Technology, QualityControl
 Encoding: UTF-8
 Repository: CRAN
 Roxygen: list(old_usage = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.0
 Language: en-US

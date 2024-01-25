@@ -9,8 +9,7 @@ read.nexus.partitions(file, return = "list", ...)
 \arguments{
 \item{file}{a file name.}
 
-\item{return}{either return a list where eeach element is a 'phyDat' object
-or an object of class 'multiphyDat'}
+\item{return}{either returns a list where each element is a 'phyDat' object.}
 
 \item{\dots}{Further arguments passed to or from other methods.}
 }

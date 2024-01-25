@@ -42,8 +42,8 @@ read.nexus.charset <- function(file){
 #' the data according to the charsets givb in the SETS block.
 #'
 #' @param file a file name.
-#' @param return either return a list where eeach element is a 'phyDat' object
-#' or an object of class 'multiphyDat'
+#' @param return either returns a list where each element is a 'phyDat' object.
+## or an object of class 'multiphyDat'
 #' @param \dots Further arguments passed to or from other methods.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{read.nexus.data}}, \code{\link{read.phyDat}}
@@ -69,13 +69,13 @@ read.nexus.charset <- function(file){
 #' @rdname read.nexus.partitions
 #' @export
 read.nexus.partitions <- function(file, return="list", ...){
-  return <- match.arg(return, c("list", "multiphyDat"))
+#  return <- match.arg(return, c("list", "multiphyDat"))
   dat <- read.phyDat(file, format="nexus", ...)
   genes <- read.nexus.charset(file)
   if(is.null(genes)) stop(paste(file, "does not contain Charset!"))
   seq <- lapply(genes, \(x, dat)dat[,x], dat)
   names(seq) <- names(genes)
-  if(return=="multiphyDat" && requireNamespace("apex"))
-    seq <- new("multiphyDat", seq = seq, add.gaps = FALSE)
+#  if(return=="multiphyDat" && requireNamespace("apex"))
+#    seq <- new("multiphyDat", seq = seq, add.gaps = FALSE)
   seq
 }
