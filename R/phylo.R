@@ -700,23 +700,23 @@ optEdgeMulti <- function(object, control = pml.control(epsilon = 1e-8,
 
 
 # add data for internal use parent.frame(n) for higher nestings
-update.pmlNew <- function(object, ..., evaluate = TRUE) {
-  call <- object$call
-  if (is.null(call))
-    stop("need an object with call component")
-  extras <- match.call(expand.dots = FALSE)$...
-  if (length(extras)) {
-    existing <- !is.na(match(names(extras), names(call)))
-    for (a in names(extras)[existing]) call[[a]] <- extras[[a]]
-    if (any(!existing)) {
-      call <- c(as.list(call), extras[!existing])
-      call <- as.call(call)
-    }
-  }
-  if (evaluate)
-    eval(call, object, parent.frame())
-  else call
-}
+# update.pmlNew <- function(object, ..., evaluate = TRUE) {
+#   call <- object$call
+#   if (is.null(call))
+#     stop("need an object with call component")
+#   extras <- match.call(expand.dots = FALSE)$...
+#   if (length(extras)) {
+#     existing <- !is.na(match(names(extras), names(call)))
+#     for (a in names(extras)[existing]) call[[a]] <- extras[[a]]
+#     if (any(!existing)) {
+#       call <- c(as.list(call), extras[!existing])
+#       call <- as.call(call)
+#     }
+#   }
+#   if (evaluate)
+#     eval(call, object, parent.frame())
+#   else call
+# }
 
 
 #' @export
@@ -2064,6 +2064,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         orig.data <- data
         addTaxa <- TRUE
         tree <- drop.tip(tree, mapping[, 1])
+        if(method=="unrooted") tree <- unroot(tree)
+        attr(tree, "order") <- NULL
         tree <- reorder(tree, "postorder")
       }
     }
