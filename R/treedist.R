@@ -704,7 +704,7 @@ kf0 <- function(tree1, tree2, check.labels = TRUE, rooted = FALSE) {
   }
 
   bp1 <- fun2(tree1, rooted)
-  bp2 <- fun2(tree1, rooted)
+  bp2 <- fun2(tree2, rooted)
 
   w1 <- numeric(max(tree1$edge))
   w2 <- numeric(max(tree2$edge))
