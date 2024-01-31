@@ -147,9 +147,9 @@ dist.superTree <- function(tree, trace = 0, fun, start = NULL,
 #' bs <- bootstrap.phyDat(Laurasiatherian,
 #'                        FUN = function(x) upgma(dist.hamming(x)), bs=50)
 #'
-#' mrp_st <- superTree(bs)
+#' mrp_st <- superTree(bs, minit = 25, maxit=50)
 #' plot(mrp_st)
-#' \dontrun{
+#' \donttest{
 #' rf_st <- superTree(bs, method = "RF")
 #' spr_st <- superTree(bs, method = "SPR")
 #' }
