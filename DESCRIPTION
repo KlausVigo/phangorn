@@ -41,6 +41,7 @@ Depends:
     ape (>= 5.7),
     R (>= 4.1.0)
 Imports:
+    apex,
     digest,
     fastmatch,
     generics,
@@ -66,8 +67,7 @@ Suggests:
     xtable
 LinkingTo:
     Rcpp
-Remotes: github::KlausVigo/apex,
-    github::EmmanuelParadis/ape
+Remotes: github::EmmanuelParadis/ape
 VignetteBuilder: 
     knitr,
     utils
@@ -75,5 +75,5 @@ biocViews: Software, Technology, QualityControl
 Encoding: UTF-8
 Repository: CRAN
 Roxygen: list(old_usage = TRUE)
-RoxygenNote: 7.3.0
+RoxygenNote: 7.3.1
 Language: en-US
