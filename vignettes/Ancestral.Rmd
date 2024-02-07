@@ -18,21 +18,22 @@ vignette: |
 knitr::opts_chunk$set(fig.width=6, fig.height=4)
 #, global.par=TRUE
 options(digits = 4)
+suppressPackageStartupMessages(library(phangorn))
 ```   
-
 
 # Introduction
 
 These notes describe the ancestral sequence reconstruction using the _phangorn_ package [@Schliep2011]. _phangorn_ provides several methods to estimate ancestral character states with either Maximum Parsimony (MP) or Maximum Likelihood (ML). For more background on all the methods see e.g. [@Felsenstein2004] or [@Yang2006].
 
 # Parsimony reconstructions 
+
 To reconstruct ancestral sequences we first load some data and reconstruct a tree:
 ```{r parsimony}
 library(phangorn)
 fdir <- system.file("extdata/trees", package = "phangorn")
 primates <- read.phyDat(file.path(fdir, "primates.dna"),
                         format = "interleaved")
-tree <- pratchet(primates, trace=0) |> acctran(primates)
+tree <- pratchet(primates, trace=0) |> acctran(primates) |> makeNodeLabel()
 parsimony(tree, primates)
 ```
 
