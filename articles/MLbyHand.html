@@ -89,7 +89,7 @@ Iris Bardel-Kahr</h4>
 Graz<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2024-01-31</h4>
+            <h4 data-toc-skip class="date">2024-02-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/vignettes/MLbyHand.Rmd" class="external-link"><code>vignettes/MLbyHand.Rmd</code></a></small>
       <div class="d-none name"><code>MLbyHand.Rmd</code></div>
@@ -252,11 +252,11 @@ time.</p>
 <span><span class="co">## 5 1.8109   0.248146</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
-<span><span class="co">##         a         c         g       t</span></span>
-<span><span class="co">## a  0.0000  0.722815 74.225069  0.6013</span></span>
-<span><span class="co">## c  0.7228  0.000000  0.003599 25.9739</span></span>
-<span><span class="co">## g 74.2251  0.003599  0.000000  1.0000</span></span>
-<span><span class="co">## t  0.6013 25.973948  1.000000  0.0000</span></span>
+<span><span class="co">##         a       c       g       t</span></span>
+<span><span class="co">## a  0.0000  0.7209 74.0293  0.5993</span></span>
+<span><span class="co">## c  0.7209  0.0000  0.0036 25.9045</span></span>
+<span><span class="co">## g 74.0293  0.0036  0.0000  1.0000</span></span>
+<span><span class="co">## t  0.5993 25.9045  1.0000  0.0000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##       a       c       g       t </span></span>
@@ -278,8 +278,8 @@ ratio statistic</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/SH.test.html">SH.test</a></span><span class="op">(</span><span class="va">fitGTR</span>, <span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##      Trees  ln L Diff ln L p-value</span></span>
-<span><span class="co">## [1,]     1 -2608       0.0  0.5044</span></span>
-<span><span class="co">## [2,]     2 -3068     460.5  0.0000</span></span></code></pre>
+<span><span class="co">## [1,]     1 -2608       0.0   0.504</span></span>
+<span><span class="co">## [2,]     2 -3068     460.5   0.000</span></span></code></pre>
 <p>or with the AIC</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
