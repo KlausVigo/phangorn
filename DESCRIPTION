@@ -41,7 +41,6 @@ Depends:
     ape (>= 5.7),
     R (>= 4.1.0)
 Imports:
-    apex,
     digest,
     fastmatch,
     generics,
@@ -56,6 +55,7 @@ Imports:
     stats,
     utils
 Suggests:
+    apex,
     Biostrings,
     knitr,
     magick,
