@@ -69,13 +69,13 @@ read.nexus.charset <- function(file){
 #' @rdname read.nexus.partitions
 #' @export
 read.nexus.partitions <- function(file, return="list", ...){
-#  return <- match.arg(return, c("list", "multiphyDat"))
+  return <- match.arg(return, c("list", "multiphyDat"))
   dat <- read.phyDat(file, format="nexus", ...)
   genes <- read.nexus.charset(file)
   if(is.null(genes)) stop(paste(file, "does not contain Charset!"))
   seq <- lapply(genes, \(x, dat)dat[,x], dat)
   names(seq) <- names(genes)
-#  if(return=="multiphyDat" && requireNamespace("apex"))
-#    seq <- new("multiphyDat", seq = seq, add.gaps = FALSE)
+  if(return=="multiphyDat" && requireNamespace("apex"))
+    seq <- new("multiphyDat", seq = seq, add.gaps = FALSE)
   seq
 }
