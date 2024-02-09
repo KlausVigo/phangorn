@@ -4,7 +4,7 @@ data(chloroplast)
 set.seed(42)
 tree <- rtree(10)
 codon_align <- simSeq(tree, l=100, type = "CODON")
-
+user_align <- simSeq(tree, l=100, type = "USER", levels=c(0:9,"-"))
 
 phy_matrix <- as.character(Laurasiatherian)
 phy_df <- as.data.frame(Laurasiatherian)
@@ -87,13 +87,38 @@ unlink("tmp1.nex")
 
 write.phyDat(chloroplast, "tmp2.txt")
 expect_true(inherits(chloro <- read.phyDat("tmp2.txt", type="AA"), "phyDat"))
-expect_equal(chloro, chloroplast) # changed to toupper
+expect_equal(chloro, chloroplast)
 unlink("tmp2.txt")
+
 write.phyDat(chloroplast, "tmp.fas", format="fasta")
 expect_true(inherits(chloro_fas <- read.phyDat("tmp.fas", type="AA",
                                               format = "fasta"), "phyDat"))
-expect_equal(chloro_fas, chloroplast) # changed to toupper
+expect_equal(chloro_fas, chloroplast)
 unlink("tmp.fas")
+
+write.phyDat(chloroplast, "tmp2.nex", format="nexus")
+expect_true(inherits(chloro_nex <- read.phyDat("tmp2.nex", type="AA",
+                                               format = "nexus"), "phyDat"))
+expect_equal(chloro_nex, chloroplast)
+unlink("tmp2.nex")
+
+write.phyDat(user_align, "tmp3.txt")
+expect_true(inherits(user2 <- read.phyDat("tmp3.txt", type="USER",
+                              levels=c(0:9,"-"), ambiguity="?"), "phyDat"))
+expect_equal(user2, user_align)
+unlink("tmp3.txt")
+
+write.phyDat(user_align, "tmp3.fas", format="fasta")
+expect_true(inherits(user_fas <- read.phyDat("tmp3.fas", type="USER",
+                levels=c(0:9,"-"), ambiguity="?", format = "fasta"), "phyDat"))
+expect_equal(user_fas, user_align)
+unlink("tmp3.fas")
+
+write.phyDat(user_align, "tmp3.nex", format="nexus")
+expect_true(inherits(user_nex <- read.phyDat("tmp3.nex", type="STANDARD",
+                                               format = "nexus"), "phyDat"))
+expect_equal(user_nex, user_align, check.attributes = FALSE)
+unlink("tmp3.nex")
 
 
 # test removing duplicated sequences
