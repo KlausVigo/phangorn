@@ -251,7 +251,7 @@ makePart <- function(fit, rooted, weight = ~index + genes) {
 multiphyDat2pmlPart <- function(x, method="unrooted", tip.dates=NULL, ...) {
   if(is.list(x) && all(sapply(x,inherits, "phyDat"))) seq  <- x
   else if(inherits(x, "multiphyDat")) seq <- x@seq
-  else stop("x must be of class 'multiphyDat' or a list of 'phyDat' objects")
+  else stop("x must be of class multiphyDat or a list of phyDat objects")
   shared_tree <- TRUE
   if (shared_tree) {
     concatenate_x <- do.call(cbind.phyDat, seq)
