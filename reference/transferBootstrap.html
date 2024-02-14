@@ -63,7 +63,7 @@ values to the (internal) edges.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">transferBootstrap</span><span class="op">(</span><span class="va">tree</span>, <span class="va">BStrees</span>, phylo <span class="op">=</span> <span class="cn">TRUE</span>, scale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">transferBootstrap</span><span class="op">(</span><span class="va">tree</span>, <span class="va">trees</span>, phylo <span class="op">=</span> <span class="cn">TRUE</span>, scale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -72,7 +72,7 @@ values to the (internal) edges.</p>
 <dd><p>The tree on which edges the bootstrap values are plotted.</p></dd>
 
 
-<dt>BStrees</dt>
+<dt>trees</dt>
 <dd><p>a list of trees (object of class "multiPhylo").</p></dd>
 
 
@@ -85,15 +85,6 @@ vector of bootstrap values.</p></dd>
 <dd><p>scale the values.</p></dd>
 
 </dl></div>
-    <div class="section level2">
-    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    
-
-<p><code>plotBS</code> returns silently a tree, i.e. an object of class
-<code>phylo</code> with the bootstrap values as node labels. The argument
-<code>BSTrees</code> is optional and if not supplied the labels supplied
-in the <code>node.label</code> slot will be used.</p>
-    </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Lemoine, F., Entfellner, J. B. D., Wilkinson, E., Correia, D.,
