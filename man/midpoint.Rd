@@ -6,7 +6,7 @@
 \alias{midpoint.phylo}
 \alias{midpoint.multiPhylo}
 \alias{pruneTree}
-\alias{keep.as.tip}
+\alias{keep_as_tip}
 \title{Tree manipulation}
 \usage{
 getRoot(tree)
@@ -19,7 +19,7 @@ midpoint(tree, node.labels = "support", ...)
 
 pruneTree(tree, ..., FUN = ">=")
 
-keep.as.tip(tree, labels)
+keep_as_tip(tree, labels)
 }
 \arguments{
 \item{tree}{an object of class \code{phylo}.}
@@ -47,7 +47,7 @@ as.numeric(as.character(tree$node.labels)) to convert them.
 \code{midpoint} by default assumes that node labels contain support values.
 This works if support values are computed from splits, but should be
 recomputed for clades.
-\code{keep.as.tip} takes a list of tips and/or node labels and returns a tree
+\code{keep_as_tip} takes a list of tips and/or node labels and returns a tree
 pruned to those. If node label, then it prunes all descendants of that node
 until that internal node becomes a tip.
 }

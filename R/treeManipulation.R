@@ -75,7 +75,7 @@ changeEdgeLength <- function(tree, edge, edge.length) {
 #' \code{midpoint} by default assumes that node labels contain support values.
 #' This works if support values are computed from splits, but should be
 #' recomputed for clades.
-#' \code{keep.as.tip} takes a list of tips and/or node labels and returns a tree
+#' \code{keep_as_tip} takes a list of tips and/or node labels and returns a tree
 #' pruned to those. If node label, then it prunes all descendants of that node
 #' until that internal node becomes a tip.
 
@@ -865,7 +865,7 @@ relabel <- function(y, ref) {
 #' @rdname midpoint
 #' @param labels tip and node labels to keep as tip labels in the tree
 #' @export
-keep.as.tip<- function(tree, labels){
+keep_as_tip<- function(tree, labels){
   nodes_to_keep <- labels[!is.na(match(labels, tree$node.label))]
   tips_to_remove <-  Descendants(tree, nodes_to_keep) |> unlist() |> unique()
   tree_1 <- drop.tip(tree, tips_to_remove, subtree = TRUE)
