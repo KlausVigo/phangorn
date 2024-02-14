@@ -47,6 +47,7 @@ anova.pml <- function(object, ...) {
 }
 
 
+#' @rdname pml
 #' @export
 vcov.pml <- function(object, ...) {
   FI <- score(object, FALSE)[[2]]
