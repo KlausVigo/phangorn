@@ -1,5 +1,5 @@
 edge_length_matrix <- function(tree, trees, rooted=TRUE){
-  if(!inherits(trees, "multiPhylo")) stop("Trees must be of class multiPhylo!")
+  if(!inherits(trees, "multiPhylo")) stop("trees must be of class multiPhylo")
   if(inherits(tree, "networx")) rooted <- FALSE
   trees <- .uncompressTipLabel(trees) |> .compressTipLabel(ref=tree$tip.label)
   if(!rooted){

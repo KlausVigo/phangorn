@@ -127,7 +127,7 @@ split_model <- function(x="GTR + G(4) + I", type="DNA"){
   tmp <-  match(m, mods)
   if(all(is.na(tmp))) stop("Could not find model!")
   else pos <- tmp[!is.na(tmp)]
-  if(length(pos)>1)  stop("Error, fould several models!")
+  if(length(pos)>1)  stop("Error, found several models!")
 
   model <- mods[pos]
   m <- m[is.na(tmp)]

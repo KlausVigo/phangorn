@@ -57,8 +57,8 @@
 #' @rdname dna2codon
 #' @export
 dna2codon <- function(x, codonstart=1, code=1, ambiguity="---", ...){
-  if(!inherits(x, "phyDat"))stop("x needs to be of class phyDat!")
-  if(attr(x, "type")=="AA")stop("x needs to be a nucleotide sequence!")
+  if(!inherits(x, "phyDat"))stop("x must be of class phyDat")
+  if(attr(x, "type")=="AA")stop("x must be a nucleotide sequence!")
 
   if(codonstart>1){
     del <- -seq_len(codonstart)
@@ -76,7 +76,7 @@ dna2codon <- function(x, codonstart=1, code=1, ambiguity="---", ...){
 #' @rdname dna2codon
 #' @export
 codon2dna <- function(x){
-  if(!inherits(x, "phyDat"))stop("x needs to be of class phyDat!")
+  if(!inherits(x, "phyDat"))stop("x must be of class phyDat")
   phyDat.DNA(as.character(x))
 }
 

@@ -172,7 +172,8 @@ treedist <- function(tree1, tree2, check.labels = TRUE) {
   branch.score.difference <- NULL
   path.difference <- NULL
   quadratic.path.difference <- NULL
-  if (!is.binary(tree1) | !is.binary(tree2)) message("Trees are not binary!")
+  if (!is.binary(tree1) | !is.binary(tree2))
+    message("Some trees are not binary. Result may not what you expect!")
 
   bp1 <- bip(tree1)
   bp2 <- bip(tree2)
@@ -248,7 +249,8 @@ sprdist <- function(tree1, tree2) {
   # side of splits)
   tree1 <- reorder(tree1, "postorder")
   tree2 <- reorder(tree2, "postorder")
-  if (!is.binary(tree1) | !is.binary(tree2)) message("Trees are not binary!")
+  if (!is.binary(tree1) | !is.binary(tree2))
+    message("Some trees are not binary. Result may not what you expect!")
   # possibly replace bip with bipart
   bp1 <- bip(tree1)
   bp1 <- SHORTwise(bp1)
@@ -368,7 +370,7 @@ wRF0 <- function(tree1, tree2, normalize = FALSE, check.labels = TRUE,
       tree2 <- unroot(tree2)
   }
   if (!is.binary(tree1) | !is.binary(tree2))
-    message("Trees are not binary!")
+    message("Some trees are not binary. Result may not what you expect!")
   if (check.labels) tree2 <- checkLabels(tree2, tree1$tip.label)
   if (has.singles(tree1)) tree1 <- collapse.singles(tree1)
   if (has.singles(tree2)) tree2 <- collapse.singles(tree2)
@@ -505,21 +507,9 @@ wRF1 <- function(trees, normalize = FALSE, check.labels = TRUE,
 
 mRF2 <- function(tree, trees, normalize = FALSE, check.labels = TRUE,
                  rooted = FALSE) {
-  if (!inherits(trees, "multiPhylo"))
-    stop("Argument trees should be an object of class \"multiPhylo\"")
-  if (!inherits(tree, "phylo"))
-    stop("Argument tree should be an object of class \"phylo\"")
   trees <- .compressTipLabel(trees)
   tipLabel <- attr(trees, "TipLabel")
   if (check.labels) tree <- checkLabels(tree, tipLabel)
-#  if (check.labels) {
-#    ind <- match(tipLabel, tree$tip.label)
-#    if (any(is.na(ind)) | length(tipLabel) != length(tree$tip.label))
-#      stop("trees have different labels")
-#    tree$tip.label <- tree$tip.label[ind]
-#    ind2 <- match(seq_along(ind), tree$edge[, 2])
-#    tree$edge[ind2, 2] <- order(ind)
-#  }
   nTips <- length(tipLabel)
   l <- length(trees)
   RF <- numeric(l)
@@ -563,8 +553,6 @@ mRF2 <- function(tree, trees, normalize = FALSE, check.labels = TRUE,
 
 
 mRF <- function(trees, normalize = FALSE, rooted = FALSE) {
-  if (!inherits(trees, "multiPhylo"))
-    stop("Argument trees should be an object of class \"multiPhylo\"")
   trees <- .compressTipLabel(trees)
   tipLabel <- attr(trees, "TipLabel")
   nTips <- length(tipLabel)
@@ -572,7 +560,7 @@ mRF <- function(trees, normalize = FALSE, rooted = FALSE) {
   RF <- numeric( (l * (l - 1)) / 2)
 
   if (rooted && any(!is.rooted(trees))) {
-    warning("Some trees were rooted, unrooted all")
+    warning("some trees were rooted, unrooted all")
     rooted <- FALSE
   }
   if (!rooted) {
@@ -637,7 +625,8 @@ RF0 <- function(tree1, tree2 = NULL, normalize = FALSE, check.labels = TRUE,
     }
   }
   if (check.labels) tree2 <- checkLabels(tree2, tree1$tip.label)
-  if (!is.binary(tree1) | !is.binary(tree2)) message("Trees are not binary!")
+  if (!is.binary(tree1) | !is.binary(tree2))
+    message("Some trees are not binary. Result may not what you expect!")
   bp1 <- bipart(tree1)
   bp2 <- bipart(tree2)
   nTips <- length(tree1$tip.label)

@@ -98,7 +98,7 @@ cbind.phyDat <- function(..., gaps="-", compress=TRUE){
   if (n == 1) return(x[[1]])
 
   types <- sapply(x, function(x)attr(x, "type"))
-# if(length(unique(types))>1) stop("All alignments need to have the same type!")
+  if(any(types!=types[1]))stop("Alignments must have same type!")
   nr <- numeric(n)
   ATTR <- attributes(x[[1]])
   nr[1] <- sum(attr(x[[1]], "weight"))
@@ -540,10 +540,10 @@ read.aa <- function (file, format = "interleaved", skip = 0, nlines = 0,
     oop <- options(warn = -1)
     fl.num <- as.numeric(unlist(strsplit(gsub("^ +", "", fl), " +")))
     options(oop)
-    if (all(is.na(fl.num)))
+    if (all(is.na(fl.num))  || length(fl.num) != 2)
       stop("the first line of the file must contain the dimensions of the data")
-    if (length(fl.num) != 2)
-      stop("the first line of the file must contain TWO numbers")
+#  if (length(fl.num) != 2)
+#    stop("the first line of the file must contain the dimensions of the data")
     else {
       n <- fl.num[1]
       s <- fl.num[2]

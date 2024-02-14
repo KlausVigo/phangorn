@@ -1,7 +1,7 @@
 tree2phyDat <- function(trees) {
   # some minor error checking
   if (!inherits(trees, "multiPhylo"))
-    stop("trees must be object of class 'multiPhylo.'")
+    stop("trees must be of class multiPhylo")
 
   labels <- lapply(trees, function(x) sort(x$tip.label))
   ulabels <- unique(labels)
