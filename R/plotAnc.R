@@ -72,7 +72,7 @@ plotAnc <- function(tree, data, i = 1, site.pattern = FALSE, col = NULL,
   if(!is.null(scheme)){
     scheme <- match.arg(scheme, c("Ape_AA", "Zappo_AA", "Clustal", "Polarity",
                                   "Transmembrane_tendency", "Ape_NT", "RY_NT"))
-    sc <- get(scheme, environment(pml))
+    sc <- get(scheme, environment(ace))
     P <- getTransition(sc, levels)
     y <- y %*% P
     levels <- colnames(P)
