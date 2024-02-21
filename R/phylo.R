@@ -129,10 +129,14 @@ optimGamma <- function(tree, data, shape = 1, k = 4, ...) {
 }
 
 
-optimInv <- function(tree, data, inv = 0.01, INV = NULL, ll.0 = NULL, ...) {
+optimInv <- function(tree, data, inv = 0.01, INV, ...) {
+  weight <- as.double(attr(data, "weight"))
+  tmp <- as.vector( INV %*% rep(1, attr(data, "nc")) )
+  ind <- which(tmp > 0)
+  max_inv <- sum(weight[ind]) / (sum(weight) + 1e-8)
   fn <- function(inv, tree, data, ...) pml.fit(tree, data, inv = inv, INV = INV,
       ll.0 = NULL, ...)
-  res <- optimize(f = fn, interval = c(0, 1), lower = 0, upper = 1,
+  res <- optimize(f = fn, interval = c(0, max_inv), lower = 0, upper = max_inv,
     maximum = TRUE, tol = .0001, tree = tree, data = data, ...)
   res
 }
