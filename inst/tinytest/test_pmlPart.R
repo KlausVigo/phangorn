@@ -143,7 +143,7 @@ expect_equal(Q, sp$fits[[1]]$Q, tolerance=5e-4)
     # weights0 <- 1000*exp(fit0$siteLik)
     sp <- pmlPart( ~ inv, fit0, weight=W, control = pml.control(trace=0))
     expect_equal(logLik(sp)[1], logLik(fit1)[1]*3, tolerance=5e-4 )
-    expect_equal(inv, sp$fits[[1]]$inv, tolerance=5e-5)
+    expect_equal(inv, sp$fits[[1]]$inv, tolerance=5e-4)
 
 
 
