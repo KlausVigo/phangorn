@@ -109,7 +109,7 @@ mcc <- maxCladeCred
 #' @export
 allCompat <- function(x, rooted=FALSE) {
   x <- .compressTipLabel(x)
-  if(!rooted) x <- unroot(x)
+  if(!rooted) x <- unroot(x, collapse.singles=TRUE)
   l <- length(x)
   nt <- Ntip(x[[1]])
   pp <- prop.part(x)
