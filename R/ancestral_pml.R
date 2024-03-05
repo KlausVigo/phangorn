@@ -148,6 +148,13 @@ ancestral.pml <- function(object, type = "marginal", return = "prob", ...) {
     }
     result[[j]] <- tmp
   }
+  ind <- identical_sites(data)
+  if(length(ind)>0){
+    for(k in (nTips+1L):m){
+      if(return=="prob") result[[k]][ind,] <- result[[1]][ind,]
+      else result[[k]][ind] <- data[[1]][ind]
+    }
+  }
   attributes(result) <- x
   attr(result, "call") <- call
   if(return=="prob") class(result) <- c("ancestral", "phyDat")
@@ -222,6 +229,14 @@ ancestral.pars <- function(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"),
   if (type == "MPR") {
     res <- mpr(tree, data, cost = cost, return = return)
     attr(res, "call") <- call
+  }
+  data <- data[tree$tip.label,]
+  ind <- identical_sites(data)
+  if(length(ind)>0){
+    for(k in (Ntip(tree)+1L):length(res)){
+      if(return=="prob") result[[k]][ind,] <- result[[1]][ind,]
+      else result[[k]][ind] <- data[[1]][ind]
+    }
   }
   res
 }
@@ -411,4 +426,3 @@ identical_sites <- function(x){
   for(i in seq_along(x)) res <- res & (x[[i]] == x[[1]])
   which(res)
 }
-
