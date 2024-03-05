@@ -73,6 +73,10 @@ plotAnc <- function(tree, data, i = 1, site.pattern = FALSE, col = NULL,
     scheme <- match.arg(scheme, c("Ape_AA", "Zappo_AA", "Clustal", "Polarity",
                                   "Transmembrane_tendency", "Ape_NT", "RY_NT"))
     sc <- get(scheme, environment(ace))
+    if(has_gap_state(data)){
+      sc$properties <- c(sc$properties, Gap="-")
+      sc$color <- c(sc$color, "#FFFFFF")
+    }
     P <- getTransition(sc, levels)
     y <- y %*% P
     levels <- colnames(P)
@@ -99,5 +103,5 @@ plotAnc <- function(tree, data, i = 1, site.pattern = FALSE, col = NULL,
     sel = seq_along(XX), thermo = NULL, piecol = col, col = "black",
     bg = "lightblue", horiz = FALSE, width = NULL, height = NULL, cex = cex.pie
   )
-  if (!is.null(pos)) legend(pos, legend=levels, pch=19, col = col)
+  if (!is.null(pos)) legend(pos, legend=levels, pch=21, pt.bg = col)
 }
