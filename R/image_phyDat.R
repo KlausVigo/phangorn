@@ -9,6 +9,7 @@
 #' @method image phyDat
 #' @export
 image.phyDat <- function(x, ...){
+  x <- gap_as_ambiguous(x)
   if(attr(x, "type") == "AA") image(as.AAbin(x), ...)
   if(attr(x, "type") == "DNA") image(as.DNAbin(x), ...)
   else return(NULL)
