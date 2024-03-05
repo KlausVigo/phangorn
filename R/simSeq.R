@@ -122,8 +122,6 @@ simSeq.phylo <- function(x, l = 1000, Q = NULL, bf = NULL, rootseq = NULL,
   if (pt == "AA")
     levels <- c("A", "R", "N", "D", "C", "Q", "E", "G", "H", "I", "L", "K",
                 "M", "F", "P", "S", "T", "W", "Y", "V")
-#    c("a", "r", "n", "d", "c", "q", "e", "g", "h", "i",
-#      "l", "k", "m", "f", "p", "s", "t", "w", "y", "v")
   if (pt == "CODON") {
     .syn <- synonymous_subs(code=code)
     .sub <- tstv_subs(code=code)
@@ -180,7 +178,7 @@ simSeq.phylo <- function(x, l = 1000, Q = NULL, bf = NULL, rootseq = NULL,
   if (pt == "DNA") return(phyDat.DNA(res, return.index = TRUE))
   if (pt == "AA") return(phyDat.AA(res, return.index = TRUE))
   if (pt == "USER") return(phyDat.default(res, levels = levels,
-                                          return.index = TRUE))
+                                          return.index = TRUE, ...))
   if (pt == "CODON") {
     res <- t(apply(res, 1, function(x) unlist(strsplit(x, ""))))
     return(phyDat.codon(res))

@@ -404,3 +404,11 @@ makeAncNodeLabel <- function(tree, ...){
   tree <- makeNodeLabel(tree, ...)
   c(tree$tip.label, tree$node.label)
 }
+
+
+identical_sites <- function(x){
+  res <- rep(TRUE, attr(x, "nr"))
+  for(i in seq_along(x)) res <- res & (x[[i]] == x[[1]])
+  which(res)
+}
+
