@@ -133,7 +133,7 @@ codonTest <- function(tree, object, model = c("M0", "M1a", "M2a"),
 }
 
 
-# tidy codon
+#' @export
 glance.pml <- function(x, ...) {
   res <- data.frame(logLik = x$logLik,
     df = x$df,
@@ -142,7 +142,7 @@ glance.pml <- function(x, ...) {
   res
 }
 
-
+#' @export
 glance.pmlMix <- function(x, ...) {
   nr <- attr(x$fits[[1]]$data, "nr")
   res <- data.frame(logLik = x$logLik,
