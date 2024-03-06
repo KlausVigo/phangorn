@@ -21,7 +21,9 @@ The functions return an object of class \code{phyDat}.
 }
 \description{
 The function \code{gap_as_state} changes the contrast of an phyDat object to
-treat as its own state.
+treat as its own state. Internally \code{phyDat} are stored similar to a
+\code{factor} objects and only the contrast matrix and some attributes
+change.
 }
 \examples{
 data(Laurasiatherian)
