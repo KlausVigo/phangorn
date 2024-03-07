@@ -234,8 +234,8 @@ ancestral.pars <- function(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"),
   ind <- identical_sites(data)
   if(length(ind)>0){
     for(k in (Ntip(tree)+1L):length(res)){
-      if(return=="prob") result[[k]][ind,] <- result[[1]][ind,]
-      else result[[k]][ind] <- data[[1]][ind]
+      if(return=="prob") res[[k]][ind,] <- res[[1]][ind,]
+      else res[[k]][ind] <- data[[1]][ind]
     }
   }
   res
