@@ -89,7 +89,7 @@ Iris Bardel-Kahr</h4>
 Graz<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2024-03-05</h4>
+            <h4 data-toc-skip class="date">2024-03-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/vignettes/Trees.Rmd" class="external-link"><code>vignettes/Trees.Rmd</code></a></small>
       <div class="d-none name"><code>Trees.Rmd</code></div>
@@ -275,10 +275,10 @@ works with the fitch algorithm.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">treeRA</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parsimony.html">random.addition</a></span><span class="op">(</span><span class="va">primates</span><span class="op">)</span></span>
 <span><span class="va">treeSPR</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parsimony.html">optim.parsimony</a></span><span class="op">(</span><span class="va">treeRA</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Final p-score 746 after  1 nni operations</span></span></code></pre>
+<pre><code><span><span class="co">## Final p-score 746 after  2 nni operations</span></span></code></pre>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/parsimony.html">parsimony</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">treeRA</span>, <span class="va">treeSPR</span><span class="op">)</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 754 746</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 755 746</span></span></code></pre>
 <div class="section level3">
 <h3 id="branch-and-bound">Branch and bound<a class="anchor" aria-label="anchor" href="#branch-and-bound"></a>
 </h3>
@@ -602,23 +602,23 @@ conducted.</p>
 <code class="sourceCode R"><span><span class="va">fit_mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">mt</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fit_mt</span></span></code></pre></div>
 <pre><code><span><span class="co">## model: HKY+G(4) </span></span>
-<span><span class="co">## loglikelihood: -2615.39 </span></span>
+<span><span class="co">## loglikelihood: -2615.014 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -1230.335 </span></span>
 <span><span class="co">## Model of rate heterogeneity: Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.432867 </span></span>
+<span><span class="co">## Shape parameter: 2.272871 </span></span>
 <span><span class="co">##        Rate Proportion</span></span>
-<span><span class="co">## 1 0.3399980       0.25</span></span>
-<span><span class="co">## 2 0.6943486       0.25</span></span>
-<span><span class="co">## 3 1.0778234       0.25</span></span>
-<span><span class="co">## 4 1.8878300       0.25</span></span>
+<span><span class="co">## 1 0.3238078       0.25</span></span>
+<span><span class="co">## 2 0.6812117       0.25</span></span>
+<span><span class="co">## 3 1.0755270       0.25</span></span>
+<span><span class="co">## 4 1.9194535       0.25</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
 <span><span class="co">##          a        c        g        t</span></span>
-<span><span class="co">## a  0.00000  1.00000 53.21668  1.00000</span></span>
-<span><span class="co">## c  1.00000  0.00000  1.00000 53.21668</span></span>
-<span><span class="co">## g 53.21668  1.00000  0.00000  1.00000</span></span>
-<span><span class="co">## t  1.00000 53.21668  1.00000  0.00000</span></span>
+<span><span class="co">## a  0.00000  1.00000 54.55014  1.00000</span></span>
+<span><span class="co">## c  1.00000  0.00000  1.00000 54.55014</span></span>
+<span><span class="co">## g 54.55014  1.00000  0.00000  1.00000</span></span>
+<span><span class="co">## t  1.00000 54.55014  1.00000  0.00000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##          a          c          g          t </span></span>
@@ -807,17 +807,17 @@ programs like <em>TempEst</em> <span class="citation">(Rambaut et al.
 <span><span class="co">## [1] knitr_1.45       phangorn_3.0.0.0 ape_5.7-1.9     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] Matrix_1.6-5      jsonlite_1.8.8    highr_0.10        compiler_4.3.3   </span></span>
-<span><span class="co">##  [5] Rcpp_1.0.12       stringr_1.5.1     parallel_4.3.3    jquerylib_0.1.4  </span></span>
-<span><span class="co">##  [9] systemfonts_1.0.5 textshaping_0.3.7 yaml_2.3.8        fastmap_1.1.1    </span></span>
-<span><span class="co">## [13] lattice_0.22-5    R6_2.5.1          generics_0.1.3    igraph_2.0.2     </span></span>
-<span><span class="co">## [17] desc_1.4.3        bslib_0.6.1       rlang_1.1.3       fastmatch_1.1-4  </span></span>
-<span><span class="co">## [21] cachem_1.0.8      stringi_1.8.3     xfun_0.42         quadprog_1.5-8   </span></span>
-<span><span class="co">## [25] fs_1.6.3          sass_0.4.8        memoise_2.0.1     cli_3.6.2        </span></span>
-<span><span class="co">## [29] pkgdown_2.0.7     magrittr_2.0.3    digest_0.6.34     grid_4.3.3       </span></span>
-<span><span class="co">## [33] lifecycle_1.0.4   nlme_3.1-164      vctrs_0.6.5       evaluate_0.23    </span></span>
-<span><span class="co">## [37] glue_1.7.0        codetools_0.2-19  ragg_1.2.7        rmarkdown_2.25   </span></span>
-<span><span class="co">## [41] purrr_1.0.2       pkgconfig_2.0.3   tools_4.3.3       htmltools_0.5.7</span></span></code></pre>
+<span><span class="co">##  [1] vctrs_0.6.5       nlme_3.1-164      cli_3.6.2         rlang_1.1.3      </span></span>
+<span><span class="co">##  [5] xfun_0.42         highr_0.10        purrr_1.0.2       generics_0.1.3   </span></span>
+<span><span class="co">##  [9] textshaping_0.3.7 jsonlite_1.8.8    htmltools_0.5.7   ragg_1.2.7       </span></span>
+<span><span class="co">## [13] sass_0.4.8        rmarkdown_2.26    quadprog_1.5-8    grid_4.3.3       </span></span>
+<span><span class="co">## [17] evaluate_0.23     jquerylib_0.1.4   fastmap_1.1.1     yaml_2.3.8       </span></span>
+<span><span class="co">## [21] lifecycle_1.0.4   memoise_2.0.1     compiler_4.3.3    codetools_0.2-19 </span></span>
+<span><span class="co">## [25] igraph_2.0.2      fs_1.6.3          pkgconfig_2.0.3   fastmatch_1.1-4  </span></span>
+<span><span class="co">## [29] Rcpp_1.0.12       lattice_0.22-5    systemfonts_1.0.5 digest_0.6.34    </span></span>
+<span><span class="co">## [33] R6_2.5.1          parallel_4.3.3    magrittr_2.0.3    Matrix_1.6-5     </span></span>
+<span><span class="co">## [37] bslib_0.6.1       tools_4.3.3       pkgdown_2.0.7     cachem_1.0.8     </span></span>
+<span><span class="co">## [41] desc_1.4.3</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
