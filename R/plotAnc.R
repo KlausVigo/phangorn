@@ -73,9 +73,16 @@ plotAnc <- function(tree, data, i = 1, site.pattern = FALSE, col = NULL,
     scheme <- match.arg(scheme, c("Ape_AA", "Zappo_AA", "Clustal", "Polarity",
                                   "Transmembrane_tendency", "Ape_NT", "RY_NT"))
     sc <- get(scheme, environment(ace))
-    if(has_gap_state(data)){
+    if(has_gap_state(data) && attr(data, "type")=="AA"){
       sc$properties <- c(sc$properties, Gap="-")
       sc$color <- c(sc$color, "#FFFFFF")
+    }
+    if(attr(data, "type")=="DNA"){
+      ind <- match("n", names(sc$properties))
+      if(!is.na(ind)){
+        sc$properties <- sc$properties[-ind]
+        sc$color <- sc$color[-ind]
+      }
     }
     P <- getTransition(sc, levels)
     y <- y %*% P
