@@ -5,7 +5,7 @@
 \alias{BranchAndBound}
 \title{Branch and bound for finding all most parsimonious trees}
 \usage{
-bab(data, tree = NULL, trace = 0, ILBound = TRUE, ...)
+bab(data, tree = NULL, trace = 0, ...)
 }
 \arguments{
 \item{data}{an object of class phyDat.}
@@ -14,9 +14,6 @@ bab(data, tree = NULL, trace = 0, ILBound = TRUE, ...)
 pratchet search is performed.}
 
 \item{trace}{defines how much information is printed during optimization.}
-
-\item{ILBound}{compute incompatibility lower bound (default TRUE) of
-Holland (2005).}
 
 \item{\dots}{Further arguments passed to or from other methods}
 }
