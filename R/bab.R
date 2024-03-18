@@ -16,12 +16,10 @@ getOrder <- function(x) {
 
   nr <- attr(x, "nr")
   storage.mode(nr) <- "integer"
-#  n <- length(x) #- 1L
 
   weight <- attr(x, "weight")
   storage.mode(weight) <- "double"
 
-#  m <- nr * (2L * nTips - 2L)
   f <- init_fitch(x, FALSE, FALSE, m=4L)
 
   edge <- tree$edge
@@ -36,9 +34,7 @@ getOrder <- function(x) {
 
   while (length(remaining) > 0) {
     edge <- tree$edge[, 2] + 2 * nTips
-
     f$prep_spr(tree$edge)
-
     l <- length(remaining)
     res <- numeric(l)
     nt <- numeric(l)
@@ -57,7 +53,21 @@ getOrder <- function(x) {
 }
 
 
-pBound <- function(x, UB, LB) {
+seq_stats <- function(x){
+  nr <- attr(x, "nr")
+  contrast <- attr(x, "contrast")
+  a <- seq_len(nr)
+  STATE <- POS <- matrix(0L, nrow(contrast), nr)
+  for(i in seq_along(x)){
+    IND <- cbind(x[[i]], a)
+    STATE[IND] <- STATE[IND] + 1L
+    POS[IND] <- i
+  }
+  list(state=STATE, position=POS)
+}
+
+# Incompatibility lower Bound
+ilb <- function(x, LB) {
   nr <- attr(x, "nr")
   contrast <- attr(x, "contrast")
   rownames(contrast) <- attr(x, "allLevels")
@@ -70,6 +80,7 @@ pBound <- function(x, UB, LB) {
   singles <- attr(x, "levels")
   fun2 <- function(x, singles) all(x %in% singles)
   fun1 <- function(x) cumsum(!duplicated(x)) - 1L
+  fun3 <- function(x) sum(!duplicated(x)) - 1L
 
   tmp <- apply(y, 2, fun2, singles)
   ind <- which(tmp)
@@ -77,32 +88,18 @@ pBound <- function(x, UB, LB) {
 
   y <- y[, ind, drop = FALSE]
   weight0 <- weight0[ind]
-#  print(sum(weight0))
-  UB <- UB[, ind, drop = FALSE]
-  single_dis <- apply(y, 2, fun1)
-  # single_dis <- LB
-
+  single_dis <- LB[, ind]
   nTips <- nrow(y)
   l <- length(weight0)
   res <- numeric(nTips)
-
   for (i in 1:(l - 1)) {
     for (j in (i + 1):l) {
-      #            cat(i, j, "\n")
       if ((weight0[i] > 0) & (weight0[j] > 0)) {
         z <- paste(y[, i], y[, j], sep = "_")
         dis2 <- single_dis[, i] + single_dis[, j]
-        #                D1 <- (dis2[nTips] - dis2)
         dis <- fun1(z)
-        #                dis <- pmax(dis, dis2)
-        #                D2 <- dis[nTips] - (UB[, i] + UB[, j])
         if (dis[nTips] > dis2[nTips]) {
-#          ub <- UB[, i] + UB[, j]
-#          dis <- dis[nTips] - ub
-#          d2 <- dis2[nTips] - dis2
-#          dis <- pmax(dis, d2) - d2
-        #  dis <- pmax(dis, dis2) - dis2
-          dis <- dis - dis2
+          dis <- pmax(dis, dis2) - dis2
           if (sum(dis[4:nTips]) > 0) {
             wmin <- min(weight0[i], weight0[j])
             weight0[i] <- weight0[i] - wmin
@@ -114,10 +111,8 @@ pBound <- function(x, UB, LB) {
       if(weight0[i] < 1e-6) break()
     }
   }
-#  print(sum(weight0))
   res
 }
-
 
 
 #' Branch and bound for finding all most parsimonious trees
@@ -140,6 +135,8 @@ pBound <- function(x, UB, LB) {
 #' @param tree a phylogenetic tree an object of class phylo, otherwise a
 #' pratchet search is performed.
 #' @param trace defines how much information is printed during optimization.
+## @param ILBound compute incompatibility lower bound (default TRUE) of
+## Holland (2005).
 #' @param \dots Further arguments passed to or from other methods
 #' @return \code{bab} returns all most parsimonious trees in an object of class
 #' \code{multiPhylo}.
@@ -165,18 +162,19 @@ pBound <- function(x, UB, LB) {
 #' gene12 <- yeast[, 1:3158]
 #' trees <- bab(gene12)
 #'
-#' @export bab
+#' @export
 bab <- function(data, tree = NULL, trace = 0, ...) {
+  if (hasArg(ILBound))
+    ILBound <- list(...)$ILBound
+  else ILBound <- FALSE
   if(inherits(data, "DNAbin") | inherits(data, "AAbin")) data <- as.phyDat(data)
   if (!inherits(data, "phyDat")) stop("data must be of class phyDat")
-  if (!is.null(tree)) data <- subset(data, tree$tip.label)
-  pBound <- FALSE
-
+  compress <- TRUE
+  recursive <- TRUE
   nTips <- length(data)
   if (nTips < 4) return(stree(nTips, tip.label = names(data)))
 
-  #  New
-  data <- removeParsimonyUninfomativeSites(data, recursive=TRUE)
+  data <- removeParsimonyUninfomativeSites(data, recursive=recursive)
   star_tree <- ifelse(attr(data, "nr") == 0, TRUE, FALSE)
   add_taxa <- ifelse(is.null(attr(data, "duplicated")), FALSE, TRUE)
   p0 <- attr(data, "p0")
@@ -193,37 +191,31 @@ bab <- function(data, tree = NULL, trace = 0, ...) {
 
   # compress sequences (all transitions count equal)
   data <- compressSites(data)
-
   o <- order(attr(data, "weight"), decreasing = TRUE)
   data <- subset(data, select = o, site.pattern=TRUE)
 
-  tree <- pratchet(data, start = tree, trace = trace - 1, maxit=10, ...)
-
-  data <- subset(data, tree$tip.label)
   nr <- as.integer(attr(data, "nr"))
   inord <- getOrder(data)
+  data <- data[inord,]
+  tree <- pratchet(data, start = tree, trace = trace - 1, maxit=10, ...)
+  p_vec <- fitch(tree, data, "site")
+
   nTips <- m <- length(data)
-
-  nr <- as.integer(attr(data, "nr"))
-  TMP <- UB <- matrix(0, m, nr)
-  for (i in 4:m) {
-    TMP[i, ] <- lowerBound(subset(data, inord[1:i]))
-    UB[i, ] <- upperBound(subset(data, inord[1:i]))
+  TMP <- matrix(0, m, nr) # UB <-
+  for (i in 2:m) {
+    TMP[i, ] <- lowerBound(data[1:i,])
   }
-
-  dat_used <- subset(data, inord)
 
   weight <- as.double(attr(data, "weight"))
 
   m <- nr * (2L * nTips - 2L)
-
+  # Single column discrepancy
   mmsAmb <- TMP %*% weight
-#  mmsAmb <- mmsAmb[nTips] - mmsAmb
-  mms0 <- 0
-  if (pBound) mms0 <- pBound(dat_used, UB, TMP)
-  mms0 <- mms0 + mmsAmb
+  #  mmsAmb <- mmsAmb[nTips] - mmsAmb
+  mms0 <- mms1 <- 0
+  if (ILBound) mms1 <- ilb(data, TMP)
+  mms0 <- mms1 + mmsAmb
   mms0 <- mms0[nTips] - mms0
-
   mms0 <- c(mms0, 0)
 
   f <- init_fitch(data, m=4L)
@@ -233,7 +225,7 @@ bab <- function(data, tree = NULL, trace = 0, ...) {
   if (trace > 1) print(paste("upper bound:", bound + p0))
 
   startTree <- structure(list(edge = structure(c(rep(nTips + 1L, 3),
-        as.integer(inord)[1:3]), .Dim = c(3L, 2L)), tip.label = tree$tip.label,
+        as.integer(1:3)), .Dim = c(3L, 2L)), tip.label = names(data),
         Nnode = 1L), .Names = c("edge", "tip.label", "Nnode"), class = "phylo",
         order = "postorder")
 
@@ -266,15 +258,15 @@ bab <- function(data, tree = NULL, trace = 0, ...) {
     edge <- tmpTree[, 2] + 2 * nTips
 
     f$prep_spr(tmpTree)
-    score <- f$pscore_vec(edge, as.integer(inord[a + 1L]))
+    score <- f$pscore_vec(edge, as.integer(a + 1L))
     score <- score + blub + mms0[a + 1L]
     ms <- min(score)
     if (ms < bound + .1) {
       if ((a + 1L) < nTips) {
         ind <- (1:L[a])[score <= bound]
         trees[[a + 1]][seq_along(ind)] <- .Call('AddOnes', tmpTree,
-                as.integer(inord[a + 1L]), as.integer(ind), as.integer(L[a]),
-                as.integer(M[a]))
+                                                as.integer(a + 1L), as.integer(ind), as.integer(L[a]),
+                                                as.integer(M[a]))
         l <- length(ind)
         # os <- order(score[ind], decreasing=TRUE)
         os <- seq_len(l)
@@ -288,8 +280,8 @@ bab <- function(data, tree = NULL, trace = 0, ...) {
         ind <- which(score == ms)
         tmp <- vector("list", length(ind))
         tmp[seq_along(ind)] <- .Call('AddOnes', tmpTree,
-                      as.integer(inord[a + 1L]), as.integer(ind),
-                      as.integer(L[a]), as.integer(M[a]))
+                                     as.integer(a + 1L), as.integer(ind),
+                                     as.integer(L[a]), as.integer(M[a]))
         if (ms < bound) {
           bound <- ms
           if (trace) cat("upper bound:", bound + p0, "\n")
@@ -303,12 +295,11 @@ bab <- function(data, tree = NULL, trace = 0, ...) {
   }
   for (i in seq_along(result)) {
     result[[i]] <- structure(list(edge = result[[i]], Nnode = nTips - 2L),
-              .Names = c("edge", "Nnode"), class = "phylo", order = "postorder")
+                             .Names = c("edge", "Nnode"), class = "phylo", order = "postorder")
   }
   attr(result, "TipLabel") <- tree$tip.label
-  attr(result, "visited") <- visited
   class(result) <- "multiPhylo"
   if(add_taxa) result <- addTaxa(result, attr(data, "duplicated"))
+  attr(result, "visited") <- visited
   return(result)
 }
-
