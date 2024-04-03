@@ -3,7 +3,7 @@
 #' \code{baseFreq} computes the frequencies (absolute or relative) of the states
 #' from a sample of sequences.
 #' \code{glance} computes some useful information about the alignment.
-#' \code{composition_test} computes a \eqn{\Chi^2}-test testing if the state
+#' \code{composition\_test} computes a \eqn{\chi^2}-test testing if the state
 #' composition for a species differs.
 #'
 #' @param obj,x as object of class phyDat
