@@ -96,5 +96,3 @@ remove_similar <- function(x, k=3, index=FALSE){
   if(index) return(dist_i)
   x[-dist_i]
 }
-
-
