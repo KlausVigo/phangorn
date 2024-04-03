@@ -197,7 +197,8 @@ bab <- function(data, tree = NULL, trace = 0, ...) {
   nr <- as.integer(attr(data, "nr"))
   inord <- getOrder(data)
   data <- data[inord,]
-  tree <- pratchet(data, start = tree, trace = trace - 1, maxit=10, ...)
+  tree <- pratchet(data, start = tree, trace = trace - 1, maxit=10,
+                   all=FALSE, ...)
   p_vec <- fitch(tree, data, "site")
 
   nTips <- m <- length(data)
