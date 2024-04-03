@@ -1,7 +1,8 @@
 #' Translate nucleic acid sequences into codons
 #'
 #' The function transforms \code{dna2codon} DNA sequences to codon sequences,
-#' \code{codon2dna} transform the other way.
+#' \code{codon2dna} transform the other way. \code{dna2codon} translates
+#' nucleotide to amino acids using the function \code{\link{trans}}.
 #'
 #' The following genetic codes are described here. The number preceding each
 #' corresponds to the code argument.
@@ -58,8 +59,7 @@
 #' @export
 dna2codon <- function(x, codonstart=1, code=1, ambiguity="---", ...){
   if(!inherits(x, "phyDat"))stop("x must be of class phyDat")
-  if(attr(x, "type")=="AA")stop("x must be a nucleotide sequence!")
-
+  if(attr(x, "type")!="DNA")stop("x must be a nucleotide sequence!")
   if(codonstart>1){
     del <- -seq_len(codonstart)
     x <- subset(x, select=del, site.pattern=FALSE)
@@ -76,8 +76,18 @@ dna2codon <- function(x, codonstart=1, code=1, ambiguity="---", ...){
 #' @rdname dna2codon
 #' @export
 codon2dna <- function(x){
-  if(!inherits(x, "phyDat"))stop("x must be of class phyDat")
+  stopifnot(inherits(x, "phyDat"))
   phyDat.DNA(as.character(x))
+}
+
+
+#' @rdname dna2codon
+#' @export
+dna2aa <- function(x, codonstart=1, code=1){
+  stopifnot(inherits(x, "phyDat"))
+  if(attr(x, "type")!="DNA")stop("x must be a nucleotide sequence!")
+  dna <- as.DNAbin(x)
+  aa <- as.phyDat(translate(dna, code=code, codonstart=codonstart))
 }
 
 

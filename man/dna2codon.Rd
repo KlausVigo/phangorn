@@ -3,11 +3,14 @@
 \name{dna2codon}
 \alias{dna2codon}
 \alias{codon2dna}
+\alias{dna2aa}
 \title{Translate nucleic acid sequences into codons}
 \usage{
 dna2codon(x, codonstart = 1, code = 1, ambiguity = "---", ...)
 
 codon2dna(x)
+
+dna2aa(x, codonstart = 1, code = 1)
 }
 \arguments{
 \item{x}{An object containing sequences.}
@@ -29,7 +32,8 @@ The functions return an object of class \code{phyDat}.
 }
 \description{
 The function transforms \code{dna2codon} DNA sequences to codon sequences,
-\code{codon2dna} transform the other way.
+\code{codon2dna} transform the other way. \code{dna2codon} translates
+nucleotide to amino acids using the function \code{\link{trans}}.
 }
 \details{
 The following genetic codes are described here. The number preceding each
