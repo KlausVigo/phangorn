@@ -673,6 +673,7 @@ rotate_matrix <- function(x, theta){
 #' sp <- as.splits(rNNI(tree1, n=10))
 #' net <- as.networx(sp)
 #' plot(net)
+#' plot(net, direction="axial")
 #' \dontrun{
 #' # also see example in consensusNet
 #' example(consensusNet)

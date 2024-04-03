@@ -101,6 +101,7 @@ tree1 <- rtree(20, rooted=FALSE)
 sp <- as.splits(rNNI(tree1, n=10))
 net <- as.networx(sp)
 plot(net)
+plot(net, direction="axial")
 \dontrun{
 # also see example in consensusNet
 example(consensusNet)
