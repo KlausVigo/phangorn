@@ -24,6 +24,7 @@ minEdge <- function(tree, tau=1e-8, enforce_ultrametric=FALSE){
 
 
 #' @rdname phangorn-internal
+#' @importFrom stats cor
 #' @export
 candidate_tree <- function(x, method=c("unrooted", "ultrametric", "tipdated"),
                            eps = 1e-8, tip.dates=NULL, ...){
@@ -35,7 +36,8 @@ candidate_tree <- function(x, method=c("unrooted", "ultrametric", "tipdated"),
     enforce_ultrametric <- TRUE
   }
   if(method=="unrooted"){
-    tree <- pratchet(x, maxit=5L, trace=0, perturbation = "stochastic")
+    tree <- pratchet(x, maxit=5L, trace=0, perturbation = "stochastic",
+                     all=FALSE)
     tree <- multi2di(tree)
     tree <- unroot(tree)
     tree <- acctran(tree, x)
@@ -48,4 +50,24 @@ candidate_tree <- function(x, method=c("unrooted", "ultrametric", "tipdated"),
     tree <- supgma(dm, tip.dates)
   }
   minEdge(tree, tau=eps, enforce_ultrametric=enforce_ultrametric)
+}
+
+
+# like is.ultrametric
+check_tip_dates <- function(tree, tip.dates){
+  tip.dates <- tip.dates[tree$tip.label]
+  nh <- node.depth.edgelength(tree)[seq_along(tree$tip.label)]
+  isTRUE(all.equal(cor(tip.dates,nh), 1))
+}
+
+
+proper_tree <- function(x, tree, method=c("ultrametric", "tipdated"),
+                        tip.dates=NULL, eps = 1e-8, ...){
+  method <- match.arg(method, c("ultrametric", "tipdated"))
+  if(!is.null(tree$edge.length)){
+    if(method=="ultrametric" && is.ultrametric(tree)) return(tree)
+    if(method=="tipdated" && check_tip_dates(tree, tip.dates)) return(tree)
+  }
+  dm <- dist.ml(x, ...)
+  nnls.tree(dm, tree, method)
 }
