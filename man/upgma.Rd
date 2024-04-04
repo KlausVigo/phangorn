@@ -6,7 +6,7 @@
 \alias{supgma}
 \title{UPGMA, WPGMA and sUPGMA}
 \usage{
-upgma(D, method = "average", NNI = FALSE, ...)
+upgma(D, method = "average", ...)
 
 wpgma(D, method = "mcquitty", ...)
 
@@ -19,9 +19,6 @@ supgma(D, tip.dates, trace = 0)
 unambiguous abbreviation of) one of "ward", "single", "complete", "average",
 "mcquitty", "median" or "centroid". The default is "average".}
 
-\item{NNI}{logical whether make nearest neighbor rearrangements to improve the
-tree. Currently only available for \code{method="average"}.}
-
 \item{\dots}{Further arguments passed to or from other methods.}
 
 \item{tip.dates}{A named vector of sampling times associated to the tips.}
@@ -33,11 +30,9 @@ A phylogenetic tree of class \code{phylo}.
 }
 \description{
 UPGMA and WPGMA clustering. UPGMA and WPGMA are a wrapper function around
-\code{\link[stats]{hclust}} retuning a \code{phylo} object. UPGMA
-additionally performs nearest neighbor interchange (NNI) tree rearrangements
-to improve the phylogeny (Schliep et al. 2023).
+\code{\link[stats]{hclust}} returning a \code{phylo} object.
 \code{supgma} perform serial sampled UPGMA similar to Drummond and Rodrigo
-(2000) however also performing NNI rearrangements.
+(2000).
 }
 \examples{
 

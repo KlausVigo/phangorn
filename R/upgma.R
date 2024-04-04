@@ -1,19 +1,19 @@
 #' UPGMA, WPGMA and sUPGMA
 #'
 #' UPGMA and WPGMA clustering. UPGMA and WPGMA are a wrapper function around
-#' \code{\link[stats]{hclust}} retuning a \code{phylo} object. UPGMA
-#' additionally performs nearest neighbor interchange (NNI) tree rearrangements
-#' to improve the phylogeny (Schliep et al. 2023).
+#' \code{\link[stats]{hclust}} returning a \code{phylo} object.
+## UPGMA additionally performs nearest neighbor interchange (NNI) tree rearrangements
+## to improve the phylogeny (Schliep et al. 2024).
 #' \code{supgma} perform serial sampled UPGMA similar to Drummond and Rodrigo
-#' (2000) however also performing NNI rearrangements.
-#'
+#' (2000).
+##  and also performing NNI rearrangements.
 #'
 #' @param D A distance matrix.
 #' @param method The agglomeration method to be used. This should be (an
 #' unambiguous abbreviation of) one of "ward", "single", "complete", "average",
 #' "mcquitty", "median" or "centroid". The default is "average".
-#' @param NNI logical whether make nearest neighbor rearrangements to improve the
-#' tree. Currently only available for \code{method="average"}.
+## @param NNI logical whether make nearest neighbor rearrangements to improve the
+## tree. Currently only available for \code{method="average"}.
 #' @param trace	 Show output during optimization (see details).
 #' @param tip.dates	 A named vector of sampling times associated to the tips.
 #' @param \dots Further arguments passed to or from other methods.
@@ -42,12 +42,13 @@
 #'
 #' @rdname upgma
 #' @export
-upgma <- function(D, method = "average", NNI=FALSE, ...) {
+upgma <- function(D, method = "average", ...) {
+  method <- match.arg(method, c("average", "ward.D", "ward.D2", "single",
+                      "complete", "average", "mcquitty", "median", "centroid"))
   DD <- as.dist(D)
   hc <- hclust(DD, method = method)
   result <- as.phylo(hc)
-#  if(NNI){
-#    stopifnot(method=="average")
+#  if(NNI && method=="average"){
 #    result <- upgma_nni(DD, tree=result, ...)
 #  }
   result <- reorder(result, "postorder")
@@ -58,13 +59,14 @@ upgma <- function(D, method = "average", NNI=FALSE, ...) {
 #' @rdname upgma
 #' @export
 wpgma <- function(D, method = "mcquitty", ...) {
+  method <- match.arg(method, c("average", "ward.D", "ward.D2", "single",
+                      "complete", "average", "mcquitty", "median", "centroid"))
   DD <- as.dist(D)
   hc <- hclust(DD, method = method, ...)
   result <- as.phylo(hc)
   result <- reorder(result, "postorder")
   result
 }
-
 
 
 #' @rdname upgma
