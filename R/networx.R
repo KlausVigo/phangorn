@@ -899,7 +899,7 @@ plot2D <- function(coords, net, show.tip.label = TRUE, show.edge.label = FALSE,
       font <- rep(font, length.out = nTips)
       tip.color <- rep(tip.color, length.out = nTips)
       cex <- rep(cex, length.out = nTips)
-      for (i in 1:length(label))
+      for (i in seq_along(label))
         text(xx[i], yy[i], label[i], font = font[i],
              cex = cex[i], srt = angle[i], adj = adj[i],
              col = tip.color[i])

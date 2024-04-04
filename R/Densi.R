@@ -171,7 +171,7 @@ densiTree <- function(x, type = "cladogram", alpha = 1 / length(x),
     maxBT <- max(maxBT, max(tip.dates) - min(label))
     at <- 1 - (max(tip.dates) - label) / maxBT
     if(direction=="leftwards" || direction=="downwards") at <- at + 1- max(at)
-    scaleX=FALSE
+    scaleX <- FALSE
   }
   else {
     if (scaleX) maxBT <- 1.0
