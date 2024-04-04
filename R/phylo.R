@@ -68,9 +68,9 @@ optimCodon <- function(tree, data, Q, subs, syn, trace = 0L, ab = c(0, 0),
 }
 
 
-subsChoice <- function(type = .dnamodels) {
+subsChoice <- function(type = .dnamodels, has_gap_state=FALSE) {
   type <- match.arg(type)
-  switch(type,
+  res <- switch(type,
     JC = list(optQ = FALSE, optBf = FALSE,   subs = c(0, 0, 0, 0, 0, 0)),
     F81 = list(optQ = FALSE, optBf = TRUE,   subs = c(0, 0, 0, 0, 0, 0)),
     K80 = list(optQ = TRUE, optBf = FALSE,   subs = c(0, 1, 0, 0, 1, 0)),
@@ -95,6 +95,14 @@ subsChoice <- function(type = .dnamodels) {
     SYM = list(optQ = TRUE, optBf = FALSE,   subs = c(1, 2, 3, 4, 5, 0)),
     GTR = list(optQ = TRUE, optBf = TRUE,    subs = c(1, 2, 3, 4, 5, 0))
   )
+  if(has_gap_state){
+    tmp <- matrix(0,4,4)
+    tmp[lower.tri(tmp)] <- res$subs
+    tmp <- rbind(tmp, max(tmp) + 1)
+    res$subs <- tmp[lower.tri(tmp)]
+    res$optQ <- TRUE
+  }
+  res
 }
 
 
@@ -133,7 +141,7 @@ optimInv <- function(tree, data, inv = 0.01, INV, ...) {
   weight <- as.double(attr(data, "weight"))
   tmp <- as.vector( INV %*% rep(1, attr(data, "nc")) )
   ind <- which(tmp > 0)
-  max_inv <- sum(weight[ind]) / (sum(weight) + 1e-8)
+  max_inv <- sum(weight[ind]) / sum(weight)
   fn <- function(inv, tree, data, ...) pml.fit(tree, data, inv = inv, INV = INV,
       ll.0 = NULL, ...)
   res <- optimize(f = fn, interval = c(0, max_inv), lower = 0, upper = max_inv,
@@ -629,9 +637,13 @@ readAArate <- function(file) {
 # save(.LG,.WAG,.Dayhoff,.JTT,.cpREV,.mtmam,.mtArt, file = "sysdata2.rda")
 
 
-getModelAA <- function(model, bf = TRUE, Q = TRUE) {
+getModelAA <- function(model, bf = TRUE, Q = TRUE, has_gap_state=FALSE) {
   model <- match.arg(eval(model), .aamodels)
   tmp <- get(paste(".", model, sep = ""), environment(pml))
+  if(has_gap_state){
+    tmp$Q <- add_gap_Q_AA(tmp$Q)
+    tmp$bf <- add_gap_bf_AA(tmp$bf)
+  }
   if (Q) assign("Q", tmp$Q, envir = parent.frame())
   if (bf) assign("bf", tmp$bf, envir = parent.frame())
 }
@@ -797,7 +809,8 @@ update.pml <- function(object, ...) {
     if (!is.na(existing[9])) {
       model <- match.arg(eval(extras[[existing[9]]], parent.frame()),
         .aamodels)
-      getModelAA(model, bf = is.na(existing[3]), Q = is.na(existing[4]))
+      getModelAA(model, bf = is.na(existing[3]), Q = is.na(existing[4]),
+                 has_gap_state = has_gap_state(data))
       updateEig <- TRUE
     }
     else model <- object$model
@@ -1358,7 +1371,8 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   nc <- as.integer(attr(data, "nc"))
   if (type == "AA" & !is.null(model)) {
     model <- match.arg(model, .aamodels)
-    getModelAA(model, bf = is.null(bf), Q = is.null(Q))
+    getModelAA(model, bf = is.null(bf), Q = is.null(Q),
+               has_gap_state = has_gap_state(data))
   }
   if (type == "CODON") {
     .syn <- synonymous_subs(code=attr(data, "code"))
@@ -1370,8 +1384,12 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     model <- match.arg(model, .usermodels)
     if(model=="ORDERED") Q <- subsChoice_USER("ORDERED", nc)$Q
   }
-  if (is.null(bf))
-    bf <- rep(1 / length(levels), length(levels))
+  if (is.null(bf)){
+    if(has_gap_state(data)){
+      bf <- baseFreq(data)
+      bf[-nc] <- (1 - bf[nc]) / (nc-1)
+    } else bf <- rep(1 / nc, nc)
+  }
   if (is.character(bf)) {
     bf_choice <- match.arg(bf, c("equal", "empirical", "F1x4", "F3x4", "F61"))
     if (bf_choice == "F3x4" & type != "CODON")
@@ -2014,7 +2032,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   ASC <- object$ASC
   site.rate <- object$site.rate
   optFreeRate <- FALSE
-  if(site.rate=="free_rate"){
+  if(site.rate=="free_rate"){subsC
     if(optGamma){
       optFreeRate <- TRUE
       optGamma <- FALSE
@@ -2038,7 +2056,6 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   addTaxa <- FALSE
   trace <- control$trace
   tau <- control$tau
-# mit Zeile 2000 vereinheitlichen
   method <- "unrooted"
   is_ultrametric <- FALSE
   timetree <- FALSE
@@ -2125,7 +2142,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   nr <- as.integer(attr(data, "nr"))
   nc <- as.integer(attr(data, "nc"))
   if (type == "DNA" & optModel) {
-    tmp <- subsChoice(model)
+    tmp <- subsChoice(model, has_gap_state(data))
     optQ <- tmp$optQ
     if (!optQ) {
       Q <- rep(1, 6)
@@ -2133,7 +2150,11 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     }
     optBf <- tmp$optBf
     if (!optBf){
-      bf <- c(0.25, 0.25, 0.25, 0.25)
+      if(has_gap_state(data)){
+        bf <- baseFreq(data)
+        bf[-nc] <- (1 - bf[nc]) / (nc-1)
+      } else bf <- rep(1 / nc, nc)
+      #bf <- c(0.25, 0.25, 0.25, 0.25)
     } else bf <- baseFreq(data)
     object <- update.pml(object, bf = bf)
     subs <- tmp$subs
@@ -2430,12 +2451,11 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       ratchet_fun <- function(tree, data, ...){
         weight <- attr(data, "weight")
         v <- rep(seq_along(weight), weight)
-        attr(data, "weight") <- tabulate(sample(v, replace = TRUE), length(weight))
-
+        attr(data, "weight") <- tabulate(sample(v, replace = TRUE),
+                                         length(weight))
         res <- opt_Edge(tree, data, ...)
         ll2 <- res[[2]]
         opt_nni(tree, data, iter_max=5, trace=0, ll=ll2, ...)$tree
-#        opt_nni(tree, data, ...)$tree
       }
       for(i in seq_len(maxit)){
         if(rearrangement == "stochastic"){
