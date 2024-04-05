@@ -87,7 +87,7 @@ dna2aa <- function(x, codonstart=1, code=1){
   stopifnot(inherits(x, "phyDat"))
   if(attr(x, "type")!="DNA")stop("x must be a nucleotide sequence!")
   dna <- as.DNAbin(x)
-  aa <- as.phyDat(translate(dna, code=code, codonstart=codonstart))
+  aa <- as.phyDat(trans(dna, code=code, codonstart=codonstart))
 }
 
 
