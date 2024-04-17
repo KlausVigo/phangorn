@@ -15,11 +15,11 @@ You can install
 - [r-universe](https://r-universe.dev/) kindly provides binaries for Windows, 
 Linux and OS X of the development version [here](https://klausvigo.r-universe.dev/phangorn#).
 
-To install the development version you may need to install the Biostrings and seqLogo package from bioconductor first:
+To install the development version you may need to install the Biostrings package from bioconductor first:
 ```
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
-BiocManager::install(c("Biostrings", "seqLogo"))
+BiocManager::install("Biostrings")
 ```
 Also the development version usually depends on the latest ape development 
 version and information to download can be found 
