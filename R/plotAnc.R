@@ -10,6 +10,16 @@ getTransition <- function(scheme, levels){
 }
 
 
+getAncDF <- function(x){
+  tmp <- x$data
+  contrast <- attr(tmp, "contrast")
+  attr(tmp, "contrast") <- contrast / rowSums(contrast)
+  tmp <- new2old.phyDat(tmp)
+  df <- list2df_ancestral(tmp, x$data)
+  rbind(df, x$prob)
+}
+
+
 #' Plot ancestral character on a tree
 #'
 #' \code{plotAnc} plots a phylogeny and adds character to the nodes. Either
@@ -19,10 +29,20 @@ getTransition <- function(scheme, levels){
 #'
 #' For further details see vignette("Ancestral").
 #'
-#' @param tree a tree, i.e. an object of class pml
-#' @param data an object of class \code{phyDat} or \code{ancestral}.
-#' @param site.pattern logical, plot i-th site pattern or i-th site
-#' @param i plots the i-th site of the \code{data}.
+## @param tree a tree, i.e. an object of class pml or an object of class
+## ancestral.
+#' @param x an object of class \code{ancestral}.
+## @param site.pattern logical, plot i-th site pattern or i-th site
+#' @param i,site plots the i-th site.
+#' @param which a subset of the numbers 1:3, by default 1:3, referring to
+#' \enumerate{
+#' \item "tree with pie charts" plot
+#' \item "seqlogo" plot
+#' \item "image" plot
+#' }
+#' @param node to plot for which the propabilities should be plotted.
+#' @param start start position to plot.
+#' @param end end position to plot.
 #' @param col a vector containing the colors for all possible states.
 #' @param cex.pie a numeric defining the size of the pie graphs.
 #' @param pos a character string defining the position of the legend.
@@ -31,7 +51,9 @@ getTransition <- function(scheme, levels){
 #' nucleotides "Ape_NT" and"RY_NT". Names can be abbreviated.
 #' @param \dots Further arguments passed to or from other methods.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{ancestral.pml}}, \code{\link[ape]{plot.phylo}}
+#' @seealso \code{\link{ancestral.pml}}, \code{\link[ape]{plot.phylo}},
+#' \code{\link[ape]{image.DNAbin}}, \code{\link[ape]{image.AAbin}}
+#' \code{\link[ggseqlogo]{ggseqlogo}}
 #' @keywords plot
 #' @examples
 #'
@@ -40,35 +62,63 @@ getTransition <- function(scheme, levels){
 #' tree <- makeNodeLabel(tree)
 #' anc.p <- ancestral.pars(tree, Laurasiatherian)
 #' # plot the third character
-#' plotAnc(tree, anc.p, 3)
+#' ## plotAnc(tree, anc.p, 3)
+#' plotAnc(anc.p, 3)
+#' plotSeqLogo(anc.p, node="Node10", 1, 25)
 #'
 #' data(chloroplast)
 #' tree <- pratchet(chloroplast,  maxit=10, trace=0)
 #' tree <- makeNodeLabel(tree)
 #' anc.ch <- ancestral.pars(tree, chloroplast)
 #' image(chloroplast[, 1:25])
-#' plotAnc(tree, anc.ch, 21, scheme="Ape_AA")
-#' plotAnc(tree, anc.ch, 21, scheme="Clustal")
+#' plotAnc(anc.ch, 21, scheme="Ape_AA")
+#' plotAnc(anc.ch, 21, scheme="Clustal")
+#' plotSeqLogo(anc.ch, node="Node1", 1, 25, scheme="Clustal")
 #' @importFrom grDevices hcl.colors
+#' @importFrom ggseqlogo make_col_scheme ggseqlogo
+#' @rdname plot.ancestral
 #' @export
-plotAnc <- function(tree, data, i = 1, site.pattern = FALSE, col = NULL,
+plot.ancestral <- function(x, which = c(1, 2, 3), site = 1,
+                           node=NULL, col = NULL, cex.pie = .5, pos = "bottomright",
+                           scheme=NULL, start=1, end=10, ...){
+  stopifnot(inherits(x, "ancestral"))
+  if (!is.numeric(which) || any(which < 1) || any(which > 3))
+    stop("'which' must be in 1:3")
+#  which <- match.arg(which, c("pie", "seqlogo", "image"), TRUE)
+  show <- rep(FALSE, 3)
+  show[which] <- TRUE
+  if(show[1L])plotAnc(x, i = site, col = col, cex.pie = cex.pie, pos = pos,
+                      scheme=scheme, ...)
+  if(show[2L])plotSeqLogo(x, node, start=start, end=end, scheme=scheme, ...)
+  if(show[3L])image(x, scheme=scheme, ...)
+}
+
+
+
+#' @rdname plot.ancestral
+#' @export
+plotAnc <- function(x, i = 1, col = NULL,
                     cex.pie = .5, pos = "bottomright", scheme=NULL,
                     ...) {
-  stopifnot(inherits(data, "phyDat"))
-  y <- subset(data, select = i, site.pattern = site.pattern)
-  if(is.null(tree$node.label) || any(is.na(match(tree$node.label, names(y)))) ||
+  stopifnot(inherits(x, "ancestral"))
+  df <- getAncDF(x)
+  data <- x$data
+  tree <- x$tree
+  Y <- subset(df, Site==i)
+  y <- as.matrix(Y[, -c(1:3)])
+  #  y <- y[, -c(1:3)]
+  colnames(y) <- gsub("p_", "", colnames(y))
+  row.names(y) <- Y$Node
+  if(is.null(tree$node.label) || any(is.na(match(tree$node.label, rownames(y)))) ||
      is.numeric(tree$node.label))
     tree <- makeNodeLabel(tree)
-  if(any(is.na(match(c(tree$tip.label, tree$node.label), names(y)))))
+
+  if(any(is.na(match(c(tree$tip.label, tree$node.label), rownames(y)))))
     stop("Tree needs nodelabel, which match the labels of the alignment!")
-  y <- y[c(tree$tip.label, tree$node.label),]
   CEX <- cex.pie
   xrad <- CEX * diff(par("usr")[1:2]) / 50
   levels <- attr(data, "levels")
   nc <- attr(data, "nc")
-  if(inherits(data, "ancestral")){
-    y <- matrix(unlist(y[]), ncol = nc, byrow = TRUE)
-  } else y <- attr(data, "contrast")[unlist(y),]
   if(!is.null(scheme)){
     scheme <- match.arg(scheme, c("Ape_AA", "Zappo_AA", "Clustal", "Polarity",
                                   "Transmembrane_tendency", "Ape_NT", "RY_NT"))
@@ -90,9 +140,6 @@ plotAnc <- function(tree, data, i = 1, site.pattern = FALSE, col = NULL,
     col <- sc$col
     nc <- ncol(y)
   }
-  #  l <- dim(y)[1]
-  #  dat <- matrix(0, l, nc)
-  #  for (i in 1:l) dat[i, ] <- y[[i]]
   plot(tree, label.offset = 1.1 * xrad, plot = FALSE, ...)
   lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
   XX <- lastPP$xx
@@ -112,3 +159,46 @@ plotAnc <- function(tree, data, i = 1, site.pattern = FALSE, col = NULL,
   )
   if (!is.null(pos)) legend(pos, legend=levels, pch=21, pt.bg = col)
 }
+
+#' @rdname plot.ancestral
+#' @export
+plotSeqLogo <- function(x, node, start=1, end=10, scheme="Ape_NT", ...){
+  stopifnot(inherits(x, "ancestral"))
+  type <- attr(x$data, "type")
+  tree <- x$tree
+  df <- getAncDF(x)
+  nodes <- c(tree$tip.label, tree$node.label)
+  if(is.numeric(node)) node <- nodes[node]
+  X <- subset(df, subset=Node==node)
+  end <- min(end, nrow(X))
+  X <- X[start:end, , drop=FALSE]
+  X <- t(as.matrix(X[, -c(1:3)]))
+  tmp <- gsub("p_", "", rownames(X))
+  lev <- rownames(X) <- toupper(tmp)
+  if(!is.null(scheme)){
+    scheme <- match.arg(scheme, c("Ape_AA", "Zappo_AA", "Clustal", "Polarity",
+                                  "Transmembrane_tendency", "Ape_NT", "RY_NT"))
+    sc <- get(scheme, environment(ace))
+    if(has_gap_state(x$data) && type=="AA"){
+      sc$properties <- c(sc$properties, Gap="-")
+      sc$color <- c(sc$color, "#FFFFFF")
+    }
+    l <- lengths(sc$properties)
+    SC <- make_col_scheme(chars = toupper(unlist(sc$properties)),
+                          groups = rep(names(sc$properties), l),
+                          cols=rep(sc$color, l))
+
+  }
+  else SC <- make_col_scheme(chars=lev, cols= hcl.colors(length(lev)))
+  ggseqlogo(X, col_scheme=SC, method='p')
+}
+
+
+#' @rdname plot.ancestral
+#' @export
+image.ancestral <- function(x, ...){
+  tmp <- c(x$"data", x$"state")
+  image(tmp, ...)
+}
+
+
