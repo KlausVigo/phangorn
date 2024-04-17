@@ -208,18 +208,30 @@ ancestral <- function(tree, align, prob){
   stopifnot(inherits(tree, "phylo"))
   stopifnot(inherits(align, "phyDat"))
   stopifnot(inherits(prob, "data.frame"))
-  erg <- list(tree=tree, data=align, prob=prob)
+  state <- extract_states(prob, attr(align, "type"),
+                          levels=attr(align, "levels"))
+  erg <- list(tree=tree, data=align, prob=prob, state=state)
   class(erg) <- "ancestral"
   erg
 }
 
+
+extract_states <- function(x, type, levels=NULL){
+  node_label <- unique(x$"Node")
+  y <- matrix(x$"State", nrow=length(node_label), byrow=TRUE,
+              dimnames = list(node_label, NULL))
+  if(type %in% c("DNA", "AA")) return( phyDat(y, type=type) )
+  phyDat(y, type=type, levels=levels)
+}
 
 #' @rdname write.ancestral
 #' @export
 print.ancestral <- function(x, ...){
   stopifnot(inherits(x, "ancestral"))
   print(x$tree)
+  cat("\n")
   print(x$data)
+  cat("\n")
   print(head(x$prob))
 }
 
