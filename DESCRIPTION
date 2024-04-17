@@ -1,6 +1,6 @@
 Package: phangorn
 Title: Phylogenetic Reconstruction and Analysis
-Version: 3.0.0.0
+Version: 3.0.0.1
 Authors@R: 
     c(person("Klaus", "Schliep", role = c("aut", "cre"),
              email = "klaus.schliep@gmail.com",
@@ -38,12 +38,13 @@ URL: https://github.com/KlausVigo/phangorn,
     https://klausvigo.github.io/phangorn/
 BugReports: https://github.com/KlausVigo/phangorn/issues
 Depends:
-    ape (>= 5.7),
+    ape (>= 5.8),
     R (>= 4.1.0)
 Imports:
     digest,
     fastmatch,
     generics,
+    ggseqlogo,
     graphics,
     grDevices,
     igraph (>= 1.0),
@@ -62,7 +63,6 @@ Suggests:
     rgl,
     rmarkdown,
     seqinr,
-    seqLogo,
     tinytest,
     xtable
 LinkingTo:
