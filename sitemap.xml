@@ -187,13 +187,13 @@
     <loc>https://klausvigo.github.io/phangorn/reference/phyDat.html</loc>
   </url>
   <url>
+    <loc>https://klausvigo.github.io/phangorn/reference/plot.ancestral.html</loc>
+  </url>
+  <url>
     <loc>https://klausvigo.github.io/phangorn/reference/plot.networx.html</loc>
   </url>
   <url>
     <loc>https://klausvigo.github.io/phangorn/reference/plot.pml.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/plotAnc.html</loc>
   </url>
   <url>
     <loc>https://klausvigo.github.io/phangorn/reference/plotBS.html</loc>
@@ -251,6 +251,9 @@
   </url>
   <url>
     <loc>https://klausvigo.github.io/phangorn/reference/upgma.html</loc>
+  </url>
+  <url>
+    <loc>https://klausvigo.github.io/phangorn/reference/write.ancestral.html</loc>
   </url>
   <url>
     <loc>https://klausvigo.github.io/phangorn/reference/writeDist.html</loc>

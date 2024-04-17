@@ -6,11 +6,11 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">phangorn</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.0.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.0.0.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,7 +50,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Ancestral character reconstruction.</h1>
-      <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/R/ancestral_pml.R" class="external-link"><code>R/ancestral_pml.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/R/ancestral.R" class="external-link"><code>R/ancestral.R</code></a></small>
       <div class="d-none name"><code>ancestral.pml.Rd</code></div>
     </div>
 
@@ -60,19 +60,12 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ancestral.pml</span><span class="op">(</span><span class="va">object</span>, type <span class="op">=</span> <span class="st">"marginal"</span>, return <span class="op">=</span> <span class="st">"prob"</span>, <span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S3 method for ancestral</span></span>
-<span><span class="fu"><a href="as.phyDat.html">as.phyDat</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S3 method for ancestral</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ancestral.pml</span><span class="op">(</span><span class="va">object</span>, type <span class="op">=</span> <span class="st">"marginal"</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">ancestral.pars</span><span class="op">(</span><span class="va">tree</span>, <span class="va">data</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"MPR"</span>, <span class="st">"ACCTRAN"</span>, <span class="st">"POSTORDER"</span><span class="op">)</span>,</span>
-<span>  cost <span class="op">=</span> <span class="cn">NULL</span>, return <span class="op">=</span> <span class="st">"prob"</span>, <span class="va">...</span><span class="op">)</span></span>
+<span>  cost <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">pace</span><span class="op">(</span><span class="va">tree</span>, <span class="va">data</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"MPR"</span>, <span class="st">"ACCTRAN"</span>, <span class="st">"POSTORDER"</span><span class="op">)</span>, cost <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  return <span class="op">=</span> <span class="st">"prob"</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">pace</span><span class="op">(</span><span class="va">tree</span>, <span class="va">data</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"MPR"</span>, <span class="st">"ACCTRAN"</span>, <span class="st">"POSTORDER"</span><span class="op">)</span>, cost <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -85,16 +78,8 @@
 <dd><p>method used to assign characters to internal nodes, see details.</p></dd>
 
 
-<dt>return</dt>
-<dd><p>return a <code>phyDat</code> object or matrix of probabilities.</p></dd>
-
-
 <dt>...</dt>
 <dd><p>Further arguments passed to or from other methods.</p></dd>
-
-
-<dt>x</dt>
-<dd><p>an object of class ancestral.</p></dd>
 
 
 <dt>tree</dt>
@@ -113,22 +98,28 @@
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>An object of class ancestral containing theestimated character
-states.
-For <code>return="phyDat"</code> an object  of class "phyDat", containing
-the ancestral states of all nodes. For nucleotide data this can contain
-ambiguous states. Apart from fitch parsimony the most likely states are
-returned.</p>
+<p>An object of class ancestral. This is a list containing the tree with
+node labels, the original alignment as an <code>phyDat</code> object, a
+<code>data.frame</code> containing the probabilities belonging to a state for all
+(internal nodes) and the most likely state.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The argument "type" defines the criterion to assign the internal nodes. For
-<code>ancestral.pml</code> so far "ml" and (empirical) "bayes" and for
+<code>ancestral.pml</code> so far "ml and marginal (empirical) "bayes" and for
 <code>ancestral.pars</code> "MPR" and "ACCTRAN" are possible.</p>
+<p>The function return a list containing the tree with node labels, the original
+alignment as an <code>phyDat</code> object, a data.frame containing the
+probabilities belonging to a state for all (internal nodes) and the most
+likely state. For parsimony and nucleotide data the most likely state might
+be ambiguous. For ML this is very unlikely to be the case.</p>
+<p>If the input tree does not contain unique node labels the function
+<code>ape::MakeNodeLabel</code> is used to create them.</p>
 <p>With parsimony reconstruction one has to keep in mind that there will be
 often no unique solution.</p>
-<p>The functions use node labels if these are present and unique. Otherwise the
-function <code>ape::MakeNodeLabel</code> is used to create them.</p>
+<p>The functions use the node labels of the provided tree (also if part of the
+<code>pml</code> object) if these are unique. Otherwise the function
+<code>ape::MakeNodeLabel</code> is used to create them.</p>
 <p>For further details see vignette("Ancestral").</p>
     </div>
     <div class="section level2">
@@ -143,7 +134,7 @@ Press, Oxford.</p>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="pml.html">pml</a></code>, <code><a href="parsimony.html">parsimony</a></code>, <code><a href="https://rdrr.io/pkg/ape/man/ace.html" class="external-link">ace</a></code>,
-<code><a href="plotAnc.html">plotAnc</a></code>, <code><a href="https://rdrr.io/pkg/ape/man/root.html" class="external-link">root</a></code>,
+<code><a href="plot.ancestral.html">plotAnc</a></code>, <code><a href="https://rdrr.io/pkg/ape/man/root.html" class="external-link">root</a></code>,
 <code><a href="https://rdrr.io/pkg/ape/man/makeNodeLabel.html" class="external-link">makeNodeLabel</a></code></p></div>
     </div>
     <div class="section level2">
@@ -169,17 +160,17 @@ Press, Oxford.</p>
 <span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="pml.html">pml</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">anc.ml</span> <span class="op">&lt;-</span> <span class="fu">ancestral.pml</span><span class="op">(</span><span class="va">fit</span>, type <span class="op">=</span> <span class="st">"ml"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">anc.p</span> <span class="op">&lt;-</span> <span class="fu">ancestral.pars</span><span class="op">(</span><span class="va">tree</span>, <span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va">seqLogo</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/seqLogo/man/seqLogo.html" class="external-link">seqLogo</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">anc.ml</span>, <span class="fl">48</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, ic.scale<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/seqLogo/man/seqLogo.html" class="external-link">seqLogo</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">anc.p</span>, <span class="fl">48</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, ic.scale<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span><span class="co"># plot the first site pattern</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="plotAnc.html">plotAnc</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">anc.ml</span>, <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># plot ancestral sequences at the root</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plot.ancestral.html">plotSeqLogo</a></span><span class="op">(</span> <span class="va">anc.ml</span>, <span class="fl">48</span>, <span class="fl">1</span>, <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ancestral.pml-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="co"># plot the third character</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="plotAnc.html">plotAnc</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">anc.ml</span>, <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">anc.ml</span>, <span class="st">"index"</span><span class="op">)</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plot.ancestral.html">plotSeqLogo</a></span><span class="op">(</span> <span class="va">anc.p</span>, <span class="fl">48</span>, <span class="fl">1</span>, <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ancestral.pml-3.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co"># plot the first character</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plot.ancestral.html">plotAnc</a></span><span class="op">(</span><span class="va">anc.ml</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="ancestral.pml-4.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co"># plot the third character</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plot.ancestral.html">plotAnc</a></span><span class="op">(</span><span class="va">anc.ml</span>, <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="ancestral.pml-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
@@ -192,7 +183,7 @@ Press, Oxford.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8.</p>
 </div>
 
     </footer></div>
