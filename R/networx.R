@@ -43,9 +43,9 @@ allCircularSplits <- function(k, labels = NULL) {
 }
 
 
-degree <- function(x){
-  tabulate(x$edge)
-}
+#degree <- function(x){
+#  tabulate(x$edge)
+#}
 
 
 splits2design <- function(obj, weight = NULL, x=TRUE) {

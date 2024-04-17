@@ -531,7 +531,8 @@ pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
           pl0 <- ll[, -i, drop = FALSE] %*% omega[-i]
           fits[[i]] <- update(fits[[i]], llMix = pl0, wMix = omega[i])
         }
-        if(trace >0) cat("logLik optim.pml start:", sum(weight * log(ll %*% omega)), "\n")
+        if(trace >0) cat("logLik optim.pml start:",
+                         sum(weight * log(ll %*% omega)), "\n")
         for (i in 1:r) {
           pl0 <- ll[, -i, drop = FALSE] %*% omega[-i]
           fits[[i]] <- optim.pml(fits[[i]], optNni = MixNni, optBf = MixBf,
@@ -541,7 +542,8 @@ pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
                             trace - 1), llMix = pl0, wMix = omega[i])
           ll[, i] <- fits[[i]]$lv
 
-          if(trace >0) cat("logLik optim.pml", i, ": ", sum(weight * log(ll %*% omega)), "\n")
+          if(trace >0) cat("logLik optim.pml", i, ": ",
+                           sum(weight * log(ll %*% omega)), "\n")
 #          res <- optW(ll, weight, omega)
 #          omega <- res$p
           if (MixRate) {
