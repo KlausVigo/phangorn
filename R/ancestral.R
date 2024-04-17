@@ -179,7 +179,7 @@ ancestral.pml <- function(object, type = "marginal", ...) {
 #' \code{write.ancestral} allows to export ancestral reconstructions. It writes
 #' out the tree, a tab delimited text file with the probabilities and the
 #' alignment.  \code{read.ancestral} tries to read in these files.
-#' \code{ancestral} generates an object of call ancestral.
+#' \code{ancestral} generates an object of class ancestral.
 #'
 #' This allows also to read in reconstruction  made by iqtree to use the
 #' plotting capabilities of R.
