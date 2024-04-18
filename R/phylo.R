@@ -588,7 +588,7 @@ optimEdge <- function(tree, data, eig = eig, w = w, g = g, bf = bf, rate = rate,
     eps <- (old.ll - newll) / newll
     if (eps < 0) return(list(tree=oldtree, logLik=old.ll))
     oldtree <- treeP
-    if (control$trace > 1) cat(old.ll, " -> ", newll, "\n")
+#    if (control$trace > 1) cat(old.ll, " -> ", newll, "\n")
     old.ll <- newll
   }
   if (control$trace > 0)
@@ -1971,8 +1971,8 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV, RELL=NULL,
 #    if(aLRT) return(support_quartet)
     ll2 <- pml.fit4(tree, data, bf=bf, eig=eig, ll.0=ll.0, w=w, g=g, ...)
     eps <- (ll - ll2) / ll2
-    if (control$trace > 1) cat(ll, " -> ", ll2, "\n")
-    if (control$trace > 1) cat("swap:", nchanges)
+    if (control$trace > 1) cat("optimize topology: ", ll, "-->", ll2,
+        " NNI moves: ", nchanges, "\n")
     ll <- ll2
     iter <- iter + 1
   }
@@ -2007,6 +2007,70 @@ updateRates <- function(res, ll, rate, shape, k, inv, wMix, update="rate",
   assign("shape", shape, envir = parent.frame(n = 1))
   assign("ll", res[[2]], envir = parent.frame(n = 1))
 }
+
+
+
+# help functions inside optim.pml
+.ratchet_fun <- function(tree, data, ...){
+  weight <- attr(data, "weight")
+  v <- rep(seq_along(weight), weight)
+  attr(data, "weight") <- tabulate(sample(v, replace = TRUE),
+                                   length(weight))
+  res <- opt_Edge(tree, data, ...)
+  ll2 <- res[[2]]
+  opt_nni(tree, data, iter_max=5, trace=0, ll=ll2, ...)$tree
+}
+
+
+.di2multi2di <- function(tree2, tau, method){
+  #  tree2 <- di2multi(tree, tol = 10 * tau, tip2root = TRUE) # raus
+  if (!is.binary(tree2)) {
+    tree2 <- multi2di(tree2)
+    if(method=="unrooted" & is.rooted(tree2)) tree2 <- unroot(tree2)
+    tree2 <- minEdge(tree2, 3*tau, method=="ultrametric")
+  }
+  attr(tree2, "order") <- NULL
+  tree2 <- reorder(tree2, "postorder")
+  tree2
+}
+
+
+.stochastic_fun <- function(tree, dm, tau, method, tip.dates, ratchet.par){
+  tree <- di2multi(tree, tol = 10 * tau, tip2root = TRUE)
+  tree <- .di2multi2di(tree, tau, method)
+  tree <- reorder(tree, "postorder")
+  nTips <- Ntip(tree)
+  tree <- rNNI(tree, moves = round(nTips * ratchet.par$prop), n = 1)
+  if(method=="unrooted") return(tree)
+  if(method=="ultrametric"){
+    tree <- nnls.tree(dm, tree)
+    tree <- midpoint(tree)
+  }
+  if(method=="tipdated") tree <- rtt(tree, tip.dates = tip.dates)
+  tree <- nnls.tree(dm, tree, method = method, tip.dates=tip.dates)
+  tree <- minEdge(tree, 5*tau, method=="ultrametric")
+  attr(tree, order) <- NULL
+  tree <- reorder(tree, "postorder")
+  tree
+}
+
+
+.updateQBF <- function(object, model, tmp){
+  nc <- attr(object$data, "nc")
+  Q <- object$Q
+  bf <- object$bf
+  if(!tmp$optQ) Q <- rep(1, (nc*(nc-1L))/2)
+  if(model=="ORDERED") Q <- tmp$Q
+  if(!tmp$optBf){
+    if(has_gap_state(object$data)){
+      bf <- baseFreq(object$data)
+      bf[-nc] <- (1 - bf[nc]) / (nc-1)
+    } else bf <- rep(1 / nc, nc)
+  }
+  object <- update(object, Q=Q, bf=bf)
+  object
+}
+
 
 
 #' @rdname pml
@@ -2142,10 +2206,11 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   nr <- as.integer(attr(data, "nr"))
   nc <- as.integer(attr(data, "nc"))
   if (type == "DNA" & optModel) {
+    # .optBFQ
     tmp <- subsChoice(model, has_gap_state(data))
     optQ <- tmp$optQ
     if (!optQ) {
-      Q <- rep(1, 6)
+      Q <- rep(1, (nc*(nc-1L))/2)
       object <- update.pml(object, Q = Q)
     }
     optBf <- tmp$optBf
@@ -2383,14 +2448,14 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         res <- optimFreeRate(tree, data, g = g, k = k, w = w, inv = inv,
                            INV = INV, bf = bf, eig = eig,
                            ll.0 = ll.0, rate = rate)
-        scale <- function(tree, g, w){
-          blub <- sum(g * w)
-          g <- g / blub
-          tree$edge.length <- tree$edge.length * blub
-          list(tree=tree, g=g)
-        }
+#        scale <- function(tree, g, w){
+#          blub <- sum(g * w)
+#          g <- g / blub
+#          tree$edge.length <- tree$edge.length * blub
+#          list(tree=tree, g=g)
+#        }
         if(res[[2]] > ll){
-          tmp_sc <- scale(tree, res[[1]], w)
+#          tmp_sc <- scale(tree, res[[1]], w)
           g0 <- res[[1]]
           blub <- sum(g0 * w)
           g <- g0 / blub
@@ -2448,32 +2513,25 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       if((rearrangement == "stochastic" || rearrangement == "ratchet") && optRooted){
         dm <- dist.ml(data, bf=bf, Q=Q, exclude = "pairwise")
       }
-      ratchet_fun <- function(tree, data, ...){
-        weight <- attr(data, "weight")
-        v <- rep(seq_along(weight), weight)
-        attr(data, "weight") <- tabulate(sample(v, replace = TRUE),
-                                         length(weight))
-        res <- opt_Edge(tree, data, ...)
-        ll2 <- res[[2]]
-        opt_nni(tree, data, iter_max=5, trace=0, ll=ll2, ...)$tree
-      }
       for(i in seq_len(maxit)){
         if(rearrangement == "stochastic"){
-          tree2 <- di2multi(tree, tol = 10 * tau, tip2root = TRUE)
-          if (!is.binary(tree2)) {
-            tree2 <- multi2di(tree2)
-            if(!optRooted) tree2 <- unroot(tree2)
-            tree2 <- minEdge(tree2, tau)
-            tree2 <- reorder(tree2, "postorder")
-          }
-          tree2 <- rNNI(tree2, moves = round(nTips * ratchet.par$prop), n = 1)
-          if(optRooted){
-             tree2 <- nnls.tree(dm, tree2, method = method,
-                                tip.dates=tip.dates)
-             tree2 <- minEdge(tree2, 10*tau)
-          }
+          tree2 <- .stochastic_fun(tree, dm, tau, method, tip.dates,
+                                   ratchet.par)
+
+#          tree2 <- di2multi(tree, tol = 10 * tau, tip2root = TRUE)
+#          if (!is.binary(tree2)) {
+#            tree2 <- multi2di(tree2)
+#            if(!optRooted) tree2 <- unroot(tree2)
+#            tree2 <- minEdge(tree2, tau)
+#            tree2 <- reorder(tree2, "postorder")
+#          }
+#          tree2 <- rNNI(tree2, moves = round(nTips * ratchet.par$prop), n = 1)
+#          if(optRooted){
+#             tree2 <- nnls.tree(dm, tree2, method = method, tip.dates=tip.dates)
+#             tree2 <- minEdge(tree2, 10*tau)
+#          }
         } else if(rearrangement == "ratchet"){
-          tree2 <- ratchet_fun(tree, data, rooted=optRooted, w = w, g = g,
+          tree2 <- .ratchet_fun(tree, data, rooted=optRooted, w = w, g = g,
                                eig = eig, bf = bf, inv=inv,
                                rate=rate, ll.0 = ll.0, INV = INV, llMix = llMix,
                                wMix=wMix, ASC=ASC,
@@ -2486,7 +2544,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
 #          tree2 <- reorder(tree2, "postorder")
         } else if(rearrangement == "multi2di"){
           tree2 <- di2multi(tree, tol=10*tau, tip2root=TRUE)
-          if(any(degree(tree2)>4)){
+          if(any(tabulate(tree2$edge)>3)){
             tree2 <- multi2di(tree2)
             if(!optRooted) tree2 <- unroot(tree2)
             tree2 <- minEdge(tree2, tau)
@@ -2667,7 +2725,7 @@ optimQuartet <- function(tree, data, eig, w, g, bf, rate, ll.0, nTips,
 #    if (control$trace > 1) cat(old.ll, " -> ", newll, "\n")
     old.ll <- newll
   }
-  if (control$trace > 0) cat(start.ll, " -> ", newll, "\n")
+#  if (control$trace > 0) cat(start.ll, " -> ", newll, "\n")
   list(tree = tree, logLik = newll, c(eps, iter))
 }
 
