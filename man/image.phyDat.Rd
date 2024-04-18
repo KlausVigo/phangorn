@@ -18,5 +18,6 @@ This function plots an image of an alignment of sequences.
 A wrapper for using \code{\link{image.DNAbin}} and \code{\link{image.AAbin}}.
 }
 \seealso{
-\code{\link{image.DNAbin}}, \code{\link{image.AAbin}}
+\code{\link{image.DNAbin}}, \code{\link{image.AAbin}},
+\code{\link{image.ancestral}}
 }

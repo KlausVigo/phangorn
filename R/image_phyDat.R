@@ -5,7 +5,8 @@
 #' A wrapper for using \code{\link{image.DNAbin}} and \code{\link{image.AAbin}}.
 #' @param x	 an object containing sequences, an object of class \code{phyDat}.
 #' @param ... further arguments passed to or from other methods.
-#' @seealso \code{\link{image.DNAbin}}, \code{\link{image.AAbin}}
+#' @seealso \code{\link{image.DNAbin}}, \code{\link{image.AAbin}},
+#' \code{\link{image.ancestral}}
 #' @method image phyDat
 #' @export
 image.phyDat <- function(x, ...){

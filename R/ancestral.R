@@ -186,6 +186,7 @@ ancestral.pml <- function(object, type = "marginal", ...) {
 #' @param x an object of class ancestral.
 #' @param file a file name. File endings are added.
 #' @param ... Further arguments passed to or from other methods.
+#' @seealso \code{\link{ancestral.pml}}, \code{\link{plot.ancestral}}
 #' @rdname write.ancestral
 #' @export
 write.ancestral <- function(x, file="ancestral"){

@@ -125,7 +125,7 @@ plotAnc <- function(x, i = 1, col = NULL,
     sc <- get(scheme, environment(ace))
     if(has_gap_state(data) && attr(data, "type")=="AA"){
       sc$properties <- c(sc$properties, Gap="-")
-      sc$color <- c(sc$color, "#FFFFFF")
+      sc$color <- c(sc$color, "#000000")
     }
     if(attr(data, "type")=="DNA"){
       ind <- match("n", names(sc$properties))
@@ -181,7 +181,7 @@ plotSeqLogo <- function(x, node, start=1, end=10, scheme="Ape_NT", ...){
     sc <- get(scheme, environment(ace))
     if(has_gap_state(x$data) && type=="AA"){
       sc$properties <- c(sc$properties, Gap="-")
-      sc$color <- c(sc$color, "#FFFFFF")
+      sc$color <- c(sc$color, "#000000")
     }
     l <- lengths(sc$properties)
     SC <- make_col_scheme(chars = toupper(unlist(sc$properties)),

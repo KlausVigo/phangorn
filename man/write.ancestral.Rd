@@ -36,3 +36,6 @@ alignment.  \code{read.ancestral} tries to read in these files.
 This allows also to read in reconstruction  made by iqtree to use the
 plotting capabilities of R.
 }
+\seealso{
+\code{\link{ancestral.pml}}, \code{\link{plot.ancestral}}
+}
