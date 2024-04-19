@@ -34,13 +34,8 @@ getAncDF <- function(x){
 #' @param x an object of class \code{ancestral}.
 ## @param site.pattern logical, plot i-th site pattern or i-th site
 #' @param i,site plots the i-th site.
-#' @param which a subset of the numbers 1:3, by default 1:3, referring to
-#' \enumerate{
-#' \item "tree with pie charts" plot
-#' \item "seqlogo" plot
-#' \item "image" plot
-#' }
-#' @param node to plot for which the propabilities should be plotted.
+#' @param which either "pie" or "seqlogo"
+#' @param node to plot for which the probabilities should be plotted.
 #' @param start start position to plot.
 #' @param end end position to plot.
 #' @param col a vector containing the colors for all possible states.
@@ -62,35 +57,29 @@ getAncDF <- function(x){
 #' tree <- makeNodeLabel(tree)
 #' anc.p <- ancestral.pars(tree, Laurasiatherian)
 #' # plot the third character
-#' ## plotAnc(tree, anc.p, 3)
-#' plotAnc(anc.p, 3)
+#' plotAnc(anc.p, 3, pos="topright")
 #' plotSeqLogo(anc.p, node="Node10", 1, 25)
 #'
 #' data(chloroplast)
 #' tree <- pratchet(chloroplast,  maxit=10, trace=0)
 #' tree <- makeNodeLabel(tree)
 #' anc.ch <- ancestral.pars(tree, chloroplast)
-#' image(chloroplast[, 1:25])
-#' plotAnc(anc.ch, 21, scheme="Ape_AA")
-#' plotAnc(anc.ch, 21, scheme="Clustal")
+#' image(as.phyDat(anc.ch)[, 1:25])
+#' plotAnc(anc.ch, 21, scheme="Ape_AA", pos="topleft")
+#' plotAnc(anc.ch, 21, scheme="Clustal", pos="topleft")
 #' plotSeqLogo(anc.ch, node="Node1", 1, 25, scheme="Clustal")
 #' @importFrom grDevices hcl.colors
 #' @importFrom ggseqlogo make_col_scheme ggseqlogo
 #' @rdname plot.ancestral
 #' @export
-plot.ancestral <- function(x, which = c(1, 2, 3), site = 1,
-                           node=NULL, col = NULL, cex.pie = .5, pos = "bottomright",
+plot.ancestral <- function(x, which = c("pie", "seqlogo"), site = 1,
+                           node=getRoot(x$tree), col = NULL, cex.pie = .5, pos = "bottomright",
                            scheme=NULL, start=1, end=10, ...){
   stopifnot(inherits(x, "ancestral"))
-  if (!is.numeric(which) || any(which < 1) || any(which > 3))
-    stop("'which' must be in 1:3")
-#  which <- match.arg(which, c("pie", "seqlogo", "image"), TRUE)
-  show <- rep(FALSE, 3)
-  show[which] <- TRUE
-  if(show[1L])plotAnc(x, i = site, col = col, cex.pie = cex.pie, pos = pos,
+  which <- match.arg(which, c("pie", "seqlogo"), TRUE)
+  if(which=="pie")plotAnc(x, i = site, col = col, cex.pie = cex.pie, pos = pos,
                       scheme=scheme, ...)
-  if(show[2L])plotSeqLogo(x, node, start=start, end=end, scheme=scheme, ...)
-  if(show[3L])image(x, scheme=scheme, ...)
+  if(which=="seqlogo")plotSeqLogo(x, node, start=start, end=end, scheme=scheme, ...)
 }
 
 
@@ -103,6 +92,7 @@ plotAnc <- function(x, i = 1, col = NULL,
   stopifnot(inherits(x, "ancestral"))
   df <- getAncDF(x)
   data <- x$data
+  type <- attr(data, "type")
   tree <- x$tree
   Y <- subset(df, Site==i)
   y <- as.matrix(Y[, -c(1:3)])
@@ -119,6 +109,8 @@ plotAnc <- function(x, i = 1, col = NULL,
   xrad <- CEX * diff(par("usr")[1:2]) / 50
   levels <- attr(data, "levels")
   nc <- attr(data, "nc")
+  if(is.null(scheme) & type=="AA") scheme="Ape_AA"
+  if(is.null(scheme) & type=="DNA") scheme="Ape_NT"
   if(!is.null(scheme)){
     scheme <- match.arg(scheme, c("Ape_AA", "Zappo_AA", "Clustal", "Polarity",
                                   "Transmembrane_tendency", "Ape_NT", "RY_NT"))
@@ -162,7 +154,7 @@ plotAnc <- function(x, i = 1, col = NULL,
 
 #' @rdname plot.ancestral
 #' @export
-plotSeqLogo <- function(x, node, start=1, end=10, scheme="Ape_NT", ...){
+plotSeqLogo <- function(x, node=getRoot(x$tree), start=1, end=10, scheme="Ape_NT", ...){
   stopifnot(inherits(x, "ancestral"))
   type <- attr(x$data, "type")
   tree <- x$tree
@@ -175,6 +167,8 @@ plotSeqLogo <- function(x, node, start=1, end=10, scheme="Ape_NT", ...){
   X <- t(as.matrix(X[, -c(1:3)]))
   tmp <- gsub("p_", "", rownames(X))
   lev <- rownames(X) <- toupper(tmp)
+  if(is.null(scheme) & type=="AA") scheme="Ape_AA"
+  if(is.null(scheme) & type=="DNA") scheme="Ape_NT"
   if(!is.null(scheme)){
     scheme <- match.arg(scheme, c("Ape_AA", "Zappo_AA", "Clustal", "Polarity",
                                   "Transmembrane_tendency", "Ape_NT", "RY_NT"))
@@ -194,11 +188,11 @@ plotSeqLogo <- function(x, node, start=1, end=10, scheme="Ape_NT", ...){
 }
 
 
-#' @rdname plot.ancestral
-#' @export
-image.ancestral <- function(x, ...){
-  tmp <- c(x$"data", x$"state")
-  image(tmp, ...)
-}
+##' @rdname plot.ancestral
+##' @export
+#image.ancestral <- function(x, ...){
+#  tmp <- rbind(x$"data", x$"state")
+#  image(tmp, ...)
+#}
 
 
