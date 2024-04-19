@@ -4,31 +4,24 @@
 \alias{plot.ancestral}
 \alias{plotAnc}
 \alias{plotSeqLogo}
-\alias{image.ancestral}
 \title{Plot ancestral character on a tree}
 \usage{
-\method{plot}{ancestral}(x, which = c(1, 2, 3), site = 1, node = NULL,
-  col = NULL, cex.pie = 0.5, pos = "bottomright", scheme = NULL,
-  start = 1, end = 10, ...)
+\method{plot}{ancestral}(x, which = c("pie", "seqlogo"), site = 1,
+  node = getRoot(x$tree), col = NULL, cex.pie = 0.5,
+  pos = "bottomright", scheme = NULL, start = 1, end = 10, ...)
 
 plotAnc(x, i = 1, col = NULL, cex.pie = 0.5, pos = "bottomright",
   scheme = NULL, ...)
 
-plotSeqLogo(x, node, start = 1, end = 10, scheme = "Ape_NT", ...)
-
-\method{image}{ancestral}(x, ...)
+plotSeqLogo(x, node = getRoot(x$tree), start = 1, end = 10,
+  scheme = "Ape_NT", ...)
 }
 \arguments{
 \item{x}{an object of class \code{ancestral}.}
 
-\item{which}{a subset of the numbers 1:3, by default 1:3, referring to
-\enumerate{
-\item "tree with pie charts" plot
-\item "seqlogo" plot
-\item "image" plot
-}}
+\item{which}{either "pie" or "seqlogo"}
 
-\item{node}{to plot for which the propabilities should be plotted.}
+\item{node}{to plot for which the probabilities should be plotted.}
 
 \item{col}{a vector containing the colors for all possible states.}
 
@@ -64,17 +57,16 @@ example(NJ)
 tree <- makeNodeLabel(tree)
 anc.p <- ancestral.pars(tree, Laurasiatherian)
 # plot the third character
-## plotAnc(tree, anc.p, 3)
-plotAnc(anc.p, 3)
+plotAnc(anc.p, 3, pos="topright")
 plotSeqLogo(anc.p, node="Node10", 1, 25)
 
 data(chloroplast)
 tree <- pratchet(chloroplast,  maxit=10, trace=0)
 tree <- makeNodeLabel(tree)
 anc.ch <- ancestral.pars(tree, chloroplast)
-image(chloroplast[, 1:25])
-plotAnc(anc.ch, 21, scheme="Ape_AA")
-plotAnc(anc.ch, 21, scheme="Clustal")
+image(as.phyDat(anc.ch)[, 1:25])
+plotAnc(anc.ch, 21, scheme="Ape_AA", pos="topleft")
+plotAnc(anc.ch, 21, scheme="Clustal", pos="topleft")
 plotSeqLogo(anc.ch, node="Node1", 1, 25, scheme="Clustal")
 }
 \seealso{

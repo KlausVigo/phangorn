@@ -236,9 +236,14 @@ print.ancestral <- function(x, ...){
   print(head(x$prob))
 }
 
-## @rdname ancestral.pml
-## @export
-#as.phyDat.ancestral <- function(x, ...) {
+#' @rdname ancestral.pml
+#' @export
+as.phyDat.ancestral <- function(x, ...) {
+  rbind(x$data, x$state)
+}
+
+
+
 highest_state <- function(x, ...) {
   type <- attr(x, "type")
   fun2 <- function(x) {

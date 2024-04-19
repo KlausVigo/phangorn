@@ -2,11 +2,14 @@
 % Please edit documentation in R/ancestral.R
 \name{ancestral.pml}
 \alias{ancestral.pml}
+\alias{as.phyDat.ancestral}
 \alias{ancestral.pars}
 \alias{pace}
 \title{Ancestral character reconstruction.}
 \usage{
 ancestral.pml(object, type = "marginal", ...)
+
+\method{as.phyDat}{ancestral}(x, ...)
 
 ancestral.pars(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"),
   cost = NULL, ...)
