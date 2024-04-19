@@ -2142,6 +2142,12 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       }
     }
   }
+  if(optRooted == FALSE && optEdge == TRUE){
+    # rescale tree if edges are likely too long
+    pscore <- fitch(tree, data) / sum(attr(data, "weight"))
+    if(sum(tree$edge.length) > 3*pscore)
+      tree$edge.length <- tree$edge.length * 3*pscore / sum(tree$edge.length)
+  }
   if (optNni) {
     if(!timetree){
       mapping <- map_duplicates(data)
