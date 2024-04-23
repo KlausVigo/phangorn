@@ -23,6 +23,8 @@ pace(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"), cost = NULL, ...)
 
 \item{\dots}{Further arguments passed to or from other methods.}
 
+\item{x}{an object of class ancestral}
+
 \item{tree}{a tree, i.e. an object of class pml}
 
 \item{data}{an object of class phyDat}

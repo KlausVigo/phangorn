@@ -237,6 +237,7 @@ print.ancestral <- function(x, ...){
 }
 
 #' @rdname ancestral.pml
+#' @param x an object of class ancestral
 #' @export
 as.phyDat.ancestral <- function(x, ...) {
   rbind(x$data, x$state)

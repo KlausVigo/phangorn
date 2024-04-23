@@ -94,7 +94,9 @@ plotAnc <- function(x, i = 1, col = NULL,
   data <- x$data
   type <- attr(data, "type")
   tree <- x$tree
-  Y <- subset(df, Site==i)
+  subset <- df[,"Site"] == i
+  Y <- df[subset & !is.na(subset),]
+#  Y <- subset(df, Site==i)
   y <- as.matrix(Y[, -c(1:3)])
   #  y <- y[, -c(1:3)]
   colnames(y) <- gsub("p_", "", colnames(y))
@@ -153,6 +155,7 @@ plotAnc <- function(x, i = 1, col = NULL,
 }
 
 #' @rdname plot.ancestral
+#' @importFrom ggplot2 scale_x_continuous
 #' @export
 plotSeqLogo <- function(x, node=getRoot(x$tree), start=1, end=10, scheme="Ape_NT", ...){
   stopifnot(inherits(x, "ancestral"))
@@ -161,9 +164,11 @@ plotSeqLogo <- function(x, node=getRoot(x$tree), start=1, end=10, scheme="Ape_NT
   df <- getAncDF(x)
   nodes <- c(tree$tip.label, tree$node.label)
   if(is.numeric(node)) node <- nodes[node]
-  X <- subset(df, subset=Node==node)
+  subset <- df[,"Node"] == node
+  X <- df[subset & !is.na(subset),]
+#  X2 <- subset(df, subset=Node==node)
   end <- min(end, nrow(X))
-  X <- X[start:end, , drop=FALSE]
+#  X <- X[start:end, , drop=FALSE]
   X <- t(as.matrix(X[, -c(1:3)]))
   tmp <- gsub("p_", "", rownames(X))
   lev <- rownames(X) <- toupper(tmp)
@@ -184,9 +189,13 @@ plotSeqLogo <- function(x, node=getRoot(x$tree), start=1, end=10, scheme="Ape_NT
 
   }
   else SC <- make_col_scheme(chars=lev, cols= hcl.colors(length(lev)))
-  ggseqlogo(X, col_scheme=SC, method='p')
+  ggseqlogo(X, col_scheme=SC, method='p')  +
+    scale_x_continuous(limits = c(start-0.5, end+.5) ,
+                       breaks=pretty(seq(start, end)))
 }
 
+
+# p = ggplot() + geom_logo(data = data, ...) + theme_logo()
 
 ##' @rdname plot.ancestral
 ##' @export
