@@ -1,6 +1,6 @@
 Package: phangorn
 Title: Phylogenetic Reconstruction and Analysis
-Version: 3.0.0.1
+Version: 3.0.0.0
 Authors@R: 
     c(person("Klaus", "Schliep", role = c("aut", "cre"),
              email = "klaus.schliep@gmail.com",
@@ -45,6 +45,7 @@ Imports:
     fastmatch,
     generics,
     ggseqlogo,
+    ggplot2,
     graphics,
     grDevices,
     igraph (>= 1.0),
