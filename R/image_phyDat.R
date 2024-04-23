@@ -3,6 +3,7 @@
 #' This function plots an image of an alignment of sequences.
 #'
 #' A wrapper for using \code{\link{image.DNAbin}} and \code{\link{image.AAbin}}.
+#' Codons triplets are handled as nucleotide sequences.
 #' @param x	 an object containing sequences, an object of class \code{phyDat}.
 #' @param ... further arguments passed to or from other methods.
 #' @seealso \code{\link{image.DNAbin}}, \code{\link{image.AAbin}}
@@ -13,5 +14,5 @@ image.phyDat <- function(x, ...){
   if(attr(x, "type") == "CODON") x <- codon2dna(x)
   if(attr(x, "type") == "AA") image(as.AAbin(x), ...)
   if(attr(x, "type") == "DNA") image(as.DNAbin(x), ...)
-  if(attr(x, "USER") ) return(NULL)
+  if(attr(x, "type") == "USER") return(NULL)
 }

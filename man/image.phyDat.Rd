@@ -16,6 +16,7 @@ This function plots an image of an alignment of sequences.
 }
 \details{
 A wrapper for using \code{\link{image.DNAbin}} and \code{\link{image.AAbin}}.
+Codons triplets are handled as nucleotide sequences.
 }
 \seealso{
 \code{\link{image.DNAbin}}, \code{\link{image.AAbin}}
