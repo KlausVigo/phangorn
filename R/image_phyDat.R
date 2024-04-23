@@ -5,13 +5,13 @@
 #' A wrapper for using \code{\link{image.DNAbin}} and \code{\link{image.AAbin}}.
 #' @param x	 an object containing sequences, an object of class \code{phyDat}.
 #' @param ... further arguments passed to or from other methods.
-#' @seealso \code{\link{image.DNAbin}}, \code{\link{image.AAbin}},
-#' \code{\link{image.ancestral}}
+#' @seealso \code{\link{image.DNAbin}}, \code{\link{image.AAbin}}
 #' @method image phyDat
 #' @export
 image.phyDat <- function(x, ...){
   x <- gap_as_ambiguous(x)
+  if(attr(x, "type") == "CODON") x <- codon2dna(x)
   if(attr(x, "type") == "AA") image(as.AAbin(x), ...)
   if(attr(x, "type") == "DNA") image(as.DNAbin(x), ...)
-  else return(NULL)
+  if(attr(x, "USER") ) return(NULL)
 }
