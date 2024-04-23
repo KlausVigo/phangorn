@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">phangorn</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.0.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.0.0.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -89,7 +89,7 @@ Schliep</h4>
 Technology<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2024-04-19</h4>
+            <h4 data-toc-skip class="date">2024-04-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/HEAD/vignettes/Ancestral.Rmd" class="external-link"><code>vignettes/Ancestral.Rmd</code></a></small>
       <div class="d-none name"><code>Ancestral.Rmd</code></div>
@@ -97,7 +97,6 @@ Technology<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.
 
     
     
-<pre><code><span><span class="co">## Warning: S3 method 'image.ancestral' was declared in NAMESPACE but not found</span></span></code></pre>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
@@ -112,7 +111,7 @@ Likelihood (ML). For more background on all the methods see e.g. <span class="ci
 </h2>
 <p>To reconstruct ancestral sequences we first load some data and
 reconstruct a tree:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/KlausVigo/phangorn" class="external-link">phangorn</a></span><span class="op">)</span></span>
 <span><span class="va">fdir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/trees"</span>, package <span class="op">=</span> <span class="st">"phangorn"</span><span class="op">)</span></span>
 <span><span class="va">primates</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read.phyDat.html">read.phyDat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">fdir</span>, <span class="st">"primates.dna"</span><span class="op">)</span>,</span>
@@ -130,7 +129,7 @@ nodes are not independent of each other. If one chooses one state for a
 specific node, this can restrict the choice of neighboring nodes
 (figures 2 and 3). The function acctran (accelerated transformation)
 assigns edge length and internal nodes to the tree <span class="citation">(Swofford and Maddison 1987)</span>.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">anc.acctran</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ancestral.pml.html">ancestral.pars</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">primates</span>, <span class="st">"ACCTRAN"</span><span class="op">)</span></span>
 <span><span class="va">anc.mpr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ancestral.pml.html">ancestral.pars</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">primates</span>, <span class="st">"MPR"</span><span class="op">)</span></span></code></pre></div>
 <p>All the ancestral reconstructions for parsimony are based on the
@@ -140,10 +139,12 @@ from <em>ape</em>.</p>
 <p>The <code>plotSeqLogo</code> function is a wrapper around the from
 the <em>ggseqlogo</em> function the the <em>ggseqlogo</em> package <span class="citation">(Wagih 2024)</span> and provides a simple way to show
 proportions of a nucleotides of ancestral states (see figure 1).</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#library(seqLogo)</span></span>
 <span><span class="co">#seqLogo( t(subset(anc.mpr, getRoot(tree), 1:20)[[1]]), ic.scale=FALSE)</span></span>
 <span><span class="fu"><a href="../reference/plot.ancestral.html">plotSeqLogo</a></span><span class="op">(</span><span class="va">anc.mpr</span>, node<span class="op">=</span><span class="fu"><a href="../reference/midpoint.html">getRoot</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span>, <span class="fl">1</span>, <span class="fl">20</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Scale for <span style="color: #00BB00;">x</span> is already present.</span></span>
+<span><span class="co">## Adding another scale for <span style="color: #00BB00;">x</span>, which will replace the existing scale.</span></span></code></pre>
 <div class="figure">
 <img src="Ancestral_files/figure-html/seqLogo-1.png" alt="Fig 1. Ancestral reconstruction for a node." width="576"><p class="caption">
 Fig 1. Ancestral reconstruction for a node.
@@ -321,7 +322,7 @@ matrices</em>. The “ARD” model is currently not available as
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] phangorn_3.0.0.1 ape_5.8         </span></span>
+<span><span class="co">## [1] phangorn_3.0.0.0 ape_5.8         </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##  [1] sass_0.4.9        utf8_1.2.4        generics_0.1.3    lattice_0.22-5   </span></span>

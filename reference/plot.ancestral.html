@@ -16,7 +16,7 @@ sequences in the alignment."><meta property="og:image" content="https://klausvig
     
     <a class="navbar-brand me-2" href="../index.html">phangorn</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.0.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.0.0.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -164,6 +164,8 @@ nucleotides "Ape_NT" and"RY_NT". Names can be abbreviated.</p></dd>
 <span class="r-in"><span><span class="fu">plotAnc</span><span class="op">(</span><span class="va">anc.p</span>, <span class="fl">3</span>, pos<span class="op">=</span><span class="st">"topright"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot.ancestral-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">plotSeqLogo</span><span class="op">(</span><span class="va">anc.p</span>, node<span class="op">=</span><span class="st">"Node10"</span>, <span class="fl">1</span>, <span class="fl">25</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Scale for <span style="color: #00BB00;">x</span> is already present.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Adding another scale for <span style="color: #00BB00;">x</span>, which will replace the existing scale.</span>
 <span class="r-plt img"><img src="plot.ancestral-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">chloroplast</span><span class="op">)</span></span></span>
@@ -171,13 +173,16 @@ nucleotides "Ape_NT" and"RY_NT". Names can be abbreviated.</p></dd>
 <span class="r-in"><span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu">makeNodeLabel</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">anc.ch</span> <span class="op">&lt;-</span> <span class="fu"><a href="ancestral.pml.html">ancestral.pars</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">chloroplast</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/image.html" class="external-link">image</a></span><span class="op">(</span><span class="fu"><a href="as.phyDat.html">as.phyDat</a></span><span class="op">(</span><span class="va">anc.ch</span><span class="op">)</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">25</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in UseMethod("as.phyDat"):</span> no applicable method for 'as.phyDat' applied to an object of class "ancestral"</span>
-<span class="r-in"><span><span class="fu">plotAnc</span><span class="op">(</span><span class="va">anc.ch</span>, <span class="fl">21</span>, scheme<span class="op">=</span><span class="st">"Ape_AA"</span>, pos<span class="op">=</span><span class="st">"topleft"</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in if (attr(x, "USER")) return(NULL):</span> argument is of length zero</span>
 <span class="r-plt img"><img src="plot.ancestral-4.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="fu">plotAnc</span><span class="op">(</span><span class="va">anc.ch</span>, <span class="fl">21</span>, scheme<span class="op">=</span><span class="st">"Clustal"</span>, pos<span class="op">=</span><span class="st">"topleft"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plotAnc</span><span class="op">(</span><span class="va">anc.ch</span>, <span class="fl">21</span>, scheme<span class="op">=</span><span class="st">"Ape_AA"</span>, pos<span class="op">=</span><span class="st">"topleft"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot.ancestral-5.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="fu">plotSeqLogo</span><span class="op">(</span><span class="va">anc.ch</span>, node<span class="op">=</span><span class="st">"Node1"</span>, <span class="fl">1</span>, <span class="fl">25</span>, scheme<span class="op">=</span><span class="st">"Clustal"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plotAnc</span><span class="op">(</span><span class="va">anc.ch</span>, <span class="fl">21</span>, scheme<span class="op">=</span><span class="st">"Clustal"</span>, pos<span class="op">=</span><span class="st">"topleft"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot.ancestral-6.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="fu">plotSeqLogo</span><span class="op">(</span><span class="va">anc.ch</span>, node<span class="op">=</span><span class="st">"Node1"</span>, <span class="fl">1</span>, <span class="fl">25</span>, scheme<span class="op">=</span><span class="st">"Clustal"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Scale for <span style="color: #00BB00;">x</span> is already present.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Adding another scale for <span style="color: #00BB00;">x</span>, which will replace the existing scale.</span>
+<span class="r-plt img"><img src="plot.ancestral-7.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
