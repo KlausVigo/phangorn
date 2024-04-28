@@ -111,15 +111,15 @@ plotAnc <- function(x, i = 1, col = NULL,
   xrad <- CEX * diff(par("usr")[1:2]) / 50
   levels <- attr(data, "levels")
   nc <- attr(data, "nc")
-  if(is.null(scheme) & type=="AA") scheme="Ape_AA"
-  if(is.null(scheme) & type=="DNA") scheme="Ape_NT"
+  if(is.null(scheme) & type=="AA") scheme <- "Ape_AA"
+  if(is.null(scheme) & type=="DNA") scheme <- "Ape_NT"
   if(!is.null(scheme)){
     scheme <- match.arg(scheme, c("Ape_AA", "Zappo_AA", "Clustal", "Polarity",
                                   "Transmembrane_tendency", "Ape_NT", "RY_NT"))
     sc <- get(scheme, environment(ace))
     if(has_gap_state(data) && attr(data, "type")=="AA"){
       sc$properties <- c(sc$properties, Gap="-")
-      sc$color <- c(sc$color, "#000000")
+      sc$color <- c(sc$color, "#FFFFFF")
     }
     if(attr(data, "type")=="DNA"){
       ind <- match("n", names(sc$properties))
@@ -168,19 +168,19 @@ plotSeqLogo <- function(x, node=getRoot(x$tree), start=1, end=10, scheme="Ape_NT
   X <- df[subset & !is.na(subset),]
 #  X2 <- subset(df, subset=Node==node)
   end <- min(end, nrow(X))
-#  X <- X[start:end, , drop=FALSE]
+  X <- X[seq_len(end), , drop=FALSE]  # creating the whole plot is slow
   X <- t(as.matrix(X[, -c(1:3)]))
   tmp <- gsub("p_", "", rownames(X))
   lev <- rownames(X) <- toupper(tmp)
-  if(is.null(scheme) & type=="AA") scheme="Ape_AA"
-  if(is.null(scheme) & type=="DNA") scheme="Ape_NT"
+  if(is.null(scheme) & type=="AA") scheme <- "Ape_AA"
+  if(is.null(scheme) & type=="DNA") scheme <- "Ape_NT"
   if(!is.null(scheme)){
     scheme <- match.arg(scheme, c("Ape_AA", "Zappo_AA", "Clustal", "Polarity",
                                   "Transmembrane_tendency", "Ape_NT", "RY_NT"))
     sc <- get(scheme, environment(ace))
     if(has_gap_state(x$data) && type=="AA"){
       sc$properties <- c(sc$properties, Gap="-")
-      sc$color <- c(sc$color, "#000000")
+      sc$color <- c(sc$color, "#FFFFFF")
     }
     l <- lengths(sc$properties)
     SC <- make_col_scheme(chars = toupper(unlist(sc$properties)),
