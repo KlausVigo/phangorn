@@ -35,7 +35,7 @@ read.fasta.user <- function (file, skip = 0, nlines = 0,
 #'
 #' \code{write.phyDat} calls the function \code{\link[ape]{write.dna}} or
 #' \code{\link[ape]{write.nexus.data}} and \code{read.phyDat} calls the function
-#' \code{\link[ape]{read.dna}}, \code{read.aa} or \code{read.nexus.data}, so see
+#' \code{\link[ape]{read.dna}} or \code{read.nexus.data}, so see
 #' for more details over there.
 #'
 #' You may import data directly with \code{\link[ape]{read.dna}} or

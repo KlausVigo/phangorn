@@ -196,10 +196,29 @@ upperBound <- function(x, cost = NULL) {
 #' @param tree a phylogenetic tree, i.e. an object of class \code{phylo}.
 #' @param cost A cost matrix for the transitions between two states.
 #' @param sitewise return CI/RI for alignment or sitewise
-#'
+#' @returns a scalar or vector with the CI/RI vector.
 #' @seealso \code{\link{parsimony}}, \code{\link{pratchet}},
 #' \code{\link{fitch}}, \code{\link{sankoff}}, \code{\link{bab}},
 #' \code{\link{ancestral.pars}}
+#' @examples
+#' example(as.phylo.formula)
+#' lab <- tr$tip.label
+#' lab[79] <- "Herpestes fuscus"
+#' tr$tip.label <- abbreviateGenus(lab)
+#' X <- matrix(0, 112, 3, dimnames = list(tr$tip.label, c("Canis", "Panthera",
+#'             "Canis_Panthera")))
+#' desc_canis <- Descendants(tr, "Canis")[[1]]
+#' desc_panthera <- Descendants(tr, "Panthera")[[1]]
+#' X[desc_canis, c(1,3)] <- 1
+#' X[desc_panthera, c(2,3)] <- 1
+#' col <- rep("black", 112)
+#' col[desc_panthera] <- "red"
+#' col[desc_canis] <- "blue"
+#' X <- phyDat(X, "USER", levels=c(0,1))
+#' plot(tr, "f", tip.color=col)
+#' # The first two sites are homoplase free!
+#' CI(tr, X, sitewise=TRUE)
+#' RI(tr, X, sitewise=TRUE)
 #'
 #' @rdname CI
 #' @export
