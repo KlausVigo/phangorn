@@ -8,7 +8,8 @@ densiTree(x, type = "cladogram", alpha = 1/length(x), consensus = NULL,
   direction = "rightwards", optim = FALSE, scaleX = FALSE, col = 1,
   width = 1, lty = 1, cex = 0.8, font = 3, tip.color = 1, adj = 0,
   srt = 0, underscore = FALSE, label.offset = 0, scale.bar = TRUE,
-  jitter = list(amount = 0, random = TRUE), tip.dates = NULL, ...)
+  jitter = list(amount = 0, random = TRUE), tip.dates = NULL,
+  xlim = NULL, ylim = NULL, ...)
 }
 \arguments{
 \item{x}{an object of class \code{multiPhylo}.}
@@ -62,6 +63,10 @@ of the phylogeny and their corresponding labels.}
 jitter and random or equally spaced (see details below)}
 
 \item{tip.dates}{A named vector of sampling times associated with the tips.}
+
+\item{xlim}{the x limits of the plot.}
+
+\item{ylim}{the y limits of the plot.}
 
 \item{\dots}{further arguments to be passed to plot.}
 }

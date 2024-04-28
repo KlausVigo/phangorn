@@ -12,12 +12,12 @@ getAges <- function(x) {
 
 
 add_tiplabels <- function(xy, tip.label, direction, adj, font, srt = 0, cex = 1,
-                          col = 1, label.offset = 0) {
+                          col = 1, label.offset = 0, maxBT=1) {
   direction <- match.arg(direction, c("rightwards", "leftwards",  "upwards",
     "downwards"))
   horizontal <- direction %in% c("rightwards", "leftwards")
   nTips <- length(tip.label)
-  xx <- rep(1, nrow(xy))
+  xx <- rep(maxBT, nrow(xy))
   yy <- xy[, 2 ]
   if (direction == "leftwards" | direction == "downwards") xx <- xx * 0
   if (!horizontal) {
@@ -92,6 +92,8 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt = 0, cex = 1,
 #' @param jitter allows to shift trees. a list with two arguments: the amount of
 #' jitter and random or equally spaced (see details below)
 #' @param tip.dates A named vector of sampling times associated with the tips.
+#' @param xlim the x limits of the plot.
+#' @param ylim the y limits of the plot.
 #' @param \dots further arguments to be passed to plot.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{plot.phylo}}, \code{\link{plot.networx}},
@@ -125,12 +127,12 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt = 0, cex = 1,
 #'
 #' @export
 densiTree <- function(x, type = "cladogram", alpha = 1 / length(x),
-                      consensus = NULL, direction = "rightwards", optim = FALSE,
-                      scaleX = FALSE, col = 1, width = 1, lty = 1, cex = .8,
-                      font = 3, tip.color = 1, adj = 0, srt = 0,
-                      underscore = FALSE, label.offset = 0, scale.bar = TRUE,
-                      jitter = list(amount = 0, random = TRUE), tip.dates=NULL,
-                      ...) {
+                       consensus = NULL, direction = "rightwards", optim = FALSE,
+                       scaleX = FALSE, col = 1, width = 1, lty = 1, cex = .8,
+                       font = 3, tip.color = 1, adj = 0, srt = 0,
+                       underscore = FALSE, label.offset = 0, scale.bar = TRUE,
+                       jitter = list(amount = 0, random = TRUE), tip.dates=NULL,
+                       xlim=NULL, ylim=NULL, ...) {
   if (!inherits(x, "multiPhylo")) stop("x must be of class multiPhylo")
   if (is.character(consensus)) {
     consensus <- stree(length(consensus), tip.label = consensus)
@@ -160,8 +162,6 @@ densiTree <- function(x, type = "cladogram", alpha = 1 / length(x),
   nTip <- as.integer(length(consensus$tip.label))
   consensus <- sort_tips(consensus)
   consensus <- reorder(consensus, "postorder")
-
-
   at <- NULL
   maxBT <- max(getAges(x))
   if(!is.null(tip.dates)){
@@ -169,57 +169,63 @@ densiTree <- function(x, type = "cladogram", alpha = 1 / length(x),
     label <- pretty(c(root_time, max(tip.dates)), min.n = 3)
     label <- label[label < max(tip.dates)]
     maxBT <- max(maxBT, max(tip.dates) - min(label))
-    at <- 1 - (max(tip.dates) - label) / maxBT
-    if(direction=="leftwards" || direction=="downwards") at <- at + 1- max(at)
+    at <- maxBT - (max(tip.dates) - label) #/ maxBT
+    if(direction=="leftwards" || direction=="downwards") at <- at + maxBT - max(at)
     scaleX <- FALSE
   }
   else {
     if (scaleX) maxBT <- 1.0
     label <- rev(pretty(c(maxBT, 0)))
     maxBT <- max(label, maxBT)
-    at <- seq(0, 1.0, length.out = length(label))
+    at <- seq(0, maxBT, length.out = length(label))
   }
-
   xy <- plotPhyloCoor(consensus, direction = direction, ...)
   yy <- xy[, 2]
-
   tl <- which.max(nchar(consensus$tip.label))
   if(horizontal) pin1 <- par("pin")[1]
   else pin1 <- par("pin")[2]
-  sw <- strwidth(consensus$tip.label[tl], "inch", cex = cex) / pin1  * 1.1
-
+  sw <- strwidth(consensus$tip.label[tl], "inch", cex = cex) / pin1  * 1.1 * maxBT
+  if(is.null(xlim)){
+    xlim <- switch(direction,
+                   rightwards = c(0, maxBT + sw),
+                   leftwards = c(0 - sw, maxBT),
+                   downwards = c(0, nTip + 1),
+                   upwards = c(0, nTip + 1))
+  }
+  if(is.null(ylim)){
+    ylim <- switch(direction,
+                   rightwards = c(0, nTip + 1),
+                   leftwards = c(0, nTip + 1),
+                   downwards = c(0 - sw, maxBT),
+                   upwards = c(0, maxBT + sw))
+  }
   if (direction == "rightwards") {
-    plot.default(0, type = "n", xlim = c(0, 1.0 + sw), ylim = c(0, nTip + 1),
+    plot.default(0, type = "n", xlim = xlim, ylim = ylim,
                  xlab = "", ylab = "", axes = FALSE, ...)
-    if (scale.bar) axis(side = 1, at = at, #seq(0, 1.0, length.out = length(label)),
-                        labels = label)
+    if (scale.bar) axis(side = 1, at = at, labels = label, cex.axis=cex)
   }
   if (direction == "leftwards") {
-    plot.default(0, type = "n", xlim = c(0 - sw, 1.0), ylim = c(0, nTip + 1),
+    plot.default(0, type = "n", xlim = xlim, ylim = ylim,
                  xlab = "", ylab = "", axes = FALSE, ...)
-    if (scale.bar) axis(side = 1, at = at, #seq(0, 1.0, length.out = length(label)),
-                        labels = rev(label))
+    if (scale.bar) axis(side = 1, at = at, labels = rev(label), cex.axis=cex)
   }
   if (direction == "downwards") {
-    plot.default(0, type = "n", xlim = c(0, nTip + 1), ylim = c(0 - sw, 1.0),
+    plot.default(0, type = "n", xlim = xlim, ylim = ylim,
                  xlab = "", ylab = "", axes = FALSE, ...)
-    if (scale.bar) axis(side = 2, at = at, #seq(0, 1.0, length.out = length(label)),
-                        labels = rev(label))
+    if (scale.bar) axis(side = 2, at = at, labels = rev(label), cex.axis=cex)
   }
   if (direction == "upwards") {
-    plot.default(0, type = "n", xlim = c(0, nTip + 1), ylim = c(0, 1.0 + sw),
+    plot.default(0, type = "n", xlim = xlim, ylim = ylim,
                  xlab = "", ylab = "", axes = FALSE, ...)
-    if (scale.bar) axis(side = 2, at = at, #seq(0, 1.0, length.out = length(label)),
-                        labels = label)
+    if (scale.bar) axis(side = 2, at = at, labels = label, cex.axis=cex)
   }
   tip_labels <- consensus$tip.label
   if (is.expression(consensus$tip.label))
     underscore <- TRUE
   if (!underscore)
     tip_labels <- gsub("_", " ", tip_labels)
-
   add_tiplabels(xy, tip_labels, direction, adj = adj, font = font, srt = srt,
-    cex = cex, col = tip.color, label.offset = label.offset)
+    cex = cex, col = tip.color, label.offset = label.offset, maxBT = maxBT)
 
   col <- rep(col, length.out = length(x))
   tiporder <-  1:nTip
@@ -241,14 +247,14 @@ densiTree <- function(x, type = "cladogram", alpha = 1 / length(x),
 
     if (horizontal) {
       if (scaleX) xx <- xx / max(xx)
-      else xx <- xx / maxBT
-      if (direction == "rightwards") xx <- xx + (1.0 - max(xx))
+      else xx <- xx #/ maxBT
+      if (direction == "rightwards") xx <- xx + (maxBT - max(xx))
       if (jitter$amount > 0) yy <- yy + jit[treeindex]
     }
     else {
       if (scaleX) yy <- yy / max(yy)
-      else yy <- yy / maxBT
-      if (direction == "upwards") yy <- yy + (1.0 - max(yy))
+      #else yy <- yy
+      if (direction == "upwards") yy <- yy + (maxBT - max(yy))
       if (jitter$amount > 0) xx <- xx + jit[treeindex]
     }
     e1 <- tmp$edge[, 1]
@@ -263,4 +269,12 @@ densiTree <- function(x, type = "cladogram", alpha = 1 / length(x),
         edge.lty = lty)
     }
   }
+  L <- list(type = type, font = font, cex = cex,
+            adj = adj, srt = srt, #no.margin = no.margin,
+            label.offset = label.offset,
+            x.lim = xlim, y.lim = ylim, direction = direction,
+            tip.color = tip.color, Ntip = nTip #, Nnode = Nnode,
+            #root.time = x$root.time, align.tip.label = align.tip.label
+            )
+  assign("last_plot.phylo", L, envir = .PlotPhyloEnv)
 }
