@@ -87,6 +87,12 @@ Index (RI).</p>
 
 </dl></div>
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    
+
+<p>a scalar or vector with the CI/RI vector.</p>
+    </div>
+    <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The Consistency Index is defined as minimum number of changes
 divided by the number of changes required on the tree (parsimony score). The
@@ -101,6 +107,50 @@ $$RI = \frac{MaxChanges - ObsChanges}{MaxChanges - MinChanges}$$</p>
 <code><a href="ancestral.pml.html">ancestral.pars</a></code></p></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span><span class="va">as.phylo.formula</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> as.ph.&gt; data(carnivora)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> as.ph.&gt; frm &lt;- ~SuperFamily/Family/Genus/Species</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> as.ph.&gt; tr &lt;- as.phylo(frm, data = carnivora, collapse=FALSE)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> as.ph.&gt; tr$edge.length &lt;- rep(1, nrow(tr$edge))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> as.ph.&gt; plot(tr, show.node.label=TRUE)</span>
+<span class="r-plt img"><img src="CI-1.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> as.ph.&gt; Nnode(tr)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 83</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> as.ph.&gt; ## compare with:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> as.ph.&gt; Nnode(as.phylo(frm, data = carnivora, collapse = FALSE))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 83</span>
+<span class="r-in"><span><span class="va">lab</span> <span class="op">&lt;-</span> <span class="va">tr</span><span class="op">$</span><span class="va">tip.label</span></span></span>
+<span class="r-in"><span><span class="va">lab</span><span class="op">[</span><span class="fl">79</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Herpestes fuscus"</span></span></span>
+<span class="r-in"><span><span class="va">tr</span><span class="op">$</span><span class="va">tip.label</span> <span class="op">&lt;-</span> <span class="fu">abbreviateGenus</span><span class="op">(</span><span class="va">lab</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">112</span>, <span class="fl">3</span>, dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">tr</span><span class="op">$</span><span class="va">tip.label</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Canis"</span>, <span class="st">"Panthera"</span>,</span></span>
+<span class="r-in"><span>            <span class="st">"Canis_Panthera"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">desc_canis</span> <span class="op">&lt;-</span> <span class="fu"><a href="Ancestors.html">Descendants</a></span><span class="op">(</span><span class="va">tr</span>, <span class="st">"Canis"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">desc_panthera</span> <span class="op">&lt;-</span> <span class="fu"><a href="Ancestors.html">Descendants</a></span><span class="op">(</span><span class="va">tr</span>, <span class="st">"Panthera"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">X</span><span class="op">[</span><span class="va">desc_canis</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span><span class="va">X</span><span class="op">[</span><span class="va">desc_panthera</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span><span class="va">col</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="fl">112</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">col</span><span class="op">[</span><span class="va">desc_panthera</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"red"</span></span></span>
+<span class="r-in"><span><span class="va">col</span><span class="op">[</span><span class="va">desc_canis</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"blue"</span></span></span>
+<span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="as.phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">X</span>, <span class="st">"USER"</span>, levels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">tr</span>, <span class="st">"f"</span>, tip.color<span class="op">=</span><span class="va">col</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="CI-2.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co"># The first two sites are homoplase free!</span></span></span>
+<span class="r-in"><span><span class="fu">CI</span><span class="op">(</span><span class="va">tr</span>, <span class="va">X</span>, sitewise<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.0 1.0 0.5</span>
+<span class="r-in"><span><span class="fu">RI</span><span class="op">(</span><span class="va">tr</span>, <span class="va">X</span>, sitewise<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.000 1.000 0.875</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
