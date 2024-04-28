@@ -512,7 +512,7 @@ constSitePattern <- function(n, names=NULL, type="DNA", levels=NULL){
 #' Department of Genetics, University of Washington.
 #' \url{https://phylipweb.github.io/phylip/}
 #' @keywords IO
-#' @export read.aa
+#' @noRd
 read.aa <- function (file, format = "interleaved", skip = 0, nlines = 0,
                      comment.char = "#", seq.names = NULL){
   getTaxaNames <- function(x) {
