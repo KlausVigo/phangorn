@@ -49,6 +49,9 @@ cophenetic.splits <- function(x) {
 #' @seealso \code{\link[stats]{cophenetic}} for the generic function,
 #' \code{neighborNet} to construct a network from a distance matrix
 #' @keywords manip
+#' @examples
+#' example(neighborNet)
+#' cophenetic(nnet)
 #' @export
 cophenetic.networx <- function(x) {
   spl <- x$splits

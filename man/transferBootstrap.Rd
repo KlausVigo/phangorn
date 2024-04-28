@@ -16,6 +16,10 @@ vector of bootstrap values.}
 
 \item{scale}{scale the values.}
 }
+\value{
+a phylogentic tree (a phylo object) with bootstrap values assigned to
+the node labels.
+}
 \description{
 \code{transferBootstrap} assigns transfer bootstrap (Lemoine et al. 2018)
 values to the (internal) edges.

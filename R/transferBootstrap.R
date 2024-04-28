@@ -9,6 +9,8 @@
 #' @param phylo Logical, return a phylogentic tree with support value or a
 #' vector of bootstrap values.
 #' @param scale scale the values.
+#' @return a phylogentic tree (a phylo object) with bootstrap values assigned to
+#' the node labels.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso  \code{\link{plotBS}}, \code{\link{maxCladeCred}},
 #' \code{\link{drawSupportOnEdges}}

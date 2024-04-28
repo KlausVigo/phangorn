@@ -10,7 +10,7 @@ CI(tree, data, cost = NULL, sitewise = FALSE)
 RI(tree, data, cost = NULL, sitewise = FALSE)
 }
 \arguments{
-\item{tree}{tree to start the nni search from.}
+\item{tree}{a phylogenetic tree, i.e. an object of class \code{phylo}.}
 
 \item{data}{A object of class phyDat containing sequences.}
 

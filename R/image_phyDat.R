@@ -7,6 +7,9 @@
 #' @param x	 an object containing sequences, an object of class \code{phyDat}.
 #' @param ... further arguments passed to or from other methods.
 #' @seealso \code{\link{image.DNAbin}}, \code{\link{image.AAbin}}
+#' @examples
+#' data("chloroplast")
+#' image(chloroplast[, 1:50], scheme="Clustal", show.aa = TRUE)
 #' @method image phyDat
 #' @export
 image.phyDat <- function(x, ...){

@@ -11,6 +11,8 @@
 #' Four values are possible: "rightwards" (the default), "leftwards", "upwards",
 #' and "downwards".
 #' @param \dots further parameters to be passed to \code{plot.phylo}.
+#' @return \code{plot.pml} returns invisibly a list with arguments dexcribing the plot.
+#' For further details see the \code{plot.phylo}.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{plot.phylo}}, \code{\link{axisPhylo}},
 #' \code{\link{add.scale.bar}}
@@ -41,8 +43,9 @@ plot.pml <- function(x, type="phylogram", direction = "rightwards", ...){
   tree <- x$tree
   extras <- match.call(expand.dots = FALSE)$...
   cex <- ifelse(is.null(extras$cex), par("cex"), extras$cex)
+  cex.axis <- ifelse(is.null(extras$cex.axis), cex, extras$cex.axis)
   if(!is.rooted(tree) && (type != "unrooted") ) tree <- midpoint(tree)
-  plot.phylo(tree, type=type, direction=direction, ...)
+  L <- plot.phylo(tree, type=type, direction=direction, ...)
   if(is.rooted(tree) && (type %in% c("phylogram","cladogram"))){
     direction <- match.arg(direction, c("rightwards", "leftwards", "upwards",
                                         "downwards"))
@@ -53,11 +56,13 @@ plot.pml <- function(x, type="phylogram", direction = "rightwards", ...){
                      "downwards" = 2)
     if(!is.null(x$tip.dates) && x$method=="tipdated"){
       root_time <- max(x$tip.dates) - max(node.depth.edgelength(x$tree))
-      axisPhylo(side, root.time = root_time, backward = FALSE)
+      axisPhylo(side, root.time = root_time, backward = FALSE,
+                cex.axis=cex.axis)
     }
-    else if(x$method=="ultrametric") axisPhylo(side)
+    else if(x$method=="ultrametric") axisPhylo(side, cex.axis=cex.axis)
     else add.scale.bar(cex=cex)
   }
   else add.scale.bar(cex=cex)
   if(!is.null(x$bs)) add_support(tree, x$bs, cex=cex)
+  invisible(L)
 }

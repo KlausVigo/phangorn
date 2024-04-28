@@ -18,6 +18,10 @@ This function plots an image of an alignment of sequences.
 A wrapper for using \code{\link{image.DNAbin}} and \code{\link{image.AAbin}}.
 Codons triplets are handled as nucleotide sequences.
 }
+\examples{
+data("chloroplast")
+image(chloroplast[, 1:50], scheme="Clustal", show.aa = TRUE)
+}
 \seealso{
 \code{\link{image.DNAbin}}, \code{\link{image.AAbin}}
 }

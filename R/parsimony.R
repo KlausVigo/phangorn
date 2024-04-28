@@ -193,7 +193,7 @@ upperBound <- function(x, cost = NULL) {
 #' \deqn{RI = \frac{MaxChanges - ObsChanges}{MaxChanges - MinChanges}}{RI = (MaxChanges - ObsChanges) / (MaxChanges - MinChanges)}
 #'
 #' @param data A object of class phyDat containing sequences.
-#' @param tree tree to start the nni search from.
+#' @param tree a phylogenetic tree, i.e. an object of class \code{phylo}.
 #' @param cost A cost matrix for the transitions between two states.
 #' @param sitewise return CI/RI for alignment or sitewise
 #'
