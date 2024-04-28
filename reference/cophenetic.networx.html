@@ -90,6 +90,37 @@ labels (as given by the element <code>tip.label</code> of the argument <code>x</
     <p>Klaus Schliep</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span><span class="va">neighborNet</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> nghbrN&gt; data(yeast)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> nghbrN&gt; dm &lt;- dist.ml(yeast)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> nghbrN&gt; nnet &lt;- neighborNet(dm)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> nghbrN&gt; plot(nnet)</span>
+<span class="r-plt img"><img src="cophenetic.networx-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/cophenetic.html" class="external-link">cophenetic</a></span><span class="op">(</span><span class="va">nnet</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            Sbay       Skud       Smik       Spar       Scer       Scas</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Skud 0.15679569                                                       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Smik 0.17138720 0.15382927                                            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Spar 0.16838347 0.15082553 0.12360062                                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Scer 0.17717456 0.16108716 0.13763679 0.08678458                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Scas 0.34958331 0.35210510 0.34479766 0.34179392 0.34350386           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Calb 0.54518366 0.54770545 0.54039800 0.53739427 0.53910421 0.52768392</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sklu 0.38096004 0.38397653 0.38238343 0.37937970 0.38167995 0.39014046</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            Calb</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Skud           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Smik           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Spar           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Scer           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Scas           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Calb           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sklu 0.54213286</span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

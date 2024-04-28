@@ -64,7 +64,8 @@
 <span>  direction <span class="op">=</span> <span class="st">"rightwards"</span>, optim <span class="op">=</span> <span class="cn">FALSE</span>, scaleX <span class="op">=</span> <span class="cn">FALSE</span>, col <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  width <span class="op">=</span> <span class="fl">1</span>, lty <span class="op">=</span> <span class="fl">1</span>, cex <span class="op">=</span> <span class="fl">0.8</span>, font <span class="op">=</span> <span class="fl">3</span>, tip.color <span class="op">=</span> <span class="fl">1</span>, adj <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  srt <span class="op">=</span> <span class="fl">0</span>, underscore <span class="op">=</span> <span class="cn">FALSE</span>, label.offset <span class="op">=</span> <span class="fl">0</span>, scale.bar <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  jitter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>amount <span class="op">=</span> <span class="fl">0</span>, random <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, tip.dates <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span>  jitter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>amount <span class="op">=</span> <span class="fl">0</span>, random <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, tip.dates <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  xlim <span class="op">=</span> <span class="cn">NULL</span>, ylim <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -159,6 +160,14 @@ jitter and random or equally spaced (see details below)</p></dd>
 
 <dt>tip.dates</dt>
 <dd><p>A named vector of sampling times associated with the tips.</p></dd>
+
+
+<dt>xlim</dt>
+<dd><p>the x limits of the plot.</p></dd>
+
+
+<dt>ylim</dt>
+<dd><p>the y limits of the plot.</p></dd>
 
 
 <dt>...</dt>
