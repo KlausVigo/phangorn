@@ -226,28 +226,6 @@ makePart <- function(fit, rooted, weight = ~index + genes) {
 
 #' @rdname pmlPart
 #' @export
-#multiphyDat2pmlPart <- function(x, rooted = FALSE,  ...) {
-#  shared_tree <- TRUE
-#  if (shared_tree) {
-#    concatenate_x <- do.call(cbind.phyDat, x@seq)
-#    dm <- dist.ml(concatenate_x)
-#    if (!rooted) tree <- NJ(dm)
-#    else tree <- upgma(dm)
-#  }
-#  else tree <- NULL
-#  fun <-  function(x, rooted = FALSE, tree, ...) {
-#    if (is.null(tree)) {
-#      dm <- dist.ml(x)
-#      if (!rooted) tree <- NJ(dm)
-#      else tree <- upgma(dm)
-#    }
-#    pml(tree, x, ...)
-#  }
-#  fits <- lapply(x@seq, fun, tree = tree, rooted = rooted, ...)
-#  fits
-#}
-#
-#
 multiphyDat2pmlPart <- function(x, method="unrooted", tip.dates=NULL, ...) {
   if(is.list(x) && all(sapply(x,inherits, "phyDat"))) seq  <- x
   else if(inherits(x, "multiphyDat")) seq <- x@seq
