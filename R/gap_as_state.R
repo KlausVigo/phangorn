@@ -36,7 +36,7 @@ gap_as_state <- function(obj, gap="-", ambiguous="?"){
   attr(obj, "levels") <- levels
   attr(obj, "nc") <- attr(obj, "nc") + 1L
   attr(obj, "contrast") <- contrast
-  attr(obj, "gap_is_state") <- TRUE
+#  attr(obj, "gap_is_state") <- TRUE
   obj
 }
 
@@ -58,11 +58,13 @@ gap_as_ambiguous <- function(obj, gap="-"){
   attr(obj, "levels") <- levels[-ind]
   attr(obj, "contrast") <- contrast
   attr(obj, "nc") <- attr(obj, "nc") - 1L
-  attr(obj, "gap_is_state") <- FALSE
+#  attr(obj, "gap_is_state") <- FALSE
   obj
 }
 
 
+#' @rdname gap_as_state
+#' @export
 has_gap_state <- function(obj){
   type <- attr(obj, "type")
   if(type=="DNA" && attr(obj, "nc")==5) return(TRUE)

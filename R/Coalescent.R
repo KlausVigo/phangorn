@@ -98,8 +98,7 @@ coalSpeciesTree <- function(tree, X = NULL, sTree = NULL) {
       Labels = attr(X, "levels"), Size = l, class = "dist",
       Diag = FALSE, Upper = FALSE
     )
-
-    sTree <- upgma(dm, "single")
+    sTree <- as.phylo(hclust(dm, method = "single"))
     # dm of pairwise states
   }
   else {

@@ -3,11 +3,14 @@
 \name{gap_as_state}
 \alias{gap_as_state}
 \alias{gap_as_ambiguous}
+\alias{has_gap_state}
 \title{Treat gaps as a state}
 \usage{
 gap_as_state(obj, gap = "-", ambiguous = "?")
 
 gap_as_ambiguous(obj, gap = "-")
+
+has_gap_state(obj)
 }
 \arguments{
 \item{obj}{An object of class phyDat.}

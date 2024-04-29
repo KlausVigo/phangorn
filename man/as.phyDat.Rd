@@ -113,7 +113,7 @@ all.equal(Laurasiatherian, as.phyDat(LauraDNAbin))
 \seealso{
 [DNAbin()], [as.DNAbin()],
 \code{\link{baseFreq}}, \code{\link{glance.phyDat}},
-\code{\link{read.dna}}, \code{\link{read.aa}}, \code{\link{read.nexus.data}}
+\code{\link{read.dna}}, \code{\link{read.nexus.data}}
 and the chapter 1 in the \code{vignette("phangorn-specials",
 package="phangorn")} and the example of \code{\link{pmlMix}} for the use of
 \code{allSitePattern}
