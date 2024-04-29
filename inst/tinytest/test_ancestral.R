@@ -27,3 +27,20 @@ test_acctran <- ancestral.pars(tree, dna, "ACCTRAN")
 
 #expect_equal(test_mpr_2[,1], test_acctran_2[,1], check.attributes = FALSE)
 
+
+data(Laurasiatherian)
+fit <- pml_bb(Laurasiatherian[,1:100], "JC", rearrangement = "none")
+anc_ml <- ancestral.pml(fit)
+write.ancestral(anc_ml)
+align <- read.phyDat("ancestral_align.fasta")
+tree <- read.tree("ancestral_tree.nwk")
+df <- read.table("ancestral.state", header=TRUE)
+anc_ml_disc <- ancestral(tree, align, df)
+expect_equal(anc_ml[[1]], anc_ml_disc[[1]])
+expect_equal(anc_ml[[2]], anc_ml_disc[[2]])
+expect_equal(anc_ml[[3]], anc_ml_disc[[3]])
+expect_equal(anc_ml[[4]], anc_ml_disc[[4]])
+unlink(c("ancestral_align.fasta", "ancestral_tree.nwk", "ancestral.state"))
+
+
+## Felsenstein example
