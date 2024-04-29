@@ -16,3 +16,4 @@
 ^vignettes/MLbyHand_cache$
 ^vignettes/AdvancedFeatures_cache$
 ^vignettes/logo.png
+^codemeta\.json$
