@@ -1056,8 +1056,16 @@ pml.fit4 <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #' @references Felsenstein, J. (1981) Evolutionary trees from DNA sequences: a
 #' maximum likelihood approach. \emph{Journal of Molecular Evolution},
 #' \bold{17}, 368--376.
+#' @examples
+#' data(Laurasiatherian)
+#' tree <- NJ(dist.ml(Laurasiatherian))
+#' bf <- rep(0.25, 4)
+#' eig <- edQt()
+#' pml.init(Laurasiatherian)
+#' pml.fit(tree, Laurasiatherian, bf=bf, eig=eig)
+#' pml.free()
+#' pml(tree, Laurasiatherian) |> logLik()
 #' @keywords cluster
-#'
 #' @rdname pml.fit
 #' @export pml.fit
 pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),

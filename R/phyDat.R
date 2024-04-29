@@ -197,7 +197,7 @@ compress.phyDat <- function(data){
   pos <- which(!duplicated(index))
   weight <- tapply(attrib$weight, index, sum)
   names(weight) <- NULL
-  attrib$weight <- weight
+  attrib$weight <- as.vector(weight)
   if(is.null(attrib$index)) attrib$index <-index
   else attrib$index <- index[attrib$index]
   for(i in seq_len(length(data))) data[[i]] <- data[[i]][pos]

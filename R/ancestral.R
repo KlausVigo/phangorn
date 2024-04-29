@@ -168,6 +168,7 @@ ancestral.pml <- function(object, type = "marginal", ...) {
   attributes(result2) <- attrib
   attributes(result) <- attrib
   result <- list2df_ancestral(result, result2)
+  result2 <- compress.phyDat(result2)
   erg <- list(tree=tree, data=data, prob=result, state=result2)
   class(erg) <- "ancestral"
   erg
@@ -187,6 +188,18 @@ ancestral.pml <- function(object, type = "marginal", ...) {
 #' @param file a file name. File endings are added.
 #' @param ... Further arguments passed to or from other methods.
 #' @seealso \code{\link{ancestral.pml}}, \code{\link{plot.ancestral}}
+#' @examples
+#' data(Laurasiatherian)
+#' fit <- pml_bb(Laurasiatherian[,1:100], "JC", rearrangement = "none")
+#' anc_ml <- ancestral.pml(fit)
+#' write.ancestral(anc_ml)
+#' # Can be also results from iqtree
+#' align <- read.phyDat("ancestral_align.fasta")
+#' tree <- read.tree("ancestral_tree.nwk")
+#' df <- read.table("ancestral.state", header=TRUE)
+#' anc_ml_disc <- ancestral(tree, align, df)
+#' plotAnc(anc_ml_disc, 20)
+#' unlink(c("ancestral_align.fasta", "ancestral_tree.nwk", "ancestral.state"))
 #' @rdname write.ancestral
 #' @export
 write.ancestral <- function(x, file="ancestral"){
@@ -335,6 +348,7 @@ ancestral.pars <- function(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"),
 #  attributes(result2) <- attrib
 #  attributes(result) <- attrib
   result <- list2df_ancestral(result, result2)
+  result2 <- compress.phyDat(result2) # needed?
   erg <- list(tree=tree, data=data, prob=result, state=result2)
   class(erg) <- "ancestral"
   erg

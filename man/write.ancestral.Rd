@@ -36,6 +36,19 @@ alignment.  \code{read.ancestral} tries to read in these files.
 This allows also to read in reconstruction  made by iqtree to use the
 plotting capabilities of R.
 }
+\examples{
+data(Laurasiatherian)
+fit <- pml_bb(Laurasiatherian[,1:100], "JC", rearrangement = "none")
+anc_ml <- ancestral.pml(fit)
+write.ancestral(anc_ml)
+# Can be also results from iqtree
+align <- read.phyDat("ancestral_align.fasta")
+tree <- read.tree("ancestral_tree.nwk")
+df <- read.table("ancestral.state", header=TRUE)
+anc_ml_disc <- ancestral(tree, align, df)
+plotAnc(anc_ml_disc, 20)
+unlink(c("ancestral_align.fasta", "ancestral_tree.nwk", "ancestral.state"))
+}
 \seealso{
 \code{\link{ancestral.pml}}, \code{\link{plot.ancestral}}
 }
