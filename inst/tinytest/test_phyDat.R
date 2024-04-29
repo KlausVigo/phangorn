@@ -131,3 +131,18 @@ map2 <- map_duplicates(Laurasiatherian)
 expect_null(map2)
 expect_true(inherits(map1, "data.frame"))
 
+
+# check gap as state
+
+Laurasiatherian_gap <- gap_as_state(Laurasiatherian)
+chloroplast_gap <- gap_as_state(chloroplast)
+
+expect_false(has_gap_state(Laurasiatherian))
+expect_true(has_gap_state(Laurasiatherian_gap))
+
+expect_false(has_gap_state(chloroplast))
+expect_true(has_gap_state(chloroplast_gap))
+
+expect_equal(Laurasiatherian, gap_as_ambiguous(Laurasiatherian_gap))
+expect_equal(chloroplast, gap_as_ambiguous(chloroplast))
+
