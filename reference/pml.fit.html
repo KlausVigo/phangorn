@@ -192,6 +192,22 @@ maximum likelihood approach. <em>Journal of Molecular Evolution</em>,
     <p>Klaus Schliep <a href="mailto:klaus.schliep@gmail.com">klaus.schliep@gmail.com</a></p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="NJ.html">NJ</a></span><span class="op">(</span><span class="fu"><a href="dist.hamming.html">dist.ml</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">bf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="fl">4</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">eig</span> <span class="op">&lt;-</span> <span class="fu">edQt</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">pml.init</span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-in"><span><span class="fu">pml.fit</span><span class="op">(</span><span class="va">tree</span>, <span class="va">Laurasiatherian</span>, bf<span class="op">=</span><span class="va">bf</span>, eig<span class="op">=</span><span class="va">eig</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -54808.83</span>
+<span class="r-in"><span><span class="fu">pml.free</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-in"><span><span class="fu"><a href="pml.html">pml</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">Laurasiatherian</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 'log Lik.' -54808.83 (df=91)</span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
