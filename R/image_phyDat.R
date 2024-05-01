@@ -6,6 +6,7 @@
 #' Codons triplets are handled as nucleotide sequences.
 #' @param x	 an object containing sequences, an object of class \code{phyDat}.
 #' @param ... further arguments passed to or from other methods.
+#' @returns Nothing. The function is called for plotting.
 #' @seealso \code{\link{image.DNAbin}}, \code{\link{image.AAbin}}
 #' @examples
 #' data("chloroplast")

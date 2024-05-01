@@ -11,6 +11,9 @@
 
 \item{...}{further arguments passed to or from other methods.}
 }
+\value{
+Nothing. The function is called for plotting.
+}
 \description{
 This function plots an image of an alignment of sequences.
 }

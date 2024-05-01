@@ -46,7 +46,7 @@ edge_length_matrix <- function(tree, trees, rooted=TRUE){
 ##' @param rooted rooted logical, if FALSE edge lengths is a function of the
 ##' observed splits, if TRUE edge lengths are estimated from height for the
 ##' observed clades.
-##' @return NULL
+##' @return The tree with newly assigned edge length.
 ##' @author Klaus Schliep
 ##' @importFrom graphics legend rect
 ##' @examples
@@ -94,7 +94,7 @@ add_edge_length <- function(tree, trees, fun=\(x)median(na.omit(x)),
 ##' @param \dots arguments passed to other functions, \code{\link{legend}} or
 ##' \code{\link{bxp}}.
 ##' @details All trees should to be rooted, either ultrametric or tip dated.
-##' @return NULL
+##' @return Nothing. Function is called for adding to a plot.
 ##' @author Emmanuel Paradis, Santiago Claramunt, Joseph Brown, Klaus Schliep
 ##' @importFrom graphics legend rect bxp boxplot
 ##' @importFrom stats median

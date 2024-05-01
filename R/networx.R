@@ -266,6 +266,7 @@ circNetwork <- function(x, ord = NULL) {
 #' splits (may excludes splits).
 #' @param coord add coordinates of the nodes, allows to reproduce the plot.
 #' @param \dots Further arguments passed to or from other methods.
+#' @returns an object of class \code{networx}.
 #' @note The internal representation is likely to change.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{consensusNet}}, \code{\link{neighborNet}},
@@ -649,6 +650,8 @@ rotate_matrix <- function(x, theta){
 #' @param digits if edge labels are numerical a positive integer indicating how
 #' many significant digits are to be used.
 #' @param \dots Further arguments passed to or from other methods.
+#' @returns \code{plot.networx} returns invisibly a list with paramters of the
+#' plot.
 #' @rdname plot.networx
 #' @note The internal representation is likely to change.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}

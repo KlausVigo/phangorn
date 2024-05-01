@@ -20,6 +20,9 @@ is computed from.}
 observed splits, if TRUE edge lengths are estimated from height for the
 observed clades.}
 }
+\value{
+The tree with newly assigned edge length.
+}
 \description{
 This command can infer some average edge lengths and assign
 them from a (bootstrap/MCMC) sample.

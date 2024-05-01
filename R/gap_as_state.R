@@ -96,5 +96,5 @@ remove_similar <- function(x, k=3, index=FALSE){
   ind_dist <- ind_dist[ind_dist[,1] < ind_dist[,2], ]
   dist_i <- unique(ind_dist[, 2])
   if(index) return(dist_i)
-  x[-dist_i]
+  x[-dist_i, ]
 }

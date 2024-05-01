@@ -83,6 +83,10 @@ many significant digits are to be used.}
 
 \item{\dots}{Further arguments passed to or from other methods.}
 }
+\value{
+\code{plot.networx} returns invisibly a list with paramters of the
+plot.
+}
 \description{
 So far not all parameters behave the same on the the \code{rgl} \code{"3D"}
 and basic graphic \code{"2D"} device.

@@ -187,6 +187,7 @@ ancestral.pml <- function(object, type = "marginal", ...) {
 #' @param x an object of class ancestral.
 #' @param file a file name. File endings are added.
 #' @param ... Further arguments passed to or from other methods.
+#' @returns \code{write.ancestral}  returns the input x invisibly.
 #' @seealso \code{\link{ancestral.pml}}, \code{\link{plot.ancestral}}
 #' @examples
 #' data(Laurasiatherian)
@@ -208,6 +209,7 @@ write.ancestral <- function(x, file="ancestral"){
   write.table(x$prob, file=paste0(file, ".state"), quote=FALSE, row.names=FALSE,
               sep="\t")
   write.tree(x$tree, file=paste0(file, "_tree.nwk"))
+  invisible(x)
 }
 
 

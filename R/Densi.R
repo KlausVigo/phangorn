@@ -95,6 +95,7 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt = 0, cex = 1,
 #' @param xlim the x limits of the plot.
 #' @param ylim the y limits of the plot.
 #' @param \dots further arguments to be passed to plot.
+#' @returns \code{densiTree} returns silently a list with graphics parameter.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{plot.phylo}}, \code{\link{plot.networx}},
 #' \code{\link{jitter}}, \code{\link{rtt}}
