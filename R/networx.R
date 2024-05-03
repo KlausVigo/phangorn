@@ -85,7 +85,7 @@ addEdge <- function(network, desc, spl) {
 
   fromTo <- intersect(attr(desc, "cycle"), split[[1]])
   fromTo <- parent[match(fromTo, child)]
-  g <- graph(t(edge), directed = FALSE)
+  g <- make_graph(t(edge), directed = FALSE)
   ind <- NULL
   for (i in 2:length(fromTo)) {
     d <- all_shortest_paths(g, fromTo[i - 1], fromTo[i])$res
@@ -177,7 +177,7 @@ circNetwork <- function(x, ord = NULL) {
     fromTo <- ordStart:ordStop
     if (ordStart > ordStop) fromTo <- c(ordStart:nTips, 1:ordStop)
     fromTo <- ord[fromTo]
-    g <- graph(t(res$edge), directed = FALSE)
+    g <- make_graph(t(res$edge), directed = FALSE)
 
     isChild <- (rsY == (Y %*% X[k, ]))[index]
     sp2 <- NULL
@@ -278,7 +278,7 @@ circNetwork <- function(x, ord = NULL) {
 #' Intertwining phylogenetic trees and networks. \emph{Methods Ecol Evol}.
 #' \bold{8}, 1212--1220. doi:10.1111/2041-210X.12760
 #' @keywords plot
-#' @importFrom igraph graph
+#' @importFrom igraph make_graph
 #' @examples
 #'
 #' set.seed(1)
@@ -415,7 +415,7 @@ as.networx.phylo <- function(x, ...) {
 
 
 # as.igraph.networx <- function(x, directed=FALSE){
-#    graph(t(x$edge), directed=directed)
+#    make_graph(t(x$edge), directed=directed)
 # }
 
 
@@ -425,7 +425,7 @@ reorder.networx <- function(x, order =  "cladewise", index.only = FALSE, ...) {
   if (!is.null(attr(x, "order")))
     if (attr(x, "order") == order)
       return(x)
-  g <- graph(t(x$edge))
+  g <- make_graph(t(x$edge))
   if (order == "cladewise") neword <- topo_sort(g, "out")
   else neword <- topo_sort(g, "in")
   neworder <- order(match(x$edge[, 1], neword))
@@ -509,9 +509,6 @@ coords <- function(obj, dim = "3D") {
   adj <- spMatrix(n, n, i = obj$edge[, 2], j = obj$edge[, 1],
                   x = rep(1, length(obj$edge.length)))
   g <- graph_from_adjacency_matrix(adj, "undirected")
-  #    add this
-  #    g2 <- graph(t(obj$edge), directed=FALSE)
-  #    g2 <- set.edge.attribute(g, "weight", value=rep(1, nrow(obj$edge))
   if (dim == "3D") {
     coord <- layout_nicely(g, dim = 3)
     k <- matrix(0, max(obj$splitIndex), 3)
@@ -668,7 +665,7 @@ rotate_matrix <- function(x, theta){
 #' Intertwining phylogenetic trees and networks. \emph{Methods Ecol Evol}.
 #' \bold{8}, 1212--1220. doi:10.1111/2041-210X.12760
 #' @keywords plot
-#' @importFrom igraph graph
+#' @importFrom igraph make_graph
 #' @examples
 #'
 #' set.seed(1)
