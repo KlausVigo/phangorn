@@ -67,7 +67,7 @@ plot(max_clade_cred, main="Maximum clade credibility tree")
 par(mfrow = c(2,1))
 plot(max_clade_cred, main="Edge length from tree")
 add_boxplot(max_clade_cred, bs)
-max_clade_cred_2 <- add_edgelength(max_clade_cred, bs)
+max_clade_cred_2 <- add_edge_length(max_clade_cred, bs)
 plot(max_clade_cred_2, main="Edge length computed from sample")
 add_boxplot(max_clade_cred_2, bs)
 
