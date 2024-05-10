@@ -2,15 +2,18 @@
 #'
 #' \code{maxCladeCred} computes the maximum clade credibility tree from a
 #' sample of trees.
-#'
 #' So far just the best tree is returned. No annotations or transformations of
-#' edge length are performed.
+#' edge length are performed and the edge length are taken from the tree.
 #'
 #' If a list of partition is provided then the clade credibility is computed
 #' for the trees in x.
 #'
 #' \code{allCompat} returns a 50\% majority rule consensus tree with added
-#' compatible splits similar to the option allcompat in MrBayes.
+#' compatible splits similar to the option allcompat in MrBayes. This tree has
+#' no edge length.
+#'
+#' \code{\link{add_edge_length}} can be used to add edge lengths computed from
+#' the sample of trees.
 #'
 #' @param x \code{x} is an object of class \code{multiPhylo} or \code{phylo}
 #' @param tree logical indicating whether return the tree with the clade
@@ -23,7 +26,8 @@
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{consensus}}, \code{\link{consensusNet}},
 #' \code{\link{prop.part}}, \code{\link{bootstrap.pml}}, \code{\link{plotBS}},
-#' \code{\link{transferBootstrap}}, \code{\link{add_edge_length}}
+#' \code{\link{transferBootstrap}}, \code{\link{add_edge_length}},
+#' \code{\link{add_boxplot}}
 #' @keywords cluster
 #' @importFrom fastmatch fmatch
 #' @examples
@@ -45,6 +49,14 @@
 #' plot(majority_consensus, main="Majority consensus tree")
 #' plot(all_compat, main="Majority consensus tree with compatible splits")
 #' plot(max_clade_cred, main="Maximum clade credibility tree")
+#'
+#' par(mfrow = c(2,1))
+#' plot(max_clade_cred, main="Edge length from tree")
+#' add_boxplot(max_clade_cred, bs)
+#' max_clade_cred_2 <- add_edgelength(max_clade_cred, bs)
+#' plot(max_clade_cred_2, main="Edge length computed from sample")
+#' add_boxplot(max_clade_cred_2, bs)
+#'
 #' par(old.par)
 #'
 #' # compute clade credibility for trees given a prop.part object

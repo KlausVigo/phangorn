@@ -26,6 +26,9 @@ each state and site.}
 
 \item{...}{Further arguments passed to or from other methods.}
 }
+\value{
+\code{write.ancestral}  returns the input x invisibly.
+}
 \description{
 \code{write.ancestral} allows to export ancestral reconstructions. It writes
 out the tree, a tab delimited text file with the probabilities and the

@@ -53,7 +53,7 @@ add_boxplot(tree, trees, boxwex=.7)
 }
 \seealso{
 \code{\link{plot.phylo}}, \code{\link{plotBS}},
-\code{\link{add_edge_length}}
+\code{\link{add_edge_length}}, \code{\link{maxCladeCred}}
 }
 \author{
 Emmanuel Paradis, Santiago Claramunt, Joseph Brown, Klaus Schliep
