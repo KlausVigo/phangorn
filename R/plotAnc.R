@@ -34,7 +34,7 @@ getAncDF <- function(x){
 #' @param x an object of class \code{ancestral}.
 ## @param site.pattern logical, plot i-th site pattern or i-th site
 #' @param i,site plots the i-th site.
-#' @param which either "pie" or "seqlogo"
+## @param which either "pie" or "seqlogo"
 #' @param node to plot for which the probabilities should be plotted.
 #' @param start start position to plot.
 #' @param end end position to plot.
@@ -70,20 +70,6 @@ getAncDF <- function(x){
 #' plotSeqLogo(anc.ch, node="Node1", 1, 25, scheme="Clustal")
 #' @importFrom grDevices hcl.colors
 #' @importFrom ggseqlogo make_col_scheme ggseqlogo
-#' @rdname plot.ancestral
-#' @export
-plot.ancestral <- function(x, which = c("pie", "seqlogo"), site = 1,
-                           node=getRoot(x$tree), col = NULL, cex.pie = .5, pos = "bottomright",
-                           scheme=NULL, start=1, end=10, ...){
-  stopifnot(inherits(x, "ancestral"))
-  which <- match.arg(which, c("pie", "seqlogo"), TRUE)
-  if(which=="pie")plotAnc(x, i = site, col = col, cex.pie = cex.pie, pos = pos,
-                      scheme=scheme, ...)
-  if(which=="seqlogo")plotSeqLogo(x, node, start=start, end=end, scheme=scheme, ...)
-}
-
-
-
 #' @rdname plot.ancestral
 #' @export
 plotAnc <- function(x, i = 1, col = NULL,
@@ -203,5 +189,19 @@ plotSeqLogo <- function(x, node=getRoot(x$tree), start=1, end=10, scheme="Ape_NT
 #  tmp <- rbind(x$"data", x$"state")
 #  image(tmp, ...)
 #}
+
+##' @rdname plot.ancestral
+##' @export
+#plot.ancestral <- function(x, which = c("pie", "seqlogo"), site = 1,
+#         node=getRoot(x$tree), col = NULL, cex.pie = .5, pos = "bottomright",
+#                          scheme=NULL, start=1, end=10, ...){
+#  stopifnot(inherits(x, "ancestral"))
+#  which <- match.arg(which, c("pie", "seqlogo"), TRUE)
+#  if(which=="pie")plotAnc(x, i = site, col = col, cex.pie = cex.pie, pos = pos,
+#                      scheme=scheme, ...)
+#  if(which=="seqlogo")plotSeqLogo(x, node, start=start, end=end, scheme=scheme, ...)
+#}
+
+
 
 
