@@ -59,7 +59,8 @@ plot.pml <- function(x, type="phylogram", direction = "rightwards", ...){
       axisPhylo(side, root.time = root_time, backward = FALSE,
                 cex.axis=cex.axis)
     }
-    else if(x$method=="ultrametric") axisPhylo(side, cex.axis=cex.axis)
+    else if(!is.null(x$method) && x$method=="ultrametric")
+      axisPhylo(side, cex.axis=cex.axis)
     else add.scale.bar(cex=cex)
   }
   else add.scale.bar(cex=cex)
