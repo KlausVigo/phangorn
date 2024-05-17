@@ -185,7 +185,7 @@ unique.splits <- function(x, incomparables = FALSE, unrooted = TRUE, ...) {
 }
 
 
-#' @export
+#' @export distinct.splits
 distinct.splits <- function(...) {
   tmp <- c(...)
   res <- unique(tmp)
