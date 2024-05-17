@@ -64,7 +64,9 @@ Suggests:
     rgl,
     rmarkdown,
     seqinr,
+    testthat (>= 3.0.0),
     tinytest,
+    vdiffr,
     xtable
 LinkingTo:
     Rcpp
@@ -78,3 +80,4 @@ Repository: CRAN
 Roxygen: list(old_usage = TRUE)
 RoxygenNote: 7.3.1
 Language: en-US
+Config/testthat/edition: 3
