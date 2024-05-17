@@ -188,7 +188,7 @@ ancestral.pml <- function(object, type = "marginal", ...) {
 #' @param file a file name. File endings are added.
 #' @param ... Further arguments passed to or from other methods.
 #' @returns \code{write.ancestral}  returns the input x invisibly.
-#' @seealso \code{\link{ancestral.pml}}, \code{\link{plot.ancestral}}
+#' @seealso \code{\link{ancestral.pml}}, \code{\link{plotAnc}}
 #' @examples
 #' data(Laurasiatherian)
 #' fit <- pml_bb(Laurasiatherian[,1:100], "JC", rearrangement = "none")

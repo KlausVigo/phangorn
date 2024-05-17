@@ -33,7 +33,8 @@ getAncDF <- function(x){
 ## ancestral.
 #' @param x an object of class \code{ancestral}.
 ## @param site.pattern logical, plot i-th site pattern or i-th site
-#' @param i,site plots the i-th site.
+#' @param i plots the i-th site.
+## ,site
 ## @param which either "pie" or "seqlogo"
 #' @param node to plot for which the probabilities should be plotted.
 #' @param start start position to plot.

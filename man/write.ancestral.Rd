@@ -53,5 +53,5 @@ plotAnc(anc_ml_disc, 20)
 unlink(c("ancestral_align.fasta", "ancestral_tree.nwk", "ancestral.state"))
 }
 \seealso{
-\code{\link{ancestral.pml}}, \code{\link{plot.ancestral}}
+\code{\link{ancestral.pml}}, \code{\link{plotAnc}}
 }

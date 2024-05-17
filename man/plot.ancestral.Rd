@@ -14,7 +14,7 @@ plotSeqLogo(x, node = getRoot(x$tree), start = 1, end = 10,
 \arguments{
 \item{x}{an object of class \code{ancestral}.}
 
-\item{i, site}{plots the i-th site.}
+\item{i}{plots the i-th site.}
 
 \item{col}{a vector containing the colors for all possible states.}
 
