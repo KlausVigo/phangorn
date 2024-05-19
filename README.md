@@ -2,7 +2,7 @@
 [![CRAN Status Badge](https://www.r-pkg.org/badges/version/phangorn)](https://cran.r-project.org/package=phangorn)
 [![CRAN Downloads (monthly)](https://cranlogs.r-pkg.org/badges/phangorn)](https://cran.r-project.org/package=phangorn)
 [![CRAN Downloads (total)](https://cranlogs.r-pkg.org/badges/grand-total/phangorn)](https://cran.r-project.org/package=phangorn)
-[![codecov.io](https://codecov.io/github/KlausVigo/phangorn/coverage.svg?branch=master)](https://app.codecov.io/github/KlausVigo/phangorn?branch=master)
+[![Codecov test coverage](https://codecov.io/gh/KlausVigo/phangorn/branch/master/graph/badge.svg)](https://app.codecov.io/gh/KlausVigo/phangorn?branch=master)
 
 # phangorn <img src='man/figures/logo.png' align="right" width="120" />
 
