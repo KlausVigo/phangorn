@@ -162,7 +162,8 @@ my_ggseqlogo <-function (data, facet = "wrap", scales = "free_x", ncol = NULL,
 
 
 #' @rdname plot.ancestral
-#' @importFrom ggplot2 scale_x_continuous
+#' @importFrom ggplot2 scale_x_continuous ggplot facet_grid facet_wrap
+#' @importFrom ggseqlogo geom_logo theme_logo
 #' @export
 plotSeqLogo <- function(x, node=getRoot(x$tree), start=1, end=10, scheme="Ape_NT", ...){
   stopifnot(inherits(x, "ancestral"))
@@ -199,8 +200,6 @@ plotSeqLogo <- function(x, node=getRoot(x$tree), start=1, end=10, scheme="Ape_NT
   my_ggseqlogo(X, col_scheme=SC, method='p')
 }
 
-
-# p = ggplot() + geom_logo(data = data, ...) + theme_logo()
 
 ##' @rdname plot.ancestral
 ##' @export
