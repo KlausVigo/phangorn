@@ -143,12 +143,12 @@ plotAnc <- function(x, i = 1, col = NULL,
 
 
 my_ggseqlogo <-function (data, facet = "wrap", scales = "free_x", ncol = NULL,
-          nrow = NULL, ...)
+          nrow = NULL, start=NULL, end=NULL, ...)
 {
   x <- geom_logo(data = data, ...)
   x[[2]] <- scale_x_continuous(limits = c(start-0.5, end+.5) ,
                                breaks=pretty(seq(start, end)))
-  p <- ggplot() + geom_logo(data = data, ...) + theme_logo()
+  p <- ggplot() + x + theme_logo()
   if (!"list" %in% class(data)) return(p)
   facet <- match.arg(facet, c("grid", "wrap"))
   if (facet == "grid") {
@@ -197,7 +197,7 @@ plotSeqLogo <- function(x, node=getRoot(x$tree), start=1, end=10, scheme="Ape_NT
 
   }
   else SC <- make_col_scheme(chars=lev, cols= hcl.colors(length(lev)))
-  my_ggseqlogo(X, col_scheme=SC, method='p')
+  my_ggseqlogo(X, col_scheme=SC, method='p', start=start, end=end)
 }
 
 
