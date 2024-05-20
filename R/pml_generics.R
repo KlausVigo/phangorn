@@ -122,3 +122,14 @@ print.pml <- function(x, ...) {
     print(bf) #cat(bf, "\n")
   }
 }
+
+
+#' @export
+write.pml <- function(x, file=tempfile()){
+  write.tree(x$tree, file=paste0(file, "_tree.nwk"))
+  if(!is.null(x$bs)) write.tree(x$bs, file=paste0(file, "_bs.nwk"))
+  sink(paste0(file, "_pml.txt"))
+  print.pml(x)
+  sink()
+  invisible(x)
+}
