@@ -4,7 +4,10 @@
 \alias{as.pml}
 \alias{pml}
 \alias{optim.pml}
+\alias{logLik.pml}
+\alias{anova.pml}
 \alias{vcov.pml}
+\alias{print.pml}
 \title{Likelihood of a tree.}
 \usage{
 as.pml(x, ...)
@@ -18,7 +21,13 @@ optim.pml(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   rearrangement = ifelse(optNni, "NNI", "none"), subs = NULL,
   ratchet.par = ratchet.control(), ...)
 
+\method{logLik}{pml}(object, ...)
+
+\method{anova}{pml}(object, ...)
+
 \method{vcov}{pml}(object, ...)
+
+\method{print}{pml}(x, ...)
 }
 \arguments{
 \item{x}{So far only an object of class \code{modelTest}.}
