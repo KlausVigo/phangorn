@@ -141,6 +141,26 @@ plotAnc <- function(x, i = 1, col = NULL,
   if (!is.null(pos)) legend(pos, legend=levels, pch=21, pt.bg = col)
 }
 
+
+my_ggseqlogo <-function (data, facet = "wrap", scales = "free_x", ncol = NULL,
+          nrow = NULL, ...)
+{
+  x <- geom_logo(data = data, ...)
+  x[[2]] <- scale_x_continuous(limits = c(start-0.5, end+.5) ,
+                               breaks=pretty(seq(start, end)))
+  p <- ggplot() + geom_logo(data = data, ...) + theme_logo()
+  if (!"list" %in% class(data)) return(p)
+  facet <- match.arg(facet, c("grid", "wrap"))
+  if (facet == "grid") {
+    p <- p + facet_grid(~seq_group, scales = scales)
+  }
+  else if (facet == "wrap") {
+    p <- p + facet_wrap(~seq_group, scales = scales, nrow = nrow, ncol = ncol)
+  }
+  return(p)
+}
+
+
 #' @rdname plot.ancestral
 #' @importFrom ggplot2 scale_x_continuous
 #' @export
@@ -176,9 +196,7 @@ plotSeqLogo <- function(x, node=getRoot(x$tree), start=1, end=10, scheme="Ape_NT
 
   }
   else SC <- make_col_scheme(chars=lev, cols= hcl.colors(length(lev)))
-  ggseqlogo(X, col_scheme=SC, method='p')  +
-    scale_x_continuous(limits = c(start-0.5, end+.5) ,
-                       breaks=pretty(seq(start, end)))
+  my_ggseqlogo(X, col_scheme=SC, method='p')
 }
 
 
