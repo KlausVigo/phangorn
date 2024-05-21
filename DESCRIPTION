@@ -70,7 +70,6 @@ Suggests:
     xtable
 LinkingTo:
     Rcpp
-Remotes: github::EmmanuelParadis/ape
 VignetteBuilder: 
     knitr,
     utils
