@@ -364,9 +364,7 @@ pace <- ancestral.pars
 
 mpr.help <- function(tree, data, cost = NULL) {
   tree <- reorder(tree, "postorder")
-  if (!inherits(data, "phyDat")) {
-    stop("data must be of class phyDat")
-  }
+  if (!inherits(data, "phyDat")) stop("data must be of class phyDat")
   levels <- attr(data, "levels")
   l <- length(levels)
   if (is.null(cost)) {
