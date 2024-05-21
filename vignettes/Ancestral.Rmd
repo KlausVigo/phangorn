@@ -54,10 +54,6 @@ The `plotSeqLogo` function is a wrapper around the from the _ggseqlogo_ function
 #seqLogo( t(subset(anc.mpr, getRoot(tree), 1:20)[[1]]), ic.scale=FALSE)
 plotSeqLogo(anc.mpr, node=getRoot(tree), 1, 20)
 ```
-![](seqLogo.png)
-
-
-
 ```{r MPR, fig.cap="Fig 2. Ancestral reconstruction using MPR."}
 plotAnc(anc.mpr, 17)
 title("MPR")
