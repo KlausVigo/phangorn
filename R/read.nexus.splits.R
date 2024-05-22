@@ -64,6 +64,8 @@ read.nexus.splits <- function(file) {
   spEnd <- spEnd[spEnd > sp][1]
   dims <- grep("DIMENSION", X, ignore.case = TRUE)
   cyc <- grep("CYCLE", X, ignore.case = TRUE)
+  fcyc <- FALSE
+  if(length(format) > 0) fcyc <- TRUE
   matr <- grep("MATRIX", X, ignore.case = TRUE)
   format <- grep("FORMAT", X, ignore.case = TRUE)
   start <- matr[matr > sp][1] + 1
@@ -119,7 +121,7 @@ read.nexus.splits <- function(file) {
   if (fint) attr(res, "intervals") <- intervals
   if (fcon) attr(res, "confidences") <- confidences
   if (flab) attr(res, "splitlabels") <- labels
-  attr(res, "cycle") <- cyc
+  if (fcyc) attr(res, "cycle") <- cyc
   class(res) <- "splits"
   res
 }
