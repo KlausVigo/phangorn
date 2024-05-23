@@ -777,9 +777,6 @@ plot.networx <- function(x, type = "equal angle", use.edge.length = TRUE,
   }
   x$.plot <- list(vertices = coord, edge.color = edge.color,
     edge.width = edge.width, edge.lty = edge.lty)
-  L <- list(Ntip = nTips, type = "networx")
-  assign("last_plot.phylo", c(L, list(edge = x$edge, xx = coord[, 1],
-    yy = coord[, 2])), envir = .PlotPhyloEnv)
   invisible(x)
 }
 
@@ -846,22 +843,30 @@ plot2D <- function(coords, net, show.tip.label = TRUE, show.edge.label = FALSE,
                    cex.node.label = cex,  cex.edge.label = cex,
                    col.node.label = tip.color, col.edge.label = tip.color,
                    font.node.label = font, font.edge.label = font,
-                   add = FALSE, direction="horizontal", ...) {
+                   add = FALSE, direction="horizontal", xlim=NULL, ylim=NULL,
+                   ...) {
   edge <- net$edge
   label <- net$tip.label
   xx <- coords[, 1]
   yy <- coords[, 2]
   nTips <- length(label)
-
-  xlim <- range(xx)
-  ylim <- range(yy)
-  direction <- match.arg(direction, c("horizontal", "axial"))
-  if (show.tip.label) {
+  if(is.null(xlim)){
+    xlim <- range(xx)
     offset <- max(nchar(label)) * 0.018 * cex * diff(xlim)
-    xlim <- c(xlim[1] - offset, xlim[2] + offset)
-    ylim <- c(ylim[1] - 0.03 * cex * diff(ylim), ylim[2] +
-                0.03 * cex * diff(ylim))
+    if (show.tip.label) xlim <- c(xlim[1] - offset, xlim[2] + offset)
   }
+  if(is.null(ylim)){
+    ylim <- range(yy)
+    if (show.tip.label) ylim <- c(ylim[1] - 0.03 * cex * diff(ylim),
+                                  ylim[2] + 0.03 * cex * diff(ylim))
+  }
+  direction <- match.arg(direction, c("horizontal", "axial"))
+#  if (show.tip.label) {
+#    offset <- max(nchar(label)) * 0.018 * cex * diff(xlim)
+#    xlim <- c(xlim[1] - offset, xlim[2] + offset)
+#    ylim <- c(ylim[1] - 0.03 * cex * diff(ylim), ylim[2] +
+#                0.03 * cex * diff(ylim))
+#  }
   if (!add) {
     plot.new()
     plot.window(xlim, ylim, asp = 1)
@@ -929,6 +934,9 @@ plot2D <- function(coords, net, show.tip.label = TRUE, show.edge.label = FALSE,
     text(xx, yy, labels = node.label, col = col.node.label,
          cex = cex.node.label, font = font.node.label)
   }
+  PP <- list(Ntip = nTips, type = "networx", edge = net$edge, xx = coords[, 1],
+             yy = coords[, 2], x.lim=xlim, y.lim=ylim)
+  assign("last_plot.phylo", PP, envir = .PlotPhyloEnv)
 }
 
 
