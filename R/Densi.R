@@ -95,7 +95,7 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt = 0, cex = 1,
 #' @param xlim the x limits of the plot.
 #' @param ylim the y limits of the plot.
 #' @param \dots further arguments to be passed to plot.
-#' @returns \code{densiTree} returns silently a list with graphics parameter.
+#' @returns \code{densiTree} returns silently x.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{plot.phylo}}, \code{\link{plot.networx}},
 #' \code{\link{jitter}}, \code{\link{rtt}}
@@ -278,4 +278,5 @@ densiTree <- function(x, type = "cladogram", alpha = 1 / length(x),
             #root.time = x$root.time, align.tip.label = align.tip.label
             )
   assign("last_plot.phylo", L, envir = .PlotPhyloEnv)
+  invisible(x)
 }

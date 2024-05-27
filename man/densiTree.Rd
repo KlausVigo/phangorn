@@ -71,7 +71,7 @@ jitter and random or equally spaced (see details below)}
 \item{\dots}{further arguments to be passed to plot.}
 }
 \value{
-\code{densiTree} returns silently a list with graphics parameter.
+\code{densiTree} returns silently x.
 }
 \description{
 An R function to plot trees similar to those produced by DensiTree.
