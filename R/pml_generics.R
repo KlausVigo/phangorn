@@ -122,6 +122,7 @@ print.pml <- function(x, ...) {
     names(bf) <- levels
     print(bf) #cat(bf, "\n")
   }
+  if(!isTRUE(all.equal(x$rate, 1))) cat("\nRate:", x$rate, "\n")
 }
 
 
