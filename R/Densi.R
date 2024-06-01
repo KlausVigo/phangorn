@@ -127,13 +127,13 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt = 0, cex = 1,
 #' }
 #'
 #' @export
-densiTree <- function(x, type = "cladogram", alpha = 1 / length(x),
+densiTree <- function(x, type = "phylogram", ..., alpha = 1 / length(x),
                        consensus = NULL, direction = "rightwards", optim = FALSE,
                        scaleX = FALSE, col = 1, width = 1, lty = 1, cex = .8,
                        font = 3, tip.color = 1, adj = 0, srt = 0,
                        underscore = FALSE, label.offset = 0, scale.bar = TRUE,
                        jitter = list(amount = 0, random = TRUE), tip.dates=NULL,
-                       xlim=NULL, ylim=NULL, ...) {
+                       xlim=NULL, ylim=NULL) {
   if (!inherits(x, "multiPhylo")) stop("x must be of class multiPhylo")
   if (is.character(consensus)) {
     consensus <- stree(length(consensus), tip.label = consensus)
