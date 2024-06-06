@@ -5,8 +5,8 @@
 \alias{plotSeqLogo}
 \title{Plot ancestral character on a tree}
 \usage{
-plotAnc(x, i = 1, col = NULL, cex.pie = 0.5, pos = "bottomright",
-  scheme = NULL, ...)
+plotAnc(x, i = 1, ..., col = NULL, type = "phylogram", cex.pie = 0.5,
+  pos = "bottomright", scheme = NULL)
 
 plotSeqLogo(x, node = getRoot(x$tree), start = 1, end = 10,
   scheme = "Ape_NT", ...)
@@ -15,6 +15,8 @@ plotSeqLogo(x, node = getRoot(x$tree), start = 1, end = 10,
 \item{x}{an object of class \code{ancestral}.}
 
 \item{i}{plots the i-th site.}
+
+\item{\dots}{Further arguments passed to or from other methods.}
 
 \item{col}{a vector containing the colors for all possible states.}
 
@@ -25,8 +27,6 @@ plotSeqLogo(x, node = getRoot(x$tree), start = 1, end = 10,
 \item{scheme}{a predefined color scheme. For amino acid options are "Ape_AA",
 "Zappo_AA", "Clustal", "Polarity" and "Transmembrane_tendency", for
 nucleotides "Ape_NT" and"RY_NT". Names can be abbreviated.}
-
-\item{\dots}{Further arguments passed to or from other methods.}
 
 \item{node}{to plot for which the probabilities should be plotted.}
 

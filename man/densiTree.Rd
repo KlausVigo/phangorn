@@ -4,18 +4,20 @@
 \alias{densiTree}
 \title{Plots a densiTree.}
 \usage{
-densiTree(x, type = "cladogram", alpha = 1/length(x), consensus = NULL,
-  direction = "rightwards", optim = FALSE, scaleX = FALSE, col = 1,
-  width = 1, lty = 1, cex = 0.8, font = 3, tip.color = 1, adj = 0,
-  srt = 0, underscore = FALSE, label.offset = 0, scale.bar = TRUE,
-  jitter = list(amount = 0, random = TRUE), tip.dates = NULL,
-  xlim = NULL, ylim = NULL, ...)
+densiTree(x, type = "phylogram", ..., alpha = 1/length(x),
+  consensus = NULL, direction = "rightwards", optim = FALSE,
+  scaleX = FALSE, col = 1, width = 1, lty = 1, cex = 0.8, font = 3,
+  tip.color = 1, adj = 0, srt = 0, underscore = FALSE,
+  label.offset = 0, scale.bar = TRUE, jitter = list(amount = 0, random =
+  TRUE), tip.dates = NULL, xlim = NULL, ylim = NULL)
 }
 \arguments{
 \item{x}{an object of class \code{multiPhylo}.}
 
 \item{type}{a character string specifying the type of phylogeny, so far
 "cladogram" (default) or "phylogram" are supported.}
+
+\item{\dots}{further arguments to be passed to plot.}
 
 \item{alpha}{parameter for semi-transparent colors.}
 
@@ -67,8 +69,6 @@ jitter and random or equally spaced (see details below)}
 \item{xlim}{the x limits of the plot.}
 
 \item{ylim}{the y limits of the plot.}
-
-\item{\dots}{further arguments to be passed to plot.}
 }
 \value{
 \code{densiTree} returns silently x.

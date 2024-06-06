@@ -16,6 +16,11 @@ getAncDF <- function(x){
   attr(tmp, "contrast") <- contrast / rowSums(contrast)
   tmp <- new2old.phyDat(tmp)
   df <- list2df_ancestral(tmp, x$data)
+  if(!identical(colnames(x$prob), colnames(df))){
+     if(identical(toupper(colnames(x$prob)), toupper(colnames(df)))){
+       colnames(x$prob) <- colnames(df)
+     } else stop("Invalid prob object")
+  }
   rbind(df, x$prob)
 }
 
@@ -73,13 +78,14 @@ getAncDF <- function(x){
 #' @importFrom ggseqlogo make_col_scheme ggseqlogo
 #' @rdname plot.ancestral
 #' @export
-plotAnc <- function(x, i = 1, col = NULL,
-                    cex.pie = .5, pos = "bottomright", scheme=NULL,
-                    ...) {
+plotAnc <- function(x, i = 1, ..., col = NULL, type="phylogram",
+                    cex.pie = .5, pos = "bottomright", scheme=NULL) {
   stopifnot(inherits(x, "ancestral"))
+  type <- match.arg(type, c("phylogram", "cladogram", "fan", "unrooted",
+                            "radial", "tidy"))
+  phylo_clado <- type %in% c("phylogram", "cladogram")
   df <- getAncDF(x)
   data <- x$data
-  type <- attr(data, "type")
   tree <- x$tree
   subset <- df[,"Site"] == i
   Y <- df[subset & !is.na(subset),]
@@ -98,8 +104,8 @@ plotAnc <- function(x, i = 1, col = NULL,
   xrad <- CEX * diff(par("usr")[1:2]) / 50
   levels <- attr(data, "levels")
   nc <- attr(data, "nc")
-  if(is.null(scheme) & type=="AA") scheme <- "Ape_AA"
-  if(is.null(scheme) & type=="DNA") scheme <- "Ape_NT"
+  if(is.null(scheme) & attr(data, "type")=="AA") scheme <- "Ape_AA"
+  if(is.null(scheme) & attr(data, "type")=="DNA") scheme <- "Ape_NT"
   if(!is.null(scheme)){
     scheme <- match.arg(scheme, c("Ape_AA", "Zappo_AA", "Clustal", "Polarity",
                                   "Transmembrane_tendency", "Ape_NT", "RY_NT"))
@@ -138,6 +144,7 @@ plotAnc <- function(x, i = 1, col = NULL,
     sel = seq_along(XX), thermo = NULL, piecol = col, col = "black",
     bg = "lightblue", horiz = FALSE, width = NULL, height = NULL, cex = cex.pie
   )
+#  if(legend) legend(pos, legend=levels, pch=21, pt.bg = col)
   if (!is.null(pos)) legend(pos, legend=levels, pch=21, pt.bg = col)
 }
 
