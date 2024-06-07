@@ -42,6 +42,9 @@ getAncDF <- function(x){
 ## ,site
 ## @param which either "pie" or "seqlogo"
 #' @param node to plot for which the probabilities should be plotted.
+#' @param type a character string specifying the type of phylogeny to be drawn;
+#' it must be one of "phylogram" (the default), "cladogram", "fan", "unrooted",
+#' "radial", "tidy", or any unambiguous abbreviation of these.
 #' @param start start position to plot.
 #' @param end end position to plot.
 #' @param col a vector containing the colors for all possible states.
@@ -51,6 +54,7 @@ getAncDF <- function(x){
 #' "Zappo_AA", "Clustal", "Polarity" and "Transmembrane_tendency", for
 #' nucleotides "Ape_NT" and"RY_NT". Names can be abbreviated.
 #' @param \dots Further arguments passed to or from other methods.
+#' @returns \code{plotAnc} returns silently x.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{ancestral.pml}}, \code{\link[ape]{plot.phylo}},
 #' \code{\link[ape]{image.DNAbin}}, \code{\link[ape]{image.AAbin}}
@@ -146,6 +150,7 @@ plotAnc <- function(x, i = 1, ..., col = NULL, type="phylogram",
   )
 #  if(legend) legend(pos, legend=levels, pch=21, pt.bg = col)
   if (!is.null(pos)) legend(pos, legend=levels, pch=21, pt.bg = col)
+  invisible(x)
 }
 
 
@@ -171,6 +176,7 @@ my_ggseqlogo <-function (data, facet = "wrap", scales = "free_x", ncol = NULL,
 #' @rdname plot.ancestral
 #' @importFrom ggplot2 scale_x_continuous ggplot facet_grid facet_wrap
 #' @importFrom ggseqlogo geom_logo theme_logo
+#' @returns \code{plotSeqLogo} returns a ggplot object.
 #' @export
 plotSeqLogo <- function(x, node=getRoot(x$tree), start=1, end=10, scheme="Ape_NT", ...){
   stopifnot(inherits(x, "ancestral"))

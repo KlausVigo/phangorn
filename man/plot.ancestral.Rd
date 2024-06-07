@@ -20,6 +20,10 @@ plotSeqLogo(x, node = getRoot(x$tree), start = 1, end = 10,
 
 \item{col}{a vector containing the colors for all possible states.}
 
+\item{type}{a character string specifying the type of phylogeny to be drawn;
+it must be one of "phylogram" (the default), "cladogram", "fan", "unrooted",
+"radial", "tidy", or any unambiguous abbreviation of these.}
+
 \item{cex.pie}{a numeric defining the size of the pie graphs.}
 
 \item{pos}{a character string defining the position of the legend.}
@@ -33,6 +37,11 @@ nucleotides "Ape_NT" and"RY_NT". Names can be abbreviated.}
 \item{start}{start position to plot.}
 
 \item{end}{end position to plot.}
+}
+\value{
+\code{plotAnc} returns silently x.
+
+\code{plotSeqLogo} returns a ggplot object.
 }
 \description{
 \code{plotAnc} plots a phylogeny and adds character to the nodes. Either
