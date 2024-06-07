@@ -32,8 +32,7 @@ each state and site.}
 \description{
 \code{write.ancestral} allows to export ancestral reconstructions. It writes
 out the tree, a tab delimited text file with the probabilities and the
-alignment.  \code{read.ancestral} tries to read in these files.
-\code{ancestral} generates an object of class ancestral.
+alignment. \code{ancestral} generates an object of class ancestral.
 }
 \details{
 This allows also to read in reconstruction  made by iqtree to use the
