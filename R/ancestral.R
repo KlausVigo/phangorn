@@ -42,7 +42,7 @@
 ## returned.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{pml}}, \code{\link{parsimony}}, \code{\link[ape]{ace}},
-#' \code{\link{plotAnc}}, \code{\link{lt2amb}}, \code{\link{latag2n}},
+#' \code{\link{plotAnc}}, \code{\link{ltg2amb}}, \code{\link{latag2n}},
 #' \code{\link{gap_as_state}}, \code{\link[ape]{root}},
 #' \code{\link[ape]{makeNodeLabel}}
 #' @references Felsenstein, J. (2004). \emph{Inferring Phylogenies}. Sinauer
