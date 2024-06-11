@@ -92,7 +92,8 @@ Press, Oxford.
 }
 \seealso{
 \code{\link{pml}}, \code{\link{parsimony}}, \code{\link[ape]{ace}},
-\code{\link{plotAnc}}, \code{\link[ape]{root}},
+\code{\link{plotAnc}}, \code{\link{lt2amb}}, \code{\link{latag2n}},
+\code{\link{gap_as_state}}, \code{\link[ape]{root}},
 \code{\link[ape]{makeNodeLabel}}
 }
 \author{
