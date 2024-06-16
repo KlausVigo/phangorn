@@ -5,7 +5,7 @@
 \alias{plotSeqLogo}
 \title{Plot ancestral character on a tree}
 \usage{
-plotAnc(x, i = 1, ..., col = NULL, type = "phylogram", cex.pie = 0.5,
+plotAnc(x, i = 1, type = "phylogram", ..., col = NULL, cex.pie = 0.5,
   pos = "bottomright", scheme = NULL)
 
 plotSeqLogo(x, node = getRoot(x$tree), start = 1, end = 10,
@@ -16,13 +16,13 @@ plotSeqLogo(x, node = getRoot(x$tree), start = 1, end = 10,
 
 \item{i}{plots the i-th site.}
 
-\item{\dots}{Further arguments passed to or from other methods.}
-
-\item{col}{a vector containing the colors for all possible states.}
-
 \item{type}{a character string specifying the type of phylogeny to be drawn;
 it must be one of "phylogram" (the default), "cladogram", "fan", "unrooted",
 "radial", "tidy", or any unambiguous abbreviation of these.}
+
+\item{\dots}{Further arguments passed to or from other methods.}
+
+\item{col}{a vector containing the colors for all possible states.}
 
 \item{cex.pie}{a numeric defining the size of the pie graphs.}
 

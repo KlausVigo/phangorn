@@ -512,8 +512,8 @@ add.tips <- function(tree, tips, where, edge.length = NULL) {
 
 #' Compute all trees topologies.
 #'
-#' \code{allTrees} computes all tree topologies for rooted or unrooted trees
-#' with up to 10 tips. \code{allTrees} returns bifurcating trees.
+#' \code{allTrees} computes all bifurcating tree topologies for rooted or unrooted
+#' trees with up to 10 tips. The number of trees grows fast
 #'
 #'
 #' @param n Number of tips (<=10).
@@ -521,7 +521,8 @@ add.tips <- function(tree, tips, where, edge.length = NULL) {
 #' @param tip.label Tip labels.
 #' @return an object of class \code{multiPhylo}.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link[ape]{rtree}}, \code{\link{nni}}
+#' @seealso \code{\link[ape]{rtree}}, \code{\link{nni}},
+#' \code{\link[ape]{howmanytrees}}, \code{\link{dfactorial}}
 #' @keywords cluster
 #' @examples
 #'
@@ -536,6 +537,7 @@ add.tips <- function(tree, tips, where, edge.length = NULL) {
 allTrees <- function(n, rooted = FALSE, tip.label = NULL) {
   n <- as.integer(n)
   nt <- as.integer(round(dfactorial(2 * (n + rooted) - 5)))
+  Nnode <- as.integer(n - 2L + rooted)
   if ( (n + rooted) > 10) {
     stop(gettextf("That would generate %d trees, and take up more than %d MB of memory!",
       nt, as.integer(round(nt / 1000)), domain = "R-phangorn"))
@@ -606,7 +608,7 @@ allTrees <- function(n, rooted = FALSE, tip.label = NULL) {
     edge <- edges[[x]]
     edge <- edge[reorderRcpp(edge, n, n + 1L, 2L), ]
     tree <- list(edge = edge)
-    tree$Nnode <- as.integer(n - 2L + rooted)
+    tree$Nnode <- Nnode
     attr(tree, "order") <- "postorder"
     class(tree) <- "phylo"
     trees[[x]] <- tree

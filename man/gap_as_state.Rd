@@ -36,7 +36,8 @@ rownames(contr) <- attr(tmp, "allLevels")
 contr
 }
 \seealso{
-\code{\link{phyDat}}
+\code{\link{phyDat}}, \code{\link{lt2amb}}, \code{\link{latag2n}},
+\code{\link{ancestral.pml}}, \code{\link{gap_as_state}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

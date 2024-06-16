@@ -82,7 +82,7 @@ getAncDF <- function(x){
 #' @importFrom ggseqlogo make_col_scheme ggseqlogo
 #' @rdname plot.ancestral
 #' @export
-plotAnc <- function(x, i = 1, ..., col = NULL, type="phylogram",
+plotAnc <- function(x, i = 1, type="phylogram", ..., col = NULL,
                     cex.pie = .5, pos = "bottomright", scheme=NULL) {
   stopifnot(inherits(x, "ancestral"))
   type <- match.arg(type, c("phylogram", "cladogram", "fan", "unrooted",
@@ -131,13 +131,13 @@ plotAnc <- function(x, i = 1, ..., col = NULL, type="phylogram",
     col <- sc$col
     nc <- ncol(y)
   }
-  plot(tree, label.offset = 1.1 * xrad, plot = FALSE, ...)
+  plot(tree, label.offset = 1.1 * xrad, plot = FALSE, type=type, ...)
   lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
   XX <- lastPP$xx
   YY <- lastPP$yy
   xrad <- CEX * diff(lastPP$x.lim * 1.1) / 50
   par(new = TRUE)
-  plot(tree, label.offset = 1.1 * xrad, plot = TRUE, ...)
+  plot(tree, label.offset = 1.1 * xrad, plot = TRUE, type=type, ...)
   if (is.null(col)) col <- hcl.colors(nc) #rainbow(nc)
   if(!is.null(names(col))) col <- col[attr(data, "levels")]
   if (length(col) != nc) {
