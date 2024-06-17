@@ -98,6 +98,7 @@ plotAnc <- function(x, i = 1, type="phylogram", ..., col = NULL,
   #  y <- y[, -c(1:3)]
   colnames(y) <- gsub("p_", "", colnames(y))
   row.names(y) <- Y$Node
+  y <- y[c(tree$tip.label, tree$node.label), ]
   if(is.null(tree$node.label) || any(is.na(match(tree$node.label, rownames(y)))) ||
      is.numeric(tree$node.label))
     tree <- makeNodeLabel(tree)
