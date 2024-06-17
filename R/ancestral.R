@@ -224,9 +224,11 @@ ancestral <- function(tree, align, prob){
   stopifnot(inherits(tree, "phylo"))
   stopifnot(inherits(align, "phyDat"))
   stopifnot(inherits(prob, "data.frame"))
+  if(is.null(tree$node.label))stop("tree needs node.label")
   state <- extract_states(prob, attr(align, "type"),
                           levels=attr(align, "levels"))
-  erg <- list(tree=tree, data=align, prob=prob, state=state)
+  erg <- list(tree=tree, data=align[tree$tip.label], prob=prob,
+              state=state[tree$node.label])
   class(erg) <- "ancestral"
   erg
 }
