@@ -18,7 +18,6 @@ joint_pml <- function(x){
   levels <- attr(data, "levels")
   allLevels <- attr(data, "allLevels")
   l <- length(tree$edge.length)
-
   L <- C <- array(NA, c(nr, nc, max(tree$edge)))
   for(i in seq_len(Ntip(tree))){
     L[,,i]<- log(contrast[data[[i]],,drop=FALSE]%*%P[[i]])
@@ -62,7 +61,7 @@ joint_pml <- function(x){
     pa_i <- edge[i,1]
     if(ch_i > ntip){
       pos <-res[[labels[pa_i]]]
-      res[[labels[ch_i]]] <- C[nrw,pos,ch_i]
+      res[[labels[ch_i]]] <- C[cbind(nrw,pos,ch_i)]
     }
   }
   ind <- match(levels, allLevels)
