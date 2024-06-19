@@ -17,8 +17,8 @@ allTrees(n, rooted = FALSE, tip.label = NULL)
 an object of class \code{multiPhylo}.
 }
 \description{
-\code{allTrees} computes all tree topologies for rooted or unrooted trees
-with up to 10 tips. \code{allTrees} returns bifurcating trees.
+\code{allTrees} computes all bifurcating tree topologies for rooted or unrooted
+trees with up to 10 tips. The number of trees grows fast
 }
 \examples{
 
@@ -31,7 +31,8 @@ par(old.par)
 
 }
 \seealso{
-\code{\link[ape]{rtree}}, \code{\link{nni}}
+\code{\link[ape]{rtree}}, \code{\link{nni}},
+\code{\link[ape]{howmanytrees}}, \code{\link{dfactorial}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

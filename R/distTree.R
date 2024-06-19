@@ -1,48 +1,3 @@
-#' UPGMA and WPGMA
-#'
-#' UPGMA and WPGMA clustering. Just a wrapper function around
-#' \code{\link[stats]{hclust}}.
-#'
-#'
-#' @param D A distance matrix.
-#' @param method The agglomeration method to be used. This should be (an
-#' unambiguous abbreviation of) one of "ward", "single", "complete", "average",
-#' "mcquitty", "median" or "centroid". The default is "average".
-#' @param \dots Further arguments passed to or from other methods.
-#' @return A phylogenetic tree of class \code{phylo}.
-#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{hclust}}, \code{\link{dist.hamming}}, \code{\link{NJ}},
-#' \code{\link{as.phylo}}, \code{\link{fastme}}, \code{\link{nnls.tree}}
-#' @keywords cluster
-#' @examples
-#'
-#' data(Laurasiatherian)
-#' dm <- dist.ml(Laurasiatherian)
-#' tree <- upgma(dm)
-#' plot(tree)
-#'
-#' @rdname upgma
-#' @export
-"upgma" <- function(D, method = "average", ...) {
-  DD <- as.dist(D)
-  hc <- hclust(DD, method = method, ...)
-  result <- as.phylo(hc)
-  result <- reorder(result, "postorder")
-  result
-}
-
-
-#' @rdname upgma
-#' @export
-"wpgma" <- function(D, method = "mcquitty", ...) {
-  DD <- as.dist(D)
-  hc <- hclust(DD, method = method, ...)
-  result <- as.phylo(hc)
-  result <- reorder(result, "postorder")
-  result
-}
-
-
 #' Neighbor-Joining
 #'
 #' This function performs the neighbor-joining tree estimation of Saitou and
@@ -157,7 +112,12 @@ UNJ <- function(x){
 #' Weighted least squares is used with weights w, i.e., sum(w * e^2) is
 #' minimized.
 #' @param balanced use weights as in balanced fastME
-#' @param tip.dates a vector of sampling times associated to the tips of tree.
+#' @param tip.dates a named vector of sampling times associated to the tips of
+#' the tree.
+#' @param calibration a named vector of calibration times associated to nodes of
+#' the tree.
+#' @param eps minimum edge length (default s 1e-8).
+## @param strict strict calibration.
 #' @return \code{nnls.tree} return a tree, i.e. an object of class
 #' \code{phylo}.  \code{designTree} and \code{designSplits} a matrix, possibly
 #' sparse.
@@ -181,26 +141,27 @@ UNJ <- function(x){
 #' @rdname designTree
 #' @export
 designTree <- function(tree, method = "unrooted", sparse = FALSE,
-                       tip.dates=NULL, ...) {
-  if (!is.na(pmatch(method, "all")))
-    method <- "unrooted"
-  METHOD <- c("unrooted", "rooted", "tipdated")
-  method <- pmatch(method, METHOD)
-  if (is.na(method)) stop("invalid method")
-  if (method == -1) stop("ambiguous method")
-  if (!is.rooted(tree) & method == 2) stop("tree has to be rooted")
-  if (method == 1) {
-    X <- designUnrooted(tree, ...)
-    if (sparse) X <- Matrix(X)
-  }
-  if (method == 2) X <- designUltra(tree, sparse = sparse, ...)
-  if(method == 3) X <- designTipDated(tree, tip.dates=tip.dates, sparse=sparse,
-                                      ...)
+                       tip.dates=NULL, calibration=NULL, ...) { # , strict=TRUE
+  method <- match.arg(method,
+                      c("unrooted", "ultrametric", "rooted", "tipdated"))
+  if(method == "rooted") method <- "ultrametric"
+  if(has.singles(tree)) tree <- collapse.singles(tree)
+  #if (!is.na(pmatch(method, "all")))
+  #  method <- "unrooted"
+  #METHOD <- c("unrooted", "rooted", "tipdated")
+  #method <- pmatch(method, METHOD)
+  #if (is.na(method)) stop("invalid method")
+  #if (method == -1) stop("ambiguous method")
+  #if (!is.rooted(tree) & method == 2) stop("tree has to be rooted")
+  if(method == "unrooted") X <- designUnrooted(tree, sparse = sparse, ...)
+  if(method == "ultrametric") X <- designUltra(tree, sparse = sparse, ...)
+  if(method == "tipdated") X <- designTipDated(tree, tip.dates=tip.dates,
+                                               sparse=sparse, ...)
   X
 }
 
 
-designUnrooted <- function(tree, order = NULL) {
+designUnrooted <- function(tree, sparse=FALSE, order = NULL) {
   if (inherits(tree, "phylo")) {
     if (is.rooted(tree)) tree <- unroot(tree)
     tree <- reorder(tree, "postorder")
@@ -225,13 +186,15 @@ designUnrooted <- function(tree, order = NULL) {
   }
   if (inherits(tree, "phylo"))
     colnames(res) <- paste(tree$edge[, 1], tree$edge[, 2], sep = "<->")
+  if(sparse) res <- Matrix(res, sparse=TRUE)
   res
 }
 
 
-designUltra <- function(tree, sparse = TRUE) {
+designUltra <- function(tree, sparse = TRUE, calibration=NULL) {
   if (is.null(attr(tree, "order")) || attr(tree, "order") != "postorder")
     tree <- reorder(tree, "postorder")
+#  stopifnot( !(!is.null(calibration) && is.null(tree$node.label)))
   leri <- allChildren(tree)
   bp <- bip(tree)
   n <- length(tree$tip.label)
@@ -341,7 +304,11 @@ designUnrooted2 <- function(tree, sparse = TRUE) {
 }
 
 
-designTipDated <- function(tree, tip.dates, sparse = TRUE){
+designTipDated <- function(tree, tip.dates, sparse=TRUE){
+  #, strict=TRUE
+  #if(!is.numeric(tip.dates)) browser()
+  #if(!length(tip.dates) >= Ntip(tree)) browser()
+  stopifnot(is.numeric(tip.dates), length(tip.dates) >= Ntip(tree))
   nTip <- Ntip(tree)
   tmp <- function(n){
     x1 <- rep(seq_len(n), each=n)
@@ -352,7 +319,7 @@ designTipDated <- function(tree, tip.dates, sparse = TRUE){
   tip.dates <- tip.dates - max(tip.dates)
   x <- tmp(nTip) %*% tip.dates
   nodes <- integer(tree$Nnode)
-  X <- designUltra(tree)
+  X <- designUltra(tree, sparse=sparse)
   nodes <- attr(X, "nodes")
   X <- cbind(X, x)
   colnames(X) <- c(nodes, -1)
@@ -361,11 +328,56 @@ designTipDated <- function(tree, tip.dates, sparse = TRUE){
 }
 
 
+designCalibrated <- function(tree, sparse=TRUE, calibration=NULL){
+  #, tip.dates=NULL, strict=TRUE
+  #stopifnot(is.numeric(tip.dates), length(tip.dates) >= Ntip(tree))
+  nTip <- Ntip(tree)
+  #if(!is.null(tree$node.label))
+  cname <- tree$node.label
+#  nodes <- integer(tree$Nnode)
+  X <- designUltra(tree, sparse=sparse)
+  #if(!is.null(tree$node.label))
+  colnames(X) <- cname
+  x <- X[, names(calibration), drop=FALSE] %*% calibration
+  X <- cbind(X[,-match(names(calibration), cname)], rate=x)
+#  nodes <- attr(X, "nodes")
+#  X <- cbind(X, x)
+#  colnames(X) <- c(nodes, -1)
+#  attr(X, "nodes") <- nodes
+  X
+}
+
+
+designConstrained <- function(tree, sparse=TRUE, tip.dates=NULL,
+                              calibration=NULL){
+  stopifnot(is.numeric(tip.dates), length(tip.dates) >= Ntip(tree))
+  X <- designUltra(tree, sparse=sparse)
+  nTip <- Ntip(tree)
+  # designTipDated
+  if(!is.null(tip.dates)){
+    tmp <- function(n){
+      x1 <- rep(seq_len(n), each=n)
+      x2 <- rep(seq_len(n), n)
+      ind <- x1 < x2
+      sparseMatrix(i = rep(seq_len(sum(ind)), 2), j = c(x1[ind], x2[ind]))
+    }
+  }
+  if(!is.null(calibration)){
+    cname <- tree$node.label
+    colnames(X) <- cname
+    x <- X[, names(calibration), drop=FALSE] %*% calibration
+    X <- cbind(X[,-match(names(calibration), cname)], rate=x)
+  }
+
+
+}
+
 #' @rdname designTree
 #' @export
 nnls.tree <- function(dm, tree, method=c("unrooted", "ultrametric", "tipdated"),
           rooted=NULL, trace=1, weight=NULL, balanced=FALSE, tip.dates=NULL) {
   method <- match.arg(method, c("unrooted", "ultrametric", "tipdated"))
+  if(has.singles(tree)) tree <- collapse.singles(tree)
   if (is.rooted(tree) && method == "unrooted") tree <- unroot(tree)
   tree <- reorder(tree, "postorder")
   if (balanced) {
@@ -421,7 +433,10 @@ nnls.tree <- function(dm, tree, method=c("unrooted", "ultrametric", "tipdated"),
     RSS <- sum((y - (X %*% betahattmp))^2)
     if (trace > 1) print(paste("RSS:", RSS))
     attr(tree, "RSS") <- RSS
-    if(method=="tipdated") betahat <- betahat / rate
+    if(method=="tipdated"){
+      betahat <- betahat / rate
+      attr(tree, "rate") <- rate
+    }
     tree$edge.length <- betahat
     return(tree)
   }
@@ -494,7 +509,7 @@ nnls.phylo <- function(x, dm, method = "unrooted", trace = 0, ...) {
 
 #' @rdname designTree
 #' @export
-nnls.splits <- function(x, dm, trace = 0) {
+nnls.splits <- function(x, dm, trace = 0, eps = 1e-8) {
   labels <- attr(x, "labels")
   dm <- as.matrix(dm)
   k <- dim(dm)[1]
@@ -517,23 +532,24 @@ nnls.splits <- function(x, dm, trace = 0) {
   dvec <- crossprod(X, y)
   betahat <- as.vector(solve(Dmat, dvec))
 
-  if (!any(betahat < 0)) {
-    RSS <- sum((y - (X %*% betahat))^2)
-    if (trace > 1) print(paste("RSS:", RSS))
-    attr(x, "RSS") <- RSS
-    attr(x, "weights") <- betahat
-    return(x)
-  }
-  n <- dim(X)[2]
+#  if (!any(betahat < 0)) {
+#    RSS <- sum((y - (X %*% betahat))^2)
+#    if (trace > 1) print(paste("RSS:", RSS))
+#    attr(x, "RSS") <- RSS
+#    attr(x, "weights") <- betahat
+#    return(x)
+#  }
   int <- lengths(x)
-
-  # quadratic programing
-  Amat <- matrix(1, 1, n)
-  Aind <- matrix(0L, 2L, n)
-  Aind[1, ] <- 1L
-  Aind[2, ] <- as.integer(1L:n)
-  betahat <- quadprog::solve.QP.compact(as.matrix(Dmat), as.vector(dvec), Amat,
-    Aind)$sol
+  if (any(betahat < 0)) {
+    n <- dim(X)[2]
+    # quadratic programing
+    Amat <- matrix(1, 1, n)
+    Aind <- matrix(0L, 2L, n)
+    Aind[1, ] <- 1L
+    Aind[2, ] <- as.integer(1L:n)
+    betahat <- quadprog::solve.QP.compact(as.matrix(Dmat), as.vector(dvec),
+                                          Amat, Aind)$sol
+  }
   RSS <- sum((y - (X %*% betahat))^2)
   ind <- (betahat > 1e-8) | int == 1
   x <- x[ind]
@@ -546,10 +562,10 @@ nnls.splits <- function(x, dm, trace = 0) {
 
 #' @rdname designTree
 #' @export
-nnls.networx <- function(x, dm) {
+nnls.networx <- function(x, dm, eps = 1e-8) {
   #    spl <- attr(x, "splits")
   spl <- x$splits
-  spl2 <- nnls.splits(spl, dm)
+  spl2 <- nnls.splits(spl, dm, eps=eps)
   weight <- attr(spl, "weight")
   weight[] <- 0
   weight[match(spl2, spl)] <- attr(spl2, "weight")

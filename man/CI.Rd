@@ -10,13 +10,16 @@ CI(tree, data, cost = NULL, sitewise = FALSE)
 RI(tree, data, cost = NULL, sitewise = FALSE)
 }
 \arguments{
-\item{tree}{tree to start the nni search from.}
+\item{tree}{a phylogenetic tree, i.e. an object of class \code{phylo}.}
 
 \item{data}{A object of class phyDat containing sequences.}
 
 \item{cost}{A cost matrix for the transitions between two states.}
 
 \item{sitewise}{return CI/RI for alignment or sitewise}
+}
+\value{
+a scalar or vector with the CI/RI vector.
 }
 \description{
 \code{CI} and \code{RI} compute the Consistency Index (CI) and Retention
@@ -28,6 +31,27 @@ divided by the number of changes required on the tree (parsimony score). The
 Consistency Index is equal to one if there is no homoplasy.
 And the Retention Index is defined as
 \deqn{RI = \frac{MaxChanges - ObsChanges}{MaxChanges - MinChanges}}{RI = (MaxChanges - ObsChanges) / (MaxChanges - MinChanges)}
+}
+\examples{
+example(as.phylo.formula)
+lab <- tr$tip.label
+lab[79] <- "Herpestes fuscus"
+tr$tip.label <- abbreviateGenus(lab)
+X <- matrix(0, 112, 3, dimnames = list(tr$tip.label, c("Canis", "Panthera",
+            "Canis_Panthera")))
+desc_canis <- Descendants(tr, "Canis")[[1]]
+desc_panthera <- Descendants(tr, "Panthera")[[1]]
+X[desc_canis, c(1,3)] <- 1
+X[desc_panthera, c(2,3)] <- 1
+col <- rep("black", 112)
+col[desc_panthera] <- "red"
+col[desc_canis] <- "blue"
+X <- phyDat(X, "USER", levels=c(0,1))
+plot(tr, "f", tip.color=col)
+# The first two sites are homoplase free!
+CI(tr, X, sitewise=TRUE)
+RI(tr, X, sitewise=TRUE)
+
 }
 \seealso{
 \code{\link{parsimony}}, \code{\link{pratchet}},

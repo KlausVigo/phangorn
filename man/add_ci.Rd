@@ -28,6 +28,9 @@ blue.}
 \item{\dots}{arguments passed to other functions, \code{\link{legend}} or
 \code{\link{bxp}}.}
 }
+\value{
+Nothing. Function is called for adding to a plot.
+}
 \description{
 These are low-level plotting commands to draw the confidence
 intervals on the node of a tree as rectangles with coloured backgrounds or
@@ -50,7 +53,7 @@ add_boxplot(tree, trees, boxwex=.7)
 }
 \seealso{
 \code{\link{plot.phylo}}, \code{\link{plotBS}},
-\code{\link{add_edge_length}}
+\code{\link{add_edge_length}}, \code{\link{maxCladeCred}}
 }
 \author{
 Emmanuel Paradis, Santiago Claramunt, Joseph Brown, Klaus Schliep

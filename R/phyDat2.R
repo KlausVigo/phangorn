@@ -172,10 +172,12 @@ phyDat.AA <- function (data, return.index = TRUE){
   # AAbin
   if (inherits(data,"AAbin")){
     if(is.list(data)) data <- as.matrix(data)
-    data <- as.character(data)
+    data <- as.character(data)  # not needed
   }
-  if(inherits(data, "character")) data <- as.matrix(data)
-  data <- toupper(data)
+  if(inherits(data, "character")){
+    data <- as.matrix(data)
+#    data <- toupper(data)
+  }
   aa <- c("A", "R", "N", "D", "C", "Q", "E", "G", "H", "I", "L", "K", "M", "F",
           "P", "S", "T", "W", "Y", "V")
   aa2 <- c("A", "R", "N", "D", "C", "Q", "E", "G", "H", "I", "L", "K", "M", "F",
@@ -203,9 +205,23 @@ phyDat.AA <- function (data, return.index = TRUE){
   n <- nrow(data)
   res <- vector("list", n)
   ind_na <- logical(length(weight))
-  for(i in seq_len(n)){
-    res[[i]] <- match(data[i, ind], aa2)
-    ind_na[is.na(res[[i]])] <- TRUE
+
+  if(inherits(data,"AAbin")){
+    cs <- rep(NA_integer_, 256)
+    #
+    cs[as.integer (sapply( aa2 , charToRaw) )] <- seq_along(aa2)
+    cs[as.integer (sapply( tolower(aa2) , charToRaw) )] <- seq_along(aa2)
+    for(i in seq_len(n)){
+      res[[i]] <- cs[ as.integer(data[i, ind]) ]
+      #      maybe check for NAs
+      #      ind_na[is.na(res[[i]])] <- TRUE
+    }
+  } else {
+    data <- toupper(data)
+    for(i in seq_len(n)){
+      res[[i]] <- match(data[i, ind], aa2)
+      ind_na[is.na(res[[i]])] <- TRUE
+    }
   }
   if(any(ind_na)){
     warning("Found unknown characters (not supplied in levels). Deleted sites with unknown states.")
@@ -239,9 +255,10 @@ phyDat.codon <- function (data, return.index = TRUE, ambiguity = "---",
     data <- as.matrix(data)
     data <- tolower(data)
   }
-  if (inherits(data,"DNAbin") || inherits(data, "phyDat"))
+  if (inherits(data,"DNAbin") || inherits(data, "phyDat")){
+    if(is.list(data) && inherits(data, "phyDat")) data <- as.matrix(data)
     data <- as.character(data)
-
+  }
   data[data=="u"] <- "t"
   stopcodon <- match.arg(stopcodon, c("exclude", "include"))
 
@@ -257,7 +274,7 @@ phyDat.codon <- function (data, return.index = TRUE, ambiguity = "---",
   if(stopcodon!="include") codon <- codon[tmp != "*"] # no stop codons
 
   if(stopcodon=="exclude"){
-    for(i in stopcodon){
+    for(i in stop_codons){
       data[data==i] <- NA
     }
     rm_stop <- which(is.na(data), arr.ind = TRUE)[,1]
@@ -324,3 +341,9 @@ phyDat.codon <- function (data, return.index = TRUE, ambiguity = "---",
   res
 }
 
+
+##  AA: add toupper to default
+##  DNA: add tolower, DNAbin to data
+##  default: create contrast from levels
+##  CODON: create contrast
+##

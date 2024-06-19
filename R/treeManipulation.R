@@ -68,13 +68,16 @@ changeEdgeLength <- function(tree, edge, edge.length) {
 #'
 #' \code{midpoint} performs midpoint rooting of a tree.  \code{pruneTree}
 #' produces a consensus tree.
-#'
 #' \code{pruneTree} prunes back a tree and produces a consensus tree, for trees
 #' already containing nodelabels.  It assumes that nodelabels are numerical or
 #' character that allows conversion to numerical, it uses
-#' as.numeric(as.character(tree$node.labels)) to convert them.  \code{midpoint}
-#' so far does not transform node.labels properly.
-#'
+#' as.numeric(as.character(tree$node.labels)) to convert them.
+#' \code{midpoint} by default assumes that node labels contain support values.
+#' This works if support values are computed from splits, but should be
+#' recomputed for clades.
+#' \code{keep_as_tip} takes a list of tips and/or node labels and returns a tree
+#' pruned to those. If node label, then it prunes all descendants of that node
+#' until that internal node becomes a tip.
 
 #' @param tree an object of class \code{phylo}.
 #' @param FUN a function evaluated on the nodelabels, result must be logical.
@@ -509,8 +512,8 @@ add.tips <- function(tree, tips, where, edge.length = NULL) {
 
 #' Compute all trees topologies.
 #'
-#' \code{allTrees} computes all tree topologies for rooted or unrooted trees
-#' with up to 10 tips. \code{allTrees} returns bifurcating trees.
+#' \code{allTrees} computes all bifurcating tree topologies for rooted or unrooted
+#' trees with up to 10 tips. The number of trees grows fast
 #'
 #'
 #' @param n Number of tips (<=10).
@@ -518,7 +521,8 @@ add.tips <- function(tree, tips, where, edge.length = NULL) {
 #' @param tip.label Tip labels.
 #' @return an object of class \code{multiPhylo}.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link[ape]{rtree}}, \code{\link{nni}}
+#' @seealso \code{\link[ape]{rtree}}, \code{\link{nni}},
+#' \code{\link[ape]{howmanytrees}}, \code{\link{dfactorial}}
 #' @keywords cluster
 #' @examples
 #'
@@ -533,6 +537,7 @@ add.tips <- function(tree, tips, where, edge.length = NULL) {
 allTrees <- function(n, rooted = FALSE, tip.label = NULL) {
   n <- as.integer(n)
   nt <- as.integer(round(dfactorial(2 * (n + rooted) - 5)))
+  Nnode <- as.integer(n - 2L + rooted)
   if ( (n + rooted) > 10) {
     stop(gettextf("That would generate %d trees, and take up more than %d MB of memory!",
       nt, as.integer(round(nt / 1000)), domain = "R-phangorn"))
@@ -603,7 +608,7 @@ allTrees <- function(n, rooted = FALSE, tip.label = NULL) {
     edge <- edges[[x]]
     edge <- edge[reorderRcpp(edge, n, n + 1L, 2L), ]
     tree <- list(edge = edge)
-    tree$Nnode <- as.integer(n - 2L + rooted)
+    tree$Nnode <- Nnode
     attr(tree, "order") <- "postorder"
     class(tree) <- "phylo"
     trees[[x]] <- tree
@@ -632,7 +637,16 @@ allAncestors <- function(x) {
   res
 }
 
-
+char2pos <- function(x, node){
+  if(is.null(x$node.label)){
+    tmp <- as.character(seq(Ntip(x)+1, Ntip(x)+Nnode(x)))
+    labels <- c(x$tip.label, tmp)
+  }
+  else  labels <- c(x$tip.label, x$node.label)
+  x <- match(node, labels)
+  if(any(is.na(x))) stop("Can't find supplied node in the labels")
+  x
+}
 
 ## @aliases Ancestors Children Descendants Siblings mrca.phylo
 #' tree utility function
@@ -649,7 +663,8 @@ allAncestors <- function(x) {
 #' If the argument node is missing the function is evaluated for all nodes.
 #'
 #' @param x a tree (a phylo object).
-#' @param node an integer or a vector of integers corresponding to a node ID
+#' @param node an integer or character vector (or scalar) corresponding to a
+#' node ID
 #' @param type specify whether to return just direct children / parents or all
 #' @param include.self whether to include self in list of siblings
 #' @param full a logical indicating whether to return the MRCAs among all tips
@@ -678,6 +693,7 @@ allAncestors <- function(x) {
 #' @export
 #' @rdname Ancestors
 Ancestors <- function(x, node, type = c("all", "parent")) {
+  if(!missing(node) && inherits(node, "character")) node <- char2pos(x, node)
   parents <- x$edge[, 1]
   child <- x$edge[, 2]
   pvector <- integer(max(x$edge)) # parents
@@ -730,6 +746,7 @@ allDescendants <- function(x) {
 #' @export
 Children <- function(x, node) {
   # return allChildren if node is missing
+  if(!missing(node) && inherits(node, "character")) node <- char2pos(x, node)
   if (!missing(node) && length(node) == 1)
     return(x$edge[x$edge[, 1] == node, 2])
   allChildren(x)[node]
@@ -740,6 +757,7 @@ Children <- function(x, node) {
 #' @export
 Descendants <- function(x, node, type = c("tips", "children", "all")) {
   type <- match.arg(type)
+  if(!missing(node) && inherits(node, "character")) node <- char2pos(x, node)
   if (type == "children") return(Children(x, node))
   if (type == "tips") return(bip(x)[node])
   # new version using Rcpp
@@ -766,6 +784,7 @@ Descendants <- function(x, node, type = c("tips", "children", "all")) {
 #' @export
 Siblings <- function(x, node, include.self = FALSE) {
   if (missing(node)) node <- as.integer(1:max(x$edge))
+  if(!missing(node) && inherits(node, "character")) node <- char2pos(x, node)
   l <- length(node)
   if (l == 1) {
     v <- Children(x, Ancestors(x, node, "parent"))
@@ -799,6 +818,7 @@ Siblings <- function(x, node, include.self = FALSE) {
 #' @export
 mrca.phylo <- function(x, node = NULL, full = FALSE) {
   if (is.null(node)) return(mrca2(x, full = full))
+  if(!missing(node) && inherits(node, "character")) node <- char2pos(x, node)
   return(getMRCA(x, node))
 }
 
@@ -842,4 +862,15 @@ relabel <- function(y, ref) {
   y$edge[ie, 2] <- ilab
   y$tip.label <- ref
   y
+}
+
+#' @rdname midpoint
+#' @param labels tip and node labels to keep as tip labels in the tree
+#' @export
+keep_as_tip<- function(tree, labels){
+  nodes_to_keep <- labels[!is.na(match(labels, tree$node.label))]
+  tips_to_remove <-  Descendants(tree, nodes_to_keep) |> unlist() |> unique()
+  tree_1 <- drop.tip(tree, tips_to_remove, subtree = TRUE)
+  tree_2 <- keep.tip(tree_1, labels, collapse.singles=FALSE)
+  tree_2
 }

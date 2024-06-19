@@ -1,4 +1,45 @@
-    CHANGES in PHANGORN VERSION 2.12.0
+    CHANGES in PHANGORN VERSION 3.0.0
+
+NEW FEATURES
+
+    o new function supgma, performing serial sampled UPGMA
+
+      (Drummond, Rodrigo 2000)
+
+    o new function gap_as_state, treating gaps as a state.
+
+    o new function keep_as_tip allows to prune a tree and keep nodes as a tip
+
+      (suggested by Hedvig Skirgård)
+
+    o nnls now can estimate trees with calibrations and tip dated trees
+
+    o the functions Descendants, Ancestors, Siblings, mrca.phy now also accept a
+
+      character vector for the node argument and not only integers.
+
+    o Ancestral state reconstructionwas in parts rewritten. Output is now an
+
+      object of class ancestral. E.g. ancestral states of constant sites are now
+
+      always this state.
+
+    o Improvements to several plot functions to get nicer plots out of the box.
+
+    o Nicer defaults for plot.pml, mainly for rooted trees.
+
+    o plotAnc got an argument scheme allowing to use different color schemes,
+
+      especially for amino acid models shared with image.AAbin.
+
+    o plot.networx gets two additional arguments, direction is in plot.phylo and
+
+      angle to rotate the network.
+
+    o new function composition_test comparing indicating possible problems
+
+      with base / state composition.
+
 
 OTHER CHANGES
 
@@ -12,11 +53,17 @@ OTHER CHANGES
 
       which were implicitly using "estimated".
 
-    o some improvements to pmlPart
+    o some improvements to pmlPart.
 
-    o nicer defaults for plot.pml
+    o the sankoff algorithm has been rewritten.
 
-    o the sankoff algorithm has been rewritten
+BUG FIXES
+
+    o pml_bb roots the tree, if method is either ultrametric or tipdated. Fixes
+
+      problem when modelTest object was supplied.
+
+    o nnls.tree now checks if the tree has singletons.
 
 
     CHANGES in PHANGORN VERSION 2.11.0

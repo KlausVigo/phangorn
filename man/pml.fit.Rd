@@ -80,6 +80,16 @@ the package coalescentMCMC, but are not intended for end user. Most of the
 functions call C code and are far less forgiving if the import is not what
 they expect than \code{pml}.
 }
+\examples{
+data(Laurasiatherian)
+tree <- NJ(dist.ml(Laurasiatherian))
+bf <- rep(0.25, 4)
+eig <- edQt()
+pml.init(Laurasiatherian)
+pml.fit(tree, Laurasiatherian, bf=bf, eig=eig)
+pml.free()
+pml(tree, Laurasiatherian) |> logLik()
+}
 \references{
 Felsenstein, J. (1981) Evolutionary trees from DNA sequences: a
 maximum likelihood approach. \emph{Journal of Molecular Evolution},

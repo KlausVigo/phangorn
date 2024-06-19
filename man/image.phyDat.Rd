@@ -11,11 +11,19 @@
 
 \item{...}{further arguments passed to or from other methods.}
 }
+\value{
+Nothing. The function is called for plotting.
+}
 \description{
 This function plots an image of an alignment of sequences.
 }
 \details{
 A wrapper for using \code{\link{image.DNAbin}} and \code{\link{image.AAbin}}.
+Codons triplets are handled as nucleotide sequences.
+}
+\examples{
+data("chloroplast")
+image(chloroplast[, 1:50], scheme="Clustal", show.aa = TRUE)
 }
 \seealso{
 \code{\link{image.DNAbin}}, \code{\link{image.AAbin}}

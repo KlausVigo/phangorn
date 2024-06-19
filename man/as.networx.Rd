@@ -23,6 +23,9 @@ splits (may excludes splits).}
 
 \item{coord}{add coordinates of the nodes, allows to reproduce the plot.}
 }
+\value{
+an object of class \code{networx}.
+}
 \description{
 \code{as.networx} convert \code{splits} objects into a \code{networx}
 object. And most important there exists a generic \code{plot} function to

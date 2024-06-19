@@ -68,8 +68,13 @@ comp2 <- function(x, y) {
 #' @references Liu, L., Yu, L. and Pearl, D. K. (2010) Maximum tree: a
 #' consistent estimator of the species tree. \emph{Journal of Mathematical
 #' Biology}, \bold{60}, 95--106.
+#' @examples
+#' ## example in Liu et al. (2010)
+#' tr1 <- read.tree(text = "(((B:0.05,C:0.05):0.01,D:0.06):0.04,A:0.1);")
+#' tr2 <- read.tree(text = "(((A:0.07,C:0.07):0.02,D:0.09):0.03,B:0.12);")
+#' TR <- c(tr1, tr2)
+#' sp_tree <- coalSpeciesTree(TR)
 #' @keywords cluster
-#'
 #' @export
 coalSpeciesTree <- function(tree, X = NULL, sTree = NULL) {
   if (is.null(X)) return(speciesTree(tree))
@@ -98,8 +103,7 @@ coalSpeciesTree <- function(tree, X = NULL, sTree = NULL) {
       Labels = attr(X, "levels"), Size = l, class = "dist",
       Diag = FALSE, Upper = FALSE
     )
-
-    sTree <- upgma(dm, "single")
+    sTree <- as.phylo(hclust(dm, method = "single"))
     # dm of pairwise states
   }
   else {

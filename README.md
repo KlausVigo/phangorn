@@ -2,7 +2,7 @@
 [![CRAN Status Badge](https://www.r-pkg.org/badges/version/phangorn)](https://cran.r-project.org/package=phangorn)
 [![CRAN Downloads (monthly)](https://cranlogs.r-pkg.org/badges/phangorn)](https://cran.r-project.org/package=phangorn)
 [![CRAN Downloads (total)](https://cranlogs.r-pkg.org/badges/grand-total/phangorn)](https://cran.r-project.org/package=phangorn)
-[![codecov.io](https://codecov.io/github/KlausVigo/phangorn/coverage.svg?branch=master)](https://codecov.io/github/KlausVigo/phangorn?branch=master)
+[![Codecov test coverage](https://codecov.io/gh/KlausVigo/phangorn/branch/master/graph/badge.svg)](https://app.codecov.io/gh/KlausVigo/phangorn?branch=master)
 
 # phangorn <img src='man/figures/logo.png' align="right" width="120" />
 
@@ -12,15 +12,18 @@ phangorn is a package for phylogenetic reconstruction and analysis in the R lang
 You can install
 - the latest released version `install.packages("phangorn")`
 - the latest development version `remotes::install_github("KlausVigo/phangorn")`
+- [r-universe](https://r-universe.dev/) kindly provides binaries for Windows, 
+Linux and OS X of the development version [here](https://klausvigo.r-universe.dev/phangorn#).
 
-To install the development version you may need to install the Biostrings and seqLogo package from bioconductor first:
+To install the development version you may need to install the Biostrings package from bioconductor first:
 ```
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
-BiocManager::install(c("Biostrings", "seqLogo"))
+BiocManager::install("Biostrings")
 ```
 Also the development version usually depends on the latest ape development 
-version and information to download can be found  [here](http://ape-package.ird.fr/ape_installation.html). 
+version and information to download can be found 
+[here](https://emmanuelparadis.github.io/ape_installation.html). 
 Additionally you may need to install on windows [Rtools](https://cran.r-project.org/bin/windows/Rtools/) and on mac [XCode](https://developer.apple.com/xcode/)
 and [GFortran](https://gcc.gnu.org/wiki/GFortranBinaries).
 

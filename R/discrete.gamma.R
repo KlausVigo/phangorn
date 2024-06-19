@@ -31,7 +31,7 @@
 #' @param \dots Further arguments passed to or from other methods.
 #' @return \code{discrete.gamma} returns a matrix.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{pml.fit}, \link{stepfun}, link{pgamma}, link{pbeta}},
+#' @seealso \code{\link{pml.fit}, \link{stepfun}, \link{pgamma}, \link{pbeta}},
 #' @examples
 #' discrete.gamma(1, 4)
 #'

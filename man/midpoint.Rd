@@ -6,6 +6,7 @@
 \alias{midpoint.phylo}
 \alias{midpoint.multiPhylo}
 \alias{pruneTree}
+\alias{keep_as_tip}
 \title{Tree manipulation}
 \usage{
 getRoot(tree)
@@ -17,6 +18,8 @@ midpoint(tree, node.labels = "support", ...)
 \method{midpoint}{multiPhylo}(tree, node.labels = "support", ...)
 
 pruneTree(tree, ..., FUN = ">=")
+
+keep_as_tip(tree, labels)
 }
 \arguments{
 \item{tree}{an object of class \code{phylo}.}
@@ -27,6 +30,8 @@ should labels get 'deleted'?}
 \item{\dots}{further arguments, passed to other methods.}
 
 \item{FUN}{a function evaluated on the nodelabels, result must be logical.}
+
+\item{labels}{tip and node labels to keep as tip labels in the tree}
 }
 \value{
 \code{pruneTree} and \code{midpoint} a tree. \code{getRoot} returns
@@ -35,13 +40,16 @@ the root node.
 \description{
 \code{midpoint} performs midpoint rooting of a tree.  \code{pruneTree}
 produces a consensus tree.
-}
-\details{
 \code{pruneTree} prunes back a tree and produces a consensus tree, for trees
 already containing nodelabels.  It assumes that nodelabels are numerical or
 character that allows conversion to numerical, it uses
-as.numeric(as.character(tree$node.labels)) to convert them.  \code{midpoint}
-so far does not transform node.labels properly.
+as.numeric(as.character(tree$node.labels)) to convert them.
+\code{midpoint} by default assumes that node labels contain support values.
+This works if support values are computed from splits, but should be
+recomputed for clades.
+\code{keep_as_tip} takes a list of tips and/or node labels and returns a tree
+pruned to those. If node label, then it prunes all descendants of that node
+until that internal node becomes a tip.
 }
 \examples{
 

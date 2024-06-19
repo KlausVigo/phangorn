@@ -46,8 +46,7 @@ fit.sankoff <- function(tree, data, cost,
 #' @rdname parsimony
 #' @export
 sankoff <- function(tree, data, cost = NULL, site = "pscore") {
-  if (!inherits(data, "phyDat"))
-    stop("data must be of class phyDat")
+  if (!inherits(data, "phyDat")) stop("data must be of class phyDat")
   data <- prepareDataSankoff(data)
   if (is.null(cost)) {
     levels <- attr(data, "levels")

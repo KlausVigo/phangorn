@@ -22,8 +22,9 @@ expect_true(is.null(attr(nnet$splits, "confidences")))
 expect_false(is.null(attr(nnet2$splits, "confidences")))
 
 dat <- Laurasiatherian[sample(47, 10)] |> as.character() |> phyDat()
-fit <- pml_bb(dat, "JC", rearrangement="NNI")
-bs_trees_pml <- bootstrap.pml(fit, bs=10, rearrangement="NNI")
+fit <- pml_bb(dat, "JC", rearrangement="NNI", control=pml.control(trace=0))
+bs_trees_pml <- bootstrap.pml(fit, bs=10, rearrangement="NNI",
+                              control=pml.control(trace=0))
 expect_inherits(bs_trees_pml, "multiPhylo")
 
 

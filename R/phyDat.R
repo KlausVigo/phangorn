@@ -39,7 +39,7 @@
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{DNAbin}}, \code{\link{as.DNAbin}},
 #' \code{\link{baseFreq}}, \code{\link{glance.phyDat}}, \code{\link{dna2codon}},
-#' \code{\link{read.dna}}, \code{\link{read.aa}}, \code{\link{read.nexus.data}}
+#' \code{\link{read.dna}}, \code{\link{read.nexus.data}}
 #' and the chapter 1 in the \code{vignette("AdvancedFeatures",
 #' package="phangorn")} and the example of \code{\link{pmlMix}} for the use of
 #' \code{\link{allSitePattern}}.
@@ -98,7 +98,7 @@ cbind.phyDat <- function(..., gaps="-", compress=TRUE){
   if (n == 1) return(x[[1]])
 
   types <- sapply(x, function(x)attr(x, "type"))
-# if(length(unique(types))>1) stop("All alignments need to have the same type!")
+  if(any(types!=types[1]))stop("Alignments must have same type!")
   nr <- numeric(n)
   ATTR <- attributes(x[[1]])
   nr[1] <- sum(attr(x[[1]], "weight"))
@@ -169,11 +169,11 @@ rbind.phyDat <- function(...){
   l <- sapply(x, function(x)sum(attr(x, "weight")))
   if(any(l!=l[1]))stop("Alignments have different # of characters!")
   if(any(types!=types[1]))stop("Alignments must have same type!")
-  nam <- sapply(x, names)
+  nam <- lapply(x, names) |> unlist()
   if(any(duplicated(nam)))stop("Duplicated names!")
   m <- lengths(x)
   mcs <- c(0, cumsum(m))
-  res <- matrix(NA_character_, sum(m), l[1])
+  res <- matrix(NA_character_, sum(m), l[1], dimnames=list(nam, NULL))
   for(i in seq_along(x)){
     res[(mcs[i]+1):mcs[i+1], ] <- as.character(x[[i]])
   }
@@ -197,7 +197,7 @@ compress.phyDat <- function(data){
   pos <- which(!duplicated(index))
   weight <- tapply(attrib$weight, index, sum)
   names(weight) <- NULL
-  attrib$weight <- weight
+  attrib$weight <- as.vector(weight)
   if(is.null(attrib$index)) attrib$index <-index
   else attrib$index <- index[attrib$index]
   for(i in seq_len(length(data))) data[[i]] <- data[[i]][pos]
@@ -510,9 +510,9 @@ constSitePattern <- function(n, names=NULL, type="DNA", levels=NULL){
 #'
 #' Felsenstein, J. (1993) Phylip (Phylogeny Inference Package) version 3.5c.
 #' Department of Genetics, University of Washington.
-#' \url{https://evolution.genetics.washington.edu/phylip/phylip.html}
+#' \url{https://phylipweb.github.io/phylip/}
 #' @keywords IO
-#' @export read.aa
+#' @noRd
 read.aa <- function (file, format = "interleaved", skip = 0, nlines = 0,
                      comment.char = "#", seq.names = NULL){
   getTaxaNames <- function(x) {
@@ -540,10 +540,10 @@ read.aa <- function (file, format = "interleaved", skip = 0, nlines = 0,
     oop <- options(warn = -1)
     fl.num <- as.numeric(unlist(strsplit(gsub("^ +", "", fl), " +")))
     options(oop)
-    if (all(is.na(fl.num)))
+    if (all(is.na(fl.num))  || length(fl.num) != 2)
       stop("the first line of the file must contain the dimensions of the data")
-    if (length(fl.num) != 2)
-      stop("the first line of the file must contain TWO numbers")
+#  if (length(fl.num) != 2)
+#    stop("the first line of the file must contain the dimensions of the data")
     else {
       n <- fl.num[1]
       s <- fl.num[2]

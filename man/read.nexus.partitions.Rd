@@ -9,14 +9,18 @@ read.nexus.partitions(file, return = "list", ...)
 \arguments{
 \item{file}{a file name.}
 
-\item{return}{either return a list where eeach element is a 'phyDat' object
+\item{return}{either returns a list where each element is a 'phyDat' object
 or an object of class 'multiphyDat'}
 
 \item{\dots}{Further arguments passed to or from other methods.}
 }
+\value{
+a list where each element is a 'phyDat' object or an object of class
+'multiphyDat'.
+}
 \description{
 \code{read.nexus.partitions} reads in sequences in NEXUS format and splits
-the data according to the charsets givb in the SETS block.
+the data according to the charsets given in the SETS block.
 }
 \examples{
 tree <- rtree(10)

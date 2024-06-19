@@ -1,6 +1,6 @@
 #' Plot phylogeny of a pml object
 #'
-#' \code{plot.pml} is a warapper around \code{plot.phylo} with different default
+#' \code{plot.pml} is a wrapper around \code{plot.phylo} with different default
 #' values for unrooted, ultrametric and tip dated phylogenies.
 #'
 #' @param x an object of class \code{pml} or \code{phyDat}.
@@ -11,6 +11,8 @@
 #' Four values are possible: "rightwards" (the default), "leftwards", "upwards",
 #' and "downwards".
 #' @param \dots further parameters to be passed to \code{plot.phylo}.
+#' @return \code{plot.pml} returns invisibly a list with arguments dexcribing the plot.
+#' For further details see the \code{plot.phylo}.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{plot.phylo}}, \code{\link{axisPhylo}},
 #' \code{\link{add.scale.bar}}
@@ -38,8 +40,13 @@
 plot.pml <- function(x, type="phylogram", direction = "rightwards", ...){
   type <- match.arg(type, c("phylogram","cladogram", "fan", "unrooted",
                             "radial", "tidy"))
-  plot.phylo(x$tree, type=type, direction=direction, ...)
-  if(is.rooted(x$tree) && (type %in% c("phylogram","cladogram"))){
+  tree <- x$tree
+  extras <- match.call(expand.dots = FALSE)$...
+  cex <- ifelse(is.null(extras$cex), par("cex"), extras$cex)
+  cex.axis <- ifelse(is.null(extras$cex.axis), cex, extras$cex.axis)
+  if(!is.rooted(tree) && (type != "unrooted") ) tree <- midpoint(tree)
+  L <- plot.phylo(tree, type=type, direction=direction, ...)
+  if(is.rooted(tree) && (type %in% c("phylogram","cladogram"))){
     direction <- match.arg(direction, c("rightwards", "leftwards", "upwards",
                                         "downwards"))
     side <-   switch(direction,
@@ -49,9 +56,14 @@ plot.pml <- function(x, type="phylogram", direction = "rightwards", ...){
                      "downwards" = 2)
     if(!is.null(x$tip.dates) && x$method=="tipdated"){
       root_time <- max(x$tip.dates) - max(node.depth.edgelength(x$tree))
-      axisPhylo(side, root.time = root_time, backward = FALSE)
+      axisPhylo(side, root.time = root_time, backward = FALSE,
+                cex.axis=cex.axis)
     }
-    else axisPhylo(side)
+    else if(!is.null(x$method) && x$method=="ultrametric")
+      axisPhylo(side, cex.axis=cex.axis)
+    else add.scale.bar(cex=cex)
   }
-  else add.scale.bar()
+  else add.scale.bar(cex=cex)
+  if(!is.null(x$bs)) add_support(tree, x$bs, cex=cex)
+  invisible(L)
 }

@@ -27,7 +27,7 @@
 #' bs <- bootstrap.phyDat(Laurasiatherian, FUN = function(x)nj(dist.hamming(x)),
 #'     bs=50)
 #' cnet <- consensusNet(bs, .3)
-#' plot(cnet)
+#' plot(cnet, angle=-60, direction="axial")
 #' \dontrun{
 #' library(rgl)
 #' open3d()
@@ -51,7 +51,8 @@ consensusNet <- function(obj, prob = 0.3, ...) {
   attr(spl, "confidences") <- (w / l)[ind]
   #    attr(spl, "weights") = w[ind]
   res <- as.networx(spl)
-  res$edge.labels <- as.character(res$edge.length / l * 100)
-  res$edge.labels[res$edge[, 2] <= length(res$tip.label)] <- ""
+  res$edge.labels <- res$edge.length / l * 100
+  #as.character(res$edge.length / l * 100)
+  res$edge.labels[res$edge[, 2] <= length(res$tip.label)] <- NA_real_ #""
   reorder(res)
 }

@@ -18,21 +18,22 @@ vignette: |
 knitr::opts_chunk$set(fig.width=6, fig.height=4)
 #, global.par=TRUE
 options(digits = 4)
+suppressPackageStartupMessages(library(phangorn))
 ```   
-
 
 # Introduction
 
 These notes describe the ancestral sequence reconstruction using the _phangorn_ package [@Schliep2011]. _phangorn_ provides several methods to estimate ancestral character states with either Maximum Parsimony (MP) or Maximum Likelihood (ML). For more background on all the methods see e.g. [@Felsenstein2004] or [@Yang2006].
 
 # Parsimony reconstructions 
+
 To reconstruct ancestral sequences we first load some data and reconstruct a tree:
 ```{r parsimony}
 library(phangorn)
 fdir <- system.file("extdata/trees", package = "phangorn")
 primates <- read.phyDat(file.path(fdir, "primates.dna"),
                         format = "interleaved")
-tree <- pratchet(primates, trace=0) |> acctran(primates)
+tree <- pratchet(primates, trace=0) |> acctran(primates) |> makeNodeLabel()
 parsimony(tree, primates)
 ```
 
@@ -46,37 +47,28 @@ anc.mpr <- ancestral.pars(tree, primates, "MPR")
 
 All the ancestral reconstructions for parsimony are based on the fitch algorithm and so far only bifurcating trees are allowed. However trees can get pruned afterwards using the function `multi2di` from _ape_.
 
-The `seqLogo` function from the _seqLogo_ package from Bioconductor provides a neat way to show proportions of a nucleotides of ancestral states (see figure 1).
+The `plotSeqLogo` function is a wrapper around the from the _ggseqlogo_ function the the _ggseqlogo_ package [@ggseqlogo]  and provides a simple way to show proportions of a nucleotides of ancestral states (see figure 1). 
 
-```{r seqLogo, fig.cap="Fig 1. Ancestral reconstruction for a node.", eval=FALSE}
-library(seqLogo)
-seqLogo( t(subset(anc.mpr, getRoot(tree), 1:20)[[1]]), ic.scale=FALSE)
+```{r seqLogo, fig.cap="Fig 1. Ancestral reconstruction for a node.", eval=TRUE}
+#library(seqLogo)
+#seqLogo( t(subset(anc.mpr, getRoot(tree), 1:20)[[1]]), ic.scale=FALSE)
+plotSeqLogo(anc.mpr, node=getRoot(tree), 1, 20)
 ```
-![](seqLogo.png)
-
-You may need to install _seqLogo_ before
-```{r, eval=FALSE}
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-BiocManager::install("seqLogo")
-```
-
-
 ```{r MPR, fig.cap="Fig 2. Ancestral reconstruction using MPR."}
-plotAnc(tree, anc.mpr, 17)
+plotAnc(anc.mpr, 17)
 title("MPR")
 ```
 ```{r ACCTRAN, fig.cap="Fig 3. Ancestral reconstruction using ACCTRAN."}
-plotAnc(tree, anc.acctran, 17)
+plotAnc(anc.acctran, 17)
 title("ACCTRAN")
 ```
 
 
 # Likelihood reconstructions
 
-_phangorn_ also offers the possibility to estimate ancestral states using a ML.
+_phangorn_ also offers the possibility to estimate ancestral states using ML.
 The advantages of ML over parsimony is that the reconstruction accounts for different edge lengths.
-So far only a marginal construction is implemented (see [@Yang2006]).
+So far only a marginal construction is implemented (see [@Yang2006][@Koshi1996]) and no joint reconstruction [@Pupko2000].
 ```{r fit_ML}
 fit <- pml(tree, primates)
 fit <- optim.pml(fit, model="F81", control = pml.control(trace=0))
@@ -97,18 +89,18 @@ anc.bayes <- ancestral.pml(fit, "bayes")
 ```
 The differences of the two approaches for a specific site (17) are represented in the following figures.
 ```{r plotML, fig.cap="Fig 4. Ancestral reconstruction the using the maximum likelihood."}
-plotAnc(tree, anc.ml, 17)
+plotAnc(anc.ml, 17)
 title("ML")
 ```
 ```{r plotB, fig.cap="Fig 5. Ancestral reconstruction using (empirical) Bayes."}
-plotAnc(tree, anc.bayes, 17)
+plotAnc(anc.bayes, 17)
 title("Bayes")
 ```
 
 # Fitting for discrete comparative data
 
 Often have already a phylogeny and only want estimate the ancestral reconstruction for this tree. 
-This is a common problem in phylogentic comparative methods and we can use the function *ace* in the ape [@Paradis2018], *fitDiscrete* in the geiger [@Pennell2014] or *fitMK* in the phytools [@Revell2012] package. Here we want fit these models using *optim.pml*.
+This is a common problem in phylogentic comparative methods and we can use the function *ace* in the ape [@Paradis2018], *fitDiscrete* in the geiger [@Pennell2014] or *fitMK* in the phytools [@Revell2012] package. Here we want to show how to fit these models using *optim.pml*.
 
 First we load a tree and create some data. 
 ```{r read_geospiza_data}
@@ -151,7 +143,7 @@ all.equal(fit_SYM$logLik, fit_ace$loglik+log(1/3))
 
 ```{r SYM_reconstruction}
 anc_SYM <- ancestral.pml(fit_SYM, "ml")
-plotAnc(bird.orders, anc_SYM)
+plotAnc(anc_SYM)
 ```
 
 More complicated models can be applied using defining the rate matrix as shown in the vignette _Markov models and transition rate matrices_. 

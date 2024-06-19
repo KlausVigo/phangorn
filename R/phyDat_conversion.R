@@ -30,7 +30,7 @@
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso [DNAbin()], [as.DNAbin()],
 #' \code{\link{baseFreq}}, \code{\link{glance.phyDat}},
-#' \code{\link{read.dna}}, \code{\link{read.aa}}, \code{\link{read.nexus.data}}
+#' \code{\link{read.dna}}, \code{\link{read.nexus.data}}
 #' and the chapter 1 in the \code{vignette("phangorn-specials",
 #' package="phangorn")} and the example of \code{\link{pmlMix}} for the use of
 #' \code{allSitePattern}
@@ -87,6 +87,11 @@ as.phyDat.factor <- function(x, ...){
 #' @export
 as.phyDat.DNAbin <- function(x, ...) phyDat.DNA(x, ...)
 
+#' @rdname as.phyDat
+#' @method as.phyDat AAbin
+#' @export
+as.phyDat.AAbin <- function(x, ...) phyDat.AA(x, ...)
+
 
 #' @rdname as.phyDat
 #' @method as.phyDat alignment
@@ -134,6 +139,22 @@ as.phyDat.MultipleAlignment <- function(x, ...){
     return(res)
   }
   return(NULL)
+}
+
+
+#' @rdname as.phyDat
+#' @method as.phyDat AAStringSet
+#' @export
+as.phyDat.AAStringSet <- function(x, ...){
+  as.AAbin(x, ...)  |> as.phyDat()
+}
+
+
+#' @rdname as.phyDat
+#' @method as.phyDat DNAStringSet
+#' @export
+as.phyDat.DNAStringSet <- function(x, ...){
+  as.DNAbin(x, ...)  |> as.phyDat()
 }
 
 

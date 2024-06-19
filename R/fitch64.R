@@ -152,7 +152,7 @@ fitch_spr <- function (tree, f, trace=0L)
 }
 
 
-indexNNI_fitch <- function(tree, offset=2L*Ntip(tree)) {
+indexNNI_fitch <- function(tree, offset=2L*Ntip(tree), rooted=is.rooted(tree)) {
   offset <- as.integer(offset)
   parent <- tree$edge[, 1]
   child <- tree$edge[, 2]
@@ -169,6 +169,15 @@ indexNNI_fitch <- function(tree, offset=2L*Ntip(tree)) {
   #       e-----f       d is closest to root, f is root from subtree a,b,c
   #      /       \
   #     b         c     c(a,b,c,d,e,f)
+
+  #           d         d is f + offset, if offset > 0
+  #          /
+  #         f
+  #        / \
+  #       e   \
+  #      / \   c
+  #     a   b
+
   k <- 1
   for (i in ind) {
     f <- pvector[i]
@@ -178,6 +187,12 @@ indexNNI_fitch <- function(tree, offset=2L*Ntip(tree)) {
     ef <- c(i, f)
     if (pvector[f]){
       cd <- c(cd, f + offset)
+    }
+    if(offset < 0L){
+      tmp <- pvector[f]
+      if(tmp==0L) tmp <- f
+      # think about this more
+      cd[2] <- tmp
     }
     #    else if(rooted) cd <- c(cd, NA_integer_)
     #    else if(!rooted) ef <- c(i, cd[2])
@@ -246,7 +261,7 @@ optim.fitch <- function(tree, data, trace = 1, rearrangements = "NNI", ...) {
   }
   if (is.null(attr(tree, "order")) || attr(tree, "order") != "postorder")
     tree <- reorder(tree, "postorder")
-  if (class(data)[1] != "phyDat") stop("data must be of class phyDat")
+  if (!inherits(data, "phyDat")) stop("data must be of class phyDat")
 
   rt <- FALSE
 

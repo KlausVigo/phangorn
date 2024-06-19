@@ -185,7 +185,7 @@ unique.splits <- function(x, incomparables = FALSE, unrooted = TRUE, ...) {
 }
 
 
-#' @export
+#' @export distinct.splits
 distinct.splits <- function(...) {
   tmp <- c(...)
   res <- unique(tmp)
@@ -433,7 +433,7 @@ as.splits.bitsplits <- function(x, ...){
 #' @export
 compatible <- function(obj1, obj2 = NULL) {
   if (!inherits(obj1, "splits"))
-    stop("obj needs to be of class splits")
+    stop("obj must be of class splits")
   labels <- attr(obj1, "labels")
   l <- length(labels)
   n <- length(obj1)
@@ -469,11 +469,10 @@ compatible <- function(obj1, obj2 = NULL) {
 # in clanistic.R ??
 compatible3 <- function(x, y = NULL) {
   if (!inherits(x, "splits"))
-    stop("x needs to be of class splits")
+    stop("x must be of class splits")
   if (is.null(y)) y <- x
-
   if (!inherits(y, "splits"))
-    stop("y needs to be of class splits")
+    stop("y must be of class splits")
   xlabels <- attr(x, "labels")
   ylabels <- attr(y, "labels")
   if (identical(xlabels, ylabels)) labels <- xlabels

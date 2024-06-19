@@ -1,0 +1,72 @@
+# Joint reconstruction
+joint_pml <- function(x){
+  stopifnot(inherits(x, "pml"))
+  if(x$k > 1 || x$inv>0) stop("One one rate allowed so far!")
+  data <- x$data
+  eig <- x$eig
+  contrast <- attr(data, "contrast")
+  tree <- x$tree
+  tree <- reorder(tree, "postorder")
+  edge <- tree$edge
+  ntip <- Ntip(tree)
+  desc <- Descendants(tree, type="children")
+  el <- numeric(max(tree$edge))
+  el[tree$edge[,2]] <- tree$edge.length
+  P <- getP(el * x$rate, eig = eig)
+  nr <- attr(data, "nr")
+  nc <- attr(data, "nc")
+  levels <- attr(data, "levels")
+  allLevels <- attr(data, "allLevels")
+  l <- length(tree$edge.length)
+  L <- C <- array(NA, c(nr, nc, max(tree$edge)))
+  for(i in seq_len(Ntip(tree))){
+    L[,,i]<- log(contrast[data[[i]],,drop=FALSE]%*%P[[i]])
+  }
+  nn <- unique(edge[,1])
+  pa <- 0
+  root <- edge[l, 1]
+  lnr <- seq_len(nr)
+  for(i in seq_len(length(nn))){
+    pa <- nn[i]
+    ch <- desc[[pa]]
+    P_i <- P[[pa]]
+    tmp1 <- tmp2 <- matrix(0, nr, nc)
+    for(j in seq_along(ch)){
+      tmp1 <- tmp1 + L[,,ch[j]]
+    }
+    if(pa==root) break()
+    for(j in 1:nc){
+      pp <- tmp1 + rep(log(P_i[j,]), each=nr)
+      pos <- max.col(pp)
+      L[,j,pa]<- pp[ cbind(lnr, pos)]
+      C[,j,pa] <- pos
+    }
+  }
+  pp <- tmp1 + rep(log(x$bf), each=nr)
+  pos <- max.col(pp)
+  L[,,pa] <- pp
+  C[,,pa] <- pos
+  tree <- reorder(tree)
+  if(is.null(tree$node.label)) tree <- makeNodeLabel(tree)
+  res <- vector("list", length(tree$node.label))
+  names(res) <- tree$node.label
+  res[[1]] <- pos
+  att <- attributes(data)
+  att$names <- tree$node.label
+  labels <- c(tree$tip.label, tree$node.label)
+  edge <- tree$edge
+  nrw <- seq_len(nr)
+  for(i in seq_along(edge[,1])){
+    ch_i <- edge[i,2]
+    pa_i <- edge[i,1]
+    if(ch_i > ntip){
+      pos <-res[[labels[pa_i]]]
+      res[[labels[ch_i]]] <- C[cbind(nrw,pos,ch_i)]
+    }
+  }
+  ind <- match(levels, allLevels)
+  for(i in length(res))  res[[i]] <- ind[res[[i]]]
+  attributes(res) <- att
+  res
+}
+

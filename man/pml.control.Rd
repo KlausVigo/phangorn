@@ -8,7 +8,7 @@
 pml.control(epsilon = 1e-08, maxit = 10, trace = 1, tau = 1e-08,
   statefreq = "empirical")
 
-ratchet.control(iter = 20L, maxit = 200L, minit = 50L, prop = 1/2,
+ratchet.control(iter = 20L, maxit = 200L, minit = 100L, prop = 1/2,
   rell = TRUE, bs = 1000L)
 }
 \arguments{
@@ -39,8 +39,8 @@ A list with components named as the arguments for controlling the
 fitting process.
 }
 \description{
-Auxiliary functions for \code{\link{optim.pml}} fitting. Use it to construct
-a \code{control} or \code{ratchet.par} argument.
+Auxiliary functions for providing \code{\link{optim.pml}, \link{pml_bb}}
+fitting. Use it to construct a \code{control} or \code{ratchet.par} argument.
 }
 \details{
 \code{pml.control} controls the fitting process. \code{epsilon} and

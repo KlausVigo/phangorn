@@ -1,13 +1,17 @@
 #' Parsimony tree.
 #'
+#' \code{pratchet} implements the parsimony ratchet (Nixon, 1999) and is the
+#' preferred way to search for the best parsimony tree. For small number of taxa
+#' the function \code{\link{bab}} can be used to compute all most parsimonious
+#' trees.
 #'
 #' \code{parsimony} returns the parsimony score of a tree using either the
-#' sankoff or the fitch algorithm. \code{optim.parsimony} tries to find the
-#' maximum parsimony tree using either Nearest Neighbor Interchange (NNI)
-#' rearrangements or sub tree pruning and regrafting (SPR). \code{pratchet}
-#' implements the parsimony ratchet (Nixon, 1999) and is the preferred way to
-#' search for the best tree.  \code{random.addition} can be used to produce
-#' starting trees.
+#' sankoff or the fitch algorithm.
+#' \code{optim.parsimony} optimizes the topology using either Nearest Neighbor
+#' Interchange (NNI) rearrangements or sub tree pruning and regrafting (SPR) and
+#' is used inside \code{pratchet}. \code{random.addition} can be used to produce
+#' starting trees and is an option for the argument perturbation in
+#' \code{pratchet}.
 #'
 #' The "SPR" rearrangements are so far only available for the "fitch" method,
 #' "sankoff" only uses "NNI". The "fitch" algorithm only works correct for
@@ -106,7 +110,7 @@ compressSites <- function(data) {
   ntaxa <- nrow(data)
   res <- vector("list", ntaxa)
   for(i in seq_len(ntaxa)) res[[i]] <- data[i, pos]
-  attrData$weight <- tapply(attrData$weight, index, sum)
+  attrData$weight <- as.vector(tapply(attrData$weight, index, sum))
   attrData$index <- NULL
   attrData$nr <- length(attrData$weight)
   attrData$compressed <- TRUE
@@ -189,21 +193,39 @@ upperBound <- function(x, cost = NULL) {
 #' \deqn{RI = \frac{MaxChanges - ObsChanges}{MaxChanges - MinChanges}}{RI = (MaxChanges - ObsChanges) / (MaxChanges - MinChanges)}
 #'
 #' @param data A object of class phyDat containing sequences.
-#' @param tree tree to start the nni search from.
+#' @param tree a phylogenetic tree, i.e. an object of class \code{phylo}.
 #' @param cost A cost matrix for the transitions between two states.
 #' @param sitewise return CI/RI for alignment or sitewise
-#'
+#' @returns a scalar or vector with the CI/RI vector.
 #' @seealso \code{\link{parsimony}}, \code{\link{pratchet}},
 #' \code{\link{fitch}}, \code{\link{sankoff}}, \code{\link{bab}},
 #' \code{\link{ancestral.pars}}
+#' @examples
+#' example(as.phylo.formula)
+#' lab <- tr$tip.label
+#' lab[79] <- "Herpestes fuscus"
+#' tr$tip.label <- abbreviateGenus(lab)
+#' X <- matrix(0, 112, 3, dimnames = list(tr$tip.label, c("Canis", "Panthera",
+#'             "Canis_Panthera")))
+#' desc_canis <- Descendants(tr, "Canis")[[1]]
+#' desc_panthera <- Descendants(tr, "Panthera")[[1]]
+#' X[desc_canis, c(1,3)] <- 1
+#' X[desc_panthera, c(2,3)] <- 1
+#' col <- rep("black", 112)
+#' col[desc_panthera] <- "red"
+#' col[desc_canis] <- "blue"
+#' X <- phyDat(X, "USER", levels=c(0,1))
+#' plot(tr, "f", tip.color=col)
+#' # The first two sites are homoplase free!
+#' CI(tr, X, sitewise=TRUE)
+#' RI(tr, X, sitewise=TRUE)
 #'
 #' @rdname CI
 #' @export
 CI <- function(tree, data, cost = NULL, sitewise = FALSE) {
-  if (sitewise) pscore <- sankoff(tree, data, cost = cost, site = "site")
-  else pscore <- sankoff(tree, data, cost = cost)
-  weight <- attr(data, "weight")
   data <- subset(data, tree$tip.label)
+  pscore <- sankoff(tree, data, cost, ifelse(sitewise, "site", "pscore"))
+  weight <- attr(data, "weight")
   m <- lowerBound(data, cost = cost)
   if (sitewise) {
     return( (m / pscore)[attr(data, "index")])
@@ -215,9 +237,8 @@ CI <- function(tree, data, cost = NULL, sitewise = FALSE) {
 #' @rdname CI
 #' @export
 RI <- function(tree, data, cost = NULL, sitewise = FALSE) {
-  if (sitewise) pscore <- sankoff(tree, data, cost = cost, site = "site")
-  else pscore <- sankoff(tree, data, cost = cost)
   data <- subset(data, tree$tip.label)
+  pscore <- sankoff(tree, data, cost, ifelse(sitewise, "site", "pscore"))
   weight <- attr(data, "weight")
   m <- lowerBound(data, cost = cost)
   g <- upperBound(data, cost = cost)
@@ -309,6 +330,7 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
                      rearrangements = "SPR", perturbation = "ratchet", ...) {
   if(inherits(data, "DNAbin") || inherits(data, "AAbin"))
     data <- as.phyDat(data)
+  printevery <- 10L
   eps <- 1e-08
   trace <- trace - 1
   ref <- names(data)
@@ -344,10 +366,9 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
     return(tree)
   }
 
-  if (perturbation != "random_addition"){
-    if(is.null(start)) start <- optim.parsimony(fastme.ols(dist.hamming(data)),
-                                       data, trace = trace-1, method = method,
-                                       rearrangements = rearrangements, ...)
+    if(is.null(start)) start <- optim.parsimony(random.addition(data),
+                                   data, trace = trace-1, method = method,
+                                   rearrangements = rearrangements, ...)
     tree <- start
     label <- intersect(tree$tip.label, names(data))
     if (!is.binary(tree)){
@@ -359,8 +380,7 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
     attr(tree, "pscore") <- parsimony(tree, data, method = method, ...)
     mp <- attr(tree, "pscore")
     if (trace >= 0)
-      print(paste("Best pscore so far:", attr(tree, "pscore")))
-  }
+      cat("Parsimony score of initial tree:", attr(tree, "pscore"), "\n")
   FUN <- function(data, tree, method, rearrangements, ...)
     optim.parsimony(tree, data = data, method = method,
                     rearrangements = rearrangements, ...)
@@ -369,12 +389,10 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
     result <- addTaxa(result, attr(data, "duplicated"))
   }
   result <- relabel(result, ref)
+#  if (trace > 1) cat("optimize topology (NNI): ", pscore, "-->", psc, "\n")
   hr <- hash(result)
   on.exit({
     if (!all && inherits(result, "multiPhylo")) result <- result[[1]]
-#    if(!is.null(attr(data, "duplicated")))
-#      result <- addTaxa(result, attr(data, "duplicated"))
-    #    else class(result) <- "multiPhylo"
     if (length(result) == 1) result <- result[[1]]
     env <- new.env()
     start_trees <- start_trees[seq_len(i)]
@@ -403,22 +421,18 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
       bs_ind <- which(bsw > 0)
       bs_data <- getRows(data, bs_ind)
       attr(bs_data, "weight") <- bsw[bs_ind]
-      if(length(bs_ind) > 0)p_trees <- optim.parsimony(tree, bs_data,
+      if(length(bs_ind) > 0){
+        # p_trees <- random.addition(bs_data)  # 3 * ??
+        p_trees <- optim.parsimony(tree, bs_data,
           trace = trace, method = method, rearrangements = rearrangements, ...)
+      }
       else p_trees <- stree(length(data), tip.label = names(data))
-      trees <- optim.parsimony(p_trees, data, trace = trace,
-                     method = method, rearrangements = rearrangements, ...)
     }
-    if (perturbation == "stochastic") {
-      p_trees <- rNNI(tree, floor(nTips / 2))
-      trees <- optim.parsimony(p_trees, data, trace = trace, method = method,
-                               rearrangements = rearrangements, ...)
-    }
-    if (perturbation == "random_addition") {
-      p_trees <- random.addition(data)
-      trees <- optim.parsimony(p_trees, data, trace = trace, method = method,
-                               rearrangements = rearrangements, ...)
-    }
+    if (perturbation == "stochastic") p_trees <- rNNI(tree, floor(nTips / 2))
+    if (perturbation == "random_addition") p_trees <- random.addition(data)
+    trees <- optim.parsimony(p_trees, data, trace = trace, method = method,
+                             rearrangements = rearrangements, ...)
+    curr_tree <- trees
     if(!is.null(attr(data, "duplicated"))){
       p_trees <- addTaxa(p_trees, attr(data, "duplicated"))
       trees <- addTaxa(trees, attr(data, "duplicated"))
@@ -432,7 +446,7 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
     if ( (mp1 + eps) < mp) {
       kmax <- 1
       result <- trees
-      tree <- trees
+      tree <- curr_tree
       hr <- hash(trees)
       mp <- mp1
     }
@@ -446,8 +460,9 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
         }
       }
     }
-    if (trace >= 0)
-      print(paste("Best pscore so far:", mp))
+    if (trace >= 0 &&  (!i%%printevery))
+      cat("\rIteration: ", i, ". Best parsimony score so far: ", mp, sep="")
     if ( (kmax >= k) && (i >= minit)) break()
   } # for
+  if (trace >= 0)cat("\n")
 }  # pratchet

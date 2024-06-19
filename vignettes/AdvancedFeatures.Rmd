@@ -73,7 +73,7 @@ contrast
 gapsdata3 <- phyDat(data, type="USER", contrast=contrast)
 gapsdata3
 ```
-Here we defined "n" as a state which can be any nucleotide, but not a gap. "-" and "?" can be any state including a gap.
+Here we defined "n" as a state which can be any nucleotide, but not a gap. And "?" can be any state including a gap.
 
 These data can be used in all functions available in _phangorn_ to compute distance matrices or perform parsimony and maximum likelihood analysis.
 

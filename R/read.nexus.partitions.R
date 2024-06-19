@@ -39,12 +39,14 @@ read.nexus.charset <- function(file){
 #' Function to import partitioned data from nexus files
 #'
 #' \code{read.nexus.partitions} reads in sequences in NEXUS format and splits
-#' the data according to the charsets givb in the SETS block.
+#' the data according to the charsets given in the SETS block.
 #'
 #' @param file a file name.
-#' @param return either return a list where eeach element is a 'phyDat' object
+#' @param return either returns a list where each element is a 'phyDat' object
 #' or an object of class 'multiphyDat'
 #' @param \dots Further arguments passed to or from other methods.
+#' @return a list where each element is a 'phyDat' object or an object of class
+#' 'multiphyDat'.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{read.nexus.data}}, \code{\link{read.phyDat}}
 #' @keywords cluster

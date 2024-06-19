@@ -3,11 +3,14 @@
 \name{baseFreq}
 \alias{baseFreq}
 \alias{glance.phyDat}
+\alias{composition_test}
 \title{Summaries of alignments}
 \usage{
 baseFreq(obj, freq = FALSE, all = FALSE, drop.unused.levels = FALSE)
 
 \method{glance}{phyDat}(x, ...)
+
+composition_test(obj)
 }
 \arguments{
 \item{obj, x}{as object of class phyDat}
@@ -31,6 +34,8 @@ contrast.}
 \code{baseFreq} computes the frequencies (absolute or relative) of the states
 from a sample of sequences.
 \code{glance} computes some useful information about the alignment.
+\code{composition\_test} computes a \eqn{\chi^2}-test testing if the state
+composition for a species differs.
 }
 \examples{
 
@@ -43,6 +48,7 @@ baseFreq(Laurasiatherian, freq=TRUE)
 baseFreq(chloroplast)
 glance(Laurasiatherian)
 glance(chloroplast)
+composition_test(Laurasiatherian)[1:10,]
 }
 \seealso{
 \code{\link{phyDat}, \link{base.freq}, \link{glance}}

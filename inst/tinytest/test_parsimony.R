@@ -72,11 +72,41 @@ tree2 <- acctran(tree2, dat)
 expect_equal(sum(tree2$edge.length), fitch(tree2,dat))
 
 
-
 # test random.addition
 ra_tree <- random.addition(yeast)
 ratchet_tree <- pratchet(yeast, start=ra_tree, trace=0)
 expect_true(attr(ra_tree, "pscore") >= attr(ratchet_tree, "pscore"))
 trivial_tree <- pratchet(dat, trace=0, all=FALSE, minit = 10, maxit = 20)
 expect_true(inherits(trivial_tree, "phylo"))
+
+
+# test CI / RI
+data(carnivora)
+frm <- ~SuperFamily/Family/Genus/Species
+tr <- as.phylo(frm, data = carnivora, collapse=FALSE)
+tr$edge.length <- rep(1, nrow(tr$edge))
+
+X <- matrix(0, 112, 7, dimnames = list(tr$tip.label, c("Canidae", "Felidae",
+          "Ursidae", "Canidae_Felidae", "Canidae_Ursidae", "Felidae_Ursidae",
+          "Canidae_Felidae_Ursidae")))
+desc_canidae <- Descendants(tr, "Canidae")[[1]]
+desc_felidae <- Descendants(tr, "Felidae")[[1]]
+desc_ursidae <- Descendants(tr, "Ursidae")[[1]]
+
+X[desc_canidae, c(1,4,5,7)] <- 1
+X[desc_felidae, c(2,4,6,7)] <- 1
+X[desc_ursidae, c(3,5,6,7)] <- 1
+
+X <- phyDat(X, "USER", levels=c(0,1))
+
+#col <- rep("black", 112)
+#col[desc_felidae] <- "red"
+#col[desc_canidae] <- "blue"
+#col[desc_ursidae] <- "green"
+#plot(tr, "f", tip.color=col, show.node=TRUE)
+
+ci1 <- CI(tr, X, sitewise = TRUE)
+ri1 <- RI(tr, X, sitewise = TRUE)
+expect_true(all(ci1[1:3]==1))
+expect_true(all(ri1[1:3]==1))
 

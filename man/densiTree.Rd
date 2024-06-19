@@ -4,17 +4,20 @@
 \alias{densiTree}
 \title{Plots a densiTree.}
 \usage{
-densiTree(x, type = "cladogram", alpha = 1/length(x), consensus = NULL,
-  direction = "rightwards", optim = FALSE, scaleX = FALSE, col = 1,
-  width = 1, lty = 1, cex = 0.8, font = 3, tip.color = 1, adj = 0,
-  srt = 0, underscore = FALSE, label.offset = 0, scale.bar = TRUE,
-  jitter = list(amount = 0, random = TRUE), ...)
+densiTree(x, type = "phylogram", ..., alpha = 1/length(x),
+  consensus = NULL, direction = "rightwards", optim = FALSE,
+  scaleX = FALSE, col = 1, width = 1, lty = 1, cex = 0.8, font = 3,
+  tip.color = 1, adj = 0, srt = 0, underscore = FALSE,
+  label.offset = 0, scale.bar = TRUE, jitter = list(amount = 0, random =
+  TRUE), tip.dates = NULL, xlim = NULL, ylim = NULL)
 }
 \arguments{
 \item{x}{an object of class \code{multiPhylo}.}
 
 \item{type}{a character string specifying the type of phylogeny, so far
 "cladogram" (default) or "phylogram" are supported.}
+
+\item{\dots}{further arguments to be passed to plot.}
 
 \item{alpha}{parameter for semi-transparent colors.}
 
@@ -61,7 +64,14 @@ of the phylogeny and their corresponding labels.}
 \item{jitter}{allows to shift trees. a list with two arguments: the amount of
 jitter and random or equally spaced (see details below)}
 
-\item{\dots}{further arguments to be passed to plot.}
+\item{tip.dates}{A named vector of sampling times associated with the tips.}
+
+\item{xlim}{the x limits of the plot.}
+
+\item{ylim}{the y limits of the plot.}
+}
+\value{
+\code{densiTree} returns silently x.
 }
 \description{
 An R function to plot trees similar to those produced by DensiTree.
@@ -108,7 +118,7 @@ trees \emph{Bioinformatics}, \bold{26 (10)}, 1372-1373.
 }
 \seealso{
 \code{\link{plot.phylo}}, \code{\link{plot.networx}},
-\code{\link{jitter}}
+\code{\link{jitter}}, \code{\link{rtt}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

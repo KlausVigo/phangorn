@@ -1,7 +1,7 @@
 #' Auxiliary for Controlling Fitting
 #'
-#' Auxiliary functions for \code{\link{optim.pml}} fitting. Use it to construct
-#' a \code{control} or \code{ratchet.par} argument.
+#' Auxiliary functions for providing \code{\link{optim.pml}, \link{pml_bb}}
+#' fitting. Use it to construct a \code{control} or \code{ratchet.par} argument.
 #'
 #' \code{pml.control} controls the fitting process. \code{epsilon} and
 #' \code{maxit} are only defined for the most outer loop, this affects
@@ -72,7 +72,7 @@ pml.control <- function(epsilon = 1e-08, maxit = 10, trace = 1, tau = 1e-8,
 
 #' @rdname pml.control
 #' @export
-ratchet.control <- function(iter = 20L, maxit = 200L, minit = 50L, prop = 1/2,
+ratchet.control <- function(iter = 20L, maxit = 200L, minit = 100L, prop = 1/2,
                             rell = TRUE, bs=1000L){
   if (!is.numeric(maxit) || maxit <= 0)
     stop("maximum number of iterations must be > 0")

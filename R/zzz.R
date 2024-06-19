@@ -43,7 +43,6 @@
 .nucleotideAlphabet <- c("a", "c", "g", "t")
 
 
-
 # if rate g[i] is smaller than .gEps invariant site is increased by w[i]
 .gEps <- 1e-12
 
@@ -55,3 +54,4 @@ loadModule("Fitch_mod", TRUE)
 # .onLoad  <- function(libname, pkgname) {
 #    library.dynam("phangorn", pkgname, libname)
 #}
+

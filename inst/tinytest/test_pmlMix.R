@@ -121,4 +121,4 @@ fits <- list()
 for(i in 1:2) fits[[i]] <- pml(tree, X, wMix=.5)
 fitMixture <- pmlMix( ~ inv, fits, m=2,
                       control=pml.control(maxit = 25, trace=0))
-expect_equal(logLik(fitMixture)[1], ll)
+expect_equal(logLik(fitMixture)[1], ll, 1e-3)

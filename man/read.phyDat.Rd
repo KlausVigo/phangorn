@@ -40,7 +40,7 @@ These functions read and write sequence alignments.
 \details{
 \code{write.phyDat} calls the function \code{\link[ape]{write.dna}} or
 \code{\link[ape]{write.nexus.data}} and \code{read.phyDat} calls the function
-\code{\link[ape]{read.dna}}, \code{read.aa} or \code{read.nexus.data}, so see
+\code{\link[ape]{read.dna}} or \code{read.nexus.data}, so see
 for more details over there.
 
 You may import data directly with \code{\link[ape]{read.dna}} or
@@ -56,7 +56,7 @@ primates <- read.phyDat(file.path(fdir, "primates.dna"),
 \url{https://www.ncbi.nlm.nih.gov/blast/fasta.shtml} Felsenstein, J. (1993)
 Phylip (Phylogeny Inference Package) version 3.5c. Department of Genetics,
 University of Washington.
-\url{https://evolution.genetics.washington.edu/phylip/phylip.html}
+\url{https://phylipweb.github.io/phylip/}
 }
 \seealso{
 \code{\link[ape]{read.dna}}, \code{\link[ape]{read.GenBank}},

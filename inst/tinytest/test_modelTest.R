@@ -38,9 +38,12 @@ expect_equal(MT_AA_all$Model[which.min(MT_AA_all$BIC)], "WAG")
 
 # test user defined states
 tree <- rcoal(10)
+tree$edge.length <- 2 * (tree$edge.length / sum(tree$edge.length))
+tree$edge.length[tree$edge[,2]<11] <- tree$edge.length[tree$edge[,2]<11] + .1
+
 Z <- simSeq(tree, Q = c(1,0,0,1,0,1), type = "USER",
             levels=c("A", "B", "C", "D"))
-MT_USER <- modelTest(Z, I=TRUE, G=TRUE,
+MT_USER <- modelTest(Z, tree=tree, I=TRUE, G=TRUE,
                   control = pml.control(epsilon = 1e-08, maxit = 5, trace = 0),
                   multicore = TRUE, mc.cores = 2L)
 expect_equal(MT_USER$Model[which.min(MT_USER$BIC)], "ORDERED")

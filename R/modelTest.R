@@ -209,7 +209,6 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
       m <- m + 1
     }
     if (FREQ & G & I) {
-#      if (trace > 0) print(paste0(model, "+G+I+F"))
       fitGIF <- update(fitIF, k = k)
       fitGIF <- optim.pml(fitGIF, model = model, optBf = TRUE,
         optInv = TRUE, optGamma = TRUE, control = control)

@@ -56,10 +56,10 @@ Currently very experimental and likely to change.
 }
 \examples{
 
-\dontrun{
 data(woodmouse)
-tmp <- pml_bb(woodmouse)
+tmp <- pml_bb(woodmouse, model="HKY+I", rearrangement="NNI")
 
+\dontrun{
 data(Laurasiatherian)
 mt <- modelTest(Laurasiatherian)
 fit <- pml_bb(mt)
