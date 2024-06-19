@@ -10,7 +10,7 @@
 #' @param ambiguous a character which codes for the ambiguous state
 #' @return The functions return an object of class \code{phyDat}.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{phyDat}}, \code{\link{lt2amb}}, \code{\link{latag2n}},
+#' @seealso \code{\link{phyDat}}, \code{\link{ltg2amb}}, \code{\link{latag2n}},
 #' \code{\link{ancestral.pml}}, \code{\link{gap_as_state}}
 #' @keywords cluster
 #' @examples
