@@ -1,267 +1,91 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/404.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/articles/AdvancedFeatures.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/articles/Ancestral.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/articles/IntertwiningTreesAndNetworks.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/articles/MLbyHand.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/articles/Morphological.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/articles/Networx.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/articles/Trees.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/index.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/Ancestors.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/CI.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/Laurasiatherian.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/NJ.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/SH.test.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/SOWH.test.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/add.tips.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/addConfidences.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/add_ci.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/add_edge_length.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/allTrees.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/ancestral.pml.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/as.networx.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/as.phyDat.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/as.splits.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/bab.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/baseFreq.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/bootstrap.pml.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/chloroplast.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/cladePar.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/coalSpeciesTree.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/codonTest.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/consensusNet.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/cophenetic.networx.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/delta.score.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/densiTree.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/designTree.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/dfactorial.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/discrete.gamma.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/dist.hamming.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/dist.p.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/distanceHadamard.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/dna2codon.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/gap_as_state.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/getClans.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/hadamard.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/identify.networx.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/image.phyDat.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/lento.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/ltg2amb.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/mast.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/maxCladeCred.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/midpoint.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/mites.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/modelTest.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/neighborNet.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/nni.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/parsimony.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/phangorn-internal.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/phangorn-package.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/phyDat.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/plot.ancestral.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/plot.networx.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/plot.pml.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/plotBS.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/pml.control.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/pml.fit.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/pml.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/pmlCluster.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/pmlMix.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/pmlPart.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/pml_bb.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/read.nexus.partitions.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/read.nexus.splits.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/read.phyDat.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/reexports.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/simSeq.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/splitsNetwork.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/superTree.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/transferBootstrap.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/treedist.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/upgma.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/write.ancestral.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/write.pml.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/writeDist.html</loc>
-  </url>
-  <url>
-    <loc>https://klausvigo.github.io/phangorn/reference/yeast.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://klausvigo.github.io/phangorn/404.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/articles/AdvancedFeatures.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/articles/Ancestral.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/articles/IntertwiningTreesAndNetworks.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/articles/MLbyHand.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/articles/Morphological.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/articles/Networx.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/articles/Trees.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/articles/index.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/authors.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/index.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/Ancestors.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/CI.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/Laurasiatherian.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/NJ.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/SH.test.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/SOWH.test.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/add.tips.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/addConfidences.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/add_ci.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/add_edge_length.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/allTrees.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/ancestral.pml.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/as.networx.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/as.phyDat.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/as.splits.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/bab.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/baseFreq.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/bootstrap.pml.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/chloroplast.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/cladePar.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/coalSpeciesTree.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/codonTest.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/consensusNet.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/cophenetic.networx.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/delta.score.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/densiTree.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/designTree.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/dfactorial.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/discrete.gamma.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/dist.hamming.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/dist.p.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/distanceHadamard.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/dna2codon.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/gap_as_state.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/getClans.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/hadamard.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/identify.networx.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/image.phyDat.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/index.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/lento.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/ltg2amb.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/mast.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/maxCladeCred.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/midpoint.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/mites.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/modelTest.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/neighborNet.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/nni.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/parsimony.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/phangorn-internal.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/phangorn-package.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/phyDat.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/plot.ancestral.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/plot.networx.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/plot.pml.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/plotBS.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/pml.control.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/pml.fit.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/pml.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/pmlCluster.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/pmlMix.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/pmlPart.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/pml_bb.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/read.nexus.partitions.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/read.nexus.splits.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/read.phyDat.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/reexports.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/simSeq.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/splitsNetwork.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/superTree.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/transferBootstrap.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/treedist.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/upgma.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/write.ancestral.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/write.pml.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/writeDist.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/yeast.html</loc></url>
 </urlset>
+

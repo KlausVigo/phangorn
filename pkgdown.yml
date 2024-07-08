@@ -1,5 +1,5 @@
 pandoc: 3.1.11
-pkgdown: 2.0.9
+pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
   AdvancedFeatures: AdvancedFeatures.html
@@ -9,8 +9,7 @@ articles:
   Morphological: Morphological.html
   Networx: Networx.html
   Trees: Trees.html
-last_built: 2024-06-19T14:33Z
+last_built: 2024-07-08T13:52Z
 urls:
   reference: https://klausvigo.github.io/phangorn/reference
   article: https://klausvigo.github.io/phangorn/articles
-
