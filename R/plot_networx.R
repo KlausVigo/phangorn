@@ -325,7 +325,8 @@ plot.networx <- function(x, type = "equal angle", use.edge.length = TRUE,
     plot2D(coord, x, show.tip.label = show.tip.label,
            show.edge.label = show.edge.label, edge.label = edge.label,
            show.node.label = show.node.label, node.label = node.label,
-           show.nodes = show.nodes, tip.color = tip.color, edge.color = edge.color,
+           #show.nodes = show.nodes,
+           tip.color = tip.color, edge.color = edge.color,
            edge.width = edge.width, edge.lty = edge.lty, font = font, cex = cex,
            cex.node.label = cex.node.label, cex.edge.label = cex.edge.label,
            col.node.label = col.node.label, col.edge.label = col.edge.label,
@@ -408,24 +409,27 @@ plot2D <- function(coords, net, show.tip.label = TRUE, show.edge.label = FALSE,
   xx <- coords[, 1]
   yy <- coords[, 2]
   nTips <- length(label)
+  offset <- max(nchar(label)) * 0.018 * cex * diff(range(xx))
   if(is.null(xlim)){
     xlim <- range(xx)
-    offset <- max(nchar(label)) * 0.018 * cex * diff(xlim)
+#    offset <- max(nchar(label)) * 0.018 * cex * diff(xlim)
     if (show.tip.label) xlim <- c(xlim[1] - offset, xlim[2] + offset)
   }
   if(is.null(ylim)){
     ylim <- range(yy)
     if (show.tip.label){
       if(direction=="axial"){
-        offset <- max(nchar(label)) * 0.018 * cex * diff(ylim)
+#        offset <- max(nchar(label)) * 0.018 * cex * diff(ylim)
         ylim <- c(ylim[1] - offset, ylim[2] + offset)
       } else ylim <- c(ylim[1] - 0.03 * cex * diff(ylim),
                      ylim[2] + 0.03 * cex * diff(ylim))
     }
   }
   if (!add) {
-    plot.new()
-    plot.window(xlim, ylim, asp = 1)
+#    plot.new()
+#    plot.window(xlim, ylim, asp = 1, ...)
+    plot.default(0, type = "n", xlim = xlim, ylim = ylim, xlab = "",
+                 ylab = "", axes = FALSE, asp = 1, ...)
   }
   cladogram.plot(edge, xx, yy, edge.color, edge.width, edge.lty)
   if (show.tip.label) {
