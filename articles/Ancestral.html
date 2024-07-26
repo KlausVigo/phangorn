@@ -68,7 +68,7 @@ Schliep</h4>
 Technology<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2024-07-17</h4>
+            <h4 data-toc-skip class="date">2024-07-26</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/master/vignettes/Ancestral.Rmd" class="external-link"><code>vignettes/Ancestral.Rmd</code></a></small>
       <div class="d-none name"><code>Ancestral.Rmd</code></div>
@@ -102,21 +102,27 @@ reconstruct a tree:</p>
 number of changes. Reconstructing ancestral states therefore defines
 also the edge lengths of a tree. However there can exist several equally
 parsimonious reconstructions or states can be ambiguous and therefore
-edge length can differ. “MPR” reconstructs the ancestral states for each
-(internal) node as if the tree would be rooted in that node. However the
-nodes are not independent of each other. If one chooses one state for a
-specific node, this can restrict the choice of neighboring nodes
-(figures 2 and 3). The function acctran (accelerated transformation)
-assigns edge length and internal nodes to the tree <span class="citation">(Swofford and Maddison 1987)</span>.</p>
+edge length can differ. In <em>phangorn</em> all the ancestral
+reconstructions for parsimony used to be based on the fitch algorithm
+(below version 3.0) and needed bifurcating trees. However trees can get
+pruned afterwards using the function <code>multi2di</code> from
+<em>ape</em>. Recently we replaced the acctran routine with a method
+based on the sankoff algorithm adopting the algorithm for joint
+reconstruction <span class="citation">(Pupko et al. 2000)</span> and
+breaking ties at random. This has the additional benefit that to infer
+phylogenies with multifurcations.</p>
+<p>“MPR” reconstructs the ancestral states for each (internal) node as
+if the tree would be rooted in that node. However the nodes are not
+independent of each other. If one chooses one state for a specific node,
+this can restrict the choice of neighboring nodes (figures 2 and 3).
+There is also an option “POSTORDER” which is only a one pass algotrithm,
+which we use for teaching purposes. The function acctran (accelerated
+transformation) assigns edge length and internal nodes to the tree <span class="citation">(Swofford and Maddison 1987)</span>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">anc.acctran</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ancestral.pml.html">ancestral.pars</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">primates</span>, <span class="st">"ACCTRAN"</span><span class="op">)</span></span>
 <span><span class="va">anc.mpr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ancestral.pml.html">ancestral.pars</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">primates</span>, <span class="st">"MPR"</span><span class="op">)</span></span></code></pre></div>
-<p>All the ancestral reconstructions for parsimony are based on the
-fitch algorithm and so far only bifurcating trees are allowed. However
-trees can get pruned afterwards using the function <code>multi2di</code>
-from <em>ape</em>.</p>
 <p>The <code>plotSeqLogo</code> function is a wrapper around the from
-the <em>ggseqlogo</em> function the the <em>ggseqlogo</em> package <span class="citation">(Wagih 2024)</span> and provides a simple way to show
+the <em>ggseqlogo</em> function in the <em>ggseqlogo</em> package <span class="citation">(Wagih 2024)</span> and provides a simple way to show
 proportions of a nucleotides of ancestral states (see figure 1).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#library(seqLogo)</span></span>
@@ -149,11 +155,12 @@ Fig 3. Ancestral reconstruction using ACCTRAN.
 </h2>
 <p><em>phangorn</em> also offers the possibility to estimate ancestral
 states using ML. The advantages of ML over parsimony is that the
-reconstruction accounts for different edge lengths. So far only a
-marginal construction is implemented (see [<span class="citation">Yang
-(2006)</span>]<span class="citation">(Koshi and Goldstein 1996)</span>)
-and no joint reconstruction <span class="citation">(Pupko et al.
-2000)</span>.</p>
+reconstruction accounts for different edge lengths. Currently a marginal
+construction is implemented (see [<span class="citation">Yang
+(2006)</span>]<span class="citation">(Koshi and Goldstein 1996)</span>),
+but the joint reconstruction <span class="citation">(Pupko et al.
+2000)</span> only for models without rate variation (e.g. gamma models)
+or invariant sites.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">pml</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">primates</span><span class="op">)</span></span>
 <span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, model<span class="op">=</span><span class="st">"F81"</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -322,8 +329,8 @@ matrices</em>. The “ARD” model is currently not available as
 <span><span class="co">## [29] fastmatch_1.1-4   vctrs_0.6.5       R6_2.5.1          lifecycle_1.0.4  </span></span>
 <span><span class="co">## [33] fs_1.6.4          htmlwidgets_1.6.4 ragg_1.3.2        pkgconfig_2.0.3  </span></span>
 <span><span class="co">## [37] desc_1.4.3        pkgdown_2.1.0     pillar_1.9.0      bslib_0.7.0      </span></span>
-<span><span class="co">## [41] gtable_0.3.5      glue_1.7.0        Rcpp_1.0.12       systemfonts_1.1.0</span></span>
-<span><span class="co">## [45] highr_0.11        xfun_0.45         tibble_3.2.1      tidyselect_1.2.1 </span></span>
+<span><span class="co">## [41] gtable_0.3.5      glue_1.7.0        Rcpp_1.0.13       systemfonts_1.1.0</span></span>
+<span><span class="co">## [45] highr_0.11        xfun_0.46         tibble_3.2.1      tidyselect_1.2.1 </span></span>
 <span><span class="co">## [49] knitr_1.48        farver_2.1.2      htmltools_0.5.8.1 nlme_3.1-164     </span></span>
 <span><span class="co">## [53] igraph_2.0.3      rmarkdown_2.27    labeling_0.4.3    compiler_4.4.1   </span></span>
 <span><span class="co">## [57] quadprog_1.5-8</span></span></code></pre>
