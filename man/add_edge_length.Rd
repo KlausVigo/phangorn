@@ -38,8 +38,9 @@ plot(tree_compat)
 add_boxplot(tree_compat, bs, boxwex=.7)
 }
 \seealso{
-\code{\link{node.depth.edgelength}}, \code{\link{consensus}},
-\code{\link{maxCladeCred}}, \code{\link{add_boxplot}}
+\code{\link[ape::node.depth]{node.depth.edgelength}},
+\code{\link[ape]{consensus}}, \code{\link{maxCladeCred}},
+\code{\link{add_boxplot}}
 }
 \author{
 Klaus Schliep

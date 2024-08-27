@@ -65,7 +65,7 @@ Schliep, K., Potts, A. J., Morrison, D. A. and Grimm, G. W.
 }
 \seealso{
 \code{\link{as.splits}}, \code{\link{as.networx}},
-\code{\link{RF.dist}}, \code{\link{plot.phylo}}
+\code{\link{RF.dist}}, \code{\link[ape]{plot.phylo}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

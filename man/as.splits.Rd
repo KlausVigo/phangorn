@@ -105,7 +105,7 @@ plot(as.networx(spl))
 
 }
 \seealso{
-\code{\link{prop.part}}, \code{\link{lento}},
+\code{\link[ape]{prop.part}}, \code{\link{lento}},
 \code{\link{as.networx}}, \code{\link{distanceHadamard}},
 \code{\link{read.nexus.splits}}
 }
