@@ -58,7 +58,7 @@ edge_length_matrix <- function(tree, trees, rooted=TRUE){
 ##'               add_edge_length(bs)
 ##' plot(tree_compat)
 ##' add_boxplot(tree_compat, bs, boxwex=.7)
-##' @seealso \code{\link[ape::node.depth]{node.depth.edgelength}},
+##' @seealso \code{\link[ape]{node.depth}},
 ##' \code{\link[ape]{consensus}}, \code{\link{maxCladeCred}},
 ##' \code{\link{add_boxplot}}
 ##' @keywords aplot

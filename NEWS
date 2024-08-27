@@ -1,4 +1,4 @@
-    CHANGES in PHANGORN VERSION 3.0.0
+    CHANGES in PHANGORN VERSION 2.12.0
 
 NEW FEATURES
 
@@ -18,15 +18,15 @@ NEW FEATURES
 
       character vector for the node argument and not only integers.
 
-    o Ancestral state reconstructionwas in parts rewritten. Output is now an
+    o Ancestral state reconstruction was rewritten. Output is now an object of
 
-      object of class ancestral. E.g. ancestral states of constant sites are now
+      class ancestral. E.g. ancestral states of constant sites are now always
 
-      always this state.
+      this state.
 
     o Improvements to several plot functions to get nicer plots out of the box.
 
-    o Nicer defaults for plot.pml, mainly for rooted trees.
+      Nicer defaults for plot.pml, mainly for rooted trees.
 
     o plotAnc got an argument scheme allowing to use different color schemes,
 
@@ -38,8 +38,7 @@ NEW FEATURES
 
     o new function composition_test comparing indicating possible problems
 
-      with base / state composition.
-
+      with base / state composition as in iqtree.
 
 OTHER CHANGES
 
