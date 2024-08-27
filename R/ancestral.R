@@ -42,7 +42,7 @@
 ## returned.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{pml}}, \code{\link{parsimony}}, \code{\link[ape]{ace}},
-#' \code{\link{plotAnc}}, \code{\link{ltg2amb}}, \code{\link{latag2n}},
+#' \code{\link{plotAnc}}, \code{\link{ltg2amb}}, \code{\link[ape]{latag2n}},
 #' \code{\link{gap_as_state}}, \code{\link[ape]{root}},
 #' \code{\link[ape]{makeNodeLabel}}
 #' @references Felsenstein, J. (2004). \emph{Inferring Phylogenies}. Sinauer
@@ -107,6 +107,9 @@ ancestral.pml <- function(object, type = "marginal", ...) {
   tree$node.label <- node_label
   tmp <- length(data)
 
+  joint <- TRUE
+  if(length(w) > 1 || object$inv > 0) joint <- FALSE
+
   eig <- object$eig
 
   bf <- object$bf
@@ -165,12 +168,15 @@ ancestral.pml <- function(object, type = "marginal", ...) {
       result2[[k]][ind] <- data[[1]][ind]
     }
   }
+  result3 <- NULL
+  if(joint) result3 <- joint_pml(object)
   attrib$names <- node_label
   attributes(result2) <- attrib
   attributes(result) <- attrib
   result <- list2df_ancestral(result, result2)
   result2 <- compress.phyDat(result2)
-  erg <- list(tree=tree, data=data, prob=result, state=result2)
+  erg <- list(tree=tree, data=data, prob=result, state=result2,
+              joint_state = result3)
   class(erg) <- "ancestral"
   erg
 }
