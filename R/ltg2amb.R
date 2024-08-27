@@ -7,7 +7,7 @@
 #' @param amb character of the ambiguous state t replace the gaps.
 #' @param gap gap parameter to replace.
 #' @returns returns an object of class \code{phyDat}.
-#' @seealso \code{\link{latag2n}}, \code{\link{ancestral.pml}},
+#' @seealso \code{\link[ape]{latag2n}}, \code{\link{ancestral.pml}},
 #' \code{\link{gap_as_state}}
 #' @examples
 #' x <- phyDat(matrix(c("-", "A", "G", "-", "T", "C"), 2, 3))

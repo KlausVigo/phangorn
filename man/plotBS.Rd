@@ -91,10 +91,10 @@ Penny D. and Hendy M.D. (1986) Estimating the reliability of evolutionary
 trees. \emph{Molecular Biology and Evolution} \bold{3}, 403--417
 }
 \seealso{
-\code{\link{plot.phylo}}, \code{\link{add_ci}},
-\code{\link{nodelabels}},
-\code{\link{prop.clades}}, \code{\link{maxCladeCred}},
-\code{\link{transferBootstrap}}, \code{\link{consensus}},
+\code{\link[ape]{plot.phylo}}, \code{\link{add_ci}},
+\code{\link[ape]{nodelabels}},
+\code{\link[ape]{prop.clades}}, \code{\link{maxCladeCred}},
+\code{\link{transferBootstrap}}, \code{\link[ape]{consensus}},
 \code{\link{consensusNet}}
 }
 \author{

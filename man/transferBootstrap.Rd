@@ -45,7 +45,7 @@ phylogenetic bootstrap in the era of big data. \emph{Nature},
 }
 \seealso{
 \code{\link{plotBS}}, \code{\link{maxCladeCred}},
-\code{\link{drawSupportOnEdges}}
+\code{\link[ape]{drawSupportOnEdges}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

@@ -75,7 +75,7 @@ dna2codon(Laurasiatherian)
 \url{https://www.ncbi.nlm.nih.gov/Taxonomy/taxonomyhome.html/index.cgi?chapter=cgencodes}
 }
 \seealso{
-\code{\link{trans}}, \code{\link{phyDat}} and the chapter 4 in the
+\code{\link[ape]{trans}}, \code{\link{phyDat}} and the chapter 4 in the
 \code{vignette("phangorn-specials", package="phangorn")}
 }
 \author{

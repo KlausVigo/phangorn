@@ -232,7 +232,8 @@ discrete morphological character data. \emph{Systematic Biology} \bold{50},
 \seealso{
 \code{\link{pml_bb}}, \code{\link{bootstrap.pml}},
 \code{\link{modelTest}}, \code{\link{pmlPart}}, \code{\link{pmlMix}},
-\code{\link{plot.phylo}}, \code{\link{SH.test}}, \code{\link{ancestral.pml}}
+\code{\link[ape]{plot.phylo}}, \code{\link{SH.test}},
+\code{\link{ancestral.pml}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

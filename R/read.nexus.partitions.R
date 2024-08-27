@@ -48,7 +48,7 @@ read.nexus.charset <- function(file){
 #' @return a list where each element is a 'phyDat' object or an object of class
 #' 'multiphyDat'.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{read.nexus.data}}, \code{\link{read.phyDat}}
+#' @seealso \code{\link[ape]{read.nexus.data}}, \code{\link{read.phyDat}}
 #' @keywords cluster
 #' @examples
 #' tree <- rtree(10)

@@ -114,7 +114,7 @@ all.equal(Laurasiatherian, as.phyDat(LauraDNAbin))
 
 }
 \seealso{
-[DNAbin()], [as.DNAbin()],
+\code{\link[ape]{DNAbin}}, \code{\link[ape]{as.DNAbin}},
 \code{\link{baseFreq}}, \code{\link{glance.phyDat}},
 \code{\link[ape]{read.dna}}, \code{\link[ape]{read.nexus.data}}
 and the chapter 1 in the \code{vignette("phangorn-specials",

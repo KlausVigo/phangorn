@@ -36,8 +36,8 @@
 #' @param \dots Further arguments passed to or from other methods.
 #' @return \code{pml_bb} returns an object of class pml.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{optim.pml}}, \code{\link{modelTest}}, \code{\link{rtt}},
-#' \code{\link{pml.control}}
+#' @seealso \code{\link{optim.pml}}, \code{\link{modelTest}},
+#' \code{\link[ape]{rtt}}, \code{\link{pml.control}}
 #' @keywords cluster
 #' @examples
 #'

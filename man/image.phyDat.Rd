@@ -26,5 +26,5 @@ data("chloroplast")
 image(chloroplast[, 1:50], scheme="Clustal", show.aa = TRUE)
 }
 \seealso{
-\code{\link{image.DNAbin}}, \code{\link{image.AAbin}}
+\code{\link[ape]{image.DNAbin}}, \code{\link[ape]{image.AAbin}}
 }

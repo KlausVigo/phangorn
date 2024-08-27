@@ -69,8 +69,8 @@ fit_HKY_R2 <- pml_bb(woodmouse, model="HKY+R(2)")
 }
 }
 \seealso{
-\code{\link{optim.pml}}, \code{\link{modelTest}}, \code{\link{rtt}},
-\code{\link{pml.control}}
+\code{\link{optim.pml}}, \code{\link{modelTest}},
+\code{\link[ape]{rtt}}, \code{\link{pml.control}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

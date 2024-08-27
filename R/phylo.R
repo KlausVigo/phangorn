@@ -1247,7 +1247,8 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{pml_bb}}, \code{\link{bootstrap.pml}},
 #' \code{\link{modelTest}}, \code{\link{pmlPart}}, \code{\link{pmlMix}},
-#' \code{\link{plot.phylo}}, \code{\link{SH.test}}, \code{\link{ancestral.pml}}
+#' \code{\link[ape]{plot.phylo}}, \code{\link{SH.test}},
+#' \code{\link{ancestral.pml}}
 #' @references Felsenstein, J. (1981) Evolutionary trees from DNA sequences: a
 #' maximum likelihood approach. \emph{Journal of Molecular Evolution},
 #' \bold{17}, 368--376.

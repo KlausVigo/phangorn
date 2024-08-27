@@ -30,7 +30,7 @@
 #' assumes that different co-variables are tab delimited and the bipartition
 #' are separated with white-space. Comments in square brackets are ignored.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{prop.part}}, \code{\link{lento}},
+#' @seealso \code{\link[ape]{prop.part}}, \code{\link{lento}},
 #' \code{\link{as.splits}}, \code{\link{as.networx}}
 #' @keywords cluster
 #' @examples

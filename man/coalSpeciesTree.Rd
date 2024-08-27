@@ -40,7 +40,7 @@ consistent estimator of the species tree. \emph{Journal of Mathematical
 Biology}, \bold{60}, 95--106.
 }
 \seealso{
-\code{\link{speciesTree}}
+\code{\link[ape]{speciesTree}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com} Emmanuel Paradies

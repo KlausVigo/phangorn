@@ -51,7 +51,7 @@ glance(chloroplast)
 composition_test(Laurasiatherian)[1:10,]
 }
 \seealso{
-\code{\link{phyDat}, \link{base.freq}, \link{glance}}
+\code{\link{phyDat}, \link[ape]{base.freq}, \link{glance}}
 }
 \author{
 Klaus Schliep

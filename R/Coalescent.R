@@ -64,7 +64,7 @@ comp2 <- function(x, y) {
 #' @param sTree A species tree which fixes the topology.
 #' @return The function returns an object of class \code{phylo}.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com} Emmanuel Paradies
-#' @seealso \code{\link{speciesTree}}
+#' @seealso \code{\link[ape]{speciesTree}}
 #' @references Liu, L., Yu, L. and Pearl, D. K. (2010) Maximum tree: a
 #' consistent estimator of the species tree. \emph{Journal of Mathematical
 #' Biology}, \bold{60}, 95--106.

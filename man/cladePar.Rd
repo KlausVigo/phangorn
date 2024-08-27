@@ -42,7 +42,7 @@ cladePar(tree, 18, "blue", "blue", x=x, plot=TRUE)
 
 }
 \seealso{
-\code{\link{plot.phylo}}
+\code{\link[ape]{plot.phylo}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

@@ -56,8 +56,8 @@ samples under the assumption of a molecular clock using serial-sample UPGMA.
 }
 \seealso{
 \code{\link{hclust}}, \code{\link{dist.hamming}}, \code{\link{NJ}},
-\code{\link{as.phylo}}, \code{\link{fastme}}, \code{\link{nnls.tree}},
-\code{\link{rtt}}
+\code{\link[ape]{as.phylo}}, \code{\link[ape]{fastme}},
+\code{\link{nnls.tree}}, \code{\link[ape]{rtt}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

@@ -24,10 +24,10 @@
 #' @return a tree (an object of class \code{phylo}) with the highest clade
 #' credibility or a numeric vector of clade credibilities for each tree.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{consensus}}, \code{\link{consensusNet}},
-#' \code{\link{prop.part}}, \code{\link{bootstrap.pml}}, \code{\link{plotBS}},
-#' \code{\link{transferBootstrap}}, \code{\link{add_edge_length}},
-#' \code{\link{add_boxplot}}
+#' @seealso \code{\link[ape]{consensus}}, \code{\link{consensusNet}},
+#' \code{\link[ape]{prop.part}}, \code{\link{bootstrap.pml}},
+#' \code{\link{plotBS}}, \code{\link{transferBootstrap}},
+#' \code{\link{add_edge_length}}, \code{\link{add_boxplot}}
 #' @keywords cluster
 #' @importFrom fastmatch fmatch
 #' @examples

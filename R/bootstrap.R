@@ -29,8 +29,8 @@
 #' if not supplied the tree with labels supplied in the \code{node.label} slot.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{optim.pml}}, \code{\link{pml}},
-#' \code{\link{plot.phylo}}, \code{\link{maxCladeCred}}
-#' \code{\link{nodelabels}},\code{\link{consensusNet}} and
+#' \code{\link[ape]{plot.phylo}}, \code{\link{maxCladeCred}}
+#' \code{\link[ape]{nodelabels}},\code{\link{consensusNet}} and
 #' \code{\link{SOWH.test}} for parametric bootstrap
 #' @references Felsenstein J. (1985) Confidence limits on phylogenies. An
 #' approach using the bootstrap. \emph{Evolution} \bold{39}, 783--791
