@@ -226,6 +226,128 @@ dist.ml <- function(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
 
 #' @rdname dist.hamming
 #' @export
+dist.ml_arma <- function(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
+                         k = 1L, shape = 1, ...){
+  if(inherits(x, "DNAbin") | inherits(x, "AAbin")) x <- as.phyDat(x)
+  if (!inherits(x, "phyDat")) stop("x must be of class phyDat")
+  l <- length(x)
+  d <- numeric((l * (l - 1)) / 2)
+  v <- numeric((l * (l - 1)) / 2)
+  contrast <- attr(x, "contrast")
+  con <- rowSums(contrast > 0) == 1
+
+  if (exclude == "all" ) x <- removeAmbiguousSites(x)
+  ambig_sites <- hasAmbiguousSites(x)
+
+  model <- match.arg(model, c("JC69", "F81", .aamodels))
+
+  unique_contrast <- grp_duplicated(contrast)
+  if(exclude != "none"){
+    pos_contrast <- rep(NA_integer_, length(unique_contrast))
+    lu <- length(unique( unique_contrast[con]) )
+    pos_contrast[unique( unique_contrast[con])] <- seq_len(lu)
+    unique_contrast <- pos_contrast[unique_contrast]
+    attr(unique_contrast, "nlevels") <- lu
+  }
+  nc <- as.integer(attr(x, "nc"))
+  nr <- as.integer(attr(x, "nr"))
+
+  if (!is.na(match(model, .aamodels)))
+    getModelAA(model, bf = is.null(bf), Q = is.null(Q))
+  if (is.null(bf) && model == "F81") bf <- baseFreq(x)
+  if (is.null(bf))
+    bf <- rep(1 / nc, nc)
+  if (is.null(Q))
+    Q <- rep(1, (nc - 1) * nc / 2L)
+  bf <- as.double(bf)
+
+  if( (model == "JC69"  || model == "F81") && !ambig_sites && k==1){
+    d <- dist.hamming(x)
+    E <- .75
+    if(model == "F81") E <- 1 - sum(bf^2)
+    dist_jc <- function(d) -E * log(1- d/E )
+    var_jc <- function(d, n) d * (1-d) / (n * (1 - d / E)^2)
+    n <- sum(attr(x, "weight"))
+    attr(d, "variance") <- var_jc(d, n)
+    d <- dist_jc(d)
+    attr(d, "call") <- match.call()
+    attr(d, "method") <- model
+    return(d)
+  }
+  eig <- edQt(Q = Q, bf = bf)
+  e_val <- eig[[1]]
+  pos <- 1
+  k <- as.integer(k)
+  w <- as.double(w <- rep(1 / k, k))
+  g <- as.double(discrete.gamma(shape, k))
+  fun <- function(s) -(nc - 1) / nc * log(1 - nc / (nc - 1) * s)
+  eps <- (nc - 1) / nc
+  n <- as.integer(dim(contrast)[1]) # attr(unique_contrast, "nlevels")
+  ind1 <- rep(1:n, n:1)
+  ind2 <- unlist(lapply(n:1, function(x) seq_len(x) + n - x))
+  li <- as.integer(length(ind1))
+  weight <- as.double(attr(x, "weight"))
+  ll.0 <- double(length(ind1))
+  if (exclude == "pairwise") {
+    index <- con[ind1] & con[ind2]
+    index <- which(!index)
+  }
+  tmp <- (contrast %*% eig[[2]])[ind1, ] *
+    (contrast %*% (t(eig[[3]]) * bf))[ind2, ]
+  tmp2 <- vector("list", k)
+
+  wshared <- which(rowSums(contrast[ind1, ] * contrast[ind2, ]) > 0)
+
+  tmp2 <- vector("list", k)
+  for (i in 1:(l - 1)) {
+    for (j in (i + 1):l) {
+      w0 <- .Call('PWI', as.integer(x[[i]]), as.integer(x[[j]]),
+                  nr, n, weight, li)
+      if (exclude == "pairwise") w0[index] <- 0.0
+      ind <- w0 > 0
+      # more error checking
+      sum_shared <- sum(w0[wshared])
+      sum_w <- sum(w0)
+      if(sum_w == 0){
+        d[pos] <- NA_real_
+        v[pos] <- NA_real_
+      } else if(sum_shared == sum_w){
+        d[pos] <- 0
+        v[pos] <- NA_real_
+      } else {
+        #1 - (sum(w0[wshared]) / sum(w0))
+        old.el <- 1 - sum_shared / sum_w
+        if (old.el > eps)
+          old.el <- 10
+        else old.el <- fun(old.el)
+        tmp3 <- array(rep(tmp[ind, , drop = FALSE], k), c(sum(ind), nc, k))
+        res <- fs_3(e_val, as.double(old.el), w, g, tmp3, k, w0[ind], ll.0[ind],
+             1.0e-8)
+        d[pos] <- res[1]
+        v[pos] <- res[2]
+      }
+      pos <- pos + 1
+    }
+  }
+  attr(d, "Size") <- l
+  if (is.list(x))
+    attr(d, "Labels") <- names(x)
+  else attr(d, "Labels") <- colnames(x)
+  attr(d, "Diag") <- FALSE
+  attr(d, "Upper") <- FALSE
+  attr(d, "call") <- match.call()
+  attr(d, "variance") <- v
+  attr(d, "method") <- model
+  class(d) <- "dist"
+  return(d)
+}
+
+
+
+
+
+#' @rdname dist.hamming
+#' @export
 dist.logDet <- function(x)
 {
   if(inherits(x, "DNAbin") | inherits(x, "AAbin")) x <- as.phyDat(x)

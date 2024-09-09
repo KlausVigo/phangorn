@@ -51,6 +51,8 @@
 
 loadModule("Fitch_mod", TRUE)
 
+loadModule("PML_mod", TRUE)
+
 # .onLoad  <- function(libname, pkgname) {
 #    library.dynam("phangorn", pkgname, libname)
 #}
