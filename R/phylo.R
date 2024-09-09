@@ -1247,7 +1247,8 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{pml_bb}}, \code{\link{bootstrap.pml}},
 #' \code{\link{modelTest}}, \code{\link{pmlPart}}, \code{\link{pmlMix}},
-#' \code{\link{plot.phylo}}, \code{\link{SH.test}}, \code{\link{ancestral.pml}}
+#' \code{\link[ape]{plot.phylo}}, \code{\link{SH.test}},
+#' \code{\link{ancestral.pml}}
 #' @references Felsenstein, J. (1981) Evolutionary trees from DNA sequences: a
 #' maximum likelihood approach. \emph{Journal of Molecular Evolution},
 #' \bold{17}, 368--376.
@@ -1340,7 +1341,7 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
                 rate = 1, model = NULL, site.rate = "gamma", ASC = FALSE, ...) {
   call <- match.call()
   extras <- match.call(expand.dots = FALSE)$...
-  pmla <- c("wMix", "llMix", "dnds", "tstv")
+  pmla <- c("wMix", "llMix", "dnds", "tstv", "w", "g")
   existing <- match(pmla, names(extras))
   wMix <- ifelse(is.na(existing[1]), 0,
     eval(extras[[existing[1]]], parent.frame()))
@@ -1348,14 +1349,18 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
 #    eval(extras[[existing[2]]], parent.frame()))
   llMix <- 0
   if(!is.na(existing[2])) llMix <- eval(extras[[existing[2]]], parent.frame())
-
-  # allow
   dnds <- tstv <- 1
   dnds <- ifelse(is.na(existing[3]), 1,
     eval(extras[[existing[3]]], parent.frame()))
   tstv <- ifelse(is.na(existing[4]), 1,
     eval(extras[[existing[4]]], parent.frame()))
-
+  w <- g <- NULL
+  if(!is.na(existing[5]) & !is.na(existing[6])) {
+    w <- eval(extras[[existing[5]]], parent.frame())
+    g <- eval(extras[[existing[6]]], parent.frame())
+    stopifnot(length(g) == length(w))
+    k <- length(w)
+  }
   if (!inherits(tree, "phylo")) stop("tree must be of class phylo")
   if (is.null(tree$edge.length)) stop("tree must have edge weights")
   if (any(duplicated(tree$tip.label))) stop("tree must have unique labels!")
@@ -1419,22 +1424,23 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     Q <- rep(1, length(levels) * (length(levels) - 1) / 2)
   m <- 1
   eig <- edQt(bf = bf, Q = Q)
-  if(site.rate=="free_rate"){
-    w <- rep(1/k, k)
-    g <- rep(1, k)
-  }
-  else{
-    rw <- rates_n_weights(shape, k, site.rate)
-    g <- rw[, 1]
-    w <- rw[, 2]
-  }
-  if (inv > 0){
-    w <- (1 - inv) * w
-    g <- g / (1 - inv)
-  }
+  if(is.null(g) | is.null(w)){
+    if(site.rate=="free_rate"){
+      w <- rep(1/k, k)
+      g <- rep(1, k)
+    }
+    else{
+      rw <- rates_n_weights(shape, k, site.rate)
+      g <- rw[, 1]
+      w <- rw[, 2]
+    }
+    if (inv > 0){
+      w <- (1 - inv) * w
+      g <- g / (1 - inv)
+    }
 #  if (wMix > 0) w <- (1 - wMix) * w
-  g <- g * rate
-
+    g <- g * rate
+  }
   inv0 <- inv
   kmax <- k
   if (any(g < .gEps)) {
@@ -1460,7 +1466,7 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   tmp <- pml.fit(tree, data, bf, shape = shape, k = k, Q = Q,
     levels = attr(data, "levels"), inv = inv, rate = rate, g = g, w = w,
     eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, wMix = wMix, site = TRUE,
-    ASC=ASC)
+    ASC=ASC, site.rate = site.rate)
   df <- ifelse(is.ultrametric(tree), tree$Nnode, length(tree$edge.length))
 
   df <- switch(type,

@@ -13,7 +13,7 @@
 #' the node labels.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso  \code{\link{plotBS}}, \code{\link{maxCladeCred}},
-#' \code{\link{drawSupportOnEdges}}
+#' \code{\link[ape]{drawSupportOnEdges}}
 #' @references Lemoine, F., Entfellner, J. B. D., Wilkinson, E., Correia, D.,
 #' Felipe, M. D., De Oliveira, T., & Gascuel, O. (2018). Renewing Felsenstein’s
 #' phylogenetic bootstrap in the era of big data. \emph{Nature},

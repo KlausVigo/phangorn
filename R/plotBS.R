@@ -75,10 +75,10 @@ support <- function(tree, trees, method="FBP", tol=2e-8, scale=TRUE){
 #' \code{trees} is optional and if not supplied the labels supplied
 #' in the \code{node.label} slot will be used.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso  \code{\link{plot.phylo}}, \code{\link{add_ci}},
-#' \code{\link{nodelabels}},
-#' \code{\link{prop.clades}}, \code{\link{maxCladeCred}},
-#' \code{\link{transferBootstrap}}, \code{\link{consensus}},
+#' @seealso  \code{\link[ape]{plot.phylo}}, \code{\link{add_ci}},
+#' \code{\link[ape]{nodelabels}},
+#' \code{\link[ape]{prop.clades}}, \code{\link{maxCladeCred}},
+#' \code{\link{transferBootstrap}}, \code{\link[ape]{consensus}},
 #' \code{\link{consensusNet}}
 #' @references Felsenstein J. (1985) Confidence limits on phylogenies. An
 #' approach using the bootstrap. \emph{Evolution} \bold{39}, 783--791

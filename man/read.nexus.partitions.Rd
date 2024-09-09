@@ -42,7 +42,7 @@ tmp
 unlink(zz)
 }
 \seealso{
-\code{\link{read.nexus.data}}, \code{\link{read.phyDat}}
+\code{\link[ape]{read.nexus.data}}, \code{\link{read.phyDat}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

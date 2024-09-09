@@ -100,8 +100,8 @@ trees. \emph{Molecular Biology and Evolution} \bold{3}, 403--417
 }
 \seealso{
 \code{\link{optim.pml}}, \code{\link{pml}},
-\code{\link{plot.phylo}}, \code{\link{maxCladeCred}}
-\code{\link{nodelabels}},\code{\link{consensusNet}} and
+\code{\link[ape]{plot.phylo}}, \code{\link{maxCladeCred}}
+\code{\link[ape]{nodelabels}},\code{\link{consensusNet}} and
 \code{\link{SOWH.test}} for parametric bootstrap
 }
 \author{

@@ -7,6 +7,8 @@
 \alias{as.phyDat.matrix}
 \alias{as.MultipleAlignment}
 \alias{as.MultipleAlignment.phyDat}
+\alias{as.StringSet}
+\alias{as.StringSet.phyDat}
 \alias{acgt2ry}
 \alias{phyDat2MultipleAlignment}
 \alias{as.phyDat}
@@ -44,6 +46,8 @@ phyDat2alignment(x)
 \method{as.phyDat}{AAStringSet}(x, ...)
 
 \method{as.phyDat}{DNAStringSet}(x, ...)
+
+\method{as.StringSet}{phyDat}(x, ...)
 
 \method{as.MultipleAlignment}{phyDat}(x, ...)
 
@@ -111,9 +115,9 @@ all.equal(Laurasiatherian, as.phyDat(LauraDNAbin))
 
 }
 \seealso{
-[DNAbin()], [as.DNAbin()],
+\code{\link[ape]{DNAbin}}, \code{\link[ape]{as.DNAbin}},
 \code{\link{baseFreq}}, \code{\link{glance.phyDat}},
-\code{\link{read.dna}}, \code{\link{read.nexus.data}}
+\code{\link[ape]{read.dna}}, \code{\link[ape]{read.nexus.data}}
 and the chapter 1 in the \code{vignette("phangorn-specials",
 package="phangorn")} and the example of \code{\link{pmlMix}} for the use of
 \code{allSitePattern}

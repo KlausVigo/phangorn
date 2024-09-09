@@ -14,7 +14,7 @@
 #' @param \dots Further arguments passed to or from other methods.
 #' @return A list containing the information about the edges and tips.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{plot.phylo}}
+#' @seealso \code{\link[ape]{plot.phylo}}
 #' @keywords plot
 #' @examples
 #'

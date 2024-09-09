@@ -17,7 +17,7 @@
 #'
 #' @return  \code{baseFreq} returns a named vector and \code{glance} a one row
 #' \code{data.frame}.
-#' @seealso \code{\link{phyDat}, \link{base.freq}, \link{glance}}
+#' @seealso \code{\link{phyDat}, \link[ape]{base.freq}, \link{glance}}
 #' @author Klaus Schliep
 #' @examples
 #'

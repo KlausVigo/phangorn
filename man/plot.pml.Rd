@@ -48,8 +48,8 @@ plot(fit_unrooted, cex=.5)
 
 }
 \seealso{
-\code{\link{plot.phylo}}, \code{\link{axisPhylo}},
-\code{\link{add.scale.bar}}
+\code{\link[ape]{plot.phylo}}, \code{\link[ape]{axisPhylo}},
+\code{\link[ape]{add.scale.bar}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

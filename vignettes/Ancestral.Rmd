@@ -38,37 +38,30 @@ parsimony(tree, primates)
 ```
 
 For parsimony analysis of the edge length represent the observed number of changes. Reconstructing ancestral states therefore defines also the edge lengths of a tree. However there can exist several equally parsimonious reconstructions or states can be ambiguous and therefore edge length can differ.
+In _phangorn_ all the ancestral reconstructions for parsimony used to be based on the fitch algorithm (below version 3.0) and needed bifurcating trees. However trees can get pruned afterwards using the function `multi2di` from _ape_. Recently we replaced the acctran routine with a method based on the sankoff algorithm adopting the algorithm for joint reconstruction [@Pupko2000] and breaking ties at random. This has the additional benefit that to infer phylogenies with multifurcations. 
+
 "MPR" reconstructs the ancestral states for each (internal) node as if the tree would be rooted in that node. However the nodes are not independent of each other. If one chooses one state for a specific node, this can restrict the choice of neighboring nodes (figures 2 and 3).
-The function acctran (accelerated transformation) assigns edge length and internal nodes to the tree [@Swofford1987].
+There is also an option "POSTORDER" which is only a one pass algotrithm, which we use for teaching purposes. 
+The function acctran (accelerated transformation) assigns edge length and internal nodes to the tree [@Swofford1987]. 
 ```{r ancestral_reconstruction}
-anc.acctran <- ancestral.pars(tree, primates, "ACCTRAN")
-anc.mpr <- ancestral.pars(tree, primates, "MPR")
+anc.pars <- anc_pars(tree, primates)
 ```
 
-All the ancestral reconstructions for parsimony are based on the fitch algorithm and so far only bifurcating trees are allowed. However trees can get pruned afterwards using the function `multi2di` from _ape_.
-
-The `plotSeqLogo` function is a wrapper around the from the _ggseqlogo_ function the the _ggseqlogo_ package [@ggseqlogo]  and provides a simple way to show proportions of a nucleotides of ancestral states (see figure 1). 
+The `plotSeqLogo` function is a wrapper around the from the _ggseqlogo_ function in the _ggseqlogo_ package [@ggseqlogo]  and provides a simple way to show proportions of a nucleotides of ancestral states (see figure 1). 
 
 ```{r seqLogo, fig.cap="Fig 1. Ancestral reconstruction for a node.", eval=TRUE}
-#library(seqLogo)
-#seqLogo( t(subset(anc.mpr, getRoot(tree), 1:20)[[1]]), ic.scale=FALSE)
-plotSeqLogo(anc.mpr, node=getRoot(tree), 1, 20)
+plotSeqLogo(anc.pars, node=getRoot(tree), 1, 20)
 ```
 ```{r MPR, fig.cap="Fig 2. Ancestral reconstruction using MPR."}
-plotAnc(anc.mpr, 17)
+plotAnc(anc.pars, 17)
 title("MPR")
 ```
-```{r ACCTRAN, fig.cap="Fig 3. Ancestral reconstruction using ACCTRAN."}
-plotAnc(anc.acctran, 17)
-title("ACCTRAN")
-```
-
 
 # Likelihood reconstructions
 
 _phangorn_ also offers the possibility to estimate ancestral states using ML.
 The advantages of ML over parsimony is that the reconstruction accounts for different edge lengths.
-So far only a marginal construction is implemented (see [@Yang2006][@Koshi1996]) and no joint reconstruction [@Pupko2000].
+Currently a marginal construction is implemented (see [@Yang2006][@Koshi1996]), but the joint reconstruction [@Pupko2000] only for models without rate variation (e.g. gamma models) or invariant sites.
 ```{r fit_ML}
 fit <- pml(tree, primates)
 fit <- optim.pml(fit, model="F81", control = pml.control(trace=0))
@@ -81,11 +74,9 @@ and the highest posterior probability ("bayes") criterion:
 \[
 P(x_r=A) =  \frac{\pi_A L(x_r=A)}{\sum_{k \in \{A,C,G,T\}}\pi_k L(x_r=k)},
 \]
-where $L(x_r)$ is the joint probability of states at the tips and the state at the root $x_r$ and $\pi_i$ are the estimated base frequencies of state $i$.
-Both methods agree if all states (base frequencies) have equal probabilities.
+where $L(x_r)$ is the joint probability of states at the tips and the state at the root $x_r$ and $\pi_i$ are the estimated base frequencies of state $i$. Both methods agree if all states (base frequencies) have equal probabilities.
 ```{r ML_reconstruction}
-anc.ml <- ancestral.pml(fit, "ml")
-anc.bayes <- ancestral.pml(fit, "bayes")
+anc.ml <- anc_pml(fit)
 ```
 The differences of the two approaches for a specific site (17) are represented in the following figures.
 ```{r plotML, fig.cap="Fig 4. Ancestral reconstruction the using the maximum likelihood."}
@@ -93,8 +84,8 @@ plotAnc(anc.ml, 17)
 title("ML")
 ```
 ```{r plotB, fig.cap="Fig 5. Ancestral reconstruction using (empirical) Bayes."}
-plotAnc(anc.bayes, 17)
-title("Bayes")
+#plotAnc(anc.bayes, 17)
+#title("Bayes")
 ```
 
 # Fitting for discrete comparative data
@@ -142,7 +133,7 @@ all.equal(fit_SYM$logLik, fit_ace$loglik+log(1/3))
 
 
 ```{r SYM_reconstruction}
-anc_SYM <- ancestral.pml(fit_SYM, "ml")
+anc_SYM <- anc_pml(fit_SYM)
 plotAnc(anc_SYM)
 ```
 

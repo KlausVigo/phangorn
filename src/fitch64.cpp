@@ -846,6 +846,7 @@ double pscore(Fitch* obj, const IntegerMatrix & orig){
 
 NumericVector pscore_node(Fitch* obj, const IntegerMatrix & orig){
   int i,j;
+  size_t ij;
   int states = obj->nStates;
   int nBits = obj->nBits;
   std::vector< std::vector<uint64_t> > vector = obj->X;
@@ -867,6 +868,7 @@ NumericVector pscore_node(Fitch* obj, const IntegerMatrix & orig){
   uint64_t ones = ~0ull;
   uint64_t tmp = 0ull;
   for(int k=0; k<nl; k+=2){
+    ij = (size_t) anc[k] - 1L;
     child1 = vector[desc[k] - 1L].data();
     child2 = vector[desc[k+1] - 1L].data();
     parent = vector[anc[k] - 1L].data();
@@ -884,7 +886,7 @@ NumericVector pscore_node(Fitch* obj, const IntegerMatrix & orig){
       parent += states;
       tmp = ~orvand & ones;
       for(int l=0; l<BIT_SIZE; ++l){
-        if((tmp >> l) & 1ull) pars[anc[k] - 1L]+= obj->weight[i*BIT_SIZE + l];
+        if((tmp >> l) & 1ull) pars[ij]+= obj->weight[i*BIT_SIZE + l];
       }
     }
     for (int i = obj->wBits; i < nBits; ++i){
@@ -897,12 +899,13 @@ NumericVector pscore_node(Fitch* obj, const IntegerMatrix & orig){
       child2 += states;
       parent += states;
       tmp = ~orvand & ones;
-      pars[anc[k] - 1L] += popcnt64(tmp);
+      pars[ij] += popcnt64(tmp);
     }
   }
   if(unrooted){
     child1 = vector[desc[nl] - 1].data();
     parent = vector[anc[nl] - 1].data();
+    ij = (size_t) anc[nl] - 1L;
     for (i = 0; i < obj->wBits; ++i){
       // OR the ANDs of all states
       uint64_t orvand = 0ull;
@@ -915,7 +918,7 @@ NumericVector pscore_node(Fitch* obj, const IntegerMatrix & orig){
       parent += states;
       uint64_t tmp = ~orvand & ones;
       for(int l=0; l<BIT_SIZE; ++l){
-        if((tmp >> l) & 1ull) pars[anc[nl] - 1L]+= obj->weight[i*BIT_SIZE + l];
+        if((tmp >> l) & 1ull) pars[ij]+= obj->weight[i*BIT_SIZE + l];
       }
     }
     for (int i = obj->wBits; i < nBits; ++i){
@@ -929,7 +932,7 @@ NumericVector pscore_node(Fitch* obj, const IntegerMatrix & orig){
       child1 += states;
       parent += states;
       uint64_t tmp = ~orvand & ones;
-      pars [anc[nl] - 1L]+= popcnt64(tmp);
+      pars [ij]+= popcnt64(tmp);
     }
   }
   return(pars);

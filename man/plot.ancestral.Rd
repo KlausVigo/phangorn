@@ -57,7 +57,7 @@ For further details see vignette("Ancestral").
 example(NJ)
 # generate node labels to ensure plotting will work
 tree <- makeNodeLabel(tree)
-anc.p <- ancestral.pars(tree, Laurasiatherian)
+anc.p <- anc_pars(tree, Laurasiatherian)
 # plot the third character
 plotAnc(anc.p, 3, pos="topright")
 plotSeqLogo(anc.p, node="Node10", 1, 25)
@@ -65,7 +65,7 @@ plotSeqLogo(anc.p, node="Node10", 1, 25)
 data(chloroplast)
 tree <- pratchet(chloroplast,  maxit=10, trace=0)
 tree <- makeNodeLabel(tree)
-anc.ch <- ancestral.pars(tree, chloroplast)
+anc.ch <- anc_pars(tree, chloroplast)
 image(as.phyDat(anc.ch)[, 1:25])
 plotAnc(anc.ch, 21, scheme="Ape_AA", pos="topleft")
 plotAnc(anc.ch, 21, scheme="Clustal", pos="topleft")

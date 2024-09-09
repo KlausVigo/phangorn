@@ -81,10 +81,10 @@ maxCladeCred(c(tree, bs[[1]]), tree=FALSE, part = pp)
 
 }
 \seealso{
-\code{\link{consensus}}, \code{\link{consensusNet}},
-\code{\link{prop.part}}, \code{\link{bootstrap.pml}}, \code{\link{plotBS}},
-\code{\link{transferBootstrap}}, \code{\link{add_edge_length}},
-\code{\link{add_boxplot}}
+\code{\link[ape]{consensus}}, \code{\link{consensusNet}},
+\code{\link[ape]{prop.part}}, \code{\link{bootstrap.pml}},
+\code{\link{plotBS}}, \code{\link{transferBootstrap}},
+\code{\link{add_edge_length}}, \code{\link{add_boxplot}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

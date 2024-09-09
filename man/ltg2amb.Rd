@@ -28,7 +28,7 @@ image(x)
 image(y)
 }
 \seealso{
-\code{\link{latag2n}}, \code{\link{ancestral.pml}},
+\code{\link[ape]{latag2n}}, \code{\link{ancestral.pml}},
 \code{\link{gap_as_state}}
 }
 \keyword{cluster}
