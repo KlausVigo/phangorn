@@ -7,6 +7,8 @@
 \alias{as.phyDat.matrix}
 \alias{as.MultipleAlignment}
 \alias{as.MultipleAlignment.phyDat}
+\alias{as.StringSet}
+\alias{as.StringSet.phyDat}
 \alias{acgt2ry}
 \alias{phyDat2MultipleAlignment}
 \alias{as.phyDat}
@@ -18,7 +20,6 @@
 \alias{as.phyDat.MultipleAlignment}
 \alias{as.phyDat.AAStringSet}
 \alias{as.phyDat.DNAStringSet}
-\alias{as.StringSet.phyDat}
 \alias{as.character.phyDat}
 \alias{as.data.frame.phyDat}
 \alias{as.DNAbin.phyDat}

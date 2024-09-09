@@ -7,7 +7,7 @@ dat <- matrix(c("a", "a",
               dimnames = list(c("t1", "t2", "t3", "t4"), NULL))
 dna <- phyDat(dat)
 fit <- pml(tree, dna)
-test_ml <- ancestral.pml(fit, type = "ml")
+test_ml <- anc_pml(fit)
 
 
 test_that("Pie_plots works", {

@@ -15,6 +15,7 @@
 #' @aliases
 #' as.phyDat.character as.phyDat.data.frame as.phyDat.matrix
 #' as.MultipleAlignment as.MultipleAlignment.phyDat
+#' as.StringSet as.StringSet.phyDat
 #' acgt2ry phyDat2MultipleAlignment
 #' @param data An object containing sequences.
 #' @param x An object containing sequences.
