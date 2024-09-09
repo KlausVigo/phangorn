@@ -177,6 +177,12 @@ rbind.phyDat <- function(...){
   for(i in seq_along(x)){
     res[(mcs[i]+1):mcs[i+1], ] <- as.character(x[[i]])
   }
+  if(types[1]=="USER"){
+    contrast <- attr(x[[1]], "contrast")
+    dimnames(contrast) <- list(attr(x[[1]], "allLevels"),
+                               attr(x[[1]], "levels"))
+    return(phyDat(res, type="USER", contrast=contrast))
+  }
   phyDat(res, type=types[1])
 }
 
