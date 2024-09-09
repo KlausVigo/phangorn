@@ -18,13 +18,15 @@ NEW FEATURES
 
       character vector for the node argument and not only integers.
 
-    o Ancestral state reconstruction was rewritten. anc_pml and anc_pars are now
+    o Ancestral state reconstruction was rewritten.
 
-      prefered over ancestral.pml and ańcestral.pars.
+      The output of ancestral.pars and ancestral.pars could return different
 
-      Output is now an object of class ancestral, which contains tree and
+      objects. anc_pml and anc_pars are now prefered over ancestral.pml and
 
-      reconstructions.
+      ańcestral.pars. Output is now an object of class ancestral, which contains
+
+      tree with node labels, the original alignment and reconstructions.
 
       Joint reconstruction for ML is now available.
 
