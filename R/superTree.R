@@ -192,15 +192,15 @@ superTree <- function(tree, method = "MRP", rooted = FALSE, trace = 0,
     }
     res <- my.supertree(tree, trace = trace, ...)
     if (rooted) {
-      if (inherits(res, "multiPhylo")) {
-        res <- lapply(res, root, "ZZZ")
-        res <- lapply(res, drop.tip, "ZZZ")
-        class(res) <- "multiPhylo"
-      }
-      else {
+#      if (inherits(res, "multiPhylo")) { # root
+#        res <- lapply(res, root, "ZZZ")
+#        res <- lapply(res, drop.tip, "ZZZ")
+#        class(res) <- "multiPhylo"
+#      }
+#      else {
         res <- root(res, "ZZZ")
         res <- drop.tip(res, "ZZZ")
-      }
+#      }
     }
     if (inherits(res, "multiPhylo")) {
       fun <- function(x) {
