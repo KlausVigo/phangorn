@@ -139,6 +139,7 @@ allCompat <- function(x, rooted=FALSE) {
   spl <- spl[ll>0]
   w <- attr(spl, "weights")
   ind <- (w / l) > 0.5 & (lengths(spl) > 1)
+  if(!any(ind)) ind[which.min(w)] <- TRUE
   res <- spl[ind]
   spl <- spl[!ind]
   for(i in seq_along(spl)){
