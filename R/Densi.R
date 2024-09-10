@@ -97,8 +97,8 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt = 0, cex = 1,
 #' @param \dots further arguments to be passed to plot.
 #' @returns \code{densiTree} returns silently x.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{plot.phylo}}, \code{\link{plot.networx}},
-#' \code{\link{jitter}}, \code{\link{rtt}}
+#' @seealso \code{\link[ape]{plot.phylo}}, \code{\link{plot.networx}},
+#' \code{\link{jitter}}, \code{\link[ape]{rtt}}
 #' @references densiTree is inspired from the great
 #' \href{https://www.cs.auckland.ac.nz/~remco/DensiTree/}{DensiTree} program of
 #' Remco Bouckaert.

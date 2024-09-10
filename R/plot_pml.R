@@ -14,8 +14,8 @@
 #' @return \code{plot.pml} returns invisibly a list with arguments dexcribing the plot.
 #' For further details see the \code{plot.phylo}.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{plot.phylo}}, \code{\link{axisPhylo}},
-#' \code{\link{add.scale.bar}}
+#' @seealso \code{\link[ape]{plot.phylo}}, \code{\link[ape]{axisPhylo}},
+#' \code{\link[ape]{add.scale.bar}}
 #' @keywords plot
 #' @examples
 #' fdir <- system.file("extdata/trees", package = "phangorn")

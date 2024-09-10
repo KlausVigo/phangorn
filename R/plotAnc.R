@@ -65,7 +65,7 @@ getAncDF <- function(x){
 #' example(NJ)
 #' # generate node labels to ensure plotting will work
 #' tree <- makeNodeLabel(tree)
-#' anc.p <- ancestral.pars(tree, Laurasiatherian)
+#' anc.p <- anc_pars(tree, Laurasiatherian)
 #' # plot the third character
 #' plotAnc(anc.p, 3, pos="topright")
 #' plotSeqLogo(anc.p, node="Node10", 1, 25)
@@ -73,7 +73,7 @@ getAncDF <- function(x){
 #' data(chloroplast)
 #' tree <- pratchet(chloroplast,  maxit=10, trace=0)
 #' tree <- makeNodeLabel(tree)
-#' anc.ch <- ancestral.pars(tree, chloroplast)
+#' anc.ch <- anc_pars(tree, chloroplast)
 #' image(as.phyDat(anc.ch)[, 1:25])
 #' plotAnc(anc.ch, 21, scheme="Ape_AA", pos="topleft")
 #' plotAnc(anc.ch, 21, scheme="Clustal", pos="topleft")
@@ -88,7 +88,7 @@ plotAnc <- function(x, i = 1, type="phylogram", ..., col = NULL,
   type <- match.arg(type, c("phylogram", "cladogram", "fan", "unrooted",
                             "radial", "tidy"))
   phylo_clado <- type %in% c("phylogram", "cladogram")
-  df <- getAncDF(x)
+  df <- as.data.frame(x)
   data <- x$data
   tree <- x$tree
   subset <- df[,"Site"] == i
@@ -158,32 +158,36 @@ plotAnc <- function(x, i = 1, type="phylogram", ..., col = NULL,
 my_ggseqlogo <-function (data, facet = "wrap", scales = "free_x", ncol = NULL,
           nrow = NULL, start=NULL, end=NULL, ...)
 {
-  x <- geom_logo(data = data, ...)
-  x[[2]] <- scale_x_continuous(limits = c(start-0.5, end+.5) ,
+  x <- ggseqlogo::geom_logo(data = data, ...)
+  x[[2]] <- ggplot2::scale_x_continuous(limits = c(start-0.5, end+.5) ,
                                breaks=pretty(seq(start, end)))
-  p <- ggplot() + x + theme_logo()
+  p <- ggplot2::ggplot() + x + ggseqlogo::theme_logo()
   if (!"list" %in% class(data)) return(p)
   facet <- match.arg(facet, c("grid", "wrap"))
   if (facet == "grid") {
-    p <- p + facet_grid(~seq_group, scales = scales)
+    p <- p + ggplot2::facet_grid(~seq_group, scales = scales)
   }
   else if (facet == "wrap") {
-    p <- p + facet_wrap(~seq_group, scales = scales, nrow = nrow, ncol = ncol)
+    p <- p + ggplot2::facet_wrap(~seq_group, scales = scales, nrow = nrow,
+                                 ncol = ncol)
   }
   return(p)
 }
 
 
 #' @rdname plot.ancestral
-#' @importFrom ggplot2 scale_x_continuous ggplot facet_grid facet_wrap
-#' @importFrom ggseqlogo geom_logo theme_logo
+## @importFrom ggplot2 scale_x_continuous ggplot facet_grid facet_wrap
+## @importFrom ggseqlogo geom_logo theme_logo
 #' @returns \code{plotSeqLogo} returns a ggplot object.
 #' @export
-plotSeqLogo <- function(x, node=getRoot(x$tree), start=1, end=10, scheme="Ape_NT", ...){
+plotSeqLogo <- function(x, node=getRoot(x$tree), start=1, end=10,
+                        scheme="Ape_NT", ...){
   stopifnot(inherits(x, "ancestral"))
+  chk <- requireNamespace("ggseqlogo", quietly = TRUE)
+  if (!chk) stop("package ggseqlogo needs to be not installed!\n")
   type <- attr(x$data, "type")
   tree <- x$tree
-  df <- getAncDF(x)
+  df <- as.data.frame(x)
   nodes <- c(tree$tip.label, tree$node.label)
   if(is.numeric(node)) node <- nodes[node]
   subset <- df[,"Node"] == node

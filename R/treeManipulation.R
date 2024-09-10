@@ -430,7 +430,7 @@ addOneTree <- function(tree, subtree, i, node) {
 #' @param edge.length optional numeric vector with edge length
 #' @return an object of class phylo
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{bind.tree}}
+#' @seealso \code{\link[ape]{bind.tree}}
 #' @keywords cluster
 #' @examples
 #' tree <- rcoal(10)

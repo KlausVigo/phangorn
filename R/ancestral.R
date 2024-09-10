@@ -29,7 +29,7 @@
 #' @param data an object of class phyDat
 #' @param type method used to assign characters to internal nodes, see details.
 #' @param cost A cost matrix for the transitions between two states.
-## @param return return a \code{phyDat} object or matrix of probabilities.
+#' @param return return a \code{phyDat} object or matrix of probabilities.
 ##  @param x an object of class ancestral.
 #' @param \dots Further arguments passed to or from other methods.
 #' @return An object of class ancestral. This is a list containing the tree with
@@ -42,7 +42,7 @@
 ## returned.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{pml}}, \code{\link{parsimony}}, \code{\link[ape]{ace}},
-#' \code{\link{plotAnc}}, \code{\link{ltg2amb}}, \code{\link{latag2n}},
+#' \code{\link{plotAnc}}, \code{\link{ltg2amb}}, \code{\link[ape]{latag2n}},
 #' \code{\link{gap_as_state}}, \code{\link[ape]{root}},
 #' \code{\link[ape]{makeNodeLabel}}
 #' @references Felsenstein, J. (2004). \emph{Inferring Phylogenies}. Sinauer
@@ -61,13 +61,8 @@
 #' # generate node labels to ensure plotting will work
 #' tree <- makeNodeLabel(tree)
 #' fit <- pml(tree, Laurasiatherian)
-#' anc.ml <- ancestral.pml(fit, type = "ml")
-#' anc.p <- ancestral.pars(tree, Laurasiatherian)
-## \dontrun{
-## require(seqLogo)
-## seqLogo( t(subset(anc.ml, 48, 1:20)[[1]]), ic.scale=FALSE)
-## seqLogo( t(subset(anc.p, 48, 1:20)[[1]]), ic.scale=FALSE)
-## }
+#' anc.ml <- anc_pml(fit)
+#' anc.p <- anc_pars(tree, Laurasiatherian)
 #' # plot ancestral sequences at the root
 #' plotSeqLogo( anc.ml, 48, 1, 20)
 #' plotSeqLogo( anc.p, 48, 1, 20)
@@ -78,9 +73,10 @@
 #'
 #' @rdname ancestral.pml
 #' @export
-ancestral.pml <- function(object, type = "marginal", ...) {
+ancestral.pml <- function(object, type = "marginal", return = "prob", ...) {
   call <- match.call()
   pt <- match.arg(type, c("marginal", "ml", "bayes")) # "joint",
+  rt <- match.arg(return, c("prob", "phyDat", "ancestral"))
   tree <- object$tree
   INV <- object$INV
   inv <- object$inv
@@ -106,6 +102,9 @@ ancestral.pml <- function(object, type = "marginal", ...) {
   node_label <- makeAncNodeLabel(tree, ...)
   tree$node.label <- node_label
   tmp <- length(data)
+
+  joint <- TRUE
+  if(length(w) > 1 || object$inv > 0) joint <- FALSE
 
   eig <- object$eig
 
@@ -165,15 +164,32 @@ ancestral.pml <- function(object, type = "marginal", ...) {
       result2[[k]][ind] <- data[[1]][ind]
     }
   }
+#  browser()
   attrib$names <- node_label
   attributes(result2) <- attrib
+  if(rt == "phyDat") return(rbind(data, result2))
+  if(rt == "prob") {
+    tmp <- c(unclass(new2old.phyDat(data)), result)
+    attrib$names <- c(tree$tip.label, node_label)
+    attributes(tmp) <- attrib
+    return(tmp)
+  }
   attributes(result) <- attrib
-  result <- list2df_ancestral(result, result2)
-  result2 <- compress.phyDat(result2)
+  if(joint) result2 <- joint_pml(object)
+#  result <- list2df_ancestral(result, result2)
+#  result2 <- compress.phyDat(result2)
   erg <- list(tree=tree, data=data, prob=result, state=result2)
   class(erg) <- "ancestral"
   erg
 }
+
+
+#' @rdname ancestral.pml
+#' @export
+anc_pml <- function(object, type = "marginal", ...) {
+  ancestral.pml(object, type=type, return="ancestral")
+}
+
 
 
 #' Export and convenience functions for  ancestral reconstructions
@@ -192,21 +208,22 @@ ancestral.pml <- function(object, type = "marginal", ...) {
 #' @examples
 #' data(Laurasiatherian)
 #' fit <- pml_bb(Laurasiatherian[,1:100], "JC", rearrangement = "none")
-#' anc_ml <- ancestral.pml(fit)
+#' anc_ml <- anc_pml(fit)
 #' write.ancestral(anc_ml)
 #' # Can be also results from iqtree
-#' align <- read.phyDat("ancestral_align.fasta")
+#' align <- read.phyDat("ancestral_align.fasta", format="fasta")
 #' tree <- read.tree("ancestral_tree.nwk")
 #' df <- read.table("ancestral.state", header=TRUE)
-#' anc_ml_disc <- ancestral(tree, align, df)
+#' anc_ml_disc <- as.ancestral(tree, align, df)
 #' plotAnc(anc_ml_disc, 20)
 #' unlink(c("ancestral_align.fasta", "ancestral_tree.nwk", "ancestral.state"))
 #' @rdname write.ancestral
 #' @export
 write.ancestral <- function(x, file="ancestral"){
   stopifnot(inherits(x, "ancestral"))
-  write.phyDat(x$data, file=paste0(file, "_align.fasta"))
-  write.table(x$prob, file=paste0(file, ".state"), quote=FALSE, row.names=FALSE,
+  write.phyDat(x$data, file=paste0(file, "_align.fasta"), format="fasta")
+  tab <- as.data.frame(x)
+  write.table(tab, file=paste0(file, ".state"), quote=FALSE, row.names=FALSE,
               sep="\t")
   write.tree(x$tree, file=paste0(file, "_tree.nwk"))
   invisible(x)
@@ -220,13 +237,14 @@ write.ancestral <- function(x, file="ancestral"){
 #' @importFrom utils head
 #' @rdname write.ancestral
 #' @export
-ancestral <- function(tree, align, prob){
+as.ancestral <- function(tree, align, prob){
   stopifnot(inherits(tree, "phylo"))
   stopifnot(inherits(align, "phyDat"))
   stopifnot(inherits(prob, "data.frame"))
   if(is.null(tree$node.label))stop("tree needs node.label")
   state <- extract_states(prob, attr(align, "type"),
                           levels=attr(align, "levels"))
+  prob <- extract_prob(prob, align, tree$node.label)
   erg <- list(tree=tree, data=align[tree$tip.label], prob=prob,
               state=state[tree$node.label])
   class(erg) <- "ancestral"
@@ -242,6 +260,21 @@ extract_states <- function(x, type, levels=NULL){
   phyDat(y, type=type, levels=levels)
 }
 
+extract_prob <- function(x, align, node_label){
+  index <- attr(align, "index")
+  idx <- which(!duplicated(index))
+  att <- attributes(align)
+  res <- vector("list", length(node_label))
+  for(i in seq_along(node_label)){
+     tmp <- x[x$"Node"==node_label[i], -c(1:3)] |> as.matrix()
+     dimnames(tmp) <- NULL
+     res[[i]] <- as.matrix(tmp)[idx,]
+  }
+  att$names <- node_label
+  attributes(res) <- att
+  res
+}
+
 #' @rdname write.ancestral
 #' @export
 print.ancestral <- function(x, ...){
@@ -249,8 +282,8 @@ print.ancestral <- function(x, ...){
   print(x$tree)
   cat("\n")
   print(x$data)
-  cat("\n")
-  print(head(x$prob))
+#  cat("\n")
+#  print(head(x$prob))
 }
 
 #' @rdname ancestral.pml
@@ -311,6 +344,46 @@ list2df_ancestral <- function(x, y=NULL, ...) {
   res
 }
 
+#' @rdname ancestral.pml
+#' @export
+as.data.frame.ancestral <- function(x, ...) {
+  stopifnot(inherits(x, "ancestral"))
+  y <- rbind(x$data, x$state)
+  contrast <- attr(x$data, "contrast")
+  Y <- unlist(as.data.frame(y))
+  n_node <- Nnode(x$tree)
+  n_tip <- Ntip(x$tree)
+  l <- length(y)
+  nr <- attr(x$data, "nr")
+  nc <- attr(x$data, "nc")
+  index <- attr(x$data, "index")
+  nr <- length(index)
+  nam <- names(y)
+  X <- matrix(0, l*length(index), nc)
+  j <- 0
+  for(i in seq_len(n_tip)){
+    X[(j+1):(j+nr), ] <- contrast[x$data[[i]][index], ]
+    j <- j + nr
+  }
+  for(i in seq_len(n_node)){
+    X[(j+1):(j+nr), ] <- x$prob[[i]][index, ]
+    j <- j + nr
+  }
+#  if(!is.null(y) & inherits(y, "phyDat")){
+#    y <- y[names(x)]
+#    Y <- unlist(as.data.frame(y))
+  res <- data.frame(Node=rep(nam, each=nr), Site=rep(seq_len(nr), l), Y, X)
+  colnames(res) <- c("Node", "Site", "State", paste0("p_", attr(x$data, "levels")))
+#  } else{
+#    res <- data.frame(Node=rep(nam, each=nr), Site=rep(seq_len(nr), l), X)
+#    colnames(res) <- c("Node", "Site", paste0("p_", attr(x, "levels")))
+#  }
+  rownames(res) <- NULL
+  res
+}
+
+
+
 
 fitchCoding2ambiguous <- function(x, type = "DNA") {
   y <- c(1L, 2L, 4L, 8L, 8L, 3L, 5L, 9L, 6L, 10L, 12L, 7L, 11L, 13L,
@@ -319,44 +392,57 @@ fitchCoding2ambiguous <- function(x, type = "DNA") {
 }
 
 
+
 #' @rdname ancestral.pml
 #' @export
 ancestral.pars <- function(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"),
+                           cost = NULL, return = "prob") {
+  call <- match.call()
+  type <- match.arg(type)
+  tree$nodel.label <- makeAncNodeLabel(tree)
+  if (type == "ACCTRAN" || type=="POSTORDER") {
+    res <- ptree(tree, data, return = return, acctran=(type == "ACCTRAN"))#, tips=TRUE)
+    attr(res, "call") <- call
+  }
+  if (type == "MPR") {
+    res <- mpr(tree, data, cost = cost, return = return) #, tips=TRUE)
+    attr(res, "call") <- call
+  }
+  res
+}
+
+
+
+#' @rdname ancestral.pml
+#' @export
+anc_pars <- function(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"),
                            cost = NULL, ...) {
-  #, return = "prob"
+  #
   call <- match.call()
   type <- match.arg(type)
   tree$node.label <- makeAncNodeLabel(tree, ...)
   contrast <- attr(data, "contrast")
   data <- data[tree$tip.label,]
-  if (type == "ACCTRAN" || type=="POSTORDER") {
-    #, return = return
-    res <- ptree(tree, data, acctran=(type == "ACCTRAN"))
-#    attr(res, "call") <- call
-  }
-  if (type == "MPR") {
-    res <- mpr(tree, data, cost = cost)
-    #, return = return
-#    attr(res, "call") <- call
-  }
-  result <- res[[1]]
-  result2 <- res[[2]]
+
+  prob <- ancestral.pars(tree, data, type, cost)
+  joint <- joint_sankoff(tree, data, cost)
   ind <- identical_sites(data)
   if(length(ind)>0){
     for(k in seq_len(Nnode(tree))){
-      result[[k]][ind,] <- contrast[data[[1]][ind],]
-      result2[[k]][ind] <- data[[1]][ind]
+      prob[[k]][ind,] <- contrast[data[[1]][ind],]
+      joint[[k]][ind] <- data[[1]][ind]
     }
   }
 #  attrib$names <- node_label
 #  attributes(result2) <- attrib
 #  attributes(result) <- attrib
-  result <- list2df_ancestral(result, result2)
-  result2 <- compress.phyDat(result2) # needed?
-  erg <- list(tree=tree, data=data, prob=result, state=result2)
+#  result <- list2df_ancestral(result, result2)
+#  result2 <- compress.phyDat(result2) # needed?
+  erg <- list(tree=tree, data=data, prob=prob, state=joint, call=call)
   class(erg) <- "ancestral"
   erg
 }
+
 
 
 #' @rdname ancestral.pml
@@ -386,11 +472,12 @@ mpr.help <- function(tree, data, cost = NULL) {
   res
 }
 
-# , return = "prob"
-mpr <- function(tree, data, cost = NULL, ...) {
+
+mpr <- function(tree, data, cost = NULL, return="prob", tips=FALSE, ...) {
   data <- subset(data, tree$tip.label)
   att <- attributes(data)
-  att$names <- tree$node.label
+  if(tips) att$names <- c(tree$tip.label, tree$node.label)
+  else att$names <- tree$node.label
   type <- att$type
   nr <- att$nr
   nc <- att$nc
@@ -410,31 +497,31 @@ mpr <- function(tree, data, cost = NULL, ...) {
   }
 #  for (i in 1:ntips) res[[i]] <- contrast[data[[i]], , drop = FALSE]
   for (i in (ntips + 1):m) res[[i]][] <- as.numeric(res[[i]] < RM)
-  res <- res[(ntips + 1):m]
-#  if (return == "prob") {
-    #        for(i in 1:ntips) res[[i]] <- contrast[data[[i]],,drop=FALSE]
-    res_prob <- lapply(res, fun)
-    attributes(res_prob) <- att
-    class(res_prob) <- c("ancestral", "phyDat")
-#  }
+  if(tips)for(i in seq_len(ntips)) res[[i]] <- contrast[data[[i]],,drop=FALSE]
+  else  res <- res[(ntips + 1):m]
+  res_prob <- lapply(res, fun)
+  attributes(res_prob) <- att
+  if(return=="prob") return(res_prob)
+#    class(res_prob) <- c("ancestral", "phyDat")
   #    else res[1:ntips] <- data[1:ntips]
-  fun2 <- function(x) {
-    x <- p2dna(x)
-    fitchCoding2ambiguous(x)
-  }
+  #fun2 <- function(x) {
+  #  x <- p2dna(x)
+  #  fitchCoding2ambiguous(x)
+  #}
 #  if (return != "prob") {
-  if (type == "DNA") {
-    res_state <- lapply(res, fun2)
-    attributes(res_state) <- att
-  }
-  else {
-    attributes(res) <- att
-    res_state <- highest_state(res)
-    attributes(res_state) <- att
-  }
+#  if (type == "DNA") {
+#    res_state <- lapply(res, fun2)
+#    attributes(res_state) <- att
+#  }
+#  else {
+  attributes(res) <- att
+  res_state <- highest_state(res)
+  attributes(res_state) <- att
+  if(tips)res_state[seq_len(ntips)] <- data
+#  }
 #    res[1:ntips] <- data
 #  }
-  list(res_prob, res_state)
+  res_state # list(res_prob, res_state)
 }
 
 
@@ -483,12 +570,13 @@ acctran <- function(tree, data) {
 }
 
 #, return = "prob"
-ptree <- function(tree, data, acctran=TRUE, ...) {
+ptree <- function(tree, data, acctran=TRUE, return = "prob", tips=FALSE, ...) {
   tree <- reorder(tree, "postorder")
   data <- subset(data, tree$tip.label)
   edge <- tree$edge
   att <- attributes(data)
-  att$names <- tree$node.label
+  att$names <- c(tree$tip.label, tree$node.label)
+  #else att$names <- tree$node.label
   nr <- att$nr
   type <- att$type
   m <- max(edge)
@@ -500,33 +588,44 @@ ptree <- function(tree, data, acctran=TRUE, ...) {
   tmp <- tmp[tmp[,2]>Ntip(tree),]
   if(length(tmp)>0 && acctran==TRUE)f$acctran_traverse(tmp)
   res <- res_state <- vector("list", nNode)
-#  res <- vector("list", m)
-  att$names <- tree$node.label #makeAncNodeLabel(tree, ...)
+  res <- vector("list", m)
+  att$names <- c(tree$tip.label, tree$node.label) #makeAncNodeLabel(tree, ...)
 #  else {
     fun <- function(X) {
       rs <- rowSums(X)
       X / rs
     }
     contrast <- att$contrast
-#    for(i in seq_len(nTip)) res[[i]] <- contrast[data[[i]], , drop=FALSE]
+    for(i in seq_len(nTip)) res[[i]] <- contrast[data[[i]], , drop=FALSE]
 #    for(i in (nTip+1):m) res[[i]] <- f$getAnc(i)[1:nr, , drop=FALSE]
-    for(i in seq_len(nNode)) res[[i]] <- f$getAnc(i+nTip)[seq_len(nr), , drop=FALSE]
+    for(i in seq_len(nNode)) res[[i+nTip]] <- f$getAnc(i+nTip)[seq_len(nr), , drop=FALSE]
     res <- lapply(res, fun)
     attributes(res) <- att
-    class(res) <- c("ancestral", "phyDat")
+#    class(res) <- c("ancestral", "phyDat")
 #  }
-  if(type=="DNA"){
-    indx <- c(1, 2, 6, 3, 7, 9, 12, 4, 8, 10, 13, 11, 14, 15, 16)
-    #    res[1:nTip] <- data[1:nTip]
-    for(i in seq_len(nNode)) #  (nTip+1):m)
-      res_state[[i]] <- indx[f$getAncAmb(i+nTip)[1:nr]]
-    attributes(res_state) <- att
-    #    return(res)
-  } else{
-    res_state <- highest_state(res)
-    class(res_state) <- "phyDat"
+  if(!tips) res <- res[tree$node.label]
+
+  if(return=="prob"){
+#    if(tips)
+    return(res)
+#    else return(res[tree$node.label])
   }
-  list(res, res_state)
+
+#  if(type=="DNA"){
+#    indx <- c(1, 2, 6, 3, 7, 9, 12, 4, 8, 10, 13, 11, 14, 15, 16)
+#    res_state[seq_len(nTip)] <- data
+#    for(i in (nTip+1):m)
+#      res_state[[i]] <- indx[f$getAncAmb(i+nTip)[1:nr]]
+#    attributes(res_state) <- att
+#    #    return(res)
+ # } else{
+    res_state <- highest_state(res)
+    attributes(res_state) <-  attributes(res)
+#    class(res_state) <- "phyDat"
+#  }
+#  if(tips) return(res_state)
+#  res_state[tree$node.label]
+    res_state
 }
 
 

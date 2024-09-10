@@ -2,24 +2,37 @@
 % Please edit documentation in R/ancestral.R
 \name{ancestral.pml}
 \alias{ancestral.pml}
+\alias{anc_pml}
 \alias{as.phyDat.ancestral}
+\alias{as.data.frame.ancestral}
 \alias{ancestral.pars}
+\alias{anc_pars}
 \alias{pace}
 \title{Ancestral character reconstruction.}
 \usage{
-ancestral.pml(object, type = "marginal", ...)
+ancestral.pml(object, type = "marginal", return = "prob", ...)
+
+anc_pml(object, type = "marginal", ...)
 
 \method{as.phyDat}{ancestral}(x, ...)
 
-ancestral.pars(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"),
-  cost = NULL, ...)
+\method{as.data.frame}{ancestral}(x, ...)
 
-pace(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"), cost = NULL, ...)
+ancestral.pars(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"),
+  cost = NULL, return = "prob")
+
+anc_pars(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"), cost = NULL,
+  ...)
+
+pace(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"), cost = NULL,
+  return = "prob")
 }
 \arguments{
 \item{object}{an object of class pml}
 
 \item{type}{method used to assign characters to internal nodes, see details.}
+
+\item{return}{return a \code{phyDat} object or matrix of probabilities.}
 
 \item{\dots}{Further arguments passed to or from other methods.}
 
@@ -69,8 +82,8 @@ example(NJ)
 # generate node labels to ensure plotting will work
 tree <- makeNodeLabel(tree)
 fit <- pml(tree, Laurasiatherian)
-anc.ml <- ancestral.pml(fit, type = "ml")
-anc.p <- ancestral.pars(tree, Laurasiatherian)
+anc.ml <- anc_pml(fit)
+anc.p <- anc_pars(tree, Laurasiatherian)
 # plot ancestral sequences at the root
 plotSeqLogo( anc.ml, 48, 1, 20)
 plotSeqLogo( anc.p, 48, 1, 20)
@@ -92,7 +105,7 @@ Press, Oxford.
 }
 \seealso{
 \code{\link{pml}}, \code{\link{parsimony}}, \code{\link[ape]{ace}},
-\code{\link{plotAnc}}, \code{\link{ltg2amb}}, \code{\link{latag2n}},
+\code{\link{plotAnc}}, \code{\link{ltg2amb}}, \code{\link[ape]{latag2n}},
 \code{\link{gap_as_state}}, \code{\link[ape]{root}},
 \code{\link[ape]{makeNodeLabel}}
 }

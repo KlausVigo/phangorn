@@ -70,3 +70,70 @@ joint_pml <- function(x){
   res
 }
 
+
+# Joint reconstruction for parsimony
+joint_sankoff <- function(tree, data, cost=NULL){
+  stopifnot(inherits(data, "phyDat"))
+  stopifnot(inherits(tree, "phylo"))
+  tree <- reorder(tree, "postorder")
+  edge <- tree$edge
+  ntip <- Ntip(tree)
+  if (is.null(cost)) {
+    levels <- attr(data, "levels")
+    l <- length(levels)
+    cost <- matrix(1, l, l)
+    cost <- cost - diag(l)
+  }
+  P <- cost
+
+  desc <- Descendants(tree, type="children")
+  nr <- attr(data, "nr")
+  nc <- attr(data, "nc")
+  levels <- attr(data, "levels")
+  allLevels <- attr(data, "allLevels")
+
+  l <- nrow(tree$edge)
+  C <- array(NA, c(nr, nc, max(tree$edge)))
+  tmp <- sankoff(tree, data, cost, "data")
+  pscore <- tmp$pscore
+  L <- tmp$dat
+  nn <- unique(edge[,1])
+  pa <- 0
+  root <- edge[l, 1]
+  lnr <- seq_len(nr)
+
+  for(i in seq_len(length(nn))){
+    pa <- nn[i]
+    if(pa==root) break()
+    for(j in 1:nc){
+      pp <- L[[pa]] + rep(P[j,], each=nr)
+      pos <- max.col(-pp)
+      C[,j,pa] <- pos
+    }
+  }
+  pp <- L[[pa]]
+  pos <- max.col(-pp)
+  C[,,pa] <- pos
+  tree <- reorder(tree)
+  if(is.null(tree$node.label)) tree <- makeNodeLabel(tree)
+  res <- vector("list", length(tree$node.label))
+  names(res) <- tree$node.label
+  res[[1]] <- pos
+  att <- attributes(data)
+  att$names <- tree$node.label
+  labels <- c(tree$tip.label, tree$node.label)
+  edge <- tree$edge
+  nrw <- seq_len(nr)
+  for(i in seq_along(edge[,1])){
+    ch_i <- edge[i,2]
+    pa_i <- edge[i,1]
+    if(ch_i > ntip){
+      pos <-res[[labels[pa_i]]]
+      res[[labels[ch_i]]] <- C[cbind(nrw,pos,ch_i)]
+    }
+  }
+  ind <- match(levels, allLevels)
+  for(i in length(res))  res[[i]] <- ind[res[[i]]]
+  attributes(res) <- att
+  res
+}

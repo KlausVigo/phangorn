@@ -75,7 +75,7 @@ write.splits(spl, print.labels = FALSE)
 
 }
 \seealso{
-\code{\link{prop.part}}, \code{\link{lento}},
+\code{\link[ape]{prop.part}}, \code{\link{lento}},
 \code{\link{as.splits}}, \code{\link{as.networx}}
 }
 \author{

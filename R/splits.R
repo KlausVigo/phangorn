@@ -26,7 +26,7 @@
 #' two splits are incompatible.
 #' @note The internal representation is likely to change.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{prop.part}}, \code{\link{lento}},
+#' @seealso \code{\link[ape]{prop.part}}, \code{\link{lento}},
 #' \code{\link{as.networx}}, \code{\link{distanceHadamard}},
 #' \code{\link{read.nexus.splits}}
 #' @keywords cluster

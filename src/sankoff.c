@@ -1,7 +1,7 @@
 /*
  * dist.c
  *
- * (c) 2008-2023  Klaus Schliep (klaus.schliep@gmail.com)
+ * (c) 2008-2024  Klaus Schliep (klaus.schliep@gmail.com)
  *
  *
  * This code may be distributed under the GNU GPL
@@ -31,7 +31,7 @@ SEXP C_rowMin(SEXP sdat, SEXP sn, SEXP sk){
     return(result);
 }
 
-
+/*
 void rowMin2(double *dat, int n,  int k, double *res){
     int i, h;
     double x;
@@ -41,7 +41,7 @@ void rowMin2(double *dat, int n,  int k, double *res){
         res[i] = x;
     }
 }
-
+*/
 
 double get_ps(double *dat, int n,  int k, double *weight){
   int i, h;

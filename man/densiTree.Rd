@@ -117,8 +117,8 @@ Remco R. Bouckaert (2010) DensiTree: making sense of sets of phylogenetic
 trees \emph{Bioinformatics}, \bold{26 (10)}, 1372-1373.
 }
 \seealso{
-\code{\link{plot.phylo}}, \code{\link{plot.networx}},
-\code{\link{jitter}}, \code{\link{rtt}}
+\code{\link[ape]{plot.phylo}}, \code{\link{plot.networx}},
+\code{\link{jitter}}, \code{\link[ape]{rtt}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}
