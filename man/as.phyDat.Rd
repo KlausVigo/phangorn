@@ -47,6 +47,8 @@ phyDat2alignment(x)
 
 \method{as.phyDat}{DNAStringSet}(x, ...)
 
+as.StringSet(x, ...)
+
 \method{as.StringSet}{phyDat}(x, ...)
 
 \method{as.MultipleAlignment}{phyDat}(x, ...)

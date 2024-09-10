@@ -15,8 +15,7 @@
 #' @aliases
 #' as.phyDat.character as.phyDat.data.frame as.phyDat.matrix
 #' as.MultipleAlignment as.MultipleAlignment.phyDat
-#' as.StringSet as.StringSet.phyDat
-#' acgt2ry phyDat2MultipleAlignment
+#' as.StringSet as.StringSet.phyDat acgt2ry phyDat2MultipleAlignment
 #' @param data An object containing sequences.
 #' @param x An object containing sequences.
 #' @param obj as object of class phyDat
@@ -159,7 +158,7 @@ as.phyDat.DNAStringSet <- function(x, ...){
 }
 
 
-# @rdname phyDat
+#' @rdname as.phyDat
 #' @export
 as.StringSet <- function (x, ...){
   if (inherits(x, "StringSet")) return(x)

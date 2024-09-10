@@ -79,7 +79,7 @@ getAncDF <- function(x){
 #' plotAnc(anc.ch, 21, scheme="Clustal", pos="topleft")
 #' plotSeqLogo(anc.ch, node="Node1", 1, 25, scheme="Clustal")
 #' @importFrom grDevices hcl.colors
-#' @importFrom ggseqlogo make_col_scheme ggseqlogo
+## @importFrom ggseqlogo make_col_scheme ggseqlogo
 #' @rdname plot.ancestral
 #' @export
 plotAnc <- function(x, i = 1, type="phylogram", ..., col = NULL,
@@ -209,12 +209,12 @@ plotSeqLogo <- function(x, node=getRoot(x$tree), start=1, end=10,
       sc$color <- c(sc$color, "#FFFFFF")
     }
     l <- lengths(sc$properties)
-    SC <- make_col_scheme(chars = toupper(unlist(sc$properties)),
+    SC <- ggseqlogo::make_col_scheme(chars = toupper(unlist(sc$properties)),
                           groups = rep(names(sc$properties), l),
                           cols=rep(sc$color, l))
 
   }
-  else SC <- make_col_scheme(chars=lev, cols= hcl.colors(length(lev)))
+  else SC <- ggseqlogo::make_col_scheme(chars=lev, cols= hcl.colors(length(lev)))
   my_ggseqlogo(X, col_scheme=SC, method='p', start=start, end=end)
 }
 
