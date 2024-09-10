@@ -416,7 +416,8 @@ NumericVector cophenetic_cpp(IntegerMatrix edge, NumericVector edge_length,
     std::vector< std::vector<int> > bip = bipCPP(edge, nTips);
     NumericVector dm( nTips * (nTips-1) /2 );
     int l=0, left, right;
-    for(size_t h=nNode; h<(nNode + nTips); h++){
+     size_t max_nodes = (nNode + nTips);
+    for(size_t h=nNode; h < max_nodes; h++){
         // changed from NumericVector to IntegerVector
         IntegerVector tmp_ch = ch[h];
         l = tmp_ch.size();
