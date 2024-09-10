@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">phangorn</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.0.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.12.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,9 +68,9 @@ Schliep</h4>
 Technology<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2024-09-04</h4>
+            <h4 data-toc-skip class="date">2024-09-10</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/v2.12/vignettes/Ancestral.Rmd" class="external-link"><code>vignettes/Ancestral.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/master/vignettes/Ancestral.Rmd" class="external-link"><code>vignettes/Ancestral.Rmd</code></a></small>
       <div class="d-none name"><code>Ancestral.Rmd</code></div>
     </div>
 
@@ -119,34 +119,23 @@ There is also an option “POSTORDER” which is only a one pass algotrithm,
 which we use for teaching purposes. The function acctran (accelerated
 transformation) assigns edge length and internal nodes to the tree <span class="citation">(Swofford and Maddison 1987)</span>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">anc.acctran</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ancestral.pml.html">ancestral.pars</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">primates</span>, <span class="st">"ACCTRAN"</span><span class="op">)</span></span>
-<span><span class="va">anc.mpr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ancestral.pml.html">ancestral.pars</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">primates</span>, <span class="st">"MPR"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">anc.pars</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ancestral.pml.html">anc_pars</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
 <p>The <code>plotSeqLogo</code> function is a wrapper around the from
 the <em>ggseqlogo</em> function in the <em>ggseqlogo</em> package <span class="citation">(Wagih 2024)</span> and provides a simple way to show
 proportions of a nucleotides of ancestral states (see figure 1).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#library(seqLogo)</span></span>
-<span><span class="co">#seqLogo( t(subset(anc.mpr, getRoot(tree), 1:20)[[1]]), ic.scale=FALSE)</span></span>
-<span><span class="fu"><a href="../reference/plot.ancestral.html">plotSeqLogo</a></span><span class="op">(</span><span class="va">anc.mpr</span>, node<span class="op">=</span><span class="fu"><a href="../reference/midpoint.html">getRoot</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span>, <span class="fl">1</span>, <span class="fl">20</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot.ancestral.html">plotSeqLogo</a></span><span class="op">(</span><span class="va">anc.pars</span>, node<span class="op">=</span><span class="fu"><a href="../reference/midpoint.html">getRoot</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span>, <span class="fl">1</span>, <span class="fl">20</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="Ancestral_files/figure-html/seqLogo-1.png" alt="Fig 1. Ancestral reconstruction for a node." width="576"><p class="caption">
 Fig 1. Ancestral reconstruction for a node.
 </p>
 </div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot.ancestral.html">plotAnc</a></span><span class="op">(</span><span class="va">anc.mpr</span>, <span class="fl">17</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot.ancestral.html">plotAnc</a></span><span class="op">(</span><span class="va">anc.pars</span>, <span class="fl">17</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"MPR"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="Ancestral_files/figure-html/MPR-1.png" alt="Fig 2. Ancestral reconstruction using MPR." width="576"><p class="caption">
 Fig 2. Ancestral reconstruction using MPR.
-</p>
-</div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot.ancestral.html">plotAnc</a></span><span class="op">(</span><span class="va">anc.acctran</span>, <span class="fl">17</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"ACCTRAN"</span><span class="op">)</span></span></code></pre></div>
-<div class="figure">
-<img src="Ancestral_files/figure-html/ACCTRAN-1.png" alt="Fig 3. Ancestral reconstruction using ACCTRAN." width="576"><p class="caption">
-Fig 3. Ancestral reconstruction using ACCTRAN.
 </p>
 </div>
 </div>
@@ -161,7 +150,7 @@ construction is implemented (see [<span class="citation">Yang
 but the joint reconstruction <span class="citation">(Pupko et al.
 2000)</span> only for models without rate variation (e.g. gamma models)
 or invariant sites.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">pml</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">primates</span><span class="op">)</span></span>
 <span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, model<span class="op">=</span><span class="st">"F81"</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>We can assign the ancestral states according to the highest
@@ -182,12 +171,11 @@ are the estimated base frequencies of state
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>.
 Both methods agree if all states (base frequencies) have equal
 probabilities.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">anc.ml</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ancestral.pml.html">ancestral.pml</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"ml"</span><span class="op">)</span></span>
-<span><span class="va">anc.bayes</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ancestral.pml.html">ancestral.pml</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"bayes"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">anc.ml</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ancestral.pml.html">anc_pml</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
 <p>The differences of the two approaches for a specific site (17) are
 represented in the following figures.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot.ancestral.html">plotAnc</a></span><span class="op">(</span><span class="va">anc.ml</span>, <span class="fl">17</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"ML"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
@@ -195,14 +183,9 @@ represented in the following figures.</p>
 Fig 4. Ancestral reconstruction the using the maximum likelihood.
 </p>
 </div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot.ancestral.html">plotAnc</a></span><span class="op">(</span><span class="va">anc.bayes</span>, <span class="fl">17</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"Bayes"</span><span class="op">)</span></span></code></pre></div>
-<div class="figure">
-<img src="Ancestral_files/figure-html/plotB-1.png" alt="Fig 5. Ancestral reconstruction using (empirical) Bayes." width="576"><p class="caption">
-Fig 5. Ancestral reconstruction using (empirical) Bayes.
-</p>
-</div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#plotAnc(anc.bayes, 17)</span></span>
+<span><span class="co">#title("Bayes")</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="fitting-for-discrete-comparative-data">Fitting for discrete comparative data<a class="anchor" aria-label="anchor" href="#fitting-for-discrete-comparative-data"></a>
@@ -215,7 +198,7 @@ comparative methods and we can use the function <em>ace</em> in the ape
 al. 2014)</span> or <em>fitMK</em> in the phytools <span class="citation">(Revell 2012)</span> package. Here we want to show how
 to fit these models using <em>optim.pml</em>.</p>
 <p>First we load a tree and create some data.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"bird.orders"</span><span class="op">)</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">18</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">x</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>,<span class="fl">22</span>,<span class="fl">23</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
@@ -224,7 +207,7 @@ to fit these models using <em>optim.pml</em>.</p>
 <span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.phyDat.html">phyDat</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"USER"</span>, levels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>We than set up the <em>pml</em> object and optimize the model.
 Instead of optimizing the edge length we only optimize the rate.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">pml</a></span><span class="op">(</span><span class="va">bird.orders</span>, <span class="va">dat</span><span class="op">)</span></span>
 <span><span class="va">fit_ER</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, optEdge <span class="op">=</span> <span class="cn">FALSE</span>, optRate<span class="op">=</span><span class="cn">TRUE</span>, </span>
 <span>                    control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
@@ -246,7 +229,7 @@ Instead of optimizing the edge length we only optimize the rate.</p>
 <span><span class="co">## Rate: 0.007846</span></span></code></pre>
 <p>We can also fit the symmetric (<em>model=“SYM”</em>) or ordered
 metristic model (<em>model=“ORDERED”</em>).</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_SYM</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, optEdge <span class="op">=</span> <span class="cn">FALSE</span>, optRate<span class="op">=</span><span class="cn">TRUE</span>, model<span class="op">=</span><span class="st">"SYM"</span>, </span>
 <span>                    control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fit_SYM</span></span></code></pre></div>
@@ -267,24 +250,24 @@ metristic model (<em>model=“ORDERED”</em>).</p>
 <span><span class="co">## Rate: 0.00678</span></span></code></pre>
 <p>We can compare the estimate with the one from <em>ace</em> from
 <em>ape</em>.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_ace</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/ace.html" class="external-link">ace</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">bird.orders</span>, model<span class="op">=</span><span class="st">"SYM"</span>, type <span class="op">=</span> <span class="st">"d"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning in sqrt(diag(solve(h))): NaNs produced</span></span></code></pre>
 <p>The log-likelihood values differ slightly as in phangorn the values
 get multiplied by the state frequencies. Thus if we add
 <code>log(1/3)</code> as we have three states to ace estimate the two
 estimates are almost identical.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_SYM</span><span class="op">$</span><span class="va">logLik</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] -15.31</span></span></code></pre>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_ace</span><span class="op">$</span><span class="va">loglik</span><span class="op">+</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] -15.31</span></span></code></pre>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">fit_SYM</span><span class="op">$</span><span class="va">logLik</span>, <span class="va">fit_ace</span><span class="op">$</span><span class="va">loglik</span><span class="op">+</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "Mean relative difference: 1.229e-07"</span></span></code></pre>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">anc_SYM</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ancestral.pml.html">ancestral.pml</a></span><span class="op">(</span><span class="va">fit_SYM</span>, <span class="st">"ml"</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">anc_SYM</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ancestral.pml.html">anc_pml</a></span><span class="op">(</span><span class="va">fit_SYM</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plot.ancestral.html">plotAnc</a></span><span class="op">(</span><span class="va">anc_SYM</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Ancestral_files/figure-html/SYM_reconstruction-1.png" width="576"></p>
 <p>More complicated models can be applied using defining the rate matrix
@@ -316,7 +299,7 @@ matrices</em>. The “ARD” model is currently not available as
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] phangorn_3.0.0.0 ape_5.8         </span></span>
+<span><span class="co">## [1] phangorn_2.12.0.0 ape_5.8          </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##  [1] sass_0.4.9        utf8_1.2.4        generics_0.1.3    lattice_0.22-6   </span></span>
@@ -328,9 +311,9 @@ matrices</em>. The “ARD” model is currently not available as
 <span><span class="co">## [25] parallel_4.4.1    dplyr_1.1.4       colorspace_2.1-1  ggplot2_3.5.1    </span></span>
 <span><span class="co">## [29] fastmatch_1.1-4   vctrs_0.6.5       R6_2.5.1          lifecycle_1.0.4  </span></span>
 <span><span class="co">## [33] fs_1.6.4          htmlwidgets_1.6.4 ragg_1.3.2        pkgconfig_2.0.3  </span></span>
-<span><span class="co">## [37] desc_1.4.3        pkgdown_2.1.0     pillar_1.9.0      bslib_0.8.0      </span></span>
+<span><span class="co">## [37] desc_1.4.3        pkgdown_2.1.0     bslib_0.8.0       pillar_1.9.0     </span></span>
 <span><span class="co">## [41] gtable_0.3.5      glue_1.7.0        Rcpp_1.0.13       systemfonts_1.1.0</span></span>
-<span><span class="co">## [45] highr_0.11        xfun_0.47         tibble_3.2.1      tidyselect_1.2.1 </span></span>
+<span><span class="co">## [45] xfun_0.47         tibble_3.2.1      tidyselect_1.2.1  highr_0.11       </span></span>
 <span><span class="co">## [49] knitr_1.48        farver_2.1.2      htmltools_0.5.8.1 nlme_3.1-164     </span></span>
 <span><span class="co">## [53] igraph_2.0.3      rmarkdown_2.28    labeling_0.4.3    compiler_4.4.1   </span></span>
 <span><span class="co">## [57] quadprog_1.5-8</span></span></code></pre>
