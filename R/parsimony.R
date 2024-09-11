@@ -362,7 +362,7 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
     else tree <- stree(nTips, tip.label = nam)
     if(add_taxa) tree <- addTaxa(tree, attr(data, "duplicated"))
     if(!ROOTED) tree <- unroot(tree)
-    tree <- relabel(result, ref)
+    tree <- relabel(tree, ref)
     return(tree)
   }
 

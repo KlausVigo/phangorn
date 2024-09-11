@@ -180,6 +180,7 @@ superTree <- function(tree, method = "MRP", rooted = FALSE, trace = 0,
     tree <- tree_tmp
   }
 
+# start <- allCompat(tree) ??
 
   if (method != "MRP") rooted <- FALSE
   if (!rooted) tree <- unroot(tree)
@@ -192,7 +193,7 @@ superTree <- function(tree, method = "MRP", rooted = FALSE, trace = 0,
     }
     res <- my.supertree(tree, trace = trace, ...)
     if (rooted) {
-#      if (inherits(res, "multiPhylo")) { # root
+#      if (inherits(res, "multiPhylo")) {
 #        res <- lapply(res, root, "ZZZ")
 #        res <- lapply(res, drop.tip, "ZZZ")
 #        class(res) <- "multiPhylo"
