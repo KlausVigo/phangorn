@@ -2,7 +2,7 @@
 #'
 #' The function transforms \code{dna2codon} DNA sequences to codon sequences,
 #' \code{codon2dna} transform the other way. \code{dna2codon} translates
-#' nucleotide to amino acids using the function \code{\link{trans}}.
+#' nucleotide to amino acids using the function \code{\link[ape]{trans}}.
 #'
 #' The following genetic codes are described here. The number preceding each
 #' corresponds to the code argument.

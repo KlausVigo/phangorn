@@ -18,7 +18,7 @@ Nothing. The function is called for plotting.
 This function plots an image of an alignment of sequences.
 }
 \details{
-A wrapper for using \code{\link{image.DNAbin}} and \code{\link{image.AAbin}}.
+A wrapper for using \code{\link[ape]{image.DNAbin}} and \code{\link[ape]{image.AAbin}}.
 Codons triplets are handled as nucleotide sequences.
 }
 \examples{

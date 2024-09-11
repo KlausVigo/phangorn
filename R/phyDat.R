@@ -37,9 +37,9 @@
 #' @param ... further arguments passed to or from other methods.
 #' @return The functions return an object of class \code{phyDat}.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{DNAbin}}, \code{\link{as.DNAbin}},
+#' @seealso \code{\link[ape]{DNAbin}}, \code{\link[ape]{as.DNAbin}},
 #' \code{\link{baseFreq}}, \code{\link{glance.phyDat}}, \code{\link{dna2codon}},
-#' \code{\link{read.dna}}, \code{\link{read.nexus.data}}
+#' \code{\link[ape]{read.dna}}, \code{\link[ape]{read.nexus.data}}
 #' and the chapter 1 in the \code{vignette("AdvancedFeatures",
 #' package="phangorn")} and the example of \code{\link{pmlMix}} for the use of
 #' \code{\link{allSitePattern}}.
