@@ -105,7 +105,7 @@ Press, Oxford.
 }
 \seealso{
 \code{\link{pml}}, \code{\link{parsimony}}, \code{\link[ape]{ace}},
-\code{\link{plotAnc}}, \code{\link{ltg2amb}}, \code{\link[ape]{latag2n}},
+\code{\link{plotAnc}}, \code{\link{latag2n.phyDat}}, \code{\link[ape]{latag2n}},
 \code{\link{gap_as_state}}, \code{\link[ape]{root}},
 \code{\link[ape]{makeNodeLabel}}
 }

@@ -28,11 +28,13 @@ NEW FEATURES
 
       tree with node labels, the original alignment and reconstructions.
 
-      The internals of this function might change.
+      The should be considered experimental as the internals of this function
 
-      Joint reconstruction for ML is now available.
+      might change in future.
 
       Ancestral states of constant sites are now always this state.
+
+    o Joint reconstruction for ML is now available.
 
     o Improvements to several plot functions to get nicer plots out of the box.
 
@@ -44,13 +46,13 @@ NEW FEATURES
 
       ancestral object.
 
-    o plot.networx gets two additional arguments, direction is in plot.phylo and
+    o plot.networx gets two additional arguments, direction as in plot.phylo and
 
       angle to rotate the network.
 
-    o new function composition_test comparing indicating possible problems
+    o new function composition_test, indicating possible problems with base /
 
-      with base / state composition as in iqtree.
+      state composition, similar to the test in iqtree.
 
 OTHER CHANGES
 

@@ -6,17 +6,19 @@
 #' @param x an object of class \code{phyDat}.
 #' @param amb character of the ambiguous state t replace the gaps.
 #' @param gap gap parameter to replace.
+#' @param ... Further arguments passed to or from other methods.
 #' @returns returns an object of class \code{phyDat}.
 #' @seealso \code{\link[ape]{latag2n}}, \code{\link{ancestral.pml}},
 #' \code{\link{gap_as_state}}
 #' @examples
 #' x <- phyDat(matrix(c("-", "A", "G", "-", "T", "C"), 2, 3))
-#' y <- ltg2amb(x)
+#' y <- latag2n.phyDat(x)
 #' image(x)
 #' image(y)
 #' @keywords cluster
 #' @export
-ltg2amb <- function(x, amb=ifelse(attr(x,"type")=="DNA", "N", "?"), gap="-"){
+latag2n.phyDat <- function(x, amb=ifelse(attr(x,"type")=="DNA", "N", "?"),
+                           gap="-", ...){
   X <- as.character(x)
   d <- dim(X)
   for(i in seq_len(d[1])){

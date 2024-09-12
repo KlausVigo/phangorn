@@ -36,7 +36,7 @@ rownames(contr) <- attr(tmp, "allLevels")
 contr
 }
 \seealso{
-\code{\link{phyDat}}, \code{\link{ltg2amb}},
+\code{\link{phyDat}}, \code{\link{latag2n.phyDat}},
 \code{\link[ape]{latag2n}}, \code{\link{ancestral.pml}},
 \code{\link{gap_as_state}}
 }
