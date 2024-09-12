@@ -28,6 +28,8 @@ NEW FEATURES
 
       tree with node labels, the original alignment and reconstructions.
 
+      The internals of this function might change.
+
       Joint reconstruction for ML is now available.
 
       Ancestral states of constant sites are now always this state.
@@ -38,7 +40,9 @@ NEW FEATURES
 
     o plotAnc got an argument scheme allowing to use different color schemes,
 
-      especially for amino acid models shared with image.AAbin.
+      especially for amino acid models shared with image.AAbin and assumes an
+
+      ancestral object.
 
     o plot.networx gets two additional arguments, direction is in plot.phylo and
 

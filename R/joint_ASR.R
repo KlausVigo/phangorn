@@ -137,3 +137,29 @@ joint_sankoff <- function(tree, data, cost=NULL){
   attributes(res) <- att
   res
 }
+
+
+
+count_mutations <- function(tree, data){
+  site="pscore"
+  tree <- reorder(tree, "postorder")
+  if(is.null(tree$node.label)) tree <- makeNodeLabel(tree)
+  anc <- joint_sankoff(tree, data)
+  dat <- rbind(data, anc)[c(tree$tip.label, tree$node.label)]
+  nr <- attr(data, "nr")
+  l <- length(dat)
+  fun <- function(x, site="pscore", nr){
+    if(site=="pscore") return(f$pscore(x))
+    sites <- f$sitewise_pscore(x)
+    sites[seq_len(nr)]
+  }
+  f <- init_fitch(dat, FALSE, FALSE, m=2L)
+  el <- numeric(nrow(tree$edge))
+  for(i in seq_along(el)){
+    edge_i <-  matrix(c(l+1L, l+1L, tree$edge[i,]), 2, 2)
+    el[i] <- fun(edge_i, site, nr)
+  }
+  tree$edge.length <- el
+  tree
+}
+
