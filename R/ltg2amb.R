@@ -32,7 +32,7 @@ latag2n.phyDat <- function(x, amb=ifelse(attr(x,"type")=="DNA", "N", "?"),
     j <- d[2]
     while(X[i,j]==gap){
       X[i,j] <- amb
-      j = j-1
+      j <- j-1
       if(j<1)break()
     }
   }

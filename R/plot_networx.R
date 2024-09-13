@@ -307,11 +307,12 @@ plot.networx <- function(x, type = "equal angle", use.edge.length = TRUE,
     plotRGL(coord, x, show.tip.label = show.tip.label,
             show.edge.label = show.edge.label, edge.label = edge.label,
             show.node.label = show.node.label, node.label = node.label,
-            show.nodes = show.nodes, tip.color = tip.color, edge.color = edge.color,
-            edge.width = edge.width, font = font, cex = cex,
-            cex.node.label = cex.node.label, cex.edge.label = cex.edge.label,
-            col.node.label = col.node.label, col.edge.label = col.edge.label,
-            font.node.label = font.node.label, font.edge.label = font.edge.label)
+            show.nodes = show.nodes, tip.color = tip.color,
+            edge.color = edge.color, edge.width = edge.width, font = font,
+            cex = cex, cex.node.label = cex.node.label,
+            cex.edge.label = cex.edge.label, col.node.label = col.node.label,
+            col.edge.label = col.edge.label, font.node.label = font.node.label,
+            font.edge.label = font.edge.label)
   }
   else {
     if (is.null(coord) || ncol(coord) != 2) {
@@ -377,8 +378,8 @@ plotRGL <- function(coords, net, show.tip.label = TRUE, show.edge.label = FALSE,
               net$tip.label, color = tip.color, cex = cex, font = font)
     else
       texts3d(x[net$translate$node] + 2.05 * radius, y[net$translate$node],
-              z[net$translate$node], net$tip.label, color = tip.color, cex = cex,
-              font = font)
+              z[net$translate$node], net$tip.label, color = tip.color,
+              cex = cex, font = font)
   }
   if (show.edge.label) {
     ec <- edgeLabels(x, y, z, edge)

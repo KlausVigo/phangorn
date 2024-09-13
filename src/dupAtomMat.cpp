@@ -12,7 +12,7 @@ SEXP grpDupAtomMat(SEXP x, SEXP MARGIN, SEXP fromLast)
 {/* returns an integer vector of duplicated rows of numeric matrix x */
     SEXP out;
 	int* dim;
-    int nGrps;
+    int nGrps=0;
 	dim=INTEGER(Rf_getAttrib(x, R_DimSymbol));
 	out = PROTECT(Rf_allocVector(INTSXP, dim[*INTEGER(MARGIN)-1]));
 

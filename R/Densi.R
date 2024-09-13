@@ -128,12 +128,12 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt = 0, cex = 1,
 #'
 #' @export
 densiTree <- function(x, type = "phylogram", ..., alpha = 1 / length(x),
-                       consensus = NULL, direction = "rightwards", optim = FALSE,
-                       scaleX = FALSE, col = 1, width = 1, lty = 1, cex = .8,
-                       font = 3, tip.color = 1, adj = 0, srt = 0,
-                       underscore = FALSE, label.offset = 0, scale.bar = TRUE,
-                       jitter = list(amount = 0, random = TRUE), tip.dates=NULL,
-                       xlim=NULL, ylim=NULL) {
+                      consensus = NULL, direction = "rightwards", optim = FALSE,
+                      scaleX = FALSE, col = 1, width = 1, lty = 1, cex = .8,
+                      font = 3, tip.color = 1, adj = 0, srt = 0,
+                      underscore = FALSE, label.offset = 0, scale.bar = TRUE,
+                      jitter = list(amount = 0, random = TRUE), tip.dates=NULL,
+                      xlim=NULL, ylim=NULL) {
   if (!inherits(x, "multiPhylo")) stop("x must be of class multiPhylo")
   if (is.character(consensus)) {
     consensus <- stree(length(consensus), tip.label = consensus)
@@ -171,7 +171,9 @@ densiTree <- function(x, type = "phylogram", ..., alpha = 1 / length(x),
     label <- label[label < max(tip.dates)]
     maxBT <- max(maxBT, max(tip.dates) - min(label))
     at <- maxBT - (max(tip.dates) - label) #/ maxBT
-    if(direction=="leftwards" || direction=="downwards") at <- at + maxBT - max(at)
+    if(direction=="leftwards" || direction=="downwards") {
+      at <- at + maxBT - max(at)
+    }
     scaleX <- FALSE
   }
   else {
@@ -185,7 +187,7 @@ densiTree <- function(x, type = "phylogram", ..., alpha = 1 / length(x),
   tl <- which.max(nchar(consensus$tip.label))
   if(horizontal) pin1 <- par("pin")[1]
   else pin1 <- par("pin")[2]
-  sw <- strwidth(consensus$tip.label[tl], "inch", cex = cex) / pin1  * 1.1 * maxBT
+  sw <- strwidth(consensus$tip.label[tl], "inch",cex = cex) / pin1 * 1.1 * maxBT
   if(is.null(xlim)){
     xlim <- switch(direction,
                    rightwards = c(0, maxBT + sw),

@@ -20,8 +20,8 @@ and "downwards".}
 \item{\dots}{further parameters to be passed to \code{plot.phylo}.}
 }
 \value{
-\code{plot.pml} returns invisibly a list with arguments dexcribing the plot.
-For further details see the \code{plot.phylo}.
+\code{plot.pml} returns invisibly a list with arguments dexcribing
+the plot. For further details see the \code{plot.phylo}.
 }
 \description{
 \code{plot.pml} is a wrapper around \code{plot.phylo} with different default

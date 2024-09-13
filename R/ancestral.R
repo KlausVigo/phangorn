@@ -124,7 +124,7 @@ ancestral.pml <- function(object, type = "marginal", return = "prob", ...) {
   pos <- match(attrib$levels, attrib$allLevels)
   nco <- as.integer(dim(contrast)[1])
   for (i in 1:l) dat[i, (nTips + 1):m] <- .Call('LogLik2', data, P[i, ], nr, nc,
-                                                node, edge, nTips, mNodes, contrast, nco)
+                                      node, edge, nTips, mNodes, contrast, nco)
   parent <- tree$edge[, 1]
   child <- tree$edge[, 2]
   nTips <- min(parent) - 1
@@ -176,8 +176,6 @@ ancestral.pml <- function(object, type = "marginal", return = "prob", ...) {
   }
   attributes(result) <- attrib
   if(joint) result2 <- joint_pml(object)
-#  result <- list2df_ancestral(result, result2)
-#  result2 <- compress.phyDat(result2)
   erg <- list(tree=tree, data=data, prob=result, state=result2)
   class(erg) <- "ancestral"
   erg
@@ -373,7 +371,8 @@ as.data.frame.ancestral <- function(x, ...) {
 #    y <- y[names(x)]
 #    Y <- unlist(as.data.frame(y))
   res <- data.frame(Node=rep(nam, each=nr), Site=rep(seq_len(nr), l), Y, X)
-  colnames(res) <- c("Node", "Site", "State", paste0("p_", attr(x$data, "levels")))
+  colnames(res) <- c("Node", "Site", "State",
+                     paste0("p_", attr(x$data, "levels")))
 #  } else{
 #    res <- data.frame(Node=rep(nam, each=nr), Site=rep(seq_len(nr), l), X)
 #    colnames(res) <- c("Node", "Site", paste0("p_", attr(x, "levels")))
@@ -401,7 +400,7 @@ ancestral.pars <- function(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"),
   type <- match.arg(type)
   tree$nodel.label <- makeAncNodeLabel(tree)
   if (type == "ACCTRAN" || type=="POSTORDER") {
-    res <- ptree(tree, data, return = return, acctran=(type == "ACCTRAN"))#, tips=TRUE)
+    res <- ptree(tree, data, return = return, acctran=(type == "ACCTRAN"))
     attr(res, "call") <- call
   }
   if (type == "MPR") {
@@ -433,11 +432,6 @@ anc_pars <- function(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"),
       joint[[k]][ind] <- data[[1]][ind]
     }
   }
-#  attrib$names <- node_label
-#  attributes(result2) <- attrib
-#  attributes(result) <- attrib
-#  result <- list2df_ancestral(result, result2)
-#  result2 <- compress.phyDat(result2) # needed?
   erg <- list(tree=tree, data=data, prob=prob, state=joint, call=call)
   class(erg) <- "ancestral"
   erg
@@ -598,7 +592,9 @@ ptree <- function(tree, data, acctran=TRUE, return = "prob", tips=FALSE, ...) {
     contrast <- att$contrast
     for(i in seq_len(nTip)) res[[i]] <- contrast[data[[i]], , drop=FALSE]
 #    for(i in (nTip+1):m) res[[i]] <- f$getAnc(i)[1:nr, , drop=FALSE]
-    for(i in seq_len(nNode)) res[[i+nTip]] <- f$getAnc(i+nTip)[seq_len(nr), , drop=FALSE]
+    for(i in seq_len(nNode)) {
+      res[[i+nTip]] <- f$getAnc(i+nTip)[seq_len(nr), , drop=FALSE]
+    }
     res <- lapply(res, fun)
     attributes(res) <- att
 #    class(res) <- c("ancestral", "phyDat")

@@ -2,8 +2,8 @@
 #'
 #' UPGMA and WPGMA clustering. UPGMA and WPGMA are a wrapper function around
 #' \code{\link[stats]{hclust}} returning a \code{phylo} object.
-## UPGMA additionally performs nearest neighbor interchange (NNI) tree rearrangements
-## to improve the phylogeny (Schliep et al. 2024).
+## UPGMA additionally performs nearest neighbor interchange (NNI) tree
+## rearrangements to improve the phylogeny (Schliep et al. 2024).
 #' \code{supgma} perform serial sampled UPGMA similar to Drummond and Rodrigo
 #' (2000).
 ##  and also performing NNI rearrangements.
@@ -12,8 +12,8 @@
 #' @param method The agglomeration method to be used. This should be (an
 #' unambiguous abbreviation of) one of "ward", "single", "complete", "average",
 #' "mcquitty", "median" or "centroid". The default is "average".
-## @param NNI logical whether make nearest neighbor rearrangements to improve the
-## tree. Currently only available for \code{method="average"}.
+## @param NNI logical whether make nearest neighbor rearrangements to improve
+## the tree. Currently only available for \code{method="average"}.
 #' @param trace	 Show output during optimization (see details).
 #' @param tip.dates	 A named vector of sampling times associated to the tips.
 #' @param \dots Further arguments passed to or from other methods.

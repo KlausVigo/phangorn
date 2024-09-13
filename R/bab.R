@@ -266,8 +266,8 @@ bab <- function(data, tree = NULL, trace = 0, ...) {
       if ((a + 1L) < nTips) {
         ind <- (1:L[a])[score <= bound]
         trees[[a + 1]][seq_along(ind)] <- .Call('AddOnes', tmpTree,
-                                                as.integer(a + 1L), as.integer(ind), as.integer(L[a]),
-                                                as.integer(M[a]))
+                        as.integer(a + 1L), as.integer(ind), as.integer(L[a]),
+                        as.integer(M[a]))
         l <- length(ind)
         # os <- order(score[ind], decreasing=TRUE)
         os <- seq_len(l)
@@ -296,7 +296,8 @@ bab <- function(data, tree = NULL, trace = 0, ...) {
   }
   for (i in seq_along(result)) {
     result[[i]] <- structure(list(edge = result[[i]], Nnode = nTips - 2L),
-                             .Names = c("edge", "Nnode"), class = "phylo", order = "postorder")
+                             .Names = c("edge", "Nnode"), class = "phylo",
+                             order = "postorder")
   }
   attr(result, "TipLabel") <- tree$tip.label
   class(result) <- "multiPhylo"

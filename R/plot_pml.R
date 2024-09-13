@@ -11,8 +11,8 @@
 #' Four values are possible: "rightwards" (the default), "leftwards", "upwards",
 #' and "downwards".
 #' @param \dots further parameters to be passed to \code{plot.phylo}.
-#' @return \code{plot.pml} returns invisibly a list with arguments dexcribing the plot.
-#' For further details see the \code{plot.phylo}.
+#' @return \code{plot.pml} returns invisibly a list with arguments dexcribing
+#' the plot. For further details see the \code{plot.phylo}.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link[ape]{plot.phylo}}, \code{\link[ape]{axisPhylo}},
 #' \code{\link[ape]{add.scale.bar}}

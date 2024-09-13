@@ -17,8 +17,8 @@ allTrees(n, rooted = FALSE, tip.label = NULL)
 an object of class \code{multiPhylo}.
 }
 \description{
-\code{allTrees} computes all bifurcating tree topologies for rooted or unrooted
-trees with up to 10 tips. The number of trees grows fast
+\code{allTrees} computes all bifurcating tree topologies for rooted or
+unrooted trees with up to 10 tips. The number of trees grows fast.
 }
 \examples{
 

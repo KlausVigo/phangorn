@@ -512,9 +512,8 @@ add.tips <- function(tree, tips, where, edge.length = NULL) {
 
 #' Compute all trees topologies.
 #'
-#' \code{allTrees} computes all bifurcating tree topologies for rooted or unrooted
-#' trees with up to 10 tips. The number of trees grows fast
-#'
+#' \code{allTrees} computes all bifurcating tree topologies for rooted or
+#' unrooted trees with up to 10 tips. The number of trees grows fast.
 #'
 #' @param n Number of tips (<=10).
 #' @param rooted Rooted or unrooted trees (default: rooted).

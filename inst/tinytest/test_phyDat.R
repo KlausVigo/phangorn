@@ -81,7 +81,8 @@ expect_equal(laura, Laurasiatherian)
 unlink("tmp1.txt")
 
 write.phyDat(Laurasiatherian, "tmp1.nex", format = "nexus")
-expect_true(inherits(laura <- read.phyDat("tmp1.nex", format="nexus"), "phyDat"))
+expect_true(inherits(laura <- read.phyDat("tmp1.nex", format="nexus"),
+                     "phyDat"))
 expect_equal(laura, Laurasiatherian)
 unlink("tmp1.nex")
 

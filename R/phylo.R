@@ -2308,7 +2308,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         bs <- RELL$bs
         for(i in seq_along(bs)){
           bs[[i]] <- add.tips(bs[[i]], tips = mapping[, 1],
-                              where = mapping[, 2], edge.length = rep(0, nrow(mapping)))
+                      where = mapping[, 2], edge.length = rep(0, nrow(mapping)))
         }
         RELL$bs <- bs
       }
@@ -2547,17 +2547,18 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
 #          }
 #          tree2 <- rNNI(tree2, moves = round(nTips * ratchet.par$prop), n = 1)
 #          if(optRooted){
-#             tree2 <- nnls.tree(dm, tree2, method = method, tip.dates=tip.dates)
-#             tree2 <- minEdge(tree2, 10*tau)
+#            tree2 <- nnls.tree(dm, tree2, method = method, tip.dates=tip.dates)
+#            tree2 <- minEdge(tree2, 10*tau)
 #          }
         } else if(rearrangement == "ratchet"){
           tree2 <- .ratchet_fun(tree, data, rooted=optRooted, w = w, g = g,
                                eig = eig, bf = bf, inv=inv,
                                rate=rate, ll.0 = ll.0, INV = INV, llMix = llMix,
                                wMix=wMix, ASC=ASC,
-                               control=list(eps=1e-08, maxit=3, trace=trace-1, tau=tau))
+                               control=list(eps=1e-08, maxit=3, trace=trace-1,
+                                            tau=tau))
           fbs[[i]] <- tree2
-#          tree2 <- bootstrap.phyDat(data, candidate_tree, bs = 1, method=method,
+#         tree2 <- bootstrap.phyDat(data, candidate_tree, bs = 1, method=method,
 #                        eps = tau, bf = bf, Q = Q, k = k, shape = shape,
 #                        tip.dates=tip.dates)[[1]]
 #          tree2 <- checkLabels(tree2, tree$tip.label)
@@ -2612,7 +2613,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     if ( perturbation==FALSE &&
          ((abs((ll1 - ll) / ll)  < control$eps) || rounds > control$maxit)){
 #      if(aLRT){
-#        support <-SH_quartet(tree, data, rooted=optRooted, iter_max=1, trace=trace,
+#        support <-SH_quartet(tree, data, rooted=optRooted, iter_max=1,
+#                    trace=trace,
 #                    ll=ll, w = w, g = g, eig = eig, bf = bf, inv=inv,
 #                    ll.0 = ll.0, INV = INV, llMix = llMix, wMix=wMix, ASC=ASC,
 #                    RELL=NULL,

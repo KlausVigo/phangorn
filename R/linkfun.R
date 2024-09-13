@@ -38,8 +38,8 @@ binomial_mk <- function (k=4)
     m <- if (any(n > 1))
       n
     else wt
-    -2 * sum(ifelse(m > 0, (wt/m), 0) * dbinom(round(m *
-                                                       y), round(m), mu, log = TRUE))
+    -2 * sum(ifelse(m > 0, (wt/m), 0) * dbinom(round(m * y), round(m), mu,
+                                               log = TRUE))
   }
   #  initialize fuer verschiedene Modelle veraendern !!!
   initialize <- expression({
@@ -60,10 +60,11 @@ binomial_mk <- function (k=4)
                 "or a 2 column matrix where col 1 is no. successes and col 2 is no. failures")
   })
   structure(list(family = "binomial", link = "Mk", linkfun = stats$linkfun,
-                 linkinv = stats$linkinv, variance = variance, dev.resids = tmp$dev.resids,
+                 linkinv = stats$linkinv, variance = variance,
+                 dev.resids = tmp$dev.resids,
                  aic = aic, mu.eta = stats$mu.eta, initialize = tmp$initialize,
-                 validmu = stats$validmu, valideta = stats$valideta, simulate = tmp$simfun,
-                 dispersion = 1), class = "family")
+                 validmu = stats$validmu, valideta = stats$valideta,
+                 simulate = tmp$simfun, dispersion = 1), class = "family")
 }
 
 

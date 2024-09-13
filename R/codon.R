@@ -45,8 +45,8 @@
 #' @return The functions return an object of class \code{phyDat}.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @references \url{https://www.ncbi.nlm.nih.gov/Taxonomy/taxonomyhome.html/index.cgi?chapter=cgencodes}
-#' @seealso \code{\link[ape]{trans}}, \code{\link{phyDat}} and the chapter 4 in the
-#' \code{vignette("phangorn-specials", package="phangorn")}
+#' @seealso \code{\link[ape]{trans}}, \code{\link{phyDat}} and the chapter 4 in
+#' the \code{vignette("phangorn-specials", package="phangorn")}
 #' @keywords cluster
 #' @examples
 #'
