@@ -213,6 +213,20 @@ compress.phyDat <- function(data){
 }
 
 
+
+uncompress.phyDat <- function(data){
+  attrib <- attributes(data)
+  stopifnot(all.equal(sum(attrib$weight), length(attrib$index)))
+  for(i in seq_along(data))
+     data[[i]] <- data[[i]][attrib$index]
+  attrib$nr <- length(attrib$index)
+  attrib$index <- seq_along(attrib$index)
+  attrib$weight <- rep(1, attrib$nr)
+  attributes(data) <- attrib
+  data
+}
+
+
 getCols <- function (data, cols, compress=FALSE){
   attrib <- attributes(data)
   if(inherits(attr(data, "index"), "data.frame")) compress <- FALSE

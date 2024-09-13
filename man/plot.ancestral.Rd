@@ -3,6 +3,7 @@
 \name{plotAnc}
 \alias{plotAnc}
 \alias{plotSeqLogo}
+\alias{add_mutations}
 \title{Plot ancestral character on a tree}
 \usage{
 plotAnc(x, i = 1, type = "phylogram", ..., col = NULL, cex.pie = 0.5,
@@ -10,6 +11,8 @@ plotAnc(x, i = 1, type = "phylogram", ..., col = NULL, cex.pie = 0.5,
 
 plotSeqLogo(x, node = getRoot(x$tree), start = 1, end = 10,
   scheme = "Ape_NT", ...)
+
+add_mutations(x, frame = "none", ...)
 }
 \arguments{
 \item{x}{an object of class \code{ancestral}.}
@@ -37,11 +40,17 @@ nucleotides "Ape_NT" and"RY_NT". Names can be abbreviated.}
 \item{start}{start position to plot.}
 
 \item{end}{end position to plot.}
+
+\item{frame}{a character string specifying the kind of frame to be printed
+around the text. See \code{\link[ape]{edgelabels}}.}
 }
 \value{
 \code{plotAnc} returns silently x.
 
 \code{plotSeqLogo} returns a ggplot object.
+
+\code{add_mutations} adds the position and and changes of possible
+mutations to a phylogeny.
 }
 \description{
 \code{plotAnc} plots a phylogeny and adds character to the nodes. Either
@@ -70,11 +79,20 @@ image(as.phyDat(anc.ch)[, 1:25])
 plotAnc(anc.ch, 21, scheme="Ape_AA", pos="topleft")
 plotAnc(anc.ch, 21, scheme="Clustal", pos="topleft")
 plotSeqLogo(anc.ch, node="Node1", 1, 25, scheme="Clustal")
+
+
+data(woodmouse)
+tree <- pml_bb(woodmouse, "JC", rearrangement="NNI")$tree |> midpoint()
+woodmouse_aa <- trans(woodmouse, 2) |> as.phyDat()
+anc_aa <- anc_pars(tree, woodmouse_aa)
+plot(tree, direction="downwards")
+add_mutations(anc_aa)
+
 }
 \seealso{
 \code{\link{ancestral.pml}}, \code{\link[ape]{plot.phylo}},
 \code{\link[ape]{image.DNAbin}}, \code{\link[ape]{image.AAbin}}
-\code{\link[ggseqlogo]{ggseqlogo}}
+\code{\link[ggseqlogo]{ggseqlogo}}, \code{\link[ape]{edgelabels}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

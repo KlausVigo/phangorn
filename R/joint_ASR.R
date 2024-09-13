@@ -139,9 +139,9 @@ joint_sankoff <- function(tree, data, cost=NULL){
 }
 
 
-
+# alternative to acctran(tree, data)
 count_mutations <- function(tree, data){
-  site="pscore"
+  site <- "pscore"
   tree <- reorder(tree, "postorder")
   if(is.null(tree$node.label)) tree <- makeNodeLabel(tree)
   anc <- joint_sankoff(tree, data)
@@ -163,3 +163,35 @@ count_mutations <- function(tree, data){
   tree
 }
 
+
+map_mutations <- function(tree, data){
+  site <- "sitewise"
+  tree <- reorder(tree, "postorder")
+  old_tree <- tree
+  lev <- attr(data, "allLevels")
+  tree <- makeNodeLabel(tree)
+  data <- data[c(tree$tip.label, tree$node.label)]
+  nr <- attr(data, "nr")
+  l <- length(data)
+  fun <- function(x, site="pscore", nr){
+    if(site=="pscore") return(f$pscore(x))
+    sites <- f$sitewise_pscore(x)
+    sites[seq_len(nr)]
+  }
+  f <- init_fitch(data, FALSE, FALSE, m=2L)
+  mttns <- vector("list", max(tree$edge))
+  index <- attr(data, "index")
+  M <- as.character(data) # not efficient
+  for(i in seq_len(nrow(tree$edge))){
+    edge_i <-  matrix(c(l+1L, l+1L, tree$edge[i,]), 2, 2)
+    ch_i <- tree$edge[i,2]
+    pa_i <- tree$edge[i,1]
+    tmp  <- fun(edge_i, site, nr)
+    tmp <- which(tmp[index] == 1)
+    if(length(tmp > 0)){
+      tmp2 <- paste0(M[pa_i, tmp], tmp, M[ch_i, tmp])
+      mttns[[ch_i]] <- tmp2
+    }
+  }
+  mttns
+}

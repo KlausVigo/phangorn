@@ -58,7 +58,7 @@ getAncDF <- function(x){
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{ancestral.pml}}, \code{\link[ape]{plot.phylo}},
 #' \code{\link[ape]{image.DNAbin}}, \code{\link[ape]{image.AAbin}}
-#' \code{\link[ggseqlogo]{ggseqlogo}}
+#' \code{\link[ggseqlogo]{ggseqlogo}}, \code{\link[ape]{edgelabels}}
 #' @keywords plot
 #' @examples
 #'
@@ -78,6 +78,15 @@ getAncDF <- function(x){
 #' plotAnc(anc.ch, 21, scheme="Ape_AA", pos="topleft")
 #' plotAnc(anc.ch, 21, scheme="Clustal", pos="topleft")
 #' plotSeqLogo(anc.ch, node="Node1", 1, 25, scheme="Clustal")
+#'
+#'
+#' data(woodmouse)
+#' tree <- pml_bb(woodmouse, "JC", rearrangement="NNI")$tree |> midpoint()
+#' woodmouse_aa <- trans(woodmouse, 2) |> as.phyDat()
+#' anc_aa <- anc_pars(tree, woodmouse_aa)
+#' plot(tree, direction="downwards")
+#' add_mutations(anc_aa)
+#'
 #' @importFrom grDevices hcl.colors
 ## @importFrom ggseqlogo make_col_scheme ggseqlogo
 #' @rdname plot.ancestral
@@ -219,25 +228,20 @@ plotSeqLogo <- function(x, node=getRoot(x$tree), start=1, end=10,
 }
 
 
-##' @rdname plot.ancestral
-##' @export
-#image.ancestral <- function(x, ...){
-#  tmp <- rbind(x$"data", x$"state")
-#  image(tmp, ...)
-#}
-
-##' @rdname plot.ancestral
-##' @export
-#plot.ancestral <- function(x, which = c("pie", "seqlogo"), site = 1,
-#         node=getRoot(x$tree), col = NULL, cex.pie = .5, pos = "bottomright",
-#                          scheme=NULL, start=1, end=10, ...){
-#  stopifnot(inherits(x, "ancestral"))
-#  which <- match.arg(which, c("pie", "seqlogo"), TRUE)
-#  if(which=="pie")plotAnc(x, i = site, col = col, cex.pie = cex.pie, pos = pos,
-#                      scheme=scheme, ...)
-#  if(which=="seqlogo")plotSeqLogo(x, node, start=start, end=end, scheme=scheme, ...)
-#}
-
-
+#' @rdname plot.ancestral
+#' @param frame a character string specifying the kind of frame to be printed
+#' around the text. See \code{\link[ape]{edgelabels}}.
+#' @returns \code{add_mutations} adds the position and and changes of possible
+#' mutations to a phylogeny.
+#' @export
+add_mutations <- function(x, frame="none", ...){
+  y <- rbind(x$data, x$state)
+  mt <- map_mutations(x$tree, y)
+  ind <- which(lengths(mt)>0)
+  lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
+  edge <- lastPP$edge
+  pos <- match(ind, edge[,2])
+  edgelabels(lapply(mt[ind], paste, collapse=" "), pos, frame=frame, ...)
+}
 
 
