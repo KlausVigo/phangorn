@@ -60,7 +60,9 @@ sequences in the alignment.</p>
 <span>  pos <span class="op">=</span> <span class="st">"bottomright"</span>, scheme <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">plotSeqLogo</span><span class="op">(</span><span class="va">x</span>, node <span class="op">=</span> <span class="fu"><a href="midpoint.html">getRoot</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">tree</span><span class="op">)</span>, start <span class="op">=</span> <span class="fl">1</span>, end <span class="op">=</span> <span class="fl">10</span>,</span>
-<span>  scheme <span class="op">=</span> <span class="st">"Ape_NT"</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span>  scheme <span class="op">=</span> <span class="st">"Ape_NT"</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">add_mutations</span><span class="op">(</span><span class="va">x</span>, frame <span class="op">=</span> <span class="st">"none"</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -114,11 +116,18 @@ nucleotides "Ape_NT" and"RY_NT". Names can be abbreviated.</p></dd>
 <dt id="arg-end">end<a class="anchor" aria-label="anchor" href="#arg-end"></a></dt>
 <dd><p>end position to plot.</p></dd>
 
+
+<dt id="arg-frame">frame<a class="anchor" aria-label="anchor" href="#arg-frame"></a></dt>
+<dd><p>a character string specifying the kind of frame to be printed
+around the text. See <code><a href="https://rdrr.io/pkg/ape/man/nodelabels.html" class="external-link">edgelabels</a></code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p><code>plotAnc</code> returns silently x.</p>
 <p><code>plotSeqLogo</code> returns a ggplot object.</p>
+<p><code>add_mutations</code> adds the position and and changes of possible
+mutations to a phylogeny.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -128,7 +137,7 @@ nucleotides "Ape_NT" and"RY_NT". Names can be abbreviated.</p></dd>
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="ancestral.pml.html">ancestral.pml</a></code>, <code><a href="https://rdrr.io/pkg/ape/man/plot.phylo.html" class="external-link">plot.phylo</a></code>,
 <code><a href="https://rdrr.io/pkg/ape/man/image.DNAbin.html" class="external-link">image.DNAbin</a></code>, <code><a href="https://rdrr.io/pkg/ape/man/AAbin.html" class="external-link">image.AAbin</a></code>
-<code><a href="https://rdrr.io/pkg/ggseqlogo/man/ggseqlogo.html" class="external-link">ggseqlogo</a></code></p></div>
+<code><a href="https://rdrr.io/pkg/ggseqlogo/man/ggseqlogo.html" class="external-link">ggseqlogo</a></code>, <code><a href="https://rdrr.io/pkg/ape/man/nodelabels.html" class="external-link">edgelabels</a></code></p></div>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
@@ -169,6 +178,22 @@ nucleotides "Ape_NT" and"RY_NT". Names can be abbreviated.</p></dd>
 <span class="r-plt img"><img src="plot.ancestral-6.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">plotSeqLogo</span><span class="op">(</span><span class="va">anc.ch</span>, node<span class="op">=</span><span class="st">"Node1"</span>, <span class="fl">1</span>, <span class="fl">25</span>, scheme<span class="op">=</span><span class="st">"Clustal"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot.ancestral-7.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">woodmouse</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">woodmouse</span>, <span class="st">"JC"</span>, rearrangement<span class="op">=</span><span class="st">"NNI"</span><span class="op">)</span><span class="op">$</span><span class="va">tree</span> <span class="op">|&gt;</span> <span class="fu"><a href="midpoint.html">midpoint</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> optimize edge weights:  -1858.403 --&gt; -1857.165 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> optimize edge weights:  -1857.165 --&gt; -1857.165 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> optimize topology:  -1857.165 --&gt; -1856.056  NNI moves:  2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> optimize edge weights:  -1856.056 --&gt; -1856.056 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> optimize topology:  -1856.056 --&gt; -1856.056  NNI moves:  0 </span>
+<span class="r-in"><span><span class="va">woodmouse_aa</span> <span class="op">&lt;-</span> <span class="fu">trans</span><span class="op">(</span><span class="va">woodmouse</span>, <span class="fl">2</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="as.phyDat.html">as.phyDat</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>sequence length not a multiple of 3: 2 nucleotides dropped</span>
+<span class="r-in"><span><span class="va">anc_aa</span> <span class="op">&lt;-</span> <span class="fu"><a href="ancestral.pml.html">anc_pars</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">woodmouse_aa</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">tree</span>, direction<span class="op">=</span><span class="st">"downwards"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">add_mutations</span><span class="op">(</span><span class="va">anc_aa</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="plot.ancestral-8.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
