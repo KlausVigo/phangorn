@@ -18,3 +18,4 @@
 ^vignettes/logo.png
 ^codemeta\.json$
 ^codecov\.yml$
+^\.out.R

@@ -315,33 +315,6 @@ highest_state <- function(x, ...) {
 }
 
 
-list2df_ancestral <- function(x, y=NULL, ...) {
-#  stopifnot(inherits(x, "ancestral"))
-  l <- length(x)
-  nr <- attr(x, "nr")
-  nc <- attr(x, "nc")
-  index <- attr(x, "index")
-  nr <- length(index)
-  nam <- names(x)
-  X <- matrix(0, l*length(index), nc)
-  j <- 0
-  for(i in seq_len(l)){
-    X[(j+1):(j+nr), ] <- x[[i]][index, ]
-    j <- j + nr
-  }
-  if(!is.null(y) & inherits(y, "phyDat")){
-    y <- y[names(x)]
-    Y <- unlist(as.data.frame(y))
-    res <- data.frame(Node=rep(nam, each=nr), Site=rep(seq_len(nr), l), Y, X)
-    colnames(res) <- c("Node", "Site", "State", paste0("p_", attr(x, "levels")))
-  } else{
-    res <- data.frame(Node=rep(nam, each=nr), Site=rep(seq_len(nr), l), X)
-    colnames(res) <- c("Node", "Site", paste0("p_", attr(x, "levels")))
-  }
-  rownames(res) <- NULL
-  res
-}
-
 #' @rdname ancestral.pml
 #' @export
 as.data.frame.ancestral <- function(x, ...) {
@@ -367,20 +340,12 @@ as.data.frame.ancestral <- function(x, ...) {
     X[(j+1):(j+nr), ] <- x$prob[[i]][index, ]
     j <- j + nr
   }
-#  if(!is.null(y) & inherits(y, "phyDat")){
-#    y <- y[names(x)]
-#    Y <- unlist(as.data.frame(y))
   res <- data.frame(Node=rep(nam, each=nr), Site=rep(seq_len(nr), l), Y, X)
   colnames(res) <- c("Node", "Site", "State",
                      paste0("p_", attr(x$data, "levels")))
-#  } else{
-#    res <- data.frame(Node=rep(nam, each=nr), Site=rep(seq_len(nr), l), X)
-#    colnames(res) <- c("Node", "Site", paste0("p_", attr(x, "levels")))
-#  }
   rownames(res) <- NULL
   res
 }
-
 
 
 

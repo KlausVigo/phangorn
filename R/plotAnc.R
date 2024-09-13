@@ -10,21 +10,6 @@ getTransition <- function(scheme, levels){
 }
 
 
-getAncDF <- function(x){
-  tmp <- x$data
-  contrast <- attr(tmp, "contrast")
-  attr(tmp, "contrast") <- contrast / rowSums(contrast)
-  tmp <- new2old.phyDat(tmp)
-  df <- list2df_ancestral(tmp, x$data)
-  if(!identical(colnames(x$prob), colnames(df))){
-     if(identical(toupper(colnames(x$prob)), toupper(colnames(df)))){
-       colnames(x$prob) <- colnames(df)
-     } else stop("Invalid prob object")
-  }
-  rbind(df, x$prob)
-}
-
-
 #' Plot ancestral character on a tree
 #'
 #' \code{plotAnc} plots a phylogeny and adds character to the nodes. Either
