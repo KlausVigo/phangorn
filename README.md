@@ -1,4 +1,5 @@
 [![R-CMD-check](https://github.com/KlausVigo/phangorn/workflows/R-CMD-check/badge.svg)](https://github.com/KlausVigo/phangorn/actions)
+[![R-CMD-check](https://github.com/KlausVigo/phangorn/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/KlausVigo/phangorn/actions/workflows/R-CMD-check.yaml)
 [![CRAN Status Badge](https://www.r-pkg.org/badges/version/phangorn)](https://cran.r-project.org/package=phangorn)
 [![CRAN Downloads (monthly)](https://cranlogs.r-pkg.org/badges/phangorn)](https://cran.r-project.org/package=phangorn)
 [![CRAN Downloads (total)](https://cranlogs.r-pkg.org/badges/grand-total/phangorn)](https://cran.r-project.org/package=phangorn)
