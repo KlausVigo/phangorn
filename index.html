@@ -65,14 +65,56 @@
 </h1>
 </div>
 <p>phangorn is a package for phylogenetic reconstruction and analysis in the R language. phangorn offers the possibility of reconstructing phylogenies with distance based methods, maximum parsimony or maximum likelihood (ML) and performing Hadamard conjugation. Extending the general ML framework, this package provides the possibility of estimating mixture and partition models. Furthermore, phangorn offers several functions for comparing trees, phylogenetic models or splits, simulating character data and performing congruence analyses.</p>
-<p>You can install - the latest released version <code>install.packages("phangorn")</code> - the latest development version <code>remotes::install_github("KlausVigo/phangorn")</code> - <a href="https://r-universe.dev/search" class="external-link">r-universe</a> kindly provides binaries for Windows, Linux and OS X of the development version <a href="https://klausvigo.r-universe.dev/phangorn#" class="external-link">here</a>.</p>
+<p>To get an introduction into phylogenetic inference you want to look at:</p>
+<pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"Trees"</span>, package<span class="op">=</span><span class="st">"phangorn"</span><span class="op">)</span></span></code></pre>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>You can install the the latest release <code>phangorn</code> of the package from <a href="https://CRAN.R-project.org/package=phangorn" class="external-link">CRAN</a>, or the development version from <a href="https://github.com/KlausVigo/phangorn" class="external-link">github</a> or <a href="https://klausvigo.r-universe.dev/phangorn" class="external-link">r-universe</a>.</p>
+<table class="table">
+<colgroup>
+<col width="14%">
+<col width="18%">
+<col width="67%">
+</colgroup>
+<thead><tr class="header">
+<th>Type</th>
+<th>Source</th>
+<th>Command</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Release</td>
+<td>CRAN</td>
+<td><code>install.packages("phangorn")</code></td>
+</tr>
+<tr class="even">
+<td>Development</td>
+<td>GitHub</td>
+<td><code>remotes::install_github("KlausVigo/phangorn")</code></td>
+</tr>
+<tr class="odd">
+<td>Development</td>
+<td>r-universe</td>
+<td><code>install.packages('phangorn', repos = 'https://klausvigo.r-universe.dev')</code></td>
+</tr>
+</tbody>
+</table>
 <p>To install the development version you may need to install the Biostrings package from bioconductor first:</p>
 <pre><code><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
 <span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu">install</span><span class="op">(</span><span class="st">"Biostrings"</span><span class="op">)</span></span></code></pre>
-<p>Also the development version usually depends on the latest ape development version and information to download can be found <a href="https://emmanuelparadis.github.io/ape_installation.html" class="external-link">here</a>. Additionally you may need to install on windows <a href="https://cran.r-project.org/bin/windows/Rtools/" class="external-link">Rtools</a> and on mac <a href="https://developer.apple.com/xcode/" class="external-link">XCode</a> and <a href="https://gcc.gnu.org/wiki/GFortranBinaries" class="external-link">GFortran</a>.</p>
+<p>To use all functionality you might install all you might need to install the <code>rgl</code> and <code>ggseqlogo</code> package.</p>
+<pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"rgl"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"ggseqlogo"</span><span class="op">)</span></span></code></pre>
+<p>The development version usually depends on the latest <code>ape</code> development version and information to download can be found <a href="https://emmanuelparadis.github.io/ape_installation.html" class="external-link">here</a>.</p>
+</div>
+<div class="section level2">
+<h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
+</h2>
 <p>If you use phangorn please cite:</p>
 <p>Schliep K.P. 2011. phangorn: phylogenetic analysis in R. Bioinformatics, 27(4) 592-593</p>
+</div>
 <div class="section level2">
 <h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
 </h2>
