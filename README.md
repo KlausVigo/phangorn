@@ -9,11 +9,25 @@
 
 phangorn is a package for phylogenetic reconstruction and analysis in the R language. phangorn offers the possibility of reconstructing phylogenies with distance based methods, maximum parsimony or maximum likelihood (ML) and performing Hadamard conjugation. Extending the general ML framework, this package provides the possibility of estimating mixture and partition models. Furthermore, phangorn offers several functions for comparing trees, phylogenetic models or splits, simulating character data and performing congruence analyses. 
 
-You can install
-- the latest released version `install.packages("phangorn")`
-- the latest development version `remotes::install_github("KlausVigo/phangorn")`
-- [r-universe](https://r-universe.dev/search) kindly provides binaries for Windows, 
-Linux and OS X of the development version [here](https://klausvigo.r-universe.dev/phangorn#).
+To get an introduction into phylogenetic inference you want to look at: 
+```
+vignette("Trees", package="phangorn")
+```
+
+
+## Installation
+
+You can install the the latest release `phangorn` of the package from
+[CRAN](https://CRAN.R-project.org/package=phangorn), or the development version 
+from [github](https://github.com/KlausVigo/phangorn) or
+[r-universe](https://klausvigo.r-universe.dev/phangorn).
+                                                                 
+                                                                 
+| Type        | Source          | Command                                                      |
+|-------------|-----------------|--------------------------------------------------------------|
+| Release     | CRAN            | `install.packages("phangorn")`                                             |
+| Development | GitHub          | `remotes::install_github("KlausVigo/phangorn")`                            |
+| Development | r-universe      | `install.packages('phangorn', repos = 'https://klausvigo.r-universe.dev')`    |
 
 To install the development version you may need to install the Biostrings package from bioconductor first:
 ```
@@ -21,11 +35,17 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 BiocManager::install("Biostrings")
 ```
-Also the development version usually depends on the latest ape development 
+To use all functionality you might install all you might need to install the 
+`rgl` and `ggseqlogo` package.  
+```
+install.packages("rgl")
+install.packages("ggseqlogo")
+```
+The development version usually depends on the latest `ape` development 
 version and information to download can be found 
 [here](https://emmanuelparadis.github.io/ape_installation.html). 
-Additionally you may need to install on windows [Rtools](https://cran.r-project.org/bin/windows/Rtools/) and on mac [XCode](https://developer.apple.com/xcode/)
-and [GFortran](https://gcc.gnu.org/wiki/GFortranBinaries).
+
+## Citation
 
 If you use phangorn please cite:
 
