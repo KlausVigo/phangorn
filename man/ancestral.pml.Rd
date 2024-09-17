@@ -19,13 +19,13 @@ anc_pml(object, type = "marginal", ...)
 \method{as.data.frame}{ancestral}(x, ...)
 
 ancestral.pars(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"),
-  cost = NULL, return = "prob")
+  cost = NULL, return = "prob", ...)
 
 anc_pars(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"), cost = NULL,
   ...)
 
 pace(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"), cost = NULL,
-  return = "prob")
+  return = "prob", ...)
 }
 \arguments{
 \item{object}{an object of class pml}

@@ -360,16 +360,19 @@ fitchCoding2ambiguous <- function(x, type = "DNA") {
 #' @rdname ancestral.pml
 #' @export
 ancestral.pars <- function(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"),
-                           cost = NULL, return = "prob") {
+                           cost = NULL, return = "prob", ...) {
   call <- match.call()
+  if (hasArg(tips)) tips <- list(...)$tips
+  else tips <- TRUE
   type <- match.arg(type)
   tree$nodel.label <- makeAncNodeLabel(tree)
   if (type == "ACCTRAN" || type=="POSTORDER") {
-    res <- ptree(tree, data, return = return, acctran=(type == "ACCTRAN"))
+    res <- ptree(tree, data, return = return, acctran=(type == "ACCTRAN"),
+                 tips=tips)
     attr(res, "call") <- call
   }
   if (type == "MPR") {
-    res <- mpr(tree, data, cost = cost, return = return) #, tips=TRUE)
+    res <- mpr(tree, data, cost = cost, return = return, tips=tips)
     attr(res, "call") <- call
   }
   res
@@ -388,7 +391,7 @@ anc_pars <- function(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"),
   contrast <- attr(data, "contrast")
   data <- data[tree$tip.label,]
 
-  prob <- ancestral.pars(tree, data, type, cost)
+  prob <- ancestral.pars(tree, data, type, cost, tips=FALSE)
   joint <- joint_sankoff(tree, data, cost)
   ind <- identical_sites(data)
   if(length(ind)>0){
