@@ -1969,7 +1969,6 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV, RELL=NULL,
         loli <- dad
 
         if (ind > 1) {
-          # print("NNI swap")
           nchanges <- nchanges + 1
           anc <- Ancestors(tree, 1:max(tree$edge), "parent")
           cvector <- allChildren(tree)
@@ -2537,19 +2536,6 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         if(rearrangement == "stochastic"){
           tree2 <- .stochastic_fun(tree, dm, tau, method, tip.dates,
                                    ratchet.par)
-
-#          tree2 <- di2multi(tree, tol = 10 * tau, tip2root = TRUE)
-#          if (!is.binary(tree2)) {
-#            tree2 <- multi2di(tree2)
-#            if(!optRooted) tree2 <- unroot(tree2)
-#            tree2 <- minEdge(tree2, tau)
-#            tree2 <- reorder(tree2, "postorder")
-#          }
-#          tree2 <- rNNI(tree2, moves = round(nTips * ratchet.par$prop), n = 1)
-#          if(optRooted){
-#            tree2 <- nnls.tree(dm, tree2, method = method, tip.dates=tip.dates)
-#            tree2 <- minEdge(tree2, 10*tau)
-#          }
         } else if(rearrangement == "ratchet"){
           tree2 <- .ratchet_fun(tree, data, rooted=optRooted, w = w, g = g,
                                eig = eig, bf = bf, inv=inv,
@@ -2558,11 +2544,6 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                                control=list(eps=1e-08, maxit=3, trace=trace-1,
                                             tau=tau))
           fbs[[i]] <- tree2
-#         tree2 <- bootstrap.phyDat(data, candidate_tree, bs = 1, method=method,
-#                        eps = tau, bf = bf, Q = Q, k = k, shape = shape,
-#                        tip.dates=tip.dates)[[1]]
-#          tree2 <- checkLabels(tree2, tree$tip.label)
-#          tree2 <- reorder(tree2, "postorder")
         } else if(rearrangement == "multi2di"){
           tree2 <- di2multi(tree, tol=10*tau, tip2root=TRUE)
           if(any(tabulate(tree2$edge)>3)){
@@ -2601,9 +2582,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         }
         else kmax <- kmax + 1
         if(!is.null(RELL)) RELL <- res$RELL
-        if (trace > 0) print(paste("Ratchet iteration ", i,
-                                   ", best pscore so far:", ll))
-        # i <- i + 1
+        if (trace > 0) cat("Ratchet iteration ", i, ", best pscore so far:", ll,
+                           "\n")
         if ( (kmax >= maxR) && (i >= minit)) break()
       }
       optNni <- TRUE
@@ -2744,10 +2724,8 @@ optimQuartet <- function(tree, data, eig, w, g, bf, rate, ll.0, nTips,
     if ( (eps < 0) || (newll < llcomp))
       return(list(tree = oldtree, logLik = old.ll, c(eps, iter)))
     oldtree <- tree # vormals treeP
-#    if (control$trace > 1) cat(old.ll, " -> ", newll, "\n")
     old.ll <- newll
   }
-#  if (control$trace > 0) cat(start.ll, " -> ", newll, "\n")
   list(tree = tree, logLik = newll, c(eps, iter))
 }
 
@@ -2901,7 +2879,6 @@ pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, wMix, llMix,
 #  }
 # return loglik, loli for approx LRT
   candidates <- loglik > ll + eps0
-  #    cat("candidates", sum(candidates), "\n")
   INDEX2 <- t(apply(INDEX, 1, index2edge, root = getRoot(tree)))
   while (any(candidates)) {
     ind <- which.max(loglik)
