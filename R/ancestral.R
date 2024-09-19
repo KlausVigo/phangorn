@@ -239,8 +239,9 @@ write.ancestral <- function(x, file="ancestral"){
   cat("# df <- read.table(\"",tname,"\", header=TRUE) \n", sep="", file = fname,
       append=TRUE)
   cat("# anc <- as.ancestral(tree, df) \n", file = fname, append=TRUE)
-  cat("# plotAnc(anc) \n", file = fname, append=TRUE)
-  cat("# see ?plotAnc or vignette(\"Ancestral\", package=\"phangorn\") \n#\n",
+  cat("# plotAnc(anc) \n#\n", file = fname, append=TRUE)
+  cat("# For more information type ?plotAnc or\n", file = fname, append=TRUE)
+  cat("# vignette(\"Ancestral\", package=\"phangorn\") in R.\n#\n",
       file = fname, append=TRUE)
   cat(colnames(tab), "\n", sep="\t", file = fname, append=TRUE)
   write.table(tab, file=fname, quote=FALSE, row.names=FALSE, col.names=FALSE,
