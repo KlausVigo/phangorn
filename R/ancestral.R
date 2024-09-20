@@ -258,6 +258,19 @@ write.ancestral <- function(x, file="ancestral"){
 #' @importFrom utils head
 #' @rdname write.ancestral
 #' @export
+as.ancestral <- function(tree, align, prob){
+  stopifnot(inherits(tree, "phylo"))
+  stopifnot(inherits(align, "phyDat"))
+  stopifnot(inherits(prob, "data.frame"))
+  if(is.null(tree$node.label))stop("tree needs node.label")
+  state <- extract_states(prob, attr(align, "type"),
+                          levels=attr(align, "levels"))
+  prob <- extract_prob(prob, align, tree$node.label)
+  erg <- list(tree=tree, data=align[tree$tip.label], prob=prob,
+              state=state[tree$node.label])
+  class(erg) <- "ancestral"
+  erg
+}
 
 
 extract_states <- function(x, type, levels=NULL){
