@@ -50,7 +50,7 @@
 
 
 chk <- requireNamespace("fastmatch", quietly = TRUE)
-fmatch <- ifelse(chk, fastmatch::fmatch, base::match)
+fmatch <- ifelse(chk, fastmatch::fmatch, function(x, ...)match(x, ...))
 
 loadModule("Fitch_mod", TRUE)
 
