@@ -25,7 +25,7 @@ optim.pml(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
 
 \method{anova}{pml}(object, ...)
 
-vcov.pml(object, ...)
+\method{vcov}{pml}(object, ...)
 
 \method{print}{pml}(x, ...)
 }
