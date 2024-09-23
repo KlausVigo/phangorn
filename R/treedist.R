@@ -147,7 +147,7 @@ fun2 <- function(x, rooted=FALSE) {
 #' VI: Proceedings of the Sixth Australian Conference on Combinatorial
 #' Mathematics, Armidale, Australia}, 119--126
 #' @keywords classif
-#' @importFrom fastmatch fmatch
+## @importFrom fastmatch fmatch
 #' @examples
 #'
 #' tree1 <- rtree(100, rooted=FALSE)

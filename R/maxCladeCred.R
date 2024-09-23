@@ -29,7 +29,6 @@
 #' \code{\link{plotBS}}, \code{\link{transferBootstrap}},
 #' \code{\link{add_edge_length}}, \code{\link{add_boxplot}}
 #' @keywords cluster
-#' @importFrom fastmatch fmatch
 #' @examples
 #'
 #'

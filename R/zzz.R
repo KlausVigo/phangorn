@@ -49,6 +49,10 @@
 .PlotNetworxEnv <- new.env()
 
 
+chk <- requireNamespace("fastmatch", quietly = TRUE)
+if(!chk) fmatch <- match
+
+
 loadModule("Fitch_mod", TRUE)
 
 # .onLoad  <- function(libname, pkgname) {
