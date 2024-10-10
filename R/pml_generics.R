@@ -142,8 +142,12 @@ print.pml <- function(x, ...) {
 #' unlink(c("woodmouse_pml.txt", "woodmouse_tree.nwk"))
 #' @export
 write.pml <- function(x, file=tempfile(), ...){
+  digits <- -1
+  if (hasArg("digits")) digits <- list(...)$digits
   write.tree(x$tree, file=paste0(file, "_tree.nwk"))
-  if(!is.null(x$bs)) write.tree(x$bs, file=paste0(file, "_bs.nwk"))
+  saveRDS(x, file=paste0(file, ".rds"))
+  if(!is.null(x$bs)) write.nexus(x$bs, file=paste0(file, "_bs.nex"),
+                                 digits=digits)
   sink(paste0(file, "_pml.txt"))
   print.pml(x)
   sink()
