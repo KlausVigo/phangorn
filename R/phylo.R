@@ -1425,15 +1425,15 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   m <- 1
   eig <- edQt(bf = bf, Q = Q)
   if(is.null(g) | is.null(w)){
-    if(site.rate=="free_rate"){
-      w <- rep(1/k, k)
-      g <- rep(1, k)
-    }
-    else{
+#    if(site.rate=="free_rate"){
+#      w <- rep(1/k, k)
+#      g <- rep(1, k)
+#    }
+#    else{
       rw <- rates_n_weights(shape, k, site.rate)
       g <- rw[, 1]
       w <- rw[, 2]
-    }
+#    }
     if (inv > 0){
       w <- (1 - inv) * w
       g <- g / (1 - inv)
