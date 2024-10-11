@@ -2335,7 +2335,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     }
     class(object) <- "pml"
     extras <- pairlist(bf = bf, Q = Q, inv = inv, shape = shape, rate = rate,
-               model=model)[c(optBf, optQ, optInv, optGamma, optRate, optModel)]
+               model=model, g=g, w=w)[c(optBf, optQ, optInv, optGamma, optRate, optModel,
+                              optFreeRate, optFreeRate)]
     if (length(extras)) {
       existing <- !is.na(match(names(extras), names(call)))
       for (a in names(extras)[existing]) call[[a]] <- extras[[a]]
