@@ -4,12 +4,15 @@
 \alias{write.pml}
 \title{Export pml objects}
 \usage{
-write.pml(x, file = tempfile(), ...)
+write.pml(x, file = "pml", save_rds = TRUE, ...)
 }
 \arguments{
 \item{x}{an object of class ancestral.}
 
 \item{file}{a file name. File endings are added.}
+
+\item{save_rds}{logical, if TRUE saves the pml object as a rds file,
+otherwise the alignment is saved as a fasta file.}
 
 \item{...}{Further arguments passed to or from other methods.}
 }

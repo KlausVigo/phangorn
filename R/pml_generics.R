@@ -132,6 +132,8 @@ print.pml <- function(x, ...) {
 #'
 #' @param x an object of class ancestral.
 #' @param file a file name. File endings are added.
+#' @param save_rds logical, if TRUE saves the pml object as a rds file,
+#' otherwise the alignment is saved as a fasta file.
 #' @param ... Further arguments passed to or from other methods.
 #' @returns \code{write.pml}  returns the input x invisibly.
 #' @seealso \code{\link{ancestral.pml}}, \code{\link{plotAnc}}
@@ -141,15 +143,34 @@ print.pml <- function(x, ...) {
 #' write.pml(fit, "woodmouse")
 #' unlink(c("woodmouse_pml.txt", "woodmouse_tree.nwk"))
 #' @export
-write.pml <- function(x, file=tempfile(), ...){
+write.pml <- function(x, file="pml", save_rds=TRUE, ...){
   digits <- -1
   if (hasArg("digits")) digits <- list(...)$digits
   write.tree(x$tree, file=paste0(file, "_tree.nwk"))
-  saveRDS(x, file=paste0(file, ".rds"))
+  if(save_rds) saveRDS(x, file=paste0(file, ".rds"))
+  else write.phyDat(x$data, file=paste0(file, "_align.fasta"), format="fasta")
   if(!is.null(x$bs)) write.nexus(x$bs, file=paste0(file, "_bs.nex"),
                                  digits=digits)
   sink(paste0(file, "_pml.txt"))
-  print.pml(x)
+  cat("phangorn", packageDescription("phangorn", fields = "Version"), "\n\n")
+  print(x)
+  cat("\n\n")
+  cat("You can (re-)create the pml object using:\n\n")
+  if(save_rds){
+    cat("fit <- readRDS(\"", file,".rds\")", sep="")
+  }
+  else {
+    call <- x$call
+    call$data <- "align"
+    cat("tree <- read.tree(\"", file, "_tree.nwk\")\n", sep="")
+    cat("align <- read.fasta(\"", file, "_align.fasta\", format=\"fasta\")",
+        sep="")
+    cat( "\nfit <- ")
+    print(call)
+  }
+  cat("\n\nREFERENCES\n\n")
+  cat("To cite phangorn please use:\n\n")
+  print(citation("phangorn") [[1]], style="text")
   sink()
   invisible(x)
 }
