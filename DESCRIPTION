@@ -69,7 +69,7 @@ Suggests:
     vdiffr,
     xtable
 LinkingTo:
-    Rcpp
+    Rcpp, RcppArmadillo
 VignetteBuilder: 
     knitr,
     utils
