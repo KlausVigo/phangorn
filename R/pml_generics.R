@@ -141,7 +141,7 @@ print.pml <- function(x, ...) {
 #' data(woodmouse)
 #' fit <- pml_bb(woodmouse, "JC", rearrangement = "none")
 #' write.pml(fit, "woodmouse")
-#' unlink(c("woodmouse_pml.txt", "woodmouse_tree.nwk"))
+#' unlink(c("woodmouse_pml.txt", "woodmouse_tree.nwk", "woodmouse.rds"))
 #' @importFrom utils citation
 #' @export
 write.pml <- function(x, file="pml", save_rds=TRUE, ...){
