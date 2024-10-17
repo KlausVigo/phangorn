@@ -154,6 +154,7 @@ ilb <- function(x, LB) {
 #' White, W.T. and Holland, B.R. (2011) Faster exact maximum parsimony search
 #' with XMP. \emph{Bioinformatics}, \bold{27(10)},1359--1367
 #' @keywords cluster
+#' @importFrom utils txtProgressBar close setTxtProgressBar
 #' @examples
 #'
 #' data(yeast)
@@ -221,10 +222,11 @@ bab <- function(data, tree = NULL, trace = 0, ...) {
 
   f <- init_fitch(data, m=4L)
 
-  if (trace > 1) print(paste("lower bound:", p0 + mms0[1]))
   bound <- f$pscore(tree$edge)
-  if (trace > 1) print(paste("upper bound:", bound + p0))
-
+  if (trace > 1){
+    cat("lower bound:", p0 + mms0[1], "\n")
+    cat("upper bound:", bound, "\n")
+  }
   startTree <- structure(list(edge = structure(c(rep(nTips + 1L, 3),
         as.integer(1:3)), .Dim = c(3L, 2L)), tip.label = names(data),
         Nnode = 1L), .Names = c("edge", "tip.label", "Nnode"), class = "phylo",
@@ -247,7 +249,8 @@ bab <- function(data, tree = NULL, trace = 0, ...) {
   npsc <- 1
 
   visited <- numeric(nTips)
-
+  if(trace > 1 && nTips > 6) pb <- txtProgressBar(min=0, max=105, initial=0,
+                                                  style=3)
   result <- list()
   while (npsc > 0) {
     a <- PSC[npsc, 1]
@@ -293,12 +296,14 @@ bab <- function(data, tree = NULL, trace = 0, ...) {
         else result <- c(result, tmp)
       }
     }
+    if(a==5 && trace>1 ) setTxtProgressBar(pb, visited[6])
   }
   for (i in seq_along(result)) {
     result[[i]] <- structure(list(edge = result[[i]], Nnode = nTips - 2L),
                              .Names = c("edge", "Nnode"), class = "phylo",
                              order = "postorder")
   }
+  if(trace > 1  && nTips > 6) close(pb)
   attr(result, "TipLabel") <- tree$tip.label
   class(result) <- "multiPhylo"
   if(add_taxa) result <- addTaxa(result, attr(data, "duplicated"))
