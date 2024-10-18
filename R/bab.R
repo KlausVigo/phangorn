@@ -154,7 +154,7 @@ ilb <- function(x, LB) {
 #' White, W.T. and Holland, B.R. (2011) Faster exact maximum parsimony search
 #' with XMP. \emph{Bioinformatics}, \bold{27(10)},1359--1367
 #' @keywords cluster
-#' @importFrom utils txtProgressBar close setTxtProgressBar
+#' @importFrom utils txtProgressBar setTxtProgressBar
 #' @examples
 #'
 #' data(yeast)
@@ -281,7 +281,6 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
         PSC <- rbind(PSC, cbind(rep(a + 1, l), os, score[ind] - mms0[a + 1L]))
         npsc <- npsc + l
         visited[a + 1] <- visited[a + 1] + l
-        #  PSC = rbind(PSC, cbind(rep(a+1, l), os, score[ind][os] ))
       }
       else {
         ind <- which(score == ms)

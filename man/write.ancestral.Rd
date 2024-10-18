@@ -8,7 +8,7 @@
 \usage{
 write.ancestral(x, file = "ancestral")
 
-as.ancestral(tree, align, prob)
+as.ancestral(tree, prob, align = NULL)
 
 \method{print}{ancestral}(x, ...)
 }
@@ -19,10 +19,10 @@ as.ancestral(tree, align, prob)
 
 \item{tree}{an object of class phylo.}
 
-\item{align}{an object of class phyDat.}
-
 \item{prob}{an data.frame containing a matrix of posterior probabilities for
 each state and site.}
+
+\item{align}{an object of class phyDat.}
 
 \item{...}{Further arguments passed to or from other methods.}
 }

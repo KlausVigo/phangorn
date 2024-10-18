@@ -26,7 +26,7 @@ otherwise the alignment is saved as a fasta file.}
 data(woodmouse)
 fit <- pml_bb(woodmouse, "JC", rearrangement = "none")
 write.pml(fit, "woodmouse")
-unlink(c("woodmouse_pml.txt", "woodmouse_tree.nwk"))
+unlink(c("woodmouse_pml.txt", "woodmouse_tree.nwk", "woodmouse.rds"))
 }
 \seealso{
 \code{\link{ancestral.pml}}, \code{\link{plotAnc}}
