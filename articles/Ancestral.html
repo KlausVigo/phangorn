@@ -109,14 +109,14 @@ pruned afterwards using the function <code>multi2di</code> from
 <em>ape</em>. Recently we replaced the acctran routine with a method
 based on the sankoff algorithm adopting the algorithm for joint
 reconstruction <span class="citation">(Pupko et al. 2000)</span> and
-breaking ties at random. This has the additional benefit that to infer
-phylogenies with multifurcations.</p>
+breaking ties at random. This has the additional benefit that it allows
+us to infer phylogenies with multifurcations.</p>
 <p>“MPR” reconstructs the ancestral states for each (internal) node as
 if the tree would be rooted in that node. However the nodes are not
 independent of each other. If one chooses one state for a specific node,
 this can restrict the choice of neighboring nodes (figures 2 and 3).
-There is also an option “POSTORDER” which is only a one pass algotrithm,
-which we use for teaching purposes. The function acctran (accelerated
+There is also an option “POSTORDER” which is only a one pass algorithm,
+which is useful for teaching purposes. The function acctran (accelerated
 transformation) assigns edge length and internal nodes to the tree <span class="citation">(Swofford and Maddison 1987)</span>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">anc.pars</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ancestral.pml.html">anc_pars</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
@@ -145,11 +145,10 @@ Fig 2. Ancestral reconstruction using MPR.
 <p><em>phangorn</em> also offers the possibility to estimate ancestral
 states using ML. The advantages of ML over parsimony is that the
 reconstruction accounts for different edge lengths. Currently a marginal
-construction is implemented (see [<span class="citation">Yang
-(2006)</span>]<span class="citation">(Koshi and Goldstein 1996)</span>),
-but the joint reconstruction <span class="citation">(Pupko et al.
-2000)</span> only for models without rate variation (e.g. gamma models)
-or invariant sites.</p>
+construction (see [<span class="citation">Yang (2006)</span>]<span class="citation">(Koshi and Goldstein 1996)</span>) and the joint
+reconstruction <span class="citation">(Pupko et al. 2000)</span> is
+implemented. Joint reconstructions is only for models without rate
+variation (e.g. gamma models) or invariant sites.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">pml</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">primates</span><span class="op">)</span></span>
 <span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, model<span class="op">=</span><span class="st">"F81"</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
