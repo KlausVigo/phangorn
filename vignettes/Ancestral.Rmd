@@ -38,10 +38,10 @@ parsimony(tree, primates)
 ```
 
 For parsimony analysis of the edge length represent the observed number of changes. Reconstructing ancestral states therefore defines also the edge lengths of a tree. However there can exist several equally parsimonious reconstructions or states can be ambiguous and therefore edge length can differ.
-In _phangorn_ all the ancestral reconstructions for parsimony used to be based on the fitch algorithm (below version 3.0) and needed bifurcating trees. However trees can get pruned afterwards using the function `multi2di` from _ape_. Recently we replaced the acctran routine with a method based on the sankoff algorithm adopting the algorithm for joint reconstruction [@Pupko2000] and breaking ties at random. This has the additional benefit that to infer phylogenies with multifurcations. 
+In _phangorn_ all the ancestral reconstructions for parsimony used to be based on the fitch algorithm (below version 3.0) and needed bifurcating trees. However trees can get pruned afterwards using the function `multi2di` from _ape_. Recently we replaced the acctran routine with a method based on the sankoff algorithm adopting the algorithm for joint reconstruction [@Pupko2000] and breaking ties at random. This has the additional benefit that it allows us to infer phylogenies with multifurcations. 
 
 "MPR" reconstructs the ancestral states for each (internal) node as if the tree would be rooted in that node. However the nodes are not independent of each other. If one chooses one state for a specific node, this can restrict the choice of neighboring nodes (figures 2 and 3).
-There is also an option "POSTORDER" which is only a one pass algotrithm, which we use for teaching purposes. 
+There is also an option "POSTORDER" which is only a one pass algorithm, which is useful for teaching purposes. 
 The function acctran (accelerated transformation) assigns edge length and internal nodes to the tree [@Swofford1987]. 
 ```{r ancestral_reconstruction}
 anc.pars <- anc_pars(tree, primates)
@@ -61,7 +61,7 @@ title("MPR")
 
 _phangorn_ also offers the possibility to estimate ancestral states using ML.
 The advantages of ML over parsimony is that the reconstruction accounts for different edge lengths.
-Currently a marginal construction is implemented (see [@Yang2006][@Koshi1996]), but the joint reconstruction [@Pupko2000] only for models without rate variation (e.g. gamma models) or invariant sites.
+Currently a marginal construction (see [@Yang2006][@Koshi1996])  and the joint reconstruction [@Pupko2000] is implemented. Joint reconstructions is only for models without rate variation (e.g. gamma models) or invariant sites.
 ```{r fit_ML}
 fit <- pml(tree, primates)
 fit <- optim.pml(fit, model="F81", control = pml.control(trace=0))
