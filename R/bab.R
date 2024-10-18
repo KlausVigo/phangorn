@@ -164,7 +164,7 @@ ilb <- function(x, LB) {
 #' trees <- bab(gene12)
 #'
 #' @export
-bab <- function(data, tree = NULL, trace = 0, ...) {
+bab <- function(data, tree = NULL, trace = 1, ...) {
   if (hasArg(ILBound))
     ILBound <- list(...)$ILBound
   else ILBound <- FALSE
@@ -198,6 +198,7 @@ bab <- function(data, tree = NULL, trace = 0, ...) {
   nr <- as.integer(attr(data, "nr"))
   inord <- getOrder(data)
   data <- data[inord,]
+  if(trace > 0) cat("Compute starting tree\n")
   tree <- pratchet(data, start = tree, trace = trace - 1, maxit=10,
                    all=FALSE, ...)
   p_vec <- fitch(tree, data, "site")
@@ -223,7 +224,7 @@ bab <- function(data, tree = NULL, trace = 0, ...) {
   f <- init_fitch(data, m=4L)
 
   bound <- f$pscore(tree$edge)
-  if (trace > 1){
+  if (trace){
     cat("lower bound:", p0 + mms0[1], "\n")
     cat("upper bound:", bound, "\n")
   }
@@ -247,10 +248,12 @@ bab <- function(data, tree = NULL, trace = 0, ...) {
   k <- 4L
   Nnode <- 1L
   npsc <- 1
-
+  status <- 0
   visited <- numeric(nTips)
-  if(trace > 1 && nTips > 6) pb <- txtProgressBar(min=0, max=105, initial=0,
-                                                  style=3)
+  if(trace > 0 && nTips > 6){
+    pb <- txtProgressBar(min=0, max=105, initial=0, style=3)
+    cat("Search Baumraum (tree space)")
+  }
   result <- list()
   while (npsc > 0) {
     a <- PSC[npsc, 1]
@@ -296,14 +299,14 @@ bab <- function(data, tree = NULL, trace = 0, ...) {
         else result <- c(result, tmp)
       }
     }
-    if(a==5 && trace>1 ) setTxtProgressBar(pb, visited[6])
+    if(a==6 && trace>0 ) setTxtProgressBar(pb, status <- status + 1)
   }
   for (i in seq_along(result)) {
     result[[i]] <- structure(list(edge = result[[i]], Nnode = nTips - 2L),
                              .Names = c("edge", "Nnode"), class = "phylo",
                              order = "postorder")
   }
-  if(trace > 1  && nTips > 6) close(pb)
+  if(trace > 0  && nTips > 6) close(pb)
   attr(result, "TipLabel") <- tree$tip.label
   class(result) <- "multiPhylo"
   if(add_taxa) result <- addTaxa(result, attr(data, "duplicated"))
