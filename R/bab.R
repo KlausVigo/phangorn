@@ -251,8 +251,8 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
   status <- 0
   visited <- numeric(nTips)
   if(trace > 0 && nTips > 6){
+    cat("Search Baumraum (tree space)\n")
     pb <- txtProgressBar(min=0, max=105, initial=0, style=3)
-    cat("Search Baumraum (tree space)")
   }
   result <- list()
   while (npsc > 0) {
