@@ -306,7 +306,10 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
                              .Names = c("edge", "Nnode"), class = "phylo",
                              order = "postorder")
   }
-  if(trace > 0  && nTips > 6) close(pb)
+  if(trace > 0  && nTips > 6) {
+    setTxtProgressBar(pb, 105)
+    close(pb)
+  }
   attr(result, "TipLabel") <- tree$tip.label
   class(result) <- "multiPhylo"
   if(add_taxa) result <- addTaxa(result, attr(data, "duplicated"))
