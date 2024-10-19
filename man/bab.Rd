@@ -32,9 +32,11 @@ trees have to be examined, where n is the number of species / tips. For ten
 species there are already 2027025 tip-labelled unrooted trees. It only uses
 some basic strategies to find a lower and upper bounds similar to penny from
 phylip. \code{bab} uses a very basic heuristic approach of MinMax Squeeze
-(Holland et al. 2005) to improve the lower bound.  On the positive side
-\code{bab} is not like many other implementations restricted to binary or
-nucleotide data.
+(Holland et al. 2005) to improve the lower bound. \cr
+\code{bab} might return multifurcating trees. These multifurcations could be
+resolved in all ways. \cr
+On the positive side \code{bab} is not like many other implementations
+restricted to binary or nucleotide data.
 }
 \examples{
 
