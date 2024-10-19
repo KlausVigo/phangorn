@@ -211,7 +211,7 @@ anc_pml <- function(object, type = "marginal", ...) {
 #' align <- read.phyDat("ancestral_align.fasta", format="fasta")
 #' tree <- read.tree("ancestral_tree.nwk")
 #' df <- read.table("ancestral.state", header=TRUE)
-#' anc_ml_disc <- as.ancestral(tree, align, df)
+#' anc_ml_disc <- as.ancestral(tree, df, align)
 #' plotAnc(anc_ml_disc, 20)
 #' unlink(c("ancestral_align.fasta", "ancestral_tree.nwk", "ancestral.state"))
 #' @rdname write.ancestral
