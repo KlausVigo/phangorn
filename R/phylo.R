@@ -451,43 +451,6 @@ score <- function(fit, transform = TRUE) {
 }
 
 
-# wird noch in partition models verwendet
-optim.quartet <- function(old.el, eig, bf, dat, g = 1, w = 1, weight,
-                          ll.0 = weight * 0, control = list(eps = 1e-08,
-                          maxit = 5, trace = 0, tau=1e-8), llcomp = -Inf) {
-  eps <- 1
-  iter <- 0
-  evi <- (t(eig[[3]]) * bf)
-  tau <- control$tau
-  while (eps > control$eps && iter < control$maxit) {
-    tmp <- fn.quartet(old.el = old.el, eig = eig, bf = bf, dat = dat,
-      g = g, w = w, weight = weight, ll.0 = ll.0)
-    old.ll <- tmp$ll
-    el1 <- fs(old.el[1], eig, tmp$res[, 1], dat[, 1], weight, g = g, w = w,
-              bf = bf, ll.0 = ll.0, evi, tau = tau, getA = TRUE, getB = FALSE)
-    el2 <- fs(old.el[2], eig, el1[[2]], dat[, 2], weight, g = g, w = w,
-              bf = bf, ll.0 = ll.0, evi, tau = tau, getA = TRUE, getB = FALSE)
-    el5 <- fs(old.el[5], eig, el2[[2]], tmp$res[, 2], weight, g = g, w = w,
-              bf = bf, ll.0 = ll.0, evi, tau = tau, getA = FALSE, getB = TRUE)
-    el3 <- fs(old.el[3], eig, el5[[3]], dat[, 3], weight, g = g, w = w,
-              bf = bf, ll.0 = ll.0, evi, tau = tau, getA = TRUE, getB = FALSE)
-    el4 <- fs(old.el[4], eig, el3[[2]], dat[, 4], weight, g = g, w = w,
-              bf = bf, ll.0 = ll.0, evi, tau = tau, getA = FALSE, getB = FALSE)
-    old.el[1] <- el1[[1]]
-    old.el[2] <- el2[[1]]
-    old.el[3] <- el3[[1]]
-    old.el[4] <- el4[[1]]
-    old.el[5] <- el5[[1]]
-    iter <- iter + 1
-    ll <- el4[[4]]
-    eps <- (old.ll - ll) / ll
-    if (ll < llcomp) return(list(old.el, ll))
-    old.ll <- ll
-  }
-  list(old.el, ll)
-}
-
-
 phangornParseFormula <- function(model) {
 
   parseSide <- function(model) {
