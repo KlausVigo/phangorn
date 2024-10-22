@@ -641,8 +641,10 @@ int get_quartet(Fitch* obj, IntegerVector & M){
 }
 */
 
-NumericVector pscore_vec(Fitch* obj, IntegerVector & edge_to, int node_from){
+NumericVector pscore_vec(Fitch* obj, const IntegerMatrix & orig, int node_from){
   // std::vector<double> res;
+  int nTips = obj->nSeq;
+  IntegerVector edge_to = orig( _, 1) + 2 * nTips;
   int n = edge_to.size();
   NumericVector res(n);
   int states = obj->nStates;
@@ -658,6 +660,18 @@ NumericVector pscore_vec(Fitch* obj, IntegerVector & edge_to, int node_from){
   }
   return(res);
 }
+
+
+// needed for random.addition, SPR & TBR
+NumericVector pscore_spr(Fitch* obj, const IntegerMatrix & orig, int node_from){
+  traversetwice(obj, orig, 0L);
+  root_all_node(obj, orig);
+  NumericVector res = pscore_vec(obj, orig, node_from);
+  return(res);
+}
+
+
+
 
 // dist.hamming works for >31 states, TODO openMP
 NumericVector hamming_dist(Fitch* obj){
@@ -972,6 +986,7 @@ RCPP_MODULE(Fitch_mod) {
         .method("pscore_nni", &pscore_nni)
         .method("pscore", &pscore)
         .method("pscore_vec", &pscore_vec)
+        .method("pscore_spr", &pscore_spr)
         .method("pscore_node", &pscore_node)
         .method("pscore_acctran", &pscore_acctran)
         .method("acctran_traverse", &acctran_traverse)

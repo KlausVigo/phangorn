@@ -104,9 +104,10 @@ random.addition <- function (data, tree=NULL, method = "fitch")
   f <- init_fitch(data, parsinfo = TRUE, order = TRUE, m=4L)
   for (i in remaining) {
     edge <- tree$edge
-    f$traversetwice(edge, 0L)
-    f$root_all_node(edge)
-    score <- f$pscore_vec(edge[,2] + 2L * nTips, i)
+#    f$traversetwice(edge, 0L)
+#    f$root_all_node(edge)
+#    score <- f$pscore_vec(edge, i)
+    score <- f$pscore_spr(edge, i)
     nt <- which.min(score)
     tree <- addOne(tree, i, nt)
   }
@@ -124,8 +125,9 @@ fitch_spr <- function (tree, f, trace=0L)
 # remove tip
     treetmp <- dropTip(tree, i)
     edge <- treetmp$edge
-    f$prep_spr(edge)
-    score <- f$pscore_vec(edge[,2] + 2L * nTips, i)
+#    f$prep_spr(edge)
+#    score <- f$pscore_vec(edge, i)
+    score <- f$pscore_spr(edge, i)
     nt <- which.min(score)
 # check if different
     tree <- addOne(treetmp, i, nt)
@@ -136,8 +138,9 @@ fitch_spr <- function (tree, f, trace=0L)
     if (i != root) {
       tmp <- dropNode(tree, i, all.ch = ch)
       if (!is.null(tmp)) {
-        f$prep_spr(tmp[[1]]$edge)
-        score <- f$pscore_vec(tmp[[1]]$edge[,2] + 2L * nTips, i)
+#        f$prep_spr(tmp[[1]]$edge)
+#        score <- f$pscore_vec(tmp[[1]]$edge, i)
+        score <- f$pscore_spr(tmp[[1]]$edge, i)
         nt <- which.min(score)
         if(!(tmp[[1]]$edge[nt, 2L] %in% tmp[[4]])){
           tree <- addOneTree(tmp[[1]], tmp[[2]], nt, tmp[[3]])

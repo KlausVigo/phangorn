@@ -33,13 +33,13 @@ getOrder <- function(x) {
   tree$edge[, 2] <- added
 
   while (length(remaining) > 0) {
-    edge <- tree$edge[, 2] + 2 * nTips
+#    edge <- tree$edge[, 2] + 2 * nTips
     f$prep_spr(tree$edge)
     l <- length(remaining)
     res <- numeric(l)
     nt <- numeric(l)
     for (j in 1:l) {
-      score <- f$pscore_vec(edge, remaining[j])
+      score <- f$pscore_vec(tree$edge, remaining[j])
       res[j] <- min(score)
       nt[j] <- which.min(score)
     }
@@ -258,21 +258,21 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
   }
   result <- list()
   while (npsc > 0) {
-    a <- PSC[npsc, 1]
-    b <- PSC[npsc, 2]
-    blub <- PSC[npsc, 3]
-    PSC <- PSC[-npsc, , drop = FALSE]
+    a <- PSC[npsc, 1] # in C++ a.back()
+    b <- PSC[npsc, 2]  # in C++ b.back()
+    blub <- PSC[npsc, 3]  # in C++ blub.back()
+    PSC <- PSC[-npsc, , drop = FALSE]  # in C++ pop_back
     npsc <- npsc - 1L
     tmpTree <- trees[[a]][[b]]
-    edge <- tmpTree[, 2] + 2 * nTips
-
-    f$prep_spr(tmpTree)
-    score <- f$pscore_vec(edge, as.integer(a + 1L))
+#    edge <- tmpTree[, 2] + 2L * nTips
+#    f$prep_spr(tmpTree)
+#    score <- f$pscore_vec(tmpTree, as.integer(a + 1L))
+    score <- f$pscore_spr(tmpTree, as.integer(a + 1L))
     score <- score + blub + mms0[a + 1L]
     ms <- min(score)
     if (ms < bound + .1) {
       if ((a + 1L) < nTips) {
-        ind <- (1:L[a])[score <= bound]
+        ind <- (1:L[a])[score <= bound]   # sehr langsam
         trees[[a + 1]][seq_along(ind)] <- .Call('AddOnes', tmpTree,
                         as.integer(a + 1L), as.integer(ind), as.integer(L[a]),
                         as.integer(M[a]))
