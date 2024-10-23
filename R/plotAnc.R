@@ -69,8 +69,8 @@ getTransition <- function(scheme, levels){
 #' tree <- pml_bb(woodmouse, "JC", rearrangement="NNI")$tree |> midpoint()
 #' woodmouse_aa <- trans(woodmouse, 2) |> as.phyDat()
 #' anc_aa <- anc_pars(tree, woodmouse_aa)
-#' plot(tree, direction="downwards")
-#' add_mutations(anc_aa)
+#' plot(tree)
+#' add_mutations(anc_aa, adj = c(.5, -0.3), col=2)
 #'
 #' @importFrom grDevices hcl.colors
 ## @importFrom ggseqlogo make_col_scheme ggseqlogo
