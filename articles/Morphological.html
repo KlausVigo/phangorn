@@ -177,8 +177,10 @@ possible to use the branch and bound algorithm <span class="citation">(Hendy and
 parsimonious trees. With bigger datasets it is definitely recommended to
 use <code>pratchet</code>.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mm_bab</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bab.html">bab</a></span><span class="op">(</span><span class="va">mm_pd</span>, trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
-<span><span class="va">mm_bab</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">mm_bab</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bab.html">bab</a></span><span class="op">(</span><span class="va">mm_pd</span>, trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##  [1]   0   0   0   3  15 105 514 467 168 266  74   0</span></span></code></pre>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mm_bab</span></span></code></pre></div>
 <pre><code><span><span class="co">## 37 phylogenetic trees</span></span></code></pre>
 </div>
 <div class="section level3">
@@ -191,7 +193,7 @@ done with the function <code>root</code> from the <em>ape</em> package
 <span class="citation">(Paradis and Schliep 2019)</span>. To save the
 correct node labels (edge support), it’s important to set
 <code>edgelabel=TRUE</code>.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mm_tree_rooted</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/root.html" class="external-link">root</a></span><span class="op">(</span><span class="va">mm_tree</span>, outgroup <span class="op">=</span> <span class="st">"C._cymba"</span>, resolve.root <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                       edgelabel <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -208,7 +210,7 @@ support. It is also possible to save the plots as <em>.pdf</em> (or
 various other formats, e.g. svg, png, tiff) file. <code>digits</code> is
 an argument to determine the number of digits shown for the bootstrap
 values.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># subsetting for tree nr. 9</span></span>
 <span><span class="fu"><a href="../reference/plotBS.html">plotBS</a></span><span class="op">(</span><span class="va">mm_tree_rooted</span><span class="op">[[</span><span class="fl">9</span><span class="op">]</span><span class="op">]</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span></span>
@@ -224,7 +226,7 @@ values.</p>
 <code>pratchet</code>, or of our 37 most parsimonious trees from
 <code>bab</code>, we can use the <code>consensus</code> function from
 <em>ape</em>.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># unrooted pratchet tree</span></span>
 <span><span class="va">mm_cons</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/consensus.html" class="external-link">consensus</a></span><span class="op">(</span><span class="va">mm_tree</span><span class="op">)</span></span>
 <span></span>
@@ -234,7 +236,7 @@ values.</p>
 <span><span class="co"># branch and bound, we root the consensus tree in the same step</span></span>
 <span><span class="va">mm_bab_cons</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ape/man/root.html" class="external-link">root</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/consensus.html" class="external-link">consensus</a></span><span class="op">(</span><span class="va">mm_bab</span><span class="op">)</span>, outgroup <span class="op">=</span> <span class="st">"C._cymba"</span>,</span>
 <span>                    resolve.root <span class="op">=</span> <span class="cn">TRUE</span>, edgelabel <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mm_cons</span>, main<span class="op">=</span><span class="st">"Unrooted pratchet consensus tree"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mm_cons_root</span>, main<span class="op">=</span><span class="st">"Rooted pratchet consensus tree"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mm_bab_cons</span>, main<span class="op">=</span><span class="st">"Rooted bab consensus tree"</span><span class="op">)</span></span></code></pre></div>
