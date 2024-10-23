@@ -244,12 +244,13 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
   L <- as.integer(2L * (1L:nTips) - 3L)
   M <- as.integer(1L:nTips + nTips - 1L)
 
-  PSC <- matrix(c(3, 1, 0), 1, 3)
+  PSC <- matrix(0, sum(L), 3)
+  PSC[1,] <- c(3, 1, 0)
   PSC[1, 3] <- f$pscore(startTree$edge)
 
   k <- 4L
   Nnode <- 1L
-  npsc <- 1
+  npsc <- 1L
   status <- 0
   visited <- numeric(nTips)
   if(trace > 0 && nTips > 6){
@@ -261,7 +262,7 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
     a <- PSC[npsc, 1] # in C++ a.back()
     b <- PSC[npsc, 2]  # in C++ b.back()
     blub <- PSC[npsc, 3]  # in C++ blub.back()
-    PSC <- PSC[-npsc, , drop = FALSE]  # in C++ pop_back
+#    PSC <- PSC[-npsc, , drop = FALSE]
     npsc <- npsc - 1L
     tmpTree <- trees[[a]][[b]]
 #    edge <- tmpTree[, 2] + 2L * nTips
@@ -280,7 +281,9 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
         # os <- order(score[ind], decreasing=TRUE)
         os <- seq_len(l)
         # in C++ pushback
-        PSC <- rbind(PSC, cbind(rep(a + 1, l), os, score[ind] - mms0[a + 1L]))
+        # PSC <- rbind(PSC, cbind(rep(a + 1, l), os, score[ind] - mms0[a + 1L]))
+        # PSC[npsc + os, ] <- cbind(rep(a + 1, l), os, score[ind] - mms0[a + 1L])
+        PSC[npsc + os, ] <- c(rep(a + 1, l), os, score[ind] - mms0[a + 1L])
         npsc <- npsc + l
         visited[a + 1] <- visited[a + 1] + l
       }
@@ -290,12 +293,14 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
         tmp[seq_along(ind)] <- .Call('AddOnes', tmpTree,
                                      as.integer(a + 1L), as.integer(ind),
                                      as.integer(L[a]), as.integer(M[a]))
-        if (ms < bound) {
+        if (ms + 1e-6 < bound) {
           bound <- ms
           if (trace) cat("upper bound:", bound + p0, "\n")
           result <- tmp
-          PSC <- PSC[PSC[, 3] < (bound + 1e-8), ]
-          npsc <- nrow(PSC)
+          TMP <- PSC[seq_len(npsc),]
+          TMP <- TMP[TMP[, 3] < (bound + 1e-8), ]
+          npsc <- nrow(TMP)
+          PSC[seq_len(npsc),] <- TMP
         }
         else result <- c(result, tmp)
       }
@@ -307,6 +312,7 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
                              .Names = c("edge", "Nnode"), class = "phylo",
                              order = "postorder")
   }
+  print(visited)
   if(trace > 0  && nTips > 6) {
     setTxtProgressBar(pb, 105)
     close(pb)
