@@ -12,7 +12,7 @@ plotAnc(x, i = 1, type = "phylogram", ..., col = NULL, cex.pie = 0.5,
 plotSeqLogo(x, node = getRoot(x$tree), start = 1, end = 10,
   scheme = "Ape_NT", ...)
 
-add_mutations(x, frame = "none", ...)
+add_mutations(x, pos = NULL, frame = "none", ...)
 }
 \arguments{
 \item{x}{an object of class \code{ancestral}.}
@@ -29,7 +29,8 @@ it must be one of "phylogram" (the default), "cladogram", "fan", "unrooted",
 
 \item{cex.pie}{a numeric defining the size of the pie graphs.}
 
-\item{pos}{a character string defining the position of the legend.}
+\item{pos}{position or range in the alignment to add mutations. If NULL all
+mutations are written out.}
 
 \item{scheme}{a predefined color scheme. For amino acid options are "Ape_AA",
 "Zappo_AA", "Clustal", "Polarity" and "Transmembrane_tendency", for
@@ -85,8 +86,8 @@ data(woodmouse)
 tree <- pml_bb(woodmouse, "JC", rearrangement="NNI")$tree |> midpoint()
 woodmouse_aa <- trans(woodmouse, 2) |> as.phyDat()
 anc_aa <- anc_pars(tree, woodmouse_aa)
-plot(tree, direction="downwards")
-add_mutations(anc_aa)
+plot(tree)
+add_mutations(anc_aa, adj = c(.5, -0.3), col=2)
 
 }
 \seealso{

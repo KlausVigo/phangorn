@@ -214,14 +214,16 @@ plotSeqLogo <- function(x, node=getRoot(x$tree), start=1, end=10,
 
 
 #' @rdname plot.ancestral
+#' @param pos position or range in the alignment to add mutations. If NULL all
+#' mutations are written out.
 #' @param frame a character string specifying the kind of frame to be printed
 #' around the text. See \code{\link[ape]{edgelabels}}.
 #' @returns \code{add_mutations} adds the position and and changes of possible
 #' mutations to a phylogeny.
 #' @export
-add_mutations <- function(x, frame="none", ...){
+add_mutations <- function(x, pos=NULL, frame="none", ...){
   y <- rbind(x$data, x$state)
-  mt <- map_mutations(x$tree, y)
+  mt <- map_mutations(x$tree, y, pos=pos)
   ind <- which(lengths(mt)>0)
   lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
   edge <- lastPP$edge

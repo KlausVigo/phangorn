@@ -164,7 +164,7 @@ count_mutations <- function(tree, data){
 }
 
 
-map_mutations <- function(tree, data){
+map_mutations <- function(tree, data, pos=NULL){
   site <- "sitewise"
   tree <- reorder(tree, "postorder")
   old_tree <- tree
@@ -180,6 +180,7 @@ map_mutations <- function(tree, data){
   }
   f <- init_fitch(data, FALSE, FALSE, m=2L)
   mttns <- vector("list", max(tree$edge))
+  if(is.null(pos)) pos <- seq_along(index)
   index <- attr(data, "index")
   M <- as.character(data) # not efficient
   for(i in seq_len(nrow(tree$edge))){
@@ -188,6 +189,7 @@ map_mutations <- function(tree, data){
     pa_i <- tree$edge[i,1]
     tmp  <- fun(edge_i, site, nr)
     tmp <- which(tmp[index] == 1)
+    tmp <- intersect(tmp, pos)
     if(length(tmp > 0)){
       tmp2 <- paste0(M[pa_i, tmp], tmp, M[ch_i, tmp])
       mttns[[ch_i]] <- tmp2
