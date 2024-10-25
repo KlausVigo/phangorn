@@ -107,7 +107,7 @@ add_edge_length <- function(tree, trees, fun=\(x)median(na.omit(x)),
 ##' trees <- bootstrap.phyDat(Laurasiatherian,
 ##'                           FUN=function(x)upgma(dist.hamming(x)), bs=100)
 ##' tree <- plotBS(tree, trees, "phylogram")
-##' add_ci(tree, trees)
+##' add_ci(tree, trees, bty="n")
 ##' plot(tree, direction="downwards")
 ##' add_boxplot(tree, trees, boxwex=.7)
 ##' @seealso \code{\link[ape]{plot.phylo}}, \code{\link{plotBS}},
