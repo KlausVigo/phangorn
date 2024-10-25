@@ -167,6 +167,7 @@ rbind.phyDat <- function(...){
   x <- list(...)
   types <- sapply(x, function(x)attr(x, "type"))
   l <- sapply(x, function(x)sum(attr(x, "weight")))
+  has_gaps <- all(sapply(x, has_gap_state))
   if(any(l!=l[1]))stop("Alignments have different # of characters!")
   if(any(types!=types[1]))stop("Alignments must have same type!")
   nam <- lapply(x, names) |> unlist()
@@ -183,7 +184,9 @@ rbind.phyDat <- function(...){
                                attr(x[[1]], "levels"))
     return(phyDat(res, type="USER", contrast=contrast))
   }
-  phyDat(res, type=types[1])
+  result <- phyDat(res, type=types[1])
+  if(has_gaps) result <- gap_as_state(result)
+  result
 }
 
 
