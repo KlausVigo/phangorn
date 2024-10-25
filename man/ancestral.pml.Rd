@@ -3,8 +3,6 @@
 \name{ancestral.pml}
 \alias{ancestral.pml}
 \alias{anc_pml}
-\alias{as.phyDat.ancestral}
-\alias{as.data.frame.ancestral}
 \alias{ancestral.pars}
 \alias{anc_pars}
 \alias{pace}
@@ -13,10 +11,6 @@
 ancestral.pml(object, type = "marginal", return = "prob", ...)
 
 anc_pml(object, type = "marginal", ...)
-
-\method{as.phyDat}{ancestral}(x, ...)
-
-\method{as.data.frame}{ancestral}(x, ...)
 
 ancestral.pars(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"),
   cost = NULL, return = "prob", ...)
@@ -35,8 +29,6 @@ pace(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"), cost = NULL,
 \item{return}{return a \code{phyDat} object or matrix of probabilities.}
 
 \item{\dots}{Further arguments passed to or from other methods.}
-
-\item{x}{an object of class ancestral}
 
 \item{tree}{a tree, i.e. an object of class pml}
 
