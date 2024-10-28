@@ -276,9 +276,7 @@ densiTree <- function(x, type = "phylogram", ..., alpha = 1 / length(x),
             adj = adj, srt = srt, #no.margin = no.margin,
             label.offset = label.offset,
             x.lim = xlim, y.lim = ylim, direction = direction,
-            tip.color = tip.color, Ntip = nTip #, Nnode = Nnode,
-            #root.time = x$root.time, align.tip.label = align.tip.label
-            )
+            tip.color = tip.color, Ntip = nTip)
   assign("last_plot.phylo", L, envir = .PlotPhyloEnv)
   invisible(x)
 }
