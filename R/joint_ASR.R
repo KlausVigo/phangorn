@@ -180,8 +180,8 @@ map_mutations <- function(tree, data, pos=NULL){
   }
   f <- init_fitch(data, FALSE, FALSE, m=2L)
   mttns <- vector("list", max(tree$edge))
-  if(is.null(pos)) pos <- seq_along(index)
   index <- attr(data, "index")
+  if(is.null(pos)) pos <- seq_along(index)
   M <- as.character(data) # not efficient
   for(i in seq_len(nrow(tree$edge))){
     edge_i <-  matrix(c(l+1L, l+1L, tree$edge[i,]), 2, 2)
