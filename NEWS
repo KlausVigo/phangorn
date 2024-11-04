@@ -4,6 +4,10 @@ OTHER CHANGES
 
     o improvements to write.ancestral
 
+    o bab got a progress bar, as it might runs for a long time (suggestion by
+
+      Bárbara Bitarello).
+
 
     CHANGES in PHANGORN VERSION 2.12.0
 

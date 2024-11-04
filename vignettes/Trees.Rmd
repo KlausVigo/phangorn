@@ -130,7 +130,7 @@ parsimony(c(treeRA, treeSPR), primates)
 
 For data sets with few species it is also possible to find all most parsimonious trees using a branch and bound algorithm [@Hendy1982]. For data sets with more than 10 taxa this can take a long time and depends strongly on how "tree-like" the data is. And for more than 20-30 taxa this will take almost forever.  
 ```{r bab}
-(trees <- bab(primates[1:10,]))
+(trees <- bab(primates[1:10,], trace=0))
 ```
 
 # Maximum likelihood
