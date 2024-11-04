@@ -10,7 +10,10 @@ dat <- matrix(c("a", "a",
 dna <- phyDat(dat)
 fit <- pml(tree, dna)
 
-
+anc_p <- anc_pars(tree, dna)
+expect_true( inherits(anc_p, "ancestral"))
+dna_df <- as.data.frame(anc_p)
+expect_equal(nrow(dna_df), 2 * (Ntip(tree) + Nnode(tree)))
 
 # dna tests differs from other data types as it may returns ambiguous data
 # test ancestral generics
