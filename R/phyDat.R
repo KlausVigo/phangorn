@@ -88,8 +88,7 @@ print.phyDat <- function (x, ...){
   cat("The states are",attr(x,"levels"), "\n")
 }
 
-
-#' @export cbind.phyDat
+#' @rdname phyDat
 #' @export
 cbind.phyDat <- function(..., gaps="-", compress=TRUE){
   object <- as.list(substitute(list(...)))[-1]
@@ -160,8 +159,7 @@ cbind.phyDat <- function(..., gaps="-", compress=TRUE){
 }
 
 
-# @rdname phyDat
-#' @export c.phyDat
+#' @rdname phyDat
 #' @export
 rbind.phyDat <- function(...){
   x <- list(...)
@@ -190,8 +188,7 @@ rbind.phyDat <- function(...){
 }
 
 
-# @rdname phyDat
-#' @export c.phyDat
+#' @rdname phyDat
 #' @export
 c.phyDat <- cbind.phyDat
 

@@ -5,6 +5,7 @@
 \alias{cbind.phyDat}
 \alias{c.phyDat}
 \alias{removeUndeterminedSites}
+\alias{rbind.phyDat}
 \alias{subset.phyDat}
 \alias{[.phyDat}
 \alias{unique.phyDat}
@@ -13,6 +14,12 @@
 \title{Generic functions for class phyDat}
 \usage{
 \method{print}{phyDat}(x, ...)
+
+\method{cbind}{phyDat}(..., gaps = "-", compress = TRUE)
+
+\method{rbind}{phyDat}(...)
+
+\method{c}{phyDat}(..., gaps = "-", compress = TRUE)
 
 \method{subset}{phyDat}(x, subset, select, site.pattern = TRUE, ...)
 
