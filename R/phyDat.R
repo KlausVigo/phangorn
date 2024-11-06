@@ -89,6 +89,8 @@ print.phyDat <- function (x, ...){
 }
 
 #' @rdname phyDat
+#' @param gaps character for gaps (default is '-').
+#' @param compress logical, compress data to store only site patterns.
 #' @export
 cbind.phyDat <- function(..., gaps="-", compress=TRUE){
   object <- as.list(substitute(list(...)))[-1]

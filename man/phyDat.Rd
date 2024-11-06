@@ -38,6 +38,10 @@ allSitePattern(n, levels = NULL, names = NULL, type = "DNA", code = 1)
 
 \item{...}{further arguments passed to or from other methods.}
 
+\item{gaps}{character for gaps (default is '-').}
+
+\item{compress}{logical, compress data to store only site patterns.}
+
 \item{subset}{a subset of taxa.}
 
 \item{select}{a subset of characters.}
