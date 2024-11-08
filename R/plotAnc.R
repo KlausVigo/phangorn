@@ -178,7 +178,7 @@ plotSeqLogo <- function(x, node=getRoot(x$tree), start=1, end=10,
                         scheme="Ape_NT", ...){
   stopifnot(inherits(x, "ancestral"))
   chk <- requireNamespace("ggseqlogo", quietly = TRUE)
-  if (!chk) stop("package ggseqlogo needs to be not installed!\n")
+  if (!chk) stop("package ggseqlogo needs to be installed!\n")
   type <- attr(x$data, "type")
   tree <- x$tree
   df <- as.data.frame(x)
