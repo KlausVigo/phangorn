@@ -69,6 +69,7 @@ Suggests:
     tinytest,
     vdiffr,
     xtable
+Remotes: github::emmanuelparadis/ape
 LinkingTo:
     Rcpp, RcppArmadillo
 VignetteBuilder: 
