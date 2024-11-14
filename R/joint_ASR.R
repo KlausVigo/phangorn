@@ -143,9 +143,10 @@ joint_sankoff <- function(tree, data, cost=NULL){
 count_mutations <- function(tree, data){
   site <- "pscore"
   tree <- reorder(tree, "postorder")
+  data <- data[tree$tip.label]
   tree_tmp <- makeNodeLabel(tree)
   anc <- joint_sankoff(tree_tmp, data)
-  dat <- rbind(data, anc)[c(tree_tmp$tip.label, tree_tmp$node.label)]
+  dat <- rbind(data, anc)
   nr <- attr(data, "nr")
   l <- length(dat)
   fun <- function(x, site="pscore", nr){

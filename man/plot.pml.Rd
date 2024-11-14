@@ -4,10 +4,11 @@
 \alias{plot.pml}
 \title{Plot phylogeny of a pml object}
 \usage{
-\method{plot}{pml}(x, type = "phylogram", direction = "rightwards", ...)
+\method{plot}{pml}(x, type = "phylogram", direction = "rightwards", ...,
+  adj = NULL, digits = 2, method = "FBP")
 }
 \arguments{
-\item{x}{an object of class \code{pml} or \code{phyDat}.}
+\item{x}{an object of class \code{pml}.}
 
 \item{type}{a character string specifying the type of phylogeny to be drawn;
 it must be one of "phylogram" (the default), "cladogram", "fan", "unrooted",
@@ -18,10 +19,17 @@ Four values are possible: "rightwards" (the default), "leftwards", "upwards",
 and "downwards".}
 
 \item{\dots}{further parameters to be passed to \code{plot.phylo}.}
+
+\item{adj}{one or two numeric values specifying the horizontal and vertical
+justification of the text or symbols of the support values.}
+
+\item{digits}{integer indicating the number of decimal places.}
+
+\item{method}{either "FBP" the classical bootstrap (default), "TBE"
+(transfer bootstrap) or "MCC" for assigning clade credibilities.}
 }
 \value{
-\code{plot.pml} returns invisibly a list with arguments dexcribing
-the plot. For further details see the \code{plot.phylo}.
+\code{plot.pml} returns the \code{pml} object x.
 }
 \description{
 \code{plot.pml} is a wrapper around \code{plot.phylo} with different default

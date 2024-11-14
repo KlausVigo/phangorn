@@ -145,6 +145,9 @@ densiTree <- function(x, type = "phylogram", ..., alpha = 1 / length(x),
   }
   if (inherits(consensus, "multiPhylo")) consensus <- consensus[[1]]
 
+  extras <- match.call(expand.dots = FALSE)$...
+  cex.axis <- ifelse(is.null(extras$cex.axis), cex, extras$cex.axis)
+
   sort_tips <- function(x) {
     x <- reorder(x)
     nTip <- as.integer(length(x$tip.label))
@@ -163,24 +166,25 @@ densiTree <- function(x, type = "phylogram", ..., alpha = 1 / length(x),
   nTip <- as.integer(length(consensus$tip.label))
   consensus <- sort_tips(consensus)
   consensus <- reorder(consensus, "postorder")
-  at <- NULL
+#  at <- NULL
   maxBT <- max(getAges(x))
+  root_time <- NULL
   if(!is.null(tip.dates)){
     root_time <- max(tip.dates) - maxBT
     label <- pretty(c(root_time, max(tip.dates)), min.n = 3)
     label <- label[label < max(tip.dates)]
     maxBT <- max(maxBT, max(tip.dates) - min(label))
-    at <- maxBT - (max(tip.dates) - label) #/ maxBT
-    if(direction=="leftwards" || direction=="downwards") {
-      at <- at + maxBT - max(at)
-    }
+#    at <- maxBT - (max(tip.dates) - label) #/ maxBT
+#    if(direction=="leftwards" || direction=="downwards") {
+#      at <- at + maxBT - max(at)
+#    }
     scaleX <- FALSE
   }
   else {
     if (scaleX) maxBT <- 1.0
     label <- rev(pretty(c(maxBT, 0)))
     maxBT <- max(label, maxBT)
-    at <- seq(0, maxBT, length.out = length(label))
+#    at <- seq(0, maxBT, length.out = length(label))
   }
   xy <- plotPhyloCoor(consensus, direction = direction, ...)
   yy <- xy[, 2]
@@ -202,26 +206,8 @@ densiTree <- function(x, type = "phylogram", ..., alpha = 1 / length(x),
                    downwards = c(0 - sw, maxBT),
                    upwards = c(0, maxBT + sw))
   }
-  if (direction == "rightwards") {
-    plot.default(0, type = "n", xlim = xlim, ylim = ylim,
-                 xlab = "", ylab = "", axes = FALSE, ...)
-    if (scale.bar) axis(side = 1, at = at, labels = label, cex.axis=cex)
-  }
-  if (direction == "leftwards") {
-    plot.default(0, type = "n", xlim = xlim, ylim = ylim,
-                 xlab = "", ylab = "", axes = FALSE, ...)
-    if (scale.bar) axis(side = 1, at = at, labels = rev(label), cex.axis=cex)
-  }
-  if (direction == "downwards") {
-    plot.default(0, type = "n", xlim = xlim, ylim = ylim,
-                 xlab = "", ylab = "", axes = FALSE, ...)
-    if (scale.bar) axis(side = 2, at = at, labels = rev(label), cex.axis=cex)
-  }
-  if (direction == "upwards") {
-    plot.default(0, type = "n", xlim = xlim, ylim = ylim,
-                 xlab = "", ylab = "", axes = FALSE, ...)
-    if (scale.bar) axis(side = 2, at = at, labels = label, cex.axis=cex)
-  }
+  plot.default(0, type = "n", xlim = xlim, ylim = ylim,
+               xlab = "", ylab = "", axes = FALSE, ...)
   tip_labels <- consensus$tip.label
   if (is.expression(consensus$tip.label))
     underscore <- TRUE
@@ -239,6 +225,9 @@ densiTree <- function(x, type = "phylogram", ..., alpha = 1 / length(x),
     else jit <- seq(-jitter$amount, jitter$amount, length = length(x))
   }
 
+
+  range_x <- range_y <- NULL
+
   for (treeindex in seq_along(x)) {
     tmp <- reorder(x[[treeindex]])
 
@@ -247,7 +236,6 @@ densiTree <- function(x, type = "phylogram", ..., alpha = 1 / length(x),
     xy <- plotPhyloCoor(tmp, tip.height = tiporder, direction = direction, ...)
     xx <- xy[, 1]
     yy <- xy[, 2]
-
     if (horizontal) {
       if (scaleX) xx <- xx / max(xx)
       else xx <- xx #/ maxBT
@@ -260,6 +248,8 @@ densiTree <- function(x, type = "phylogram", ..., alpha = 1 / length(x),
       if (direction == "upwards") yy <- yy + (maxBT - max(yy))
       if (jitter$amount > 0) xx <- xx + jit[treeindex]
     }
+    range_x <- c(min(range_x[1], min(xx)), max(range_x[2], max(xx)))
+    range_y <- c(min(range_y[1], min(yy)), max(range_y[2], max(yy)))
     e1 <- tmp$edge[, 1]
     if (type == "cladogram") cladogram.plot(tmp$edge, xx, yy, edge.color =
         adjustcolor(col[treeindex], alpha.f = alpha), edge.width = width,
@@ -274,9 +264,11 @@ densiTree <- function(x, type = "phylogram", ..., alpha = 1 / length(x),
   }
   L <- list(type = type, font = font, cex = cex,
             adj = adj, srt = srt, #no.margin = no.margin,
-            label.offset = label.offset,
+            label.offset = label.offset, xx=range_x, yy=range_y,
             x.lim = xlim, y.lim = ylim, direction = direction,
             tip.color = tip.color, Ntip = nTip)
   assign("last_plot.phylo", L, envir = .PlotPhyloEnv)
+  if (scale.bar) axisPhylo(root.time = root_time, backward=is.null(root_time),
+                           cex.axis=cex.axis)
   invisible(x)
 }

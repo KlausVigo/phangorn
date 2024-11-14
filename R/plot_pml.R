@@ -3,16 +3,20 @@
 #' \code{plot.pml} is a wrapper around \code{plot.phylo} with different default
 #' values for unrooted, ultrametric and tip dated phylogenies.
 #'
-#' @param x an object of class \code{pml} or \code{phyDat}.
+#' @param x an object of class \code{pml}.
 #' @param type a character string specifying the type of phylogeny to be drawn;
 #' it must be one of "phylogram" (the default), "cladogram", "fan", "unrooted",
 #' "radial", "tidy", or any unambiguous abbreviation of these.
 #' @param direction a character string specifying the direction of the tree.
 #' Four values are possible: "rightwards" (the default), "leftwards", "upwards",
 #' and "downwards".
+#' @param adj	one or two numeric values specifying the horizontal and vertical
+#' justification of the text or symbols of the support values.
+#' @param method either "FBP" the classical bootstrap (default), "TBE"
+#' (transfer bootstrap) or "MCC" for assigning clade credibilities.
+#' @param digits integer indicating the number of decimal places.
 #' @param \dots further parameters to be passed to \code{plot.phylo}.
-#' @return \code{plot.pml} returns invisibly a list with arguments dexcribing
-#' the plot. For further details see the \code{plot.phylo}.
+#' @return \code{plot.pml} returns the \code{pml} object x.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link[ape]{plot.phylo}}, \code{\link[ape]{axisPhylo}},
 #' \code{\link[ape]{add.scale.bar}}
@@ -37,7 +41,8 @@
 #' plot(fit_unrooted, cex=.5)
 #'
 #' @export
-plot.pml <- function(x, type="phylogram", direction = "rightwards", ...){
+plot.pml <- function(x, type="phylogram", direction = "rightwards",
+                     ..., adj = NULL, digits=2, method="FBP"){
   type <- match.arg(type, c("phylogram","cladogram", "fan", "unrooted",
                             "radial", "tidy"))
   tree <- x$tree
@@ -50,8 +55,8 @@ plot.pml <- function(x, type="phylogram", direction = "rightwards", ...){
     direction <- match.arg(direction, c("rightwards", "leftwards", "upwards",
                                         "downwards"))
     side <-   switch(direction,
-                     rightwards = 1,
-                     leftwards = 1,
+                     "rightwards" = 1,
+                     "leftwards" = 1,
                      "upwards" = 2,
                      "downwards" = 2)
     if(!is.null(x$tip.dates) && x$method=="tipdated"){
@@ -62,8 +67,20 @@ plot.pml <- function(x, type="phylogram", direction = "rightwards", ...){
     else if(!is.null(x$method) && x$method=="ultrametric")
       axisPhylo(side, cex.axis=cex.axis)
     else add.scale.bar(cex=cex)
+    if(!is.null(x$bs)) {
+      if(is.null(adj)){
+        adj <- c(0.5, 0)
+        if(side==2) adj <- c(1, 0.5)
+      }
+      add_support(tree, x$bs, cex=cex, adj=adj, method=method, digits=digits)
+    }
   }
-  else add.scale.bar(cex=cex)
-  if(!is.null(x$bs)) add_support(tree, x$bs, cex=cex)
-  invisible(L)
+  else{
+    add.scale.bar(cex=cex)
+    if(!is.null(x$bs)) {
+      if(is.null(adj)) adj <- c(0.5, 0.5)
+      add_support(tree, x$bs, cex=cex, adj=adj, method=method, digits=digits)
+    }
+  }
+  invisible(x)
 }
