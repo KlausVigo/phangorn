@@ -120,13 +120,9 @@ fitch_spr <- function (tree, f, trace=0L)
 {
   nTips <- as.integer(length(tree$tip.label))
   m <- max(tree$edge)
-#  f <- init_fitch(data, FALSE, FALSE, m=4L)
   for (i in 1:nTips) {
-# remove tip
     treetmp <- dropTip(tree, i)
     edge <- treetmp$edge
-#    f$prep_spr(edge)
-#    score <- f$pscore_vec(edge, i)
     score <- f$pscore_spr(edge, i)
     nt <- which.min(score)
 # check if different
@@ -138,8 +134,6 @@ fitch_spr <- function (tree, f, trace=0L)
     if (i != root) {
       tmp <- dropNode(tree, i, all.ch = ch)
       if (!is.null(tmp)) {
-#        f$prep_spr(tmp[[1]]$edge)
-#        score <- f$pscore_vec(tmp[[1]]$edge, i)
         score <- f$pscore_spr(tmp[[1]]$edge, i)
         nt <- which.min(score)
         if(!(tmp[[1]]$edge[nt, 2L] %in% tmp[[4]])){
