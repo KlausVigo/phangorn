@@ -152,7 +152,7 @@ write.pml <- function(x, file="pml", save_rds=TRUE, ...){
   else write.phyDat(x$data, file=paste0(file, "_align.fasta"), format="fasta")
   if(!is.null(x$bs)) write.nexus(x$bs, file=paste0(file, "_bs.nex"),
                                  digits=digits)
-  sink(paste0(file, "_pml.txt"))
+  sink(paste0(file, ".txt"))
   cat("phangorn", packageDescription("phangorn", fields = "Version"), "\n\n")
   print(x)
   cat("\n\n")
@@ -164,7 +164,7 @@ write.pml <- function(x, file="pml", save_rds=TRUE, ...){
     call <- x$call
     call$data <- "align"
     cat("tree <- read.tree(\"", file, "_tree.nwk\")\n", sep="")
-    cat("align <- read.fasta(\"", file, "_align.fasta\", format=\"fasta\")",
+    cat("align <- read.phyDat(\"", file, "_align.fasta\", format=\"fasta\")",
         sep="")
     cat( "\nfit <- ")
     print(call)
