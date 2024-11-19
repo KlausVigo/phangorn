@@ -1,0 +1,29 @@
+phangorn 2.12.1.1 
+
+model: JC 
+loglikelihood: -1856.056 
+unconstrained loglikelihood: -1866.991 
+
+Rate matrix:
+  a c g t
+a 0 1 1 1
+c 1 0 1 1
+g 1 1 0 1
+t 1 1 1 0
+
+Base frequencies:  
+   a    c    g    t 
+0.25 0.25 0.25 0.25 
+
+
+You can (re-)create the pml object using:
+
+fit <- readRDS("woodmouse.rds")
+
+REFERENCES
+
+To cite phangorn please use:
+
+Schliep K (2011). “phangorn: phylogenetic analysis in R.”
+_Bioinformatics_, *27*(4), 592-593. doi:10.1093/bioinformatics/btq706
+<https://doi.org/10.1093/bioinformatics/btq706>.
