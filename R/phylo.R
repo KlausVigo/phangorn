@@ -1440,6 +1440,12 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     USER = df + (kmax > 1) + (inv0 > 0) + length(unique(bf)) - 1 +
       length(unique(Q)) - 1)
 
+  extras <- pairlist(bf = bf, Q = Q, inv = inv, shape = shape, rate = rate, k=k,
+                     model=model, g=g, w=w, site.rate = site.rate, ASC = ASC,
+                     dnds=dnds, tstv=tstv)
+  existing <- names(call)[names(call) %in% names(extras)]
+  for (a in existing) call[[a]] <- extras[[a]]
+
   result <- list(logLik = tmp$loglik, inv = inv, k = kmax, shape = shape,
     Q = Q, bf = bf, rate = rate, siteLik = tmp$siteLik, weight = weight,
     g = g, w = w, eig = eig, data = data, model = model, INV = INV,
