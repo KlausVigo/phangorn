@@ -162,7 +162,8 @@ write.pml <- function(x, file="pml", save_rds=TRUE, ...){
   }
   else {
     call <- x$call
-    call$data <- "align"
+    call$data <- quote(align)
+    call$tree <- quote(tree)
     cat("tree <- read.tree(\"", file, "_tree.nwk\")\n", sep="")
     cat("align <- read.phyDat(\"", file, "_align.fasta\", format=\"fasta\")",
         sep="")
