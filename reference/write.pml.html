@@ -47,7 +47,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">write.pml</span><span class="op">(</span><span class="va">x</span>, file <span class="op">=</span> <span class="st">"pml"</span>, save_rds <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">write.pml</span><span class="op">(</span><span class="va">x</span>, file <span class="op">=</span> <span class="st">"pml"</span>, save_rds <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -88,7 +88,7 @@ otherwise the alignment is saved as a fasta file.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> optimize edge weights:  -1856.056 --&gt; -1856.056 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> optimize edge weights:  -1856.056 --&gt; -1856.056 </span>
 <span class="r-in"><span><span class="fu">write.pml</span><span class="op">(</span><span class="va">fit</span>, <span class="st">"woodmouse"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"woodmouse_pml.txt"</span>, <span class="st">"woodmouse_tree.nwk"</span>, <span class="st">"woodmouse.rds"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"woodmouse.txt"</span>, <span class="st">"woodmouse_tree.nwk"</span>, <span class="st">"woodmouse_align.fasta"</span><span class="op">)</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
