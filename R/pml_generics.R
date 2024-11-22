@@ -144,31 +144,29 @@ print.pml <- function(x, ...) {
 #' unlink(c("woodmouse_pml.txt", "woodmouse_tree.nwk", "woodmouse.rds"))
 #' @importFrom utils citation
 #' @export
-write.pml <- function(x, file="pml", save_rds=TRUE, ...){
+write.pml <- function(x, file="pml", save_rds=FALSE, ...){
   digits <- -1
   if (hasArg("digits")) digits <- list(...)$digits
   write.tree(x$tree, file=paste0(file, "_tree.nwk"))
   if(save_rds) saveRDS(x, file=paste0(file, ".rds"))
-  else write.phyDat(x$data, file=paste0(file, "_align.fasta"), format="fasta")
+  write.phyDat(x$data, file=paste0(file, "_align.fasta"), format="fasta")
   if(!is.null(x$bs)) write.nexus(x$bs, file=paste0(file, "_bs.nex"),
                                  digits=digits)
   sink(paste0(file, ".txt"))
   cat("phangorn", packageDescription("phangorn", fields = "Version"), "\n\n")
   print(x)
-  cat("\n\n")
-  cat("You can (re-)create the pml object using:\n\n")
+  cat("\n\nThe following lines (re-)creates the pml object up to numerical inaccuracies:\n\n")
+  call <- x$call
+  call$data <- quote(align)
+  call$tree <- quote(tree)
+  cat("tree <- read.tree(\"", file, "_tree.nwk\")\n", sep="")
+  cat("align <- read.phyDat(\"", file, "_align.fasta\", format=\"fasta\")",
+      sep="")
+  cat( "\nfit <- ")
+  print(call)
   if(save_rds){
+    cat("\nAnd the following reproduces the exact pml object:\n\n")
     cat("fit <- readRDS(\"", file,".rds\")", sep="")
-  }
-  else {
-    call <- x$call
-    call$data <- quote(align)
-    call$tree <- quote(tree)
-    cat("tree <- read.tree(\"", file, "_tree.nwk\")\n", sep="")
-    cat("align <- read.phyDat(\"", file, "_align.fasta\", format=\"fasta\")",
-        sep="")
-    cat( "\nfit <- ")
-    print(call)
   }
   cat("\n\nREFERENCES\n\n")
   cat("To cite phangorn please use:\n\n")
