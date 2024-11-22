@@ -4,7 +4,7 @@
 \alias{write.pml}
 \title{Export pml objects}
 \usage{
-write.pml(x, file = "pml", save_rds = TRUE, ...)
+write.pml(x, file = "pml", save_rds = FALSE, ...)
 }
 \arguments{
 \item{x}{an object of class ancestral.}
@@ -26,7 +26,7 @@ otherwise the alignment is saved as a fasta file.}
 data(woodmouse)
 fit <- pml_bb(woodmouse, "JC", rearrangement = "none")
 write.pml(fit, "woodmouse")
-unlink(c("woodmouse_pml.txt", "woodmouse_tree.nwk", "woodmouse.rds"))
+unlink(c("woodmouse.txt", "woodmouse_tree.nwk", "woodmouse_align.fasta"))
 }
 \seealso{
 \code{\link{ancestral.pml}}, \code{\link{plotAnc}}
