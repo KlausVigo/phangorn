@@ -16,9 +16,13 @@ Base frequencies:
 0.25 0.25 0.25 0.25 
 
 
-You can (re-)create the pml object using:
+The following lines (re-)creates the pml object up to numerical inaccuracies:
 
-fit <- readRDS("woodmouse.rds")
+tree <- read.tree("woodmouse_tree.nwk")
+align <- read.phyDat("woodmouse_align.fasta", format="fasta")
+fit <- pml(tree = tree, data = align, k = 1L, site.rate = "gamma", ASC = FALSE, 
+    model = "JC")
+
 
 REFERENCES
 
