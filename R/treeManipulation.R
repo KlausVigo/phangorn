@@ -849,6 +849,8 @@ mrca2 <- function(phy, full = FALSE) {
 }
 
 
+#' @rdname phangorn-internal
+#' @export
 relabel <- function(y, ref) {
   label <- y$tip.label
   if (identical(label, ref)) return(y)

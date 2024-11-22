@@ -2511,7 +2511,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                                eig = eig, bf = bf, inv=inv,
                                rate=rate, ll.0 = ll.0, INV = INV, llMix = llMix,
                                wMix=wMix, ASC=ASC,
-                               control=list(eps=1e-08, maxit=3, trace=trace-1,
+                               control=list(eps=1e-08, maxit=3, trace=0,
                                             tau=tau))
           fbs[[i]] <- tree2
         } else if(rearrangement == "multi2di"){
@@ -2532,7 +2532,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                         inv=inv, rate=rate, ll.0=ll.0, llMix = llMix, wMix=wMix,
                         ASC=ASC,
                         control = pml.control(epsilon = 1e-08, maxit = 10,
-                                              trace = trace-1L, tau = tau))
+                                              trace = 0, tau = tau))
         ll2 <- res[[2]]
         tree2 <- res[[1]]
         swap <- 1
@@ -2540,11 +2540,11 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
 #          levels = attr(data, "levels"), inv = inv, rate = rate,
 #          g = g, w = w, eig = eig, INV = INV, ll.0 = ll.0,
 #          llMix = llMix, wMix = wMix, site = FALSE, Mkv=Mkv)
-        res <- opt_nni(tree2, data, rooted=optRooted, iter_max=25, trace=trace,
+        res <- opt_nni(tree2, data, rooted=optRooted, iter_max=25, trace=0,
                        ll=ll2, w = w, g = g, eig = eig, bf = bf, inv=inv,
                        rate=rate, ll.0 = ll.0, INV = INV, llMix = llMix,
                        wMix=wMix, ASC=ASC, RELL=RELL,
-                       control=list(eps=1e-08, maxit=3, trace=trace-1, tau=tau))
+                       control=list(eps=1e-08, maxit=3, trace=0, tau=tau))
         if (res$logLik > (ll + epsR)) {
           tree <- res$tree
           ll <- res$logLik
@@ -2552,13 +2552,15 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         }
         else kmax <- kmax + 1
         if(!is.null(RELL)) RELL <- res$RELL
-        if (trace > 0) cat("Ratchet iteration ", i, ", best pscore so far:", ll,
-                           "\n")
+        if (trace > 0) cat("\rRatchet iteration ", i, ", best pscore so far:", ll) #  "\n")
         if ( (kmax >= maxR) && (i >= minit)) break()
       }
       optNni <- TRUE
       perturbation <- FALSE
       rounds <- 1
+
+ #     cat("\rIteration: ", i, ". Best parsimony score so far: ", mp, sep="")
+      if (trace >= 0)cat("\n")
     }
     if ( perturbation==FALSE &&
          ((abs((ll1 - ll) / ll)  < control$eps) || rounds > control$maxit)){

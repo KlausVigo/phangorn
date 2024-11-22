@@ -184,11 +184,11 @@ ancestral.pml <- function(object, type = "marginal", return = "prob", ...) {
 #' @rdname ancestral.pml
 #' @export
 anc_pml <- function(object, type = "marginal", ...) {
-  ancestral.pml(object, type=type, return="ancestral")
+  call <- c(object$call, match.call())
+  res <- ancestral.pml(object, type=type, return="ancestral")
+  res$call <- call
+  res
 }
-
-
-
 
 
 fitchCoding2ambiguous <- function(x, type = "DNA") {
