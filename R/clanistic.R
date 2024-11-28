@@ -174,7 +174,7 @@ getSlices <- function(tree){
     k <- 1
     for(i in 1:l){
         tmp1 <- as.numeric((clans[index[i,1],] + clans[index[i,2],])==2)
-        tmp <- paste(tmp1,sep="",collapse="")
+        tmp <- paste(tmp1, sep="", collapse="")
         if(is.na(match(tmp,strClan))){
             result[k,] <- tmp1
             k <- k+1

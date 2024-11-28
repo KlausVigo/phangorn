@@ -564,8 +564,6 @@ read.aa <- function (file, format = "interleaved", skip = 0, nlines = 0,
     options(oop)
     if (all(is.na(fl.num))  || length(fl.num) != 2)
       stop("the first line of the file must contain the dimensions of the data")
-#  if (length(fl.num) != 2)
-#    stop("the first line of the file must contain the dimensions of the data")
     else {
       n <- fl.num[1]
       s <- fl.num[2]

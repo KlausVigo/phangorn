@@ -1,6 +1,3 @@
-#
-# pmlPart + pmlCluster
-#
 optimPartQGeneral <- function(object, Q = c(1, 1, 1, 1, 1, 1),
                               subs = rep(1, length(Q)), ...) {
   m <- length(Q)
@@ -119,8 +116,7 @@ dltmp <- function(fit, i = 1, transform = transform) {
       tmp2 <- (datp[[parent[j]]] / (dat[[child[j]]] %*% P[[j]]))
       dl[, j] <- (tmp2 * (dat[[child[j]]] %*% dP[[j]])) %*% (w * bf)
       datp[[child[j]]] <- (tmp2 %*% P[[j]]) * dat[[child[j]]]
-    }
-    else {
+    } else {
       tmp2 <- datp[[parent[j]]] / ((contrast %*% P[[j]])[data[[child[j]]], ])
       dl[, j] <- (tmp2 * ((contrast %*% dP[[j]])[data[[child[j]]], ])) %*%
         (w * bf)
