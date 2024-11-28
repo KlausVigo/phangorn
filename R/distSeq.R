@@ -337,8 +337,8 @@ write.nexus.dist <- function(x, file = "", append = FALSE, upper = FALSE,
   if (!append) cat("#NEXUS\n\n", file = file)
 
   if (taxa) {
-    cat(paste("BEGIN TAXA;\n\tDIMENSIONS ntax=", ntaxa, ";\n",
-      sep = ""), file = file, append = TRUE)
+    cat(paste0("BEGIN TAXA;\n\tDIMENSIONS ntax=", ntaxa, ";\n"), file = file,
+        append = TRUE)
     cat("\tTAXLABELS", paste(taxa.labels, sep = " "), ";\nEND;\n\n",
       file = file, append = TRUE)
   }
