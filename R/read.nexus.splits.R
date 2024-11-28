@@ -51,7 +51,7 @@ read.nexus.splits <- function(file) {
   sp <- grep("SPLITS;", X, ignore.case = TRUE)
   i1 <- i1[i1 < sp]
   if(length(i1)>1)i1 <- i1[length(i1)]
-  taxlab <- ifelse(length(i1) > 0, TRUE, FALSE)
+  taxlab <- length(i1) > 0
   if (taxlab) {
     end <- semico[semico >= i1][1]
     x <- X[(i1):end] # assumes not a 'new line' after "TRANSLATE"

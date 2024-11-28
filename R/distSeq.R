@@ -379,7 +379,7 @@ read.nexus.dist <- function(file){
     semico <- grep(";", X)
     X <- gsub("\\[(.*?)\\]", "", X) # get rid of comments
     i1 <- grep("TAXLABELS", X, ignore.case = TRUE)
-    taxlab <- ifelse(length(i1) > 0, TRUE, FALSE)
+    taxlab <- length(i1) > 0
     if (taxlab) {
       end <- semico[semico >= i1][1]
       x <- X[(i1):end] # assumes not a 'new line' after "TRANSLATE"
