@@ -613,7 +613,7 @@ allTrees <- function(n, rooted = FALSE, tip.label = NULL) {
     trees[[x]] <- tree
   }
   attr(trees, "TipLabel") <- if (is.null(tip.label))
-    paste("t", 1:n, sep = "")
+    paste0("t", 1:n)
   else tip.label
   class(trees) <- "multiPhylo"
   trees

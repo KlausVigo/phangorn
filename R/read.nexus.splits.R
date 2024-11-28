@@ -150,14 +150,14 @@ write.nexus.splits <- function(obj, file = "", weights = NULL, taxa = TRUE,
   }
   # TAXON BLOCK
   if (taxa) {
-    cat(paste("BEGIN TAXA;\n\tDIMENSIONS ntax=", ntaxa, ";\n",
-      sep = ""), file = file, append = TRUE)
+    cat(paste0("BEGIN TAXA;\n\tDIMENSIONS ntax=", ntaxa, ";\n"),
+        file = file, append = TRUE)
     cat("\tTAXLABELS", paste(taxa.labels, sep = " "), ";\nEND;\n\n",
       file = file, append = TRUE)
   }
   # SPLITS BLOCK
-  cat(paste("BEGIN SPLITS;\n\tDIMENSIONS ntax=", ntaxa, " nsplits=", nsplits,
-    ";\n", sep = ""), file = file, append = TRUE)
+  cat(paste0("BEGIN SPLITS;\n\tDIMENSIONS ntax=", ntaxa, " nsplits=", nsplits,
+    ";\n"), file = file, append = TRUE)
   format <- "\tFORMAT labels=left"
   if (fwei) format <- paste(format, "weights=yes")
   else format <- paste(format, "weights=no")
@@ -182,7 +182,7 @@ write.nexus.splits <- function(obj, file = "", weights = NULL, taxa = TRUE,
   }
   else format <- paste(format, "intervals=no")
   if (!is.null(attr(obj, "splitlabels"))) flab <- TRUE
-  format <- paste(format, ";\n",  sep = "")
+  format <- paste0(format, ";\n")
   cat(format, file = file, append = TRUE)
   if (!is.null(attr(obj, "cycle"))) {
     cycle <- paste(attr(obj, "cycle"), collapse = " ")
@@ -216,8 +216,8 @@ write.nexus.networx <- function(obj, file = "", taxa = TRUE, splits = TRUE,
   ntaxa <- length(obj$tip.label)
   # TAXON BLOCK
   if (taxa) {
-    cat(paste("BEGIN TAXA;\n\tDIMENSIONS NTAX=", ntaxa, ";\n",
-      sep = ""), file = file, append = TRUE)
+    cat(paste0("BEGIN TAXA;\n\tDIMENSIONS NTAX=", ntaxa, ";\n"), file = file,
+        append = TRUE)
     if (splits) taxalabel <- attr(obj$splits, "labels")
     else taxalabel <- obj$tip.label
     cat("\tTAXLABELS", paste(taxalabel, sep = " "), ";\nEND;\n\n",
@@ -242,9 +242,8 @@ write.nexus.networx <- function(obj, file = "", taxa = TRUE, splits = TRUE,
   else edge.col <- NULL
   nedges <- nrow(obj$edge)
   # NETWORK BLOCK
-  cat(paste("BEGIN NETWORK;\nDIMENSIONS ntax=", ntaxa,
-    "\tnvertices=", nvertices, "\tnedges=", nedges, ";\n", sep = ""),
-  file = file, append = TRUE)
+  cat(paste0("BEGIN NETWORK;\nDIMENSIONS ntax=", ntaxa, "\tnvertices=",
+             nvertices, "\tnedges=", nedges, ";\n"), file = file, append = TRUE)
   cat("DRAW to_scale;\n", file = file, append = TRUE)
   cat("TRANSLATE\n", file = file, append = TRUE)
   if (is.null(obj$translate)) {
@@ -290,9 +289,9 @@ write.nexus.networx <- function(obj, file = "", taxa = TRUE, splits = TRUE,
   if (is.null(obj$splitIndex)) splI <- FALSE
   for (i in 1:nedges) {
     ecoli <- edge.col[i]
-    spInd <- ifelse(splI, paste("\ts=", obj$splitIndex[i], sep = ""), "")
-    edgeCol <- ifelse(ecoli == "black", "", paste("\tfg=",
-      paste(col2rgb(ecoli), collapse = " "), sep = ""))
+    spInd <- ifelse(splI, paste0("\ts=", obj$splitIndex[i]), "")
+    edgeCol <- ifelse(ecoli == "black", "", paste0("\tfg=",
+      paste(col2rgb(ecoli), collapse = " ")))
     cat(i, "\t", obj$edge[i, 1], "\t", obj$edge[i, 2], spInd, edgeCol, ",\n",
       sep = "", file = file, append = TRUE)
   }
