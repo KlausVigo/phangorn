@@ -353,8 +353,8 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
   if(!is.null(attr(data, "informative"))) w[attr(data, "informative")] <- TRUE
   else w[] <- TRUE
 
-  star_tree <- ifelse(attr(data, "nr") == 0, TRUE, FALSE)
-  add_taxa <- ifelse(is.null(attr(data, "duplicated")), FALSE, TRUE)
+  star_tree <- attr(data, "nr") == 0
+  add_taxa <- !(is.null(attr(data, "duplicated")))
   nTips <- length(data)
   # check for trivial trees
   if (nTips < (3L + !ROOTED)  || star_tree) {

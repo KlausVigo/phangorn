@@ -2067,9 +2067,9 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   aLRT <- FALSE
   rearrangement <- match.arg(rearrangement,
                         c("none", "NNI", "ratchet", "stochastic", "multi2di"))
-  optNni <- ifelse(rearrangement ==  "none", FALSE, TRUE)
-  perturbation <- ifelse(rearrangement %in%
-                        c("ratchet", "stochastic", "multi2di"), TRUE, FALSE)
+  optNni <- !(rearrangement ==  "none")
+  perturbation <- rearrangement %in%
+                        c("ratchet", "stochastic", "multi2di")
   if(rearrangement=="ratchet") fbs <- vector("list", ratchet.par$minit)
   extras <- match.call(expand.dots = FALSE)$...
   pmla <- c("wMix", "llMix")

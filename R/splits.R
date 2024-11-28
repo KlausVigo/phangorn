@@ -369,8 +369,8 @@ postprocess.splits <- function (x)
   x <- SHORTwise(x)
   drop <- duplicated(x)
   if (any(drop)) {
-    W <- ifelse (is.null(tmp$weights), FALSE, TRUE)
-    CONF <- ifelse (is.null(tmp$confidences), FALSE, TRUE)
+    W <- !(is.null(tmp$weights))
+    CONF <- !(is.null(tmp$confidences))
     if(W) w <- tmp$weights
     if (CONF) conf <- tmp$confidences
     class(x) <- NULL

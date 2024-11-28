@@ -265,8 +265,8 @@ optim.fitch <- function(tree, data, trace = 1, rearrangements = "NNI", ...) {
   #  New
   data <- removeParsimonyUninfomativeSites(data, recursive=TRUE)
 
-  star_tree <- ifelse(attr(data, "nr") == 0, TRUE, FALSE)
-  add_taxa <- ifelse(is.null(attr(data, "duplicated")), FALSE, TRUE)
+  star_tree <- attr(data, "nr") == 0
+  add_taxa <- !is.null(attr(data, "duplicated"))
   nTips <- length(data)
   if (nTips < 4L  || star_tree) {
     nam <- names(data)

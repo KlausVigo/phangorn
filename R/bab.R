@@ -179,8 +179,8 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
   if (nTips < 4) return(stree(nTips, tip.label = names(data)))
 
   data <- removeParsimonyUninfomativeSites(data, recursive=recursive)
-  star_tree <- ifelse(attr(data, "nr") == 0, TRUE, FALSE)
-  add_taxa <- ifelse(is.null(attr(data, "duplicated")), FALSE, TRUE)
+  star_tree <- attr(data, "nr") == 0
+  add_taxa <- !is.null(attr(data, "duplicated"))
   p0 <- attr(data, "p0")
 
   nTips <- length(data)
