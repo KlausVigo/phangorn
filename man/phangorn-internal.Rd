@@ -26,7 +26,7 @@ coords(obj, dim = "3D")
 
 pmlPen(object, lambda, ...)
 
-relabel(y, ref)
+relabel(x, ref)
 }
 \description{
 Internal \pkg{phangorn} functions.

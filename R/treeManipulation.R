@@ -851,19 +851,32 @@ mrca2 <- function(phy, full = FALSE) {
 
 #' @rdname phangorn-internal
 #' @export
-relabel <- function(y, ref) {
-  label <- y$tip.label
-  if (identical(label, ref)) return(y)
-  if (length(label) != length(ref))
-    stop("one tree has a different number of tips")
+relabel <- function(x, ref) {
+  label <- x$tip.label
+  if (identical(label, ref)) return(x)
   ilab <- match(label, ref)
-  if (any(is.na(ilab)))
-    stop("one tree has different tip labels")
-  ie <- match(seq_along(ref), y$edge[, 2])
-  y$edge[ie, 2] <- ilab
-  y$tip.label <- ref
-  y
+  if (anyNA(ilab) | length(label) != length(ref))
+    stop("tree has different labels")
+  ie <- match(seq_along(ref), x$edge[, 2])
+  x$edge[ie, 2] <- ilab
+  x$tip.label <- ref
+  x
 }
+
+
+#checkLabels <- function(tree, tip) {
+#  ind <- match(tree$tip.label, tip)
+#  if (any(is.na(ind)) | length(tree$tip.label) != length(tip)) {
+#    stop("tree has different labels")
+#  }
+#  tree$tip.label <- tip
+#  ind2 <- tree$edge[, 2] <= Ntip(tree)
+#  tree$edge[ind2, 2] <- ind[tree$edge[ind2, 2]]
+#  tree
+#}
+
+
+
 
 #' @rdname midpoint
 #' @param labels tip and node labels to keep as tip labels in the tree

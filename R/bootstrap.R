@@ -208,18 +208,6 @@ bootstrap.phyDat <- function(x, FUN, bs = 100, multicore = FALSE,
 }
 
 
-checkLabels <- function(tree, tip) {
-  ind <- match(tree$tip.label, tip)
-  if (any(is.na(ind)) | length(tree$tip.label) != length(tip)) {
-    stop("tree has different labels")
-  }
-  tree$tip.label <- tip #tree$tip.label[ind]
-  ind2 <- tree$edge[, 2] <= Ntip(tree)
-  tree$edge[ind2, 2] <- ind[tree$edge[ind2, 2]]
-  tree
-}
-
-
 cladeMatrix <- function(x, rooted = FALSE) {
   if (!rooted) x <- unroot(x)
   pp <- prop.part(x)

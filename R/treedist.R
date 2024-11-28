@@ -166,7 +166,7 @@ treedist <- function(tree1, tree2, check.labels = TRUE) {
 
   tree1 <- unroot(tree1)
   tree2 <- unroot(tree2)
-  if (check.labels) tree2 <- checkLabels(tree2, tree1$tip.label)
+  if (check.labels) tree2 <- relabel(tree2, tree1$tip.label)
 
   tree1 <- reorder(tree1, "postorder")
   tree2 <- reorder(tree2, "postorder")
@@ -313,7 +313,7 @@ SPR1 <- function(trees) {
 
 SPR2 <- function(tree, trees) {
   trees <- .compressTipLabel(trees)
-  tree <- checkLabels(tree, attr(trees, "TipLabel"))
+  tree <- relabel(tree, attr(trees, "TipLabel"))
   trees <- .uncompressTipLabel(trees)
   if (any(is.rooted(trees))) {
     trees <- unroot(trees)
@@ -374,7 +374,7 @@ wRF0 <- function(tree1, tree2, normalize = FALSE, check.labels = TRUE,
   }
   if (!is.binary(tree1) | !is.binary(tree2))
     message("Some trees are not binary. Result may not what you expect!")
-  if (check.labels) tree2 <- checkLabels(tree2, tree1$tip.label)
+  if (check.labels) tree2 <- relabel(tree2, tree1$tip.label)
   if (has.singles(tree1)) tree1 <- collapse.singles(tree1)
   if (has.singles(tree2)) tree2 <- collapse.singles(tree2)
 
@@ -404,7 +404,7 @@ wRF2 <- function(tree, trees, normalize = FALSE, check.labels = TRUE,
                  rooted = FALSE) {
   if (check.labels) {
     trees <- .compressTipLabel(trees)
-    tree <- checkLabels(tree, attr(trees, "TipLabel"))
+    tree <- relabel(tree, attr(trees, "TipLabel"))
   }
   trees <- .uncompressTipLabel(trees)
 
@@ -512,7 +512,7 @@ mRF2 <- function(tree, trees, normalize = FALSE, check.labels = TRUE,
                  rooted = FALSE) {
   trees <- .compressTipLabel(trees)
   tipLabel <- attr(trees, "TipLabel")
-  if (check.labels) tree <- checkLabels(tree, tipLabel)
+  if (check.labels) tree <- relabel(tree, tipLabel)
   nTips <- length(tipLabel)
   l <- length(trees)
   RF <- numeric(l)
@@ -627,7 +627,7 @@ RF0 <- function(tree1, tree2 = NULL, normalize = FALSE, check.labels = TRUE,
       r1 <- r2 <- FALSE
     }
   }
-  if (check.labels) tree2 <- checkLabels(tree2, tree1$tip.label)
+  if (check.labels) tree2 <- relabel(tree2, tree1$tip.label)
   if (!is.binary(tree1) | !is.binary(tree2))
     message("Some trees are not binary. Result may not what you expect!")
   bp1 <- bipart(tree1)
@@ -677,7 +677,7 @@ wRF.dist <- function(tree1, tree2 = NULL, normalize = FALSE,
 
 
 kf0 <- function(tree1, tree2, check.labels = TRUE, rooted = FALSE) {
-  if (check.labels) tree2 <- checkLabels(tree2, tree1$tip.label)
+  if (check.labels) tree2 <- relabel(tree2, tree1$tip.label)
   if (has.singles(tree1)) tree1 <- collapse.singles(tree1)
   if (has.singles(tree2)) tree2 <- collapse.singles(tree2)
   r1 <- is.rooted(tree1)
@@ -718,7 +718,7 @@ kf0 <- function(tree1, tree2, check.labels = TRUE, rooted = FALSE) {
 kf1 <- function(tree, trees, check.labels = TRUE, rooted = FALSE) {
   if (check.labels) {
     trees <- .compressTipLabel(trees)
-    tree <- checkLabels(tree, attr(trees, "TipLabel"))
+    tree <- relabel(tree, attr(trees, "TipLabel"))
   }
   trees <- .uncompressTipLabel(trees)
   if (any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
@@ -843,7 +843,7 @@ path.dist <- function(tree1, tree2 = NULL, check.labels = TRUE,
 
 
 pd0 <- function(tree1, tree2, check.labels = TRUE, path = TRUE) {
-  if (check.labels) tree2 <- checkLabels(tree2, tree1$tip.label)
+  if (check.labels) tree2 <- relabel(tree2, tree1$tip.label)
   if (path) {
     tree1 <- unroot(tree1)
     tree2 <- unroot(tree2)
@@ -857,7 +857,7 @@ pd0 <- function(tree1, tree2, check.labels = TRUE, path = TRUE) {
 pd1 <- function(tree, trees, check.labels = TRUE, path = TRUE) {
   if (check.labels) {
     trees <- .compressTipLabel(trees)
-    tree <- checkLabels(tree, attr(trees, "TipLabel"))
+    tree <- relabel(tree, attr(trees, "TipLabel"))
   }
   trees <- .uncompressTipLabel(trees)
   if (path) {

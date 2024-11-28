@@ -89,7 +89,7 @@ maxCladeCred <- function(x, tree = TRUE, part = NULL, rooted = TRUE) {
   l <- length(x)
   res <- numeric(l)
   for (i in 1:l) {
-    tmp <- checkLabels(x[[i]], pplabel)
+    tmp <- relabel(x[[i]], pplabel)
     if (!rooted) tmp <- unroot(tmp)
     ppi <- prop.part(tmp) # trees[[i]]
     if (!rooted) ppi <- SHORTwise(ppi)
