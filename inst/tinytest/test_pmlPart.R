@@ -47,8 +47,6 @@ expect_equal(logLik(sp)[1], logLik(fit1)[1]*3, tolerance=5e-4 )
 expect_equal(Q, sp$fits[[1]]$Q, tolerance=5e-4)
 
 # unlinked parameter
-# TODO more complicated models
-# weights0 <- 1000*exp(fit0$siteLik)
     sp <- pmlPart( ~ Q, fit0, weight=W, control = pml.control(trace=0))
     expect_equal(logLik(sp)[1], logLik(fit1)[1]*3, tolerance=5e-4 )
     expect_equal(Q, sp$fits[[1]]$Q, tolerance=5e-4)
@@ -77,8 +75,6 @@ expect_equal(Q, sp$fits[[1]]$Q, tolerance=5e-4)
     expect_equal(bf, sp$fits[[1]]$bf, tolerance=5e-4)
 
     # unlinked parameter
-    # TODO more complicated models
-    # weights0 <- 1000*exp(fit0$siteLik)
     sp <- pmlPart( ~ bf, fit0, weight=W, control = pml.control(trace=0))
     expect_equal(logLik(sp)[1], logLik(fit1)[1]*3, tolerance=5e-4 )
     expect_equal(bf, sp$fits[[1]]$bf, tolerance=5e-4)
@@ -109,8 +105,6 @@ expect_equal(Q, sp$fits[[1]]$Q, tolerance=5e-4)
     expect_equal(shape, sp$fits[[1]]$shape, tolerance=5e-3)
 
     # unlinked parameter
-    # TODO more complicated models
-    # weights0 <- 1000*exp(fit0$siteLik)
     sp <- pmlPart( ~ shape, fit0, weight=W, control=pml.control(trace=0))
     expect_equal(logLik(sp)[1], logLik(fit1)[1]*3, tolerance=5e-4 )
     expect_equal(shape, sp$fits[[1]]$shape, tolerance=5e-4)
@@ -139,8 +133,6 @@ expect_equal(Q, sp$fits[[1]]$Q, tolerance=5e-4)
     expect_equal(inv, sp$fits[[1]]$inv, tolerance=5e-5)
 
     # unlinked parameter
-    # TODO more complicated models
-    # weights0 <- 1000*exp(fit0$siteLik)
     sp <- pmlPart( ~ inv, fit0, weight=W, control = pml.control(trace=0))
     expect_equal(logLik(sp)[1], logLik(fit1)[1]*3, tolerance=5e-4 )
     expect_equal(inv, sp$fits[[1]]$inv, tolerance=5e-4)

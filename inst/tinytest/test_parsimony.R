@@ -7,10 +7,6 @@ trees <- .compressTipLabel(c(tree1, tree2))
 dat <- phyDat(c(t1="a", t2="a",t3="t",t4="t"), type="USER",
               levels=c("a","c","g","t"))
 
-# TODO
-# test sitewise pscores, ancestral and different states binary, DNA, AA
-# sankoff + fitch
-# CI, RI
 
 # test parsimony
 expect_equal(fitch(tree1, dat), 1)
