@@ -864,16 +864,16 @@ relabel <- function(x, ref) {
 }
 
 
-#checkLabels <- function(tree, tip) {
-#  ind <- match(tree$tip.label, tip)
-#  if (any(is.na(ind)) | length(tree$tip.label) != length(tip)) {
-#    stop("tree has different labels")
-#  }
-#  tree$tip.label <- tip
-#  ind2 <- tree$edge[, 2] <= Ntip(tree)
-#  tree$edge[ind2, 2] <- ind[tree$edge[ind2, 2]]
-#  tree
-#}
+checkLabels <- function(tree, tip) {
+  ind <- match(tree$tip.label, tip)
+  if (any(is.na(ind)) | length(tree$tip.label) != length(tip)) {
+    stop("tree has different labels")
+  }
+  tree$tip.label <- tip
+  ind2 <- tree$edge[, 2] <= Ntip(tree)
+  tree$edge[ind2, 2] <- ind[tree$edge[ind2, 2]]
+  tree
+}
 
 
 
