@@ -132,7 +132,7 @@ optimGamma <- function(tree, data, shape = 1, k = 4, ...) {
   fn <- function(shape, tree, data, k, ...) pml.fit(tree, data, shape = shape,
       k = k, ...)
   res <- optimize(f = fn, interval = c(0.1, 100), lower = 0.1, upper = 100,
-    maximum = TRUE,  tol = .001, tree = tree, data = data, k = k, ...)
+    maximum = TRUE,  tol = 0.001, tree = tree, data = data, k = k, ...)
   res
 }
 
@@ -145,12 +145,12 @@ optimInv <- function(tree, data, inv = 0.01, INV, ...) {
   fn <- function(inv, tree, data, ...) pml.fit(tree, data, inv = inv, INV = INV,
       ll.0 = NULL, ...)
   res <- optimize(f = fn, interval = c(0, max_inv), lower = 0, upper = max_inv,
-    maximum = TRUE, tol = .0001, tree = tree, data = data, ...)
+    maximum = TRUE, tol = 0.0001, tree = tree, data = data, ...)
   res
 }
 
 
-optimFreeRate <- function(tree, data, g = c(.25, .75, 1, 2), k=4, w=w, ...) {
+optimFreeRate <- function(tree, data, g = c(0.25, 0.75, 1, 2), k=4, w=w, ...) {
   g0 <- c(g[1], diff(g))
   g0[g0 < 1e-8] <- 1e-8 # required by constrOptim
   R <- matrix(0, k, k)
@@ -172,7 +172,7 @@ optimFreeRate <- function(tree, data, g = c(.25, .75, 1, 2), k=4, w=w, ...) {
 }
 
 
-optimWs <- function(tree, data, w = c(.25, .25, .25, .25), g=g, ...) {
+optimWs <- function(tree, data, w = c(0.25, 0.25, 0.25, 0.25), g=g, ...) {
   k <- length(w)
   nenner <- 1 / w[1]
   eta <- log(w * nenner)
@@ -207,7 +207,7 @@ optimRate <- function(tree, data, rate = 1, ...) {
 }
 
 
-optimBf <- function(tree, data, bf = c(.25, .25, .25, .25), trace = 0, ...) {
+optimBf <- function(tree, data, bf = c(0.25, 0.25, 0.25, 0.25), trace = 0, ...) {
   l <- length(bf)
   nenner <- 1 / bf[l]
   lbf <- log(bf * nenner)
@@ -228,7 +228,7 @@ optimBf <- function(tree, data, bf = c(.25, .25, .25, .25), trace = 0, ...) {
 
 
 # ML F3x4 model
-optimF3x4 <- function(tree, data, bf_codon = matrix(.25, 4, 3), trace = 0, ...){
+optimF3x4 <- function(tree, data, bf_codon = matrix(0.25, 4, 3), trace = 0, ...){
   l <- nrow(bf_codon)
   nenner <- 1 / bf_codon[l, ]
   lbf <- log(bf_codon * rep(nenner, each = 4))
@@ -1489,11 +1489,11 @@ optimRooted <- function(tree, data, bf, g, w, eig, ll.0,
       tree$edge.length <- tree$edge.length * t
       pml.fit4(tree, data, ...)
     }
-    min_scaler <- max(.25, tau / min(tree$edge.length) )
+    min_scaler <- max(0.25, tau / min(tree$edge.length) )
     min_scaler <- min(min_scaler, 1)
 #    if(min_scaler>1) browser()
     optimize(f = fn, interval = c(min_scaler, 4), tree = tree, data = data, ...,
-      maximum = TRUE, tol = .00001)
+      maximum = TRUE, tol = 0.00001)
   }
   # ensure that each edge is at least tau long
   # tips have the same height
@@ -1718,7 +1718,7 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV, RELL=NULL,
   parent <- tree$edge[, 1]
   ll <- pml.fit4(tree, data, bf = bf, eig = eig, ll.0 = ll.0, w = w, g = g, ...)
   llstart <- ll
-  eps <- .00001
+  eps <- 0.00001
   iter <- 1
   EL <- numeric(max(tree$edge))
   EL[tree$edge[, 2]] <- tree$edge.length
@@ -1810,15 +1810,15 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV, RELL=NULL,
           tree3$edge <- X3
           edge1 <- X1[, 2]
           edge1[4] <- dad
-          res1 <- optim(par = c(.1, .1), optRootU, gr = NULL, tree = tree1,
+          res1 <- optim(par = c(0.1, 0.1), optRootU, gr = NULL, tree = tree1,
             data = data, nh = nh[X1[, 2]], g = g, w = w, eig = eig, bf = bf,
             ll.0 = ll.0, ..., method = "L-BFGS-B",
             lower = 1e-8, upper = 5, control = list(fnscale = -1))
-          res2 <- optim(par = c(.1, .1), optRootU, gr = NULL, tree = tree2,
+          res2 <- optim(par = c(0.1, 0.1), optRootU, gr = NULL, tree = tree2,
             data = data, nh = nh[X2[, 2]], g = g, w = w, eig = eig, bf = bf,
             ll.0 = ll.0, ..., method = "L-BFGS-B",
             lower = 1e-8, upper = 5, control = list(fnscale = -1))
-          res3 <- optim(par = c(.1, .1), optRootU, gr = NULL, tree = tree3,
+          res3 <- optim(par = c(0.1, 0.1), optRootU, gr = NULL, tree = tree3,
             data = data,  nh = nh[X3[, 2]], g = g, w = w, eig = eig, bf = bf,
             ll.0 = ll.0, ..., method = "L-BFGS-B",
             lower = 1e-8, upper = 5, control = list(fnscale = -1))
@@ -1868,7 +1868,7 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV, RELL=NULL,
           tree1$edge <- X1
           tree2$edge <- X2
           tree3$edge <- X3
-          tt <- c(.3, .5)
+          tt <- c(0.3, 0.5)
 
           res1 <- optim(par = tt, optEdgeU, gr = NULL, tree = tree1, data,
             nh = nh[X1[, 2]], g = g, w = w, eig = eig, bf = bf, ll.0 = ll.0,
@@ -2701,7 +2701,7 @@ optimQuartet <- function(tree, data, eig, w, g, bf, rate, ll.0, nTips,
 
 
 # allow weight Matrix or return site likelihood
-pml.quartet <- function(tree, data, bf = rep(.25, 4), k = 1, rate = 1, g, w,
+pml.quartet <- function(tree, data, bf = rep(0.25, 4), k = 1, rate = 1, g, w,
                         eig, ll.0 = NULL, #ind.ll0 = NULL,
                         inv=0, llMix = NULL,
                         wMix = 0, nTips, weight, nr, nc, contrast, nco, ...,

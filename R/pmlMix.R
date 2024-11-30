@@ -123,7 +123,7 @@ optimAllRate <- function(object, rate = 1, omega, ...) {
 
 
 
-optimMixBf <- function(object, bf = c(.25, .25, .25, .25), omega, ...) {
+optimMixBf <- function(object, bf = c(0.25, 0.25, 0.25, 0.25), omega, ...) {
   l <- length(bf)
   nenner <- 1 / bf[l]
   lbf <- log(bf * nenner)
@@ -157,7 +157,7 @@ optimMixInv <- function(object, inv = 0.01, omega, ...) {
     res
   }
   res <- optimize(f = fn, interval = c(0, 1), lower = 0, upper = 1,
-                  maximum = TRUE, tol = .0001, object, omega = omega, ...)
+                  maximum = TRUE, tol = 0.0001, object, omega = omega, ...)
   res[[1]]
 }
 
@@ -231,7 +231,7 @@ optimMixEdge <- function(object, omega, trace = 1, ...) {
   iter <- 0
   scalep <- 1
   if (trace > 0) cat(ll0)
-  while (abs(eps) > .0001 & iter < 10) {
+  while (abs(eps) > 0.0001 & iter < 10) {
     dl <- matrix(0, p, q)
     for (i in 1:n) dl <- dl + dl(object[[i]], TRUE) * omega[i]
     dl <- dl / lv1
