@@ -285,7 +285,7 @@ subset.phyDat <- function (x, subset, select, site.pattern = TRUE, ...){
       if(any(select > length(w))) stop("subscript out of bounds")
     }
     else if(any(select > sum(w))) stop("subscript out of bounds")
-    if(any(is.na(select))) return(NULL)
+    if(anyNA(select)) return(NULL)
     x <- getRows(x, select, site.pattern=site.pattern)
   }
   x

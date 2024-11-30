@@ -62,7 +62,7 @@ expect_error(pml_bb(dat, model="GTR", method="tipdated"))
 #    expect_equal(pmlR3.fitted$tree, pmlR1$tree, tolerance=5e-6)
 
 # test bf optimisation
-    bf <- c(.1,.2,.3,.4)
+    bf <- c(0.1,0.2,0.3,0.4)
     fit_T <- pml(treeU1, dat, bf=bf)
     weights <- as.vector(1000 * exp(fit_T$siteLik))
     dat_tmp <- dat

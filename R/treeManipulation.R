@@ -641,7 +641,7 @@ char2pos <- function(x, node){
   }
   else  labels <- c(x$tip.label, x$node.label)
   x <- match(node, labels)
-  if(any(is.na(x))) stop("Can't find supplied node in the labels")
+  if(anyNA(x)) stop("Can't find supplied node in the labels")
   x
 }
 
@@ -864,7 +864,7 @@ relabel <- function(x, ref) {
 
 checkLabels <- function(tree, tip) {
   ind <- match(tree$tip.label, tip)
-  if (any(is.na(ind)) | length(tree$tip.label) != length(tip)) {
+  if (anyNA(ind) | length(tree$tip.label) != length(tip)) {
     stop("tree has different labels")
   }
   tree$tip.label <- tip

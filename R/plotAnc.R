@@ -77,7 +77,7 @@ getTransition <- function(scheme, levels){
 #' @rdname plot.ancestral
 #' @export
 plotAnc <- function(x, i = 1, type="phylogram", ..., col = NULL,
-                    cex.pie = .5, pos = "bottomright", scheme=NULL) {
+                    cex.pie = 0.5, pos = "bottomright", scheme=NULL) {
   stopifnot(inherits(x, "ancestral"))
   type <- match.arg(type, c("phylogram", "cladogram", "fan", "unrooted",
                             "radial", "tidy"))
@@ -93,11 +93,11 @@ plotAnc <- function(x, i = 1, type="phylogram", ..., col = NULL,
   colnames(y) <- gsub("p_", "", colnames(y))
   row.names(y) <- Y$Node
   y <- y[c(tree$tip.label, tree$node.label), ]
-  if(is.null(tree$node.label) || any(is.na(match(tree$node.label, rownames(y)))) ||
+  if(is.null(tree$node.label) || anyNA(match(tree$node.label, rownames(y))) ||
      is.numeric(tree$node.label))
     tree <- makeNodeLabel(tree)
 
-  if(any(is.na(match(c(tree$tip.label, tree$node.label), rownames(y)))))
+  if(anyNA(match(c(tree$tip.label, tree$node.label), rownames(y))))
     stop("Tree needs nodelabel, which match the labels of the alignment!")
   CEX <- cex.pie
   xrad <- CEX * diff(par("usr")[1:2]) / 50
@@ -153,7 +153,7 @@ my_ggseqlogo <-function (data, facet = "wrap", scales = "free_x", ncol = NULL,
           nrow = NULL, start=NULL, end=NULL, ...)
 {
   x <- ggseqlogo::geom_logo(data = data, ...)
-  x[[2]] <- ggplot2::scale_x_continuous(limits = c(start-0.5, end+.5) ,
+  x[[2]] <- ggplot2::scale_x_continuous(limits = c(start-0.5, end+0.5) ,
                                breaks=pretty(seq(start, end)))
   p <- ggplot2::ggplot() + x + ggseqlogo::theme_logo()
   if (!"list" %in% class(data)) return(p)

@@ -162,7 +162,7 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
       if(!append) plot(g, w, xlim = xlim, #c(-.5, 1.25 * max(g)),
                        ylim=c(0, 1),
                        type="n", xlab=xlab, ylab=ylab, ...)
-      plot(function(x)cdf_fun(x, shape, inv),  xlim[1], -.001, add=TRUE, ...)
+      plot(function(x)cdf_fun(x, shape, inv),  xlim[1], -0.001, add=TRUE, ...)
       plot(function(x)cdf_fun(x, shape, inv),  0, xlim[2], add=TRUE, ...)
       points(0, inv, ...)
       if(verticals) segments(0, 0, 0, inv, ...)
@@ -231,7 +231,7 @@ plotRates <- function(obj, cdf.color="blue", main="cdf", ...){
   plot(ecdf_pscores, verticals = TRUE, do.points=FALSE, main=main, ...)
   rug(jitter(pscores)) # rug(sort(unique(pscores)))
   el <- obj$tree$edge.length
-  xlim <- c(-.25, 1.1 * max(pscores))
+  xlim <- c(-0.25, 1.1 * max(pscores))
   plot_gamma_plus_inv(k=obj$k, shape=obj$shape, inv=obj$inv, append=TRUE,
                       xlim = xlim,
                       edge.length=sum(el), verticals=TRUE, col=cdf.color,

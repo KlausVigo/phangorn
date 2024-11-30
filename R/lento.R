@@ -32,7 +32,7 @@
 #' @export lento
 lento <- function(obj, xlim = NULL, ylim = NULL, main = "Lento plot",
                   sub = NULL, xlab = NULL, ylab = NULL, bipart = TRUE,
-                  trivial = FALSE, col = rgb(0, 0, 0, .5), ...) {
+                  trivial = FALSE, col = rgb(0, 0, 0, 0.5), ...) {
   if (inherits(obj, "phylo")) {
     if (inherits(obj, "phylo", TRUE) == 1) obj <- as.splits(obj)[obj$edge[, 2]]
     obj <- as.splits(obj)
@@ -79,11 +79,11 @@ lento <- function(obj, xlim = NULL, ylim = NULL, main = "Lento plot",
   at <- min(ylim) + (1:l) * aty
   if (bipart) {
     Y <- rep(at, n)
-    X <- rep( (1:n) - .5, each = l)
+    X <- rep( (1:n) - 0.5, each = l)
     Circles <- matrix(1, l, n)
     for (i in 1:n) Circles[obj[[ord[i]]], i] <- 19
     col <- rep(col, each = l)
-    text(x = n + .1, y = at, labels, pos = 4, ...)
+    text(x = n + 0.1, y = at, labels, pos = 4, ...)
     points(X, Y, pch = as.numeric(Circles), col = col, ...)
   }
   invisible(list(support = cbind(support, conflict), splits = obj[ord]))

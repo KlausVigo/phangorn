@@ -122,7 +122,7 @@ changeOrder <- function(x, labels) {
 #' @export
 matchSplits <- function(x, y, as.in = TRUE) {
   tiplabel <- attr(x, "labels")
-  if (any(is.na(match(tiplabel, attr(y, "labels")))))
+  if (anyNA(match(tiplabel, attr(y, "labels"))))
     stop("x and y have different labels!")
   nTips <- length(tiplabel)
   y <- changeOrder(y, tiplabel)

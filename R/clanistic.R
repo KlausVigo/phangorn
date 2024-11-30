@@ -190,8 +190,7 @@ getSlices <- function(tree){
 #' @export
 getClips <- function (tree, all = TRUE)
 {
-    if (any(is.na(tree$edge.length)))
-        return(NULL)
+    if (anyNA(tree$edge.length))  return(NULL)
     dm <- cophenetic(tree)
     tips <- tree$tip.label
     nTips <- length(tips)
@@ -353,7 +352,7 @@ getDiv <- function(tree, x, native=NULL){
     clans <- getClans(tree)
     labels <- tree$tip.label
     x <- subset(x, labels)
-    LHG <- E_Intruder_2(clans, subset(x,,1))
+    LHG <- E_Intruder_2(clans, subset(x,select=1))
     if(!is.null(native)){
 	    ll <- match(native, attr(x, "allLevels"))
 	    ind <- (as.numeric(x) %in% ll)
@@ -367,7 +366,7 @@ getDiv <- function(tree, x, native=NULL){
     }
     else tree2 <- NULL
 	list(c(shannon(rowSums(LHG)),
-    summary(factor(attr(x, "allLevels"))[as.numeric(subset(x,,1))]),
+    summary(factor(attr(x, "allLevels"))[as.numeric(subset(x,select=1))]),
           parsimony(tree, x)), tree2 )
 }
 

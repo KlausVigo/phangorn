@@ -3,7 +3,7 @@ tree <- read.tree(text = "((t1:0.3,t2:0.3):0.1,(t3:0.3,t4:0.3):0.1,t5:0.5);")
 tree2 <- read.tree(text = "((t1:0.3,t3:0.3):0.1,(t2:0.3,t4:0.3):0.1,t5:0.5);")
 
 fit0 <- pml(tree, X, k=4)
-fit1 <- update(fit0, rate=.5)
+fit1 <- update(fit0, rate=0.5)
 fit2 <- update(fit0, rate=2)
 
 weights0 <- 1000*exp(fit0$siteLik)
@@ -111,7 +111,7 @@ expect_equal(Q, sp$fits[[1]]$Q, tolerance=5e-4)
 
 # Invariant sites
 # test_that Invariant sites optimisation works properly
-    inv <- .2
+    inv <- 0.2
 
     fit0 <- pml(tree, X, k=4)
     fit1 <- pml(tree, X, k=4, inv=inv)
@@ -145,7 +145,7 @@ expect_equal(Q, sp$fits[[1]]$Q, tolerance=5e-4)
 
     fit0 <- pml(tree, X, k=4)
     weights0 <- 1000*exp(fit0$siteLik)
-    weights1 <- 1000*exp(update(fit0, rate=.5)$siteLik)
+    weights1 <- 1000*exp(update(fit0, rate=0.5)$siteLik)
     weights2 <- 1000*exp(update(fit0, tree=tree2)$siteLik)
 
     attr(Z, "weight") <- weights0 + weights1 + weights2

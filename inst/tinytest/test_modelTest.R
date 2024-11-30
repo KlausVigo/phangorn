@@ -39,7 +39,7 @@ expect_equal(MT_AA_all$Model[which.min(MT_AA_all$BIC)], "WAG")
 # test user defined states
 tree <- rcoal(10)
 tree$edge.length <- 2 * (tree$edge.length / sum(tree$edge.length))
-tree$edge.length[tree$edge[,2]<11] <- tree$edge.length[tree$edge[,2]<11] + .1
+tree$edge.length[tree$edge[,2]<11] <- tree$edge.length[tree$edge[,2]<11] + 0.1
 
 Z <- simSeq(tree, Q = c(1,0,0,1,0,1), type = "USER",
             levels=c("A", "B", "C", "D"))

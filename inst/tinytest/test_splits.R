@@ -69,7 +69,7 @@ set.seed(1)
 data("Laurasiatherian")
 bs <- bootstrap.phyDat(Laurasiatherian,
                        FUN = function(x)nj(dist.hamming(x)), bs=50)
-cnet <- consensusNet(bs, .2)
+cnet <- consensusNet(bs, 0.2)
 expect_true(inherits(cnet, "networx"))
 
 

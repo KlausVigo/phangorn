@@ -18,6 +18,6 @@ trees <- c(tree, tree2) |> .compressTipLabel()
 
 test_that("densiTree works", {
   densi_plot <- function() densiTree(trees, type="phylogram", width=2,
-          jitter=list(amount=.1, random=FALSE), alpha=1)
+          jitter=list(amount=0.1, random=FALSE), alpha=1)
   vdiffr::expect_doppelganger("densiTree", densi_plot)
 })

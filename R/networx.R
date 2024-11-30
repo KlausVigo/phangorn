@@ -135,7 +135,7 @@ circNetwork <- function(x, ord = NULL) {
   spRes <- as.splits(res)[res$edge[, 2]]
   index <- match(spRes, x)
 
-  if (any(is.na(index))) {
+  if (anyNA(index)) {
     l.na <- sum(is.na(index))
     x <- c(x, spRes[is.na(index)])
     weight <- c(weight, rep(0, l.na))
@@ -311,7 +311,7 @@ addTrivialSplits <- function(obj) {
   STree$edge.length <- NULL
   spRes <- as.splits(STree)[STree$edge[, 2]]
   tmpIndex <- match(spRes, SHORTwise(obj))
-  if (any(is.na(tmpIndex))) {
+  if (anyNA(tmpIndex)) {
     l.na <- sum(is.na(tmpIndex))
     obj <- c(obj, spRes[is.na(tmpIndex)])
     weight <- c(weight, rep(0, l.na))

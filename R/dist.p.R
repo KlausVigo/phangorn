@@ -115,7 +115,7 @@ dist.p <- function(x, cost = "polymorphism", ignore.indels = TRUE) {
 
   lev1 <- dimnames(cost)[[1]]
 
-  if (any(is.na(match(lev, lev1))))
+  if (anyNA(match(lev, lev1)))
     stop("Levels of x are not in levels of cost matrix!")
 
   if (ignore.indels) {

@@ -9,7 +9,7 @@ dm <- cophenetic(tree)
 Y <- phyDat(matrix(c("A", "C", "G", "T", "A", "C", "G", "A"), 2, 4,
                    dimnames=list(c("a", "b", NULL)), byrow=TRUE))
 
-bf <- c(.1,.2,.3,.4)
+bf <- c(0.1,0.2,0.3,0.4)
 fun <- function(s) - 3/4 * log(1 - 4/3 * s)
 
 data(woodmouse)
@@ -18,7 +18,7 @@ data(woodmouse)
     expect_true(inherits(dist.logDet(X), "dist"))
     expect_true(inherits(dist.hamming(X), "dist"))
     expect_true(inherits(dist.ml(X), "dist"))
-    expect_equal(as.matrix(dist.ml(X, k=4, shape=.5)), dm)
+    expect_equal(as.matrix(dist.ml(X, k=4, shape=0.5)), dm)
     expect_equal(as.matrix(dist.ml(Y)), as.matrix(fun(dist.hamming(Y))))
     expect_equivalent(dist.dna(woodmouse, "JC", pairwise.deletion = FALSE),
                       dist.ml(woodmouse, exclude = "all"))

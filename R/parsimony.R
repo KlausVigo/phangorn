@@ -102,7 +102,7 @@ compressSites <- function(data) {
   uni <- match(lev, LEV)
   fun <- function(x, uni) {
     u <- unique.default(x)
-    res <- if (any(is.na(match(u, uni)))) return(x)
+    res <- if (anyNA(match(u, uni))) return(x)
     match(x, u)
   }
   data <- apply(data, 1, fun, uni)

@@ -409,7 +409,7 @@ nnls.tree <- function(dm, tree, method=c("unrooted", "ultrametric", "tipdated"),
   lab <- attr(X, "nodes")
   ll <- length(lab) + 1L
   # na.action
-  if (any(is.na(y))) {
+  if (anyNA(y)) {
     ind <- which(is.na(y))
     X <- X[-ind, , drop = FALSE]
     y <- y[-ind]
@@ -464,7 +464,7 @@ nnls.tree <- function(dm, tree, method=c("unrooted", "ultrametric", "tipdated"),
     Aind[3, ind3] <- length(lab) + 1L
   }
 
-  if (any(is.na(Aind))) {
+  if (anyNA(Aind)) {
     na_ind <- which(is.na(Aind), arr.ind = TRUE)
     Aind[is.na(Aind)] <- 0L
     for (i in seq_len(nrow(na_ind)) ){
@@ -522,7 +522,7 @@ nnls.splits <- function(x, dm, trace = 0, eps = 1e-8) {
 
   X <- splits2design(x)
 
-  if (any(is.na(y))) {
+  if (anyNA(y)) {
     ind <- which(is.na(y))
     X <- X[-ind, , drop = FALSE]
     y <- y[-ind]

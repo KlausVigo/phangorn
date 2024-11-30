@@ -129,7 +129,7 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt = 0, cex = 1,
 #' @export
 densiTree <- function(x, type = "phylogram", ..., alpha = 1 / length(x),
                       consensus = NULL, direction = "rightwards", optim = FALSE,
-                      scaleX = FALSE, col = 1, width = 1, lty = 1, cex = .8,
+                      scaleX = FALSE, col = 1, width = 1, lty = 1, cex = 0.8,
                       font = 3, tip.color = 1, adj = 0, srt = 0,
                       underscore = FALSE, label.offset = 0, scale.bar = TRUE,
                       jitter = list(amount = 0, random = TRUE), tip.dates=NULL,
@@ -140,7 +140,7 @@ densiTree <- function(x, type = "phylogram", ..., alpha = 1 / length(x),
     consensus$edge.length <- rep(1.0, nrow(consensus$edge))
   }
   if (is.null(consensus)) {
-    consensus <- tryCatch(consensus(x, p = .5),
+    consensus <- tryCatch(consensus(x, p = 0.5),
                           error = function(e) unroot(midpoint(superTree(x))))
   }
   if (inherits(consensus, "multiPhylo")) consensus <- consensus[[1]]

@@ -94,7 +94,7 @@ maxCladeCred <- function(x, tree = TRUE, part = NULL, rooted = TRUE) {
     ppi <- prop.part(tmp) # trees[[i]]
     if (!rooted) ppi <- SHORTwise(ppi)
     indi <- fmatch(ppi, pp)
-    if (any(is.na(indi))) {
+    if (anyNA(indi)) {
       res[i] <- -Inf
     } else {
       res[i] <- sum(nb[indi])

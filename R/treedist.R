@@ -244,7 +244,7 @@ sprdist <- function(tree1, tree2) {
   # checking labels is obligatory for spr (user should prune one of them
   # beforehand?)
   ind <- match(tree1$tip.label, tree2$tip.label)
-  if (any(is.na(ind)) | lt1 != lt2) stop("trees have different labels")
+  if (anyNA(ind) | lt1 != lt2) stop("trees have different labels")
   tree2$tip.label <- tree2$tip.label[ind]
   ind2 <- match(seq_along(ind), tree2$edge[, 2])
   tree2$edge[ind2, 2] <- order(ind)
