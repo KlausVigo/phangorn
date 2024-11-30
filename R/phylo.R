@@ -2078,11 +2078,9 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   ASC <- object$ASC
   site.rate <- object$site.rate
   optFreeRate <- FALSE
-  if(site.rate=="free_rate"){
-    if(optGamma){
+  if(site.rate=="free_rate" && optGamma){
       optFreeRate <- TRUE
       optGamma <- FALSE
-    }
   }
   optModel <- FALSE
   if (is.null(model)) model <- object$model

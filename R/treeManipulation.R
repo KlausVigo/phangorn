@@ -498,12 +498,10 @@ add.tips <- function(tree, tips, where, edge.length = NULL) {
   tree$tip.label <- c(tree$tip.label, tips)
   attr(tree, "order") <- NULL
   tree <- reorder(tree)
-  if (!is.null(tree$edge.length)) {
-    if (is.null(edge.length)) {
+  if (!is.null(tree$edge.length) && is.null(edge.length)) {
       nh <- nodeHeight(tree)
       nh[tip_index] <- 0
       tree$edge.length <- nh[tree$edge[, 1]] - nh[tree$edge[, 2]]
-    }
   }
   tree
 }
