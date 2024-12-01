@@ -216,7 +216,7 @@ densiTree <- function(x, type = "phylogram", ..., alpha = 1 / length(x),
   add_tiplabels(xy, tip_labels, direction, adj = adj, font = font, srt = srt,
     cex = cex, col = tip.color, label.offset = label.offset, maxBT = maxBT)
 
-  col <- rep(col, length.out = length(x))
+  col <- rep_len(col, length(x))
   tiporder <-  1:nTip
   names(tiporder) <- consensus$tip.label
 

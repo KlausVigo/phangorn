@@ -488,8 +488,8 @@ add.tips <- function(tree, tips, where, edge.length = NULL) {
         rep(0, nTips_new + n_internal))
     }
     else {
-      if (length(edge.length) < nTips_new) edge.length <- rep(edge.length,
-          length.out = nTips_new)
+      if (length(edge.length) < nTips_new) edge.length <- rep_len(edge.length,
+                                                                  nTips_new)
       tree$edge.length <- c(tree$edge.length, edge.length,
         rep(0, n_internal))
     }

@@ -462,9 +462,9 @@ plot2D <- function(coords, net, show.tip.label = TRUE, show.edge.label = FALSE,
       adj <- as.numeric(adj)
       ## `srt' takes only a single value, so can't vectorize this:
       ## (and need to 'elongate' these vectors:)
-      font <- rep(font, length.out = nTips)
-      tip.color <- rep(tip.color, length.out = nTips)
-      cex <- rep(cex, length.out = nTips)
+      font <- rep_len(font, nTips)
+      tip.color <- rep_len(tip.color, nTips)
+      cex <- rep_len(cex, nTips)
       for (i in seq_along(label))
         text(xx[i], yy[i], label[i], font = font[i],
              cex = cex[i], srt = angle[i], adj = adj[i],
