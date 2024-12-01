@@ -16,22 +16,22 @@ fit1 <- update(fit, data=X, k=1)
 fitMixture <- pmlMix(~rate, fit1 , m=4, control=pml.control(trace=0))
 expect_equal(fitMixture$logLik, ll0, tolerance = 1e-4)
 rates <- sapply(fitMixture$fits, \(x)x$rate )
-expect_true( cor(rates, discrete.gamma(1,4)) > .95)
+expect_true( cor(rates, discrete.gamma(1,4)) > 0.95)
 
 # test edge optimisation works properly
 tree_tmp <- tree
-tree_tmp$edge.length[] <- .3
+tree_tmp$edge.length[] <- 0.3
 rates <- discrete.gamma(1,4)
 fits <- list()
 for(i in 1:4) fits[[i]] <- update(fit1, tree=tree_tmp, rate=rates[i])
 fitMixture <- pmlMix(edge~., fits, m=4, control=pml.control(trace=0))
-expect_true( cor(fitMixture$fits[[1]]$tree$edge.length, tree$edge.length) > .99)
+expect_true(cor(fitMixture$fits[[1]]$tree$edge.length, tree$edge.length) > 0.99)
 
 for(i in 1:4) fits[[i]] <- update(fit1, tree=tree_tmp)
 fitMixture <- pmlMix(edge~rate, fits, m=4, control=pml.control(trace=0))
-expect_true( cor(fitMixture$fits[[1]]$tree$edge.length, tree$edge.length) > .99)
+expect_true(cor(fitMixture$fits[[1]]$tree$edge.length, tree$edge.length) > 0.99)
 rates <- sapply(fitMixture$fits, \(x)x$rate )
-expect_true( cor(rates, discrete.gamma(1,4)) > .95)
+expect_true(cor(rates, discrete.gamma(1,4)) > 0.95)
 
 
 fit1 <- pml(tree, X)
@@ -67,7 +67,7 @@ fits <- list()
 for(i in 1:4) fits[[i]] <-  pml(tree, X, rate=rates[i])
 fitMixture <- pmlMix(Q ~ ., fits, m=4, control=pml.control(trace=0))
 Q_est <- fitMixture$fits[[1]]$Q
-expect_true( cor(Q_est, 6:1) > .999)
+expect_true( cor(Q_est, 6:1) > 0.999)
 
 
 # test base frequency optimization works properly
@@ -78,7 +78,7 @@ fits <- list()
 for(i in 1:4) fits[[i]] <-  pml(tree, X, rate=rates[i])
 fitMixture <- pmlMix(bf ~ ., fits, m=4, control=pml.control(trace=0))
 bf_est <- fitMixture$fits[[1]]$bf
-expect_true( cor(bf_est, (1:4)/10) > .999)
+expect_true( cor(bf_est, (1:4)/10) > 0.999)
 
 
 # test base frequency optimization works properly
@@ -92,14 +92,14 @@ fitMixture <- pmlMix( ~ bf, fits, m=2, control=pml.control(trace=0))
 bf1_est <- fitMixture$fits[[1]]$bf
 bf2_est <- fitMixture$fits[[2]]$bf
 if(bf1_est[1] < bf1_est[2]) {
-  expect_true( cor(bf1_est, (1:4)/10) > .999)
-} else expect_true( cor(bf1_est, (4:1)/10) > .999)
+  expect_true( cor(bf1_est, (1:4)/10) > 0.999)
+} else expect_true( cor(bf1_est, (4:1)/10) > 0.999)
 
 
 
 # test invariant site optimization works properly
 #rates <- discrete.gamma(1,2)
-fit1 <- pml(tree, X, inv=.3)
+fit1 <- pml(tree, X, inv=0.3)
 weights <- 1000*exp(fit1$siteLik)
 attr(X, "weight") <- weights
 fits <- list()
@@ -107,18 +107,18 @@ for(i in 1:2) fits[[i]] <- pml(tree, X)
 fitMixture <- pmlMix(inv ~ ., fits, m=2, control=pml.control(trace=0))
 inv1_est <- fitMixture$fits[[1]]$inv
 inv2_est <- fitMixture$fits[[2]]$inv
-expect_equal( inv1_est, .3, 1e-3)
-expect_equal( inv2_est, .3, 1e-3)
+expect_equal( inv1_est, 0.3, 1e-3)
+expect_equal( inv2_est, 0.3, 1e-3)
 
 
 # Not identifiable, so only check logLik
 fit1 <- pml(tree, X, inv=0.3)
-fit2 <- pml(tree, X, inv=.0)
+fit2 <- pml(tree, X, inv=0.0)
 weights <- 500*exp(fit1$siteLik) + 500*exp(fit2$siteLik)
 attr(X, "weight") <- weights
-ll <- sum(weights * log(fit1$lv *.5 + fit2$lv*.5))
+ll <- sum(weights * log(fit1$lv * 0.5 + fit2$lv * 0.5))
 fits <- list()
-for(i in 1:2) fits[[i]] <- pml(tree, X, wMix=.5)
+for(i in 1:2) fits[[i]] <- pml(tree, X, wMix=0.5)
 fitMixture <- pmlMix( ~ inv, fits, m=2,
                       control=pml.control(maxit = 25, trace=0))
 expect_equal(logLik(fitMixture)[1], ll, 1e-3)
