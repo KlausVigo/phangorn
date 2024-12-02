@@ -18,7 +18,7 @@ expect_true(all(tree1$node.label[-1] <= tree2$node.label[-1]))
 tree3 <- addConfidences(tree, bs_trees)
 expect_equal(tree1, tree3)
 nnet2 <- addConfidences(nnet, bs_trees)
-expect_true(is.null(attr(nnet$splits, "confidences")))
+expect_null(attr(nnet$splits, "confidences"))
 expect_false(is.null(attr(nnet2$splits, "confidences")))
 
 dat <- Laurasiatherian[sample(47, 10)] |> as.character() |> phyDat()
