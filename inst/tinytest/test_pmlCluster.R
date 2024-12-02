@@ -17,7 +17,7 @@ fit <- optim.pml(fit, control=pml.control(trace=0))
 sp <- pmlCluster( ~ edge + nni, fit, weight, p=1:3,
                      control=pml.control(epsilon=1e-08, maxit=10, trace=0))
 #    expect_equal( sp$Partition, c(1,1,1,2,2))
-expect_equal( all(sp$Partition ==  c(1,1,1,2,2)) ||
-                      all(sp$Partition ==  c(2,2,2,1,1)) , TRUE)
+expect_true(all(sp$Partition ==  c(1,1,1,2,2)) ||
+                      all(sp$Partition ==  c(2,2,2,1,1)))
 
 

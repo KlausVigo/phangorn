@@ -20,9 +20,9 @@ expect_true(inherits(Mat, "Matrix"))
 expect_equal(spl2tree , tree)
 # test generics
 c_spl <- c(tree2spl, tree2spl, tree2spl)
-expect_equal(length(c_spl) , 3L*length(tree2spl))
-expect_equal(length(unique(c_spl)) , length(tree2spl))
-expect_equal(length(distinct.splits(c_spl)) , length(tree2spl))
+expect_length(c_spl, 3L*length(tree2spl))
+expect_length(unique(c_spl), length(tree2spl))
+expect_length(distinct.splits(c_spl), length(tree2spl))
 spl <- allCircularSplits(6)
 spl <- ONEwise(spl)
 write.nexus.splits(spl, "tmp.nex")
@@ -59,7 +59,7 @@ expect_true(inherits(cnet, "networx"))
 net1$edge.length <- cnet$edge.length <- cnet$edge.labels <- NULL
 attr(cnet, "order") <- NULL
 expect_equal(cnet, net1)
-expect_equal(nrow(cnet$edge), length(as.splits(cnet)))
+expect_length(as.splits(cnet), nrow(cnet$edge))
 
 
 
