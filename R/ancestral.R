@@ -390,7 +390,7 @@ ptree <- function(tree, data, acctran=TRUE, return = "prob", tips=FALSE, ...) {
   f$traverse(edge)
   tmp <- reorder(tree)$edge
   tmp <- tmp[tmp[,2]>Ntip(tree),]
-  if(length(tmp)>0 && acctran==TRUE)f$acctran_traverse(tmp)
+  if(length(tmp)>0 && acctran)f$acctran_traverse(tmp)
   res <- res_state <- vector("list", nNode)
   res <- vector("list", m)
   att$names <- c(tree$tip.label, tree$node.label) #makeAncNodeLabel(tree, ...)
