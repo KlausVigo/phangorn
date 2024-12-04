@@ -72,10 +72,24 @@ glance.phyDat <- function (x, ...){
   nchar <- sum(attr(x,"weight"))
   unique_sites <- attr(x, "nr")
   pis <- parsinfo(x)
+  type <- attr(x, "type")
+
+  gap <- "-" # needs check
+  contr <- attr(x, "contrast")
+  levels <- attr(x, "levels")
+  allLevels <- attr(x, "allLevels")
+  ambiguous_states <- allLevels[rowSums(contr>0) > 1]
+  ambiguous_states <- ambiguous_states[-match(gap, ambiguous_states)]
+  BF <- baseFreq(x, freq=TRUE, all=TRUE)
+  amb <- sum(BF[ambiguous_states])
+  gaps <- sum(BF[gap])
+
   parsimony_informative_sites <- sum(attr(x, "weight")[-pis[, 1]])
+  duplicats <- sum(duplicated(x))
   data.frame(nseq=nseq, nchar=nchar, unique_site_pattern=unique_sites,
              parsimony_informative_sites=parsimony_informative_sites,
-             const_sites=const_site(x))
+             const_sites=const_site(x), duplicated_seq=duplicats,
+             gaps=gaps, ambiguous=amb, type=type)
 }
 
 
@@ -90,7 +104,7 @@ composition_test <- function(obj){
   n <- length(obj)
   ALL <- baseFreq(obj, freq=TRUE)
   res <- matrix(0, n, 3, dimnames = list(names(obj),
-                                    c("statistic", "parameter df", "p-value")))
+                                    c("statistic", "df", "p-value")))
   for(i in seq_len(n)){
     tmp <- baseFreq(obj[i], freq=TRUE)
     res[i, ] <- unlist(chisq.test(rbind(ALL-tmp, tmp))[1:3])
@@ -98,3 +112,38 @@ composition_test <- function(obj){
   res
 }
 
+
+#' @rdname baseFreq
+#' @export
+summary.phyDat <- function(object, ...){
+  bf <- baseFreq(object)
+  gl <- glance(object, ...)
+  ct <- composition_test(object)
+  ans <- list(glance=gl, composition=ct)
+  class(ans) <- "summary.phyDat"
+  ans
+}
+
+#' @rdname baseFreq
+#' @export
+print.summary.phyDat <- function(x, ...,
+                                 digits = max(3L, getOption("digits") - 3L)){
+  cat("Alignment statistics \n\n")
+  cat("Type: ", x$glance$type, "\n")
+  cat("Sequences: ", x$glance$nseq, "\n")
+  cat("Columns: ", x$glance$nchar, "\n")
+  cat("Site pattern: ", x$glance$unique_site_pattern, "\n")
+  cat("Parsimony informative sites: ", x$glance$parsimony_informative_sites,
+      "\n")
+  cat("Constant sites: ", x$glance$const_sites, "\n")
+  cat("Number of gaps: ", x$glance$gaps, "\n")
+  cat("Number of ambiguous states: ", x$glance$amb, "\n")
+  cat("Duplicated sequences: ", x$glance$duplicated_seq, "\n\n")
+  cat("Composition Test (Chisq) \n")
+  comp <- x$composition
+  comp <- comp[order(comp[,3]),]
+  ind <- max(which(comp[,3] < 0.05))
+  if(any(comp[,3] < 0.05)) ind <- max(which(comp[,3] < 0.05))
+  else ind <- min(6, x$glance$nseq)
+  print(comp[seq_len(ind),], digits=digits, ...)
+}

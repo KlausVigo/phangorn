@@ -4,6 +4,8 @@
 \alias{baseFreq}
 \alias{glance.phyDat}
 \alias{composition_test}
+\alias{summary.phyDat}
+\alias{print.summary.phyDat}
 \title{Summaries of alignments}
 \usage{
 baseFreq(obj, freq = FALSE, all = FALSE, drop.unused.levels = FALSE)
@@ -11,6 +13,11 @@ baseFreq(obj, freq = FALSE, all = FALSE, drop.unused.levels = FALSE)
 \method{glance}{phyDat}(x, ...)
 
 composition_test(obj)
+
+\method{summary}{phyDat}(object, ...)
+
+\method{print}{summary.phyDat}(x, ..., digits = max(3L, getOption("digits") -
+  3L))
 }
 \arguments{
 \item{obj, x}{as object of class phyDat}

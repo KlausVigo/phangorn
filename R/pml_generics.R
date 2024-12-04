@@ -154,6 +154,8 @@ write.pml <- function(x, file="pml", save_rds=FALSE, ...){
                                  digits=digits)
   sink(paste0(file, ".txt"))
   cat("phangorn", packageDescription("phangorn", fields = "Version"), "\n\n")
+  print(summary(x$data))
+  cat("\n\n")
   print(x)
   cat("\n\nThe following lines (re-)creates the pml object up to numerical inaccuracies:\n\n")
   call <- x$call
