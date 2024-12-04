@@ -41,7 +41,6 @@ Depends:
     ape (>= 5.8),
     R (>= 4.1.0)
 Imports:
-    cli,
     digest,
     generics,
     graphics,
