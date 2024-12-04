@@ -49,9 +49,11 @@ binomial_mk <- function (k=4)
       if (any(y < 0 | y > 1)) stop("y values must be 0 <= y <= 1")
       mustart <- (weights * y + 0.5)/(2*(weights + 1))
       m <- weights * y
-      if (any(abs(m - round(m)) > 0.001)) warning("non-integer #successes in a binomial glm!")
+      if (any(abs(m - round(m)) > 0.001))
+        warning("non-integer #successes in a binomial glm!")
     } else if (NCOL(y) == 2) {
-      if (any(abs(y - round(y)) > 0.001)) warning("non-integer counts in a binomial glm!")
+      if (any(abs(y - round(y)) > 0.001))
+        warning("non-integer counts in a binomial glm!")
       n <- y[, 1] + y[, 2]
       y <- ifelse(n == 0, 0, y[, 1]/n)
       weights <- weights * n

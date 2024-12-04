@@ -22,8 +22,8 @@ tree <- relabel(tree, fit$tree$tip.label)
 align <- read.phyDat("pml_align.fasta", format="fasta")
 fit3 <- pml(tree = tree, data = align, k = 1L, site.rate = "gamma", ASC = FALSE,
            bf = c(0.306541405706333, 0.261308281141267, 0.126026443980515,
-                  0.306123869171886), Q = c(1, 23.0401029286372, 1, 1, 23.0401029286372,
-                                            1), inv = 0.850681184138605, model = "HKY")
+                  0.306123869171886), Q = c(1, 23.0401029286372, 1, 1,
+                  23.0401029286372, 1), inv = 0.850681184138605, model = "HKY")
 expect_equal(logLik(fit), logLik(fit3))
 
 unlink(c("pml_align.fasta", "pml_tree.nwk", "pml.rds", "pml.txt"))

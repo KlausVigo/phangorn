@@ -6,7 +6,7 @@
 #' \code{composition\_test} computes a \eqn{\chi^2}-test testing if the state
 #' composition for a species differs.
 #'
-#' @param obj,x as object of class phyDat
+#' @param object,obj,x as object of class phyDat
 #' @param freq logical, if 'TRUE', frequencies or counts are returned otherwise
 #' proportions
 #' @param all all a logical; if all = TRUE, all counts of bases, ambiguous
@@ -14,6 +14,7 @@
 #' contrast.
 #' @param drop.unused.levels logical, drop unused levels
 #' @param ... further arguments passed to or from other methods.
+#' @param digits minimal number of significant digits.
 #'
 #' @return  \code{baseFreq} returns a named vector and \code{glance} a one row
 #' \code{data.frame}.

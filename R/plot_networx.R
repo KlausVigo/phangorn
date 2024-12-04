@@ -448,7 +448,8 @@ plot2D <- function(coords, net, show.tip.label = TRUE, show.edge.label = FALSE,
       YY[is.na(YY)] <- 0
       pos[abs(YY) > abs(XX)] <- pos2[abs(YY) > abs(XX)]
       if (is.null(net$translate)) text(xx[1:nTips], yy[1:nTips], labels = label,
-                                       pos = pos, col = tip.color, cex = cex, font = font)
+                                       pos = pos, col = tip.color, cex = cex,
+                                       font = font)
       else text(xx[net$translate$node], yy[net$translate$node], labels = label,
                 pos = pos, col = tip.color, cex = cex, font = font)
     }

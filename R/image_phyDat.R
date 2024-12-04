@@ -2,7 +2,8 @@
 #'
 #' This function plots an image of an alignment of sequences.
 #'
-#' A wrapper for using \code{\link[ape]{image.DNAbin}} and \code{\link[ape]{image.AAbin}}.
+#' A wrapper for using \code{\link[ape]{image.DNAbin}} and
+#' \code{\link[ape]{image.AAbin}}.
 #' Codons triplets are handled as nucleotide sequences.
 #' @param x	 an object containing sequences, an object of class \code{phyDat}.
 #' @param ... further arguments passed to or from other methods.

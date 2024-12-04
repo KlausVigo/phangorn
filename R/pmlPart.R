@@ -865,7 +865,7 @@ logLik.pmlPart <- function(object, ...) {
 
 optim.quartet <- function(old.el, eig, bf, dat, g = 1, w = 1, weight,
                           ll.0 = weight * 0, control = list(eps = 1e-08,
-                                                            maxit = 5, trace = 0, tau=1e-8), llcomp = -Inf) {
+                          maxit = 5, trace = 0, tau=1e-8), llcomp = -Inf) {
   eps <- 1
   iter <- 0
   evi <- (t(eig[[3]]) * bf)

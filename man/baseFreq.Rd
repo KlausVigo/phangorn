@@ -20,8 +20,6 @@ composition_test(obj)
   3L))
 }
 \arguments{
-\item{obj, x}{as object of class phyDat}
-
 \item{freq}{logical, if 'TRUE', frequencies or counts are returned otherwise
 proportions}
 
@@ -32,6 +30,10 @@ contrast.}
 \item{drop.unused.levels}{logical, drop unused levels}
 
 \item{...}{further arguments passed to or from other methods.}
+
+\item{object, obj, x}{as object of class phyDat}
+
+\item{digits}{minimal number of significant digits.}
 }
 \value{
 \code{baseFreq} returns a named vector and \code{glance} a one row

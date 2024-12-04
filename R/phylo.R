@@ -207,7 +207,7 @@ optimRate <- function(tree, data, rate = 1, ...) {
 }
 
 
-optimBf <- function(tree, data, bf = c(0.25, 0.25, 0.25, 0.25), trace = 0, ...) {
+optimBf <- function(tree, data, bf = c(0.25, 0.25, 0.25, 0.25), trace = 0, ...){
   l <- length(bf)
   nenner <- 1 / bf[l]
   lbf <- log(bf * nenner)
@@ -2261,8 +2261,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     }
     class(object) <- "pml"
     extras <- pairlist(bf = bf, Q = Q, inv = inv, shape = shape, rate = rate,
-               model=model, g=g, w=w)[c(optBf, optQ, optInv, optGamma, optRate, optModel,
-                              optFreeRate, optFreeRate)]
+               model=model, g=g, w=w)[c(optBf, optQ, optInv, optGamma, optRate,
+                                        optModel, optFreeRate, optFreeRate)]
     if (length(extras)) {
       existing <- !is.na(match(names(extras), names(call)))
       for (a in names(extras)[existing]) call[[a]] <- extras[[a]]
@@ -2509,7 +2509,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         }
         else kmax <- kmax + 1
         if(!is.null(RELL)) RELL <- res$RELL
-        if (trace > 0) cat("\rRatchet iteration ", i, ", best pscore so far:", ll) #  "\n")
+        if (trace > 0) cat("\rRatchet iteration ", i, ", best pscore so far:", ll)
         if ( (kmax >= maxR) && (i >= minit)) break()
       }
       optNni <- TRUE
