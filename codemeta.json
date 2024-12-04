@@ -1,0 +1,502 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "identifier": "phangorn",
+  "description": "Allows for estimation of phylogenetic trees and networks using Maximum Likelihood, Maximum Parsimony, distance methods and Hadamard conjugation (Schliep 2011). Offers methods for tree comparison, model selection and visualization of phylogenetic networks as described in Schliep et al. (2017).",
+  "name": "phangorn: Phylogenetic Reconstruction and Analysis",
+  "relatedLink": ["https://klausvigo.github.io/phangorn/", "https://CRAN.R-project.org/package=phangorn"],
+  "codeRepository": "https://github.com/KlausVigo/phangorn",
+  "issueTracker": "https://github.com/KlausVigo/phangorn/issues",
+  "license": "https://spdx.org/licenses/GPL-2.0",
+  "version": "2.12.1.1",
+  "programmingLanguage": {
+    "@type": "ComputerLanguage",
+    "name": "R",
+    "url": "https://r-project.org"
+  },
+  "runtimePlatform": "R version 4.4.2 (2024-10-31)",
+  "provider": {
+    "@id": "https://cran.r-project.org",
+    "@type": "Organization",
+    "name": "Comprehensive R Archive Network (CRAN)",
+    "url": "https://cran.r-project.org"
+  },
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Klaus",
+      "familyName": "Schliep",
+      "email": "klaus.schliep@gmail.com",
+      "@id": "https://orcid.org/0000-0003-2941-0161"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Emmanuel",
+      "familyName": "Paradis",
+      "@id": "https://orcid.org/0000-0003-3092-2199"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Leonardo",
+      "familyName": "de Oliveira Martins",
+      "@id": "https://orcid.org/0000-0001-5247-1320"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Alastair",
+      "familyName": "Potts"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Iris",
+      "familyName": "Bardel-Kahr",
+      "@id": "https://orcid.org/0000-0002-8950-834X"
+    }
+  ],
+  "contributor": [
+    {
+      "@type": "Person",
+      "givenName": "Tim W.",
+      "familyName": "White"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Cyrill",
+      "familyName": "Stachniss"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Michelle",
+      "familyName": "Kendall",
+      "email": "m.kendall@imperial.ac.uk"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Keren",
+      "familyName": "Halabi"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Richel",
+      "familyName": "Bilderbeek"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Kristin",
+      "familyName": "Winchell"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Liam",
+      "familyName": "Revell"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Mike",
+      "familyName": "Gilchrist"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Jeremy",
+      "familyName": "Beaulieu"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Brian",
+      "familyName": "O'Meara"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Long",
+      "familyName": "Qu"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Joseph",
+      "familyName": "Brown",
+      "@id": "https://orcid.org/0000-0002-3835-8062"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Santiago",
+      "familyName": "Claramunt",
+      "@id": "https://orcid.org/0000-0002-8926-5974"
+    }
+  ],
+  "maintainer": [
+    {
+      "@type": "Person",
+      "givenName": "Klaus",
+      "familyName": "Schliep",
+      "email": "klaus.schliep@gmail.com",
+      "@id": "https://orcid.org/0000-0003-2941-0161"
+    }
+  ],
+  "softwareSuggestions": [
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "apex",
+      "name": "apex",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=apex"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "Biostrings",
+      "name": "Biostrings",
+      "provider": {
+        "@id": "https://www.bioconductor.org",
+        "@type": "Organization",
+        "name": "Bioconductor",
+        "url": "https://www.bioconductor.org"
+      },
+      "sameAs": "https://bioconductor.org/packages/release/bioc/html/Biostrings.html"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "fastmatch",
+      "name": "fastmatch",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=fastmatch"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "ggseqlogo",
+      "name": "ggseqlogo",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=ggseqlogo"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "ggplot2",
+      "name": "ggplot2",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=ggplot2"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "knitr",
+      "name": "knitr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=knitr"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "magick",
+      "name": "magick",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=magick"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "rgl",
+      "name": "rgl",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=rgl"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "rmarkdown",
+      "name": "rmarkdown",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=rmarkdown"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "seqinr",
+      "name": "seqinr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=seqinr"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "testthat",
+      "name": "testthat",
+      "version": ">= 3.0.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=testthat"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "tinytest",
+      "name": "tinytest",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=tinytest"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "vdiffr",
+      "name": "vdiffr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=vdiffr"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "xtable",
+      "name": "xtable",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=xtable"
+    }
+  ],
+  "softwareRequirements": {
+    "1": {
+      "@type": "SoftwareApplication",
+      "identifier": "ape",
+      "name": "ape",
+      "version": ">= 5.8",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://github.com/emmanuelparadis/ape"
+    },
+    "2": {
+      "@type": "SoftwareApplication",
+      "identifier": "R",
+      "name": "R",
+      "version": ">= 4.1.0"
+    },
+    "3": {
+      "@type": "SoftwareApplication",
+      "identifier": "digest",
+      "name": "digest",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=digest"
+    },
+    "4": {
+      "@type": "SoftwareApplication",
+      "identifier": "generics",
+      "name": "generics",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=generics"
+    },
+    "5": {
+      "@type": "SoftwareApplication",
+      "identifier": "graphics",
+      "name": "graphics"
+    },
+    "6": {
+      "@type": "SoftwareApplication",
+      "identifier": "grDevices",
+      "name": "grDevices"
+    },
+    "7": {
+      "@type": "SoftwareApplication",
+      "identifier": "igraph",
+      "name": "igraph",
+      "version": ">= 1.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=igraph"
+    },
+    "8": {
+      "@type": "SoftwareApplication",
+      "identifier": "Matrix",
+      "name": "Matrix",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=Matrix"
+    },
+    "9": {
+      "@type": "SoftwareApplication",
+      "identifier": "methods",
+      "name": "methods"
+    },
+    "10": {
+      "@type": "SoftwareApplication",
+      "identifier": "parallel",
+      "name": "parallel"
+    },
+    "11": {
+      "@type": "SoftwareApplication",
+      "identifier": "quadprog",
+      "name": "quadprog",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=quadprog"
+    },
+    "12": {
+      "@type": "SoftwareApplication",
+      "identifier": "Rcpp",
+      "name": "Rcpp",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=Rcpp"
+    },
+    "13": {
+      "@type": "SoftwareApplication",
+      "identifier": "stats",
+      "name": "stats"
+    },
+    "14": {
+      "@type": "SoftwareApplication",
+      "identifier": "utils",
+      "name": "utils"
+    },
+    "SystemRequirements": null
+  },
+  "fileSize": "2662.241KB",
+  "citation": [
+    {
+      "@type": "ScholarlyArticle",
+      "datePublished": "2011",
+      "author": [
+        {
+          "@type": "Person",
+          "givenName": "Klaus",
+          "familyName": "Schliep"
+        }
+      ],
+      "name": "phangorn: phylogenetic analysis in R",
+      "identifier": "10.1093/bioinformatics/btq706",
+      "pagination": "592--593",
+      "@id": "https://doi.org/10.1093/bioinformatics/btq706",
+      "sameAs": "https://doi.org/10.1093/bioinformatics/btq706",
+      "isPartOf": {
+        "@type": "PublicationIssue",
+        "issueNumber": "4",
+        "datePublished": "2011",
+        "isPartOf": {
+          "@type": ["PublicationVolume", "Periodical"],
+          "volumeNumber": "27",
+          "name": "Bioinformatics"
+        }
+      }
+    },
+    {
+      "@type": "ScholarlyArticle",
+      "datePublished": "2017",
+      "author": [
+        {
+          "@type": "Person",
+          "givenName": "Klaus",
+          "familyName": "Schliep"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Alastair J.",
+          "familyName": "Potts"
+        },
+        {
+          "@type": "Person",
+          "givenName": "David A.",
+          "familyName": "Morrison"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Guido W.",
+          "familyName": "Grimm"
+        }
+      ],
+      "name": "Intertwining phylogenetic trees and networks",
+      "pagination": "1212--1220",
+      "isPartOf": {
+        "@type": "PublicationIssue",
+        "issueNumber": "10",
+        "datePublished": "2017",
+        "isPartOf": {
+          "@type": ["PublicationVolume", "Periodical"],
+          "volumeNumber": "8",
+          "name": "Methods in Ecology and Evolution"
+        }
+      }
+    }
+  ],
+  "releaseNotes": "https://github.com/KlausVigo/phangorn/blob/main/NEWS",
+  "readme": "https://github.com/KlausVigo/phangorn/blob/master/README.md",
+  "contIntegration": ["https://github.com/KlausVigo/phangorn/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/github/KlausVigo/phangorn?branch=master"],
+  "keywords": ["r", "phylogenetic-analysis", "phylogenetics"]
+}
