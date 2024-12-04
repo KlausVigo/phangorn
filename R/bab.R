@@ -156,8 +156,8 @@ ilb <- function(x, LB) {
 #' White, W.T. and Holland, B.R. (2011) Faster exact maximum parsimony search
 #' with XMP. \emph{Bioinformatics}, \bold{27(10)},1359--1367
 #' @keywords cluster
-## @importFrom utils txtProgressBar setTxtProgressBar
-#' @importFrom cli cli_progress_bar cli_progress_update cli_progress_done
+#' @importFrom utils txtProgressBar setTxtProgressBar
+## @importFrom cli cli_progress_bar cli_progress_update cli_progress_done
 #' @examples
 #'
 #' data(yeast)
@@ -255,9 +255,9 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
   status <- 0
   visited <- numeric(nTips)
   if(trace > 0 && nTips > 6){
-#    cat("Search Baumraum (tree space)\n")
-#    pb <- txtProgressBar(min=0, max=105, initial=0, style=3)
-    cli_progress_bar("Search Baumraum (tree space)", total = 105, clear=TRUE)
+    cat("Search Baumraum (tree space)\n")
+    pb <- txtProgressBar(min=0, max=105, initial=0, style=3)
+#    cli_progress_bar("Search Baumraum (tree space)", total = 105, clear=TRUE)
   }
   result <- list()
   while (npsc > 0) {
@@ -269,7 +269,7 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
     score <- f$pscore_spr(tmpTree, as.integer(a + 1L))
     score <- score + blub + mms0[a + 1L]
     ms <- min(score)
-    if (ms < bound + .1) {
+    if (ms < bound + 0.1) {
       if ((a + 1L) < nTips) {
         ind <- (1:L[a])[score <= bound]   # sehr langsam
         trees[[a + 1]][seq_along(ind)] <- .Call('AddOnes', tmpTree,
@@ -300,8 +300,8 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
         else result <- c(result, tmp)
       }
     }
-    if(a==6 && trace>0 ) cli_progress_update()
-    #setTxtProgressBar(pb, status <- status + 1)
+    if(a==6 && trace>0 ) setTxtProgressBar(pb, status <- status + 1)
+    #cli_progress_update()
   }
   for (i in seq_along(result)) {
     result[[i]] <- structure(list(edge = result[[i]], Nnode = nTips - 2L),
@@ -309,9 +309,9 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
                              order = "postorder")
   }
   if(trace > 0  && nTips > 6) {
-#    setTxtProgressBar(pb, 105)
-#    close(pb)
-    cli_progress_done()
+    setTxtProgressBar(pb, 105)
+    close(pb)
+#    cli_progress_done()
   }
   attr(result, "TipLabel") <- tree$tip.label
   class(result) <- "multiPhylo"
