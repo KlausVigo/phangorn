@@ -143,7 +143,6 @@ print.summary.phyDat <- function(x, ...,
   cat("Composition Test (Chisq) \n")
   comp <- x$composition
   comp <- comp[order(comp[,3]),]
-  ind <- max(which(comp[,3] < 0.05))
   if(any(comp[,3] < 0.05)) ind <- max(which(comp[,3] < 0.05))
   else ind <- min(6, x$glance$nseq)
   print(comp[seq_len(ind),], digits=digits, ...)
