@@ -99,7 +99,9 @@ allSitePattern generates an alignment of all possible site patterns."><meta prop
 <span></span>
 <span><span class="fu">genlight2phyDat</span><span class="op">(</span><span class="va">x</span>, ambiguity <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">acgt2ry</span><span class="op">(</span><span class="va">obj</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">acgt2ry</span><span class="op">(</span><span class="va">obj</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">unalign</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -156,6 +158,9 @@ example for specifying "USER" defined data formats in the vignette
 "phangorn-specials".</p>
 <p><code>acgt2ry</code> converts a <code>phyDat</code> object of nucleotides into an binary
 ry-coded dataset.</p>
+<p><code>unalign</code> converts a <code>phyDat</code> object of nucleotides or amino acids
+into a <code>DNAbin</code> or <code>AAbin</code> object in list form removing all gaps.
+These objects can be exported using <code><a href="https://rdrr.io/pkg/ape/man/write.dna.html" class="external-link">write.FASTA</a></code>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
