@@ -141,18 +141,11 @@ UNJ <- function(x){
 #' @rdname designTree
 #' @export
 designTree <- function(tree, method = "unrooted", sparse = FALSE,
-                       tip.dates=NULL, calibration=NULL, ...) { # , strict=TRUE
+                       tip.dates=NULL, calibration=NULL, ...) {
   method <- match.arg(method,
                       c("unrooted", "ultrametric", "rooted", "tipdated"))
   if(method == "rooted") method <- "ultrametric"
   if(has.singles(tree)) tree <- collapse.singles(tree)
-  #if (!is.na(pmatch(method, "all")))
-  #  method <- "unrooted"
-  #METHOD <- c("unrooted", "rooted", "tipdated")
-  #method <- pmatch(method, METHOD)
-  #if (is.na(method)) stop("invalid method")
-  #if (method == -1) stop("ambiguous method")
-  #if (!is.rooted(tree) & method == 2) stop("tree has to be rooted")
   if(method == "unrooted") X <- designUnrooted(tree, sparse = sparse, ...)
   if(method == "ultrametric") X <- designUltra(tree, sparse = sparse, ...)
   if(method == "tipdated") X <- designTipDated(tree, tip.dates=tip.dates,
@@ -201,8 +194,9 @@ designUltra <- function(tree, sparse = TRUE, calibration=NULL) {
   l <- tree$Nnode
   nodes <- integer(l)
   k <- 1L
-  u <- numeric(n * (n - 1) / 2)
-  v <- numeric(n * (n - 1) / 2)
+  u <- integer(n * (n - 1) / 2)
+#  v <- integer(n * (n - 1) / 2)
+  p <- integer(l + 1)
   m <- 1L
   for (i in seq_along(leri)) {
     if (length(leri[[i]]) > 1) {
@@ -216,16 +210,22 @@ designUltra <- function(tree, sparse = TRUE, calibration=NULL) {
             unlist(bp[ le[(j + 1):nl] ]), n))
       }
       li <- length(ind)
-      v[m:(m + li - 1)] <- k
-      u[m:(m + li - 1)] <- ind
+      p[k + 1] <- li
+#      v[m:(m + li - 1)] <- k
+      u[m:(m + li - 1)] <- ind # sorted??
       nodes[k] <- i
       m <- m + li
       k <- k + 1L
     }
   }
-  if (sparse) X <- sparseMatrix(i = u, j = v, x = 2L)
-  else {
+#  print(all.equal(v, rep(seq_len(l), p[-1])))
+  if (sparse){
+    p <- cumsum(p)
+#    X <- sparseMatrix(i = u, j = v, x = 2L)
+    X <- sparseMatrix(i = u, p = p, x = 2L)
+  } else {
     X <- matrix(0L, n * (n - 1) / 2, l)
+    v <- rep(seq_len(l), p[-1])
     X[cbind(u, v)] <- 2L
   }
   colnames(X) <- nodes
@@ -329,32 +329,24 @@ designTipDated <- function(tree, tip.dates, sparse=TRUE){
 
 
 designCalibrated <- function(tree, sparse=TRUE, calibration=NULL){
-  #, tip.dates=NULL, strict=TRUE
-  #stopifnot(is.numeric(tip.dates), length(tip.dates) >= Ntip(tree))
   nTip <- Ntip(tree)
-  #if(!is.null(tree$node.label))
+  stopifnot(is.null(tree$node.label))
   cname <- tree$node.label
-#  nodes <- integer(tree$Nnode)
   X <- designUltra(tree, sparse=sparse)
-  #if(!is.null(tree$node.label))
   colnames(X) <- cname
   x <- X[, names(calibration), drop=FALSE] %*% calibration
   X <- cbind(X[,-match(names(calibration), cname)], rate=x)
-#  nodes <- attr(X, "nodes")
-#  X <- cbind(X, x)
-#  colnames(X) <- c(nodes, -1)
-#  attr(X, "nodes") <- nodes
   X
 }
 
 
 designConstrained <- function(tree, sparse=TRUE, tip.dates=NULL,
                               calibration=NULL){
-  stopifnot(is.numeric(tip.dates), length(tip.dates) >= Ntip(tree))
   X <- designUltra(tree, sparse=sparse)
   nTip <- Ntip(tree)
   # designTipDated
   if(!is.null(tip.dates)){
+    stopifnot(is.numeric(tip.dates), length(tip.dates) >= Ntip(tree))
     tmp <- function(n){
       x1 <- rep(seq_len(n), each=n)
       x2 <- rep(seq_len(n), n)
@@ -368,14 +360,14 @@ designConstrained <- function(tree, sparse=TRUE, tip.dates=NULL,
     x <- X[, names(calibration), drop=FALSE] %*% calibration
     X <- cbind(X[,-match(names(calibration), cname)], rate=x)
   }
-
-
+  X
 }
 
 #' @rdname designTree
 #' @export
 nnls.tree <- function(dm, tree, method=c("unrooted", "ultrametric", "tipdated"),
-          rooted=NULL, trace=1, weight=NULL, balanced=FALSE, tip.dates=NULL) {
+          rooted=NULL, trace=1, weight=NULL, balanced=FALSE, tip.dates=NULL,
+          constraint=NULL) {
   method <- match.arg(method, c("unrooted", "ultrametric", "tipdated"))
   if(has.singles(tree)) tree <- collapse.singles(tree)
   if (is.rooted(tree) && method == "unrooted") tree <- unroot(tree)
@@ -398,8 +390,6 @@ nnls.tree <- function(dm, tree, method=c("unrooted", "ultrametric", "tipdated"),
               unrooted=designUnrooted2(tree),
               ultrametric=designUltra(tree),
               tipdated=designTipDated(tree, tip.dates))
-#  if (rooted) X <- designUltra(tree)
-#  else X <- designUnrooted2(tree)
 
   if (!is.null(weight)) {
     y <- y * sqrt(weight)
