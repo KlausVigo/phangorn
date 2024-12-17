@@ -25,6 +25,7 @@
 \alias{as.DNAbin.phyDat}
 \alias{as.AAbin.phyDat}
 \alias{genlight2phyDat}
+\alias{unalign}
 \title{Conversion among Sequence Formats}
 \usage{
 phyDat(data, type = "DNA", levels = NULL, return.index = TRUE, ...)
@@ -64,6 +65,8 @@ as.StringSet(x, ...)
 genlight2phyDat(x, ambiguity = NA)
 
 acgt2ry(obj)
+
+unalign(x)
 }
 \arguments{
 \item{data}{An object containing sequences.}
@@ -101,6 +104,10 @@ example for specifying "USER" defined data formats in the vignette
 
 \code{acgt2ry} converts a \code{phyDat} object of nucleotides into an binary
 ry-coded dataset.
+
+\code{unalign} converts a \code{phyDat} object of nucleotides or amino acids
+into a \code{DNAbin} or \code{AAbin} object in list form removing all gaps.
+These objects can be exported using \code{\link[ape]{write.FASTA}}.
 }
 \examples{
 

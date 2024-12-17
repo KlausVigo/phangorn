@@ -12,6 +12,10 @@
 #' \code{acgt2ry} converts a \code{phyDat} object of nucleotides into an binary
 #' ry-coded dataset.
 #'
+#' \code{unalign} converts a \code{phyDat} object of nucleotides or amino acids
+#' into a \code{DNAbin} or \code{AAbin} object in list form removing all gaps.
+#' These objects can be exported using \code{\link[ape]{write.FASTA}}.
+#'
 #' @aliases
 #' as.phyDat.character as.phyDat.data.frame as.phyDat.matrix
 #' as.MultipleAlignment as.MultipleAlignment.phyDat
@@ -367,3 +371,21 @@ acgt2ry <- function(obj){
                         levels = c("r", "y"), ambiguity = NULL)
   obj
 }
+
+
+#' @rdname as.phyDat
+#' @export
+unalign <- function(x){
+  if(inherits(x, "phyDat")){
+    if(attr(x, "type")=="DNA") x<- as.DNAbin(x)
+    if(attr(x, "type")=="AA") x<- as.AAbin(x)
+  }
+  stopifnot(inherits(x, "DNAbin") || inherits(x, "AAbin"))
+  x <- as.list(x)
+  for(i in 1:length(x)){
+    tmp <- as.character(x[[i]])
+    x[[i]] <- x[[i]][tmp!="-"]
+  }
+  x
+}
+

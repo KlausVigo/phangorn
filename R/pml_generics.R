@@ -134,6 +134,8 @@ print.pml <- function(x, ...) {
 #' @param file a file name. File endings are added.
 #' @param save_rds logical, if TRUE saves the pml object as a rds file,
 #' otherwise the alignment is saved as a fasta file.
+## @param chi_sq logical, if TRUE performs $Chi^2$-test to check if sequences have similar
+## state composition.
 #' @param ... Further arguments passed to or from other methods.
 #' @returns \code{write.pml}  returns the input x invisibly.
 #' @seealso \code{\link{ancestral.pml}}, \code{\link{plotAnc}}
@@ -144,7 +146,7 @@ print.pml <- function(x, ...) {
 #' unlink(c("woodmouse.txt", "woodmouse_tree.nwk", "woodmouse_align.fasta"))
 #' @importFrom utils citation
 #' @export
-write.pml <- function(x, file="pml", save_rds=FALSE, ...){
+write.pml <- function(x, file="pml", save_rds=FALSE,...){
   digits <- -1
   if (hasArg("digits")) digits <- list(...)$digits
   write.tree(x$tree, file=paste0(file, "_tree.nwk"))
@@ -162,7 +164,8 @@ write.pml <- function(x, file="pml", save_rds=FALSE, ...){
   call$data <- quote(align)
   call$tree <- quote(tree)
   cat("tree <- read.tree(\"", file, "_tree.nwk\")\n", sep="")
-  cat("align <- read.phyDat(\"", file, "_align.fasta\", format=\"fasta\")",
+  type <- attr(x$data, "type")
+  cat("align <- read.phyDat(\"", file, "_align.fasta\", format=\"fasta\", type=\"", type,"\")",
       sep="")
   cat( "\nfit <- ")
   print(call)
