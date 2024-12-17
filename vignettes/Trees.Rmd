@@ -247,7 +247,7 @@ dates <- setNames(tmp$numdate_given, tmp$name)
 head(dates)
 ```
 Again we use the `pml_bb` function, which optimizes the tree given the constraints of the `tip.dates` vector. 
-```{r tipdated_fit}
+```{r tipdated_fit, cache=TRUE}
 fit_td <- pml_bb(H3N2, model="HKY+I", method="tipdated", tip.dates=dates, 
                rearrangement="NNI", control = pml.control(trace = 0))
 fit_td
