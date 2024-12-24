@@ -12,10 +12,11 @@ phangorn is an open source project, maintained by people who care. We are not di
 [website]: https://KlausVigo.github.io/phangorn
 [citation]: https://KlausVigo.github.io/phangorn/authors.html
 [email]: mailto:klaus.schliep@gmail.com
-
+<!--
 ## Code of conduct
 
 Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
+-->
 
 ## How you can contribute
 

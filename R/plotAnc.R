@@ -41,7 +41,7 @@ getTransition <- function(scheme, levels){
 #' @param \dots Further arguments passed to or from other methods.
 #' @returns \code{plotAnc} returns silently x.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{ancestral.pml}}, \code{\link[ape]{plot.phylo}},
+#' @seealso \code{\link{anc_pml}}, \code{\link[ape]{plot.phylo}},
 #' \code{\link[ape]{image.DNAbin}}, \code{\link[ape]{image.AAbin}}
 #' \code{\link[ggseqlogo]{ggseqlogo}}, \code{\link[ape]{edgelabels}}
 #' @keywords plot

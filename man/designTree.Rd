@@ -14,7 +14,7 @@ designTree(tree, method = "unrooted", sparse = FALSE, tip.dates = NULL,
 
 nnls.tree(dm, tree, method = c("unrooted", "ultrametric", "tipdated"),
   rooted = NULL, trace = 1, weight = NULL, balanced = FALSE,
-  tip.dates = NULL)
+  tip.dates = NULL, calibration = NULL)
 
 nnls.phylo(x, dm, method = "unrooted", trace = 0, ...)
 

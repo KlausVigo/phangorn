@@ -305,9 +305,6 @@ designUnrooted2 <- function(tree, sparse = TRUE) {
 
 
 designTipDated <- function(tree, tip.dates, sparse=TRUE){
-  #, strict=TRUE
-  #if(!is.numeric(tip.dates)) browser()
-  #if(!length(tip.dates) >= Ntip(tree)) browser()
   stopifnot(is.numeric(tip.dates), length(tip.dates) >= Ntip(tree))
   nTip <- Ntip(tree)
   tmp <- function(n){
@@ -367,7 +364,7 @@ designConstrained <- function(tree, sparse=TRUE, tip.dates=NULL,
 #' @export
 nnls.tree <- function(dm, tree, method=c("unrooted", "ultrametric", "tipdated"),
           rooted=NULL, trace=1, weight=NULL, balanced=FALSE, tip.dates=NULL,
-          constraint=NULL) {
+          calibration=NULL) {
   method <- match.arg(method, c("unrooted", "ultrametric", "tipdated"))
   if(has.singles(tree)) tree <- collapse.singles(tree)
   if (is.rooted(tree) && method == "unrooted") tree <- unroot(tree)

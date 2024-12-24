@@ -139,26 +139,44 @@ joint_sankoff <- function(tree, data, cost=NULL){
 }
 
 
-# alternative to acctran(tree, data)
+#' Assign edge length to tree
+#'
+#' \code{parsimony_edgelength} and \code{acctran} assign edge length to a tree where
+#' the edge length is the number of mutations. \code{parsimony_edgelengths}
+#' assigns edge lengths using a joint reconstruction based on the sankoff
+#' algorithm. Ties are broken at random and trees can be multifurating.
+#' \code{acctran} is based on the fitch algorithm and is faster. However trees
+#' need to be bifurcating and ties are split.
+#' @param tree a tree, i.e. an object of class pml
+#' @param data an object of class phyDat
+#' @return a tree with edge length.
+#' @export
+parsimony_edgelength <- function(tree, data){
+  if(inherits(tree, "phylo")) return(count_mutations(tree, data))
+  if(inherits(tree, "multiPhylo")) {
+    res <- lapply(tree, count_mutations, data=data)
+    class(res) <- "multiPhylo"
+    return(res)
+  }
+  NULL
+}
+
+
 count_mutations <- function(tree, data){
-  site <- "pscore"
   tree <- reorder(tree, "postorder")
   data <- data[tree$tip.label]
   tree_tmp <- makeNodeLabel(tree)
   anc <- joint_sankoff(tree_tmp, data)
+#  ind <-   length(data)+seq_along(anc)
+#  data[ind] <- anc
+#  names(dat[ind]) <- names(anc)
   dat <- rbind(data, anc)
-  nr <- attr(data, "nr")
   l <- length(dat)
-  fun <- function(x, site="pscore", nr){
-    if(site=="pscore") return(f$pscore(x))
-    sites <- f$sitewise_pscore(x)
-    sites[seq_len(nr)]
-  }
   f <- init_fitch(dat, FALSE, FALSE, m=2L)
   el <- numeric(nrow(tree$edge))
   for(i in seq_along(el)){
     edge_i <-  matrix(c(l+1L, l+1L, tree$edge[i,]), 2, 2)
-    el[i] <- fun(edge_i, site, nr)
+    el[i] <- f$pscore(edge_i)
   }
   tree$edge.length <- el
   tree

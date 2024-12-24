@@ -89,7 +89,7 @@ random.addition <- function (data, tree=NULL, method = "fitch")
     tree$edge <- edge
     remaining <- sample(setdiff(label, tree$tip.label))
     tree$tip.label <- c(tree$tip.label, remaining)
-    tree <- relabel(tree, label)
+    tree <- checkLabels(tree, label)
     remaining <- match(remaining, label)
   }
 

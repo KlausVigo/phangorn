@@ -19,3 +19,4 @@
 ^codemeta\.json$
 ^codecov\.yml$
 ^\.out.R
+^CONTRIBUTING.md$
