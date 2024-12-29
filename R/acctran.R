@@ -36,6 +36,7 @@ acctran2 <- function(tree, data) {
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{pratchet}}
 #' @examples
+#' data(Laurasiatherian)
 #' # lower number of iterations for the example, to run time less than 5 sec.
 #' treeRatchet <- pratchet(Laurasiatherian, minit=5, k=5, trace=0)
 #' # assign edge length (number of substitutions)

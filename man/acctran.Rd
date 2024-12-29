@@ -26,6 +26,7 @@ algorithm. Ties are broken at random and trees can be multifurating.
 need to be bifurcating and ties are split.
 }
 \examples{
+data(Laurasiatherian)
 # lower number of iterations for the example, to run time less than 5 sec.
 treeRatchet <- pratchet(Laurasiatherian, minit=5, k=5, trace=0)
 # assign edge length (number of substitutions)
