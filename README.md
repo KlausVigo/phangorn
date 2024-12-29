@@ -1,9 +1,9 @@
-[![R-CMD-check](https://github.com/KlausVigo/phangorn/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/KlausVigo/phangorn/actions/workflows/R-CMD-check.yaml)
 [![CRAN Status Badge](https://www.r-pkg.org/badges/version/phangorn)](https://cran.r-project.org/package=phangorn)
 [![CRAN Downloads (monthly)](https://cranlogs.r-pkg.org/badges/phangorn)](https://cran.r-project.org/package=phangorn)
 [![CRAN Downloads (total)](https://cranlogs.r-pkg.org/badges/grand-total/phangorn)](https://cran.r-project.org/package=phangorn)
+[![R-CMD-check](https://github.com/KlausVigo/phangorn/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/KlausVigo/phangorn/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/KlausVigo/phangorn/branch/master/graph/badge.svg)](https://app.codecov.io/github/KlausVigo/phangorn?branch=master)
-                                                                                                      
+
 # phangorn <img src='man/figures/logo.png' align="right" width="120" />
 
 
