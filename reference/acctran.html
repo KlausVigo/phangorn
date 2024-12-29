@@ -94,7 +94,8 @@ need to be bifurcating and ties are split.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># lower number of iterations for the example, to run time less than 5 sec.</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># lower number of iterations for the example, to run time less than 5 sec.</span></span></span>
 <span class="r-in"><span><span class="va">treeRatchet</span> <span class="op">&lt;-</span> <span class="fu"><a href="parsimony.html">pratchet</a></span><span class="op">(</span><span class="va">Laurasiatherian</span>, minit<span class="op">=</span><span class="fl">5</span>, k<span class="op">=</span><span class="fl">5</span>, trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># assign edge length (number of substitutions)</span></span></span>
 <span class="r-in"><span><span class="va">treeRatchet</span> <span class="op">&lt;-</span> <span class="fu">parsimony_edgelength</span><span class="op">(</span><span class="va">treeRatchet</span>, <span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
