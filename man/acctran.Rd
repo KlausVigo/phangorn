@@ -33,3 +33,9 @@ treeRatchet <- parsimony_edgelength(treeRatchet, Laurasiatherian)
 plot(midpoint(treeRatchet))
 add.scale.bar(0,0, length=100)
 }
+\seealso{
+\code{\link{pratchet}}
+}
+\author{
+Klaus Schliep \email{klaus.schliep@gmail.com}
+}

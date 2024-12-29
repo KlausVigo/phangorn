@@ -116,7 +116,7 @@ Analysis. \emph{Cladistics} \bold{15}, 407-414
 }
 \seealso{
 \code{\link{bab}}, \code{\link{CI}}, \code{\link{RI}},
-\code{\link{ancestral.pml}}, \code{\link{nni}}, \code{\link{NJ}},
+\code{\link{acctran}}, \code{\link{nni}}, \code{\link{NJ}},
 \code{\link{pml}}, \code{\link{getClans}}, \code{\link{ancestral.pars}},
 \code{\link{bootstrap.pml}}
 }

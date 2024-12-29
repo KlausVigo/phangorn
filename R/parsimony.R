@@ -42,7 +42,7 @@
 #' according to the ACCTRAN criterion.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{bab}}, \code{\link{CI}}, \code{\link{RI}},
-#' \code{\link{ancestral.pml}}, \code{\link{nni}}, \code{\link{NJ}},
+#' \code{\link{acctran}}, \code{\link{nni}}, \code{\link{NJ}},
 #' \code{\link{pml}}, \code{\link{getClans}}, \code{\link{ancestral.pars}},
 #' \code{\link{bootstrap.pml}}
 #' @references Felsenstein, J. (2004). \emph{Inferring Phylogenies}. Sinauer
