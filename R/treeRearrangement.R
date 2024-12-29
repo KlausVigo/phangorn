@@ -59,6 +59,7 @@ nnin <- function(tree, n) {
 #' @rdname nni
 #' @export nni
 nni <- function(tree) {
+  stopifnot(Ntip(tree) > 3-is.rooted(tree))
   tip.label <- tree$tip.label
   attr(tree, "order") <- NULL
   k <- min(tree$edge[, 1]) - 1
@@ -211,8 +212,7 @@ kSPR <- function(tree, k = NULL) {
 
 
 oneOf4 <- function(tree, ind1, ind2, from = 1, to = 1, root) {
-  if (!is.binary(tree))
-    stop("trees must be binary")
+  if (!is.binary(tree))  stop("tree must be binary")
   tree <- reroot(tree, ind2, FALSE)
   kids1 <- Children(tree, ind1)
   anc <- Ancestors(tree, ind1, "all")

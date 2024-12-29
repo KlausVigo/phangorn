@@ -11,7 +11,7 @@ support <- function(tree, trees, method="FBP", tol=2e-8, scale=TRUE){
   if("MCC" %in% method){
     trees <- .uncompressTipLabel(trees) # check if needed
     if(any(!is.rooted(trees)))
-      stop("All trees need to be rooted for method 'MCC'!")
+      stop("All trees need to be rooted!")
     x <- prop.clades(tree, trees)
     x <- (x / length(trees))
     if(!scale) x <- x * 100
