@@ -68,7 +68,7 @@ Iris Bardel-Kahr</h4>
 Graz<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2024-12-24</h4>
+            <h4 data-toc-skip class="date">2024-12-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/master/vignettes/Trees.Rmd" class="external-link"><code>vignettes/Trees.Rmd</code></a></small>
       <div class="d-none name"><code>Trees.Rmd</code></div>
@@ -227,7 +227,7 @@ the function not write the current status to the console. The function
 may return several best trees, but these trees have no branch length
 assigned to them yet. Now let’s do this:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">treeRatchet</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parsimony.html">acctran</a></span><span class="op">(</span><span class="va">treeRatchet</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">treeRatchet</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/acctran.html">acctran</a></span><span class="op">(</span><span class="va">treeRatchet</span>, <span class="va">primates</span><span class="op">)</span></span></code></pre></div>
 <p>After assigning edge weights, we prune away internal edges of length
 <code>tol</code> (default = 1e-08), so our trees may contain
 multifurcations.</p>
@@ -800,7 +800,7 @@ programs like <em>TempEst</em> <span class="citation">(Rambaut et al.
 <span><span class="co">##  [9] ragg_1.3.3        sass_0.4.9        rmarkdown_2.29    quadprog_1.5-8   </span></span>
 <span><span class="co">## [13] grid_4.4.2        evaluate_1.0.1    jquerylib_0.1.4   fastmap_1.2.0    </span></span>
 <span><span class="co">## [17] yaml_2.3.10       lifecycle_1.0.4   compiler_4.4.2    codetools_0.2-20 </span></span>
-<span><span class="co">## [21] igraph_2.1.2      fs_1.6.5          fastmatch_1.1-4   pkgconfig_2.0.3  </span></span>
+<span><span class="co">## [21] igraph_2.1.2      fs_1.6.5          fastmatch_1.1-6   pkgconfig_2.0.3  </span></span>
 <span><span class="co">## [25] Rcpp_1.0.13-1     htmlwidgets_1.6.4 systemfonts_1.1.0 lattice_0.22-6   </span></span>
 <span><span class="co">## [29] digest_0.6.37     R6_2.5.1          parallel_4.4.2    magrittr_2.0.3   </span></span>
 <span><span class="co">## [33] Matrix_1.7-1      bslib_0.8.0       tools_4.4.2       pkgdown_2.1.1    </span></span>

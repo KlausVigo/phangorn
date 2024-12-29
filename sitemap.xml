@@ -18,6 +18,7 @@
 <url><loc>https://klausvigo.github.io/phangorn/reference/NJ.html</loc></url>
 <url><loc>https://klausvigo.github.io/phangorn/reference/SH.test.html</loc></url>
 <url><loc>https://klausvigo.github.io/phangorn/reference/SOWH.test.html</loc></url>
+<url><loc>https://klausvigo.github.io/phangorn/reference/acctran.html</loc></url>
 <url><loc>https://klausvigo.github.io/phangorn/reference/add.tips.html</loc></url>
 <url><loc>https://klausvigo.github.io/phangorn/reference/addConfidences.html</loc></url>
 <url><loc>https://klausvigo.github.io/phangorn/reference/add_ci.html</loc></url>
@@ -61,7 +62,6 @@
 <url><loc>https://klausvigo.github.io/phangorn/reference/neighborNet.html</loc></url>
 <url><loc>https://klausvigo.github.io/phangorn/reference/nni.html</loc></url>
 <url><loc>https://klausvigo.github.io/phangorn/reference/parsimony.html</loc></url>
-<url><loc>https://klausvigo.github.io/phangorn/reference/parsimony_edgelength.html</loc></url>
 <url><loc>https://klausvigo.github.io/phangorn/reference/phangorn-internal.html</loc></url>
 <url><loc>https://klausvigo.github.io/phangorn/reference/phangorn-package.html</loc></url>
 <url><loc>https://klausvigo.github.io/phangorn/reference/phyDat.html</loc></url>
