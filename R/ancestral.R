@@ -329,51 +329,6 @@ mpr <- function(tree, data, cost = NULL, return="prob", tips=FALSE, ...) {
 }
 
 
-#
-# ACCTRAN
-#
-acctran2 <- function(tree, data) {
-  if(!is.binary(tree)) tree <- multi2di(tree)
-  tree <- reorder(tree, "postorder")
-  edge <- tree$edge
-  data <- subset(data, tree$tip.label)
-  f <- init_fitch(data, FALSE, FALSE, m=2L)
-  psc_node <- f$pscore_node(edge)
-  tmp <- reorder(tree)$edge
-  tmp <- tmp[tmp[,2]>Ntip(tree), ,drop=FALSE]
-  f$traverse(edge)
-  if(length(tmp)>0)f$acctran_traverse(tmp)
-  psc <- f$pscore_acctran(edge)
-  el <- psc
-  parent <- unique(edge[,1])
-  desc <- Descendants(tree, parent, "children")
-  for(i in seq_along(parent)){
-    x <- psc_node[parent[i]] -sum(psc[desc[[i]]])
-    if(x>0) el[desc[[i]] ] <- el[desc[[i]] ] + x/length(desc[[i]])
-  }
-  tree$edge.length <- el[edge[,2]]
-  tree
-}
-
-
-#' @rdname parsimony
-#' @export
-acctran <- function(tree, data) {
-  if (inherits(tree, "multiPhylo")) {
-    compress <- FALSE
-    if (!is.null(attr(tree, "TipLabel"))){
-      compress <- TRUE
-      tree <- .uncompressTipLabel(tree)
-    }
-    res <- lapply(tree, acctran2, data)
-    class(res) <- "multiPhylo"
-    if (compress) res <- .compressTipLabel(res)
-    return(res)
-  }
-  acctran2(tree, data)
-}
-
-#, return = "prob"
 ptree <- function(tree, data, acctran=TRUE, return = "prob", tips=FALSE, ...) {
   tree <- reorder(tree, "postorder")
   data <- subset(data, tree$tip.label)
