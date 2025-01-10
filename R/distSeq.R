@@ -144,8 +144,8 @@ dist.ml <- function(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
   bf <- as.double(bf)
 
   if( (model == "JC69"  || model == "F81") && !ambig_sites && k==1){
-    d <- dist.hamming(x)
-    E <- .75
+    d <- dist.hamming(x, exclude=exclude)
+    E <- 0.75
     if(model == "F81") E <- 1 - sum(bf^2)
     dist_jc <- function(d) -E * log(1- d/E )
     var_jc <- function(d, n) d * (1-d) / (n * (1 - d / E)^2)
