@@ -93,15 +93,7 @@ addConfidences.splits <- function(x, y, scaler = 1, rooted=FALSE, ...) {
   tiplabel <- attr(x, "labels")
   nTips <- length(tiplabel)
   #    x = addTrivialSplits(x)
-  if (inherits(y, "phylo")) {
-    y <- relabel(y, tiplabel)
-#    ind <- match(tiplabel, y$tip.label)
-#    if (any(is.na(ind)) | length(tiplabel) != length(y$tip.label))
-#      stop("trees have different labels")
-#    y$tip.label <- y$tip.label[ind]
-#    ind2 <- match(seq_along(ind), y$edge[, 2])
-#    y$edge[ind2, 2] <- order(ind)
-  }
+  if (inherits(y, "phylo")) y <- relabel(y, tiplabel)
   if (inherits(y, "multiPhylo")) {
     if (inherits(try(.compressTipLabel(y), TRUE), "try-error")) {
       res <- addConfidencesMultiPhylo(x, y)
