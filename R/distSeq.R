@@ -72,17 +72,6 @@ dist.hamming <- function(x, ratio = TRUE, exclude = "none"){
   if (exclude == "all") x <- removeAmbiguousSites(x)
   weight <- attr(x, "weight")
   d <- numeric( (l * (l - 1)) / 2)
-  if (exclude == "pairwise") {
-    k <- 1
-    W <- numeric(l * (l - 1) / 2)
-    for (i in 1:(l - 1)) {
-      tmp <- con[x[[i]]]
-      for (j in (i + 1):l) {
-        W[k] <- sum(weight[tmp & con[ x[[j]] ] ])
-        k <- k + 1
-      }
-    }
-  }
   if (exclude == "pairwise"){
     contrast[!con, ] <- 1L
     attr(x, "contrast") <- contrast
@@ -90,8 +79,20 @@ dist.hamming <- function(x, ratio = TRUE, exclude = "none"){
   f <- init_fitch(x, FALSE, TRUE, m=1L)
   d <- f$hamming_dist()
   if (ratio) {
-    if (exclude == "pairwise") d <- d / W
-    else d <- d / sum(weight)
+    if (exclude == "pairwise") {
+      k <- 1
+      W <- numeric(l * (l - 1) / 2)
+      for (i in 1:(l - 1)) {
+        tmp <- con[x[[i]]]
+        for (j in (i + 1):l) {
+          W[k] <- sum(weight[tmp & con[ x[[j]] ] ])
+          k <- k + 1
+        }
+      }
+      d <- d / W
+    }else d <- d / sum(weight)
+#    if (exclude == "pairwise") d <- d / W
+
   }
   attr(d, "Size") <- l
   if (is.list(x))
