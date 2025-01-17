@@ -130,6 +130,7 @@ write.phyDat <- function(x, file, format="phylip", colsep = "", nbcol=-1, ...){
     write.dna(as.character(x), file, format=format, colsep = colsep,
               nbcol=nbcol, ...)
   }
+  invisible(x)
 }
 
 
