@@ -160,7 +160,7 @@ optimPartEdge <- function(object, ...) {
   eps <- 1
   scalep <- 1
   k <- 1
-  while (eps > 0.001 & k < 50) {
+  while (eps > 0.001 && k < 50) {
     if (scalep == 1) {
       for (i in 1:n) {
         lv <- drop(exp(object[[i]]$siteLik))
@@ -182,8 +182,7 @@ optimPartEdge <- function(object, ...) {
       eps <- 1
       thetaNew <- log(theta)
       ll1 <- ll0
-    }
-    else {
+    } else {
       scalep <- 1
       tree <- tmptree
     }
@@ -209,7 +208,7 @@ makePart <- function(fit, rooted, weight = ~index + genes) {
   if (class(weight)[1] == "formula")
     weight <- xtabs(weight, data = attr(dat, "index"))
   fits <- NULL
-  for (i in 1:dim(weight)[2]) {
+  for (i in seq_len(dim(weight)[2])) {
     ind <- which(weight[, i] > 0)
     dat2 <- getRows(dat, ind)
     attr(dat2, "weight") <- weight[ind, i]
@@ -222,19 +221,18 @@ makePart <- function(fit, rooted, weight = ~index + genes) {
 
 #' @rdname pmlPart
 #' @export
-multiphyDat2pmlPart <- function(x, method="unrooted", tip.dates=NULL, ...) {
-  if(is.list(x) && all(sapply(x,inherits, "phyDat"))) seq  <- x
+multiphyDat2pmlPart <- function(x, method = "unrooted", tip.dates = NULL, ...) {
+  if(is.list(x) && all(sapply(x, inherits, "phyDat"))) seq  <- x
   else if(inherits(x, "multiphyDat")) seq <- x@seq
   else stop("x must be of class multiphyDat or a list of phyDat objects")
   shared_tree <- TRUE
   if (shared_tree) {
     concatenate_x <- do.call(cbind.phyDat, seq)
     tree <- candidate_tree(concatenate_x, method=method, tip.dates=tip.dates)
-  }
-  else tree <- NULL
+  } else tree <- NULL
   fun <-  function(x, method, tip.dates, tree, ...) {
     if (is.null(tree)) {
-      tree <- candidate_tree(x, method=method, tip.dates=tip.dates)
+      tree <- candidate_tree(x, method = method, tip.dates = tip.dates)
     }
     pml(tree, x, ...)
   }
@@ -323,9 +321,9 @@ plot.pmlPart <- function(x, ...) {
 #' @rdname pmlPart
 #' @export pmlPart
 pmlPart <- function(formula, object, control = pml.control(epsilon = 1e-8,
-                    maxit = 10, trace = 1), model = NULL, method="unrooted", ...) {
+            maxit = 10, trace = 1), model = NULL, method = "unrooted", ...) {
   method <- match.arg(method, c("unrooted", "ultrametric", "tipdated"))
-  if(method=="unrooted") rooted <- FALSE
+  if(method == "unrooted") rooted <- FALSE
   else rooted <- TRUE
   call <- match.call()
   form <- phangornParseFormula(formula)
@@ -356,7 +354,7 @@ pmlPart <- function(formula, object, control = pml.control(epsilon = 1e-8,
   if (inherits(object, "phyDat")) fits <- makePart(object, rooted = rooted, ...)
   if (inherits(object, "pmlPart")) fits <- object$fits
   if (inherits(object, "list")) fits <- object
-  if(AllNNI) if(Ntip(fits[[1]]$tree) <  (3 + !rooted)) AllNNI <- FALSE
+  if(AllNNI && (Ntip(fits[[1]]$tree) <  (3 + !rooted))) AllNNI <- FALSE
 
   trace <- control$trace
   epsilon <- control$epsilon
@@ -415,7 +413,7 @@ pmlPart <- function(formula, object, control = pml.control(epsilon = 1e-8,
     return(object)
   })
 
-  while (eps > epsilon & m < maxit) {
+  while (eps > epsilon && m < maxit) {
     loli <- 0
 #    if (AllEdge) fits <- optimPartEdge(fits)
     if (any(c(PartNni, PartBf, PartInv, PartQ, PartGamma, PartEdge, PartRate))){
@@ -557,7 +555,7 @@ pmlCluster.fit <- function(formula, fit, weight, p = 4, part = NULL,
     res <- list(logLik = logLik, Partition = Part, trees = trees)
     result <- list(logLik = loli, fits = fits, Partition = part, df = df,
                    res = res, call = call)
-    class(result) <- c("pmlPart")
+    class(result) <- "pmlPart"
     return(result)
   })
 
@@ -645,8 +643,7 @@ pmlCluster.fit <- function(formula, fit, weight, p = 4, part = NULL,
       medtmp <- quantile(tmp, .25)
       medind <- which(tmp <= medtmp)
       part[medind] <- max.col(LL[medind, ])
-    }
-    else part <- max.col(LL)
+    } else part <- max.col(LL)
     #        else part <- apply(LL, 1, which.max)
     # force groups to have at least one member
     part[fixi] <- 1:p
@@ -659,8 +656,7 @@ pmlCluster.fit <- function(formula, fit, weight, p = 4, part = NULL,
     if (trace > 0) print(loli)
     Part <- cbind(Part, part)
     df2 <- df2 + df2
-    if (eps == ncw & swap == 0)
-      AllNNI <- FALSE
+    if (eps == ncw && swap == 0) AllNNI <- FALSE
     m <- m + 1
     if (eps == ncw)
       iter <- iter + 1
@@ -784,7 +780,7 @@ pmlCluster <- function(formula, fit, weight, p = 1:5, part = NULL, nrep = 10,
 
 
 #' @export
-plot.pmlCluster <- function(x, which = c(1L:3L), caption =
+plot.pmlCluster <- function(x, which = 1L:3L, caption =
                             list("BIC", "log-likelihood", "Partitions"), ...) {
   show <- rep(FALSE, 3)
   show[which] <- TRUE
@@ -904,7 +900,6 @@ optNNI <- function(fit, INDEX) {
   ll.0 <- fit$ll.0
   bf <- fit$bf
   eig <- fit$eig
-#  k <- fit$k
   w <- fit$w
   g <- fit$g
   rootEdges <- attr(INDEX, "root")
@@ -947,7 +942,7 @@ optNNI <- function(fit, INDEX) {
 }
 
 
-optimPartNNI <- function(object, AllEdge = TRUE, trace=0, ...) {
+optimPartNNI <- function(object, AllEdge = TRUE, trace = 0, ...) {
   tree <- object[[1]]$tree
   INDEX <- indexNNI(tree)
   l <- length(object)
@@ -998,7 +993,7 @@ optimPartNNI <- function(object, AllEdge = TRUE, trace=0, ...) {
       }
       loglik0 <- 0
       for (i in 1:l) loglik0 <- loglik0 + logLik(object[[i]])
-      if(trace>0) cat(loglik0, "\n")
+      if(trace > 0) cat(loglik0, "\n")
     }
   }
   if (AllEdge) object <- optimPartEdge(object)

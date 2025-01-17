@@ -20,7 +20,7 @@ getOrder <- function(x) {
   weight <- attr(x, "weight")
   storage.mode(weight) <- "double"
 
-  f <- init_fitch(x, FALSE, FALSE, m=4L)
+  f <- init_fitch(x, FALSE, FALSE, m = 4L)
 
   edge <- tree$edge
   for (i in seq_along(remaining)) {
@@ -53,7 +53,7 @@ getOrder <- function(x) {
 }
 
 
-seq_stats <- function(x){
+seq_stats <- function(x) {
   nr <- attr(x, "nr")
   contrast <- attr(x, "contrast")
   a <- seq_len(nr)
@@ -63,7 +63,7 @@ seq_stats <- function(x){
     STATE[IND] <- STATE[IND] + 1L
     POS[IND] <- i
   }
-  list(state=STATE, position=POS)
+  list(state = STATE, position = POS)
 }
 
 # Incompatibility lower Bound
@@ -94,7 +94,7 @@ ilb <- function(x, LB) {
   res <- numeric(nTips)
   for (i in 1:(l - 1)) {
     for (j in (i + 1):l) {
-      if ((weight0[i] > 0) & (weight0[j] > 0)) {
+      if ((weight0[i] > 0) && (weight0[j] > 0)) {
         z <- paste(y[, i], y[, j], sep = "_")
         dis2 <- single_dis[, i] + single_dis[, j]
         dis <- fun1(z)
@@ -171,14 +171,14 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
   if (hasArg(ILBound))
     ILBound <- list(...)$ILBound
   else ILBound <- FALSE
-  if(inherits(data, "DNAbin") | inherits(data, "AAbin")) data <- as.phyDat(data)
+  if(inherits(data, "DNAbin") || inherits(data, "AAbin")) data <- as.phyDat(data)
   if (!inherits(data, "phyDat")) stop("data must be of class phyDat")
-  compress <- TRUE
+  # compress <- TRUE
   recursive <- TRUE
   nTips <- length(data)
   if (nTips < 4) return(stree(nTips, tip.label = names(data)))
 
-  data <- removeParsimonyUninfomativeSites(data, recursive=recursive)
+  data <- removeParsimonyUninfomativeSites(data, recursive = recursive)
   star_tree <- attr(data, "nr") == 0
   add_taxa <- !is.null(attr(data, "duplicated"))
   p0 <- attr(data, "p0")
@@ -196,20 +196,20 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
   # compress sequences (all transitions count equal)
   data <- compressSites(data)
   o <- order(attr(data, "weight"), decreasing = TRUE)
-  data <- subset(data, select = o, site.pattern=TRUE)
+  data <- subset(data, select = o, site.pattern = TRUE)
 
   nr <- as.integer(attr(data, "nr"))
   inord <- getOrder(data)
-  data <- data[inord,]
+  data <- data[inord, ]
   if(trace > 0) cat("Compute starting tree\n")
-  tree <- pratchet(data, start = tree, trace = trace - 1, maxit=10,
-                   all=FALSE, ...)
-  p_vec <- fitch(tree, data, "site")
+  tree <- pratchet(data, start = tree, trace = trace - 1, maxit = 10,
+                   all = FALSE, ...)
+#  p_vec <- fitch(tree, data, "site")
 
   nTips <- m <- length(data)
   TMP <- matrix(0, m, nr) # UB <-
   for (i in 2:m) {
-    TMP[i, ] <- lowerBound(data[1:i,])
+    TMP[i, ] <- lowerBound(data[1:i, ])
   }
 
   weight <- as.double(attr(data, "weight"))
@@ -224,10 +224,10 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
   mms0 <- mms0[nTips] - mms0
   mms0 <- c(mms0, 0)
 
-  f <- init_fitch(data, m=4L)
+  f <- init_fitch(data, m = 4L)
 
   bound <- f$pscore(tree$edge)
-  if (trace){
+  if (trace) {
     cat("lower bound:", p0 + mms0[1], "\n")
     cat("upper bound:", bound, "\n")
   }
@@ -246,17 +246,16 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
   M <- as.integer(1L:nTips + nTips - 1L)
 
   PSC <- matrix(0, sum(L), 3)
-  PSC[1,] <- c(3, 1, 0)
+  PSC[1, ] <- c(3, 1, 0)
   PSC[1, 3] <- f$pscore(startTree$edge)
-
-  k <- 4L
+#  k <- 4L
   Nnode <- 1L
   npsc <- 1L
   status <- 0
   visited <- numeric(nTips)
-  if(trace > 0 && nTips > 6){
+  if (trace > 0 && nTips > 6) {
     cat("Search Baumraum (tree space)\n")
-    pb <- txtProgressBar(min=0, max=105, initial=0, style=3)
+    pb <- txtProgressBar(min = 0, max = 105, initial = 0, style = 3)
 #    cli_progress_bar("Search Baumraum (tree space)", total = 105, clear=TRUE)
   }
   result <- list()
@@ -272,7 +271,7 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
     if (ms < bound + 0.1) {
       if ((a + 1L) < nTips) {
         ind <- (1:L[a])[score <= bound]   # sehr langsam
-        trees[[a + 1]][seq_along(ind)] <- .Call('AddOnes', tmpTree,
+        trees[[a + 1]][seq_along(ind)] <- .Call("AddOnes", tmpTree,
                         as.integer(a + 1L), as.integer(ind), as.integer(L[a]),
                         as.integer(M[a]))
         l <- length(ind)
@@ -281,26 +280,24 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
         PSC[npsc + os, ] <- c(rep(a + 1, l), os, score[ind] - mms0[a + 1L])
         npsc <- npsc + l
         visited[a + 1] <- visited[a + 1] + l
-      }
-      else {
+      } else {
         ind <- which(score == ms)
         tmp <- vector("list", length(ind))
-        tmp[seq_along(ind)] <- .Call('AddOnes', tmpTree,
+        tmp[seq_along(ind)] <- .Call("AddOnes", tmpTree,
                                      as.integer(a + 1L), as.integer(ind),
                                      as.integer(L[a]), as.integer(M[a]))
         if (ms + 1e-6 < bound) {
           bound <- ms
           if (trace) cat("upper bound:", bound + p0, "\n")
           result <- tmp
-          TMP <- PSC[seq_len(npsc),]
+          TMP <- PSC[seq_len(npsc), ]
           TMP <- TMP[TMP[, 3] < (bound + 1e-8), ]
           npsc <- nrow(TMP)
-          PSC[seq_len(npsc),] <- TMP
-        }
-        else result <- c(result, tmp)
+          PSC[seq_len(npsc), ] <- TMP
+        } else result <- c(result, tmp)
       }
     }
-    if(a==6 && trace>0 ) setTxtProgressBar(pb, status <- status + 1)
+    if(a == 6 && trace > 0 ) setTxtProgressBar(pb, status <- status + 1)
     #cli_progress_update()
   }
   for (i in seq_along(result)) {
