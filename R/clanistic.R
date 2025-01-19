@@ -82,7 +82,7 @@
 #' (p-score) for all trees and variables. The data.frame has two attributes,
 #' the first is a splits object to identify the taxa of each tree and the
 #' second is a splits object containing all partitions that perfectly fit.
-#' @author Klaus Schliep \email{klaus.schliep@@snv.jussieu.fr}
+#' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #'
 #' Francois-Joseph Lapointe \email{francois-joseph.lapointe@@umontreal.ca}
 #' @seealso \code{\link{parsimony}}, Consistency index \code{\link{CI}},
@@ -426,7 +426,7 @@ getDiversity <- function (tree, x, norm = TRUE, var.names = NULL, labels="new")
         names(res) <- c("tree", "variable", "E clan", "# natives",
             "# intruder", "# unknown", "E slice", "# intruder", "# unknown",
             "E melange", "# intruder", "# unknown", "bs 1", "bs 2", "p-score")
-        warning("The variable names have changed")
+        #warning("The variable names have changed")
     }
     attr(res, "Perfect") <- L
     class(res) <- c("clanistics", "data.frame")

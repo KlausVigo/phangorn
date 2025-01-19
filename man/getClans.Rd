@@ -154,7 +154,7 @@ Biology and Evolution} 28(4): 1393-1405
 Retention index \code{\link{RI}}, \code{\link{phyDat}}
 }
 \author{
-Klaus Schliep \email{klaus.schliep@snv.jussieu.fr}
+Klaus Schliep \email{klaus.schliep@gmail.com}
 
 Francois-Joseph Lapointe \email{francois-joseph.lapointe@umontreal.ca}
 }
