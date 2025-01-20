@@ -19,8 +19,7 @@ dist.logDet(x)
 \item{ratio}{Compute uncorrected ('p') distance or character difference.}
 
 \item{exclude}{One of "none", "all", "pairwise" indicating whether to delete
-the sites with missing data (or ambiguous states). The default is handle
-missing data as in pml.}
+the sites with gaps, missing data (or ambiguous states). See details below.}
 
 \item{model}{One of "JC69", "F81" or one of 17 amino acid models see
 details.}
@@ -40,7 +39,7 @@ an object of class \code{dist}
 }
 \description{
 \code{dist.hamming}, \code{dist.ml} and \code{dist.logDet} compute pairwise
-distances for an object of class \code{phyDat}.  \code{dist.ml} uses DNA /
+distances for an object of class \code{phyDat}. \code{dist.ml} uses DNA /
 AA sequences to compute distances under different substitution models.
 }
 \details{
@@ -51,6 +50,17 @@ matrices and frequencies can be supplied.
 
 The "F81" model uses empirical base frequencies, the "JC69" equal base
 frequencies. This is even the case if the data are not nucleotides.
+
+The argument \code{exclude} decides how gaps / ambiguous data / missing data
+are treated. Usually gaps are treated as ambiguous states, but you can give
+gaps its on state \code{\link{gap_as_state}}. \code{exclude="none"} keeps all
+ambiguous data. The behavior of \code{dist.ml} is in this case these same
+you would achieve using \code{optim.pml} to compute pairwise distances, it
+might be a bit odd. \code{exclude="all"} removes all sites with ambiguous
+states and all gaps if these are coded as ambiguous states. This can lead to
+the situation that there only few sites if any fo the alignment left.
+Safer is therefore to use \code{exclude="pairwise"} which only removes sites
+which are ambiguous for each pair of sequences.
 }
 \examples{
 

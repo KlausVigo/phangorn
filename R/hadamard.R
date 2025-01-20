@@ -51,7 +51,7 @@ ldfactorial <- function(x) {
 
 #' Hadamard Matrices and Fast Hadamard Multiplication
 #'
-#' A collection of functions to perform Hadamard conjugation.  %Hv of a
+#' A collection of functions to perform Hadamard conjugation Hv of a
 #' Hadamard matrix H with a vector v using fast Hadamard multiplication.
 #'
 #' \code{h2st} and \code{h4st} perform Hadamard conjugation for 2-state

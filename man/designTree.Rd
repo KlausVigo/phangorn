@@ -67,7 +67,7 @@ sparse.
 squares given a tree and a distance matrix.  \code{designTree} and
 \code{designSplits} compute design matrices for the estimation of edge
 length of (phylogenetic) trees using linear models.  For larger trees a
-sparse design matrix can save a lot of memory. %\code{designTree} also
+sparse design matrix can save a lot of memory. \code{designTree} also
 computes a contrast matrix if the method is "rooted".
 }
 \examples{

@@ -92,4 +92,5 @@ par(old.par)
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}
 }
-\keyword{cluster}
+\keyword{distribution}
+\keyword{hplot}

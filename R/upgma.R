@@ -1,14 +1,22 @@
 #' UPGMA, WPGMA and sUPGMA
 #'
-#' UPGMA and WPGMA clustering. UPGMA and WPGMA are a wrapper function around
-#' \code{\link[stats]{hclust}} returning a \code{phylo} object.
+#' UPGMA and WPGMA clustering. UPGMA (Sokal and Michener 1958) and WPGMA
+#' (McQuitty 1966) are a wrapper function around \code{\link[stats]{hclust}}
+#' returning a \code{phylo} object.
 ## UPGMA additionally performs nearest neighbor interchange (NNI) tree
-## rearrangements to improve the phylogeny (Schliep et al. 2024).
+## rearrangements to improve the phylogeny (Schliep et al. 2025).
 #' \code{supgma} perform serial sampled UPGMA similar to Drummond and Rodrigo
 #' (2000).
 ##  and also performing NNI rearrangements.
 #'
-#' @param D A distance matrix.
+#' UPGMA and WPGMA return ultrametric trees, it is implicitly assumed that the
+#' distances supplied are close to ultrametric, e.g. hold the molecular clock
+#' assumption. Neighbor Joining (NJ) \code{\link[ape]{nj}} and fastME
+#' \code{\link[ape]{fastme}} relax this assumption to additive distances.
+#' sUPGMA assumes tip dated data.
+#'
+#' @param D A distance matrix, i.e. an object of class \code{dist}. If an matrix
+#' is supplied it is tried to covert it do a \code{dist} object.
 #' @param method The agglomeration method to be used. This should be (an
 #' unambiguous abbreviation of) one of "ward", "single", "complete", "average",
 #' "mcquitty", "median" or "centroid". The default is "average".
@@ -16,6 +24,8 @@
 ## the tree. Currently only available for \code{method="average"}.
 #' @param trace	 Show output during optimization (see details).
 #' @param tip.dates	 A named vector of sampling times associated to the tips.
+## @param NNI logical to indicate if nearest neighbor interchange (NNI)
+## rearrangements should applied.
 #' @param \dots Further arguments passed to or from other methods.
 #' @return A phylogenetic tree of class \code{phylo}.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
@@ -32,6 +42,10 @@
 #' Drummond, A., & Rodrigo, A. G. (2000). Reconstructing genealogies of serial
 #' samples under the assumption of a molecular clock using serial-sample UPGMA.
 #' \emph{Molecular Biology and Evolution}, \bold{17(12)}, 1807-1815.
+#'
+#' McQuitty, L.L. (1966). Similarity Analysis by Reciprocal Pairs for Discrete
+#' and Continuous Data. \emph{Educational and Psychological Measurement},
+#' \bold{26}, 825–831.
 #' @keywords cluster
 #' @examples
 #'
@@ -48,9 +62,7 @@ upgma <- function(D, method = "average", ...) {
   DD <- as.dist(D)
   hc <- hclust(DD, method = method)
   result <- as.phylo(hc)
-#  if(NNI && method=="average"){
-#    result <- upgma_nni(DD, tree=result, ...)
-#  }
+  # if(NNI && method=="average")  result <- upgma_nni(DD, tree=result, ...)
   result <- reorder(result, "postorder")
   result
 }
@@ -71,9 +83,11 @@ wpgma <- function(D, method = "mcquitty", ...) {
 
 #' @rdname upgma
 #' @export
-supgma <- function(D, tip.dates, trace=0){
+supgma <- function(D, tip.dates, trace=0, ...){
+  D <- as.dist(D)
+  stopifnot("D needs to be of class dist"=inherits(D, "dist"))
   tree <- fastme.ols(D)
-  tree <- checkLabels(tree, attr(D, "Labels"))
+  tree <- relabel(tree, attr(D, "Labels"))
   tree <- rtt(tree, tip.dates[tree$tip.label])
   tree <- nnls.tree(D, tree, method = "tipdated",
                   tip.dates=tip.dates[tree$tip.label])
@@ -88,7 +102,7 @@ supgma <- function(D, tip.dates, trace=0){
   swapi <- 1
   while(iter){
     D_tmp <- D - rate_0 * dm_td
-    tree_tmp <- upgma(D_tmp)
+    tree_tmp <- upgma(D_tmp, ...)
     swapi <- attr(tree_tmp, "swap")
     tree_tmp <- nnls.tree(D, tree_tmp, method = "tipdated",
                        tip.dates=tip.dates[tree$tip.label])
@@ -103,3 +117,18 @@ supgma <- function(D, tip.dates, trace=0){
   tree$tip.dates <- tip.dates[tree$tip.label]
   tree
 }
+
+
+# SRR tags ---------------------------------------------------------------------
+
+#' @srrstats {G1.1} UPGMA(NNI=TRUE) is the first implementation of a new
+#' algorithm. UPGMA(NNI=FALSE), WPGMA() are wrapper around hclust. sUPGMA is the
+#' first implementation in R (I am aware of).
+#' @srrstats {G1.4} This file's functions are all documented with `{roxygen2}`.
+#' @srrstats {UL1.0} explicitly document expected format (types or classes)
+#'    for input data
+#' @srrstats {UL1.1} test for distance matrix.
+#' @srrstats {UL1.3} tip labels correspond to labels from the distance.
+#' @srrstats {UL1.4} Cite assumption about ultrametric distances.
+NULL
+

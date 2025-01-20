@@ -10,10 +10,11 @@ upgma(D, method = "average", ...)
 
 wpgma(D, method = "mcquitty", ...)
 
-supgma(D, tip.dates, trace = 0)
+supgma(D, tip.dates, trace = 0, ...)
 }
 \arguments{
-\item{D}{A distance matrix.}
+\item{D}{A distance matrix, i.e. an object of class \code{dist}. If an matrix
+is supplied it is tried to covert it do a \code{dist} object.}
 
 \item{method}{The agglomeration method to be used. This should be (an
 unambiguous abbreviation of) one of "ward", "single", "complete", "average",
@@ -29,10 +30,18 @@ unambiguous abbreviation of) one of "ward", "single", "complete", "average",
 A phylogenetic tree of class \code{phylo}.
 }
 \description{
-UPGMA and WPGMA clustering. UPGMA and WPGMA are a wrapper function around
-\code{\link[stats]{hclust}} returning a \code{phylo} object.
+UPGMA and WPGMA clustering. UPGMA (Sokal and Michener 1958) and WPGMA
+(McQuitty 1966) are a wrapper function around \code{\link[stats]{hclust}}
+returning a \code{phylo} object.
 \code{supgma} perform serial sampled UPGMA similar to Drummond and Rodrigo
 (2000).
+}
+\details{
+UPGMA and WPGMA return ultrametric trees, it is implicitly assumed that the
+distances supplied are close to ultrametric, e.g. hold the molecular clock
+assumption. Neighbor Joining (NJ) \code{\link[ape]{nj}} and fastME
+\code{\link[ape]{fastme}} relax this assumption to additive distances.
+sUPGMA assumes tip dated data.
 }
 \examples{
 
@@ -53,6 +62,10 @@ v. 38.
 Drummond, A., & Rodrigo, A. G. (2000). Reconstructing genealogies of serial
 samples under the assumption of a molecular clock using serial-sample UPGMA.
 \emph{Molecular Biology and Evolution}, \bold{17(12)}, 1807-1815.
+
+McQuitty, L.L. (1966). Similarity Analysis by Reciprocal Pairs for Discrete
+and Continuous Data. \emph{Educational and Psychological Measurement},
+\bold{26}, 825–831.
 }
 \seealso{
 \code{\link{hclust}}, \code{\link{dist.hamming}}, \code{\link{NJ}},

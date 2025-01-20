@@ -44,8 +44,7 @@
 #' plot_gamma_plus_inv(shape=2, append = TRUE)
 #' par(old.par)
 #'
-#' @keywords cluster
-#'
+#' @keywords distribution
 #' @rdname discrete.gamma
 #' @export
 discrete.gamma <- function(alpha, k) {
@@ -68,6 +67,7 @@ discrete.beta <- function(shape1, shape2, k) {
 #' @rdname discrete.gamma
 #' @importFrom stats dgamma qgamma stepfun
 #' @importFrom graphics curve
+#' @keywords hplot
 #' @export
 plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
                                 append=FALSE, xlab = "x",

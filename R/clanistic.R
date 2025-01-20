@@ -12,13 +12,6 @@
 #' clans. The number of distinguishable slices for a binary tree with \eqn{n}
 #' tips is \eqn{2n^2 - 10n + 12}.
 #'
-#' %A clip is a different type of partition as it is defined by evolutionary or
-#' cophenetic distance and not by the topology. Namely clips are groups of
-#' leaves for which the maximum pairwise distance is smaller than threshold.
-#' %For a better separation we additionally demand that the maximum pairwise
-#' distance within a clip is lower than the distance between any member of the
-#' clip and any other tip.
-#'
 #' A clip is a different type of partition, defining groups of leaves that are
 #' related in terms of evolutionary distances and not only topology.  Namely,
 #' clips are groups of leaves for which all pairwise path-length distances are
@@ -62,7 +55,6 @@
 #' \code{data.frame} where each column is a factor and the rownames of \code{X}
 #' correspond to the tips of the trees.
 #'
-#' %TODO See also vignette("Clanistic").
 #'
 #' @param tree An object of class phylo or multiPhylo (getDiversity).
 #' @param all A logical, return all or just the largest clip.
@@ -117,6 +109,7 @@
 #' (divTab <- getDiversity(trees, x, var.names=colnames(X)))
 #' summary(divTab)
 #'
+#' @keywords univar
 #' @rdname getClans
 #' @export
 getClans <- function (tree)

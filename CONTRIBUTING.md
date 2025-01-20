@@ -12,6 +12,7 @@ phangorn is an open source project, maintained by people who care. We are not di
 [website]: https://KlausVigo.github.io/phangorn
 [citation]: https://KlausVigo.github.io/phangorn/authors.html
 [email]: mailto:klaus.schliep@gmail.com
+
 <!--
 ## Code of conduct
 
@@ -70,6 +71,8 @@ Functions are described as comments near their code and translated to documentat
 3. [Propose a file change](https://help.github.com/articles/editing-files-in-another-user-s-repository/) to update the function documentation in the roxygen comments (starting with `#'`).
 
 ### Contribute code 📝
+
+This package is in a stable state of development, with active subsequent development primarily in response to user feedback.
 
 Care to fix bugs or implement new functionality for phangorn? Awesome! 👏 Have a look at the [issue list][issues] and leave a comment on the things you want to work on. See also the development guidelines below.
 

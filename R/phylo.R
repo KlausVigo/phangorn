@@ -293,7 +293,7 @@ lli <- function(data, tree = NULL, ...)  {
 }
 
 
-#' @rdname pml.fit
+#' @rdname phangorn-internal
 #' @export
 edQt <- function(Q = c(1, 1, 1, 1, 1, 1), bf = c(0.25, 0.25, 0.25, 0.25)) {
   l <- length(bf)
@@ -349,15 +349,14 @@ df_freq_codon <- function(bf) {
 }
 
 
-#' @rdname pml.fit
+#' @rdname phangorn-internal
 #' @export
 pml.free <- function() {
   .Call("ll_free2")
-  #    rm(.INV, .iind, envir = parent.frame())
 }
 
 
-#' @rdname pml.fit
+#' @rdname phangorn-internal
 #' @export
 pml.init <- function(data, k = 1L) {
   nTips <- length(data)
@@ -2888,7 +2887,7 @@ opt_nni <- function(tree, data, rooted, iter_max, trace, ll, RELL=NULL, ...){
 }
 
 
-#  external
+#  external TODO
 SH_quartet <- function(tree, data, rooted, ll, ...){
   if (rooted) tmp <- rooted.nni(tree, data, aLRT=TRUE, ...)
   else tmp <- pml.nni(tree, data, ll=ll, aLRT=TRUE, ...)

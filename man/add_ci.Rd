@@ -13,12 +13,12 @@ add_boxplot(tree, trees, ...)
 \arguments{
 \item{tree}{a phylogenetic tree to which the confidences should be added.}
 
-\item{trees}{phylogenetic trees, i.e. an object of class `multiPhylo`}
+\item{trees}{phylogenetic trees, i.e. an object of class \code{multiPhylo}}
 
-\item{col95}{colour used for the 95% intervals; by default: transparent
+\item{col95}{colour used for the 95\% intervals; by default: transparent
 red.}
 
-\item{col50}{colour used for the 50% intervals; by default: transparent
+\item{col50}{colour used for the 50\% intervals; by default: transparent
 blue.}
 
 \item{height}{the height of the boxes.}

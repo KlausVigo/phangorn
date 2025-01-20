@@ -31,7 +31,7 @@ h2st(obj, eps = 0.001)
 fast Hadamard multiplication.
 }
 \description{
-A collection of functions to perform Hadamard conjugation.  %Hv of a
+A collection of functions to perform Hadamard conjugation Hv of a
 Hadamard matrix H with a vector v using fast Hadamard multiplication.
 }
 \details{
