@@ -47,4 +47,4 @@ cladePar(tree, 18, "blue", "blue", x=x, plot=TRUE)
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}
 }
-\keyword{plot}
+\keyword{hplot}

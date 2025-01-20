@@ -47,4 +47,4 @@ unlink(zz)
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}
 }
-\keyword{cluster}
+\keyword{IO}

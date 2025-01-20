@@ -105,7 +105,7 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt = 0, cex = 1,
 #'
 #' Remco R. Bouckaert (2010) DensiTree: making sense of sets of phylogenetic
 #' trees \emph{Bioinformatics}, \bold{26 (10)}, 1372-1373.
-#' @keywords plot
+#' @keywords hplot
 #' @examples
 #'
 #' data(Laurasiatherian)

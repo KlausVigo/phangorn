@@ -32,7 +32,7 @@
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link[ape]{prop.part}}, \code{\link{lento}},
 #' \code{\link{as.splits}}, \code{\link{as.networx}}
-#' @keywords cluster
+#' @keywords IO
 #' @examples
 #'
 #' (sp <- as.splits(rtree(5)))

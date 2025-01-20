@@ -20,6 +20,7 @@
 #' contr <- attr(tmp, "contrast")
 #' rownames(contr) <- attr(tmp, "allLevels")
 #' contr
+#' @keywords manip
 #' @rdname gap_as_state
 #' @export
 gap_as_state <- function(obj, gap="-", ambiguous="?"){

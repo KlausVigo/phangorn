@@ -68,4 +68,4 @@ Intertwining phylogenetic trees and networks. \emph{Methods Ecol Evol}.
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}
 }
-\keyword{plot}
+\keyword{dplot}

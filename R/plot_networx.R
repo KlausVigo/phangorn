@@ -221,7 +221,7 @@ rotate_matrix <- function(x, theta){
 #' Schliep, K., Potts, A. J., Morrison, D. A. and Grimm, G. W. (2017),
 #' Intertwining phylogenetic trees and networks. \emph{Methods Ecol Evol}.
 #' \bold{8}, 1212--1220. doi:10.1111/2041-210X.12760
-#' @keywords plot
+#' @keywords hplot
 #' @importFrom igraph make_graph
 #' @examples
 #'

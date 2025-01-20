@@ -44,3 +44,4 @@ contr
 Klaus Schliep \email{klaus.schliep@gmail.com}
 }
 \keyword{cluster}
+\keyword{manip}

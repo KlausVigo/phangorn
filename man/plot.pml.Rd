@@ -62,4 +62,4 @@ plot(fit_unrooted, cex=.5)
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}
 }
-\keyword{plot}
+\keyword{hplot}

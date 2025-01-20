@@ -123,4 +123,4 @@ trees \emph{Bioinformatics}, \bold{26 (10)}, 1372-1373.
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}
 }
-\keyword{plot}
+\keyword{hplot}

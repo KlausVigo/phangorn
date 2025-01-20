@@ -27,7 +27,6 @@ expect_true(inherits(allTrees(6), "multiPhylo"))
 expect_true(all(RF.dist(allTrees(6))>0))
 
 
-# TODO: check why rooted trees give error in development version
 # test midpoint
 # topology stays the same
 expect_equal( max( sapply(trees, function(x)RF.dist(x,midpoint(x)))), 0)

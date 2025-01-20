@@ -81,4 +81,4 @@ write.splits(spl, print.labels = FALSE)
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}
 }
-\keyword{cluster}
+\keyword{IO}

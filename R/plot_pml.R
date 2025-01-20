@@ -20,7 +20,7 @@
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link[ape]{plot.phylo}}, \code{\link[ape]{axisPhylo}},
 #' \code{\link[ape]{add.scale.bar}}
-#' @keywords plot
+#' @keywords hplot
 #' @examples
 #' fdir <- system.file("extdata/trees", package = "phangorn")
 #' tmp <- read.csv(file.path(fdir,"H3N2_NA_20.csv"))

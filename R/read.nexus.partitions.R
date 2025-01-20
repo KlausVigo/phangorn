@@ -49,7 +49,7 @@ read.nexus.charset <- function(file){
 #' 'multiphyDat'.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link[ape]{read.nexus.data}}, \code{\link{read.phyDat}}
-#' @keywords cluster
+#' @keywords IO
 #' @examples
 #' tree <- rtree(10)
 #' dat <- simSeq(tree, l=24)

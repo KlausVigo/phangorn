@@ -44,7 +44,7 @@ getTransition <- function(scheme, levels){
 #' @seealso \code{\link{anc_pml}}, \code{\link[ape]{plot.phylo}},
 #' \code{\link[ape]{image.DNAbin}}, \code{\link[ape]{image.AAbin}}
 #' \code{\link[ggseqlogo]{ggseqlogo}}, \code{\link[ape]{edgelabels}}
-#' @keywords plot
+#' @keywords hplot
 #' @examples
 #'
 #' example(NJ)

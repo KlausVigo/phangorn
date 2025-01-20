@@ -98,4 +98,4 @@ add_mutations(anc_aa, adj = c(.5, -0.3), col=2)
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}
 }
-\keyword{plot}
+\keyword{hplot}
