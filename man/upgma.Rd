@@ -10,7 +10,7 @@ upgma(D, method = "average", ...)
 
 wpgma(D, method = "mcquitty", ...)
 
-supgma(D, tip.dates, trace = 0)
+supgma(D, tip.dates, trace = 0, ...)
 }
 \arguments{
 \item{D}{A distance matrix.}

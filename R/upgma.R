@@ -16,6 +16,8 @@
 ## the tree. Currently only available for \code{method="average"}.
 #' @param trace	 Show output during optimization (see details).
 #' @param tip.dates	 A named vector of sampling times associated to the tips.
+## @param NNI logical to indicate if nearest neighbor interchange (NNI)
+## rearrangements should applied.
 #' @param \dots Further arguments passed to or from other methods.
 #' @return A phylogenetic tree of class \code{phylo}.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
@@ -48,9 +50,7 @@ upgma <- function(D, method = "average", ...) {
   DD <- as.dist(D)
   hc <- hclust(DD, method = method)
   result <- as.phylo(hc)
-#  if(NNI && method=="average"){
-#    result <- upgma_nni(DD, tree=result, ...)
-#  }
+  # if(NNI && method=="average")  result <- upgma_nni(DD, tree=result, ...)
   result <- reorder(result, "postorder")
   result
 }
@@ -71,9 +71,9 @@ wpgma <- function(D, method = "mcquitty", ...) {
 
 #' @rdname upgma
 #' @export
-supgma <- function(D, tip.dates, trace=0){
+supgma <- function(D, tip.dates, trace=0, ...){
   tree <- fastme.ols(D)
-  tree <- checkLabels(tree, attr(D, "Labels"))
+  tree <- relabel(tree, attr(D, "Labels"))
   tree <- rtt(tree, tip.dates[tree$tip.label])
   tree <- nnls.tree(D, tree, method = "tipdated",
                   tip.dates=tip.dates[tree$tip.label])
@@ -88,7 +88,7 @@ supgma <- function(D, tip.dates, trace=0){
   swapi <- 1
   while(iter){
     D_tmp <- D - rate_0 * dm_td
-    tree_tmp <- upgma(D_tmp)
+    tree_tmp <- upgma(D_tmp, ...)
     swapi <- attr(tree_tmp, "swap")
     tree_tmp <- nnls.tree(D, tree_tmp, method = "tipdated",
                        tip.dates=tip.dates[tree$tip.label])
