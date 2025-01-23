@@ -64,18 +64,18 @@
 <img src="logo.png" class="logo" alt=""><h1 id="phangorn-">phangorn <a class="anchor" aria-label="anchor" href="#phangorn-"></a>
 </h1>
 </div>
-<p>phangorn is a package for phylogenetic reconstruction and analysis in the R language. phangorn offers the possibility of reconstructing phylogenies with distance based methods, maximum parsimony or maximum likelihood (ML) and performing Hadamard conjugation. Extending the general ML framework, this package provides the possibility of estimating mixture and partition models. Furthermore, phangorn offers several functions for comparing trees, phylogenetic models or splits, simulating character data and performing congruence analyses.</p>
+<p>phangorn is a package for phylogenetic reconstruction and analysis in the R language. phangorn offers the possibility of reconstructing phylogenies with distance based methods, maximum parsimony or maximum likelihood (ML) and performing Hadamard conjugation. Extending the general ML framework, this package provides the possibility of estimating mixture and partition models. Furthermore, phangorn offers several functions for exploring and comparing trees, phylogenetic models or splits, simulating character data and performing congruence analyses.</p>
 <p>To get an introduction into phylogenetic inference you want to look at:</p>
-<pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"Trees"</span>, package<span class="op">=</span><span class="st">"phangorn"</span><span class="op">)</span></span></code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">vignette</span>(<span class="st">"Trees"</span>, <span class="at">package=</span><span class="st">"phangorn"</span>)</span></code></pre></div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>You can install the the latest release <code>phangorn</code> of the package from <a href="https://CRAN.R-project.org/package=phangorn" class="external-link">CRAN</a>, or the development version from <a href="https://github.com/KlausVigo/phangorn" class="external-link">github</a> or <a href="https://klausvigo.r-universe.dev/phangorn" class="external-link">r-universe</a>.</p>
 <table class="table">
 <colgroup>
-<col width="14%">
-<col width="18%">
-<col width="67%">
+<col width="33%">
+<col width="33%">
+<col width="33%">
 </colgroup>
 <thead><tr class="header">
 <th>Type</th>
@@ -101,12 +101,12 @@
 </tbody>
 </table>
 <p>To install the development version you may need to install the Biostrings package from bioconductor first:</p>
-<pre><code><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
-<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu">install</span><span class="op">(</span><span class="st">"Biostrings"</span><span class="op">)</span></span></code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"BiocManager"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">"BiocManager"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">"Biostrings"</span>)</span></code></pre></div>
 <p>To use all functionality you might install all you might need to install the <code>rgl</code> and <code>ggseqlogo</code> package.</p>
-<pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"rgl"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"ggseqlogo"</span><span class="op">)</span></span></code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"rgl"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"ggseqlogo"</span>)</span></code></pre></div>
 <p>The development version usually depends on the latest <code>ape</code> development version and information to download can be found <a href="https://emmanuelparadis.github.io/ape_installation.html" class="external-link">here</a>.</p>
 </div>
 <div class="section level2">

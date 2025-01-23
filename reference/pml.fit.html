@@ -52,12 +52,6 @@ pml or optim.pml."><meta property="og:image" content="https://klausvigo.github.i
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">lli</span><span class="op">(</span><span class="va">data</span>, tree <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">edQt</span><span class="op">(</span>Q <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, bf <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="fl">0.25</span>, <span class="fl">0.25</span>, <span class="fl">0.25</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">pml.free</span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">pml.init</span><span class="op">(</span><span class="va">data</span>, k <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span>
-<span></span>
 <span><span class="fu">pml.fit</span><span class="op">(</span><span class="va">tree</span>, <span class="va">data</span>, bf <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">levels</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">levels</span><span class="op">)</span><span class="op">)</span>, shape <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  k <span class="op">=</span> <span class="fl">1</span>, Q <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">levels</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">levels</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>,</span>
 <span>  levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">data</span>, <span class="st">"levels"</span><span class="op">)</span>, inv <span class="op">=</span> <span class="fl">0</span>, rate <span class="op">=</span> <span class="fl">1</span>, g <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -81,20 +75,20 @@ pml or optim.pml."><meta property="og:image" content="https://klausvigo.github.i
 <dd><p>Further arguments passed to or from other methods.</p></dd>
 
 
-<dt id="arg-q">Q<a class="anchor" aria-label="anchor" href="#arg-q"></a></dt>
-<dd><p>A vector containing the lower triangular part of the rate matrix.</p></dd>
-
-
 <dt id="arg-bf">bf<a class="anchor" aria-label="anchor" href="#arg-bf"></a></dt>
 <dd><p>Base frequencies.</p></dd>
+
+
+<dt id="arg-shape">shape<a class="anchor" aria-label="anchor" href="#arg-shape"></a></dt>
+<dd><p>Shape parameter of the gamma distribution.</p></dd>
 
 
 <dt id="arg-k">k<a class="anchor" aria-label="anchor" href="#arg-k"></a></dt>
 <dd><p>Number of intervals of the discrete gamma distribution.</p></dd>
 
 
-<dt id="arg-shape">shape<a class="anchor" aria-label="anchor" href="#arg-shape"></a></dt>
-<dd><p>Shape parameter of the gamma distribution.</p></dd>
+<dt id="arg-q">Q<a class="anchor" aria-label="anchor" href="#arg-q"></a></dt>
+<dd><p>A vector containing the lower triangular part of the rate matrix.</p></dd>
 
 
 <dt id="arg-levels">levels<a class="anchor" aria-label="anchor" href="#arg-levels"></a></dt>
@@ -184,12 +178,12 @@ maximum likelihood approach. <em>Journal of Molecular Evolution</em>,
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="NJ.html">NJ</a></span><span class="op">(</span><span class="fu"><a href="dist.hamming.html">dist.ml</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">bf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="fl">4</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">eig</span> <span class="op">&lt;-</span> <span class="fu">edQt</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">pml.init</span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">eig</span> <span class="op">&lt;-</span> <span class="fu"><a href="phangorn-internal.html">edQt</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="phangorn-internal.html">pml.init</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="fu">pml.fit</span><span class="op">(</span><span class="va">tree</span>, <span class="va">Laurasiatherian</span>, bf<span class="op">=</span><span class="va">bf</span>, eig<span class="op">=</span><span class="va">eig</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] -54808.83</span>
-<span class="r-in"><span><span class="fu">pml.free</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="phangorn-internal.html">pml.free</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="fu"><a href="pml.html">pml</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">Laurasiatherian</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 'log Lik.' -54808.83 (df=91)</span>
