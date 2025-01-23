@@ -84,8 +84,6 @@ wpgma <- function(D, method = "mcquitty", ...) {
 #' @rdname upgma
 #' @export
 supgma <- function(D, tip.dates, trace=0, ...){
-  D <- as.dist(D)
-  stopifnot("D needs to be of class dist"=inherits(D, "dist"))
   tree <- fastme.ols(D)
   tree <- relabel(tree, attr(D, "Labels"))
   tree <- rtt(tree, tip.dates[tree$tip.label])
