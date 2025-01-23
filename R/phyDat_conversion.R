@@ -378,13 +378,14 @@ acgt2ry <- function(obj){
 unalign <- function(x){
   if(inherits(x, "phyDat")){
     if(attr(x, "type")=="DNA") x<- as.DNAbin(x)
-    if(attr(x, "type")=="AA") x<- as.AAbin(x)
+    else if(attr(x, "type")=="AA") x<- as.AAbin(x)
   }
   stopifnot(inherits(x, "DNAbin") || inherits(x, "AAbin"))
   x <- as.list(x)
+  if(inherits(x, "DNAbin")) gap <- as.raw(4)
+  else gap <- charToRaw("-")
   for(i in 1:length(x)){
-    tmp <- as.character(x[[i]])
-    x[[i]] <- x[[i]][tmp!="-"]
+    x[[i]] <- x[[i]][x[[i]]!=gap]
   }
   x
 }
