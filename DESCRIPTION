@@ -77,7 +77,7 @@ VignetteBuilder:
 biocViews: Software, Technology, QualityControl
 Encoding: UTF-8
 Repository: CRAN
-Roxygen: list(old_usage = TRUE)
+Roxygen: list(old_usage = TRUE, markdown = TRUE, roclets = c ("namespace", "rd", "srr::srr_stats_roclet"))
 RoxygenNote: 7.3.2
 Language: en-US
 Config/testthat/edition: 3
