@@ -2,19 +2,10 @@
 % Please edit documentation in R/phylo.R
 \name{lli}
 \alias{lli}
-\alias{edQt}
-\alias{pml.free}
-\alias{pml.init}
 \alias{pml.fit}
 \title{Internal maximum likelihood functions.}
 \usage{
 lli(data, tree = NULL, ...)
-
-edQt(Q = c(1, 1, 1, 1, 1, 1), bf = c(0.25, 0.25, 0.25, 0.25))
-
-pml.free()
-
-pml.init(data, k = 1L)
 
 pml.fit(tree, data, bf = rep(1/length(levels), length(levels)), shape = 1,
   k = 1, Q = rep(1, length(levels) * (length(levels) - 1)/2),
@@ -29,13 +20,13 @@ pml.fit(tree, data, bf = rep(1/length(levels), length(levels)), shape = 1,
 
 \item{\dots}{Further arguments passed to or from other methods.}
 
-\item{Q}{A vector containing the lower triangular part of the rate matrix.}
-
 \item{bf}{Base frequencies.}
+
+\item{shape}{Shape parameter of the gamma distribution.}
 
 \item{k}{Number of intervals of the discrete gamma distribution.}
 
-\item{shape}{Shape parameter of the gamma distribution.}
+\item{Q}{A vector containing the lower triangular part of the rate matrix.}
 
 \item{levels}{The alphabet used e.g. c("a", "c", "g", "t") for DNA}
 
