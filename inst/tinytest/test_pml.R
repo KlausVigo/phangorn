@@ -187,3 +187,9 @@ expect_error(pml_bb(dat, model="GTR", method="tipdated"))
     expect_true(sum(fit_Mk$tree$edge.length) > sum(fit_Mkv_1$tree$edge.length))
     expect_true(sum(fit_Mk$tree$edge.length) > sum(fit_Mkv_2$tree$edge.length))
     expect_true(sum(fit_Mk$tree$edge.length) > sum(fit_Mkv_3$tree$edge.length))
+
+
+
+#' @srrstats {G5.6, G5.6a,} Lots of parameter recovery tests for optim.pml,
+#' which is also the workhorse inside pml_bb
+

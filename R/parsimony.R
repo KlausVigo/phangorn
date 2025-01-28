@@ -331,6 +331,7 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
                      rearrangements = "SPR", perturbation = "ratchet", ...) {
   if(inherits(data, "DNAbin") || inherits(data, "AAbin"))
     data <- as.phyDat(data)
+  method <- match.arg(tolower(method), c("fitch", "sankoff"))
   printevery <- 10L
   eps <- 1e-08
   trace <- trace - 1

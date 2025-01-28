@@ -315,7 +315,7 @@ dist.logDet <- function(x)
 #' @rdname writeDist
 #' @export writeDist
 writeDist <- function(x, file = "", format = "phylip", ...) {
-  format <- match.arg(format, c("phylip", "nexus"))
+  format <- match.arg(tolower(format), c("phylip", "nexus"))
   if (format == "phylip") {
     x <- as.matrix(x)
     # maybe x <- format(x, digits = digits, justify = "none")
@@ -452,3 +452,14 @@ unique.dist <-  function(x, incomparables, ...) {
   }
   x
 }
+
+
+
+# SRR tags ---------------------------------------------------------------------
+
+#' @srrstats {G1.1} dist.ml provides similar functionality as dist.dna in ape,
+#' and additionally supports amoino acid.
+#' @srrstats {G1.4} This file's functions are all documented with `{roxygen2}`.
+#' @srrstats {G2.3, G2.3a} functions use match.arg
+NULL
+
