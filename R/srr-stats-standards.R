@@ -20,8 +20,8 @@
 #' @srrstatsTODO {G2.1} *Implement assertions on types of inputs (see the initial point on nomenclature above).*
 #' @srrstatsTODO {G2.1a} *Provide explicit secondary documentation of expectations on data types of all vector inputs.*
 #' @srrstatsTODO {G2.2} *Appropriately prohibit or restrict submission of multivariate input to parameters expected to be univariate.*
-#' @srrstatsTODO {G2.3} *For univariate character input:*
-#' @srrstatsTODO {G2.3a} *Use `match.arg()` or equivalent where applicable to only permit expected values.*
+## @srrstatsTODO {G2.3} *For univariate character input:*
+## @srrstatsTODO {G2.3a} *Use `match.arg()` or equivalent where applicable to only permit expected values.*
 #' @srrstatsTODO {G2.3b} *Either: use `tolower()` or equivalent to ensure input of character parameters is not case dependent; or explicitly document that parameters are strictly case-sensitive.*
 #' @srrstatsTODO {G2.4} *Provide appropriate mechanisms to convert between different data types, potentially including:*
 #' @srrstatsTODO {G2.4a} *explicit conversion to `integer` via `as.integer()`*
@@ -53,9 +53,8 @@
 #' @srrstatsTODO {G5.4b} *For new implementations of existing methods, correctness tests should include tests against previous implementations. Such testing may explicitly call those implementations in testing, preferably from fixed-versions of other software, or use stored outputs from those where that is not possible.*
 #' @srrstatsTODO {G5.4c} *Where applicable, stored values may be drawn from published paper outputs when applicable and where code from original implementations is not available*
 #' @srrstatsTODO {G5.5} *Correctness tests should be run with a fixed random seed*
-#' @srrstatsTODO {G5.6} **Parameter recovery tests** *to test that the implementation produce expected results given data with known properties. For instance, a linear regression algorithm should return expected coefficient values for a simulated data set generated from a linear model.*
-#' @srrstatsTODO {G5.6a} *Parameter recovery tests should generally be expected to succeed within a defined tolerance rather than recovering exact values.*
-#' @srrstatsTODO {G5.6b} *Parameter recovery tests should be run with multiple random seeds when either data simulation or the algorithm contains a random component. (When long-running, such tests may be part of an extended, rather than regular, test suite; see G5.10-4.12, below).*
+## @srrstatsTODO {G5.6} **Parameter recovery tests** *to test that the implementation produce expected results given data with known properties. For instance, a linear regression algorithm should return expected coefficient values for a simulated data set generated from a linear model.*
+## @srrstatsTODO {G5.6a} *Parameter recovery tests should generally be expected to succeed within a defined tolerance rather than recovering exact values.*
 #' @srrstatsTODO {G5.7} **Algorithm performance tests** *to test that implementation performs as expected as properties of data change. For instance, a test may show that parameters approach correct estimates within tolerance as data size increases, or that convergence times decrease for higher convergence thresholds.*
 #' @srrstatsTODO {G5.8} **Edge condition tests** *to test that these conditions produce expected behaviour such as clear warnings or errors when confronted with data with extreme properties including but not limited to:*
 #' @srrstatsTODO {G5.8a} *Zero-length data*
@@ -132,6 +131,7 @@ NULL
 #' @srrstatsNA {G3.1} *Statistical software which relies on covariance calculations should enable users to choose between different algorithms for calculating covariances, and should not rely solely on covariances from the `stats::cov` function.*
 #' @srrstatsNA {G3.1a} *The ability to use arbitrarily specified covariance methods should be documented (typically in examples or vignettes).*
 #' @srrstatsNA {G5.0} *Where applicable or practicable, tests should use standard data sets with known properties (for example, the [NIST Standard Reference Datasets](https://www.itl.nist.gov/div898/strd/), or data sets provided by other widely-used R packages).*
+#' @srrstatsNA {G5.6b} *Parameter recovery tests should be run with multiple random seeds when either data simulation or the algorithm contains a random component. (When long-running, such tests may be part of an extended, rather than regular, test suite; see G5.10-4.12, below).*
 #' @srrstatsNA {G5.11} *Where extended tests require large data sets or other assets, these should be provided for downloading and fetched as part of the testing workflow.*
 #' @srrstatsNA {G5.11a} *When any downloads of additional data necessary for extended tests fail, the tests themselves should not fail, rather be skipped and implicitly succeed with an appropriate diagnostic message.*
 #' @srrstatsNA {EA2.0} *EDA Software which accepts standard tabular data and implements or relies upon extensive table filter and join operations should utilise an **index column** system*
@@ -155,30 +155,23 @@ NULL
 NULL
 
 
-#' General
+#' General comments
 #'
 #' Here are some standards listed which are cumbersome and verbose to add to
 #' each file or function.
 #' @srrstats {G1.0} Over 30 Rd.files contain a reference section and so do all
 #' the vignettes.
 #' *Statistical Software should list at least one primary reference from published academic literature.*
+#' @srrstats {G1.1}
+#' The package is on CRAN since 2008-03-25. So in many cases the phangorn will have the first implementation within R of an algorithm,
+#' which has previously been implemented in other languages or contexts,
+#' e.g. for parsimony, ML, consensusNetworks, densiTree like plots, split networks.
+#' @srrstats {G1.2} CONTRIBUTING.md contains some information about the life cycle.
+#' As phangorn is already over 10 years on CRAN many functions are mature.
+#' Some newer functions or less used function might be more experimental. This is usually stated in the manual.
 #' @srrstats {G1.4}
 #' All Rd.pages are generated with roxygen2.
 #' *Software should use [`roxygen2`](https://roxygen2.r-lib.org/) to document all functions.*
-#' @srrstats {G1.2} CONTRIBUTING.md contains some information about the life
-#' cycle.
 #'
-#' hclust objects return ultrametric trees. The ultrametric assuption can be
-#' relaxed and many phylogenetic trees use additive distances, popularized by
-#' Neighbor joining (NJ). phylo objects do not make this rather restrictive
-#' assumption and have been implemented in ape (Paradis & Schliep 2019).
-#' plot functions for phylo are implemented in ape.
 #' @noRd
 NULL
-
-
-## plots: densiTree, plot.networx, lento
-## to my knowledge the first implemntation, ggtree has one tanggle provides a different in ggtree / ggplot2 implementation,
-
-
-

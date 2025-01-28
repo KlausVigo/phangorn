@@ -65,7 +65,7 @@ joint_pml <- function(x){
     }
   }
   ind <- match(levels, allLevels)
-  for(i in length(res))  res[[i]] <- ind[res[[i]]]
+  for(i in seq_along(res))  res[[i]] <- ind[res[[i]]]
   attributes(res) <- att
   res
 }
@@ -133,7 +133,7 @@ joint_sankoff <- function(tree, data, cost=NULL){
     }
   }
   ind <- match(levels, allLevels)
-  for(i in length(res))  res[[i]] <- ind[res[[i]]]
+  for(i in seq_along(res))  res[[i]] <- ind[res[[i]]]
   attributes(res) <- att
   res
 }
