@@ -30,7 +30,9 @@
 #' @param x a phylogenetic tree \code{tree}, i.e. an object of class
 #' \code{phylo} or and object of class \code{pml}.
 #' @param l The length of the sequence to simulate.
-#' @param Q The rate matrix.
+#' @param Q A numeric matrix of size Nstates &times; Nstates, giving the
+#' transition rates between sites. Every row must sum to zero. `simSeq` will
+#' normalize the given rates so that each row sums to one.
 #' @param bf Base frequencies.
 #' @param rootseq A vector of length \code{l} containing the root sequence.
 #' If not provided, the root sequence is randomly generated.
