@@ -1,6 +1,6 @@
 #' Simulate sequences.
 #'
-#' Simulate sequences from a given evolutionary tree.
+#' Simulate sequences from a given evolutionary tree or an `pml` object.
 #'
 #' \code{simSeq} is a generic function to simulate sequence alignments
 #' along a phylogeny. It is quite flexible and can generate DNA, RNA,
@@ -16,6 +16,12 @@
 #' for the dN/dS ratio and \code{tstv} for the transition transversion ratio
 #' can be supplied.
 #'
+#' So far `simSeq` is limited to time reversible models.
+#' `simSeq` will normalize the rate matrix A composed from Q and bf so that
+#' every row of A sums to zero and expected rate is one, see formulas 13.14 and
+#' 13.15 on page 205 in Felsenstein (2004). The edge lengths are should
+#' represent the expected number of mutations per site.
+#'
 #' \strong{Defaults:}
 #'
 #' If \code{x} is a tree of class \code{phylo}, then sequences will be generated
@@ -27,12 +33,13 @@
 #' If \code{Q} is not specified, then a uniform rate matrix will be employed.
 #'
 #'
-#' @param x a phylogenetic tree \code{tree}, i.e. an object of class
-#' \code{phylo} or and object of class \code{pml}.
+#'
+#' @param x a phylogenetic tree \code{tree} with edge lengths, i.e. an object of
+#' class \code{phylo} or and object of class \code{pml}.
 #' @param l The length of the sequence to simulate.
-#' @param Q A numeric matrix of size Nstates &times; Nstates, giving the
-#' transition rates between sites. Every row must sum to zero. `simSeq` will
-#' normalize the given rates so that each row sums to one.
+#' @param Q Either a numeric matrix of size Nstates &times; Nstates, giving the
+#' transition rates between states or a vector representing the lower
+#' triangular of these matrix (see details).
 #' @param bf Base frequencies.
 #' @param rootseq A vector of length \code{l} containing the root sequence.
 #' If not provided, the root sequence is randomly generated.
@@ -52,6 +59,8 @@
 #' @return \code{simSeq} returns an object of class phyDat.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{phyDat}}, \code{\link{pml}}, \code{\link{SOWH.test}}
+#' @references Felsenstein, J. (2004). \emph{Inferring Phylogenies}. Sinauer
+#' Associates, Sunderland.
 #' @keywords cluster
 #' @examples
 #'

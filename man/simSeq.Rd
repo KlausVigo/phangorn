@@ -15,14 +15,16 @@ simSeq(x, ...)
 \method{simSeq}{pml}(x, ancestral = FALSE, ...)
 }
 \arguments{
-\item{x}{a phylogenetic tree \code{tree}, i.e. an object of class
-\code{phylo} or and object of class \code{pml}.}
+\item{x}{a phylogenetic tree \code{tree} with edge lengths, i.e. an object of
+class \code{phylo} or and object of class \code{pml}.}
 
 \item{\dots}{Further arguments passed to or from other methods.}
 
 \item{l}{The length of the sequence to simulate.}
 
-\item{Q}{The rate matrix.}
+\item{Q}{Either a numeric matrix of size Nstates × Nstates, giving the
+transition rates between states or a vector representing the lower
+triangular of these matrix (see details).}
 
 \item{bf}{Base frequencies.}
 
@@ -50,7 +52,7 @@ default the standard genetic code is used.}
 \code{simSeq} returns an object of class phyDat.
 }
 \description{
-Simulate sequences from a given evolutionary tree.
+Simulate sequences from a given evolutionary tree or an \code{pml} object.
 }
 \details{
 \code{simSeq} is a generic function to simulate sequence alignments
@@ -66,6 +68,12 @@ a scaler for the edge lengths.
 For codon models \code{type="CODON"}, two additional arguments \code{dnds}
 for the dN/dS ratio and \code{tstv} for the transition transversion ratio
 can be supplied.
+
+So far \code{simSeq} is limited to time reversible models.
+\code{simSeq} will normalize the rate matrix A composed from Q and bf so that
+every row of A sums to zero and expected rate is one, see formulas 13.14 and
+13.15 on page 205 in Felsenstein (2004). The edge lengths are should
+represent the expected number of mutations per site.
 
 \strong{Defaults:}
 
@@ -110,6 +118,10 @@ write.phyDat(data, file="temp.dat", format="sequential", nbcol = -1,
   colsep = "")
 unlink("temp.dat")
 
+}
+\references{
+Felsenstein, J. (2004). \emph{Inferring Phylogenies}. Sinauer
+Associates, Sunderland.
 }
 \seealso{
 \code{\link{phyDat}}, \code{\link{pml}}, \code{\link{SOWH.test}}
