@@ -32,9 +32,9 @@
 #' @param all return all equally good trees or just one of them.
 #' @param perturbation whether to use "ratchet", "random_addition" or
 #' "stochastic" (nni) for shuffling the tree.
-
 #' @param ... Further arguments passed to or from other methods (e.g.
 #' model="sankoff" and cost matrix).
+#' @importFrom checkmate assert_flag assert_count
 #' @return \code{parsimony} returns the maximum parsimony score (pscore).
 #' \code{optim.parsimony} returns a tree after NNI rearrangements.
 #' \code{pratchet} returns a tree or list of trees containing the best tree(s)
@@ -316,6 +316,7 @@ indexNNI <- function(tree) {
 #' @export
 optim.parsimony <- function(tree, data, method = "fitch", cost = NULL,
                             trace = 1, rearrangements = "SPR", ...) {
+  method <- match.arg(tolower(method), c("fitch", "sankoff"))
   if (method == "fitch") result <- optim.fitch(tree = tree, data = data,
                       trace = trace, rearrangements = rearrangements, ...)
   if (method == "sankoff") result <- optim.sankoff(tree = tree, data = data,
@@ -331,6 +332,14 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
                      rearrangements = "SPR", perturbation = "ratchet", ...) {
   if(inherits(data, "DNAbin") || inherits(data, "AAbin"))
     data <- as.phyDat(data)
+  assert_phyDat(data)
+  assert_count(maxit)
+  assert_count(minit)
+  assert_count(k)
+  assert_count(trace)
+  assert_flag(all)
+  perturbation <- match.arg(tolower(perturbation), c("ratchet", "stochastic",
+                                                     "random_addition"))
   method <- match.arg(tolower(method), c("fitch", "sankoff"))
   printevery <- 10L
   eps <- 1e-08

@@ -38,13 +38,15 @@ anc_ml <- anc_pml(fit)
 write.ancestral(anc_ml)
 align <- read.phyDat("ancestral_align.fasta", format = "fasta")
 tree <- read.tree("ancestral_tree.nwk")
-df <- read.table("ancestral.state", header=TRUE)
+df <- read.table("ancestral_state.tsv", header=TRUE)
+unlink(c("ancestral_align.fasta", "ancestral_tree.nwk", "ancestral_state.tsv"))
+
 anc_ml_disc <- as.ancestral(tree, df, align)
 expect_equal(anc_ml$tree, anc_ml_disc$tree)
 expect_equal(anc_ml$data[tree$tip.label], anc_ml_disc$data)
 #expect_equal(anc_ml[[3]], anc_ml_disc[[3]])
 expect_equal(anc_ml$state, anc_ml_disc$state)
-unlink(c("ancestral_align.fasta", "ancestral_tree.nwk", "ancestral.state"))
+
 
 
 ## Felsenstein example

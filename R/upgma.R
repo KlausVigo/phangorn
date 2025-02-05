@@ -58,7 +58,7 @@
 #' @export
 upgma <- function(D, method = "average", ...) {
   method <- match.arg(method, c("average", "ward.D", "ward.D2", "single",
-                      "complete", "average", "mcquitty", "median", "centroid"))
+                      "complete", "mcquitty", "median", "centroid"))
   DD <- as.dist(D)
   hc <- hclust(DD, method = method)
   result <- as.phylo(hc)
@@ -72,7 +72,7 @@ upgma <- function(D, method = "average", ...) {
 #' @export
 wpgma <- function(D, method = "mcquitty", ...) {
   method <- match.arg(method, c("average", "ward.D", "ward.D2", "single",
-                      "complete", "average", "mcquitty", "median", "centroid"))
+                      "complete", "mcquitty", "median", "centroid"))
   DD <- as.dist(D)
   hc <- hclust(DD, method = method, ...)
   result <- as.phylo(hc)

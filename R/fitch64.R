@@ -34,6 +34,7 @@ init_fitch <- function(obj, parsinfo=FALSE, order=FALSE, m=4L, ...){
 #' @export
 fitch <- function(tree, data, site = "pscore"){
   if(any(!is.binary(tree))) tree <- multi2di(tree)
+  assert_phyDat(data)
   tree <- reorder(tree, "postorder")
   nr <- attr(data, "nr")
   fun <- function(tree, site="pscore", nr){
@@ -247,7 +248,11 @@ fitch_nni <- function(tree, f) {
 
 
 optim.fitch <- function(tree, data, trace = 1, rearrangements = "NNI", ...) {
-  if (!inherits(tree, "phylo")) stop("tree must be of class phylo")
+  assert_phylo(tree)
+  assert_phyDat(data, label=tree$tip.label)
+  assert_count(trace)
+  rearrangements <- match.arg(toupper(rearrangements), c("NNI", "SPR"))
+#  if (!inherits(tree, "phylo")) stop("tree must be of class phylo")
   if (!is.binary(tree)) {
     tree <- multi2di(tree)
     attr(tree, "order") <- NULL
@@ -258,8 +263,7 @@ optim.fitch <- function(tree, data, trace = 1, rearrangements = "NNI", ...) {
   }
   if (is.null(attr(tree, "order")) || attr(tree, "order") != "postorder")
     tree <- reorder(tree, "postorder")
-  if (!inherits(data, "phyDat")) stop("data must be of class phyDat")
-
+#  if (!inherits(data, "phyDat")) stop("data must be of class phyDat")
   rt <- FALSE
 
   #  New

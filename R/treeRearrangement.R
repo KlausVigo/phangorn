@@ -160,6 +160,7 @@ dn <- function(x) {
 #' @rdname nni
 #' @export
 rSPR <- function(tree, moves = 1, n = length(moves), k = NULL) {
+  if(is.rooted(tree)) stop("rSPR currently works only for unrooted trees!")
   if (n == 1) {
     trees <- tree
     for (i in 1:moves) trees <- kSPR(trees, k = k)
