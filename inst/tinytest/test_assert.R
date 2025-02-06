@@ -20,6 +20,4 @@ expect_error( assert_phyDat(rooted_tree) )
 expect_silent( assert_pml(fit) )
 expect_error( assert_pml(rooted_tree) )
 
-#expect_equal, expect_equal_to_reference, expect_equivalent, expect_error,
-#expect_false, expect_identical, expect_length, expect_match, expect_message,
-#expect_null, expect_silent, expect_true, expect_warning, test_package
+
