@@ -24,11 +24,16 @@ assert_multiPhylo <- function(x, is_ultrametric=FALSE, is_rooted=FALSE,
 
 assert_phyDat <- function(x, contains_label=!is.null(label), label=NULL){
   txt <-  deparse(substitute(x))
-  if (!inherits(x, "phyDat")) stop(gettextf("%s must be of class phyDat", txt))
+  if (!inherits(x, "phyDat")) stop(gettextf("%s must be of class 'phyDat'", txt))
   if (contains_label && anyNA(match(label, attr(x, "names"))))
     stop(gettextf("tip labels are not in %s", txt))
   invisible(x)
 }
 
 
+assert_pml <- function(x, contains_label=!is.null(label), label=NULL){
+  txt <-  deparse(substitute(x))
+  if (!inherits(x, "pml")) stop(gettextf("%s must be of class 'pml'", txt))
+  invisible(x)
+}
 
