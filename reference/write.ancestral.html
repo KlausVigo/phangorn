@@ -123,9 +123,12 @@ plotting capabilities of R.</p>
 <span class="r-in"><span><span class="va">align</span> <span class="op">&lt;-</span> <span class="fu"><a href="read.phyDat.html">read.phyDat</a></span><span class="op">(</span><span class="st">"ancestral_align.fasta"</span>, format<span class="op">=</span><span class="st">"fasta"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu">read.tree</span><span class="op">(</span><span class="st">"ancestral_tree.nwk"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="st">"ancestral.state"</span>, header<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>cannot open file 'ancestral.state': No such file or directory</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in file(file, "rt"):</span> cannot open the connection</span>
 <span class="r-in"><span><span class="va">anc_ml_disc</span> <span class="op">&lt;-</span> <span class="fu">as.ancestral</span><span class="op">(</span><span class="va">tree</span>, <span class="va">df</span>, <span class="va">align</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in as.ancestral(tree, df, align):</span> inherits(prob, "data.frame") is not TRUE</span>
 <span class="r-in"><span><span class="fu"><a href="plot.ancestral.html">plotAnc</a></span><span class="op">(</span><span class="va">anc_ml_disc</span>, <span class="fl">20</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="write.ancestral-1.png" alt="" width="700" height="433"></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'anc_ml_disc' not found</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ancestral_align.fasta"</span>, <span class="st">"ancestral_tree.nwk"</span>, <span class="st">"ancestral.state"</span><span class="op">)</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
