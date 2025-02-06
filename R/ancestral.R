@@ -73,6 +73,7 @@
 #' @rdname ancestral.pml
 #' @export
 ancestral.pml <- function(object, type = "marginal", return = "prob", ...) {
+  assert_pml(object)
   call <- match.call()
   pt <- match.arg(type, c("marginal", "ml", "bayes")) # "joint",
   rt <- match.arg(return, c("prob", "phyDat", "ancestral"))
@@ -207,6 +208,8 @@ ancestral.pars <- function(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"),
   if (hasArg(tips)) tips <- list(...)$tips
   else tips <- TRUE
   type <- match.arg(type)
+  assert_phylo(tree)
+  assert_phyDat(data)
   tree$nodel.label <- makeAncNodeLabel(tree)
   if (type == "ACCTRAN" || type=="POSTORDER") {
     res <- ptree(tree, data, return = return, acctran=(type == "ACCTRAN"),
@@ -229,6 +232,8 @@ anc_pars <- function(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"),
   #
   call <- match.call()
   type <- match.arg(type)
+  assert_phylo(tree)
+  assert_phyDat(data)
   tree$node.label <- makeAncNodeLabel(tree, ...)
   contrast <- attr(data, "contrast")
   data <- data[tree$tip.label,]

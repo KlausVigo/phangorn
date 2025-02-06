@@ -52,10 +52,11 @@ write.ancestral(anc_ml)
 # Can be also results from iqtree
 align <- read.phyDat("ancestral_align.fasta", format="fasta")
 tree <- read.tree("ancestral_tree.nwk")
-df <- read.table("ancestral.state", header=TRUE)
+df <- read.table("ancestral_state.tsv", header=TRUE)
 anc_ml_disc <- as.ancestral(tree, df, align)
 plotAnc(anc_ml_disc, 20)
-unlink(c("ancestral_align.fasta", "ancestral_tree.nwk", "ancestral.state"))
+unlink(c("ancestral_align.fasta", "ancestral_tree.nwk",
+         "ancestral_state.tsv"))
 }
 \seealso{
 \code{\link{anc_pml}}, \code{\link{plotAnc}}
