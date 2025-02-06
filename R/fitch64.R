@@ -250,7 +250,7 @@ fitch_nni <- function(tree, f) {
 optim.fitch <- function(tree, data, trace = 1, rearrangements = "NNI", ...) {
   assert_phylo(tree)
   assert_phyDat(data, label=tree$tip.label)
-  assert_count(trace)
+  assert_int(trace)
   rearrangements <- match.arg(toupper(rearrangements), c("NNI", "SPR"))
 #  if (!inherits(tree, "phylo")) stop("tree must be of class phylo")
   if (!is.binary(tree)) {

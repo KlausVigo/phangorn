@@ -1,3 +1,5 @@
+#' @rdname phangorn-internal
+#' @export
 assert_phylo <- function(x, has_edge_length=FALSE, is_rooted=FALSE,
                          is_ultrametric=FALSE){
   txt <-  deparse(substitute(x))
@@ -13,6 +15,8 @@ assert_phylo <- function(x, has_edge_length=FALSE, is_rooted=FALSE,
 }
 
 
+#' @rdname phangorn-internal
+#' @export
 assert_multiPhylo <- function(x, is_ultrametric=FALSE, is_rooted=FALSE,
                               same_labels=FALSE,  has_edge_length=FALSE){
   txt <-  deparse(substitute(x))
@@ -22,6 +26,8 @@ assert_multiPhylo <- function(x, is_ultrametric=FALSE, is_rooted=FALSE,
 }
 
 
+#' @rdname phangorn-internal
+#' @export
 assert_phyDat <- function(x, contains_label=!is.null(label), label=NULL){
   txt <-  deparse(substitute(x))
   if (!inherits(x, "phyDat")) stop(gettextf("%s must be of class 'phyDat'", txt))
@@ -31,6 +37,8 @@ assert_phyDat <- function(x, contains_label=!is.null(label), label=NULL){
 }
 
 
+#' @rdname phangorn-internal
+#' @export
 assert_pml <- function(x, contains_label=!is.null(label), label=NULL){
   txt <-  deparse(substitute(x))
   if (!inherits(x, "pml")) stop(gettextf("%s must be of class 'pml'", txt))

@@ -1,7 +1,7 @@
 ## generate data
 set.seed(42)
 tree1 <- rtree(100)
-tree2 <- rSPR(tree1, 5)
+tree2 <- rNNI(tree1, 10)
 tips <- mast(tree1, tree2, tree = FALSE)
 mast_tree <- mast(tree1, tree2)
 

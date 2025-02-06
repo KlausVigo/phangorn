@@ -28,7 +28,7 @@ The version for the unrooted trees is much slower.
 }
 \examples{
 tree1 <- rtree(100)
-tree2 <- rSPR(tree1, 5)
+tree2 <- rNNI(tree1, 20)
 tips <- mast(tree1, tree2)
 
 }

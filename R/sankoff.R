@@ -158,7 +158,7 @@ optim.sankoff <- function(tree, data, cost = NULL, trace = 1, ...) {
   if (is.rooted(tree)) tree <- unroot(tree)
   tree <- reorder(tree, "postorder")
   assert_phyDat(data, label=tree$tip.label)
-  assert_count(trace)
+  assert_int(trace)
 #  if (!inherits(data, "phyDat")) stop("data must be of class phyDat")
   data <- data[tree$tip.label]
   addTaxa <- FALSE
