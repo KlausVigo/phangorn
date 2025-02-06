@@ -39,9 +39,62 @@ assert_phyDat <- function(x, contains_label=!is.null(label), label=NULL){
 
 #' @rdname phangorn-internal
 #' @export
-assert_pml <- function(x, contains_label=!is.null(label), label=NULL){
+assert_pml <- function(x){
   txt <-  deparse(substitute(x))
   if (!inherits(x, "pml")) stop(gettextf("%s must be of class 'pml'", txt))
   invisible(x)
 }
 
+
+#' @rdname phangorn-internal
+#' @export
+assert_dist <- function(x, finite=FALSE, missing=FALSE){
+  txt <-  deparse(substitute(x))
+  if (!inherits(x, "dist")) stop(gettextf("%s must be of class 'pml'", txt))
+  if(missing && any(is.nan(x)))
+    stop(gettextf("%s contains missing values (NA)", txt))
+  if(is_finite && !all(is.finite(x)))
+      stop(gettextf("Some distances in %s are not finite", txt))
+  invisible(x)
+}
+
+
+#' @rdname phangorn-internal
+#' @export
+assert_treeish <- function(x, null.ok=FALSE){
+  txt <-  deparse(substitute(x))
+  if (missing(x))
+    stop(gettextf("argument \"%s\" is missing, with no default", txt))
+  treeish <- inherits(x, "phylo") || inherits(x, "multiPhylo")
+  if(null.ok) treeish <- treeish || is.null(x)
+  if(!treeish) stop(gettextf("%s must be of class 'phylo' or 'multiPhylo'", txt))
+  invisible(x)
+}
+
+
+#' @rdname phangorn-internal
+#' @export
+clean_phylo <- function(x, unroot=FALSE, multi2di=FALSE, collapse.singles=FALSE,
+                        reorder=FALSE){
+  if(collapse.singles && has.singles(x)) x <- collapse.singles(x)
+  if(multi2di && !is.binary(x)) x <- multi2di(x)
+  if(unroot && is.rooted(x)) x <- unroot(x)
+  if(reorder) x <- reorder(x, "postorder")
+}
+
+
+#' @rdname phangorn-internal
+#' @export
+clean_multiPhylo <- function(x, unroot=FALSE, multi2di=FALSE,
+                        collapse.singles=FALSE, reorder=FALSE, compress=FALSE){
+  compressed <- !is.null(attr(x, "TipLabel"))
+  if(compress) x <- .compressTipLabel(x)
+  if(collapse.singles && any(hs <- has.singles(x))){
+    x <- .uncompressTipLabel(x)
+    for(i in which(hs)) x[[i]] <- collapse.singles(x[[i]])
+    if(compress) x <- .compressTipLabel(x)
+  }
+  if(multi2di && !all(is.binary(x))) x <- multi2di(x)
+  if(unroot && any(is.rooted(x))) x <- unroot(x)
+  if(reorder) x <- reorder(x, "postorder")
+}

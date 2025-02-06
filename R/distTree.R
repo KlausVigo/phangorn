@@ -142,8 +142,10 @@ UNJ <- function(x){
 #' @export
 designTree <- function(tree, method = "unrooted", sparse = FALSE,
                        tip.dates=NULL, calibration=NULL, ...) {
+  assert_phylo(tree)
   method <- match.arg(method,
                       c("unrooted", "ultrametric", "rooted", "tipdated"))
+  assert_flag(sparse)
   if(method == "rooted") method <- "ultrametric"
   if(has.singles(tree)) tree <- collapse.singles(tree)
   if(method == "unrooted") X <- designUnrooted(tree, sparse = sparse, ...)
