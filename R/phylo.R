@@ -1282,15 +1282,17 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     stopifnot(length(g) == length(w))
     k <- length(w)
   }
-  if (!inherits(tree, "phylo")) stop("tree must be of class phylo")
-  if (is.null(tree$edge.length)) stop("tree must have edge weights")
-  if (any(duplicated(tree$tip.label))) stop("tree must have unique labels!")
+  assert_phylo(tree, has_edge_length=TRUE)
+#  if (!inherits(tree, "phylo")) stop("tree must be of class phylo")
+#  if (is.null(tree$edge.length)) stop("tree must have edge weights")
+#  if (any(duplicated(tree$tip.label))) stop("tree must have unique labels!")
   nTips <- as.integer(length(tree$tip.label))
   tree <- reorder(tree, "postorder")
   if (any(tree$edge.length < 0)) tree <- minEdge(tree)
-  if (!inherits(data, "phyDat")) stop("data must be of class phyDat")
-  if (anyNA(match(tree$tip.label, attr(data, "names"))))
-    stop("tip labels are not in data")
+  assert_phyDat(data, label=tree$tip.label)
+#  if (!inherits(data, "phyDat")) stop("data must be of class phyDat")
+#  if (anyNA(match(tree$tip.label, attr(data, "names"))))
+#    stop("tip labels are not in data")
   data <- subset(data, tree$tip.label) # needed
   levels <- attr(data, "levels")
   type <- attr(data, "type")
@@ -2117,6 +2119,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     warning("You can't optimize edges and rates at the same time, only edges are optimized!", call. = FALSE)
     optRate <- FALSE
   }
+  # 1x if  optEdge <- optEdge || optRooted || optNNI
   if (optRooted) {
     optEdge <- TRUE
     if (!is.rooted(tree)) stop("tree must be rooted")

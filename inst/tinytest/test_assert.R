@@ -3,6 +3,7 @@ data("Laurasiatherian")
 
 rooted_tree <- rcoal(47, names(Laurasiatherian))
 unrooted_tree <- rtree(47, rooted=FALSE, names(Laurasiatherian))
+trees <- rmtree(10,10)
 
 fit <- pml(unrooted_tree, Laurasiatherian)
 
@@ -21,3 +22,7 @@ expect_silent( assert_pml(fit) )
 expect_error( assert_pml(rooted_tree) )
 
 
+expert_silent(assert_treeish(unrooted_tree))
+expert_silent(assert_treeish(trees))
+expert_error(assert_treeish(NULL))
+expert_silent(assert_treeish(NULL, null.ok=TRUE))

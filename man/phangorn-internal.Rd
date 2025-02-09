@@ -8,6 +8,10 @@
 \alias{assert_multiPhylo}
 \alias{assert_phyDat}
 \alias{assert_pml}
+\alias{assert_dist}
+\alias{assert_treeish}
+\alias{clean_phylo}
+\alias{clean_multiPhylo}
 \alias{candidate_tree}
 \alias{hash}
 \alias{phangorn-internal}
@@ -30,7 +34,17 @@ assert_multiPhylo(x, is_ultrametric = FALSE, is_rooted = FALSE,
 
 assert_phyDat(x, contains_label = !is.null(label), label = NULL)
 
-assert_pml(x, contains_label = !is.null(label), label = NULL)
+assert_pml(x)
+
+assert_dist(x, finite = FALSE, missing = FALSE)
+
+assert_treeish(x, null.ok = FALSE)
+
+clean_phylo(x, unroot = FALSE, multi2di = FALSE,
+  collapse.singles = FALSE, reorder = FALSE)
+
+clean_multiPhylo(x, unroot = FALSE, multi2di = FALSE,
+  collapse.singles = FALSE, reorder = FALSE, compress = FALSE)
 
 candidate_tree(x, method = c("unrooted", "ultrametric", "tipdated"),
   eps = 1e-08, tip.dates = NULL, ...)
