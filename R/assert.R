@@ -53,7 +53,7 @@ assert_dist <- function(x, finite=FALSE, missing=FALSE){
   if (!inherits(x, "dist")) stop(gettextf("%s must be of class 'pml'", txt))
   if(missing && any(is.nan(x)))
     stop(gettextf("%s contains missing values (NA)", txt))
-  if(is_finite && !all(is.finite(x)))
+  if(finite && !all(is.finite(x)))
       stop(gettextf("Some distances in %s are not finite", txt))
   invisible(x)
 }
