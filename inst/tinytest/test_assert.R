@@ -22,7 +22,7 @@ expect_silent( assert_pml(fit) )
 expect_error( assert_pml(rooted_tree) )
 
 
-expert_silent(assert_treeish(unrooted_tree))
-expert_silent(assert_treeish(trees))
-expert_error(assert_treeish(NULL))
-expert_silent(assert_treeish(NULL, null.ok=TRUE))
+expect_silent(assert_treeish(unrooted_tree))
+expect_silent(assert_treeish(trees))
+expect_error(assert_treeish(NULL))
+expect_silent(assert_treeish(NULL, null.ok=TRUE))
