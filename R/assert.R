@@ -17,6 +17,20 @@ assert_phylo <- function(x, has_edge_length=FALSE, is_rooted=FALSE,
 
 #' @rdname phangorn-internal
 #' @export
+assert_treeish <- function(x, null.ok=FALSE){
+  txt <-  deparse(substitute(x))
+  if (missing(x))
+    stop(gettextf("argument \"%s\" is missing, with no default", txt))
+  treeish <- inherits(x, "phylo") || inherits(x, "multiPhylo")
+  if(null.ok) treeish <- treeish || is.null(x)
+  if(!treeish) stop(gettextf("%s must be of class 'phylo' or 'multiPhylo'", txt))
+  invisible(x)
+}
+
+
+
+#' @rdname phangorn-internal
+#' @export
 assert_multiPhylo <- function(x, is_ultrametric=FALSE, is_rooted=FALSE,
                               same_labels=FALSE,  has_edge_length=FALSE){
   txt <-  deparse(substitute(x))
@@ -46,30 +60,19 @@ assert_pml <- function(x){
 }
 
 
-#' @rdname phangorn-internal
-#' @export
-assert_dist <- function(x, finite=FALSE, missing=FALSE){
-  txt <-  deparse(substitute(x))
-  if (!inherits(x, "dist")) stop(gettextf("%s must be of class 'pml'", txt))
-  if(missing && any(is.nan(x)))
-    stop(gettextf("%s contains missing values (NA)", txt))
-  if(finite && !all(is.finite(x)))
-      stop(gettextf("Some distances in %s are not finite", txt))
-  invisible(x)
-}
+## @rdname phangorn-internal
+## @export
+#assert_dist <- function(x, finite=FALSE, missing=FALSE){
+#  txt <-  deparse(substitute(x))
+#  if (!inherits(x, "dist")) stop(gettextf("%s must be of class 'dist'", txt))
+#  if(missing && any(is.nan(x)))
+#    stop(gettextf("%s contains missing values (NA)", txt))
+#  if(finite && !all(is.finite(x)))
+#      stop(gettextf("Some distances in %s are not finite", txt))
+#  invisible(x)
+#}
 
 
-#' @rdname phangorn-internal
-#' @export
-assert_treeish <- function(x, null.ok=FALSE){
-  txt <-  deparse(substitute(x))
-  if (missing(x))
-    stop(gettextf("argument \"%s\" is missing, with no default", txt))
-  treeish <- inherits(x, "phylo") || inherits(x, "multiPhylo")
-  if(null.ok) treeish <- treeish || is.null(x)
-  if(!treeish) stop(gettextf("%s must be of class 'phylo' or 'multiPhylo'", txt))
-  invisible(x)
-}
 
 
 #' @rdname phangorn-internal

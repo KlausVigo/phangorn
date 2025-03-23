@@ -1,8 +1,7 @@
-
 data("Laurasiatherian")
 
 rooted_tree <- rcoal(47, names(Laurasiatherian))
-unrooted_tree <- rtree(47, rooted=FALSE, names(Laurasiatherian))
+unrooted_tree <- rtree(47, rooted = FALSE, names(Laurasiatherian))
 trees <- rmtree(10,10)
 
 fit <- pml(unrooted_tree, Laurasiatherian)
@@ -21,8 +20,12 @@ expect_error( assert_phyDat(rooted_tree) )
 expect_silent( assert_pml(fit) )
 expect_error( assert_pml(rooted_tree) )
 
+expect_silent(assert_multiPhylo(trees))
+expect_error(assert_multiPhylo(rooted_tree))
 
 expect_silent(assert_treeish(unrooted_tree))
 expect_silent(assert_treeish(trees))
 expect_error(assert_treeish(NULL))
-expect_silent(assert_treeish(NULL, null.ok=TRUE))
+expect_silent(assert_treeish(NULL, null.ok = TRUE))
+
+
