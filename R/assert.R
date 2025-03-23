@@ -60,17 +60,17 @@ assert_pml <- function(x){
 }
 
 
-## @rdname phangorn-internal
-## @export
-#assert_dist <- function(x, finite=FALSE, missing=FALSE){
-#  txt <-  deparse(substitute(x))
-#  if (!inherits(x, "dist")) stop(gettextf("%s must be of class 'dist'", txt))
-#  if(missing && any(is.nan(x)))
-#    stop(gettextf("%s contains missing values (NA)", txt))
-#  if(finite && !all(is.finite(x)))
-#      stop(gettextf("Some distances in %s are not finite", txt))
-#  invisible(x)
-#}
+#' @rdname phangorn-internal
+#' @export
+assert_dist <- function(x, finite=FALSE, missing=FALSE){
+  txt <-  deparse(substitute(x))
+  if (!inherits(x, "dist")) stop(gettextf("%s must be of class 'dist'", txt))
+  if(missing && any(is.nan(x)))
+    stop(gettextf("%s contains missing values (NA)", txt))
+  if(finite && !all(is.finite(x)))
+      stop(gettextf("Some distances in %s are not finite", txt))
+  invisible(x)
+}
 
 
 
