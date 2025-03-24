@@ -83,6 +83,7 @@ clean_phylo <- function(x, unroot=FALSE, multi2di=FALSE, collapse.singles=FALSE,
   if(multi2di && !is.binary(x)) x <- multi2di(x)
   if(unroot && is.rooted(x)) x <- unroot(x)
   if(reorder) x <- reorder(x, "postorder")
+  x
 }
 
 
@@ -91,13 +92,13 @@ clean_phylo <- function(x, unroot=FALSE, multi2di=FALSE, collapse.singles=FALSE,
 clean_multiPhylo <- function(x, unroot=FALSE, multi2di=FALSE,
                         collapse.singles=FALSE, reorder=FALSE, compress=FALSE){
   compressed <- !is.null(attr(x, "TipLabel"))
-  if(compress) x <- .compressTipLabel(x)
   if(collapse.singles && any(hs <- has.singles(x))){
     x <- .uncompressTipLabel(x)
     for(i in which(hs)) x[[i]] <- collapse.singles(x[[i]])
-    if(compress) x <- .compressTipLabel(x)
   }
+  if(compress) x <- .compressTipLabel(x)
   if(multi2di && !all(is.binary(x))) x <- multi2di(x)
   if(unroot && any(is.rooted(x))) x <- unroot(x)
   if(reorder) x <- reorder(x, "postorder")
+  x
 }
