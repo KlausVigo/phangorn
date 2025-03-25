@@ -161,15 +161,18 @@ fun2 <- function(x, rooted=FALSE) {
 #' @rdname treedist
 #' @export treedist
 treedist <- function(tree1, tree2, check.labels = TRUE) {
-  if (has.singles(tree1)) tree1 <- collapse.singles(tree1)
-  if (has.singles(tree2)) tree2 <- collapse.singles(tree2)
-
-  tree1 <- unroot(tree1)
-  tree2 <- unroot(tree2)
+  assert_phylo(tree1)
+  assert_phylo(tree2)
+  assert_flag(check.labels)
+#  if (has.singles(tree1)) tree1 <- collapse.singles(tree1)
+#  if (has.singles(tree2)) tree2 <- collapse.singles(tree2)
+#  tree1 <- unroot(tree1)
+#  tree2 <- unroot(tree2)
   if (check.labels) tree2 <- relabel(tree2, tree1$tip.label)
-
-  tree1 <- reorder(tree1, "postorder")
-  tree2 <- reorder(tree2, "postorder")
+  tree1 <- clean_phylo(tree1, unroot=TRUE, collapse.singles=TRUE, reorder=TRUE)
+  tree2 <- clean_phylo(tree2, unroot=TRUE, collapse.singles=TRUE, reorder=TRUE)
+#  tree1 <- reorder(tree1, "postorder")
+#  tree2 <- reorder(tree2, "postorder")
 
   symmetric.difference <- NULL
   branch.score.difference <- NULL
@@ -235,23 +238,28 @@ treedist <- function(tree1, tree2, check.labels = TRUE) {
 #' @rdname treedist
 #' @export
 sprdist <- function(tree1, tree2) {
-  if (has.singles(tree1)) tree1 <- collapse.singles(tree1)
-  if (has.singles(tree2)) tree2 <- collapse.singles(tree2)
-  tree1 <- unroot(tree1)
-  tree2 <- unroot(tree2)
+  assert_phylo(tree1)
+  assert_phylo(tree2)
+  tree2 <- relabel(tree2, tree1$tip.label)
+  tree1 <- clean_phylo(tree1, unroot=TRUE, collapse.singles=TRUE, reorder=TRUE)
+  tree2 <- clean_phylo(tree2, unroot=TRUE, collapse.singles=TRUE, reorder=TRUE)
+##  if (has.singles(tree1)) tree1 <- collapse.singles(tree1)
+##  if (has.singles(tree2)) tree2 <- collapse.singles(tree2)
+##  tree1 <- unroot(tree1)
+##  tree2 <- unroot(tree2)
   lt1 <- length(tree1$tip.label)
-  lt2 <- length(tree2$tip.label)
+##  lt2 <- length(tree2$tip.label)
   # checking labels is obligatory for spr (user should prune one of them
   # beforehand?)
-  ind <- match(tree1$tip.label, tree2$tip.label)
-  if (anyNA(ind) | lt1 != lt2) stop("trees have different labels")
-  tree2$tip.label <- tree2$tip.label[ind]
-  ind2 <- match(seq_along(ind), tree2$edge[, 2])
-  tree2$edge[ind2, 2] <- order(ind)
+##  ind <- match(tree1$tip.label, tree2$tip.label)
+##  if (anyNA(ind) | lt1 != lt2) stop("trees have different labels")
+##  tree2$tip.label <- tree2$tip.label[ind]
+##  ind2 <- match(seq_along(ind), tree2$edge[, 2])
+##  tree2$edge[ind2, 2] <- order(ind)
   # same as in original treedist (will create list of strings with shorter
   # side of splits)
-  tree1 <- reorder(tree1, "postorder")
-  tree2 <- reorder(tree2, "postorder")
+##  tree1 <- reorder(tree1, "postorder")
+##  tree2 <- reorder(tree2, "postorder")
   if (!is.binary(tree1) | !is.binary(tree2))
     message("Some trees are not binary. Result may not what you expect!")
   # possibly replace bip with bipart
@@ -275,11 +283,13 @@ sprdist <- function(tree1, tree2) {
 
 
 SPR1 <- function(trees) {
-  trees <- .compressTipLabel(trees)
+  trees <- clean_multiPhylo(trees, unroot=TRUE, collapse.singles=TRUE,
+                            reorder=TRUE, compress=TRUE)
+#  trees <- .compressTipLabel(trees)
   trees <- .uncompressTipLabel(trees)
-  trees <- lapply(trees, unroot)
-  if (any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
-  trees <- lapply(trees, reorder, "postorder")
+#  trees <- lapply(trees, unroot)
+#  if (any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
+#  trees <- lapply(trees, reorder, "postorder")
 
   nTips <- length(trees[[1]]$tip.label)
 
@@ -312,16 +322,19 @@ SPR1 <- function(trees) {
 
 
 SPR2 <- function(tree, trees) {
-  trees <- .compressTipLabel(trees)
+  tree <- clean_phylo(tree, unroot=TRUE, collapse.singles=TRUE, reorder=TRUE)
+  trees <- clean_multiPhylo(trees, unroot=TRUE, collapse.singles=TRUE,
+                            reorder=TRUE, compress=TRUE)
+#  trees <- .compressTipLabel(trees)
   tree <- relabel(tree, attr(trees, "TipLabel"))
   trees <- .uncompressTipLabel(trees)
-  if (any(is.rooted(trees))) {
-    trees <- unroot(trees)
-  }
-  if (any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
-  trees <- lapply(trees, reorder, "postorder")
-  tree <- unroot(tree)
-  if (has.singles(tree)) tree <- collapse.singles(tree)
+#  if (any(is.rooted(trees))) {
+#    trees <- unroot(trees)
+#  }
+#  if (any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
+#  trees <- lapply(trees, reorder, "postorder")
+#  tree <- unroot(tree)
+#  if (has.singles(tree)) tree <- collapse.singles(tree)
   nTips <- length(tree$tip.label)
 
   fun <- function(x) {
@@ -347,6 +360,8 @@ SPR2 <- function(tree, trees) {
 #' @rdname treedist
 #' @export
 SPR.dist <- function(tree1, tree2 = NULL) {
+  assert_treeish(tree1, null.ok=FALSE)
+  assert_treeish(tree2, null.ok=TRUE)
   if (inherits(tree1, "multiPhylo") && is.null(tree2)) return(SPR1(tree1))
   if (inherits(tree1, "phylo") && inherits(tree2, "phylo"))
     return(sprdist(tree1, tree2)[1])
@@ -362,21 +377,25 @@ wRF0 <- function(tree1, tree2, normalize = FALSE, check.labels = TRUE,
                  rooted = FALSE) {
   r1 <- is.rooted(tree1)
   r2 <- is.rooted(tree2)
-  if (r1 != r2) {
+  if (rooted && (r1 != r2)) {
     message("one tree is unrooted, unrooted both")
     rooted <- FALSE
   }
-  if (!rooted) {
-    if (r1)
-      tree1 <- unroot(tree1)
-    if (r2)
-      tree2 <- unroot(tree2)
-  }
+  if (check.labels) tree2 <- relabel(tree2, tree1$tip.label)
+  tree1 <- clean_phylo(tree1, unroot=!rooted, collapse.singles=TRUE,
+                       reorder=TRUE)
+  tree2 <- clean_phylo(tree2, unroot=!rooted, collapse.singles=TRUE,
+                       reorder=TRUE)
+#  if (!rooted) {
+#    if (r1)
+#      tree1 <- unroot(tree1)
+#    if (r2)
+#      tree2 <- unroot(tree2)
+#  }
+#  if (has.singles(tree1)) tree1 <- collapse.singles(tree1)
+#  if (has.singles(tree2)) tree2 <- collapse.singles(tree2)
   if (!is.binary(tree1) | !is.binary(tree2))
     message("Some trees are not binary. Result may not what you expect!")
-  if (check.labels) tree2 <- relabel(tree2, tree1$tip.label)
-  if (has.singles(tree1)) tree1 <- collapse.singles(tree1)
-  if (has.singles(tree2)) tree2 <- collapse.singles(tree2)
 
   bp1 <- fun2(tree1, rooted)
   bp2 <- fun2(tree2, rooted)
@@ -406,17 +425,21 @@ wRF2 <- function(tree, trees, normalize = FALSE, check.labels = TRUE,
     trees <- .compressTipLabel(trees)
     tree <- relabel(tree, attr(trees, "TipLabel"))
   }
-  trees <- .uncompressTipLabel(trees)
 
   if (rooted && any(!is.rooted(trees))) {
     message("some trees were rooted, unrooted all")
     rooted <- FALSE
   }
 
-  if (!rooted && any(is.rooted(trees))) trees <- unroot(trees)
-  if (any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
-  if (has.singles(tree)) tree <- collapse.singles(tree)
+  tree <- clean_phylo(tree, unroot=!rooted, collapse.singles=TRUE,
+                       reorder=TRUE)
+  trees <- clean_multiPhylo(trees, unroot=!rooted, collapse.singles=TRUE,
+                            reorder=TRUE, compress=TRUE)
+#  if (!rooted && any(is.rooted(trees))) trees <- unroot(trees)
+#  if (any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
+#  if (has.singles(tree)) tree <- collapse.singles(tree)
 
+  trees <- .uncompressTipLabel(trees)
   unclass(trees)
 
   nTips <- length(tree$tip.label)
@@ -454,15 +477,18 @@ wRF2 <- function(tree, trees, normalize = FALSE, check.labels = TRUE,
 
 wRF1 <- function(trees, normalize = FALSE, check.labels = TRUE,
                  rooted = FALSE) {
-  if (check.labels) trees <- .compressTipLabel(trees)
-  trees <- .uncompressTipLabel(trees)
+#  if (check.labels) trees <- .compressTipLabel(trees)
+#  trees <- .uncompressTipLabel(trees)
 
   if (rooted && any(!is.rooted(trees))) {
     message("some trees were rooted, unrooted all")
     rooted <- FALSE
   }
-  if (!rooted && any(is.rooted(trees))) trees <- unroot(trees)
-  if (any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
+  trees <- clean_multiPhylo(trees, unroot=!rooted, collapse.singles=TRUE,
+                            reorder=TRUE, compress=TRUE)
+#  if (!rooted && any(is.rooted(trees))) trees <- unroot(trees)
+#  if (any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
+#  trees <- .uncompressTipLabel(trees)
   unclass(trees) # fix needed
 
   nTips <- length(trees[[1]]$tip.label)
@@ -501,26 +527,30 @@ wRF1 <- function(trees, normalize = FALSE, check.labels = TRUE,
 
 mRF2 <- function(tree, trees, normalize = FALSE, check.labels = TRUE,
                  rooted = FALSE) {
-  trees <- .compressTipLabel(trees)
+#  if (!rooted && any(is.rooted(trees))) {
+#    message("some trees were rooted, unrooted all")
+#    rooted <- FALSE
+#    #trees <- unroot(trees)
+#  }
+  trees <- clean_multiPhylo(trees, unroot=!rooted, collapse.singles=TRUE,
+                            reorder=TRUE, compress=TRUE)
+#  trees <- .compressTipLabel(trees)
   tipLabel <- attr(trees, "TipLabel")
   if (check.labels) tree <- relabel(tree, tipLabel)
   nTips <- length(tipLabel)
   l <- length(trees)
   RF <- numeric(l)
+  tree <- clean_phylo(tree, unroot=!rooted, collapse.singles=TRUE,
+                      reorder=TRUE)
   trees <- .uncompressTipLabel(trees)
-  if (any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
-  if (has.singles(tree)) tree <- collapse.singles(tree)
-
-  if (!rooted && any(is.rooted(trees))) {
-    message("some trees were rooted, unrooted all")
-    trees <- unroot(trees)
-  }
-  if (!rooted && is.rooted(tree)) tree <- unroot(tree)
+#  if (any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
+#  if (has.singles(tree)) tree <- collapse.singles(tree)
+#  if (!rooted && is.rooted(tree)) tree <- unroot(tree)
   if (any(!is.binary(trees))) {
     message("Some trees are not binary. Result may not what you expect!")
   }
-  tree <- reorder(tree, "postorder")
-  trees <- reorder(trees, "postorder")
+#  tree <- reorder(tree, "postorder")
+#  trees <- reorder(trees, "postorder")
   xx <- lapply(trees, bipart)
   if (!rooted) xx <- lapply(xx, SHORTwise)
   xx <- lapply(xx, function(x) sapply(x, paste, collapse = "_"))
@@ -557,8 +587,10 @@ mRF <- function(trees, normalize = FALSE, rooted = FALSE) {
     message("some trees were rooted, unrooted all")
     rooted <- FALSE
   }
-  if (!rooted && any(is.rooted(trees))) trees <- unroot(trees)
-  if (any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
+  trees <- clean_multiPhylo(trees, unroot=!rooted, collapse.singles=TRUE,
+                            reorder=TRUE, compress=TRUE)
+#  if (!rooted && any(is.rooted(trees))) trees <- unroot(trees)
+#  if (any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
   if (any(!is.binary(trees))) {
     message("Some trees are not binary. Result may not what you expect!")
   }
@@ -635,6 +667,11 @@ RF0 <- function(tree1, tree2 = NULL, normalize = FALSE, check.labels = TRUE,
 #' @export
 RF.dist <- function(tree1, tree2 = NULL, normalize = FALSE, check.labels = TRUE,
                     rooted = FALSE) {
+  assert_treeish(tree1, null.ok=FALSE)
+  assert_treeish(tree2, null.ok=TRUE)
+  assert_flag(normalize)
+  assert_flag(check.labels)
+  assert_flag(rooted)
   if (inherits(tree1, "phylo") && inherits(tree2, "phylo"))
     return(RF0(tree1, tree2, normalize, check.labels, rooted))
   if (inherits(tree1, "multiPhylo") && is.null(tree2))
@@ -651,6 +688,11 @@ RF.dist <- function(tree1, tree2 = NULL, normalize = FALSE, check.labels = TRUE,
 #' @export
 wRF.dist <- function(tree1, tree2 = NULL, normalize = FALSE,
                      check.labels = TRUE, rooted = FALSE) {
+  assert_treeish(tree1, null.ok=FALSE)
+  assert_treeish(tree2, null.ok=TRUE)
+  assert_flag(normalize)
+  assert_flag(check.labels)
+  assert_flag(rooted)
   if (inherits(tree1, "phylo") && inherits(tree2, "phylo"))
     return(wRF0(tree1, tree2, normalize, check.labels, rooted))
   if (inherits(tree1, "multiPhylo") && is.null(tree2))
@@ -797,6 +839,10 @@ kf2 <- function(trees, check.labels = TRUE, rooted = FALSE) {
 #' @rdname treedist
 #' @export
 KF.dist <- function(tree1, tree2 = NULL, check.labels = TRUE, rooted = FALSE) {
+  assert_treeish(tree1, null.ok=FALSE)
+  assert_treeish(tree2, null.ok=TRUE)
+  assert_flag(check.labels)
+  assert_flag(rooted)
   if (inherits(tree1, "multiPhylo") && is.null(tree2))
     return(kf2(tree1, rooted = rooted))
   if (inherits(tree1, "phylo") && inherits(tree2, "phylo"))
@@ -813,6 +859,10 @@ KF.dist <- function(tree1, tree2 = NULL, check.labels = TRUE, rooted = FALSE) {
 #' @export
 path.dist <- function(tree1, tree2 = NULL, check.labels = TRUE,
                       use.weight = FALSE) {
+  assert_treeish(tree1, null.ok=FALSE)
+  assert_treeish(tree2, null.ok=TRUE)
+  assert_flag(check.labels)
+  assert_flag(use.weight)
   if (inherits(tree1, "phylo") && inherits(tree2, "phylo"))
     return(pd0(tree1, tree2, check.labels, !use.weight))
   if (inherits(tree1, "phylo") && inherits(tree2, "multiPhylo"))

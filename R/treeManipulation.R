@@ -7,6 +7,7 @@
 #' @rdname midpoint
 #' @export
 getRoot <- function(tree) {
+  assert_phylo(tree)
   if (!is.null(attr(tree, "order")) && attr(tree, "order") ==
     "postorder") {
     return(tree$edge[nrow(tree$edge), 1])
@@ -197,7 +198,7 @@ midpoint.phylo <- function(tree, node.labels = "support", ...) {
   attr(tree, "order") <- NULL
   tree <- reorder(tree)
   if (!is.null(oldtree$node.label)) {
-    type <- match.arg(node.labels, c("support", "label", "delete"))
+    type <- match.arg(tolower(node.labels), c("support", "label", "delete"))
     if (type == "support") tree <- addConfidences.phylo(tree, oldtree)
     if (type == "delete") tree$node.label <- NULL
   }
@@ -221,6 +222,7 @@ midpoint.multiPhylo <- function(tree, node.labels = "support", ...) {
 #' @rdname midpoint
 #' @export
 pruneTree <- function(tree, ..., FUN = ">=") {
+  assert_phylo(tree)
   if (is.null(tree$node)) stop("no node labels")
   # if (is.rooted(tree)) tree <- unroot(tree)
   has_edge.length <- !is.null(tree$edge.length)
@@ -690,12 +692,13 @@ char2pos <- function(x, node){
 #' @export
 #' @rdname Ancestors
 Ancestors <- function(x, node, type = c("all", "parent")) {
+  assert_phylo(x)
   if(!missing(node) && inherits(node, "character")) node <- char2pos(x, node)
   parents <- x$edge[, 1]
   child <- x$edge[, 2]
   pvector <- integer(max(x$edge)) # parents
   pvector[child] <- parents
-  type <- match.arg(type)
+  type <- match.arg(tolower(type),  c("all", "parent"))
   if (type == "parent")
     return(pvector[node])
   anc <- function(pvector, node) {
@@ -743,6 +746,7 @@ allDescendants <- function(x) {
 #' @export
 Children <- function(x, node) {
   # return allChildren if node is missing
+  assert_phylo(x)
   if(!missing(node) && inherits(node, "character")) node <- char2pos(x, node)
   if (!missing(node) && length(node) == 1)
     return(x$edge[x$edge[, 1] == node, 2])
@@ -753,7 +757,7 @@ Children <- function(x, node) {
 #' @rdname Ancestors
 #' @export
 Descendants <- function(x, node, type = c("tips", "children", "all")) {
-  type <- match.arg(type)
+  type <- match.arg(tolower(type), c("tips", "children", "all"))
   if(!missing(node) && inherits(node, "character")) node <- char2pos(x, node)
   if (type == "children") return(Children(x, node))
   if (type == "tips") return(bip(x)[node])

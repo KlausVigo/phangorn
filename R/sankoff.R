@@ -46,7 +46,9 @@ fit.sankoff <- function(tree, data, cost,
 #' @rdname parsimony
 #' @export
 sankoff <- function(tree, data, cost = NULL, site = "pscore") {
-  if (!inherits(data, "phyDat")) stop("data must be of class phyDat")
+  assert_treeish(tree)
+  assert_phyDat(data)
+  site <- match.arg(site, c("pscore", "site", "data"))
   data <- prepareDataSankoff(data)
   if (is.null(cost)) {
     levels <- attr(data, "levels")
@@ -56,7 +58,7 @@ sankoff <- function(tree, data, cost = NULL, site = "pscore") {
   }
   if (inherits(tree, "phylo")) return(fit.sankoff(tree, data, cost,
                                                   returnData = site))
-  if (inherits(tree, "multiPhylo")) {
+  else if (inherits(tree, "multiPhylo")) {
     if (is.null(tree$TipLabel)) tree <- unclass(tree)
     return(sapply(tree, fit.sankoff, data, cost, site))
   }

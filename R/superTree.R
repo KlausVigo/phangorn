@@ -1,8 +1,6 @@
 tree2phyDat <- function(trees) {
   # some minor error checking
-  if (!inherits(trees, "multiPhylo"))
-    stop("trees must be of class multiPhylo")
-
+  assert_multiPhylo(trees)
   labels <- lapply(trees, function(x) sort(x$tip.label))
   ulabels <- unique(labels)
   lul <- length(ulabels)
@@ -157,6 +155,12 @@ dist.superTree <- function(tree, trace = 0, fun, start = NULL,
 #' @export superTree
 superTree <- function(tree, method = "MRP", rooted = FALSE, trace = 0,
                       start = NULL, multicore = FALSE, mc.cores = NULL, ...) {
+  assert_phylo(tree)
+  method <- match.arg(method, c("MRP", "RF", "SPR"))
+  assert_flag(rooted)
+  assert_int(trace)
+  assert_treeish(start)
+  assert_flag(multicore)
   fun <- function(x) {
     x <- reorder(x, "postorder")
     nTips <- length(x$tip.label)

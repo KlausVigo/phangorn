@@ -107,7 +107,8 @@ simSeq <- function(x, ...)
 simSeq.phylo <- function(x, l = 1000, Q = NULL, bf = NULL, rootseq = NULL,
                          type = "DNA", model = NULL, levels = NULL, rate = 1,
                          ancestral = FALSE, code=1, ...) {
-  if(l<=0)stop("l must be greater than 0!")
+  assert_count(l, positive = TRUE)
+  assert_flag(ancestral)
   if (!is.null(model)) {
     model <- match.arg(model, .aamodels)
     getModelAA(model, bf = is.null(bf), Q = is.null(Q))
@@ -201,6 +202,7 @@ simSeq.phylo <- function(x, l = 1000, Q = NULL, bf = NULL, rootseq = NULL,
 #' @method simSeq pml
 #' @export
 simSeq.pml <- function(x, ancestral = FALSE, ...) {
+  assert_flag(ancestral)
   g <- x$g
   w <- x$w
   if (x$inv > 0) {

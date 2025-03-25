@@ -59,6 +59,7 @@ nnin <- function(tree, n) {
 #' @rdname nni
 #' @export nni
 nni <- function(tree) {
+  assert_phylo(tree)
   stopifnot(Ntip(tree) > 3-is.rooted(tree))
   tip.label <- tree$tip.label
   attr(tree, "order") <- NULL
