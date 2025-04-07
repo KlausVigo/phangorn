@@ -8,7 +8,6 @@ circ.mean <- function(deg) {
   rad.m <- (deg * pi) / (180)
   mean.cos <- mean(cos(rad.m))
   mean.sin <- mean(sin(rad.m))
-
   theta <- rad2deg(atan(mean.sin / mean.cos))
   if (mean.cos < 0) theta <- theta + 180
   if ((mean.sin < 0) & (mean.cos > 0)) theta <- theta + 360
@@ -35,7 +34,6 @@ coords.equal.angle <- function(obj) {
   spl <- obj$splits
   spl <- SHORTwise(spl) #, length(obj$tip.label))
   l <- length(obj$edge.length)
-  #  ind1 <- which(!duplicated(obj$splitIndex))
   n <- max(obj$edge)
   angle <- spl2angle(spl)
   weight <- attr(spl, "weight")
@@ -427,8 +425,6 @@ plot2D <- function(coords, net, show.tip.label = TRUE, show.edge.label = FALSE,
     }
   }
   if (!add) {
-#    plot.new()
-#    plot.window(xlim, ylim, asp = 1, ...)
     plot.default(0, type = "n", xlim = xlim, ylim = ylim, xlab = "",
                  ylab = "", axes = FALSE, asp = 1, ...)
   }
