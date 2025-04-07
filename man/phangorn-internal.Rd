@@ -5,11 +5,11 @@
 \name{threshStateC}
 \alias{threshStateC}
 \alias{assert_phylo}
+\alias{assert_treeish}
 \alias{assert_multiPhylo}
 \alias{assert_phyDat}
 \alias{assert_pml}
 \alias{assert_dist}
-\alias{assert_treeish}
 \alias{clean_phylo}
 \alias{clean_multiPhylo}
 \alias{candidate_tree}
@@ -29,6 +29,8 @@ threshStateC(x, thresholds)
 assert_phylo(x, has_edge_length = FALSE, is_rooted = FALSE,
   is_ultrametric = FALSE)
 
+assert_treeish(x, null.ok = FALSE)
+
 assert_multiPhylo(x, is_ultrametric = FALSE, is_rooted = FALSE,
   same_labels = FALSE, has_edge_length = FALSE)
 
@@ -37,8 +39,6 @@ assert_phyDat(x, contains_label = !is.null(label), label = NULL)
 assert_pml(x)
 
 assert_dist(x, finite = FALSE, missing = FALSE)
-
-assert_treeish(x, null.ok = FALSE)
 
 clean_phylo(x, unroot = FALSE, multi2di = FALSE,
   collapse.singles = FALSE, reorder = FALSE)

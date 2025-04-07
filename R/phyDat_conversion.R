@@ -56,7 +56,8 @@
 #' @export
 phyDat <- function (data, type="DNA", levels=NULL, return.index = TRUE, ...){
   #  if (inherits(data, "DNAbin")) type <- "DNA"
-  pt <- match.arg(type, c("DNA", "AA", "CODON", "USER"))
+  assert_flag(return.index)
+  pt <- match.arg(toupper(type), c("DNA", "AA", "CODON", "USER"))
   if(pt=="DNA") dat <- phyDat.DNA(data, return.index=return.index, ...)
   if(pt=="AA") dat <- phyDat.AA(data, return.index=return.index, ...)
   if(pt=="CODON") dat <- phyDat.codon(data, return.index=return.index, ...)
@@ -377,8 +378,8 @@ acgt2ry <- function(obj){
 #' @export
 unalign <- function(x){
   if(inherits(x, "phyDat")){
-    if(attr(x, "type")=="DNA") x<- as.DNAbin(x)
-    else if(attr(x, "type")=="AA") x<- as.AAbin(x)
+    if(attr(x, "type")=="DNA") x <- as.DNAbin(x)
+    else if(attr(x, "type")=="AA") x <- as.AAbin(x)
   }
   stopifnot(inherits(x, "DNAbin") || inherits(x, "AAbin"))
   x <- as.list(x)
@@ -390,3 +391,11 @@ unalign <- function(x){
   x
 }
 
+
+
+# SRR tags ---------------------------------------------------------------------
+#' @srrstats {G1.4} This file's functions are all documented with `{roxygen2}`.
+#' @srrstats {G2.3, G2.3a, G2.3b} functions use match.arg
+#' @srrstats {G2.4} *Provide appropriate mechanisms to convert between different data types, potentially including:*
+#' @srrstats {G2.4e} *explicit conversion from factor via `as...()` functions*
+NULL
