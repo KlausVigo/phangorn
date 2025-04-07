@@ -3,6 +3,7 @@
 #' This function performs the neighbor-joining tree estimation of Saitou and
 #' Nei (1987). UNJ is the unweighted version from Gascuel (1997).
 #'
+#' NJ is a wrapper around nj from ape.
 #'
 #' @param x A distance matrix.
 #' @return an object of class \code{"phylo"}.
@@ -37,6 +38,9 @@ NJ <- function(x) reorder(nj(x), "postorder")
 #' @rdname NJ
 #' @export
 UNJ <- function(x){
+  if(anyNA(x)) stop("missing values are not allowed in the distance matrix")
+  if(any(is.infinite(x)))
+    stop("infinite values are not allowed in the distance matrix")
   x <- as.matrix(x)
   labels <- attr(x, "Labels")[[1]]
   edge.length <- NULL
@@ -84,10 +88,6 @@ UNJ <- function(x){
   reorder(result, "postorder")
 }
 
-
-#
-# Distance Matrix methods
-#
 
 
 #' Compute a design matrix or non-negative LS
@@ -187,6 +187,7 @@ designUnrooted <- function(tree, sparse=FALSE, order = NULL) {
 
 
 designUltra <- function(tree, sparse = TRUE, calibration=NULL) {
+  assert_phylo(tree)
   if (is.null(attr(tree, "order")) || attr(tree, "order") != "postorder")
     tree <- reorder(tree, "postorder")
 #  stopifnot( !(!is.null(calibration) && is.null(tree$node.label)))
@@ -368,6 +369,10 @@ nnls.tree <- function(dm, tree, method=c("unrooted", "ultrametric", "tipdated"),
           rooted=NULL, trace=1, weight=NULL, balanced=FALSE, tip.dates=NULL,
           calibration=NULL) {
   method <- match.arg(method, c("unrooted", "ultrametric", "tipdated"))
+  if(anyNA(dm)) stop("missing values are not allowed in the distance matrix")
+  if(any(is.infinite(dm)))
+    stop("infinite values are not allowed in the distance matrix")
+  assert_phylo(tree)
   if(has.singles(tree)) tree <- collapse.singles(tree)
   if (is.rooted(tree) && method == "unrooted") tree <- unroot(tree)
   tree <- reorder(tree, "postorder")
@@ -499,6 +504,9 @@ nnls.phylo <- function(x, dm, method = "unrooted", trace = 0, ...) {
 #' @rdname designTree
 #' @export
 nnls.splits <- function(x, dm, trace = 0, eps = 1e-8) {
+  if(anyNA(dm)) stop("missing values are not allowed in the distance matrix")
+  if(any(is.infinite(dm)))
+    stop("infinite values are not allowed in the distance matrix")
   labels <- attr(x, "labels")
   dm <- as.matrix(dm)
   k <- dim(dm)[1]

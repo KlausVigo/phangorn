@@ -15,6 +15,11 @@
 #' \code{\link[ape]{fastme}} relax this assumption to additive distances.
 #' sUPGMA assumes tip dated data.
 #'
+#' \code{tip.dates} should be a vector of sampling times, in any time unit, with
+#' time increasing toward the present. For example, this may be in units of
+#' "days since study start" or "years since 10.000 BCE", but not "millions of
+#' years ago".
+#'
 #' @param D A distance matrix, i.e. an object of class \code{dist}. If an matrix
 #' is supplied it is tried to covert it do a \code{dist} object.
 #' @param method The agglomeration method to be used. This should be (an
@@ -57,6 +62,9 @@
 #' @rdname upgma
 #' @export
 upgma <- function(D, method = "average", ...) {
+  if(anyNA(D)) stop("missing values are not allowed in the distance matrix")
+  if(any(is.infinite(D)))
+    stop("infinite values are not allowed in the distance matrix")
   method <- match.arg(method, c("average", "ward.D", "ward.D2", "single",
                       "complete", "mcquitty", "median", "centroid"))
   DD <- as.dist(D)
@@ -71,6 +79,9 @@ upgma <- function(D, method = "average", ...) {
 #' @rdname upgma
 #' @export
 wpgma <- function(D, method = "mcquitty", ...) {
+  if(anyNA(D)) stop("missing values are not allowed in the distance matrix")
+  if(any(is.infinite(D)))
+    stop("infinite values are not allowed in the distance matrix")
   method <- match.arg(method, c("average", "ward.D", "ward.D2", "single",
                       "complete", "mcquitty", "median", "centroid"))
   DD <- as.dist(D)
@@ -84,6 +95,10 @@ wpgma <- function(D, method = "mcquitty", ...) {
 #' @rdname upgma
 #' @export
 supgma <- function(D, tip.dates, trace=0, ...){
+  if(anyNA(x)) stop("missing values are not allowed in the distance matrix")
+  if(any(is.infinite(x)))
+    stop("infinite values are not allowed in the distance matrix")
+  D <- as.dist(D)
   tree <- fastme.ols(D)
   tree <- relabel(tree, attr(D, "Labels"))
   tree <- rtt(tree, tip.dates[tree$tip.label])
@@ -123,10 +138,13 @@ supgma <- function(D, tip.dates, trace=0, ...){
 #' algorithm. UPGMA(NNI=FALSE), WPGMA() are wrapper around hclust. sUPGMA is the
 #' first implementation in R (I am aware of).
 #' @srrstats {G1.4} This file's functions are all documented with `{roxygen2}`.
+#' @srrstats {G2.15, G2.16} Checks for missing, infinite values
 #' @srrstats {UL1.0} explicitly document expected format (types or classes)
 #'    for input data
 #' @srrstats {UL1.1} test for distance matrix.
 #' @srrstats {UL1.3} tip labels correspond to labels from the distance.
-#' @srrstats {UL1.4} Cite assumption about ultrametric distances.
+#' @srrstats {UL1.4, UL1.4a, UL1.4b} Cite assumption about ultrametric and tip
+#' dated distances.
+#'
 NULL
 

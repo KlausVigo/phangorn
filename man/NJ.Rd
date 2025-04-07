@@ -19,6 +19,9 @@ an object of class \code{"phylo"}.
 This function performs the neighbor-joining tree estimation of Saitou and
 Nei (1987). UNJ is the unweighted version from Gascuel (1997).
 }
+\details{
+NJ is a wrapper around nj from ape.
+}
 \examples{
 
 data(Laurasiatherian)

@@ -42,6 +42,11 @@ distances supplied are close to ultrametric, e.g. hold the molecular clock
 assumption. Neighbor Joining (NJ) \code{\link[ape]{nj}} and fastME
 \code{\link[ape]{fastme}} relax this assumption to additive distances.
 sUPGMA assumes tip dated data.
+
+\code{tip.dates} should be a vector of sampling times, in any time unit, with
+time increasing toward the present. For example, this may be in units of
+"days since study start" or "years since 10.000 BCE", but not "millions of
+years ago".
 }
 \examples{
 
