@@ -337,7 +337,7 @@ removeTrivialSplits <- function(obj) {
 #' @export
 as.networx.splits <- function(x, planar = FALSE, coord = "none", ...) {
   label <- attr(x, "labels")
-  coord <- match.arg(coord, c("none", "equal angle", "3D", "2D"))
+  coord <- match.arg(coord, c("none", "equal angle", "3D", "2D", "outline"))
   x <- addTrivialSplits(x)
   nTips <- length(label)
   x <- ONEwise(x)
@@ -361,6 +361,12 @@ as.networx.splits <- function(x, planar = FALSE, coord = "none", ...) {
   # which splits are in circular ordering
   circSplits <- which(countCycles(x, ord = c.ord) == 2)
   if (length(circSplits) == length(x)) planar <- TRUE
+
+  if (coord=="outline"){
+    if (!planar) stop("splits need to be planar!")
+    tmp <- outline(x)
+    return(tmp)
+  }
   tmp <- circNetwork(x, c.ord)
   attr(tmp, "order") <- NULL
   if (planar) {
@@ -394,7 +400,6 @@ as.networx.splits <- function(x, planar = FALSE, coord = "none", ...) {
     "equal angle" = coords.equal.angle(tmp),
     "2D" = coords(tmp, dim = "2D"),
     "3D" = coords(tmp, dim = "3D"))
-  #    attr(tmp, "coords") <- coordinates
   tmp$plot <- list(vertices = vert)
   tmp
 }
