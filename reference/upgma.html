@@ -104,6 +104,10 @@ distances supplied are close to ultrametric, e.g. hold the molecular clock
 assumption. Neighbor Joining (NJ) <code><a href="https://rdrr.io/pkg/ape/man/nj.html" class="external-link">nj</a></code> and fastME
 <code><a href="https://rdrr.io/pkg/ape/man/fastme.html" class="external-link">fastme</a></code> relax this assumption to additive distances.
 sUPGMA assumes tip dated data.</p>
+<p><code>tip.dates</code> should be a vector of sampling times, in any time unit, with
+time increasing toward the present. For example, this may be in units of
+"days since study start" or "years since 10.000 BCE", but not "millions of
+years ago".</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>

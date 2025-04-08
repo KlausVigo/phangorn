@@ -52,6 +52,8 @@
 <span><span class="fu">assert_phylo</span><span class="op">(</span><span class="va">x</span>, has_edge_length <span class="op">=</span> <span class="cn">FALSE</span>, is_rooted <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  is_ultrametric <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
+<span><span class="fu">assert_treeish</span><span class="op">(</span><span class="va">x</span>, null.ok <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">assert_multiPhylo</span><span class="op">(</span><span class="va">x</span>, is_ultrametric <span class="op">=</span> <span class="cn">FALSE</span>, is_rooted <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  same_labels <span class="op">=</span> <span class="cn">FALSE</span>, has_edge_length <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
@@ -60,8 +62,6 @@
 <span><span class="fu">assert_pml</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">assert_dist</span><span class="op">(</span><span class="va">x</span>, finite <span class="op">=</span> <span class="cn">FALSE</span>, missing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">assert_treeish</span><span class="op">(</span><span class="va">x</span>, null.ok <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">clean_phylo</span><span class="op">(</span><span class="va">x</span>, unroot <span class="op">=</span> <span class="cn">FALSE</span>, multi2di <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  collapse.singles <span class="op">=</span> <span class="cn">FALSE</span>, reorder <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
