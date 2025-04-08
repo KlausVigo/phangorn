@@ -336,7 +336,7 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
   assert_count(maxit)
   assert_count(minit)
   assert_count(k)
-  assert_int(trace)
+  assert_number(trace)
   assert_flag(all)
   perturbation <- match.arg(tolower(perturbation), c("ratchet", "stochastic",
                                                      "random_addition"))
