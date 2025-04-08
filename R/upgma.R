@@ -95,8 +95,8 @@ wpgma <- function(D, method = "mcquitty", ...) {
 #' @rdname upgma
 #' @export
 supgma <- function(D, tip.dates, trace=0, ...){
-  if(anyNA(x)) stop("missing values are not allowed in the distance matrix")
-  if(any(is.infinite(x)))
+  if(anyNA(D)) stop("missing values are not allowed in the distance matrix")
+  if(any(is.infinite(D)))
     stop("infinite values are not allowed in the distance matrix")
   D <- as.dist(D)
   tree <- fastme.ols(D)

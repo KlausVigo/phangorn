@@ -34,7 +34,7 @@
 #' "stochastic" (nni) for shuffling the tree.
 #' @param ... Further arguments passed to or from other methods (e.g.
 #' model="sankoff" and cost matrix).
-#' @importFrom checkmate assert_flag assert_count assert_int
+#' @importFrom checkmate assert_flag assert_count assert_int assert_number
 #' @return \code{parsimony} returns the maximum parsimony score (pscore).
 #' \code{optim.parsimony} returns a tree after NNI rearrangements.
 #' \code{pratchet} returns a tree or list of trees containing the best tree(s)
@@ -336,7 +336,7 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
   assert_count(maxit)
   assert_count(minit)
   assert_count(k)
-  assert_number(trace)
+  assert_int(trace)
   assert_flag(all)
   perturbation <- match.arg(tolower(perturbation), c("ratchet", "stochastic",
                                                      "random_addition"))

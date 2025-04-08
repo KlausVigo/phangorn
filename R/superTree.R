@@ -158,7 +158,7 @@ superTree <- function(tree, method = "MRP", rooted = FALSE, trace = 0,
   assert_multiPhylo(tree)
   method <- match.arg(method, c("MRP", "RF", "SPR"))
   assert_flag(rooted)
-  assert_number(trace)
+  assert_int(trace)
   assert_treeish(start, null.ok = TRUE)
   assert_flag(multicore)
   fun <- function(x) {
