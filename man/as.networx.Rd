@@ -37,6 +37,8 @@ network and extends the \code{phylo} object. Therefore some generic function
 for \code{phylo} objects will also work for \code{networx} objects.  The
 argument \code{planar = TRUE} will create a planar split graph based on a
 cyclic ordering. These objects can be nicely plotted in \code{"2D"}.
+The argument "coord" allows to create coordinates, with options are "none",
+"equal angle", "3D", "2D" and "outline" (Bagci et al. 2021).
 }
 \note{
 The internal representation is likely to change.
@@ -48,6 +50,10 @@ tree1 <- rtree(20, rooted=FALSE)
 sp <- as.splits(rNNI(tree1, n=10))
 net <- as.networx(sp)
 plot(net)
+
+spl <- allCircularSplits(5)
+plot(as.networx(spl))
+plot(as.networx(spl, coord="outline"))
 \dontrun{
 # also see example in consensusNet
 example(consensusNet)
@@ -58,6 +64,10 @@ example(consensusNet)
 Schliep, K., Potts, A. J., Morrison, D. A. and Grimm, G. W. (2017),
 Intertwining phylogenetic trees and networks. \emph{Methods Ecol Evol}.
 \bold{8}, 1212--1220. doi:10.1111/2041-210X.12760
+
+Bagci, C., Bryant, D., Cetinkaya, B. and Huson, D.H. (2021), Microbial
+Phylogenetic Context Using Phylogenetic Outlines. \emph{Genome Biology and
+Evolution}. Volume 13. Issue 9. evab213
 }
 \seealso{
 \code{\link{consensusNet}}, \code{\link{neighborNet}},
