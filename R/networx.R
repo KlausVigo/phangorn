@@ -259,6 +259,8 @@ circNetwork <- function(x, ord = NULL) {
 #' for \code{phylo} objects will also work for \code{networx} objects.  The
 #' argument \code{planar = TRUE} will create a planar split graph based on a
 #' cyclic ordering. These objects can be nicely plotted in \code{"2D"}.
+#' The argument "coord" allows to create coordinates, with options are "none",
+#' "equal angle", "3D", "2D" and "outline" (Bagci et al. 2021).
 #'
 #' @aliases networx
 #' @param x an object of class \code{"splits"} or \code{"phylo"}
@@ -277,6 +279,10 @@ circNetwork <- function(x, ord = NULL) {
 #' Schliep, K., Potts, A. J., Morrison, D. A. and Grimm, G. W. (2017),
 #' Intertwining phylogenetic trees and networks. \emph{Methods Ecol Evol}.
 #' \bold{8}, 1212--1220. doi:10.1111/2041-210X.12760
+#'
+#' Bagci, C., Bryant, D., Cetinkaya, B. and Huson, D.H. (2021), Microbial
+#' Phylogenetic Context Using Phylogenetic Outlines. \emph{Genome Biology and
+#' Evolution}. Volume 13. Issue 9. evab213
 #' @keywords dplot
 #' @importFrom igraph make_graph
 #' @examples
@@ -286,6 +292,10 @@ circNetwork <- function(x, ord = NULL) {
 #' sp <- as.splits(rNNI(tree1, n=10))
 #' net <- as.networx(sp)
 #' plot(net)
+#'
+#' spl <- allCircularSplits(5)
+#' plot(as.networx(spl))
+#' plot(as.networx(spl, coord="outline"))
 #' \dontrun{
 #' # also see example in consensusNet
 #' example(consensusNet)
