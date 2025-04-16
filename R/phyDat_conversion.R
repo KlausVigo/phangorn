@@ -385,8 +385,8 @@ unalign <- function(x){
   x <- as.list(x)
   if(inherits(x, "DNAbin")) gap <- as.raw(4)
   else gap <- charToRaw("-")
-  for(i in 1:length(x)){
-    x[[i]] <- x[[i]][x[[i]]!=gap]
+  for(i in seq_along(x)){
+    x[[i]] <- x[[i]][x[[i]] != gap]
   }
   x
 }
@@ -398,4 +398,6 @@ unalign <- function(x){
 #' @srrstats {G2.3, G2.3a, G2.3b} functions use match.arg
 #' @srrstats {G2.4} *Provide appropriate mechanisms to convert between different data types, potentially including:*
 #' @srrstats {G2.4e} *explicit conversion from factor via `as...()` functions*
+#' @srrstats {G2.7} phyDat accepts matrices, named vectors, data.frames
+#' Software should accept as input as many of the above standard tabular forms as possible, including extension to domain-specific forms.
 NULL

@@ -2,9 +2,9 @@
 #include "Fitch.h"
 #include "phangorn_utils.h"
 
-//#include <omp.h>
-// parallel for
-// simd
+
+#include <omp.h>
+
 
 //using namespace Rcpp;
 
@@ -13,6 +13,10 @@
 
 
 /*
+ // [[Rcpp::plugins(openmp)]]
+ // parallel for
+ // simd
+
 // Examples from Dirk to find minimum dist
 double vecmin(NumericVector x) {
   // Rcpp supports STL-style iterators
@@ -344,6 +348,7 @@ void traversetwice(Fitch* obj, const IntegerMatrix & orig, int nni){
     if(c2 > nni)update_vector(obj->X[c2 + 2*nTips].data(), obj->X[p + 2*nTips].data(),
        obj->X[c1].data(), nBits, states);
   }
+// if(nni <0) root_all_node
 }
 
 
@@ -381,7 +386,7 @@ void root_all_node(Fitch* obj, const IntegerMatrix orig)
   int nSeq = obj->nSeq;
 //  std::vector< std::vector<uint64_t> > vector = obj->X;
   IntegerVector node = orig( _, 1);
-
+// #pragma omp parallel for num_threads(4)
   for(int i=0; i < node.size(); ++i) {
     int ni = node[i]-1;
 // generic
@@ -391,7 +396,7 @@ void root_all_node(Fitch* obj, const IntegerMatrix orig)
 }
 
 
-// needed for random.addition, SPR & TBR
+// needed for random.addition, SPR
 void prep_spr(Fitch* obj, IntegerMatrix orig){
   traversetwice(obj, orig, 0L);
   root_all_node(obj, orig);
@@ -662,7 +667,7 @@ NumericVector pscore_vec(Fitch* obj, const IntegerMatrix & orig, int node_from){
 }
 
 
-// needed for random.addition, SPR & TBR
+// needed for random.addition, SPR
 NumericVector pscore_spr(Fitch* obj, const IntegerMatrix & orig, int node_from){
   traversetwice(obj, orig, 0L);
   root_all_node(obj, orig);
@@ -670,8 +675,62 @@ NumericVector pscore_spr(Fitch* obj, const IntegerMatrix & orig, int node_from){
   return(res);
 }
 
+/*
+ *
+#pragma omp parallel for num_threads(nthreads) default(none)	\
+ private(i, j, ij)						                                     \
+ firstprivate(nr, dc, d, method, distfun, nc, x, p)
+ for(j = 0 ; j <= *nr ; j++) {
+ ij = j * (*nr - dc) + j - ((1 + j) * j) / 2;
+ for(i = j+dc ; i < *nr ; i++)
+ d[ij++] = (*method != MINKOWSKI) ?
+ distfun(x, *nr, *nc, i, j) :
+ R_minkowski(x, *nr, *nc, i, j, *p);
+ }
 
 
+
+#define DINDEX(i, j)
+ n*(i - 1) - i * (i - 1)/2 + j - i - 1
+
+ j * (n-1) + j - ((1 + j) * j) / 2;
+ size_t  ij;  // can exceed 2^31 - 1
+  double (*distfun)(double*, int, int, int, int) = NULL;
+  #ifdef _OPENMP
+  int nthreads;
+  #endif
+
+
+ */
+
+
+/*
+// dist.hamming works for >31 states, TODO openMP
+NumericVector hamming_dist_parallel(Fitch* obj){
+  int nthreads=4;
+  int i, j;
+  size_t  ij=0;
+  int states = obj->nStates;
+  int nBits = obj->nBits;
+  int wBits = obj->wBits;
+  int nTips = obj->nSeq;
+  R_xlen_t N;
+  N = (R_xlen_t)nTips * (nTips-1)/2;
+  std::vector< std::vector<uint64_t> > X = obj->X;
+  NumericVector weight = obj->weight;
+  NumericVector ans(N);
+  i=0;
+  j=1;
+  #pragma omp parallel for num_threads(nthreads) private(i, j, ij)
+  for(j = 0 ; j < (nTips-1L) ; j++){
+    ij = j * (nTips-1L) + j - ((1 + j) * j) / 2;
+    for(i = j+1; i < nTips ; i++){
+      ans[ij++] = pscore_vector(X[i].data(), X[j].data(), weight, nBits, wBits, states);
+    }
+  }
+  return(ans);
+}
+*/
 
 // dist.hamming works for >31 states, TODO openMP
 NumericVector hamming_dist(Fitch* obj){
@@ -993,6 +1052,7 @@ RCPP_MODULE(Fitch_mod) {
         .method("traverse", &traverse)
         .method("sitewise_pscore", &sitewise_pscore)
         .method("hamming_dist", &hamming_dist)
+ //       .method("hamming_dist_parallel", &hamming_dist_parallel)
         .method("root_all_node", &root_all_node)
         .method("getAnc", &getAnc)
         .method("getAncAmb", &getAncAmb)

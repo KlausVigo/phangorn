@@ -56,7 +56,7 @@ The convergence may be very slow and sometimes fails.
 \dontrun{
 # load woodmouse data from ape
 data(woodmouse)
-dat_codon <- dna2codon(as.phyDat(woodmouse))
+dat_codon <- dna2codon(as.phyDat(woodmouse), code=2)
 tree <- NJ(dist.ml(dat_codon))
 # optimize the model the old way
 fit <- pml(tree, dat_codon, bf="F3x4")

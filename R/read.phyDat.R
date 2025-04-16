@@ -114,8 +114,18 @@ read.phyDat <- function(file, format="phylip", type="DNA", ...){
 #' @export
 write.phyDat <- function(x, file, format="phylip", colsep = "", nbcol=-1, ...){
   formats <- c("phylip", "nexus", "interleaved", "sequential", "fasta")
+
   if(inherits(x, "ancestral")) x <- as.phyDat(x)
   format <- match.arg(tolower(format), formats)
+
+  ending <- switch(format,
+                  phylip='.phy',
+                  nexus='.nex',
+                  interleaved='.phy',
+                  sequential='.phy',
+                  fasta='.fas')
+  file <- ifelse(!grepl('\\.[^.]+$', file), paste0(file, ending), file)
+
   if(format=="nexus"){
     type <- attr(x, "type")
     if(type=="DNA") write.nexus.data(as.list(as.data.frame(x)), file,
@@ -134,3 +144,7 @@ write.phyDat <- function(x, file, format="phylip", colsep = "", nbcol=-1, ...){
 }
 
 
+# SRR tags ---------------------------------------------------------------------
+#' @srrstats {G4.0} check ending in write.phyDat
+#' *Statistical Software which enables outputs to be written to local files should parse parameters specifying file names to ensure appropriate file suffices are automatically generated where not provided.*
+NULL
