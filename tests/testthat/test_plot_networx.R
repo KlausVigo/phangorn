@@ -1,9 +1,16 @@
 net <- as.networx(allCircularSplits(5))
+outline <- as.networx(allCircularSplits(5), coord = "outline")
 
 test_that("plot.networx works", {
   networx_plot <- function() plot(net)
   vdiffr::expect_doppelganger("plot.networx", networx_plot)
 })
+
+test_that("plot outline works", {
+  outline_plot <- function() plot(outline)
+  vdiffr::expect_doppelganger("outline_plot", outline_plot)
+})
+
 
 
 #' @srrstats {EA6.1} *The properties of graphical output from EDA software
