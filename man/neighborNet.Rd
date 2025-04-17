@@ -34,7 +34,10 @@ plot(nnet)
 \references{
 Bryant, D. & Moulton, V. (2004) Neighbor-Net: An Agglomerative
 Method for the Construction of Phylogenetic Networks. \emph{Molecular
-Biology and Evolution}, 2004, \bold{21}, 255-265
+Biology and Evolution}, \bold{21}, 255-265
+
+Bryant, D., & Huson, D. H. (2023). NeighborNet: improved algorithms and
+implementation.  \emph{Frontiers in bioinformatics}, \bold{3}, 1178600.
 }
 \seealso{
 \code{\link{splitsNetwork}}, \code{\link{consensusNet}},

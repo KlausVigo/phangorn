@@ -67,7 +67,6 @@ getOrderingNN <- function(x) {
   z <- 0
   while (lCL > 1) {
     z <- z + 1
-
     l <- nrow(DM)
     # compute Q_D from D_C
     if (l > 2) {
@@ -193,7 +192,10 @@ getOrderingNN <- function(x) {
 #' \code{\link{cophenetic.networx}}, \code{\link{distanceHadamard}}
 #' @references Bryant, D. & Moulton, V. (2004) Neighbor-Net: An Agglomerative
 #' Method for the Construction of Phylogenetic Networks. \emph{Molecular
-#' Biology and Evolution}, 2004, \bold{21}, 255-265
+#' Biology and Evolution}, \bold{21}, 255-265
+#'
+#' Bryant, D., & Huson, D. H. (2023). NeighborNet: improved algorithms and
+#' implementation.  \emph{Frontiers in bioinformatics}, \bold{3}, 1178600.
 #' @keywords hplot
 #' @examples
 #'

@@ -55,6 +55,7 @@ coords.equal.angle <- function(obj) {
 coords <- function(obj, dim = "3D") {
   #    if(is.null(attr(obj,"order")) || (attr(obj, "order")=="postorder") )
   #        obj = reorder.networx(obj)
+
   if (dim == "equal_angle") return(coords.equal.angle(obj))
 
   l <- length(obj$edge.length)
@@ -164,8 +165,8 @@ rotate_matrix <- function(x, theta){
 #' splits (e.g. splits.color) than for edges. These overwrite values edge.color.
 #'
 #' @param x an object of class \code{"networx"}
-#' @param type "3D" to plot using rgl or "equal angle" and "2D" in the normal
-#' device.
+#' @param type "3D" to plot using rgl or "equal angle", "2D" or "outline" in the
+#' normal device.
 #' @param use.edge.length a logical indicating whether to use the edge weights
 #' of the network to draw the branches (the default) or not.
 #' @param show.tip.label a logical indicating whether to show the tip labels on
@@ -219,6 +220,10 @@ rotate_matrix <- function(x, theta){
 #' Schliep, K., Potts, A. J., Morrison, D. A. and Grimm, G. W. (2017),
 #' Intertwining phylogenetic trees and networks. \emph{Methods Ecol Evol}.
 #' \bold{8}, 1212--1220. doi:10.1111/2041-210X.12760
+#'
+#' Bagci, C., Bryant, D., Cetinkaya, B. and Huson, D.H. (2021), Microbial
+#' Phylogenetic Context Using Phylogenetic Outlines. \emph{Genome Biology and
+#' Evolution}. Volume 13. Issue 9. evab213
 #' @keywords hplot
 #' @importFrom igraph make_graph
 #' @examples
@@ -248,11 +253,15 @@ plot.networx <- function(x, type = "equal angle", use.edge.length = TRUE,
                          col.edge.label = tip.color, font.node.label = font,
                          font.edge.label = font, underscore = FALSE,
                          angle=0, digits=3, ...) {
-  type <- match.arg(type, c("equal angle", "3D", "2D"))
-  if (use.edge.length == FALSE){
+  type <- match.arg(type, c("equal angle", "3D", "2D", "outline"))
+  assert_flag(use.edge.length)
+  assert_flag(show.tip.label)
+  assert_flag(show.node.label)
+  if (!use.edge.length){
     x$edge.length[] <- 1
     attr(x$splits, "weight") <- rep(1, length(x$splits))
   }
+  if(type=="outline") x <- as.networx(x$splits, coord="outline")
   nTips <- length(x$tip.label)
   conf <- attr(x$splits, "confidences")
   index <- x$splitIndex

@@ -18,8 +18,8 @@
 \arguments{
 \item{x}{an object of class \code{"networx"}}
 
-\item{type}{"3D" to plot using rgl or "equal angle" and "2D" in the normal
-device.}
+\item{type}{"3D" to plot using rgl or "equal angle", "2D" or "outline" in the
+normal device.}
 
 \item{use.edge.length}{a logical indicating whether to use the edge weights
 of the network to draw the branches (the default) or not.}
@@ -119,6 +119,10 @@ Dress, A.W.M. and Huson, D.H. (2004) Constructing Splits Graphs
 Schliep, K., Potts, A. J., Morrison, D. A. and Grimm, G. W. (2017),
 Intertwining phylogenetic trees and networks. \emph{Methods Ecol Evol}.
 \bold{8}, 1212--1220. doi:10.1111/2041-210X.12760
+
+Bagci, C., Bryant, D., Cetinkaya, B. and Huson, D.H. (2021), Microbial
+Phylogenetic Context Using Phylogenetic Outlines. \emph{Genome Biology and
+Evolution}. Volume 13. Issue 9. evab213
 }
 \seealso{
 \code{\link{consensusNet}}, \code{\link{neighborNet}},

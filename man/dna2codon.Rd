@@ -39,26 +39,26 @@ nucleotide to amino acids using the function \code{\link[ape]{trans}}.
 The following genetic codes are described here. The number preceding each
 corresponds to the code argument.
 \tabular{rl}{
-  1 \tab standard   \cr
-  2 \tab vertebrate.mitochondrial \cr
-  3 \tab yeast.mitochondrial \cr
-  4 \tab protozoan.mitochondrial+mycoplasma \cr
-  5 \tab invertebrate.mitochondrial \cr
-  6 \tab ciliate+dasycladaceal \cr
-  9 \tab echinoderm+flatworm.mitochondrial \cr
-  10 \tab euplotid \cr
-  11 \tab bacterial+plantplastid \cr
-  12 \tab alternativeyeast \cr
-  13 \tab ascidian.mitochondrial \cr
-  14 \tab alternativeflatworm.mitochondrial \cr
-  15 \tab blepharism \cr
-  16 \tab chlorophycean.mitochondrial \cr
-  21 \tab trematode.mitochondrial \cr
-  22 \tab scenedesmus.mitochondrial \cr
-  23 \tab thraustochytrium.mitochondria \cr
-  24 \tab Pterobranchia.mitochondrial \cr
-  25 \tab CandidateDivision.SR1+Gracilibacteria \cr
-  26 \tab Pachysolen.tannophilus
+1 \tab standard   \cr
+2 \tab vertebrate.mitochondrial \cr
+3 \tab yeast.mitochondrial \cr
+4 \tab protozoan.mitochondrial+mycoplasma \cr
+5 \tab invertebrate.mitochondrial \cr
+6 \tab ciliate+dasycladaceal \cr
+9 \tab echinoderm+flatworm.mitochondrial \cr
+10 \tab euplotid \cr
+11 \tab bacterial+plantplastid \cr
+12 \tab alternativeyeast \cr
+13 \tab ascidian.mitochondrial \cr
+14 \tab alternativeflatworm.mitochondrial \cr
+15 \tab blepharism \cr
+16 \tab chlorophycean.mitochondrial \cr
+21 \tab trematode.mitochondrial \cr
+22 \tab scenedesmus.mitochondrial \cr
+23 \tab thraustochytrium.mitochondria \cr
+24 \tab Pterobranchia.mitochondrial \cr
+25 \tab CandidateDivision.SR1+Gracilibacteria \cr
+26 \tab Pachysolen.tannophilus
 }
 Alignment gaps and ambiguities are currently ignored and sites containing
 these are deleted.
