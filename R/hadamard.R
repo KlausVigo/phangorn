@@ -209,7 +209,7 @@ distanceHadamard <- function(dm, eps = 0.001) {
 #' @rdname hadamard
 #' @export
 h4st <- function(obj, levels = c("a", "c", "g", "t")) {
-  if (!inherits(obj, "phyDat")) stop("obj must be of class phyDat")
+  assert_phyDat(obj)
   if (attr(obj, "nc") != 4L) stop("Error")
   obj <- removeAmbiguousSites(obj)
   obj <- as.data.frame(t(as.character(obj)))

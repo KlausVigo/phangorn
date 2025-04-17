@@ -48,7 +48,7 @@ fit.sankoff <- function(tree, data, cost,
 sankoff <- function(tree, data, cost = NULL, site = "pscore") {
   assert_treeish(tree)
   assert_phyDat(data)
-  site <- match.arg(site, c("pscore", "site", "data"))
+  site <- match.arg(tolower(site), c("pscore", "site", "data"))
   data <- prepareDataSankoff(data)
   if (is.null(cost)) {
     levels <- attr(data, "levels")
@@ -116,7 +116,6 @@ sankoff_nni <- function(tree, data, cost, ...) {
   tree <- reorder(tree, "postorder")
   isRooted <- !(isSymmetric(cost))
   INDEX <-  indexNNI_fitch(tree, offset=Nnode(tree))
-  if (!inherits(data, "phyDat")) stop("data must be of class phyDat")
   data <- data[tree$tip.label]
   levels <- attr(data, "levels")
   l <- length(levels)
@@ -137,7 +136,7 @@ sankoff_nni <- function(tree, data, cost, ...) {
   pscore <- as.vector(pscore)
   candidates <- which(pscore < p0)
 
-  while (length(candidates)>0) {
+  while (length(candidates) > 0) {
     ind <- which.min(pscore[candidates])
     tree2 <- changeEdge(tree, INDEX[candidates[ind], c(2, 3)])
     test <- fit.sankoff(tree2, data, cost, returnData = "pscore")
@@ -156,12 +155,10 @@ sankoff_nni <- function(tree, data, cost, ...) {
 
 optim.sankoff <- function(tree, data, cost = NULL, trace = 1, ...) {
   assert_phylo(tree)
-#  if (!inherits(tree, "phylo")) stop("tree must be of class phylo")
   if (is.rooted(tree)) tree <- unroot(tree)
   tree <- reorder(tree, "postorder")
   assert_phyDat(data, label=tree$tip.label)
   assert_int(trace)
-#  if (!inherits(data, "phyDat")) stop("data must be of class phyDat")
   data <- data[tree$tip.label]
   addTaxa <- FALSE
   mapping <- map_duplicates(data)

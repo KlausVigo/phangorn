@@ -37,10 +37,7 @@ outline <- function(x){
 
   ord1 <- order(i, -j)
   ord2 <- order(j, -i)
-#  S_plus <- y[ord1]
-#  S_minus <- y[ord2]
 
-#getOrd <- function(){
   l <- length(y)
   n <- 1L
   m <- 1L
@@ -61,11 +58,9 @@ outline <- function(x){
     }
   }
   tmp <- data.frame(final_ord = final_ord, outbound = outbound)
-#}
 ## compute edge matrix and coord matrix
 
   nTips <- length(attr(y, "labels"))
-
 #  angle <- (i + j - 2) / (2 * nTips) * (2 * pi)
   angle <- spl2angle(y)
   weight <- attr(y, "weight")
@@ -85,10 +80,8 @@ outline <- function(x){
 
   for (k in 1:(length(final_ord) - 1)) {
     p <- final_ord[k]
-#  print(k)
     if (outbound[k]) {
       edge[k,] <- c(current_node, max_node + 1L)
-
       coord[max_node + 1L, ] <- coord[current_node, ] +
         kreis2kart(weight[p], angle[p])
       spl_list[[max_node + 1]] <- sort(c(spl_list[[current_node]], p))
@@ -99,7 +92,6 @@ outline <- function(x){
       tmp <- tmp[tmp != p]
       ind <- match(list(tmp), spl_list)
       if(is.na(ind)){
-#       browser()
         edge[k,] <- c(current_node, max_node + 1L)
         coord[max_node + 1L, ] <- coord[current_node, ] +
           kreis2kart(weight[p], angle[p] + pi)
@@ -130,11 +122,3 @@ outline <- function(x){
   class(res) <- c("networx", "phylo")
   res
 }
-
-
-
-
-
-
-
-

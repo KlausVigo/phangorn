@@ -1,8 +1,8 @@
 support <- function(tree, trees, method="FBP", tol=2e-8, scale=TRUE){
   trees <- keep.tip(trees, tree$tip.label)
-  method <- match.arg(method, c("FBP", "TBE", "MCC"), several.ok=TRUE)
-  multi <- length(method)>1
-  tip2root <- method=="MCC"
+  method <- match.arg(toupper(method), c("FBP", "TBE", "MCC"), several.ok=TRUE)
+  multi <- length(method) > 1
+  tip2root <- method == "MCC"
   if(all(sapply(trees, \(x)!is.null(x$edge.length)))){
     trees <- di2multi(trees, tol=tol) # , tip2root=tip2root)
   }
@@ -109,7 +109,7 @@ plotBS <- function(tree, trees, type = "phylogram", method="FBP",
   type <- match.arg(type, c("phylogram", "cladogram", "fan", "unrooted",
                             "radial", "none"))
   if(inherits(tree, "pml")) tree <- tree$tree
-  if(!inherits(tree, "phylo")) stop("tree must be of class phylo")
+  assert_phylo(tree)
 #  method <- match.arg(method, c("FBP", "TBE", "MCC"), several.ok=TRUE)
 # wird in support gecheckt
   if (hasArg(trees)) {
