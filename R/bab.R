@@ -172,7 +172,7 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
     ILBound <- list(...)$ILBound
   else ILBound <- FALSE
   if(inherits(data, "DNAbin") || inherits(data, "AAbin")) data <- as.phyDat(data)
-  if (!inherits(data, "phyDat")) stop("data must be of class phyDat")
+  assert_phyDat(data)
   # compress <- TRUE
   recursive <- TRUE
   nTips <- length(data)

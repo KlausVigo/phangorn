@@ -35,7 +35,7 @@
 #' @rdname baseFreq
 #' @export
 baseFreq <- function(obj, freq=FALSE, all=FALSE, drop.unused.levels = FALSE){
-  if (!inherits(obj,"phyDat")) stop("data must be of class phyDat")
+  assert_phyDat(obj)
   labels <- attr(obj, "allLevels")
   weight <- attr(obj,"weight")
   n <- length(obj)

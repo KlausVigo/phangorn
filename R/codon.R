@@ -58,7 +58,7 @@
 #' @rdname dna2codon
 #' @export
 dna2codon <- function(x, codonstart=1, code=1, ambiguity="---", ...){
-  if(!inherits(x, "phyDat"))stop("x must be of class phyDat")
+  assert_phyDat(x)
   if(attr(x, "type")!="DNA")stop("x must be a nucleotide sequence!")
   if(codonstart>1){
     del <- -seq_len(codonstart)

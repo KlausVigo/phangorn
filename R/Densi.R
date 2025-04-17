@@ -134,7 +134,7 @@ densiTree <- function(x, type = "phylogram", ..., alpha = 1 / length(x),
                       underscore = FALSE, label.offset = 0, scale.bar = TRUE,
                       jitter = list(amount = 0, random = TRUE), tip.dates=NULL,
                       xlim=NULL, ylim=NULL) {
-  if (!inherits(x, "multiPhylo")) stop("x must be of class multiPhylo")
+  assert_multiPhylo(x)
   if (is.character(consensus)) {
     consensus <- stree(length(consensus), tip.label = consensus)
     consensus$edge.length <- rep(1.0, nrow(consensus$edge))
