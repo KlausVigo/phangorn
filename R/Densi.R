@@ -94,6 +94,7 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt = 0, cex = 1,
 #' @param tip.dates A named vector of sampling times associated with the tips.
 #' @param xlim the x limits of the plot.
 #' @param ylim the y limits of the plot.
+#' @param show.consensus superimpose the consensus tree?
 #' @param \dots further arguments to be passed to plot.
 #' @returns \code{densiTree} returns silently x.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
@@ -115,6 +116,11 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt = 0, cex = 1,
 #' # cladogram nice to show topological differences
 #' densiTree(bs, type="cladogram", col="blue")
 #' densiTree(bs, type="phylogram", col="green", direction="downwards", width=2)
+#' # show consensus tree
+#' tree_compat <- allCompat(bs, rooted=TRUE) |> add_edge_length(bs)
+#' densiTree(bs, type="phylogram", col="green", consensus = tree_compat,
+#'   show.consensus=TRUE)
+#'
 #' # plot five trees slightly shifted, no transparent color
 #' densiTree(bs[1:5], type="phylogram", col=1:5, width=2, jitter=
 #'     list(amount=.3, random=FALSE), alpha=1)
@@ -133,15 +139,16 @@ densiTree <- function(x, type = "phylogram", ..., alpha = 1 / length(x),
                       font = 3, tip.color = 1, adj = 0, srt = 0,
                       underscore = FALSE, label.offset = 0, scale.bar = TRUE,
                       jitter = list(amount = 0, random = TRUE), tip.dates=NULL,
-                      xlim=NULL, ylim=NULL) {
+                      xlim=NULL, ylim=NULL, show.consensus=FALSE) {
   assert_multiPhylo(x)
   if (is.character(consensus)) {
     consensus <- stree(length(consensus), tip.label = consensus)
     consensus$edge.length <- rep(1.0, nrow(consensus$edge))
   }
   if (is.null(consensus)) {
-    consensus <- tryCatch(consensus(x, p = 0.5),
+    consensus <- tryCatch(allCompat(x, rooted=TRUE),
                           error = function(e) unroot(midpoint(superTree(x))))
+    consensus <- add_edge_length(consensus, x)
   }
   if (inherits(consensus, "multiPhylo")) consensus <- consensus[[1]]
 
@@ -166,7 +173,8 @@ densiTree <- function(x, type = "phylogram", ..., alpha = 1 / length(x),
   nTip <- as.integer(length(consensus$tip.label))
   consensus <- sort_tips(consensus)
   consensus <- reorder(consensus, "postorder")
-#  at <- NULL
+  if(show.consensus) x <- c(x, consensus)
+
   maxBT <- max(getAges(x))
   root_time <- NULL
   if(!is.null(tip.dates)){
@@ -174,17 +182,12 @@ densiTree <- function(x, type = "phylogram", ..., alpha = 1 / length(x),
     label <- pretty(c(root_time, max(tip.dates)), min.n = 3)
     label <- label[label < max(tip.dates)]
     maxBT <- max(maxBT, max(tip.dates) - min(label))
-#    at <- maxBT - (max(tip.dates) - label) #/ maxBT
-#    if(direction=="leftwards" || direction=="downwards") {
-#      at <- at + maxBT - max(at)
-#    }
     scaleX <- FALSE
   }
   else {
     if (scaleX) maxBT <- 1.0
     label <- rev(pretty(c(maxBT, 0)))
     maxBT <- max(label, maxBT)
-#    at <- seq(0, maxBT, length.out = length(label))
   }
   xy <- plotPhyloCoor(consensus, direction = direction, ...)
   yy <- xy[, 2]
@@ -251,6 +254,9 @@ densiTree <- function(x, type = "phylogram", ..., alpha = 1 / length(x),
     range_x <- c(min(range_x[1], min(xx)), max(range_x[2], max(xx)))
     range_y <- c(min(range_y[1], min(yy)), max(range_y[2], max(yy)))
     e1 <- tmp$edge[, 1]
+
+    if(show.consensus && treeindex == length(x)) alpha <- 1
+
     if (type == "cladogram") cladogram.plot(tmp$edge, xx, yy, edge.color =
         adjustcolor(col[treeindex], alpha.f = alpha), edge.width = width,
         edge.lty = lty)

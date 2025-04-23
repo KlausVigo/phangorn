@@ -9,7 +9,8 @@ densiTree(x, type = "phylogram", ..., alpha = 1/length(x),
   scaleX = FALSE, col = 1, width = 1, lty = 1, cex = 0.8, font = 3,
   tip.color = 1, adj = 0, srt = 0, underscore = FALSE,
   label.offset = 0, scale.bar = TRUE, jitter = list(amount = 0, random =
-  TRUE), tip.dates = NULL, xlim = NULL, ylim = NULL)
+  TRUE), tip.dates = NULL, xlim = NULL, ylim = NULL,
+  show.consensus = FALSE)
 }
 \arguments{
 \item{x}{an object of class \code{multiPhylo}.}
@@ -69,6 +70,8 @@ jitter and random or equally spaced (see details below)}
 \item{xlim}{the x limits of the plot.}
 
 \item{ylim}{the y limits of the plot.}
+
+\item{show.consensus}{superimpose the consensus tree?}
 }
 \value{
 \code{densiTree} returns silently x.
@@ -96,6 +99,10 @@ bs <- bootstrap.phyDat(Laurasiatherian, FUN =
 # cladogram nice to show topological differences
 densiTree(bs, type="cladogram", col="blue")
 densiTree(bs, type="phylogram", col="green", direction="downwards", width=2)
+# show consensus tree
+tree_compat <- allCompat(bs, rooted=TRUE) |> add_edge_length(bs)
+densiTree(bs, type="phylogram", col="green", show.consensus=TRUE)
+
 # plot five trees slightly shifted, no transparent color
 densiTree(bs[1:5], type="phylogram", col=1:5, width=2, jitter=
     list(amount=.3, random=FALSE), alpha=1)
