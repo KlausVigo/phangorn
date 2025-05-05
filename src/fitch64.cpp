@@ -3,7 +3,7 @@
 #include "phangorn_utils.h"
 
 
-#include <omp.h>
+// #include <omp.h>
 
 
 //using namespace Rcpp;
