@@ -216,7 +216,8 @@ trees <em>Bioinformatics</em>, <b>26 (10)</b>, 1372-1373.</p>
 <span class="r-plt img"><img src="densiTree-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co"># show consensus tree</span></span></span>
 <span class="r-in"><span><span class="va">tree_compat</span> <span class="op">&lt;-</span> <span class="fu"><a href="maxCladeCred.html">allCompat</a></span><span class="op">(</span><span class="va">bs</span>, rooted<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="add_edge_length.html">add_edge_length</a></span><span class="op">(</span><span class="va">bs</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">densiTree</span><span class="op">(</span><span class="va">bs</span>, type<span class="op">=</span><span class="st">"phylogram"</span>, col<span class="op">=</span><span class="st">"green"</span>, show.consensus<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">densiTree</span><span class="op">(</span><span class="va">bs</span>, type<span class="op">=</span><span class="st">"phylogram"</span>, col<span class="op">=</span><span class="st">"green"</span>, consensus <span class="op">=</span> <span class="va">tree_compat</span>,</span></span>
+<span class="r-in"><span>  show.consensus<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="densiTree-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># plot five trees slightly shifted, no transparent color</span></span></span>
