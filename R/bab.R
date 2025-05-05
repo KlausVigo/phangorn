@@ -56,8 +56,9 @@ getOrder <- function(x) {
 seq_stats <- function(x) {
   nr <- attr(x, "nr")
   contrast <- attr(x, "contrast")
+  lev <- attr(x, "allLevels")
   a <- seq_len(nr)
-  STATE <- POS <- matrix(0L, nrow(contrast), nr)
+  STATE <- POS <- matrix(0L, nrow(contrast), nr, dimnames = list(lev, NULL))
   for(i in seq_along(x)){
     IND <- cbind(x[[i]], a)
     STATE[IND] <- STATE[IND] + 1L
@@ -65,6 +66,40 @@ seq_stats <- function(x) {
   }
   list(state = STATE, position = POS)
 }
+
+extract_cherries <- function(x){
+  # x <- phangorn:::removeParsimonyUninfomativeSites(x)
+  # x <- phangorn:::compressSites(x)
+  # lb <- phangorn:::lowerBound(x)
+  ub <- phangorn:::upperBound(x)
+  ii <- which(ub==2)
+  w <- attr(x, "weight")
+  X <- seq_stats(x)[[1]]
+  Y <- matrix(unlist(x), ncol=length(x))
+  edge <- matrix(NA_integer_, length(ii), 2)
+  for(i in seq_along(ii)){
+    pos <- which(X[,ii[i]]==2)
+    edge[i,] <- which(Y[ii[i],]==pos)
+  }
+  list(edge = edge, g = igraph::graph_from_edgelist(edge), weight = w[ii],
+       pos = ii)
+}
+
+
+pos <- function(obj){
+  weight <- obj$weight
+  edge <- obj$edge
+  tt <- tabulate(obj$edge)
+  while(max(tt)>3){
+    pos <- which.max(tt)
+    if(any(tt) > 2){
+      e1 <- edge[which(edge==pos, arr.ind = TRUE)[,1], ]
+
+    }
+  }
+
+}
+
 
 # Incompatibility lower Bound
 ilb <- function(x, LB) {
