@@ -101,7 +101,8 @@ densiTree(bs, type="cladogram", col="blue")
 densiTree(bs, type="phylogram", col="green", direction="downwards", width=2)
 # show consensus tree
 tree_compat <- allCompat(bs, rooted=TRUE) |> add_edge_length(bs)
-densiTree(bs, type="phylogram", col="green", show.consensus=TRUE)
+densiTree(bs, type="phylogram", col="green", consensus = tree_compat,
+  show.consensus=TRUE)
 
 # plot five trees slightly shifted, no transparent color
 densiTree(bs[1:5], type="phylogram", col=1:5, width=2, jitter=
