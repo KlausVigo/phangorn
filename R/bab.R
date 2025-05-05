@@ -68,10 +68,10 @@ seq_stats <- function(x) {
 }
 
 extract_cherries <- function(x){
-  # x <- phangorn:::removeParsimonyUninfomativeSites(x)
-  # x <- phangorn:::compressSites(x)
-  # lb <- phangorn:::lowerBound(x)
-  ub <- phangorn:::upperBound(x)
+  # x <- removeParsimonyUninfomativeSites(x)
+  # x <- compressSites(x)
+  # lb <- lowerBound(x)
+  ub <- upperBound(x)
   ii <- which(ub==2)
   w <- attr(x, "weight")
   X <- seq_stats(x)[[1]]
