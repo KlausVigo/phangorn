@@ -61,7 +61,7 @@ title("MPR")
 
 _phangorn_ also offers the possibility to estimate ancestral states using ML.
 The advantages of ML over parsimony is that the reconstruction accounts for different edge lengths.
-Currently a marginal construction (see [@Yang2006][@Koshi1996])  and the joint reconstruction [@Pupko2000] is implemented. Joint reconstructions is only for models without rate variation (e.g. gamma models) or invariant sites.
+Currently marginal construction (see [@Yang2006; @Koshi1996])  and joint reconstruction [@Pupko2000] are implemented. Joint reconstructions is only available for models without rate variation (e.g. gamma models) or invariant sites.
 ```{r fit_ML}
 fit <- pml(tree, primates)
 fit <- optim.pml(fit, model="F81", control = pml.control(trace=0))
