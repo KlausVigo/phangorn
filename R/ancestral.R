@@ -101,6 +101,7 @@ ancestral.pml <- function(object, type = "marginal", return = "prob", ...) {
   dim(dat) <- c(l, m)
   node_label <- makeAncNodeLabel(tree, ...)
   tree$node.label <- node_label
+  object$tree <- tree
   tmp <- length(data)
 
   joint <- TRUE
@@ -325,7 +326,7 @@ mpr <- function(tree, data, cost = NULL, return="prob", tips=FALSE, ...) {
   attributes(res) <- att
   res_state <- highest_state(res)
   attributes(res_state) <- att
-  if(tips)res_state[seq_len(ntips)] <- data
+  if(tips) res_state[seq_len(ntips)] <- data
 #  }
 #    res[1:ntips] <- data
 #  }
