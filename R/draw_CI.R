@@ -1,7 +1,7 @@
-edge_length_matrix <- function(tree, trees, rooted=TRUE){
+edge_length_matrix <- function(tree, trees, rooted = TRUE){
   assert_multiPhylo(trees)
   if(inherits(tree, "networx")) rooted <- FALSE
-  trees <- .uncompressTipLabel(trees) |> .compressTipLabel(ref=tree$tip.label)
+  trees <- .uncompressTipLabel(trees) |> .compressTipLabel(ref = tree$tip.label)
   if(!rooted){
     trees <- unroot(trees)
     tree <- unroot(tree)

@@ -181,7 +181,7 @@ designUnrooted <- function(tree, sparse=FALSE, order = NULL) {
   }
   if (inherits(tree, "phylo"))
     colnames(res) <- paste(tree$edge[, 1], tree$edge[, 2], sep = "<->")
-  if(sparse) res <- Matrix(res, sparse=TRUE)
+  if(sparse) res <- Matrix(res, sparse = TRUE)
   res
 }
 
@@ -195,7 +195,8 @@ designUltra <- function(tree, sparse = TRUE, calibration=NULL) {
   bp <- bip(tree)
   n <- length(tree$tip.label)
   l <- tree$Nnode
-  nodes <- integer(l)
+  if (!is.null(tree$node.label)) nodes <- tree$node.label
+  else nodes <- integer(l)
   k <- 1L
   u <- integer(n * (n - 1) / 2)
 #  v <- integer(n * (n - 1) / 2)
@@ -231,8 +232,8 @@ designUltra <- function(tree, sparse = TRUE, calibration=NULL) {
     v <- rep(seq_len(l), p[-1])
     X[cbind(u, v)] <- 2L
   }
-  colnames(X) <- nodes
-  attr(X, "nodes") <- nodes
+  colnames(X) <- nodes         # node labels
+  attr(X, "nodes") <- nodes    # node index
   X
 }
 
@@ -345,20 +346,20 @@ designConstrained <- function(tree, sparse=TRUE, tip.dates=NULL,
   X <- designUltra(tree, sparse=sparse)
   nTip <- Ntip(tree)
   # designTipDated
-  if(!is.null(tip.dates)){
+  if (!is.null(tip.dates)) {
     stopifnot(is.numeric(tip.dates), length(tip.dates) >= Ntip(tree))
     tmp <- function(n){
-      x1 <- rep(seq_len(n), each=n)
+      x1 <- rep(seq_len(n), each = n)
       x2 <- rep(seq_len(n), n)
       ind <- x1 < x2
       sparseMatrix(i = rep(seq_len(sum(ind)), 2), j = c(x1[ind], x2[ind]))
     }
   }
-  if(!is.null(calibration)){
+  if (!is.null(calibration)) {
     cname <- tree$node.label
     colnames(X) <- cname
-    x <- X[, names(calibration), drop=FALSE] %*% calibration
-    X <- cbind(X[,-match(names(calibration), cname)], rate=x)
+    x <- X[, names(calibration), drop = FALSE] %*% calibration
+    X <- cbind(X[,-match(names(calibration), cname)], rate = x)
   }
   X
 }
@@ -369,11 +370,11 @@ nnls.tree <- function(dm, tree, method=c("unrooted", "ultrametric", "tipdated"),
           rooted=NULL, trace=1, weight=NULL, balanced=FALSE, tip.dates=NULL,
           calibration=NULL) {
   method <- match.arg(method, c("unrooted", "ultrametric", "tipdated"))
-  if(anyNA(dm)) stop("missing values are not allowed in the distance matrix")
-  if(any(is.infinite(dm)))
+  if (anyNA(dm)) stop("missing values are not allowed in the distance matrix")
+  if (any(is.infinite(dm)))
     stop("infinite values are not allowed in the distance matrix")
   assert_phylo(tree)
-  if(has.singles(tree)) tree <- collapse.singles(tree)
+  if (has.singles(tree)) tree <- collapse.singles(tree)
   if (is.rooted(tree) && method == "unrooted") tree <- unroot(tree)
   tree <- reorder(tree, "postorder")
   if (balanced) {
@@ -386,9 +387,9 @@ nnls.tree <- function(dm, tree, method=c("unrooted", "ultrametric", "tipdated"),
   dm <- dm[labels, labels]
   y <- dm[lower.tri(dm)]
   # computing the design matrix from the tree
-  if(!is.null(rooted)){
-    if(isTRUE(rooted)) method <- "ultrametric"
-    if(isFALSE(rooted)) method <- "unrooted"
+  if (!is.null(rooted)){
+    if (isTRUE(rooted)) method <- "ultrametric"
+    if (isFALSE(rooted)) method <- "unrooted"
   }
   X <- switch(method,
               unrooted=designUnrooted2(tree),
