@@ -21,3 +21,8 @@ image.phyDat <- function(x, ...){
   if(attr(x, "type") == "DNA") image(as.DNAbin(x), ...)
   if(attr(x, "type") == "USER") return(NULL)
 }
+
+
+#' @method image ancestral
+#' @export
+image.ancestral <- function(x, ...) image(as.phyDat(x))
