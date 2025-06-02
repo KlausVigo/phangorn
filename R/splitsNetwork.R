@@ -44,7 +44,7 @@
 #' write.nexus.splits(fit)
 #'
 #' @export splitsNetwork
-splitsNetwork <- function(dm, splits = NULL, gamma = .1, lambda = 1e-6,
+splitsNetwork <- function(dm, splits = NULL, gamma = 0.1, lambda = 1e-6,
                           weight = NULL) {
   dm <- as.matrix(dm)
   k <- dim(dm)[1]

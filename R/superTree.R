@@ -209,7 +209,7 @@ superTree <- function(tree, method = "MRP", rooted = FALSE, trace = 0,
     }
     if (inherits(res, "multiPhylo")) {
       fun <- function(x) {
-        x$edge.length <- rep(.1, nrow(x$edge))
+        x$edge.length <- rep(0.1, nrow(x$edge))
         x
       }
       res <- lapply(res, fun)
@@ -217,7 +217,7 @@ superTree <- function(tree, method = "MRP", rooted = FALSE, trace = 0,
       class(res) <- "multiPhylo"
     }
     else {
-      res$edge.length <- rep(.1, nrow(res$edge))
+      res$edge.length <- rep(0.1, nrow(res$edge))
       res <- reorder(res, "postorder")
     }
   }
