@@ -12,6 +12,7 @@
 #' @examples
 #' data("chloroplast")
 #' image(chloroplast[, 1:50], scheme="Clustal", show.aa = TRUE)
+#' @rdname image.phyDat
 #' @method image phyDat
 #' @export
 image.phyDat <- function(x, ...){
@@ -23,6 +24,7 @@ image.phyDat <- function(x, ...){
 }
 
 
+#' @rdname image.phyDat
 #' @method image ancestral
 #' @export
 image.ancestral <- function(x, ...) image(as.phyDat(x))

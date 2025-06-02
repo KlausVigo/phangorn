@@ -458,7 +458,7 @@ unique.dist <-  function(x, incomparables, ...) {
 # SRR tags ---------------------------------------------------------------------
 
 #' @srrstats {G1.1} dist.ml provides similar functionality as dist.dna in ape,
-#' and additionally supports amoino acid.
+#' but additionally supports amino acid.
 #' @srrstats {G1.4} This file's functions are all documented with `{roxygen2}`.
 #' @srrstats {G2.3, G2.3a} functions use match.arg
 NULL

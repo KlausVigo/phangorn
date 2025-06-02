@@ -2,9 +2,12 @@
 % Please edit documentation in R/image_phyDat.R
 \name{image.phyDat}
 \alias{image.phyDat}
+\alias{image.ancestral}
 \title{Plot of a Sequence Alignment}
 \usage{
 \method{image}{phyDat}(x, ...)
+
+\method{image}{ancestral}(x, ...)
 }
 \arguments{
 \item{x}{an object containing sequences, an object of class \code{phyDat}.}
