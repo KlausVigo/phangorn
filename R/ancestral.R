@@ -75,7 +75,7 @@
 ancestral.pml <- function(object, type = "marginal", return = "prob", ...) {
   assert_pml(object)
   call <- match.call()
-  pt <- match.arg(type, c("marginal", "ml", "bayes")) # "joint",
+  pt <- match.arg(type, c("marginal", "ml", "bayes", "lhood")) # "joint",
   rt <- match.arg(return, c("prob", "phyDat", "ancestral"))
   tree <- object$tree
   INV <- object$INV
@@ -146,8 +146,8 @@ ancestral.pml <- function(object, type = "marginal", return = "prob", ...) {
       tmp <- tmp + w[i] * dat[[i, j]]
     }
     if ((pt == "bayes") || (pt == "marginal")) tmp <- tmp * rep(bf, each = nr)
-    tmp <- tmp / rowSums(tmp)
-
+    #KBH: don't normalize if partial lhoods desired
+    if (pt != "lhood") tmp <- tmp / rowSums(tmp)
     if (data_type == "DNA") {
       tmp_max <- p2dna(tmp)
       tmp_max  <- fitchCoding2ambiguous(tmp_max)
