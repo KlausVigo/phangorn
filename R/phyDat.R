@@ -622,3 +622,5 @@ read.aa <- function (file, format = "interleaved", skip = 0, nlines = 0,
   obj
 }
 
+#' @srrstats {G1.0} in the lines folloing: 530
+#' @srrstats {G2.3, G2.3a} in lines: 461, 547

@@ -127,3 +127,4 @@ summary.SOWH <- function(object, digits = 4L, plot = TRUE, ...) {
   }
   invisible(object)
 }
+#' @srrstats {G1.0} in the lines folloing: 25

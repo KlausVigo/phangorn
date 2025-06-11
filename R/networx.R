@@ -454,3 +454,5 @@ reorder.networx <- function(x, order =  "cladewise", index.only = FALSE, ...) {
   attr(x, "order") <- order
   x
 }
+#' @srrstats {G1.0} in the lines folloing: 278
+#' @srrstats {G2.3, G2.3a} in lines: 350, 407, 439

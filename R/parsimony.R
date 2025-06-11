@@ -477,3 +477,6 @@ pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
   } # for
   if (trace >= 0)cat("\n")
 }  # pratchet
+#' @srrstats {G1.0} in the lines folloing: 48
+#' @srrstats {G2.3, G2.3a} in lines: 85
+#' @srrstats {G2.3, G2.3a, G2.3b} in lines: 319, 341, 343

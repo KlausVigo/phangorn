@@ -296,3 +296,5 @@ h2st <- function(obj, eps = 0.001) {
   attr(result, "Labels") <- names(obj)
   result
 }
+#' @srrstats {G1.0} in the lines folloing: 73
+#' @srrstats {G1.0} in the lines folloing: 162

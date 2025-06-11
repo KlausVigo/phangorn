@@ -348,3 +348,4 @@ phyDat.codon <- function (data, return.index = TRUE, ambiguity = "---",
 ##  default: create contrast from levels
 ##  CODON: create contrast
 ##
+#' @srrstats {G2.3, G2.3a} in lines: 264

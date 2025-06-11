@@ -131,3 +131,4 @@ mast.fit <- function(x, y) {
   x$tip.label[m[[i, j]]]
 }
 
+#' @srrstats {G1.0} in the lines folloing: 18

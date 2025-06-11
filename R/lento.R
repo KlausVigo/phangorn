@@ -88,3 +88,4 @@ lento <- function(obj, xlim = NULL, ylim = NULL, main = "Lento plot",
   }
   invisible(list(support = cbind(support, conflict), splits = obj[ord]))
 }
+#' @srrstats {G1.0} in the lines folloing: 21

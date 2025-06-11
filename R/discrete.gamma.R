@@ -334,3 +334,4 @@ discrete.gamma.2 <- function(alpha, k){
 
 # free_rate <- function(k) nur optimisieren
 
+#' @srrstats {G2.3, G2.3a} in lines: 285

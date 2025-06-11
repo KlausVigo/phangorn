@@ -218,3 +218,4 @@ neighborNet <-  function(x, ord = NULL) {
   attr(spl, "cycle") <- 1:l
   as.networx(spl)
 }
+#' @srrstats {G1.0} in the lines folloing: 193

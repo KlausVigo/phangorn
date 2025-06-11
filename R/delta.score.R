@@ -63,3 +63,4 @@ delta.score <- function(x, arg = "mean", ...) {
   if (arg == "mean") return(mean(delta.values))
   if (arg == "sd") return(sd(delta.values))
 }
+#' @srrstats {G1.0} in the lines folloing: 40

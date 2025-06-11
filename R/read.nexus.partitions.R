@@ -86,3 +86,4 @@ read.nexus.partitions <- function(file, return="list", ...){
   }
   seq
 }
+#' @srrstats {G2.3, G2.3a} in lines: 74

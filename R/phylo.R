@@ -2930,3 +2930,26 @@ update_rell <- function(obj, siteLik, tree){
   }
   obj
 }
+
+# SRR tags ---------------------------------------------------------------------
+#' @srrstats {G2.8} lots of checking for optimizing routines pml.fit opt_Edge,
+#' Software should provide appropriate conversion or dispatch routines as part
+#' of initial pre-processing to ensure that all other sub-functions of a package
+#' receive inputs of a single defined class or type.
+#' @srrstats {G2.9} diagnostic messages if trees get unrooted
+#' Software should issue diagnostic messages for type conversion in which
+#' information is lost (such as conversion of variables from factor to
+#' character; standardisation of variable names; or removal of meta-data such as
+#' those associated with [`sf`-format](https://r-spatial.github.io/sf/) data) or
+#' added (such as insertion of variable or column names where none were
+#' provided)
+#' @srrstats {G3.0} floating numbers are compared with tolerance (e.g. variables
+#' tol, eps above)
+#' Statistical software should never compare floating point numbers for
+#' equality. All numeric equality comparisons should either ensure that they are
+#' made between integers, or use appropriate tolerances for approximate
+#' equality.
+NULL
+#' @srrstats {G1.0} in the lines folloing: 977
+#' @srrstats {G1.0} in the lines folloing: 1173
+#' @srrstats {G2.3, G2.3a} in lines: 72, 119, 603, 703, 731, 765, 772, 1309, 1320, 1330, 1929, 2028, 2137

@@ -141,3 +141,4 @@ dist.p <- function(x, cost = "polymorphism", ignore.indels = TRUE) {
   class(d) <- "dist"
   return(d)
 }
+#' @srrstats {G1.0} in the lines folloing: 27

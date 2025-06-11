@@ -932,3 +932,4 @@ pd2 <- function(trees, check.labels = TRUE, path = TRUE) {
   class(PD) <- "dist"
   return(PD)
 }
+#' @srrstats {G1.0} in the lines folloing: 126

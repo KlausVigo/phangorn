@@ -224,3 +224,5 @@ simSeq.pml <- function(x, ancestral = FALSE, ...) {
                               paste0(",res[[", 2:n, "]]", collapse = ""), ")"))
   eval(x)
 }
+#' @srrstats {G1.0} in the lines folloing: 62
+#' @srrstats {G2.3, G2.3a} in lines: 113, 125

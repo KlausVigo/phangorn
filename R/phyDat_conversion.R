@@ -401,3 +401,5 @@ unalign <- function(x){
 #' @srrstats {G2.7} phyDat accepts matrices, named vectors, data.frames
 #' Software should accept as input as many of the above standard tabular forms as possible, including extension to domain-specific forms.
 NULL
+#' @srrstats {G2.3, G2.3a} in lines: 398
+#' @srrstats {G2.3, G2.3a, G2.3b} in lines: 398

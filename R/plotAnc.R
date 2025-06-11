@@ -232,3 +232,4 @@ add_mutations <- function(x, pos=NULL, frame="none", ...){
 }
 
 
+#' @srrstats {G2.3, G2.3a} in lines: 82, 109, 160, 198

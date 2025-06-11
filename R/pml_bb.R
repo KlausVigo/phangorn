@@ -205,3 +205,4 @@ split_model <- function(x="GTR + G(4) + I", type="DNA"){
   list(model=model, optFreq=optFreq, optInv=optInv, optGamma=optGamma, k=k,
        ASC=ASC, site_model=site_model)
 }
+#' @srrstats {G2.3, G2.3a} in lines: 61

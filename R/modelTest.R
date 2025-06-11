@@ -304,3 +304,5 @@ as.pml.modelTest <- function(x, model="BIC", ...){
 }
 
 
+#' @srrstats {G1.0} in the lines folloing: 39
+#' @srrstats {G2.3, G2.3a} in lines: 89, 295

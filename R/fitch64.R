@@ -334,3 +334,4 @@ optim.fitch <- function(tree, data, trace = 1, rearrangements = "NNI", ...) {
                      "nni operations \n")
 }
 
+#' @srrstats {G2.3, G2.3a, G2.3b} in lines: 

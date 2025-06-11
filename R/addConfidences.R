@@ -194,3 +194,4 @@ createLabel <- function(x, y, label_y, type = "edge", nomatch = NA) {
   }
   res
 }
+#' @srrstats {G1.0} in the lines folloing: 19

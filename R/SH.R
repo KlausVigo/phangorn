@@ -121,3 +121,4 @@ SH.tmp <- function(siteLik, weight = NULL, B = 10000, boot=NULL) {
   colnames(res) <- c("Trees", "ln L", "Diff ln L", "p-value")
   res
 }
+#' @srrstats {G1.0} in the lines folloing: 18

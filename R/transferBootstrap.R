@@ -64,3 +64,4 @@ transferBootstrap <- function(tree, trees, phylo=TRUE, scale=TRUE){
   tree
 }
 
+#' @srrstats {G1.0} in the lines folloing: 17

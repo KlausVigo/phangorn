@@ -53,7 +53,7 @@ read.fasta.user <- function (file, skip = 0, nlines = 0,
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link[ape]{read.dna}}, \code{\link[ape]{read.GenBank}},
 #' \code{\link[phangorn]{phyDat}}, \code{\link[seqinr]{read.alignment}}
-#' @references % Anonymous. FASTA format description. %
+#' @references Anonymous. FASTA format description.
 #' \url{https://www.ncbi.nlm.nih.gov/blast/fasta.shtml} Felsenstein, J. (1993)
 #' Phylip (Phylogeny Inference Package) version 3.5c. Department of Genetics,
 #' University of Washington.
@@ -148,3 +148,5 @@ write.phyDat <- function(x, file, format="phylip", colsep = "", nbcol=-1, ...){
 #' @srrstats {G4.0} check ending in write.phyDat
 #' *Statistical Software which enables outputs to be written to local files should parse parameters specifying file names to ensure appropriate file suffices are automatically generated where not provided.*
 NULL
+#' @srrstats {G1.0} in the lines folloing: 56
+#' @srrstats {G2.3, G2.3a, G2.3b} in lines: 71, 119, 74

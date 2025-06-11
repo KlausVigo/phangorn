@@ -52,7 +52,7 @@ primates <- read.phyDat(file.path(fdir, "primates.dna"),
                         format = "interleaved")
 }
 \references{
-% Anonymous. FASTA format description. %
+Anonymous. FASTA format description.
 \url{https://www.ncbi.nlm.nih.gov/blast/fasta.shtml} Felsenstein, J. (1993)
 Phylip (Phylogeny Inference Package) version 3.5c. Department of Genetics,
 University of Washington.

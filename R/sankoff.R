@@ -206,3 +206,5 @@ optim.sankoff <- function(tree, data, cost = NULL, trace = 1, ...) {
 
 
 
+#' @srrstats {G2.3, G2.3a} in lines: 13
+#' @srrstats {G2.3, G2.3a, G2.3b} in lines: 13

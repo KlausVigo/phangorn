@@ -463,3 +463,7 @@ unique.dist <-  function(x, incomparables, ...) {
 #' @srrstats {G2.3, G2.3a} functions use match.arg
 NULL
 
+#' @srrstats {G1.0} in the lines folloing: 44
+#' @srrstats {G1.0} in the lines folloing: 303
+#' @srrstats {G2.3, G2.3a} in lines: 136, 371, 463
+#' @srrstats {G2.3, G2.3a, G2.3b} in lines: 136, 371, 463

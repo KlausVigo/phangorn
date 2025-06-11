@@ -584,3 +584,5 @@ identify.networx <- function(x, quiet = FALSE, ...) {
   split <- x$splitIndex[which.min(d)]
   x$splits[split]
 }
+#' @srrstats {G1.0} in the lines folloing: 216
+#' @srrstats {G2.3, G2.3a} in lines: 256, 414

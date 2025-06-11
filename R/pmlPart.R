@@ -1000,3 +1000,5 @@ optimPartNNI <- function(object, AllEdge = TRUE, trace = 0, ...) {
   attr(object, "swap") <- swap
   object
 }
+#' @srrstats {G1.0} in the lines folloing: 702
+#' @srrstats {G2.3, G2.3a} in lines: 325

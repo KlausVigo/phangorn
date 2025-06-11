@@ -119,3 +119,4 @@ splitsNetwork <- function(dm, splits = NULL, gamma = 0.1, lambda = 1e-6,
   class(splits) <- "splits"
   return(splits)
 }
+#' @srrstats {G1.0} in the lines folloing: 28

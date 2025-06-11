@@ -84,3 +84,5 @@ ratchet.control <- function(iter = 20L, maxit = 200L, minit = 100L, prop = 1/2,
     stop("proportion of rearrangenemts must be > 0")
   list(iter=iter, maxit=maxit, minit = minit, prop = prop, rell = rell, bs=bs)
 }
+#' @srrstats {G1.0} in the lines folloing: 49
+#' @srrstats {G2.3, G2.3a} in lines: 68

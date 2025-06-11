@@ -71,3 +71,4 @@ proper_tree <- function(x, tree, method=c("ultrametric", "tipdated"),
   dm <- dist.ml(x, ...)
   nnls.tree(dm, tree, method)
 }
+#' @srrstats {G2.3, G2.3a} in lines: 31, 66

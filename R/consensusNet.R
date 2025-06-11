@@ -56,3 +56,4 @@ consensusNet <- function(obj, prob = 0.3, ...) {
   res$edge.labels[res$edge[, 2] <= length(res$tip.label)] <- NA_real_ #""
   reorder(res)
 }
+#' @srrstats {G1.0} in the lines folloing: 19

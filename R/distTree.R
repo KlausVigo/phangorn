@@ -618,3 +618,5 @@ designStar <- function(n, sparse = TRUE) {
   if (!sparse) return(as.matrix(res))
   res
 }
+#' @srrstats {G1.0} in the lines folloing: 14
+#' @srrstats {G2.3, G2.3a} in lines: 146, 372

@@ -175,3 +175,6 @@ add_support <- function(tree, trees, method="FBP", tol=1e-8,
 
 
 
+#' @srrstats {G1.0} in the lines folloing: 83
+#' @srrstats {G2.3, G2.3a} in lines: 109, 113
+#' @srrstats {G2.3, G2.3a, G2.3b} in lines: 109, 113

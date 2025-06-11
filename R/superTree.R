@@ -232,3 +232,5 @@ superTree <- function(tree, method = "MRP", rooted = FALSE, trace = 0,
       start = start, multicore = multicore, mc.cores = mc.cores)
   res
 }
+#' @srrstats {G1.0} in the lines folloing: 134
+#' @srrstats {G2.3, G2.3a} in lines: 159

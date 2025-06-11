@@ -84,3 +84,4 @@ plot.pml <- function(x, type="phylogram", direction = "rightwards",
   }
   invisible(x)
 }
+#' @srrstats {G2.3, G2.3a} in lines: 46, 55

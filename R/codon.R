@@ -121,3 +121,4 @@ tstv_subs <- function(code=1, stop.codon=FALSE){
   res[lower.tri(res)]
 }
 
+#' @srrstats {G1.0} in the lines folloing: 47

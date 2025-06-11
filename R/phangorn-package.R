@@ -94,3 +94,5 @@ NULL
 #' cnet <- consensusNet(trees)
 #' plot(cnet)
 NULL
+#' @srrstats {G1.0} in the lines folloing: 56
+#' @srrstats {G1.0} in the lines folloing: 77

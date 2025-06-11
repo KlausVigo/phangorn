@@ -890,3 +890,4 @@ keep_as_tip<- function(tree, labels){
   tree_2 <- keep.tip(tree_1, labels, collapse.singles=FALSE)
   tree_2
 }
+#' @srrstats {G2.3, G2.3a, G2.3b} in lines: 201, 701, 760
