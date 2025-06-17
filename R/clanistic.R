@@ -542,4 +542,6 @@ diversity <- function(tree, X){
                          pscore=res[,1], ntips=nt, natives=res2)
     result
 }
+
 #' @srrstats {G1.0} in the lines folloing: 82
+NULL

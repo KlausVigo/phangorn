@@ -206,4 +206,6 @@ bootstrap.phyDat <- function(x, FUN, bs = 100, multicore = FALSE,
   }
   res
 }
+
 #' @srrstats {G1.0} in the lines folloing: 35
+NULL

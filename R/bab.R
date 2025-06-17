@@ -68,7 +68,6 @@ seq_stats <- function(x) {
 }
 
 
-#' @export
 extract_cherries <- function(x){
   x <- removeParsimonyUninfomativeSites(x)
   x <- compressSites(x)

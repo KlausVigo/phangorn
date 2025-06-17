@@ -411,5 +411,7 @@ identical_sites <- function(x){
   for(i in seq_along(x)) res <- res & (x[[i]] == x[[1]])
   which(res)
 }
+
 #' @srrstats {G1.0} in the lines folloing: 48
 #' @srrstats {G2.3, G2.3a} in lines: 78, 79, 211, 235
+NULL

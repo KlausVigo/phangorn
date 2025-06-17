@@ -182,5 +182,7 @@ neb <- function(x) {
   res <- res / rowSums(res)
   res[index, ]
 }
+
 #' @srrstats {G1.0} in the lines folloing: 37
 #' @srrstats {G2.3, G2.3a} in lines: 88
+NULL

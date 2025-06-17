@@ -2949,7 +2949,7 @@ update_rell <- function(obj, siteLik, tree){
 #' equality. All numeric equality comparisons should either ensure that they are
 #' made between integers, or use appropriate tolerances for approximate
 #' equality.
-NULL
 #' @srrstats {G1.0} in the lines folloing: 977
 #' @srrstats {G1.0} in the lines folloing: 1173
 #' @srrstats {G2.3, G2.3a} in lines: 72, 119, 603, 703, 731, 765, 772, 1309, 1320, 1330, 1929, 2028, 2137
+NULL
