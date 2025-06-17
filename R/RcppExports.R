@@ -5,6 +5,14 @@ fhm_new <- function(v, n) {
     .Call(`_phangorn_fhm_new`, v, n)
 }
 
+node_heights_upgma <- function(left, right, n, y) {
+    .Call(`_phangorn_node_heights_upgma`, left, right, n, y)
+}
+
+rss_upgma <- function(left, right, n, beta, y) {
+    .Call(`_phangorn_rss_upgma`, left, right, n, beta, y)
+}
+
 allDescCPP <- function(orig, nTips) {
     .Call(`_phangorn_allDescCPP`, orig, nTips)
 }

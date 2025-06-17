@@ -118,4 +118,6 @@ coalSpeciesTree <- function(tree, X = NULL, sTree = NULL) {
   }
   sTree
 }
+
 #' @srrstats {G1.0} in the lines folloing: 68
+NULL

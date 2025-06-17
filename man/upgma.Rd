@@ -18,7 +18,8 @@ is supplied it is tried to covert it do a \code{dist} object.}
 
 \item{method}{The agglomeration method to be used. This should be (an
 unambiguous abbreviation of) one of "ward", "single", "complete", "average",
-"mcquitty", "median" or "centroid". The default is "average".}
+"mcquitty", "median" or "centroid". The default is "average" for UPGMA and
+"mcquitty" for WPGMA.}
 
 \item{\dots}{Further arguments passed to or from other methods.}
 

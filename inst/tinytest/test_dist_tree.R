@@ -18,10 +18,10 @@ expect_equal(tree_unj, tree_nnls_unj)
 expect_false(all.equal(tree_nj, tree_nnls_nj))
 
 # Test NNI
-# tree_upgma_no_nni <- upgma(dm, NNI=FALSE)
-# tree_upgma_nni <- upgma(dm, NNI=TRUE)
+tree_upgma_no_nni <- upgma(dm, NNI=FALSE)
+tree_upgma_nni <- upgma(dm, NNI=TRUE)
 
-# expect_true(is.ultrametric(tree_upgma_nni))
-# expect_true(sum(tree_upgma_no_nni$edge.length)
-#         >= sum(tree_upgma_nni$edge.length))
+expect_true(is.ultrametric(tree_upgma_nni))
+expect_true(sum(tree_upgma_no_nni$edge.length)
+         >= sum(tree_upgma_nni$edge.length))
 

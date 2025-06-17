@@ -38,6 +38,37 @@ NumericVector fhm_new(NumericVector v, int n){
 }
 
 
+// [[Rcpp::export]]
+double node_heights_upgma(IntegerVector left, IntegerVector right, int n, NumericVector y){
+  int ind;
+  double res = 0.0, w=0.0;
+  for (int i = 0; i < left.size(); i++){
+    for (int j = 0; j < right.size(); j++){
+      ind = give_index3(left[i], right[j], n);
+      res += y[ind];
+      w += 1.0;
+    }
+  }
+  res /= 2.0* w;
+  // res /= 2.0 * double(left.size() * right.size());
+  return(res);
+}
+
+
+// [[Rcpp::export]]
+double rss_upgma(IntegerVector left, IntegerVector right, int n, double beta, NumericVector y){
+  int ind;
+  double res=0.0, tmp=0.0;
+  for (int i = 0; i < left.size(); i++){
+    for (int j = 0; j < right.size(); j++){
+      ind = give_index3(left[i], right[j], n);
+      tmp = y[ind] - 2.0 * beta;
+      res += tmp * tmp; //  pow(y[ind]- 2.0 * beta, 2.0);
+    }
+  }
+  return(res);
+}
+
 
 //library(tools)
 //package_native_routine_registration_skeleton("package-root-directory")

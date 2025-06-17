@@ -310,12 +310,11 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
     attr(data2, "weight") <- weight_cherry
   }
 
-  if (ILBound){  # nur 25 statt 37 Bäume
+  if (ILBound){  # tests needed
     if(cherry) mms1 <- ilb(data2, TMP)
     else mms1 <- ilb(data, TMP)
   }
   mms0 <- mms1 + mmsAmb
-  #  if(cherry)mms0 <- mms0 + mmsAmb_cherry
   mms0 <- mms0[nTips] - mms0
   if(cherry)mms0 <- mms0 + cherry_res$res
   mms0 <- c(mms0, 0)

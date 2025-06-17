@@ -3,11 +3,11 @@
 #' UPGMA and WPGMA clustering. UPGMA (Sokal and Michener 1958) and WPGMA
 #' (McQuitty 1966) are a wrapper function around \code{\link[stats]{hclust}}
 #' returning a \code{phylo} object.
-## UPGMA additionally performs nearest neighbor interchange (NNI) tree
-## rearrangements to improve the phylogeny (Schliep et al. 2025).
+## By default UPGMA additionally performs nearest neighbor interchange (NNI)
+## tree rearrangements to improve the phylogeny in respect to the munimum
+## evolution criterium.
 #' \code{supgma} perform serial sampled UPGMA similar to Drummond and Rodrigo
 #' (2000).
-##  and also performing NNI rearrangements.
 #'
 #' UPGMA and WPGMA return ultrametric trees, it is implicitly assumed that the
 #' distances supplied are close to ultrametric, e.g. hold the molecular clock
@@ -24,13 +24,12 @@
 #' is supplied it is tried to covert it do a \code{dist} object.
 #' @param method The agglomeration method to be used. This should be (an
 #' unambiguous abbreviation of) one of "ward", "single", "complete", "average",
-#' "mcquitty", "median" or "centroid". The default is "average".
+#' "mcquitty", "median" or "centroid". The default is "average" for UPGMA and
+#' "mcquitty" for WPGMA.
 ## @param NNI logical whether make nearest neighbor rearrangements to improve
-## the tree. Currently only available for \code{method="average"}.
+## the tree. Currently only available for UPGMA, i.e. \code{method="average"}.
 #' @param trace	 Show output during optimization (see details).
 #' @param tip.dates	 A named vector of sampling times associated to the tips.
-## @param NNI logical to indicate if nearest neighbor interchange (NNI)
-## rearrangements should applied.
 #' @param \dots Further arguments passed to or from other methods.
 #' @return A phylogenetic tree of class \code{phylo}.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
@@ -65,12 +64,14 @@ upgma <- function(D, method = "average", ...) {
   if(anyNA(D)) stop("missing values are not allowed in the distance matrix")
   if(any(is.infinite(D)))
     stop("infinite values are not allowed in the distance matrix")
+  if (hasArg(NNI)) NNI <- list(...)$NNI
+  else NNI <- FALSE
   method <- match.arg(method, c("average", "ward.D", "ward.D2", "single",
                       "complete", "mcquitty", "median", "centroid"))
   DD <- as.dist(D)
   hc <- hclust(DD, method = method)
   result <- as.phylo(hc)
-  # if(NNI && method=="average")  result <- upgma_nni(DD, tree=result, ...)
+  if(NNI && method == "average") result <- upgma_nni(DD, tree = result)
   result <- reorder(result, "postorder")
   result
 }
@@ -115,7 +116,7 @@ supgma <- function(D, tip.dates, trace=0, ...){
   swapi <- 1
   while(iter){
     D_tmp <- D - rate_0 * dm_td
-    tree_tmp <- upgma(D_tmp, ...)
+    tree_tmp <- upgma(D_tmp, NNI=TRUE)
     swapi <- attr(tree_tmp, "swap")
     tree_tmp <- nnls.tree(D, tree_tmp, method = "tipdated",
                        tip.dates=tip.dates[tree$tip.label])
@@ -142,9 +143,11 @@ supgma <- function(D, tip.dates, trace=0, ...){
 #' @srrstats {UL1.0} explicitly document expected format (types or classes)
 #'    for input data
 #' @srrstats {UL1.1} test for distance matrix.
-#' @srrstats {UL1.3} tip labels correspond to labels from the distance.
+#' @srrstats {UL1.3, UL1.3a} tip labels correspond to labels from the distances.
 #' @srrstats {UL1.4, UL1.4a, UL1.4b} Cite assumption about ultrametric and tip
 #' dated distances.
 #'
 NULL
 
+#' @srrstats {G1.0} in the lines folloing: 41
+#' @srrstats {G2.3, G2.3a} in lines: 69, 86
