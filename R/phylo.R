@@ -698,16 +698,11 @@ update.pml <- function(object, ...) {
   if (is.na(existing[3])) bf <- object$bf
   else {
     bf <- eval(extras[[existing[3]]], parent.frame())
-    # check for "character"
     if (is.character(bf)) {
       bf_choice <- match.arg(bf, c("equal", "empirical", "F1x4", "F3x4", "F61"))
-      # if(bf_choice %in% c("F1x4", "F3x4", "F61") & type != "CODON")
-      if (bf_choice == "F3x4" & type != "CODON")
-        stop("F3x4 not available for this data type")
-      if (bf_choice == "F1x4" & type != "CODON")
-        stop("F1x4 not available for this data type")
-      if (bf_choice == "F61" & type != "CODON")
-        stop("F61 not available for this data type")
+      txt <-  deparse(substitute(bf_choice))
+      if(bf_choice %in% c("F1x4", "F3x4", "F61") && type != "CODON")
+         stop(gettextf("%s not available for this data type", txt))
       bf <- switch(bf_choice,
                    equal = rep(1 / nc, nc),
                    empirical = baseFreq(data),
@@ -1283,16 +1278,10 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     k <- length(w)
   }
   assert_phylo(tree, has_edge_length=TRUE)
-#  if (!inherits(tree, "phylo")) stop("tree must be of class phylo")
-#  if (is.null(tree$edge.length)) stop("tree must have edge weights")
-#  if (any(duplicated(tree$tip.label))) stop("tree must have unique labels!")
   nTips <- as.integer(length(tree$tip.label))
   tree <- reorder(tree, "postorder")
   if (any(tree$edge.length < 0)) tree <- minEdge(tree)
   assert_phyDat(data, label=tree$tip.label)
-#  if (!inherits(data, "phyDat")) stop("data must be of class phyDat")
-#  if (anyNA(match(tree$tip.label, attr(data, "names"))))
-#    stop("tip labels are not in data")
   data <- subset(data, tree$tip.label) # needed
   levels <- attr(data, "levels")
   type <- attr(data, "type")
@@ -1328,12 +1317,9 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   }
   if (is.character(bf)) {
     bf_choice <- match.arg(bf, c("equal", "empirical", "F1x4", "F3x4", "F61"))
-    if (bf_choice == "F3x4" & type != "CODON")
-      stop("F3x4 not available for this data type")
-    if (bf_choice == "F1x4" & type != "CODON")
-      stop("F1x4 not available for this data type")
-    if (bf_choice == "F61" & type != "CODON")
-      stop("F61 not available for this data type")
+    txt <-  deparse(substitute(bf_choice))
+    if(bf_choice %in% c("F1x4", "F3x4", "F61") && type != "CODON")
+       stop(gettextf("%s not available for this data type", txt))
     bf <- switch(bf_choice,
       equal = rep(1 / length(levels), length(levels)),
       empirical = baseFreq(data),
@@ -1467,7 +1453,7 @@ optimRooted <- function(tree, data, bf, g, w, eig, ll.0,
   allKids <- cvector <- allChildren(tree)
   rootNode <- getRoot(tree)
 
-  child2 <- orderNNI(tree, nTips)   # (cvector, rootNode, nTips, TRUE)
+  child2 <- orderNNI(tree, nTips)
 
   lengthList <- edgeList <- vector("list", max(tree$edge))
   for (i in tree$edge[, 2]) {
