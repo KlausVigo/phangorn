@@ -1,12 +1,26 @@
-    CHANGES in PHANGORN VERSION 2.12.1.1
+    CHANGES in PHANGORN VERSION 3.0.0
+
+NEW FEATURES
+
+    o as.networx and plot.networx got a new option "outline", reducing the
+
+      number of edges plotted
 
 OTHER CHANGES
 
-    o improvements to write.ancestral
+    o improvements to write.ancestral and write.pml.
 
-    o bab got a progress bar, as it might runs for a long time (suggestion by
+    o bab got a progress bar, as it might runs for a long time (suggested by
 
-      Bárbara Bitarello).
+      Barbara Bitarello). bab might be faster thanks to improved lower bound.
+
+    o densiTree now calls axisPhylo, which was improved in ape, to avoid code
+
+      duplication
+
+    o more error checking of input arguments and associated tests
+
+    o improved lower bound in function bab
 
 
     CHANGES in PHANGORN VERSION 2.12.0
@@ -21,7 +35,7 @@ NEW FEATURES
 
     o new function keep_as_tip allows to prune a tree and keep nodes as a tip
 
-      (suggested by Hedvig Skirgård)
+      (suggested by Hedvig Skirgard)
 
     o nnls now can estimate trees with calibrations and tip dated trees
 
@@ -35,7 +49,7 @@ NEW FEATURES
 
       objects. anc_pml and anc_pars are now prefered over ancestral.pml and
 
-      ańcestral.pars. Output is now an object of class ancestral, which contains
+      ancestral.pars. Output is now an object of class ancestral, which contains
 
       tree with node labels, the original alignment and reconstructions.
 
