@@ -67,12 +67,28 @@ seq_stats <- function(x) {
   list(state = STATE, position = POS)
 }
 
+
+#' @export
 extract_cherries <- function(x){
-  # x <- removeParsimonyUninfomativeSites(x)
-  # x <- compressSites(x)
-  # lb <- lowerBound(x)
+  x <- removeParsimonyUninfomativeSites(x)
+  x <- compressSites(x)
+  nr <- attr(x, "nr")
+  lb <- lowerBound(x)
   ub <- upperBound(x)
   ii <- which(ub==2)
+
+  w <- attr(x, "weight")
+  z <- x
+  attr(z, "weight") <- rep(1, nr)
+  attr(z, "index") <- NULL
+
+  y <- as.character(z)
+  singles <- attr(z, "levels")
+  fun2 <- function(x, singles) all(x %in% singles)
+  single_pos <- apply(y, 2, fun2, singles)
+
+  ii <- which(ub==2 & lb==1 & single_pos)
+
   w <- attr(x, "weight")
   X <- seq_stats(x)[[1]]
   Y <- matrix(unlist(x), ncol=length(x))
@@ -81,23 +97,50 @@ extract_cherries <- function(x){
     pos <- which(X[,ii[i]]==2)
     edge[i,] <- which(Y[ii[i],]==pos)
   }
-  list(edge = edge, g = igraph::graph_from_edgelist(edge), weight = w[ii],
-       pos = ii)
+  list(edge = edge, g = igraph::graph_from_edgelist(edge, directed =FALSE),
+       weight = w[ii], pos = ii, nTip = length(x))
 }
 
 
-pos <- function(obj){
+cherries <- function(obj, LB, UB){
   weight <- obj$weight
   edge <- obj$edge
   tt <- tabulate(obj$edge)
-  while(max(tt)>3){
-    pos <- which.max(tt)
-    if(any(tt) > 2){
-      e1 <- edge[which(edge==pos, arr.ind = TRUE)[,1], ]
+  eps <- 1e-6
+  edge_2 <- edge
+  res <- numeric(obj$nTip)
 
-    }
+  LB <- subset(LB, select=obj$pos)
+  UB <- subset(UB, select=obj$pos)
+
+  while(any(tt >= (2-eps))){
+    max_pos <- which(tt > (max(tt)-eps))
+    max_pos <- max_pos[length(max_pos)]
+
+    lb_tt <- as.integer(2L * max(tt) - 1L)
+    ind_max <- which(edge==max_pos, arr.ind = TRUE)[,1] |> sort()
+    ind_max <- intersect(ind_max, which(weight>1e-6))
+    e1 <- edge[ind_max, ]
+
+    #    cs <- cumsum(tabulate(e1, obj$nTip))
+    #    cs1 <- pmin(cs, lb_tt)
+    #    cs1 <- lb_tt - cs1
+    #    cs <- pmax(lb_tt - cs, 0)
+
+    w0 <- min(weight[ind_max])
+
+    old_lb <- rowSums(LB[, ind_max, drop=FALSE])
+    old_lb <- old_lb[obj$nTip] - old_lb
+
+    old_ub <- rowSums(UB[, ind_max, drop=FALSE])
+    old_ub <- pmax(lb_tt - old_ub, 0)
+
+    weight[ind_max] <- weight[ind_max] - w0
+    edge_2 <- edge[weight>1e-6, ]
+    tt <- tabulate(edge_2)
+    res <- res + w0 * (old_ub - old_lb)
   }
-
+  list(res=res, weight=weight)
 }
 
 
@@ -134,7 +177,11 @@ ilb <- function(x, LB) {
         dis2 <- single_dis[, i] + single_dis[, j]
         dis <- fun1(z)
         if (dis[nTips] > dis2[nTips]) {
-          dis <- pmax(dis, dis2) - dis2
+          #browser()
+          dis <- pmax(dis, dis2)
+          if(any(diff(dis)<0))browser()
+          dis <- dis - dis2
+
           if (sum(dis[4:nTips]) > 0) {
             wmin <- min(weight0[i], weight0[j])
             weight0[i] <- weight0[i] - wmin
@@ -203,17 +250,15 @@ ilb <- function(x, LB) {
 #'
 #' @export
 bab <- function(data, tree = NULL, trace = 1, ...) {
-  if (hasArg(ILBound))
-    ILBound <- list(...)$ILBound
-  else ILBound <- FALSE
+  #  if (hasArg(ILBound))
+  #    ILBound <- list(...)$ILBound
+  #  else
+  ILBound <- FALSE
   if(inherits(data, "DNAbin") || inherits(data, "AAbin")) data <- as.phyDat(data)
   assert_phyDat(data)
-  # compress <- TRUE
-  recursive <- TRUE
   nTips <- length(data)
   if (nTips < 4) return(stree(nTips, tip.label = names(data)))
-
-  data <- removeParsimonyUninfomativeSites(data, recursive = recursive)
+  data <- removeParsimonyUninfomativeSites(data, recursive = TRUE)
   star_tree <- attr(data, "nr") == 0
   add_taxa <- !is.null(attr(data, "duplicated"))
   p0 <- attr(data, "p0")
@@ -239,24 +284,41 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
   if(trace > 0) cat("Compute starting tree\n")
   tree <- pratchet(data, start = tree, trace = trace - 1, maxit = 10,
                    all = FALSE, ...)
-#  p_vec <- fitch(tree, data, "site")
+  #  p_vec <- fitch(tree, data, "site")
 
   nTips <- m <- length(data)
-  TMP <- matrix(0, m, nr) # UB <-
+  LB <- UB <- matrix(0, m, nr) # UB <-
   for (i in 2:m) {
-    TMP[i, ] <- lowerBound(data[1:i, ])
+    LB[i, ] <- lowerBound(data[1:i, ])
+    UB[i, ] <- upperBound(data[1:i, ])
   }
 
   weight <- as.double(attr(data, "weight"))
 
   m <- nr * (2L * nTips - 2L)
   # Single column discrepancy
-  mmsAmb <- TMP %*% weight
+  mmsAmb <- LB %*% weight
   #  mmsAmb <- mmsAmb[nTips] - mmsAmb
   mms0 <- mms1 <- 0
-  if (ILBound) mms1 <- ilb(data, TMP)
+
+  cherry <- TRUE
+  if(cherry){
+    ec <- extract_cherries(data)
+    cherry_res  <- cherries(ec, LB, UB)
+    weight_cherry <- weight
+    weight_cherry[ec$pos] <- cherry_res$weight
+    data2 <- data
+    attr(data2, "weight") <- weight_cherry
+  }
+
+  if (ILBound){  # nur 25 statt 37 Bäume
+    if(cherry) mms1 <- ilb(data2, TMP)
+    else mms1 <- ilb(data, TMP)
+  }
   mms0 <- mms1 + mmsAmb
+  #  if(cherry)mms0 <- mms0 + mmsAmb_cherry
   mms0 <- mms0[nTips] - mms0
+  if(cherry)mms0 <- mms0 + cherry_res$res
   mms0 <- c(mms0, 0)
 
   f <- init_fitch(data, m = 4L)
@@ -267,9 +329,9 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
     cat("upper bound:", bound, "\n")
   }
   startTree <- structure(list(edge = structure(c(rep(nTips + 1L, 3),
-        as.integer(1:3)), .Dim = c(3L, 2L)), tip.label = names(data),
-        Nnode = 1L), .Names = c("edge", "tip.label", "Nnode"), class = "phylo",
-        order = "postorder")
+                                                 as.integer(1:3)), .Dim = c(3L, 2L)), tip.label = names(data),
+                              Nnode = 1L), .Names = c("edge", "tip.label", "Nnode"), class = "phylo",
+                         order = "postorder")
 
   trees <- vector("list", nTips)
   trees[[3]] <- list(startTree$edge)
@@ -283,7 +345,6 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
   PSC <- matrix(0, sum(L), 3)
   PSC[1, ] <- c(3, 1, 0)
   PSC[1, 3] <- f$pscore(startTree$edge)
-#  k <- 4L
   Nnode <- 1L
   npsc <- 1L
   status <- 0
@@ -291,7 +352,7 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
   if (trace > 0 && nTips > 6) {
     cat("Search Baumraum (tree space)\n")
     pb <- txtProgressBar(min = 0, max = 105, initial = 0, style = 3)
-#    cli_progress_bar("Search Baumraum (tree space)", total = 105, clear=TRUE)
+    #    cli_progress_bar("Search Baumraum (tree space)", total = 105, clear=TRUE)
   }
   result <- list()
   while (npsc > 0) {
@@ -307,10 +368,9 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
       if ((a + 1L) < nTips) {
         ind <- (1:L[a])[score <= bound]   # sehr langsam
         trees[[a + 1]][seq_along(ind)] <- .Call("AddOnes", tmpTree,
-                        as.integer(a + 1L), as.integer(ind), as.integer(L[a]),
-                        as.integer(M[a]))
+                                                as.integer(a + 1L), as.integer(ind), as.integer(L[a]),
+                                                as.integer(M[a]))
         l <- length(ind)
-        # os <- order(score[ind], decreasing=TRUE)
         os <- seq_len(l)
         PSC[npsc + os, ] <- c(rep(a + 1, l), os, score[ind] - mms0[a + 1L])
         npsc <- npsc + l
@@ -343,7 +403,7 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
   if(trace > 0  && nTips > 6) {
     setTxtProgressBar(pb, 105)
     close(pb)
-#    cli_progress_done()
+    #    cli_progress_done()
   }
   attr(result, "TipLabel") <- tree$tip.label
   class(result) <- "multiPhylo"
