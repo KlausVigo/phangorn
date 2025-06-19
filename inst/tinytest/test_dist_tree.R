@@ -25,3 +25,18 @@ expect_true(is.ultrametric(tree_upgma_nni))
 expect_true(sum(tree_upgma_no_nni$edge.length)
          >= sum(tree_upgma_nni$edge.length))
 
+# Test hclust_edge_length
+
+tree_complete <- as.phylo(hclust(dm, method="complete"))
+tree_single <- as.phylo(hclust(dm, method="single"))
+
+tree_upgma_el <- edge_length_hclust(tree_upgma, dm)
+tree_wpgma_el <- edge_length_hclust(tree_wpgma, dm, method="mcquitty")
+tree_single_el <- edge_length_hclust(tree_wpgma, dm, method="single")
+tree_complete_el <- edge_length_hclust(tree_wpgma, dm, method="complete")
+
+expect_equal(tree_upgma_el, tree_upgma_el)
+expect_equal(tree_wpgma_el, tree_wpgma_el)
+expect_equal(tree_single_el, tree_single_el)
+expect_equal(tree_complete_el, tree_complete_el)
+

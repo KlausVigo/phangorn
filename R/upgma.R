@@ -133,6 +133,59 @@ supgma <- function(D, tip.dates, trace=0, ...){
 }
 
 
+
+wpgma_weights <- function(tree){
+  ntips <- Ntip(tree)
+  tree_u <- unroot(tree)
+  ind <- sort(unique( tree_u$edge[,1]) )[-1]
+  desc <- Descendants(tree_u, ind)
+  x <- seq_len(ntips)
+  w <- integer( ntips * (ntips-1L) / 2 )
+  for(i in seq_along(ind)){
+    ind <- getIndex(desc[[i]], x[-desc[[i]]], ntips)
+    w[ind] <- w[ind] + 1L
+  }
+  w
+}
+
+
+#' @rdname phangorn-internal
+#' @export
+edge_length_hclust <- function(x, dm, method = "average") {
+  METHODS <- c("average", "single", "complete", "mcquitty")
+  i.meth <- match.arg(method, METHODS)
+  X <- designTree(x, "rooted", TRUE)
+  labels <- x$tip
+  if (is.matrix(dm) || inherits(dm, "dist")) {
+    dm <- as.matrix(dm)[labels, labels]
+    dm <- dm[lower.tri(dm)]
+  }
+  ind <- X@i + 1
+  node <- X@p
+  X@x[] <- 1
+  nh <- numeric(max(x$edge))
+  Y <- X * dm
+  if(i.meth=="mcquitty"){
+    w <- .5 ^ wpgma_weights(x)
+    Y <- X * (dm * w)
+    Y[,1] <- Y[,1]/2
+  }
+
+  for (i in 1:(length(node) - 1)) {
+    pos <- ind[(node[i] + 1):node[i + 1]]
+    tmp <- switch(i.meth,
+                  average = mean(Y[pos, i]),
+                  mcquitty = sum(Y[pos, i]),
+                  single = min(Y[pos, i]),
+                  complete = max(Y[pos, i]))
+    nh[X@nodes[i]] <- tmp
+  }
+  x$edge.length <- (nh[x$edge[, 1]] - nh[x$edge[, 2]]) / 2
+  x
+}
+
+
+
 # SRR tags ---------------------------------------------------------------------
 
 #' @srrstats {G1.1} UPGMA(NNI=TRUE) is the first implementation of a new
