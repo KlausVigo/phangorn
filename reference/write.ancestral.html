@@ -114,9 +114,9 @@ plotting capabilities of R.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">]</span>, <span class="st">"JC"</span>, rearrangement <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> optimize edge weights:  -2135.629 --&gt; -2126.584 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> optimize edge weights:  -2126.584 --&gt; -2126.584 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> optimize edge weights:  -2126.584 --&gt; -2126.584 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> optimize edge weights:  -2153.509 --&gt; -2143.08 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> optimize edge weights:  -2143.08 --&gt; -2143.08 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> optimize edge weights:  -2143.08 --&gt; -2143.08 </span>
 <span class="r-in"><span><span class="va">anc_ml</span> <span class="op">&lt;-</span> <span class="fu"><a href="ancestral.pml.html">anc_pml</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">write.ancestral</span><span class="op">(</span><span class="va">anc_ml</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Can be also results from iqtree</span></span></span>
