@@ -233,3 +233,4 @@ add_mutations <- function(x, pos=NULL, frame="none", ...){
 
 
 #' @srrstats {G2.3, G2.3a} in lines: 82, 109, 160, 198
+#' @srrstats {EA4.1, EA4.2, EA5.2, EA5.4}
