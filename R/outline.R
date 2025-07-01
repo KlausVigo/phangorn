@@ -105,6 +105,7 @@ outline <- function(x){
     }
   }
   coord <- coord[complete.cases(coord),]
+  final_ord <- final_ord[seq_len(nrow(edge))]
   splitIndex <- final_ord[!duplicated(edge)]
   edge <- edge[complete.cases(edge),] |> unique()
 
@@ -113,6 +114,9 @@ outline <- function(x){
   pos[tab == 1L] <- seq_len(nTips)
   pos[tab > 1L] <- (nTips + 1L):max(edge)
   edge[] <- pos[edge]
+  ind <- which(edge[,1] %in% seq_len(nTips))
+  if(length(ind) > 0) edge[ind, ] <- edge[ind, c(2,1)]
+
   coord <- coord[order(pos),]
 
   res <- list(edge = edge, tip.label = attr(x, "labels"),
