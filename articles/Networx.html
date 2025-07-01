@@ -64,7 +64,7 @@
                         <h4 data-toc-skip class="author">Klaus
 Schliep</h4>
             
-            <h4 data-toc-skip class="date">June 23, 2025</h4>
+            <h4 data-toc-skip class="date">July 01, 2025</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/main/vignettes/Networx.Rmd" class="external-link"><code>vignettes/Networx.Rmd</code></a></small>
       <div class="d-none name"><code>Networx.Rmd</code></div>
@@ -128,9 +128,9 @@ get still a good impression of the network is to plot it in 3D.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cnet</span>, <span class="st">"3D"</span><span class="op">)</span></span>
 <span><span class="co"># rotate 3d plot</span></span>
-<span><span class="fu"><a href="https://dmurdoch.github.io/rgl/reference/play3d.html" class="external-link">play3d</a></span><span class="op">(</span><span class="fu"><a href="https://dmurdoch.github.io/rgl/reference/spin3d.html" class="external-link">spin3d</a></span><span class="op">(</span>axis<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span>, rpm<span class="op">=</span><span class="fl">6</span><span class="op">)</span>, duration<span class="op">=</span><span class="fl">10</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/play3d.html" class="external-link">play3d</a></span><span class="op">(</span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/spin3d.html" class="external-link">spin3d</a></span><span class="op">(</span>axis<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span>, rpm<span class="op">=</span><span class="fl">6</span><span class="op">)</span>, duration<span class="op">=</span><span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co"># create animated gif file </span></span>
-<span><span class="fu"><a href="https://dmurdoch.github.io/rgl/reference/play3d.html" class="external-link">movie3d</a></span><span class="op">(</span><span class="fu"><a href="https://dmurdoch.github.io/rgl/reference/spin3d.html" class="external-link">spin3d</a></span><span class="op">(</span>axis<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span>, rpm<span class="op">=</span><span class="fl">6</span><span class="op">)</span>, duration<span class="op">=</span><span class="fl">10</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/play3d.html" class="external-link">movie3d</a></span><span class="op">(</span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/spin3d.html" class="external-link">spin3d</a></span><span class="op">(</span>axis<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span>, rpm<span class="op">=</span><span class="fl">6</span><span class="op">)</span>, duration<span class="op">=</span><span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <p>which will result in a spinning graph similar to this</p>
 <div class="float">
 <img src="movie.gif" alt="rotatingNetworx"><div class="figcaption">rotatingNetworx</div>
