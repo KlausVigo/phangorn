@@ -160,7 +160,7 @@ ilb <- function(x, LB) {
   fun3 <- function(x) sum(!duplicated(x)) - 1L
 
   tmp <- apply(y, 2, fun2, singles)
-  ind <- which(tmp)
+  ind <- which(tmp & (weight0 > 1e-6))
   if (length(ind) < 2) return(0)
 
   y <- y[, ind, drop = FALSE]
@@ -171,14 +171,14 @@ ilb <- function(x, LB) {
   res <- numeric(nTips)
   for (i in 1:(l - 1)) {
     for (j in (i + 1):l) {
-      if ((weight0[i] > 0) && (weight0[j] > 0)) {
+      if ((weight0[i] > 1e-6) && (weight0[j] > 1e-6)) {
         z <- paste(y[, i], y[, j], sep = "_")
         dis2 <- single_dis[, i] + single_dis[, j]
         dis <- fun1(z)
         if (dis[nTips] > dis2[nTips]) {
-          #browser()
+##browser()
           dis <- pmax(dis, dis2)
-          if(any(diff(dis)<0))browser()
+##if(any(diff(dis)<0))browser()
           dis <- dis - dis2
 
           if (sum(dis[4:nTips]) > 0) {
@@ -311,8 +311,8 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
   }
 
   if (ILBound){  # tests needed
-    if(cherry) mms1 <- ilb(data2, TMP)
-    else mms1 <- ilb(data, TMP)
+    if(cherry) mms1 <- ilb(data2, LB)
+    else mms1 <- ilb(data, LB)
   }
   mms0 <- mms1 + mmsAmb
   mms0 <- mms0[nTips] - mms0
