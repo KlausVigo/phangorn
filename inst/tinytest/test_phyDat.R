@@ -147,3 +147,8 @@ expect_true(has_gap_state(chloroplast_gap))
 expect_equal(Laurasiatherian, gap_as_ambiguous(Laurasiatherian_gap))
 expect_equal(chloroplast, gap_as_ambiguous(chloroplast))
 
+# check latag2n.phyDat
+x <- phyDat(matrix(c("-", "A", "G", "-", "T", "C"), 2, 3))
+y <- latag2n.phyDat(x)
+expect_true(baseFreq(x, all=T)["n"] < baseFreq(y, all=T)["n"])
+expect_true(inherits(y, "phyDat"))
