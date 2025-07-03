@@ -22,8 +22,8 @@ expect_true(fit_GY_opt$tstv > 1)
 
 library(ape)
 data(woodmouse)
-dat_codon <- dna2codon(as.phyDat(woodmouse), code=1)
-dat_codon_2 <- dna2codon(as.phyDat(woodmouse), code=2)
+#dat_codon <- dna2codon(as.phyDat(woodmouse), code=1)
+dat_codon <- dna2codon(as.phyDat(woodmouse), code=2)
 
 tree <- NJ(dist.ml(dat_codon))
 
@@ -36,3 +36,13 @@ expect_true(inherits(fit_codon, "codonTest"))
 #fit_codon_2 <- codonTest(tree, dat_codon_2, model = c("M0", "M1a"),
 #                         opt_freq = TRUE, control = pml.control(maxit = 20))
 #expect_true(inherits(fit_codon_2, "codonTest"))
+
+fdir <- system.file("extdata/trees", package = "phangorn")
+hiv_2_nef <- read.phyDat(file.path(fdir, "seqfile.txt"), format="sequential")
+
+tree_hiv <- read.tree(file.path(fdir, "tree.txt"))
+
+fit_codon_2 <- codonTest(tree_hiv, dna2codon(hiv_2_nef), frequencies="F1x4")
+expect_true(inherits(fit_codon_2, "codonTest"))
+expect_true(fit_codon_2$summary$logLik[1] < fit_codon_2$summary$logLik[2])
+expect_true(fit_codon_2$summary$logLik[2] < fit_codon_2$summary$logLik[3])
