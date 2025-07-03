@@ -57,10 +57,22 @@ expect_equal(attr(best_fitch, "pscore"), attr(best_sankoff, "pscore"))
 
 
 # test tree length
-tree <- nj(dist.hamming(yeast))
+tree <- read.tree(text = "(Spar,(Smik,((((Calb,Sklu),Scas),Sbay),Skud)),Scer);")
 pscore <- fitch(tree, yeast)
 tree1 <- acctran(tree, yeast)
 expect_equal(sum(tree1$edge.length), pscore)
+
+tree_pe <- parsimony_edgelength(tree, yeast)
+expect_equal(sum(tree_pe$edge.length), pscore)
+
+trees <- nni(tree)
+trees_acctran <- acctran(trees, yeast)
+trees_pe <- parsimony_edgelength(trees, yeast)
+pscores <- fitch(trees, yeast)
+fun <- function(x)sapply(x, \(x)sum(x$edge.length))
+expect_equal(fun(trees_acctran), pscores)
+expect_equal(fun(trees_pe), pscores)
+
 
 tree2 <- rtree(100)
 dat <- simSeq(tree2)
