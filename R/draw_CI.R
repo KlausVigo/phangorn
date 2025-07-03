@@ -152,6 +152,7 @@ add_ci <- function(tree, trees, col95 = "#FF00004D", col50 = "#0000FF4D",
     graphics::legend(loc, legend = c("95% CI", "50% CI"), pch = 22,
                      pt.bg = c(col95, col50), col = c(col95, col50), ...)
   }
+  invisible(tree)
 }
 
 ##' @rdname add_ci
@@ -193,4 +194,5 @@ add_boxplot <- function(tree, trees, ...)
   tmp$out <- out
   Y <- Y[-c(1:Ntip(tree))]
   bxp(tmp, at=Y, horizontal=horizontal, add=TRUE, axes=FALSE, ...)
+  invisible(tree)
 }
