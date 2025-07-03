@@ -4,7 +4,9 @@ author:
 - name: Klaus Schliep, Iris Bardel-Kahr
   affiliation: Graz University of Technology, University of Graz
   email: klaus.schliep@gmail.com
-date: "`r Sys.Date()`"  
+date: "`r Sys.Date()`" 
+header-includes:
+   - \usepackage{amsmath}
 bibliography: phangorn.bib
 output: rmarkdown::html_vignette
 vignette: >
