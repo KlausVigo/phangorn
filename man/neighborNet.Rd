@@ -29,6 +29,7 @@ data(yeast)
 dm <- dist.ml(yeast)
 nnet <- neighborNet(dm)
 plot(nnet)
+plot(nnet, type="outline")
 
 }
 \references{

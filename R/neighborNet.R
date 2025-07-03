@@ -203,6 +203,7 @@ getOrderingNN <- function(x) {
 #' dm <- dist.ml(yeast)
 #' nnet <- neighborNet(dm)
 #' plot(nnet)
+#' plot(nnet, type="outline")
 #'
 #' @export neighborNet
 neighborNet <-  function(x, ord = NULL) {
