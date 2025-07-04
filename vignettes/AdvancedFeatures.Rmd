@@ -206,7 +206,6 @@ e | 0 | 0 | 0 | 1 |
 A special case of the transition rates are codon models. _phangorn_ now offers the possibility to estimate the $d_N/d_S$ ratio (sometimes called ka/ks), for an overview see [@Yang2014]. These functions extend the option to estimate the $d_N/d_S$ ratio for pairwise sequence comparison as it is available through the function `kaks` in _seqinr_. The transition rate between between codon $i$ and $j$ is defined as follows:
 
 $$
-\begin{aligned}
 q_{ij}=\left\{
     \begin{array}{l@{\quad}l}
          0 & \textrm{if i and j differ in more than one position} \\
@@ -216,7 +215,6 @@ q_{ij}=\left\{
          \pi_j\omega\kappa & \textrm{for non-synonymous transition}
     \end{array}
     \right. \nonumber
-\end{aligned}
 $$
 
 where $\omega$ is the $d_N/d_S$ ratio,  $\kappa$ the transition transversion ratio and $\pi_j$ is the the equilibrium frequency of codon $j$. 
