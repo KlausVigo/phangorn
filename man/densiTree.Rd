@@ -10,7 +10,7 @@ densiTree(x, type = "phylogram", ..., alpha = 1/length(x),
   tip.color = 1, adj = 0, srt = 0, underscore = FALSE,
   label.offset = 0, scale.bar = TRUE, jitter = list(amount = 0, random =
   TRUE), tip.dates = NULL, xlim = NULL, ylim = NULL,
-  show.consensus = FALSE)
+  show.consensus = FALSE, side = NULL)
 }
 \arguments{
 \item{x}{an object of class \code{multiPhylo}.}
@@ -72,6 +72,10 @@ jitter and random or equally spaced (see details below)}
 \item{ylim}{the y limits of the plot.}
 
 \item{show.consensus}{superimpose the consensus tree?}
+
+\item{side}{a numeric value specifying the side where the axis is plotted:
+1: below, 2: left, 3: above, 4: right. By default, this is taken from the
+direction of the plot.}
 }
 \value{
 \code{densiTree} returns silently x.
@@ -126,7 +130,7 @@ trees \emph{Bioinformatics}, \bold{26 (10)}, 1372-1373.
 }
 \seealso{
 \code{\link[ape]{plot.phylo}}, \code{\link{plot.networx}},
-\code{\link{jitter}}, \code{\link[ape]{rtt}}
+\code{\link{jitter}}, \code{\link[ape]{rtt}}, \link[ape]{axisPhylo}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}
