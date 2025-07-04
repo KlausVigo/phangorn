@@ -130,7 +130,7 @@ trees \emph{Bioinformatics}, \bold{26 (10)}, 1372-1373.
 }
 \seealso{
 \code{\link[ape]{plot.phylo}}, \code{\link{plot.networx}},
-\code{\link{jitter}}, \code{\link[ape]{rtt}}, \link[ape]{axisPhylo}}
+\code{\link{jitter}}, \code{\link[ape]{rtt}}, \code{\link[ape]{axisPhylo}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}
