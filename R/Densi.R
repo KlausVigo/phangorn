@@ -95,11 +95,14 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt = 0, cex = 1,
 #' @param xlim the x limits of the plot.
 #' @param ylim the y limits of the plot.
 #' @param show.consensus superimpose the consensus tree?
+#' @param side a numeric value specifying the side where the axis is plotted:
+#' 1: below, 2: left, 3: above, 4: right. By default, this is taken from the
+#' direction of the plot.
 #' @param \dots further arguments to be passed to plot.
 #' @returns \code{densiTree} returns silently x.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link[ape]{plot.phylo}}, \code{\link{plot.networx}},
-#' \code{\link{jitter}}, \code{\link[ape]{rtt}}
+#' \code{\link{jitter}}, \code{\link[ape]{rtt}}, \link[ape]{axisPhylo}}
 #' @references densiTree is inspired from the great
 #' \href{https://www.cs.auckland.ac.nz/~remco/DensiTree/}{DensiTree} program of
 #' Remco Bouckaert.
@@ -139,7 +142,7 @@ densiTree <- function(x, type = "phylogram", ..., alpha = 1 / length(x),
                       font = 3, tip.color = 1, adj = 0, srt = 0,
                       underscore = FALSE, label.offset = 0, scale.bar = TRUE,
                       jitter = list(amount = 0, random = TRUE), tip.dates=NULL,
-                      xlim=NULL, ylim=NULL, show.consensus=FALSE) {
+                      xlim=NULL, ylim=NULL, show.consensus=FALSE, side=NULL) {
   assert_multiPhylo(x)
   if (is.character(consensus)) {
     consensus <- stree(length(consensus), tip.label = consensus)
@@ -270,12 +273,12 @@ densiTree <- function(x, type = "phylogram", ..., alpha = 1 / length(x),
   }
   L <- list(type = type, font = font, cex = cex,
             adj = adj, srt = srt, #no.margin = no.margin,
-            label.offset = label.offset, xx=range_x, yy=range_y,
+            label.offset = label.offset, xx = range_x, yy = range_y,
             x.lim = xlim, y.lim = ylim, direction = direction,
             tip.color = tip.color, Ntip = nTip)
   assign("last_plot.phylo", L, envir = .PlotPhyloEnv)
-  if (scale.bar) axisPhylo(root.time = root_time, backward=is.null(root_time),
-                           cex.axis=cex.axis)
+  if (scale.bar) axisPhylo(side = side, root.time = root_time,
+                           backward = is.null(root_time), cex.axis = cex.axis)
   invisible(x)
 }
 #' @srrstats {G1.0} in the lines folloing: 103
