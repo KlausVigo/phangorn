@@ -53,7 +53,7 @@
 <span>  tip.color <span class="op">=</span> <span class="fl">1</span>, adj <span class="op">=</span> <span class="fl">0</span>, srt <span class="op">=</span> <span class="fl">0</span>, underscore <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  label.offset <span class="op">=</span> <span class="fl">0</span>, scale.bar <span class="op">=</span> <span class="cn">TRUE</span>, jitter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>amount <span class="op">=</span> <span class="fl">0</span>, random <span class="op">=</span></span>
 <span>  <span class="cn">TRUE</span><span class="op">)</span>, tip.dates <span class="op">=</span> <span class="cn">NULL</span>, xlim <span class="op">=</span> <span class="cn">NULL</span>, ylim <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  show.consensus <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span>  show.consensus <span class="op">=</span> <span class="cn">FALSE</span>, side <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -167,6 +167,12 @@ jitter and random or equally spaced (see details below)</p></dd>
 <dt id="arg-show-consensus">show.consensus<a class="anchor" aria-label="anchor" href="#arg-show-consensus"></a></dt>
 <dd><p>superimpose the consensus tree?</p></dd>
 
+
+<dt id="arg-side">side<a class="anchor" aria-label="anchor" href="#arg-side"></a></dt>
+<dd><p>a numeric value specifying the side where the axis is plotted:
+1: below, 2: left, 3: above, 4: right. By default, this is taken from the
+direction of the plot.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -195,7 +201,7 @@ trees <em>Bioinformatics</em>, <b>26 (10)</b>, 1372-1373.</p>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="https://rdrr.io/pkg/ape/man/plot.phylo.html" class="external-link">plot.phylo</a></code>, <code><a href="plot.networx.html">plot.networx</a></code>,
-<code><a href="https://rdrr.io/r/base/jitter.html" class="external-link">jitter</a></code>, <code><a href="https://rdrr.io/pkg/ape/man/rtt.html" class="external-link">rtt</a></code></p></div>
+<code><a href="https://rdrr.io/r/base/jitter.html" class="external-link">jitter</a></code>, <code><a href="https://rdrr.io/pkg/ape/man/rtt.html" class="external-link">rtt</a></code>, <a href="https://rdrr.io/pkg/ape/man/axisPhylo.html" class="external-link">axisPhylo</a></p></div>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
