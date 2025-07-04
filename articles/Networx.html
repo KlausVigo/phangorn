@@ -132,9 +132,9 @@ get still a good impression of the network is to plot it in 3D.</p>
 <span><span class="co"># create animated gif file </span></span>
 <span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/play3d.html" class="external-link">movie3d</a></span><span class="op">(</span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/spin3d.html" class="external-link">spin3d</a></span><span class="op">(</span>axis<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span>, rpm<span class="op">=</span><span class="fl">6</span><span class="op">)</span>, duration<span class="op">=</span><span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <p>which will result in a spinning graph similar to this</p>
-<div class="float">
-<img src="movie.gif" alt="rotatingNetworx"><div class="figcaption">rotatingNetworx</div>
-</div>
+<p><img src="movie.gif" alt="rotatingNetworx"> The rendering of the
+<code>networx</code> is done using the the fantastic igraph package
+<span class="citation">(Csardi and Nepusz 2006)</span>.</p>
 </div>
 <div class="section level2">
 <h2 id="neighbornet">neighborNet<a class="anchor" aria-label="anchor" href="#neighbornet"></a>
@@ -153,10 +153,12 @@ Least-Squares (nnls).</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nnet</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Networx_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
 <p>The advantage of Neighbor-Net is that it returns a circular split
-system which can be always displayed in a planar (2D) graph. The
-rendering of the <code>networx</code> is done using the the fantastic
-igraph package <span class="citation">(Csardi and Nepusz
-2006)</span>.</p>
+system which can be always displayed in a planar (2D) graph. For planar
+graphs we can also plot only the outline (<span class="citation">Bagci
+et al. (2021)</span>).</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nnet</span>, type <span class="op">=</span> <span class="st">"outline"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Networx_files/figure-html/outline-1.png" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="adding-support-values">Adding support values<a class="anchor" aria-label="anchor" href="#adding-support-values"></a>
@@ -167,13 +169,13 @@ igraph package <span class="citation">(Csardi and Nepusz
 <code>phylo</code> object. The Neighbor-Net object we computed above
 provides no support values. We can add the support values from the tree
 we computed to the splits (edges) shared by both objects.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nnet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/addConfidences.html">addConfidences</a></span><span class="op">(</span><span class="va">nnet</span>, <span class="va">tree</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"mar"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nnet</span>, show.edge.label<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Networx_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
 <p>Analogously, we can also add support values to a tree:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tree2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nni.html">rNNI</a></span><span class="op">(</span><span class="va">tree</span>, <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="va">tree2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/addConfidences.html">addConfidences</a></span><span class="op">(</span><span class="va">tree2</span>, <span class="va">tree</span><span class="op">)</span></span>
 <span><span class="co"># several support values are missing</span></span>
@@ -192,7 +194,7 @@ values correspond with the actual genetic distance between the involved
 taxa. Given a distance matrix, we can estimate edge weights using
 non-negative Least-Squares, and plot them onto the consensusNet splits
 graph.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cnet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/designTree.html">nnls.networx</a></span><span class="op">(</span><span class="va">cnet</span>, <span class="va">dm</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"mar"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cnet</span>, show.edge.label<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
@@ -210,7 +212,7 @@ functions, examples, and advanced application.</p>
 <div class="section level2">
 <h2 id="session-information">Session Information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## R version 4.5.1 (2025-06-13)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>
@@ -251,6 +253,12 @@ functions, examples, and advanced application.</p>
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-Bagci2021" class="csl-entry">
+Bagci, Caner, David Bryant, Banu Cetinkaya, and Daniel H Huson. 2021.
+<span>“Microbial Phylogenetic Context Using Phylogenetic
+Outlines.”</span> <em>Genome Biology and Evolution</em> 13 (9): evab213.
+<a href="https://doi.org/10.1093/gbe/evab213" class="external-link">https://doi.org/10.1093/gbe/evab213</a>.
+</div>
 <div id="ref-Bryant2023" class="csl-entry">
 Bryant, David, and Daniel H Huson. 2023. <span>“NeighborNet: Improved
 Algorithms and Implementation.”</span> <em>Frontiers in
