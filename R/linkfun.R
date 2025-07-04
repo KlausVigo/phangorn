@@ -1,33 +1,4 @@
-#' Family objects for evolutionary models
-#'
-#' Family objects provide a convenient way to specify the details of the models
-#' used by functions such as \code{glm}. \code{binomial_mk} extends the
-#' \code{binomial} family with the Mk model. The 2 state model is also known
-#' Neyman and 4 state model as the Jukes Cantor model.
-#' See the documentation for \code{\link{family}} for more details and
-#' \code{\link{glm}} for the details on how such model fitting takes place.
-#'
-#' The link function for the Jukes Cantor 4 state model is
-#' \deqn{g(\mu) = -0.75 \cdot log(1-(4/3)\cdot\mu)}{-0.75 * log(1 - (4/3) * mu)}
-#'
-#' @seealso \code{\link{family}}, \code{\link{binomial}}, \code{\link{glm}}
-#' @param k number of states.
 #' @importFrom stats binomial dbinom
-#' @examples
-#' plot(function(x) binomial_mk()$linkinv(x), 0, 1.5, , ylim=c(0, 1), asp=1,
-#'      main = "inverse link function (JC69)", ylab="f(x)")
-#' abline(0, 1)
-#' abline(h=.75)
-#' plot(function(x) binomial_mk()$linkfun(x), 0, .75,
-#'      main = "link function (JC69)", ylab="f(x)")
-#'
-#' data(yeast)
-#' dm <- dist.hamming(yeast, FALSE)
-#' y <- cbind(dm, 127026 - dm)
-#' tree <- nj(dm)
-#' X <- designTree(tree)
-#' glm(y ~ X -1, binomial_mk())
-#' @noRd
 #' @rdname phangorn-internal
 #' @export
 binomial_mk <- function (k=4)
@@ -91,3 +62,32 @@ make_link_mk <- function (n=4L){
        valideta = valideta)
 }
 
+#' Family objects for evolutionary models
+#'
+#' Family objects provide a convenient way to specify the details of the models
+#' used by functions such as \code{glm}. \code{binomial_mk} extends the
+#' \code{binomial} family with the Mk model. The 2 state model is also known
+#' Neyman and 4 state model as the Jukes Cantor model.
+#' See the documentation for \code{\link{family}} for more details and
+#' \code{\link{glm}} for the details on how such model fitting takes place.
+#'
+#' The link function for the Jukes Cantor 4 state model is
+#' \deqn{g(\mu) = -0.75 \cdot log(1-(4/3)\cdot\mu)}{-0.75 * log(1 - (4/3) * mu)}
+#'
+#' @seealso \code{\link{family}}, \code{\link{binomial}}, \code{\link{glm}}
+#' @param k number of states.
+#' @examples
+#' plot(function(x) binomial_mk()$linkinv(x), 0, 1.5, , ylim=c(0, 1), asp=1,
+#'      main = "inverse link function (JC69)", ylab="f(x)")
+#' abline(0, 1)
+#' abline(h=.75)
+#' plot(function(x) binomial_mk()$linkfun(x), 0, .75,
+#'      main = "link function (JC69)", ylab="f(x)")
+#'
+#' data(yeast)
+#' dm <- dist.hamming(yeast, FALSE)
+#' y <- cbind(dm, 127026 - dm)
+#' tree <- nj(dm)
+#' X <- designTree(tree)
+#' glm(y ~ X -1, binomial_mk())
+#' @noRd
