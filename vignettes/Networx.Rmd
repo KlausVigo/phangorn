@@ -49,7 +49,7 @@ movie3d(spin3d(axis=c(0,1,0), rpm=6), duration=10)
 which will result in a spinning graph similar to this
 
 ![rotatingNetworx](movie.gif)
-
+The rendering of the `networx` is done using the the fantastic igraph package [@Csardi2006].
 
 ## neighborNet
 The function `neighborNet` implements the popular method of @Bryant2004. The Neighbor-Net algorithm is essentially a 2D-version of the Neighbor joining algorithm. The Neighbour-net is computed in two steps: the first computes a circular ordering of the taxa in the data set; the second step involves the estimation of edge weights using non-negative Least-Squares (nnls).    
@@ -61,7 +61,13 @@ par("mar" = rep(1, 4))
 plot(nnet)
 ```
 
-The advantage of Neighbor-Net is that it returns a circular split system which can be always displayed in a planar (2D) graph. The rendering of the `networx` is done using the the fantastic igraph package [@Csardi2006]. 
+The advantage of Neighbor-Net is that it returns a circular split system which can be always displayed in a planar (2D) graph. For planar graphs we can also plot only the outline (@Bagci2021).  
+
+```{r outline, eval=TRUE}
+plot(nnet, type = "outline")
+```
+
+
 
 
 ## Adding support values
