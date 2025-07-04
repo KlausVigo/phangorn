@@ -28,6 +28,8 @@
 #' X <- designTree(tree)
 #' glm(y ~ X -1, binomial_mk())
 #' @noRd
+#' @rdname phangorn-internal
+#' @export
 binomial_mk <- function (k=4)
 {
   stats <- make_link_mk(k)
