@@ -65,3 +65,8 @@ treeBS <- plotBS(tree, bs, type="none")
 expect_length(treeBS$node.label, treeBS$Nnode)
 expect_true(all(treeBS$node.label >=0) )
 expect_true(all(treeBS$node.label <= 100) )
+
+
+# test pruneTree
+tree_pruned <- pruneTree(treeBS, .8)
+expect_true(Nnode(tree_pruned) <= Nnode(treeBS))
