@@ -15,6 +15,12 @@ expect_true( inherits(anc_p, "ancestral"))
 dna_df <- as.data.frame(anc_p)
 expect_equal(nrow(dna_df), 2 * (Ntip(tree) + Nnode(tree)))
 
+anc_acctran <- anc_pars(tree, dna, type="ACCTRAN")
+expect_true( inherits(anc_acctran, "ancestral"))
+
+
+
+
 # dna tests differs from other data types as it may returns ambiguous data
 # test ancestral generics
 #    test.ml1 <- ancestral.pml(fit, type = "ml")
