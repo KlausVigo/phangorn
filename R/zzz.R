@@ -20,7 +20,9 @@
 
 .aamodels <- c("WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt",
                "MtZoa", "mtREV24", "VT", "RtREV", "HIVw", "HIVb", "FLU",
-               "Blosum62", "Dayhoff_DCMut", "JTT_DCMut")
+               "Blosum62", "Dayhoff_DCMut", "JTT_DCMut", "3Di")
+
+.threeDi <- readAArate("3Di.dat")
 
 .dnamodels <- c("JC", "F81", "K80", "HKY", "TrNe", "TrN",
   "TPM1", "K81", "TPM1u", "TPM2", "TPM2u", "TPM3", "TPM3u",
@@ -28,6 +30,7 @@
   "TVM", "SYM", "GTR")
 
 .usermodels <- c("ER", "SYM", "FREQ", "GTR", "ORDERED")
+
 
 
 # environment variables
