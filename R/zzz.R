@@ -20,7 +20,7 @@
 
 .aamodels <- c("WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt",
                "MtZoa", "mtREV24", "VT", "RtREV", "HIVw", "HIVb", "FLU",
-               "Blosum62", "Dayhoff_DCMut", "JTT_DCMut", "3Di")
+               "Blosum62", "Dayhoff_DCMut", "JTT_DCMut")
 
 .threeDi <- readAArate("3Di.dat")
 
