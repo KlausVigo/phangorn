@@ -10,7 +10,6 @@ weights0 <- 1000*exp(fit0$siteLik)
 weights1 <- 1000*exp(fit1$siteLik)
 weights2 <- 1000*exp(fit2$siteLik)
 
-
 W <- cbind(weights0, weights1, weights2)
 colnames(W) <- c("g1", "g2", "g3")
 
@@ -19,6 +18,28 @@ colnames(W) <- c("g1", "g2", "g3")
 sp <- pmlPart(edge ~ rate, fit0, weight=W, control = pml.control(trace=0))
 expect_equal( sp$fits[[1]]$rate / sp$fits[[2]]$rate , 2, tolerance = 1e-5)
 expect_equal( sp$fits[[1]]$rate / sp$fits[[3]]$rate , 0.5, tolerance = 1e-5)
+
+
+# extract trees
+trees <- pmlPart2multiPhylo(sp)
+expect_true(inherits(trees), "multiPhylo")
+
+# test multiphyDat objects
+XX <- as.character(X)
+p0 <- sample(1024, 500, replace = TRUE, prob = exp(fit0$siteLik))
+X0 <- phyDat(XX[,p0])
+p1 <- sample(1024, 500, replace = TRUE, prob = exp(fit1$siteLik))
+X1 <- phyDat(XX[,p1])
+p2 <- sample(1024, 500, replace = TRUE, prob = exp(fit2$siteLik))
+X2 <- phyDat(XX[,p2])
+
+if(suppressPackageStartupMessages(requireNamespace('apex'))){
+  mp <- new("multiphyDat", list(X0, X1, X2))
+  sp_mp <- pmlPart(edge ~ rate, mp, control = pml.control(trace=0))
+  expect_true(inherits(sp_mp, "pmlPart"))
+  expect_true(sp_mp$fits[[1]]$rate > sp_mp$fits[[2]]$rate)
+  expect_true(sp_mp$fits[[1]]$rate < sp_mp$fits[[3]]$rate)
+}
 
 
 # nni
