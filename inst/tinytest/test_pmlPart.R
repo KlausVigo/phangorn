@@ -35,8 +35,7 @@ X2 <- phyDat(XX[,p2])
 
 if(suppressPackageStartupMessages(requireNamespace('apex'))){
   mp <- new("multiphyDat", list(X0, X1, X2))
-  sp_mp <- pmlPart(edge ~ rate, mp, control = pml.control(trace=0))
-  print(sp_mp$fits)
+  sp_mp <- pmlPart(~ rate, mp, control = pml.control(trace = 0))
   expect_true(inherits(sp_mp, "pmlPart"))
   expect_true(sp_mp$fits[[1]]$rate > sp_mp$fits[[2]]$rate)
   expect_true(sp_mp$fits[[1]]$rate < sp_mp$fits[[3]]$rate)
