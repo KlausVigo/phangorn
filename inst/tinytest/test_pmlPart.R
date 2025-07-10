@@ -22,7 +22,7 @@ expect_equal( sp$fits[[1]]$rate / sp$fits[[3]]$rate , 0.5, tolerance = 1e-5)
 
 # extract trees
 trees <- pmlPart2multiPhylo(sp)
-expect_true(inherits(trees), "multiPhylo")
+expect_true(inherits(trees, "multiPhylo"))
 
 # test multiphyDat objects
 XX <- as.character(X)
