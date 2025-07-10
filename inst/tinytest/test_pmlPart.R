@@ -2,7 +2,7 @@ X <- allSitePattern(5)
 tree <- read.tree(text = "((t1:0.3,t2:0.3):0.1,(t3:0.3,t4:0.3):0.1,t5:0.5);")
 tree2 <- read.tree(text = "((t1:0.3,t3:0.3):0.1,(t2:0.3,t4:0.3):0.1,t5:0.5);")
 
-fit0 <- pml(tree, X, k=4)
+fit0 <- pml(tree, X)
 fit1 <- update(fit0, rate=0.5)
 fit2 <- update(fit0, rate=2)
 
@@ -26,16 +26,17 @@ expect_true(inherits(trees, "multiPhylo"))
 
 # test multiphyDat objects
 XX <- as.character(X)
-p0 <- sample(1024, 500, replace = TRUE, prob = exp(fit0$siteLik))
+p0 <- sample(1024, 1000, replace = TRUE, prob = exp(fit0$siteLik))
 X0 <- phyDat(XX[,p0])
-p1 <- sample(1024, 500, replace = TRUE, prob = exp(fit1$siteLik))
+p1 <- sample(1024, 1000, replace = TRUE, prob = exp(fit1$siteLik))
 X1 <- phyDat(XX[,p1])
-p2 <- sample(1024, 500, replace = TRUE, prob = exp(fit2$siteLik))
+p2 <- sample(1024, 1000, replace = TRUE, prob = exp(fit2$siteLik))
 X2 <- phyDat(XX[,p2])
 
 if(suppressPackageStartupMessages(requireNamespace('apex'))){
   mp <- new("multiphyDat", list(X0, X1, X2))
   sp_mp <- pmlPart(edge ~ rate, mp, control = pml.control(trace=0))
+  print(sp_mp$fits)
   expect_true(inherits(sp_mp, "pmlPart"))
   expect_true(sp_mp$fits[[1]]$rate > sp_mp$fits[[2]]$rate)
   expect_true(sp_mp$fits[[1]]$rate < sp_mp$fits[[3]]$rate)
