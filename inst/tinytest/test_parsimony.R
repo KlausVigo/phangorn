@@ -37,7 +37,7 @@ for(i in 1:10){
   pf_4 <- parsimony(tree100, dat_4, method = "fitch", site = "pscore")
   ps_4 <- parsimony(tree100, dat_4, method = "sankoff", site = "pscore")
   expect_equal(pf_4, ps_4)
-  pvf_2 <- parsimony(tree100, dat_2, method = "fitch", site = "sitee")
+  pvf_2 <- parsimony(tree100, dat_2, method = "fitch", site = "site")
   pvs_2 <- parsimony(tree100, dat_2, method = "sankoff", site = "site")
   expect_equal(pvf_2, pvs_2)
 }
