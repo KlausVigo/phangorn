@@ -81,8 +81,8 @@
 ## parsimony <- function(tree, data, cost=NULL, method = NULL)
 parsimony <- function(tree, data, method = "fitch", cost=NULL, site = "pscore"){
   if(inherits(data, "DNAbin") | inherits(data, "AAbin")) data <- as.phyDat(data)
-  assert_phyDat(data)
-  method <- match.arg(method, c("fitch", "sankoff"))
+#  assert_phyDat(data) inside fitch sankoff
+  method <- match.arg(tolower(method), c("fitch", "sankoff"))
   if(!any(is.binary(tree)) || !is.null(cost)) method <- "sankoff"
   if (method == "sankoff") result <- sankoff(tree, data, cost=cost, site = site)
   if (method == "fitch") result <- fitch(tree, data, site = site)
