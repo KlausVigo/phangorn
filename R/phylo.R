@@ -602,7 +602,8 @@ readAArate <- function(file) {
 
 getModelAA <- function(model, bf = TRUE, Q = TRUE, has_gap_state=FALSE) {
   model <- match.arg(eval(model), .aamodels)
-  tmp <- get(paste0(".", model), environment(pml))
+  if(model=="3Di") tmp <- get(".threeDi", environment(pml))
+  else tmp <- get(paste0(".", model), environment(pml))
   if(has_gap_state){
     tmp$Q <- add_gap_Q_AA(tmp$Q)
     tmp$bf <- add_gap_bf_AA(tmp$bf)
