@@ -1608,7 +1608,7 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV, RELL=NULL,
   nTips <- as.integer(length(tree$tip.label))
   k <- length(w)
   tree <- reorder.phylo(tree, "postorder")
-  if (!is.rooted(tree)) stop("tree must be rooted")
+  assert_phylo(tree, has_edge_length = TRUE, is_rooted = TRUE)
 #  if(aLRT){
 #    support_quartet <- matrix(NA, max(tree$edge), 3)
 #  }
@@ -2109,8 +2109,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   }
   # 1x if  optEdge <- optEdge || optRooted || optNNI
   if (optRooted) {
+    assert_phylo(tree, is_rooted = TRUE)
     optEdge <- TRUE
-    if (!is.rooted(tree)) stop("tree must be rooted")
   }
   data <- subset(data, tree$tip.label)
   type <- attr(data, "type")

@@ -254,7 +254,6 @@ optim.fitch <- function(tree, data, trace = 1, rearrangements = "NNI", ...) {
   assert_phyDat(data, label=tree$tip.label)
   assert_int(trace)
   rearrangements <- match.arg(toupper(rearrangements), c("NNI", "SPR"))
-#  if (!inherits(tree, "phylo")) stop("tree must be of class phylo")
   if (!is.binary(tree)) {
     tree <- multi2di(tree)
     attr(tree, "order") <- NULL
@@ -265,10 +264,8 @@ optim.fitch <- function(tree, data, trace = 1, rearrangements = "NNI", ...) {
   }
   if (is.null(attr(tree, "order")) || attr(tree, "order") != "postorder")
     tree <- reorder(tree, "postorder")
-#  if (!inherits(data, "phyDat")) stop("data must be of class phyDat")
   rt <- FALSE
 
-  #  New
   data <- removeParsimonyUninfomativeSites(data, recursive=TRUE)
 
   star_tree <- attr(data, "nr") == 0
@@ -328,7 +325,7 @@ optim.fitch <- function(tree, data, trace = 1, rearrangements = "NNI", ...) {
           tree <- tree2
         }
       }
-      #      if (rearrangements == "TBR") {}
+      # add TBR moves?
       else iter <- FALSE
     }
   }

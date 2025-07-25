@@ -9,9 +9,7 @@
 \alias{assert_multiPhylo}
 \alias{assert_phyDat}
 \alias{assert_pml}
-\alias{assert_dist}
 \alias{clean_phylo}
-\alias{clean_multiPhylo}
 \alias{candidate_tree}
 \alias{hash}
 \alias{binomial_mk}
@@ -40,12 +38,7 @@ assert_phyDat(x, contains_label = !is.null(label), label = NULL)
 
 assert_pml(x)
 
-assert_dist(x, finite = FALSE, missing = FALSE)
-
 clean_phylo(x, unroot = FALSE, multi2di = FALSE,
-  collapse.singles = FALSE, reorder = FALSE)
-
-clean_multiPhylo(x, unroot = FALSE, multi2di = FALSE,
   collapse.singles = FALSE, reorder = FALSE, compress = FALSE)
 
 candidate_tree(x, method = c("unrooted", "ultrametric", "tipdated"),

@@ -283,7 +283,7 @@ sprdist <- function(tree1, tree2) {
 
 
 SPR1 <- function(trees) {
-  trees <- clean_multiPhylo(trees, unroot=TRUE, collapse.singles=TRUE,
+  trees <- clean_phylo(trees, unroot=TRUE, collapse.singles=TRUE,
                             reorder=TRUE, compress=TRUE)
 #  trees <- .compressTipLabel(trees)
   trees <- .uncompressTipLabel(trees)
@@ -323,7 +323,7 @@ SPR1 <- function(trees) {
 
 SPR2 <- function(tree, trees) {
   tree <- clean_phylo(tree, unroot=TRUE, collapse.singles=TRUE, reorder=TRUE)
-  trees <- clean_multiPhylo(trees, unroot=TRUE, collapse.singles=TRUE,
+  trees <- clean_phylo(trees, unroot=TRUE, collapse.singles=TRUE,
                             reorder=TRUE, compress=TRUE)
 #  trees <- .compressTipLabel(trees)
   tree <- relabel(tree, attr(trees, "TipLabel"))
@@ -433,7 +433,7 @@ wRF2 <- function(tree, trees, normalize = FALSE, check.labels = TRUE,
 
   tree <- clean_phylo(tree, unroot=!rooted, collapse.singles=TRUE,
                        reorder=TRUE)
-  trees <- clean_multiPhylo(trees, unroot=!rooted, collapse.singles=TRUE,
+  trees <- clean_phylo(trees, unroot=!rooted, collapse.singles=TRUE,
                             reorder=TRUE, compress=TRUE)
 #  if (!rooted && any(is.rooted(trees))) trees <- unroot(trees)
 #  if (any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
@@ -484,7 +484,7 @@ wRF1 <- function(trees, normalize = FALSE, check.labels = TRUE,
     message("some trees were rooted, unrooted all")
     rooted <- FALSE
   }
-  trees <- clean_multiPhylo(trees, unroot=!rooted, collapse.singles=TRUE,
+  trees <- clean_phylo(trees, unroot=!rooted, collapse.singles=TRUE,
                             reorder=TRUE, compress=TRUE)
 #  if (!rooted && any(is.rooted(trees))) trees <- unroot(trees)
 #  if (any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
@@ -532,7 +532,7 @@ mRF2 <- function(tree, trees, normalize = FALSE, check.labels = TRUE,
 #    rooted <- FALSE
 #    #trees <- unroot(trees)
 #  }
-  trees <- clean_multiPhylo(trees, unroot=!rooted, collapse.singles=TRUE,
+  trees <- clean_phylo(trees, unroot=!rooted, collapse.singles=TRUE,
                             reorder=TRUE, compress=TRUE)
 #  trees <- .compressTipLabel(trees)
   tipLabel <- attr(trees, "TipLabel")
@@ -587,7 +587,7 @@ mRF <- function(trees, normalize = FALSE, rooted = FALSE) {
     message("some trees were rooted, unrooted all")
     rooted <- FALSE
   }
-  trees <- clean_multiPhylo(trees, unroot=!rooted, collapse.singles=TRUE,
+  trees <- clean_phylo(trees, unroot=!rooted, collapse.singles=TRUE,
                             reorder=TRUE, compress=TRUE)
 #  if (!rooted && any(is.rooted(trees))) trees <- unroot(trees)
 #  if (any(has.singles(trees))) trees <- lapply(trees, collapse.singles)

@@ -38,9 +38,10 @@ NJ <- function(x) reorder(nj(x), "postorder")
 #' @rdname NJ
 #' @export
 UNJ <- function(x){
-  if(anyNA(x)) stop("missing values are not allowed in the distance matrix")
-  if(any(is.infinite(x)))
-    stop("infinite values are not allowed in the distance matrix")
+  assert_numeric(x, lower=0, any.missing=FALSE, finite=TRUE)
+#  if(anyNA(x)) stop("missing values are not allowed in the distance matrix")
+#  if(any(is.infinite(x)))
+#    stop("infinite values are not allowed in the distance matrix")
   x <- as.matrix(x)
   labels <- attr(x, "Labels")[[1]]
   edge.length <- NULL
@@ -370,9 +371,10 @@ nnls.tree <- function(dm, tree, method=c("unrooted", "ultrametric", "tipdated"),
           rooted=NULL, trace=1, weight=NULL, balanced=FALSE, tip.dates=NULL,
           calibration=NULL) {
   method <- match.arg(method, c("unrooted", "ultrametric", "tipdated"))
-  if (anyNA(dm)) stop("missing values are not allowed in the distance matrix")
-  if (any(is.infinite(dm)))
-    stop("infinite values are not allowed in the distance matrix")
+  assert_numeric(dm, lower=0, any.missing=FALSE, finite=TRUE)
+#  if (anyNA(dm)) stop("missing values are not allowed in the distance matrix")
+#  if (any(is.infinite(dm)))
+#    stop("infinite values are not allowed in the distance matrix")
   assert_phylo(tree)
   if (has.singles(tree)) tree <- collapse.singles(tree)
   if (is.rooted(tree) && method == "unrooted") tree <- unroot(tree)
@@ -505,9 +507,10 @@ nnls.phylo <- function(x, dm, method = "unrooted", trace = 0, ...) {
 #' @rdname designTree
 #' @export
 nnls.splits <- function(x, dm, trace = 0, eps = 1e-8) {
-  if(anyNA(dm)) stop("missing values are not allowed in the distance matrix")
-  if(any(is.infinite(dm)))
-    stop("infinite values are not allowed in the distance matrix")
+  assert_numeric(dm, lower=0, any.missing=FALSE, finite=TRUE)
+#  if(anyNA(dm)) stop("missing values are not allowed in the distance matrix")
+#  if(any(is.infinite(dm)))
+#    stop("infinite values are not allowed in the distance matrix")
   labels <- attr(x, "labels")
   dm <- as.matrix(dm)
   k <- dim(dm)[1]

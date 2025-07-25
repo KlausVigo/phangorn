@@ -82,6 +82,7 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
     data <- object$data
     if (is.null(tree)) tree <- object$tree
   }
+#  assert_phyDat(data)
   if (attr(data, "type") == "DNA") type <- .dnamodels
   if (attr(data, "type") == "AA") type <- .aamodels
   if (attr(data, "type") == "USER") type <- .usermodels
@@ -144,7 +145,6 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
       m <- m + 1
     }
     if (G) {
-#      if (trace > 0) print(paste0(model, "+G"))
       fitG <- update(fittmp, k = k)
       fitG <- optim.pml(fitG, model = model, optGamma = TRUE,
         control = control)

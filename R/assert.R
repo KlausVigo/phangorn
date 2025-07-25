@@ -62,43 +62,22 @@ assert_pml <- function(x){
 
 #' @rdname phangorn-internal
 #' @export
-assert_dist <- function(x, finite=FALSE, missing=FALSE){
-  txt <-  deparse(substitute(x))
-  if (!inherits(x, "dist")) stop(gettextf("%s must be of class 'dist'", txt))
-  if(missing && any(is.nan(x)))
-    stop(gettextf("%s contains missing values (NA)", txt))
-  if(finite && !all(is.finite(x)))
-      stop(gettextf("Some distances in %s are not finite", txt))
-  invisible(x)
-}
-
-
-
-
-#' @rdname phangorn-internal
-#' @export
-clean_phylo <- function(x, unroot=FALSE, multi2di=FALSE, collapse.singles=FALSE,
-                        reorder=FALSE){
-  if(collapse.singles && has.singles(x)) x <- collapse.singles(x)
-  if(multi2di && !is.binary(x)) x <- multi2di(x)
-  if(unroot && is.rooted(x)) x <- unroot(x)
-  if(reorder) x <- reorder(x, "postorder")
-  x
-}
-
-
-#' @rdname phangorn-internal
-#' @export
-clean_multiPhylo <- function(x, unroot=FALSE, multi2di=FALSE,
+clean_phylo <- function(x, unroot=FALSE, multi2di=FALSE,
                         collapse.singles=FALSE, reorder=FALSE, compress=FALSE){
+  assert_treeish(x)
+  is_multiPhylo <- inherits(x, "multiPhylo")
   compressed <- !is.null(attr(x, "TipLabel"))
   if(collapse.singles && any(hs <- has.singles(x))){
-    x <- .uncompressTipLabel(x)
-    for(i in which(hs)) x[[i]] <- collapse.singles(x[[i]])
+    if(is_multiPhylo){
+      x <- .uncompressTipLabel(x)
+      for(i in which(hs)) x[[i]] <- collapse.singles(x[[i]])
+    } else x <- collapse.singles(x)
   }
-  if(compress) x <- .compressTipLabel(x)
+  if(compress && is_multiPhylo) x <- .compressTipLabel(x)
   if(multi2di && !all(is.binary(x))) x <- multi2di(x)
   if(unroot && any(is.rooted(x))) x <- unroot(x)
   if(reorder) x <- reorder(x, "postorder")
   x
 }
+
+

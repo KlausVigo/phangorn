@@ -58,12 +58,14 @@
 #' tree <- upgma(dm)
 #' plot(tree)
 #'
+#' @importFrom checkmate assert_numeric
 #' @rdname upgma
 #' @export
 upgma <- function(D, method = "average", ...) {
-  if(anyNA(D)) stop("missing values are not allowed in the distance matrix")
-  if(any(is.infinite(D)))
-    stop("infinite values are not allowed in the distance matrix")
+  assert_numeric(D, lower=0, any.missing=FALSE, finite=TRUE)
+#  if(anyNA(D)) stop("missing values are not allowed in the distance matrix")
+#  if(any(is.infinite(D)))
+#    stop("infinite values are not allowed in the distance matrix")
   if (hasArg(NNI)) NNI <- list(...)$NNI
   else NNI <- FALSE
   method <- match.arg(method, c("average", "ward.D", "ward.D2", "single",
@@ -80,9 +82,10 @@ upgma <- function(D, method = "average", ...) {
 #' @rdname upgma
 #' @export
 wpgma <- function(D, method = "mcquitty", ...) {
-  if(anyNA(D)) stop("missing values are not allowed in the distance matrix")
-  if(any(is.infinite(D)))
-    stop("infinite values are not allowed in the distance matrix")
+  assert_numeric(D, lower=0, any.missing=FALSE, finite=TRUE)
+#  if(anyNA(D)) stop("missing values are not allowed in the distance matrix")
+#  if(any(is.infinite(D)))
+#    stop("infinite values are not allowed in the distance matrix")
   method <- match.arg(method, c("average", "ward.D", "ward.D2", "single",
                       "complete", "mcquitty", "median", "centroid"))
   DD <- as.dist(D)
@@ -96,9 +99,10 @@ wpgma <- function(D, method = "mcquitty", ...) {
 #' @rdname upgma
 #' @export
 supgma <- function(D, tip.dates, trace=0, ...){
-  if(anyNA(D)) stop("missing values are not allowed in the distance matrix")
-  if(any(is.infinite(D)))
-    stop("infinite values are not allowed in the distance matrix")
+  assert_numeric(D, lower=0, any.missing=FALSE, finite=TRUE)
+#  if(anyNA(D)) stop("missing values are not allowed in the distance matrix")
+#  if(any(is.infinite(D)))
+#    stop("infinite values are not allowed in the distance matrix")
   D <- as.dist(D)
   tree <- fastme.ols(D)
   tree <- relabel(tree, attr(D, "Labels"))
@@ -156,6 +160,7 @@ edge_length_hclust <- function(x, dm, method = "average") {
   i.meth <- match.arg(method, METHODS)
   X <- designTree(x, "rooted", TRUE)
   labels <- x$tip
+  assert_numeric(dm, lower=0, any.missing=FALSE, finite=TRUE)
   if (is.matrix(dm) || inherits(dm, "dist")) {
     dm <- as.matrix(dm)[labels, labels]
     dm <- dm[lower.tri(dm)]
