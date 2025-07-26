@@ -5,7 +5,7 @@ hash <- function (x, ...) UseMethod("hash")
 #' @export
 hash.phylo <- function(x, rooted=FALSE, ...){
   assert_phylo(x, is_rooted = rooted)
-  clean_phylo(x, unroot=!rooted, collapse.singles = TRUE, reorder = TRUE)
+  x <- clean_phylo(x, unroot=!rooted, collapse.singles = TRUE, reorder = TRUE)
 #  if(has.singles(x)) x <- collapse.singles(x)
 #  if(!rooted) x <- unroot(x)
   # assert_phylo(x, is_rooted = TRUE)
