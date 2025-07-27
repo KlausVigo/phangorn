@@ -586,3 +586,5 @@ identify.networx <- function(x, quiet = FALSE, ...) {
 }
 #' @srrstats {G1.0} in the lines folloing: 216
 #' @srrstats {G2.3, G2.3a} in lines: 256, 414
+#' @srrstats {EA5.4} use of prettyNum in plot.networx
+NULL

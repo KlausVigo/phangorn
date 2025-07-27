@@ -185,4 +185,7 @@ neb <- function(x) {
 
 #' @srrstats {G1.0} in the lines folloing: 37
 #' @srrstats {G2.3, G2.3a} in lines: 88
+#' @srrstats {EA3.0, EA3.1} codonTest simplify the the rather
+#' complicated PAML workflow (https://doi.org/10.1093/molbev/msad041).
+#' However currently limited in the number of models
 NULL

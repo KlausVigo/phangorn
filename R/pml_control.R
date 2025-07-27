@@ -65,7 +65,7 @@ pml.control <- function(epsilon = 1e-08, maxit = 10, trace = 1, tau = 1e-8,
     stop("maximum number of iterations must be > 0")
   if (!is.numeric(tau) || tau <= 0)
     stop("tau must be > 0")
-  statefreq <- match.arg(statefreq, c("empirical", "estimated"))
+  statefreq <- match.arg(tolower(statefreq), c("empirical", "estimated"))
   list(epsilon = epsilon, maxit = maxit, trace = trace, tau = tau,
        statefreq=statefreq)
 }

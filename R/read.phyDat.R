@@ -149,4 +149,4 @@ write.phyDat <- function(x, file, format="phylip", colsep = "", nbcol=-1, ...){
 #' *Statistical Software which enables outputs to be written to local files should parse parameters specifying file names to ensure appropriate file suffices are automatically generated where not provided.*
 NULL
 #' @srrstats {G1.0} in the lines folloing: 56
-#' @srrstats {G2.3, G2.3a, G2.3b} in lines: 71, 119, 74
+#' @srrstats {G2.3, G2.3a, G2.3b} using match.arg() and tolower()
