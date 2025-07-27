@@ -20,7 +20,7 @@
 
 .aamodels <- c("WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt",
                "MtZoa", "mtREV24", "VT", "RtREV", "HIVw", "HIVb", "FLU",
-               "Blosum62", "Dayhoff_DCMut", "JTT_DCMut")
+               "Blosum62", "Dayhoff_DCMut", "JTT_DCMut", "3Di")
 
 .threeDi <- readAArate("3Di.dat")
 
@@ -60,4 +60,6 @@ loadModule("Fitch_mod", TRUE)
 # .onLoad  <- function(libname, pkgname) {
 #    library.dynam("phangorn", pkgname, libname)
 #}
+
+if(getRversion() <= "4.6.0") options("quiet" = FALSE)
 
