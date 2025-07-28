@@ -171,6 +171,7 @@ add_support <- function(tree, trees, method="FBP", tol=1e-8,
   x <- round(x, digits=digits)
   if(length(method)>1) x <- apply(x, 1, paste, collapse=sep)
   drawSupportOnEdges(x, frame=frame, ...)
+  invisible(tree)
 }
 
 
