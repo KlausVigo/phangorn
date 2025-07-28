@@ -123,6 +123,7 @@ print.pml <- function(x, ...) {
     print(bf) #cat(bf, "\n")
   }
   if(!isTRUE(all.equal(x$rate, 1))) cat("\nRate:", x$rate, "\n")
+  invisible(x)
 }
 
 

@@ -154,7 +154,10 @@ glance.pmlMix <- function(x, ...) {
 
 
 #' @export
-print.codonTest <- function(x, ...) print(x$summary)
+print.codonTest <- function(x, ...) {
+  print(x$summary)
+  invisible(x)
+}
 
 
 #' @importFrom grDevices hcl.colors

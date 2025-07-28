@@ -61,5 +61,5 @@ loadModule("Fitch_mod", TRUE)
 #    library.dynam("phangorn", pkgname, libname)
 #}
 
-if(getRversion() <= "4.6.0") options("quiet" = FALSE)
+# if(getRversion() <= "4.6.0") options("quiet" = FALSE)
 

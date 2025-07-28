@@ -86,6 +86,7 @@ print.phyDat <- function (x, ...){
   cat(length(x), "sequences with",sum(attr(x,"weight")), "character and",
       attr(x,"nr"),"different site patterns.\n")
   cat("The states are",attr(x,"levels"), "\n")
+  invisible(x)
 }
 
 #' @rdname phyDat

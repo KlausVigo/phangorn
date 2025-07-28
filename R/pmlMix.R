@@ -649,6 +649,7 @@ print.pmlMix <- function(x, ...) {
     cat("\nRate matrix:\n")
     print(Q)
   }
+  invisible(x)
 }
 
 

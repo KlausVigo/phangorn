@@ -113,6 +113,7 @@ print.ancestral <- function(x, ...){
   print(x$tree)
   cat("\n")
   print(x$data)
+  invisible(x)
   #  cat("\n")
   #  print(head(x$prob))
 }

@@ -145,4 +145,5 @@ print.summary.phyDat <- function(x, ...,
   if(any(comp[,3] < 0.05)) ind <- max(which(comp[,3] < 0.05))
   else ind <- min(6, x$glance$nseq)
   print(comp[seq_len(ind),], digits=digits, ...)
+  invisible(x)
 }

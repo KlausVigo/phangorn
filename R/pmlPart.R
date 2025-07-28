@@ -847,6 +847,7 @@ print.pmlPart <- function(x, ...) {
     cat("\nRate matrix:\n")
     print(Q)
   }
+  invisible(x)
 }
 
 
