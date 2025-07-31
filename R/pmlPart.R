@@ -321,7 +321,7 @@ plot.pmlPart <- function(x, ...) {
 #' @rdname pmlPart
 #' @export pmlPart
 pmlPart <- function(formula, object, control = pml.control(epsilon = 1e-8,
-            maxit = 10, trace = 1), model = NULL, method = "unrooted", ...) {
+            maxit = 10), model = NULL, method = "unrooted", ...) {
   method <- match.arg(method, c("unrooted", "ultrametric", "tipdated"))
   if(method == "unrooted") rooted <- FALSE
   else rooted <- TRUE

@@ -5,7 +5,7 @@
 \title{Phylogenetic mixture model}
 \usage{
 pmlMix(formula, fit, m = 2, omega = rep(1/m, m),
-  control = pml.control(epsilon = 1e-08, maxit = 20, trace = 1), ...)
+  control = pml.control(epsilon = 1e-08, maxit = 20), ...)
 }
 \arguments{
 \item{formula}{a formula object (see details).}

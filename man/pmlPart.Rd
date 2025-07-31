@@ -10,8 +10,8 @@ multiphyDat2pmlPart(x, method = "unrooted", tip.dates = NULL, ...)
 
 pmlPart2multiPhylo(x)
 
-pmlPart(formula, object, control = pml.control(epsilon = 1e-08, maxit = 10,
-  trace = 1), model = NULL, method = "unrooted", ...)
+pmlPart(formula, object, control = pml.control(epsilon = 1e-08, maxit = 10),
+  model = NULL, method = "unrooted", ...)
 }
 \arguments{
 \item{x}{an object of class \code{pmlPart}}

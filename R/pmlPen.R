@@ -8,7 +8,7 @@ pmlPen <- function(object, lambda, ...) {
 
 
 pmlPartPen <- function(object, lambda, control = pml.control(epsilon = 1e-8,
-                         maxit = 20, trace = 1), ...) {
+                         maxit = 20), ...) {
   fits <- object$fits
   m <- length(fits)
   K <- -diag(length(fits[[1]]$tree$edge.length))
@@ -71,8 +71,7 @@ pmlPartPen <- function(object, lambda, control = pml.control(epsilon = 1e-8,
 
 
 pmlMixPen <- function(object, lambda, optOmega = TRUE,
-                      control = pml.control(epsilon = 1e-8, maxit = 20,
-                                            trace = 1), ...){
+                      control = pml.control(epsilon = 1e-8, maxit = 20), ...){
   fits <- object$fits
   m <- length(fits)
   K <- -diag(length(fits[[1]]$tree$edge.length))

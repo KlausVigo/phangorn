@@ -356,8 +356,7 @@ optimMixEdge <- function(object, omega, trace = 1, ...) {
 #'
 #' @export pmlMix
 pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
-                   control = pml.control(epsilon = 1e-8, maxit = 20, trace = 1),
-                   ...) {
+                   control = pml.control(epsilon = 1e-8, maxit = 20), ...) {
   call <- match.call()
   form <- phangornParseFormula(formula)
   opt <- c("nni", "bf", "Q", "inv", "shape", "edge", "rate", "M1a", "M2a")
