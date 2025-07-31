@@ -152,7 +152,7 @@ available for models without rate variation (e.g. gamma models) or
 invariant sites.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">pml</a></span><span class="op">(</span><span class="va">tree</span>, <span class="va">primates</span><span class="op">)</span></span>
-<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, model<span class="op">=</span><span class="st">"F81"</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, model<span class="op">=</span><span class="st">"F81"</span><span class="op">)</span></span></code></pre></div>
 <p>We can assign the ancestral states according to the highest
 likelihood (“ml”):
 <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mi>r</mi></msub><mo>=</mo><mi>A</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mrow><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mi>r</mi></msub><mo>=</mo><mi>A</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><munder><mo>∑</mo><mrow><mi>k</mi><mo>∈</mo><mo stretchy="false" form="prefix">{</mo><mi>A</mi><mo>,</mo><mi>C</mi><mo>,</mo><mi>G</mi><mo>,</mo><mi>T</mi><mo stretchy="false" form="postfix">}</mo></mrow></munder><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mi>r</mi></msub><mo>=</mo><mi>k</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac></mrow><annotation encoding="application/x-tex">
@@ -209,8 +209,7 @@ to fit these models using <em>optim.pml</em>.</p>
 Instead of optimizing the edge length we only optimize the rate.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">pml</a></span><span class="op">(</span><span class="va">bird.orders</span>, <span class="va">dat</span><span class="op">)</span></span>
-<span><span class="va">fit_ER</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, optEdge <span class="op">=</span> <span class="cn">FALSE</span>, optRate<span class="op">=</span><span class="cn">TRUE</span>, </span>
-<span>                    control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">fit_ER</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, optEdge <span class="op">=</span> <span class="cn">FALSE</span>, optRate<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">fit_ER</span></span></code></pre></div>
 <pre><code><span><span class="co">## model: Mk </span></span>
 <span><span class="co">## loglikelihood: -16.47 </span></span>
@@ -230,8 +229,7 @@ Instead of optimizing the edge length we only optimize the rate.</p>
 <p>We can also fit the symmetric (<em>model=“SYM”</em>) or ordered
 metristic model (<em>model=“ORDERED”</em>).</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fit_SYM</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, optEdge <span class="op">=</span> <span class="cn">FALSE</span>, optRate<span class="op">=</span><span class="cn">TRUE</span>, model<span class="op">=</span><span class="st">"SYM"</span>, </span>
-<span>                    control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">fit_SYM</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, optEdge <span class="op">=</span> <span class="cn">FALSE</span>, optRate<span class="op">=</span><span class="cn">TRUE</span>, model<span class="op">=</span><span class="st">"SYM"</span><span class="op">)</span></span>
 <span><span class="va">fit_SYM</span></span></code></pre></div>
 <pre><code><span><span class="co">## model: SYM </span></span>
 <span><span class="co">## loglikelihood: -15.31 </span></span>

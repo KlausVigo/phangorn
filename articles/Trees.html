@@ -299,8 +299,7 @@ you can work with them.</p>
 <code class="sourceCode R"><span><span class="va">mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modelTest.html">modelTest</a></span><span class="op">(</span><span class="va">primates</span><span class="op">)</span></span></code></pre></div>
 <p>It’s also possible to only select some common models:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modelTest.html">modelTest</a></span><span class="op">(</span><span class="va">primates</span>, model<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"JC"</span>, <span class="st">"F81"</span>, <span class="st">"K80"</span>, <span class="st">"HKY"</span>, <span class="st">"SYM"</span>, <span class="st">"GTR"</span><span class="op">)</span>, </span>
-<span>                control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modelTest.html">modelTest</a></span><span class="op">(</span><span class="va">primates</span>, model<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"JC"</span>, <span class="st">"F81"</span>, <span class="st">"K80"</span>, <span class="st">"HKY"</span>, <span class="st">"SYM"</span>, <span class="st">"GTR"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>The results of <code>modelTest</code> is illustrated in following
 table:</p>
 <table class="table">
@@ -584,7 +583,7 @@ bootstrapping <span class="citation">(Minh, Nguyen, and Haeseler
 <code>rearrangements="NNI"</code> is used, no bootstrapping is
 conducted.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fit_mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">mt</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">fit_mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">mt</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_mt</span></span></code></pre></div>
 <pre><code><span><span class="co">## model: HKY+G(4) </span></span>
@@ -620,8 +619,7 @@ phylogenetic tree.</p>
 <p>If we instead want to conduct standard bootstrapping <span class="citation">(Felsenstein 1985; Penny and Hendy 1985)</span>, we can
 do so with the function <code>bootstrap.pml</code>:</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">bs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bootstrap.pml.html">bootstrap.pml</a></span><span class="op">(</span><span class="va">fit_mt</span>, bs<span class="op">=</span><span class="fl">100</span>, optNni<span class="op">=</span><span class="cn">TRUE</span>,</span>
-<span>    control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">bs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bootstrap.pml.html">bootstrap.pml</a></span><span class="op">(</span><span class="va">fit_mt</span>, bs<span class="op">=</span><span class="fl">100</span>, optNni<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>Now we can plot the tree with the bootstrap support values on the
 edges and compare the standard bootstrap values to the ultrafast
 bootstrap values. With the function <code>plotBS</code> it is not only
@@ -697,7 +695,7 @@ fulfill the constraints. In this case for an ultrametric starting tree
 we can use an UPGMA or WPGMA tree.</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_strict</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">primates</span>, model<span class="op">=</span><span class="st">"HKY+G(4)"</span>, method<span class="op">=</span><span class="st">"ultrametric"</span>,</span>
-<span>                     rearrangement<span class="op">=</span><span class="st">"NNI"</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>                     rearrangement<span class="op">=</span><span class="st">"NNI"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit_strict</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Trees_files/figure-html/plot_strict_primates-1.png" width="768"></p>
@@ -732,7 +730,7 @@ e.g. days and months.</p>
 tree given the constraints of the <code>tip.dates</code> vector.</p>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_td</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">H3N2</span>, model<span class="op">=</span><span class="st">"HKY+I"</span>, method<span class="op">=</span><span class="st">"tipdated"</span>, tip.dates<span class="op">=</span><span class="va">dates</span>, </span>
-<span>               rearrangement<span class="op">=</span><span class="st">"NNI"</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span>               rearrangement<span class="op">=</span><span class="st">"NNI"</span><span class="op">)</span></span>
 <span><span class="va">fit_td</span></span></code></pre></div>
 <pre><code><span><span class="co">## model: HKY+I </span></span>
 <span><span class="co">## loglikelihood: -3117.866 </span></span>

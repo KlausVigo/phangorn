@@ -125,14 +125,8 @@ supplied, but the branch length are not optimized for the Jukes-Cantor
 <span class="citation">(Jukes and Cantor 1969)</span> model yet, which
 can be done with the function <code>optim.pml</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fitJC</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, rearrangement<span class="op">=</span><span class="st">"NNI"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## optimize edge weights:  -3075 --&gt; -3068 </span></span>
-<span><span class="co">## optimize edge weights:  -3068 --&gt; -3068 </span></span>
-<span><span class="co">## optimize topology:  -3068 --&gt; -3068  NNI moves:  1 </span></span>
-<span><span class="co">## optimize edge weights:  -3068 --&gt; -3068 </span></span>
-<span><span class="co">## optimize topology:  -3068 --&gt; -3068  NNI moves:  0</span></span></code></pre>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik</a></span><span class="op">(</span><span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">fitJC</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, rearrangement<span class="op">=</span><span class="st">"NNI"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik</a></span><span class="op">(</span><span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 'log Lik.' -3068 (df=25)</span></span></code></pre>
 <p>With the default values <code>pml</code> will estimate a Jukes-Cantor
 model. That means equal base frequencies and all transition rates are
@@ -140,7 +134,7 @@ equal. The generic function <code>update</code> allows to change
 parameters manually. This is not what we usually want to do. However we
 might want to supply a different tree or change the number of rate
 categories.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fitF81</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/update.html" class="external-link">update</a></span><span class="op">(</span><span class="va">fitJC</span>, k<span class="op">=</span><span class="fl">4</span>, inv<span class="op">=</span><span class="fl">0.2</span>, bf<span class="op">=</span><span class="fu"><a href="../reference/baseFreq.html">baseFreq</a></span><span class="op">(</span><span class="va">primates</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fitF81</span></span></code></pre></div>
 <pre><code><span><span class="co">## model: F81+G(4)+I </span></span>
@@ -170,9 +164,9 @@ categories.</p>
 <p>In the line above we changed the model to a (discrete) rate across
 site model with 4 rate categories (using the default shape parameter of
 1), to 0.2 invariant sites and supply empirical base frequencies.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fitGTR</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fitF81</span>, model<span class="op">=</span><span class="st">"GTR"</span>, optInv<span class="op">=</span><span class="cn">TRUE</span>, optGamma<span class="op">=</span><span class="cn">TRUE</span>,</span>
-<span>    rearrangement <span class="op">=</span> <span class="st">"NNI"</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span>    rearrangement <span class="op">=</span> <span class="st">"NNI"</span><span class="op">)</span></span>
 <span><span class="va">fitGTR</span></span></code></pre></div>
 <pre><code><span><span class="co">## model: GTR+G(4)+I </span></span>
 <span><span class="co">## loglikelihood: -2611 </span></span>
@@ -213,10 +207,10 @@ which than gets optimized to escape local optima. The second option
 <span class="citation">(Vos 2003)</span>.</p>
 <p>While these algorithms may find better trees they will also take more
 time.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fitGTR</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fitGTR</span>, model<span class="op">=</span><span class="st">"GTR"</span>, optInv<span class="op">=</span><span class="cn">TRUE</span>, optGamma<span class="op">=</span><span class="cn">TRUE</span>,</span>
-<span>    rearrangement <span class="op">=</span> <span class="st">"stochastic"</span>, control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<span>    rearrangement <span class="op">=</span> <span class="st">"stochastic"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fitGTR</span></span></code></pre></div>
 <pre><code><span><span class="co">## model: GTR+G(4)+I </span></span>
 <span><span class="co">## loglikelihood: -2608 </span></span>
@@ -248,7 +242,7 @@ time.</p>
 <p>We can compare nested models for the JC and GTR +
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Γ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>4</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\Gamma(4)</annotation></semantics></math>
 + I model using likelihood ratio statistic</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova</a></span><span class="op">(</span><span class="va">fitJC</span>, <span class="va">fitGTR</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Likelihood Ratio Test Table</span></span>
 <span><span class="co">##   Log lik. Df Df change Diff log lik. Pr(&gt;|Chi|)    </span></span>
@@ -257,22 +251,22 @@ time.</p>
 <span><span class="co">## ---</span></span>
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre>
 <p>with the Shimodaira-Hasegawa test</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/SH.test.html">SH.test</a></span><span class="op">(</span><span class="va">fitGTR</span>, <span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##      Trees  ln L Diff ln L p-value</span></span>
 <span><span class="co">## [1,]     1 -2608       0.0  0.5061</span></span>
 <span><span class="co">## [2,]     2 -3068     460.2  0.0000</span></span></code></pre>
 <p>or with the AIC</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 6187</span></span></code></pre>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">fitGTR</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 5286</span></span></code></pre>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/modelTest.html">AICc</a></span><span class="op">(</span><span class="va">fitGTR</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 5299</span></span></code></pre>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">BIC</a></span><span class="op">(</span><span class="va">fitGTR</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 5407</span></span></code></pre>
 </div>
@@ -282,13 +276,12 @@ time.</p>
 <p>At last we may want to apply standard bootstrap to test how well the
 edges of the tree are supported. This has already been shown in the
 vignette <em>Estimating phylogenetic trees with phangorn</em>.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">bs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bootstrap.pml.html">bootstrap.pml</a></span><span class="op">(</span><span class="va">fitJC</span>, bs<span class="op">=</span><span class="fl">100</span>, optNni<span class="op">=</span><span class="cn">TRUE</span>,</span>
-<span>    control <span class="op">=</span> <span class="fu"><a href="../reference/pml.control.html">pml.control</a></span><span class="op">(</span>trace <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">bs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bootstrap.pml.html">bootstrap.pml</a></span><span class="op">(</span><span class="va">fitJC</span>, bs<span class="op">=</span><span class="fl">100</span>, optNni<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>Now we can plot the tree with the bootstrap support values on the
 edges and also look at <code>consensusNet</code> to identify potential
 conflict.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotBS.html">plotBS</a></span><span class="op">(</span><span class="fu"><a href="../reference/midpoint.html">midpoint</a></span><span class="op">(</span><span class="va">fitJC</span><span class="op">$</span><span class="va">tree</span><span class="op">)</span>, <span class="va">bs</span>, p <span class="op">=</span> <span class="fl">50</span>, type<span class="op">=</span><span class="st">"p"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="MLbyHand_files/figure-html/plotBS-1.png" alt="Tree with bootstrap support. Unrooted tree (midpoint rooted) with bootstrap support values." width="768"><p class="caption">
@@ -296,7 +289,7 @@ Tree with bootstrap support. Unrooted tree (midpoint rooted) with
 bootstrap support values.
 </p>
 </div>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cnet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/consensusNet.html">consensusNet</a></span><span class="op">(</span><span class="va">bs</span>, p<span class="op">=</span><span class="fl">0.2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cnet</span>, show.edge.label<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
@@ -315,14 +308,14 @@ computes all possible bifurcating tree topologies either rooted or
 unrooted for up to 10 taxa. One has to keep in mind that the number of
 trees is growing exponentially, use <code>howmanytrees</code> from
 <em>ape</em> as a reminder.</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trees</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/allTrees.html">allTrees</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">5</span><span class="op">)</span>, mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">15</span><span class="op">)</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">trees</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>, cex<span class="op">=</span><span class="fl">1</span>, type<span class="op">=</span><span class="st">"u"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="MLbyHand_files/figure-html/allTrees-1.png" width="768"></p>
 <p><code>nni</code> returns a list of all trees which are one nearest
 neighbor interchange away.</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/nni.html">nni</a></span><span class="op">(</span><span class="va">trees</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 4 phylogenetic trees</span></span></code></pre>
 <p><code>rNNI</code> and <code>rSPR</code> generate trees which are a
