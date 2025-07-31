@@ -17,6 +17,7 @@ vignette: |
 # set global chunk options: images will be bigger
 knitr::opts_chunk$set(fig.width=8, fig.height=6)
 options(digits = 4)
+options("quiet" = TRUE)
 ```
 
 # Maximum likelihood by hand
@@ -56,7 +57,7 @@ fitF81
 In the line above we changed the model to a (discrete) rate across site model with 4 rate categories (using the default shape parameter of 1), to 0.2 invariant sites and supply empirical base frequencies. 
 ```{r GTR+G+I, cache=TRUE}
 fitGTR <- optim.pml(fitF81, model="GTR", optInv=TRUE, optGamma=TRUE,
-    rearrangement = "NNI", control = pml.control(trace = 0))
+    rearrangement = "NNI")
 fitGTR
 ```
 We will change the model to the GTR + $\Gamma(4)$ + I model and then optimize all the parameters.
@@ -66,7 +67,7 @@ With the control parameters the thresholds for the fitting process can be change
 While these algorithms may find better trees they will also take more time.
 ```{r stochastic, cache=TRUE}
 fitGTR <- optim.pml(fitGTR, model="GTR", optInv=TRUE, optGamma=TRUE,
-    rearrangement = "stochastic", control = pml.control(trace = 0))
+    rearrangement = "stochastic")
 fitGTR
 ```
 
@@ -92,8 +93,7 @@ BIC(fitGTR)
 ## Bootstrap
 At last we may want to apply standard bootstrap to test how well the edges of the tree are supported. This has already been shown in the vignette _Estimating phylogenetic trees with phangorn_. 
 ```{r, echo=TRUE, eval=TRUE, cache=TRUE}
-bs <- bootstrap.pml(fitJC, bs=100, optNni=TRUE,
-    control = pml.control(trace = 0))
+bs <- bootstrap.pml(fitJC, bs=100, optNni=TRUE)
 ```
 
 

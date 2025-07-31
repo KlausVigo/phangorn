@@ -18,6 +18,7 @@ vignette: |
 knitr::opts_chunk$set(fig.width=6, fig.height=4)
 #, global.par=TRUE
 options(digits = 4)
+options("quiet" = TRUE)
 suppressPackageStartupMessages(library(phangorn))
 ```   
 
@@ -64,7 +65,7 @@ The advantages of ML over parsimony is that the reconstruction accounts for diff
 Currently marginal construction (see [@Yang2006; @Koshi1996])  and joint reconstruction [@Pupko2000] are implemented. Joint reconstructions is only available for models without rate variation (e.g. gamma models) or invariant sites.
 ```{r fit_ML}
 fit <- pml(tree, primates)
-fit <- optim.pml(fit, model="F81", control = pml.control(trace=0))
+fit <- optim.pml(fit, model="F81")
 ```
 We can assign the ancestral states according to the highest likelihood ("ml"):
 \[
@@ -108,15 +109,13 @@ We than set up the *pml* object and optimize the model. Instead of optimizing th
 
 ```{r ER_model}
 fit <- pml(bird.orders, dat)
-fit_ER <- optim.pml(fit, optEdge = FALSE, optRate=TRUE, 
-                    control = pml.control(trace=0))
+fit_ER <- optim.pml(fit, optEdge = FALSE, optRate=TRUE)
 fit_ER
 ```
 
 We can also fit the symmetric (*model="SYM"*) or ordered metristic model (*model="ORDERED"*).
 ```{r SYM_model}
-fit_SYM <- optim.pml(fit, optEdge = FALSE, optRate=TRUE, model="SYM", 
-                    control = pml.control(trace=0))
+fit_SYM <- optim.pml(fit, optEdge = FALSE, optRate=TRUE, model="SYM")
 fit_SYM
 ```
 We can compare the estimate with the one from *ace* from *ape*. 

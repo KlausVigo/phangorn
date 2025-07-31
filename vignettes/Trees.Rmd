@@ -16,6 +16,7 @@ vignette: |
 ```{r setup, echo=FALSE}
 # set global chunk options: images will be bigger
 knitr::opts_chunk$set(fig.width=8, fig.height=6)
+options("quiet" = TRUE)
 ```
 
 # Introduction
@@ -150,8 +151,7 @@ It's also possible to only select some common models:
 load("Trees.RData")
 ```
 ```{r mt_selected, echo=TRUE, eval=FALSE}
-mt <- modelTest(primates, model=c("JC", "F81", "K80", "HKY", "SYM", "GTR"), 
-                control = pml.control(trace = 0))
+mt <- modelTest(primates, model=c("JC", "F81", "K80", "HKY", "SYM", "GTR"))
 ```
 The results of `modelTest` is illustrated in following table:
 ```{r, echo=FALSE}
@@ -168,7 +168,7 @@ fit <- as.pml(mt, "BIC")
 
 To simplify  the workflow, we can give the result of `modelTest` to the function `pml_bb` and optimize the parameters taking the best model according to BIC. Ultrafast bootstrapping [@minh2013] is conducted automatically if the default `rearrangements="stochastic"` is used. If `rearrangements="NNI"` is used, no bootstrapping is conducted.
 ```{r pml_bb_modelTest, cache=TRUE}
-fit_mt <- pml_bb(mt, control = pml.control(trace = 0))
+fit_mt <- pml_bb(mt)
 fit_mt
 ```
 We can also use `pml_bb` with a defined model to infer a phylogenetic tree.
@@ -180,8 +180,7 @@ fitGTR <- pml_bb(primates, model="GTR+G(4)+I")
 
 If we instead want to conduct standard bootstrapping [@Felsenstein1985; @Penny1985], we can do so with the function `bootstrap.pml`: 
 ```{r bs, echo=TRUE, eval=FALSE}
-bs <- bootstrap.pml(fit_mt, bs=100, optNni=TRUE,
-    control = pml.control(trace = 0))
+bs <- bootstrap.pml(fit_mt, bs=100, optNni=TRUE)
 ```
 
 Now we can plot the tree with the bootstrap support values on the edges and compare the standard bootstrap values to the ultrafast bootstrap values. With the function `plotBS` it is not only possible to plot these two, but also the transfer bootstraps [@Lemoine2018] which are especially useful for large data sets.
@@ -229,7 +228,7 @@ write.tree(tree_tfbs, "primates.tree")
 When we assume a "molecular clock" phylogenies can be used to infer divergence times [@Zuckerkandl1965]. We implemented a strict clock as described in [@Felsenstein2004], p. 266, allowing to infer ultrametric and tip-dated phylogenies. The function `pml_bb` ensures that the  tree is ultrametric, or the constraints given by the tip dates are fulfilled. That differs from the function `optim.pml` where th tree supplied to the function has to fulfill the constraints. In this case for an ultrametric starting tree we can use an UPGMA or WPGMA tree. 
 ```{r strict_primates, echo=TRUE, cache=TRUE}
 fit_strict <- pml_bb(primates, model="HKY+G(4)", method="ultrametric",
-                     rearrangement="NNI", control = pml.control(trace = 0))
+                     rearrangement="NNI")
 ```
 ```{r plot_strict_primates}
 plot(fit_strict)
@@ -249,7 +248,7 @@ head(dates)
 Again we use the `pml_bb` function, which optimizes the tree given the constraints of the `tip.dates` vector. 
 ```{r tipdated_fit, cache=TRUE}
 fit_td <- pml_bb(H3N2, model="HKY+I", method="tipdated", tip.dates=dates, 
-               rearrangement="NNI", control = pml.control(trace = 0))
+               rearrangement="NNI")
 fit_td
 ```
 While the loglikelihood is lower than for an unrooted tree, we have to keep in mind that rooted trees use less parameters.

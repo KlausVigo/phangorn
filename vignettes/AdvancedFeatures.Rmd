@@ -20,6 +20,7 @@ vignette: >
 knitr::opts_chunk$set(fig.width=6, fig.height=4)
 #, global.par=TRUE
 options(digits = 4)
+options("quiet" = TRUE)
 ```
 
 
@@ -136,8 +137,7 @@ Negative values indicate that there is no direct transition possible and the rat
 library(ape)
 tree <- unroot(rtree(3))
 fit <- pml(tree, gapsdata3)
-fit <- optim.pml(fit, optQ=TRUE, subs=c(1,0,1,2,1,0,2,1,2,2),
-    control=pml.control(trace=0))
+fit <- optim.pml(fit, optQ=TRUE, subs=c(1,0,1,2,1,0,2,1,2,2))
 fit
 ```
 
@@ -265,12 +265,12 @@ A lot if implementations differ in the way the codon frequencies are derived. Th
 ```{r M0}
 treeM0 <- cdn$estimates[["M0"]]$tree # tree with edge lengths
 M0 <- pml(treeM0, dna2codon(hiv_2_nef), bf="F3x4")
-M0 <- optim.pml(M0, model="codon1", control=pml.control(trace=0))
+M0 <- optim.pml(M0, model="codon1")
 M0
 ```
 For the F3x4 model can optimize the codon frequencies setting the option to `optBf=TRUE` in `optim.pml`.
 ```{r M0+F3x4, eval=FALSE}
-M0_opt <- optim.pml(M0, model="codon1", optBf=TRUE, control=pml.control(trace=0))
+M0_opt <- optim.pml(M0, model="codon1", optBf=TRUE)
 M0_opt
 ```
 ```{r M0+F3x4_cheat, echo=FALSE}
