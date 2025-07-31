@@ -6,8 +6,8 @@
 \title{ModelTest}
 \usage{
 modelTest(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
-  FREQ = FALSE, k = 4, control = pml.control(epsilon = 1e-08, maxit = 10,
-  trace = 1), multicore = FALSE, mc.cores = NULL)
+  FREQ = FALSE, k = 4, control = pml.control(), multicore = FALSE,
+  mc.cores = NULL)
 }
 \arguments{
 \item{object}{an object of class phyDat or pml}

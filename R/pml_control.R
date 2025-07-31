@@ -57,7 +57,8 @@
 #' pml.control()
 #' pml.control(maxit=25)
 #' @export
-pml.control <- function(epsilon = 1e-08, maxit = 10, trace = 1, tau = 1e-8,
+pml.control <- function(epsilon = 1e-08, maxit = 10,
+                        trace = !getOption("quiet"), tau = 1e-8,
                         statefreq="empirical") {
   if (!is.numeric(epsilon) || epsilon <= 0)
     stop("value of 'epsilon' must be > 0")

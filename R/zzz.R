@@ -57,9 +57,13 @@ fmatch <- ifelse(chk, fastmatch::fmatch, function(x, ...)match(x, ...))
 
 loadModule("Fitch_mod", TRUE)
 
-# .onLoad  <- function(libname, pkgname) {
-#    library.dynam("phangorn", pkgname, libname)
-#}
-
-# if(getRversion() <= "4.6.0") options("quiet" = FALSE)
-
+# set  if(getRversion() <= "4.6.0") options("quiet" = FALSE)
+.onLoad <- function(libname, pkgname) {
+# library.dynam("phangorn", pkgname, libname)
+  op <- options()
+  op.phangorn <- list(
+    quiet = FALSE
+  )
+  toset <- !(names(op.phangorn) %in% names(op))
+  if (any(toset)) options(op.phangorn[toset])
+}

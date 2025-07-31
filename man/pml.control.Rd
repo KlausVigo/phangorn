@@ -5,8 +5,8 @@
 \alias{ratchet.control}
 \title{Auxiliary for Controlling Fitting}
 \usage{
-pml.control(epsilon = 1e-08, maxit = 10, trace = 1, tau = 1e-08,
-  statefreq = "empirical")
+pml.control(epsilon = 1e-08, maxit = 10, trace = !getOption("quiet"),
+  tau = 1e-08, statefreq = "empirical")
 
 ratchet.control(iter = 20L, maxit = 200L, minit = 100L, prop = 1/2,
   rell = TRUE, bs = 1000L)
