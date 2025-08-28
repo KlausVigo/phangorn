@@ -218,7 +218,7 @@ plotSeqLogo <- function(x, node=getRoot(x$tree), start=1, end=10,
 #' mutations are written out.
 #' @param frame a character string specifying the kind of frame to be printed
 #' around the text. See \code{\link[ape]{edgelabels}}.
-#' @returns \code{add_mutations} adds the position and and changes of possible
+#' @returns \code{add_mutations} adds the position and changes of possible
 #' mutations to a phylogeny.
 #' @export
 add_mutations <- function(x, pos=NULL, frame="none", ...){
@@ -229,6 +229,7 @@ add_mutations <- function(x, pos=NULL, frame="none", ...){
   edge <- lastPP$edge
   pos <- match(ind, edge[,2])
   edgelabels(lapply(mt[ind], paste, collapse=" "), pos, frame=frame, ...)
+  invisible(x)
 }
 
 

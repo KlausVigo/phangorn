@@ -95,7 +95,8 @@ add_edge_length <- function(tree, trees, fun=\(x)median(na.omit(x)),
 ##' @param \dots arguments passed to other functions, \code{\link{legend}} or
 ##' \code{\link{bxp}}.
 ##' @details All trees should to be rooted, either ultrametric or tip dated.
-##' @return Nothing. Function is called for adding to a plot.
+##' @returns \code{add_ci} and \code{add_boxplot} return silently the tree
+##' object.
 ##' @author Emmanuel Paradis, Santiago Claramunt, Joseph Brown, Klaus Schliep
 ##' @importFrom graphics legend rect bxp boxplot
 ##' @importFrom stats median

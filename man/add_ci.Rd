@@ -29,7 +29,8 @@ blue.}
 \code{\link{bxp}}.}
 }
 \value{
-Nothing. Function is called for adding to a plot.
+\code{add_ci} and \code{add_boxplot} return silently the tree
+object.
 }
 \description{
 These are low-level plotting commands to draw the confidence

@@ -15,7 +15,7 @@
 \item{...}{further arguments passed to or from other methods.}
 }
 \value{
-Nothing. The function is called for plotting.
+\code{image.phyDat} returns silently x.
 }
 \description{
 This function plots an image of an alignment of sequences.
@@ -23,7 +23,8 @@ This function plots an image of an alignment of sequences.
 \details{
 A wrapper for using \code{\link[ape]{image.DNAbin}} and
 \code{\link[ape]{image.AAbin}}.
-Codons triplets are handled as nucleotide sequences.
+Codons triplets are transformed and handled as nucleotide sequences. So far
+it is not yet possible to plot data with \code{ type="USER"}.
 }
 \examples{
 data("chloroplast")
