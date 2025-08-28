@@ -662,7 +662,7 @@ guess_model <- function(x){
 update.pml <- function(object, ...) {
   extras <- match.call(expand.dots = FALSE)$...
   pmla <- c("tree", "data", "bf", "Q", "inv", "k", "shape", "rate", "model",
-            "wMix", "llMix", "dnds", "tstv", "scaleQ", "...")
+            "wMix", "llMix", "dnds", "tstv", "scaleQ", "site.rate", "...")
   names(extras) <- pmla[pmatch(names(extras), pmla[-length(pmla)])]
   call <- object$call
   if (length(extras)) {
@@ -685,6 +685,11 @@ update.pml <- function(object, ...) {
   if (is.na(existing[1])) tree <- object$tree
   else tree <- eval(extras[[existing[1]]], parent.frame())
   tree <- reorder(tree, "postorder")
+  if (is.na(existing[15])) site.rate <- object$site.rate
+  else {
+    site.rate <- eval(extras[[existing[15]]], parent.frame())
+    updateRates <- TRUE
+  }
   if (is.na(existing[2])) {
     data <- object$data
     INV <- object$INV
