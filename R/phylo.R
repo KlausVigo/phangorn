@@ -892,21 +892,8 @@ pml.fit4 <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
   nc <- as.integer(attr(data, "nc"))
   nTips <- as.integer(length(tree$tip.label))
   k <- length(w)
-  m <- 1
+#  m <- 1
 
-#  if (is.null(ll.0)) {
-#    ll.0 <- numeric(attr(data, "nr"))
-#  }
-#  if (is.null(INV))
-#    INV <- Matrix(lli(data, tree), sparse = TRUE)
-#  if (inv > 0)
-#    ll.0 <- as.matrix(INV %*% (bf * inv))
-#  if (ASC)
-#    ll.0 <- as.matrix(INV %*% bf)
-#  if (wMix > 0)
-#    ll.0 <- ll.0 + llMix
-#  node <- tree$edge[, 1]
-#  edge <- tree$edge[, 2]
   el <- as.double(tree$edge.length)
   node <- as.integer(tree$edge[, 1] - nTips - 1L) #    min(node))
   edge <- as.integer(tree$edge[, 2] - 1L)
@@ -1168,9 +1155,9 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #' tree.} \item{siteLik}{Site log-likelihoods.} \item{weight}{Weight of the
 #' site patterns.}
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{pml_bb}}, \code{\link{bootstrap.pml}},
-#' \code{\link{modelTest}}, \code{\link{pmlPart}}, \code{\link{pmlMix}},
-#' \code{\link[ape]{plot.phylo}}, \code{\link{SH.test}},
+#' @seealso \code{\link{pml_bb}}, \code{\link{pml.control}},
+#' \code{\link{bootstrap.pml}}, \code{\link{modelTest}}, \code{\link{pmlPart}},
+#' \code{\link{pmlMix}}, \code{\link[ape]{plot.phylo}}, \code{\link{SH.test}},
 #' \code{\link{ancestral.pml}}
 #' @references Felsenstein, J. (1981) Evolutionary trees from DNA sequences: a
 #' maximum likelihood approach. \emph{Journal of Molecular Evolution},
@@ -2704,6 +2691,7 @@ pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, wMix, llMix,
   INDEX <-  indexNNI3(tree)
   tmpl <- pml.fit4(tree, data, bf=bf, g=g, w=w, eig=eig, inv=inv,
                    ll.0=ll.0, k=k, wMix=wMix, llMix=llMix, ...)
+#  pml_nni_pml_fit4[1] <<- pml_nni_pml_fit4[1] + 1
   nr <- as.integer(attr(data, "nr"))
   nc <- as.integer(attr(data, "nc"))
   weight <- as.numeric(attr(data, "weight"))
@@ -2812,12 +2800,13 @@ pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, wMix, llMix,
 
     IND <- index2edge(INDEX[(ind + 1) %/% 2, ], nTips + 1L)
     treeT <- changeEdge(tree, IND[swap.edge], IND, edgeMatrix[ind, ])
-    test <- pml.fit4(treeT, data, bf = bf, k = k, g = g, w = w, eig = eig,
-      ll.0 = ll.0, inv = inv, wMix=wMix, llMix=llMix, ...)
-
-    if (test <= ll + eps0) candidates[ind] <- FALSE
-    if (test > ll + eps0) {
-      ll <- test
+    site <- !is.null(RELL)
+    test <- pml.fit(treeT, data, bf = bf, k = k, g = g, w = w, eig = eig,
+      ll.0 = ll.0, inv = inv, wMix=wMix, llMix=llMix, site=site, ...)
+#    pml_nni_pml_fit4[2] <<- pml_nni_pml_fit4[2] + 1
+    if (test[[1]] <= ll + eps0) candidates[ind] <- FALSE
+    if (test[[1]] > ll + eps0) {
+      ll <- test[[1]]
       swap <- swap + 1
       tree <- treeT
       indi <- which(rep(colSums(apply(INDEX, 1, match, INDEX[(ind + 1) %/% 2, ],
@@ -2825,9 +2814,12 @@ pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, wMix, llMix,
       candidates[indi] <- FALSE
       loglik[indi] <- -Inf
       if(!is.null(RELL)){
-        siteLik <- pml.fit4(tree, data, bf=bf, eig=eig, ll.0=ll.0, w=w,
-                            g=g, site=TRUE, wMix=wMix, llMix=llMix, ...)$siteLik
-        RELL <- update_rell(RELL, siteLik, tree)
+        # next line should be not necessary
+#        pml_nni_pml_fit4[3] <<- pml_nni_pml_fit4[3] + 1
+#        siteLik <- test[[2]]
+#          pml.fit(tree, data, bf=bf, eig=eig, ll.0=ll.0, w=w,
+#                            g=g, site=TRUE, wMix=wMix, llMix=llMix, ...)$siteLik
+        RELL <- update_rell(RELL, test$siteLik, tree)
       }
     }
   }
