@@ -2147,7 +2147,10 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         bf[-nc] <- (1 - bf[nc]) / (nc-1)
       } else bf <- rep(1 / nc, nc)
       #bf <- c(0.25, 0.25, 0.25, 0.25)
-    } else bf <- baseFreq(data)
+    } else{
+      if(control$statefreq=="empirical") bf <- baseFreq(data)
+      else bf <- object$bf
+    }
     object <- update.pml(object, bf = bf)
     subs <- tmp$subs
   }
