@@ -155,6 +155,6 @@ NULL
 #' plot.pml(), plot.networx().
 #' Labels (e.g.) bootstrap support are placed for readability. The plot functions
 #' mainly build on the ape package.
-#'
+#' @noRd
 NULL
 

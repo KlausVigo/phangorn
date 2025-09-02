@@ -1,10 +1,10 @@
 #' @rdname phangorn-internal
 #' @export
 assert_phylo <- function(x, has_edge_length=FALSE, is_rooted=FALSE,
-                         is_ultrametric=FALSE){
+                         is_ultrametric=FALSE, unique_tiplabel=TRUE){
   txt <-  deparse(substitute(x))
   if (!inherits(x, "phylo")) stop(gettextf("%s must be of class phylo", txt))
-  if (any(duplicated(x$tip.label)))
+  if (unique_tiplabel && any(duplicated(x$tip.label)))
     stop(gettextf("%s must have unique labels!", txt))
   if (has_edge_length && is.null(x$edge.length))
     stop(gettextf("%s must have edge weights", txt))
