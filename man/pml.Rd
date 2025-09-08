@@ -2,6 +2,7 @@
 % Please edit documentation in R/modelTest.R, R/phylo.R, R/pml_generics.R
 \name{as.pml}
 \alias{as.pml}
+\alias{update.pml}
 \alias{pml}
 \alias{optim.pml}
 \alias{logLik.pml}
@@ -11,6 +12,8 @@
 \title{Likelihood of a tree.}
 \usage{
 as.pml(x, ...)
+
+\method{update}{pml}(object, ...)
 
 pml(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   rate = 1, model = NULL, site.rate = "gamma", ASC = FALSE, ...)
@@ -34,6 +37,8 @@ optim.pml(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
 
 \item{\dots}{Further arguments passed to or from other methods.}
 
+\item{object}{An object of class \code{pml}.}
+
 \item{tree}{A phylogenetic \code{tree}, object of class \code{phylo}.}
 
 \item{data}{An alignment, object of class \code{phyDat}.}
@@ -54,13 +59,11 @@ optim.pml(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
 details.}
 
 \item{site.rate}{Indicates what type of gamma distribution to use. Options
-are "gamma" approach of Yang 1994 (default), ""gamma_quadrature"" after the
+are "gamma" approach of Yang 1994 (default), "gamma_quadrature" after the
 Laguerre quadrature approach of Felsenstein 2001 or "freerate".}
 
 \item{ASC}{ascertainment bias correction (ASC), allows to estimate models
 like Lewis' Mkv.}
-
-\item{object}{An object of class \code{pml}.}
 
 \item{optNni}{Logical value indicating whether topology gets optimized (NNI).}
 

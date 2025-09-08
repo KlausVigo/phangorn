@@ -9,7 +9,7 @@ pml.control(epsilon = 1e-08, maxit = 10, trace = !getOption("quiet"),
   tau = 1e-08, statefreq = "empirical")
 
 ratchet.control(iter = 20L, maxit = 200L, minit = 100L, prop = 1/2,
-  rell = TRUE, bs = 1000L)
+  rell = TRUE, bs = 100L)
 }
 \arguments{
 \item{epsilon}{Stop criterion for optimization (see details).}

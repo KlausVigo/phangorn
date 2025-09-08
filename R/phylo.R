@@ -658,6 +658,7 @@ guess_model <- function(x){
 # }
 
 
+#' @rdname pml
 #' @export
 update.pml <- function(object, ...) {
   extras <- match.call(expand.dots = FALSE)$...
@@ -1123,7 +1124,7 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #' @param model allows to choose an amino acid models or nucleotide model, see
 #' details.
 #' @param site.rate Indicates what type of gamma distribution to use. Options
-#' are "gamma" approach of Yang 1994 (default), ""gamma_quadrature"" after the
+#' are "gamma" approach of Yang 1994 (default), "gamma_quadrature" after the
 #' Laguerre quadrature approach of Felsenstein 2001 or "freerate".
 ## or "lognormal" after a lognormal
 #' @param object An object of class \code{pml}.
@@ -1567,7 +1568,7 @@ optimRooted <- function(tree, data, bf, g, w, eig, ll.0,
   list(tree = tree, logLik = ll, c(eps = eps, iter = iter))
 }
 
-
+# for rooted trees
 index.nni <- function(ch, cvector, pvector, root) {
   p1 <- pvector[ch]
   k12 <- cvector[[ch]]
@@ -2688,13 +2689,21 @@ index2edge <- function(x, root) {
 }
 
 
+caterpillar <- function(x, i){
+  anc <- c(as.integer(i), Ancestors(x, i))
+  ind <- x$edge[,1] %in% anc
+  x$edge <- x$edge[ind, ]
+  x$edge.length <- x$edge.length[ind]
+  x
+}
+
+
 pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, wMix, llMix,
                     RELL=NULL, aLRT=FALSE, ...) {
   k <- length(w)
   INDEX <-  indexNNI3(tree)
   tmpl <- pml.fit4(tree, data, bf=bf, g=g, w=w, eig=eig, inv=inv,
                    ll.0=ll.0, k=k, wMix=wMix, llMix=llMix, ...)
-#  pml_nni_pml_fit4[1] <<- pml_nni_pml_fit4[1] + 1
   nr <- as.integer(attr(data, "nr"))
   nc <- as.integer(attr(data, "nc"))
   weight <- as.numeric(attr(data, "weight"))
@@ -2795,7 +2804,12 @@ pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, wMix, llMix,
 # return loglik, loli for approx LRT
   candidates <- loglik > ll + eps0
   INDEX2 <- t(apply(INDEX, 1, index2edge, root = getRoot(tree)))
+
+  tmpl <- pml.fit4(tree, data, bf=bf, g=g, w=w, eig=eig, inv=inv,
+                   ll.0=ll.0, k=k, wMix=wMix, llMix=llMix, ...)
+
   while (any(candidates)) {
+
     ind <- which.max(loglik)
     loglik[ind] <- -Inf
     if (ind %% 2) swap.edge <- c(2, 4)
@@ -2803,11 +2817,22 @@ pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, wMix, llMix,
 
     IND <- index2edge(INDEX[(ind + 1) %/% 2, ], nTips + 1L)
     treeT <- changeEdge(tree, IND[swap.edge], IND, edgeMatrix[ind, ])
+
+    cat_tree <- caterpillar(treeT, INDEX[(ind + 1) %/% 2, 5])
+
     site <- !is.null(RELL)
-    test <- pml.fit(treeT, data, bf = bf, k = k, g = g, w = w, eig = eig,
+#    test <- pml.fit(treeT, data, bf = bf, k = k, g = g, w = w, eig = eig,
+#      ll.0 = ll.0, inv = inv, wMix=wMix, llMix=llMix, site=site, ...)
+    test <- pml.fit4(cat_tree, data, bf = bf, k = k, g = g, w = w, eig = eig,
       ll.0 = ll.0, inv = inv, wMix=wMix, llMix=llMix, site=site, ...)
-#    pml_nni_pml_fit4[2] <<- pml_nni_pml_fit4[2] + 1
-    if (test[[1]] <= ll + eps0) candidates[ind] <- FALSE
+
+    if (test[[1]] <= ll + eps0){
+      candidates[ind] <- FALSE
+      # change internal nodes to before
+      cat_tree <- caterpillar(tree, INDEX[(ind + 1) %/% 2, 5])
+      test2 <- pml.fit4(cat_tree, data, bf = bf, k = k, g = g, w = w, eig = eig,
+                ll.0 = ll.0, inv = inv, wMix=wMix, llMix=llMix, site=site, ...)
+    }
     if (test[[1]] > ll + eps0) {
       ll <- test[[1]]
       swap <- swap + 1
@@ -2831,6 +2856,7 @@ pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, wMix, llMix,
 }
 
 
+# add lower bound for RELL
 opt_nni <- function(tree, data, rooted, iter_max, trace, ll, RELL=NULL, ...){
   swap <- 0
   iter <- 0

@@ -166,7 +166,7 @@ split_model <- function(x="GTR + G(4) + I", type="DNA"){
       k_tmp <- sub("\\)", "", k_tmp)
       k <- as.integer(k_tmp)
       m <- m[-pos]
-      site_model <- "gamma_unbiased"
+      site_model <- "gamma_phangorn"
     }
   }
   if(length(m)>0){

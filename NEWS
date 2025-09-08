@@ -10,6 +10,10 @@ OTHER CHANGES
 
     o improvements to write.ancestral and write.pml.
 
+    o update.pml can now also update site.rate.
+
+    o NNI rearrangements in optim.pml / pml_bb are faster for larger trees.
+
     o bab got a progress bar, as it might runs for a long time (suggested by
 
       Barbara Bitarello). bab might be faster thanks to improved lower bound.
@@ -19,8 +23,6 @@ OTHER CHANGES
       duplication
 
     o more error checking of input arguments and associated tests
-
-    o improved lower bound in function bab
 
 
     CHANGES in PHANGORN VERSION 2.12.0

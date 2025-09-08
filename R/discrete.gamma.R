@@ -17,7 +17,7 @@
 #' @param site.rate Indicates what type of gamma distribution to use. Options
 #' are "gamma" (Yang 1994) and "gamma_quadrature" using Laguerre quadrature
 #' approach of Felsenstein (2001)
-## or "free_rate" "gamma_unbiased".
+## or "free_rate" "gamma_phangorn".
 #' @param edge.length Total edge length (sum of all edges in a tree).
 #' @param discrete logical whether to plot discrete (default) or continuous pdf
 #' or cdf.
@@ -282,7 +282,7 @@ Laguerre <- function(x, shape, degree) {
 
 
 rates_n_weights <- function(shape, k, site.rate = "gamma"){
-  site.rate <- match.arg(site.rate, c("gamma", "gamma_unbiased",
+  site.rate <- match.arg(site.rate, c("gamma", "gamma_phangorn",
                                       "gamma_quadrature", "free_rate"))
   if(k==1) rates.and.weights <- matrix(c(1,1), ncol=2L,
                                   dimnames = list(NULL, c("rate", "weight")))
@@ -293,7 +293,7 @@ rates_n_weights <- function(shape, k, site.rate = "gamma"){
       rates.and.weights <- matrix( c(g, w), ncol=2L,
                           dimnames = list(NULL, c("rate", "weight")))
     }
-    if(site.rate == "gamma_unbiased"){
+    if(site.rate == "gamma_phangorn"){
       rates.and.weights <- discrete.gamma.2(alpha=shape, k=k)
     }
     if(site.rate == "gamma_quadrature")
