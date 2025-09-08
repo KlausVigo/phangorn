@@ -196,6 +196,27 @@ package="phangorn")</a></code> and the example of <code><a href="pmlMix.html">pm
 <span class="r-in"><span><span class="fu"><a href="baseFreq.html">baseFreq</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         a         c         g         t </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.3321866 0.1990791 0.2040652 0.2646691 </span>
+<span class="r-in"><span><span class="co"># summary statistics</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Alignment statistics </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Type:  DNA </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sequences:  47 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Columns:  3179 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Site pattern:  1605 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Parsimony informative sites:  1400 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Constant sites:  1354 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of gaps:  0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of ambiguous states:  0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Duplicated sequences:  0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Composition Test (Chisq) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           statistic df  p-value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Opposum      12.518  3 0.005805</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Baboon        8.888  3 0.030823</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Human         8.319  3 0.039866</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Bandicoot     7.909  3 0.047937</span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># subsetting phyDat objects</span></span></span>
 <span class="r-in"><span><span class="co"># the first 5 sequences</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">Laurasiatherian</span>, subset<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span></span>

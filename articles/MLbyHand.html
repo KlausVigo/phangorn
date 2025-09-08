@@ -68,7 +68,7 @@ Iris Bardel-Kahr</h4>
 Graz<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2025-08-28</h4>
+            <h4 data-toc-skip class="date">2025-09-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/main/vignettes/MLbyHand.Rmd" class="external-link"><code>vignettes/MLbyHand.Rmd</code></a></small>
       <div class="d-none name"><code>MLbyHand.Rmd</code></div>
@@ -215,23 +215,23 @@ time.</p>
 <pre><code><span><span class="co">## model: GTR+G(4)+I </span></span>
 <span><span class="co">## loglikelihood: -2608 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -1230 </span></span>
-<span><span class="co">## Proportion of invariant sites: 0.007365 </span></span>
+<span><span class="co">## Proportion of invariant sites: 0.00741 </span></span>
 <span><span class="co">## Model of rate heterogeneity: Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.912 </span></span>
+<span><span class="co">## Shape parameter: 2.994 </span></span>
 <span><span class="co">##     Rate Proportion</span></span>
-<span><span class="co">## 1 0.0000   0.007365</span></span>
-<span><span class="co">## 2 0.3852   0.248159</span></span>
-<span><span class="co">## 3 0.7320   0.248159</span></span>
-<span><span class="co">## 4 1.0901   0.248159</span></span>
-<span><span class="co">## 5 1.8224   0.248159</span></span>
+<span><span class="co">## 1 0.0000    0.00741</span></span>
+<span><span class="co">## 2 0.3917    0.24815</span></span>
+<span><span class="co">## 3 0.7366    0.24815</span></span>
+<span><span class="co">## 4 1.0906    0.24815</span></span>
+<span><span class="co">## 5 1.8110    0.24815</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate matrix:</span></span>
 <span><span class="co">##         a         c         g       t</span></span>
-<span><span class="co">## a  0.0000  0.680633 69.341299  0.5591</span></span>
-<span><span class="co">## c  0.6806  0.000000  0.003307 24.4306</span></span>
-<span><span class="co">## g 69.3413  0.003307  0.000000  1.0000</span></span>
-<span><span class="co">## t  0.5591 24.430638  1.000000  0.0000</span></span>
+<span><span class="co">## a  0.0000  0.719700 73.861407  0.5978</span></span>
+<span><span class="co">## c  0.7197  0.000000  0.003286 25.8480</span></span>
+<span><span class="co">## g 73.8614  0.003286  0.000000  1.0000</span></span>
+<span><span class="co">## t  0.5978 25.848009  1.000000  0.0000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
 <span><span class="co">##       a       c       g       t </span></span>
@@ -247,15 +247,15 @@ time.</p>
 <pre><code><span><span class="co">## Likelihood Ratio Test Table</span></span>
 <span><span class="co">##   Log lik. Df Df change Diff log lik. Pr(&gt;|Chi|)    </span></span>
 <span><span class="co">## 1    -3068 25                                       </span></span>
-<span><span class="co">## 2    -2608 35        10           920     &lt;2e-16 ***</span></span>
+<span><span class="co">## 2    -2608 35        10           921     &lt;2e-16 ***</span></span>
 <span><span class="co">## ---</span></span>
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre>
 <p>with the Shimodaira-Hasegawa test</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/SH.test.html">SH.test</a></span><span class="op">(</span><span class="va">fitGTR</span>, <span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##      Trees  ln L Diff ln L p-value</span></span>
-<span><span class="co">## [1,]     1 -2608       0.0  0.5061</span></span>
-<span><span class="co">## [2,]     2 -3068     460.2  0.0000</span></span></code></pre>
+<span><span class="co">## [1,]     1 -2608       0.0  0.5023</span></span>
+<span><span class="co">## [2,]     2 -3068     460.5  0.0000</span></span></code></pre>
 <p>or with the AIC</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
@@ -265,10 +265,10 @@ time.</p>
 <pre><code><span><span class="co">## [1] 5286</span></span></code></pre>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/modelTest.html">AICc</a></span><span class="op">(</span><span class="va">fitGTR</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 5299</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 5298</span></span></code></pre>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">BIC</a></span><span class="op">(</span><span class="va">fitGTR</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 5407</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 5406</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="bootstrap">Bootstrap<a class="anchor" aria-label="anchor" href="#bootstrap"></a>
@@ -350,9 +350,9 @@ pruning and regrafting) away.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##  [1] nlme_3.1-168      cli_3.6.5         knitr_1.50        rlang_1.1.6      </span></span>
-<span><span class="co">##  [5] xfun_0.53         generics_0.1.4    textshaping_1.0.1 jsonlite_2.0.0   </span></span>
-<span><span class="co">##  [9] backports_1.5.0   htmltools_0.5.8.1 ragg_1.4.0        sass_0.4.10      </span></span>
-<span><span class="co">## [13] rmarkdown_2.29    quadprog_1.5-8    grid_4.5.1        evaluate_1.0.4   </span></span>
+<span><span class="co">##  [5] xfun_0.53         generics_0.1.4    textshaping_1.0.3 jsonlite_2.0.0   </span></span>
+<span><span class="co">##  [9] backports_1.5.0   htmltools_0.5.8.1 ragg_1.5.0        sass_0.4.10      </span></span>
+<span><span class="co">## [13] rmarkdown_2.29    quadprog_1.5-8    grid_4.5.1        evaluate_1.0.5   </span></span>
 <span><span class="co">## [17] jquerylib_0.1.4   fastmap_1.2.0     yaml_2.3.10       lifecycle_1.0.4  </span></span>
 <span><span class="co">## [21] compiler_4.5.1    codetools_0.2-20  igraph_2.1.4      fs_1.6.6         </span></span>
 <span><span class="co">## [25] pkgconfig_2.0.3   Rcpp_1.1.0        htmlwidgets_1.6.4 systemfonts_1.2.3</span></span>

@@ -55,6 +55,9 @@ parameters. For a more user-friendly interface see <code><a href="pml_bb.html">p
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">as.pml</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># S3 method for class 'pml'</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/update.html" class="external-link">update</a></span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">pml</span><span class="op">(</span><span class="va">tree</span>, <span class="va">data</span>, bf <span class="op">=</span> <span class="cn">NULL</span>, Q <span class="op">=</span> <span class="cn">NULL</span>, inv <span class="op">=</span> <span class="fl">0</span>, k <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  rate <span class="op">=</span> <span class="fl">1</span>, model <span class="op">=</span> <span class="cn">NULL</span>, site.rate <span class="op">=</span> <span class="st">"gamma"</span>, ASC <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
@@ -87,6 +90,10 @@ parameters. For a more user-friendly interface see <code><a href="pml_bb.html">p
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Further arguments passed to or from other methods.</p></dd>
+
+
+<dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
+<dd><p>An object of class <code>pml</code>.</p></dd>
 
 
 <dt id="arg-tree">tree<a class="anchor" aria-label="anchor" href="#arg-tree"></a></dt>
@@ -128,17 +135,13 @@ details.</p></dd>
 
 <dt id="arg-site-rate">site.rate<a class="anchor" aria-label="anchor" href="#arg-site-rate"></a></dt>
 <dd><p>Indicates what type of gamma distribution to use. Options
-are "gamma" approach of Yang 1994 (default), ""gamma_quadrature"" after the
+are "gamma" approach of Yang 1994 (default), "gamma_quadrature" after the
 Laguerre quadrature approach of Felsenstein 2001 or "freerate".</p></dd>
 
 
 <dt id="arg-asc">ASC<a class="anchor" aria-label="anchor" href="#arg-asc"></a></dt>
 <dd><p>ascertainment bias correction (ASC), allows to estimate models
 like Lewis' Mkv.</p></dd>
-
-
-<dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
-<dd><p>An object of class <code>pml</code>.</p></dd>
 
 
 <dt id="arg-optnni">optNni<a class="anchor" aria-label="anchor" href="#arg-optnni"></a></dt>
@@ -289,9 +292,9 @@ discrete morphological character data. <em>Systematic Biology</em> <b>50</b>,
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="pml_bb.html">pml_bb</a></code>, <code><a href="bootstrap.pml.html">bootstrap.pml</a></code>,
-<code><a href="modelTest.html">modelTest</a></code>, <code><a href="pmlPart.html">pmlPart</a></code>, <code><a href="pmlMix.html">pmlMix</a></code>,
-<code><a href="https://rdrr.io/pkg/ape/man/plot.phylo.html" class="external-link">plot.phylo</a></code>, <code><a href="SH.test.html">SH.test</a></code>,
+    <div class="dont-index"><p><code><a href="pml_bb.html">pml_bb</a></code>, <code><a href="pml.control.html">pml.control</a></code>,
+<code><a href="bootstrap.pml.html">bootstrap.pml</a></code>, <code><a href="modelTest.html">modelTest</a></code>, <code><a href="pmlPart.html">pmlPart</a></code>,
+<code><a href="pmlMix.html">pmlMix</a></code>, <code><a href="https://rdrr.io/pkg/ape/man/plot.phylo.html" class="external-link">plot.phylo</a></code>, <code><a href="SH.test.html">SH.test</a></code>,
 <code><a href="ancestral.pml.html">ancestral.pml</a></code></p></div>
     </div>
     <div class="section level2">
