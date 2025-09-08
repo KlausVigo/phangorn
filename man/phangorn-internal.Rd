@@ -27,7 +27,7 @@
 threshStateC(x, thresholds)
 
 assert_phylo(x, has_edge_length = FALSE, is_rooted = FALSE,
-  is_ultrametric = FALSE)
+  is_ultrametric = FALSE, unique_tiplabel = TRUE)
 
 assert_treeish(x, null.ok = FALSE)
 

@@ -29,9 +29,12 @@
 #' baseFreq(Laurasiatherian, all=TRUE)
 #' baseFreq(Laurasiatherian, freq=TRUE)
 #' baseFreq(chloroplast)
+#'
+#' # some statistics
 #' glance(Laurasiatherian)
 #' glance(chloroplast)
 #' composition_test(Laurasiatherian)[1:10,]
+#' summary(Laurasiatherian)
 #' @rdname baseFreq
 #' @export
 baseFreq <- function(obj, freq=FALSE, all=FALSE, drop.unused.levels = FALSE){

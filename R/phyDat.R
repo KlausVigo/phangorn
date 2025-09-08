@@ -51,6 +51,9 @@
 #' Laurasiatherian
 #' # base frequencies
 #' baseFreq(Laurasiatherian)
+#' # summary statistics
+#' summary(Laurasiatherian)
+#'
 #' # subsetting phyDat objects
 #' # the first 5 sequences
 #' subset(Laurasiatherian, subset=1:5)

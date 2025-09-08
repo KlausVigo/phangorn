@@ -55,9 +55,12 @@ baseFreq(Laurasiatherian)
 baseFreq(Laurasiatherian, all=TRUE)
 baseFreq(Laurasiatherian, freq=TRUE)
 baseFreq(chloroplast)
+
+# some statistics
 glance(Laurasiatherian)
 glance(chloroplast)
 composition_test(Laurasiatherian)[1:10,]
+summary(Laurasiatherian)
 }
 \seealso{
 \code{\link{phyDat}, \link[ape]{base.freq}, \link{glance}}

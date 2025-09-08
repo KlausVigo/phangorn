@@ -50,7 +50,7 @@ around the text. See \code{\link[ape]{edgelabels}}.}
 
 \code{plotSeqLogo} returns a ggplot object.
 
-\code{add_mutations} adds the position and and changes of possible
+\code{add_mutations} adds the position and changes of possible
 mutations to a phylogeny.
 }
 \description{
