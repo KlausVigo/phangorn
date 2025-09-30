@@ -207,6 +207,7 @@ getOrderingNN <- function(x) {
 #'
 #' @export neighborNet
 neighborNet <-  function(x, ord = NULL) {
+  assert_numeric(x, lower=0, any.missing=FALSE, finite=TRUE)
   x <- as.matrix(x)
   labels <- attr(x, "Labels")[[1]]
   if (is.null(labels))

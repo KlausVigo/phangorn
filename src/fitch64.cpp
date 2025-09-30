@@ -823,6 +823,18 @@ IntegerVector sitewise_pscore(Fitch* obj, const IntegerMatrix & orig){
 }
 
 
+double pscore_pw(Fitch* obj, int a, int b){
+  int states = obj->nStates;
+  int nBits = obj->nBits;
+  int wBits = obj->wBits;
+  int nTips = obj->nSeq;
+  double pars = 0;
+  std::vector< std::vector<uint64_t> > X = obj->X;
+  NumericVector weight = obj->weight;
+  pars = pscore_vector(X[a-1].data(), X[b-1].data(), weight, nBits, wBits, states);
+  return(pars);
+}
+
 double pscore(Fitch* obj, const IntegerMatrix & orig){
   int i,j;
   int states = obj->nStates;
@@ -1044,6 +1056,7 @@ RCPP_MODULE(Fitch_mod) {
         .method("prep_spr", &prep_spr)
         .method("pscore_nni", &pscore_nni)
         .method("pscore", &pscore)
+        .method("pscore_pw", &pscore_pw)
         .method("pscore_vec", &pscore_vec)
         .method("pscore_spr", &pscore_spr)
         .method("pscore_node", &pscore_node)

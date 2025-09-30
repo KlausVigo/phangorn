@@ -32,10 +32,16 @@ assert_treeish <- function(x, null.ok=FALSE){
 #' @rdname phangorn-internal
 #' @export
 assert_multiPhylo <- function(x, is_ultrametric=FALSE, is_rooted=FALSE,
-                              same_labels=FALSE,  has_edge_length=FALSE){
+                              has_edge_length=FALSE){ # same_labels=FALSE,
   txt <-  deparse(substitute(x))
   if (!inherits(x, "multiPhylo"))
     stop(gettextf("%s must be of class 'multiPhylo'", txt))
+  if(has_edge_length && any(sapply(x, \(x)is.null(x$edge.length))) )
+     stop(gettextf("All trees in %s must have edge weights", txt))
+  if(is_rooted && !all(is.rooted(x)))
+    stop(gettextf("All trees in %s must be rooted!", txt))
+  if(is_ultrametric && !all(is.ultrametric(x)))
+    stop(gettextf("All trees in %s must be ultrametric!", txt))
   invisible(x)
 }
 

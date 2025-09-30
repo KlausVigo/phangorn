@@ -184,6 +184,10 @@ Felsenstein, J. (1981) Evolutionary trees from DNA sequences: a
 maximum likelihood approach. \emph{Journal of Molecular Evolution},
 \bold{17}, 368--376.
 
+Felsenstein, J. (2001) Taking Variation of Evolutionary Rates Between Sites
+into Account in Inferring Phylogenies. \emph{Journal of Molecular Evolution},
+\bold{53}, 447--455.
+
 Felsenstein, J. (2004). \emph{Inferring Phylogenies}. Sinauer Associates,
 Sunderland.
 

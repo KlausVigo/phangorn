@@ -253,6 +253,11 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
   }
   attr(RESULT, "env") <- env
   class(RESULT) <- c("modelTest", "data.frame")
+
+  if (trace > 0) {
+    tmp <- mt$Model[which.min(RESULT$BIC)]
+    cat("\nBest model according to AIC:", tmp, "\n\n")
+  }
   RESULT
 }
 

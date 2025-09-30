@@ -49,6 +49,7 @@ Imports:
     igraph (>= 1.0),
     Matrix,
     methods,
+    osqp,
     parallel,
     quadprog,
     Rcpp,
@@ -80,6 +81,6 @@ biocViews: Software, Technology, QualityControl
 Encoding: UTF-8
 Repository: CRAN
 Roxygen: list(old_usage = TRUE, markdown = TRUE, roclets = c ("namespace", "rd", "srr::srr_stats_roclet"))
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Language: en-US
 Config/testthat/edition: 3

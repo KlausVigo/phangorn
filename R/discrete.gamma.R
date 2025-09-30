@@ -44,6 +44,9 @@
 #' plot_gamma_plus_inv(shape=2, append = TRUE)
 #' par(old.par)
 #'
+#' data(Laurasiatherian)
+#' fit <- pml_bb(Laurasiatherian, "JC+G(4)", rearrangement = "none")
+#' plotRates(fit)
 #' @keywords distribution
 #' @rdname discrete.gamma
 #' @export
@@ -225,12 +228,12 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
 #' @param main a main title for the plot.
 #' @param cdf.color color of the cdf.
 #' @export
-plotRates <- function(obj, cdf.color="blue", main="cdf", ...){
+plotRates <- function(obj, cdf.color="blue", main="cdf", rug=TRUE, ...){
   pscores <- parsimony(obj$tree, obj$data, site="site")[attr(obj$data, "index")]
   ecdf_pscores <- ecdf(pscores)
   plot(ecdf_pscores, verticals = TRUE, do.points=FALSE, main=main, ...)
-  rug(jitter(pscores)) # rug(sort(unique(pscores)))
-  el <- obj$tree$edge.length
+  if(rug) rug(jitter(pscores))
+  el <- obj$tree$edge.length * obj$rate
   xlim <- c(-0.25, 1.1 * max(pscores))
   plot_gamma_plus_inv(k=obj$k, shape=obj$shape, inv=obj$inv, append=TRUE,
                       xlim = xlim,
@@ -281,7 +284,7 @@ Laguerre <- function(x, shape, degree) {
 }
 
 
-rates_n_weights <- function(shape, k, site.rate = "gamma"){
+rates_n_weights <- function(shape, k, site.rate = "gamma", w=NULL){
   site.rate <- match.arg(site.rate, c("gamma", "gamma_phangorn",
                                       "gamma_quadrature", "free_rate"))
   if(k==1) rates.and.weights <- matrix(c(1,1), ncol=2L,

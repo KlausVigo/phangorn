@@ -14,9 +14,10 @@ discrete.beta(shape1, shape2, k)
 plot_gamma_plus_inv(shape = 1, inv = 0, k = 4, discrete = TRUE,
   cdf = TRUE, append = FALSE, xlab = "x", ylab = ifelse(cdf, "F(x)",
   "f(x)"), xlim = NULL, verticals = FALSE, edge.length = NULL,
-  site.rate = "gamma", ...)
+  site.rate = "gamma", g = NULL, w = NULL, ...)
 
-plotRates(obj, cdf.color = "blue", main = "cdf", ...)
+plotRates(obj, cdf.color = "blue", main = "cdf", xlim = NULL,
+  rug = TRUE, ...)
 }
 \arguments{
 \item{alpha}{Shape parameter of the gamma distribution.}
@@ -58,6 +59,8 @@ approach of Felsenstein (2001)}
 \item{cdf.color}{color of the cdf.}
 
 \item{main}{a main title for the plot.}
+
+\item{rug}{adds a rug representation of parsimony score to the plot.}
 }
 \value{
 \code{discrete.gamma} returns a matrix.
