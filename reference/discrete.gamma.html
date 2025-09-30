@@ -60,9 +60,10 @@ for simulation studies or in cases where .</p>
 <span><span class="fu">plot_gamma_plus_inv</span><span class="op">(</span>shape <span class="op">=</span> <span class="fl">1</span>, inv <span class="op">=</span> <span class="fl">0</span>, k <span class="op">=</span> <span class="fl">4</span>, discrete <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  cdf <span class="op">=</span> <span class="cn">TRUE</span>, append <span class="op">=</span> <span class="cn">FALSE</span>, xlab <span class="op">=</span> <span class="st">"x"</span>, ylab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">cdf</span>, <span class="st">"F(x)"</span>,</span>
 <span>  <span class="st">"f(x)"</span><span class="op">)</span>, xlim <span class="op">=</span> <span class="cn">NULL</span>, verticals <span class="op">=</span> <span class="cn">FALSE</span>, edge.length <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  site.rate <span class="op">=</span> <span class="st">"gamma"</span>, <span class="va">...</span><span class="op">)</span></span>
+<span>  site.rate <span class="op">=</span> <span class="st">"gamma"</span>, g <span class="op">=</span> <span class="cn">NULL</span>, w <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">plotRates</span><span class="op">(</span><span class="va">obj</span>, cdf.color <span class="op">=</span> <span class="st">"blue"</span>, main <span class="op">=</span> <span class="st">"cdf"</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">plotRates</span><span class="op">(</span><span class="va">obj</span>, cdf.color <span class="op">=</span> <span class="st">"blue"</span>, main <span class="op">=</span> <span class="st">"cdf"</span>, xlim <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  rug <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -143,6 +144,10 @@ approach of Felsenstein (2001)</p></dd>
 
 <dt id="arg-main">main<a class="anchor" aria-label="anchor" href="#arg-main"></a></dt>
 <dd><p>a main title for the plot.</p></dd>
+
+
+<dt id="arg-rug">rug<a class="anchor" aria-label="anchor" href="#arg-rug"></a></dt>
+<dd><p>adds a rug representation of parsimony score to the plot.</p></dd>
 
 </dl></div>
     <div class="section level2">
