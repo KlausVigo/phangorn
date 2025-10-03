@@ -68,7 +68,7 @@ Iris Bardel-Kahr</h4>
 Graz<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2025-10-01</h4>
+            <h4 data-toc-skip class="date">2025-10-03</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/main/vignettes/Trees.Rmd" class="external-link"><code>vignettes/Trees.Rmd</code></a></small>
       <div class="d-none name"><code>Trees.Rmd</code></div>
@@ -584,7 +584,632 @@ bootstrapping <span class="citation">(Minh, Nguyen, and Haeseler
 conducted.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">mt</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<pre><code><span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.514 --&gt; -2623.842 </span></span>
+<span><span class="co">## candidates: 11 swap: 3 </span></span>
+<span><span class="co">## optimize edge weights:  -2616.922 --&gt; -2616.79 </span></span>
+<span><span class="co">## candidates: 5 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2616.79 --&gt; -2616.79 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2616.79 --&gt; -2616.79 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.801 --&gt; -2615.801 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.801 --&gt; -2615.801 </span></span>
+<span><span class="co">## optimize edge weights:  -2618.997 --&gt; -2618.929 </span></span>
+<span><span class="co">## candidates: 6 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.237 --&gt; -2617.23 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.23 --&gt; -2617.23 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.23 --&gt; -2617.23 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.99 --&gt; -2623.779 </span></span>
+<span><span class="co">## candidates: 7 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.779 --&gt; -2623.778 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.779 --&gt; -2623.778 </span></span>
+<span><span class="co">## optimize edge weights:  -2628.329 --&gt; -2628.105 </span></span>
+<span><span class="co">## candidates: 10 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.993 --&gt; -2623.875 </span></span>
+<span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.833 --&gt; -2623.811 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.811 --&gt; -2623.811 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.811 --&gt; -2623.811 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.454 --&gt; -2617.454 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.454 --&gt; -2617.454 </span></span>
+<span><span class="co">## optimize edge weights:  -2627.205 --&gt; -2627.162 </span></span>
+<span><span class="co">## candidates: 5 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2625.352 --&gt; -2625.232 </span></span>
+<span><span class="co">## candidates: 6 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2619.28 --&gt; -2619.119 </span></span>
+<span><span class="co">## candidates: 5 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2618.44 --&gt; -2618.416 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2618.416 --&gt; -2617.621 </span></span>
+<span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.621 --&gt; -2617.618 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.621 --&gt; -2617.618 </span></span>
+<span><span class="co">## optimize edge weights:  -2622.657 --&gt; -2622.615 </span></span>
+<span><span class="co">## candidates: 7 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2622.615 --&gt; -2616.946 </span></span>
+<span><span class="co">## candidates: 5 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.695 --&gt; -2615.537 </span></span>
+<span><span class="co">## candidates: 10 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.537 --&gt; -2615.536 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.537 --&gt; -2615.536 </span></span>
+<span><span class="co">## optimize edge weights:  -2647.547 --&gt; -2647.412 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2647.412 --&gt; -2647.412 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2647.412 --&gt; -2647.412 </span></span>
+<span><span class="co">## optimize edge weights:  -2653.672 --&gt; -2653.207 </span></span>
+<span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2653.207 --&gt; -2653.206 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2653.207 --&gt; -2653.206 </span></span>
+<span><span class="co">## optimize edge weights:  -2619.05 --&gt; -2619.031 </span></span>
+<span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2619.031 --&gt; -2619.031 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2619.031 --&gt; -2619.031 </span></span>
+<span><span class="co">## optimize edge weights:  -2628.131 --&gt; -2628.051 </span></span>
+<span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2628.051 --&gt; -2628.051 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2628.051 --&gt; -2628.051 </span></span>
+<span><span class="co">## optimize edge weights:  -2622.056 --&gt; -2621.833 </span></span>
+<span><span class="co">## candidates: 8 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2620.509 --&gt; -2620.456 </span></span>
+<span><span class="co">## candidates: 5 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2620.456 --&gt; -2620.456 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2620.456 --&gt; -2620.456 </span></span>
+<span><span class="co">## optimize edge weights:  -2626.071 --&gt; -2625.9 </span></span>
+<span><span class="co">## candidates: 7 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2625.9 --&gt; -2625.9 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2625.9 --&gt; -2625.9 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.239 --&gt; -2624.217 </span></span>
+<span><span class="co">## candidates: 8 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.701 --&gt; -2623.635 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.387 --&gt; -2623.348 </span></span>
+<span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.348 --&gt; -2623.348 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.348 --&gt; -2623.348 </span></span>
+<span><span class="co">## optimize edge weights:  -2627.994 --&gt; -2627.867 </span></span>
+<span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.961 --&gt; -2623.877 </span></span>
+<span><span class="co">## candidates: 7 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.877 --&gt; -2623.877 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.877 --&gt; -2623.877 </span></span>
+<span><span class="co">## optimize edge weights:  -2625.79 --&gt; -2625.637 </span></span>
+<span><span class="co">## candidates: 7 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2620.526 --&gt; -2620.406 </span></span>
+<span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2620.406 --&gt; -2620.406 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2620.406 --&gt; -2620.406 </span></span>
+<span><span class="co">## optimize edge weights:  -2631.77 --&gt; -2628.895 </span></span>
+<span><span class="co">## candidates: 5 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.739 --&gt; -2623.568 </span></span>
+<span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.568 --&gt; -2623.557 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.568 --&gt; -2623.557 </span></span>
+<span><span class="co">## optimize edge weights:  -2622.2 --&gt; -2622.167 </span></span>
+<span><span class="co">## candidates: 6 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2622.167 --&gt; -2622.167 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2622.167 --&gt; -2622.167 </span></span>
+<span><span class="co">## optimize edge weights:  -2625.776 --&gt; -2625.681 </span></span>
+<span><span class="co">## candidates: 5 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2625.057 --&gt; -2624.992 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.779 --&gt; -2624.732 </span></span>
+<span><span class="co">## candidates: 5 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.732 --&gt; -2624.732 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.732 --&gt; -2624.732 </span></span>
+<span><span class="co">## optimize edge weights:  -2632.741 --&gt; -2632.519 </span></span>
+<span><span class="co">## candidates: 12 swap: 3 </span></span>
+<span><span class="co">## optimize edge weights:  -2631.051 --&gt; -2630.914 </span></span>
+<span><span class="co">## candidates: 8 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2630.914 --&gt; -2630.914 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2630.914 --&gt; -2630.914 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.891 --&gt; -2623.839 </span></span>
+<span><span class="co">## candidates: 7 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.839 --&gt; -2623.839 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.839 --&gt; -2623.839 </span></span>
+<span><span class="co">## optimize edge weights:  -2628.869 --&gt; -2628.743 </span></span>
+<span><span class="co">## candidates: 7 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.647 --&gt; -2623.494 </span></span>
+<span><span class="co">## candidates: 5 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2622.951 --&gt; -2622.93 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2622.637 --&gt; -2622.622 </span></span>
+<span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2622.622 --&gt; -2622.622 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2622.622 --&gt; -2622.622 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.311 --&gt; -2624.265 </span></span>
+<span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2620.848 --&gt; -2620.742 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.618 --&gt; -2615.536 </span></span>
+<span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.536 --&gt; -2615.536 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.536 --&gt; -2615.536 </span></span>
+<span><span class="co">## optimize edge weights:  -2625.201 --&gt; -2625.201 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2625.201 --&gt; -2625.201 </span></span>
+<span><span class="co">## optimize edge weights:  -2633.288 --&gt; -2632.204 </span></span>
+<span><span class="co">## candidates: 11 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.762 --&gt; -2623.652 </span></span>
+<span><span class="co">## candidates: 7 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.652 --&gt; -2623.652 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.652 --&gt; -2623.652 </span></span>
+<span><span class="co">## optimize edge weights:  -2621.744 --&gt; -2621.744 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2621.744 --&gt; -2621.744 </span></span>
+<span><span class="co">## optimize edge weights:  -2616.945 --&gt; -2616.945 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2616.945 --&gt; -2616.945 </span></span>
+<span><span class="co">## optimize edge weights:  -2634.3 --&gt; -2634.3 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2634.3 --&gt; -2634.3 </span></span>
+<span><span class="co">## optimize edge weights:  -2622.878 --&gt; -2622.769 </span></span>
+<span><span class="co">## candidates: 7 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.937 --&gt; -2617.811 </span></span>
+<span><span class="co">## candidates: 6 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.811 --&gt; -2617.81 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.811 --&gt; -2617.81 </span></span>
+<span><span class="co">## optimize edge weights:  -2629.887 --&gt; -2629.887 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2629.887 --&gt; -2629.887 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.368 --&gt; -2624.226 </span></span>
+<span><span class="co">## candidates: 12 swap: 3 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.001 --&gt; -2622.612 </span></span>
+<span><span class="co">## candidates: 8 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2622.612 --&gt; -2616.961 </span></span>
+<span><span class="co">## candidates: 7 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2616.092 --&gt; -2615.988 </span></span>
+<span><span class="co">## candidates: 10 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.575 --&gt; -2615.536 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.536 --&gt; -2615.536 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.536 --&gt; -2615.536 </span></span>
+<span><span class="co">## optimize edge weights:  -2621.901 --&gt; -2621.901 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2621.901 --&gt; -2621.901 </span></span>
+<span><span class="co">## optimize edge weights:  -2685.769 --&gt; -2685.769 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2685.769 --&gt; -2685.769 </span></span>
+<span><span class="co">## optimize edge weights:  -2618.407 --&gt; -2618.168 </span></span>
+<span><span class="co">## candidates: 12 swap: 3 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.705 --&gt; -2617.618 </span></span>
+<span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.618 --&gt; -2617.618 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.618 --&gt; -2617.618 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.634 --&gt; -2624.503 </span></span>
+<span><span class="co">## candidates: 8 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2622.941 --&gt; -2622.905 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2622.905 --&gt; -2622.905 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2622.905 --&gt; -2622.905 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.575 --&gt; -2615.536 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.536 --&gt; -2615.536 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.536 --&gt; -2615.536 </span></span>
+<span><span class="co">## optimize edge weights:  -2627.009 --&gt; -2626.969 </span></span>
+<span><span class="co">## candidates: 5 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2626.969 --&gt; -2626.969 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2626.969 --&gt; -2626.969 </span></span>
+<span><span class="co">## optimize edge weights:  -2622.498 --&gt; -2622.348 </span></span>
+<span><span class="co">## candidates: 11 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2621.697 --&gt; -2621.655 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2621.655 --&gt; -2621.655 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2621.655 --&gt; -2621.655 </span></span>
+<span><span class="co">## optimize edge weights:  -2620.346 --&gt; -2620.346 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2620.346 --&gt; -2620.346 </span></span>
+<span><span class="co">## optimize edge weights:  -2625.514 --&gt; -2625.454 </span></span>
+<span><span class="co">## candidates: 7 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2620.459 --&gt; -2620.339 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2619.837 --&gt; -2619.779 </span></span>
+<span><span class="co">## candidates: 5 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2619.779 --&gt; -2619.779 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.671 --&gt; -2617.619 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.619 --&gt; -2617.618 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.619 --&gt; -2617.618 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.593 --&gt; -2617.575 </span></span>
+<span><span class="co">## candidates: 7 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.268 --&gt; -2617.23 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.23 --&gt; -2617.23 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.23 --&gt; -2617.23 </span></span>
+<span><span class="co">## optimize edge weights:  -2621.295 --&gt; -2621.295 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2621.295 --&gt; -2621.295 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.769 --&gt; -2615.537 </span></span>
+<span><span class="co">## candidates: 11 swap: 3 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.537 --&gt; -2615.536 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.537 --&gt; -2615.536 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.96 --&gt; -2617.621 </span></span>
+<span><span class="co">## candidates: 10 swap: 3 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.619 --&gt; -2617.618 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.163 --&gt; -2617.147 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.147 --&gt; -2617.147 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.147 --&gt; -2617.147 </span></span>
+<span><span class="co">## optimize edge weights:  -2650.665 --&gt; -2650.662 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2629.379 --&gt; -2624.441 </span></span>
+<span><span class="co">## candidates: 6 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.316 --&gt; -2623.295 </span></span>
+<span><span class="co">## candidates: 8 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.295 --&gt; -2623.295 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.295 --&gt; -2623.295 </span></span>
+<span><span class="co">## optimize edge weights:  -2628.644 --&gt; -2628.602 </span></span>
+<span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2628.602 --&gt; -2628.602 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2628.602 --&gt; -2628.602 </span></span>
+<span><span class="co">## optimize edge weights:  -2651.376 --&gt; -2651.371 </span></span>
+<span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2650.863 --&gt; -2650.83 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2649.657 --&gt; -2649.624 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2649.288 --&gt; -2649.271 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2648.929 --&gt; -2648.923 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2648.923 --&gt; -2648.923 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2648.923 --&gt; -2648.923 </span></span>
+<span><span class="co">## optimize edge weights:  -2621.239 --&gt; -2621.177 </span></span>
+<span><span class="co">## candidates: 9 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2619.669 --&gt; -2619.666 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2619.666 --&gt; -2619.666 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2619.666 --&gt; -2619.666 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.315 --&gt; -2623.147 </span></span>
+<span><span class="co">## candidates: 8 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.147 --&gt; -2623.145 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.147 --&gt; -2623.145 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.817 --&gt; -2623.773 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.773 --&gt; -2623.773 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2623.773 --&gt; -2623.773 </span></span>
+<span><span class="co">## optimize edge weights:  -2630.188 --&gt; -2629.93 </span></span>
+<span><span class="co">## candidates: 12 swap: 3 </span></span>
+<span><span class="co">## optimize edge weights:  -2625.193 --&gt; -2625.06 </span></span>
+<span><span class="co">## candidates: 8 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2620.044 --&gt; -2619.963 </span></span>
+<span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2619.963 --&gt; -2619.963 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2619.963 --&gt; -2619.963 </span></span>
+<span><span class="co">## optimize edge weights:  -2627.4 --&gt; -2627.396 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2625.002 --&gt; -2624.999 </span></span>
+<span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.999 --&gt; -2624.999 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.999 --&gt; -2624.999 </span></span>
+<span><span class="co">## optimize edge weights:  -2629.591 --&gt; -2629.378 </span></span>
+<span><span class="co">## candidates: 7 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2628.838 --&gt; -2628.815 </span></span>
+<span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2628.815 --&gt; -2628.815 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2628.815 --&gt; -2628.815 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.194 --&gt; -2615.026 </span></span>
+<span><span class="co">## candidates: 10 swap: 3 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.026 --&gt; -2615.025 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.026 --&gt; -2615.025 </span></span>
+<span><span class="co">## optimize edge weights:  -2628.822 --&gt; -2628.304 </span></span>
+<span><span class="co">## candidates: 8 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2627.853 --&gt; -2624.054 </span></span>
+<span><span class="co">## candidates: 9 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.554 --&gt; -2617.408 </span></span>
+<span><span class="co">## candidates: 7 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.408 --&gt; -2617.408 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.408 --&gt; -2617.408 </span></span>
+<span><span class="co">## optimize edge weights:  -2627.932 --&gt; -2627.877 </span></span>
+<span><span class="co">## candidates: 9 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2627.877 --&gt; -2627.877 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2627.877 --&gt; -2627.877 </span></span>
+<span><span class="co">## optimize edge weights:  -2620.58 --&gt; -2620.411 </span></span>
+<span><span class="co">## candidates: 8 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2618.552 --&gt; -2618.537 </span></span>
+<span><span class="co">## candidates: 7 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.451 --&gt; -2615.314 </span></span>
+<span><span class="co">## candidates: 7 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.314 --&gt; -2615.314 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.314 --&gt; -2615.314 </span></span>
+<span><span class="co">## optimize edge weights:  -2625.262 --&gt; -2625.149 </span></span>
+<span><span class="co">## candidates: 12 swap: 3 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.908 --&gt; -2624.891 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.891 --&gt; -2624.89 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.891 --&gt; -2624.89 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.443 --&gt; -2624.42 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.42 --&gt; -2624.42 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.42 --&gt; -2624.42 </span></span>
+<span><span class="co">## optimize edge weights:  -2631.513 --&gt; -2631.46 </span></span>
+<span><span class="co">## candidates: 9 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2631.282 --&gt; -2631.223 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2631.223 --&gt; -2631.223 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2631.223 --&gt; -2631.223 </span></span>
+<span><span class="co">## optimize edge weights:  -2632.756 --&gt; -2632.677 </span></span>
+<span><span class="co">## candidates: 10 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2630.074 --&gt; -2630.053 </span></span>
+<span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2630.053 --&gt; -2630.053 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2630.053 --&gt; -2630.053 </span></span>
+<span><span class="co">## optimize edge weights:  -2627.386 --&gt; -2627.386 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2627.386 --&gt; -2627.386 </span></span>
+<span><span class="co">## optimize edge weights:  -2630.535 --&gt; -2630.402 </span></span>
+<span><span class="co">## candidates: 9 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2627.175 --&gt; -2627.099 </span></span>
+<span><span class="co">## candidates: 5 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2626.831 --&gt; -2626.819 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2626.819 --&gt; -2626.819 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2626.819 --&gt; -2626.819 </span></span>
+<span><span class="co">## optimize edge weights:  -2625.556 --&gt; -2625.513 </span></span>
+<span><span class="co">## candidates: 7 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2625.513 --&gt; -2625.513 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2625.513 --&gt; -2625.513 </span></span>
+<span><span class="co">## optimize edge weights:  -2625.77 --&gt; -2625.68 </span></span>
+<span><span class="co">## candidates: 5 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2625.68 --&gt; -2625.68 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2625.68 --&gt; -2625.68 </span></span>
+<span><span class="co">## optimize edge weights:  -2650.039 --&gt; -2650.027 </span></span>
+<span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2650.027 --&gt; -2650.027 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2650.027 --&gt; -2650.027 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.264 --&gt; -2624.103 </span></span>
+<span><span class="co">## candidates: 8 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.103 --&gt; -2624.103 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.103 --&gt; -2624.103 </span></span>
+<span><span class="co">## optimize edge weights:  -2621.581 --&gt; -2621.543 </span></span>
+<span><span class="co">## candidates: 8 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2621.242 --&gt; -2621.201 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2621.201 --&gt; -2621.201 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2621.201 --&gt; -2621.201 </span></span>
+<span><span class="co">## optimize edge weights:  -2649.547 --&gt; -2649.465 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2649.136 --&gt; -2649.011 </span></span>
+<span><span class="co">## candidates: 5 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2649.011 --&gt; -2649.011 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2649.011 --&gt; -2649.011 </span></span>
+<span><span class="co">## optimize edge weights:  -2622.616 --&gt; -2622.616 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2622.616 --&gt; -2622.616 </span></span>
+<span><span class="co">## optimize edge weights:  -2626.472 --&gt; -2626.467 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2625.005 --&gt; -2624.999 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.999 --&gt; -2624.999 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.999 --&gt; -2624.999 </span></span>
+<span><span class="co">## optimize edge weights:  -2622.528 --&gt; -2622.174 </span></span>
+<span><span class="co">## candidates: 8 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2621.724 --&gt; -2621.659 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2621.659 --&gt; -2621.658 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2621.659 --&gt; -2621.658 </span></span>
+<span><span class="co">## optimize edge weights:  -2654.35 --&gt; -2654.235 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2654.235 --&gt; -2654.235 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2654.235 --&gt; -2654.235 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.907 --&gt; -2624.748 </span></span>
+<span><span class="co">## candidates: 6 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.952 --&gt; -2617.821 </span></span>
+<span><span class="co">## candidates: 6 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.973 --&gt; -2615.966 </span></span>
+<span><span class="co">## candidates: 7 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.176 --&gt; -2615.025 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.025 --&gt; -2615.025 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.025 --&gt; -2615.025 </span></span>
+<span><span class="co">## optimize edge weights:  -2655.687 --&gt; -2655.687 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2655.687 --&gt; -2655.687 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.413 --&gt; -2624.228 </span></span>
+<span><span class="co">## candidates: 6 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.228 --&gt; -2624.228 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.228 --&gt; -2624.228 </span></span>
+<span><span class="co">## optimize edge weights:  -2655.053 --&gt; -2654.944 </span></span>
+<span><span class="co">## candidates: 5 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2654.944 --&gt; -2654.944 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2654.944 --&gt; -2654.944 </span></span>
+<span><span class="co">## optimize edge weights:  -2616.206 --&gt; -2616.206 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2616.206 --&gt; -2616.206 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.24 --&gt; -2617.223 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.223 --&gt; -2617.222 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.223 --&gt; -2617.222 </span></span>
+<span><span class="co">## optimize edge weights:  -2626.107 --&gt; -2626.104 </span></span>
+<span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2626.104 --&gt; -2626.104 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2626.104 --&gt; -2626.104 </span></span>
+<span><span class="co">## optimize edge weights:  -2645.306 --&gt; -2645.209 </span></span>
+<span><span class="co">## candidates: 7 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2645.209 --&gt; -2645.209 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2645.209 --&gt; -2645.209 </span></span>
+<span><span class="co">## optimize edge weights:  -2627.449 --&gt; -2627.321 </span></span>
+<span><span class="co">## candidates: 7 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2621.331 --&gt; -2620.653 </span></span>
+<span><span class="co">## candidates: 6 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2618.937 --&gt; -2618.879 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2616.441 --&gt; -2616.437 </span></span>
+<span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2616.437 --&gt; -2616.437 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2616.437 --&gt; -2616.437 </span></span>
+<span><span class="co">## optimize edge weights:  -2627.454 --&gt; -2627.069 </span></span>
+<span><span class="co">## candidates: 12 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.742 --&gt; -2624.732 </span></span>
+<span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.732 --&gt; -2624.732 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.732 --&gt; -2624.732 </span></span>
+<span><span class="co">## optimize edge weights:  -2622.851 --&gt; -2622.834 </span></span>
+<span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2622.834 --&gt; -2622.834 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2622.834 --&gt; -2622.834 </span></span>
+<span><span class="co">## optimize edge weights:  -2666.439 --&gt; -2666.438 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2666.439 --&gt; -2666.438 </span></span>
+<span><span class="co">## optimize edge weights:  -2626.96 --&gt; -2626.851 </span></span>
+<span><span class="co">## candidates: 7 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2626.851 --&gt; -2626.851 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2626.851 --&gt; -2626.851 </span></span>
+<span><span class="co">## optimize edge weights:  -2619.768 --&gt; -2619.737 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2619.737 --&gt; -2619.737 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2619.737 --&gt; -2619.737 </span></span>
+<span><span class="co">## optimize edge weights:  -2626.09 --&gt; -2626.082 </span></span>
+<span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2626.082 --&gt; -2626.082 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2626.082 --&gt; -2626.082 </span></span>
+<span><span class="co">## optimize edge weights:  -2654.944 --&gt; -2654.944 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2654.944 --&gt; -2654.944 </span></span>
+<span><span class="co">## optimize edge weights:  -2630.808 --&gt; -2630.681 </span></span>
+<span><span class="co">## candidates: 7 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2628.112 --&gt; -2628.108 </span></span>
+<span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2628.108 --&gt; -2628.108 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2628.108 --&gt; -2628.108 </span></span>
+<span><span class="co">## optimize edge weights:  -2622.626 --&gt; -2622.605 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2622.605 --&gt; -2622.605 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2622.605 --&gt; -2622.605 </span></span>
+<span><span class="co">## optimize edge weights:  -2619.252 --&gt; -2619.203 </span></span>
+<span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2619.203 --&gt; -2619.203 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2619.203 --&gt; -2619.203 </span></span>
+<span><span class="co">## optimize edge weights:  -2650.243 --&gt; -2650.124 </span></span>
+<span><span class="co">## candidates: 3 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2650.124 --&gt; -2650.123 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2650.124 --&gt; -2650.123 </span></span>
+<span><span class="co">## optimize edge weights:  -2616.446 --&gt; -2616.201 </span></span>
+<span><span class="co">## candidates: 11 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.456 --&gt; -2615.314 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.314 --&gt; -2615.314 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2615.314 --&gt; -2615.314 </span></span>
+<span><span class="co">## optimize edge weights:  -2620.269 --&gt; -2620.177 </span></span>
+<span><span class="co">## candidates: 10 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2618.456 --&gt; -2618.273 </span></span>
+<span><span class="co">## candidates: 7 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.721 --&gt; -2617.675 </span></span>
+<span><span class="co">## candidates: 5 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.675 --&gt; -2617.675 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.675 --&gt; -2617.675 </span></span>
+<span><span class="co">## optimize edge weights:  -2620.744 --&gt; -2620.411 </span></span>
+<span><span class="co">## candidates: 8 swap: 2 </span></span>
+<span><span class="co">## optimize edge weights:  -2620.411 --&gt; -2620.411 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2620.411 --&gt; -2620.411 </span></span>
+<span><span class="co">## optimize edge weights:  -2622.755 --&gt; -2622.661 </span></span>
+<span><span class="co">## candidates: 11 swap: 3 </span></span>
+<span><span class="co">## optimize edge weights:  -2617.418 --&gt; -2617.369 </span></span>
+<span><span class="co">## candidates: 5 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2616.553 --&gt; -2616.437 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2616.437 --&gt; -2616.437 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2616.437 --&gt; -2616.437 </span></span>
+<span><span class="co">## optimize edge weights:  -2632.551 --&gt; -2632.551 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2632.551 --&gt; -2632.551 </span></span>
+<span><span class="co">## optimize edge weights:  -2627.19 --&gt; -2625.598 </span></span>
+<span><span class="co">## candidates: 11 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.89 --&gt; -2624.856 </span></span>
+<span><span class="co">## candidates: 4 swap: 1 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.856 --&gt; -2624.856 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## optimize edge weights:  -2624.856 --&gt; -2624.856 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## candidates: 0 swap: 0</span></span></code></pre>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_mt</span></span></code></pre></div>
 <pre><code><span><span class="co">## model: HKY+G(4) </span></span>
 <span><span class="co">## loglikelihood: -2615.014 </span></span>
@@ -610,7 +1235,7 @@ conducted.</p>
 <span><span class="co">## 0.37480751 0.40160148 0.03911303 0.18447798</span></span></code></pre>
 <p>We can also use <code>pml_bb</code> with a defined model to infer a
 phylogenetic tree.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fitGTR</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">primates</span>, model<span class="op">=</span><span class="st">"GTR+G(4)+I"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -618,14 +1243,14 @@ phylogenetic tree.</p>
 </h3>
 <p>If we instead want to conduct standard bootstrapping <span class="citation">(Felsenstein 1985; Penny and Hendy 1985)</span>, we can
 do so with the function <code>bootstrap.pml</code>:</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bootstrap.pml.html">bootstrap.pml</a></span><span class="op">(</span><span class="va">fit_mt</span>, bs<span class="op">=</span><span class="fl">100</span>, optNni<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>Now we can plot the tree with the bootstrap support values on the
 edges and compare the standard bootstrap values to the ultrafast
 bootstrap values. With the function <code>plotBS</code> it is not only
 possible to plot these two, but also the transfer bootstraps <span class="citation">(Lemoine et al. 2018)</span> which are especially
 useful for large data sets.</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotBS.html">plotBS</a></span><span class="op">(</span><span class="fu"><a href="../reference/midpoint.html">midpoint</a></span><span class="op">(</span><span class="va">fit_mt</span><span class="op">$</span><span class="va">tree</span><span class="op">)</span>, p <span class="op">=</span> <span class="fl">.5</span>, type<span class="op">=</span><span class="st">"p"</span>, digits<span class="op">=</span><span class="fl">2</span>, main<span class="op">=</span><span class="st">"Ultrafast bootstrap"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/plotBS.html">plotBS</a></span><span class="op">(</span><span class="fu"><a href="../reference/midpoint.html">midpoint</a></span><span class="op">(</span><span class="va">fit_mt</span><span class="op">$</span><span class="va">tree</span><span class="op">)</span>, <span class="va">bs</span>, p <span class="op">=</span> <span class="fl">50</span>, type<span class="op">=</span><span class="st">"p"</span>, main<span class="op">=</span><span class="st">"Standard bootstrap"</span><span class="op">)</span></span>
@@ -641,7 +1266,7 @@ bootstrap support values.
 node labels in our tree instead of plotting it (e.g. to export the tree
 somewhere else), <code>plotBS</code> gives that option with
 <code>type = "n"</code>:</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># assigning standard bootstrap values to our tree; this is the default method</span></span>
 <span><span class="va">tree_stdbs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plotBS.html">plotBS</a></span><span class="op">(</span><span class="va">fit_mt</span><span class="op">$</span><span class="va">tree</span>, <span class="va">bs</span>, type <span class="op">=</span> <span class="st">"n"</span><span class="op">)</span></span>
 <span></span>
@@ -649,7 +1274,7 @@ somewhere else), <code>plotBS</code> gives that option with
 <span><span class="va">tree_tfbs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plotBS.html">plotBS</a></span><span class="op">(</span><span class="va">fit_mt</span><span class="op">$</span><span class="va">tree</span>, <span class="va">bs</span>, type <span class="op">=</span> <span class="st">"n"</span>, method <span class="op">=</span> <span class="st">"TBE"</span><span class="op">)</span></span></code></pre></div>
 <p>It is also possible to look at <code>consensusNet</code> to identify
 potential conflict.</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cnet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/consensusNet.html">consensusNet</a></span><span class="op">(</span><span class="va">bs</span>, p<span class="op">=</span><span class="fl">0.2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cnet</span>, show.edge.label<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
@@ -670,7 +1295,7 @@ but not using a GUI (for example “Aqua” on Macs) and unfortunately the
 </h3>
 <p>Now that we have our tree with bootstrap values, we can easily write
 it to a file in <em>Newick</em>-format:</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># tree with ultrafast bootstrap values</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/write.tree.html" class="external-link">write.tree</a></span><span class="op">(</span><span class="va">fit_mt</span><span class="op">$</span><span class="va">tree</span>, <span class="st">"primates.tree"</span><span class="op">)</span></span>
 <span></span>
@@ -693,17 +1318,18 @@ tip dates are fulfilled. That differs from the function
 <code>optim.pml</code> where th tree supplied to the function has to
 fulfill the constraints. In this case for an ultrametric starting tree
 we can use an UPGMA or WPGMA tree.</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_strict</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">primates</span>, model<span class="op">=</span><span class="st">"HKY+G(4)"</span>, method<span class="op">=</span><span class="st">"ultrametric"</span>,</span>
 <span>                     rearrangement<span class="op">=</span><span class="st">"NNI"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<pre><code><span><span class="co">## candidates: 0 swap: 0</span></span></code></pre>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit_strict</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Trees_files/figure-html/plot_strict_primates-1.png" width="768"></p>
 <p>With <em>phangorn</em> we also can estimate tipdated phylogenies.
 Here we use a H3N2 virus data set from <em>treetime</em> <span class="citation">(Sagulenko, Puller, and Neher 2018)</span> as an
 example. Additionally to the alignment we also need to read in data
 containing the dates of the tips.</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fdir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/trees"</span>, package <span class="op">=</span> <span class="st">"phangorn"</span><span class="op">)</span></span>
 <span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">fdir</span>,<span class="st">"H3N2_NA_20.csv"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">H3N2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read.phyDat.html">read.phyDat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">fdir</span>,<span class="st">"H3N2_NA_20.fasta"</span><span class="op">)</span>, format<span class="op">=</span><span class="st">"fasta"</span><span class="op">)</span></span></code></pre></div>
@@ -711,7 +1337,7 @@ containing the dates of the tips.</p>
 <em>lubridate</em> package <span class="citation">(Grolemund and Wickham
 2011)</span> comes in very handy dates in case one has to recode dates,
 e.g. days and months.</p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html" class="external-link">setNames</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">$</span><span class="va">numdate_given</span>, <span class="va">tmp</span><span class="op">$</span><span class="va">name</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dates</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##               A/Hawaii/02/2013|KF789866|05/28/2013|USA|12_13|H3N2/1-1409 </span></span>
@@ -728,10 +1354,14 @@ e.g. days and months.</p>
 <span><span class="co">##                                                                 2000.682</span></span></code></pre>
 <p>Again we use the <code>pml_bb</code> function, which optimizes the
 tree given the constraints of the <code>tip.dates</code> vector.</p>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_td</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">H3N2</span>, model<span class="op">=</span><span class="st">"HKY+I"</span>, method<span class="op">=</span><span class="st">"tipdated"</span>, tip.dates<span class="op">=</span><span class="va">dates</span>, </span>
-<span>               rearrangement<span class="op">=</span><span class="st">"NNI"</span><span class="op">)</span></span>
-<span><span class="va">fit_td</span></span></code></pre></div>
+<span>               rearrangement<span class="op">=</span><span class="st">"NNI"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## candidates: 0 swap: 3 </span></span>
+<span><span class="co">## candidates: 0 swap: 0 </span></span>
+<span><span class="co">## candidates: 0 swap: 0</span></span></code></pre>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit_td</span></span></code></pre></div>
 <pre><code><span><span class="co">## model: HKY+I </span></span>
 <span><span class="co">## loglikelihood: -3117.866 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -2883.911 </span></span>
@@ -760,7 +1390,7 @@ is here comparable to the slope fo the tip-to-root regression in
 programs like <em>TempEst</em> <span class="citation">(Rambaut et al.
 2016)</span>.</p>
 <p>And at last we plot the tree with a timescale.</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit_td</span>, align.tip.label<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Trees_files/figure-html/tipdated_plot-1.png" width="768"></p>
 <div style="page-break-after: always;"></div>
@@ -799,7 +1429,7 @@ programs like <em>TempEst</em> <span class="citation">(Rambaut et al.
 <span><span class="co">## [13] quadprog_1.5-8    grid_4.5.1        evaluate_1.0.5    jquerylib_0.1.4  </span></span>
 <span><span class="co">## [17] fastmap_1.2.0     yaml_2.3.10       lifecycle_1.0.4   compiler_4.5.1   </span></span>
 <span><span class="co">## [21] codetools_0.2-20  igraph_2.1.4      fs_1.6.6          fastmatch_1.1-6  </span></span>
-<span><span class="co">## [25] pkgconfig_2.0.3   Rcpp_1.1.0        htmlwidgets_1.6.4 systemfonts_1.3.0</span></span>
+<span><span class="co">## [25] pkgconfig_2.0.3   Rcpp_1.1.0        htmlwidgets_1.6.4 systemfonts_1.3.1</span></span>
 <span><span class="co">## [29] lattice_0.22-7    digest_0.6.37     R6_2.6.1          parallel_4.5.1   </span></span>
 <span><span class="co">## [33] magrittr_2.0.4    checkmate_2.3.3   Matrix_1.7-3      bslib_0.9.0      </span></span>
 <span><span class="co">## [37] tools_4.5.1       pkgdown_2.1.3     cachem_1.1.0      desc_1.4.3</span></span></code></pre>
