@@ -60,10 +60,9 @@ for simulation studies or in cases where .</p>
 <span><span class="fu">plot_gamma_plus_inv</span><span class="op">(</span>shape <span class="op">=</span> <span class="fl">1</span>, inv <span class="op">=</span> <span class="fl">0</span>, k <span class="op">=</span> <span class="fl">4</span>, discrete <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  cdf <span class="op">=</span> <span class="cn">TRUE</span>, append <span class="op">=</span> <span class="cn">FALSE</span>, xlab <span class="op">=</span> <span class="st">"x"</span>, ylab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">cdf</span>, <span class="st">"F(x)"</span>,</span>
 <span>  <span class="st">"f(x)"</span><span class="op">)</span>, xlim <span class="op">=</span> <span class="cn">NULL</span>, verticals <span class="op">=</span> <span class="cn">FALSE</span>, edge.length <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  site.rate <span class="op">=</span> <span class="st">"gamma"</span>, g <span class="op">=</span> <span class="cn">NULL</span>, w <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
+<span>  site.rate <span class="op">=</span> <span class="st">"gamma"</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">plotRates</span><span class="op">(</span><span class="va">obj</span>, cdf.color <span class="op">=</span> <span class="st">"blue"</span>, main <span class="op">=</span> <span class="st">"cdf"</span>, xlim <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  rug <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">plotRates</span><span class="op">(</span><span class="va">obj</span>, cdf.color <span class="op">=</span> <span class="st">"blue"</span>, main <span class="op">=</span> <span class="st">"cdf"</span>, rug <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -145,10 +144,6 @@ approach of Felsenstein (2001)</p></dd>
 <dt id="arg-main">main<a class="anchor" aria-label="anchor" href="#arg-main"></a></dt>
 <dd><p>a main title for the plot.</p></dd>
 
-
-<dt id="arg-rug">rug<a class="anchor" aria-label="anchor" href="#arg-rug"></a></dt>
-<dd><p>adds a rug representation of parsimony score to the plot.</p></dd>
-
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -185,6 +180,19 @@ they expect than <code>pml</code>.</p>
 <span class="r-plt img"><img src="discrete.gamma-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">old.par</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">Laurasiatherian</span>, <span class="st">"JC+G(4)"</span>, rearrangement <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> optimize edge weights:  -49811.1 --&gt; -49285.06 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> optimize shape parameter:  -49285.06 --&gt; -48610.3 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> optimize edge weights:  -48610.3 --&gt; -48604.91 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> optimize shape parameter:  -48604.91 --&gt; -48604.68 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> optimize edge weights:  -48604.68 --&gt; -48604.66 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> optimize shape parameter:  -48604.66 --&gt; -48604.65 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> optimize edge weights:  -48604.65 --&gt; -48604.65 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> optimize shape parameter:  -48604.65 --&gt; -48604.65 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> optimize edge weights:  -48604.65 --&gt; -48604.65 </span>
+<span class="r-in"><span><span class="fu">plotRates</span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="discrete.gamma-2.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
