@@ -196,6 +196,33 @@ optimWs <- function(tree, data, w = c(0.25, 0.25, 0.25, 0.25), g=g, ...) {
 }
 
 
+# optimize shape parameter and weights
+optimGammaPhangorn <- function(tree, data, w = c(0.25, 0.25, 0.25, 0.25),
+                               shape=1, ...) {
+  k <- length(w)
+  nenner <- 1 / w[1]
+  eta <- log(w * nenner)
+  eta <- eta[-1]
+  par <- c(eta, shape)
+  fn <- function(par, tree, data, k, shape, ...) {
+    eta <- c(0, par[-k])
+    shape <- par[k]
+    w_new <- exp(eta) / sum(exp(eta))
+    g <- discrete.gamma.3(alpha=shape, w=w_new)
+    pml.fit(tree, data, g=g, w=w_new, k=k, ...)
+  }
+  res <- optim(par, fn = fn, method = "L-BFGS-B", lower = c(rep(-5, k-1), 0.1),
+               upper = c(rep(5, k-1), 100),
+               control = list(fnscale = -1, maxit = 25), gr = NULL,
+               tree = tree, data = data, k = k, shape=shape, ...)
+  w <- exp(c(0, res[[1]][-k]))
+  w <- w / sum(w)
+  shape <- res[[1]][k]
+  result <- list(par = c(w, shape), value = res[[2]])
+  result
+}
+
+
 # changed to c(-10,10) from c(-5,5)
 optimRate <- function(tree, data, rate = 1, ...) {
   fn <- function(rate, tree, data, ...)
@@ -816,7 +843,7 @@ update.pml <- function(object, ...) {
   g <- object$g
   w <- object$w
   if(updateRates){
-    rw <- rates_n_weights(shape, k, site.rate)
+    rw <- rates_n_weights(shape, k, site.rate, w)
     g <- rw[, 1]
     w <- rw[, 2]
 
@@ -995,7 +1022,7 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
   if (is.null(eig))
     eig <- edQt(bf = bf, Q = Q)
   if(is.null(g) | is.null(w)){
-    rw <- rates_n_weights(shape, k, site.rate)
+    rw <- rates_n_weights(shape, k, site.rate, w)
     g <- rw[, 1]
     w <- rw[, 2]
 
@@ -1163,6 +1190,10 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #' @references Felsenstein, J. (1981) Evolutionary trees from DNA sequences: a
 #' maximum likelihood approach. \emph{Journal of Molecular Evolution},
 #' \bold{17}, 368--376.
+#'
+#' Felsenstein, J. (2001) Taking Variation of Evolutionary Rates Between Sites
+#' into Account in Inferring Phylogenies. \emph{Journal of Molecular Evolution},
+#' \bold{53}, 447--455.
 #'
 #' Felsenstein, J. (2004). \emph{Inferring Phylogenies}. Sinauer Associates,
 #' Sunderland.
@@ -1334,7 +1365,7 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
 #      g <- rep(1, k)
 #    }
 #    else{
-      rw <- rates_n_weights(shape, k, site.rate)
+      rw <- rates_n_weights(shape, k, site.rate, w)
       g <- rw[, 1]
       w <- rw[, 2]
 #    }
@@ -1904,7 +1935,7 @@ rooted.nni <- function(tree, data, eig, w, g, bf, rate, ll.0, INV, RELL=NULL,
 
 
 updateRates <- function(res, ll, rate, shape, k, inv, wMix, update="rate",
-                        site.rate = "gamma"){
+                        site.rate = "gamma", w=NULL){
   if( is.infinite(res[[2]]) || is.nan(res[[2]])) return(NULL)
   if(res[[2]] < ll) return(NULL)
   update <- match.arg(update, c("rate", "shape", "inv"))
@@ -1912,7 +1943,7 @@ updateRates <- function(res, ll, rate, shape, k, inv, wMix, update="rate",
   if(update=="shape") shape <- res[[1]]
   if(update=="inv") inv <- res[[1]]
 
-  rw <- rates_n_weights(shape, k, site.rate)
+  rw <- rates_n_weights(shape, k, site.rate, w)
   g <- rw[, 1]
   w <- rw[, 2]
 
@@ -2363,13 +2394,23 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       if (wMix > 0) ll.0 <- ll.0 + llMix
     }
     if (optGamma) {
-      res <- optimGamma(tree, data, shape = shape, k = k, inv = inv, INV = INV,
-                        Q = Q, bf = bf, eig = eig, ll.0 = ll.0, rate = rate,
-                        llMix = llMix, wMix=wMix, ASC=ASC)
-      if (trace > 0)
+      if(site.rate=="gamma_phangorn") {
+        res <- optimGammaPhangorn(tree, data, w=w, shape = shape,
+                                  inv = inv, INV = INV,
+                          Q = Q, bf = bf, eig = eig, ll.0 = ll.0, rate = rate,
+                          llMix = llMix, wMix=wMix, ASC=ASC)
+        shape <- res[[1]][k+1]
+        w <- res[[1]][1:k]
+        g <- discrete.gamma.3(shape, w)
+      } else {
+        res <- optimGamma(tree, data, shape = shape, k = k, inv = inv,
+                          INV = INV, Q = Q, bf = bf, eig = eig, ll.0 = ll.0,
+                          rate = rate, llMix = llMix, wMix=wMix, ASC=ASC)
+        if (trace > 0)
         cat("optimize shape parameter: ", ll, "-->", max(res[[2]], ll), "\n")
-      updateRates(res, ll, rate, shape, k, inv, wMix, update="shape",
+        updateRates(res, ll, rate, shape, k, inv, wMix, update="shape",
                   site.rate=site.rate)
+      }
     }
     if (optFreeRate) {
       # bis jetzt w nicht optimiert!
@@ -2487,7 +2528,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                        ll=ll2, w = w, g = g, eig = eig, bf = bf, inv=inv,
                        rate=rate, ll.0 = ll.0, INV = INV, llMix = llMix,
                        wMix=wMix, ASC=ASC, RELL=RELL,
-                       control=list(eps=1e-08, maxit=3, trace=0, tau=tau))
+                       control=list(eps=1e-08, maxit=3, trace=3, tau=tau))
         if (res$logLik > (ll + epsR)) {
           tree <- res$tree
           ll <- res$logLik
@@ -2805,9 +2846,11 @@ pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, wMix, llMix,
   candidates <- loglik > ll + eps0
   INDEX2 <- t(apply(INDEX, 1, index2edge, root = getRoot(tree)))
 
+  cand <- neighborhood(candidates, INDEX, nTips)
+
   tmpl <- pml.fit4(tree, data, bf=bf, g=g, w=w, eig=eig, inv=inv,
                    ll.0=ll.0, k=k, wMix=wMix, llMix=llMix, ...)
-
+#  browser()
   while (any(candidates)) {
 
     ind <- which.max(loglik)
@@ -2851,8 +2894,7 @@ pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, wMix, llMix,
       }
     }
   }
-  list(tree = tree, loglik = ll, swap = swap, candidates = candidates,
-       RELL=RELL)
+  list(tree = tree, loglik = ll, swap = swap, candidates = cand, RELL=RELL)
 }
 
 
@@ -2882,6 +2924,8 @@ opt_nni <- function(tree, data, rooted, iter_max, trace, ll, RELL=NULL, ...){
       ll2 <- ll
     }
     swap <- swap + tmp$swap
+
+    cat("candidates:", length(tmp$candidates), "swap:",tmp$swap,  "\n")
     if (trace > 1) cat("optimize topology: ", ll, "-->", ll2,
                        " NNI moves: ", tmp$swap, "\n")
     ll <- ll2
@@ -2903,6 +2947,12 @@ opt_nni <- function(tree, data, rooted, iter_max, trace, ll, RELL=NULL, ...){
   res
 }
 
+
+neighborhood <- function(candidates, INDEX, nTips){
+  cand <- unique( (which(candidates) + 1) %/% 2 )
+  cand <- unique(as.vector(INDEX[cand, ]) )
+  cand[cand>nTips]
+}
 
 #  external TODO
 SH_quartet <- function(tree, data, rooted, ll, ...){

@@ -32,7 +32,7 @@ assert_phylo(x, has_edge_length = FALSE, is_rooted = FALSE,
 assert_treeish(x, null.ok = FALSE)
 
 assert_multiPhylo(x, is_ultrametric = FALSE, is_rooted = FALSE,
-  same_labels = FALSE, has_edge_length = FALSE)
+  has_edge_length = FALSE)
 
 assert_phyDat(x, contains_label = !is.null(label), label = NULL)
 
