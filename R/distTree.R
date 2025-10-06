@@ -128,7 +128,7 @@ UNJ <- function(x){
 #' \code{\link[phangorn]{splitsNetwork}}, \code{\link[phangorn]{upgma}}
 #' @keywords cluster
 #' @importFrom Matrix Matrix sparseMatrix crossprod solve
-#' @importFrom quadprog solve.QP.compact
+## @importFrom quadprog solve.QP.compact
 #' @examples
 #'
 #' example(NJ)
@@ -468,9 +468,19 @@ nnls.tree <- function(dm, tree, method=c("unrooted", "ultrametric", "tipdated"),
       Aind[1, na_ind[i, 2]] <- Aind[1, na_ind[i, 2]] - 1L
     }
   }
+  Amat2 <- Matrix(0,  nrow=l, ncol=nrow(Dmat))
+  Amat2[cbind(seq_len(l), as.integer(ind1))] <- 1
+  ind4 <- cbind(seq_len(l), as.integer(ind2))
+  Amat2[na.omit(ind4)] <- -1
 
-  betahat <- quadprog::solve.QP.compact(as.matrix(Dmat), as.vector(dvec), Amat,
-                                        Aind)$sol
+#  browser()
+#  betahat <- quadprog::solve.QP.compact(as.matrix(Dmat), as.vector(dvec), Amat,
+#                                        Aind)$sol
+  settings <- osqp::osqpSettings(verbose = FALSE, eps_abs=1e-16,
+                                 eps_rel = 1e-16)
+  betahat <- osqp::solve_osqp(Dmat, -dvec, Amat2,
+                                    pars=settings, l=numeric(l))$x
+
 
 
   # quadratic programing solving
@@ -544,12 +554,17 @@ nnls.splits <- function(x, dm, trace = 0, eps = 1e-8) {
   if (any(betahat < 0)) {
     n <- dim(X)[2]
     # quadratic programing
-    Amat <- matrix(1, 1, n)
+#    Amat <- matrix(1, 1, n)
     Aind <- matrix(0L, 2L, n)
     Aind[1, ] <- 1L
     Aind[2, ] <- as.integer(1L:n)
-    betahat <- quadprog::solve.QP.compact(as.matrix(Dmat), as.vector(dvec),
-                                          Amat, Aind)$sol
+#    browser()
+#    betahat <- quadprog::solve.QP.compact(as.matrix(Dmat), as.vector(dvec),
+#                                          Amat, Aind)$sol
+    Amat2 <- Matrix::Diagonal(n)
+    settings <- osqp::osqpSettings(verbose = FALSE, eps_abs=1e-16, eps_rel = 1e-16)
+    betahat <- osqp::solve_osqp(Dmat, -dvec, Amat2, l=numeric(n),
+                                pars=settings)$x
   }
   RSS <- sum((y - (X %*% betahat))^2)
   ind <- (betahat > 1e-8) | int == 1
