@@ -122,14 +122,14 @@ summary.phyDat <- function(object, ...){
   bf <- baseFreq(object)
   gl <- glance(object, ...)
   ct <- composition_test(object)
-  ans <- list(glance=gl, composition=ct)
+  ans <- list(glance=gl, composition=ct, state_frequency=bf)
   class(ans) <- "summary.phyDat"
   ans
 }
 
 #' @rdname baseFreq
 #' @export
-print.summary.phyDat <- function(x, ...,
+print.summary.phyDat <- function(x, ..., show_frequencies=TRUE,
                                  digits = max(3L, getOption("digits") - 3L)){
   cat("Alignment statistics \n\n")
   cat("Type: ", x$glance$type, "\n")
@@ -142,6 +142,14 @@ print.summary.phyDat <- function(x, ...,
   cat("Number of gaps: ", x$glance$gaps, "\n")
   cat("Number of ambiguous states: ", x$glance$amb, "\n")
   cat("Duplicated sequences: ", x$glance$duplicated_seq, "\n\n")
+  if(length(x$state_frequency) < 21){
+    bf <- x$state_frequency
+    tmp <- paste0("p(", names(bf), ") =")
+    cat("State frequencies (empirical):\n")
+    for(i in seq_along(bf))cat(tmp[i], bf[i], "\n")
+#    print(matrix(bf, ncol=1, dimnames = list(tmp, NULL)))
+    cat("\n")
+  }
   cat("Composition Test (Chisq) \n")
   comp <- x$composition
   comp <- comp[order(comp[,3]),]
