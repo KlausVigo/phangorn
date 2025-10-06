@@ -29,7 +29,7 @@ image.phyDat <- function(x, ...){
 #' @rdname image.phyDat
 #' @method image ancestral
 #' @export
-image.ancestral <- function(x, ...) image(as.phyDat(x))
+image.ancestral <- function(x, ...) image(as.phyDat(x), ...)
 
 
 #' @srrstats {EA4.0} is implicitly done e.g. distinguish between DNA, AA or user type data
