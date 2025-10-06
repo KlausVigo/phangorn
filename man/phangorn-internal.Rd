@@ -12,6 +12,7 @@
 \alias{clean_phylo}
 \alias{candidate_tree}
 \alias{hash}
+\alias{hash_topo}
 \alias{binomial_mk}
 \alias{phangorn-internal}
 \alias{coords}
@@ -45,6 +46,8 @@ candidate_tree(x, method = c("unrooted", "ultrametric", "tipdated"),
   eps = 1e-08, tip.dates = NULL, ...)
 
 hash(x, ...)
+
+hash_topo(x, rooted = FALSE, ...)
 
 binomial_mk(k = 4)
 
