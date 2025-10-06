@@ -33,7 +33,7 @@
 #' Thesis)
 #' @keywords cluster
 #' @importFrom Matrix sparseMatrix
-#' @importFrom quadprog solve.QP
+## @importFrom quadprog solve.QP
 #' @examples
 #'
 #' data(yeast)
@@ -83,11 +83,12 @@ splitsNetwork <- function(dm, splits = NULL, gamma = 0.1, lambda = 1e-6,
   Amat       <- cbind(ind1, diag(n))
   bvec       <- c(gamma, rep(0, n))
   uvec       <- c(gamma, rep(Inf, n))
-  solution <- quadprog::solve.QP(Dmat, dvec, Amat, bvec = bvec, meq = 1)$sol
 
+#  browser()
+#  solution <- quadprog::solve.QP(Dmat, dvec, Amat, bvec = bvec, meq = 1)$sol
   settings <- osqp::osqpSettings(verbose = FALSE, eps_abs = 1e-16,
                                  eps_rel = 1e-16)
-  osqp_solution <- osqp::solve_osqp(Dmat, -dvec, t(Amat), l=bvec, u = uvec,
+  solution <- osqp::solve_osqp(Dmat, -dvec, t(Amat), l=bvec, u = uvec,
                                     pars=settings)$x
 
   ind2 <- which(solution > 1e-8)
@@ -105,14 +106,12 @@ splitsNetwork <- function(dm, splits = NULL, gamma = 0.1, lambda = 1e-6,
 
   Amat2 <- diag(n2)
   bvec2 <- rep(0, n2)
-  # bvec2 not used
-  solution2  <- quadprog::solve.QP(Dmat, dvec, Amat2)$sol
-
-
-
+# bvec2 not used
+#  browser()
+#  solution2  <- quadprog::solve.QP(Dmat, dvec, Amat2)$sol
   settings <- osqp::osqpSettings(verbose = FALSE, eps_abs = 1e-16,
                                  eps_rel = 1e-16)
-  osqp_solution2 <- osqp::solve_osqp(P = Dmat, q = -dvec, A = t(Amat2),
+  solution2 <- osqp::solve_osqp(P = Dmat, q = -dvec, A = t(Amat2),
                                     l = bvec2, pars = settings)$x
 
   RSS1 <- sum( (y - X[, ind2] %*% solution[ind2])^2)
