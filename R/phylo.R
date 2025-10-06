@@ -208,7 +208,7 @@ optimGammaPhangorn <- function(tree, data, w = c(0.25, 0.25, 0.25, 0.25),
     eta <- c(0, par[-k])
     shape <- par[k]
     w_new <- exp(eta) / sum(exp(eta))
-    g <- discrete.gamma.3(alpha=shape, w=w_new)
+    g <- discrete.gamma.2(alpha=shape, k=length(w_new))
     pml.fit(tree, data, g=g, w=w_new, k=k, ...)
   }
   res <- optim(par, fn = fn, method = "L-BFGS-B", lower = c(rep(-5, k-1), 0.1),
@@ -2401,7 +2401,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                           llMix = llMix, wMix=wMix, ASC=ASC)
         shape <- res[[1]][k+1]
         w <- res[[1]][1:k]
-        g <- discrete.gamma.3(shape, w)
+        g <- discrete.gamma.2(shape, length(w))
       } else {
         res <- optimGamma(tree, data, shape = shape, k = k, inv = inv,
                           INV = INV, Q = Q, bf = bf, eig = eig, ll.0 = ll.0,
@@ -2925,7 +2925,7 @@ opt_nni <- function(tree, data, rooted, iter_max, trace, ll, RELL=NULL, ...){
     }
     swap <- swap + tmp$swap
 
-    cat("candidates:", length(tmp$candidates), "swap:",tmp$swap,  "\n")
+    if (trace > 3) cat("candidates:", length(tmp$candidates), "swap:",tmp$swap,  "\n")
     if (trace > 1) cat("optimize topology: ", ll, "-->", ll2,
                        " NNI moves: ", tmp$swap, "\n")
     ll <- ll2
