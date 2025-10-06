@@ -256,7 +256,7 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
 
   if (trace > 0) {
     tmp <- RESULT$Model[which.min(RESULT$BIC)]
-    cat("\nBest model according to AIC:", tmp, "\n\n")
+    cat("\nBest fitting model according to AIC:", tmp, "\n\n")
   }
   RESULT
 }
