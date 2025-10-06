@@ -269,9 +269,6 @@ std::vector< std::vector<int> > short_bipCPP(IntegerMatrix orig, int nTips) {
       std::set_difference (x.begin(), x.end(), y.begin(), y.end(), inserter(z, begin(z)));
       out[j].insert( out[j].begin(), z.begin(), z.end() );
     }
-//    if((y.size() == half) && !even ){
-//      out[j].insert( out[j].begin(), y.begin(), y.end() );
-//    }
     if((y.size() == half)){
       if((y[0] > 1L)  && even){
         std::vector<int> z;
