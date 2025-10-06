@@ -70,8 +70,8 @@ composition for a species differs.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'summary.phyDat'</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, digits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fl">3L</span>, <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"digits"</span><span class="op">)</span> <span class="op">-</span></span>
-<span>  <span class="fl">3L</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, show_frequencies <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  digits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fl">3L</span>, <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"digits"</span><span class="op">)</span> <span class="op">-</span> <span class="fl">3L</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -183,6 +183,12 @@ contrast.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of gaps:  0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of ambiguous states:  0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Duplicated sequences:  0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> State frequencies (empirical):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p(a) = 0.3321866 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p(c) = 0.1990791 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p(g) = 0.2040652 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p(t) = 0.2646691 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Composition Test (Chisq) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           statistic df  p-value</span>
