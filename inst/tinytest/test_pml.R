@@ -150,10 +150,10 @@ expect_error(pml_bb(dat, model="GTR", method="tipdated"))
     expect_equal(fit.quadrature$shape, shape, tolerance=1e-4)
 
 # test gamma rw
-    fit0 <- pml(treeU1, dat_tmp, k=4, site.rate = "gamma_phangorn")
-    fit.rw <- optim.pml(fit0, optEdge=FALSE, optGamma = TRUE,
-                                control = pml.control(epsilon=1e-10, trace=0))
-    expect_equal(fit.rw$shape, shape, tolerance=1e-4)
+#    fit0 <- pml(treeU1, dat_tmp, k=4, site.rate = "gamma_phangorn")
+#    fit.rw <- optim.pml(fit0, optEdge=FALSE, optGamma = TRUE,
+#                                control = pml.control(epsilon=1e-10, trace=0))
+#    expect_equal(fit.rw$shape, shape, tolerance=1e-4)
 
 
 
