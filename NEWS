@@ -16,7 +16,7 @@ OTHER CHANGES
 
     o bab got a progress bar, as it might runs for a long time (suggested by
 
-      Barbara Bitarello). bab might be faster thanks to improved lower bound.
+      Barbara Bitarello). bab might be faster thanks to an improved lower bound.
 
     o densiTree now calls axisPhylo, which was improved in ape, to avoid code
 
