@@ -227,6 +227,8 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
 #' @param obj an object of class pml
 #' @param main a main title for the plot.
 #' @param cdf.color color of the cdf.
+#' @param rug logical; if TRUE a \code{\link[graphics]{rug}} is added to the
+#' plot.
 #' @export
 plotRates <- function(obj, cdf.color="blue", main="cdf", rug=TRUE, ...){
   pscores <- parsimony(obj$tree, obj$data, site="site")[attr(obj$data, "index")]
@@ -296,9 +298,9 @@ rates_n_weights <- function(shape, k, site.rate = "gamma", w=NULL){
       rates.and.weights <- matrix( c(g, w), ncol=2L,
                           dimnames = list(NULL, c("rate", "weight")))
     }
-    if(site.rate == "gamma_phangorn"){
-      rates.and.weights <- discrete.gamma.2(alpha=shape, k=k)
-    }
+#    if(site.rate == "gamma_phangorn"){
+#      rates.and.weights <- discrete.gamma.2(alpha=shape, k=k)
+#    }
     if(site.rate == "gamma_quadrature")
       rates.and.weights <- LaguerreQuad(shape=shape, k)
     if(site.rate == "free_rate"){

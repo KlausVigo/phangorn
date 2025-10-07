@@ -16,8 +16,8 @@ composition_test(obj)
 
 \method{summary}{phyDat}(object, ...)
 
-\method{print}{summary.phyDat}(x, ..., show_frequencies = TRUE,
-  digits = max(3L, getOption("digits") - 3L))
+\method{print}{summary.phyDat}(x, ..., digits = max(3L, getOption("digits") -
+  3L))
 }
 \arguments{
 \item{freq}{logical, if 'TRUE', frequencies or counts are returned otherwise

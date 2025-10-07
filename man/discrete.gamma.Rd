@@ -58,6 +58,9 @@ approach of Felsenstein (2001)}
 \item{cdf.color}{color of the cdf.}
 
 \item{main}{a main title for the plot.}
+
+\item{rug}{logical; if TRUE a \code{\link[graphics]{rug}} is added to the
+plot.}
 }
 \value{
 \code{discrete.gamma} returns a matrix.

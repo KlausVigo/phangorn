@@ -129,7 +129,7 @@ summary.phyDat <- function(object, ...){
 
 #' @rdname baseFreq
 #' @export
-print.summary.phyDat <- function(x, ..., show_frequencies=TRUE,
+print.summary.phyDat <- function(x, ...,
                                  digits = max(3L, getOption("digits") - 3L)){
   cat("Alignment statistics \n\n")
   cat("Type: ", x$glance$type, "\n")
