@@ -8,13 +8,13 @@
   "codeRepository": "https://github.com/KlausVigo/phangorn",
   "issueTracker": "https://github.com/KlausVigo/phangorn/issues",
   "license": "https://spdx.org/licenses/GPL-2.0",
-  "version": "2.12.1.1",
+  "version": "2.12.1.3",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.4.2 (2024-10-31)",
+  "runtimePlatform": "R version 4.5.1 (2025-06-13)",
   "provider": {
     "@id": "https://cran.r-project.org",
     "@type": "Organization",
@@ -156,6 +156,18 @@
         "url": "https://www.bioconductor.org"
       },
       "sameAs": "https://bioconductor.org/packages/release/bioc/html/Biostrings.html"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "codetools",
+      "name": "codetools",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=codetools"
     },
     {
       "@type": "SoftwareApplication",
@@ -315,7 +327,7 @@
         "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://github.com/emmanuelparadis/ape"
+      "sameAs": "https://CRAN.R-project.org/package=ape"
     },
     "2": {
       "@type": "SoftwareApplication",
@@ -324,6 +336,18 @@
       "version": ">= 4.1.0"
     },
     "3": {
+      "@type": "SoftwareApplication",
+      "identifier": "checkmate",
+      "name": "checkmate",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=checkmate"
+    },
+    "4": {
       "@type": "SoftwareApplication",
       "identifier": "digest",
       "name": "digest",
@@ -335,7 +359,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=digest"
     },
-    "4": {
+    "5": {
       "@type": "SoftwareApplication",
       "identifier": "generics",
       "name": "generics",
@@ -347,17 +371,17 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=generics"
     },
-    "5": {
+    "6": {
       "@type": "SoftwareApplication",
       "identifier": "graphics",
       "name": "graphics"
     },
-    "6": {
+    "7": {
       "@type": "SoftwareApplication",
       "identifier": "grDevices",
       "name": "grDevices"
     },
-    "7": {
+    "8": {
       "@type": "SoftwareApplication",
       "identifier": "igraph",
       "name": "igraph",
@@ -370,7 +394,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=igraph"
     },
-    "8": {
+    "9": {
       "@type": "SoftwareApplication",
       "identifier": "Matrix",
       "name": "Matrix",
@@ -382,29 +406,29 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=Matrix"
     },
-    "9": {
+    "10": {
       "@type": "SoftwareApplication",
       "identifier": "methods",
       "name": "methods"
     },
-    "10": {
-      "@type": "SoftwareApplication",
-      "identifier": "parallel",
-      "name": "parallel"
-    },
     "11": {
       "@type": "SoftwareApplication",
-      "identifier": "quadprog",
-      "name": "quadprog",
+      "identifier": "osqp",
+      "name": "osqp",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
         "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://CRAN.R-project.org/package=quadprog"
+      "sameAs": "https://CRAN.R-project.org/package=osqp"
     },
     "12": {
+      "@type": "SoftwareApplication",
+      "identifier": "parallel",
+      "name": "parallel"
+    },
+    "13": {
       "@type": "SoftwareApplication",
       "identifier": "Rcpp",
       "name": "Rcpp",
@@ -416,19 +440,19 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=Rcpp"
     },
-    "13": {
+    "14": {
       "@type": "SoftwareApplication",
       "identifier": "stats",
       "name": "stats"
     },
-    "14": {
+    "15": {
       "@type": "SoftwareApplication",
       "identifier": "utils",
       "name": "utils"
     },
     "SystemRequirements": null
   },
-  "fileSize": "2662.241KB",
+  "fileSize": "19405.075KB",
   "citation": [
     {
       "@type": "ScholarlyArticle",
@@ -495,8 +519,7 @@
       }
     }
   ],
-  "releaseNotes": "https://github.com/KlausVigo/phangorn/blob/main/NEWS",
-  "readme": "https://github.com/KlausVigo/phangorn/blob/master/README.md",
-  "contIntegration": ["https://github.com/KlausVigo/phangorn/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/github/KlausVigo/phangorn?branch=master"],
+  "readme": "https://github.com/KlausVigo/phangorn/blob/main/README.md",
+  "contIntegration": ["https://github.com/KlausVigo/phangorn/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/github/KlausVigo/phangorn?branch=main"],
   "keywords": ["r", "phylogenetic-analysis", "phylogenetics"]
 }

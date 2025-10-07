@@ -51,7 +51,6 @@ Imports:
     methods,
     osqp,
     parallel,
-    quadprog,
     Rcpp,
     stats,
     utils
