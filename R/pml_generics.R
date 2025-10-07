@@ -96,11 +96,25 @@ print.pml <- function(x, ...) {
   if(!is.null(x$method) && x$method == "tipdated") cat("\nRate:", x$rate, "\n")
   if (type == "AA") cat("Rate matrix:", x$model, "\n")
   if (type == "DNA") {
-    cat("\nRate matrix:\n")
-    QM <- matrix(0, nc, nc, dimnames = list(levels, levels))
-    QM[lower.tri(QM)] <- x$Q
-    QM <- QM + t(QM)
-    print(QM)
+
+    lev <- attr(x$data, "levels")
+    tri_ind <- function (n.rows)
+    {
+      seqi <- seq.int(n.rows - 1L)
+      hi <- sequence(rev(seqi), from = seqi + 1)
+      lo <- rep.int(seqi, rev(seqi))
+      cbind(lo, hi, deparse.level = 0)
+    }
+    IND <- tri_ind(length(lev))
+    cat("\nRates:\n")
+    for(i in seq_len(nrow(IND))){
+      cat(lev[IND[i,1]], "<->", lev[IND[i,2]], ":", x$Q[i], "\n")
+    }
+#    cat("\nRate matrix:\n")
+#    QM <- matrix(0, nc, nc, dimnames = list(levels, levels))
+#    QM[lower.tri(QM)] <- x$Q
+#    QM <- QM + t(QM)
+#    print(QM)
     cat("\nBase frequencies:  \n")
     bf <- x$bf
     names(bf) <- levels
@@ -122,7 +136,7 @@ print.pml <- function(x, ...) {
     names(bf) <- levels
     print(bf) #cat(bf, "\n")
   }
-  if(!isTRUE(all.equal(x$rate, 1))) cat("\nRate:", x$rate, "\n")
+  if (!isTRUE(all.equal(x$rate, 1))) cat("\nRate:", x$rate, "\n")
   invisible(x)
 }
 
@@ -172,11 +186,11 @@ write.pml <- function(x, file="pml", save_rds=FALSE,...){
   print(call)
   if(save_rds){
     cat("\nAnd the following reproduces the exact pml object:\n\n")
-    cat("fit <- readRDS(\"", file,".rds\")", sep="")
+    cat("fit <- readRDS(\"", file,".rds\")", sep = "")
   }
   cat("\n\nREFERENCES\n\n")
   cat("To cite phangorn please use:\n\n")
-  print(citation("phangorn") [[1]], style="text")
+  print(citation("phangorn") [[1]], style = "text")
   sink()
   invisible(x)
 }
