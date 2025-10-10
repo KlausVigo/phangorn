@@ -4,7 +4,7 @@
 \alias{write.pml}
 \title{Export pml objects}
 \usage{
-write.pml(x, file = "pml", save_rds = FALSE, ...)
+write.pml(x, file = "pml", save_rds = FALSE, digits = -1, ...)
 }
 \arguments{
 \item{x}{an object of class ancestral.}
@@ -14,6 +14,9 @@ write.pml(x, file = "pml", save_rds = FALSE, ...)
 \item{save_rds}{logical, if TRUE saves the pml object as a rds file,
 otherwise the alignment is saved as a fasta file.}
 
+\item{digits}{default is -1, no edge length for the bootstrap trees are
+exported. For digits larger than zero edge length are added.}
+
 \item{...}{Further arguments passed to or from other methods.}
 }
 \value{
@@ -21,6 +24,13 @@ otherwise the alignment is saved as a fasta file.}
 }
 \description{
 \code{write.pml} writes out the ML tree and the model parameters.
+}
+\details{
+\code{write.pml} creates several files. It exports the alignment as fasta
+file. It writes out the ML tree in a newick file and the estimates parameters
+in a txt file.  It should be possible to (re-)create the pml object up to
+numerical inaccuracies.
+If bootstrap trees exist these are additionally exported in a nexus file.
 }
 \examples{
 data(woodmouse)

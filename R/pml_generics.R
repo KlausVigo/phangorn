@@ -145,12 +145,20 @@ print.pml <- function(x, ...) {
 #'
 #' \code{write.pml} writes out the ML tree and the model parameters.
 #'
+#' \code{write.pml} creates several files. It exports the alignment as fasta
+#' file. It writes out the ML tree in a newick file and the estimates parameters
+#' in a txt file.  It should be possible to (re-)create the pml object up to
+#' numerical inaccuracies.
+#' If bootstrap trees exist these are additionally exported in a nexus file.
+#'
 #' @param x an object of class ancestral.
 #' @param file a file name. File endings are added.
 #' @param save_rds logical, if TRUE saves the pml object as a rds file,
 #' otherwise the alignment is saved as a fasta file.
-## @param chi_sq logical, if TRUE performs $Chi^2$-test to check if sequences have similar
-## state composition.
+#' @param digits default is -1, no edge length for the bootstrap trees are
+#' exported. For digits larger than zero edge length are added.
+## @param chi_sq logical, if TRUE performs $Chi^2$-test to check if sequences
+## have similar state composition.
 #' @param ... Further arguments passed to or from other methods.
 #' @returns \code{write.pml}  returns the input x invisibly.
 #' @seealso \code{\link{ancestral.pml}}, \code{\link{plotAnc}}
@@ -161,9 +169,9 @@ print.pml <- function(x, ...) {
 #' unlink(c("woodmouse.txt", "woodmouse_tree.nwk", "woodmouse_align.fasta"))
 #' @importFrom utils citation
 #' @export
-write.pml <- function(x, file="pml", save_rds=FALSE,...){
-  digits <- -1
-  if (hasArg("digits")) digits <- list(...)$digits
+write.pml <- function(x, file="pml", save_rds=FALSE, digits=-1, ...){
+#  digits <- -1
+#  if (hasArg("digits")) digits <- list(...)$digits
   write.tree(x$tree, file=paste0(file, "_tree.nwk"))
   if(save_rds) saveRDS(x, file=paste0(file, ".rds"))
   write.phyDat(x$data, file=paste0(file, "_align.fasta"), format="fasta")
@@ -180,8 +188,8 @@ write.pml <- function(x, file="pml", save_rds=FALSE,...){
   call$tree <- quote(tree)
   cat("tree <- read.tree(\"", file, "_tree.nwk\")\n", sep="")
   type <- attr(x$data, "type")
-  cat("align <- read.phyDat(\"", file, "_align.fasta\", format=\"fasta\", type=\"", type,"\")",
-      sep="")
+  cat("align <- read.phyDat(\"", file,
+      "_align.fasta\", format=\"fasta\", type=\"", type,"\")", sep="")
   cat( "\nfit <- ")
   print(call)
   if(save_rds){
