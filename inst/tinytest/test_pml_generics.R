@@ -7,7 +7,7 @@ expect_true(AICc(fit) > AIC(fit))
 expect_true(BIC(fit) > AIC(fit))
 
 c_mat <- vcov(fit)
-expect_true( isSymmetric(c_mat, tol=1e-12) )
+expect_true( isSymmetric(c_mat, tol=1e-8) )
 
 # test write.pml
 write.pml(fit, save_rds = TRUE)

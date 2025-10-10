@@ -5,7 +5,7 @@ tree_u1 <- unique(trees)
 tmp <- hash(trees)
 tree_u2 <- trees[!duplicated(tmp)]
 
-expect_equal(attr(tree_u1, "old.index"), match(tmp, tmp))
+expect_equal(attr(tree_u1, "old.index"),  match(tmp, unique(tmp)))
 
 
 #all.equal

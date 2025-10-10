@@ -68,7 +68,8 @@ terraces <- function(x, bs_trees=NULL, dist_fun="RF.dist", di2multi=TRUE,
 #      rgl::points3d(xyz, size=10, col=col)
 #      invisible(xyz)
 #    }
-    plot_terraces(xyz, size=site, lwd=lwd, ...)
+    # , size=size, lwd=lwd define
+    plot_terraces(xyz, add=add, ...)
   } else return(xyz)
   #  scatterplot3d::scatterplot3d(xyz[,1], xyz[,2], xyz[,3], type = "h")
   #  plot3D::scatter3D(xyz[,1], xyz[,2], xyz[,3], type = "h")
