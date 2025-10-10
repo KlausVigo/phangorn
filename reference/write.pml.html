@@ -47,7 +47,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">write.pml</span><span class="op">(</span><span class="va">x</span>, file <span class="op">=</span> <span class="st">"pml"</span>, save_rds <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">write.pml</span><span class="op">(</span><span class="va">x</span>, file <span class="op">=</span> <span class="st">"pml"</span>, save_rds <span class="op">=</span> <span class="cn">FALSE</span>, digits <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -67,6 +67,11 @@
 otherwise the alignment is saved as a fasta file.</p></dd>
 
 
+<dt id="arg-digits">digits<a class="anchor" aria-label="anchor" href="#arg-digits"></a></dt>
+<dd><p>default is -1, no edge length for the bootstrap trees are
+exported. For digits larger than zero edge length are added.</p></dd>
+
+
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Further arguments passed to or from other methods.</p></dd>
 
@@ -74,6 +79,14 @@ otherwise the alignment is saved as a fasta file.</p></dd>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p><code>write.pml</code>  returns the input x invisibly.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p><code>write.pml</code> creates several files. It exports the alignment as fasta
+file. It writes out the ML tree in a newick file and the estimates parameters
+in a txt file.  It should be possible to (re-)create the pml object up to
+numerical inaccuracies.
+If bootstrap trees exist these are additionally exported in a nexus file.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
