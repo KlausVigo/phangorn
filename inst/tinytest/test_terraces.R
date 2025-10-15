@@ -1,5 +1,4 @@
 data(woodmouse)
-library(rgl)
 fit <- pml_bb(woodmouse, model="JC")
 trees <- unique(c(fit$tree, fit$bs))
 
