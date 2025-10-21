@@ -2235,6 +2235,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   RELL <- NULL
   if(ratchet.par$rell && perturbation){
     RELL <- init_rell(data, B=ratchet.par$bs)
+    RELL <- update_rell(RELL, object$siteLik, tree)
   }
   nTips <- as.integer(length(tree$tip.label))
   on.exit({
@@ -2527,7 +2528,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         res <- opt_nni(tree2, data, rooted=optRooted, iter_max=25, trace=0,
                        ll=ll2, w = w, g = g, eig = eig, bf = bf, inv=inv,
                        rate=rate, ll.0 = ll.0, INV = INV, llMix = llMix,
-                       wMix=wMix, ASC=ASC, RELL=RELL,
+                       wMix=wMix, ASC=ASC, RELL=RELL, ll_current=ll,
                        control=list(eps=1e-08, maxit=3, trace=0, tau=tau))
         if (res$logLik > (ll + epsR)) {
           tree <- res$tree
@@ -2740,7 +2741,7 @@ caterpillar <- function(x, i){
 
 
 pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, wMix, llMix,
-                    RELL=NULL, aLRT=FALSE, ...) {
+                    RELL=NULL, aLRT=FALSE, ll_current=NULL, ...) {
   k <- length(w)
   INDEX <-  indexNNI3(tree)
   tmpl <- pml.fit4(tree, data, bf=bf, g=g, w=w, eig=eig, inv=inv,
@@ -2884,13 +2885,13 @@ pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, wMix, llMix,
         nomatch = 0)) > 0, each = 2))
       candidates[indi] <- FALSE
       loglik[indi] <- -Inf
-      if(!is.null(RELL)){
+      if(!is.null(RELL) ){ # && test[[1]] > ll_current * 1.001){
         # next line should be not necessary
 #        pml_nni_pml_fit4[3] <<- pml_nni_pml_fit4[3] + 1
 #        siteLik <- test[[2]]
 #          pml.fit(tree, data, bf=bf, eig=eig, ll.0=ll.0, w=w,
 #                            g=g, site=TRUE, wMix=wMix, llMix=llMix, ...)$siteLik
-        RELL <- update_rell(RELL, test$siteLik, tree)
+        RELL <- update_rell(RELL, test$siteLik, tree, ll_current)
       }
     }
   }
@@ -2899,13 +2900,14 @@ pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, wMix, llMix,
 
 
 # add lower bound for RELL
-opt_nni <- function(tree, data, rooted, iter_max, trace, ll, RELL=NULL, ...){
+opt_nni <- function(tree, data, rooted, iter_max, trace, ll, RELL=NULL,
+                    ll_current=NULL, ...){
   swap <- 0
   iter <- 0
   llstart <- ll
   while (iter < iter_max) {
     if (!rooted) {
-      tmp <- pml.nni(tree, data, ll=ll, RELL=RELL, ...)
+      tmp <- pml.nni(tree, data, ll=ll, RELL=RELL, ll_current=ll_current, ...)
       res <- optimEdge(tmp$tree, data, ...)
     }
     else {
@@ -2981,21 +2983,27 @@ init_rell <- function(x, B = 100L){
   for (i in 1:B) X[i,] <- tabulate(sample(wvec, replace = TRUE), nbins = lw)
   bs <- vector("list", B)
   logLik <- rep(-Inf, B)
-  list(X=X, bs=bs, logLik=logLik)
+  list(X=X, bs=bs, logLik=logLik, weight=weight)
 }
 
 
-update_rell <- function(obj, siteLik, tree){
+update_rell <- function(obj, siteLik, tree, ll=-Inf){
+#
+#  .RELL_NULL <<- .RELL_NULL + 1
+#  browser()
+#  if(sum(obj$weight*siteLik) > 1.001 * ll) .RELL_ZWEI <<- .RELL_ZWEI + 1
   rell_tmp <- obj$X %*% siteLik
   rell_ind <- rell_tmp > obj$logLik
   if(any(rell_ind)){
+#    print(sum(obj$weight*siteLik) / ll)
+#    .RELL_EINS <<- .RELL_EINS + 1
     obj$logLik[rell_ind] <- rell_tmp[rell_ind]
     obj$bs[rell_ind] <- c(tree)
   }
   obj
 }
 
-# SRR tags ---------------------------------------------------------------------
+# SRR tags --------------------------------------------------------------------
 #' @srrstats {G2.8} lots of checking for optimizing routines pml.fit opt_Edge,
 #' Software should provide appropriate conversion or dispatch routines as part
 #' of initial pre-processing to ensure that all other sub-functions of a package

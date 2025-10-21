@@ -1,6 +1,8 @@
     CHANGES in PHANGORN VERSION 3.0.0
 
-NEW FEATURES
+NEW FEATU
+
+    o terraces plots the likelihood / parsimony surface for a set of trees
 
     o as.networx and plot.networx got a new option "outline", reducing the
 

@@ -4,10 +4,10 @@
 %   R/plot_networx.R, R/pmlPen.R, R/treeManipulation.R, R/upgma.R
 \name{threshStateC}
 \alias{threshStateC}
-\alias{assert_phylo}
-\alias{assert_treeish}
-\alias{assert_multiPhylo}
 \alias{assert_phyDat}
+\alias{assert_phylo}
+\alias{assert_multiPhylo}
+\alias{assert_treeish}
 \alias{assert_pml}
 \alias{clean_phylo}
 \alias{candidate_tree}
@@ -27,20 +27,23 @@
 \usage{
 threshStateC(x, thresholds)
 
+assert_phyDat(x, contains_label = !is.null(label), label = NULL)
+
 assert_phylo(x, has_edge_length = FALSE, is_rooted = FALSE,
-  is_ultrametric = FALSE, unique_tiplabel = TRUE)
+  is_ultrametric = FALSE, is_binary = FALSE, unique_tiplabel = TRUE)
+
+assert_multiPhylo(x, has_edge_length = FALSE, is_rooted = FALSE,
+  is_ultrametric = FALSE, is_binary = FALSE)
 
 assert_treeish(x, null.ok = FALSE)
-
-assert_multiPhylo(x, is_ultrametric = FALSE, is_rooted = FALSE,
-  has_edge_length = FALSE)
 
 assert_phyDat(x, contains_label = !is.null(label), label = NULL)
 
 assert_pml(x)
 
-clean_phylo(x, unroot = FALSE, multi2di = FALSE,
-  collapse.singles = FALSE, reorder = FALSE, compress = FALSE)
+clean_phylo(x, ..., unroot = FALSE, collapse.singles = FALSE,
+  reorder = FALSE, order = "postorder", multi2di = FALSE,
+  di2multi = FALSE, tol = 1e-07, compress = FALSE)
 
 candidate_tree(x, method = c("unrooted", "ultrametric", "tipdated"),
   eps = 1e-08, tip.dates = NULL, ...)

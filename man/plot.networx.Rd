@@ -99,13 +99,16 @@ splits (e.g. splits.color) than for edges. These overwrite values edge.color.
 The internal representation is likely to change.
 }
 \examples{
-
 set.seed(1)
 tree1 <- rtree(20, rooted=FALSE)
 sp <- as.splits(rNNI(tree1, n=10))
 net <- as.networx(sp)
 plot(net)
 plot(net, direction="axial")
+
+circ_net <- allCircularSplits(5) |> as.networx()
+plot(circ_net)
+plot(circ_net, type = "outline")
 \dontrun{
 # also see example in consensusNet
 example(consensusNet)

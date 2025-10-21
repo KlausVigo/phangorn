@@ -2,20 +2,22 @@
 % Please edit documentation in R/terraces.R
 \name{terraces}
 \alias{terraces}
-\title{Discrete Gamma and Beta distribution}
+\title{Explore likelihood parsimony surface}
 \usage{
-terraces(x, bs_trees = NULL, dist_fun = "RF.dist", di2multi = TRUE,
+terraces(x, trees = NULL, dist_fun = "SPR.dist", di2multi = FALSE,
   tol = 2e-08, plot = TRUE, add = FALSE, ...)
 }
 \arguments{
 \item{x}{an object of class \code{pml}}
 
-\item{bs_trees}{an object of class \code{multiPhylo}}
+\item{trees}{an object of class \code{multiPhylo}}
 
 \item{dist_fun}{a function to compute distances between trees see e.g.
 \code{\link{RF.dist}}}
 
-\item{di2multi}{logical, should trees multichotomies get collapsed.}
+\item{di2multi}{logical, should trees multichotomies get collapsed. Useful
+for Robinson-Foulds distance. If edge length are used to compute the
+distance, e.g. Kuhner-Felsenstein distance, this is not needed.}
 
 \item{tol}{a numeric value giving the tolerance to consider a branch length
 significantly greater than zero.}
@@ -30,14 +32,14 @@ significantly greater than zero.}
 \code{terraces} silently returns a matrix.
 }
 \description{
-\code{terraces} visualizes in likelihood surface for the tree space (Sanderson ) Usually trees are from a bootstrap or MCMC sample. There the first two
-axis are the principle components of distances between trees and the third
-axis is the likelihood value.
+\code{terraces} visualizes in likelihood surface for the tree space
+(Sanderson et al. 2011). Usually trees are from a bootstrap or MCMC sample.
+There the first two axis are the principle components of distances between
+trees and the third axis is the likelihood value or parsimony score.
 }
 \examples{
 \dontrun{
 data(woodmouse)
-library(rgl)
 fit <- pml_bb(woodmouse, model="JC")
 library(rgl)
 open3d()

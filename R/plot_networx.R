@@ -227,13 +227,16 @@ rotate_matrix <- function(x, theta){
 #' @keywords hplot
 #' @importFrom igraph make_graph
 #' @examples
-#'
 #' set.seed(1)
 #' tree1 <- rtree(20, rooted=FALSE)
 #' sp <- as.splits(rNNI(tree1, n=10))
 #' net <- as.networx(sp)
 #' plot(net)
 #' plot(net, direction="axial")
+#'
+#' circ_net <- allCircularSplits(5) |> as.networx()
+#' plot(circ_net)
+#' plot(circ_net, type = "outline")
 #' \dontrun{
 #' # also see example in consensusNet
 #' example(consensusNet)
