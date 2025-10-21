@@ -74,7 +74,7 @@ terraces_pars <- function(x, trees, dist_fun="RF.dist", di2multi=TRUE,
   if(length(trees) < 3) stop("less than 3 different trees found!")
   dm <- do.call(dist_fun, list(trees))
   xy <- cmdscale(dm)
-  z <- parsimony(trees, trees)
+  z <- parsimony(trees, x)
   xyz <- cbind(xy, z)
   colnames(xyz) = c("prc_1", "prc_2", "parsimony score")
 }
@@ -108,7 +108,7 @@ plot_terraces <- function(xyz, size=10, lwd=2, pkg="rgl",
       col_names <- colnames(xyz)
       plot3D::scatter3D(xyz[,1], xyz[,2], xyz[,3], type = "h",
                         xlab = col_names[1], ylab = col_names[2],
-                        zlab = col_names[3])
+                        zlab = col_names[3], ...)
     }
   }
   invisible(xyz)
