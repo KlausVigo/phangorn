@@ -63,6 +63,7 @@ Suggests:
     ggplot2,
     knitr,
     magick,
+    plot3D,
     rgl,
     rmarkdown,
     seqinr,

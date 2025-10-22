@@ -46,12 +46,14 @@ open3d()
 terraces(fit)
 }
 }
+\references{
+Sanderson, M.J., McMahon, M.M. and Steel, M. (2011). Terraces in phylogenetic tree space. \emph{Science},
+\bold{333}, 448--450.
+}
 \seealso{
 \code{\link{pml_bb}, \link{optim.pml}, \link{pratchet},
 \link{RF.dist}, \link[ape]{di2multi}, \link{cmdscale}}.
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}
-#' @references Sanderson, M.J., McMahon, M.M. and Steel, M. (2011). Terraces in phylogenetic tree space. \emph{Science},
-\bold{333}, 448--450.
 }
