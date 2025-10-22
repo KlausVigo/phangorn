@@ -20,7 +20,7 @@
 #' @param \dots Further arguments passed to or from other methods.
 #' @return \code{terraces} silently returns a matrix.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' #' @references Sanderson, M.J., McMahon, M.M. and Steel, M. (2011). Terraces in phylogenetic tree space. \emph{Science},
+#' @references Sanderson, M.J., McMahon, M.M. and Steel, M. (2011). Terraces in phylogenetic tree space. \emph{Science},
 #' \bold{333}, 448--450.
 #'
 #' @importFrom stats cmdscale
@@ -105,6 +105,7 @@ plot_terraces <- function(xyz, size=10, lwd=2, pkg="rgl",
     if (!chk) {
       warning("package 'plot3D' is required!\n")
     } else {
+      attachNamespace("plot3D")
       col_names <- colnames(xyz)
       plot3D::scatter3D(xyz[,1], xyz[,2], xyz[,3], type = "h",
                         xlab = col_names[1], ylab = col_names[2],
