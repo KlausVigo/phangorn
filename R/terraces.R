@@ -35,8 +35,13 @@
 #' terraces(fit)
 #' }
 #' @export
-terraces <- function(x, trees=NULL, dist_fun="SPR.dist", di2multi=FALSE,
-                     tol=2e-8, plot=TRUE, add=FALSE, ...) {
+terraces <- function(x, trees=NULL, plot=TRUE, ...){
+  UseMethod("terraces")
+}
+
+#' @export
+terraces.pml <- function(x, trees=NULL, dist_fun="RF.dist", di2multi=FALSE,
+                     tol=2e-8, plot=TRUE, ...) {
   assert_pml(x)
   tree <- x$tree
   if(is.null(trees)) trees <- x$bs
@@ -59,14 +64,13 @@ terraces <- function(x, trees=NULL, dist_fun="SPR.dist", di2multi=FALSE,
   z <- vapply(trees, fun, -Inf,  x=x)
   xyz <- cbind(xy, z)
   colnames(xyz) = c("prc_1", "prc_2", "log-likelihood")
-  if (plot){
-    plot_terraces(xyz, add=add, ...)
-  } else return(xyz)
+  if (plot) plot_terraces(xyz, ...)
+  invisible(xyz)
 }
 
-
-terraces_pars <- function(x, trees, dist_fun="RF.dist", di2multi=TRUE,
-                          tol=2e-8){
+#' @export
+terraces.phyDat <- function(x, trees, dist_fun="RF.dist", di2multi=TRUE,
+                          tol=2e-8, plot=TRUE, ...){
   assert_phyDat(x)
   assert_multiPhylo(trees)
   clean_phylo(trees, compress = TRUE)
@@ -77,20 +81,19 @@ terraces_pars <- function(x, trees, dist_fun="RF.dist", di2multi=TRUE,
   z <- parsimony(trees, x)
   xyz <- cbind(xy, z)
   colnames(xyz) = c("prc_1", "prc_2", "parsimony score")
+  if(plot) plot_terraces(xyz, ...)
+  invisible(xyz)
 }
 
-plot_terraces <- function(xyz, size=10, lwd=2, pkg="rgl",
+
+plot_terraces <- function(xyz, size=10, lwd=2, pkg="plot3D",
                           max=TRUE, add=FALSE, ...){
   match.arg <- match.arg(pkg, c("rgl", "plot3D"))
   nr <- nrow(xyz)
   col <- rep("black", nr)
-  if(max) {
-    ind <- which(xyz[,3] > (max(xyz[,3] - 1e-8)))
-    col[ind] <- "red"
-  } else{
-    ind <- which(xyz[,3] < (min(xyz[,3] - 1e+8)))
-    col[ind] <- "red"
-  }
+  if(max) ind <- which(xyz[,3] > (max(xyz[,3] - 1e-8)))
+  else ind <- which(xyz[,3] < (min(xyz[,3] - 1e+8)))
+  col[ind] <- "red"
   if(pkg=="rgl"){
     chk <- requireNamespace("rgl", quietly = TRUE)
     if (!chk) {
