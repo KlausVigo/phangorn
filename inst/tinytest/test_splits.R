@@ -77,4 +77,10 @@ spl <- allSplits(4)
 net <- as.networx(spl)
 expect_equal(Nnode(net), 8L)
 
-
+# test coordinates for networx
+xyz <- coords(cnet)
+expect_equal(dim(xyz), c(max(cnet$edge), 3L))
+xy1 <- coords(cnet, "2D")
+expect_equal(dim(xy1), c(max(cnet$edge), 2L))
+xy2 <- coords(cnet, "equal")
+expect_equal(dim(xy2), c(max(cnet$edge), 2L))
