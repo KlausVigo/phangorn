@@ -2,9 +2,17 @@
 % Please edit documentation in R/terraces.R
 \name{terraces}
 \alias{terraces}
+\alias{terraces.pml}
+\alias{terraces.phyDat}
 \title{Explore likelihood parsimony surface}
 \usage{
 terraces(x, trees = NULL, plot = TRUE, ...)
+
+\method{terraces}{pml}(x, trees = NULL, dist_fun = "RF.dist",
+  di2multi = FALSE, tol = 2e-08, plot = TRUE, ...)
+
+\method{terraces}{phyDat}(x, trees, dist_fun = "RF.dist", di2multi = TRUE,
+  tol = 2e-08, plot = TRUE, ...)
 }
 \arguments{
 \item{x}{an object of class \code{pml}}

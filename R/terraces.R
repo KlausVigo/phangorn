@@ -39,6 +39,9 @@ terraces <- function(x, trees=NULL, plot=TRUE, ...){
   UseMethod("terraces")
 }
 
+
+#' @rdname terraces
+#' @method terraces pml
 #' @export
 terraces.pml <- function(x, trees=NULL, dist_fun="RF.dist", di2multi=FALSE,
                      tol=2e-8, plot=TRUE, ...) {
@@ -68,6 +71,8 @@ terraces.pml <- function(x, trees=NULL, dist_fun="RF.dist", di2multi=FALSE,
   invisible(xyz)
 }
 
+#' @rdname terraces
+#' @method terraces phyDat
 #' @export
 terraces.phyDat <- function(x, trees, dist_fun="RF.dist", di2multi=TRUE,
                           tol=2e-8, plot=TRUE, ...){
