@@ -35,7 +35,7 @@
 #' terraces(fit)
 #' }
 #' @export
-terraces <- function(x, trees=NULL, plot=TRUE, ...){
+terraces <- function(x, ...){
   UseMethod("terraces")
 }
 

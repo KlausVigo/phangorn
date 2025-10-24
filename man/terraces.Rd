@@ -6,7 +6,7 @@
 \alias{terraces.phyDat}
 \title{Explore likelihood parsimony surface}
 \usage{
-terraces(x, trees = NULL, plot = TRUE, ...)
+terraces(x, ...)
 
 \method{terraces}{pml}(x, trees = NULL, dist_fun = "RF.dist",
   di2multi = FALSE, tol = 2e-08, plot = TRUE, ...)
@@ -17,11 +17,9 @@ terraces(x, trees = NULL, plot = TRUE, ...)
 \arguments{
 \item{x}{an object of class \code{pml}}
 
-\item{trees}{an object of class \code{multiPhylo}}
-
-\item{plot}{loggical if TRUE a 3D scatter is shown.}
-
 \item{\dots}{Further arguments passed to or from other methods.}
+
+\item{trees}{an object of class \code{multiPhylo}}
 
 \item{dist_fun}{a function to compute distances between trees see e.g.
 \code{\link{RF.dist}}}
@@ -32,6 +30,8 @@ distance, e.g. Kuhner-Felsenstein distance, this is not needed.}
 
 \item{tol}{a numeric value giving the tolerance to consider a branch length
 significantly greater than zero.}
+
+\item{plot}{loggical if TRUE a 3D scatter is shown.}
 }
 \value{
 \code{terraces} silently returns a matrix.
