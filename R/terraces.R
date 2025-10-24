@@ -16,7 +16,7 @@
 #' @param tol a numeric value giving the tolerance to consider a branch length
 #' significantly greater than zero.
 #' @param plot loggical if TRUE a 3D scatter is shown.
-#' @param add whether to add the points to an existing plot.
+## @param add whether to add the points to an existing plot.
 #' @param \dots Further arguments passed to or from other methods.
 #' @return \code{terraces} silently returns a matrix.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}

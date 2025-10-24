@@ -32,8 +32,6 @@ distance, e.g. Kuhner-Felsenstein distance, this is not needed.}
 
 \item{tol}{a numeric value giving the tolerance to consider a branch length
 significantly greater than zero.}
-
-\item{add}{whether to add the points to an existing plot.}
 }
 \value{
 \code{terraces} silently returns a matrix.
