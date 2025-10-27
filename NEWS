@@ -6,13 +6,13 @@ NEW FEATURES
 
       by the user specific to its hardware.
 
-    o terraces functio to plot the likelihood / parsimony surface for a set of
+    o the terraces function plots the likelihood / parsimony surface for a set
 
-      trees
+      of trees
 
     o as.networx and plot.networx got a new option "outline", reducing the
 
-      number of edges plotted
+      number of edges plotted for planar networks
 
 OTHER CHANGES
 
