@@ -1,8 +1,14 @@
     CHANGES in PHANGORN VERSION 3.0.0
 
-NEW FEATU
+NEW FEATURES
 
-    o terraces plots the likelihood / parsimony surface for a set of trees
+    o rely on the future framework. This allows to adapt parallelization
+
+      by the user specific to its hardware.
+
+    o terraces functio to plot the likelihood / parsimony surface for a set of
+
+      trees
 
     o as.networx and plot.networx got a new option "outline", reducing the
 
@@ -12,9 +18,11 @@ OTHER CHANGES
 
     o improvements to write.ancestral and write.pml.
 
-    o update.pml can now also update site.rate.
+    o Decreased the overhead for NNI rearrangements in optim.pml / pml_bb,
 
-    o NNI rearrangements in optim.pml / pml_bb are faster for larger trees.
+      tree rearrangements are now much faster for larger trees (hundreads of
+
+      taxa).
 
     o bab got a progress bar, as it might runs for a long time (suggested by
 
@@ -25,6 +33,10 @@ OTHER CHANGES
       duplication
 
     o more error checking of input arguments and associated tests
+
+BUG FIXES
+
+    o update.pml can now can properly update site.rate
 
 
     CHANGES in PHANGORN VERSION 2.12.0
