@@ -22,6 +22,7 @@
 #' @param \dots further parameters used by \code{optim.pml} or
 #' \code{plot.phylo}.
 #' @param FUN the function to estimate the trees.
+#' @importFrom future.apply future_lapply
 #' @return \code{bootstrap.pml} returns an object of class \code{multi.phylo}
 #' or a list where each element is an object of class \code{pml}. \code{plotBS}
 #' returns silently a tree, i.e. an object of class \code{phylo} with the
@@ -142,15 +143,17 @@ bootstrap.pml <- function(x, bs = 100, trees = TRUE, multicore = FALSE,
     attr(fit, "data") <- NULL
     fit
   }
-  eval.success <- FALSE
+#  eval.success <- FALSE
   if(method=="tipdated") do_rearr <- FALSE
-  if (!eval.success & multicore) {
-    res <- mclapply(BS, pmlPar, x, trees = trees, do_rearr = do_rearr, ...,
-                    mc.cores = mc.cores)
-    eval.success <- TRUE
-  }
-  if (!eval.success) res <- lapply(BS, pmlPar, x, trees = trees,
-                                   do_rearr = do_rearr, ...)
+#  if (!eval.success & multicore) {
+#    res <- mclapply(BS, pmlPar, x, trees = trees, do_rearr = do_rearr, ...,
+#                    mc.cores = mc.cores)
+#    eval.success <- TRUE
+#  }
+#  if (!eval.success) res <- lapply(BS, pmlPar, x, trees = trees,
+#                                   do_rearr = do_rearr, ...)
+  res <- future_lapply(BS, pmlPar, x, trees = trees,
+                do_rearr = do_rearr, future.seed = TRUE, ...)
   if (trees) {
     class(res) <- "multiPhylo"
     res <- .compressTipLabel(res) # save memory
@@ -186,20 +189,23 @@ bootstrap.phyDat <- function(x, FUN, bs = 100, multicore = FALSE,
     data <- subset(data, J[[2]])
     FUN(data, ...)
   }
-  if (multicore) {
-    if (jumble) {
-      res <- mclapply(J, fitParJumble, x, ..., mc.cores = mc.cores)
-    } else {
-      res <- mclapply(BS, fitPar, x, ..., mc.cores = mc.cores)
-    }
-  }
-  else {
-    if (jumble) {
-      res <- lapply(J, fitParJumble, x, ...)
-    } else {
-      res <- lapply(BS, fitPar, x, ...)
-    }
-  }
+#  if (multicore) {
+#    if (jumble) {
+#      res <- mclapply(J, fitParJumble, x, ..., mc.cores = mc.cores)
+#    } else {
+#      res <- mclapply(BS, fitPar, x, ..., mc.cores = mc.cores)
+#    }
+#  }
+#  else {
+#    if (jumble) {
+#      res <- lapply(J, fitParJumble, x, ...)
+#    } else {
+#      res <- lapply(BS, fitPar, x, ...)
+#    }
+#  }
+# new future proof design
+  if (jumble) res <- future_lapply(J, fitParJumble, x, future.seed = TRUE, ...)
+  else res <- future_lapply(BS, fitPar, x, future.seed = TRUE, ...)
   if (inherits(res[[1]], "phylo")) {
     class(res) <- "multiPhylo"
     res <- .compressTipLabel(res) # save memory

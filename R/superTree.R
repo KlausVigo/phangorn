@@ -86,11 +86,13 @@ dist.superTree <- function(tree, trace = 0, fun, start = NULL,
   eps <- TRUE
   while (eps) {
     nni_trees <- nni(best_tree)
-    if (multicore) {
-      tmp <- mclapply(nni_trees, fun, tree, mc.cores = mc.cores)
-      tmp <- unlist(tmp)
-    }
-    else tmp <- sapply(nni_trees, fun, tree)
+#    if (multicore) {
+#      tmp <- mclapply(nni_trees, fun, tree, mc.cores = mc.cores)
+#      tmp <- unlist(tmp)
+#    }
+#    else tmp <- sapply(nni_trees, fun, tree)
+    tmp <- future_sapply(nni_trees, fun, tree, future.seed = TRUE)
+
     if (min(tmp) < best) {
       ind <- which.min(tmp)
       best_tree <- nni_trees[[ind]]
@@ -128,6 +130,7 @@ dist.superTree <- function(tree, trace = 0, fun, start = NULL,
 #' processes will be run simultaneously.
 #' @param \dots further arguments passed to or from other methods.
 #' @return The function returns an object of class \code{phylo}.
+#' @importFrom future.apply future_sapply
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com} Liam Revell
 #' @seealso \code{mrp.supertree}, \code{\link{densiTree}},
 #' \code{\link{RF.dist}}, \code{\link{SPR.dist}}

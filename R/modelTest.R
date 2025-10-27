@@ -223,13 +223,14 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
     list(res, trees, calls)
   }
   if(trace & !multicore) cat("Model        df  logLik   AIC      BIC\n")
-  eval.success <- FALSE
-  if (!eval.success & multicore) {
-    RES <- mclapply(model, fitPar, fit, G, I, k, FREQ, mc.cores = mc.cores)
-    eval.success <- TRUE
-  }
-  if (!eval.success)
-    RES <- lapply(model, fitPar, fit, G, I, k, FREQ)
+#  eval.success <- FALSE
+#  if (!eval.success & multicore) {
+#    RES <- mclapply(model, fitPar, fit, G, I, k, FREQ, mc.cores = mc.cores)
+#    eval.success <- TRUE
+#  }
+#  if (!eval.success)
+#    RES <- lapply(model, fitPar, fit, G, I, k, FREQ)
+  RES <- future_lapply(model, fitPar, fit, G, I, k, FREQ, future.seed = TRUE)
   RESULT <- matrix(NA, n * l, 8)
   RESULT <- as.data.frame(RESULT)
   colnames(RESULT) <- c("Model", "df", "logLik", "AIC", "AICw", "AICc",
