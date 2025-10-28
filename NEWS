@@ -2,7 +2,7 @@
 
 NEW FEATURES
 
-    o rely on the future framework. This allows to adapt parallelization
+    o move to the future framework. This allows to adapt parallelization
 
       by the user specific to its hardware.
 

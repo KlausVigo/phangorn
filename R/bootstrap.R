@@ -81,9 +81,9 @@
 #' @export
 bootstrap.pml <- function(x, bs = 100, trees = TRUE, multicore = FALSE,
                           mc.cores = NULL, tip.dates=NULL, ...) {
-  if(.Platform$OS.type=="windows") multicore <- FALSE
-  if (multicore && is.null(mc.cores)) mc.cores <- min(detectCores()-1L, 4L)
-  if(multicore && mc.cores < 2L) multicore <- FALSE
+#  if(.Platform$OS.type=="windows") multicore <- FALSE
+#  if (multicore && is.null(mc.cores)) mc.cores <- min(detectCores()-1L, 4L)
+#  if(multicore && mc.cores < 2L) multicore <- FALSE
   if(is.rooted(x$tree)){
     if(is.ultrametric(x$tree)) method <- "ultrametric"
     else method <- "tipdated"
@@ -165,8 +165,8 @@ bootstrap.pml <- function(x, bs = 100, trees = TRUE, multicore = FALSE,
 #' @export
 bootstrap.phyDat <- function(x, FUN, bs = 100, multicore = FALSE,
                              mc.cores = NULL, jumble = TRUE, ...) {
-  if(.Platform$OS.type=="windows") multicore <- FALSE
-  if (multicore && is.null(mc.cores)) mc.cores <- detectCores()
+#  if(.Platform$OS.type=="windows") multicore <- FALSE
+#  if (multicore && is.null(mc.cores)) mc.cores <- detectCores()
   weight <- attr(x, "weight")
   v <- rep(seq_along(weight), weight)
   BS <- vector("list", bs)

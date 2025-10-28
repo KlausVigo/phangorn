@@ -72,8 +72,8 @@ aic.weights <- function(aic) {
 modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
                       FREQ = FALSE, k = 4, control = pml.control(),
                       multicore = FALSE, mc.cores = NULL) {
-  if(.Platform$OS.type=="windows") multicore <- FALSE
-  if (multicore && is.null(mc.cores)) mc.cores <- detectCores()
+#  if(.Platform$OS.type=="windows") multicore <- FALSE
+#  if (multicore && is.null(mc.cores)) mc.cores <- detectCores()
   if(inherits(object, "DNAbin") || inherits(object, "AAbin"))
     object <- as.phyDat(object)
   if (inherits(object, "phyDat")) data <- object
