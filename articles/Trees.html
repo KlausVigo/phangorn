@@ -246,7 +246,11 @@ the tree.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotBS.html">plotBS</a></span><span class="op">(</span><span class="fu"><a href="../reference/midpoint.html">midpoint</a></span><span class="op">(</span><span class="va">treeRatchet</span><span class="op">)</span>, type<span class="op">=</span><span class="st">"phylogram"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/add.scale.bar.html" class="external-link">add.scale.bar</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Trees_files/figure-html/midpoint-1.png" width="768"></p>
+<div class="figure">
+<img src="Trees_files/figure-html/midpoint-1.png" alt="MP phylogeny with bootstrap values." width="768"><p class="caption">
+MP phylogeny with bootstrap values.
+</p>
+</div>
 <p>If <code>treeRatchet</code> is a list of trees, i.e. an object of
 class <code>multiPhylo</code>, we can subset the i-th trees with
 <code>treeRatchet[[i]]</code>.</p>
@@ -700,7 +704,11 @@ we can use an UPGMA or WPGMA tree.</p>
 <span>                     rearrangement<span class="op">=</span><span class="st">"NNI"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit_strict</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Trees_files/figure-html/plot_strict_primates-1.png" width="768"></p>
+<div class="figure">
+<img src="Trees_files/figure-html/plot_strict_primates-1.png" alt="Ultrametric ML phylogeny." width="768"><p class="caption">
+Ultrametric ML phylogeny.
+</p>
+</div>
 <p>With <em>phangorn</em> we also can estimate tipdated phylogenies.
 Here we use a H3N2 virus data set from <em>treetime</em> <span class="citation">(Sagulenko, Puller, and Neher 2018)</span> as an
 example. Additionally to the alignment we also need to read in data
@@ -765,7 +773,11 @@ programs like <em>TempEst</em> <span class="citation">(Rambaut et al.
 <p>And at last we plot the tree with a timescale.</p>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit_td</span>, align.tip.label<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Trees_files/figure-html/tipdated_plot-1.png" width="768"></p>
+<div class="figure">
+<img src="Trees_files/figure-html/tipdated_plot-1.png" alt="Tip dated ML phylogeny with time scale in years." width="768"><p class="caption">
+Tip dated ML phylogeny with time scale in years.
+</p>
+</div>
 <div style="page-break-after: always;"></div>
 </div>
 </div>

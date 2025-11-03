@@ -720,10 +720,18 @@ P(\omega|x_h) = \frac{P(X_h|\omega_i)p_i}{P(X_h)} =
 </annotation></semantics></math></p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cdn</span>, <span class="st">"M1a"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="AdvancedFeatures_files/figure-html/plot_codon-1.png" width="576"></p>
+<div class="figure">
+<img src="AdvancedFeatures_files/figure-html/plot_codon-1.png" alt="Posterior probability of the rate class for each amino acid" width="576"><p class="caption">
+Posterior probability of the rate class for each amino acid
+</p>
+</div>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cdn</span>, <span class="st">"M2a"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="AdvancedFeatures_files/figure-html/plot_codon-2.png" width="576"></p>
+<div class="figure">
+<img src="AdvancedFeatures_files/figure-html/plot_codon-2.png" alt="Posterior probability of the rate class for each amino acid" width="576"><p class="caption">
+Posterior probability of the rate class for each amino acid
+</p>
+</div>
 <p>A lot if implementations differ in the way the codon frequencies are
 derived. The M0 model can be also estimated using <code>pml</code> and
 <code>optim.pml</code> functions. There are several ways to estimate the
