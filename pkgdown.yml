@@ -8,8 +8,9 @@ articles:
   MLbyHand: MLbyHand.html
   Morphological: Morphological.html
   Networx: Networx.html
+  Parallel: Parallel.html
   Trees: Trees.html
-last_built: 2025-10-28T15:18Z
+last_built: 2025-11-03T14:21Z
 urls:
   reference: https://klausvigo.github.io/phangorn/reference
   article: https://klausvigo.github.io/phangorn/articles
