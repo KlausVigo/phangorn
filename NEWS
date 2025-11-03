@@ -20,9 +20,9 @@ OTHER CHANGES
 
     o Decreased the overhead for NNI rearrangements in optim.pml / pml_bb,
 
-      tree rearrangements are now much faster for larger trees (hundreads of
+      tree rearrangements are now much faster for larger trees (with hundreads
 
-      taxa).
+      of taxa).
 
     o bab got a progress bar, as it might runs for a long time (suggested by
 
