@@ -120,8 +120,8 @@ Again for nucleotide data the most common models can be called directly in the `
 We will now show how to estimate a rate matrix with different transition ($\alpha$) and transversion ratio ($\beta$) and a fixed rate to the gap state ($\gamma$) - a kind of Kimura two-parameter model (K81) for nucleotide data with gaps as fifth state (see table 1).
 
 
-  | a        | c        | g        | t        | - 
---|----------|----------|----------|----------|----
+  | a        | c        | g        | t        |  - 
+--|----------|----------|----------|----------|-----
 a |          |          |          |          | 
 c | $\beta$  |          |          |          | 
 g | $\alpha$ | $\beta$  |          |          |
@@ -255,7 +255,7 @@ P(\omega|x_h) = \frac{P(X_h|\omega_i)p_i}{P(X_h)} =
 \frac{P(X_h|\omega_i)p_i}{\sum_j P(X_h|\omega_j)p_j}
 \]
 
-```{R plot_codon}
+```{R plot_codon, fig.cap="Posterior probability of the rate class for each amino acid"}
 plot(cdn, "M1a")
 plot(cdn, "M2a")
 ```

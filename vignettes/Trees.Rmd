@@ -112,7 +112,7 @@ if(inherits(treeRatchet, "multiPhylo")){
 }
 ```
 As mentioned above, the parsimony ratchet implicitly performs a bootstrap analysis (step 1). We make use of this and store the trees which where visited. This allows us to add bootstrap support values to the tree. 
-```{r midpoint}
+```{r midpoint, fig.cap="MP phylogeny with bootstrap values."}
 plotBS(midpoint(treeRatchet), type="phylogram")
 add.scale.bar()
 ```
@@ -230,7 +230,7 @@ When we assume a "molecular clock" phylogenies can be used to infer divergence t
 fit_strict <- pml_bb(primates, model="HKY+G(4)", method="ultrametric",
                      rearrangement="NNI")
 ```
-```{r plot_strict_primates}
+```{r plot_strict_primates, fig.cap="Ultrametric ML phylogeny."}
 plot(fit_strict)
 ```
 
@@ -257,7 +257,7 @@ In unrooted trees we estimate one edge length parameter for each tree, for ultra
 
 
 And at last we plot the tree with a timescale. 
-```{r tipdated_plot}
+```{r tipdated_plot, fig.cap="Tip dated ML phylogeny with time scale in years."}
 plot(fit_td, align.tip.label=TRUE)
 ```
 
