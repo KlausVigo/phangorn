@@ -78,19 +78,20 @@ Technology<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.
     
     
 <div class="section level3">
-<h3 id="section"></h3>
+<h3 id="changes-in-phangorn-3-0">Changes in phangorn 3.0<a class="anchor" aria-label="anchor" href="#changes-in-phangorn-3-0"></a>
+</h3>
 <p>Several function in phangorn make use of parallel computing. With the
-new version 3 we move to using the future and future.apply package <span class="citation">(Bengtsson 2021)</span>. Before we were using the
-mclapply function in in bootstrap.pml, bootstrap.phyDat, modelTest. The
-disadvantage of mclapply is that it works not for Windows and its usage
-is not recommended inside a GUI. The future package allows the user to
-define its backend and can so be adjusted to the hardware and operating
-system of the user. Now also on Windows one can use parallel processing.
-It is very likely that several other function will allow the future
-framework. By default processes are running sequential. To run a
-function in parralel we just need to call the function plan specifying
-the backend and than the function which allows the parallel
-processing.</p>
+new version 3 we move to using the future and future.apply package <span class="citation">(Bengtsson 2021)</span>.</p>
+<p>Before we were using the mclapply function in in bootstrap.pml,
+bootstrap.phyDat, modelTest. The disadvantage of mclapply is that it
+works not for Windows and its usage is not recommended inside a GUI. The
+future package allows the user to define its backend and can so be
+adjusted to the hardware and operating system of the user. Now also on
+Windows one can use parallel processing. It is very likely that several
+other function will allow the future framework. By default processes are
+running sequential. To run a function in parralel we just need to call
+the function plan specifying the backend and than the function which
+allows the parallel processing.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/KlausVigo/phangorn" class="external-link">phangorn</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org" class="external-link">future</a></span><span class="op">)</span></span>
@@ -101,7 +102,10 @@ processing.</p>
 <p>It is good practise to clean up and set the backend to sequential
 after using parallel processing.</p>
 <p>When running prcesses in parallel the momory footpront might be
-larger compared to the sequential computation.</p>
+larger compared to the sequential computation. Furthermore some of the
+linear algebra routines build in R might implicitly use parallel
+computing. So best cores used. check how many cores are in use. If too
+many cores are used parallel code might even slow down.</p>
 <p>For more see the man page for plan <code><a href="https://future.futureverse.org/reference/plan.html" class="external-link">help(plan)</a></code>, the
 vignettes <code>vignette(package="future")</code> and other
 documentation of the future package.</p>
