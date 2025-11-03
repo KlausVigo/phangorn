@@ -19,9 +19,13 @@ knitr::opts_chunk$set(fig.width=6, fig.height=4)
 options(digits = 2)
 ```
 
-## 
+## Changes in phangorn 3.0
 
-Several function in phangorn make use of parallel computing. With the new version 3 we move to using the future and future.apply package [@future]. Before we were using the mclapply function in in bootstrap.pml, bootstrap.phyDat, modelTest. The disadvantage of mclapply is that it works not for Windows and its usage is not recommended inside a GUI.
+Several function in phangorn make use of parallel computing. With the new version 3 we move to using the future and future.apply package [@future]. 
+
+
+
+Before we were using the mclapply function in in bootstrap.pml, bootstrap.phyDat, modelTest. The disadvantage of mclapply is that it works not for Windows and its usage is not recommended inside a GUI.
 The future package allows the user to define its backend and can so be adjusted to the hardware and operating system of the user. Now also on Windows one can use parallel processing. It is very likely that several other function will allow the future framework. By default processes are running sequential.
 To run a function in parralel we just need to call the function plan specifying the backend and than the function which allows the parallel processing. 
 ```{r future_example, eval = FALSE}
@@ -35,6 +39,7 @@ plan(sequential) # run sequential again
 It is good practise to clean up and set the backend to sequential after using parallel processing.  
 
 When running prcesses in parallel the momory footpront might be larger compared to the sequential computation. 
+Furthermore some of the linear algebra routines build in R might implicitly use parallel computing. So best  cores used. check how many cores are in use. If too many cores are used parallel code might even slow down. 
 
 For more see the man page for plan `help(plan)`, the vignettes `vignette(package="future")` and other documentation of the future package. 
 
