@@ -114,10 +114,7 @@ nodelabels(mrbayes.tree$node.label, adj = c(1, 0), frame = "none")
 
 par(mfrow=c(1,1)) # Setting plot parameters
 # NeighborNet
-plot(Nnet,"2D")
-## alternatively,
-# plot(Nnet,"2D")
-
+plot(Nnet)
 ```
 
 ### Intertwining trees and network functions                         
