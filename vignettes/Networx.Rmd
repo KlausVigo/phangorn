@@ -25,15 +25,15 @@ data(yeast)
 A consensusNet [@Holland2004] is a generalization of a consensus tree. Instead of only representing splits (taxon bipartitions) occurring in at least 50% of the trees in a bootstrap or MCMC sample one can use a lower threshold and explore competing splits. Note that, in its basic implementation used here, the consensusNet edge lengths are proportional to the frequency of the corresponding splits in the provided list of trees. 
 
 The input for `consensusNet` is a list of trees i.e. an object of class `multiPhylo`.
-```{r, eval=TRUE}
+```{r, eval=TRUE, fig.cap="Tree with bootstrap values and consensusNet for the same trees", out.width = "90%", fig.dim = c(7, 4)}
 set.seed(1)
 bs <- bootstrap.phyDat(yeast, FUN = function(x)nj(dist.hamming(x)), 
     bs=100)
 tree <- nj(dist.hamming(yeast))
-par("mar" = rep(1, 4))
-tree <- plotBS(tree, bs, "phylogram")
 cnet <- consensusNet(bs, .3)
-plot(cnet, show.edge.label=TRUE)
+par("mar" = rep(1, 4), "mfrow"=c(1,2))
+tree <- plotBS(midpoint(tree), bs, "phylogram", main="a)")
+plot(cnet, show.edge.label=TRUE, main="b)")
 ```
 
 In many cases, `consensusNet` will return more than two incompatible (competing) splits. This cannot be plotted as a planar (2-dimensional) graph. Such as situation requires a n-dimensional graph, where the maximum number of dimensions equals the maximum number of incompatible splits. For example, if we have three alternative incompatible splits: (A,B)|(C,D) vs. (A,C)|(B,D) vs. (A,D)|(B,C), we need a 3-dimensional graph to show all three alternatives. A nice way to get still a good impression of the network is to plot it in 3D. 
@@ -49,6 +49,7 @@ movie3d(spin3d(axis=c(0,1,0), rpm=6), duration=10)
 which will result in a spinning graph similar to this
 
 ![rotatingNetworx](movie.gif)
+
 The rendering of the `networx` is done using the the fantastic igraph package [@Csardi2006].
 
 ## neighborNet
@@ -57,14 +58,14 @@ The function `neighborNet` implements the popular method of @Bryant2004. The Nei
 ```{r, eval=TRUE}
 dm <- dist.hamming(yeast)
 nnet <- neighborNet(dm)
-par("mar" = rep(1, 4))
-plot(nnet)
 ```
 
-The advantage of Neighbor-Net is that it returns a circular split system which can be always displayed in a planar (2D) graph. For planar graphs we can also plot only the outline (@Bagci2021).  
+The advantage of Neighbor-Net is that it returns always a circular split system which can be always displayed in a planar (2D) graph. For planar graphs we can also plot only the outline (@Bagci2021).  
 
-```{r outline, eval=TRUE}
-plot(nnet, type = "outline")
+```{r outline, eval=TRUE, out.width = "90%", fig.dim = c(9, 4), fig.cap="NeighborNet showing a) all edges and b) only the outline."}
+par("mar" = rep(1, 4), "mfrow" = c(1, 2))
+plot(nnet, main="a)")
+plot(nnet, type = "outline", main="b)")
 ```
 
 

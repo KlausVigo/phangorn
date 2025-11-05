@@ -111,7 +111,7 @@ plot(cnet, show.edge.label=TRUE)
 
 _phangorn_ has several functions to generate tree topologies, which may are interesting for simulation studies. `allTrees` computes all possible bifurcating tree topologies either rooted or unrooted for up to 10 taxa. One has to keep in mind that the number of trees is growing exponentially, use `howmanytrees` from _ape_ as a reminder.
 
-```{r allTrees}
+```{r allTrees, fig.cap="All 15 unrooted trees with five tip labels."}
 trees <- allTrees(5)
 par(mfrow=c(3,5), mar=rep(0,4))
 for(i in 1:15)plot(trees[[i]], cex=1, type="u")
