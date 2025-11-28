@@ -155,8 +155,8 @@ print.pml <- function(x, ...) {
 #' @param file a file name. File endings are added.
 #' @param save_rds logical, if TRUE saves the pml object as a rds file,
 #' otherwise the alignment is saved as a fasta file.
-#' @param digits default is -1, no edge length for the bootstrap trees are
-#' exported. For digits larger than zero edge length are added.
+#' @param digits default is 10, i.e. edge length for the bootstrap trees are
+#' exported. For digits larger smaller than zero no edge length are exported.
 ## @param chi_sq logical, if TRUE performs $Chi^2$-test to check if sequences
 ## have similar state composition.
 #' @param ... Further arguments passed to or from other methods.
@@ -169,7 +169,7 @@ print.pml <- function(x, ...) {
 #' unlink(c("woodmouse.txt", "woodmouse_tree.nwk", "woodmouse_align.fasta"))
 #' @importFrom utils citation
 #' @export
-write.pml <- function(x, file="pml", save_rds=FALSE, digits=-1, ...){
+write.pml <- function(x, file="pml", save_rds=FALSE, digits=10, ...){
 #  digits <- -1
 #  if (hasArg("digits")) digits <- list(...)$digits
   write.tree(x$tree, file=paste0(file, "_tree.nwk"))

@@ -4,7 +4,7 @@
 \alias{write.pml}
 \title{Export pml objects}
 \usage{
-write.pml(x, file = "pml", save_rds = FALSE, digits = -1, ...)
+write.pml(x, file = "pml", save_rds = FALSE, digits = 10, ...)
 }
 \arguments{
 \item{x}{an object of class ancestral.}
@@ -14,8 +14,8 @@ write.pml(x, file = "pml", save_rds = FALSE, digits = -1, ...)
 \item{save_rds}{logical, if TRUE saves the pml object as a rds file,
 otherwise the alignment is saved as a fasta file.}
 
-\item{digits}{default is -1, no edge length for the bootstrap trees are
-exported. For digits larger than zero edge length are added.}
+\item{digits}{default is 10, i.e. edge length for the bootstrap trees are
+exported. For digits larger smaller than zero no edge length are exported.}
 
 \item{...}{Further arguments passed to or from other methods.}
 }

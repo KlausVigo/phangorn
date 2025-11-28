@@ -50,6 +50,7 @@ plot.pml <- function(x, type="phylogram", direction = "rightwards",
   cex <- ifelse(is.null(extras$cex), par("cex"), extras$cex)
   cex.axis <- ifelse(is.null(extras$cex.axis), cex, extras$cex.axis)
   if(!is.rooted(tree) && (type != "unrooted") ) tree <- midpoint(tree)
+  tree <- ladderize(tree)
   L <- plot.phylo(tree, type=type, direction=direction, ...)
   if(is.rooted(tree) && (type %in% c("phylogram","cladogram"))){
     direction <- match.arg(direction, c("rightwards", "leftwards", "upwards",
