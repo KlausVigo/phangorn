@@ -54,8 +54,9 @@
 #'}
 #' @rdname pml_bb
 #' @export
-pml_bb <- function(x, model=NULL, rearrangement="stochastic",
-         method="unrooted", start=NULL, tip.dates=NULL, ...){
+pml_bb <- function(x, model=NULL, rearrangement=
+                   ifelse(method=="unrooted", "stochastic", "ratchet"),
+                   method="unrooted", start=NULL, tip.dates=NULL, ...){
   fit <- NULL
   type <- NULL
   method <- match.arg(method, c("unrooted", "ultrametric", "tipdated"))
@@ -118,7 +119,7 @@ split_model <- function(x="GTR + G(4) + I", type="DNA"){
   mods <- NULL
   site_model <- "gamma"
   if(type=="DNA") mods <- .dnamodels
-  if(type=="AA") mods <- .aamodels
+  if(type=="AA") mods <- .aa_3Di_models
   if(type=="USER") mods <- .usermodels
 
   m <- strsplit(x, "\\+")[[1]]

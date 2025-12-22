@@ -14,15 +14,16 @@ aic.weights <- function(aic) {
 #' work within a GUI interface and will not work under Windows.
 #'
 #' @aliases modelTest AICc
-#' @param object an object of class phyDat or pml
+#' @param object an object of class phyDat or pml.
 #' @param tree a phylogenetic tree.
 #' @param model a vector containing the substitution models to compare with
-#' each other or "all" to test all available models
-#' @param G logical, TRUE (default) if (discrete) Gamma model should be tested
-#' @param I logical, TRUE (default) if invariant sites should be tested
+#' each other or "all" to test all available models.
+#' @param G logical, TRUE (default) if (discrete) Gamma model should be tested.
+#' @param I logical, TRUE (default) if invariant sites should be tested.
 #' @param FREQ logical, FALSE (default) if TRUE amino acid frequencies will be
 #' estimated.
-#' @param k number of rate classes
+#' @param R logical, TRUE (default) if free rate model should be tested.
+#' @param k number of rate classes.
 #' @param control A list of parameters for controlling the fitting process.
 #' @param multicore logical, whether models should estimated in parallel.
 #' @param mc.cores The number of cores to use, i.e. at most how many child
@@ -49,6 +50,10 @@ aic.weights <- function(aic) {
 #' Darriba D., Taboada G.L., Doallo R and Posada D. (2011) ProtTest 3: fast
 #' selection of best-fit models of protein evolution. . \emph{Bioinformatics}
 #' \bold{27}: 1164-1165
+#'
+#' Garg, S.G., Hochberg, G.K.A. (2025) A General Substitution Matrix for
+#' Structural Phylogenetics, \emph{Molecular Biology and Evolution},
+#' \bold{42(6)}, https://doi.org/10.1093/molbev/msaf124
 #' @keywords cluster
 #' @examples
 #'
@@ -70,7 +75,7 @@ aic.weights <- function(aic) {
 #'
 #' @export modelTest
 modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
-                      FREQ = FALSE, k = 4, control = pml.control(),
+                      FREQ = FALSE, R=FALSE, k = 4, control = pml.control(),
                       multicore = FALSE, mc.cores = NULL) {
 #  if(.Platform$OS.type=="windows") multicore <- FALSE
 #  if (multicore && is.null(mc.cores)) mc.cores <- detectCores()
@@ -83,9 +88,22 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
   }
 #  assert_phyDat(data)
   if (attr(data, "type") == "DNA") type <- .dnamodels
-  if (attr(data, "type") == "AA") type <- .aamodels
+  if (attr(data, "type") == "AA") type <- .aa_3Di_models
   if (attr(data, "type") == "USER") type <- .usermodels
-  if ( is.null(model) || (length(model)==1 && model == "all") ) model <- type
+#  if ( is.null(model) || (length(model)==1 && model == "all") ) {
+#    model <- type
+#    if (attr(data, "type") == "AA") type <- .aamodels
+#  }
+  if ( is.null(model) ) model <- "all"
+  if ( length(model)==1 ) {
+    if(model == "all"){
+      model <- type
+      if (attr(data, "type") == "AA") type <- .aamodels
+    } else if(model=="3Di"){
+      model <- ._3Di_models
+    } else if(model=="AA_3Di") model <- .aa_3Di_models
+  }
+
   model <- match.arg(model, type, TRUE)
 
   env <- new.env()
@@ -107,7 +125,8 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
   l <- length(model)
   if (attr(fit$data, "type") == "DNA") FREQ <- FALSE
   n <- 1L + sum(I + G + (G & I) + FREQ + (FREQ & I) + (FREQ & G) +
-    (FREQ & G & I))
+    (FREQ & G & I) + R + (FREQ & R))
+
   nseq <- sum(attr(data, "weight"))
 
   get_pars <- function(x, nseq){
@@ -169,6 +188,19 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
       trees[[m]] <- fitGI$tree
       m <- m + 1
     }
+    if (R) {
+      fitR <- update(fittmp, k = k, site.rate="free_rate")
+      fitR <- optim.pml(fitR, model = model, optGamma = TRUE,
+                        control = control)
+      res[m, 1] <- paste0(model, "+R(", k, ")")
+      pars <- get_pars(fitR, nseq)
+      res[m, 2:6] <- pars
+      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[-4],
+                         preserve.width="individual"), "\n")
+      calls[[m]] <- fitR$call
+      trees[[m]] <- fitR$tree
+      m <- m + 1
+    }
     if (FREQ) {
       fitF <- optim.pml(fittmp, model = model, optBf = TRUE,
         control = control)
@@ -218,6 +250,19 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
                          preserve.width="individual"), "\n")
       calls[[m]] <- fitGIF$call
       trees[[m]] <- fitGIF$tree
+      m <- m + 1
+    }
+    if (FREQ & R) {
+      fitRF <- update(fittmp, k = k, site.rate="free_rate")
+      fitRF <- optim.pml(fitRF, model = model, optGamma = TRUE, optBf = TRUE,
+                         control = control)
+      res[m, 1] <- paste0(model, "+R(", k, ")+F")
+      pars <- get_pars(fitRF, nseq)
+      res[m, 2:6] <- pars
+      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[-4],
+                                                                preserve.width="individual"), "\n")
+      calls[[m]] <- fitRF$call
+      trees[[m]] <- fitRF$tree
       m <- m + 1
     }
     list(res, trees, calls)

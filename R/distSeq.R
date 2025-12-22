@@ -133,7 +133,7 @@ dist.ml <- function(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
   if (exclude == "all" ) x <- removeAmbiguousSites(x)
   ambig_sites <- hasAmbiguousSites(x)
 
-  model <- match.arg(model, c("JC69", "F81", .aamodels))
+  model <- match.arg(model, c("JC69", "F81", .aa_3Di_models))
 
   unique_contrast <- grp_duplicated(contrast)
   if(exclude != "none"){
@@ -146,7 +146,7 @@ dist.ml <- function(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
   nc <- as.integer(attr(x, "nc"))
   nr <- as.integer(attr(x, "nr"))
 
-  if (!is.na(match(model, .aamodels)))
+  if (!is.na(match(model, .aa_3Di_models)))
     getModelAA(model, bf = is.null(bf), Q = is.null(Q))
   if (is.null(bf) && model == "F81") bf <- baseFreq(x)
   if (is.null(bf))

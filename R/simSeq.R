@@ -45,8 +45,8 @@
 #' If not provided, the root sequence is randomly generated.
 #' @param type Type of sequences ("DNA", "AA", "CODON" or "USER").
 #' @param model Amino acid model of evolution to employ, for example "WAG",
-#' "JTT", "Dayhoff" or "LG". For a full list of supported models, type
-#' \code{phangorn:::.aamodels}. Ignored if type is not equal to "AA".
+#' "JTT", "Dayhoff" or "LG" or structural 3Di alphabet (e.g. "Q_3Di"). For a full list of supported models, type
+#' \code{phangorn:::.aa_3Di_models}. Ignored if type is not equal to "AA".
 #' @param levels A character vector of the different character tokens.
 #' Ignored unless type = "USER".
 #' @param rate A numerical value greater than zero giving the mutation rate
@@ -110,7 +110,7 @@ simSeq.phylo <- function(x, l = 1000, Q = NULL, bf = NULL, rootseq = NULL,
   assert_count(l, positive = TRUE)
   assert_flag(ancestral)
   if (!is.null(model)) {
-    model <- match.arg(model, .aamodels)
+    model <- match.arg(model, .aa_3Di_models)
     getModelAA(model, bf = is.null(bf), Q = is.null(Q))
     type <- "AA"
   }

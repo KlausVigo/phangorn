@@ -20,9 +20,13 @@
 
 .aamodels <- c("WAG", "JTT", "LG", "Dayhoff", "cpREV", "mtmam", "mtArt",
                "MtZoa", "mtREV24", "VT", "RtREV", "HIVw", "HIVb", "FLU",
-               "Blosum62", "Dayhoff_DCMut", "JTT_DCMut", "3Di")
+               "Blosum62", "Dayhoff_DCMut", "JTT_DCMut") #, "Q_3Di"
 
-.threeDi <- readAArate("3Di.dat")
+.Q_3Di <- readAArate("3Di.dat")
+.Q_3Di_LLM <- readAArate("Q.3Di.LLM")
+.Q_3Di_AF <- readAArate("Q.3Di.AF")
+._3Di_models <- c("Q_3Di", "Q_3Di_LLM", "Q_3Di_AF")
+.aa_3Di_models <- c(.aamodels, ._3Di_models)
 
 .dnamodels <- c("JC", "F81", "K80", "HKY", "TrNe", "TrN",
   "TPM1", "K81", "TPM1u", "TPM2", "TPM2u", "TPM3", "TPM3u",
