@@ -628,9 +628,10 @@ readAArate <- function(file) {
 
 
 getModelAA <- function(model, bf = TRUE, Q = TRUE, has_gap_state=FALSE) {
-  model <- match.arg(eval(model), .aamodels)
-  if(model=="3Di") tmp <- get(".threeDi", environment(pml))
-  else tmp <- get(paste0(".", model), environment(pml))
+  model <- match.arg(eval(model), .aa_3Di_models)
+#  if(model=="Q_3Di") tmp <- get(".threeDi", environment(pml))
+#  else
+    tmp <- get(paste0(".", model), environment(pml))
   if(has_gap_state){
     tmp$Q <- add_gap_Q_AA(tmp$Q)
     tmp$bf <- add_gap_bf_AA(tmp$bf)
@@ -759,7 +760,7 @@ update.pml <- function(object, ...) {
   if (type == "AA") {
     if (!is.na(existing[9])) {
       model <- match.arg(eval(extras[[existing[9]]], parent.frame()),
-        .aamodels)
+        .aa_3Di_models)
       getModelAA(model, bf = is.na(existing[3]), Q = is.na(existing[4]),
                  has_gap_state = has_gap_state(data))
       updateEig <- TRUE
@@ -885,6 +886,7 @@ update.pml <- function(object, ...) {
     site = TRUE)
 
   df <- ifelse(is.ultrametric(tree), tree$Nnode, length(tree$edge.length))
+  if(site.rate == "free_rate") df <- df + 2 * kmax - 3L
   df <- switch(type,
     DNA = df + (k > 1) + (inv > 0) + length(unique(bf)) - 1 +
       length(unique(Q)) - 1,
@@ -1321,7 +1323,7 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   nr <- attr(data, "nr")
   nc <- as.integer(attr(data, "nc"))
   if (type == "AA" & !is.null(model)) {
-    model <- match.arg(model, .aamodels)
+    model <- match.arg(model, .aa_3Di_models)
     getModelAA(model, bf = is.null(bf), Q = is.null(Q),
                has_gap_state = has_gap_state(data))
   }
@@ -1403,7 +1405,7 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, wMix = wMix, site = TRUE,
     ASC=ASC, site.rate = site.rate)
   df <- ifelse(is.ultrametric(tree), tree$Nnode, length(tree$edge.length))
-
+  if(site.rate=="free_rate") df <- df + 2 * kmax - 3L
   df <- switch(type,
     DNA =  df + (kmax > 1) + (inv0 > 0) + length(unique(bf)) - 1 +
       length(unique(Q)) - 1,
@@ -2257,6 +2259,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       }
     }
     df <- ifelse(optRooted, tree$Nnode, length(tree$edge.length))
+    if(site.rate=="free_rate" & k > 1) df <- df + 2 * k - 3L
     dfQ <- ifelse(is.null(subs), length(unique(Q)) - 1, max(subs))
     df <- switch(type,
       DNA = df + (k > 1) + (optInv | (inv > 0)) + length(unique(bf)) - 1 + dfQ,
@@ -2525,7 +2528,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
 #          levels = attr(data, "levels"), inv = inv, rate = rate,
 #          g = g, w = w, eig = eig, INV = INV, ll.0 = ll.0,
 #          llMix = llMix, wMix = wMix, site = FALSE, Mkv=Mkv)
-        res <- opt_nni(tree2, data, rooted=optRooted, iter_max=25, trace=0,
+        res <- opt_nni(tree2, data, rooted=optRooted, iter_max=25, trace=trace-2,
                        ll=ll2, w = w, g = g, eig = eig, bf = bf, inv=inv,
                        rate=rate, ll.0 = ll.0, INV = INV, llMix = llMix,
                        wMix=wMix, ASC=ASC, RELL=RELL, ll_current=ll,
@@ -2905,9 +2908,22 @@ opt_nni <- function(tree, data, rooted, iter_max, trace, ll, RELL=NULL,
   swap <- 0
   iter <- 0
   llstart <- ll
+
+#  cand <- as.integer(Ntip(tree) : max(tree$edge))
+
   while (iter < iter_max) {
     if (!rooted) {
       tmp <- pml.nni(tree, data, ll=ll, RELL=RELL, ll_current=ll_current, ...)
+      debug <- FALSE
+#      if(debug){
+#      cand1 <- neighborhood_2(tmp$tree, cand)
+#      cand2 <- neighborhood_2(tmp$tree, cand, 2)
+#      cand3 <- neighborhood_2(tmp$tree, cand, 3)
+#      cat("Envir 1:", length(cand1), all(tmp$cand %in% cand1),"\n" )
+#      cat("Envir 2:", length(cand2), all(tmp$cand %in% cand2),"\n" )
+#      cat("Envir 3:", length(cand3), all(tmp$cand %in% cand3),"\n" )
+#      cand <- tmp$candidates
+#      }
       res <- optimEdge(tmp$tree, data, ...)
     }
     else {
