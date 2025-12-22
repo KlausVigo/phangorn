@@ -6,25 +6,27 @@
 \title{ModelTest}
 \usage{
 modelTest(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
-  FREQ = FALSE, k = 4, control = pml.control(), multicore = FALSE,
-  mc.cores = NULL)
+  FREQ = FALSE, R = FALSE, k = 4, control = pml.control(),
+  multicore = FALSE, mc.cores = NULL)
 }
 \arguments{
-\item{object}{an object of class phyDat or pml}
+\item{object}{an object of class phyDat or pml.}
 
 \item{tree}{a phylogenetic tree.}
 
 \item{model}{a vector containing the substitution models to compare with
-each other or "all" to test all available models}
+each other or "all" to test all available models.}
 
-\item{G}{logical, TRUE (default) if (discrete) Gamma model should be tested}
+\item{G}{logical, TRUE (default) if (discrete) Gamma model should be tested.}
 
-\item{I}{logical, TRUE (default) if invariant sites should be tested}
+\item{I}{logical, TRUE (default) if invariant sites should be tested.}
 
 \item{FREQ}{logical, FALSE (default) if TRUE amino acid frequencies will be
 estimated.}
 
-\item{k}{number of rate classes}
+\item{R}{logical, TRUE (default) if free rate model should be tested.}
+
+\item{k}{number of rate classes.}
 
 \item{control}{A list of parameters for controlling the fitting process.}
 
@@ -83,6 +85,10 @@ Biology and Evolution} \bold{25}: 1253-1256
 Darriba D., Taboada G.L., Doallo R and Posada D. (2011) ProtTest 3: fast
 selection of best-fit models of protein evolution. . \emph{Bioinformatics}
 \bold{27}: 1164-1165
+
+Garg, S.G., Hochberg, G.K.A. (2025) A General Substitution Matrix for
+Structural Phylogenetics, \emph{Molecular Biology and Evolution},
+\bold{42(6)}, https://doi.org/10.1093/molbev/msaf124
 }
 \seealso{
 \code{\link{pml}}, \code{\link{anova}}, \code{\link[stats]{AIC}},

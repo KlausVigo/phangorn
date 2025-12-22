@@ -4,8 +4,9 @@
 \alias{pml_bb}
 \title{Likelihood of a tree.}
 \usage{
-pml_bb(x, model = NULL, rearrangement = "stochastic",
-  method = "unrooted", start = NULL, tip.dates = NULL, ...)
+pml_bb(x, model = NULL, rearrangement = ifelse(method == "unrooted",
+  "stochastic", "ratchet"), method = "unrooted", start = NULL,
+  tip.dates = NULL, ...)
 }
 \arguments{
 \item{x}{An alignment of class (either class \code{phyDat}, \code{DNAbin} or
