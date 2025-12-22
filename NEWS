@@ -14,6 +14,8 @@ NEW FEATURES
 
       number of edges plotted for planar networks
 
+    o modelTest got a new argument R to additionally test free rate model
+
 OTHER CHANGES
 
     o improvements to write.ancestral and write.pml.
@@ -37,6 +39,8 @@ OTHER CHANGES
 BUG FIXES
 
     o update.pml can now can properly update site.rate
+
+    o fix degree of freedom for free rate models
 
 
     CHANGES in PHANGORN VERSION 2.12.0
