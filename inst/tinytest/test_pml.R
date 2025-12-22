@@ -139,8 +139,8 @@ expect_error(pml_bb(dat, model="GTR", method="tipdated"))
     fit.freerate <- optim.pml(fit0, optEdge=FALSE, optGamma = TRUE,
                               control = pml.control(epsilon=1e-10, trace=0))
 #    expect_equal(discrete.gamma(2,4), fit.freerate$g, tolerance=1e-4)
-    expect_equal(logLik(fit.freerate),
-                 logLik(pml(treeU1, dat_tmp, shape=shape, k=4)))
+    expect_equal(fit.freerate$logLik,
+                 pml(treeU1, dat_tmp, shape=shape, k=4)$logLik)
     expect_equal(phangorn:::guess_model(fit.freerate), "JC+R(4)")
 
 # test Laguerre quadrature
