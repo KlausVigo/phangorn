@@ -14,8 +14,8 @@
 #' @param shape1,shape2 non-negative parameters of the Beta distribution.
 #' @param k Number of intervals of the discrete gamma distribution.
 #' @param inv Proportion of invariable sites.
-#' @param r rates of discrete distribution.
-#' @param w proportion of rate r.
+#' @param g rates of discrete distribution.
+#' @param w proportion of rate g.
 #' @param site.rate Indicates what type of gamma distribution to use. Options
 #' are "gamma" (Yang 1994) and "gamma_quadrature" using Laguerre quadrature
 #' approach of Felsenstein (2001)

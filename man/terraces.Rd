@@ -8,7 +8,7 @@
 \usage{
 terraces(x, ...)
 
-\method{terraces}{pml}(x, trees = NULL, dist_fun = "RF.dist",
+\method{terraces}{pml}(x, trees = x$bs, dist_fun = "RF.dist",
   di2multi = FALSE, tol = 2e-08, plot = TRUE, ...)
 
 \method{terraces}{phyDat}(x, trees, dist_fun = "RF.dist", di2multi = TRUE,

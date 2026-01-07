@@ -16,7 +16,8 @@ plot_gamma_plus_inv(w = NULL, g = NULL, shape = 1, inv = 0, k = 4,
   ylab = ifelse(cdf, "F(x)", "f(x)"), xlim = NULL, verticals = FALSE,
   edge.length = NULL, site.rate = "gamma", ...)
 
-plotRates(obj, cdf.color = "blue", main = "cdf", rug = FALSE, ...)
+plotRates(obj, cdf.color = "blue", main = "cdf", rug = FALSE,
+  xlim = NULL, ...)
 }
 \arguments{
 \item{alpha}{Shape parameter of the gamma distribution.}
@@ -25,7 +26,9 @@ plotRates(obj, cdf.color = "blue", main = "cdf", rug = FALSE, ...)
 
 \item{shape1, shape2}{non-negative parameters of the Beta distribution.}
 
-\item{w}{proportion of rate r.}
+\item{w}{proportion of rate g.}
+
+\item{g}{rates of discrete distribution.}
 
 \item{shape}{Shape parameter of the gamma distribution.}
 
@@ -63,8 +66,6 @@ approach of Felsenstein (2001)}
 
 \item{rug}{logical; if TRUE a \code{\link[graphics]{rug}} is added to the
 plot.}
-
-\item{r}{rates of discrete distribution.}
 }
 \value{
 \code{discrete.gamma} returns a matrix.
