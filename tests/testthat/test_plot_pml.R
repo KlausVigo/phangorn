@@ -26,7 +26,8 @@ test_that("densiTree works", {
 set.seed(42)
 data("Laurasiatherian")
 tmp <- subset(Laurasiatherian, 1:15, compress = TRUE)
-fit <- pml_bb(tmp, "JC+G(4)", rearrangement = "NNI")
+fit <- pml_bb(tmp, "JC+G(4)", rearrangement = "NNI",
+              control=pml.control(trace=0))
 
 test_that("plotRates works", {
   rates_plot <- function() plotRates(fit)
@@ -34,7 +35,7 @@ test_that("plotRates works", {
 })
 
 data(woodmouse)
-fit100 <- pml_bb(woodmouse, "JC")
+fit100 <- pml_bb(woodmouse, "JC", control=pml.control(trace=0))
 
 test_that("terraces works", {
   terraces_plot <- function() terraces(fit100)
