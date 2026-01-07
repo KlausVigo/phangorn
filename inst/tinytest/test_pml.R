@@ -144,6 +144,12 @@ expect_error(pml_bb(dat, model="GTR", method="tipdated"))
     expect_equal(phangorn:::guess_model(fit.freerate), "JC+R(4)")
 
 # test Laguerre quadrature
+    shape <- 2
+    fit_T <- pml(treeU1, dat, shape=shape, k=4, site.rate = "gamma_quadrature")
+    weights <- as.vector(1000 * exp(fit_T$siteLik))
+    dat_tmp <- dat
+    attr(dat_tmp, "weight") <- weights
+
     fit0 <- pml(treeU1, dat_tmp, k=4, site.rate = "gamma_quadrature")
     fit.quadrature <- optim.pml(fit0, optEdge=FALSE, optGamma = TRUE,
                               control = pml.control(epsilon=1e-10, trace=0))
