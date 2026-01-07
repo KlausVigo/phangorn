@@ -58,12 +58,12 @@ for simulation studies or in cases where .</p>
 <span></span>
 <span><span class="fu">discrete.beta</span><span class="op">(</span><span class="va">shape1</span>, <span class="va">shape2</span>, <span class="va">k</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">plot_gamma_plus_inv</span><span class="op">(</span>shape <span class="op">=</span> <span class="fl">1</span>, inv <span class="op">=</span> <span class="fl">0</span>, k <span class="op">=</span> <span class="fl">4</span>, discrete <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  cdf <span class="op">=</span> <span class="cn">TRUE</span>, append <span class="op">=</span> <span class="cn">FALSE</span>, xlab <span class="op">=</span> <span class="st">"x"</span>, ylab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">cdf</span>, <span class="st">"F(x)"</span>,</span>
-<span>  <span class="st">"f(x)"</span><span class="op">)</span>, xlim <span class="op">=</span> <span class="cn">NULL</span>, verticals <span class="op">=</span> <span class="cn">FALSE</span>, edge.length <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  site.rate <span class="op">=</span> <span class="st">"gamma"</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu">plot_gamma_plus_inv</span><span class="op">(</span>w <span class="op">=</span> <span class="cn">NULL</span>, g <span class="op">=</span> <span class="cn">NULL</span>, shape <span class="op">=</span> <span class="fl">1</span>, inv <span class="op">=</span> <span class="fl">0</span>, k <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  discrete <span class="op">=</span> <span class="cn">TRUE</span>, cdf <span class="op">=</span> <span class="cn">TRUE</span>, append <span class="op">=</span> <span class="cn">FALSE</span>, xlab <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>  ylab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">cdf</span>, <span class="st">"F(x)"</span>, <span class="st">"f(x)"</span><span class="op">)</span>, xlim <span class="op">=</span> <span class="cn">NULL</span>, verticals <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  edge.length <span class="op">=</span> <span class="cn">NULL</span>, site.rate <span class="op">=</span> <span class="st">"gamma"</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">plotRates</span><span class="op">(</span><span class="va">obj</span>, cdf.color <span class="op">=</span> <span class="st">"blue"</span>, main <span class="op">=</span> <span class="st">"cdf"</span>, rug <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">plotRates</span><span class="op">(</span><span class="va">obj</span>, cdf.color <span class="op">=</span> <span class="st">"blue"</span>, main <span class="op">=</span> <span class="st">"cdf"</span>, rug <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -80,6 +80,10 @@ for simulation studies or in cases where .</p>
 
 <dt id="arg-shape-shape-">shape1, shape2<a class="anchor" aria-label="anchor" href="#arg-shape-shape-"></a></dt>
 <dd><p>non-negative parameters of the Beta distribution.</p></dd>
+
+
+<dt id="arg-w">w<a class="anchor" aria-label="anchor" href="#arg-w"></a></dt>
+<dd><p>proportion of rate r.</p></dd>
 
 
 <dt id="arg-shape">shape<a class="anchor" aria-label="anchor" href="#arg-shape"></a></dt>
@@ -149,6 +153,10 @@ approach of Felsenstein (2001)</p></dd>
 <dt id="arg-rug">rug<a class="anchor" aria-label="anchor" href="#arg-rug"></a></dt>
 <dd><p>logical; if TRUE a <code><a href="https://rdrr.io/r/graphics/rug.html" class="external-link">rug</a></code> is added to the
 plot.</p></dd>
+
+
+<dt id="arg-r">r<a class="anchor" aria-label="anchor" href="#arg-r"></a></dt>
+<dd><p>rates of discrete distribution.</p></dd>
 
 </dl></div>
     <div class="section level2">

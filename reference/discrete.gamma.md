@@ -11,12 +11,12 @@ discrete.gamma(alpha, k)
 
 discrete.beta(shape1, shape2, k)
 
-plot_gamma_plus_inv(shape = 1, inv = 0, k = 4, discrete = TRUE,
-  cdf = TRUE, append = FALSE, xlab = "x", ylab = ifelse(cdf, "F(x)",
-  "f(x)"), xlim = NULL, verticals = FALSE, edge.length = NULL,
-  site.rate = "gamma", ...)
+plot_gamma_plus_inv(w = NULL, g = NULL, shape = 1, inv = 0, k = 4,
+  discrete = TRUE, cdf = TRUE, append = FALSE, xlab = "x",
+  ylab = ifelse(cdf, "F(x)", "f(x)"), xlim = NULL, verticals = FALSE,
+  edge.length = NULL, site.rate = "gamma", ...)
 
-plotRates(obj, cdf.color = "blue", main = "cdf", rug = TRUE, ...)
+plotRates(obj, cdf.color = "blue", main = "cdf", rug = FALSE, ...)
 ```
 
 ## Arguments
@@ -32,6 +32,10 @@ plotRates(obj, cdf.color = "blue", main = "cdf", rug = TRUE, ...)
 - shape1, shape2:
 
   non-negative parameters of the Beta distribution.
+
+- w:
+
+  proportion of rate r.
 
 - shape:
 
@@ -100,6 +104,10 @@ plotRates(obj, cdf.color = "blue", main = "cdf", rug = TRUE, ...)
 
   logical; if TRUE a [`rug`](https://rdrr.io/r/graphics/rug.html) is
   added to the plot.
+
+- r:
+
+  rates of discrete distribution.
 
 ## Value
 

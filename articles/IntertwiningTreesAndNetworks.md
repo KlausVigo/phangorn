@@ -129,7 +129,7 @@ nodelabels(mrbayes.tree$node.label, adj = c(1, 0), frame = "none")
 ``` r
 par(mfrow=c(1,1)) # Setting plot parameters
 # NeighborNet
-plot(Nnet)
+plot(Nnet, direction="horizontal")
 ```
 
 ![](IntertwiningTreesAndNetworks_files/figure-html/unnamed-chunk-4-2.png)
