@@ -14,6 +14,8 @@
 #' @param shape1,shape2 non-negative parameters of the Beta distribution.
 #' @param k Number of intervals of the discrete gamma distribution.
 #' @param inv Proportion of invariable sites.
+#' @param r rates of discrete distribution.
+#' @param w proportion of rate r.
 #' @param site.rate Indicates what type of gamma distribution to use. Options
 #' are "gamma" (Yang 1994) and "gamma_quadrature" using Laguerre quadrature
 #' approach of Felsenstein (2001)
@@ -72,7 +74,7 @@ discrete.beta <- function(shape1, shape2, k) {
 #' @importFrom graphics curve
 #' @keywords hplot
 #' @export
-plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
+plot_gamma_plus_inv <- function(w=NULL, g=NULL, shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
                                 append=FALSE, xlab = "x",
                                 ylab=ifelse(cdf, "F(x)", "f(x)"), xlim=NULL,
                                 verticals=FALSE, edge.length=NULL,
@@ -97,6 +99,30 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
     cbind(w=w, g=g)
   }
 
+  cr <- TRUE
+  if(!is.null(w) && !is.null(g)){
+    tmp <- cbind(w=w, g=g)
+    cr <- FALSE
+  }
+
+#  step_GpI <- function(alpha=1, k=4, inv=0, edge.length=NULL,
+#                       site.rate="gamma"){
+#    rw <- rates_n_weights(alpha, k, site.rate)
+#    g <- rw[, 1]
+#    w <- rw[, 2]
+#    if (inv > 0) w <- c(inv, (1 - inv) * w)
+#    cw <- cumsum(w)
+#    if (inv > 0) g <- c(0, g/(1 - inv))
+#    if(!is.null(edge.length)) g <- g * edge.length
+#    stepfun(g, c(0, cw))
+#  }
+
+  step_gw <- function(g, w, edge.length=NULL){
+    cw <- c(0, cumsum(w))
+    if(!is.null(edge.length)) g <- g * edge.length
+    stepfun(g, cw)
+  }
+
   g <- mapply(function(shape, k, inv) max(gw(shape, k, inv, site.rate)[,"g"]),
               shape, k, inv) |> max()
 
@@ -116,34 +142,24 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
     (1-inv) * dgamma(x, shape = shape, rate = shape)
   }
 
-  step_GpI <- function(alpha=1, k=4, inv=0, edge.length=NULL,
-                       site.rate="gamma"){
-    rw <- rates_n_weights(alpha, k, site.rate)
-    g <- rw[, 1]
-    w <- rw[, 2]
-    if (inv > 0) w <- c(inv, (1 - inv) * w)
-    cw <- cumsum(w)
-    if (inv > 0) g <- c(0, g/(1 - inv))
-    if(!is.null(edge.length)) g <- g * edge.length
-    stepfun(g, c(0, cw))
-  }
 
-  plot_cdf_discrete <- function(shape=1, inv=0, k=4, verticals=FALSE,
-                                append=FALSE, ylab=ylab, xlim=xlim,
-                                edge.length=edge.length, site.rate="gamma",
-                                ...){
-    sf <- step_GpI(shape, inv, k=k, edge.length=edge.length,
-                   site.rate = site.rate)
+#shape=1, inv=0, k=4,
+  plot_cdf_discrete <- function(g, w, verticals=FALSE, append=FALSE, ylab=ylab,
+                                xlim=xlim, edge.length=edge.length,
+                                site.rate="gamma", ...){
+#    sf <- step_GpI(shape, inv, k=k, edge.length=edge.length,
+#                   site.rate = site.rate)
+    sf <- step_gw(g=g, w=w, edge.length=edge.length)
     if(append) plot(sf, verticals=verticals, add=TRUE, xlim=xlim, ...)
     else plot(sf, verticals=verticals, ylab=ylab, xlim=xlim, ...)
   }
 
-  plot_density_discrete <- function(shape=1, inv=0, k=4, append=FALSE,
-                                    xlab=xlab, ylab=ylab, xlim=xlim,
-                                    site.rate="gamma", ...){
-    g_w <- gw(shape, k, inv, site.rate)
-    g <- g_w[, "g"]
-    w <- g_w[, "w"]
+#shape=1, inv=0, k=4
+  plot_density_discrete <- function(g, w, append=FALSE,  xlab=xlab, ylab=ylab,
+                                    xlim=xlim, site.rate="gamma", ...){
+#    g_w <- gw(shape, k, inv, site.rate)
+#    g <- g_w[, "g"]
+#    w <- g_w[, "w"]
     if(!append) plot(g, w, xlim = xlim, ylim=c(0, 1), type="n",
                      xlab=xlab, ylab=ylab, ...)
     segments(g, 0, g, w, ...)
@@ -191,7 +207,8 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
 
     if(cdf){
       if(discrete){
-        plot_cdf_discrete(shape[i], inv[i], k[i], verticals = verticals[i],
+        if(cr)tmp <- gw(shape=shape[i], k=k[i], inv=inv[i], site.rate=site.rate)
+        plot_cdf_discrete(g=tmp[,"g"], w=tmp[,"w"], verticals = verticals[i],
                           append = append, ylab = ylab, xlim=xlim,
                           edge.length=edge.length, site.rate=site.rate, ...)
       }
@@ -203,8 +220,8 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
     }
     else{
       if(discrete){
-
-        plot_density_discrete(shape[i], inv[i], k[i], append=append,
+        if(cr)tmp <- gw(shape=shape[i], k=k[i], inv=inv[i], site.rate=site.rate)
+        plot_density_discrete(g=tmp[,"g"], w=tmp[,"w"], append=append,
                               xlab=xlab, ylab=ylab, xlim=xlim,
                               site.rate=site.rate, ...)
       }
@@ -230,17 +247,24 @@ plot_gamma_plus_inv <- function(shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
 #' @param rug logical; if TRUE a \code{\link[graphics]{rug}} is added to the
 #' plot.
 #' @export
-plotRates <- function(obj, cdf.color="blue", main="cdf", rug=TRUE, ...){
+plotRates <- function(obj, cdf.color="blue", main="cdf", rug=FALSE, xlim=NULL, ...){
   pscores <- parsimony(obj$tree, obj$data, site="site")[attr(obj$data, "index")]
   ecdf_pscores <- ecdf(pscores)
-  plot(ecdf_pscores, verticals = TRUE, do.points=FALSE, main=main, ...)
+  if(is.null(xlim)) xlim <- c(-0.25, 1.1 * max(pscores))
+  plot(ecdf_pscores, verticals = TRUE, do.points=FALSE, main=main, xlim=xlim, ...)
   if(rug) rug(jitter(pscores))
   el <- obj$tree$edge.length * obj$rate
-  xlim <- c(-0.25, 1.1 * max(pscores))
-  plot_gamma_plus_inv(k=obj$k, shape=obj$shape, inv=obj$inv, append=TRUE,
+  if(obj$site.rate == "free_rate"){
+    plot_gamma_plus_inv(w=obj$w, g=obj$g, append=TRUE, xlim=xlim,
+                        edge.length=sum(el), verticals=TRUE, col=cdf.color,
+                        site.rate=obj$site.rate, ...)
+  } else {
+      plot_gamma_plus_inv(k=obj$k, shape=obj$shape, inv=obj$inv, append=TRUE,
                       xlim = xlim,
                       edge.length=sum(el), verticals=TRUE, col=cdf.color,
                       site.rate=obj$site.rate, ...)
+  }
+  invisible(obj)
 }
 
 

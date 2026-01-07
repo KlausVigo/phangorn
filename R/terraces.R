@@ -43,12 +43,13 @@ terraces <- function(x, ...){
 #' @rdname terraces
 #' @method terraces pml
 #' @export
-terraces.pml <- function(x, trees=NULL, dist_fun="RF.dist", di2multi=FALSE,
+terraces.pml <- function(x, trees=x$bs, dist_fun="RF.dist", di2multi=FALSE,
                      tol=2e-8, plot=TRUE, ...) {
   assert_pml(x)
   tree <- x$tree
-  if(is.null(trees)) trees <- x$bs
-  else assert_multiPhylo(trees)
+#  if(is.null(trees)) trees <- x$bs
+#  else assert_multiPhylo(trees)
+  assert_multiPhylo(trees)
   trees <- c(tree, trees)
   trees <- .compressTipLabel(trees)
 
@@ -56,7 +57,7 @@ terraces.pml <- function(x, trees=NULL, dist_fun="RF.dist", di2multi=FALSE,
   tmp <- hash(trees)
   trees <- trees[!duplicated(tmp)]
 
-  if(length(trees) < 3) stop("less than 3 different trees found!")
+#  if(length(trees) < 3) stop("less than 3 different trees found!")
   dm <- do.call(dist_fun, list(trees))
 
   xy <- cmdscale(dm)

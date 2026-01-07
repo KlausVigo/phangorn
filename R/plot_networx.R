@@ -28,15 +28,16 @@ spl2angle <- function(x) {
 }
 
 
-coords.equal.angle <- function(obj) {
+coords.equal.angle <- function(obj, eps=1e-8) {
   if (is.null(attr(obj, "order")) || (attr(obj, "order") == "postorder"))
     obj <- reorder.networx(obj)
   spl <- obj$splits
   spl <- SHORTwise(spl) #, length(obj$tip.label))
   l <- length(obj$edge.length)
   n <- max(obj$edge)
-  angle <- spl2angle(spl)
   weight <- attr(spl, "weight")
+  attr(spl, "weight")[weight < eps] <- eps
+  angle <- spl2angle(spl)
   k <- matrix(0, max(obj$splitIndex), 2)
 
   res <- matrix(0, max(obj$edge), 2)
@@ -119,6 +120,7 @@ kart2kreis <- function(x, y) {
   alpha <- atan(y / x)
   #if (x < 0) alpha <- alpha + pi
   if (any(x < 0)) alpha[x < 0] <- alpha[x < 0] + pi
+  alpha[is.na(alpha)] <- 0 # better ensure edge length > 0
   cbind(r, alpha)
 }
 
