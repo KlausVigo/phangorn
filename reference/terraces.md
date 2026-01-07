@@ -12,7 +12,7 @@ parsimony score.
 terraces(x, ...)
 
 # S3 method for class 'pml'
-terraces(x, trees = NULL, dist_fun = "RF.dist",
+terraces(x, trees = x$bs, dist_fun = "RF.dist",
   di2multi = FALSE, tol = 2e-08, plot = TRUE, ...)
 
 # S3 method for class 'phyDat'

@@ -16,7 +16,8 @@ plot_gamma_plus_inv(w = NULL, g = NULL, shape = 1, inv = 0, k = 4,
   ylab = ifelse(cdf, "F(x)", "f(x)"), xlim = NULL, verticals = FALSE,
   edge.length = NULL, site.rate = "gamma", ...)
 
-plotRates(obj, cdf.color = "blue", main = "cdf", rug = FALSE, ...)
+plotRates(obj, cdf.color = "blue", main = "cdf", rug = FALSE,
+  xlim = NULL, ...)
 ```
 
 ## Arguments
@@ -35,7 +36,11 @@ plotRates(obj, cdf.color = "blue", main = "cdf", rug = FALSE, ...)
 
 - w:
 
-  proportion of rate r.
+  proportion of rate g.
+
+- g:
+
+  rates of discrete distribution.
 
 - shape:
 
@@ -104,10 +109,6 @@ plotRates(obj, cdf.color = "blue", main = "cdf", rug = FALSE, ...)
 
   logical; if TRUE a [`rug`](https://rdrr.io/r/graphics/rug.html) is
   added to the plot.
-
-- r:
-
-  rates of discrete distribution.
 
 ## Value
 
