@@ -13,6 +13,9 @@ aic.weights <- function(aic) {
 #' parallel. \code{modelTest} runs each model in one thread.  This is may not
 #' work within a GUI interface and will not work under Windows.
 #'
+#' model="3Di" tests the three models for structural alignments mention in
+#' Garg(2025).
+#'
 #' @aliases modelTest AICc
 #' @param object an object of class phyDat or pml.
 #' @param tree a phylogenetic tree.
@@ -50,6 +53,10 @@ aic.weights <- function(aic) {
 #' Darriba D., Taboada G.L., Doallo R and Posada D. (2011) ProtTest 3: fast
 #' selection of best-fit models of protein evolution. . \emph{Bioinformatics}
 #' \bold{27}: 1164-1165
+#'
+#' Puente-Lelievre, Caroline, et al. (2023) "Tertiary-interaction characters
+#' enable fast, model-based structural phylogenetics beyond the twilight zone."
+#' \emph{bioRxiv}: 2023-12
 #'
 #' Garg, S.G., Hochberg, G.K.A. (2025) A General Substitution Matrix for
 #' Structural Phylogenetics, \emph{Molecular Biology and Evolution},

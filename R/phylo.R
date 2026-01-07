@@ -2409,7 +2409,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       } else {
         res <- optimGamma(tree, data, shape = shape, k = k, inv = inv,
                           INV = INV, Q = Q, bf = bf, eig = eig, ll.0 = ll.0,
-                          rate = rate, llMix = llMix, wMix=wMix, ASC=ASC)
+                          rate = rate, llMix = llMix, wMix=wMix, ASC=ASC,
+                          site.rate=site.rate)
         if (trace > 0)
         cat("optimize shape parameter: ", ll, "-->", max(res[[2]], ll), "\n")
         updateRates(res, ll, rate, shape, k, inv, wMix, update="shape",
