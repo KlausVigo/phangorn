@@ -43,7 +43,6 @@ Depends:
 Imports:
     checkmate,
     digest,
-    future,
     future.apply,
     generics,
     graphics,
