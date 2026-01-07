@@ -69,7 +69,7 @@ Iris Bardel-Kahr</h4>
 Graz<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2025-11-05</h4>
+            <h4 data-toc-skip class="date">2026-01-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/main/vignettes/MLbyHand.Rmd" class="external-link"><code>vignettes/MLbyHand.Rmd</code></a></small>
       <div class="d-none name"><code>MLbyHand.Rmd</code></div>
@@ -290,7 +290,7 @@ conflict.</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotBS.html">plotBS</a></span><span class="op">(</span><span class="fu"><a href="../reference/midpoint.html">midpoint</a></span><span class="op">(</span><span class="va">fitJC</span><span class="op">$</span><span class="va">tree</span><span class="op">)</span>, <span class="va">bs</span>, p <span class="op">=</span> <span class="fl">50</span>, type<span class="op">=</span><span class="st">"p"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="MLbyHand_files/figure-html/plotBS-1.png" alt="Tree with bootstrap support. Unrooted tree (midpoint rooted) with bootstrap support values." width="768"><p class="caption">
+<img src="MLbyHand_files/figure-html/plotBS-1.png" class="r-plt" alt="Tree with bootstrap support. Unrooted tree (midpoint rooted) with bootstrap support values." width="768"><p class="caption">
 Tree with bootstrap support. Unrooted tree (midpoint rooted) with
 bootstrap support values.
 </p>
@@ -299,7 +299,7 @@ bootstrap support values.
 <code class="sourceCode R"><span><span class="va">cnet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/consensusNet.html">consensusNet</a></span><span class="op">(</span><span class="va">bs</span>, p<span class="op">=</span><span class="fl">0.2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cnet</span>, show.edge.label<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="MLbyHand_files/figure-html/ConsensusNet-1.png" alt="ConsensusNet from the bootstrap sample." width="768"><p class="caption">
+<img src="MLbyHand_files/figure-html/ConsensusNet-1.png" class="r-plt" alt="ConsensusNet from the bootstrap sample." width="768"><p class="caption">
 ConsensusNet from the bootstrap sample.
 </p>
 </div>
@@ -319,7 +319,7 @@ trees is growing exponentially, use <code>howmanytrees</code> from
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">5</span><span class="op">)</span>, mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">15</span><span class="op">)</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">trees</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>, cex<span class="op">=</span><span class="fl">1</span>, type<span class="op">=</span><span class="st">"u"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="MLbyHand_files/figure-html/allTrees-1.png" alt="All 15 unrooted trees with five tip labels." width="768"><p class="caption">
+<img src="MLbyHand_files/figure-html/allTrees-1.png" class="r-plt" alt="All 15 unrooted trees with five tip labels." width="768"><p class="caption">
 All 15 unrooted trees with five tip labels.
 </p>
 </div>
@@ -356,24 +356,24 @@ pruning and regrafting) away.</p>
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] future_1.67.0     phangorn_2.12.1.3 ape_5.8-1        </span></span>
+<span><span class="co">## [1] future_1.68.0     phangorn_2.12.1.3 ape_5.8-1        </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] Matrix_1.7-4        future.apply_1.20.0 jsonlite_2.0.0     </span></span>
+<span><span class="co">##  [1] Matrix_1.7-4        future.apply_1.20.1 jsonlite_2.0.0     </span></span>
 <span><span class="co">##  [4] compiler_4.5.2      Rcpp_1.1.0          parallel_4.5.2     </span></span>
 <span><span class="co">##  [7] jquerylib_0.1.4     globals_0.18.0      systemfonts_1.3.1  </span></span>
-<span><span class="co">## [10] textshaping_1.0.4   yaml_2.3.10         fastmap_1.2.0      </span></span>
+<span><span class="co">## [10] textshaping_1.0.4   yaml_2.3.12         fastmap_1.2.0      </span></span>
 <span><span class="co">## [13] lattice_0.22-7      R6_2.6.1            generics_0.1.4     </span></span>
-<span><span class="co">## [16] igraph_2.2.1        knitr_1.50          htmlwidgets_1.6.4  </span></span>
+<span><span class="co">## [16] igraph_2.2.1        knitr_1.51          htmlwidgets_1.6.4  </span></span>
 <span><span class="co">## [19] backports_1.5.0     checkmate_2.3.3     desc_1.4.3         </span></span>
 <span><span class="co">## [22] bslib_0.9.0         rlang_1.1.6         cachem_1.1.0       </span></span>
-<span><span class="co">## [25] xfun_0.54           fs_1.6.6            sass_0.4.10        </span></span>
-<span><span class="co">## [28] cli_3.6.5           pkgdown_2.1.3       magrittr_2.0.4     </span></span>
-<span><span class="co">## [31] digest_0.6.37       grid_4.5.2          lifecycle_1.0.4    </span></span>
-<span><span class="co">## [34] nlme_3.1-168        evaluate_1.0.5      listenv_0.10.0     </span></span>
-<span><span class="co">## [37] codetools_0.2-20    ragg_1.5.0          parallelly_1.45.1  </span></span>
-<span><span class="co">## [40] rmarkdown_2.30      tools_4.5.2         pkgconfig_2.0.3    </span></span>
-<span><span class="co">## [43] htmltools_0.5.8.1</span></span></code></pre>
+<span><span class="co">## [25] xfun_0.55           fs_1.6.6            sass_0.4.10        </span></span>
+<span><span class="co">## [28] otel_0.2.0          cli_3.6.5           pkgdown_2.2.0      </span></span>
+<span><span class="co">## [31] magrittr_2.0.4      digest_0.6.39       grid_4.5.2         </span></span>
+<span><span class="co">## [34] lifecycle_1.0.4     nlme_3.1-168        evaluate_1.0.5     </span></span>
+<span><span class="co">## [37] listenv_0.10.0      codetools_0.2-20    ragg_1.5.0         </span></span>
+<span><span class="co">## [40] parallelly_1.46.0   rmarkdown_2.30      pkgconfig_2.0.3    </span></span>
+<span><span class="co">## [43] tools_4.5.2         htmltools_0.5.9</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -411,7 +411,7 @@ Likelihood Ratchet.”</span> <em>Systematic Biology</em> 52 (3): 368–73.
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

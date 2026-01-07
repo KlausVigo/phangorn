@@ -1,0 +1,114 @@
+# codonTest
+
+Models for detecting positive selection
+
+## Usage
+
+``` r
+codonTest(tree, object, model = c("M0", "M1a", "M2a"),
+  frequencies = "F3x4", opt_freq = FALSE, codonstart = 1,
+  control = pml.control(maxit = 20), ...)
+```
+
+## Arguments
+
+- tree:
+
+  a phylogenetic tree.
+
+- object:
+
+  an object of class phyDat.
+
+- model:
+
+  a vector containing the substitution models to compare with each other
+  or "all" to test all available models.
+
+- frequencies:
+
+  a character string or vector defining how to compute the codon
+  frequencies
+
+- opt_freq:
+
+  optimize frequencies (so far ignored)
+
+- codonstart:
+
+  an integer giving where to start the translation. This should be 1, 2,
+  or 3, but larger values are accepted and have for effect to start the
+  translation further within the sequence.
+
+- control:
+
+  a list of parameters for controlling the fitting process.
+
+- ...:
+
+  further arguments passed to or from other methods.
+
+## Value
+
+A list with an element called summary containing a data.frame with the
+log-likelihood, number of estimated parameters, etc. of all tested
+models. An object called posterior which contains the posterior
+probability for the rate class for each sites and the estimates of the
+defined models.
+
+## Details
+
+`codonTest` allows to test for positive selection similar to programs
+like PAML (Yang ) or HyPhy (Kosakovsky Pond et al. 2005).
+
+There are several options for deriving the codon frequencies.
+Frequencies can be "equal" (1/61), derived from nucleotide frequencies
+"F1x4" and "F3x4" or "empirical" codon frequencies. The frequencies
+taken using the empirical frequencies or estimated via maximum
+likelihood.
+
+So far the M0 model (Goldman and Yang 2002), M1a and M2a are
+implemented. The M0 model is always computed the other are optional. The
+convergence may be very slow and sometimes fails.
+
+## References
+
+Ziheng Yang (2014). *Molecular Evolution: A Statistical Approach*.
+Oxford University Press, Oxford
+
+Sergei L. Kosakovsky Pond, Simon D. W. Frost, Spencer V. Muse (2005)
+HyPhy: hypothesis testing using phylogenies, *Bioinformatics*,
+**21(5)**: 676–679, doi:10.1093/bioinformatics/bti079
+
+Nielsen, R., and Z. Yang. (1998) Likelihood models for detecting
+positively selected amino acid sites and applications to the HIV-1
+envelope gene. *Genetics*, **148**: 929–936
+
+## See also
+
+[`pml`](https://klausvigo.github.io/phangorn/reference/pml.md),
+[`pmlMix`](https://klausvigo.github.io/phangorn/reference/pmlMix.md),
+[`modelTest`](https://klausvigo.github.io/phangorn/reference/modelTest.md),
+[`AIC`](https://rdrr.io/r/stats/AIC.html)
+
+## Author
+
+Klaus Schliep <klaus.schliep@gmail.com>
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+# load woodmouse data from ape
+data(woodmouse)
+dat_codon <- dna2codon(as.phyDat(woodmouse), code=2)
+tree <- NJ(dist.ml(dat_codon))
+# optimize the model the old way
+fit <- pml(tree, dat_codon, bf="F3x4")
+M0 <- optim.pml(fit, model="codon1")
+# Now using the codonTest function
+fit_codon <- codonTest(tree, dat_codon)
+fit_codon
+plot(fit_codon, "M1a")
+} # }
+```

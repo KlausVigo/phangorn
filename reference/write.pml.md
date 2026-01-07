@@ -1,0 +1,62 @@
+# Export pml objects
+
+`write.pml` writes out the ML tree and the model parameters.
+
+## Usage
+
+``` r
+write.pml(x, file = "pml", save_rds = FALSE, digits = 10, ...)
+```
+
+## Arguments
+
+- x:
+
+  an object of class ancestral.
+
+- file:
+
+  a file name. File endings are added.
+
+- save_rds:
+
+  logical, if TRUE saves the pml object as a rds file, otherwise the
+  alignment is saved as a fasta file.
+
+- digits:
+
+  default is 10, i.e. edge length for the bootstrap trees are exported.
+  For digits larger smaller than zero no edge length are exported.
+
+- ...:
+
+  Further arguments passed to or from other methods.
+
+## Value
+
+`write.pml` returns the input x invisibly.
+
+## Details
+
+`write.pml` creates several files. It exports the alignment as fasta
+file. It writes out the ML tree in a newick file and the estimates
+parameters in a txt file. It should be possible to (re-)create the pml
+object up to numerical inaccuracies. If bootstrap trees exist these are
+additionally exported in a nexus file.
+
+## See also
+
+[`ancestral.pml`](https://klausvigo.github.io/phangorn/reference/ancestral.pml.md),
+[`plotAnc`](https://klausvigo.github.io/phangorn/reference/plot.ancestral.md)
+
+## Examples
+
+``` r
+data(woodmouse)
+fit <- pml_bb(woodmouse, "JC", rearrangement = "none")
+#> optimize edge weights:  -1864.042 --> -1857.165 
+#> optimize edge weights:  -1857.165 --> -1857.165 
+#> optimize edge weights:  -1857.165 --> -1857.165 
+write.pml(fit, "woodmouse")
+unlink(c("woodmouse.txt", "woodmouse_tree.nwk", "woodmouse_align.fasta"))
+```

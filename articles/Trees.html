@@ -69,7 +69,7 @@ Iris Bardel-Kahr</h4>
 Graz<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2025-11-05</h4>
+            <h4 data-toc-skip class="date">2026-01-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/main/vignettes/Trees.Rmd" class="external-link"><code>vignettes/Trees.Rmd</code></a></small>
       <div class="d-none name"><code>Trees.Rmd</code></div>
@@ -143,14 +143,14 @@ with the commands:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">treeUPGMA</span>, main<span class="op">=</span><span class="st">"UPGMA"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="Trees_files/figure-html/plot1-1.png" alt="Rooted UPGMA tree." width="768"><p class="caption">
+<img src="Trees_files/figure-html/plot1-1.png" class="r-plt" alt="Rooted UPGMA tree." width="768"><p class="caption">
 Rooted UPGMA tree.
 </p>
 </div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">treeNJ</span>, <span class="st">"unrooted"</span>, main<span class="op">=</span><span class="st">"NJ"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="Trees_files/figure-html/plot2-1.png" alt="Unrooted NJ tree." width="768"><p class="caption">
+<img src="Trees_files/figure-html/plot2-1.png" class="r-plt" alt="Unrooted NJ tree." width="768"><p class="caption">
 Unrooted NJ tree.
 </p>
 </div>
@@ -170,7 +170,7 @@ and afterwards compute the tree. We can then give this function to the
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotBS.html">plotBS</a></span><span class="op">(</span><span class="va">treeUPGMA</span>, <span class="va">bs_upgma</span>, main<span class="op">=</span><span class="st">"UPGMA"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="Trees_files/figure-html/plot_bs-1.png" alt="Rooted UPGMA tree." width="768"><p class="caption">
+<img src="Trees_files/figure-html/plot_bs-1.png" class="r-plt" alt="Rooted UPGMA tree." width="768"><p class="caption">
 Rooted UPGMA tree.
 </p>
 </div>
@@ -247,7 +247,7 @@ the tree.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotBS.html">plotBS</a></span><span class="op">(</span><span class="fu"><a href="../reference/midpoint.html">midpoint</a></span><span class="op">(</span><span class="va">treeRatchet</span><span class="op">)</span>, type<span class="op">=</span><span class="st">"phylogram"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/add.scale.bar.html" class="external-link">add.scale.bar</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="Trees_files/figure-html/midpoint-1.png" alt="MP phylogeny with bootstrap values." width="768"><p class="caption">
+<img src="Trees_files/figure-html/midpoint-1.png" class="r-plt" alt="MP phylogeny with bootstrap values." width="768"><p class="caption">
 MP phylogeny with bootstrap values.
 </p>
 </div>
@@ -638,7 +638,7 @@ useful for large data sets.</p>
 <span></span>
 <span><span class="fu"><a href="../reference/plotBS.html">plotBS</a></span><span class="op">(</span><span class="fu"><a href="../reference/midpoint.html">midpoint</a></span><span class="op">(</span><span class="va">fit_mt</span><span class="op">$</span><span class="va">tree</span><span class="op">)</span>, <span class="va">bs</span>, p <span class="op">=</span> <span class="fl">50</span>, type<span class="op">=</span><span class="st">"p"</span>, digits<span class="op">=</span><span class="fl">0</span>, method <span class="op">=</span> <span class="st">"TBE"</span>, main<span class="op">=</span><span class="st">"Transfer bootstrap"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="Trees_files/figure-html/plotBS_ultrafast_bs-1.png" alt="Unrooted tree (midpoint rooted) with ultrafast, standard and transfer bootstrap support values." width="33%"><img src="Trees_files/figure-html/plotBS_ultrafast_bs-2.png" alt="Unrooted tree (midpoint rooted) with ultrafast, standard and transfer bootstrap support values." width="33%"><img src="Trees_files/figure-html/plotBS_ultrafast_bs-3.png" alt="Unrooted tree (midpoint rooted) with ultrafast, standard and transfer bootstrap support values." width="33%"><p class="caption">
+<img src="Trees_files/figure-html/plotBS_ultrafast_bs-1.png" class="r-plt" alt="Unrooted tree (midpoint rooted) with ultrafast, standard and transfer bootstrap support values." width="33%"><img src="Trees_files/figure-html/plotBS_ultrafast_bs-2.png" class="r-plt" alt="Unrooted tree (midpoint rooted) with ultrafast, standard and transfer bootstrap support values." width="33%"><img src="Trees_files/figure-html/plotBS_ultrafast_bs-3.png" class="r-plt" alt="Unrooted tree (midpoint rooted) with ultrafast, standard and transfer bootstrap support values." width="33%"><p class="caption">
 Unrooted tree (midpoint rooted) with ultrafast, standard and transfer
 bootstrap support values.
 </p>
@@ -659,7 +659,7 @@ potential conflict.</p>
 <code class="sourceCode R"><span><span class="va">cnet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/consensusNet.html">consensusNet</a></span><span class="op">(</span><span class="va">bs</span>, p<span class="op">=</span><span class="fl">0.2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cnet</span>, show.edge.label<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="Trees_files/figure-html/ConsensusNet-1.png" alt="ConsensusNet from the standard bootstrap sample." width="768"><p class="caption">
+<img src="Trees_files/figure-html/ConsensusNet-1.png" class="r-plt" alt="ConsensusNet from the standard bootstrap sample." width="768"><p class="caption">
 ConsensusNet from the standard bootstrap sample.
 </p>
 </div>
@@ -705,7 +705,7 @@ we can use an UPGMA or WPGMA tree.</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit_strict</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="Trees_files/figure-html/plot_strict_primates-1.png" alt="Ultrametric ML phylogeny." width="768"><p class="caption">
+<img src="Trees_files/figure-html/plot_strict_primates-1.png" class="r-plt" alt="Ultrametric ML phylogeny." width="768"><p class="caption">
 Ultrametric ML phylogeny.
 </p>
 </div>
@@ -774,7 +774,7 @@ programs like <em>TempEst</em> <span class="citation">(Rambaut et al.
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit_td</span>, align.tip.label<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="Trees_files/figure-html/tipdated_plot-1.png" alt="Tip dated ML phylogeny with time scale in years." width="768"><p class="caption">
+<img src="Trees_files/figure-html/tipdated_plot-1.png" class="r-plt" alt="Tip dated ML phylogeny with time scale in years." width="768"><p class="caption">
 Tip dated ML phylogeny with time scale in years.
 </p>
 </div>
@@ -805,24 +805,24 @@ Tip dated ML phylogeny with time scale in years.
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] knitr_1.50        future_1.67.0     phangorn_2.12.1.3 ape_5.8-1        </span></span>
+<span><span class="co">## [1] knitr_1.51        future_1.68.0     phangorn_2.12.1.3 ape_5.8-1        </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] Matrix_1.7-4        future.apply_1.20.0 jsonlite_2.0.0     </span></span>
+<span><span class="co">##  [1] Matrix_1.7-4        future.apply_1.20.1 jsonlite_2.0.0     </span></span>
 <span><span class="co">##  [4] compiler_4.5.2      Rcpp_1.1.0          parallel_4.5.2     </span></span>
 <span><span class="co">##  [7] jquerylib_0.1.4     globals_0.18.0      systemfonts_1.3.1  </span></span>
-<span><span class="co">## [10] textshaping_1.0.4   yaml_2.3.10         fastmap_1.2.0      </span></span>
+<span><span class="co">## [10] textshaping_1.0.4   yaml_2.3.12         fastmap_1.2.0      </span></span>
 <span><span class="co">## [13] lattice_0.22-7      R6_2.6.1            generics_0.1.4     </span></span>
 <span><span class="co">## [16] igraph_2.2.1        htmlwidgets_1.6.4   backports_1.5.0    </span></span>
 <span><span class="co">## [19] checkmate_2.3.3     desc_1.4.3          osqp_0.6.3.3       </span></span>
 <span><span class="co">## [22] bslib_0.9.0         rlang_1.1.6         fastmatch_1.1-6    </span></span>
-<span><span class="co">## [25] cachem_1.1.0        xfun_0.54           fs_1.6.6           </span></span>
-<span><span class="co">## [28] sass_0.4.10         cli_3.6.5           pkgdown_2.1.3      </span></span>
-<span><span class="co">## [31] magrittr_2.0.4      digest_0.6.37       grid_4.5.2         </span></span>
-<span><span class="co">## [34] lifecycle_1.0.4     nlme_3.1-168        evaluate_1.0.5     </span></span>
-<span><span class="co">## [37] listenv_0.10.0      codetools_0.2-20    ragg_1.5.0         </span></span>
-<span><span class="co">## [40] parallelly_1.45.1   rmarkdown_2.30      tools_4.5.2        </span></span>
-<span><span class="co">## [43] pkgconfig_2.0.3     htmltools_0.5.8.1</span></span></code></pre>
+<span><span class="co">## [25] cachem_1.1.0        xfun_0.55           fs_1.6.6           </span></span>
+<span><span class="co">## [28] sass_0.4.10         otel_0.2.0          cli_3.6.5          </span></span>
+<span><span class="co">## [31] pkgdown_2.2.0       magrittr_2.0.4      digest_0.6.39      </span></span>
+<span><span class="co">## [34] grid_4.5.2          lifecycle_1.0.4     nlme_3.1-168       </span></span>
+<span><span class="co">## [37] evaluate_1.0.5      listenv_0.10.0      codetools_0.2-20   </span></span>
+<span><span class="co">## [40] ragg_1.5.0          parallelly_1.46.0   rmarkdown_2.30     </span></span>
+<span><span class="co">## [43] pkgconfig_2.0.3     tools_4.5.2         htmltools_0.5.9</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -941,7 +941,7 @@ Biology</em> 8 (2): 357–66.
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>
