@@ -21,3 +21,22 @@ test_that("densiTree works", {
           jitter=list(amount=0.1, random=FALSE), alpha=1)
   vdiffr::expect_doppelganger("densiTree", densi_plot)
 })
+
+
+set.seed(42)
+data("Laurasiatherian")
+tmp <- subset(Laurasiatherian, 1:15, compress = TRUE)
+fit <- pml_bb(tmp, "JC+G(4)", rearrangement = "NNI")
+
+test_that("plotRates works", {
+  rates_plot <- function() plotRates(fit)
+  vdiffr::expect_doppelganger("plotRates", rates_plot)
+})
+
+data(woodmouse)
+fit100 <- pml_bb(woodmouse, "JC")
+
+test_that("terraces works", {
+  terraces_plot <- function() terraces(fit100)
+  vdiffr::expect_doppelganger("terraces", terraces_plot)
+})
