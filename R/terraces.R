@@ -30,8 +30,6 @@
 #' \dontrun{
 #' data(woodmouse)
 #' fit <- pml_bb(woodmouse, model="JC")
-#' library(rgl)
-#' open3d()
 #' terraces(fit)
 #' }
 #' @export
@@ -90,7 +88,6 @@ terraces.phyDat <- function(x, trees, dist_fun="RF.dist", di2multi=TRUE,
   if(plot) plot_terraces(xyz, ...)
   invisible(xyz)
 }
-
 
 plot_terraces <- function(xyz, size=10, lwd=2, pkg="plot3D",
                           max=TRUE, add=FALSE, ...){
