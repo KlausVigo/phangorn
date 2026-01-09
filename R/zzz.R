@@ -28,8 +28,8 @@
 ._3Di_models <- c("Q_3Di", "Q_3Di_LLM", "Q_3Di_AF")
 .aa_3Di_models <- c(.aamodels, ._3Di_models)
 
-.dnamodels <- c("JC", "F81", "K80", "HKY", "TrNe", "TrN",
-  "TPM1", "K81", "TPM1u", "TPM2", "TPM2u", "TPM3", "TPM3u",
+.dnamodels <- c("JC", "F81", "K80", "HKY", "TrNe", "TrN", # "TPM1",
+  "K81", "TPM1u", "TPM2", "TPM2u", "TPM3", "TPM3u",
   "TIM1e", "TIM1", "TIM2e", "TIM2", "TIM3e", "TIM3", "TVMe",
   "TVM", "SYM", "GTR")
 

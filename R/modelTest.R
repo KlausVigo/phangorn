@@ -111,6 +111,18 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
     } else if(model=="AA_3Di") model <- .aa_3Di_models
   }
 
+  # clean up
+  if(attr(data, "type") == "DNA" &&
+     any(model %in% c("K2P", "K3P", "TPM1", "JC69", "TN93"))){
+    # check for models: TPM1 == K81 == K3P & K80 == K2P
+    model[model=="K2P"] <- "K80"
+    model[model=="K3P"] <- "K81"
+    model[model=="TPM1"] <- "K81"
+    model[model=="JC69"] <- "JC"
+    model[model=="TN93"] <- "TrN"
+    model <- unique(model)
+  }
+
   model <- match.arg(model, type, TRUE)
 
   env <- new.env()
@@ -137,23 +149,28 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
   nseq <- sum(attr(data, "weight"))
 
   get_pars <- function(x, nseq){
-    c(x$df, x$logLik, AIC(x), AICc(x), AIC(x, k = log(nseq)))
+    shape <- NA_real_
+    if(x$k>1 && x$site.rate!="free_rate") shape <- x$shape
+    c(x$df, x$logLik, AIC(x), AICc(x), AIC(x, k = log(nseq)), x$k, shape, x$inv,
+      sum(x$tree$edge.length))
+#    c(x$df, x$logLik, AIC(x), AICc(x), AIC(x, k = log(nseq)))
   }
 
   fitPar <- function(model, fit, G, I, k, FREQ) {
     m <- 1
-    res <- matrix(NA, n, 6)
+    res <- matrix(NA, n, 10)
     res <- as.data.frame(res)
-    colnames(res) <- c("Model", "df", "logLik", "AIC", "AICc", "BIC")
-    data.frame(c("Model", "df", "logLik", "AIC", "AICc", "BIC"))
+    colnames(res) <- c("Model", "df", "logLik", "AIC", "AICc", "BIC", "k",
+                       "shape", "inv", "TL")
+#    data.frame(c("Model", "df", "logLik", "AIC", "AICc", "BIC"))
     calls <- vector("list", n)
     trees <- vector("list", n)
     fittmp <- optim.pml(fit, model = model, control = control)
     res[m, 1] <- model
     pars <- get_pars(fittmp, nseq)
-    res[m, 2:6] <- pars
+    res[m, -1] <- pars
     if (trace > 0) cat(formatC(res[m,1], width=12),
-                       prettyNum(pars[-4], preserve.width="individual"), "\n")
+                       prettyNum(pars[c(1,2,3,5)], preserve.width="individual"), "\n")
     calls[[m]] <- fittmp$call
     trees[[m]] <- fittmp$tree
     m <- m + 1
@@ -162,8 +179,8 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
         control = control)
       res[m, 1] <- paste0(model, "+I")
       pars <- get_pars(fitI, nseq)
-      res[m, 2:6] <- pars
-      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[-4],
+      res[m, -1] <- pars
+      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[c(1,2,3,5)],
                          preserve.width="individual"), "\n")
       calls[[m]] <- fitI$call
       trees[[m]] <- fitI$tree
@@ -175,8 +192,8 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
         control = control)
       res[m, 1] <- paste0(model, "+G(", k, ")")
       pars <- get_pars(fitG, nseq)
-      res[m, 2:6] <- pars
-      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[-4],
+      res[m, -1] <- pars
+      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[c(1,2,3,5)],
                          preserve.width="individual"), "\n")
       calls[[m]] <- fitG$call
       trees[[m]] <- fitG$tree
@@ -188,8 +205,8 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
         optInv = TRUE, control = control)
       res[m, 1] <- paste0(model, "+G(", k, ")+I")
       pars <- get_pars(fitGI, nseq)
-      res[m, 2:6] <- pars
-      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[-4],
+      res[m, -1] <- pars
+      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[c(1,2,3,5)],
                          preserve.width="individual"), "\n")
       calls[[m]] <- fitGI$call
       trees[[m]] <- fitGI$tree
@@ -201,8 +218,8 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
                         control = control)
       res[m, 1] <- paste0(model, "+R(", k, ")")
       pars <- get_pars(fitR, nseq)
-      res[m, 2:6] <- pars
-      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[-4],
+      res[m, -1] <- pars
+      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[c(1,2,3,5)],
                          preserve.width="individual"), "\n")
       calls[[m]] <- fitR$call
       trees[[m]] <- fitR$tree
@@ -213,8 +230,8 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
         control = control)
       res[m, 1] <- paste0(model, "+F")
       pars <- get_pars(fitF, nseq)
-      res[m, 2:6] <- pars
-      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[-4],
+      res[m, -1] <- pars
+      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[c(1,2,3,5)],
                          preserve.width="individual"), "\n")
       calls[[m]] <- fitF$call
       trees[[m]] <- fitF$tree
@@ -226,8 +243,8 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
         control = control)
       res[m, 1] <- paste0(model, "+I+F")
       pars <- get_pars(fitIF, nseq)
-      res[m, 2:6] <- pars
-      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[-4],
+      res[m, -1] <- pars
+      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[c(1,2,3,5)],
                                  preserve.width="individual"), "\n")
       calls[[m]] <- fitIF$call
       trees[[m]] <- fitIF$tree
@@ -239,8 +256,8 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
         optGamma = TRUE, control = control)
       res[m, 1] <- paste0(model, "+G(", k, ")+F")
       pars <- get_pars(fitGF, nseq)
-      res[m, 2:6] <- pars
-      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[-4],
+      res[m, -1] <- pars
+      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[c(1,2,3,5)],
                          preserve.width="individual"), "\n")
       calls[[m]] <- fitGF$call
       trees[[m]] <- fitGF$tree
@@ -252,8 +269,8 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
         optInv = TRUE, optGamma = TRUE, control = control)
       res[m, 1] <- paste0(model, "+G(", k, ")+I+F")
       pars <- get_pars(fitGIF, nseq)
-      res[m, 2:6] <- pars
-      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[-4],
+      res[m, -1] <- pars
+      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[c(1,2,3,5)],
                          preserve.width="individual"), "\n")
       calls[[m]] <- fitGIF$call
       trees[[m]] <- fitGIF$tree
@@ -265,8 +282,8 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
                          control = control)
       res[m, 1] <- paste0(model, "+R(", k, ")+F")
       pars <- get_pars(fitRF, nseq)
-      res[m, 2:6] <- pars
-      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[-4],
+      res[m, -1] <- pars
+      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[c(1,2,3,5)],
                                                                 preserve.width="individual"), "\n")
       calls[[m]] <- fitRF$call
       trees[[m]] <- fitRF$tree
@@ -283,13 +300,14 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
 #  if (!eval.success)
 #    RES <- lapply(model, fitPar, fit, G, I, k, FREQ)
   RES <- future_lapply(model, fitPar, fit, G, I, k, FREQ, future.seed = TRUE)
-  RESULT <- matrix(NA, n * l, 8)
+  RESULT <- matrix(NA, n * l, 12)
   RESULT <- as.data.frame(RESULT)
   colnames(RESULT) <- c("Model", "df", "logLik", "AIC", "AICw", "AICc",
-    "AICcw", "BIC")
+    "AICcw", "BIC", "k", "shape", "inv", "TL")
 
-  for (i in 1:l) RESULT[( (i - 1) * n + 1):(n * i), c(1, 2, 3, 4, 6, 8)] <-
-    RES[[i]][[1]]
+  for (i in 1:l) RESULT[( (i - 1) * n + 1):(n * i), -c(5, 7)] <- RES[[i]][[1]]
+#  for (i in 1:l) RESULT[( (i - 1) * n + 1):(n * i), c(1, 2, 3, 4, 6, 8)] <-
+#    RES[[i]][[1]]
   RESULT[, 5] <- aic.weights(RESULT[, 4])
   RESULT[, 7] <- aic.weights(RESULT[, 6])
   for (i in 1:l) {
