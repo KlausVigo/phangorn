@@ -35,9 +35,10 @@ test_that("plotRates works", {
 })
 
 data(woodmouse)
-fit100 <- pml_bb(woodmouse, "JC", control=pml.control(trace=0))
+fit20 <- pml_bb(woodmouse, "JC", control=pml.control(trace=0),
+                 ratchet.par = ratchet.control(maxit=20, bs=10))
 
 test_that("terraces works", {
-  terraces_plot <- function() terraces(fit100)
+  terraces_plot <- function() terraces(fit20)
   vdiffr::expect_doppelganger("terraces", terraces_plot)
 })
