@@ -46,8 +46,6 @@ trees and the third axis is the likelihood value or parsimony score.
 \dontrun{
 data(woodmouse)
 fit <- pml_bb(woodmouse, model="JC")
-library(rgl)
-open3d()
 terraces(fit)
 }
 }
