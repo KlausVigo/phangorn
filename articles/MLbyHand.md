@@ -347,9 +347,9 @@ away.
     ## [25] xfun_0.55           fs_1.6.6            sass_0.4.10        
     ## [28] otel_0.2.0          cli_3.6.5           pkgdown_2.2.0      
     ## [31] magrittr_2.0.4      digest_0.6.39       grid_4.5.2         
-    ## [34] lifecycle_1.0.4     nlme_3.1-168        evaluate_1.0.5     
+    ## [34] lifecycle_1.0.5     nlme_3.1-168        evaluate_1.0.5     
     ## [37] listenv_0.10.0      codetools_0.2-20    ragg_1.5.0         
-    ## [40] parallelly_1.46.0   rmarkdown_2.30      pkgconfig_2.0.3    
+    ## [40] parallelly_1.46.1   rmarkdown_2.30      pkgconfig_2.0.3    
     ## [43] tools_4.5.2         htmltools_0.5.9
 
 ## References

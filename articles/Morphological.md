@@ -234,9 +234,9 @@ topology.
     ## [25] cachem_1.1.0        xfun_0.55           fs_1.6.6           
     ## [28] sass_0.4.10         otel_0.2.0          cli_3.6.5          
     ## [31] pkgdown_2.2.0       magrittr_2.0.4      digest_0.6.39      
-    ## [34] grid_4.5.2          lifecycle_1.0.4     nlme_3.1-168       
+    ## [34] grid_4.5.2          lifecycle_1.0.5     nlme_3.1-168       
     ## [37] evaluate_1.0.5      listenv_0.10.0      codetools_0.2-20   
-    ## [40] ragg_1.5.0          parallelly_1.46.0   rmarkdown_2.30     
+    ## [40] ragg_1.5.0          parallelly_1.46.1   rmarkdown_2.30     
     ## [43] pkgconfig_2.0.3     tools_4.5.2         htmltools_0.5.9
 
 ## References

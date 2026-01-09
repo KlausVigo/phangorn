@@ -64,7 +64,7 @@ plotSeqLogo(anc.pars, node=getRoot(tree), 1, 20)
     ## ℹ See also `vignette("ggplot2-in-packages")` for more information.
     ## ℹ The deprecated feature was likely used in the ggseqlogo package.
     ##   Please report the issue at <https://github.com/omarwagih/ggseqlogo/issues>.
-    ## This warning is displayed once every 8 hours.
+    ## This warning is displayed once per session.
     ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
     ## generated.
 
@@ -277,21 +277,21 @@ reversible models.
     ## [10] RColorBrewer_1.1-3  fastmap_1.2.0       jsonlite_2.0.0     
     ## [13] Matrix_1.7-4        backports_1.5.0     scales_1.4.0       
     ## [16] codetools_0.2-20    textshaping_1.0.4   jquerylib_0.1.4    
-    ## [19] cli_3.6.5           crayon_1.5.3        rlang_1.1.6        
-    ## [22] parallelly_1.46.0   future.apply_1.20.1 withr_3.0.2        
-    ## [25] cachem_1.1.0        yaml_2.3.12         otel_0.2.0         
-    ## [28] tools_4.5.2         ggseqlogo_0.2.2     parallel_4.5.2     
-    ## [31] checkmate_2.3.3     dplyr_1.1.4         ggplot2_4.0.1      
-    ## [34] fastmatch_1.1-6     globals_0.18.0      vctrs_0.6.5        
-    ## [37] R6_2.6.1            lifecycle_1.0.4     fs_1.6.6           
-    ## [40] htmlwidgets_1.6.4   ragg_1.5.0          pkgconfig_2.0.3    
-    ## [43] desc_1.4.3          pillar_1.11.1       pkgdown_2.2.0      
-    ## [46] bslib_0.9.0         gtable_0.3.6        glue_1.8.0         
-    ## [49] Rcpp_1.1.0          systemfonts_1.3.1   tidyselect_1.2.1   
-    ## [52] tibble_3.3.0        xfun_0.55           knitr_1.51         
-    ## [55] farver_2.1.2        htmltools_0.5.9     nlme_3.1-168       
-    ## [58] igraph_2.2.1        labeling_0.4.3      rmarkdown_2.30     
-    ## [61] compiler_4.5.2      S7_0.2.1
+    ## [19] cli_3.6.5           rlang_1.1.6         parallelly_1.46.1  
+    ## [22] future.apply_1.20.1 withr_3.0.2         cachem_1.1.0       
+    ## [25] yaml_2.3.12         otel_0.2.0          tools_4.5.2        
+    ## [28] ggseqlogo_0.2.2     parallel_4.5.2      checkmate_2.3.3    
+    ## [31] dplyr_1.1.4         ggplot2_4.0.1       fastmatch_1.1-6    
+    ## [34] globals_0.18.0      vctrs_0.6.5         R6_2.6.1           
+    ## [37] lifecycle_1.0.5     fs_1.6.6            htmlwidgets_1.6.4  
+    ## [40] ragg_1.5.0          pkgconfig_2.0.3     desc_1.4.3         
+    ## [43] pillar_1.11.1       pkgdown_2.2.0       bslib_0.9.0        
+    ## [46] gtable_0.3.6        glue_1.8.0          Rcpp_1.1.0         
+    ## [49] systemfonts_1.3.1   tidyselect_1.2.1    tibble_3.3.0       
+    ## [52] xfun_0.55           knitr_1.51          farver_2.1.2       
+    ## [55] htmltools_0.5.9     nlme_3.1-168        igraph_2.2.1       
+    ## [58] labeling_0.4.3      rmarkdown_2.30      compiler_4.5.2     
+    ## [61] S7_0.2.1
 
 ## References
 
