@@ -77,8 +77,6 @@ Klaus Schliep <klaus.schliep@gmail.com>
 if (FALSE) { # \dontrun{
 data(woodmouse)
 fit <- pml_bb(woodmouse, model="JC")
-library(rgl)
-open3d()
 terraces(fit)
 } # }
 ```
