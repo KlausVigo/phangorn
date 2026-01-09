@@ -8,13 +8,13 @@ NEW FEATURES
 
     o the terraces function plots the likelihood / parsimony surface for a set
 
-      of trees
+      of trees.
 
     o as.networx and plot.networx got a new option "outline", reducing the
 
-      number of edges plotted for planar networks
+      number of edges plotted for planar networks.
 
-    o modelTest got a new argument R to additionally test free rate model
+    o modelTest got a new argument R to additionally test free rate model.
 
 OTHER CHANGES
 

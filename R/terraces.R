@@ -30,7 +30,9 @@
 #' \dontrun{
 #' data(woodmouse)
 #' fit <- pml_bb(woodmouse, model="JC")
-#' terraces(fit)
+#' terraces(fit, pkg="scatterplot3d")
+#' terraces(fit, pkg="plot3D")
+#' terraces(fit, pkg="rgl")
 #' }
 #' @export
 terraces <- function(x, ...){
@@ -91,7 +93,7 @@ terraces.phyDat <- function(x, trees, dist_fun="RF.dist", di2multi=TRUE,
 
 plot_terraces <- function(xyz, size=10, lwd=2, pkg="plot3D",
                           max=TRUE, add=FALSE, ...){
-  match.arg <- match.arg(pkg, c("rgl", "plot3D"))
+  match.arg <- match.arg(pkg, c("rgl", "plot3D", "scatterplot3d"))
   nr <- nrow(xyz)
   col <- rep("black", nr)
   if(max) ind <- which(xyz[,3] > (max(xyz[,3] - 1e-8)))
@@ -116,7 +118,18 @@ plot_terraces <- function(xyz, size=10, lwd=2, pkg="plot3D",
                         xlab = col_names[1], ylab = col_names[2],
                         zlab = col_names[3], ...)
     }
+  } else if(pkg=="scatterplot3d"){
+    chk <- requireNamespace("scatterplot3d", quietly = TRUE)
+    if (!chk) {
+      warning("package 'scatterplot3d' is required!\n")
+    } else {
+      col_names <- colnames(xyz)
+      scatterplot3d::scatterplot3d(xyz[,1], xyz[,2], xyz[,3], type = "h",
+            xlab = col_names[1], ylab = col_names[2], zlab = col_names[3],
+            color=col, ...)
+    }
   }
+
   invisible(xyz)
 }
 
