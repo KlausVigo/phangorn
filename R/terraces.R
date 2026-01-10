@@ -133,5 +133,5 @@ plot_terraces <- function(xyz, size=10, lwd=2, pkg="plot3D",
   invisible(xyz)
 }
 
-#  scatterplot3d::scatterplot3d(xyz[,1], xyz[,2], xyz[,3], type = "h")
+
 

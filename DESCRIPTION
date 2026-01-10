@@ -66,6 +66,7 @@ Suggests:
     magick,
     plot3D,
     rgl,
+    scatterplot3d,
     rmarkdown,
     seqinr,
     testthat (>= 3.0.0),
