@@ -343,7 +343,7 @@ away.
     ## [13] lattice_0.22-7      R6_2.6.1            generics_0.1.4     
     ## [16] igraph_2.2.1        knitr_1.51          htmlwidgets_1.6.4  
     ## [19] backports_1.5.0     checkmate_2.3.3     desc_1.4.3         
-    ## [22] bslib_0.9.0         rlang_1.1.6         cachem_1.1.0       
+    ## [22] bslib_0.9.0         rlang_1.1.7         cachem_1.1.0       
     ## [25] xfun_0.55           fs_1.6.6            sass_0.4.10        
     ## [28] otel_0.2.0          cli_3.6.5           pkgdown_2.2.0      
     ## [31] magrittr_2.0.4      digest_0.6.39       grid_4.5.2         
