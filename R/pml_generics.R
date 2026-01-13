@@ -147,9 +147,15 @@ print.pml <- function(x, ...) {
 #'
 #' \code{write.pml} creates several files. It exports the alignment as fasta
 #' file. It writes out the ML tree in a newick file and the estimates parameters
-#' in a txt file.  It should be possible to (re-)create the pml object up to
-#' numerical inaccuracies.
-#' If bootstrap trees exist these are additionally exported in a nexus file.
+#' in a txt file. It should be possible to (re-)create the pml object up to
+#' numerical inaccuracies and this is possible with the *.rds file.
+#' If bootstrap trees exist these are additionally exported in a compressed
+#' nexus file.
+#' Additionally several plots are returned. The maximum likelihood tree, with
+#' support values, if these are available. If an bootstrapped trees exist, a
+#' consensus tree, a consensus network (< 200 tips) and terrace plot.
+#' And last but not least the distribution of the rates. It might be better to
+#' adopt these on the dataset.
 #'
 #' @param x an object of class ancestral.
 #' @param file a file name. File endings are added.
@@ -169,14 +175,50 @@ print.pml <- function(x, ...) {
 #' unlink(c("woodmouse.txt", "woodmouse_tree.nwk", "woodmouse_align.fasta"))
 #' @importFrom utils citation
 #' @export
-write.pml <- function(x, file="pml", save_rds=FALSE, digits=10, ...){
+write.pml <- function(x, file="pml", save_rds=TRUE, digits=10, ...){
 #  digits <- -1
 #  if (hasArg("digits")) digits <- list(...)$digits
   write.tree(x$tree, file=paste0(file, "_tree.nwk"))
   if(save_rds) saveRDS(x, file=paste0(file, ".rds"))
   write.phyDat(x$data, file=paste0(file, "_align.fasta"), format="fasta")
-  if(!is.null(x$bs)) write.nexus(x$bs, file=paste0(file, "_bs.nex"),
-                                 digits=digits)
+
+  ntips <- Ntip(x$tree)
+  my_heigtht <- max(7, ntips*50 / 300 )
+  if(!is.null(x$bs)){
+    zzfil <- paste0(file, "_bs.nex.gz")
+    zz <- gzfile(zzfil, "w")
+    write.nexus(x$bs, file=zz, digits=digits)
+    close(zz)
+    if(ntips < 3000){
+      pdf(file=paste0(file, "_consensus.pdf"), height=my_heigtht)
+      ctree <- consensus(x$bs, p=0.5)
+      par(mar=c(1,1,1,1))
+      plot(ctree, main="Majority consensus tree", node.depth = 2)
+      dev.off()
+    }
+    if(ntips < 200){
+      pdf(file=paste0(file, "_consensusNet.pdf"), height=my_heigtht)
+      ctree <- consensus(x$bs, p=0.5)
+      cnet <- consensusNet(x$bs, prob=0.3)
+      plot(cnet, main="Consensus network", direction="axial")
+      dev.off()
+    }
+    pdf(file=paste0(file, "_terraces.pdf"), height=my_heigtht)
+    terraces(fit, pkg="scatterplot3d")
+    dev.off()
+  }
+  if(ntips < 3000){
+    pdf(file=paste0(file, "_tree.pdf"), height=my_heigtht)
+    par(mar=c(1,1,1,1))
+    plot(x)
+    dev.off()
+  }
+  pdf(file=paste0(file, "_rates.pdf"))
+  plotRates(x)
+  dev.off()
+
+#  if(!is.null(x$bs)) write.nexus(x$bs, file=paste0(file, "_bs.nex"),
+#                                 digits=digits)
   sink(paste0(file, ".txt"))
   cat("phangorn", packageDescription("phangorn", fields = "Version"), "\n\n")
   print(summary(x$data))

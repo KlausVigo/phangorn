@@ -16,6 +16,8 @@ NEW FEATURES
 
     o modelTest got a new argument R to additionally test free rate model.
 
+    o write.pml() exports also several plots
+
 OTHER CHANGES
 
     o improvements to write.ancestral and write.pml.
