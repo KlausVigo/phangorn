@@ -224,7 +224,7 @@ topology.
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] Matrix_1.7-4        future.apply_1.20.1 jsonlite_2.0.0     
-    ##  [4] compiler_4.5.2      Rcpp_1.1.0          parallel_4.5.2     
+    ##  [4] compiler_4.5.2      Rcpp_1.1.1          parallel_4.5.2     
     ##  [7] jquerylib_0.1.4     globals_0.18.0      systemfonts_1.3.1  
     ## [10] textshaping_1.0.4   yaml_2.3.12         fastmap_1.2.0      
     ## [13] lattice_0.22-7      R6_2.6.1            generics_0.1.4     

@@ -286,8 +286,8 @@ reversible models.
     ## [37] lifecycle_1.0.5     fs_1.6.6            htmlwidgets_1.6.4  
     ## [40] ragg_1.5.0          pkgconfig_2.0.3     desc_1.4.3         
     ## [43] pillar_1.11.1       pkgdown_2.2.0       bslib_0.9.0        
-    ## [46] gtable_0.3.6        glue_1.8.0          Rcpp_1.1.0         
-    ## [49] systemfonts_1.3.1   tidyselect_1.2.1    tibble_3.3.0       
+    ## [46] gtable_0.3.6        glue_1.8.0          Rcpp_1.1.1         
+    ## [49] systemfonts_1.3.1   tidyselect_1.2.1    tibble_3.3.1       
     ## [52] xfun_0.55           knitr_1.51          farver_2.1.2       
     ## [55] htmltools_0.5.9     nlme_3.1-168        igraph_2.2.1       
     ## [58] labeling_0.4.3      rmarkdown_2.30      compiler_4.5.2     
