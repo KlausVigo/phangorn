@@ -96,13 +96,11 @@ estimated.</p></dd>
 
 
 <dt id="arg-multicore">multicore<a class="anchor" aria-label="anchor" href="#arg-multicore"></a></dt>
-<dd><p>logical, whether models should estimated in parallel.</p></dd>
+<dd><p>Currently not used.</p></dd>
 
 
 <dt id="arg-mc-cores">mc.cores<a class="anchor" aria-label="anchor" href="#arg-mc-cores"></a></dt>
-<dd><p>The number of cores to use, i.e. at most how many child
-processes will be run simultaneously. Must be at least one, and
-parallelization requires at least two cores.</p></dd>
+<dd><p>Currently not used.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -144,7 +142,7 @@ Structural Phylogenetics, <em>Molecular Biology and Evolution</em>,
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="pml.html">pml</a></code>, <code><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova</a></code>, <code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></code>,
-<code><a href="codonTest.html">codonTest</a></code></p></div>
+<code><a href="codonTest.html">codonTest</a></code>, <code><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></code></p></div>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
@@ -155,9 +153,13 @@ Structural Phylogenetics, <em>Molecular Biology and Evolution</em>,
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span><span class="va">NJ</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">(</span><span class="va">mT</span> <span class="op">&lt;-</span> <span class="fu">modelTest</span><span class="op">(</span><span class="va">Laurasiatherian</span>, <span class="va">tree</span>, model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"JC"</span>, <span class="st">"F81"</span>, <span class="st">"K80"</span>, <span class="st">"HKY"</span>,</span></span>
-<span class="r-in"><span>                 <span class="st">"SYM"</span>, <span class="st">"GTR"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mT</span> <span class="op">&lt;-</span> <span class="fu">modelTest</span><span class="op">(</span><span class="va">Laurasiatherian</span>, <span class="va">tree</span>, model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"JC"</span>, <span class="st">"K80"</span>, <span class="st">"HKY"</span>, <span class="st">"GTR"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                R<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Some exploratory data analysis</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mT</span><span class="op">$</span><span class="va">TL</span>, <span class="va">mT</span><span class="op">$</span><span class="va">logLik</span>, xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">6.5</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">mT</span><span class="op">$</span><span class="va">TL</span>, <span class="va">mT</span><span class="op">$</span><span class="va">logLik</span>, labels<span class="op">=</span><span class="va">mT</span><span class="op">$</span><span class="va">Model</span>, pos<span class="op">=</span><span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># extract best model</span></span></span>
 <span class="r-in"><span><span class="op">(</span><span class="va">best_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="pml.html">as.pml</a></span><span class="op">(</span><span class="va">mT</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -167,7 +169,9 @@ Structural Phylogenetics, <em>Molecular Biology and Evolution</em>,
 <span class="r-in"><span><span class="op">(</span><span class="va">mTAA</span> <span class="op">&lt;-</span> <span class="fu">modelTest</span><span class="op">(</span><span class="va">chloroplast</span>, model<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"JTT"</span>, <span class="st">"WAG"</span>, <span class="st">"LG"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># test all available amino acid models</span></span></span>
-<span class="r-in"><span><span class="op">(</span><span class="va">mTAA_all</span> <span class="op">&lt;-</span> <span class="fu">modelTest</span><span class="op">(</span><span class="va">chloroplast</span>, model<span class="op">=</span><span class="st">"all"</span>, multicore<span class="op">=</span><span class="cn">TRUE</span>, mc.cores<span class="op">=</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plan</span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">(</span><span class="va">mTAA_all</span> <span class="op">&lt;-</span> <span class="fu">modelTest</span><span class="op">(</span><span class="va">chloroplast</span>, model<span class="op">=</span><span class="st">"all"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plan</span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

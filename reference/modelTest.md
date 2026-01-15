@@ -52,13 +52,11 @@ modelTest(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
 
 - multicore:
 
-  logical, whether models should estimated in parallel.
+  Currently not used.
 
 - mc.cores:
 
-  The number of cores to use, i.e. at most how many child processes will
-  be run simultaneously. Must be at least one, and parallelization
-  requires at least two cores.
+  Currently not used.
 
 ## Value
 
@@ -107,7 +105,8 @@ https://doi.org/10.1093/molbev/msaf124
 [`pml`](https://klausvigo.github.io/phangorn/reference/pml.md),
 [`anova`](https://rdrr.io/r/stats/anova.html),
 [`AIC`](https://rdrr.io/r/stats/AIC.html),
-[`codonTest`](https://klausvigo.github.io/phangorn/reference/codonTest.md)
+[`codonTest`](https://klausvigo.github.io/phangorn/reference/codonTest.md),
+[`plan`](https://future.futureverse.org/reference/plan.html)
 
 ## Author
 
@@ -117,9 +116,13 @@ Klaus Schliep <klaus.schliep@gmail.com>
 
 ``` r
 if (FALSE) { # \dontrun{
-example(NJ)
-(mT <- modelTest(Laurasiatherian, tree, model = c("JC", "F81", "K80", "HKY",
-                 "SYM", "GTR")))
+data(Laurasiatherian)
+mT <- modelTest(Laurasiatherian, tree, model = c("JC", "K80", "HKY", "GTR"),
+                R=TRUE)
+
+# Some exploratory data analysis
+plot(mT$TL, mT$logLik, xlim=c(3,6.5))
+text(mT$TL, mT$logLik, labels=mT$Model, pos=4)
 
 # extract best model
 (best_model <- as.pml(mT))
@@ -129,6 +132,8 @@ data(chloroplast)
 (mTAA <- modelTest(chloroplast, model=c("JTT", "WAG", "LG")))
 
 # test all available amino acid models
-(mTAA_all <- modelTest(chloroplast, model="all", multicore=TRUE, mc.cores=2))
+plan(multisession, workers = 2)
+(mTAA_all <- modelTest(chloroplast, model="all"))
+plan(sequential)
 } # }
 ```
