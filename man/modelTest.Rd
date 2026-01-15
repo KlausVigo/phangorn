@@ -30,11 +30,9 @@ estimated.}
 
 \item{control}{A list of parameters for controlling the fitting process.}
 
-\item{multicore}{logical, whether models should estimated in parallel.}
+\item{multicore}{Currently not used.}
 
-\item{mc.cores}{The number of cores to use, i.e. at most how many child
-processes will be run simultaneously. Must be at least one, and
-parallelization requires at least two cores.}
+\item{mc.cores}{Currently not used.}
 }
 \value{
 A data.frame containing the log-likelihood, number of estimated
@@ -58,9 +56,13 @@ Garg(2025).
 \examples{
 
 \dontrun{
-example(NJ)
-(mT <- modelTest(Laurasiatherian, tree, model = c("JC", "F81", "K80", "HKY",
-                 "SYM", "GTR")))
+data(Laurasiatherian)
+mT <- modelTest(Laurasiatherian, tree, model = c("JC", "K80", "HKY", "GTR"),
+                R=TRUE)
+
+# Some exploratory data analysis
+plot(mT$TL, mT$logLik, xlim=c(3,6.5))
+text(mT$TL, mT$logLik, labels=mT$Model, pos=4)
 
 # extract best model
 (best_model <- as.pml(mT))
@@ -70,7 +72,9 @@ data(chloroplast)
 (mTAA <- modelTest(chloroplast, model=c("JTT", "WAG", "LG")))
 
 # test all available amino acid models
-(mTAA_all <- modelTest(chloroplast, model="all", multicore=TRUE, mc.cores=2))
+plan(multisession, workers = 2)
+(mTAA_all <- modelTest(chloroplast, model="all"))
+plan(sequential)
 }
 
 }
@@ -99,7 +103,7 @@ Structural Phylogenetics, \emph{Molecular Biology and Evolution},
 }
 \seealso{
 \code{\link{pml}}, \code{\link{anova}}, \code{\link[stats]{AIC}},
-\code{\link{codonTest}}
+\code{\link{codonTest}}, \code{\link[future]{plan}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

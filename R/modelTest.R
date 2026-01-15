@@ -28,10 +28,12 @@ aic.weights <- function(aic) {
 #' @param R logical, TRUE (default) if free rate model should be tested.
 #' @param k number of rate classes.
 #' @param control A list of parameters for controlling the fitting process.
-#' @param multicore logical, whether models should estimated in parallel.
-#' @param mc.cores The number of cores to use, i.e. at most how many child
-#' processes will be run simultaneously. Must be at least one, and
-#' parallelization requires at least two cores.
+#' @param multicore Currently not used.
+## logical, whether models should estimated in parallel.
+#' @param mc.cores Currently not used.
+## The number of cores to use, i.e. at most how many child
+## processes will be run simultaneously. Must be at least one, and
+## parallelization requires at least two cores.
 #' @return A data.frame containing the log-likelihood, number of estimated
 #' parameters, AIC, AICc and BIC all tested models.  The data.frame has an
 #' attributes "env" which is an environment which contains all the trees, the
@@ -39,7 +41,7 @@ aic.weights <- function(aic) {
 #' point for further analysis (see example).
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{pml}}, \code{\link{anova}}, \code{\link[stats]{AIC}},
-#' \code{\link{codonTest}}
+#' \code{\link{codonTest}}, \code{\link[future]{plan}}
 #' @references Burnham, K. P. and Anderson, D. R (2002) \emph{Model selection
 #' and multimodel inference: a practical information-theoretic approach}. 2nd
 #' ed. Springer, New York
@@ -65,9 +67,13 @@ aic.weights <- function(aic) {
 #' @examples
 #'
 #' \dontrun{
-#' example(NJ)
-#' (mT <- modelTest(Laurasiatherian, tree, model = c("JC", "F81", "K80", "HKY",
-#'                  "SYM", "GTR")))
+#' data(Laurasiatherian)
+#' mT <- modelTest(Laurasiatherian, tree, model = c("JC", "K80", "HKY", "GTR"),
+#'                 R=TRUE)
+#'
+#' # Some exploratory data analysis
+#' plot(mT$TL, mT$logLik, xlim=c(3,6.5))
+#' text(mT$TL, mT$logLik, labels=mT$Model, pos=4)
 #'
 #' # extract best model
 #' (best_model <- as.pml(mT))
@@ -77,7 +83,9 @@ aic.weights <- function(aic) {
 #' (mTAA <- modelTest(chloroplast, model=c("JTT", "WAG", "LG")))
 #'
 #' # test all available amino acid models
-#' (mTAA_all <- modelTest(chloroplast, model="all", multicore=TRUE, mc.cores=2))
+#' plan(multisession, workers = 2)
+#' (mTAA_all <- modelTest(chloroplast, model="all"))
+#' plan(sequential)
 #' }
 #'
 #' @export modelTest
@@ -150,10 +158,9 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
 
   get_pars <- function(x, nseq){
     shape <- NA_real_
-    if(x$k>1 && x$site.rate!="free_rate") shape <- x$shape
+    if(x$k > 1 && x$site.rate != "free_rate") shape <- x$shape
     c(x$df, x$logLik, AIC(x), AICc(x), AIC(x, k = log(nseq)), x$k, shape, x$inv,
       sum(x$tree$edge.length))
-#    c(x$df, x$logLik, AIC(x), AICc(x), AIC(x, k = log(nseq)))
   }
 
   fitPar <- function(model, fit, G, I, k, FREQ) {
@@ -162,7 +169,6 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
     res <- as.data.frame(res)
     colnames(res) <- c("Model", "df", "logLik", "AIC", "AICc", "BIC", "k",
                        "shape", "inv", "TL")
-#    data.frame(c("Model", "df", "logLik", "AIC", "AICc", "BIC"))
     calls <- vector("list", n)
     trees <- vector("list", n)
     fittmp <- optim.pml(fit, model = model, control = control)
@@ -306,8 +312,6 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
     "AICcw", "BIC", "k", "shape", "inv", "TL")
 
   for (i in 1:l) RESULT[( (i - 1) * n + 1):(n * i), -c(5, 7)] <- RES[[i]][[1]]
-#  for (i in 1:l) RESULT[( (i - 1) * n + 1):(n * i), c(1, 2, 3, 4, 6, 8)] <-
-#    RES[[i]][[1]]
   RESULT[, 5] <- aic.weights(RESULT[, 4])
   RESULT[, 7] <- aic.weights(RESULT[, 6])
   for (i in 1:l) {
