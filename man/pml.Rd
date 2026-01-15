@@ -60,7 +60,7 @@ details.}
 
 \item{site.rate}{Indicates what type of gamma distribution to use. Options
 are "gamma" approach of Yang 1994 (default), "gamma_quadrature" after the
-Laguerre quadrature approach of Felsenstein 2001 or "freerate".}
+Laguerre quadrature approach of Felsenstein 2001 or "free_rate".}
 
 \item{ASC}{ascertainment bias correction (ASC), allows to estimate models
 like Lewis' Mkv.}
