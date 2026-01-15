@@ -90,7 +90,7 @@ print(x, ...)
 
   Indicates what type of gamma distribution to use. Options are "gamma"
   approach of Yang 1994 (default), "gamma_quadrature" after the Laguerre
-  quadrature approach of Felsenstein 2001 or "freerate".
+  quadrature approach of Felsenstein 2001 or "free_rate".
 
 - ASC:
 
