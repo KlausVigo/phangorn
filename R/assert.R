@@ -100,12 +100,7 @@ clean_phylo <- function(x, ..., unroot=FALSE, collapse.singles=FALSE,
   assert_treeish(x)
   is_multiPhylo <- inherits(x, "multiPhylo")
   compressed <- !is.null(attr(x, "TipLabel"))
-  if(collapse.singles && any(hs <- has.singles(x))){
-    if(is_multiPhylo){
-      x <- .uncompressTipLabel(x)
-      for(i in which(hs)) x[[i]] <- collapse.singles(x[[i]])
-    } else x <- collapse.singles(x)
-  }
+  if(collapse.singles && any(has.singles(x))) x <- collapse.singles(x)
   if(compress && is_multiPhylo) x <- .compressTipLabel(x)
   if(multi2di && di2multi) stop("di2multi and multi2di cannot both be TRUE!")
   if(multi2di && !all(is.binary(x))) x <- multi2di(x)

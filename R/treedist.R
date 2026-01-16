@@ -164,15 +164,9 @@ treedist <- function(tree1, tree2, check.labels = TRUE) {
   assert_phylo(tree1)
   assert_phylo(tree2)
   assert_flag(check.labels)
-#  if (has.singles(tree1)) tree1 <- collapse.singles(tree1)
-#  if (has.singles(tree2)) tree2 <- collapse.singles(tree2)
-#  tree1 <- unroot(tree1)
-#  tree2 <- unroot(tree2)
   if (check.labels) tree2 <- relabel(tree2, tree1$tip.label)
   tree1 <- clean_phylo(tree1, unroot=TRUE, collapse.singles=TRUE, reorder=TRUE)
   tree2 <- clean_phylo(tree2, unroot=TRUE, collapse.singles=TRUE, reorder=TRUE)
-#  tree1 <- reorder(tree1, "postorder")
-#  tree2 <- reorder(tree2, "postorder")
 
   symmetric.difference <- NULL
   branch.score.difference <- NULL
@@ -243,23 +237,7 @@ sprdist <- function(tree1, tree2) {
   tree2 <- relabel(tree2, tree1$tip.label)
   tree1 <- clean_phylo(tree1, unroot=TRUE, collapse.singles=TRUE, reorder=TRUE)
   tree2 <- clean_phylo(tree2, unroot=TRUE, collapse.singles=TRUE, reorder=TRUE)
-##  if (has.singles(tree1)) tree1 <- collapse.singles(tree1)
-##  if (has.singles(tree2)) tree2 <- collapse.singles(tree2)
-##  tree1 <- unroot(tree1)
-##  tree2 <- unroot(tree2)
   lt1 <- length(tree1$tip.label)
-##  lt2 <- length(tree2$tip.label)
-  # checking labels is obligatory for spr (user should prune one of them
-  # beforehand?)
-##  ind <- match(tree1$tip.label, tree2$tip.label)
-##  if (anyNA(ind) | lt1 != lt2) stop("trees have different labels")
-##  tree2$tip.label <- tree2$tip.label[ind]
-##  ind2 <- match(seq_along(ind), tree2$edge[, 2])
-##  tree2$edge[ind2, 2] <- order(ind)
-  # same as in original treedist (will create list of strings with shorter
-  # side of splits)
-##  tree1 <- reorder(tree1, "postorder")
-##  tree2 <- reorder(tree2, "postorder")
   if (!is.binary(tree1) | !is.binary(tree2))
     message("Some trees are not binary. Result may not what you expect!")
   # possibly replace bip with bipart
@@ -285,11 +263,7 @@ sprdist <- function(tree1, tree2) {
 SPR1 <- function(trees) {
   trees <- clean_phylo(trees, unroot=TRUE, collapse.singles=TRUE,
                             reorder=TRUE, compress=TRUE)
-#  trees <- .compressTipLabel(trees)
   trees <- .uncompressTipLabel(trees)
-#  trees <- lapply(trees, unroot)
-#  if (any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
-#  trees <- lapply(trees, reorder, "postorder")
 
   nTips <- length(trees[[1]]$tip.label)
 
@@ -932,4 +906,4 @@ pd2 <- function(trees, check.labels = TRUE, path = TRUE) {
   class(PD) <- "dist"
   return(PD)
 }
-#' @srrstats {G1.0} in the lines folloing: 126
+#' @srrstats {G1.0} in the lines following: 126
