@@ -44,6 +44,8 @@ BUG FIXES
 
     o fix degree of freedom for free rate models
 
+    o baseFreq() now uses C++ code and is considerably faster
+
 
     CHANGES in PHANGORN VERSION 2.12.0
 

@@ -476,3 +476,25 @@ IntegerVector threshStateC(NumericVector x, NumericVector thresholds) {
   return out;
 }
 
+
+
+//' @rdname phangorn-internal
+//' @export
+// [[Rcpp::export]]
+std::vector<double> base_freq(RObject obj){
+  NumericVector weight = obj.attr("weight");
+  IntegerMatrix contr = obj.attr("contrast");
+  int l = contr.nrow();
+  std::vector<double> out(l);
+  Rcpp::List xlist(obj);
+  int nSeq = xlist.size();
+  int nChar = (int) obj.attr("nr");
+  for(int i=0; i<nSeq; ++i) {
+    Rcpp::IntegerVector y(xlist[i]);
+    for(int j=0; j<nChar; ++j){
+      out[y[j]-1L] += weight[j];
+    }
+  }
+  return(out);
+}
+

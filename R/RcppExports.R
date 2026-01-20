@@ -79,3 +79,9 @@ threshStateC <- function(x, thresholds) {
     .Call(`_phangorn_threshStateC`, x, thresholds)
 }
 
+#' @rdname phangorn-internal
+#' @export
+base_freq <- function(obj) {
+    .Call(`_phangorn_base_freq`, obj)
+}
+

@@ -4,6 +4,7 @@
 %   R/plot_networx.R, R/pmlPen.R, R/treeManipulation.R, R/upgma.R
 \name{threshStateC}
 \alias{threshStateC}
+\alias{base_freq}
 \alias{assert_phyDat}
 \alias{assert_phylo}
 \alias{assert_multiPhylo}
@@ -26,6 +27,8 @@
 \title{Internal phangorn Functions}
 \usage{
 threshStateC(x, thresholds)
+
+base_freq(obj)
 
 assert_phyDat(x, contains_label = !is.null(label), label = NULL)
 

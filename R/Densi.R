@@ -281,6 +281,6 @@ densiTree <- function(x, type = "phylogram", ..., alpha = 1 / length(x),
                            backward = is.null(root_time), cex.axis = cex.axis)
   invisible(x)
 }
-#' @srrstats {G1.0} in the lines folloing: 103
+#' @srrstats {G1.0} in the lines following: 103
 #' @srrstats {G2.3, G2.3a} in lines: 16, 167, 168
 #' @srrstats {EA4.1, EA4.2, EA5.2, EA5.4}

@@ -246,6 +246,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// base_freq
+std::vector<double> base_freq(RObject obj);
+RcppExport SEXP _phangorn_base_freq(SEXP objSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< RObject >::type obj(objSEXP);
+    rcpp_result_gen = Rcpp::wrap(base_freq(obj));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 RcppExport SEXP AddOnes(SEXP, SEXP, SEXP, SEXP, SEXP);
 RcppExport SEXP C_rowMin(SEXP, SEXP, SEXP);
@@ -294,6 +305,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_phangorn_node_height_cpp", (DL_FUNC) &_phangorn_node_height_cpp, 3},
     {"_phangorn_cophenetic_cpp", (DL_FUNC) &_phangorn_cophenetic_cpp, 4},
     {"_phangorn_threshStateC", (DL_FUNC) &_phangorn_threshStateC, 2},
+    {"_phangorn_base_freq", (DL_FUNC) &_phangorn_base_freq, 1},
     {"_rcpp_module_boot_Fitch_mod", (DL_FUNC) &_rcpp_module_boot_Fitch_mod, 0},
     {"AddOnes",                    (DL_FUNC) &AddOnes,                     5},
     {"C_rowMin",                   (DL_FUNC) &C_rowMin,                    3},

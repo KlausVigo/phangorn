@@ -40,14 +40,15 @@
 baseFreq <- function(obj, freq=FALSE, all=FALSE, drop.unused.levels = FALSE){
   assert_phyDat(obj)
   labels <- attr(obj, "allLevels")
-  weight <- attr(obj,"weight")
-  n <- length(obj)
-  res <- numeric(length(labels))
-  D <- diag(length(labels))
-  for(i in 1:n)res <- res + colSums(D[obj[[i]],, drop=FALSE]*weight)
+#  weight <- attr(obj,"weight")
+#  n <- length(obj)
+#  res <- numeric(length(labels))
+#  D <- diag(length(labels))
+#  for(i in 1:n)res <- res + colSums(D[obj[[i]],, drop=FALSE]*weight)
+  res <- base_freq(obj)
   names(res) <- labels
   if(!all) res <- res[as.character( attr(obj, "levels") )]
-  if(!freq)res <- res/sum(res)
+  if(!freq) res <- res/sum(res)
   if(drop.unused.levels) return(res[res>0])
   res
 }
