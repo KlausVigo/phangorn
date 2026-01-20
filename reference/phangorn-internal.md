@@ -7,6 +7,8 @@ Internal phangorn functions.
 ``` r
 threshStateC(x, thresholds)
 
+base_freq(obj)
+
 assert_phyDat(x, contains_label = !is.null(label), label = NULL)
 
 assert_phylo(x, has_edge_length = FALSE, is_rooted = FALSE,

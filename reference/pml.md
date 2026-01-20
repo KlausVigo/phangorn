@@ -320,6 +320,7 @@ Klaus Schliep <klaus.schliep@gmail.com>
 #> model: JC 
 #> loglikelihood: -54230.41 
 #> unconstrained loglikelihood: -17300.92 
+#> Total tree length: 3.251135 
 #> 
 #> Rates:
 #> a <-> c : 1 
@@ -362,6 +363,7 @@ if (FALSE) { # \dontrun{
 #> model: Mk 
 #> loglikelihood: -17024.81 
 #> unconstrained loglikelihood: -8702.769 
+#> Total tree length: 0.9252797 
 #> 
 #> Rate matrix:
 #>   r y

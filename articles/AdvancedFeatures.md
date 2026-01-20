@@ -216,6 +216,7 @@ fit
     ## model: Mk 
     ## loglikelihood: -33.01 
     ## unconstrained loglikelihood: -28.43 
+    ## Total tree length: 0.4314 
     ## 
     ## Rate matrix:
     ##           a         c         g         t      -
@@ -407,6 +408,7 @@ M0
     ## model: codon1 
     ## loglikelihood: -9773 
     ## unconstrained loglikelihood: -1372 
+    ## Total tree length: 7.96 
     ## dn/ds: 0.5049 
     ## ts/tv: 4.418 
     ## Freq: F3x4
@@ -422,6 +424,7 @@ M0_opt
     ## model: codon1 
     ## loglikelihood: -9668 
     ## unconstrained loglikelihood: -1372 
+    ## Total tree length: 7.905 
     ## dn/ds: 0.51 
     ## ts/tv: 4.581 
     ## Freq: F3x4
@@ -458,9 +461,9 @@ M0_opt
     ## [10] textshaping_1.0.4   yaml_2.3.12         fastmap_1.2.0      
     ## [13] lattice_0.22-7      R6_2.6.1            generics_0.1.4     
     ## [16] igraph_2.2.1        knitr_1.51          htmlwidgets_1.6.4  
-    ## [19] backports_1.5.0     checkmate_2.3.3     future_1.68.0      
+    ## [19] backports_1.5.0     checkmate_2.3.3     future_1.69.0      
     ## [22] desc_1.4.3          bslib_0.9.0         rlang_1.1.7        
-    ## [25] cachem_1.1.0        xfun_0.55           fs_1.6.6           
+    ## [25] cachem_1.1.0        xfun_0.56           fs_1.6.6           
     ## [28] sass_0.4.10         otel_0.2.0          cli_3.6.5          
     ## [31] pkgdown_2.2.0       magrittr_2.0.4      digest_0.6.39      
     ## [34] grid_4.5.2          lifecycle_1.0.5     nlme_3.1-168       

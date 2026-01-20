@@ -117,7 +117,7 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ``` r
 if (FALSE) { # \dontrun{
 data(Laurasiatherian)
-mT <- modelTest(Laurasiatherian, tree, model = c("JC", "K80", "HKY", "GTR"),
+mT <- modelTest(Laurasiatherian, model = c("JC", "K80", "HKY", "GTR"),
                 R=TRUE)
 
 # Some exploratory data analysis

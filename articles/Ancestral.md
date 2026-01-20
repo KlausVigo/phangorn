@@ -162,6 +162,7 @@ fit_ER
     ## model: Mk 
     ## loglikelihood: -16.47 
     ## unconstrained loglikelihood: 0 
+    ## Total tree length: 537.1 
     ## 
     ## Rate matrix:
     ##   0 1 2
@@ -186,6 +187,7 @@ fit_SYM
     ## model: SYM 
     ## loglikelihood: -15.31 
     ## unconstrained loglikelihood: 0 
+    ## Total tree length: 537.1 
     ## 
     ## Rate matrix:
     ##           0      1         2
@@ -271,7 +273,7 @@ reversible models.
     ## [1] phangorn_2.12.1.3 ape_5.8-1        
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] sass_0.4.10         future_1.68.0       generics_0.1.4     
+    ##  [1] sass_0.4.10         future_1.69.0       generics_0.1.4     
     ##  [4] lattice_0.22-7      listenv_0.10.0      digest_0.6.39      
     ##  [7] magrittr_2.0.4      evaluate_1.0.5      grid_4.5.2         
     ## [10] RColorBrewer_1.1-3  fastmap_1.2.0       jsonlite_2.0.0     
@@ -281,14 +283,14 @@ reversible models.
     ## [22] future.apply_1.20.1 withr_3.0.2         cachem_1.1.0       
     ## [25] yaml_2.3.12         otel_0.2.0          tools_4.5.2        
     ## [28] ggseqlogo_0.2.2     parallel_4.5.2      checkmate_2.3.3    
-    ## [31] dplyr_1.1.4         ggplot2_4.0.1       fastmatch_1.1-6    
-    ## [34] globals_0.18.0      vctrs_0.6.5         R6_2.6.1           
+    ## [31] dplyr_1.1.4         ggplot2_4.0.1       fastmatch_1.1-8    
+    ## [34] globals_0.18.0      vctrs_0.7.0         R6_2.6.1           
     ## [37] lifecycle_1.0.5     fs_1.6.6            htmlwidgets_1.6.4  
     ## [40] ragg_1.5.0          pkgconfig_2.0.3     desc_1.4.3         
     ## [43] pillar_1.11.1       pkgdown_2.2.0       bslib_0.9.0        
     ## [46] gtable_0.3.6        glue_1.8.0          Rcpp_1.1.1         
     ## [49] systemfonts_1.3.1   tidyselect_1.2.1    tibble_3.3.1       
-    ## [52] xfun_0.55           knitr_1.51          farver_2.1.2       
+    ## [52] xfun_0.56           knitr_1.51          farver_2.1.2       
     ## [55] htmltools_0.5.9     nlme_3.1-168        igraph_2.2.1       
     ## [58] labeling_0.4.3      rmarkdown_2.30      compiler_4.5.2     
     ## [61] S7_0.2.1

@@ -324,6 +324,7 @@ fit_mt
     ## model: HKY+G(4) 
     ## loglikelihood: -2615.014 
     ## unconstrained loglikelihood: -1230.335 
+    ## Total tree length: 43.77113 
     ## Model of rate heterogeneity: Discrete gamma model
     ## Number of rate categories: 4 
     ## Shape parameter: 2.272865 
@@ -506,6 +507,7 @@ fit_td
     ## model: HKY+I 
     ## loglikelihood: -3117.866 
     ## unconstrained loglikelihood: -2883.911 
+    ## Total tree length: 52.13048 
     ## Proportion of invariant sites: 0.6865064 
     ## 
     ## Rate: 0.002534975 
@@ -566,7 +568,7 @@ Tip dated ML phylogeny with time scale in years.
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] knitr_1.51        future_1.68.0     phangorn_2.12.1.3 ape_5.8-1        
+    ## [1] knitr_1.51        future_1.69.0     phangorn_2.12.1.3 ape_5.8-1        
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] Matrix_1.7-4        future.apply_1.20.1 jsonlite_2.0.0     
@@ -576,8 +578,8 @@ Tip dated ML phylogeny with time scale in years.
     ## [13] lattice_0.22-7      R6_2.6.1            generics_0.1.4     
     ## [16] igraph_2.2.1        htmlwidgets_1.6.4   backports_1.5.0    
     ## [19] checkmate_2.3.3     desc_1.4.3          osqp_0.6.3.3       
-    ## [22] bslib_0.9.0         rlang_1.1.7         fastmatch_1.1-6    
-    ## [25] cachem_1.1.0        xfun_0.55           fs_1.6.6           
+    ## [22] bslib_0.9.0         rlang_1.1.7         fastmatch_1.1-8    
+    ## [25] cachem_1.1.0        xfun_0.56           fs_1.6.6           
     ## [28] sass_0.4.10         otel_0.2.0          cli_3.6.5          
     ## [31] pkgdown_2.2.0       magrittr_2.0.4      digest_0.6.39      
     ## [34] grid_4.5.2          lifecycle_1.0.5     nlme_3.1-168       

@@ -31,6 +31,7 @@ fit
     ## model: JC 
     ## loglikelihood: -3075 
     ## unconstrained loglikelihood: -1230 
+    ## Total tree length: 4.056 
     ## 
     ## Rates:
     ## a <-> c : 1 
@@ -83,6 +84,7 @@ fitF81
     ## model: F81+G(4)+I 
     ## loglikelihood: -3037 
     ## unconstrained loglikelihood: -1230 
+    ## Total tree length: 4.221 
     ## Proportion of invariant sites: 0.2 
     ## Model of rate heterogeneity: Discrete gamma model
     ## Number of rate categories: 4 
@@ -119,6 +121,7 @@ fitGTR
     ## model: GTR+G(4)+I 
     ## loglikelihood: -2611 
     ## unconstrained loglikelihood: -1230 
+    ## Total tree length: 30.6 
     ## Proportion of invariant sites: 0.006978 
     ## Model of rate heterogeneity: Discrete gamma model
     ## Number of rate categories: 4 
@@ -170,6 +173,7 @@ fitGTR
     ## model: GTR+G(4)+I 
     ## loglikelihood: -2608 
     ## unconstrained loglikelihood: -1230 
+    ## Total tree length: 41.75 
     ## Proportion of invariant sites: 0.00741 
     ## Model of rate heterogeneity: Discrete gamma model
     ## Number of rate categories: 4 
@@ -333,7 +337,7 @@ away.
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] future_1.68.0     phangorn_2.12.1.3 ape_5.8-1        
+    ## [1] future_1.69.0     phangorn_2.12.1.3 ape_5.8-1        
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] Matrix_1.7-4        future.apply_1.20.1 jsonlite_2.0.0     
@@ -344,7 +348,7 @@ away.
     ## [16] igraph_2.2.1        knitr_1.51          htmlwidgets_1.6.4  
     ## [19] backports_1.5.0     checkmate_2.3.3     desc_1.4.3         
     ## [22] bslib_0.9.0         rlang_1.1.7         cachem_1.1.0       
-    ## [25] xfun_0.55           fs_1.6.6            sass_0.4.10        
+    ## [25] xfun_0.56           fs_1.6.6            sass_0.4.10        
     ## [28] otel_0.2.0          cli_3.6.5           pkgdown_2.2.0      
     ## [31] magrittr_2.0.4      digest_0.6.39       grid_4.5.2         
     ## [34] lifecycle_1.0.5     nlme_3.1-168        evaluate_1.0.5     

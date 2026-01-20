@@ -189,7 +189,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] future_1.68.0     phangorn_2.12.1.3 ape_5.8-1        
+    ## [1] future_1.69.0     phangorn_2.12.1.3 ape_5.8-1        
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] Matrix_1.7-4        future.apply_1.20.1 jsonlite_2.0.0     
@@ -200,7 +200,7 @@ sessionInfo()
     ## [16] igraph_2.2.1        knitr_1.51          htmlwidgets_1.6.4  
     ## [19] backports_1.5.0     checkmate_2.3.3     desc_1.4.3         
     ## [22] osqp_0.6.3.3        bslib_0.9.0         rlang_1.1.7        
-    ## [25] cachem_1.1.0        xfun_0.55           fs_1.6.6           
+    ## [25] cachem_1.1.0        xfun_0.56           fs_1.6.6           
     ## [28] sass_0.4.10         otel_0.2.0          cli_3.6.5          
     ## [31] pkgdown_2.2.0       magrittr_2.0.4      digest_0.6.39      
     ## [34] grid_4.5.2          lifecycle_1.0.5     nlme_3.1-168       
