@@ -63,5 +63,6 @@ fit <- pml_bb(woodmouse, "JC", rearrangement = "none")
 #> optimize edge weights:  -1857.165 --> -1857.165 
 #> optimize edge weights:  -1857.165 --> -1857.165 
 write.pml(fit, "woodmouse")
-unlink(c("woodmouse.txt", "woodmouse_tree.nwk", "woodmouse_align.fasta"))
+unlink(c("woodmouse.txt", "woodmouse_tree.nwk", "woodmouse_align.fasta",
+       "woodmouse_tree.pdf", "woodmouse.rds", "woodmouse_rates.pdf"))
 ```

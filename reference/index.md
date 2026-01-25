@@ -203,6 +203,7 @@
   Morphological characters of Mites (Schäffer et al. 2010)
 
 - [`modelTest()`](https://klausvigo.github.io/phangorn/reference/modelTest.md)
+  [`write.modelTest()`](https://klausvigo.github.io/phangorn/reference/modelTest.md)
   : ModelTest
 
 - [`neighborNet()`](https://klausvigo.github.io/phangorn/reference/neighborNet.md)

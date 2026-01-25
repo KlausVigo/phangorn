@@ -217,6 +217,9 @@ fit
     ## loglikelihood: -33.01 
     ## unconstrained loglikelihood: -28.43 
     ## Total tree length: 0.4314 
+    ##  (expected number of substituions per site)
+    ## Minimal tree length: 0.3333 
+    ##  (observed substitutions per site)
     ## 
     ## Rate matrix:
     ##           a         c         g         t      -
@@ -409,6 +412,9 @@ M0
     ## loglikelihood: -9773 
     ## unconstrained loglikelihood: -1372 
     ## Total tree length: 7.96 
+    ##  (expected number of substituions per site)
+    ## Minimal tree length: 6.444 
+    ##  (observed substitutions per site)
     ## dn/ds: 0.5049 
     ## ts/tv: 4.418 
     ## Freq: F3x4
@@ -425,6 +431,9 @@ M0_opt
     ## loglikelihood: -9668 
     ## unconstrained loglikelihood: -1372 
     ## Total tree length: 7.905 
+    ##  (expected number of substituions per site)
+    ## Minimal tree length: 6.444 
+    ##  (observed substitutions per site)
     ## dn/ds: 0.51 
     ## ts/tv: 4.581 
     ## Freq: F3x4

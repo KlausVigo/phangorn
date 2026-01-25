@@ -69,7 +69,7 @@ Iris Bardel-Kahr</h4>
 Graz<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2026-01-20</h4>
+            <h4 data-toc-skip class="date">2026-01-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/main/vignettes/Trees.Rmd" class="external-link"><code>vignettes/Trees.Rmd</code></a></small>
       <div class="d-none name"><code>Trees.Rmd</code></div>
@@ -307,7 +307,21 @@ you can work with them.</p>
 <code class="sourceCode R"><span><span class="va">mt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modelTest.html">modelTest</a></span><span class="op">(</span><span class="va">primates</span>, model<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"JC"</span>, <span class="st">"F81"</span>, <span class="st">"K80"</span>, <span class="st">"HKY"</span>, <span class="st">"SYM"</span>, <span class="st">"GTR"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>The results of <code>modelTest</code> is illustrated in following
 table:</p>
-<table class="table">
+<table style="width:100%;" class="table">
+<colgroup>
+<col width="13%">
+<col width="3%">
+<col width="11%">
+<col width="10%">
+<col width="6%">
+<col width="10%">
+<col width="7%">
+<col width="10%">
+<col width="3%">
+<col width="8%">
+<col width="6%">
+<col width="7%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">Model</th>
 <th align="right">df</th>
@@ -317,6 +331,10 @@ table:</p>
 <th align="right">AICc</th>
 <th align="right">AICcw</th>
 <th align="right">BIC</th>
+<th align="right">k</th>
+<th align="right">shape</th>
+<th align="right">inv</th>
+<th align="right">TL</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
@@ -328,6 +346,10 @@ table:</p>
 <td align="right">6193.15</td>
 <td align="right">0.00</td>
 <td align="right">6273.00</td>
+<td align="right">1</td>
+<td align="right">NA</td>
+<td align="right">0.00</td>
+<td align="right">4.23</td>
 </tr>
 <tr class="even">
 <td align="left">JC+I</td>
@@ -338,6 +360,10 @@ table:</p>
 <td align="right">6184.10</td>
 <td align="right">0.00</td>
 <td align="right">6266.87</td>
+<td align="right">1</td>
+<td align="right">NA</td>
+<td align="right">0.04</td>
+<td align="right">4.31</td>
 </tr>
 <tr class="odd">
 <td align="left">JC+G(4)</td>
@@ -348,56 +374,80 @@ table:</p>
 <td align="right">6192.68</td>
 <td align="right">0.00</td>
 <td align="right">6275.45</td>
+<td align="right">4</td>
+<td align="right">12.21</td>
+<td align="right">0.00</td>
+<td align="right">4.34</td>
 </tr>
 <tr class="even">
 <td align="left">JC+G(4)+I</td>
 <td align="right">27</td>
-<td align="right">-3062.63</td>
-<td align="right">6179.27</td>
+<td align="right">-3062.71</td>
+<td align="right">6179.43</td>
 <td align="right">0.00</td>
-<td align="right">6186.68</td>
+<td align="right">6186.84</td>
 <td align="right">0.00</td>
-<td align="right">6272.33</td>
+<td align="right">6272.49</td>
+<td align="right">4</td>
+<td align="right">100.00</td>
+<td align="right">0.04</td>
+<td align="right">4.32</td>
 </tr>
 <tr class="odd">
 <td align="left">F81</td>
 <td align="right">28</td>
-<td align="right">-2918.17</td>
-<td align="right">5892.33</td>
+<td align="right">-2954.83</td>
+<td align="right">5965.66</td>
 <td align="right">0.00</td>
-<td align="right">5900.33</td>
+<td align="right">5973.66</td>
 <td align="right">0.00</td>
-<td align="right">5988.84</td>
+<td align="right">6062.16</td>
+<td align="right">1</td>
+<td align="right">NA</td>
+<td align="right">0.00</td>
+<td align="right">4.83</td>
 </tr>
 <tr class="even">
 <td align="left">F81+I</td>
 <td align="right">29</td>
-<td align="right">-2909.12</td>
-<td align="right">5876.24</td>
+<td align="right">-2948.22</td>
+<td align="right">5954.43</td>
 <td align="right">0.00</td>
-<td align="right">5884.85</td>
+<td align="right">5963.05</td>
 <td align="right">0.00</td>
-<td align="right">5976.20</td>
+<td align="right">6054.39</td>
+<td align="right">1</td>
+<td align="right">NA</td>
+<td align="right">0.04</td>
+<td align="right">4.96</td>
 </tr>
 <tr class="odd">
 <td align="left">F81+G(4)</td>
 <td align="right">29</td>
-<td align="right">-2912.56</td>
-<td align="right">5883.12</td>
+<td align="right">-2952.16</td>
+<td align="right">5962.33</td>
 <td align="right">0.00</td>
-<td align="right">5891.73</td>
+<td align="right">5970.94</td>
 <td align="right">0.00</td>
-<td align="right">5983.07</td>
+<td align="right">6062.28</td>
+<td align="right">4</td>
+<td align="right">7.62</td>
+<td align="right">0.00</td>
+<td align="right">5.10</td>
 </tr>
 <tr class="even">
 <td align="left">F81+G(4)+I</td>
 <td align="right">30</td>
-<td align="right">-2908.52</td>
-<td align="right">5877.04</td>
+<td align="right">-2948.20</td>
+<td align="right">5956.40</td>
 <td align="right">0.00</td>
-<td align="right">5886.29</td>
+<td align="right">5965.65</td>
 <td align="right">0.00</td>
-<td align="right">5980.44</td>
+<td align="right">6059.80</td>
+<td align="right">4</td>
+<td align="right">89.89</td>
+<td align="right">0.04</td>
+<td align="right">4.99</td>
 </tr>
 <tr class="odd">
 <td align="left">K80</td>
@@ -408,6 +458,10 @@ table:</p>
 <td align="right">5964.73</td>
 <td align="right">0.00</td>
 <td align="right">6047.50</td>
+<td align="right">1</td>
+<td align="right">NA</td>
+<td align="right">0.00</td>
+<td align="right">4.66</td>
 </tr>
 <tr class="even">
 <td align="left">K80+I</td>
@@ -418,6 +472,10 @@ table:</p>
 <td align="right">5950.43</td>
 <td align="right">0.00</td>
 <td align="right">6036.08</td>
+<td align="right">1</td>
+<td align="right">NA</td>
+<td align="right">0.04</td>
+<td align="right">4.86</td>
 </tr>
 <tr class="odd">
 <td align="left">K80+G(4)</td>
@@ -428,6 +486,10 @@ table:</p>
 <td align="right">5950.94</td>
 <td align="right">0.00</td>
 <td align="right">6036.59</td>
+<td align="right">4</td>
+<td align="right">3.79</td>
+<td align="right">0.00</td>
+<td align="right">5.47</td>
 </tr>
 <tr class="even">
 <td align="left">K80+G(4)+I</td>
@@ -438,46 +500,66 @@ table:</p>
 <td align="right">5948.68</td>
 <td align="right">0.00</td>
 <td align="right">6037.19</td>
+<td align="right">4</td>
+<td align="right">6.79</td>
+<td align="right">0.03</td>
+<td align="right">5.32</td>
 </tr>
 <tr class="odd">
 <td align="left">HKY</td>
 <td align="right">29</td>
-<td align="right">-2624.93</td>
-<td align="right">5307.86</td>
+<td align="right">-2627.07</td>
+<td align="right">5312.15</td>
 <td align="right">0.00</td>
-<td align="right">5316.47</td>
+<td align="right">5320.76</td>
 <td align="right">0.00</td>
-<td align="right">5407.82</td>
+<td align="right">5412.10</td>
+<td align="right">1</td>
+<td align="right">NA</td>
+<td align="right">0.00</td>
+<td align="right">20.69</td>
 </tr>
 <tr class="even">
 <td align="left">HKY+I</td>
 <td align="right">30</td>
-<td align="right">-2621.11</td>
-<td align="right">5302.22</td>
+<td align="right">-2623.45</td>
+<td align="right">5306.89</td>
 <td align="right">0.00</td>
-<td align="right">5311.48</td>
+<td align="right">5316.15</td>
 <td align="right">0.00</td>
-<td align="right">5405.63</td>
+<td align="right">5410.30</td>
+<td align="right">1</td>
+<td align="right">NA</td>
+<td align="right">0.02</td>
+<td align="right">29.30</td>
 </tr>
 <tr class="odd">
 <td align="left">HKY+G(4)</td>
 <td align="right">30</td>
-<td align="right">-2612.60</td>
-<td align="right">5285.19</td>
-<td align="right">0.18</td>
-<td align="right">5294.45</td>
-<td align="right">0.46</td>
-<td align="right">5388.60</td>
+<td align="right">-2616.16</td>
+<td align="right">5292.32</td>
+<td align="right">0.02</td>
+<td align="right">5301.58</td>
+<td align="right">0.09</td>
+<td align="right">5395.72</td>
+<td align="right">4</td>
+<td align="right">2.38</td>
+<td align="right">0.00</td>
+<td align="right">40.17</td>
 </tr>
 <tr class="even">
 <td align="left">HKY+G(4)+I</td>
 <td align="right">31</td>
-<td align="right">-2612.44</td>
-<td align="right">5286.89</td>
-<td align="right">0.08</td>
-<td align="right">5296.81</td>
-<td align="right">0.14</td>
-<td align="right">5393.74</td>
+<td align="right">-2615.91</td>
+<td align="right">5293.83</td>
+<td align="right">0.01</td>
+<td align="right">5303.75</td>
+<td align="right">0.03</td>
+<td align="right">5400.68</td>
+<td align="right">4</td>
+<td align="right">2.36</td>
+<td align="right">0.00</td>
+<td align="right">43.46</td>
 </tr>
 <tr class="odd">
 <td align="left">SYM</td>
@@ -488,6 +570,10 @@ table:</p>
 <td align="right">5697.05</td>
 <td align="right">0.00</td>
 <td align="right">5791.19</td>
+<td align="right">1</td>
+<td align="right">NA</td>
+<td align="right">0.00</td>
+<td align="right">4.49</td>
 </tr>
 <tr class="even">
 <td align="left">SYM+I</td>
@@ -498,6 +584,10 @@ table:</p>
 <td align="right">5695.38</td>
 <td align="right">0.00</td>
 <td align="right">5792.31</td>
+<td align="right">1</td>
+<td align="right">NA</td>
+<td align="right">0.02</td>
+<td align="right">4.53</td>
 </tr>
 <tr class="odd">
 <td align="left">SYM+G(4)</td>
@@ -508,6 +598,10 @@ table:</p>
 <td align="right">5681.28</td>
 <td align="right">0.00</td>
 <td align="right">5778.20</td>
+<td align="right">4</td>
+<td align="right">3.65</td>
+<td align="right">0.00</td>
+<td align="right">5.39</td>
 </tr>
 <tr class="even">
 <td align="left">SYM+G(4)+I</td>
@@ -518,46 +612,66 @@ table:</p>
 <td align="right">5683.95</td>
 <td align="right">0.00</td>
 <td align="right">5783.63</td>
+<td align="right">4</td>
+<td align="right">3.71</td>
+<td align="right">0.00</td>
+<td align="right">5.38</td>
 </tr>
 <tr class="odd">
 <td align="left">GTR</td>
 <td align="right">33</td>
-<td align="right">-2618.46</td>
-<td align="right">5302.92</td>
+<td align="right">-2618.82</td>
+<td align="right">5303.63</td>
 <td align="right">0.00</td>
-<td align="right">5314.25</td>
+<td align="right">5314.96</td>
 <td align="right">0.00</td>
-<td align="right">5416.66</td>
+<td align="right">5417.37</td>
+<td align="right">1</td>
+<td align="right">NA</td>
+<td align="right">0.00</td>
+<td align="right">21.18</td>
 </tr>
 <tr class="even">
 <td align="left">GTR+I</td>
 <td align="right">34</td>
-<td align="right">-2613.53</td>
-<td align="right">5295.06</td>
+<td align="right">-2613.78</td>
+<td align="right">5295.55</td>
 <td align="right">0.00</td>
-<td align="right">5307.14</td>
+<td align="right">5307.63</td>
 <td align="right">0.00</td>
-<td align="right">5412.24</td>
+<td align="right">5412.74</td>
+<td align="right">1</td>
+<td align="right">NA</td>
+<td align="right">0.02</td>
+<td align="right">32.05</td>
 </tr>
 <tr class="odd">
 <td align="left">GTR+G(4)</td>
 <td align="right">34</td>
-<td align="right">-2607.65</td>
-<td align="right">5283.30</td>
-<td align="right">0.47</td>
-<td align="right">5295.38</td>
-<td align="right">0.29</td>
-<td align="right">5400.48</td>
+<td align="right">-2608.78</td>
+<td align="right">5285.55</td>
+<td align="right">0.59</td>
+<td align="right">5297.63</td>
+<td align="right">0.61</td>
+<td align="right">5402.74</td>
+<td align="right">4</td>
+<td align="right">2.72</td>
+<td align="right">0.00</td>
+<td align="right">39.64</td>
 </tr>
 <tr class="even">
 <td align="left">GTR+G(4)+I</td>
 <td align="right">35</td>
-<td align="right">-2607.21</td>
-<td align="right">5284.43</td>
+<td align="right">-2608.22</td>
+<td align="right">5286.45</td>
+<td align="right">0.38</td>
+<td align="right">5299.31</td>
 <td align="right">0.27</td>
-<td align="right">5297.28</td>
-<td align="right">0.11</td>
-<td align="right">5405.06</td>
+<td align="right">5407.08</td>
+<td align="right">4</td>
+<td align="right">2.95</td>
+<td align="right">0.01</td>
+<td align="right">44.92</td>
 </tr>
 </tbody>
 </table>
@@ -592,24 +706,27 @@ conducted.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_mt</span></span></code></pre></div>
 <pre><code><span><span class="co">## model: HKY+G(4) </span></span>
-<span><span class="co">## loglikelihood: -2615.014 </span></span>
+<span><span class="co">## loglikelihood: -2615.015 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -1230.335 </span></span>
-<span><span class="co">## Total tree length: 43.77113 </span></span>
+<span><span class="co">## Total tree length: 43.65922 </span></span>
+<span><span class="co">##  (expected number of substituions per site)</span></span>
+<span><span class="co">## Minimal tree length: 3.314655 </span></span>
+<span><span class="co">##  (observed substitutions per site)</span></span>
 <span><span class="co">## Model of rate heterogeneity: Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
-<span><span class="co">## Shape parameter: 2.272865 </span></span>
+<span><span class="co">## Shape parameter: 2.274277 </span></span>
 <span><span class="co">##        Rate Proportion</span></span>
-<span><span class="co">## 1 0.3238072       0.25</span></span>
-<span><span class="co">## 2 0.6812111       0.25</span></span>
-<span><span class="co">## 3 1.0755269       0.25</span></span>
-<span><span class="co">## 4 1.9194548       0.25</span></span>
+<span><span class="co">## 1 0.3239553       0.25</span></span>
+<span><span class="co">## 2 0.6813335       0.25</span></span>
+<span><span class="co">## 3 1.0755498       0.25</span></span>
+<span><span class="co">## 4 1.9191614       0.25</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rates:</span></span>
 <span><span class="co">## a &lt;-&gt; c : 1 </span></span>
-<span><span class="co">## a &lt;-&gt; g : 54.5506 </span></span>
+<span><span class="co">## a &lt;-&gt; g : 54.35653 </span></span>
 <span><span class="co">## a &lt;-&gt; t : 1 </span></span>
 <span><span class="co">## c &lt;-&gt; g : 1 </span></span>
-<span><span class="co">## c &lt;-&gt; t : 54.5506 </span></span>
+<span><span class="co">## c &lt;-&gt; t : 54.35653 </span></span>
 <span><span class="co">## g &lt;-&gt; t : 1 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
@@ -746,7 +863,10 @@ tree given the constraints of the <code>tip.dates</code> vector.</p>
 <pre><code><span><span class="co">## model: HKY+I </span></span>
 <span><span class="co">## loglikelihood: -3117.866 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -2883.911 </span></span>
-<span><span class="co">## Total tree length: 52.13048 </span></span>
+<span><span class="co">## Total tree length: 0.1321494 </span></span>
+<span><span class="co">##  (expected number of substituions per site)</span></span>
+<span><span class="co">## Minimal tree length: 0.1279318 </span></span>
+<span><span class="co">##  (observed substitutions per site)</span></span>
 <span><span class="co">## Proportion of invariant sites: 0.6865064 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rate: 0.002534975 </span></span>

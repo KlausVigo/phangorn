@@ -321,6 +321,9 @@ Klaus Schliep <klaus.schliep@gmail.com>
 #> loglikelihood: -54230.41 
 #> unconstrained loglikelihood: -17300.92 
 #> Total tree length: 3.251135 
+#>  (expected number of substituions per site)
+#> Minimal tree length: 3.075181 
+#>  (observed substitutions per site)
 #> 
 #> Rates:
 #> a <-> c : 1 
@@ -364,6 +367,9 @@ if (FALSE) { # \dontrun{
 #> loglikelihood: -17024.81 
 #> unconstrained loglikelihood: -8702.769 
 #> Total tree length: 0.9252797 
+#>  (expected number of substituions per site)
+#> Minimal tree length: 0.8943064 
+#>  (observed substitutions per site)
 #> 
 #> Rate matrix:
 #>   r y

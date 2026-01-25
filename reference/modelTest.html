@@ -50,7 +50,9 @@
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">modelTest</span><span class="op">(</span><span class="va">object</span>, tree <span class="op">=</span> <span class="cn">NULL</span>, model <span class="op">=</span> <span class="cn">NULL</span>, G <span class="op">=</span> <span class="cn">TRUE</span>, I <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  FREQ <span class="op">=</span> <span class="cn">FALSE</span>, R <span class="op">=</span> <span class="cn">FALSE</span>, k <span class="op">=</span> <span class="fl">4</span>, control <span class="op">=</span> <span class="fu"><a href="pml.control.html">pml.control</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  multicore <span class="op">=</span> <span class="cn">FALSE</span>, mc.cores <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<span>  multicore <span class="op">=</span> <span class="cn">FALSE</span>, mc.cores <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">write.modelTest</span><span class="op">(</span><span class="va">x</span>, file <span class="op">=</span> <span class="st">"modelTest"</span>, digits <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -101,6 +103,15 @@ estimated.</p></dd>
 
 <dt id="arg-mc-cores">mc.cores<a class="anchor" aria-label="anchor" href="#arg-mc-cores"></a></dt>
 <dd><p>Currently not used.</p></dd>
+
+
+<dt id="arg-file">file<a class="anchor" aria-label="anchor" href="#arg-file"></a></dt>
+<dd><p>a file name. File endings are added.</p></dd>
+
+
+<dt id="arg-digits">digits<a class="anchor" aria-label="anchor" href="#arg-digits"></a></dt>
+<dd><p>default is 10, i.e. edge length for the bootstrap trees are
+exported. For digits larger smaller than zero no edge length are exported.</p></dd>
 
 </dl></div>
     <div class="section level2">

@@ -32,6 +32,9 @@ fit
     ## loglikelihood: -3075 
     ## unconstrained loglikelihood: -1230 
     ## Total tree length: 4.056 
+    ##  (expected number of substituions per site)
+    ## Minimal tree length: 3.216 
+    ##  (observed substitutions per site)
     ## 
     ## Rates:
     ## a <-> c : 1 
@@ -85,6 +88,9 @@ fitF81
     ## loglikelihood: -3037 
     ## unconstrained loglikelihood: -1230 
     ## Total tree length: 4.221 
+    ##  (expected number of substituions per site)
+    ## Minimal tree length: 3.237 
+    ##  (observed substitutions per site)
     ## Proportion of invariant sites: 0.2 
     ## Model of rate heterogeneity: Discrete gamma model
     ## Number of rate categories: 4 
@@ -122,6 +128,9 @@ fitGTR
     ## loglikelihood: -2611 
     ## unconstrained loglikelihood: -1230 
     ## Total tree length: 30.6 
+    ##  (expected number of substituions per site)
+    ## Minimal tree length: 3.237 
+    ##  (observed substitutions per site)
     ## Proportion of invariant sites: 0.006978 
     ## Model of rate heterogeneity: Discrete gamma model
     ## Number of rate categories: 4 
@@ -174,6 +183,9 @@ fitGTR
     ## loglikelihood: -2608 
     ## unconstrained loglikelihood: -1230 
     ## Total tree length: 41.75 
+    ##  (expected number of substituions per site)
+    ## Minimal tree length: 3.315 
+    ##  (observed substitutions per site)
     ## Proportion of invariant sites: 0.00741 
     ## Model of rate heterogeneity: Discrete gamma model
     ## Number of rate categories: 4 

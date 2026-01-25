@@ -8,6 +8,8 @@ Comparison of different nucleotide or amino acid substitution models
 modelTest(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
   FREQ = FALSE, R = FALSE, k = 4, control = pml.control(),
   multicore = FALSE, mc.cores = NULL)
+
+write.modelTest(x, file = "modelTest", digits = 10)
 ```
 
 ## Arguments
@@ -57,6 +59,15 @@ modelTest(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
 - mc.cores:
 
   Currently not used.
+
+- file:
+
+  a file name. File endings are added.
+
+- digits:
+
+  default is 10, i.e. edge length for the bootstrap trees are exported.
+  For digits larger smaller than zero no edge length are exported.
 
 ## Value
 
