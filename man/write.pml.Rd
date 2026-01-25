@@ -42,7 +42,8 @@ adopt these on the dataset.
 data(woodmouse)
 fit <- pml_bb(woodmouse, "JC", rearrangement = "none")
 write.pml(fit, "woodmouse")
-unlink(c("woodmouse.txt", "woodmouse_tree.nwk", "woodmouse_align.fasta"))
+unlink(c("woodmouse.txt", "woodmouse_tree.nwk", "woodmouse_align.fasta",
+       "woodmouse_tree.pdf", "woodmouse.rds", "woodmouse_rates.pdf"))
 }
 \seealso{
 \code{\link{ancestral.pml}}, \code{\link{plotAnc}}

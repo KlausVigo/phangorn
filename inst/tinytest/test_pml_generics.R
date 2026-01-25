@@ -26,4 +26,5 @@ fit3 <- pml(tree = tree, data = align, k = 1L, site.rate = "gamma", ASC = FALSE,
                   23.0401029286372, 1), inv = 0.850681184138605, model = "HKY")
 expect_equal(logLik(fit), logLik(fit3))
 
-unlink(c("pml_align.fasta", "pml_tree.nwk", "pml.rds", "pml.txt"))
+unlink(c("pml_align.fasta", "pml_tree.nwk", "pml.rds", "pml.txt",
+         "pml_rates.pdf", "pml_tree.pdf"))

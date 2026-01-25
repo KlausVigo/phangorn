@@ -387,8 +387,12 @@ as.pml.modelTest <- function(x, model="BIC", ...){
 }
 
 
+#' @param digits	default is 10, i.e. edge length for the bootstrap trees are
+#' exported. For digits larger smaller than zero no edge length are exported.
+#' @param file a file name. File endings are added.
+#' @rdname modelTest
 #' @export
-write.modelTest <- function(x, file="modelTest"){
+write.modelTest <- function(x, file="modelTest", digits=10){
   zzfil <- paste0(file, ".nex.gz")
   zz <- gzfile(zzfil, "w")
   write.nexus(attr(x, "trees"), file=zz, digits=digits)

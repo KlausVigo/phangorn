@@ -3,11 +3,14 @@
 \name{modelTest}
 \alias{modelTest}
 \alias{AICc}
+\alias{write.modelTest}
 \title{ModelTest}
 \usage{
 modelTest(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
   FREQ = FALSE, R = FALSE, k = 4, control = pml.control(),
   multicore = FALSE, mc.cores = NULL)
+
+write.modelTest(x, file = "modelTest", digits = 10)
 }
 \arguments{
 \item{object}{an object of class phyDat or pml.}
@@ -33,6 +36,11 @@ estimated.}
 \item{multicore}{Currently not used.}
 
 \item{mc.cores}{Currently not used.}
+
+\item{file}{a file name. File endings are added.}
+
+\item{digits}{default is 10, i.e. edge length for the bootstrap trees are
+exported. For digits larger smaller than zero no edge length are exported.}
 }
 \value{
 A data.frame containing the log-likelihood, number of estimated

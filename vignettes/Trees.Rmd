@@ -150,7 +150,7 @@ It's also possible to only select some common models:
 ```{r, echo=FALSE}
 load("Trees.RData")
 ```
-```{r mt_selected, echo=TRUE, eval=FALSE}
+```{r mt_selected, echo=TRUE, eval=TRUE, cache=TRUE}
 mt <- modelTest(primates, model=c("JC", "F81", "K80", "HKY", "SYM", "GTR"))
 ```
 The results of `modelTest` is illustrated in following table:

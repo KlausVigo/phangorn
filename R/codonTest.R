@@ -133,6 +133,7 @@ codonTest <- function(tree, object, model = c("M0", "M1a", "M2a"),
 }
 
 
+#' @importFrom stats setNames
 #' @export
 glance.pml <- function(x, ...) {
   nam_rate <- function (x)

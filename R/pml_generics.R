@@ -176,8 +176,10 @@ print.pml <- function(x, ...) {
 #' data(woodmouse)
 #' fit <- pml_bb(woodmouse, "JC", rearrangement = "none")
 #' write.pml(fit, "woodmouse")
-#' unlink(c("woodmouse.txt", "woodmouse_tree.nwk", "woodmouse_align.fasta"))
+#' unlink(c("woodmouse.txt", "woodmouse_tree.nwk", "woodmouse_align.fasta",
+#'        "woodmouse_tree.pdf", "woodmouse.rds", "woodmouse_rates.pdf"))
 #' @importFrom utils citation
+#' @importFrom grDevices dev.off pdf
 #' @export
 write.pml <- function(x, file="pml", save_rds=TRUE, digits=10, ...){
 #  digits <- -1
@@ -208,7 +210,7 @@ write.pml <- function(x, file="pml", save_rds=TRUE, digits=10, ...){
       dev.off()
     }
     pdf(file=paste0(file, "_terraces.pdf"), height=my_heigtht)
-    terraces(fit, pkg="scatterplot3d")
+    terraces(x, pkg="scatterplot3d")
     dev.off()
   }
   if(ntips < 3000){
