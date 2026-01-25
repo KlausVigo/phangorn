@@ -60,6 +60,10 @@ write.modelTest(x, file = "modelTest", digits = 10)
 
   Currently not used.
 
+- x:
+
+  an object of class modelTest.
+
 - file:
 
   a file name. File endings are added.

@@ -12,7 +12,7 @@ write.pml(x, file = "pml", save_rds = TRUE, digits = 10, ...)
 
 - x:
 
-  an object of class ancestral.
+  an object of class pml.
 
 - file:
 
