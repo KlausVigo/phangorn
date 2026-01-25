@@ -387,6 +387,7 @@ as.pml.modelTest <- function(x, model="BIC", ...){
 }
 
 
+#' @param x an object of class modelTest.
 #' @param digits	default is 10, i.e. edge length for the bootstrap trees are
 #' exported. For digits larger smaller than zero no edge length are exported.
 #' @param file a file name. File endings are added.

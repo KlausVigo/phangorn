@@ -37,6 +37,8 @@ estimated.}
 
 \item{mc.cores}{Currently not used.}
 
+\item{x}{an object of class modelTest.}
+
 \item{file}{a file name. File endings are added.}
 
 \item{digits}{default is 10, i.e. edge length for the bootstrap trees are

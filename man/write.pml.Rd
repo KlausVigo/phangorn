@@ -7,7 +7,7 @@
 write.pml(x, file = "pml", save_rds = TRUE, digits = 10, ...)
 }
 \arguments{
-\item{x}{an object of class ancestral.}
+\item{x}{an object of class pml.}
 
 \item{file}{a file name. File endings are added.}
 

@@ -161,7 +161,7 @@ print.pml <- function(x, ...) {
 #' And last but not least the distribution of the rates. It might be better to
 #' adopt these on the dataset.
 #'
-#' @param x an object of class ancestral.
+#' @param x an object of class pml.
 #' @param file a file name. File endings are added.
 #' @param save_rds logical, if TRUE saves the pml object as a rds file,
 #' otherwise the alignment is saved as a fasta file.
