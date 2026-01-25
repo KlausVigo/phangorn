@@ -74,7 +74,10 @@ print.pml <- function(x, ...) {
   nc <- attr(x$data, "nc")
   ll0 <- sum(w * log(w / sum(w)))
   cat("unconstrained loglikelihood:", ll0, "\n")
-  cat("Total tree length:", sum(x$tree$edge.length), "\n")
+  cat("Total tree length:",
+      sum(x$tree$edge.length) * x$rate, "\n\t(expected number of substituions per site)\n")
+  cat("Minimal tree length:",
+      parsimony(x$tree, x$data) / sum(attr(x$data, "weight")), "\n\t(observed substitutions per site)\n")
   if (x$inv > 0) cat("Proportion of invariant sites:", x$inv, "\n")
   if (x$k > 1) {
     cat("Model of rate heterogeneity: ")
