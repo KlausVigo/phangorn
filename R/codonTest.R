@@ -80,8 +80,8 @@ codonTest <- function(tree, object, model = c("M0", "M1a", "M2a"),
   fit <- pml(tree, object, bf = frequencies)
   M0 <- optim.pml(fit, model="codon1", control = control)
   result <- cbind(model = "M0", Frequencies = frequencies,
-    estimate = "empirical", glance.pml(M0)[1:4], dnds_0 = M0$dnds,
-    dnds_1 = NA, dnds_2 = NA, p_0 = 1, p_1 = NA, p_2 = NA,
+    estimate = "empirical", glance.pml(M0)[c("logLik", "df", "AIC", "BIC")],
+    dnds_0 = M0$dnds, dnds_1 = NA, dnds_2 = NA, p_0 = 1, p_1 = NA, p_2 = NA,
     tstv = M0$tstv)
 
   choices <- c("M0", "M1a", "M2a")
