@@ -9,6 +9,7 @@
 \alias{anova.pml}
 \alias{vcov.pml}
 \alias{print.pml}
+\alias{glance.pml}
 \title{Likelihood of a tree.}
 \usage{
 as.pml(x, ...)
@@ -31,6 +32,8 @@ optim.pml(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
 \method{vcov}{pml}(object, ...)
 
 \method{print}{pml}(x, ...)
+
+\method{glance}{pml}(x, ...)
 }
 \arguments{
 \item{x}{So far only an object of class \code{modelTest}.}

@@ -133,52 +133,6 @@ codonTest <- function(tree, object, model = c("M0", "M1a", "M2a"),
 }
 
 
-#' @importFrom stats setNames
-#' @export
-glance.pml <- function(x, ...) {
-  nam_rate <- function (x)
-  {
-    lev <- attr(x$data, "levels")
-    seqi <- seq.int(length(lev) - 1L)
-    hi <- sequence(rev(seqi), from = seqi + 1)
-    lo <- rep.int(seqi, rev(seqi))
-    paste0(lev[lo], "-", lev[hi])
-  }
-  type <- attr(x$data, "type")
-
-  k <- x$k
-  rate_model <- ifelse(k>1, x$site.rate, NA_real_)
-  shape <- ifelse(k>1, x$shape, NA_real_)
-  if(x$site.rate == "free_rate") shape <- NA_real_
-#  inv <- x$inv
-  res <- data.frame(logLik = x$logLik,
-    df = x$df,
-    AIC = AIC(x),
-    BIC = BIC(x),
-    rate_model = rate_model,
-    k = k,
-    shape = shape,
-    inv = x$inv,
-    TL = sum(x$tree$edge.length) * x$rate
-    )
-  if(type == "DNA"){
-    Q <- setNames(x$Q, nam_rate(x))
-    bf <- setNames(x$bf, attr(x$data, "levels"))
-    res <- cbind(res, as.data.frame(t(c(bf, Q))))
-  }
-  res
-}
-
-#' @export
-glance.pmlMix <- function(x, ...) {
-  nr <- attr(x$fits[[1]]$data, "nr")
-  res <- data.frame(logLik = x$logLik,
-    df = attr(logLik(x), "df"),
-    AIC = AIC(x),
-    BIC = AIC(x, k = log(nr)))
-  res
-}
-
 
 #' @export
 print.codonTest <- function(x, ...) {
