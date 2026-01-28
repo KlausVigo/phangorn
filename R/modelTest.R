@@ -147,12 +147,12 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
 
   nseq <- sum(attr(data, "weight"))
 
-  get_pars <- function(x, nseq){
-    shape <- NA_real_
-    if(x$k > 1 && x$site.rate != "free_rate") shape <- x$shape
-    c(x$df, x$logLik, AIC(x), AICc(x), AIC(x, k = log(nseq)), x$k, shape, x$inv,
-      sum(x$tree$edge.length))
-  }
+  #  get_pars <- function(x, nseq){
+  #    shape <- NA_real_
+  #    if(x$k > 1 && x$site.rate != "free_rate") shape <- x$shape
+  #    c(x$df, x$logLik, AIC(x), AICc(x), AIC(x, k = log(nseq)), x$k, shape, x$inv,
+  #      sum(x$tree$edge.length))
+  #  }
 
   clean_call <- function(x, k){
     if (!is.null(x[["k"]])) x["k"] <- k
@@ -161,15 +161,17 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
 
   fitPar <- function(model, fit, G, I, k, FREQ) {
     m <- 1
-    res <- matrix(NA, n, 10)
-    res <- as.data.frame(res)
-    colnames(res) <- c("Model", "df", "logLik", "AIC", "AICc", "BIC", "k",
-                       "shape", "inv", "TL")
     calls <- vector("list", n)
     trees <- vector("list", n)
     fittmp <- optim.pml(fit, model = model, control = control)
+    #    pars <- get_pars(fittmp, nseq)
+    pars <- glance(fittmp)
+    res <- matrix(NA, n, length(pars)+1L)
+    res <- as.data.frame(res)
+    #    colnames(res) <- c("Model", "df", "logLik", "AIC", "AICc", "BIC", "k",
+    #                       "shape", "inv", "TL")
+    colnames(res) <- c("Model", names(pars))
     res[m, 1] <- model
-    pars <- get_pars(fittmp, nseq)
     res[m, -1] <- pars
     if (trace > 0) cat(formatC(res[m,1], width=12),
                        prettyNum(pars[c(1,2,3,5)], preserve.width="individual"), "\n")
@@ -180,7 +182,8 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
       fitI <- optim.pml(fittmp, model = model, optInv = TRUE,
                         control = control)
       res[m, 1] <- paste0(model, "+I")
-      pars <- get_pars(fitI, nseq)
+      #      pars <- get_pars(fitI, nseq)
+      pars <- glance(fitI)
       res[m, -1] <- pars
       if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[c(1,2,3,5)],
                                                                 preserve.width="individual"), "\n")
@@ -193,7 +196,8 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
       fitG <- optim.pml(fitG, model = model, optGamma = TRUE,
                         control = control)
       res[m, 1] <- paste0(model, "+G(", k, ")")
-      pars <- get_pars(fitG, nseq)
+      #      pars <- get_pars(fitG, nseq)
+      pars <- glance(fitG)
       res[m, -1] <- pars
       if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[c(1,2,3,5)],
                                                                 preserve.width="individual"), "\n")
@@ -206,7 +210,8 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
       fitGI <- optim.pml(fitGI, model = model, optGamma = TRUE,
                          optInv = TRUE, control = control)
       res[m, 1] <- paste0(model, "+G(", k, ")+I")
-      pars <- get_pars(fitGI, nseq)
+      #      pars <- get_pars(fitGI, nseq)
+      pars <- glance(fitGI)
       res[m, -1] <- pars
       if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[c(1,2,3,5)],
                                                                 preserve.width="individual"), "\n")
@@ -219,7 +224,8 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
       fitR <- optim.pml(fitR, model = model, optGamma = TRUE,
                         control = control)
       res[m, 1] <- paste0(model, "+R(", k, ")")
-      pars <- get_pars(fitR, nseq)
+      #      pars <- get_pars(fitR, nseq)
+      pars <- glance(fitR)
       res[m, -1] <- pars
       if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[c(1,2,3,5)],
                                                                 preserve.width="individual"), "\n")
@@ -231,7 +237,8 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
       fitF <- optim.pml(fittmp, model = model, optBf = TRUE,
                         control = control)
       res[m, 1] <- paste0(model, "+F")
-      pars <- get_pars(fitF, nseq)
+      #      pars <- get_pars(fitF, nseq)
+      pars <- glance(fitF)
       res[m, -1] <- pars
       if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[c(1,2,3,5)],
                                                                 preserve.width="individual"), "\n")
@@ -244,7 +251,8 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
       fitIF <- optim.pml(fitIF, model = model, optBf = TRUE, optInv = TRUE,
                          control = control)
       res[m, 1] <- paste0(model, "+I+F")
-      pars <- get_pars(fitIF, nseq)
+      #      pars <- get_pars(fitIF, nseq)
+      pars <- glance(fitIF)
       res[m, -1] <- pars
       if (trace > 0) cat(formatC(res[m,1], width=12),
                          prettyNum(pars[c(1,2,3,5)],
@@ -258,7 +266,8 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
       fitGF <- optim.pml(fitGF, model = model, optBf = TRUE,
                          optGamma = TRUE, control = control)
       res[m, 1] <- paste0(model, "+G(", k, ")+F")
-      pars <- get_pars(fitGF, nseq)
+      #      pars <- get_pars(fitGF, nseq)
+      pars <- glance(fitGF)
       res[m, -1] <- pars
       if (trace > 0) cat(formatC(res[m,1], width=12),
                          prettyNum(pars[c(1,2,3,5)],
@@ -272,11 +281,12 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
       fitGIF <- optim.pml(fitGIF, model = model, optBf = TRUE,
                           optInv = TRUE, optGamma = TRUE, control = control)
       res[m, 1] <- paste0(model, "+G(", k, ")+I+F")
-      pars <- get_pars(fitGIF, nseq)
+      #      pars <- get_pars(fitGIF, nseq)
+      pars <- glance(fitGIF)
       res[m, -1] <- pars
       if (trace > 0) cat(formatC(res[m,1], width=12),
                          prettyNum(pars[c(1,2,3,5)],
-                         preserve.width="individual"), "\n")
+                                   preserve.width="individual"), "\n")
       calls[[m]] <- clean_call(fitGIF$call, k=k)
       trees[[m]] <- fitGIF$tree
       m <- m + 1
@@ -286,11 +296,12 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
       fitRF <- optim.pml(fitRF, model = model, optGamma = TRUE, optBf = TRUE,
                          control = control)
       res[m, 1] <- paste0(model, "+R(", k, ")+F")
-      pars <- get_pars(fitRF, nseq)
+      #      pars <- get_pars(fitRF, nseq)
+      pars <- glance(fitRF)
       res[m, -1] <- pars
       if (trace > 0) cat(formatC(res[m,1], width=12),
                          prettyNum(pars[c(1,2,3,5)],
-                        preserve.width="individual"), "\n")
+                                   preserve.width="individual"), "\n")
       calls[[m]] <- clean_call(fitRF$call, k=k)
       trees[[m]] <- fitRF$tree
       m <- m + 1
@@ -300,10 +311,11 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
   if(trace & !multicore) cat("Model        df  logLik   AIC      BIC\n")
 
   RES <- future_lapply(model, fitPar, fit, G, I, k, FREQ, future.seed = TRUE)
-  RESULT <- matrix(NA, n * l, 12)
+  v <- ncol(RES[[1]][[1]])
+  RESULT <- matrix(NA, n * l, v + 2L)
   RESULT <- as.data.frame(RESULT)
   colnames(RESULT) <- c("Model", "df", "logLik", "AIC", "AICw", "AICc",
-                        "AICcw", "BIC", "k", "shape", "inv", "TL")
+                        "AICcw", colnames(RES[[1]][[1]])[6:v])
 
   trees <- vector("list", n * l)
   calls <- vector("list", n * l)
@@ -313,8 +325,6 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
     RESULT[ind, -c(5, 7)] <- RES[[i]][[1]]
     trees[ind] <- RES[[i]][[2]]
     calls[ind] <- RES[[i]][[3]]
-
-
   }
   RESULT[, 5] <- aic.weights(RESULT[, 4])
   RESULT[, 7] <- aic.weights(RESULT[, 6])
@@ -375,9 +385,6 @@ as.pml.modelTest <- function(x, model="BIC", ...){
   if(model %in% c("AIC", "AICc", "BIC")){
     model <- x$Model[which.min(x[, model])]
   }
-  mods <- strsplit(x$Model, "\\+")
-  names(mods) <- x$Model
-
   best_model <- attr(x, "calls")[[model]]
   tree <- attr(x, "trees")[[model]]
   data <- attr(x, "data")
@@ -403,7 +410,6 @@ write.modelTest <- function(x, file="modelTest", digits=10){
               sep = " ", file=paste0(file, ".tsv"),
               col.names = c("Model", "Call"))
 }
-
 
 
 #' @srrstats {G1.0} in the lines folloing: 39
