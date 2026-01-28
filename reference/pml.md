@@ -33,6 +33,9 @@ vcov(object, ...)
 
 # S3 method for class 'pml'
 print(x, ...)
+
+# S3 method for class 'pml'
+glance(x, ...)
 ```
 
 ## Arguments

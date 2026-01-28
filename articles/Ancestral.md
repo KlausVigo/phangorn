@@ -293,7 +293,7 @@ reversible models.
     ## [34] globals_0.18.0      vctrs_0.7.1         R6_2.6.1           
     ## [37] lifecycle_1.0.5     fs_1.6.6            htmlwidgets_1.6.4  
     ## [40] ragg_1.5.0          pkgconfig_2.0.3     desc_1.4.3         
-    ## [43] pillar_1.11.1       pkgdown_2.2.0       bslib_0.9.0        
+    ## [43] pillar_1.11.1       pkgdown_2.2.0       bslib_0.10.0       
     ## [46] gtable_0.3.6        glue_1.8.0          Rcpp_1.1.1         
     ## [49] systemfonts_1.3.1   tidyselect_1.2.1    tibble_3.3.1       
     ## [52] xfun_0.56           knitr_1.51          farver_2.1.2       

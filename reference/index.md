@@ -257,6 +257,7 @@
   [`anova(`*`<pml>`*`)`](https://klausvigo.github.io/phangorn/reference/pml.md)
   [`vcov(`*`<pml>`*`)`](https://klausvigo.github.io/phangorn/reference/pml.md)
   [`print(`*`<pml>`*`)`](https://klausvigo.github.io/phangorn/reference/pml.md)
+  [`glance(`*`<pml>`*`)`](https://klausvigo.github.io/phangorn/reference/pml.md)
   : Likelihood of a tree.
 
 - [`pml.control()`](https://klausvigo.github.io/phangorn/reference/pml.control.md)
