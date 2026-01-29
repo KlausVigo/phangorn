@@ -1,3 +1,4 @@
+set.seed(123)
 tree <- read.tree(text = "((t1:1,t2:1):1,(t3:1,t4:1):1);")
 tree2 <- read.tree(text = "((t1:1.1,t2:1.1):1,(t3:1,t4:1):1.1);")
 dat <- matrix(c("a", "a",
@@ -23,7 +24,6 @@ test_that("densiTree works", {
 })
 
 
-set.seed(42)
 data("Laurasiatherian")
 tmp <- subset(Laurasiatherian, 1:15, compress = TRUE)
 fit <- pml_bb(tmp, "JC+G(4)", rearrangement = "NNI",
