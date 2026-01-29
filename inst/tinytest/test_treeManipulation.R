@@ -35,6 +35,12 @@ expect_equal( max( node.depth.edgelength(midpoint(tree)) *2),
                   max(cophenetic(tree)))
 
 
+# test keep_as_tip
+tree <- read.tree(text="((t1:.1,t2:.1)A:.2,(t3:.2,t4:.2)B:.1);")
+tree_tip <- keep_as_tip(tree, c("A", "t3", "t4"))
+expect_equal(sort(tree_tip$tip.label), c("A", "t3", "t4"))
+
+
 # test maxCladeCred
 tree <- rcoal(100)
 trees <- nni(tree)
