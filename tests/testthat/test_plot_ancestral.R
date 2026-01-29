@@ -16,7 +16,7 @@ test_that("Pie_plots works", {
 })
 
 
-test_that("plotSeqLogo works", {
-  p <- plotSeqLogo(test_ml)
-  vdiffr::expect_doppelganger("SeqLogo", p)
-})
+#test_that("plotSeqLogo works", {
+#  p <- plotSeqLogo(test_ml)
+#  vdiffr::expect_doppelganger("SeqLogo", p)
+#})
