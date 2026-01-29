@@ -60,12 +60,13 @@ dm <- dist.hamming(yeast)
 nnet <- neighborNet(dm)
 ```
 
-The advantage of Neighbor-Net is that it returns always a circular split system which can be always displayed in a planar (2D) graph. For planar graphs we can also plot only the outline (@Bagci2021).  
+The advantage of Neighbor-Net is that it returns always a circular split system which can be always displayed in a planar (2D) graph. For planar graphs we can also plot only the outline (@Bagci2021) as in figure \@ref(fig:outline) c). 
 
-```{r outline, eval=TRUE, out.width = "90%", fig.dim = c(9, 4), fig.cap="NeighborNet showing a) all edges and b) only the outline."}
-par("mar" = rep(1, 4), "mfrow" = c(1, 2))
+```{r outline, eval=TRUE, out.width = "90%", fig.dim = c(9, 4), fig.cap="NeighborNet showing a) all edges, without using edge length information b) and to contrast only the outline."}
+par("mar" = rep(1, 4), "mfrow" = c(1, 3))
 plot(nnet, main="a)")
-plot(nnet, type = "outline", main="b)")
+plot(nnet, main="b)", use.edge.length = FALSE)
+plot(nnet, type = "outline", main="c)", use.edge.length = FALSE)
 ```
 
 
