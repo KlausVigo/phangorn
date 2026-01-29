@@ -157,14 +157,17 @@ Least-Squares (nnls).</p>
 <span><span class="va">nnet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/neighborNet.html">neighborNet</a></span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span></code></pre></div>
 <p>The advantage of Neighbor-Net is that it returns always a circular
 split system which can be always displayed in a planar (2D) graph. For
-planar graphs we can also plot only the outline (<span class="citation">Bagci et al. (2021)</span>).</p>
+planar graphs we can also plot only the outline (<span class="citation">Bagci et al. (2021)</span>) as in figure
+@ref(fig:outline) c).</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"mar"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span>, <span class="st">"mfrow"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"mar"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span>, <span class="st">"mfrow"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nnet</span>, main<span class="op">=</span><span class="st">"a)"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nnet</span>, type <span class="op">=</span> <span class="st">"outline"</span>, main<span class="op">=</span><span class="st">"b)"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nnet</span>, main<span class="op">=</span><span class="st">"b)"</span>, use.edge.length <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nnet</span>, type <span class="op">=</span> <span class="st">"outline"</span>, main<span class="op">=</span><span class="st">"c)"</span>, use.edge.length <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="Networx_files/figure-html/outline-1.png" class="r-plt" alt="NeighborNet showing a) all edges and b) only the outline." width="90%"><p class="caption">
-NeighborNet showing a) all edges and b) only the outline.
+<img src="Networx_files/figure-html/outline-1.png" class="r-plt" alt="NeighborNet showing a) all edges, without using edge length information b) and to contrast only the outline." width="90%"><p class="caption">
+NeighborNet showing a) all edges, without using edge length information
+b) and to contrast only the outline.
 </p>
 </div>
 </div>

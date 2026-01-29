@@ -97,18 +97,22 @@ nnet <- neighborNet(dm)
 
 The advantage of Neighbor-Net is that it returns always a circular split
 system which can be always displayed in a planar (2D) graph. For planar
-graphs we can also plot only the outline (Bagci et al. (2021)).
+graphs we can also plot only the outline (Bagci et al. (2021)) as in
+figure @ref(fig:outline) c).
 
 ``` r
-par("mar" = rep(1, 4), "mfrow" = c(1, 2))
+par("mar" = rep(1, 4), "mfrow" = c(1, 3))
 plot(nnet, main="a)")
-plot(nnet, type = "outline", main="b)")
+plot(nnet, main="b)", use.edge.length = FALSE)
+plot(nnet, type = "outline", main="c)", use.edge.length = FALSE)
 ```
 
-![NeighborNet showing a) all edges and b) only the
+![NeighborNet showing a) all edges, without using edge length
+information b) and to contrast only the
 outline.](Networx_files/figure-html/outline-1.png)
 
-NeighborNet showing a) all edges and b) only the outline.
+NeighborNet showing a) all edges, without using edge length information
+b) and to contrast only the outline.
 
 ## Adding support values
 
