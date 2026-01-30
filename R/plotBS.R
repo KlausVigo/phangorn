@@ -42,11 +42,10 @@ support <- function(tree, trees, method="FBP", tol=2e-8, scale=TRUE){
 #' phylogenetic tree. \code{add_support} adds support values to a plot.
 #'
 #' The functions can either assign the classical Felsenstein’s bootstrap
-#' proportions (FBP) (Felsenstein (1985), Hendy & Penny (1985))  or the
-#' transfer bootstrap expectation (TBE) of Lemoine et al. (2018). Using the
-#' option \code{type=="n"} just assigns the bootstrap values and return the tree
-#' without plotting it.
-#'
+#' proportions (FBP) (Felsenstein (1985), Hendy & Penny (1985)), the transfer
+#' bootstrap expectation (TBE) of Lemoine et al. (2018) or "MCC" for assigning
+#' clade credibilities if trees are rooted. Using the option \code{type=="n"}
+#' just assigns the bootstrap values and return the tree without plotting it.
 #'
 #' @param tree The tree on which edges the bootstrap values are plotted.
 #' @param trees a list of trees (object of class "multiPhylo").

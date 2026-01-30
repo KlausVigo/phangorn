@@ -67,7 +67,7 @@ terraces.pml <- function(x, trees=x$bs, dist_fun="RF.dist", di2multi=FALSE,
   }
   z <- vapply(trees, fun, -Inf,  x=x)
   xyz <- cbind(xy, z)
-  colnames(xyz) = c("prc_1", "prc_2", "log-likelihood")
+  colnames(xyz) <- c("prc_1", "prc_2", "log-likelihood")
   if (plot) plot_terraces(xyz, ...)
   invisible(xyz)
 }
@@ -86,7 +86,7 @@ terraces.phyDat <- function(x, trees, dist_fun="RF.dist", di2multi=TRUE,
   xy <- cmdscale(dm)
   z <- parsimony(trees, x)
   xyz <- cbind(xy, z)
-  colnames(xyz) = c("prc_1", "prc_2", "parsimony score")
+  colnames(xyz) <- c("prc_1", "prc_2", "parsimony score")
   if(plot) plot_terraces(xyz, ...)
   invisible(xyz)
 }
