@@ -7,7 +7,7 @@
 #' @rdname midpoint
 #' @export
 getRoot <- function(tree) {
-  assert_phylo(tree)
+#  assert_phylo(tree, unique_tiplabel=FALSE)
   if (!is.null(attr(tree, "order")) && attr(tree, "order") ==
     "postorder") {
     return(tree$edge[nrow(tree$edge), 1])
@@ -417,7 +417,6 @@ addOneTree <- function(tree, subtree, i, node) {
   if (tmproot != tips1) tree <- unroot(tree)
   tree
 }
-
 
 
 #' Add tips to a tree
@@ -882,6 +881,12 @@ checkLabels <- function(tree, tip) {
 
 #' @rdname midpoint
 #' @param labels tip and node labels to keep as tip labels in the tree
+#' @examples
+#' # prune to node labels
+#' tree <- read.tree(text="((t1:.1,t2:.1)A:.2,(t3:.2,t4:.2)B:.1);")
+#' plot(tree, show.node.label = TRUE)
+#' tree_tip <- keep_as_tip(tree, c("A", "t3", "t4"))
+#' plot(tree_tip, show.node.label = TRUE)
 #' @export
 keep_as_tip<- function(tree, labels){
   nodes_to_keep <- labels[!is.na(match(labels, tree$node.label))]
@@ -890,4 +895,5 @@ keep_as_tip<- function(tree, labels){
   tree_2 <- keep.tip(tree_1, labels, collapse.singles=FALSE)
   tree_2
 }
+
 #' @srrstats {G2.3, G2.3a, G2.3b} in lines: 201, 701, 760

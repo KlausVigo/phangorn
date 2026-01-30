@@ -14,9 +14,13 @@ NEW FEATURES
 
       number of edges plotted for planar networks.
 
-    o modelTest got a new argument R to additionally test free rate model.
+    o modelTest got a new argument R to additionally test free rate model and
 
-    o write.pml() exports also several plots
+      returns now more of the estimated parameters. A write method to export the
+
+      tree, data and models was added.
+
+    o write.pml() exports now additionally several plots
 
 OTHER CHANGES
 
@@ -38,9 +42,11 @@ OTHER CHANGES
 
     o more error checking of input arguments and associated tests
 
+    o lots of improvements to man pages and vignettes
+
 BUG FIXES
 
-    o update.pml can now can properly update site.rate
+    o update.pml can now properly updates site.rate
 
     o fix degree of freedom for free rate models
 
