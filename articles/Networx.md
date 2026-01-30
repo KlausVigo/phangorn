@@ -108,11 +108,11 @@ plot(nnet, type = "outline", main="c)", use.edge.length = FALSE)
 ```
 
 ![NeighborNet showing a) all edges, without using edge length
-information b) and to contrast only the
-outline.](Networx_files/figure-html/outline-1.png)
+information b) and only the outline
+c).](Networx_files/figure-html/outline-1.png)
 
 NeighborNet showing a) all edges, without using edge length information
-b) and to contrast only the outline.
+b) and only the outline c).
 
 ## Adding support values
 

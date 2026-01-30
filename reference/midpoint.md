@@ -83,4 +83,11 @@ plot(tree2, show.node.label=TRUE)
 plot(tree3, show.node.label=TRUE)
 
 par(old.par)
+
+# prune to node labels
+tree <- read.tree(text="((t1:.1,t2:.1)A:.2,(t3:.2,t4:.2)B:.1);")
+plot(tree, show.node.label = TRUE)
+
+tree_tip <- keep_as_tip(tree, c("A", "t3", "t4"))
+plot(tree_tip, show.node.label = TRUE)
 ```

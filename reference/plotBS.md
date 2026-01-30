@@ -88,9 +88,10 @@ used.
 ## Details
 
 The functions can either assign the classical Felsenstein’s bootstrap
-proportions (FBP) (Felsenstein (1985), Hendy & Penny (1985)) or the
-transfer bootstrap expectation (TBE) of Lemoine et al. (2018). Using the
-option `type=="n"` just assigns the bootstrap values and return the tree
+proportions (FBP) (Felsenstein (1985), Hendy & Penny (1985)), the
+transfer bootstrap expectation (TBE) of Lemoine et al. (2018) or "MCC"
+for assigning clade credibilities if trees are rooted. Using the option
+`type=="n"` just assigns the bootstrap values and return the tree
 without plotting it.
 
 ## References
