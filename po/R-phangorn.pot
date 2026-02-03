@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: phangorn 2.12.1.3\n"
-"POT-Creation-Date: 2026-02-03 18:02\n"
+"POT-Creation-Date: 2026-02-03 18:31\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -160,9 +160,6 @@ msgstr ""
 msgid "Found unknown characters (not supplied in levels). Deleted sites with unknown states."
 msgstr ""
 
-msgid "Found unknown characters. Deleted sites with unknown states."
-msgstr ""
-
 msgid "x must be a amino acid sequence"
 msgstr ""
 
@@ -296,9 +293,6 @@ msgid "There are apparently two root edges in your tree"
 msgstr ""
 
 msgid "tree needs edge length"
-msgstr ""
-
-msgid "no node labels"
 msgstr ""
 
 msgid "That would generate %d trees, and take up more than %d MB of memory!"
