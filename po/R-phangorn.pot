@@ -1,446 +1,338 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: phangorn 2.12.1.3\n"
-"POT-Creation-Date: 2025-07-25 13:57+0200\n"
+"POT-Creation-Date: 2026-02-03 18:02\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ancestral.R:402
-msgid ""
-"Node labels are not unique, used makeNodeLabel(tree, ...) to create them!"
-msgstr ""
-
-#: ancestral_generics.R:75
-msgid "tree needs node.label"
-msgstr ""
-
-#: assert.R:6
-#, c-format
-msgid "%s must be of class phylo"
-msgstr ""
-
-#: assert.R:8
-#, c-format
-msgid "%s must have unique labels!"
-msgstr ""
-
-#: assert.R:10
-#, c-format
-msgid "%s must have edge weights"
-msgstr ""
-
-#: assert.R:11
-#, c-format
-msgid "%s must be rooted!"
-msgstr ""
-
-#: assert.R:13
-#, c-format
-msgid "%s must be ultrametric!"
-msgstr ""
-
-#: assert.R:23
-#, c-format
-msgid "argument \"%s\" is missing, with no default"
-msgstr ""
-
-#: assert.R:26
-#, c-format
-msgid "%s must be of class 'phylo' or 'multiPhylo'"
-msgstr ""
-
-#: assert.R:38
-#, c-format
-msgid "%s must be of class 'multiPhylo'"
-msgstr ""
-
-#: assert.R:47
-#, c-format
-msgid "%s must be of class 'phyDat'"
-msgstr ""
-
-#: assert.R:49
-#, c-format
-msgid "tip labels are not in %s"
-msgstr ""
-
-#: assert.R:58
-#, c-format
-msgid "%s must be of class 'pml'"
-msgstr ""
-
-#: assert.R:67
-#, c-format
-msgid "%s must be of class 'dist'"
-msgstr ""
-
-#: assert.R:69
-#, c-format
-msgid "%s contains missing values (NA)"
-msgstr ""
-
-#: assert.R:71
-#, c-format
-msgid "Some distances in %s are not finite"
-msgstr ""
-
-#: candidate_tree.R:2
-msgid "tau must be >= 0!"
-msgstr ""
-
-#: candidate_tree.R:47
-msgid "Argument tip.dates is missing!"
-msgstr ""
-
-#: clanistic.R:506
-msgid "contrasts are not defined for 0 degrees of freedom"
-msgstr ""
-
-#: codon.R:62 codon.R:88
-msgid "x must be a nucleotide sequence!"
-msgstr ""
-
-#: delta.score.R:61
-msgid "return options are: all, mean, or sd"
-msgstr ""
-
-#: dist.p.R:116
-msgid "Levels of x are not in levels of cost matrix!"
-msgstr ""
-
-#: distTree.R:383 treeRearrangement.R:217
-msgid "tree must be binary"
-msgstr ""
-
-#: distTree.R:589
-msgid "invalid splits method"
-msgstr ""
-
-#: distTree.R:590
-msgid "ambiguous splits method"
-msgstr ""
-
-#: draw_CI.R:10 draw_CI.R:125 plotBS.R:14
-msgid "All trees need to be rooted!"
-msgstr ""
-
-#: hadamard.R:187 hadamard.R:272
-msgid "Hadamard conjugation works only efficient for n < 24"
-msgstr ""
-
-#: hadamard.R:213 hadamard.R:265 hadamard.R:266
-msgid "Error"
-msgstr ""
-
-#: hadamard.R:221
-msgid "4-state Hadamard conjugation works only efficient for n < 12"
-msgstr ""
-
-#: joint_ASR.R:4
-msgid "One one rate allowed so far!"
-msgstr ""
-
-#: linkfun.R:22
-msgid "y values must be 0 <= y <= 1"
-msgstr ""
-
-#: linkfun.R:26
-msgid "non-integer #successes in a binomial glm!"
-msgstr ""
-
-#: linkfun.R:29
-msgid "non-integer counts in a binomial glm!"
-msgstr ""
-
-#: linkfun.R:34
-msgid "for the binomial family, y must be a vector of 0 and 1's"
-msgstr ""
-
-#: linkfun.R:35
-msgid ""
-"or a 2 column matrix where col 1 is no. successes and col 2 is no. failures"
-msgstr ""
-
-#: modelTest.R:97
-msgid "Labels in tree and data differ!"
-msgstr ""
-
-#: networx.R:376
-msgid "splits need to be planar!"
-msgstr ""
-
-#: phyDat.R:102 phyDat.R:172
-msgid "Alignments must have same type!"
-msgstr ""
-
-#: phyDat.R:171
-msgid "Alignments have different # of characters!"
-msgstr ""
-
-#: phyDat.R:174
-msgid "Duplicated names!"
-msgstr ""
-
-#: phyDat.R:279 phyDat.R:285 phyDat.R:287
-msgid "subscript out of bounds"
-msgstr ""
-
-#: phyDat.R:408
-msgid "each site contains at least one ambiguous state!"
-msgstr ""
-
-#: phyDat.R:566
-msgid "the first line of the file must contain the dimensions of the data"
-msgstr ""
-
-#: phyDat2.R:95
-msgid "data object must contain taxa names"
-msgstr ""
-
-#: phyDat2.R:128
-msgid "Either argument levels or contrast has to be supplied"
-msgstr ""
-
-#: phyDat2.R:147 phyDat2.R:228
-msgid ""
-"Found unknown characters (not supplied in levels). Deleted sites with "
-"unknown states."
-msgstr ""
-
-#: phyDat2.R:322
-msgid "Found unknown characters. Deleted sites with unknown states."
-msgstr ""
-
-#: phyDat_conversion.R:331
-msgid "x must be a nucleotide sequence"
-msgstr ""
-
-#: phyDat_conversion.R:339
-msgid "x must be a amino acid sequence"
-msgstr ""
-
-#: phylo.R:465
-msgid "model must be a formula object"
-msgstr ""
-
-#: phylo.R:707 phylo.R:1324
-#, c-format
 msgid "%s not available for this data type"
 msgstr ""
 
-#: phylo.R:927
+msgid "Node labels are not unique, used makeNodeLabel(tree, ...) to create them!"
+msgstr ""
+
+msgid "tree needs node.label"
+msgstr ""
+
+msgid "%s must be of class 'phyDat'"
+msgstr ""
+
+msgid "tip labels are not in %s"
+msgstr ""
+
+msgid "%s must be of class phylo"
+msgstr ""
+
+msgid "%s must have edge weights"
+msgstr ""
+
+msgid "%s must be rooted!"
+msgstr ""
+
+msgid "%s must be ultrametric!"
+msgstr ""
+
+msgid "%s must be binary!"
+msgstr ""
+
+msgid "%s must have unique labels!"
+msgstr ""
+
+msgid "%s must be of class 'multiPhylo'"
+msgstr ""
+
+msgid "All trees in %s must have edge weights"
+msgstr ""
+
+msgid "All trees in %s must be rooted!"
+msgstr ""
+
+msgid "All trees in %s must be ultrametric!"
+msgstr ""
+
+msgid "All trees in %s must be binary!"
+msgstr ""
+
+msgid "argument \"%s\" is missing, with no default"
+msgstr ""
+
+msgid "%s must be of class 'phylo' or 'multiPhylo'"
+msgstr ""
+
+msgid "%s must be of class 'pml'"
+msgstr ""
+
+msgid "di2multi and multi2di cannot both be TRUE!"
+msgstr ""
+
+msgid "tau must be >= 0!"
+msgstr ""
+
+msgid "Argument tip.dates is missing!"
+msgstr ""
+
+msgid "contrasts are not defined for 0 degrees of freedom"
+msgstr ""
+
+msgid "x must be a nucleotide sequence!"
+msgstr ""
+
+msgid "return options are: all, mean, or sd"
+msgstr ""
+
+msgid "Levels of x are not in levels of cost matrix!"
+msgstr ""
+
+msgid "invalid splits method"
+msgstr ""
+
+msgid "ambiguous splits method"
+msgstr ""
+
+msgid "All trees need to be rooted!"
+msgstr ""
+
+msgid "Hadamard conjugation works only efficient for n < 24"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+msgid "4-state Hadamard conjugation works only efficient for n < 12"
+msgstr ""
+
+msgid "No plot function available for type=\"USER\""
+msgstr ""
+
+msgid "One one rate allowed so far!"
+msgstr ""
+
+msgid "y values must be 0 <= y <= 1"
+msgstr ""
+
+msgid "non-integer #successes in a binomial glm!"
+msgstr ""
+
+msgid "non-integer counts in a binomial glm!"
+msgstr ""
+
+msgid "for the binomial family, y must be a vector of 0 and 1's"
+msgstr ""
+
+msgid "or a 2 column matrix where col 1 is no. successes and col 2 is no. failures"
+msgstr ""
+
+msgid "Labels in tree and data differ!"
+msgstr ""
+
+msgid "splits need to be planar!"
+msgstr ""
+
+msgid "Alignments must have same type!"
+msgstr ""
+
+msgid "Alignments have different # of characters!"
+msgstr ""
+
+msgid "Duplicated names!"
+msgstr ""
+
+msgid "subscript out of bounds"
+msgstr ""
+
+msgid "each site contains at least one ambiguous state!"
+msgstr ""
+
+msgid "the first line of the file must contain the dimensions of the data"
+msgstr ""
+
+msgid "data object must contain taxa names"
+msgstr ""
+
+msgid "Either argument levels or contrast has to be supplied"
+msgstr ""
+
+msgid "Found unknown characters (not supplied in levels). Deleted sites with unknown states."
+msgstr ""
+
+msgid "Found unknown characters. Deleted sites with unknown states."
+msgstr ""
+
+msgid "x must be a amino acid sequence"
+msgstr ""
+
+msgid "model must be a formula object"
+msgstr ""
+
 msgid "Error Mkv"
 msgstr ""
 
-#: phylo.R:2059
 msgid "I unrooted the tree"
 msgstr ""
 
-#: phylo.R:2099
 msgid "rooted / unrooted tree needs at least 2 / 3 tips"
 msgstr ""
 
-#: phylo.R:2107
-msgid ""
-"You can't optimize edges and rates at the same time, only edges are "
-"optimized!"
+msgid "You can't optimize edges and rates at the same time, only edges are optimized!"
 msgstr ""
 
-#: phylo.R:2192
 msgid "only one rate class, ignored optGamma"
 msgstr ""
 
-#: phylo.R:2196
 msgid "cannot estimate invariant sites and Mkv model, ignored optInv"
 msgstr ""
 
-#: plotAnc.R:101
 msgid "Tree needs nodelabel, which match the labels of the alignment!"
 msgstr ""
 
-#: plotAnc.R:139
 msgid "Length of color vector differs from number of levels!"
 msgstr ""
 
-#: plotAnc.R:181
 msgid "package ggseqlogo needs to be installed!"
 msgstr ""
 
-#: plotBS.R:122
-msgid ""
-"You need to supply 'trees' or the tree needs support-values as node.label"
+msgid "You need to supply 'trees' or the tree needs support-values as node.label"
 msgstr ""
 
-#: plot_networx.R:286 plot_networx.R:291 plot_networx.R:296
 msgid "split.color must be same length as splits"
 msgstr ""
 
-#: plot_networx.R:304
 msgid "type='3D' requires the package 'rgl', plotting in '2D' instead!"
 msgstr ""
 
-#: pmlPart.R:227
 msgid "x must be of class multiphyDat or a list of phyDat objects"
 msgstr ""
 
-#: pmlPen.R:6
 msgid "object has to be of class pmlPart or pmlMix"
 msgstr ""
 
-#: pml_bb.R:84
 msgid "Please supply a model!"
 msgstr ""
 
-#: pml_bb.R:128
 msgid "Could not find model!"
 msgstr ""
 
-#: pml_bb.R:130
 msgid "Error, found several models!"
 msgstr ""
 
-#: pml_bb.R:204
 msgid "Some parameters are unknown"
 msgstr ""
 
-#: pml_control.R:63
 msgid "value of 'epsilon' must be > 0"
 msgstr ""
 
-#: pml_control.R:65 pml_control.R:78
 msgid "maximum number of iterations must be > 0"
 msgstr ""
 
-#: pml_control.R:67
 msgid "tau must be > 0"
 msgstr ""
 
-#: pml_control.R:80
 msgid "minimum number of iterations must be > 0"
 msgstr ""
 
-#: pml_control.R:82
 msgid "number of iterations must be > 0"
 msgstr ""
 
-#: pml_control.R:84
 msgid "proportion of rearrangenemts must be > 0"
 msgstr ""
 
-#: read.nexus.partitions.R:77
 msgid "does not contain Charset!"
 msgstr ""
 
-#: read.nexus.partitions.R:83
 msgid "return='multiphyDat' requires the package 'apex', return list instead!"
 msgstr ""
 
-#: read.nexus.splits.R:318
 msgid "File does not contain network block, return only splits!"
 msgstr ""
 
-#: read.nexus.splits.R:321
 msgid "File does not contain network block!"
 msgstr ""
 
-#: read.nexus.splits.R:439
 msgid "Problem"
 msgstr ""
 
-#: read.phyDat.R:90
 msgid "sequences have different length"
 msgstr ""
 
-#: simSeq.R:151
 msgid "levels have to be supplied if type is USER"
 msgstr ""
 
-#: splits.R:126
 msgid "x and y have different labels!"
 msgstr ""
 
-#: splits.R:156
 msgid "names do not match previous names"
 msgstr ""
 
-#: splits.R:279
 msgid "No split object included!"
 msgstr ""
 
-#: splits.R:436
 msgid "obj must be of class splits"
 msgstr ""
 
-#: splits.R:472
 msgid "x must be of class splits"
 msgstr ""
 
-#: splits.R:475
 msgid "y must be of class splits"
 msgstr ""
 
-#: treeManipulation.R:20
+msgid "less than 3 different trees found!"
+msgstr ""
+
+msgid "package 'rgl' is required!"
+msgstr ""
+
+msgid "package 'plot3D' is required!"
+msgstr ""
+
+msgid "package 'scatterplot3d' is required!"
+msgstr ""
+
 msgid "There are apparently two root edges in your tree"
 msgstr ""
 
-#: treeManipulation.R:134
 msgid "tree needs edge length"
 msgstr ""
 
-#: treeManipulation.R:226
 msgid "no node labels"
 msgstr ""
 
-#: treeManipulation.R:541
-#, c-format
 msgid "That would generate %d trees, and take up more than %d MB of memory!"
 msgstr ""
 
-#: treeManipulation.R:545
 msgid "A tree must have at least two taxa."
 msgstr ""
 
-#: treeManipulation.R:548
 msgid "An unrooted tree must have at least three taxa."
 msgstr ""
 
-#: treeManipulation.R:646
 msgid "Can't find supplied node in the labels"
 msgstr ""
 
-#: treeManipulation.R:861 treeManipulation.R:872
 msgid "tree has different labels"
 msgstr ""
 
-#: treeRearrangement.R:119
 msgid "Not enough edges for NNI rearrangements"
 msgstr ""
 
-#: treeRearrangement.R:164
 msgid "rSPR currently works only for unrooted trees!"
 msgstr ""
 
-#: treeRearrangement.R:205
 msgid "k is chosen too big"
 msgstr ""
 
-#: treedist.R:182 treedist.R:264 treedist.R:398 treedist.R:550 treedist.R:595 treedist.R:651
 msgid "Some trees are not binary. Result may not what you expect!"
 msgstr ""
 
-#: treedist.R:274
 msgid "number of bipartitions given to C_sprdist are not the same"
 msgstr ""
 
-#: treedist.R:381 treedist.R:643 treedist.R:720
 msgid "one tree is unrooted, unrooted both"
 msgstr ""
 
-#: treedist.R:430 treedist.R:484 treedist.R:587 treedist.R:757 treedist.R:801
 msgid "some trees were rooted, unrooted all"
 msgstr ""
