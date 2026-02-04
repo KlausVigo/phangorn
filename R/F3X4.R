@@ -36,3 +36,22 @@ F1x4 <- function(x, bf=NULL) {
   codon_abc <- attr(x, "levels")
   F3x4_freq(BF, CodonAlphabet = codon_abc)
 }
+
+
+# pml, update.pml
+# bf_choice <- match.arg(j, c("equal", "empirical", "F1x4", "F3x4", "F61"))
+bf_char <- function(data, bf_choice ){
+  nc <- attr(gap_as_state(data), "nc")
+  txt <-  deparse(substitute(bf_choice))
+  if(bf_choice %in% c("F1x4", "F3x4", "F61") && type != "CODON")
+    stop(gettextf("%s not available for this data type", txt))
+  bf <- switch(bf_choice,
+               equal = rep(1 / nc, nc),
+               empirical = baseFreq(data),
+               F61 = baseFreq(data),
+               F3x4 = F3x4(data),
+               F1x4 = F1x4(data))
+  names(bf) <- NULL
+  bf
+}
+# freq_df <- df_freq_codon(bf_choice)

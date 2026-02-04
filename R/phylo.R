@@ -736,17 +736,18 @@ update.pml <- function(object, ...) {
     bf <- eval(extras[[existing[3]]], parent.frame())
     if (is.character(bf)) {
       bf_choice <- match.arg(bf, c("equal", "empirical", "F1x4", "F3x4", "F61"))
-      txt <-  deparse(substitute(bf_choice))
-      if(bf_choice %in% c("F1x4", "F3x4", "F61") && type != "CODON")
-         stop(gettextf("%s not available for this data type", txt))
-      bf <- switch(bf_choice,
-                   equal = rep(1 / nc, nc),
-                   empirical = baseFreq(data),
-                   F61 = baseFreq(data),
-                   F3x4 = F3x4(data),
-                   F1x4 = F1x4(data))
+      bf <- bf_char(data, bf_choice)
+#      txt <-  deparse(substitute(bf_choice))
+#      if(bf_choice %in% c("F1x4", "F3x4", "F61") && type != "CODON")
+#         stop(gettextf("%s not available for this data type", txt))
+#      bf <- switch(bf_choice,
+#                   equal = rep(1 / nc, nc),
+#                   empirical = baseFreq(data),
+#                   F61 = baseFreq(data),
+#                   F3x4 = F3x4(data),
+#                   F1x4 = F1x4(data))
+#      names(bf) <- NULL
       freq_df <- df_freq_codon(bf_choice)
-      names(bf) <- NULL
     }
     updateEig <- TRUE
   }
@@ -1345,16 +1346,17 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   }
   if (is.character(bf)) {
     bf_choice <- match.arg(bf, c("equal", "empirical", "F1x4", "F3x4", "F61"))
-    txt <-  deparse(substitute(bf_choice))
-    if(bf_choice %in% c("F1x4", "F3x4", "F61") && type != "CODON")
-       stop(gettextf("%s not available for this data type", txt))
-    bf <- switch(bf_choice,
-      equal = rep(1 / length(levels), length(levels)),
-      empirical = baseFreq(data),
-      F61 = baseFreq(data),
-      F3x4 = F3x4(data),
-      F1x4 = F1x4(data))
-    names(bf) <- NULL
+    bf <- bf_char(data, bf_choice)
+#    txt <-  deparse(substitute(bf_choice))
+#    if(bf_choice %in% c("F1x4", "F3x4", "F61") && type != "CODON")
+#       stop(gettextf("%s not available for this data type", txt))
+#    bf <- switch(bf_choice,
+#      equal = rep(1 / length(levels), length(levels)),
+#      empirical = baseFreq(data),
+#      F61 = baseFreq(data),
+#      F3x4 = F3x4(data),
+#      F1x4 = F1x4(data))
+#    names(bf) <- NULL
   }
   if (type == "CODON") freq_df  <- df_freq_codon(bf_choice)
   if (is.null(Q))
