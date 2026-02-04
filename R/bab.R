@@ -119,12 +119,6 @@ cherries <- function(obj, LB, UB){
     lb_tt <- as.integer(2L * max(tt) - 1L)
     ind_max <- which(edge==max_pos, arr.ind = TRUE)[,1] |> sort()
     ind_max <- intersect(ind_max, which(weight>1e-6))
-    e1 <- edge[ind_max, ]
-
-    #    cs <- cumsum(tabulate(e1, obj$nTip))
-    #    cs1 <- pmin(cs, lb_tt)
-    #    cs1 <- lb_tt - cs1
-    #    cs <- pmax(lb_tt - cs, 0)
 
     w0 <- min(weight[ind_max])
 
@@ -140,59 +134,6 @@ cherries <- function(obj, LB, UB){
     res <- res + w0 * (old_ub - old_lb)
   }
   list(res=res, weight=weight)
-}
-
-
-# Incompatibility lower Bound
-ilb <- function(x, LB) {
-  nr <- attr(x, "nr")
-  contrast <- attr(x, "contrast")
-  rownames(contrast) <- attr(x, "allLevels")
-  colnames(contrast) <- attr(x, "levels")
-  weight0 <- attr(x, "weight")
-  attr(x, "weight") <- rep(1, nr)
-  attr(x, "index") <- NULL
-
-  y <- as.character(x)
-  singles <- attr(x, "levels")
-  fun2 <- function(x, singles) all(x %in% singles)
-  fun1 <- function(x) cumsum(!duplicated(x)) - 1L
-  fun3 <- function(x) sum(!duplicated(x)) - 1L
-
-  tmp <- apply(y, 2, fun2, singles)
-  ind <- which(tmp & (weight0 > 1e-6))
-  if (length(ind) < 2) return(0)
-
-  y <- y[, ind, drop = FALSE]
-  weight0 <- weight0[ind]
-  single_dis <- LB[, ind]
-  nTips <- nrow(y)
-  l <- length(weight0)
-  res <- numeric(nTips)
-  for (i in 1:(l - 1)) {
-    for (j in (i + 1):l) {
-      if ((weight0[i] > 1e-6) && (weight0[j] > 1e-6)) {
-        z <- paste(y[, i], y[, j], sep = "_")
-        dis2 <- single_dis[, i] + single_dis[, j]
-        dis <- fun1(z)
-        if (dis[nTips] > dis2[nTips]) {
-##browser()
-          dis <- pmax(dis, dis2)
-##if(any(diff(dis)<0))browser()
-          dis <- dis - dis2
-
-          if (sum(dis[4:nTips]) > 0) {
-            wmin <- min(weight0[i], weight0[j])
-            weight0[i] <- weight0[i] - wmin
-            weight0[j] <- weight0[j] - wmin
-            res <- res + dis * wmin
-          }
-        }
-      }
-      if(weight0[i] < 1e-6) break()
-    }
-  }
-  res
 }
 
 
@@ -281,42 +222,44 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
   inord <- getOrder(data)
   data <- data[inord, ]
   if(trace > 0) cat("Compute starting tree\n")
-  tree <- pratchet(data, start = tree, trace = trace - 1, maxit = 10,
+  tree <- pratchet(data, start = tree, trace = trace - 1, maxit = 100,
                    all = FALSE, ...)
   #  p_vec <- fitch(tree, data, "site")
 
   nTips <- m <- length(data)
   LB <- UB <- matrix(0, m, nr) # UB <-
+
+  PT <- numeric(m)
+  tips <- names(data)
   for (i in 2:m) {
     LB[i, ] <- lowerBound(data[1:i, ])
     UB[i, ] <- upperBound(data[1:i, ])
+    PT[i] <- parsimony(keep.tip(tree, tips[1:i]), data)
   }
-
+  psc <- parsimony(tree, data, site="site")
   weight <- as.double(attr(data, "weight"))
 
   m <- nr * (2L * nTips - 2L)
   # Single column discrepancy
   mmsAmb <- LB %*% weight
   #  mmsAmb <- mmsAmb[nTips] - mmsAmb
+
+  # cherry discrepancy
+  ec <- extract_cherries(data)
+  cherry_res  <- cherries(ec, LB, UB)
+  weight_cherry <- weight
+  weight_cherry[ec$pos] <- cherry_res$weight
+  attr(data, "weight") <- weight_cherry
+
+# incompatibility lower bound
+#  if (ILBound){  # tests needed
+#    mms1 <- ilb(data, LB, psc)
+#  }
+
   mms0 <- mms1 <- 0
-
-  cherry <- TRUE
-  if(cherry){
-    ec <- extract_cherries(data)
-    cherry_res  <- cherries(ec, LB, UB)
-    weight_cherry <- weight
-    weight_cherry[ec$pos] <- cherry_res$weight
-    data2 <- data
-    attr(data2, "weight") <- weight_cherry
-  }
-
-  if (ILBound){  # tests needed
-    if(cherry) mms1 <- ilb(data2, LB)
-    else mms1 <- ilb(data, LB)
-  }
   mms0 <- mms1 + mmsAmb
   mms0 <- mms0[nTips] - mms0
-  if(cherry)mms0 <- mms0 + cherry_res$res
+  mms0 <- mms0 + cherry_res$res
   mms0 <- c(mms0, 0)
 
   f <- init_fitch(data, m = 4L)
@@ -352,6 +295,7 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
     pb <- txtProgressBar(min = 0, max = 105, initial = 0, style = 3)
     #    cli_progress_bar("Search Baumraum (tree space)", total = 105, clear=TRUE)
   }
+  add <- TRUE
   result <- list()
   while (npsc > 0) {
     a <- PSC[npsc, 1] # in C++ a.back()
@@ -387,7 +331,11 @@ bab <- function(data, tree = NULL, trace = 1, ...) {
           TMP <- TMP[TMP[, 3] < (bound + 1e-8), ]
           npsc <- nrow(TMP)
           PSC[seq_len(npsc), ] <- TMP
-        } else result <- c(result, tmp)
+          add <- TRUE
+        } else if(add){
+          result <- c(result, tmp) # use index dont grow vector
+          if (length(tmp) > 100000) add <- FALSE
+        }
       }
     }
     if(a == 6 && trace > 0 ) setTxtProgressBar(pb, status <- status + 1)
