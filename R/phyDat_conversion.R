@@ -328,7 +328,7 @@ as.DNAbin.phyDat <- function (x, ...){
     class(result) <- "DNAbin"
     return(result)
   }
-  else stop("x must be a nucleotide sequence")
+  else stop("x must be a nucleotide sequence!")
 }
 
 

@@ -575,7 +575,7 @@ optimEdge <- function(tree, data, eig = eig, w = w, g = g, bf = bf, rate = rate,
     treeP$edge.length <- EL[treeP$edge[, 2]]
     newll <- pml.fit4(treeP, data, bf=bf, g=g, w=w, eig=eig, ll.0=ll.0, ...)
     eps <- (old.ll - newll) / newll
-    if (eps < 0) return(list(tree=oldtree, logLik=old.ll))
+    if (eps < 0) return(list(tree=oldtree, logLik=old.ll, c(eps, iter)))
     oldtree <- treeP
 #    if (control$trace > 1) cat(old.ll, " -> ", newll, "\n")
     old.ll <- newll
@@ -1524,7 +1524,7 @@ optimRooted <- function(tree, data, bf, g, w, eig, ll.0,
   el <- tree$edge.length
   EL[tree$edge[, 2]] <- tree$edge.length
   ll2 <- pml.fit4(tree, data, bf=bf, eig=eig, ll.0=ll.0, w=w, g=g, ...)
-  tmptree <- tree
+  currenttree <- tmptree <- tree
 
   while (eps > control$eps && iter < control$maxit) {
     ll2 <- pml.fit4(tree, data, bf=bf, eig=eig, ll.0=ll.0, w=w, g=g, ...)
@@ -1588,12 +1588,13 @@ optimRooted <- function(tree, data, bf, g, w, eig, ll.0,
       else optRoot0(0, tmptree, data, g, w, eig, bf, ll.0, k, ...)
       loli <- dad
     }
-    tree$edge.length <- EL[tree$edge[, 2]]
-    ll2 <- pml.fit4(tree, data, bf=bf, eig=eig, ll.0=ll.0, w=w, g=g, ...)
+    currenttree$edge.length <- EL[tree$edge[, 2]]
+    ll2 <- pml.fit4(currenttree, data, bf=bf, eig=eig, ll.0=ll.0, w=w, g=g, ...)
     eps <- (ll - ll2) / ll2
-
+    if (eps < 0) return(list(tree=tree, logLik=ll, c(eps = eps, iter = iter)))
     if (control$trace > 1) cat("optimRooted: ", ll, " -> ", ll2, "\n")
     ll <- ll2
+    tree <- currenttree
     iter <- iter + 1
   }
   if (control$trace > 0)
@@ -2317,10 +2318,10 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       llMix = llMix, wMix=wMix, ASC=ASC,
       control = pml.control(epsilon = 1e-07, maxit = 10, trace = trace,
                              tau = tau))
-    if (res[[2]] > ll) {
+#    if (res[[2]] > ll) {
       ll <- res[[2]]
       tree <- res[[1]]
-    }
+#    }
   }
   rounds <- 1
   while (opti) {
@@ -2464,10 +2465,10 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                       llMix = llMix, wMix=wMix, ASC=ASC,
                        control = pml.control(epsilon = 1e-08, maxit = 10,
                                              trace = trace, tau = tau))
-      if (res[[2]] > ll) {
+#      if (res[[2]] > ll) {
         ll <- res[[2]]
         tree <- res[[1]]
-      }
+#      }
     }
     epsR <- 1e-8
     if (optNni) {
@@ -2925,12 +2926,13 @@ opt_nni <- function(tree, data, rooted, iter_max, trace, ll, RELL=NULL,
 #      cat("Envir 3:", length(cand3), all(tmp$cand %in% cand3),"\n" )
 #      cand <- tmp$candidates
 #      }
-      res <- optimEdge(tmp$tree, data, ...)
+#      res <- optimEdge(tmp$tree, data, ...)
     }
     else {
       tmp <- rooted.nni(tree, data, RELL=RELL, ...)
-      res <- optimRooted(tmp$tree, data, ...)
+#      res <- optimRooted(tmp$tree, data, ...)
     }
+    res <- opt_Edge(tmp$tree, data, rooted, ...)
     if(!is.null(RELL)) RELL <- tmp$RELL
     ll2 <- res$logLik
 #    if(length(ll2)==0) browser()
@@ -2955,8 +2957,9 @@ opt_nni <- function(tree, data, rooted, iter_max, trace, ll, RELL=NULL,
     }
   }
 #
-  if (!rooted) res <- optimEdge(tmp$tree, data, ...)
-  else res <- optimRooted(tmp$tree, data, ...)
+#  if (!rooted) res <- optimEdge(tmp$tree, data, ...)
+#  else res <- optimRooted(tmp$tree, data, ...)
+  res <- opt_Edge(tmp$tree, data, rooted, ...)
   ll2 <- res$logLik
   if (trace > 0) cat("optimize topology: ", llstart, "-->", ll2,
                      " NNI moves: ", swap, "\n")

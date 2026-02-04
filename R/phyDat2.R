@@ -319,7 +319,7 @@ phyDat.codon <- function (data, return.index = TRUE, ambiguity = "---",
     res <- lapply(res, function(x, ind){x[is.na(x)] <- ind; x}, ind)
   }
   else if(any(ind_na)){
-    warning("Found unknown characters. Deleted sites with unknown states.")
+    warning("Found unknown characters (not supplied in levels). Deleted sites with unknown states.")
     res <- lapply(res, function(x, ind_na)x[!ind_na], ind_na)
     weight <- weight[!ind_na]
     index <- index[which(ind_na == FALSE)]

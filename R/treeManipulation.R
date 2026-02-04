@@ -223,7 +223,7 @@ midpoint.multiPhylo <- function(tree, node.labels = "support", ...) {
 #' @export
 pruneTree <- function(tree, ..., FUN = ">=") {
   assert_phylo(tree)
-  if (is.null(tree$node)) stop("no node labels")
+  if (is.null(tree$node)) stop("tree needs node.label")
   # if (is.rooted(tree)) tree <- unroot(tree)
   has_edge.length <- !is.null(tree$edge.length)
   tree <- reorder(tree)

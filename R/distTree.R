@@ -380,7 +380,7 @@ nnls.tree <- function(dm, tree, method=c("unrooted", "ultrametric", "tipdated"),
   if (is.rooted(tree) && method == "unrooted") tree <- unroot(tree)
   tree <- reorder(tree, "postorder")
   if (balanced) {
-    if (!is.binary(tree)) stop("tree must be binary")
+    if (!is.binary(tree)) gettextf("%s must be binary!", "tree")
     weight <- rowSums(designTree(unroot(tree)))
   }
   dm <- as.matrix(dm)

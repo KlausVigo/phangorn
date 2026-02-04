@@ -214,7 +214,7 @@ kSPR <- function(tree, k = NULL) {
 
 
 oneOf4 <- function(tree, ind1, ind2, from = 1, to = 1, root) {
-  if (!is.binary(tree))  stop("tree must be binary")
+  if (!is.binary(tree))  gettextf("%s must be binary!", "tree")
   tree <- reroot(tree, ind2, FALSE)
   kids1 <- Children(tree, ind1)
   anc <- Ancestors(tree, ind1, "all")
