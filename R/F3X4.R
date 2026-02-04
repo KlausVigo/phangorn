@@ -41,7 +41,8 @@ F1x4 <- function(x, bf=NULL) {
 # pml, update.pml
 # bf_choice <- match.arg(j, c("equal", "empirical", "F1x4", "F3x4", "F61"))
 bf_char <- function(data, bf_choice ){
-  nc <- attr(gap_as_state(data), "nc")
+  nc <- attr(data, "nc")
+  type <- attr(data, "type")
   txt <-  deparse(substitute(bf_choice))
   if(bf_choice %in% c("F1x4", "F3x4", "F61") && type != "CODON")
     stop(gettextf("%s not available for this data type", txt))
