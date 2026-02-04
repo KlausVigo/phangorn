@@ -225,11 +225,11 @@ topology.
     ## loaded via a namespace (and not attached):
     ##  [1] Matrix_1.7-4        future.apply_1.20.1 jsonlite_2.0.0     
     ##  [4] compiler_4.5.2      Rcpp_1.1.1          parallel_4.5.2     
-    ##  [7] jquerylib_0.1.4     globals_0.18.0      systemfonts_1.3.1  
+    ##  [7] jquerylib_0.1.4     globals_0.19.0      systemfonts_1.3.1  
     ## [10] textshaping_1.0.4   yaml_2.3.12         fastmap_1.2.0      
     ## [13] lattice_0.22-7      R6_2.6.1            generics_0.1.4     
     ## [16] igraph_2.2.1        knitr_1.51          htmlwidgets_1.6.4  
-    ## [19] backports_1.5.0     checkmate_2.3.3     future_1.69.0      
+    ## [19] backports_1.5.0     checkmate_2.3.4     future_1.69.0      
     ## [22] desc_1.4.3          bslib_0.10.0        rlang_1.1.7        
     ## [25] cachem_1.1.0        xfun_0.56           fs_1.6.6           
     ## [28] sass_0.4.10         otel_0.2.0          cli_3.6.5          

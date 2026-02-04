@@ -288,9 +288,9 @@ reversible models.
     ## [19] cli_3.6.5           rlang_1.1.7         parallelly_1.46.1  
     ## [22] future.apply_1.20.1 withr_3.0.2         cachem_1.1.0       
     ## [25] yaml_2.3.12         otel_0.2.0          tools_4.5.2        
-    ## [28] ggseqlogo_0.2.2     parallel_4.5.2      checkmate_2.3.3    
-    ## [31] dplyr_1.1.4         ggplot2_4.0.1       fastmatch_1.1-8    
-    ## [34] globals_0.18.0      vctrs_0.7.1         R6_2.6.1           
+    ## [28] ggseqlogo_0.2.2     parallel_4.5.2      checkmate_2.3.4    
+    ## [31] dplyr_1.2.0         ggplot2_4.0.2       fastmatch_1.1-8    
+    ## [34] globals_0.19.0      vctrs_0.7.1         R6_2.6.1           
     ## [37] lifecycle_1.0.5     fs_1.6.6            htmlwidgets_1.6.4  
     ## [40] ragg_1.5.0          pkgconfig_2.0.3     desc_1.4.3         
     ## [43] pillar_1.11.1       pkgdown_2.2.0       bslib_0.10.0       

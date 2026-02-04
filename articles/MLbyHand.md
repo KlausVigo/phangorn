@@ -140,14 +140,14 @@ fitGTR
     ## 2 0.3982   0.248256
     ## 3 0.7411   0.248256
     ## 4 1.0905   0.248256
-    ## 5 1.7983   0.248256
+    ## 5 1.7982   0.248256
     ## 
     ## Rates:
-    ## a <-> c : 0.9533 
-    ## a <-> g : 64.01 
-    ## a <-> t : 0.8128 
-    ## c <-> g : 0.005089 
-    ## c <-> t : 24.79 
+    ## a <-> c : 0.9472 
+    ## a <-> g : 63.59 
+    ## a <-> t : 0.807 
+    ## c <-> g : 0.003986 
+    ## c <-> t : 24.63 
     ## g <-> t : 1 
     ## 
     ## Base frequencies:  
@@ -182,27 +182,27 @@ fitGTR
     ## model: GTR+G(4)+I 
     ## loglikelihood: -2608 
     ## unconstrained loglikelihood: -1230 
-    ## Total tree length: 41.74 
+    ## Total tree length: 41.75 
     ##  (expected number of substituions per site)
     ## Minimal tree length: 3.315 
     ##  (observed substitutions per site)
-    ## Proportion of invariant sites: 0.007411 
+    ## Proportion of invariant sites: 0.00741 
     ## Model of rate heterogeneity: Discrete gamma model
     ## Number of rate categories: 4 
     ## Shape parameter: 2.994 
     ##     Rate Proportion
-    ## 1 0.0000   0.007411
-    ## 2 0.3917   0.248147
-    ## 3 0.7366   0.248147
-    ## 4 1.0906   0.248147
-    ## 5 1.8110   0.248147
+    ## 1 0.0000    0.00741
+    ## 2 0.3917    0.24815
+    ## 3 0.7366    0.24815
+    ## 4 1.0906    0.24815
+    ## 5 1.8110    0.24815
     ## 
     ## Rates:
-    ## a <-> c : 0.7227 
-    ## a <-> g : 74.21 
-    ## a <-> t : 0.6014 
-    ## c <-> g : 0.003998 
-    ## c <-> t : 25.96 
+    ## a <-> c : 0.7197 
+    ## a <-> g : 73.86 
+    ## a <-> t : 0.5978 
+    ## c <-> g : 0.003286 
+    ## c <-> t : 25.85 
     ## g <-> t : 1 
     ## 
     ## Base frequencies:  
@@ -232,8 +232,8 @@ SH.test(fitGTR, fitJC)
 ```
 
     ##      Trees  ln L Diff ln L p-value
-    ## [1,]     1 -2608       0.0   0.504
-    ## [2,]     2 -3068     460.5   0.000
+    ## [1,]     1 -2608       0.0  0.5023
+    ## [2,]     2 -3068     460.5  0.0000
 
 or with the AIC
 
@@ -354,11 +354,11 @@ away.
     ## loaded via a namespace (and not attached):
     ##  [1] Matrix_1.7-4        future.apply_1.20.1 jsonlite_2.0.0     
     ##  [4] compiler_4.5.2      Rcpp_1.1.1          parallel_4.5.2     
-    ##  [7] jquerylib_0.1.4     globals_0.18.0      systemfonts_1.3.1  
+    ##  [7] jquerylib_0.1.4     globals_0.19.0      systemfonts_1.3.1  
     ## [10] textshaping_1.0.4   yaml_2.3.12         fastmap_1.2.0      
     ## [13] lattice_0.22-7      R6_2.6.1            generics_0.1.4     
     ## [16] igraph_2.2.1        knitr_1.51          htmlwidgets_1.6.4  
-    ## [19] backports_1.5.0     checkmate_2.3.3     desc_1.4.3         
+    ## [19] backports_1.5.0     checkmate_2.3.4     desc_1.4.3         
     ## [22] bslib_0.10.0        rlang_1.1.7         cachem_1.1.0       
     ## [25] xfun_0.56           fs_1.6.6            sass_0.4.10        
     ## [28] otel_0.2.0          cli_3.6.5           pkgdown_2.2.0      
