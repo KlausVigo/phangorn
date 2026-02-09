@@ -309,31 +309,42 @@ Laguerre <- function(x, shape, degree) {
   return(y)
 }
 
-
-rates_n_weights <- function(shape, k, site.rate = "gamma", w=NULL){
+# w currently not used! Out?
+rates_n_weights <- function(shape, k, site.rate = "gamma", w=NULL, inv=0){
   site.rate <- match.arg(site.rate, c("gamma", "gamma_phangorn",
                                       "gamma_quadrature", "free_rate"))
-  if(k==1) rates.and.weights <- matrix(c(1,1), ncol=2L,
-                                  dimnames = list(NULL, c("rate", "weight")))
+  if(site.rate == "gamma_quadrature")
+    return(LaguerreQuad(shape=shape, k))
+  if(k==1){
+    g <- 1
+    w <- 1
+  }
+    #rates.and.weights <- matrix(c(1,1), ncol=2L,
+          #                        dimnames = list(NULL, c("rate", "weight")))
   else{
     if(site.rate == "gamma"){
       g <- discrete.gamma(shape, k=k)
       w <- rep(1 / k, k)
-      rates.and.weights <- matrix( c(g, w), ncol=2L,
-                          dimnames = list(NULL, c("rate", "weight")))
+#      rates.and.weights <- matrix( c(g, w), ncol=2L,
+#                          dimnames = list(NULL, c("rate", "weight")))
     }
 #    if(site.rate == "gamma_phangorn"){
 #      rates.and.weights <- discrete.gamma.2(alpha=shape, k=k)
 #    }
-    if(site.rate == "gamma_quadrature")
-      rates.and.weights <- LaguerreQuad(shape=shape, k)
+
     if(site.rate == "free_rate"){
-      g <- rep(1, k)
+      g <- discrete.gamma(1, k=k) # rep(1, k)
       w <- rep(1 / k, k)
-      rates.and.weights <- matrix( c(g, w), ncol=2L,
-                                   dimnames = list(NULL, c("rate", "weight")))
+#      rates.and.weights <- matrix( c(g, w), ncol=2L,
+#                                   dimnames = list(NULL, c("rate", "weight")))
     }
   }
+  if (inv > 0){
+    w <- (1 - inv) * w
+    g <- g / (1 - inv)
+  }
+  rates.and.weights <- matrix( c(g, w), ncol=2L,
+                               dimnames = list(NULL, c("rate", "weight")))
   rates.and.weights
 }
 

@@ -734,21 +734,6 @@ update.pml <- function(object, ...) {
   if (is.na(existing[3])) bf <- object$bf
   else {
     bf <- eval(extras[[existing[3]]], parent.frame())
-    if (is.character(bf)) {
-      bf_choice <- match.arg(bf, c("equal", "empirical", "F1x4", "F3x4", "F61"))
-      bf <- bf_char(data, bf_choice)
-#      txt <-  deparse(substitute(bf_choice))
-#      if(bf_choice %in% c("F1x4", "F3x4", "F61") && type != "CODON")
-#         stop(gettextf("%s not available for this data type", txt))
-#      bf <- switch(bf_choice,
-#                   equal = rep(1 / nc, nc),
-#                   empirical = baseFreq(data),
-#                   F61 = baseFreq(data),
-#                   F3x4 = F3x4(data),
-#                   F1x4 = F1x4(data))
-#      names(bf) <- NULL
-      freq_df <- df_freq_codon(bf_choice)
-    }
     updateEig <- TRUE
   }
   if (is.na(existing[4])) Q <- object$Q
@@ -758,16 +743,19 @@ update.pml <- function(object, ...) {
   }
   type <- attr(object$data, "type")
   model <- NULL
-  if (type == "AA") {
-    if (!is.na(existing[9])) {
-      model <- match.arg(eval(extras[[existing[9]]], parent.frame()),
-        .aa_3Di_models)
-      getModelAA(model, bf = is.na(existing[3]), Q = is.na(existing[4]),
-                 has_gap_state = has_gap_state(data))
+
+  if (!is.na(existing[9]) && type != "CODON") {
+      model <- eval(extras[[existing[9]]], parent.frame())
+#      print(model)
+#      browser()
+#      getModelAA(model, bf = is.na(existing[3]), Q = is.na(existing[4]),
+#                 has_gap_state = has_gap_state(data))
+      updateModel(model, type, nc, bf = is.na(existing[3]),
+                  Q = is.na(existing[4]), has_gap_state = has_gap_state(data))
       updateEig <- TRUE
     }
-    else model <- object$model
-  }
+  else model <- object$model
+
   scaleQ <- FALSE
   if (type == "CODON") {
     if (is.na(existing[12])) dnds <- object$dnds
@@ -791,22 +779,6 @@ update.pml <- function(object, ...) {
                                dnds = dnds)
     }
     model <- object$model
-  }
-  if (type == "DNA") {
-    if (!is.na(existing[9])) {
-      model <- match.arg(eval(extras[[existing[9]]], parent.frame()),
-                         .dnamodels)
-    }
-    else model <- object$model
-  }
-  if (type == "USER") {
-    if (!is.na(existing[9])) {
-      model <- match.arg(eval(extras[[existing[9]]], parent.frame()),
-                         .usermodels)
-      if(model=="ORDERED") Q <- subsChoice_USER(model, nc)$Q
-      updateEig <- TRUE
-    }
-    else model <- object$model
   }
   if (is.na(existing[5])) inv <- object$inv
   else {
@@ -832,6 +804,14 @@ update.pml <- function(object, ...) {
     eval(extras[[existing[10]]], parent.frame()))
   if (is.na(existing[11])) llMix <- object$llMix
   else llMix <- eval(extras[[existing[11]]], parent.frame())
+
+  if (is.character(bf)) {
+    bf_choice <- match.arg(bf, c("equal", "empirical", "F1x4", "F3x4", "F61"))
+    bf <- bf_char(data, bf_choice)
+    freq_df <- df_freq_codon(bf_choice)
+    updateEig <- TRUE
+  }
+
   levels <- attr(data, "levels")
   weight <- attr(data, "weight")
   if (updateEig){
@@ -845,14 +825,14 @@ update.pml <- function(object, ...) {
   g <- object$g
   w <- object$w
   if(updateRates){
-    rw <- rates_n_weights(shape, k, site.rate, w)
+    rw <- rates_n_weights(shape, k, site.rate, w, inv = inv)
     g <- rw[, 1]
     w <- rw[, 2]
 
-    if (inv > 0){
-      w <- (1 - inv) * w
-      g <- g / (1 - inv)
-    }
+#    if (inv > 0){
+#      w <- (1 - inv) * w
+#      g <- g / (1 - inv)
+#    }
 #  if (wMix > 0) w <- (1 - wMix) * w
     g <- g * rate
   }
@@ -1025,14 +1005,14 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
   if (is.null(eig))
     eig <- edQt(bf = bf, Q = Q)
   if(is.null(g) | is.null(w)){
-    rw <- rates_n_weights(shape, k, site.rate, w)
+    rw <- rates_n_weights(shape, k, site.rate, w, inv = inv)
     g <- rw[, 1]
     w <- rw[, 2]
 
-    if (inv > 0){
-      w <- (1 - inv) * w
-      g <- g / (1 - inv)
-    }
+#    if (inv > 0){
+#      w <- (1 - inv) * w
+#      g <- g / (1 - inv)
+#    }
 #    if (wMix > 0) w <- (1 - wMix) * w
     g <- g * rate
   }
@@ -1323,40 +1303,27 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   weight <- attr(data, "weight")
   nr <- attr(data, "nr")
   nc <- as.integer(attr(data, "nc"))
-  if (type == "AA" & !is.null(model)) {
-    model <- match.arg(model, .aa_3Di_models)
-    getModelAA(model, bf = is.null(bf), Q = is.null(Q),
-               has_gap_state = has_gap_state(data))
-  }
+#  if (type == "AA" & !is.null(model)) {
+#    model <- match.arg(model, .aa_3Di_models)
+#    getModelAA(model, bf = is.null(bf), Q = is.null(Q),
+#               has_gap_state = has_gap_state(data))
+#  }
   if (type == "CODON") {
     .syn <- synonymous_subs(code=attr(data, "code"))
     .sub <- tstv_subs(code=attr(data, "code"))
     Q <- CodonQ(subs = .sub, syn = .syn, tstv = tstv, dnds = dnds)
     if(is.null(bf)) bf_choice <- "equal"
   }
-  if(type=="USER" & !is.null(model)){
-    model <- match.arg(model, .usermodels)
-    if(model=="ORDERED") Q <- subsChoice_USER("ORDERED", nc)$Q
+  if(type!="CODON" && !is.null(model)){
+    updateModel(model, type, nc, bf = is.null(bf), Q = is.null(Q),
+                has_gap_state = has_gap_state(data), initiate = TRUE)
   }
   if (is.null(bf)){
-    if(has_gap_state(data)){
-      bf <- baseFreq(data)
-      bf[-nc] <- (1 - bf[nc]) / (nc-1)
-    } else bf <- rep(1 / nc, nc)
+    bf <- "equal"
   }
   if (is.character(bf)) {
     bf_choice <- match.arg(bf, c("equal", "empirical", "F1x4", "F3x4", "F61"))
     bf <- bf_char(data, bf_choice)
-#    txt <-  deparse(substitute(bf_choice))
-#    if(bf_choice %in% c("F1x4", "F3x4", "F61") && type != "CODON")
-#       stop(gettextf("%s not available for this data type", txt))
-#    bf <- switch(bf_choice,
-#      equal = rep(1 / length(levels), length(levels)),
-#      empirical = baseFreq(data),
-#      F61 = baseFreq(data),
-#      F3x4 = F3x4(data),
-#      F1x4 = F1x4(data))
-#    names(bf) <- NULL
   }
   if (type == "CODON") freq_df  <- df_freq_codon(bf_choice)
   if (is.null(Q))
@@ -1364,19 +1331,14 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   m <- 1
   eig <- edQt(bf = bf, Q = Q)
   if(is.null(g) | is.null(w)){
-#    if(site.rate=="free_rate"){
-#      w <- rep(1/k, k)
-#      g <- rep(1, k)
-#    }
-#    else{
-      rw <- rates_n_weights(shape, k, site.rate, w)
+      rw <- rates_n_weights(shape, k, site.rate, w, inv = inv)
       g <- rw[, 1]
       w <- rw[, 2]
 #    }
-    if (inv > 0){
-      w <- (1 - inv) * w
-      g <- g / (1 - inv)
-    }
+#    if (inv > 0){
+#      w <- (1 - inv) * w
+#      g <- g / (1 - inv)
+#    }
 #  if (wMix > 0) w <- (1 - wMix) * w
     g <- g * rate
   }
@@ -1948,14 +1910,14 @@ updateRates <- function(res, ll, rate, shape, k, inv, wMix, update="rate",
   if(update=="shape") shape <- res[[1]]
   if(update=="inv") inv <- res[[1]]
 
-  rw <- rates_n_weights(shape, k, site.rate, w)
+  rw <- rates_n_weights(shape, k, site.rate, w, inv = inv)
   g <- rw[, 1]
   w <- rw[, 2]
 
-  if (inv > 0){
-    w <- (1 - inv) * w
-    g <- g / (1 - inv)
-  }
+#  if (inv > 0){
+#    w <- (1 - inv) * w
+#    g <- g / (1 - inv)
+#  }
   # if (wMix > 0) w <- (1 - wMix) * w
   g <- g * rate
 
@@ -2170,44 +2132,20 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   nr <- as.integer(attr(data, "nr"))
   nc <- as.integer(attr(data, "nc"))
   if (type == "DNA" & optModel) {
-    # .optBFQ
+    object <- update(object, model = model)
+    model <- object$model
     tmp <- subsChoice(model, has_gap_state(data))
-    optQ <- tmp$optQ
-    if (!optQ) {
-      Q <- rep(1, (nc*(nc-1L))/2)
-      object <- update.pml(object, Q = Q)
-    }
     optBf <- tmp$optBf
-    if (!optBf){
-      if(has_gap_state(data)){
-        bf <- baseFreq(data)
-        bf[-nc] <- (1 - bf[nc]) / (nc-1)
-      } else bf <- rep(1 / nc, nc)
-      #bf <- c(0.25, 0.25, 0.25, 0.25)
-    } else{
-      if(control$statefreq=="empirical") bf <- baseFreq(data)
-      else bf <- object$bf
-    }
-    object <- update.pml(object, bf = bf)
+    optQ <- tmp$optQ
     subs <- tmp$subs
   }
   if (type == "USER" & optModel) {
     tmp <- subsChoice_USER(model, nc)
-    optQ <- tmp$optQ
-    if (!optQ){
-      Q <- rep(1, (nc*(nc-1L))/2)
-      object <- update.pml(object, Q = Q)
-    }
-    optBf <- tmp$optBf
-    if (!optBf){
-      bf <- rep(1 / nc, nc)
-      object <- update.pml(object, bf = bf)
-    }
     subs <- tmp$subs
-    if(model=="ORDERED") {
-      Q <- tmp$Q
-      object <- update.pml(object, Q = Q)
-    }
+    object <- update(object, model = model)
+    model <- object$model
+    optBf <- tmp$optBf
+    optQ <- tmp$optQ
   }
   if(optBf && control$statefreq=="empirical" && type != "CODON"){
     bf <- baseFreq(data)
