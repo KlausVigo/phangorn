@@ -60,7 +60,9 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt = 0, cex = 1,
 #' If \code{amount == 0}, it is ignored. If \code{random=TRUE} the result of the
 #' permutation is \code{runif(n, -amount, amount)}, otherwise
 #' \code{seq(-amount, amount, length=n)}, where \code{n <- length(x)}.
-#' @param x an object of class \code{multiPhylo}.
+#' @param x an object of class \code{multiPhylo} or an object of class
+#' \code{pml}. If the later is the case it need to contain a bootstrap sample
+#' is extracted.
 #' @param type a character string specifying the type of phylogeny, so far
 #' "cladogram" (default) or "phylogram" are supported.
 #' @param alpha parameter for semi-transparent colors.
@@ -150,6 +152,7 @@ densiTree <- function(x, type = "phylogram", ..., alpha = 1 / length(x),
     consensus <- ladderize(x$tree)
     txt <-  deparse(substitute(x))
     stopifnot(is.rooted(consensus))
+    if (is.null(tip.dates) && !is.null(x$tip.dates)) tip.dates <- x$tip.dates
     x <- x$bs
   }
   assert_multiPhylo(x)

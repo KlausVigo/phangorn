@@ -13,7 +13,9 @@ densiTree(x, type = "phylogram", ..., alpha = 1/length(x),
   show.consensus = FALSE, side = NULL)
 }
 \arguments{
-\item{x}{an object of class \code{multiPhylo}.}
+\item{x}{an object of class \code{multiPhylo} or an object of class
+\code{pml}. If the later is the case it need to contain a bootstrap sample
+is extracted.}
 
 \item{type}{a character string specifying the type of phylogeny, so far
 "cladogram" (default) or "phylogram" are supported.}
