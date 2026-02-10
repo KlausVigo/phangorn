@@ -18,7 +18,8 @@ densiTree(x, type = "phylogram", ..., alpha = 1/length(x),
 
 - x:
 
-  an object of class `multiPhylo`.
+  an object of class `multiPhylo` or an object of class `pml`. If the
+  later is the case it need to contain a bootstrap sample is extracted.
 
 - type:
 
