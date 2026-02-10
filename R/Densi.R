@@ -143,6 +143,15 @@ densiTree <- function(x, type = "phylogram", ..., alpha = 1 / length(x),
                       underscore = FALSE, label.offset = 0, scale.bar = TRUE,
                       jitter = list(amount = 0, random = TRUE), tip.dates=NULL,
                       xlim=NULL, ylim=NULL, show.consensus=FALSE, side=NULL) {
+
+  old <- x
+  if(inherits(x, "pml")){
+    is_pml <- TRUE
+    consensus <- ladderize(x$tree)
+    txt <-  deparse(substitute(x))
+    stopifnot(is.rooted(consensus))
+    x <- x$bs
+  }
   assert_multiPhylo(x)
   if (is.character(consensus)) {
     consensus <- stree(length(consensus), tip.label = consensus)
@@ -279,7 +288,7 @@ densiTree <- function(x, type = "phylogram", ..., alpha = 1 / length(x),
   assign("last_plot.phylo", L, envir = .PlotPhyloEnv)
   if (scale.bar) axisPhylo(side = side, root.time = root_time,
                            backward = is.null(root_time), cex.axis = cex.axis)
-  invisible(x)
+  invisible(old)
 }
 #' @srrstats {G1.0} in the lines following: 103
 #' @srrstats {G2.3, G2.3a} in lines: 16, 167, 168

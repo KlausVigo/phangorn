@@ -5,15 +5,18 @@
 \alias{add_boxplot}
 \title{Draw Confidences Intervals on Phylogenies}
 \usage{
-add_ci(tree, trees, col95 = "#FF00004D", col50 = "#0000FF4D",
+add_ci(tree, trees = NULL, col95 = "#FF00004D", col50 = "#0000FF4D",
   height = 0.7, legend = TRUE, ...)
 
-add_boxplot(tree, trees, ...)
+add_boxplot(tree, trees = NULL, boxwex = 0.7, ...)
 }
 \arguments{
-\item{tree}{a phylogenetic tree to which the confidences should be added.}
+\item{tree}{either an object of class phylo to which the confidences should
+be added or an object of class \code{pml}. In case of the later the tree is
+extracted from the object.}
 
-\item{trees}{phylogenetic trees, i.e. an object of class \code{multiPhylo}}
+\item{trees}{phylogenetic trees, i.e. an object of class \code{multiPhylo}. Can
+be empty if tree is an object of class \code{pml}.}
 
 \item{col95}{colour used for the 95\% intervals; by default: transparent
 red.}
@@ -26,6 +29,9 @@ blue.}
 \item{legend}{a logical value.}
 
 \item{\dots}{arguments passed to other functions, \code{\link{legend}} or
+\code{\link{bxp}}.}
+
+\item{boxwex}{a scale factor to be applied to all boxes, see
 \code{\link{bxp}}.}
 }
 \value{

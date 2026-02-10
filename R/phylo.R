@@ -2243,6 +2243,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       object$tree <- addConfidences(object$tree, spl)
     }
     if(rearrangement=="ratchet"){
+      ind_null <- sapply(fbs, is.null)
+      fbs <- fbs[!ind_null]
       class(fbs) <- "multiPhylo"
       object$abs <-  object$bs
       object$bs <- fbs

@@ -84,8 +84,11 @@ add_edge_length <- function(tree, trees, fun=\(x)median(na.omit(x)),
 ##' @description These are low-level plotting commands to draw the confidence
 ##' intervals on the node of a tree as rectangles with coloured backgrounds or
 ##' add boxplots to ultrametric or tipdated trees.
-##' @param tree a phylogenetic tree to which the confidences should be added.
-##' @param trees phylogenetic trees, i.e. an object of class `multiPhylo`
+##' @param tree either an object of class phylo to which the confidences should
+##' be added or an object of class `pml`. In case of the later the tree is
+##' extracted from the object.
+##' @param trees phylogenetic trees, i.e. an object of class `multiPhylo`. Can
+##' be empty if tree is an object of class `pml`.
 ##' @param col95 colour used for the 95% intervals; by default: transparent
 ##' red.
 ##' @param col50 colour used for the 50% intervals; by default: transparent
@@ -116,9 +119,17 @@ add_edge_length <- function(tree, trees, fun=\(x)median(na.omit(x)),
 ##' @keywords aplot
 ##' @rdname add_ci
 ##' @export
-add_ci <- function(tree, trees, col95 = "#FF00004D", col50 = "#0000FF4D",
+add_ci <- function(tree, trees=NULL, col95 = "#FF00004D", col50 = "#0000FF4D",
                     height = 0.7, legend = TRUE, ...)
 {
+
+  old <- tree
+  if(inherits(tree, "pml")){
+    is_pml <- TRUE
+    tree <- tree$tree
+    if(is.null(trees)) trees <- old$bs
+  }
+
   lastPP <- get("last_plot.phylo", envir = ape::.PlotPhyloEnv)
   direction <- lastPP$direction
   trees <- .uncompressTipLabel(trees)
@@ -153,13 +164,21 @@ add_ci <- function(tree, trees, col95 = "#FF00004D", col50 = "#0000FF4D",
     graphics::legend(loc, legend = c("95% CI", "50% CI"), pch = 22,
                      pt.bg = c(col95, col50), col = c(col95, col50), ...)
   }
-  invisible(tree)
+  invisible(old)
 }
 
+##' @param boxwex a scale factor to be applied to all boxes, see
+##' \code{\link{bxp}}.
 ##' @rdname add_ci
 ##' @export
-add_boxplot <- function(tree, trees, ...)
+add_boxplot <- function(tree, trees=NULL, boxwex = 0.7, ...)
 {
+  old <- tree
+  if(inherits(tree, "pml")){
+    is_pml <- TRUE
+    tree <- tree$tree
+    if(is.null(trees)) trees <- old$bs
+  }
   X <- edge_length_matrix(tree, trees, rooted=TRUE)
   X <- X[, -c(1:Ntip(tree))]
   tmp <- boxplot(X, plot=FALSE)
@@ -194,6 +213,7 @@ add_boxplot <- function(tree, trees, ...)
   tmp$stats <- CI
   tmp$out <- out
   Y <- Y[-c(1:Ntip(tree))]
-  bxp(tmp, at=Y, horizontal=horizontal, add=TRUE, axes=FALSE, ...)
+  bxp(tmp, at = Y, horizontal = horizontal, add = TRUE, axes = FALSE,
+      boxwex = boxwex, ...)
   invisible(tree)
 }
