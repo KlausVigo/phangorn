@@ -14,9 +14,9 @@ plot(x, type = "equal angle", use.edge.length = TRUE,
   edge.lty = 1, split.color = NULL, split.width = NULL,
   split.lty = NULL, font = 3, cex = par("cex"), cex.node.label = cex,
   cex.edge.label = cex, col.node.label = tip.color,
-  col.edge.label = tip.color, font.node.label = font,
-  font.edge.label = font, underscore = FALSE, angle = 0, digits = 3,
-  ...)
+  col.edge.label = tip.color, font.node.label = par("font"),
+  font.edge.label = par("font"), underscore = FALSE, angle = 0,
+  digits = 3, ...)
 ```
 
 ## Arguments

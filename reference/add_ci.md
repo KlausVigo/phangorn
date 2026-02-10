@@ -7,21 +7,24 @@ boxplots to ultrametric or tipdated trees.
 ## Usage
 
 ``` r
-add_ci(tree, trees, col95 = "#FF00004D", col50 = "#0000FF4D",
+add_ci(tree, trees = NULL, col95 = "#FF00004D", col50 = "#0000FF4D",
   height = 0.7, legend = TRUE, ...)
 
-add_boxplot(tree, trees, ...)
+add_boxplot(tree, trees = NULL, boxwex = 0.7, ...)
 ```
 
 ## Arguments
 
 - tree:
 
-  a phylogenetic tree to which the confidences should be added.
+  either an object of class phylo to which the confidences should be
+  added or an object of class `pml`. In case of the later the tree is
+  extracted from the object.
 
 - trees:
 
-  phylogenetic trees, i.e. an object of class `multiPhylo`
+  phylogenetic trees, i.e. an object of class `multiPhylo`. Can be empty
+  if tree is an object of class `pml`.
 
 - col95:
 
@@ -43,6 +46,11 @@ add_boxplot(tree, trees, ...)
 
   arguments passed to other functions,
   [`legend`](https://rdrr.io/r/graphics/legend.html) or
+  [`bxp`](https://rdrr.io/r/graphics/bxp.html).
+
+- boxwex:
+
+  a scale factor to be applied to all boxes, see
   [`bxp`](https://rdrr.io/r/graphics/bxp.html).
 
 ## Value
