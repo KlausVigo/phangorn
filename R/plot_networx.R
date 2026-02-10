@@ -234,7 +234,7 @@ rotate_matrix <- function(x, theta){
 #' sp <- as.splits(rNNI(tree1, n=10))
 #' net <- as.networx(sp)
 #' plot(net)
-#' plot(net, direction="axial")
+#' plot(net, direction="horizontal")
 #'
 #' circ_net <- allCircularSplits(5) |> as.networx()
 #' plot(circ_net)
@@ -251,14 +251,14 @@ plot.networx <- function(x, type = "equal angle", use.edge.length = TRUE,
                          edge.label = NULL, show.node.label = FALSE,
                          node.label = NULL, show.nodes = FALSE,
                          tip.color = "black", edge.color = "black",
-                         edge.width = 3, edge.lty = 1, split.color = NULL,
+                         edge.width = 1, edge.lty = 1, split.color = NULL,
                          split.width = NULL, split.lty = NULL, font = 3,
                          cex = par("cex"), cex.node.label = cex,
                          cex.edge.label = cex, col.node.label = tip.color,
                          col.edge.label = tip.color,
                          font.node.label = par("font"),
                          font.edge.label = par("font"), underscore = FALSE,
-                         angle=0, digits=3, ...) {
+                         angle=0, digits=2, ...) {
   type <- match.arg(type, c("equal angle", "3D", "2D", "outline"))
   assert_flag(use.edge.length)
   assert_flag(show.tip.label)
@@ -415,7 +415,7 @@ plot2D <- function(coords, net, show.tip.label = TRUE, show.edge.label = FALSE,
                    cex.node.label = cex,  cex.edge.label = cex,
                    col.node.label = tip.color, col.edge.label = tip.color,
                    font.node.label = font, font.edge.label = font,
-                   add = FALSE, direction="horizontal", xlim=NULL, ylim=NULL,
+                   add = FALSE, direction="axial", xlim=NULL, ylim=NULL,
                    ...) {
   direction <- match.arg(direction, c("horizontal", "axial"))
   edge <- net$edge

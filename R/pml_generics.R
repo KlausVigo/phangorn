@@ -255,7 +255,7 @@ write.pml <- function(x, file="pml", save_rds=TRUE, digits=10, ...){
       pdf(file=paste0(file, "_consensusNet.pdf"), height=my_heigtht)
       ctree <- consensus(x$bs, p=0.5)
       cnet <- consensusNet(x$bs, prob=0.3)
-      plot(cnet, main="Consensus network", direction="axial")
+      plot(cnet, main="Consensus network")
       dev.off()
     }
     pdf(file=paste0(file, "_terraces.pdf"), height=my_heigtht)
