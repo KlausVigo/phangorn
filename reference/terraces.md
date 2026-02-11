@@ -77,6 +77,7 @@ Klaus Schliep <klaus.schliep@gmail.com>
 if (FALSE) { # \dontrun{
 data(woodmouse)
 fit <- pml_bb(woodmouse, model="JC")
+terraces(fit, dist_fun="KF.dist")
 terraces(fit, pkg="scatterplot3d")
 terraces(fit, pkg="plot3D")
 terraces(fit, pkg="rgl")
