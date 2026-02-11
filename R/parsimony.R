@@ -328,15 +328,15 @@ optim.parsimony <- function(tree, data, method = "fitch", cost = NULL,
 #' @rdname parsimony
 #' @export
 pratchet <- function(data, start = NULL, method = "fitch", maxit = 1000,
-                     minit = 100, k = 10, trace = 1, all = FALSE,
-                     rearrangements = "SPR", perturbation = "ratchet", ...) {
+                  minit = 100, k = 10, trace = !getOption("quiet"), all = FALSE,
+                  rearrangements = "SPR", perturbation = "ratchet", ...) {
   if(inherits(data, "DNAbin") || inherits(data, "AAbin"))
     data <- as.phyDat(data)
   assert_phyDat(data)
   assert_count(maxit)
   assert_count(minit)
   assert_count(k)
-  assert_int(trace)
+#  assert_int(trace)
   assert_flag(all)
   perturbation <- match.arg(tolower(perturbation), c("ratchet", "stochastic",
                                                      "random_addition"))
