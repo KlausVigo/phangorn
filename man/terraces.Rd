@@ -46,13 +46,15 @@ trees and the third axis is the likelihood value or parsimony score.
 \dontrun{
 data(woodmouse)
 fit <- pml_bb(woodmouse, model="JC")
+terraces(fit, dist_fun="KF.dist")
 terraces(fit, pkg="scatterplot3d")
 terraces(fit, pkg="plot3D")
 terraces(fit, pkg="rgl")
 }
 }
 \references{
-Sanderson, M.J., McMahon, M.M. and Steel, M. (2011). Terraces in phylogenetic tree space. \emph{Science},
+Sanderson, M.J., McMahon, M.M. and Steel, M. (2011). Terraces in
+phylogenetic tree space. \emph{Science},
 \bold{333}, 448--450.
 }
 \seealso{

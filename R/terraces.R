@@ -20,7 +20,8 @@
 #' @param \dots Further arguments passed to or from other methods.
 #' @return \code{terraces} silently returns a matrix.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @references Sanderson, M.J., McMahon, M.M. and Steel, M. (2011). Terraces in phylogenetic tree space. \emph{Science},
+#' @references Sanderson, M.J., McMahon, M.M. and Steel, M. (2011). Terraces in
+#' phylogenetic tree space. \emph{Science},
 #' \bold{333}, 448--450.
 #'
 #' @importFrom stats cmdscale
@@ -30,6 +31,7 @@
 #' \dontrun{
 #' data(woodmouse)
 #' fit <- pml_bb(woodmouse, model="JC")
+#' terraces(fit, dist_fun="KF.dist")
 #' terraces(fit, pkg="scatterplot3d")
 #' terraces(fit, pkg="plot3D")
 #' terraces(fit, pkg="rgl")
@@ -129,7 +131,6 @@ plot_terraces <- function(xyz, size=10, lwd=2, pkg="plot3D",
             color=col, ...)
     }
   }
-
   invisible(xyz)
 }
 

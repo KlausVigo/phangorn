@@ -166,6 +166,7 @@ add_support <- function(tree, trees, method="FBP", tol=1e-8,
   lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
 #  if(!all.equal(lastPP$edge, reorder(tree)$edge))
 #     stop("tree seems to differ from the last plot!")
+  if(is.null(method)) return(invisible(tree))
   x <- support(tree, trees, method=method, tol=tol, scale=scale)
   x <- round(x, digits=digits)
   if(length(method)>1) x <- apply(x, 1, paste, collapse=sep)
