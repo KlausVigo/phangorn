@@ -249,10 +249,11 @@ fitch_nni <- function(tree, f) {
 }
 
 
-optim.fitch <- function(tree, data, trace = 1, rearrangements = "NNI", ...) {
+optim.fitch <- function(tree, data, trace = !getOption("quiet"),
+                        rearrangements = "NNI", ...) {
   assert_phylo(tree)
   assert_phyDat(data, label=tree$tip.label)
-  assert_int(trace)
+#  assert_int(trace)
   rearrangements <- match.arg(toupper(rearrangements), c("NNI", "SPR"))
   if (!is.binary(tree)) {
     tree <- multi2di(tree)

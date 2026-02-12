@@ -48,7 +48,7 @@
 #'
 #' @export SOWH.test
 SOWH.test <- function(x, n = 100, restricted = list(optNni = FALSE),
-                      optNni = TRUE, trace = 1, ...) {
+                      optNni = TRUE, trace = !getOption("quiet"), ...) {
   res <- matrix(NA, n, 2)
   extras <- match.call(expand.dots = FALSE)$...
 

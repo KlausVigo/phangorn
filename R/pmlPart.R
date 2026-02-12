@@ -482,8 +482,7 @@ pmlPart <- function(formula, object, control = pml.control(epsilon = 1e-8,
 
 
 pmlCluster.fit <- function(formula, fit, weight, p = 4, part = NULL,
-                           control = pml.control(epsilon = 1e-8, maxit = 10,
-                                                 trace = 1), ...) {
+                      control = pml.control(epsilon = 1e-8, maxit = 10), ...) {
   call <- match.call()
   form <- phangornParseFormula(formula)
   opt <- c("nni", "bf", "Q", "inv", "shape", "edge", "rate")
@@ -726,8 +725,7 @@ pmlCluster.fit <- function(formula, fit, weight, p = 4, part = NULL,
 #'
 #' @export pmlCluster
 pmlCluster <- function(formula, fit, weight, p = 1:5, part = NULL, nrep = 10,
-                       control = pml.control(epsilon = 1e-08, maxit = 10,
-                                             trace = 1), ...) {
+                    control = pml.control(epsilon = 1e-08, maxit = 10), ...) {
   call <- match.call()
   form <- phangornParseFormula(formula)
   if (any(p == 1)) {

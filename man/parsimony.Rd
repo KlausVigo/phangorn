@@ -15,8 +15,8 @@ random.addition(data, tree = NULL, method = "fitch")
 
 parsimony(tree, data, method = "fitch", cost = NULL, site = "pscore")
 
-optim.parsimony(tree, data, method = "fitch", cost = NULL, trace = 1,
-  rearrangements = "SPR", ...)
+optim.parsimony(tree, data, method = "fitch", cost = NULL,
+  trace = !getOption("quiet"), rearrangements = "SPR", ...)
 
 pratchet(data, start = NULL, method = "fitch", maxit = 1000,
   minit = 100, k = 10, trace = !getOption("quiet"), all = FALSE,

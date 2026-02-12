@@ -153,7 +153,8 @@ sankoff_nni <- function(tree, data, cost, ...) {
 }
 
 
-optim.sankoff <- function(tree, data, cost = NULL, trace = 1, ...) {
+optim.sankoff <- function(tree, data, cost = NULL,
+                          trace = !getOption("quiet"), ...) {
   assert_phylo(tree)
   if (is.rooted(tree)) tree <- unroot(tree)
   tree <- reorder(tree, "postorder")

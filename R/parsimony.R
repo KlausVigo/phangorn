@@ -315,7 +315,7 @@ indexNNI <- function(tree) {
 #' @rdname parsimony
 #' @export
 optim.parsimony <- function(tree, data, method = "fitch", cost = NULL,
-                            trace = 1, rearrangements = "SPR", ...) {
+                    trace = !getOption("quiet"), rearrangements = "SPR", ...) {
   method <- match.arg(tolower(method), c("fitch", "sankoff"))
   if (method == "fitch") result <- optim.fitch(tree = tree, data = data,
                       trace = trace, rearrangements = rearrangements, ...)

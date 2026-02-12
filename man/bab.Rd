@@ -5,7 +5,7 @@
 \alias{BranchAndBound}
 \title{Branch and bound for finding all most parsimonious trees}
 \usage{
-bab(data, tree = NULL, trace = 1, ...)
+bab(data, tree = NULL, trace = !getOption("quiet"), ...)
 }
 \arguments{
 \item{data}{an object of class phyDat.}

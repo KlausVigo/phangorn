@@ -189,7 +189,7 @@ cherries <- function(obj, LB, UB){
 #' trees <- bab(gene12)
 #'
 #' @export
-bab <- function(data, tree = NULL, trace = 1, ...) {
+bab <- function(data, tree = NULL, trace = !getOption("quiet"), ...) {
   #  if (hasArg(ILBound))
   #    ILBound <- list(...)$ILBound
   #  else

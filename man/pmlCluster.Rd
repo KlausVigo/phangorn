@@ -5,7 +5,7 @@
 \title{Stochastic Partitioning}
 \usage{
 pmlCluster(formula, fit, weight, p = 1:5, part = NULL, nrep = 10,
-  control = pml.control(epsilon = 1e-08, maxit = 10, trace = 1), ...)
+  control = pml.control(epsilon = 1e-08, maxit = 10), ...)
 }
 \arguments{
 \item{formula}{a formula object (see details).}

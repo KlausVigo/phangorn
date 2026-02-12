@@ -5,7 +5,7 @@
 \title{Swofford-Olsen-Waddell-Hillis Test}
 \usage{
 SOWH.test(x, n = 100, restricted = list(optNni = FALSE), optNni = TRUE,
-  trace = 1, ...)
+  trace = !getOption("quiet"), ...)
 }
 \arguments{
 \item{x}{an object of class \code{"pml"}.}
