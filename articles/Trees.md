@@ -207,11 +207,6 @@ nearest-neighbor interchanges (NNI) and subtree pruning and regrafting
 ``` r
 treeRA <- random.addition(primates)
 treeSPR  <- optim.parsimony(treeRA, primates)
-```
-
-    ## Final p-score 750 after  2 nni operations
-
-``` r
 parsimony(c(treeRA, treeSPR), primates)
 ```
 

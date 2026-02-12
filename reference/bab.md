@@ -5,7 +5,7 @@
 ## Usage
 
 ``` r
-bab(data, tree = NULL, trace = 1, ...)
+bab(data, tree = NULL, trace = !getOption("quiet"), ...)
 ```
 
 ## Arguments
