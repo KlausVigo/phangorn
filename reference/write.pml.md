@@ -59,9 +59,8 @@ the rates. It might be better to adopt these on the dataset.
 ``` r
 data(woodmouse)
 fit <- pml_bb(woodmouse, "JC", rearrangement = "none")
-#> optimize edge weights:  -1858.786 --> -1857.165 
-#> optimize edge weights:  -1857.165 --> -1857.165 
-#> optimize edge weights:  -1857.165 --> -1857.165 
+#> optimize edge weights:  -1858.115 --> -1856.056 
+#> optimize edge weights:  -1856.056 --> -1856.056 
 write.pml(fit, "woodmouse")
 unlink(c("woodmouse.txt", "woodmouse_tree.nwk", "woodmouse_align.fasta",
        "woodmouse_tree.pdf", "woodmouse.rds", "woodmouse_rates.pdf"))

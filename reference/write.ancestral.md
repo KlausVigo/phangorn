@@ -67,9 +67,9 @@ plotting capabilities of R.
 ``` r
 data(Laurasiatherian)
 fit <- pml_bb(Laurasiatherian[,1:100], "JC", rearrangement = "none")
-#> optimize edge weights:  -2142.479 --> -2136.397 
-#> optimize edge weights:  -2136.397 --> -2136.397 
-#> optimize edge weights:  -2136.397 --> -2136.397 
+#> optimize edge weights:  -2143.605 --> -2134.395 
+#> optimize edge weights:  -2134.395 --> -2134.395 
+#> optimize edge weights:  -2134.395 --> -2134.395 
 anc_ml <- anc_pml(fit)
 write.ancestral(anc_ml)
 # Can be also results from iqtree

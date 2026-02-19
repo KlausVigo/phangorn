@@ -139,15 +139,15 @@ Klaus P. Schliep <klaus.schliep@gmail.com>, Leonardo de Oliveira Martins
 tree1 <- rtree(100, rooted=FALSE)
 tree2 <- rSPR(tree1, 3)
 RF.dist(tree1, tree2)
-#> [1] 32
+#> [1] 50
 treedist(tree1, tree2)
 #>      symmetric.difference   branch.score.difference           path.difference 
-#>                 32.000000                  3.750043                 96.643675 
+#>                 50.000000                  4.364967                161.291661 
 #> quadratic.path.difference 
-#>                 50.567245 
+#>                 88.148561 
 sprdist(tree1, tree2)
 #>       spr spr_extra        rf     hdist 
-#>         3         0        32        20 
+#>         3         0        50        46 
 trees <- rSPR(tree1, 1:5)
 SPR.dist(tree1, trees)
 #> [1] 1 2 3 4 5

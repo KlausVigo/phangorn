@@ -192,15 +192,15 @@ Leonardo de Oliveira Martins</p>
 <span class="r-in"><span><span class="va">tree1</span> <span class="op">&lt;-</span> <span class="fu">rtree</span><span class="op">(</span><span class="fl">100</span>, rooted<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tree2</span> <span class="op">&lt;-</span> <span class="fu"><a href="nni.html">rSPR</a></span><span class="op">(</span><span class="va">tree1</span>, <span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">RF.dist</span><span class="op">(</span><span class="va">tree1</span>, <span class="va">tree2</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 50</span>
 <span class="r-in"><span><span class="fu">treedist</span><span class="op">(</span><span class="va">tree1</span>, <span class="va">tree2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      symmetric.difference   branch.score.difference           path.difference </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 32.000000                  3.750043                 96.643675 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 50.000000                  4.364967                161.291661 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> quadratic.path.difference </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 50.567245 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 88.148561 </span>
 <span class="r-in"><span><span class="fu">sprdist</span><span class="op">(</span><span class="va">tree1</span>, <span class="va">tree2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       spr spr_extra        rf     hdist </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         3         0        32        20 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         3         0        50        46 </span>
 <span class="r-in"><span><span class="va">trees</span> <span class="op">&lt;-</span> <span class="fu"><a href="nni.html">rSPR</a></span><span class="op">(</span><span class="va">tree1</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">SPR.dist</span><span class="op">(</span><span class="va">tree1</span>, <span class="va">trees</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 2 3 4 5</span>
