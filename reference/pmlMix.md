@@ -95,7 +95,7 @@ tree <- NJ(dm)
 fit <- pml(tree, Laurasiatherian)
 fit <- optim.pml(fit)
 
-fit2 <- update(fit, k=4)
+fit2 <- update(fit, k=4, site.rate="free_rate")
 fit2 <- optim.pml(fit2, optGamma=TRUE)
 
 fitMix <- pmlMix(edge ~ rate, fit, m=4)
@@ -106,6 +106,7 @@ fitMix
 # simulation of mixture models
 #
 X <- allSitePattern(5)
+tree0 <- read.tree(text = "((t1:0.3,t2:0.3):0.1,(t3:0.3,t4:0.3):0.1,t5:0.5);")
 tree1 <- read.tree(text = "((t1:0.1,t2:0.5):0.1,(t3:0.1,t4:0.5):0.1,t5:0.5);")
 tree2 <- read.tree(text = "((t1:0.5,t2:0.1):0.1,(t3:0.5,t4:0.1):0.1,t5:0.5);")
 tree1 <- unroot(tree1)
@@ -116,6 +117,7 @@ fit2 <- pml(tree2,X)
 weights <- 2000*exp(fit1$siteLik) + 1000*exp(fit2$siteLik)
 attr(X, "weight") <- weights
 
+fit0 <- pml(tree0, X)
 fit1 <- pml(tree1, X)
 fit2 <- optim.pml(fit1)
 logLik(fit2)
