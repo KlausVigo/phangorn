@@ -29,10 +29,9 @@
 #' \link{RF.dist}, \link[ape]{di2multi}, \link{cmdscale}}.
 #' @examples
 #' data(woodmouse)
-#' pratchet(woodmouse)
 #' trs <- pratchet(woodmouse, all=TRUE)
 #' start_trs <- get("start_trees", envir = attr(trs, "env"))
-#' terraces(woodmouse, c(trs, start_trs))
+#' terraces(as.phyDat(woodmouse), c(trs, start_trs))
 #'
 #' \dontrun{
 #' fit <- pml_bb(woodmouse, model="JC")
