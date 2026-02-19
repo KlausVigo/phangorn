@@ -7,8 +7,8 @@ pmlPen <- function(object, lambda, ...) {
 }
 
 
-pmlPartPen <- function(object, lambda, control = pml.control(epsilon = 1e-8,
-                         maxit = 20), ...) {
+pmlPartPen <- function(object, lambda, ... ,
+                       control = pml.control(epsilon = 1e-8, maxit = 20)) {
   fits <- object$fits
   m <- length(fits)
   K <- -diag(length(fits[[1]]$tree$edge.length))
@@ -70,8 +70,8 @@ pmlPartPen <- function(object, lambda, control = pml.control(epsilon = 1e-8,
 }
 
 
-pmlMixPen <- function(object, lambda, optOmega = TRUE,
-                      control = pml.control(epsilon = 1e-8, maxit = 20), ...){
+pmlMixPen <- function(object, lambda, ..., optOmega = TRUE,
+                      control = pml.control(epsilon = 1e-8, maxit = 20)){
   fits <- object$fits
   m <- length(fits)
   K <- -diag(length(fits[[1]]$tree$edge.length))
@@ -94,11 +94,11 @@ pmlMixPen <- function(object, lambda, optOmega = TRUE,
   for (i in 1:m) theta <- c(theta, fits[[i]]$tree$edge.length)
   pen <- -0.5 * lambda * t(theta) %*% KM %*% theta
   loglik <- loglik + pen
-  print(loglik)
+  trace <- control$trace
+  if(trace) print(loglik)
   eps0 <- 1
   dl <- matrix(0, nr, m * l)
   iter0 <- 0
-  trace <- control$trace
   while (abs(eps0) > control$eps & iter0 < control$maxit) {
     eps <- 1
     iter <- 0
