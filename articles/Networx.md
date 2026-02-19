@@ -201,7 +201,7 @@ sessionInfo()
     ##  [7] jquerylib_0.1.4     globals_0.19.0      systemfonts_1.3.1  
     ## [10] textshaping_1.0.4   yaml_2.3.12         fastmap_1.2.0      
     ## [13] lattice_0.22-7      R6_2.6.1            generics_0.1.4     
-    ## [16] igraph_2.2.1        knitr_1.51          htmlwidgets_1.6.4  
+    ## [16] igraph_2.2.2        knitr_1.51          htmlwidgets_1.6.4  
     ## [19] backports_1.5.0     checkmate_2.3.4     desc_1.4.3         
     ## [22] osqp_0.6.3.3        bslib_0.10.0        rlang_1.1.7        
     ## [25] cachem_1.1.0        xfun_0.56           fs_1.6.6           

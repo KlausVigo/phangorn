@@ -142,7 +142,6 @@ tree <- pml_bb(woodmouse, "JC", rearrangement="NNI")$tree |> midpoint()
 #> optimize edge weights:  -1861.356 --> -1857.165 
 #> optimize edge weights:  -1857.165 --> -1857.165 
 #> optimize topology:  -1857.165 --> -1856.056  NNI moves:  2 
-#> optimize edge weights:  -1856.056 --> -1856.056 
 #> optimize topology:  -1856.056 --> -1856.056  NNI moves:  0 
 woodmouse_aa <- trans(woodmouse, 2) |> as.phyDat()
 #> Warning: sequence length not a multiple of 3: 2 nucleotides dropped

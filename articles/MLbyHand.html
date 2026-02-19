@@ -69,7 +69,7 @@ Iris Bardel-Kahr</h4>
 Graz<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2026-02-12</h4>
+            <h4 data-toc-skip class="date">2026-02-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/main/vignettes/MLbyHand.Rmd" class="external-link"><code>vignettes/MLbyHand.Rmd</code></a></small>
       <div class="d-none name"><code>MLbyHand.Rmd</code></div>
@@ -196,14 +196,14 @@ site model with 4 rate categories (using the default shape parameter of
 <span><span class="co">## 2 0.3982   0.248256</span></span>
 <span><span class="co">## 3 0.7411   0.248256</span></span>
 <span><span class="co">## 4 1.0905   0.248256</span></span>
-<span><span class="co">## 5 1.7983   0.248256</span></span>
+<span><span class="co">## 5 1.7982   0.248256</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rates:</span></span>
-<span><span class="co">## a &lt;-&gt; c : 0.9533 </span></span>
-<span><span class="co">## a &lt;-&gt; g : 64.01 </span></span>
-<span><span class="co">## a &lt;-&gt; t : 0.8128 </span></span>
-<span><span class="co">## c &lt;-&gt; g : 0.005089 </span></span>
-<span><span class="co">## c &lt;-&gt; t : 24.79 </span></span>
+<span><span class="co">## a &lt;-&gt; c : 0.9472 </span></span>
+<span><span class="co">## a &lt;-&gt; g : 63.59 </span></span>
+<span><span class="co">## a &lt;-&gt; t : 0.807 </span></span>
+<span><span class="co">## c &lt;-&gt; g : 0.003986 </span></span>
+<span><span class="co">## c &lt;-&gt; t : 24.63 </span></span>
 <span><span class="co">## g &lt;-&gt; t : 1 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
@@ -232,27 +232,27 @@ time.</p>
 <pre><code><span><span class="co">## model: GTR+G(4)+I </span></span>
 <span><span class="co">## loglikelihood: -2608 </span></span>
 <span><span class="co">## unconstrained loglikelihood: -1230 </span></span>
-<span><span class="co">## Total tree length: 41.74 </span></span>
+<span><span class="co">## Total tree length: 41.75 </span></span>
 <span><span class="co">##  (expected number of substituions per site)</span></span>
 <span><span class="co">## Minimal tree length: 3.315 </span></span>
 <span><span class="co">##  (observed substitutions per site)</span></span>
-<span><span class="co">## Proportion of invariant sites: 0.007411 </span></span>
+<span><span class="co">## Proportion of invariant sites: 0.00741 </span></span>
 <span><span class="co">## Model of rate heterogeneity: Discrete gamma model</span></span>
 <span><span class="co">## Number of rate categories: 4 </span></span>
 <span><span class="co">## Shape parameter: 2.994 </span></span>
 <span><span class="co">##     Rate Proportion</span></span>
-<span><span class="co">## 1 0.0000   0.007411</span></span>
-<span><span class="co">## 2 0.3917   0.248147</span></span>
-<span><span class="co">## 3 0.7366   0.248147</span></span>
-<span><span class="co">## 4 1.0906   0.248147</span></span>
-<span><span class="co">## 5 1.8110   0.248147</span></span>
+<span><span class="co">## 1 0.0000    0.00741</span></span>
+<span><span class="co">## 2 0.3917    0.24815</span></span>
+<span><span class="co">## 3 0.7366    0.24815</span></span>
+<span><span class="co">## 4 1.0906    0.24815</span></span>
+<span><span class="co">## 5 1.8110    0.24815</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Rates:</span></span>
-<span><span class="co">## a &lt;-&gt; c : 0.7227 </span></span>
-<span><span class="co">## a &lt;-&gt; g : 74.21 </span></span>
-<span><span class="co">## a &lt;-&gt; t : 0.6014 </span></span>
-<span><span class="co">## c &lt;-&gt; g : 0.003998 </span></span>
-<span><span class="co">## c &lt;-&gt; t : 25.96 </span></span>
+<span><span class="co">## a &lt;-&gt; c : 0.7197 </span></span>
+<span><span class="co">## a &lt;-&gt; g : 73.86 </span></span>
+<span><span class="co">## a &lt;-&gt; t : 0.5978 </span></span>
+<span><span class="co">## c &lt;-&gt; g : 0.003286 </span></span>
+<span><span class="co">## c &lt;-&gt; t : 25.85 </span></span>
 <span><span class="co">## g &lt;-&gt; t : 1 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Base frequencies:  </span></span>
@@ -276,8 +276,8 @@ time.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/SH.test.html">SH.test</a></span><span class="op">(</span><span class="va">fitGTR</span>, <span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##      Trees  ln L Diff ln L p-value</span></span>
-<span><span class="co">## [1,]     1 -2608       0.0   0.504</span></span>
-<span><span class="co">## [2,]     2 -3068     460.5   0.000</span></span></code></pre>
+<span><span class="co">## [1,]     1 -2608       0.0  0.5023</span></span>
+<span><span class="co">## [2,]     2 -3068     460.5  0.0000</span></span></code></pre>
 <p>or with the AIC</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">fitJC</span><span class="op">)</span></span></code></pre></div>
@@ -380,7 +380,7 @@ pruning and regrafting) away.</p>
 <span><span class="co">##  [7] jquerylib_0.1.4     globals_0.19.0      systemfonts_1.3.1  </span></span>
 <span><span class="co">## [10] textshaping_1.0.4   yaml_2.3.12         fastmap_1.2.0      </span></span>
 <span><span class="co">## [13] lattice_0.22-7      R6_2.6.1            generics_0.1.4     </span></span>
-<span><span class="co">## [16] igraph_2.2.1        knitr_1.51          htmlwidgets_1.6.4  </span></span>
+<span><span class="co">## [16] igraph_2.2.2        knitr_1.51          htmlwidgets_1.6.4  </span></span>
 <span><span class="co">## [19] backports_1.5.0     checkmate_2.3.4     desc_1.4.3         </span></span>
 <span><span class="co">## [22] bslib_0.10.0        rlang_1.1.7         cachem_1.1.0       </span></span>
 <span><span class="co">## [25] xfun_0.56           fs_1.6.6            sass_0.4.10        </span></span>

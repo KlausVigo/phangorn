@@ -297,7 +297,7 @@ reversible models.
     ## [46] gtable_0.3.6        glue_1.8.0          Rcpp_1.1.1         
     ## [49] systemfonts_1.3.1   tidyselect_1.2.1    tibble_3.3.1       
     ## [52] xfun_0.56           knitr_1.51          farver_2.1.2       
-    ## [55] htmltools_0.5.9     nlme_3.1-168        igraph_2.2.1       
+    ## [55] htmltools_0.5.9     nlme_3.1-168        igraph_2.2.2       
     ## [58] labeling_0.4.3      rmarkdown_2.30      compiler_4.5.2     
     ## [61] S7_0.2.1
 

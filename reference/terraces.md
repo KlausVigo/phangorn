@@ -74,8 +74,27 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
 data(woodmouse)
+pratchet(woodmouse)
+#> Parsimony score of initial tree: 68 
+#> Iteration: 10. Best parsimony score so far: 68Iteration: 20. Best parsimony score so far: 68Iteration: 30. Best parsimony score so far: 68Iteration: 40. Best parsimony score so far: 68Iteration: 50. Best parsimony score so far: 68Iteration: 60. Best parsimony score so far: 68Iteration: 70. Best parsimony score so far: 68Iteration: 80. Best parsimony score so far: 68Iteration: 90. Best parsimony score so far: 68Iteration: 100. Best parsimony score so far: 68
+#> 
+#> Phylogenetic tree with 15 tips and 13 internal nodes.
+#> 
+#> Tip labels:
+#>   No305, No304, No306, No0906S, No0908S, No0909S, ...
+#> Node labels:
+#>   1, 0.73, 0.88, 0.8, 0.99, 0.7, ...
+#> 
+#> Unrooted; no branch length.
+trs <- pratchet(woodmouse, all=TRUE)
+#> Parsimony score of initial tree: 68 
+#> Iteration: 10. Best parsimony score so far: 68Iteration: 20. Best parsimony score so far: 68Iteration: 30. Best parsimony score so far: 68Iteration: 40. Best parsimony score so far: 68Iteration: 50. Best parsimony score so far: 68Iteration: 60. Best parsimony score so far: 68Iteration: 70. Best parsimony score so far: 68Iteration: 80. Best parsimony score so far: 68Iteration: 90. Best parsimony score so far: 68Iteration: 100. Best parsimony score so far: 68
+start_trs <- get("start_trees", envir = attr(trs, "env"))
+terraces(woodmouse, c(trs, start_trs))
+#> Error in UseMethod("terraces"): no applicable method for 'terraces' applied to an object of class "DNAbin"
+
+if (FALSE) { # \dontrun{
 fit <- pml_bb(woodmouse, model="JC")
 terraces(fit, dist_fun="KF.dist")
 terraces(fit, pkg="scatterplot3d")

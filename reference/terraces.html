@@ -126,8 +126,27 @@ phylogenetic tree space. <em>Science</em>,
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">woodmouse</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">woodmouse</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="parsimony.html">pratchet</a></span><span class="op">(</span><span class="va">woodmouse</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Parsimony score of initial tree: 68 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration: 10. Best parsimony score so far: 68Iteration: 20. Best parsimony score so far: 68Iteration: 30. Best parsimony score so far: 68Iteration: 40. Best parsimony score so far: 68Iteration: 50. Best parsimony score so far: 68Iteration: 60. Best parsimony score so far: 68Iteration: 70. Best parsimony score so far: 68Iteration: 80. Best parsimony score so far: 68Iteration: 90. Best parsimony score so far: 68Iteration: 100. Best parsimony score so far: 68</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Phylogenetic tree with 15 tips and 13 internal nodes.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Tip labels:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   No305, No304, No306, No0906S, No0908S, No0909S, ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Node labels:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1, 0.73, 0.88, 0.8, 0.99, 0.7, ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Unrooted; no branch length.</span>
+<span class="r-in"><span><span class="va">trs</span> <span class="op">&lt;-</span> <span class="fu"><a href="parsimony.html">pratchet</a></span><span class="op">(</span><span class="va">woodmouse</span>, all<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Parsimony score of initial tree: 68 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration: 10. Best parsimony score so far: 68Iteration: 20. Best parsimony score so far: 68Iteration: 30. Best parsimony score so far: 68Iteration: 40. Best parsimony score so far: 68Iteration: 50. Best parsimony score so far: 68Iteration: 60. Best parsimony score so far: 68Iteration: 70. Best parsimony score so far: 68Iteration: 80. Best parsimony score so far: 68Iteration: 90. Best parsimony score so far: 68Iteration: 100. Best parsimony score so far: 68</span>
+<span class="r-in"><span><span class="va">start_trs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/get.html" class="external-link">get</a></span><span class="op">(</span><span class="st">"start_trees"</span>, envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">trs</span>, <span class="st">"env"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">terraces</span><span class="op">(</span><span class="va">woodmouse</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">trs</span>, <span class="va">start_trs</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in UseMethod("terraces"):</span> no applicable method for 'terraces' applied to an object of class "DNAbin"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="pml_bb.html">pml_bb</a></span><span class="op">(</span><span class="va">woodmouse</span>, model<span class="op">=</span><span class="st">"JC"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">terraces</span><span class="op">(</span><span class="va">fit</span>, dist_fun<span class="op">=</span><span class="st">"KF.dist"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">terraces</span><span class="op">(</span><span class="va">fit</span>, pkg<span class="op">=</span><span class="st">"scatterplot3d"</span><span class="op">)</span></span></span>

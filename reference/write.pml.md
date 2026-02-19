@@ -59,7 +59,7 @@ the rates. It might be better to adopt these on the dataset.
 ``` r
 data(woodmouse)
 fit <- pml_bb(woodmouse, "JC", rearrangement = "none")
-#> optimize edge weights:  -1864.042 --> -1857.165 
+#> optimize edge weights:  -1858.786 --> -1857.165 
 #> optimize edge weights:  -1857.165 --> -1857.165 
 #> optimize edge weights:  -1857.165 --> -1857.165 
 write.pml(fit, "woodmouse")
