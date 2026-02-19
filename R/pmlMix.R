@@ -1,10 +1,10 @@
-logLik_pmlMix <- function(fits, weight, omega){
-  res <- NULL
-  for(i in seq_along(omega)){
-    res <- res + fits[[i]]$ll.0 * omega[i]
-  }
-  sum(log(res)*weight)
-}
+#logLik_pmlMix <- function(fits, weight, omega){
+#  res <- NULL
+#  for(i in seq_along(omega)){
+#    res <- res + fits[[i]]$ll.0 * omega[i]
+#  }
+#  sum(log(res)*weight)
+#}
 
 
 optimMixQ <- function(object, Q = c(1, 1, 1, 1, 1, 1), omega, ...) {
@@ -319,7 +319,7 @@ optimMixEdge <- function(object, omega, trace = 1, ...) {
 #' fit <- pml(tree, Laurasiatherian)
 #' fit <- optim.pml(fit)
 #'
-#' fit2 <- update(fit, k=4)
+#' fit2 <- update(fit, k=4, site.rate="free_rate")
 #' fit2 <- optim.pml(fit2, optGamma=TRUE)
 #'
 #' fitMix <- pmlMix(edge ~ rate, fit, m=4)
@@ -330,6 +330,7 @@ optimMixEdge <- function(object, omega, trace = 1, ...) {
 #' # simulation of mixture models
 #' #
 #' X <- allSitePattern(5)
+#' tree0 <- read.tree(text = "((t1:0.3,t2:0.3):0.1,(t3:0.3,t4:0.3):0.1,t5:0.5);")
 #' tree1 <- read.tree(text = "((t1:0.1,t2:0.5):0.1,(t3:0.1,t4:0.5):0.1,t5:0.5);")
 #' tree2 <- read.tree(text = "((t1:0.5,t2:0.1):0.1,(t3:0.5,t4:0.1):0.1,t5:0.5);")
 #' tree1 <- unroot(tree1)
@@ -340,6 +341,7 @@ optimMixEdge <- function(object, omega, trace = 1, ...) {
 #' weights <- 2000*exp(fit1$siteLik) + 1000*exp(fit2$siteLik)
 #' attr(X, "weight") <- weights
 #'
+#' fit0 <- pml(tree0, X)
 #' fit1 <- pml(tree1, X)
 #' fit2 <- optim.pml(fit1)
 #' logLik(fit2)
@@ -570,7 +572,6 @@ pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
           pl0 <- ll[, -j, drop = FALSE] %*% omega[-j]
           fits[[j]] <- update(fits[[j]], llMix = pl0, wMix = omega[j])
         }
-
 
         ll2 <- sum(weight * log(ll %*% omega))
         eps1 <- llold - ll2
