@@ -28,8 +28,13 @@
 #' @seealso \code{\link{pml_bb}, \link{optim.pml}, \link{pratchet},
 #' \link{RF.dist}, \link[ape]{di2multi}, \link{cmdscale}}.
 #' @examples
-#' \dontrun{
 #' data(woodmouse)
+#' pratchet(woodmouse)
+#' trs <- pratchet(woodmouse, all=TRUE)
+#' start_trs <- get("start_trees", envir = attr(trs, "env"))
+#' terraces(woodmouse, c(trs, start_trs))
+#'
+#' \dontrun{
 #' fit <- pml_bb(woodmouse, model="JC")
 #' terraces(fit, dist_fun="KF.dist")
 #' terraces(fit, pkg="scatterplot3d")

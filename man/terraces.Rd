@@ -43,8 +43,13 @@ There the first two axis are the principle components of distances between
 trees and the third axis is the likelihood value or parsimony score.
 }
 \examples{
-\dontrun{
 data(woodmouse)
+pratchet(woodmouse)
+trs <- pratchet(woodmouse, all=TRUE)
+start_trs <- get("start_trees", envir = attr(trs, "env"))
+terraces(woodmouse, c(trs, start_trs))
+
+\dontrun{
 fit <- pml_bb(woodmouse, model="JC")
 terraces(fit, dist_fun="KF.dist")
 terraces(fit, pkg="scatterplot3d")
