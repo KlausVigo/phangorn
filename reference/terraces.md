@@ -1,10 +1,11 @@
-# Explore likelihood parsimony surface
+# Explore the likelihood / parsimony / distance surface
 
 `terraces` visualizes in likelihood surface for the tree space
 (Sanderson et al. 2011). Usually trees are from a bootstrap or MCMC
 sample. There the first two axis are the principle components of
-distances between trees and the third axis is the likelihood value or
-parsimony score.
+distances between trees and the third axis is the likelihood value. We
+also allow parsimony score, minimum evolution criteria or least squares
+as criterion.
 
 ## Usage
 
@@ -16,8 +17,12 @@ terraces(x, trees = x$bs, dist_fun = "RF.dist",
   di2multi = FALSE, tol = 2e-08, plot = TRUE, ...)
 
 # S3 method for class 'phyDat'
-terraces(x, trees, dist_fun = "RF.dist", di2multi = TRUE,
+terraces(x, trees, dist_fun = "RF.dist", di2multi = FALSE,
   tol = 2e-08, plot = TRUE, ...)
+
+# S3 method for class 'dist'
+terraces(x, trees, dist_fun = "RF.dist", di2multi = FALSE,
+  tol = 2e-08, plot = TRUE, crit = "ME", ...)
 ```
 
 ## Arguments
@@ -41,9 +46,9 @@ terraces(x, trees, dist_fun = "RF.dist", di2multi = TRUE,
 
 - di2multi:
 
-  logical, should trees multichotomies get collapsed. Useful for
-  Robinson-Foulds distance. If edge length are used to compute the
-  distance, e.g. Kuhner-Felsenstein distance, this is not needed.
+  logical, should polytomies get collapsed. Useful for Robinson-Foulds
+  distance. If edge length are used to compute the distance, e.g.
+  Kuhner-Felsenstein distance, this is not needed.
 
 - tol:
 
@@ -52,7 +57,12 @@ terraces(x, trees, dist_fun = "RF.dist", di2multi = TRUE,
 
 - plot:
 
-  loggical if TRUE a 3D scatter is shown.
+  logical if TRUE a 3D scatter is shown.
+
+- crit:
+
+  either "ME" (minimum) or "RSS" (residual sum of squares) if x is a
+  dist object.
 
 ## Value
 
@@ -80,6 +90,7 @@ trs <- pratchet(woodmouse, all=TRUE)
 #> Iteration: 10. Best parsimony score so far: 68Iteration: 20. Best parsimony score so far: 68Iteration: 30. Best parsimony score so far: 68Iteration: 40. Best parsimony score so far: 68Iteration: 50. Best parsimony score so far: 68Iteration: 60. Best parsimony score so far: 68Iteration: 70. Best parsimony score so far: 68Iteration: 80. Best parsimony score so far: 68Iteration: 90. Best parsimony score so far: 68Iteration: 100. Best parsimony score so far: 68
 start_trs <- get("start_trees", envir = attr(trs, "env"))
 terraces(as.phyDat(woodmouse), c(trs, start_trs))
+#> Some trees are not binary. Result may not what you expect!
 #> Warning: no DISPLAY variable so Tk is not available
 
 

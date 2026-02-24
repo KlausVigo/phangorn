@@ -286,7 +286,7 @@ reversible models.
     ## [13] Matrix_1.7-4        backports_1.5.0     scales_1.4.0       
     ## [16] codetools_0.2-20    textshaping_1.0.4   jquerylib_0.1.4    
     ## [19] cli_3.6.5           rlang_1.1.7         parallelly_1.46.1  
-    ## [22] future.apply_1.20.1 withr_3.0.2         cachem_1.1.0       
+    ## [22] future.apply_1.20.2 withr_3.0.2         cachem_1.1.0       
     ## [25] yaml_2.3.12         otel_0.2.0          tools_4.5.2        
     ## [28] ggseqlogo_0.2.2     parallel_4.5.2      checkmate_2.3.4    
     ## [31] dplyr_1.2.0         ggplot2_4.0.2       fastmatch_1.1-8    

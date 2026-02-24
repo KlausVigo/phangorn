@@ -306,7 +306,7 @@
   : Super Tree methods
 
 - [`terraces()`](https://klausvigo.github.io/phangorn/reference/terraces.md)
-  : Explore likelihood parsimony surface
+  : Explore the likelihood / parsimony / distance surface
 
 - [`transferBootstrap()`](https://klausvigo.github.io/phangorn/reference/transferBootstrap.md)
   : Transfer Bootstrap
