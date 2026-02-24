@@ -827,7 +827,7 @@ double pscore_pw(Fitch* obj, int a, int b){
   int states = obj->nStates;
   int nBits = obj->nBits;
   int wBits = obj->wBits;
-  int nTips = obj->nSeq;
+//  int nTips = obj->nSeq;
   double pars = 0;
   std::vector< std::vector<uint64_t> > X = obj->X;
   NumericVector weight = obj->weight;

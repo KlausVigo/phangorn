@@ -1,21 +1,23 @@
-#' Explore likelihood parsimony surface
+#' Explore the likelihood / parsimony / distance surface
 #'
 #' \code{terraces} visualizes in likelihood surface for the tree space
 #' (Sanderson et al. 2011). Usually trees are from a bootstrap or MCMC sample.
 #' There the first two axis are the principle components of distances between
-#' trees and the third axis is the likelihood value or parsimony score.
-## (it could also parsiomony score, minimum evolution criteria or least squares)
+#' trees and the third axis is the likelihood value. We also allow parsimony
+#' score, minimum evolution criteria or least squares as criterion.
 #'
 #' @param x an object of class \code{pml}
 #' @param trees an object of class \code{multiPhylo}
 #' @param dist_fun a function to compute distances between trees see e.g.
 #' \code{\link{RF.dist}}
-#' @param di2multi logical, should trees multichotomies get collapsed. Useful
+#' @param di2multi logical, should polytomies get collapsed. Useful
 #' for Robinson-Foulds distance. If edge length are used to compute the
 #' distance, e.g. Kuhner-Felsenstein distance, this is not needed.
 #' @param tol a numeric value giving the tolerance to consider a branch length
 #' significantly greater than zero.
-#' @param plot loggical if TRUE a 3D scatter is shown.
+#' @param plot logical if TRUE a 3D scatter is shown.
+#' @param crit either "ME" (minimum) or "RSS" (residual sum of squares) if x is
+#' a dist object.
 ## @param add whether to add the points to an existing plot.
 #' @param \dots Further arguments passed to or from other methods.
 #' @return \code{terraces} silently returns a matrix.
@@ -58,7 +60,6 @@ terraces.pml <- function(x, trees=x$bs, dist_fun="RF.dist", di2multi=FALSE,
   assert_multiPhylo(trees)
   trees <- c(tree, trees)
   trees <- .compressTipLabel(trees)
-
   if(di2multi)trees <- multi2di(trees, tol)
   tmp <- hash(trees)
   trees <- trees[!duplicated(tmp)]
@@ -73,7 +74,7 @@ terraces.pml <- function(x, trees=x$bs, dist_fun="RF.dist", di2multi=FALSE,
   }
   z <- vapply(trees, fun, -Inf,  x=x)
   xyz <- cbind(xy, z)
-  colnames(xyz) <- c("prc_1", "prc_2", "log-likelihood")
+  colnames(xyz) <- c("prc 1", "prc 2", "log-likelihood")
   if (plot) plot_terraces(xyz, ...)
   invisible(xyz)
 }
@@ -81,21 +82,48 @@ terraces.pml <- function(x, trees=x$bs, dist_fun="RF.dist", di2multi=FALSE,
 #' @rdname terraces
 #' @method terraces phyDat
 #' @export
-terraces.phyDat <- function(x, trees, dist_fun="RF.dist", di2multi=TRUE,
+terraces.phyDat <- function(x, trees, dist_fun="RF.dist", di2multi=FALSE,
                           tol=2e-8, plot=TRUE, ...){
   assert_phyDat(x)
   assert_multiPhylo(trees)
-  clean_phylo(trees, compress = TRUE)
+  trees <- clean_phylo(trees, compress = TRUE) #, di2multi=di2multi, tol=tol)
   if (di2multi) trees <- multi2di(trees, tol)
   if(length(trees) < 3) stop("less than 3 different trees found!")
   dm <- do.call(dist_fun, list(trees))
   xy <- cmdscale(dm)
   z <- parsimony(trees, x)
   xyz <- cbind(xy, z)
-  colnames(xyz) <- c("prc_1", "prc_2", "parsimony score")
+  colnames(xyz) <- c("prc 1", "prc 2", "parsimony score")
   if(plot) plot_terraces(xyz, ...)
   invisible(xyz)
 }
+
+
+#' @rdname terraces
+#' @method terraces dist
+#' @export
+terraces.dist <- function(x, trees, dist_fun="RF.dist", di2multi=FALSE,
+                          tol=2e-8, plot=TRUE, crit="ME", ...){
+  stopifnot(inherits(x, "dist"))
+  assert_multiPhylo(trees)
+  trees <- clean_phylo(trees, compress = TRUE) #, di2multi=di2multi, tol=tol)
+  if (di2multi) trees <- multi2di(trees, tol)
+  if(length(trees) < 3) stop("less than 3 different trees found!")
+  dm <- do.call(dist_fun, list(trees))
+  xy <- cmdscale(dm)
+
+  crit <- match.arg(crit, c("ME", "RSS"))
+  lab <- attr(trees, "TipLabel")
+  x <- as.dist(as.matrix(x)[lab, lab])
+  tmp <- lapply(trees, nnls.phylo, dm=x)
+  if(crit=="ME") z <-sapply(tmp, \(x){sum(x$edge.length)})
+  else if(crit=="RSS") z <-sapply(tmp, \(x){attr(x, "RSS")})
+  xyz <- cbind(xy, z)
+  colnames(xyz) <- c("prc 1", "prc 2", "parsimony score")
+  if(plot) plot_terraces(xyz, ...)
+  invisible(xyz)
+}
+
 
 plot_terraces <- function(xyz, size=10, lwd=2, pkg="plot3D",
                           max=TRUE, add=FALSE, ...){

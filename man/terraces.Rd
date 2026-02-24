@@ -4,15 +4,19 @@
 \alias{terraces}
 \alias{terraces.pml}
 \alias{terraces.phyDat}
-\title{Explore likelihood parsimony surface}
+\alias{terraces.dist}
+\title{Explore the likelihood / parsimony / distance surface}
 \usage{
 terraces(x, ...)
 
 \method{terraces}{pml}(x, trees = x$bs, dist_fun = "RF.dist",
   di2multi = FALSE, tol = 2e-08, plot = TRUE, ...)
 
-\method{terraces}{phyDat}(x, trees, dist_fun = "RF.dist", di2multi = TRUE,
+\method{terraces}{phyDat}(x, trees, dist_fun = "RF.dist", di2multi = FALSE,
   tol = 2e-08, plot = TRUE, ...)
+
+\method{terraces}{dist}(x, trees, dist_fun = "RF.dist", di2multi = FALSE,
+  tol = 2e-08, plot = TRUE, crit = "ME", ...)
 }
 \arguments{
 \item{x}{an object of class \code{pml}}
@@ -24,14 +28,17 @@ terraces(x, ...)
 \item{dist_fun}{a function to compute distances between trees see e.g.
 \code{\link{RF.dist}}}
 
-\item{di2multi}{logical, should trees multichotomies get collapsed. Useful
+\item{di2multi}{logical, should polytomies get collapsed. Useful
 for Robinson-Foulds distance. If edge length are used to compute the
 distance, e.g. Kuhner-Felsenstein distance, this is not needed.}
 
 \item{tol}{a numeric value giving the tolerance to consider a branch length
 significantly greater than zero.}
 
-\item{plot}{loggical if TRUE a 3D scatter is shown.}
+\item{plot}{logical if TRUE a 3D scatter is shown.}
+
+\item{crit}{either "ME" (minimum) or "RSS" (residual sum of squares) if x is
+a dist object.}
 }
 \value{
 \code{terraces} silently returns a matrix.
@@ -40,7 +47,8 @@ significantly greater than zero.}
 \code{terraces} visualizes in likelihood surface for the tree space
 (Sanderson et al. 2011). Usually trees are from a bootstrap or MCMC sample.
 There the first two axis are the principle components of distances between
-trees and the third axis is the likelihood value or parsimony score.
+trees and the third axis is the likelihood value. We also allow parsimony
+score, minimum evolution criteria or least squares as criterion.
 }
 \examples{
 data(woodmouse)
