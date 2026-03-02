@@ -119,7 +119,7 @@ terraces.dist <- function(x, trees, dist_fun="RF.dist", di2multi=FALSE,
   if(crit=="ME") z <-sapply(tmp, \(x){sum(x$edge.length)})
   else if(crit=="RSS") z <-sapply(tmp, \(x){attr(x, "RSS")})
   xyz <- cbind(xy, z)
-  colnames(xyz) <- c("prc 1", "prc 2", "parsimony score")
+  colnames(xyz) <- c("prc 1", "prc 2", crit)
   if(plot) plot_terraces(xyz, ...)
   invisible(xyz)
 }
