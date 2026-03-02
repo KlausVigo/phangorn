@@ -578,15 +578,16 @@ Tip dated ML phylogeny with time scale in years.
     ## [10] textshaping_1.0.4   yaml_2.3.12         fastmap_1.2.0      
     ## [13] lattice_0.22-7      R6_2.6.1            generics_0.1.4     
     ## [16] igraph_2.2.2        htmlwidgets_1.6.4   backports_1.5.0    
-    ## [19] checkmate_2.3.4     desc_1.4.3          osqp_0.6.3.3       
+    ## [19] checkmate_2.3.4     desc_1.4.3          osqp_1.0.0         
     ## [22] bslib_0.10.0        rlang_1.1.7         fastmatch_1.1-8    
-    ## [25] cachem_1.1.0        xfun_0.56           fs_1.6.6           
-    ## [28] sass_0.4.10         otel_0.2.0          cli_3.6.5          
-    ## [31] pkgdown_2.2.0       magrittr_2.0.4      digest_0.6.39      
-    ## [34] grid_4.5.2          lifecycle_1.0.5     nlme_3.1-168       
-    ## [37] evaluate_1.0.5      listenv_0.10.0      codetools_0.2-20   
-    ## [40] ragg_1.5.0          parallelly_1.46.1   rmarkdown_2.30     
-    ## [43] pkgconfig_2.0.3     tools_4.5.2         htmltools_0.5.9
+    ## [25] cachem_1.1.0        xfun_0.56           S7_0.2.1           
+    ## [28] fs_1.6.6            sass_0.4.10         otel_0.2.0         
+    ## [31] cli_3.6.5           pkgdown_2.2.0       magrittr_2.0.4     
+    ## [34] digest_0.6.39       grid_4.5.2          lifecycle_1.0.5    
+    ## [37] nlme_3.1-168        evaluate_1.0.5      listenv_0.10.0     
+    ## [40] codetools_0.2-20    ragg_1.5.0          parallelly_1.46.1  
+    ## [43] rmarkdown_2.30      pkgconfig_2.0.3     tools_4.5.2        
+    ## [46] htmltools_0.5.9
 
 ## References
 
