@@ -40,3 +40,17 @@ expect_equal(tree_wpgma_el, tree_wpgma_el)
 expect_equal(tree_single_el, tree_single_el)
 expect_equal(tree_complete_el, tree_complete_el)
 
+
+# Test binomial_mk
+data("Laurasiatherian")
+dm <- dist.hamming(Laurasiatherian, FALSE)
+y <- cbind(dm, 3179 - dm)
+y_jc <- dist.ml(Laurasiatherian)
+tree <- UNJ(y_jc)
+X <- designTree(tree)
+coef_glm <- glm(y ~ X -1, binomial_mk())$coef
+coef_lm <- lm(y_jc ~ X -1)$coef
+
+expect_true(cor(coef_glm, coef_lm) > 0.99)
+
+
