@@ -2,7 +2,8 @@
 
 `write.ancestral` allows to export ancestral reconstructions. It writes
 out the tree, a tab delimited text file with the probabilities and the
-alignment. `ancestral` generates an object of class ancestral.
+original alignment and an alignment of the most likely ancestral states.
+`ancestral` generates an object of class ancestral.
 
 ## Usage
 
