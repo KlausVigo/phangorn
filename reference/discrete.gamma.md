@@ -147,14 +147,14 @@ par(old.par)
 
 data(Laurasiatherian)
 fit <- pml_bb(Laurasiatherian, "JC+G(4)", rearrangement = "none")
-#> optimize edge weights:  -49799.79 --> -49285.06 
-#> optimize shape parameter:  -49285.06 --> -48610.3 
-#> optimize edge weights:  -48610.3 --> -48604.91 
-#> optimize shape parameter:  -48604.91 --> -48604.68 
-#> optimize edge weights:  -48604.68 --> -48604.66 
-#> optimize shape parameter:  -48604.66 --> -48604.65 
-#> optimize edge weights:  -48604.65 --> -48604.65 
-#> optimize shape parameter:  -48604.65 --> -48604.65 
-#> optimize edge weights:  -48604.65 --> -48604.65 
+#> optimize edge weights:  -49820.63 --> -49284.37 
+#> optimize shape parameter:  -49284.37 --> -48609.6 
+#> optimize edge weights:  -48609.6 --> -48603.86 
+#> optimize shape parameter:  -48603.86 --> -48603.58 
+#> optimize edge weights:  -48603.58 --> -48603.56 
+#> optimize shape parameter:  -48603.56 --> -48603.55 
+#> optimize edge weights:  -48603.55 --> -48603.55 
+#> optimize shape parameter:  -48603.55 --> -48603.55 
+#> optimize edge weights:  -48603.55 --> -48603.55 
 plotRates(fit)
 ```

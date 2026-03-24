@@ -199,7 +199,7 @@ topology.
 
 ## Session info
 
-    ## R version 4.5.2 (2025-10-31)
+    ## R version 4.5.3 (2026-03-11)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 24.04.3 LTS
     ## 
@@ -224,20 +224,20 @@ topology.
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] Matrix_1.7-4        future.apply_1.20.2 jsonlite_2.0.0     
-    ##  [4] compiler_4.5.2      Rcpp_1.1.1          parallel_4.5.2     
-    ##  [7] jquerylib_0.1.4     globals_0.19.0      systemfonts_1.3.1  
-    ## [10] textshaping_1.0.4   yaml_2.3.12         fastmap_1.2.0      
-    ## [13] lattice_0.22-7      R6_2.6.1            generics_0.1.4     
+    ##  [4] compiler_4.5.3      Rcpp_1.1.1          parallel_4.5.3     
+    ##  [7] jquerylib_0.1.4     globals_0.19.1      systemfonts_1.3.2  
+    ## [10] textshaping_1.0.5   yaml_2.3.12         fastmap_1.2.0      
+    ## [13] lattice_0.22-9      R6_2.6.1            generics_0.1.4     
     ## [16] igraph_2.2.2        knitr_1.51          htmlwidgets_1.6.4  
-    ## [19] backports_1.5.0     checkmate_2.3.4     future_1.69.0      
+    ## [19] backports_1.5.0     checkmate_2.3.4     future_1.70.0      
     ## [22] desc_1.4.3          bslib_0.10.0        rlang_1.1.7        
-    ## [25] cachem_1.1.0        xfun_0.56           fs_1.6.6           
+    ## [25] cachem_1.1.0        xfun_0.57           fs_2.0.0           
     ## [28] sass_0.4.10         otel_0.2.0          cli_3.6.5          
     ## [31] pkgdown_2.2.0       magrittr_2.0.4      digest_0.6.39      
-    ## [34] grid_4.5.2          lifecycle_1.0.5     nlme_3.1-168       
-    ## [37] evaluate_1.0.5      listenv_0.10.0      codetools_0.2-20   
-    ## [40] ragg_1.5.0          parallelly_1.46.1   rmarkdown_2.30     
-    ## [43] pkgconfig_2.0.3     tools_4.5.2         htmltools_0.5.9
+    ## [34] grid_4.5.3          lifecycle_1.0.5     nlme_3.1-168       
+    ## [37] evaluate_1.0.5      listenv_0.10.1      codetools_0.2-20   
+    ## [40] ragg_1.5.2          parallelly_1.46.1   rmarkdown_2.30     
+    ## [43] pkgconfig_2.0.3     tools_4.5.3         htmltools_0.5.9
 
 ## References
 

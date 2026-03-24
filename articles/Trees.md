@@ -92,7 +92,7 @@ bs_upgma <- bootstrap.phyDat(primates,  fun)
 With the new syntax of R 4.1 this can be written a bit shorter:
 
 ``` r
-bs_upgma <- bootstrap.phyDat(primates,  \(x){dist.ml(x) |> upgma})
+bs_upgma <- bootstrap.phyDat(primates,  \(x){dist.ml(x) |> upgma()})
 ```
 
 Finally, we can plot the tree with bootstrap values added:
@@ -509,23 +509,23 @@ fit_td
     ##  (expected number of substituions per site)
     ## Minimal tree length: 0.1279318 
     ##  (observed substitutions per site)
-    ## Proportion of invariant sites: 0.6865064 
+    ## Proportion of invariant sites: 0.6865065 
     ## 
-    ## Rate: 0.002534975 
+    ## Rate: 0.00253498 
     ## 
     ## Rates:
     ## a <-> c : 1 
-    ## a <-> g : 9.866433 
+    ## a <-> g : 9.866434 
     ## a <-> t : 1 
     ## c <-> g : 1 
-    ## c <-> t : 9.866433 
+    ## c <-> t : 9.866434 
     ## g <-> t : 1 
     ## 
     ## Base frequencies:  
     ##         a         c         g         t 
     ## 0.3097759 0.1928617 0.2376819 0.2596805 
     ## 
-    ## Rate: 0.002534975
+    ## Rate: 0.00253498
 
 While the loglikelihood is lower than for an unrooted tree, we have to
 keep in mind that rooted trees use less parameters. In unrooted trees we
@@ -548,7 +548,7 @@ Tip dated ML phylogeny with time scale in years.
 
 ## Session info
 
-    ## R version 4.5.2 (2025-10-31)
+    ## R version 4.5.3 (2026-03-11)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 24.04.3 LTS
     ## 
@@ -569,24 +569,24 @@ Tip dated ML phylogeny with time scale in years.
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] knitr_1.51        future_1.69.0     phangorn_2.12.1.3 ape_5.8-1        
+    ## [1] knitr_1.51        future_1.70.0     phangorn_2.12.1.3 ape_5.8-1        
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] Matrix_1.7-4        future.apply_1.20.2 jsonlite_2.0.0     
-    ##  [4] compiler_4.5.2      Rcpp_1.1.1          parallel_4.5.2     
-    ##  [7] jquerylib_0.1.4     globals_0.19.0      systemfonts_1.3.1  
-    ## [10] textshaping_1.0.4   yaml_2.3.12         fastmap_1.2.0      
-    ## [13] lattice_0.22-7      R6_2.6.1            generics_0.1.4     
+    ##  [4] compiler_4.5.3      Rcpp_1.1.1          parallel_4.5.3     
+    ##  [7] jquerylib_0.1.4     globals_0.19.1      systemfonts_1.3.2  
+    ## [10] textshaping_1.0.5   yaml_2.3.12         fastmap_1.2.0      
+    ## [13] lattice_0.22-9      R6_2.6.1            generics_0.1.4     
     ## [16] igraph_2.2.2        htmlwidgets_1.6.4   backports_1.5.0    
     ## [19] checkmate_2.3.4     desc_1.4.3          osqp_1.0.0         
     ## [22] bslib_0.10.0        rlang_1.1.7         fastmatch_1.1-8    
-    ## [25] cachem_1.1.0        xfun_0.56           S7_0.2.1           
-    ## [28] fs_1.6.6            sass_0.4.10         otel_0.2.0         
+    ## [25] cachem_1.1.0        xfun_0.57           S7_0.2.1           
+    ## [28] fs_2.0.0            sass_0.4.10         otel_0.2.0         
     ## [31] cli_3.6.5           pkgdown_2.2.0       magrittr_2.0.4     
-    ## [34] digest_0.6.39       grid_4.5.2          lifecycle_1.0.5    
-    ## [37] nlme_3.1-168        evaluate_1.0.5      listenv_0.10.0     
-    ## [40] codetools_0.2-20    ragg_1.5.0          parallelly_1.46.1  
-    ## [43] rmarkdown_2.30      pkgconfig_2.0.3     tools_4.5.2        
+    ## [34] digest_0.6.39       grid_4.5.3          lifecycle_1.0.5    
+    ## [37] nlme_3.1-168        evaluate_1.0.5      listenv_0.10.1     
+    ## [40] codetools_0.2-20    ragg_1.5.2          parallelly_1.46.1  
+    ## [43] rmarkdown_2.30      pkgconfig_2.0.3     tools_4.5.3        
     ## [46] htmltools_0.5.9
 
 ## References

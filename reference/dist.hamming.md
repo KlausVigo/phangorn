@@ -1,15 +1,16 @@
 # Pairwise Distances from Sequences
 
 `dist.hamming`, `dist.ml` and `dist.logDet` compute pairwise distances
-for an object of class `phyDat`. `dist.ml` uses DNA / AA sequences to
-compute distances under different substitution models.
+for an object of class `phyDat` and additional `DNAbin` or `AAbin` from
+ape. `dist.ml` uses DNA / AA sequences to compute distances under
+different substitution models.
 
 ## Usage
 
 ``` r
-dist.hamming(x, ratio = TRUE, exclude = "none")
+dist.hamming(x, ratio = TRUE, exclude = "pairwise")
 
-dist.ml(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
+dist.ml(x, model = "JC69", exclude = "pairwise", bf = NULL, Q = NULL,
   k = 1L, shape = 1, ...)
 
 dist.logDet(x)
@@ -66,8 +67,12 @@ So far 17 amino acid models are supported ("WAG", "JTT", "LG",
 "HIVw", "HIVb", "FLU", "Blosum62", "Dayhoff_DCMut" and "JTT_DCMut") and
 additional rate matrices and frequencies can be supplied.
 
-The "F81" model uses empirical base frequencies, the "JC69" equal base
-frequencies. This is even the case if the data are not nucleotides.
+The Jukes-Cantor model "JC69" assumnes equal base frequencies and equal
+rates and is a sepqecial case of the Mk model. When calling a "JC69"
+model with different state space a "Mk" model is fitted. The "F81" model
+uses empirical base frequencies.
+[`dist.dna`](https://rdrr.io/pkg/ape/man/dist.dna.html) offers
+additional nucleotide models.
 
 The argument `exclude` decides how gaps / ambiguous data / missing data
 are treated. Usually gaps are treated as ambiguous states, but you can

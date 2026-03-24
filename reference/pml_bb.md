@@ -86,7 +86,7 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ``` r
 data(woodmouse)
 tmp <- pml_bb(woodmouse, model="HKY+I", rearrangement="NNI")
-#> optimize edge weights:  -1812.646 --> -1810.473 
+#> optimize edge weights:  -1811.409 --> -1810.473 
 #> optimize rate matrix:  -1810.473 --> -1758.757 
 #> optimize invariant sites:  -1758.757 --> -1744.355 
 #> optimize edge weights:  -1744.355 --> -1744.199 

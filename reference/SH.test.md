@@ -71,7 +71,7 @@ fit2 <- optim.pml(fit2)
 # with pml objects as input
 SH.test(fit1, fit2, B=1000)
 #>      Trees      ln L Diff ln L p-value
-#> [1,]     1 -54290.26    0.0000   0.493
+#> [1,]     1 -54290.26    0.0000   0.498
 #> [2,]     2 -54911.33  621.0767   0.000
 # in real analysis use larger B, e.g. 10000
 
@@ -79,7 +79,7 @@ SH.test(fit1, fit2, B=1000)
 X <- matrix(c(fit1$siteLik, fit2$siteLik), ncol=2)
 SH.test(X, weight=attr(Laurasiatherian, "weight"), B=1000)
 #>      Trees      ln L Diff ln L p-value
-#> [1,]     1 -54290.26    0.0000   0.489
+#> [1,]     1 -54290.26    0.0000   0.492
 #> [2,]     2 -54911.33  621.0767   0.000
 if (FALSE) { # \dontrun{
 example(pmlPart)
