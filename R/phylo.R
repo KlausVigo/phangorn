@@ -202,13 +202,12 @@ optimGammaPhangorn <- function(tree, data, w = c(0.25, 0.25, 0.25, 0.25),
   k <- length(w)
   nenner <- 1 / w[1]
   eta <- log(w * nenner)
-  eta <- eta[-1]
-  par <- c(eta, shape)
+  par <- c(eta[-1], shape)
   fn <- function(par, tree, data, k, shape, ...) {
     eta <- c(0, par[-k])
     shape <- par[k]
     w_new <- exp(eta) / sum(exp(eta))
-    g <- discrete.gamma.2(alpha=shape, k=length(w_new))
+    g <- discrete.gamma.2(alpha=shape, k=length(w_new), w=w_new)
     pml.fit(tree, data, g=g, w=w_new, k=k, ...)
   }
   res <- optim(par, fn = fn, method = "L-BFGS-B", lower = c(rep(-5, k-1), 0.1),
@@ -747,7 +746,6 @@ update.pml <- function(object, ...) {
   if (!is.na(existing[9]) && type != "CODON") {
       model <- eval(extras[[existing[9]]], parent.frame())
 #      print(model)
-#      browser()
 #      getModelAA(model, bf = is.na(existing[3]), Q = is.na(existing[4]),
 #                 has_gap_state = has_gap_state(data))
       updateModel(model, type, nc, bf = is.na(existing[3]),
@@ -2348,7 +2346,10 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                           llMix = llMix, wMix=wMix, ASC=ASC)
         shape <- res[[1]][k+1]
         w <- res[[1]][1:k]
-        g <- discrete.gamma.2(shape, length(w))
+        g <- discrete.gamma.2(shape, length(w), w=w)
+        ll <- res[[2]]
+        if (trace > 0)
+          cat("optimize shape parameter: ", ll, "-->", max(res[[2]], ll), "\n")
       } else {
         res <- optimGamma(tree, data, shape = shape, k = k, inv = inv,
                           INV = INV, Q = Q, bf = bf, eig = eig, ll.0 = ll.0,
@@ -2476,7 +2477,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                        ll=ll2, w = w, g = g, eig = eig, bf = bf, inv=inv,
                        rate=rate, ll.0 = ll.0, INV = INV, llMix = llMix,
                        wMix=wMix, ASC=ASC, RELL=RELL, ll_current=ll,
-                       control=list(eps=1e-08, maxit=3, trace=0, tau=tau))
+                       control=list(eps=1e-08, maxit=3, trace=trace-3, tau=tau))
         if (res$logLik > (ll + epsR)) {
           tree <- res$tree
           ll <- res$logLik
@@ -2798,7 +2799,6 @@ pml.nni <- function(tree, data, w, g, eig, bf, ll.0, ll, inv, wMix, llMix,
 
   tmpl <- pml.fit4(tree, data, bf=bf, g=g, w=w, eig=eig, inv=inv,
                    ll.0=ll.0, k=k, wMix=wMix, llMix=llMix, ...)
-#  browser()
   while (any(candidates)) {
 
     ind <- which.max(loglik)
@@ -2853,21 +2853,23 @@ opt_nni <- function(tree, data, rooted, iter_max, trace, ll, RELL=NULL,
   iter <- 0
   llstart <- ll
 
-#  cand <- as.integer(Ntip(tree) : max(tree$edge))
+  cand <- as.integer(Ntip(tree) : max(tree$edge))
 
   while (iter < iter_max) {
     if (!rooted) {
       tmp <- pml.nni(tree, data, ll=ll, RELL=RELL, ll_current=ll_current, ...)
       debug <- FALSE
-#      if(debug){
-#      cand1 <- neighborhood_2(tmp$tree, cand)
-#      cand2 <- neighborhood_2(tmp$tree, cand, 2)
-#      cand3 <- neighborhood_2(tmp$tree, cand, 3)
-#      cat("Envir 1:", length(cand1), all(tmp$cand %in% cand1),"\n" )
-#      cat("Envir 2:", length(cand2), all(tmp$cand %in% cand2),"\n" )
-#      cat("Envir 3:", length(cand3), all(tmp$cand %in% cand3),"\n" )
-#      cand <- tmp$candidates
-#      }
+      if(debug){
+        cand1 <- neighborhood_2(tmp$tree, cand)
+        cand2 <- neighborhood_2(tmp$tree, cand, 2)
+        cand3 <- neighborhood_2(tmp$tree, cand, 3)
+        cand4 <- neighborhood_2(tmp$tree, cand, 4)
+        cat("Envir 1:", length(cand1), all(tmp$cand %in% cand1),"\n" )
+        cat("Envir 2:", length(cand2), all(tmp$cand %in% cand2),"\n" )
+        cat("Envir 3:", length(cand3), all(tmp$cand %in% cand3),"\n" )
+        cat("Envir 4:", length(cand4), all(tmp$cand %in% cand4),"\n" )
+        cand <- tmp$candidates
+      }
 #      res <- optimEdge(tmp$tree, data, ...)
     }
     else {
@@ -2918,6 +2920,18 @@ neighborhood <- function(candidates, INDEX, nTips){
   cand[cand>nTips]
 }
 
+
+neighborhood_2 <- function(x, pos, range=1){
+  for(i in seq_len(range)){
+    anc <- Ancestors(x, pos, "parent") |> unlist()
+    desc <- Descendants(x, pos ,"children") |> unlist()
+    sib <- Siblings(x, pos) |> unlist()
+    pos <- sort(unique(c(pos, anc, desc, sib)))
+    pos <- pos[pos > (Ntip(x)) ]
+  }
+  pos
+}
+
 #  external TODO
 SH_quartet <- function(tree, data, rooted, ll, ...){
   if (rooted) tmp <- rooted.nni(tree, data, aLRT=TRUE, ...)
@@ -2950,15 +2964,9 @@ init_rell <- function(x, B = 100L){
 
 
 update_rell <- function(obj, siteLik, tree, ll=-Inf){
-#
-#  .RELL_NULL <<- .RELL_NULL + 1
-#  browser()
-#  if(sum(obj$weight*siteLik) > 1.001 * ll) .RELL_ZWEI <<- .RELL_ZWEI + 1
   rell_tmp <- obj$X %*% siteLik
   rell_ind <- rell_tmp > obj$logLik
   if(any(rell_ind)){
-#    print(sum(obj$weight*siteLik) / ll)
-#    .RELL_EINS <<- .RELL_EINS + 1
     obj$logLik[rell_ind] <- rell_tmp[rell_ind]
     obj$bs[rell_ind] <- c(tree)
   }
