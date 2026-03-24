@@ -322,19 +322,25 @@ rates_n_weights <- function(shape, k, site.rate = "gamma", w=NULL, inv=0){
     #rates.and.weights <- matrix(c(1,1), ncol=2L,
           #                        dimnames = list(NULL, c("rate", "weight")))
   else{
+
     if(site.rate == "gamma"){
-      g <- discrete.gamma(shape, k=k)
       w <- rep(1 / k, k)
+      g <- discrete.gamma(shape, k=k)
+
 #      rates.and.weights <- matrix( c(g, w), ncol=2L,
 #                          dimnames = list(NULL, c("rate", "weight")))
     }
-#    if(site.rate == "gamma_phangorn"){
-#      rates.and.weights <- discrete.gamma.2(alpha=shape, k=k)
-#    }
+    if(site.rate == "gamma_phangorn"){
+      if(is.null(w))  w <- rep(1 / k, k)
+      g <- discrete.gamma.2(alpha=shape, k=k, w=w)
+#      g <- rates.and.weights[, 1]
+#      w <- rates.and.weights[, 2]
+    }
 
     if(site.rate == "free_rate"){
-      g <- discrete.gamma(1, k=k) # rep(1, k)
       w <- rep(1 / k, k)
+      g <- discrete.gamma(1, k=k) # rep(1, k)
+#      w <- rep(1 / k, k)
 #      rates.and.weights <- matrix( c(g, w), ncol=2L,
 #                                   dimnames = list(NULL, c("rate", "weight")))
     }
@@ -349,29 +355,16 @@ rates_n_weights <- function(shape, k, site.rate = "gamma", w=NULL, inv=0){
 }
 
 
-discrete.gamma.2 <- function(alpha, k){
-  if (k == 1) return(list(w=1, g=1))
-  bin <- c(rep(0, k), 1)
-  quants <- rep(0, k+1)
-  quants[k+1] <- 1
-  for(i in 2:k){
-    old_bin <- bin[i-1]
-    fun <- function(x, k, alpha, old_bin){
-      quants <- qgamma(c(old_bin, x), shape = alpha, rate = alpha)
-      tmp <- diff(pgamma(quants * alpha, alpha + 1)) * (1 / (x-old_bin))
-      abs( (x - old_bin) * tmp - 1/k )
-    }
-    res <- optimize(fun, k=k, alpha=alpha, old_bin=old_bin,
-                    interval=c(old_bin, 1), tol = .Machine$double.eps^0.5)
-    bin[i] <- res$minimum
-  }
-  w <- diff(bin)
+discrete.gamma.2 <- function(alpha, k, w=NULL){
+  if (k == 1) return(1)
+  if(is.null(w)) w <- rep(1/k, k)
+  bin <- c(0, cumsum(w)[-k])
   quants <- qgamma( bin[seq_len(k)], shape = alpha, rate = alpha)
   g <- diff(c(pgamma(quants * alpha, alpha + 1), 1)) * (1/w)
-  matrix(c(g, w), ncol=2L, dimnames = list(NULL, c("rate", "weight")))
+#   matrix(c(g, w), ncol=2L, dimnames = list(NULL, c("rate", "weight")))
+  g
 }
 
 
-# free_rate <- function(k) nur optimisieren
 
 #' @srrstats {G2.3, G2.3a} in lines: 285
