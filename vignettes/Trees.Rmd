@@ -67,7 +67,7 @@ bs_upgma <- bootstrap.phyDat(primates,  fun)
 ```
 With the new syntax of R 4.1 this can be written a bit shorter:
 ```{r bootstrap_dist_new, echo=TRUE, eval=FALSE, cache=TRUE}
-bs_upgma <- bootstrap.phyDat(primates,  \(x){dist.ml(x) |> upgma})
+bs_upgma <- bootstrap.phyDat(primates,  \(x){dist.ml(x) |> upgma()})
 ```
 Finally, we can plot the tree with bootstrap values added: 
 ```{r plot_bs, fig.cap="Rooted UPGMA tree.", echo=TRUE}

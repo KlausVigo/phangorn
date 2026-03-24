@@ -74,7 +74,7 @@ terraces.pml <- function(x, trees=x$bs, dist_fun="RF.dist", di2multi=FALSE,
   }
   z <- vapply(trees, fun, -Inf,  x=x)
   xyz <- cbind(xy, z)
-  colnames(xyz) <- c("prc 1", "prc 2", "log-likelihood")
+  colnames(xyz) <- c("PC 1", "PC 2", "lnL")
   if (plot) plot_terraces(xyz, ...)
   invisible(xyz)
 }
@@ -93,7 +93,7 @@ terraces.phyDat <- function(x, trees, dist_fun="RF.dist", di2multi=FALSE,
   xy <- cmdscale(dm)
   z <- parsimony(trees, x)
   xyz <- cbind(xy, z)
-  colnames(xyz) <- c("prc 1", "prc 2", "parsimony score")
+  colnames(xyz) <- c("PC 1", "PC 2", "Parsimony score")
   if(plot) plot_terraces(xyz, ...)
   invisible(xyz)
 }
@@ -119,7 +119,7 @@ terraces.dist <- function(x, trees, dist_fun="RF.dist", di2multi=FALSE,
   if(crit=="ME") z <-sapply(tmp, \(x){sum(x$edge.length)})
   else if(crit=="RSS") z <-sapply(tmp, \(x){attr(x, "RSS")})
   xyz <- cbind(xy, z)
-  colnames(xyz) <- c("prc 1", "prc 2", crit)
+  colnames(xyz) <- c("PC 1", "PC 2", crit)
   if(plot) plot_terraces(xyz, ...)
   invisible(xyz)
 }
@@ -127,7 +127,7 @@ terraces.dist <- function(x, trees, dist_fun="RF.dist", di2multi=FALSE,
 
 plot_terraces <- function(xyz, size=10, lwd=2, pkg="plot3D",
                           max=TRUE, add=FALSE, ...){
-  match.arg <- match.arg(pkg, c("rgl", "plot3D", "scatterplot3d"))
+  match.arg <- match.arg(pkg, c("rgl", "plot3D")) #, "scatterplot3d"
   nr <- nrow(xyz)
   col <- rep("black", nr)
   if(max) ind <- which(xyz[,3] > (max(xyz[,3] - 1e-8)))
@@ -152,17 +152,17 @@ plot_terraces <- function(xyz, size=10, lwd=2, pkg="plot3D",
                         xlab = col_names[1], ylab = col_names[2],
                         zlab = col_names[3], ...)
     }
-  } else if(pkg=="scatterplot3d"){
-    chk <- requireNamespace("scatterplot3d", quietly = TRUE)
-    if (!chk) {
-      warning("package 'scatterplot3d' is required!\n")
-    } else {
-      col_names <- colnames(xyz)
-      scatterplot3d::scatterplot3d(xyz[,1], xyz[,2], xyz[,3], type = "h",
-            xlab = col_names[1], ylab = col_names[2], zlab = col_names[3],
-            color=col, ...)
-    }
-  }
+  } #else if(pkg=="scatterplot3d"){
+    #chk <- requireNamespace("scatterplot3d", quietly = TRUE)
+    #if (!chk) {
+    #  warning("package 'scatterplot3d' is required!\n")
+    #} else {
+    #  col_names <- colnames(xyz)
+    #  scatterplot3d::scatterplot3d(xyz[,1], xyz[,2], xyz[,3], type = "h",
+    #        xlab = col_names[1], ylab = col_names[2], zlab = col_names[3],
+    #        color=col, ...)
+    #}
+  #}
   invisible(xyz)
 }
 

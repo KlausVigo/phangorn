@@ -259,7 +259,7 @@ write.pml <- function(x, file="pml", save_rds=TRUE, digits=10, ...){
       dev.off()
     }
     pdf(file=paste0(file, "_terraces.pdf"), height=my_heigtht)
-    terraces(x, pkg="scatterplot3d")
+    terraces(x, pkg="plot3D")
     dev.off()
   }
   if(ntips < 3000){
