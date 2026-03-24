@@ -69,8 +69,8 @@ seq_stats <- function(x) {
 
 
 extract_cherries <- function(x){
-  x <- removeParsimonyUninfomativeSites(x)
-  x <- compressSites(x)
+#    x <- removeParsimonyUninfomativeSites(x)
+#    x <- compressSites(x)
   nr <- attr(x, "nr")
   lb <- lowerBound(x)
   ub <- upperBound(x)
@@ -249,7 +249,7 @@ bab <- function(data, tree = NULL, trace = !getOption("quiet"), ...) {
   cherry_res  <- cherries(ec, LB, UB)
   weight_cherry <- weight
   weight_cherry[ec$pos] <- cherry_res$weight
-  attr(data, "weight") <- weight_cherry
+#  attr(data, "weight") <- weight_cherry
 
 # incompatibility lower bound
 #  if (ILBound){  # tests needed
