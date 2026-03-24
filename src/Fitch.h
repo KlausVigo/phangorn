@@ -62,6 +62,9 @@ std::vector< std::vector<uint64_t> > readFitch(const List &xlist,
              IntegerMatrix contr, int nSeq, int nChar, int nStates,
              int nBits, int m);
 
+std::vector< std::vector<uint64_t> > readMask(const List &xlist,
+             std::vector<int> contr, int nSeq, int nChar, int nBits);
+
 // IntegerMatrix preorder(const IntegerMatrix & edge, int nTips);
 
 
@@ -69,7 +72,9 @@ class Fitch {
 public:
   // Fitch(Robject)
   Fitch (RObject obj, int w1, int m) {
-    weight = obj.attr("weight");
+    // weight = obj.attr("weight");
+    NumericVector tmp = obj.attr("weight");
+    weight = Rcpp::as<std::vector<double>>(tmp);
     nChar = (int) obj.attr("nr");
     if( (nChar % BIT_SIZE) ){
       for(int i= (nChar % BIT_SIZE); i<BIT_SIZE; ++i) weight.push_back(0.0);
@@ -79,9 +84,11 @@ public:
     wBits = (w1 / BIT_SIZE) + (w1 % BIT_SIZE != 0);
     nBits = (nChar / BIT_SIZE) + (nChar % BIT_SIZE != 0);
     IntegerMatrix contr = obj.attr("contrast");
+    std::vector<int> mask = obj.attr("mask");
     Rcpp::List xlist(obj);
     nSeq = xlist.size();
     X = readFitch(xlist, contr, nSeq, nChar, nStates, nBits, m);
+    Y = readMask(xlist, mask, nSeq, nChar, nBits);
   }
 
 //  int getNR(void){ return nChar; }
@@ -91,8 +98,10 @@ public:
 //  int getnBits(void){ return nBits; }
 
   std::vector< std::vector<uint64_t> > X;
-  IntegerVector pscore_nodes;
-  NumericVector weight; // Integer??
+  std::vector< std::vector<uint64_t> > Y;
+//  IntegerVector pscore_nodes;
+//  NumericVector weight;
+  std::vector<double> weight;
   int nChar;
   int nSeq;
   int nStates;

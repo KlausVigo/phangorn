@@ -6,9 +6,9 @@
 \alias{dist.logDet}
 \title{Pairwise Distances from Sequences}
 \usage{
-dist.hamming(x, ratio = TRUE, exclude = "none")
+dist.hamming(x, ratio = TRUE, exclude = "pairwise")
 
-dist.ml(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
+dist.ml(x, model = "JC69", exclude = "pairwise", bf = NULL, Q = NULL,
   k = 1L, shape = 1, ...)
 
 dist.logDet(x)
@@ -39,8 +39,9 @@ an object of class \code{dist}
 }
 \description{
 \code{dist.hamming}, \code{dist.ml} and \code{dist.logDet} compute pairwise
-distances for an object of class \code{phyDat}. \code{dist.ml} uses DNA /
-AA sequences to compute distances under different substitution models.
+distances for an object of class \code{phyDat} and additional \code{DNAbin}
+or \code{AAbin} from ape. \code{dist.ml} uses DNA / AA sequences to compute
+distances under different substitution models.
 }
 \details{
 So far 17 amino acid models are supported ("WAG", "JTT", "LG", "Dayhoff",
@@ -48,8 +49,11 @@ So far 17 amino acid models are supported ("WAG", "JTT", "LG", "Dayhoff",
 "FLU", "Blosum62", "Dayhoff_DCMut" and "JTT_DCMut") and additional rate
 matrices and frequencies can be supplied.
 
-The "F81" model uses empirical base frequencies, the "JC69" equal base
-frequencies. This is even the case if the data are not nucleotides.
+The Jukes-Cantor model "JC69" assumnes equal base frequencies and equal rates
+and is a sepqecial case of the Mk model. When calling a "JC69" model with
+different state space a "Mk" model is fitted. The "F81" model uses empirical
+base frequencies. \code{\link[ape]{dist.dna}} offers additional nucleotide
+models.
 
 The argument \code{exclude} decides how gaps / ambiguous data / missing data
 are treated. Usually gaps are treated as ambiguous states, but you can give

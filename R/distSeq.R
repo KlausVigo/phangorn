@@ -1,16 +1,20 @@
 #' Pairwise Distances from Sequences
 #'
 #' \code{dist.hamming}, \code{dist.ml} and \code{dist.logDet} compute pairwise
-#' distances for an object of class \code{phyDat}. \code{dist.ml} uses DNA /
-#' AA sequences to compute distances under different substitution models.
+#' distances for an object of class \code{phyDat} and additional \code{DNAbin}
+#' or \code{AAbin} from ape. \code{dist.ml} uses DNA / AA sequences to compute
+#' distances under different substitution models.
 #'
 #' So far 17 amino acid models are supported ("WAG", "JTT", "LG", "Dayhoff",
 #' "cpREV", "mtmam", "mtArt", "MtZoa", "mtREV24", "VT","RtREV", "HIVw", "HIVb",
 #' "FLU", "Blosum62", "Dayhoff_DCMut" and "JTT_DCMut") and additional rate
 #' matrices and frequencies can be supplied.
 #'
-#' The "F81" model uses empirical base frequencies, the "JC69" equal base
-#' frequencies. This is even the case if the data are not nucleotides.
+#' The Jukes-Cantor model "JC69" assumnes equal base frequencies and equal rates
+#' and is a sepqecial case of the Mk model. When calling a "JC69" model with
+#' different state space a "Mk" model is fitted. The "F81" model uses empirical
+#' base frequencies. \code{\link[ape]{dist.dna}} offers additional nucleotide
+#' models.
 #'
 #' The argument \code{exclude} decides how gaps / ambiguous data / missing data
 #' are treated. Usually gaps are treated as ambiguous states, but you can give
@@ -72,11 +76,10 @@
 #'
 #' @rdname dist.hamming
 #' @export
-dist.hamming <- function(x, ratio = TRUE, exclude = "none"){
+dist.hamming <- function(x, ratio = TRUE, exclude = "pairwise"){
   if(inherits(x, "DNAbin") | inherits(x, "AAbin")) x <- as.phyDat(x)
   assert_phyDat(x)
   l <- length(x)
-
   contrast <- attr(x, "contrast")
   nc <- as.integer(attr(x, "nc"))
   con <- rowSums(contrast > 0) < 2
@@ -88,22 +91,11 @@ dist.hamming <- function(x, ratio = TRUE, exclude = "none"){
     attr(x, "contrast") <- contrast
   }
   f <- init_fitch(x, FALSE, TRUE, m=1L)
-  d <- f$hamming_dist()
-  if (ratio) {
-    if (exclude == "pairwise") {
-      k <- 1
-      W <- numeric(l * (l - 1) / 2)
-      for (i in 1:(l - 1)) {
-        tmp <- con[x[[i]]]
-        for (j in (i + 1):l) {
-          W[k] <- sum(weight[tmp & con[ x[[j]] ] ])
-          k <- k + 1
-        }
-      }
-      d <- d / W
-    }else d <- d / sum(weight)
-#    if (exclude == "pairwise") d <- d / W
-
+  if (exclude == "pairwise") {
+    d <- f$hamming_dist_2(as.integer(ratio))
+  } else {
+    d <- f$hamming_dist()
+    if (ratio) d <- d / sum(weight)
   }
   attr(d, "Size") <- l
   if (is.list(x))
@@ -120,7 +112,7 @@ dist.hamming <- function(x, ratio = TRUE, exclude = "none"){
 
 #' @rdname dist.hamming
 #' @export
-dist.ml <- function(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
+dist.ml <- function(x, model = "JC69", exclude = "pairwise", bf = NULL, Q = NULL,
                     k = 1L, shape = 1, ...){
   if(inherits(x, "DNAbin") | inherits(x, "AAbin")) x <- as.phyDat(x)
   assert_phyDat(x)
@@ -132,7 +124,7 @@ dist.ml <- function(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
 
   if (exclude == "all" ) x <- removeAmbiguousSites(x)
   ambig_sites <- hasAmbiguousSites(x)
-
+  if(exclude == "pairwise") ambig_sites <- FALSE
   model <- match.arg(model, c("JC69", "F81", .aa_3Di_models))
 
   unique_contrast <- grp_duplicated(contrast)
@@ -157,7 +149,7 @@ dist.ml <- function(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
 
   if( (model == "JC69"  || model == "F81") && !ambig_sites && k==1){
     d <- dist.hamming(x, exclude=exclude)
-    E <- 0.75
+    E <- 1 - 1 / nc #0.75
     if(model == "F81") E <- 1 - sum(bf^2)
     dist_jc <- function(d) -E * log(1- d/E )
     var_jc <- function(d, n) d * (1-d) / (n * (1 - d / E)^2)

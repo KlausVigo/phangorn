@@ -25,6 +25,9 @@ init_fitch <- function(obj, parsinfo=FALSE, order=FALSE, m=4L, ...){
   contrast <- rbind(0L, contrast)
   storage.mode(contrast) <- "integer"
   attr(obj, "contrast") <- contrast
+  mask <- integer(nrow(contrast))
+  mask[rowSums(contrast) == 1L] <- 1L
+  attr(obj, "mask") <- mask
   f <- new(Fitch, obj, as.integer(first_1), as.integer(m))
   f
 }
