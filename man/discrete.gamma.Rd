@@ -7,7 +7,7 @@
 \alias{plotRates}
 \title{Discrete Gamma and Beta distribution}
 \usage{
-discrete.gamma(alpha, k)
+discrete.gamma(alpha, k, w = NULL)
 
 discrete.beta(shape1, shape2, k)
 
@@ -17,16 +17,16 @@ plot_gamma_plus_inv(w = NULL, g = NULL, shape = 1, inv = 0, k = 4,
   edge.length = NULL, site.rate = "gamma", ...)
 
 plotRates(obj, cdf.color = "blue", main = "cdf", rug = FALSE,
-  xlim = NULL, ...)
+  xlim = NULL, append = FALSE, ...)
 }
 \arguments{
 \item{alpha}{Shape parameter of the gamma distribution.}
 
 \item{k}{Number of intervals of the discrete gamma distribution.}
 
-\item{shape1, shape2}{non-negative parameters of the Beta distribution.}
-
 \item{w}{proportion of rate g.}
+
+\item{shape1, shape2}{non-negative parameters of the Beta distribution.}
 
 \item{g}{rates of discrete distribution.}
 

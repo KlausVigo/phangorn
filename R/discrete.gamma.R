@@ -52,10 +52,12 @@
 #' @keywords distribution
 #' @rdname discrete.gamma
 #' @export
-discrete.gamma <- function(alpha, k) {
+discrete.gamma <- function(alpha, k, w=NULL){
   if (k == 1) return(1)
-  quants <- qgamma( (1:(k - 1)) / k, shape = alpha, rate = alpha)
-  diff(c(0, pgamma(quants * alpha, alpha + 1), 1)) * k
+  if (is.null(w) || length(w)!=k) w <- rep(1/k, k)
+  bin <- c(0, cumsum(w)[-k])
+  quants <- qgamma(bin, shape = alpha, rate = alpha)
+  diff(c(pgamma(quants * alpha, alpha + 1), 1)) * (1/w)
 }
 
 
@@ -157,9 +159,6 @@ plot_gamma_plus_inv <- function(w=NULL, g=NULL, shape=1, inv=0, k=4, discrete=TR
 #shape=1, inv=0, k=4
   plot_density_discrete <- function(g, w, append=FALSE,  xlab=xlab, ylab=ylab,
                                     xlim=xlim, site.rate="gamma", ...){
-#    g_w <- gw(shape, k, inv, site.rate)
-#    g <- g_w[, "g"]
-#    w <- g_w[, "w"]
     if(!append) plot(g, w, xlim = xlim, ylim=c(0, 1), type="n",
                      xlab=xlab, ylab=ylab, ...)
     segments(g, 0, g, w, ...)
@@ -236,7 +235,6 @@ plot_gamma_plus_inv <- function(w=NULL, g=NULL, shape=1, inv=0, k=4, discrete=TR
 }
 
 
-
 #' @rdname discrete.gamma
 #' @importFrom stats ecdf
 #' @importFrom graphics rug
@@ -247,23 +245,34 @@ plot_gamma_plus_inv <- function(w=NULL, g=NULL, shape=1, inv=0, k=4, discrete=TR
 #' @param rug logical; if TRUE a \code{\link[graphics]{rug}} is added to the
 #' plot.
 #' @export
-plotRates <- function(obj, cdf.color="blue", main="cdf", rug=FALSE, xlim=NULL, ...){
+plotRates <- function(obj, cdf.color="blue", main="cdf", rug=FALSE, xlim=NULL,
+                      append=FALSE, ...){
   pscores <- parsimony(obj$tree, obj$data, site="site")[attr(obj$data, "index")]
   ecdf_pscores <- ecdf(pscores)
   if(is.null(xlim)) xlim <- c(-0.25, 1.1 * max(pscores))
-  plot(ecdf_pscores, verticals = TRUE, do.points=FALSE, main=main, xlim=xlim, ...)
-  if(rug) rug(jitter(pscores))
-  el <- obj$tree$edge.length * obj$rate
-  if(obj$site.rate == "free_rate"){
-    plot_gamma_plus_inv(w=obj$w, g=obj$g, append=TRUE, xlim=xlim,
-                        edge.length=sum(el), verticals=TRUE, col=cdf.color,
-                        site.rate=obj$site.rate, ...)
-  } else {
-      plot_gamma_plus_inv(k=obj$k, shape=obj$shape, inv=obj$inv, append=TRUE,
-                      xlim = xlim,
-                      edge.length=sum(el), verticals=TRUE, col=cdf.color,
-                      site.rate=obj$site.rate, ...)
+  if(!append){
+    plot(ecdf_pscores, verticals = TRUE, do.points=FALSE, main=main, xlim=xlim,
+         ...)
+    if(rug) rug(jitter(pscores))
   }
+  el <- obj$tree$edge.length * obj$rate
+#  if(obj$site.rate == "gamma"){
+#    plot_gamma_plus_inv(k=obj$k, shape=obj$shape, inv=obj$inv, append=TRUE,
+#                        xlim = xlim,
+#                        edge.length=sum(el), verticals=TRUE, col=cdf.color,
+#                        site.rate=obj$site.rate, ...)
+#  } else {
+  w <- obj$w
+  g <- obj$g
+  inv <- obj$inv
+  if (inv > 1e-8) {
+    g <- c(0, g)
+    w <- c(inv, w)
+  }
+  plot_gamma_plus_inv(w=w, g=g, append=TRUE, xlim=xlim,
+                       edge.length=sum(el), verticals=TRUE, col=cdf.color,
+                       site.rate=obj$site.rate, ...)
+#  }
   invisible(obj)
 }
 
@@ -319,50 +328,29 @@ rates_n_weights <- function(shape, k, site.rate = "gamma", w=NULL, inv=0){
     g <- 1
     w <- 1
   }
-    #rates.and.weights <- matrix(c(1,1), ncol=2L,
-          #                        dimnames = list(NULL, c("rate", "weight")))
   else{
 
     if(site.rate == "gamma"){
       w <- rep(1 / k, k)
       g <- discrete.gamma(shape, k=k)
-
-#      rates.and.weights <- matrix( c(g, w), ncol=2L,
-#                          dimnames = list(NULL, c("rate", "weight")))
     }
     if(site.rate == "gamma_phangorn"){
-      if(is.null(w))  w <- rep(1 / k, k)
-      g <- discrete.gamma.2(alpha=shape, k=k, w=w)
-#      g <- rates.and.weights[, 1]
-#      w <- rates.and.weights[, 2]
-    }
+      #if(is.null(w) || length(w)!=k)  w <- rep(1 / k, k)
+      g <- discrete.gamma(alpha=shape, k=k, w=w)
 
+    }
     if(site.rate == "free_rate"){
       w <- rep(1 / k, k)
-      g <- discrete.gamma(1, k=k) # rep(1, k)
-#      w <- rep(1 / k, k)
-#      rates.and.weights <- matrix( c(g, w), ncol=2L,
-#                                   dimnames = list(NULL, c("rate", "weight")))
+      g <- discrete.gamma(1, k=k)
     }
   }
   if (inv > 0){
     w <- (1 - inv) * w
     g <- g / (1 - inv)
   }
-  rates.and.weights <- matrix( c(g, w), ncol=2L,
+  rates.and.weights <- matrix(c(g, w), ncol=2L,
                                dimnames = list(NULL, c("rate", "weight")))
   rates.and.weights
-}
-
-
-discrete.gamma.2 <- function(alpha, k, w=NULL){
-  if (k == 1) return(1)
-  if(is.null(w)) w <- rep(1/k, k)
-  bin <- c(0, cumsum(w)[-k])
-  quants <- qgamma( bin[seq_len(k)], shape = alpha, rate = alpha)
-  g <- diff(c(pgamma(quants * alpha, alpha + 1), 1)) * (1/w)
-#   matrix(c(g, w), ncol=2L, dimnames = list(NULL, c("rate", "weight")))
-  g
 }
 
 
