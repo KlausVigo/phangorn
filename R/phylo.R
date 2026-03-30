@@ -150,51 +150,52 @@ optimInv <- function(tree, data, inv = 0.01, INV, ...) {
 }
 
 
-optimFreeRate <- function(tree, data, g = c(0.25, 0.75, 1, 2), k=4, w=w, ...) {
+optimFreeRate2 <- function(tree, data, g = c(0.25, 0.75, 1, 2), k=4, w=w,
+                           optInv=FALSE, timetree,  ...) {
   g0 <- c(g[1], diff(g))
   g0[g0 < 1e-8] <- 1e-8 # required by constrOptim
   R <- matrix(0, k, k)
   R[lower.tri(R, TRUE)] <- 1
-  fn <- function(g0, tree, data, R, w, k, ...) {
-    g_new <- as.vector(R %*% g0)
-    pml.fit(tree, data, g=g_new, w=w, k=k, ...)
-  }
-  ui <- rbind(R, diag(k))
-  ci <- rep(0, 2 * k)
-  # Maybe constrain rates * omega
-  res <- constrOptim(g0, fn, grad = NULL, ui = ui, ci = ci, mu = 1e-04,
-                     control = list(fnscale = -1), method = "Nelder-Mead",
-                     outer.iterations = 100, outer.eps = 1e-08, tree = tree,
-                     data = data, R = R, w = w, k=k, ...)
-  rate <- res[[1]]
-  res[[1]] <- as.vector(R %*% rate)
-  res
-}
 
-
-optimWs <- function(tree, data, w = c(0.25, 0.25, 0.25, 0.25), g=g, ...) {
-  k <- length(w)
   nenner <- 1 / w[1]
   eta <- log(w * nenner)
   eta <- eta[-1]
-  fn <- function(eta, tree, data, g, k, ...) {
+  ind <- seq_len(k)
+  par <- c(g0, eta)
+
+
+  fn <- function(par, tree, data, R, k, optInv=FALSE, timetree, ...) {
+    inv <- 0
+    ind <- seq_len(k)
+    g0 <- par[ind]
+    eta <- par[-ind]
+    g_new <- as.vector(R %*% g0)
+
     eta <- c(0, eta)
     w_new <- exp(eta) / sum(exp(eta))
-    pml.fit(tree, data, g=g, w=w_new, k=k, ...)
+    # scaling
+    if (timetree) g_new <- g_new / sum(g_new * w_new)
+    pml.fit(tree, data, g = g_new, w = w_new, k = k, ...)
   }
-  if (k == 2) res <- optimize(f = fn, interval = c(-3, 3), lower = -3,
-                              upper = 3, maximum = TRUE,
-                              tol = .Machine$double.eps^0.25, tree = tree,
-                              data = data, g = g, k=k, ...)
-  else res <- optim(eta, fn = fn, method = "L-BFGS-B", lower = -5, upper = 5,
-                    control = list(fnscale = -1, maxit = 25), gr = NULL,
-                    tree = tree, data = data, g = g, k = k, ...)
-  w <- exp(c(0, res[[1]]))
+
+  lb <- c(rep(0, length(g0)), rep(-5, length(eta)))
+  ub <- c(rep(10, length(g0)), rep(5, length(eta)))
+
+  res <- optim(par, fn = fn, method = "L-BFGS-B", lower = lb, upper = ub,
+               control = list(fnscale = -1, maxit = 25), gr = NULL,
+               tree = tree, data = data, R = R, k = k, timetree = timetree, ...)
+
+  rate <- res[[1]][ind]
+  r <- as.vector(R %*% rate)
+  w <- exp(c(0, res[[1]][-ind]))
   w <- w / sum(w)
-  result <- list(par = w, value = res[[2]])
+  sc <- sum(r * w)
+  # !timetree && optEdge
+  if(!timetree) tree$edge.length <- tree$edge.length * sc
+  r <- r / sc
+  result <- list(r = r, w = w, tree = tree, value = res[[2]])
   result
 }
-
 
 # optimize shape parameter and weights
 optimGammaPhangorn <- function(tree, data, w = c(0.25, 0.25, 0.25, 0.25),
@@ -2362,42 +2363,16 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       }
     }
     if (optFreeRate) {
-      # bis jetzt w nicht optimiert!
       tmp_ll <- ll_fr <- ll
       eps_fr <- 1e8
       iter_fr <- 0
-      while(eps_fr > control$epsilon & iter_fr < 3){
-        res <- optimFreeRate(tree, data, g = g, k = k, w = w, inv = inv,
+      res_test <- optimFreeRate2(tree, data, g = g, k = k, w = w, inv = inv,
                            INV = INV, bf = bf, eig = eig,
-                           ll.0 = ll.0, rate = rate)
-#        scale <- function(tree, g, w){
-#          blub <- sum(g * w)
-#          g <- g / blub
-#          tree$edge.length <- tree$edge.length * blub
-#          list(tree=tree, g=g)
-#        }
-        if(res[[2]] > ll){
-#          tmp_sc <- scale(tree, res[[1]], w)
-          g0 <- res[[1]]
-          blub <- sum(g0 * w)
-          g <- g0 / blub
-          tree$edge.length <- tree$edge.length * blub
-          ll <- res[[2]]
-        }
-        res2 <- optimWs(tree, data, w = w, g=g, inv = inv,
-                      INV = INV, bf = bf, eig = eig,
-                      ll.0 = ll.0, rate = rate)
-        if(res2[[2]] > ll){
-          w <- res2[[1]]
-          blub <- sum(g * w)
-          g <- g / blub
-          tree$edge.length <- tree$edge.length * blub
-          ll <- res2[[2]]
-        }
-        eps_fr <- ll - ll_fr
-        ll_fr <- ll
-        iter_fr <- iter_fr+1
-      }
+                           ll.0 = ll.0, rate = rate, timetree=timetree)
+      w <- res_test$w
+      g <- res_test$r
+      tree <- res_test$tree
+      ll <- res_test$value
       if (trace > 0) cat("optimize free rate parameters: ", tmp_ll, "-->",
                          ll, "\n")
     }
