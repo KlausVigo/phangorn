@@ -257,7 +257,7 @@ reversible models.
 
     ## R version 4.5.3 (2026-03-11)
     ## Platform: x86_64-pc-linux-gnu
-    ## Running under: Ubuntu 24.04.3 LTS
+    ## Running under: Ubuntu 24.04.4 LTS
     ## 
     ## Matrix products: default
     ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -291,14 +291,14 @@ reversible models.
     ## [28] ggseqlogo_0.2.2     parallel_4.5.3      checkmate_2.3.4    
     ## [31] dplyr_1.2.0         ggplot2_4.0.2       fastmatch_1.1-8    
     ## [34] globals_0.19.1      vctrs_0.7.2         R6_2.6.1           
-    ## [37] lifecycle_1.0.5     fs_2.0.0            htmlwidgets_1.6.4  
+    ## [37] lifecycle_1.0.5     fs_2.0.1            htmlwidgets_1.6.4  
     ## [40] ragg_1.5.2          pkgconfig_2.0.3     desc_1.4.3         
     ## [43] pillar_1.11.1       pkgdown_2.2.0       bslib_0.10.0       
     ## [46] gtable_0.3.6        glue_1.8.0          Rcpp_1.1.1         
     ## [49] systemfonts_1.3.2   tidyselect_1.2.1    tibble_3.3.1       
     ## [52] xfun_0.57           knitr_1.51          farver_2.1.2       
     ## [55] htmltools_0.5.9     nlme_3.1-168        igraph_2.2.2       
-    ## [58] labeling_0.4.3      rmarkdown_2.30      compiler_4.5.3     
+    ## [58] labeling_0.4.3      rmarkdown_2.31      compiler_4.5.3     
     ## [61] S7_0.2.1
 
 ## References

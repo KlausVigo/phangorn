@@ -550,7 +550,7 @@ Tip dated ML phylogeny with time scale in years.
 
     ## R version 4.5.3 (2026-03-11)
     ## Platform: x86_64-pc-linux-gnu
-    ## Running under: Ubuntu 24.04.3 LTS
+    ## Running under: Ubuntu 24.04.4 LTS
     ## 
     ## Matrix products: default
     ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -581,12 +581,12 @@ Tip dated ML phylogeny with time scale in years.
     ## [19] checkmate_2.3.4     desc_1.4.3          osqp_1.0.0         
     ## [22] bslib_0.10.0        rlang_1.1.7         fastmatch_1.1-8    
     ## [25] cachem_1.1.0        xfun_0.57           S7_0.2.1           
-    ## [28] fs_2.0.0            sass_0.4.10         otel_0.2.0         
+    ## [28] fs_2.0.1            sass_0.4.10         otel_0.2.0         
     ## [31] cli_3.6.5           pkgdown_2.2.0       magrittr_2.0.4     
     ## [34] digest_0.6.39       grid_4.5.3          lifecycle_1.0.5    
     ## [37] nlme_3.1-168        evaluate_1.0.5      listenv_0.10.1     
     ## [40] codetools_0.2-20    ragg_1.5.2          parallelly_1.46.1  
-    ## [43] rmarkdown_2.30      pkgconfig_2.0.3     tools_4.5.3        
+    ## [43] rmarkdown_2.31      pkgconfig_2.0.3     tools_4.5.3        
     ## [46] htmltools_0.5.9
 
 ## References
