@@ -1,5 +1,5 @@
 data(woodmouse)
-fit <- pml_bb(woodmouse, model="JC")
+fit <- pml_bb(woodmouse, model="JC", control=pml.control(trace=0))
 trees <- unique(c(fit$tree, fit$bs))
 
 dm <- dist.dna(woodmouse)

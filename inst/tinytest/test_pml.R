@@ -161,8 +161,8 @@ expect_error(pml_bb(dat, model="GTR", method="tipdated"))
     fit.rw <- optim.pml(fit0, optEdge=FALSE, optGamma = TRUE,
                                 control = pml.control(epsilon=1e-10, trace=0))
     expect_equal(logLik(fit.rw),
-                 logLik(pml(treeU1, dat_tmp, shape=shape, k=4)), tolerance=1e-4)
-
+                 logLik(pml(treeU1, dat_tmp, shape=shape, k=4,
+                            site.rate = "gamma_quadrature")), tolerance=1e-4)
 
 
 # test rate optimisation
