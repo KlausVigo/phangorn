@@ -877,6 +877,7 @@ update.pml <- function(object, ...) {
 
   df <- ifelse(is.ultrametric(tree), tree$Nnode, length(tree$edge.length))
   if(site.rate == "free_rate") df <- df + 2 * kmax - 3L
+  if(site.rate == "gamma_phangorn") df <- df + kmax - 1L
   df <- switch(type,
     DNA = df + (k > 1) + (inv > 0) + length(unique(bf)) - 1 +
       length(unique(Q)) - 1,
@@ -1378,7 +1379,8 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     eig = eig, INV = INV, ll.0 = ll.0, llMix = llMix, wMix = wMix, site = TRUE,
     ASC=ASC, site.rate = site.rate)
   df <- ifelse(is.ultrametric(tree), tree$Nnode, length(tree$edge.length))
-  if(site.rate=="free_rate") df <- df + 2 * kmax - 3L
+  if(site.rate=="free_rate") df <- df + 2L * kmax - 3L
+  if(site.rate=="gamma_phangorn") df <- df + kmax - 1L
   df <- switch(type,
     DNA =  df + (kmax > 1) + (inv0 > 0) + length(unique(bf)) - 1 +
       length(unique(Q)) - 1,
@@ -2209,7 +2211,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       }
     }
     df <- ifelse(optRooted, tree$Nnode, length(tree$edge.length))
-    if(site.rate=="free_rate" & k > 1) df <- df + 2 * k - 3L
+    if(site.rate == "free_rate" & k > 1) df <- df + 2 * k - 3L
+    if(site.rate == "gamma_phangorn" & k > 1) df <- df + k - 1L
     dfQ <- ifelse(is.null(subs), length(unique(Q)) - 1, max(subs))
     df <- switch(type,
       DNA = df + (k > 1) + (optInv | (inv > 0)) + length(unique(bf)) - 1 + dfQ,
