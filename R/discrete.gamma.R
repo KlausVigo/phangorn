@@ -335,7 +335,7 @@ rates_n_weights <- function(shape, k, site.rate = "gamma", w=NULL, inv=0){
       g <- discrete.gamma(shape, k=k)
     }
     if(site.rate == "gamma_phangorn"){
-      #if(is.null(w) || length(w)!=k)  w <- rep(1 / k, k)
+      if(is.null(w) || length(w)!=k)  w <- rep(1 / k, k)
       g <- discrete.gamma(alpha=shape, k=k, w=w)
 
     }
