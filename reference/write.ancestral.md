@@ -81,5 +81,5 @@ anc_ml_disc <- as.ancestral(tree, df, align)
 plotAnc(anc_ml_disc, 20)
 
 unlink(c("ancestral_align.fasta", "ancestral_tree.nwk",
-         "ancestral_state.tsv"))
+         "ancestral_state.tsv", "ancestral_state.fasta"))
 ```
