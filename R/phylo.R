@@ -128,6 +128,19 @@ subsChoice_USER <- function(type = .usermodels, nstates) {
 }
 
 
+optimInv <- function(tree, data, inv = 0.01, INV, ...) {
+  weight <- as.double(attr(data, "weight"))
+  tmp <- as.vector( INV %*% rep(1, attr(data, "nc")) )
+  ind <- which(tmp > 0)
+  max_inv <- sum(weight[ind]) / sum(weight)
+  fn <- function(inv, tree, data, ...) pml.fit(tree, data, inv = inv, INV = INV,
+                                               ll.0 = NULL, ...)
+  res <- optimize(f = fn, interval = c(0, max_inv), lower = 0, upper = max_inv,
+                  maximum = TRUE, tol = 0.0001, tree = tree, data = data, ...)
+  res
+}
+
+
 optimGamma <- function(tree, data, shape = 1, k = 4, ...) {
   fn <- function(shape, tree, data, k, ...) pml.fit(tree, data, shape = shape,
       k = k, ...)
@@ -136,66 +149,6 @@ optimGamma <- function(tree, data, shape = 1, k = 4, ...) {
   res
 }
 
-
-optimInv <- function(tree, data, inv = 0.01, INV, ...) {
-  weight <- as.double(attr(data, "weight"))
-  tmp <- as.vector( INV %*% rep(1, attr(data, "nc")) )
-  ind <- which(tmp > 0)
-  max_inv <- sum(weight[ind]) / sum(weight)
-  fn <- function(inv, tree, data, ...) pml.fit(tree, data, inv = inv, INV = INV,
-      ll.0 = NULL, ...)
-  res <- optimize(f = fn, interval = c(0, max_inv), lower = 0, upper = max_inv,
-    maximum = TRUE, tol = 0.0001, tree = tree, data = data, ...)
-  res
-}
-
-
-optimFreeRate2 <- function(tree, data, g = c(0.25, 0.75, 1, 2), k=4, w=w,
-                           optInv=FALSE, timetree,  ...) {
-  g0 <- c(g[1], diff(g))
-  g0[g0 < 1e-8] <- 1e-8 # required by constrOptim
-  R <- matrix(0, k, k)
-  R[lower.tri(R, TRUE)] <- 1
-
-  nenner <- 1 / w[1]
-  eta <- log(w * nenner)
-  eta <- eta[-1]
-  ind <- seq_len(k)
-  par <- c(g0, eta)
-
-
-  fn <- function(par, tree, data, R, k, optInv=FALSE, timetree, ...) {
-    inv <- 0
-    ind <- seq_len(k)
-    g0 <- par[ind]
-    eta <- par[-ind]
-    g_new <- as.vector(R %*% g0)
-
-    eta <- c(0, eta)
-    w_new <- exp(eta) / sum(exp(eta))
-    # scaling
-    if (timetree) g_new <- g_new / sum(g_new * w_new)
-    pml.fit(tree, data, g = g_new, w = w_new, k = k, ...)
-  }
-
-  lb <- c(rep(0, length(g0)), rep(-5, length(eta)))
-  ub <- c(rep(10, length(g0)), rep(5, length(eta)))
-
-  res <- optim(par, fn = fn, method = "L-BFGS-B", lower = lb, upper = ub,
-               control = list(fnscale = -1, maxit = 25), gr = NULL,
-               tree = tree, data = data, R = R, k = k, timetree = timetree, ...)
-
-  rate <- res[[1]][ind]
-  r <- as.vector(R %*% rate)
-  w <- exp(c(0, res[[1]][-ind]))
-  w <- w / sum(w)
-  sc <- sum(r * w)
-  # !timetree && optEdge
-  if(!timetree) tree$edge.length <- tree$edge.length * sc
-  r <- r / sc
-  result <- list(r = r, w = w, tree = tree, value = res[[2]])
-  result
-}
 
 # optimize shape parameter and weights
 optimGammaPhangorn <- function(tree, data, w = c(0.25, 0.25, 0.25, 0.25),
@@ -208,7 +161,7 @@ optimGammaPhangorn <- function(tree, data, w = c(0.25, 0.25, 0.25, 0.25),
     eta <- c(0, par[-k])
     shape <- par[k]
     w_new <- exp(eta) / sum(exp(eta))
-    g <- discrete.gamma.2(alpha=shape, k=length(w_new), w=w_new)
+    g <- discrete.gamma(alpha=shape, k=length(w_new), w=w_new)
     pml.fit(tree, data, g=g, w=w_new, k=k, ...)
   }
   res <- optim(par, fn = fn, method = "L-BFGS-B", lower = c(rep(-5, k-1), 0.1),
@@ -219,6 +172,63 @@ optimGammaPhangorn <- function(tree, data, w = c(0.25, 0.25, 0.25, 0.25),
   w <- w / sum(w)
   shape <- res[[1]][k]
   result <- list(par = c(w, shape), value = res[[2]])
+  result
+}
+
+
+optimFreeRate <- function(tree, data, g = c(0.25, 0.75, 1, 2), k=4, w=w,
+                          inv=inv, optInv=FALSE, timetree,  ...) {
+  g0 <- c(g[1], diff(g))
+  g0[g0 < 1e-8] <- 1e-8 # required by constrOptim
+  R <- matrix(0, k, k)
+  R[lower.tri(R, TRUE)] <- 1
+
+  if(optInv) w <- c(inv, w)
+
+  nenner <- 1 / w[1]
+  eta <- log(w * nenner)
+  eta <- eta[-1]
+  ind <- seq_len(k)
+  par <- c(g0, eta)
+
+  fn <- function(par, tree, data, R, k, optInv=FALSE, timetree, ...) {
+    inv <- 0
+    ind <- seq_len(k)
+    g0 <- par[ind]
+    eta <- par[-ind]
+    g_new <- as.vector(R %*% g0)
+    eta <- c(0, eta)
+    w_new <- exp(eta) / sum(exp(eta))
+    if (optInv) {
+      inv <- w_new[1]
+      w_new <- w_new[-1]
+    }
+    # scaling
+    if (timetree) g_new <- g_new / sum(g_new * w_new)
+    pml.fit(tree, data, g = g_new, w = w_new, k = k, inv = inv, ...)
+  }
+
+  lb <- c(rep(0, length(g0)), rep(-5, length(eta)))
+  ub <- c(rep(10, length(g0)), rep(5, length(eta)))
+
+  res <- optim(par, fn = fn, method = "L-BFGS-B", lower = lb, upper = ub,
+               control = list(fnscale = -1, maxit = 25), gr = NULL,
+               tree = tree, data = data, R = R, k = k, optInv = optInv,
+               timetree = timetree, ...)
+
+  rate <- res[[1]][ind]
+  r <- as.vector(R %*% rate)
+  w <- exp(c(0, res[[1]][-ind]))
+  w <- w / sum(w)
+  if(optInv){
+    inv <- w[1]
+    w <- w[-1]
+  }
+  sc <- sum(r * w)
+  # !timetree && optEdge
+  if(!timetree) tree$edge.length <- tree$edge.length * sc
+  r <- r / sc
+  result <- list(r = r, w = w, tree = tree, inv = inv, value = res[[2]])
   result
 }
 
@@ -2347,7 +2357,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                           llMix = llMix, wMix=wMix, ASC=ASC)
         shape <- res[[1]][k+1]
         w <- res[[1]][1:k]
-        g <- discrete.gamma.2(shape, length(w), w=w)
+        g <- discrete.gamma(shape, length(w), w = w)
         ll <- res[[2]]
         if (trace > 0)
           cat("optimize shape parameter: ", ll, "-->", max(res[[2]], ll), "\n")
@@ -2363,16 +2373,18 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       }
     }
     if (optFreeRate) {
-      tmp_ll <- ll_fr <- ll
-      eps_fr <- 1e8
-      iter_fr <- 0
-      res_test <- optimFreeRate2(tree, data, g = g, k = k, w = w, inv = inv,
-                           INV = INV, bf = bf, eig = eig,
+      tmp_ll <- ll
+      res_test <- optimFreeRate(tree, data, g = g, k = k, w = w, inv = inv,
+                           INV = INV, bf = bf, eig = eig, optInv=FALSE,
                            ll.0 = ll.0, rate = rate, timetree=timetree)
       w <- res_test$w
       g <- res_test$r
       tree <- res_test$tree
       ll <- res_test$value
+      inv <- res_test$inv
+      ll.0 <- as.matrix(INV %*% (bf * inv))
+      if (wMix > 0) ll.0 <- ll.0 + llMix
+
       if (trace > 0) cat("optimize free rate parameters: ", tmp_ll, "-->",
                          ll, "\n")
     }
