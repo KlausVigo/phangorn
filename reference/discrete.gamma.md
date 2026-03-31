@@ -7,7 +7,7 @@ simulation studies or in cases where .
 ## Usage
 
 ``` r
-discrete.gamma(alpha, k)
+discrete.gamma(alpha, k, w = NULL)
 
 discrete.beta(shape1, shape2, k)
 
@@ -17,7 +17,7 @@ plot_gamma_plus_inv(w = NULL, g = NULL, shape = 1, inv = 0, k = 4,
   edge.length = NULL, site.rate = "gamma", ...)
 
 plotRates(obj, cdf.color = "blue", main = "cdf", rug = FALSE,
-  xlim = NULL, ...)
+  xlim = NULL, append = FALSE, ...)
 ```
 
 ## Arguments
@@ -30,13 +30,13 @@ plotRates(obj, cdf.color = "blue", main = "cdf", rug = FALSE,
 
   Number of intervals of the discrete gamma distribution.
 
-- shape1, shape2:
-
-  non-negative parameters of the Beta distribution.
-
 - w:
 
   proportion of rate g.
+
+- shape1, shape2:
+
+  non-negative parameters of the Beta distribution.
 
 - g:
 
