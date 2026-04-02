@@ -152,22 +152,34 @@ optimGamma <- function(tree, data, shape = 1, k = 4, ...) {
 
 # optimize shape parameter and weights
 optimGammaPhangorn <- function(tree, data, w = c(0.25, 0.25, 0.25, 0.25),
-                               shape=1, ...) {
+                               shape=1, inv=0, ...) {
   k <- length(w)
   nenner <- 1 / w[1]
   eta <- log(w * nenner)
   par <- c(eta[-1], shape)
-  fn <- function(par, tree, data, k, shape, ...) {
+
+
+  fn <- function(par, tree, data, k, shape, inv, ...) {
     eta <- c(0, par[-k])
     shape <- par[k]
     w_new <- exp(eta) / sum(exp(eta))
     g <- discrete.gamma(alpha=shape, k=length(w_new), w=w_new)
-    pml.fit(tree, data, g=g, w=w_new, k=k, ...)
+    if (any(g < .gEps)) {
+      for (i in seq_along(g)) {
+        if (g[i] < .gEps) {
+          inv <- inv + w[i]
+          w_new[i] <- 0
+          g[i] <- 1
+        }
+      }
+    }
+    ll <- pml.fit(tree, data, g=g, w=w_new, k=k, inv=inv, ...)
+    ll
   }
   res <- optim(par, fn = fn, method = "L-BFGS-B", lower = c(rep(-5, k-1), 0.1),
                upper = c(rep(5, k-1), 100),
                control = list(fnscale = -1, maxit = 25), gr = NULL,
-               tree = tree, data = data, k = k, shape=shape, ...)
+               tree = tree, data = data, k = k, shape=shape, inv=inv, ...)
   w <- exp(c(0, res[[1]][-k]))
   w <- w / sum(w)
   shape <- res[[1]][k]
