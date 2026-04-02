@@ -247,11 +247,20 @@ plot_gamma_plus_inv <- function(w=NULL, g=NULL, shape=1, inv=0, k=4, discrete=TR
 #' @export
 plotRates <- function(obj, cdf.color="blue", main="cdf", rug=FALSE, xlim=NULL,
                       append=FALSE, ...){
-  pscores <- parsimony(obj$tree, obj$data, site="site")[attr(obj$data, "index")]
-  ecdf_pscores <- ecdf(pscores)
+  pscores <- parsimony(obj$tree, obj$data, site="site")
+  if(!is.null(attr(obj$data, "index"))){
+    ecdf_pscores <- ecdf( pscores[attr(obj$data, "index")])
+  } else{
+    tmp <- aggregate(attr(obj$data, "weight"), by=list(pscores), FUN=sum)
+    x <- tmp[, 1]
+    y <- cumsum(c(0, tmp[,2]))
+    y <- y / max(y)
+    ecdf_pscores <- stepfun(x, y)
+  }
+
   if(is.null(xlim)) xlim <- c(-0.25, 1.1 * max(pscores))
   if(!append){
-    plot(ecdf_pscores, verticals = TRUE, do.points=FALSE, main=main, xlim=xlim,
+    plot.ecdf(ecdf_pscores, verticals = TRUE, do.points=FALSE, main=main, xlim=xlim,
          ...)
     if(rug) rug(jitter(pscores))
   }
