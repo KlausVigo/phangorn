@@ -283,13 +283,13 @@ reversible models.
     ##  [4] lattice_0.22-9      listenv_0.10.1      digest_0.6.39      
     ##  [7] magrittr_2.0.4      evaluate_1.0.5      grid_4.5.3         
     ## [10] RColorBrewer_1.1-3  fastmap_1.2.0       jsonlite_2.0.0     
-    ## [13] Matrix_1.7-4        backports_1.5.0     scales_1.4.0       
+    ## [13] Matrix_1.7-4        backports_1.5.1     scales_1.4.0       
     ## [16] codetools_0.2-20    textshaping_1.0.5   jquerylib_0.1.4    
     ## [19] cli_3.6.5           rlang_1.1.7         parallelly_1.46.1  
     ## [22] future.apply_1.20.2 withr_3.0.2         cachem_1.1.0       
     ## [25] yaml_2.3.12         otel_0.2.0          tools_4.5.3        
     ## [28] ggseqlogo_0.2.2     parallel_4.5.3      checkmate_2.3.4    
-    ## [31] dplyr_1.2.0         ggplot2_4.0.2       fastmatch_1.1-8    
+    ## [31] dplyr_1.2.1         ggplot2_4.0.2       fastmatch_1.1-8    
     ## [34] globals_0.19.1      vctrs_0.7.2         R6_2.6.1           
     ## [37] lifecycle_1.0.5     fs_2.0.1            htmlwidgets_1.6.4  
     ## [40] ragg_1.5.2          pkgconfig_2.0.3     desc_1.4.3         
