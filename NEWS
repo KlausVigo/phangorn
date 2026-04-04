@@ -6,9 +6,9 @@ NEW FEATURES
 
       by the user specific to its hardware.
 
-    o the terraces function plots the likelihood / parsimony surface for a set
+    o the terraces function plots the likelihood / parsimony / LS surface
 
-      of trees.
+      for a set of trees (e.g. bootstrap).
 
     o as.networx and plot.networx got a new option "outline", reducing the
 
@@ -44,13 +44,19 @@ OTHER CHANGES
 
     o lots of improvements to man pages and vignettes
 
+    o default for dist.hamming and dist.ml is now delete="pairwise"
+
+    o dist.hamming is faster with argument delete="pairwise", and can be
+
+      speed up dist.ml as well.
+
+    o baseFreq() now uses C++ code and is considerably faster
+
 BUG FIXES
 
     o update.pml can now properly updates site.rate
 
     o fix degree of freedom for free rate models
-
-    o baseFreq() now uses C++ code and is considerably faster
 
 
     CHANGES in PHANGORN VERSION 2.12.0
