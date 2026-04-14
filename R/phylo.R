@@ -158,12 +158,17 @@ optimGammaPhangorn <- function(tree, data, w = c(0.25, 0.25, 0.25, 0.25),
   eta <- log(w * nenner)
   par <- c(eta[-1], shape)
 
-
   fn <- function(par, tree, data, k, shape, inv, ...) {
     eta <- c(0, par[-k])
     shape <- par[k]
     w_new <- exp(eta) / sum(exp(eta))
     g <- discrete.gamma(alpha=shape, k=length(w_new), w=w_new)
+
+    if (inv > 0){
+      w <- (1 - inv) * w
+      g <- g / (1 - inv)
+    }
+
     if (any(g < .gEps)) {
       for (i in seq_along(g)) {
         if (g[i] < .gEps) {
@@ -663,6 +668,19 @@ getModelAA <- function(model, bf = TRUE, Q = TRUE, has_gap_state=FALSE) {
 }
 
 
+model_term <- function(model, k, site.rate, inv){
+  if(k > 1) {
+    model <-  switch(site.rate,
+                     "gamma" = paste0(model, "+G(", k, ")"),
+                     "gamma_quadrature" = paste0(model, "+GQ(", k, ")"),
+                     "gamma_weighted" = paste0(model, "+GW(", k, ")"),
+                     "free_rate" = paste0(model, "+R(", k, ")"))
+  }
+  if(inv>0) model <- paste0(model, "+I")
+  model
+}
+
+
 guess_model <- function(x){
   model <- x$model
   type <- attr(x$data, "type")
@@ -678,11 +696,19 @@ guess_model <- function(x){
     else if(bf==FALSE && Q==FALSE){ model <- "Mk"}
     else {model <- "UNKNOWN"}
   }
-  if(x$k > 1) {
-    if(x$site.rate=="free_rate") model <- paste0(model, "+R(", x$k, ")")
-    else model <- paste0(model, "+G(", x$k, ")")
-  }
-  if(x$inv>0) model <- paste0(model, "+I")
+#  if(x$k > 1) {
+#    if(x$site.rate=="free_rate") model <- paste0(model, "+R(", x$k, ")")
+#    else model <- paste0(model, "+G(", x$k, ")")
+#  }
+#  if(x$k > 1) {
+#    model <-  switch(site.rate,
+#             "gamma" = paste0(model, "+G(", k, ")"),
+#             "gamma_quadrature" = paste0(model, "+GQ(", k, ")"),
+#             "gamma_weighted" = paste0(model, "+GW(", k, ")"),
+#             "free_rate" = paste0(model, "+R(", k, ")"))
+#  }
+#  if(x$inv>0) model <- paste0(model, "+I")
+  model <- model_term(model, x$k, x$site.rate, x$inv)
   model
 }
 
@@ -697,7 +723,7 @@ guess_model <- function(x){
 #   if (length(extras)) {
 #     existing <- !is.na(match(names(extras), names(call)))
 #     for (a in names(extras)[existing]) call[[a]] <- extras[[a]]
-#     if (any(!existing)) {
+#   if (any(!existing)) {
 #       call <- c(as.list(call), extras[!existing])
 #       call <- as.call(call)
 #     }
@@ -889,7 +915,7 @@ update.pml <- function(object, ...) {
 
   df <- ifelse(is.ultrametric(tree), tree$Nnode, length(tree$edge.length))
   if(site.rate == "free_rate") df <- df + 2 * kmax - 3L
-  if(site.rate == "gamma_phangorn") df <- df + kmax - 1L
+  if(site.rate == "gamma_weighted") df <- df + kmax - 1L
   df <- switch(type,
     DNA = df + (k > 1) + (inv > 0) + length(unique(bf)) - 1 +
       length(unique(Q)) - 1,
@@ -898,6 +924,11 @@ update.pml <- function(object, ...) {
       + (tstv != 1),
     USER = df + (k > 1) + (inv > 0) + length(unique(bf)) - 1 +
       length(unique(Q)) - 1)
+
+  extras <- pairlist(bf = bf, Q = Q, inv = inv, shape = shape, rate = rate, k=k,
+                     model=model, g=g, w=w, site.rate = site.rate, ASC = ASC)
+  existing <- names(call)[names(call) %in% names(extras)]
+  for (a in existing) call[[a]] <- extras[[a]]
 
   result <- list(logLik = tmp$loglik, inv = inv, k = kmax, shape = shape,
     Q = Q, bf = bf, rate = rate, siteLik = tmp$siteLik,
@@ -1392,7 +1423,7 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     ASC=ASC, site.rate = site.rate)
   df <- ifelse(is.ultrametric(tree), tree$Nnode, length(tree$edge.length))
   if(site.rate=="free_rate") df <- df + 2L * kmax - 3L
-  if(site.rate=="gamma_phangorn") df <- df + kmax - 1L
+  if(site.rate=="gamma_weighted") df <- df + kmax - 1L
   df <- switch(type,
     DNA =  df + (kmax > 1) + (inv0 > 0) + length(unique(bf)) - 1 +
       length(unique(Q)) - 1,
@@ -1405,6 +1436,7 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
                      model=model, g=g, w=w, site.rate = site.rate, ASC = ASC,
                      dnds=dnds, tstv=tstv)
   existing <- names(call)[names(call) %in% names(extras)]
+
   for (a in existing) call[[a]] <- extras[[a]]
 
   result <- list(logLik = tmp$loglik, inv = inv, k = kmax, shape = shape,
@@ -2224,7 +2256,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     }
     df <- ifelse(optRooted, tree$Nnode, length(tree$edge.length))
     if(site.rate == "free_rate" & k > 1) df <- df + 2 * k - 3L
-    if(site.rate == "gamma_phangorn" & k > 1) df <- df + k - 1L
+    if(site.rate == "gamma_weighted" & k > 1) df <- df + k - 1L
     dfQ <- ifelse(is.null(subs), length(unique(Q)) - 1, max(subs))
     df <- switch(type,
       DNA = df + (k > 1) + (optInv | (inv > 0)) + length(unique(bf)) - 1 + dfQ,
@@ -2246,9 +2278,10 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       object$frequencies <- bf_choice
     }
     class(object) <- "pml"
-    extras <- pairlist(bf = bf, Q = Q, inv = inv, shape = shape, rate = rate,
-               model=model, g=g, w=w)[c(optBf, optQ, optInv, optGamma, optRate,
-                                        optModel, optFreeRate, optFreeRate)]
+    extras <- pairlist(bf = bf, Q = Q, inv = inv, shape = shape, k=k,
+              rate = rate, model=model, g=g, w=w)[c(optBf, optQ, optInv,
+              optGamma, optGamma, optRate, optModel, optFreeRate, optFreeRate)]
+
     if (length(extras)) {
       existing <- !is.na(match(names(extras), names(call)))
       for (a in names(extras)[existing]) call[[a]] <- extras[[a]]
@@ -2353,7 +2386,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       ll <- res[[2]]
     }
     ### start sitewise
-    if (optInv) {
+    if (optInv && !optFreeRate) {
       res <- optimInv(tree, data, inv = inv, INV = INV, Q = Q,
         bf = bf, eig = eig, k = k, shape = shape, rate = rate,
         llMix = llMix, wMix=wMix)
@@ -2365,7 +2398,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       if (wMix > 0) ll.0 <- ll.0 + llMix
     }
     if (optGamma) {
-      if(site.rate=="gamma_phangorn") {
+      if(site.rate=="gamma_weighted") {
         res <- optimGammaPhangorn(tree, data, w=w, shape = shape,
                                   inv = inv, INV = INV,
                           Q = Q, bf = bf, eig = eig, ll.0 = ll.0, rate = rate,
@@ -2373,6 +2406,12 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
         shape <- res[[1]][k+1]
         w <- res[[1]][1:k]
         g <- discrete.gamma(shape, length(w), w = w)
+
+        if (inv > 0){
+          w <- (1 - inv) * w
+          g <- g / (1 - inv)
+        }
+
         ll <- res[[2]]
         if (trace > 0)
           cat("optimize shape parameter: ", ll, "-->", max(res[[2]], ll), "\n")
@@ -2390,7 +2429,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     if (optFreeRate) {
       tmp_ll <- ll
       res_test <- optimFreeRate(tree, data, g = g, k = k, w = w, inv = inv,
-                           INV = INV, bf = bf, eig = eig, optInv=FALSE,
+                           INV = INV, bf = bf, eig = eig, optInv=optInv,
                            ll.0 = ll.0, rate = rate, timetree=timetree)
       w <- res_test$w
       g <- res_test$r
@@ -2410,10 +2449,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                       llMix = llMix, wMix=wMix, ASC=ASC,
                        control = pml.control(epsilon = 1e-08, maxit = 10,
                                              trace = trace, tau = tau))
-#      if (res[[2]] > ll) {
         ll <- res[[2]]
         tree <- res[[1]]
-#      }
     }
     epsR <- 1e-8
     if (optNni) {

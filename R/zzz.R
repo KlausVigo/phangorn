@@ -51,7 +51,7 @@
 
 
 # if rate g[i] is smaller than .gEps invariant site is increased by w[i]
-.gEps <- 1e-12
+.gEps <- 1e-6
 
 .PlotNetworxEnv <- new.env()
 
