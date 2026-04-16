@@ -56,6 +56,10 @@ write.modelTest(x, file = "modelTest", digits = 10)
   weights, "gamma_weighted" for discrete gamma model with estimated
   weights, "free_rate" and "gamma_quadrature".
 
+- ...:
+
+  Further arguments passed to or from other methods.
+
 - mt_control:
 
   a list with some options.
@@ -72,10 +76,6 @@ write.modelTest(x, file = "modelTest", digits = 10)
 
   default is 10, i.e. edge length for the bootstrap trees are exported.
   For digits larger smaller than zero no edge length are exported.
-
-- name:
-
-  description
 
 ## Value
 
