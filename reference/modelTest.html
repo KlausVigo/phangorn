@@ -49,8 +49,8 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">modelTest</span><span class="op">(</span><span class="va">object</span>, tree <span class="op">=</span> <span class="cn">NULL</span>, model <span class="op">=</span> <span class="cn">NULL</span>, G <span class="op">=</span> <span class="cn">TRUE</span>, I <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  FREQ <span class="op">=</span> <span class="cn">FALSE</span>, R <span class="op">=</span> <span class="cn">FALSE</span>, k <span class="op">=</span> <span class="fl">4</span>, control <span class="op">=</span> <span class="fu"><a href="pml.control.html">pml.control</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  multicore <span class="op">=</span> <span class="cn">FALSE</span>, mc.cores <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span>  FREQ <span class="op">=</span> <span class="cn">FALSE</span>, k <span class="op">=</span> <span class="fl">4</span>, control <span class="op">=</span> <span class="fu"><a href="pml.control.html">pml.control</a></span><span class="op">(</span><span class="op">)</span>, RHAS <span class="op">=</span> <span class="st">"gamma"</span>, <span class="va">...</span>,</span>
+<span>  mt_control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>crit <span class="op">=</span> <span class="st">"BIC"</span>, n_model <span class="op">=</span> <span class="fl">100</span>, n_rhas <span class="op">=</span> <span class="fl">7</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">write.modelTest</span><span class="op">(</span><span class="va">x</span>, file <span class="op">=</span> <span class="st">"modelTest"</span>, digits <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -85,24 +85,24 @@ each other or "all" to test all available models.</p></dd>
 estimated.</p></dd>
 
 
-<dt id="arg-r">R<a class="anchor" aria-label="anchor" href="#arg-r"></a></dt>
-<dd><p>logical, TRUE (default) if free rate model should be tested.</p></dd>
-
-
 <dt id="arg-k">k<a class="anchor" aria-label="anchor" href="#arg-k"></a></dt>
-<dd><p>number of rate classes.</p></dd>
+<dd><p>number of rate classes. Can be a list with a vector for each RHAS
+term.</p></dd>
 
 
 <dt id="arg-control">control<a class="anchor" aria-label="anchor" href="#arg-control"></a></dt>
 <dd><p>A list of parameters for controlling the fitting process.</p></dd>
 
 
-<dt id="arg-multicore">multicore<a class="anchor" aria-label="anchor" href="#arg-multicore"></a></dt>
-<dd><p>Currently not used.</p></dd>
+<dt id="arg-rhas">RHAS<a class="anchor" aria-label="anchor" href="#arg-rhas"></a></dt>
+<dd><p>a character vector specifying the rate heterogeneity among sites
+models. Option are "gamma" for discrete gamma model with equal weights,
+"gamma_weighted" for discrete gamma model with estimated weights,
+"free_rate" and "gamma_quadrature".</p></dd>
 
 
-<dt id="arg-mc-cores">mc.cores<a class="anchor" aria-label="anchor" href="#arg-mc-cores"></a></dt>
-<dd><p>Currently not used.</p></dd>
+<dt id="arg-mt-control">mt_control<a class="anchor" aria-label="anchor" href="#arg-mt-control"></a></dt>
+<dd><p>a list with some options.</p></dd>
 
 
 <dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
@@ -116,6 +116,10 @@ estimated.</p></dd>
 <dt id="arg-digits">digits<a class="anchor" aria-label="anchor" href="#arg-digits"></a></dt>
 <dd><p>default is 10, i.e. edge length for the bootstrap trees are
 exported. For digits larger smaller than zero no edge length are exported.</p></dd>
+
+
+<dt id="arg-name">name<a class="anchor" aria-label="anchor" href="#arg-name"></a></dt>
+<dd><p>description</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -169,12 +173,18 @@ Structural Phylogenetics, <em>Molecular Biology and Evolution</em>,
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">mT</span> <span class="op">&lt;-</span> <span class="fu">modelTest</span><span class="op">(</span><span class="va">Laurasiatherian</span>, model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"JC"</span>, <span class="st">"K80"</span>, <span class="st">"HKY"</span>, <span class="st">"GTR"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                R<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mT</span> <span class="op">&lt;-</span> <span class="fu">modelTest</span><span class="op">(</span><span class="va">Laurasiatherian</span>, model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"JC"</span>, <span class="st">"K80"</span>, <span class="st">"HKY"</span>, <span class="st">"GTR"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Some exploratory data analysis</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mT</span><span class="op">$</span><span class="va">TL</span>, <span class="va">mT</span><span class="op">$</span><span class="va">logLik</span>, xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">6.5</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">mT</span><span class="op">$</span><span class="va">TL</span>, <span class="va">mT</span><span class="op">$</span><span class="va">logLik</span>, labels<span class="op">=</span><span class="va">mT</span><span class="op">$</span><span class="va">Model</span>, pos<span class="op">=</span><span class="fl">4</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">fit_GTR_G</span> <span class="op">&lt;-</span> <span class="fu"><a href="pml.html">as.pml</a></span><span class="op">(</span><span class="va">mt</span>, <span class="st">"GTR+G(4)"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fit_GTR_GW</span> <span class="op">&lt;-</span> <span class="fu"><a href="pml.html">as.pml</a></span><span class="op">(</span><span class="va">mt</span>, <span class="st">"GTR+GW(4)"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fit_GTR_R</span> <span class="op">&lt;-</span> <span class="fu"><a href="pml.html">as.pml</a></span><span class="op">(</span><span class="va">mt</span>, <span class="st">"GTR+R(4)"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="discrete.gamma.html">plotRates</a></span><span class="op">(</span><span class="va">fit_GTR_G</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="discrete.gamma.html">plotRates</a></span><span class="op">(</span><span class="va">fit_GTR_GW</span>, append<span class="op">=</span><span class="cn">TRUE</span>, col<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="discrete.gamma.html">plotRates</a></span><span class="op">(</span><span class="va">fit_GTR_R</span>, append<span class="op">=</span><span class="cn">TRUE</span>, col<span class="op">=</span><span class="st">"green"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># extract best model</span></span></span>
 <span class="r-in"><span><span class="op">(</span><span class="va">best_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="pml.html">as.pml</a></span><span class="op">(</span><span class="va">mT</span><span class="op">)</span><span class="op">)</span></span></span>
