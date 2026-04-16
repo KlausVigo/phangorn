@@ -107,7 +107,7 @@ fitPar <- function(par, fit, trees=NULL, calls=NULL, ...) {
 #' term.
 #' @param mt_control a list with some options.
 #' @param control A list of parameters for controlling the fitting process.
-#' @param name description
+#' @param ... Further arguments passed to or from other methods.
 #' @return A data.frame containing the log-likelihood, number of estimated
 #' parameters, AIC, AICc and BIC all tested models.  The data.frame has an
 #' attributes "env" which is an environment which contains all the trees, the
@@ -188,17 +188,17 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
   inv0 <- max(0, 0.9 * (gld$const_sites / gld$nchar))
   #inv0 <- 0
   #  assert_phyDat(data)
-  if (attr(data, "type") == "DNA") type <- phangorn:::.dnamodels
-  if (attr(data, "type") == "AA") type <- phangorn:::.aa_3Di_models
-  if (attr(data, "type") == "USER") type <- phangorn:::.usermodels
+  if (attr(data, "type") == "DNA") type <- .dnamodels
+  if (attr(data, "type") == "AA") type <- .aa_3Di_models
+  if (attr(data, "type") == "USER") type <- .usermodels
   if ( is.null(model) ) model <- "all"
   if ( length(model)==1 ) {
     if(model == "all"){
       model <- type
-      if (attr(data, "type") == "AA") type <- phangorn:::.aamodels
+      if (attr(data, "type") == "AA") type <- .aamodels
     } else if(model=="3Di"){
-      model <- phangorn:::._3Di_models
-    } else if(model=="AA_3Di") model <- phangorn:::.aa_3Di_models
+      model <- ._3Di_models
+    } else if(model=="AA_3Di") model <- .aa_3Di_models
   }
   # clean up
   if(attr(data, "type") == "DNA" &&

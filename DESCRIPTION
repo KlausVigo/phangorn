@@ -48,7 +48,6 @@ Imports:
     graphics,
     grDevices,
     igraph (>= 1.0),
-    lars,
     Matrix,
     methods,
     osqp,

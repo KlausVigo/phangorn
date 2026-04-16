@@ -225,6 +225,7 @@ plot_gamma_plus_inv <- function(w=NULL, g=NULL, shape=1, inv=0, k=4, discrete=TR
 
 #' @rdname discrete.gamma
 #' @importFrom stats ecdf
+#' @importFrom stats plot.ecdf
 #' @importFrom graphics rug
 ## @importFrom statmod gauss.quad.prob
 #' @param obj an object of class pml
