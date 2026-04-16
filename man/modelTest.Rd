@@ -7,8 +7,8 @@
 \title{ModelTest}
 \usage{
 modelTest(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
-  FREQ = FALSE, R = FALSE, k = 4, control = pml.control(),
-  multicore = FALSE, mc.cores = NULL)
+  FREQ = FALSE, k = 4, control = pml.control(), RHAS = "gamma", ...,
+  mt_control = list(crit = "BIC", n_model = 100, n_rhas = 7))
 
 write.modelTest(x, file = "modelTest", digits = 10)
 }
@@ -27,15 +27,17 @@ each other or "all" to test all available models.}
 \item{FREQ}{logical, FALSE (default) if TRUE amino acid frequencies will be
 estimated.}
 
-\item{R}{logical, TRUE (default) if free rate model should be tested.}
-
-\item{k}{number of rate classes.}
+\item{k}{number of rate classes. Can be a list with a vector for each RHAS
+term.}
 
 \item{control}{A list of parameters for controlling the fitting process.}
 
-\item{multicore}{Currently not used.}
+\item{RHAS}{a character vector specifying the rate heterogeneity among sites
+models. Option are "gamma" for discrete gamma model with equal weights,
+"gamma_weighted" for discrete gamma model with estimated weights,
+"free_rate" and "gamma_quadrature".}
 
-\item{mc.cores}{Currently not used.}
+\item{mt_control}{a list with some options.}
 
 \item{x}{an object of class modelTest.}
 
@@ -43,6 +45,8 @@ estimated.}
 
 \item{digits}{default is 10, i.e. edge length for the bootstrap trees are
 exported. For digits larger smaller than zero no edge length are exported.}
+
+\item{name}{description}
 }
 \value{
 A data.frame containing the log-likelihood, number of estimated
@@ -67,12 +71,18 @@ Garg(2025).
 
 \dontrun{
 data(Laurasiatherian)
-mT <- modelTest(Laurasiatherian, model = c("JC", "K80", "HKY", "GTR"),
-                R=TRUE)
+mT <- modelTest(Laurasiatherian, model = c("JC", "K80", "HKY", "GTR"))
 
 # Some exploratory data analysis
 plot(mT$TL, mT$logLik, xlim=c(3,6.5))
 text(mT$TL, mT$logLik, labels=mT$Model, pos=4)
+
+fit_GTR_G <- as.pml(mt, "GTR+G(4)")
+fit_GTR_GW <- as.pml(mt, "GTR+GW(4)")
+fit_GTR_R <- as.pml(mt, "GTR+R(4)")
+plotRates(fit_GTR_G)
+plotRates(fit_GTR_GW, append=TRUE, col="red")
+plotRates(fit_GTR_R, append=TRUE, col="green")
 
 # extract best model
 (best_model <- as.pml(mT))

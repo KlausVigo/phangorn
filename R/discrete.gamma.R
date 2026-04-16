@@ -107,18 +107,6 @@ plot_gamma_plus_inv <- function(w=NULL, g=NULL, shape=1, inv=0, k=4, discrete=TR
     cr <- FALSE
   }
 
-#  step_GpI <- function(alpha=1, k=4, inv=0, edge.length=NULL,
-#                       site.rate="gamma"){
-#    rw <- rates_n_weights(alpha, k, site.rate)
-#    g <- rw[, 1]
-#    w <- rw[, 2]
-#    if (inv > 0) w <- c(inv, (1 - inv) * w)
-#    cw <- cumsum(w)
-#    if (inv > 0) g <- c(0, g/(1 - inv))
-#    if(!is.null(edge.length)) g <- g * edge.length
-#    stepfun(g, c(0, cw))
-#  }
-
   step_gw <- function(g, w, edge.length=NULL){
     cw <- c(0, cumsum(w))
     if(!is.null(edge.length)) g <- g * edge.length
@@ -265,12 +253,6 @@ plotRates <- function(obj, cdf.color="blue", main="cdf", rug=FALSE, xlim=NULL,
     if(rug) rug(jitter(pscores))
   }
   el <- obj$tree$edge.length * obj$rate
-#  if(obj$site.rate == "gamma"){
-#    plot_gamma_plus_inv(k=obj$k, shape=obj$shape, inv=obj$inv, append=TRUE,
-#                        xlim = xlim,
-#                        edge.length=sum(el), verticals=TRUE, col=cdf.color,
-#                        site.rate=obj$site.rate, ...)
-#  } else {
   w <- obj$w
   g <- obj$g
   inv <- obj$inv

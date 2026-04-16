@@ -1333,11 +1333,13 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   tstv <- ifelse(is.na(existing[4]), 1,
     eval(extras[[existing[4]]], parent.frame()))
   w <- g <- NULL
-  if(!is.na(existing[5]) & !is.na(existing[6])) {
+  if(!is.na(existing[5])) {
     w <- eval(extras[[existing[5]]], parent.frame())
+    k <- length(w)
+  }
+  if(!is.na(existing[6])) {
     g <- eval(extras[[existing[6]]], parent.frame())
     stopifnot(length(g) == length(w))
-    k <- length(w)
   }
   assert_phylo(tree, has_edge_length=TRUE)
   nTips <- as.integer(length(tree$tip.label))
@@ -1356,11 +1358,6 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   weight <- attr(data, "weight")
   nr <- attr(data, "nr")
   nc <- as.integer(attr(data, "nc"))
-#  if (type == "AA" & !is.null(model)) {
-#    model <- match.arg(model, .aa_3Di_models)
-#    getModelAA(model, bf = is.null(bf), Q = is.null(Q),
-#               has_gap_state = has_gap_state(data))
-#  }
   if (type == "CODON") {
     .syn <- synonymous_subs(code=attr(data, "code"))
     .sub <- tstv_subs(code=attr(data, "code"))
@@ -2280,7 +2277,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     class(object) <- "pml"
     extras <- pairlist(bf = bf, Q = Q, inv = inv, shape = shape, k=k,
               rate = rate, model=model, g=g, w=w)[c(optBf, optQ, optInv,
-              optGamma, optGamma, optRate, optModel, optFreeRate, optFreeRate)]
+              optGamma, optGamma, optRate, optModel,
+              optFreeRate, optFreeRate || site.rate=="gamma_weighted")]
 
     if (length(extras)) {
       existing <- !is.na(match(names(extras), names(call)))

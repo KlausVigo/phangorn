@@ -4,6 +4,80 @@ aic.weights <- function(aic) {
 }
 
 
+as_par <- function(models, k=4, inv=0.2, site_rate="gamma",
+                   I = TRUE, G = TRUE, FREQ=FALSE){
+  # create_model
+  l <- length(site_rate)
+  if(!is.list(k)) k <- as.list(rep(k, l))
+  l_r <- sum(lengths(k))
+  l_m <- length(models)
+  l_g <- length(site_rate)
+  nb_m <- l_m + I * l_m + G * l_r * l_m + (G && I) * l_r * l_m
+  res <- as.data.frame(matrix(NA, nb_m, 5, dimnames = list(NULL,
+                          c("model_term", "model", "k", "site_rate", "inv"))))
+  pos <- 1
+  for(m in models){
+    m_term <- model_term(model=m, k=1, site.rate=site_rate[1], inv=0)
+    res[pos,] <- list(m_term=m_term, model=m, k=1, site_rate=site_rate[1], inv=0)
+    pos <- pos + 1
+  }
+  if(I){
+    for(m in models){
+      m_term <- model_term(model=m, k=1, site.rate=site_rate[1], inv=inv)
+      res[pos,] <- list(m_term=m_term, model=m, k=1, site_rate=site_rate[1], inv=inv)
+      pos <- pos + 1
+    }
+  }
+  if(G){
+    for(m in models){
+      for(j in seq_along(site_rate)){
+        for(kj in k[[j]]){
+          m_term <- model_term(model=m, k=kj, site.rate=site_rate[j], inv=0)
+          res[pos,] <- list(m_term=m_term, model=m, k=kj, site_rate=site_rate[j], inv=0)
+          pos <- pos + 1
+        }
+      }
+    }
+  }
+  if(G && I){
+    for(m in models){
+      for(j in seq_along(site_rate)){
+        for(kj in k[[j]]){
+          m_term <- model_term(model=m, k=kj, site.rate=site_rate[j], inv=inv)
+          res[pos,] <- list(m_term=m_term, model=m, k=kj, site_rate=site_rate[j], inv=inv)
+          pos <- pos + 1
+        }
+      }
+    }
+  }
+  res$anc <- res$model
+  if(FREQ){
+    res2 <- res
+    res2$model_term <- paste0(res2$model_term, "+F")
+    res2$anc <- paste0(res2$anc, "+F")
+    res <- rbind(res, res2)
+  }
+  res
+}
+
+
+fitPar <- function(par, fit, trees=NULL, calls=NULL, ...) {
+  if(!is.null(trees) && !is.null(calls)){
+    data <- fit$data
+    tree <- trees[[par$anc]]
+    fit <- eval(calls[[par$anc]])
+#    fit$model <- strsplit(par$model, "\\+")[[1]][1]
+#     tmp <- update(fit, k = par$k, site.rate = par$site_rate,
+#                inv = par$inv)
+  }
+  tmp <- update(fit, model = par$model, k = par$k, site.rate = par$site_rate,
+                inv = par$inv)
+  tmp <- pml_bb(tmp, model = par$model_term, rearrangement = "none", ...)
+  pars <- glance(tmp)
+  list(model_term = par$model_term, model = par$model, call = tmp$call,
+       tree = tmp$tree, pars = pars)
+}
+
 #' ModelTest
 #'
 #' Comparison of different nucleotide or amino acid substitution models
@@ -25,15 +99,15 @@ aic.weights <- function(aic) {
 #' @param I logical, TRUE (default) if invariant sites should be tested.
 #' @param FREQ logical, FALSE (default) if TRUE amino acid frequencies will be
 #' estimated.
-#' @param R logical, TRUE (default) if free rate model should be tested.
-#' @param k number of rate classes.
+#' @param RHAS a character vector specifying the rate heterogeneity among sites
+#' models. Option are "gamma" for discrete gamma model with equal weights,
+#' "gamma_weighted" for discrete gamma model with estimated weights,
+#' "free_rate" and "gamma_quadrature".
+#' @param k number of rate classes. Can be a list with a vector for each RHAS
+#' term.
+#' @param mt_control a list with some options.
 #' @param control A list of parameters for controlling the fitting process.
-#' @param multicore Currently not used.
-## logical, whether models should estimated in parallel.
-#' @param mc.cores Currently not used.
-## The number of cores to use, i.e. at most how many child
-## processes will be run simultaneously. Must be at least one, and
-## parallelization requires at least two cores.
+#' @param name description
 #' @return A data.frame containing the log-likelihood, number of estimated
 #' parameters, AIC, AICc and BIC all tested models.  The data.frame has an
 #' attributes "env" which is an environment which contains all the trees, the
@@ -68,12 +142,18 @@ aic.weights <- function(aic) {
 #'
 #' \dontrun{
 #' data(Laurasiatherian)
-#' mT <- modelTest(Laurasiatherian, model = c("JC", "K80", "HKY", "GTR"),
-#'                 R=TRUE)
+#' mT <- modelTest(Laurasiatherian, model = c("JC", "K80", "HKY", "GTR"))
 #'
 #' # Some exploratory data analysis
 #' plot(mT$TL, mT$logLik, xlim=c(3,6.5))
 #' text(mT$TL, mT$logLik, labels=mT$Model, pos=4)
+#'
+#' fit_GTR_G <- as.pml(mt, "GTR+G(4)")
+#' fit_GTR_GW <- as.pml(mt, "GTR+GW(4)")
+#' fit_GTR_R <- as.pml(mt, "GTR+R(4)")
+#' plotRates(fit_GTR_G)
+#' plotRates(fit_GTR_GW, append=TRUE, col="red")
+#' plotRates(fit_GTR_R, append=TRUE, col="green")
 #'
 #' # extract best model
 #' (best_model <- as.pml(mT))
@@ -88,10 +168,13 @@ aic.weights <- function(aic) {
 #' plan(sequential)
 #' }
 #'
-#' @export modelTest
+#' @export
 modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
-                      FREQ = FALSE, R=FALSE, k = 4, control = pml.control(),
-                      multicore = FALSE, mc.cores = NULL) {
+                       FREQ = FALSE, k = 4, control = pml.control(),
+                       RHAS = "gamma", ...,
+                       mt_control=list(crit="BIC", n_model=100, n_rhas=7)) {
+  crit <- mt_control$crit
+
   if(inherits(object, "DNAbin") || inherits(object, "AAbin"))
     object <- as.phyDat(object)
   if (inherits(object, "phyDat")) data <- object
@@ -99,18 +182,23 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
     data <- object$data
     if (is.null(tree)) tree <- object$tree
   }
+  RHAS <- match.arg(RHAS, choices = c("gamma", "gamma_weighted",
+                    "gamma_quadtrature", "free_rate"), several.ok = TRUE)
+  gld <- glance(data)
+  inv0 <- max(0, 0.9 * (gld$const_sites / gld$nchar))
+  #inv0 <- 0
   #  assert_phyDat(data)
-  if (attr(data, "type") == "DNA") type <- .dnamodels
-  if (attr(data, "type") == "AA") type <- .aa_3Di_models
-  if (attr(data, "type") == "USER") type <- .usermodels
+  if (attr(data, "type") == "DNA") type <- phangorn:::.dnamodels
+  if (attr(data, "type") == "AA") type <- phangorn:::.aa_3Di_models
+  if (attr(data, "type") == "USER") type <- phangorn:::.usermodels
   if ( is.null(model) ) model <- "all"
   if ( length(model)==1 ) {
     if(model == "all"){
       model <- type
-      if (attr(data, "type") == "AA") type <- .aamodels
+      if (attr(data, "type") == "AA") type <- phangorn:::.aamodels
     } else if(model=="3Di"){
-      model <- ._3Di_models
-    } else if(model=="AA_3Di") model <- .aa_3Di_models
+      model <- phangorn:::._3Di_models
+    } else if(model=="AA_3Di") model <- phangorn:::.aa_3Di_models
   }
   # clean up
   if(attr(data, "type") == "DNA" &&
@@ -126,8 +214,11 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
 
   model <- match.arg(model, type, TRUE)
 
+  if (is.null(tree)){
+ #   p("Compute starting tree")
+    tree <- candidate_tree(data)
 
-  if (is.null(tree)) tree <- candidate_tree(data)
+  }
   if(!identical(sort(names(data)), sort(tree$tip.label))){
     stop("Labels in tree and data differ!")
   }
@@ -138,182 +229,115 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
   }
   trace <- control$trace
   control$trace <- trace - 1
-  fit <- pml(tree, data)
+  fit <- pml(tree, data, model=model[1], ...)
   fit <- optim.pml(fit, control = control)
   l <- length(model)
   if (attr(fit$data, "type") == "DNA") FREQ <- FALSE
-  n <- 1L + sum(I + G + (G & I) + FREQ + (FREQ & I) + (FREQ & G) +
-                  (FREQ & G & I) + R + (FREQ & R))
   nseq <- sum(attr(data, "weight"))
 
   clean_call <- function(x, k){
     if (!is.null(x[["k"]])) x["k"] <- k
     x
   }
+  pars <- as_par(model, k=k, inv=inv0, site_rate=RHAS, I = I, G = G,
+                 FREQ = FREQ)
 
-  fitPar <- function(model, fit, G, I, k, FREQ) {
-    m <- 1
-    calls <- vector("list", n)
-    trees <- vector("list", n)
-    fittmp <- optim.pml(fit, model = model, control = control)
-    pars <- glance(fittmp)
-    res <- matrix(NA, n, length(pars)+1L)
-    res <- as.data.frame(res)
-    colnames(res) <- c("Model", names(pars))
-    res[m, 1] <- model
-    res[m, -1] <- pars
-    if (trace > 0) cat(formatC(res[m,1], width=12),
-                       prettyNum(pars[c(1,2,3,5)], preserve.width="individual"), "\n")
-    calls[[m]] <- fittmp$call
-    trees[[m]] <- fittmp$tree
-    m <- m + 1
-    if (I) {
-      fitI <- optim.pml(fittmp, model = model, optInv = TRUE,
-                        control = control)
-      res[m, 1] <- paste0(model, "+I")
-      pars <- glance(fitI)
-      res[m, -1] <- pars
-      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[c(1,2,3,5)],
-                                                                preserve.width="individual"), "\n")
-      calls[[m]] <- fitI$call
-      trees[[m]] <- fitI$tree
-      m <- m + 1
-    }
-    if (G) {
-      fitG <- update(fittmp, k = k)
-      fitG <- optim.pml(fitG, model = model, optGamma = TRUE,
-                        control = control)
-      res[m, 1] <- paste0(model, "+G(", k, ")")
-      pars <- glance(fitG)
-      res[m, -1] <- pars
-      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[c(1,2,3,5)],
-                                                                preserve.width="individual"), "\n")
-      calls[[m]] <- clean_call(fitG$call, k=k)
-      trees[[m]] <- fitG$tree
-      m <- m + 1
-    }
-    if (G & I) {
-      fitGI <- update(fitI, k = k)
-      fitGI <- optim.pml(fitGI, model = model, optGamma = TRUE,
-                         optInv = TRUE, control = control)
-      res[m, 1] <- paste0(model, "+G(", k, ")+I")
-      pars <- glance(fitGI)
-      res[m, -1] <- pars
-      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[c(1,2,3,5)],
-                                                                preserve.width="individual"), "\n")
-      calls[[m]] <- clean_call(fitGI$call, k=k)
-      trees[[m]] <- fitGI$tree
-      m <- m + 1
-    }
-    if (R) {
-      fitR <- update(fittmp, k = k, site.rate="free_rate")
-      fitR <- optim.pml(fitR, model = model, optGamma = TRUE,
-                        control = control)
-      res[m, 1] <- paste0(model, "+R(", k, ")")
-      pars <- glance(fitR)
-      res[m, -1] <- pars
-      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[c(1,2,3,5)],
-                                                                preserve.width="individual"), "\n")
-      calls[[m]] <- clean_call(fitR$call, k=k)
-      trees[[m]] <- fitR$tree
-      m <- m + 1
-    }
-    if (FREQ) {
-      fitF <- optim.pml(fittmp, model = model, optBf = TRUE,
-                        control = control)
-      res[m, 1] <- paste0(model, "+F")
-      pars <- glance(fitF)
-      res[m, -1] <- pars
-      if (trace > 0) cat(formatC(res[m,1], width=12), prettyNum(pars[c(1,2,3,5)],
-                                                                preserve.width="individual"), "\n")
-      calls[[m]] <- fitF$call
-      trees[[m]] <- fitF$tree
-      m <- m + 1
-    }
-    if (FREQ & I) {
-      fitIF <- update(fitF, inv = fitI$inv)
-      fitIF <- optim.pml(fitIF, model = model, optBf = TRUE, optInv = TRUE,
-                         control = control)
-      res[m, 1] <- paste0(model, "+I+F")
-      pars <- glance(fitIF)
-      res[m, -1] <- pars
-      if (trace > 0) cat(formatC(res[m,1], width=12),
-                         prettyNum(pars[c(1,2,3,5)],
-                                   preserve.width="individual"), "\n")
-      calls[[m]] <- fitIF$call
-      trees[[m]] <- fitIF$tree
-      m <- m + 1
-    }
-    if (FREQ & G) {
-      fitGF <- update(fitF, k = k, shape = fitG$shape)
-      fitGF <- optim.pml(fitGF, model = model, optBf = TRUE,
-                         optGamma = TRUE, control = control)
-      res[m, 1] <- paste0(model, "+G(", k, ")+F")
-      pars <- glance(fitGF)
-      res[m, -1] <- pars
-      if (trace > 0) cat(formatC(res[m,1], width=12),
-                         prettyNum(pars[c(1,2,3,5)],
-                                   preserve.width="individual"), "\n")
-      calls[[m]] <- clean_call(fitGF$call, k=k)
-      trees[[m]] <- fitGF$tree
-      m <- m + 1
-    }
-    if (FREQ & G & I) {
-      fitGIF <- update(fitIF, k = k)
-      fitGIF <- optim.pml(fitGIF, model = model, optBf = TRUE,
-                          optInv = TRUE, optGamma = TRUE, control = control)
-      res[m, 1] <- paste0(model, "+G(", k, ")+I+F")
-      pars <- glance(fitGIF)
-      res[m, -1] <- pars
-      if (trace > 0) cat(formatC(res[m,1], width=12),
-                         prettyNum(pars[c(1,2,3,5)],
-                                   preserve.width="individual"), "\n")
-      calls[[m]] <- clean_call(fitGIF$call, k=k)
-      trees[[m]] <- fitGIF$tree
-      m <- m + 1
-    }
-    if (FREQ & R) {
-      fitRF <- update(fittmp, k = k, site.rate="free_rate")
-      fitRF <- optim.pml(fitRF, model = model, optGamma = TRUE, optBf = TRUE,
-                         control = control)
-      res[m, 1] <- paste0(model, "+R(", k, ")+F")
-      pars <- glance(fitRF)
-      res[m, -1] <- pars
-      if (trace > 0) cat(formatC(res[m,1], width=12),
-                         prettyNum(pars[c(1,2,3,5)],
-                                   preserve.width="individual"), "\n")
-      calls[[m]] <- clean_call(fitRF$call, k=k)
-      trees[[m]] <- fitRF$tree
-      m <- m + 1
-    }
-    list(res, trees, calls)
+  ind <- which(pars$k==1 & pars$inv == 0)
+  spl_pars <- split(pars[ind, ], ind)
+  names(spl_pars) <- pars$model_term[ind]
+
+  p <- progressor(along = spl_pars)
+  RES <- lapply(spl_pars, function(x, fit, control=control, ...){
+    p()
+    fitPar(x, fit=fit, control=control, ...)
+  }, fit, control=control, future.seed = TRUE)
+
+#  RES <- future_lapply(spl_pars, fitPar, fit, control = control,
+#                       future.seed = TRUE)
+
+
+  fun <- function(x){
+    trees <- lapply(x, \(x)x$tree)
+    class(trees) <- "multiPhylo"
+    calls <- sapply(x, \(x)x$call)
+    df <- as.data.frame(matrix(NA, length(x), length(x[[1]]$pars),
+            dimnames = list(names(x), names(x[[1]]$pars))))
+    for(i in seq_along(x)) df[i,] <- x[[i]]$pars
+    list(df=df, calls=calls, trees=trees)
   }
-  if(trace & !multicore) cat("Model        df  logLik   AIC      BIC\n")
+  res1 <- fun(RES)
+  df <- res1$df
+  calls <- res1$calls
+  trees <- res1$trees
 
-  RES <- future_lapply(model, fitPar, fit, G, I, k, FREQ, future.seed = TRUE)
-  v <- ncol(RES[[1]][[1]])
-  RESULT <- matrix(NA, n * l, v + 2L)
-  RESULT <- as.data.frame(RESULT)
-  colnames(RESULT) <- c("Model", "df", "logLik", "AIC", "AICw", "AICc",
-                        "AICcw", colnames(RES[[1]][[1]])[6:v])
+  pars2 <- pars[-ind, , drop=FALSE]
 
-  trees <- vector("list", n * l)
-  calls <- vector("list", n * l)
+  if( G || I){
+    best_models <- df$model[order(df[, crit])] |> unique()
+    #  sort(setNames(df[, crit], rownames(df)))
+    #best_models <- gsub(best_models, "+F") |> unique()
+    best_model <- best_models[1] #names(best_models)[1]
+    best_models <- best_models[-1]#names(best_models)[-1]
+    best_models <- best_models[ seq_len(min(length(best_models), mt_control$n_model)) ]
+    ind2 <- which(pars2$model==best_model)
+    pars3 <- pars2[-ind2,]
+    pars2 <- pars2[ind2, ]
+    spl_pars2 <- split(pars2, seq_len(nrow(pars2)))
+    names(spl_pars2) <- pars2$model_term
 
-  for (i in 1:l){
-    ind <- ((i - 1) * n + 1):(n * i)
-    RESULT[ind, -c(5, 7)] <- RES[[i]][[1]]
-    trees[ind] <- RES[[i]][[2]]
-    calls[ind] <- RES[[i]][[3]]
+#    p <- progressor(along = spl_pars2)
+#    RES2 <- future_lapply(spl_pars2, fitPar, fit, trees = trees, calls = calls,
+#                          control = control, future.seed = TRUE)
+
+    p <- progressor(along = spl_pars2)
+    RES2 <- lapply(spl_pars2, function(x, fit, trees = trees, calls = calls,
+                                      control=control,...){
+      p()
+      fitPar(x, fit=fit, trees = trees, calls = calls, control=control, ...)
+    }, fit,  trees = trees, calls = calls, control=control, future.seed = TRUE)
+    res2 <- fun(RES2)
+    df2 <- res2$df
+    best_rhas <- sort(setNames(df2[, crit], rownames(df2)))
+    best_rhas <- best_rhas[seq_len(min(length(best_rhas), mt_control$n_rhas))]
+    best_rhas <- names(best_rhas)
+
+    rest <- NULL
+    for(i in best_models) rest <- c(rest, gsub(best_model, i, best_rhas))
+
+    trees3 <- NULL
+    calls3 <- NULL
+    ind3 <- match(rest, pars3$model_term)
+    if(length(ind3)>0) {
+      pars3 <- pars3[ind3, ]
+      spl_pars3 <- split(pars3, seq_len(nrow(pars3)))
+      names(spl_pars3) <- pars3$model_term
+#      p <- progressor(along = spl_pars3)
+#      RES3 <- future_lapply(spl_pars3, fitPar, fit, trees=trees, calls=calls,
+#                            control=control, future.seed = TRUE)
+
+      p <- progressor(along = spl_pars3)
+      RES3 <- lapply(spl_pars3, function(x, fit, trees = trees, calls = calls,
+                                        control=control,...){
+        p()
+        fitPar(x, fit=fit, trees = trees, calls = calls, control=control, ...)
+      }, fit,  trees = trees, calls = calls, control=control, future.seed = TRUE)
+      res3 <- fun(RES3)
+    }
+    calls <- c(calls, res2$calls, res3$calls)
+    trees <- c(trees, res2$trees, res3$trees)
+    trees <- .compressTipLabel(trees)
+    RESULT <- rbind(df, df2, res3$df)
   }
-  RESULT[, 5] <- aic.weights(RESULT[, 4])
-  RESULT[, 7] <- aic.weights(RESULT[, 6])
 
-  names(trees) <- RESULT[, 1]
-  names(calls) <- RESULT[, 1]
-  class(trees) <- "multiPhylo"
-  trees <- .compressTipLabel(trees)
+  RES_1 <-  cbind(Model_term=rownames(RESULT), AICw = aic.weights(RESULT[, "AIC"]),
+                  AICcw = aic.weights(RESULT[, "AICc"]), RESULT[, 1:5])
+  RES_1 <- RES_1[, c("Model_term", "model", "df", "logLik", "AIC", "AICw", "AICc",
+                     "AICcw")]
+  RESULT <- cbind(RES_1, RESULT[, -(1:5)])
+  RESULT <- RESULT[order(RESULT[,crit]), ]
 
+#  RESULT <- cbind(Model=rownames(RESULT), AICw = aic.weights(RESULT[, "AIC"]),
+#                  AICcw = aic.weights(RESULT[, "AICc"]), RESULT)
   class(RESULT) <- c("modelTest", "data.frame")
   attr(RESULT, "data") <- data
   attr(RESULT, "trees") <- trees
@@ -324,7 +348,6 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
   }
   RESULT
 }
-
 
 
 ## @importFrom generics tidy
@@ -373,11 +396,14 @@ as.pml.modelTest <- function(x, model="BIC", ...){
   fit
 }
 
+# c.modelTest <- function(...){}
+
 
 #' @param x an object of class modelTest.
 #' @param digits	default is 10, i.e. edge length for the bootstrap trees are
 #' exported. For digits larger smaller than zero no edge length are exported.
 #' @param file a file name. File endings are added.
+#' @importFrom progressr progressor
 #' @rdname modelTest
 #' @export
 write.modelTest <- function(x, file="modelTest", digits=10){
@@ -386,11 +412,34 @@ write.modelTest <- function(x, file="modelTest", digits=10){
   write.nexus(attr(x, "trees"), file=zz, digits=digits)
   close(zz)
   write.phyDat(attr(x, "data"), file=paste0(file, ".fasta"), format="fasta")
-  write.table(cbind(x$Model, unlist(attr(x, "calls"))), row.names=FALSE,
-              sep = " ", file=paste0(file, ".tsv"),
-              col.names = c("Model", "Call"))
+
+  calls <- as.character(gsub("\"", "\'", attr(x, "calls")))
+
+  write.table(cbind(x, Call=calls), row.names=FALSE,
+              sep = "\t", file=paste0(file, ".tsv"))
 }
 
 
-#' @srrstats {G1.0} in the lines following: 39
-#' @srrstats {G2.3, G2.3a} in lines: 89, 295
+#summary.modelTest <- function(object, max.print=10, sort#="BIC", plot=TRUE, ...){
+#  browser()
+#  tmp <- object[order(object[, sort]),
+#                c("Model", "df", "logLik", "AIC", "AICc", #"BIC", "TL")]
+#  print(tmp, row.names="Model")
+#  invisible(object)
+#}
+
+
+#plot.modelTest <- function(object, ...){
+#  library(ggrepel)
+#  plot(logLik ~ TL, data=object)
+#  text(y=object$logLik, x=object$TL, labels=object$Model)
+#  if(requireNamespace(ggplot2) && requireNamespace(ggrepel)){
+#  p <- ggplot(object, aes(TL, logLik,  label = Model)) +
+#    geom_point() + geom_text_repel(cex=2.25) + theme_bw() +
+#    xlim(3.1, 6.2) +
+#    xlab("total tree length") + ylab("log-Likelihood")
+#  return(p)
+#}
+#  invisible(object)
+#}
+
