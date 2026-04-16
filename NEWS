@@ -14,11 +14,15 @@ NEW FEATURES
 
       number of edges plotted for planar networks.
 
-    o modelTest got a new argument R to additionally test free rate model and
+    o modelTest allows now easier to estimate different models for rate
 
-      returns now more of the estimated parameters. A write method to export the
+      heterogeneity among sites (RHAS), e.g. free rate model and returns now
 
-      tree, data and models was added.
+      more of the estimated parameters.
+
+      Added some plot functions to explore the different model space.
+
+      A write method to export the tree, data and models was added.
 
     o write.pml() exports now additionally several plots
 
