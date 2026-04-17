@@ -272,6 +272,8 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
 
   pars2 <- pars[-ind, , drop=FALSE]
 
+  RESULT <- df
+
   if( G || I){
     best_models <- df$model[order(df[, crit])] |> unique()
     #  sort(setNames(df[, crit], rownames(df)))
