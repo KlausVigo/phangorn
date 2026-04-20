@@ -3,6 +3,7 @@
 \name{pml.control}
 \alias{pml.control}
 \alias{ratchet.control}
+\alias{mt.control}
 \title{Auxiliary for Controlling Fitting}
 \usage{
 pml.control(epsilon = 1e-08, maxit = 10, trace = !getOption("quiet"),
@@ -10,6 +11,8 @@ pml.control(epsilon = 1e-08, maxit = 10, trace = !getOption("quiet"),
 
 ratchet.control(iter = 20L, maxit = 200L, minit = 100L, prop = 1/2,
   rell = TRUE, bs = 100L)
+
+mt.control(crit = "BIC", n_model = 100, n_rhas = 7)
 }
 \arguments{
 \item{epsilon}{Stop criterion for optimization (see details).}

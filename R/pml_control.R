@@ -85,5 +85,18 @@ ratchet.control <- function(iter = 20L, maxit = 200L, minit = 100L, prop = 1/2,
     stop("proportion of rearrangenemts must be > 0")
   list(iter=iter, maxit=maxit, minit = minit, prop = prop, rell = rell, bs=bs)
 }
+
+
+#' @rdname pml.control
+#' @export
+mt.control <- function(crit = "BIC", n_model = 100, n_rhas = 7){
+  crit <- match.arg(crit, c("AIC", "AICc", "BIC"))
+  if (!is.numeric(n_model) || n_model <= 0)
+    stop("n_model must be > 0")
+  if (!is.numeric(n_rhas) || n_rhas <= 0)
+    stop("n_rhas must be > 0")
+
+  list(iter=iter, n_model=n_model, n_rhas = n_rhas)
+}
 #' @srrstats {G1.0} in the lines folloing: 49
 #' @srrstats {G2.3, G2.3a} in lines: 68

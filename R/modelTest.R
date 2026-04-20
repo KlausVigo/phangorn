@@ -172,7 +172,7 @@ fitPar <- function(par, fit, trees=NULL, calls=NULL, ...) {
 modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
                        FREQ = FALSE, k = 4, control = pml.control(),
                        RHAS = "gamma", ...,
-                       mt_control=list(crit="BIC", n_model=100, n_rhas=7)) {
+                       mt_control=mt.control(crit="BIC", n_model=100, n_rhas=7)) {
   crit <- mt_control$crit
 
   if(inherits(object, "DNAbin") || inherits(object, "AAbin"))
@@ -247,7 +247,7 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
   names(spl_pars) <- pars$model_term[ind]
 
   p <- progressor(along = spl_pars)
-  RES <- lapply(spl_pars, function(x, fit, control=control, ...){
+  RES <- future_lapply(spl_pars, function(x, fit, control=control, ...){
     p()
     fitPar(x, fit=fit, control=control, ...)
   }, fit, control=control, future.seed = TRUE)
@@ -293,8 +293,8 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
 #                          control = control, future.seed = TRUE)
 
     p <- progressor(along = spl_pars2)
-    RES2 <- lapply(spl_pars2, function(x, fit, trees = trees, calls = calls,
-                                      control=control,...){
+    RES2 <- future_lapply(spl_pars2, function(x, fit, trees = trees,
+                                  calls = calls, control=control, ...){
       p()
       fitPar(x, fit=fit, trees = trees, calls = calls, control=control, ...)
     }, fit,  trees = trees, calls = calls, control=control, future.seed = TRUE)
@@ -319,11 +319,12 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
 #                            control=control, future.seed = TRUE)
 
       p <- progressor(along = spl_pars3)
-      RES3 <- lapply(spl_pars3, function(x, fit, trees = trees, calls = calls,
-                                        control=control,...){
-        p()
-        fitPar(x, fit=fit, trees = trees, calls = calls, control=control, ...)
-      }, fit,  trees = trees, calls = calls, control=control, future.seed = TRUE)
+      RES3 <- future_lapply(spl_pars3, function(x, fit, trees = trees,
+                        calls = calls, control=control, ...){
+          p()
+          fitPar(x, fit=fit, trees = trees, calls = calls, control=control, ...)
+        }, fit,  trees = trees, calls = calls, control=control,
+        future.seed = TRUE)
       res3 <- fun(RES3)
       calls3 <- res3$calls
       tree3 <- res3$trees
