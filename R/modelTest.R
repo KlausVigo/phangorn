@@ -265,6 +265,7 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
     for(i in seq_along(x)) df[i,] <- x[[i]]$pars
     list(df=df, calls=calls, trees=trees)
   }
+
   res1 <- fun(RES)
   df <- res1$df
   calls <- res1$calls
@@ -275,7 +276,7 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
   RESULT <- df
 
   if( G || I){
-    best_models <- df$model[order(df[, crit])] |> unique()
+    best_models <- df$Substitution[order(df[, crit])] |> unique()
     #  sort(setNames(df[, crit], rownames(df)))
     #best_models <- gsub(best_models, "+F") |> unique()
     best_model <- best_models[1] #names(best_models)[1]
@@ -324,16 +325,18 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
         fitPar(x, fit=fit, trees = trees, calls = calls, control=control, ...)
       }, fit,  trees = trees, calls = calls, control=control, future.seed = TRUE)
       res3 <- fun(RES3)
+      calls3 <- res3$calls
+      tree3 <- res3$trees
     }
-    calls <- c(calls, res2$calls, res3$calls)
-    trees <- c(trees, res2$trees, res3$trees)
+    calls <- c(calls, res2$calls, calls3)
+    trees <- c(trees, res2$trees, trees3)
     trees <- .compressTipLabel(trees)
     RESULT <- rbind(df, df2, res3$df)
   }
 
-  RES_1 <-  cbind(Model_term=rownames(RESULT), AICw = aic.weights(RESULT[, "AIC"]),
+  RES_1 <-  cbind(Model=rownames(RESULT), AICw = aic.weights(RESULT[, "AIC"]),
                   AICcw = aic.weights(RESULT[, "AICc"]), RESULT[, 1:5])
-  RES_1 <- RES_1[, c("Model_term", "model", "df", "logLik", "AIC", "AICw", "AICc",
+  RES_1 <- RES_1[, c("Model", "Substitution", "df", "logLik", "AIC", "AICw", "AICc",
                      "AICcw")]
   RESULT <- cbind(RES_1, RESULT[, -(1:5)])
   RESULT <- RESULT[order(RESULT[,crit]), ]

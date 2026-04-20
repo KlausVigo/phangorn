@@ -16,8 +16,8 @@ plot_gamma_plus_inv(w = NULL, g = NULL, shape = 1, inv = 0, k = 4,
   ylab = ifelse(cdf, "F(x)", "f(x)"), xlim = NULL, verticals = FALSE,
   edge.length = NULL, site.rate = "gamma", ...)
 
-plotRates(obj, cdf.color = "blue", main = "cdf", rug = FALSE,
-  xlim = NULL, append = FALSE, ...)
+plotRates(obj, cdf.color = "blue", main = "", rug = FALSE, xlim = NULL,
+  append = FALSE, ...)
 }
 \arguments{
 \item{alpha}{Shape parameter of the gamma distribution.}

@@ -164,7 +164,7 @@ glance.pml <- function(x, ...) {
   shape <- ifelse(k>1, x$shape, NA_real_)
   if(x$site.rate == "free_rate") shape <- NA_real_
   #  inv <- x$inv
-  res <- data.frame(model = x$model,
+  res <- data.frame(Substitution = x$model,
                     df = x$df,
                     logLik = x$logLik,
                     AIC = AIC(x),

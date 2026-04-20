@@ -234,7 +234,7 @@ plot_gamma_plus_inv <- function(w=NULL, g=NULL, shape=1, inv=0, k=4, discrete=TR
 #' @param rug logical; if TRUE a \code{\link[graphics]{rug}} is added to the
 #' plot.
 #' @export
-plotRates <- function(obj, cdf.color="blue", main="cdf", rug=FALSE, xlim=NULL,
+plotRates <- function(obj, cdf.color="blue", main="", rug=FALSE, xlim=NULL,
                       append=FALSE, ...){
   pscores <- parsimony(obj$tree, obj$data, site="site")
   if(!is.null(attr(obj$data, "index"))){
