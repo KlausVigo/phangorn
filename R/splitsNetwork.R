@@ -12,8 +12,7 @@
 #' External edges are fitted without L1 or L2 constraints.
 #'
 #' @param dm A distance matrix.
-#' @param splits a splits object, containing all splits to consider, otherwise
-#' all possible splits are used
+#' @param splits a splits object, containing all splits to consider.
 #' @param gamma penalty value for the L1 constraint.
 #' @param lambda penalty value for the L2 constraint.
 #' @param weight a vector of weights.
@@ -38,30 +37,32 @@
 #'
 #' data(yeast)
 #' dm <- dist.ml(yeast)
-#' fit <- splitsNetwork(dm)
+#' spl <- allSplits(8, names(yeast))
+#' fit <- splitsNetwork(spl, dm)
 #' net <- as.networx(fit)
 #' plot(net)
 #' write.nexus.splits(fit)
 #'
 #' @export splitsNetwork
-splitsNetwork <- function(dm, splits = NULL, gamma = 0.1, lambda = 1e-6,
+splitsNetwork <- function(splits, dm, gamma = 0.1, lambda = 1e-6,
                           weight = NULL) {
   assert_numeric(dm, lower=0, any.missing=FALSE, finite=TRUE)
   dm <- as.matrix(dm)
   k <- dim(dm)[1]
 
-  if (!is.null(splits)) {
-    tmp <- which(lengths(splits) == k)
-    if(length(tmp)>0) splits <- splits[-tmp]
-    lab <- attr(splits, "labels")
-    dm <- dm[lab, lab]
-  }
+#  if (!is.null(splits)) {
+  tmp <- which(lengths(splits) == k)
+  if(length(tmp)>0) splits <- splits[-tmp]
+  lab <- attr(splits, "labels")
+  dm <- dm[lab, lab]
+#  }
 
-  if (is.null(splits)) {
-    X2 <- designAll(k, TRUE)
-    X <- X2[[1]]
-  }
-  else X <- as.matrix(splits2design(splits))
+#  if (is.null(splits)) {
+#    X2 <- designAll(k, TRUE)
+#    X <- X2[[1]]
+#  }
+#  else
+  X <- as.matrix(splits2design(splits))
 
   y <- dm[lower.tri(dm)]
   if (is.null(splits)) ind <- c(2^(0:(k - 2)), 2^(k - 1) - 1)
@@ -129,4 +130,6 @@ splitsNetwork <- function(dm, splits = NULL, gamma = 0.1, lambda = 1e-6,
   class(splits) <- "splits"
   return(splits)
 }
-#' @srrstats {G1.0} in the lines folloing: 28
+
+
+#' @srrstats {G1.0} in the lines following: 28

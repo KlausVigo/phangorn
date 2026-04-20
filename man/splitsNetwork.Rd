@@ -4,14 +4,12 @@
 \alias{splitsNetwork}
 \title{Phylogenetic Network}
 \usage{
-splitsNetwork(dm, splits = NULL, gamma = 0.1, lambda = 1e-06,
-  weight = NULL)
+splitsNetwork(splits, dm, gamma = 0.1, lambda = 1e-06, weight = NULL)
 }
 \arguments{
-\item{dm}{A distance matrix.}
+\item{splits}{a splits object, containing all splits to consider.}
 
-\item{splits}{a splits object, containing all splits to consider, otherwise
-all possible splits are used}
+\item{dm}{A distance matrix.}
 
 \item{gamma}{penalty value for the L1 constraint.}
 
@@ -42,7 +40,8 @@ External edges are fitted without L1 or L2 constraints.
 
 data(yeast)
 dm <- dist.ml(yeast)
-fit <- splitsNetwork(dm)
+spl <- allSplits(8, names(yeast))
+fit <- splitsNetwork(spl, dm)
 net <- as.networx(fit)
 plot(net)
 write.nexus.splits(fit)
