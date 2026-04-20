@@ -285,21 +285,21 @@ reversible models.
     ## [10] RColorBrewer_1.1-3  fastmap_1.2.0       jsonlite_2.0.0     
     ## [13] Matrix_1.7-4        backports_1.5.1     scales_1.4.0       
     ## [16] codetools_0.2-20    textshaping_1.0.5   jquerylib_0.1.4    
-    ## [19] cli_3.6.6           rlang_1.2.0         parallelly_1.46.1  
+    ## [19] cli_3.6.6           rlang_1.2.0         parallelly_1.47.0  
     ## [22] future.apply_1.20.2 withr_3.0.2         cachem_1.1.0       
     ## [25] yaml_2.3.12         otel_0.2.0          tools_4.5.3        
     ## [28] ggseqlogo_0.2.2     parallel_4.5.3      checkmate_2.3.4    
     ## [31] dplyr_1.2.1         ggplot2_4.0.2       fastmatch_1.1-8    
     ## [34] globals_0.19.1      vctrs_0.7.3         R6_2.6.1           
-    ## [37] lifecycle_1.0.5     fs_2.0.1            htmlwidgets_1.6.4  
+    ## [37] lifecycle_1.0.5     fs_2.1.0            htmlwidgets_1.6.4  
     ## [40] ragg_1.5.2          pkgconfig_2.0.3     desc_1.4.3         
     ## [43] pillar_1.11.1       pkgdown_2.2.0       progressr_0.19.0   
-    ## [46] bslib_0.10.0        gtable_0.3.6        glue_1.8.0         
-    ## [49] Rcpp_1.1.1          systemfonts_1.3.2   tidyselect_1.2.1   
+    ## [46] bslib_0.10.0        gtable_0.3.6        glue_1.8.1         
+    ## [49] Rcpp_1.1.1-1        systemfonts_1.3.2   tidyselect_1.2.1   
     ## [52] tibble_3.3.1        xfun_0.57           knitr_1.51         
     ## [55] farver_2.1.2        htmltools_0.5.9     nlme_3.1-168       
     ## [58] igraph_2.2.3        labeling_0.4.3      rmarkdown_2.31     
-    ## [61] compiler_4.5.3      S7_0.2.1
+    ## [61] compiler_4.5.3      S7_0.2.1-1
 
 ## References
 

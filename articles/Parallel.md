@@ -72,7 +72,7 @@ future package.
     ## [13] pkgdown_2.2.0     textshaping_1.0.5 jquerylib_0.1.4   systemfonts_1.3.2
     ## [17] compiler_4.5.3    tools_4.5.3       ragg_1.5.2        bslib_0.10.0     
     ## [21] evaluate_1.0.5    yaml_2.3.12       otel_0.2.0        jsonlite_2.0.0   
-    ## [25] rlang_1.2.0       fs_2.0.1          htmlwidgets_1.6.4
+    ## [25] rlang_1.2.0       fs_2.1.0          htmlwidgets_1.6.4
 
 ## References
 
