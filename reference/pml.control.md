@@ -60,6 +60,20 @@ mt.control(crit = "BIC", n_model = 100, n_rhas = 7)
 
   number of approximate bootstrap samples.
 
+- crit:
+
+  criterion to choose for best models, one of "AIC", "AICc", "BIC".
+
+- n_model:
+
+  how many of the best transition models to choose to compute the rate
+  heterogeneity for.
+
+- n_rhas:
+
+  number of rate heterogeneity models to compute for each transition
+  model.
+
 ## Value
 
 A list with components named as the arguments for controlling the
