@@ -6,20 +6,18 @@ matrix.
 ## Usage
 
 ``` r
-splitsNetwork(dm, splits = NULL, gamma = 0.1, lambda = 1e-06,
-  weight = NULL)
+splitsNetwork(splits, dm, gamma = 0.1, lambda = 1e-06, weight = NULL)
 ```
 
 ## Arguments
 
+- splits:
+
+  a splits object, containing all splits to consider.
+
 - dm:
 
   A distance matrix.
-
-- splits:
-
-  a splits object, containing all splits to consider, otherwise all
-  possible splits are used
 
 - gamma:
 
@@ -74,7 +72,8 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ``` r
 data(yeast)
 dm <- dist.ml(yeast)
-fit <- splitsNetwork(dm)
+spl <- allSplits(8, names(yeast))
+fit <- splitsNetwork(spl, dm)
 net <- as.networx(fit)
 plot(net)
 
@@ -90,20 +89,17 @@ write.nexus.splits(fit)
 #> END;
 #> 
 #> BEGIN SPLITS;
-#>  DIMENSIONS ntax=8 nsplits=11;
+#>  DIMENSIONS ntax=8 nsplits=8;
 #>  FORMAT labels=left weights=yes confidences=no intervals=no;
 #>  MATRIX
-#>      1   0.0651862396712616  1,
-#>      2   0.0587180691106358  1 3 4 5 6 7 8,
-#>      3   0.0696965521631351  1 2 4 5 6 7 8,
-#>      4   0.00922638340350294     1 2 3,
-#>      5   0.0814873133362595  1 2 3 5 6 7 8,
-#>      6   0.00406741289174909     1 2 3 4,
-#>      7   0.0886759961042268  1 2 3 4 6 7 8,
-#>      8   0.0867062037047412  1 2 3 4 5,
-#>      9   0.17646629129439    1 2 3 4 5 7 8,
-#>      10  0.208306664127701   1 2 3 4 5 6 8,
-#>      11  0.36479839452168    1 2 3 4 5 6 7,
+#>      1   0.106864415283204   1,
+#>      2   0.100396244722565   1 3 4 5 6 7 8,
+#>      3   0.111374727775072   1 2 4 5 6 7 8,
+#>      4   0.120090027813701   1 2 3 5 6 7 8,
+#>      5   0.12727871058167    1 2 3 4 6 7 8,
+#>      6   0.243971073673417   1 2 3 4 5 7 8,
+#>      7   0.275811446506724   1 2 3 4 5 6 8,
+#>      8   0.0999999999999936  1 2 3 4 5 6 7,
 #>  ;
 #> END;
 ```

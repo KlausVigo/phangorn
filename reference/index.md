@@ -262,6 +262,7 @@
 
 - [`pml.control()`](https://klausvigo.github.io/phangorn/reference/pml.control.md)
   [`ratchet.control()`](https://klausvigo.github.io/phangorn/reference/pml.control.md)
+  [`mt.control()`](https://klausvigo.github.io/phangorn/reference/pml.control.md)
   : Auxiliary for Controlling Fitting
 
 - [`lli()`](https://klausvigo.github.io/phangorn/reference/pml.fit.md)

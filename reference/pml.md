@@ -360,7 +360,7 @@ if (FALSE) { # \dontrun{
   dat <- acgt2ry(Laurasiatherian)
   fit2ST <- pml(tree, dat)
   fit2ST <- optim.pml(fit2ST,optNni=TRUE)
-#> optimize edge weights:  -19749.4 --> -17092.17 
+#> optimize edge weights:  -19996.09 --> -17092.17 
 #> optimize edge weights:  -17092.17 --> -17092.17 
 #> optimize topology:  -17092.17 --> -17024.81  NNI moves:  10 
 #> optimize edge weights:  -17024.81 --> -17024.81 

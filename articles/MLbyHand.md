@@ -186,23 +186,23 @@ fitGTR
     ##  (expected number of substituions per site)
     ## Minimal tree length: 3.315 
     ##  (observed substitutions per site)
-    ## Proportion of invariant sites: 0.007411 
+    ## Proportion of invariant sites: 0.007369 
     ## Model of rate heterogeneity: Discrete gamma model
     ## Number of rate categories: 4 
     ## Shape parameter: 2.994 
     ##     Rate Proportion
-    ## 1 0.0000   0.007411
-    ## 2 0.3917   0.248147
-    ## 3 0.7366   0.248147
-    ## 4 1.0906   0.248147
-    ## 5 1.8110   0.248147
+    ## 1 0.0000   0.007369
+    ## 2 0.3917   0.248158
+    ## 3 0.7366   0.248158
+    ## 4 1.0905   0.248158
+    ## 5 1.8109   0.248158
     ## 
     ## Rates:
-    ## a <-> c : 0.7227 
-    ## a <-> g : 74.21 
-    ## a <-> t : 0.6014 
-    ## c <-> g : 0.003993 
-    ## c <-> t : 25.96 
+    ## a <-> c : 0.5937 
+    ## a <-> g : 61.01 
+    ## a <-> t : 0.4768 
+    ## c <-> g : 0.004348 
+    ## c <-> t : 21.35 
     ## g <-> t : 1 
     ## 
     ## Base frequencies:  
@@ -232,8 +232,8 @@ SH.test(fitGTR, fitJC)
 ```
 
     ##      Trees  ln L Diff ln L p-value
-    ## [1,]     1 -2608       0.0   0.504
-    ## [2,]     2 -3068     460.5   0.000
+    ## [1,]     1 -2608       0.0  0.5043
+    ## [2,]     2 -3068     460.5  0.0000
 
 or with the AIC
 
