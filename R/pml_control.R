@@ -96,7 +96,7 @@ mt.control <- function(crit = "BIC", n_model = 100, n_rhas = 7){
   if (!is.numeric(n_rhas) || n_rhas <= 0)
     stop("n_rhas must be > 0")
 
-  list(iter=iter, n_model=n_model, n_rhas = n_rhas)
+  list(crit = crit, n_model = n_model, n_rhas = n_rhas)
 }
 #' @srrstats {G1.0} in the lines folloing: 49
 #' @srrstats {G2.3, G2.3a} in lines: 68
