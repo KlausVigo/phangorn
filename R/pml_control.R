@@ -88,6 +88,11 @@ ratchet.control <- function(iter = 20L, maxit = 200L, minit = 100L, prop = 1/2,
 
 
 #' @rdname pml.control
+#' @param crit criterion to choose for best models, one of "AIC", "AICc", "BIC".
+#' @param n_model how many of the best transition models to choose to compute
+#' the rate heterogeneity for.
+#' @param n_rhas number of rate heterogeneity models to compute for each
+#' transition model.
 #' @export
 mt.control <- function(crit = "BIC", n_model = 100, n_rhas = 7){
   crit <- match.arg(crit, c("AIC", "AICc", "BIC"))

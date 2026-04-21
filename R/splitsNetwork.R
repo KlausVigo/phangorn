@@ -120,7 +120,7 @@ splitsNetwork <- function(splits, dm, gamma = 0.1, lambda = 1e-6,
 
   if (is.null(splits)) {
     splits <- vector("list", length(ind2))
-    for (i in seq_along(ind2)) splits[[i]] <- which(X2[[2]][ind2[i], ] == 1)
+    for (i in seq_along(ind2)) splits[[i]] <- which(X[[2]][ind2[i], ] == 1)
   }
   else splits <- splits[ind2]
   attr(splits, "weights") <- solution[ind2]

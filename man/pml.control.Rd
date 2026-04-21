@@ -36,6 +36,14 @@ should be added to the tree in proportion of the number of taxa.´}
 (2013) is performed.}
 
 \item{bs}{number of approximate bootstrap samples.}
+
+\item{crit}{criterion to choose for best models, one of "AIC", "AICc", "BIC".}
+
+\item{n_model}{how many of the best transition models to choose to compute
+the rate heterogeneity for.}
+
+\item{n_rhas}{number of rate heterogeneity models to compute for each
+transition model.}
 }
 \value{
 A list with components named as the arguments for controlling the
