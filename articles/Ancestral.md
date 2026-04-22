@@ -276,7 +276,7 @@ reversible models.
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] phangorn_2.12.1.3 ape_5.8-1        
+    ## [1] phangorn_2.12.1.4 ape_5.8-1        
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] sass_0.4.10         future_1.70.0       generics_0.1.4     

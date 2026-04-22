@@ -461,7 +461,7 @@ M0_opt
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] phangorn_2.12.1.3 ape_5.8-1        
+    ## [1] phangorn_2.12.1.4 ape_5.8-1        
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] Matrix_1.7-4        future.apply_1.20.2 jsonlite_2.0.0     
