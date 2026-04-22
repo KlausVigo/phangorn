@@ -170,9 +170,8 @@ fitPar <- function(par, fit, trees=NULL, calls=NULL, ...) {
 #'
 #' @export
 modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
-                       FREQ = FALSE, k = 4, control = pml.control(),
-                       RHAS = "gamma", ...,
-                       mt_control=mt.control(crit="BIC", n_model=100, n_rhas=7)) {
+              FREQ = FALSE, k = 4, control = pml.control(), RHAS = "gamma", ...,
+              mt_control=mt.control(crit="BIC", n_model=100, n_rhas=100)) {
   crit <- mt_control$crit
 
   if(inherits(object, "DNAbin") || inherits(object, "AAbin"))
@@ -327,7 +326,7 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
         future.seed = TRUE)
       res3 <- fun(RES3)
       calls3 <- res3$calls
-      tree3 <- res3$trees
+      trees3 <- res3$trees
     }
     calls <- c(calls, res2$calls, calls3)
     trees <- c(trees, res2$trees, trees3)

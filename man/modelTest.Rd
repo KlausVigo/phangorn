@@ -8,7 +8,7 @@
 \usage{
 modelTest(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
   FREQ = FALSE, k = 4, control = pml.control(), RHAS = "gamma", ...,
-  mt_control = mt.control(crit = "BIC", n_model = 100, n_rhas = 7))
+  mt_control = mt.control(crit = "BIC", n_model = 100, n_rhas = 100))
 
 write.modelTest(x, file = "modelTest", digits = 10)
 }
