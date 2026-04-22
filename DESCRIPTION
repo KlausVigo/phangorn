@@ -60,7 +60,6 @@ Suggests:
     apex,
     Biostrings,
     codetools,
-    fastmatch,
     ggseqlogo,
     ggplot2,
     knitr,
@@ -73,7 +72,6 @@ Suggests:
     tinytest,
     vdiffr,
     xtable
-Remotes: ape
 LinkingTo:
     Rcpp, RcppArmadillo
 VignetteBuilder: 

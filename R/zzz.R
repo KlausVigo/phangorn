@@ -56,8 +56,9 @@
 .PlotNetworxEnv <- new.env()
 
 
-chk <- requireNamespace("fastmatch", quietly = TRUE)
-fmatch <- ifelse(chk, fastmatch::fmatch, function(x, ...)match(x, ...))
+#chk <- requireNamespace("fastmatch", quietly = TRUE)
+#fmatch <- ifelse(chk, fastmatch::fmatch, function(x, ...)match(x, ...))
+fmatch <-  function(x, ...)match(x, ...)
 
 loadModule("Fitch_mod", TRUE)
 
