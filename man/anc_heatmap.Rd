@@ -24,6 +24,8 @@ labels.}
 \item{clade}{a node number or label to extract the clade from the tree.}
 
 \item{select}{a subset of characters, columns in the alignment.}
+
+\item{...}{Further arguments passed to or from other methods.}
 }
 \description{
 Plots a heat map with ancestral states.

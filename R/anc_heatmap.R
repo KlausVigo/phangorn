@@ -40,6 +40,8 @@ nh_anc <- function(x){
 #' labels.
 #' @param clade a node number or label to extract the clade from the tree.
 #' @param select a subset of characters, columns in the alignment.
+#' @param ... Further arguments passed to or from other methods.
+#' @importFrom graphics layout
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{anc_pml}}, \code{\link{plotAnc}}
 #' @examples
