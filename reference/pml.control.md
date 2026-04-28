@@ -138,7 +138,7 @@ pml.control()
 #> [1] 10
 #> 
 #> $trace
-#> [1] TRUE
+#> [1] FALSE
 #> 
 #> $tau
 #> [1] 1e-08
@@ -154,7 +154,7 @@ pml.control(maxit=25)
 #> [1] 25
 #> 
 #> $trace
-#> [1] TRUE
+#> [1] FALSE
 #> 
 #> $tau
 #> [1] 1e-08

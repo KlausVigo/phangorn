@@ -199,7 +199,7 @@ topology.
 
 ## Session info
 
-    ## R version 4.5.3 (2026-03-11)
+    ## R version 4.6.0 (2026-04-24)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 24.04.4 LTS
     ## 
@@ -223,21 +223,21 @@ topology.
     ## [1] phangorn_2.12.1.4 ape_5.8-1        
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] Matrix_1.7-4        future.apply_1.20.2 jsonlite_2.0.0     
-    ##  [4] compiler_4.5.3      Rcpp_1.1.1-1        parallel_4.5.3     
+    ##  [1] Matrix_1.7-5        future.apply_1.20.2 jsonlite_2.0.0     
+    ##  [4] compiler_4.6.0      Rcpp_1.1.1-1.1      parallel_4.6.0     
     ##  [7] jquerylib_0.1.4     globals_0.19.1      systemfonts_1.3.2  
     ## [10] textshaping_1.0.5   yaml_2.3.12         fastmap_1.2.0      
     ## [13] lattice_0.22-9      R6_2.6.1            generics_0.1.4     
-    ## [16] igraph_2.2.3        knitr_1.51          htmlwidgets_1.6.4  
+    ## [16] igraph_2.3.0        knitr_1.51          htmlwidgets_1.6.4  
     ## [19] backports_1.5.1     checkmate_2.3.4     future_1.70.0      
     ## [22] desc_1.4.3          bslib_0.10.0        rlang_1.2.0        
     ## [25] cachem_1.1.0        xfun_0.57           fs_2.1.0           
     ## [28] sass_0.4.10         otel_0.2.0          cli_3.6.6          
     ## [31] progressr_0.19.0    pkgdown_2.2.0       magrittr_2.0.5     
-    ## [34] digest_0.6.39       grid_4.5.3          lifecycle_1.0.5    
-    ## [37] nlme_3.1-168        evaluate_1.0.5      listenv_0.10.1     
+    ## [34] digest_0.6.39       grid_4.6.0          lifecycle_1.0.5    
+    ## [37] nlme_3.1-169        evaluate_1.0.5      listenv_0.10.1     
     ## [40] codetools_0.2-20    ragg_1.5.2          parallelly_1.47.0  
-    ## [43] rmarkdown_2.31      pkgconfig_2.0.3     tools_4.5.3        
+    ## [43] rmarkdown_2.31      pkgconfig_2.0.3     tools_4.6.0        
     ## [46] htmltools_0.5.9
 
 ## References

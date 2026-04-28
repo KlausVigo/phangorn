@@ -142,7 +142,6 @@ parsimony(tree, Laurasiatherian)
 #> [1] 9796
 treeRA <- random.addition(Laurasiatherian)
 treeSPR <- optim.parsimony(tree, Laurasiatherian)
-#> Final p-score 9715 after  11 nni operations 
 
 # lower number of iterations for the example (to run less than 5 seconds),
 # keep default values (maxit, minit, k) or increase them for real life

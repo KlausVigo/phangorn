@@ -141,17 +141,10 @@ of a <code>pmlPart</code> object.</p>
 <span class="r-in"><span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="NJ.html">NJ</a></span><span class="op">(</span><span class="va">dm</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="pml.html">pml</a></span><span class="op">(</span><span class="va">tree</span>,<span class="va">yeast</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">fits</span> <span class="op">&lt;-</span> <span class="fu"><a href="pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> optimize edge weights:  -737063 --&gt; -734615.7 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> optimize edge weights:  -734615.7 --&gt; -734615.7 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> optimize edge weights:  -734615.7 --&gt; -734615.7 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">weight</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs</a></span><span class="op">(</span><span class="op">~</span> <span class="va">index</span><span class="op">+</span><span class="va">genes</span>,<span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">yeast</span>, <span class="st">"index"</span><span class="op">)</span><span class="op">)</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">sp</span> <span class="op">&lt;-</span> <span class="fu">pmlPart</span><span class="op">(</span><span class="va">edge</span> <span class="op">~</span> <span class="va">rate</span> <span class="op">+</span> <span class="va">inv</span>, <span class="va">fits</span>, weight<span class="op">=</span><span class="va">weight</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> loglik: -61530.38 --&gt; -59834.29 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> loglik: -59834.29 --&gt; -59833.25 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> loglik: -59833.25 --&gt; -59833.25 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> loglik: -59833.25 --&gt; -59833.25 </span>
 <span class="r-in"><span><span class="va">sp</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> loglikelihood: -59833.25 </span>

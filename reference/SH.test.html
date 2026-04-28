@@ -105,13 +105,7 @@ Biology and Evolution</em>, <b>16</b>, 1114–1116.</p>
 <span class="r-in"><span><span class="va">fit1</span> <span class="op">&lt;-</span> <span class="fu"><a href="pml.html">pml</a></span><span class="op">(</span><span class="va">tree1</span>, <span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="pml.html">pml</a></span><span class="op">(</span><span class="va">tree2</span>, <span class="va">Laurasiatherian</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">fit1</span> <span class="op">&lt;-</span> <span class="fu"><a href="pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit1</span><span class="op">)</span> <span class="co"># optimize edge weights</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> optimize edge weights:  -54807.68 --&gt; -54290.26 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> optimize edge weights:  -54290.26 --&gt; -54290.26 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> optimize edge weights:  -54290.26 --&gt; -54290.26 </span>
 <span class="r-in"><span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit2</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> optimize edge weights:  -55623.41 --&gt; -54911.33 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> optimize edge weights:  -54911.33 --&gt; -54911.33 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> optimize edge weights:  -54911.33 --&gt; -54911.33 </span>
 <span class="r-in"><span><span class="co"># with pml objects as input</span></span></span>
 <span class="r-in"><span><span class="fu">SH.test</span><span class="op">(</span><span class="va">fit1</span>, <span class="va">fit2</span>, B<span class="op">=</span><span class="fl">1000</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      Trees      ln L Diff ln L p-value</span>

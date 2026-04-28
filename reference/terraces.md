@@ -86,8 +86,6 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ``` r
 data(woodmouse)
 trs <- pratchet(woodmouse, all=TRUE)
-#> Parsimony score of initial tree: 68 
-#> Iteration: 10. Best parsimony score so far: 68Iteration: 20. Best parsimony score so far: 68Iteration: 30. Best parsimony score so far: 68Iteration: 40. Best parsimony score so far: 68Iteration: 50. Best parsimony score so far: 68Iteration: 60. Best parsimony score so far: 68Iteration: 70. Best parsimony score so far: 68Iteration: 80. Best parsimony score so far: 68Iteration: 90. Best parsimony score so far: 68Iteration: 100. Best parsimony score so far: 68
 start_trs <- get("start_trees", envir = attr(trs, "env"))
 terraces(as.phyDat(woodmouse), c(trs, start_trs))
 #> Some trees are not binary. Result may not what you expect!

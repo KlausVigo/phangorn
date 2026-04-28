@@ -99,17 +99,10 @@ dm <- dist.logDet(yeast)
 tree <- NJ(dm)
 fit <- pml(tree,yeast)
 fits <- optim.pml(fit)
-#> optimize edge weights:  -737063 --> -734615.7 
-#> optimize edge weights:  -734615.7 --> -734615.7 
-#> optimize edge weights:  -734615.7 --> -734615.7 
 
 weight=xtabs(~ index+genes,attr(yeast, "index"))[,1:10]
 
 sp <- pmlPart(edge ~ rate + inv, fits, weight=weight)
-#> loglik: -61530.38 --> -59834.29 
-#> loglik: -59834.29 --> -59833.25 
-#> loglik: -59833.25 --> -59833.25 
-#> loglik: -59833.25 --> -59833.25 
 sp
 #> 
 #> loglikelihood: -59833.25 

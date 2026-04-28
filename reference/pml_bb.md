@@ -86,17 +86,6 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ``` r
 data(woodmouse)
 tmp <- pml_bb(woodmouse, model="HKY+I", rearrangement="NNI")
-#> optimize edge weights:  -1811.409 --> -1810.473 
-#> optimize rate matrix:  -1810.473 --> -1758.757 
-#> optimize invariant sites:  -1758.757 --> -1744.355 
-#> optimize edge weights:  -1744.355 --> -1744.199 
-#> optimize topology:  -1744.199 --> -1744.199  NNI moves:  0 
-#> optimize rate matrix:  -1744.199 --> -1744.186 
-#> optimize invariant sites:  -1744.186 --> -1744.186 
-#> optimize edge weights:  -1744.186 --> -1744.186 
-#> optimize rate matrix:  -1744.186 --> -1744.186 
-#> optimize invariant sites:  -1744.186 --> -1744.186 
-#> optimize edge weights:  -1744.186 --> -1744.186 
 
 if (FALSE) { # \dontrun{
 data(Laurasiatherian)

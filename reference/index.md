@@ -41,6 +41,9 @@
 - [`allTrees()`](https://klausvigo.github.io/phangorn/reference/allTrees.md)
   : Compute all trees topologies.
 
+- [`anc_heatmap()`](https://klausvigo.github.io/phangorn/reference/anc_heatmap.md)
+  : anc_heatmap
+
 - [`ancestral.pml()`](https://klausvigo.github.io/phangorn/reference/ancestral.pml.md)
   [`anc_pml()`](https://klausvigo.github.io/phangorn/reference/ancestral.pml.md)
   [`ancestral.pars()`](https://klausvigo.github.io/phangorn/reference/ancestral.pml.md)

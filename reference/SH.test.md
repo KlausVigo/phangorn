@@ -61,13 +61,7 @@ tree2 <- unroot(upgma(dm))
 fit1 <- pml(tree1, Laurasiatherian)
 fit2 <- pml(tree2, Laurasiatherian)
 fit1 <- optim.pml(fit1) # optimize edge weights
-#> optimize edge weights:  -54807.68 --> -54290.26 
-#> optimize edge weights:  -54290.26 --> -54290.26 
-#> optimize edge weights:  -54290.26 --> -54290.26 
 fit2 <- optim.pml(fit2)
-#> optimize edge weights:  -55623.41 --> -54911.33 
-#> optimize edge weights:  -54911.33 --> -54911.33 
-#> optimize edge weights:  -54911.33 --> -54911.33 
 # with pml objects as input
 SH.test(fit1, fit2, B=1000)
 #>      Trees      ln L Diff ln L p-value

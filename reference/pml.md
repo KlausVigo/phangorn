@@ -316,9 +316,6 @@ Klaus Schliep <klaus.schliep@gmail.com>
   fitJC <- pml(tree, Laurasiatherian)
 # optimize edge length parameter
   fitJC <- optim.pml(fitJC)
-#> optimize edge weights:  -54808.83 --> -54230.41 
-#> optimize edge weights:  -54230.41 --> -54230.41 
-#> optimize edge weights:  -54230.41 --> -54230.41 
   fitJC
 #> model: JC 
 #> loglikelihood: -54230.41 
@@ -360,11 +357,6 @@ if (FALSE) { # \dontrun{
   dat <- acgt2ry(Laurasiatherian)
   fit2ST <- pml(tree, dat)
   fit2ST <- optim.pml(fit2ST,optNni=TRUE)
-#> optimize edge weights:  -19996.09 --> -17092.17 
-#> optimize edge weights:  -17092.17 --> -17092.17 
-#> optimize topology:  -17092.17 --> -17024.81  NNI moves:  10 
-#> optimize edge weights:  -17024.81 --> -17024.81 
-#> optimize topology:  -17024.81 --> -17024.81  NNI moves:  0 
   fit2ST
 #> model: Mk 
 #> loglikelihood: -17024.81 
