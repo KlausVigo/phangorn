@@ -53,5 +53,5 @@ plan(sequential)
 write.modelTest(MT2)
 mt2_trees <- read.nexus("modelTest.nex.gz")
 expect_equal(mt2_trees, attr(MT2, "trees"))
-unlink("modelTest.fasta", "modelTest.nex.gz", "modelTest.tsv")
+unlink(c("modelTest.fasta", "modelTest.nex.gz", "modelTest.tsv"))
 
