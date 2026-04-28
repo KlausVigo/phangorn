@@ -38,6 +38,10 @@ anc_heatmap(x, y = NULL, use.edge.length = FALSE, align_label = TRUE,
 
   a subset of characters, columns in the alignment.
 
+- ...:
+
+  Further arguments passed to or from other methods.
+
 ## Details
 
 `anc_heatmap` plot the joint distribution or the most likely state.
