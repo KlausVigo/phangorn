@@ -253,22 +253,22 @@ RI <- function(tree, data, cost = NULL, sitewise = FALSE) {
 }
 
 
-old2new.phyDat <- function(obj) {
-  att <- attributes(obj)
-  l <- length(obj)
-  contrast <- attr(obj, "contrast")
-  nr <- attr(obj, "nr")
-  X <- matrix(rep(rowSums(contrast), each = nr), nrow = nr)
-  for (i in 1:l) obj[[i]][obj[[i]] > 0] <- 1
-  res <- vector("list", l)
-  contrast[contrast == 0] <- 1e6
-  for (i in 1:l) {
-    tmp <-  tcrossprod(obj[[i]], contrast) - X
-    res[[i]] <- unlist(apply(tmp, 1, function(x) which(x < 1e-6)[1]))
-  }
-  attributes(res) <- att
-  res
-}
+#old2new.phyDat <- function(obj) {
+#  att <- attributes(obj)
+#  l <- length(obj)
+#  contrast <- attr(obj, "contrast")
+#  nr <- attr(obj, "nr")
+#  X <- matrix(rep(rowSums(contrast), each = nr), nrow = nr)
+#  for (i in 1:l) obj[[i]][obj[[i]] > 0] <- 1
+#  res <- vector("list", l)
+#  contrast[contrast == 0] <- 1e6
+#  for (i in 1:l) {
+#    tmp <-  tcrossprod(obj[[i]], contrast) - X
+#    res[[i]] <- unlist(apply(tmp, 1, function(x) which(x < 1e-6)[1]))
+#  }
+#  attributes(res) <- att
+#  res
+#}
 
 
 

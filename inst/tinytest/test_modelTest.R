@@ -47,3 +47,11 @@ MT_USER <- modelTest(Z, tree=tree, I=TRUE, G=TRUE,
 expect_equal(MT_USER$Model[which.min(MT_USER$BIC)], "ORDERED")
 
 plan(sequential)
+
+
+# test write.modelTest
+write.modelTest(MT2)
+mt2_trees <- read.nexus("modelTest.nex.gz")
+expect_equal(mt2_trees, attr(MT2, "trees"))
+unlink("modelTest.fasta", "modelTest.nex.gz", "modelTest.tsv")
+

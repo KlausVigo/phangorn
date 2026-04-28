@@ -344,6 +344,7 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
 #  RESULT <- cbind(Model=rownames(RESULT), AICw = aic.weights(RESULT[, "AIC"]),
 #                  AICcw = aic.weights(RESULT[, "AICc"]), RESULT)
   class(RESULT) <- c("modelTest", "data.frame")
+  row.names(RESULT) <- NULL
   attr(RESULT, "data") <- data
   attr(RESULT, "trees") <- trees
   attr(RESULT, "calls") <- calls
@@ -425,6 +426,18 @@ write.modelTest <- function(x, file="modelTest", digits=10){
 }
 
 
+#read.modelTest <- function(file="modelTest", type="DNA"){
+#  trees <- read.nexus(paste0(file, ".nex.gz"))
+#  data <- read.phyDat(paste0(file, ".fasta"), type=type, format="fasta")
+#  res <- read.table(file=paste0(file, ".tsv"), sep = "\t", header=TRUE)
+#  calls <- setNames(res$Call, res$Model)
+#  attr(res, "calls") <- calls
+#  attr(res, "trees") <- res
+#  attr(res, "data") <- data
+#  class(res) <- c("modelTest", "data.frame")
+#  res
+#}
+
 #summary.modelTest <- function(object, max.print=10, sort#="BIC", plot=TRUE, ...){
 #  browser()
 #  tmp <- object[order(object[, sort]),
@@ -434,17 +447,15 @@ write.modelTest <- function(x, file="modelTest", digits=10){
 #}
 
 
-#plot.modelTest <- function(object, ...){
-#  library(ggrepel)
-#  plot(logLik ~ TL, data=object)
-#  text(y=object$logLik, x=object$TL, labels=object$Model)
-#  if(requireNamespace(ggplot2) && requireNamespace(ggrepel)){
-#  p <- ggplot(object, aes(TL, logLik,  label = Model)) +
-#    geom_point() + geom_text_repel(cex=2.25) + theme_bw() +
-#    xlim(3.1, 6.2) +
-#    xlab("total tree length") + ylab("log-Likelihood")
-#  return(p)
-#}
+#plot.modelTest <- function(object, x=TL, y=BIC, ...){
+#  if(requireNamespace("ggplot2") && requireNamespace("ggrepel")){
+#  p <- ggplot(object, aes({{x}}, {{y}},  label = Model)) +
+#    geom_point() + geom_text_repel(cex=2.25) + theme_bw()
+#  print(p)
+#  } else {
+#    plot(y ~ x, data=object, ...)
+#    text(y=object$logLik, x=object$TL, labels=object$Model)
+#  }
 #  invisible(object)
 #}
 
