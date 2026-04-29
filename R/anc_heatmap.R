@@ -61,7 +61,7 @@ anc_heatmap <- function(x, y=NULL, use.edge.length = FALSE,
     if(is.null(y)) y <- as.phyDat(x)
     x <- x$tree
     }
-  if(is.null(x$tree$edge.length)) use.edge.length <- FALSE
+  if(is.null(x$edge.length)) use.edge.length <- FALSE
   if(anyNA(match(c(x$tip.label, x$node.label), names(y))))
     stop("labels between treee and alignment mismatch")
 
@@ -75,13 +75,14 @@ anc_heatmap <- function(x, y=NULL, use.edge.length = FALSE,
   else {
     xx <- node.depth(x, 2L)
     xx <- max(xx) - xx
-    }
+  }
+  op <- par()
   nf <- layout(matrix(c(1,2),1,2,byrow = TRUE), c(1,2))
   #layout.show(nf)
   #text(x=3, y=xx, labels=lab)
     lab <- c(x$tip.label, x$node.label)
   ind <- rev(lab[order(yy)])
-  op <- par()
+
   if (is.numeric(align_label)) {
     align_label_lty <- align_label
     align_label <- TRUE
@@ -109,6 +110,7 @@ anc_heatmap <- function(x, y=NULL, use.edge.length = FALSE,
 
   y <- y[ind]
   image(y, ...)
+  par("mfrow"=op$mfrow)
 #  par(op)
   invisible(x)
 }
