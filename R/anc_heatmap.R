@@ -116,4 +116,16 @@ anc_heatmap <- function(x, y=NULL, use.edge.length = FALSE,
 }
 
 
+#' @rdname phangorn-internal
+#' @export
+reference_position <- function(x, pos, ref=1, gap="-"){
+  tmp <- as.character(x[ref,])
+  ind <- which(tmp==gap)
+  y <- rep(1L, length(tmp))
+  y[ind] <- 0L
+  y <- cumsum(y)
+  match(pos, y)
+}
+
+
 #example(anc_pml)
