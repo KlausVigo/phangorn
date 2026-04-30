@@ -69,7 +69,7 @@ Iris Bardel-Kahr</h4>
 Graz<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2026-04-29</h4>
+            <h4 data-toc-skip class="date">2026-04-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/main/vignettes/AdvancedFeatures.Rmd" class="external-link"><code>vignettes/AdvancedFeatures.Rmd</code></a></small>
       <div class="d-none name"><code>AdvancedFeatures.Rmd</code></div>
@@ -186,7 +186,7 @@ maximum likelihood analysis.</p>
 <p>To model nucleotide substitutions across the edges of a tree T we can
 assign a transition matrix. In the case of nucleotides, with four
 character states, each 4
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>×</mo><annotation encoding="application/x-tex">\times</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>×</mi><annotation encoding="application/x-tex">\times</annotation></semantics></math>
 4 transition matrix has, at most, 12 free parameters.</p>
 <p>Time-reversible Markov models are used to describe how characters
 change over time, and use fewer parameters. Time-reversible means that
@@ -197,11 +197,11 @@ computing pairwise distances, as well as in simulating sequence
 evolution.</p>
 <p>We will now describe the General Time-Reversible (GTR) model <span class="citation">(Tavaré 1986)</span>. The parameters of the GTR model
 are the equilibrium frequencies
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>π</mi><mi>A</mi></msub><mo>,</mo><msub><mi>π</mi><mi>C</mi></msub><mo>,</mo><msub><mi>π</mi><mi>G</mi></msub><mo>,</mo><msub><mi>π</mi><mi>T</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\pi = (\pi_A ,\pi_C ,\pi_G ,\pi_T)</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>π</mi><mi>A</mi></msub><mo>,</mo><msub><mi>π</mi><mi>C</mi></msub><mo>,</mo><msub><mi>π</mi><mi>G</mi></msub><mo>,</mo><msub><mi>π</mi><mi>T</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\pi = (\pi_A ,\pi_C ,\pi_G ,\pi_T)</annotation></semantics></math>
 and a rate matrix
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Q</mi><annotation encoding="application/x-tex">Q</annotation></semantics></math>
 which has the form
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mo>*</mo></mtd><mtd columnalign="center" style="text-align: center"><mi>α</mi><msub><mi>π</mi><mi>C</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>β</mi><msub><mi>π</mi><mi>G</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>γ</mi><msub><mi>π</mi><mi>T</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>α</mi><msub><mi>π</mi><mi>A</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mo>*</mo></mtd><mtd columnalign="center" style="text-align: center"><mi>δ</mi><msub><mi>π</mi><mi>G</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>ϵ</mi><msub><mi>π</mi><mi>T</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>β</mi><msub><mi>π</mi><mi>A</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>δ</mi><msub><mi>π</mi><mi>C</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mo>*</mo></mtd><mtd columnalign="center" style="text-align: center"><mi>η</mi><msub><mi>π</mi><mi>T</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>γ</mi><msub><mi>π</mi><mi>A</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>ϵ</mi><msub><mi>π</mi><mi>C</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>η</mi><msub><mi>π</mi><mi>G</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mo>*</mo></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{equation}
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>*</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>α</mi><msub><mi>π</mi><mi>C</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>β</mi><msub><mi>π</mi><mi>G</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>γ</mi><msub><mi>π</mi><mi>T</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>α</mi><msub><mi>π</mi><mi>A</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>*</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>δ</mi><msub><mi>π</mi><mi>G</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>ϵ</mi><msub><mi>π</mi><mi>T</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>β</mi><msub><mi>π</mi><mi>A</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>δ</mi><msub><mi>π</mi><mi>C</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>*</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>η</mi><msub><mi>π</mi><mi>T</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>γ</mi><msub><mi>π</mi><mi>A</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>ϵ</mi><msub><mi>π</mi><mi>C</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>η</mi><msub><mi>π</mi><mi>G</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>*</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\begin{equation}
 Q =
 \begin{pmatrix}
 \ast  &amp; \alpha\pi_C &amp; \beta\pi_G &amp; \gamma\pi_T \\
@@ -229,10 +229,10 @@ to
 in time
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>,
 are given by the corresponding entries of the matrix exponential
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>p</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msup><mi>e</mi><mrow><mi>Q</mi><mi>t</mi></mrow></msup><mo>,</mo><mspace width="2.0em"></mspace><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>p</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>p</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>e</mi><mrow><mi>Q</mi><mi>t</mi></mrow></msup><mo>,</mo><mspace width="2.0em"></mspace><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>p</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">
 P(t) = (p_{ij}(t)) = e^{Qt}, \qquad \sum_j p_{ij}=1
 </annotation></semantics></math> where
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">P(t)</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P(t)</annotation></semantics></math>
 is the transition matrix spanning a period of time
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>.</p>
 </div>
@@ -249,9 +249,8 @@ which can estimated directly in <code>optim.pml</code>. For amino acids
 several transition matrices are available (“WAG”, “JTT”, “LG”,
 “Dayhoff”, “cpREV”, “mtmam”, “mtArt”, “MtZoa”, “mtREV24”, “VT”,“RtREV”,
 “HIVw”, “HIVb”, “FLU”, “Blosum62”, “Dayhoff_DCMut” and “JTT-DCMut”) or
-can be estimated with <code>optim.pml</code>. For example <span class="citation">Mathews, Clements, and Beilstein (2010)</span> used
-this function to estimate a phytochrome amino acid transition
-matrix.</p>
+can be estimated with <code>optim.pml</code>. For example <span class="citation">Mathews et al. (2010)</span> used this function to
+estimate a phytochrome amino acid transition matrix.</p>
 <p>We will now show how to estimate a rate matrix with different
 transition
 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>)
@@ -371,161 +370,161 @@ in equation (1)</p>
 <td>JC</td>
 <td>FALSE</td>
 <td>FALSE</td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">c(0, 0, 0, 0, 0, 0)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(0, 0, 0, 0, 0, 0)</annotation></semantics></math></td>
 <td>0</td>
 </tr>
 <tr class="even">
 <td>F81</td>
 <td>FALSE</td>
 <td>TRUE</td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">c(0, 0, 0, 0, 0, 0)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(0, 0, 0, 0, 0, 0)</annotation></semantics></math></td>
 <td>3</td>
 </tr>
 <tr class="odd">
 <td>K80</td>
 <td>TRUE</td>
 <td>FALSE</td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">c(0, 1, 0, 0, 1, 0)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(0, 1, 0, 0, 1, 0)</annotation></semantics></math></td>
 <td>1</td>
 </tr>
 <tr class="even">
 <td>HKY</td>
 <td>TRUE</td>
 <td>TRUE</td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">c(0, 1, 0, 0, 1, 0)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(0, 1, 0, 0, 1, 0)</annotation></semantics></math></td>
 <td>4</td>
 </tr>
 <tr class="odd">
 <td>TrNe</td>
 <td>TRUE</td>
 <td>FALSE</td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">c(0, 1, 0, 0, 2, 0)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(0, 1, 0, 0, 2, 0)</annotation></semantics></math></td>
 <td>2</td>
 </tr>
 <tr class="even">
 <td>TrN</td>
 <td>TRUE</td>
 <td>TRUE</td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">c(0, 1, 0, 0, 2, 0)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(0, 1, 0, 0, 2, 0)</annotation></semantics></math></td>
 <td>5</td>
 </tr>
 <tr class="odd">
 <td>TPM1</td>
 <td>TRUE</td>
 <td>FALSE</td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">c(0, 1, 2, 2, 1, 0)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(0, 1, 2, 2, 1, 0)</annotation></semantics></math></td>
 <td>2</td>
 </tr>
 <tr class="even">
 <td>K81</td>
 <td>TRUE</td>
 <td>FALSE</td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">c(0, 1, 2, 2, 1, 0)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(0, 1, 2, 2, 1, 0)</annotation></semantics></math></td>
 <td>2</td>
 </tr>
 <tr class="odd">
 <td>TPM1u</td>
 <td>TRUE</td>
 <td>TRUE</td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">c(0, 1, 2, 2, 1, 0)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(0, 1, 2, 2, 1, 0)</annotation></semantics></math></td>
 <td>5</td>
 </tr>
 <tr class="even">
 <td>TPM2</td>
 <td>TRUE</td>
 <td>FALSE</td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">c(1, 2, 1, 0, 2, 0)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(1, 2, 1, 0, 2, 0)</annotation></semantics></math></td>
 <td>2</td>
 </tr>
 <tr class="odd">
 <td>TPM2u</td>
 <td>TRUE</td>
 <td>TRUE</td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">c(1, 2, 1, 0, 2, 0)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(1, 2, 1, 0, 2, 0)</annotation></semantics></math></td>
 <td>5</td>
 </tr>
 <tr class="even">
 <td>TPM3</td>
 <td>TRUE</td>
 <td>FALSE</td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">c(1, 2, 0, 1, 2, 0)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(1, 2, 0, 1, 2, 0)</annotation></semantics></math></td>
 <td>2</td>
 </tr>
 <tr class="odd">
 <td>TPM3u</td>
 <td>TRUE</td>
 <td>TRUE</td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">c(1, 2, 0, 1, 2, 0)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(1, 2, 0, 1, 2, 0)</annotation></semantics></math></td>
 <td>5</td>
 </tr>
 <tr class="even">
 <td>TIM1e</td>
 <td>TRUE</td>
 <td>FALSE</td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">c(0, 1, 2, 2, 3, 0)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(0, 1, 2, 2, 3, 0)</annotation></semantics></math></td>
 <td>3</td>
 </tr>
 <tr class="odd">
 <td>TIM1</td>
 <td>TRUE</td>
 <td>TRUE</td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">c(0, 1, 2, 2, 3, 0)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(0, 1, 2, 2, 3, 0)</annotation></semantics></math></td>
 <td>6</td>
 </tr>
 <tr class="even">
 <td>TIM2e</td>
 <td>TRUE</td>
 <td>FALSE</td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">c(1, 2, 1, 0, 3, 0)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(1, 2, 1, 0, 3, 0)</annotation></semantics></math></td>
 <td>3</td>
 </tr>
 <tr class="odd">
 <td>TIM2</td>
 <td>TRUE</td>
 <td>TRUE</td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">c(1, 2, 1, 0, 3, 0)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(1, 2, 1, 0, 3, 0)</annotation></semantics></math></td>
 <td>6</td>
 </tr>
 <tr class="even">
 <td>TIM3e</td>
 <td>TRUE</td>
 <td>FALSE</td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">c(1, 2, 0, 1, 3, 0)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(1, 2, 0, 1, 3, 0)</annotation></semantics></math></td>
 <td>3</td>
 </tr>
 <tr class="odd">
 <td>TIM3</td>
 <td>TRUE</td>
 <td>TRUE</td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">c(1, 2, 0, 1, 3, 0)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(1, 2, 0, 1, 3, 0)</annotation></semantics></math></td>
 <td>6</td>
 </tr>
 <tr class="even">
 <td>TVMe</td>
 <td>TRUE</td>
 <td>FALSE</td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">c(1, 2, 3, 4, 2, 0)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(1, 2, 3, 4, 2, 0)</annotation></semantics></math></td>
 <td>4</td>
 </tr>
 <tr class="odd">
 <td>TVM</td>
 <td>TRUE</td>
 <td>TRUE</td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">c(1, 2, 3, 4, 2, 0)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(1, 2, 3, 4, 2, 0)</annotation></semantics></math></td>
 <td>7</td>
 </tr>
 <tr class="even">
 <td>SYM</td>
 <td>TRUE</td>
 <td>FALSE</td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">c(1, 2, 3, 4, 5, 0)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(1, 2, 3, 4, 5, 0)</annotation></semantics></math></td>
 <td>5</td>
 </tr>
 <tr class="odd">
 <td>GTR</td>
 <td>TRUE</td>
 <td>TRUE</td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">c(1, 2, 3, 4, 5, 0)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(1, 2, 3, 4, 5, 0)</annotation></semantics></math></td>
 <td>8</td>
 </tr>
 </tbody>
@@ -636,7 +635,7 @@ between between codon
 and
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
 is defined as follows:</p>
-<p><span class="math display">$$
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>q</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mn>0</mn></mtd><mtd columnalign="left" style="text-align: left"><mtext mathvariant="normal">if i and j differ in more than one position</mtext></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><msub><mi>π</mi><mi>j</mi></msub></mtd><mtd columnalign="left" style="text-align: left"><mtext mathvariant="normal">for synonymous transversion</mtext></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><msub><mi>π</mi><mi>j</mi></msub><mi>κ</mi></mtd><mtd columnalign="left" style="text-align: left"><mtext mathvariant="normal">for synonymous transition</mtext></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><msub><mi>π</mi><mi>j</mi></msub><mi>ω</mi></mtd><mtd columnalign="left" style="text-align: left"><mtext mathvariant="normal">for non-synonymous transversion</mtext></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><msub><mi>π</mi><mi>j</mi></msub><mi>ω</mi><mi>κ</mi></mtd><mtd columnalign="left" style="text-align: left"><mtext mathvariant="normal">for non-synonymous transition</mtext></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">
 q_{ij}=\left\{
     \begin{array}{l@{\quad}l}
          0 &amp; \textrm{if i and j differ in more than one position} \\
@@ -646,7 +645,7 @@ q_{ij}=\left\{
          \pi_j\omega\kappa &amp; \textrm{for non-synonymous transition}
     \end{array}
     \right. \nonumber
-$$</span></p>
+</annotation></semantics></math></p>
 <p>where
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ω</mi><annotation encoding="application/x-tex">\omega</annotation></semantics></math>
 is the
@@ -718,7 +717,7 @@ mentioned above and are no branch models implemented so far.</p>
 <p>We can identify sites under positive selection using the Na"ive
 empirical Bayes (NEB) method of <span class="citation">Yang and Nielsen
 (1998)</span>:
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="prefix">|</mo><msub><mi>x</mi><mi>h</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>X</mi><mi>h</mi></msub><mo stretchy="false" form="prefix">|</mo><msub><mi>ω</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>p</mi><mi>i</mi></msub></mrow><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>X</mi><mi>h</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>X</mi><mi>h</mi></msub><mo stretchy="false" form="prefix">|</mo><msub><mi>ω</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>p</mi><mi>i</mi></msub></mrow><mrow><munder><mo>∑</mo><mi>j</mi></munder><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>X</mi><mi>h</mi></msub><mo stretchy="false" form="prefix">|</mo><msub><mi>ω</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>p</mi><mi>j</mi></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="prefix">|</mo><msub><mi>x</mi><mi>h</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>X</mi><mi>h</mi></msub><mo stretchy="false" form="prefix">|</mo><msub><mi>ω</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><msub><mi>p</mi><mi>i</mi></msub></mrow><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>X</mi><mi>h</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>X</mi><mi>h</mi></msub><mo stretchy="false" form="prefix">|</mo><msub><mi>ω</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><msub><mi>p</mi><mi>i</mi></msub></mrow><mrow><munder><mo>∑</mo><mi>j</mi></munder><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>X</mi><mi>h</mi></msub><mo stretchy="false" form="prefix">|</mo><msub><mi>ω</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">)</mo><msub><mi>p</mi><mi>j</mi></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">
 P(\omega|x_h) = \frac{P(X_h|\omega_i)p_i}{P(X_h)} =
 \frac{P(X_h|\omega_i)p_i}{\sum_j P(X_h|\omega_j)p_j}
 </annotation></semantics></math></p>
@@ -828,17 +827,17 @@ option to <code>optBf=TRUE</code> in <code>optim.pml</code>.</p>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Bielawski2005" class="csl-entry">
 Bielawski, Joseph P., and Ziheng Yang. 2005. <span>“Maximum Likelihood
 Methods for Detecting Adaptive Protein Evolution.”</span> In
-<em>Statistical Methods in Molecular Evolution</em>, 103–24. New York,
-NY: Springer New York. <a href="https://doi.org/10.1007/0-387-27733-1_5" class="external-link">https://doi.org/10.1007/0-387-27733-1_5</a>.
+<em>Statistical Methods in Molecular Evolution</em>. Springer New York.
+<a href="https://doi.org/10.1007/0-387-27733-1_5" class="external-link">https://doi.org/10.1007/0-387-27733-1_5</a>.
 </div>
 <div id="ref-Jukes1969" class="csl-entry">
 Jukes, Thomas H., and Charles R. Cantor. 1969. <span>“{CHAPTER} 24 -
 Evolution of Protein Molecules.”</span> In <em>Mammalian Protein
-Metabolism</em>, edited by H. N. Munro, 21–132. Academic Press.
+Metabolism</em>, edited by H. N. Munro. Academic Press.
 </div>
 <div id="ref-Mathews2010" class="csl-entry">
 Mathews, S., M. D. Clements, and M. A. Beilstein. 2010. <span>“A
@@ -861,7 +860,7 @@ Currents Tree of Life</em>.
 </div>
 <div id="ref-Yang2014" class="csl-entry">
 Yang, Ziheng. 2014. <em>Molecular Evolution: A Statistical
-Approach</em>. Oxford: Oxford University Press.
+Approach</em>. Oxford University Press.
 </div>
 <div id="ref-Yang1998" class="csl-entry">
 Yang, Ziheng, and Rasmus Nielsen. 1998. <span>“Synonymous and

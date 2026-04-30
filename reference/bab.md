@@ -71,6 +71,7 @@ Klaus Schliep <klaus.schliep@gmail.com> based on work on Liam Revell
 ## Examples
 
 ``` r
+
 data(yeast)
 dfactorial(11)
 #> [1] 10395

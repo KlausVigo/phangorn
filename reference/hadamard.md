@@ -80,6 +80,7 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ## Examples
 
 ``` r
+
 H <- hadamard(3)
 v <- 1:8
 H %*% v

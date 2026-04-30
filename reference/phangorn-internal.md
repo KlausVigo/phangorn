@@ -9,6 +9,8 @@ threshStateC(x, thresholds)
 
 base_freq(obj)
 
+reference_position(x, pos, ref = 1, gap = "-")
+
 assert_phyDat(x, contains_label = !is.null(label), label = NULL)
 
 assert_phylo(x, has_edge_length = FALSE, is_rooted = FALSE,

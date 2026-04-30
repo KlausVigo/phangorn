@@ -171,6 +171,7 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ## Examples
 
 ``` r
+
 data(Laurasiatherian)
 set.seed(1)
 bs <- bootstrap.phyDat(Laurasiatherian, FUN =

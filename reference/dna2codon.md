@@ -93,6 +93,7 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ## Examples
 
 ``` r
+
 data(Laurasiatherian)
 class(Laurasiatherian)
 #> [1] "phyDat"

@@ -70,6 +70,7 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ## Examples
 
 ``` r
+
 data(yeast)
 dm <- dist.ml(yeast)
 spl <- allSplits(8, names(yeast))

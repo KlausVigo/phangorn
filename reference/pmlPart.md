@@ -94,6 +94,7 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ## Examples
 
 ``` r
+
 data(yeast)
 dm <- dist.logDet(yeast)
 tree <- NJ(dm)

@@ -95,6 +95,7 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ## Examples
 
 ``` r
+
 data(Laurasiatherian)
 dm <- dist.ml(Laurasiatherian)
 tree <- upgma(dm)

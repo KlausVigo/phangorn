@@ -105,6 +105,7 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ## Examples
 
 ``` r
+
 example(NJ)
 #> 
 #> NJ> data(Laurasiatherian)

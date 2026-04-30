@@ -77,6 +77,7 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ## Examples
 
 ``` r
+
 data(yeast)
 yeast.ry <- acgt2ry(yeast)
 #> Warning: Found unknown characters (not supplied in levels). Deleted sites with unknown states.

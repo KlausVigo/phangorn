@@ -88,6 +88,7 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ## Examples
 
 ``` r
+
 data(yeast)
 dm <- dist.ml(yeast)
 writeDist(dm)

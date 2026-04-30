@@ -9,6 +9,7 @@ functions, e.g. `optim_pml`. The data is the same as in the vignette
 *Estimating phylogenetic trees with phangorn*:
 
 ``` r
+
 library(ape)
 library(phangorn)
 fdir <- system.file("extdata/trees", package = "phangorn")
@@ -19,11 +20,13 @@ primates <- read.phyDat(file.path(fdir, "primates.dna"),
 As a starting tree, we calculate a neighbor joining tree:
 
 ``` r
+
 dm <- dist.ml(primates)
 treeNJ  <- NJ(dm)
 ```
 
 ``` r
+
 fit <- pml(treeNJ, data=primates)
 fit
 ```
@@ -54,6 +57,7 @@ like the likelihood. There are many generic functions for the class
 `pml` available, which allow the handling of these objects.
 
 ``` r
+
 methods(class="pml")
 ```
 
@@ -67,6 +71,7 @@ supplied, but the branch length are not optimized for the Jukes-Cantor
 `optim.pml`.
 
 ``` r
+
 fitJC  <- optim.pml(fit, rearrangement="NNI")
 logLik(fitJC)
 ```
@@ -80,6 +85,7 @@ not what we usually want to do. However we might want to supply a
 different tree or change the number of rate categories.
 
 ``` r
+
 fitF81 <- update(fitJC, k=4, inv=0.2, bf=baseFreq(primates))
 fitF81
 ```
@@ -119,6 +125,7 @@ model with 4 rate categories (using the default shape parameter of 1),
 to 0.2 invariant sites and supply empirical base frequencies.
 
 ``` r
+
 fitGTR <- optim.pml(fitF81, model="GTR", optInv=TRUE, optGamma=TRUE,
     rearrangement = "NNI")
 fitGTR
@@ -154,7 +161,7 @@ fitGTR
     ##       a       c       g       t 
     ## 0.37481 0.40160 0.03911 0.18448
 
-We will change the model to the GTR + $\Gamma(4)$ + I model and then
+We will change the model to the GTR + $`\Gamma(4)`$ + I model and then
 optimize all the parameters.
 
 With the control parameters the thresholds for the fitting process can
@@ -171,11 +178,13 @@ While these algorithms may find better trees they will also take more
 time.
 
 ``` r
+
 fitGTR <- optim.pml(fitGTR, model="GTR", optInv=TRUE, optGamma=TRUE,
     rearrangement = "stochastic")
 ```
 
 ``` r
+
 fitGTR
 ```
 
@@ -211,10 +220,11 @@ fitGTR
 
 ### Model comparison
 
-We can compare nested models for the JC and GTR + $\Gamma(4)$ + I model
-using likelihood ratio statistic
+We can compare nested models for the JC and GTR + $`\Gamma(4)`$ + I
+model using likelihood ratio statistic
 
 ``` r
+
 anova(fitJC, fitGTR)
 ```
 
@@ -228,6 +238,7 @@ anova(fitJC, fitGTR)
 with the Shimodaira-Hasegawa test
 
 ``` r
+
 SH.test(fitGTR, fitJC)
 ```
 
@@ -238,24 +249,28 @@ SH.test(fitGTR, fitJC)
 or with the AIC
 
 ``` r
+
 AIC(fitJC)
 ```
 
     ## [1] 6187
 
 ``` r
+
 AIC(fitGTR)
 ```
 
     ## [1] 5286
 
 ``` r
+
 AICc(fitGTR)
 ```
 
     ## [1] 5298
 
 ``` r
+
 BIC(fitGTR)
 ```
 
@@ -268,6 +283,7 @@ edges of the tree are supported. This has already been shown in the
 vignette *Estimating phylogenetic trees with phangorn*.
 
 ``` r
+
 bs <- bootstrap.pml(fitJC, bs=100, optNni=TRUE)
 ```
 
@@ -275,6 +291,7 @@ Now we can plot the tree with the bootstrap support values on the edges
 and also look at `consensusNet` to identify potential conflict.
 
 ``` r
+
 plotBS(midpoint(fitJC$tree), bs, p = 50, type="p")
 ```
 
@@ -285,6 +302,7 @@ Tree with bootstrap support. Unrooted tree (midpoint rooted) with
 bootstrap support values.
 
 ``` r
+
 cnet <- consensusNet(bs, p=0.2)
 plot(cnet, show.edge.label=TRUE)
 ```
@@ -303,6 +321,7 @@ One has to keep in mind that the number of trees is growing
 exponentially, use `howmanytrees` from *ape* as a reminder.
 
 ``` r
+
 trees <- allTrees(5)
 par(mfrow=c(3,5), mar=rep(0,4))
 for(i in 1:15)plot(trees[[i]], cex=1, type="u")
@@ -317,6 +336,7 @@ All 15 unrooted trees with five tip labels.
 interchange away.
 
 ``` r
+
 nni(trees[[1]])
 ```
 
@@ -373,7 +393,7 @@ away.
 
 Jukes, Thomas H., and Charles R. Cantor. 1969. “{CHAPTER} 24 - Evolution
 of Protein Molecules.” In *Mammalian Protein Metabolism*, edited by H.
-N. Munro, 21–132. Academic Press.
+N. Munro. Academic Press.
 
 Nguyen, Lam-Tung, Heiko A. Schmidt, Arndt von Haeseler, and Bui Quang
 Minh. 2015. “IQ-TREE: A Fast and Effective Stochastic Algorithm for

@@ -76,6 +76,7 @@ Klaus Schliep and Alastair Potts
 ## Examples
 
 ``` r
+
 data(Laurasiatherian)
 laura <- as.DNAbin(Laurasiatherian)
 

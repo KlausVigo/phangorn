@@ -33,12 +33,14 @@ Let’s assume we have given a matrix where each row contains a character
 vector of a taxonomic unit:
 
 ``` r
+
 library(phangorn)
 ```
 
     ## Loading required package: ape
 
 ``` r
+
 data <- matrix(c("r","a","y","g","g","a","c","-","c","t","c","g",
     "a","a","t","g","g","a","t","-","c","t","c","a",
     "a","a","t","-","g","a","c","c","c","t","?","g"),
@@ -55,6 +57,7 @@ Normally we would transform this matrix into a phyDat object and gaps
 are handled as ambiguous character (like “?”).
 
 ``` r
+
 gapsdata1 <- phyDat(data)
 gapsdata1
 ```
@@ -68,6 +71,7 @@ four nucleotide states and the gap. Additionally we can define ambiguous
 states which can be any of the states.
 
 ``` r
+
 gapsdata2 <- phyDat(data, type="USER", levels=c("a","c","g","t","-"),
     ambiguity = c("?", "n"))
 ```
@@ -77,6 +81,7 @@ gapsdata2 <- phyDat(data, type="USER", levels=c("a","c","g","t","-"),
     ## states.
 
 ``` r
+
 gapsdata2
 ```
 
@@ -89,6 +94,7 @@ ambiguous characters like “r” and “y” explicitly we have to supply a
 contrast matrix similar to contrasts for factors.
 
 ``` r
+
 contrast <- matrix(data = c(1,0,0,0,0,
     0,1,0,0,0,
     0,0,1,0,0,
@@ -116,6 +122,7 @@ contrast
     ## ? 1 1 1 1 1
 
 ``` r
+
 gapsdata3 <- phyDat(data, type="USER", contrast=contrast)
 gapsdata3
 ```
@@ -134,7 +141,7 @@ analysis.
 
 To model nucleotide substitutions across the edges of a tree T we can
 assign a transition matrix. In the case of nucleotides, with four
-character states, each 4 $\times$ 4 transition matrix has, at most, 12
+character states, each 4 $`\times`$ 4 transition matrix has, at most, 12
 free parameters.
 
 Time-reversible Markov models are used to describe how characters change
@@ -146,26 +153,35 @@ pairwise distances, as well as in simulating sequence evolution.
 
 We will now describe the General Time-Reversible (GTR) model (Tavaré
 1986). The parameters of the GTR model are the equilibrium frequencies
-$\pi = \left( \pi_{A},\pi_{C},\pi_{G},\pi_{T} \right)$ and a rate matrix
-$Q$ which has the form $$Q = \begin{pmatrix}
-* & {\alpha\pi_{C}} & {\beta\pi_{G}} & {\gamma\pi_{T}} \\
-{\alpha\pi_{A}} & * & {\delta\pi_{G}} & {\epsilon\pi_{T}} \\
-{\beta\pi_{A}} & {\delta\pi_{C}} & * & {\eta\pi_{T}} \\
-{\gamma\pi_{A}} & {\epsilon\pi_{C}} & {\eta\pi_{G}} & * \\
- & & & 
-\end{pmatrix}(1)$$
+$`\pi = (\pi_A ,\pi_C ,\pi_G ,\pi_T)`$ and a rate matrix $`Q`$ which has
+the form
+``` math
+\begin{equation}
+Q =
+\begin{pmatrix}
+\ast  & \alpha\pi_C & \beta\pi_G & \gamma\pi_T \\
+\alpha\pi_A & \ast & \delta\pi_G & \epsilon\pi_T \\
+\beta\pi_A & \delta\pi_C & \ast & \eta\pi_T \\
+\gamma\pi_A &  \epsilon\pi_C & \eta\pi_G & \ast \\
+\end{pmatrix}
+(1)
+\end{equation}
+```
 
-where we need to assign 6 parameters $\alpha,\ldots,\eta$. The elements
-on the diagonal are chosen so that the rows sum to zero. The
+where we need to assign 6 parameters $`\alpha, \dots, \eta`$. The
+elements on the diagonal are chosen so that the rows sum to zero. The
 Jukes-Cantor (JC) (Jukes and Cantor 1969) model can be derived as
 special case from the GTR model, for equal equilibrium frequencies
-$\pi_{A} = \pi_{C} = \pi_{G} = \pi_{T} = 0.25$ and equal rates set to
-$\alpha = \beta = \gamma = \delta = \eta$. Table 2 lists all built-in
+$`\pi_A = \pi_C = \pi_G = \pi_T = 0.25`$ and equal rates set to
+$`\alpha = \beta = \gamma = \delta = \eta`$. Table 2 lists all built-in
 nucleotide models in *phangorn*. The transition probabilities, which
-describe the probabilities of change from character $i$ to $j$ in time
-$t$, are given by the corresponding entries of the matrix exponential
-$$P(t) = \left( p_{ij}(t) \right) = e^{Qt},\qquad\sum\limits_{j}p_{ij} = 1$$
-where $P(t)$ is the transition matrix spanning a period of time $t$.
+describe the probabilities of change from character $`i`$ to $`j`$ in
+time $`t`$, are given by the corresponding entries of the matrix
+exponential
+``` math
+P(t) = (p_{ij}(t)) = e^{Qt}, \qquad \sum_j p_{ij}=1
+```
+where $`P(t)`$ is the transition matrix spanning a period of time $`t`$.
 
 ## Estimation of non-standard transition rate matrices
 
@@ -180,23 +196,23 @@ directly in `optim.pml`. For amino acids several transition matrices are
 available (“WAG”, “JTT”, “LG”, “Dayhoff”, “cpREV”, “mtmam”, “mtArt”,
 “MtZoa”, “mtREV24”, “VT”,“RtREV”, “HIVw”, “HIVb”, “FLU”, “Blosum62”,
 “Dayhoff_DCMut” and “JTT-DCMut”) or can be estimated with `optim.pml`.
-For example Mathews, Clements, and Beilstein (2010) used this function
-to estimate a phytochrome amino acid transition matrix.
+For example Mathews et al. (2010) used this function to estimate a
+phytochrome amino acid transition matrix.
 
 We will now show how to estimate a rate matrix with different transition
-($\alpha$) and transversion ratio ($\beta$) and a fixed rate to the gap
-state ($\gamma$) - a kind of Kimura two-parameter model (K81) for
+($`\alpha`$) and transversion ratio ($`\beta`$) and a fixed rate to the
+gap state ($`\gamma`$) - a kind of Kimura two-parameter model (K81) for
 nucleotide data with gaps as fifth state (see table 1).
 
-| a   | c        | g        | t        | \-       |     |
-|-----|----------|----------|----------|----------|-----|
-| a   |          |          |          |          |     |
-| c   | $\beta$  |          |          |          |     |
-| g   | $\alpha$ | $\beta$  |          |          |     |
-| t   | $\beta$  | $\alpha$ | $\beta$  |          |     |
-| \-  | $\gamma$ | $\gamma$ | $\gamma$ | $\gamma$ |     |
+| a   | c          | g          | t          | \-         |     |
+|-----|------------|------------|------------|------------|-----|
+| a   |            |            |            |            |     |
+| c   | $`\beta`$  |            |            |            |     |
+| g   | $`\alpha`$ | $`\beta`$  |            |            |     |
+| t   | $`\beta`$  | $`\alpha`$ | $`\beta`$  |            |     |
+| \-  | $`\gamma`$ | $`\gamma`$ | $`\gamma`$ | $`\gamma`$ |     |
 
-Tab 1. Rate matrix with 3 parameters to optimize.
+Tab 1. Rate matrix with 3 parameters to optimize. {.table}
 
 If we want to fit a non-standard transition rate matrix, we have to tell
 `optim.pml` which transitions in Q get the same rate. The parameter
@@ -206,6 +222,7 @@ values indicate that there is no direct transition possible and the rate
 is set to zero.
 
 ``` r
+
 library(ape)
 tree <- unroot(rtree(3))
 fit <- pml(tree, gapsdata3)
@@ -243,35 +260,35 @@ reversible model (optBf=TRUE, i.e. the GTR for nucleotides) is
 estimated. This can be slow if the there are many character states,
 e.g. for amino acids. Table 2 shows how parameters are optimized and the
 number of parameters to estimate. The elements of the vector subs
-correspond to $\alpha,\ldots,\eta$ in equation (1)
+correspond to $`\alpha, \dots, \eta`$ in equation (1)
 
-| model | optQ  | optBf | subs             | df  |
-|-------|-------|-------|------------------|-----|
-| JC    | FALSE | FALSE | $c(0,0,0,0,0,0)$ | 0   |
-| F81   | FALSE | TRUE  | $c(0,0,0,0,0,0)$ | 3   |
-| K80   | TRUE  | FALSE | $c(0,1,0,0,1,0)$ | 1   |
-| HKY   | TRUE  | TRUE  | $c(0,1,0,0,1,0)$ | 4   |
-| TrNe  | TRUE  | FALSE | $c(0,1,0,0,2,0)$ | 2   |
-| TrN   | TRUE  | TRUE  | $c(0,1,0,0,2,0)$ | 5   |
-| TPM1  | TRUE  | FALSE | $c(0,1,2,2,1,0)$ | 2   |
-| K81   | TRUE  | FALSE | $c(0,1,2,2,1,0)$ | 2   |
-| TPM1u | TRUE  | TRUE  | $c(0,1,2,2,1,0)$ | 5   |
-| TPM2  | TRUE  | FALSE | $c(1,2,1,0,2,0)$ | 2   |
-| TPM2u | TRUE  | TRUE  | $c(1,2,1,0,2,0)$ | 5   |
-| TPM3  | TRUE  | FALSE | $c(1,2,0,1,2,0)$ | 2   |
-| TPM3u | TRUE  | TRUE  | $c(1,2,0,1,2,0)$ | 5   |
-| TIM1e | TRUE  | FALSE | $c(0,1,2,2,3,0)$ | 3   |
-| TIM1  | TRUE  | TRUE  | $c(0,1,2,2,3,0)$ | 6   |
-| TIM2e | TRUE  | FALSE | $c(1,2,1,0,3,0)$ | 3   |
-| TIM2  | TRUE  | TRUE  | $c(1,2,1,0,3,0)$ | 6   |
-| TIM3e | TRUE  | FALSE | $c(1,2,0,1,3,0)$ | 3   |
-| TIM3  | TRUE  | TRUE  | $c(1,2,0,1,3,0)$ | 6   |
-| TVMe  | TRUE  | FALSE | $c(1,2,3,4,2,0)$ | 4   |
-| TVM   | TRUE  | TRUE  | $c(1,2,3,4,2,0)$ | 7   |
-| SYM   | TRUE  | FALSE | $c(1,2,3,4,5,0)$ | 5   |
-| GTR   | TRUE  | TRUE  | $c(1,2,3,4,5,0)$ | 8   |
+| model | optQ  | optBf | subs                    | df  |
+|-------|-------|-------|-------------------------|-----|
+| JC    | FALSE | FALSE | $`c(0, 0, 0, 0, 0, 0)`$ | 0   |
+| F81   | FALSE | TRUE  | $`c(0, 0, 0, 0, 0, 0)`$ | 3   |
+| K80   | TRUE  | FALSE | $`c(0, 1, 0, 0, 1, 0)`$ | 1   |
+| HKY   | TRUE  | TRUE  | $`c(0, 1, 0, 0, 1, 0)`$ | 4   |
+| TrNe  | TRUE  | FALSE | $`c(0, 1, 0, 0, 2, 0)`$ | 2   |
+| TrN   | TRUE  | TRUE  | $`c(0, 1, 0, 0, 2, 0)`$ | 5   |
+| TPM1  | TRUE  | FALSE | $`c(0, 1, 2, 2, 1, 0)`$ | 2   |
+| K81   | TRUE  | FALSE | $`c(0, 1, 2, 2, 1, 0)`$ | 2   |
+| TPM1u | TRUE  | TRUE  | $`c(0, 1, 2, 2, 1, 0)`$ | 5   |
+| TPM2  | TRUE  | FALSE | $`c(1, 2, 1, 0, 2, 0)`$ | 2   |
+| TPM2u | TRUE  | TRUE  | $`c(1, 2, 1, 0, 2, 0)`$ | 5   |
+| TPM3  | TRUE  | FALSE | $`c(1, 2, 0, 1, 2, 0)`$ | 2   |
+| TPM3u | TRUE  | TRUE  | $`c(1, 2, 0, 1, 2, 0)`$ | 5   |
+| TIM1e | TRUE  | FALSE | $`c(0, 1, 2, 2, 3, 0)`$ | 3   |
+| TIM1  | TRUE  | TRUE  | $`c(0, 1, 2, 2, 3, 0)`$ | 6   |
+| TIM2e | TRUE  | FALSE | $`c(1, 2, 1, 0, 3, 0)`$ | 3   |
+| TIM2  | TRUE  | TRUE  | $`c(1, 2, 1, 0, 3, 0)`$ | 6   |
+| TIM3e | TRUE  | FALSE | $`c(1, 2, 0, 1, 3, 0)`$ | 3   |
+| TIM3  | TRUE  | TRUE  | $`c(1, 2, 0, 1, 3, 0)`$ | 6   |
+| TVMe  | TRUE  | FALSE | $`c(1, 2, 3, 4, 2, 0)`$ | 4   |
+| TVM   | TRUE  | TRUE  | $`c(1, 2, 3, 4, 2, 0)`$ | 7   |
+| SYM   | TRUE  | FALSE | $`c(1, 2, 3, 4, 5, 0)`$ | 5   |
+| GTR   | TRUE  | TRUE  | $`c(1, 2, 3, 4, 5, 0)`$ | 8   |
 
-Tab 2. DNA models available in phangorn.
+Tab 2. DNA models available in phangorn. {.table}
 
 ### Predefined models for user defined data
 
@@ -287,6 +304,7 @@ only the equal rates (ER) model will be appropriate.
 | GTR | GTR  |
 
 Tab 2: Build in models which are available for USER defined data.
+{.table}
 
 There is an additional model ORDERED, which assumes ordered characters
 and only allows to switch between neighboring states. Table 3 show the
@@ -300,29 +318,35 @@ corresponding rate matrix.
 | d   | 0   | 0   | 1   |     |     |
 | e   | 0   | 0   | 0   | 1   |     |
 
-Tab 3: Rate matrix for “ORDERED” model with 5 states.
+Tab 3: Rate matrix for “ORDERED” model with 5 states. {.table}
 
 ## Codon substitution models
 
 A special case of the transition rates are codon models. *phangorn* now
-offers the possibility to estimate the $d_{N}/d_{S}$ ratio (sometimes
+offers the possibility to estimate the $`d_N/d_S`$ ratio (sometimes
 called ka/ks), for an overview see (Yang 2014). These functions extend
-the option to estimate the $d_{N}/d_{S}$ ratio for pairwise sequence
+the option to estimate the $`d_N/d_S`$ ratio for pairwise sequence
 comparison as it is available through the function `kaks` in *seqinr*.
-The transition rate between between codon $i$ and $j$ is defined as
+The transition rate between between codon $`i`$ and $`j`$ is defined as
 follows:
 
-\$\$ q\_{ij}=\left\\ \begin{array}{l@{\quad}l} 0 & \textrm{if i and j
-differ in more than one position} \\ \pi_j & \textrm{for synonymous
-transversion} \\ \pi_j\kappa & \textrm{for synonymous transition} \\
-\pi_j\omega & \textrm{for non-synonymous transversion} \\
-\pi_j\omega\kappa & \textrm{for non-synonymous transition} \end{array}
-\right. \nonumber \$\$
+``` math
+q_{ij}=\left\{
+    \begin{array}{l@{\quad}l}
+         0 & \textrm{if i and j differ in more than one position} \\
+         \pi_j & \textrm{for synonymous transversion} \\
+         \pi_j\kappa & \textrm{for synonymous transition} \\
+         \pi_j\omega & \textrm{for non-synonymous transversion} \\
+         \pi_j\omega\kappa & \textrm{for non-synonymous transition}
+    \end{array}
+    \right. \nonumber
+```
 
-where $\omega$ is the $d_{N}/d_{S}$ ratio, $\kappa$ the transition
-transversion ratio and $\pi_{j}$ is the the equilibrium frequency of
-codon $j$. For $\omega \sim 1$ the amino acid change is neutral, for
-$\omega < 1$ purifying selection and $\omega > 1$ positive selection.
+where $`\omega`$ is the $`d_N/d_S`$ ratio, $`\kappa`$ the transition
+transversion ratio and $`\pi_j`$ is the the equilibrium frequency of
+codon $`j`$. For $`\omega\sim1`$ the amino acid change is neutral, for
+$`\omega < 1`$ purifying selection and $`\omega > 1`$ positive
+selection.
 
 Here we use a data set from and follow loosely the example in Bielawski
 and Yang (2005). We first read in an alignment and phylogenetic tree for
@@ -330,6 +354,7 @@ and Yang (2005). We first read in an alignment and phylogenetic tree for
 `read.phyDat` function.
 
 ``` r
+
 fdir <- system.file("extdata/trees", package = "phangorn")
 hiv_2_nef <- read.phyDat(file.path(fdir, "seqfile.txt"), format="sequential")
 tree <- read.tree(file.path(fdir, "tree.txt"))
@@ -338,19 +363,20 @@ tree <- read.tree(file.path(fdir, "tree.txt"))
 With the tree and data set we can estimate currently 3 different site
 models:
 
-1.  The M0 model with a constant $\omega$, where $\omega$ estimates the
-    average over all sites of the alignment. M0 does not allow for
-    distinct $\omega$ and identifies classes, therefore we will not
+1.  The M0 model with a constant $`\omega`$, where $`\omega`$ estimates
+    the average over all sites of the alignment. M0 does not allow for
+    distinct $`\omega`$ and identifies classes, therefore we will not
     retrieve any information regarding positive selection.  
-2.  The M1a or nearly neutral model estimates two different $\omega$
-    value classes ($\omega = 1$ & $\omega < 1$).
+2.  The M1a or nearly neutral model estimates two different $`\omega`$
+    value classes ($`\omega=1`$ & $`\omega<1`$).
 3.  The M2a or positive selection model estimates three different
-    classes of $\omega$ (negative selection $\omega < 1$, neutral
-    selection $\omega = 1$, positive selection $\omega > 1$). One can
+    classes of $`\omega`$ (negative selection $`\omega<1`$, neutral
+    selection $`\omega=1`$, positive selection $`\omega>1`$). One can
     use a likelihood ratio test to compare the M1a and M2a to for
     positive selection.
 
 ``` r
+
 cdn <- codonTest(tree, hiv_2_nef)
 cdn
 ```
@@ -369,9 +395,13 @@ mentioned above and are no branch models implemented so far.
 
 We can identify sites under positive selection using the Na"ive
 empirical Bayes (NEB) method of Yang and Nielsen (1998):
-$$P\left( \omega|x_{h} \right) = \frac{P\left( X_{h}|\omega_{i} \right)p_{i}}{P\left( X_{h} \right)} = \frac{P\left( X_{h}|\omega_{i} \right)p_{i}}{\sum\limits_{j}P\left( X_{h}|\omega_{j} \right)p_{j}}$$
+``` math
+P(\omega|x_h) = \frac{P(X_h|\omega_i)p_i}{P(X_h)} =
+\frac{P(X_h|\omega_i)p_i}{\sum_j P(X_h|\omega_j)p_j}
+```
 
 ``` r
+
 plot(cdn, "M1a")
 ```
 
@@ -381,6 +411,7 @@ acid](AdvancedFeatures_files/figure-html/plot_codon-1.png)
 Posterior probability of the rate class for each amino acid
 
 ``` r
+
 plot(cdn, "M2a")
 ```
 
@@ -392,7 +423,7 @@ Posterior probability of the rate class for each amino acid
 A lot if implementations differ in the way the codon frequencies are
 derived. The M0 model can be also estimated using `pml` and `optim.pml`
 functions. There are several ways to estimate the codon frequencies
-$\pi_{j}$. The simplest model is to assume they have equal frequencies
+$`\pi_j`$. The simplest model is to assume they have equal frequencies
 (=1/61). A second is to use the empirical codon frequencies, either
 computed using `baseFreq` or using the argument `bf="empirical"` in
 `pml`. This is usually not really good as some codons are rare and have
@@ -402,6 +433,7 @@ be derived from the base frequencies at each codon position, the F3x4
 model is set by the argument `bf="F3x4"`.
 
 ``` r
+
 treeM0 <- cdn$estimates[["M0"]]$tree # tree with edge lengths
 M0 <- pml(treeM0, dna2codon(hiv_2_nef), bf="F3x4")
 M0 <- optim.pml(M0, model="codon1")
@@ -423,6 +455,7 @@ For the F3x4 model can optimize the codon frequencies setting the option
 to `optBf=TRUE` in `optim.pml`.
 
 ``` r
+
 M0_opt <- optim.pml(M0, model="codon1", optBf=TRUE)
 M0_opt
 ```
@@ -485,12 +518,12 @@ M0_opt
 
 Bielawski, Joseph P., and Ziheng Yang. 2005. “Maximum Likelihood Methods
 for Detecting Adaptive Protein Evolution.” In *Statistical Methods in
-Molecular Evolution*, 103–24. New York, NY: Springer New York.
+Molecular Evolution*. Springer New York.
 <https://doi.org/10.1007/0-387-27733-1_5>.
 
 Jukes, Thomas H., and Charles R. Cantor. 1969. “{CHAPTER} 24 - Evolution
 of Protein Molecules.” In *Mammalian Protein Metabolism*, edited by H.
-N. Munro, 21–132. Academic Press.
+N. Munro. Academic Press.
 
 Mathews, S., M. D. Clements, and M. A. Beilstein. 2010. “A Duplicate
 Gene Rooting of Seed Plants and the Phylogenetic Position of Flowering
@@ -509,7 +542,7 @@ with Gaps Can Be Statistically Inconsistent.” *PLOS Currents Tree of
 Life*.
 
 Yang, Ziheng. 2014. *Molecular Evolution: A Statistical Approach*.
-Oxford: Oxford University Press.
+Oxford University Press.
 
 Yang, Ziheng, and Rasmus Nielsen. 1998. “Synonymous and Nonsynonymous
 Rate Variation in Nuclear Genes of Mammals.” *Journal of Molecular

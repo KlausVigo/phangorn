@@ -75,6 +75,7 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ## Examples
 
 ``` r
+
 # in real analysis use larger n, e.g. 500 preferably more
 if (FALSE) { # \dontrun{
 data(Laurasiatherian)

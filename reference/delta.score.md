@@ -48,6 +48,7 @@ Alastair Potts and Klaus Schliep
 ## Examples
 
 ``` r
+
 data(yeast)
 hist(delta.score(yeast, "all"))
 

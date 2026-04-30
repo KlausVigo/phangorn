@@ -21,6 +21,7 @@ call the function plan specifying the backend and than the function
 which allows the parallel processing.
 
 ``` r
+
 library(phangorn)
 library(future)
 data("Laurasiatherian")

@@ -69,7 +69,7 @@ Schliep</h4>
 Technology<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2026-04-29</h4>
+            <h4 data-toc-skip class="date">2026-04-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/main/vignettes/Ancestral.Rmd" class="external-link"><code>vignettes/Ancestral.Rmd</code></a></small>
       <div class="d-none name"><code>Ancestral.Rmd</code></div>
@@ -164,14 +164,14 @@ invariant sites.</p>
 <span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pml.html">optim.pml</a></span><span class="op">(</span><span class="va">fit</span>, model<span class="op">=</span><span class="st">"F81"</span><span class="op">)</span></span></code></pre></div>
 <p>We can assign the ancestral states according to the highest
 likelihood (“ml”):
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mi>r</mi></msub><mo>=</mo><mi>A</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mrow><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mi>r</mi></msub><mo>=</mo><mi>A</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><munder><mo>∑</mo><mrow><mi>k</mi><mo>∈</mo><mo stretchy="false" form="prefix">{</mo><mi>A</mi><mo>,</mo><mi>C</mi><mo>,</mo><mi>G</mi><mo>,</mo><mi>T</mi><mo stretchy="false" form="postfix">}</mo></mrow></munder><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mi>r</mi></msub><mo>=</mo><mi>k</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac></mrow><annotation encoding="application/x-tex">
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>r</mi></msub><mo>=</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>r</mi></msub><mo>=</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><munder><mo>∑</mo><mrow><mi>k</mi><mo>∈</mo><mo stretchy="false" form="prefix">{</mo><mi>A</mi><mo>,</mo><mi>C</mi><mo>,</mo><mi>G</mi><mo>,</mo><mi>T</mi><mo stretchy="false" form="postfix">}</mo></mrow></munder><mi>L</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>r</mi></msub><mo>=</mo><mi>k</mi><mo stretchy="false" form="postfix">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">
 P(x_r = A) =  \frac{L(x_r=A)}{\sum_{k \in \{A,C,G,T\}}L(x_r=k)}
 </annotation></semantics></math> and the highest posterior probability
 (“bayes”) criterion:
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mi>r</mi></msub><mo>=</mo><mi>A</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mrow><msub><mi>π</mi><mi>A</mi></msub><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mi>r</mi></msub><mo>=</mo><mi>A</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><munder><mo>∑</mo><mrow><mi>k</mi><mo>∈</mo><mo stretchy="false" form="prefix">{</mo><mi>A</mi><mo>,</mo><mi>C</mi><mo>,</mo><mi>G</mi><mo>,</mo><mi>T</mi><mo stretchy="false" form="postfix">}</mo></mrow></munder><msub><mi>π</mi><mi>k</mi></msub><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mi>r</mi></msub><mo>=</mo><mi>k</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mo>,</mo></mrow><annotation encoding="application/x-tex">
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>r</mi></msub><mo>=</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><msub><mi>π</mi><mi>A</mi></msub><mi>L</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>r</mi></msub><mo>=</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><munder><mo>∑</mo><mrow><mi>k</mi><mo>∈</mo><mo stretchy="false" form="prefix">{</mo><mi>A</mi><mo>,</mo><mi>C</mi><mo>,</mo><mi>G</mi><mo>,</mo><mi>T</mi><mo stretchy="false" form="postfix">}</mo></mrow></munder><msub><mi>π</mi><mi>k</mi></msub><mi>L</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>r</mi></msub><mo>=</mo><mi>k</mi><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mo>,</mo></mrow><annotation encoding="application/x-tex">
 P(x_r=A) =  \frac{\pi_A L(x_r=A)}{\sum_{k \in \{A,C,G,T\}}\pi_k L(x_r=k)},
 </annotation></semantics></math> where
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mi>r</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">L(x_r)</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>r</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(x_r)</annotation></semantics></math>
 is the joint probability of states at the tips and the state at the root
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>x</mi><mi>r</mi></msub><annotation encoding="application/x-tex">x_r</annotation></semantics></math>
 and
@@ -346,10 +346,10 @@ matrices</em>. The “ARD” model is currently not available as
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Felsenstein2004" class="csl-entry">
-Felsenstein, Joseph. 2004. <em>Inferring Phylogenies</em>. Sunderland:
-Sinauer Associates.
+Felsenstein, Joseph. 2004. <em>Inferring Phylogenies</em>. Sinauer
+Associates.
 </div>
 <div id="ref-Koshi1996" class="csl-entry">
 Koshi, Jeffrey M., and Richard A. Goldstein. 1996. <span>“<span class="nocase">Probabilistic reconstruction of ancestral protein
@@ -362,8 +362,7 @@ Environment for Modern Phylogenetics and Evolutionary Analyses in
 r.”</span> <em>Bioinformatics</em> 35 (3): 526–28. <a href="https://doi.org/10.1093/bioinformatics/bty633" class="external-link">https://doi.org/10.1093/bioinformatics/bty633</a>.
 </div>
 <div id="ref-Pennell2014" class="csl-entry">
-Pennell, M. W., J. M. Eastman, G. J. Slater, J. W. Brown, J. C. Uyeda,
-R. G. Fitzjohn, M. E. Alfaro, and L. J. Harmon. 2014. <span>“Geiger
+Pennell, M. W., J. M. Eastman, G. J. Slater, et al. 2014. <span>“Geiger
 V2.0: An Expanded Suite of Methods for Fitting Macroevolutionary Models
 to Phylogenetic Trees.”</span> <em>Bioinformatics</em> 30: 2216–18. <a href="https://doi.org/10.1093/bioinformatics/btu181" class="external-link">https://doi.org/10.1093/bioinformatics/btu181</a>.
 </div>
@@ -391,8 +390,8 @@ Wagih, Omar. 2024. <em>Ggseqlogo: A ’Ggplot2’ Extension for Drawing
 Publication-Ready Sequence Logos</em>. <a href="https://CRAN.R-project.org/package=ggseqlogo" class="external-link">https://CRAN.R-project.org/package=ggseqlogo</a>.
 </div>
 <div id="ref-Yang2006" class="csl-entry">
-Yang, Ziheng. 2006. <em>Computational Molecular Evolution</em>. Oxford:
-Oxford University Press.
+Yang, Ziheng. 2006. <em>Computational Molecular Evolution</em>. Oxford
+University Press.
 </div>
 </div>
 </div>

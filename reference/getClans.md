@@ -159,6 +159,7 @@ Francois-Joseph Lapointe <francois-joseph.lapointe@umontreal.ca>
 ## Examples
 
 ``` r
+
 set.seed(111)
 tree <- rtree(10)
 getClans(tree)

@@ -41,6 +41,7 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ## Examples
 
 ``` r
+
 trees <- allTrees(5)
 
 old.par <- par(no.readonly = TRUE)

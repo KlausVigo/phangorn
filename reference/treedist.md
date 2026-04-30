@@ -136,6 +136,7 @@ Klaus P. Schliep <klaus.schliep@gmail.com>, Leonardo de Oliveira Martins
 ## Examples
 
 ``` r
+
 tree1 <- rtree(100, rooted=FALSE)
 tree2 <- rSPR(tree1, 3)
 RF.dist(tree1, tree2)

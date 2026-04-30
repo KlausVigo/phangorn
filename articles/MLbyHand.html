@@ -69,7 +69,7 @@ Iris Bardel-Kahr</h4>
 Graz<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2026-04-29</h4>
+            <h4 data-toc-skip class="date">2026-04-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/main/vignettes/MLbyHand.Rmd" class="external-link"><code>vignettes/MLbyHand.Rmd</code></a></small>
       <div class="d-none name"><code>MLbyHand.Rmd</code></div>
@@ -210,7 +210,7 @@ site model with 4 rate categories (using the default shape parameter of
 <span><span class="co">##       a       c       g       t </span></span>
 <span><span class="co">## 0.37481 0.40160 0.03911 0.18448</span></span></code></pre>
 <p>We will change the model to the GTR +
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Γ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>4</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\Gamma(4)</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Γ</mi><mo stretchy="false" form="prefix">(</mo><mn>4</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\Gamma(4)</annotation></semantics></math>
 + I model and then optimize all the parameters.</p>
 <p>With the control parameters the thresholds for the fitting process
 can be changed. Here we want just to suppress output during the fitting
@@ -262,7 +262,7 @@ time.</p>
 <h3 id="model-comparison">Model comparison<a class="anchor" aria-label="anchor" href="#model-comparison"></a>
 </h3>
 <p>We can compare nested models for the JC and GTR +
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Γ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>4</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\Gamma(4)</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Γ</mi><mo stretchy="false" form="prefix">(</mo><mn>4</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\Gamma(4)</annotation></semantics></math>
 + I model using likelihood ratio statistic</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova</a></span><span class="op">(</span><span class="va">fitJC</span>, <span class="va">fitGTR</span><span class="op">)</span></span></code></pre></div>
@@ -395,11 +395,11 @@ pruning and regrafting) away.</p>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Jukes1969" class="csl-entry">
 Jukes, Thomas H., and Charles R. Cantor. 1969. <span>“{CHAPTER} 24 -
 Evolution of Protein Molecules.”</span> In <em>Mammalian Protein
-Metabolism</em>, edited by H. N. Munro, 21–132. Academic Press.
+Metabolism</em>, edited by H. N. Munro. Academic Press.
 </div>
 <div id="ref-Nguyen2015" class="csl-entry">
 Nguyen, Lam-Tung, Heiko A. Schmidt, Arndt von Haeseler, and Bui Quang

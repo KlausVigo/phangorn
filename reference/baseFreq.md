@@ -67,6 +67,7 @@ Klaus Schliep
 ## Examples
 
 ``` r
+
 data(Laurasiatherian)
 data(chloroplast)
 # base frequencies

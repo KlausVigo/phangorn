@@ -11,12 +11,14 @@ different formats. The most common ones are **.csv** and **.nexus**.
 We start by loading the *phangorn* package and setting a random seed:
 
 ``` r
+
 library(phangorn)
 ```
 
     ## Loading required package: ape
 
 ``` r
+
 set.seed(9)
 ```
 
@@ -29,6 +31,7 @@ names. To get a `phyDat` object, we have to convert the dataframe into a
 matrix with `as.matrix`.
 
 ``` r
+
 fdir <- system.file("extdata", package = "phangorn")
 mm <- read.csv(file.path(fdir, "mites.csv"), row.names = 1)
 mm_pd <- phyDat(as.matrix(mm), type = "USER", levels = 0:7)
@@ -37,12 +40,14 @@ mm_pd <- phyDat(as.matrix(mm), type = "USER", levels = 0:7)
 The data can then be written into a *nexus* file:
 
 ``` r
+
 write.phyDat(mm_pd, file.path(fdir, "mites.nex"), format = "nexus")
 ```
 
 Reading in a *nexus* file is even easier than reading in a *csv* file:
 
 ``` r
+
 mm_pd <- read.phyDat(file.path(fdir, "mites.nex"), format = "nexus", type = "STANDARD")
 ```
 
@@ -51,6 +56,7 @@ only has the states 0:7. Here is one possibility to change the contrast
 matrix:
 
 ``` r
+
 contrast <- matrix(data = c(1,0,0,0,0,0,0,0,0,
     0,1,0,0,0,0,0,0,0,
     0,0,1,0,0,0,0,0,0,
@@ -80,6 +86,7 @@ contrast
     ## ? 1 1 1 1 1 1 1 1 1
 
 ``` r
+
 mm_pd <- phyDat(mm_pd, type="USER", contrast=contrast)
 ```
 
@@ -94,12 +101,14 @@ implements the parsimony ratchet (Nixon 1999). To create a starting
 tree, we can use the function `random.addition`:
 
 ``` r
+
 mm_start <- random.addition(mm_pd)
 ```
 
 This tree can then be given to `pratchet`:
 
 ``` r
+
 mm_tree <- pratchet(mm_pd, start = mm_start, minit = 1000, maxit = 10000,
                     all = TRUE, trace = 0)
 mm_tree
@@ -113,6 +122,7 @@ iterations, we already have some edge support. Now we can assign the
 edge lengths.
 
 ``` r
+
 mm_tree <- acctran(mm_tree, mm_pd)
 ```
 
@@ -124,6 +134,7 @@ most parsimonious trees. With bigger datasets it is definitely
 recommended to use `pratchet`.
 
 ``` r
+
 mm_bab <- bab(mm_pd, trace = 0)
 mm_bab
 ```
@@ -140,6 +151,7 @@ save the correct node labels (edge support), it’s important to set
 `edgelabel=TRUE`.
 
 ``` r
+
 mm_tree_rooted <- root(mm_tree, outgroup = "C._cymba", resolve.root = TRUE,
                        edgelabel = TRUE)
 ```
@@ -152,6 +164,7 @@ e.g. svg, png, tiff) file. `digits` is an argument to determine the
 number of digits shown for the bootstrap values.
 
 ``` r
+
 # subsetting for tree nr. 9
 plotBS(mm_tree_rooted[[9]], digits = 2)
 
@@ -168,6 +181,7 @@ To look at the consensus tree of our 19 trees from `pratchet`, or of our
 function from *ape*.
 
 ``` r
+
 # unrooted pratchet tree
 mm_cons <- consensus(mm_tree)
 
@@ -180,6 +194,7 @@ mm_bab_cons <- root(consensus(mm_bab), outgroup = "C._cymba",
 ```
 
 ``` r
+
 plot(mm_cons, main="Unrooted pratchet consensus tree")
 plot(mm_cons_root, main="Rooted pratchet consensus tree")
 plot(mm_bab_cons, main="Rooted bab consensus tree")

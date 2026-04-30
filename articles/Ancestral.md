@@ -14,6 +14,7 @@ To reconstruct ancestral sequences we first load some data and
 reconstruct a tree:
 
 ``` r
+
 library(phangorn)
 fdir <- system.file("extdata/trees", package = "phangorn")
 primates <- read.phyDat(file.path(fdir, "primates.dna"),
@@ -47,6 +48,7 @@ transformation) assigns edge length and internal nodes to the tree
 (Swofford and Maddison 1987).
 
 ``` r
+
 anc.pars <- anc_pars(tree, primates)
 ```
 
@@ -56,6 +58,7 @@ way to show proportions of a nucleotides of ancestral states (see figure
 1).
 
 ``` r
+
 plotSeqLogo(anc.pars, node=getRoot(tree), 1, 20)
 ```
 
@@ -74,6 +77,7 @@ node.](Ancestral_files/figure-html/seqLogo-1.png)
 Fig 1. Ancestral reconstruction for a node.
 
 ``` r
+
 plotAnc(anc.pars, 17)
 title("MPR")
 ```
@@ -94,21 +98,27 @@ available for models without rate variation (e.g. gamma models) or
 invariant sites.
 
 ``` r
+
 fit <- pml(tree, primates)
 fit <- optim.pml(fit, model="F81")
 ```
 
 We can assign the ancestral states according to the highest likelihood
 (“ml”):
-$$P\left( x_{r} = A \right) = \frac{L\left( x_{r} = A \right)}{\sum\limits_{k \in \{ A,C,G,T\}}L\left( x_{r} = k \right)}$$
+``` math
+P(x_r = A) =  \frac{L(x_r=A)}{\sum_{k \in \{A,C,G,T\}}L(x_r=k)}
+```
 and the highest posterior probability (“bayes”) criterion:
-$$P\left( x_{r} = A \right) = \frac{\pi_{A}L\left( x_{r} = A \right)}{\sum\limits_{k \in \{ A,C,G,T\}}\pi_{k}L\left( x_{r} = k \right)},$$
-where $L\left( x_{r} \right)$ is the joint probability of states at the
-tips and the state at the root $x_{r}$ and $\pi_{i}$ are the estimated
-base frequencies of state $i$. Both methods agree if all states (base
+``` math
+P(x_r=A) =  \frac{\pi_A L(x_r=A)}{\sum_{k \in \{A,C,G,T\}}\pi_k L(x_r=k)},
+```
+where $`L(x_r)`$ is the joint probability of states at the tips and the
+state at the root $`x_r`$ and $`\pi_i`$ are the estimated base
+frequencies of state $`i`$. Both methods agree if all states (base
 frequencies) have equal probabilities.
 
 ``` r
+
 anc.ml <- anc_pml(fit)
 ```
 
@@ -116,6 +126,7 @@ The differences of the two approaches for a specific site (17) are
 represented in the following figures.
 
 ``` r
+
 plotAnc(anc.ml, 17)
 title("ML")
 ```
@@ -126,6 +137,7 @@ likelihood.](Ancestral_files/figure-html/plotML-1.png)
 Fig 4. Ancestral reconstruction the using the maximum likelihood.
 
 ``` r
+
 #plotAnc(anc.bayes, 17)
 #title("Bayes")
 ```
@@ -142,6 +154,7 @@ show how to fit these models using *optim.pml*.
 First we load a tree and create some data.
 
 ``` r
+
 data("bird.orders")
 x <- c(rep(0, 5), rep(1, 18))
 x[c(20,22,23)] <- 2
@@ -154,6 +167,7 @@ We than set up the *pml* object and optimize the model. Instead of
 optimizing the edge length we only optimize the rate.
 
 ``` r
+
 fit <- pml(bird.orders, dat)
 fit_ER <- optim.pml(fit, optEdge = FALSE, optRate=TRUE)
 fit_ER
@@ -183,6 +197,7 @@ We can also fit the symmetric (*model=“SYM”*) or ordered metristic model
 (*model=“ORDERED”*).
 
 ``` r
+
 fit_SYM <- optim.pml(fit, optEdge = FALSE, optRate=TRUE, model="SYM")
 fit_SYM
 ```
@@ -210,6 +225,7 @@ fit_SYM
 We can compare the estimate with the one from *ace* from *ape*.
 
 ``` r
+
 fit_ace <- ace(x, bird.orders, model="SYM", type = "d")
 ```
 
@@ -221,24 +237,28 @@ have three states to ace estimate the two estimates are almost
 identical.
 
 ``` r
+
 fit_SYM$logLik
 ```
 
     ## [1] -15.31
 
 ``` r
+
 fit_ace$loglik+log(1/3)
 ```
 
     ## [1] -15.31
 
 ``` r
+
 all.equal(fit_SYM$logLik, fit_ace$loglik+log(1/3))
 ```
 
     ## [1] "Mean relative difference: 1.229e-07"
 
 ``` r
+
 anc_SYM <- anc_pml(fit_SYM)
 plotAnc(anc_SYM)
 ```
@@ -303,8 +323,7 @@ reversible models.
 
 ## References
 
-Felsenstein, Joseph. 2004. *Inferring Phylogenies*. Sunderland: Sinauer
-Associates.
+Felsenstein, Joseph. 2004. *Inferring Phylogenies*. Sinauer Associates.
 
 Koshi, Jeffrey M., and Richard A. Goldstein. 1996. “Probabilistic
 reconstruction of ancestral protein sequences.” *Journal of Molecular
@@ -314,9 +333,8 @@ Paradis, Emmanuel, and Klaus Schliep. 2019. “Ape 5.0: An Environment for
 Modern Phylogenetics and Evolutionary Analyses in r.” *Bioinformatics*
 35 (3): 526–28. <https://doi.org/10.1093/bioinformatics/bty633>.
 
-Pennell, M. W., J. M. Eastman, G. J. Slater, J. W. Brown, J. C. Uyeda,
-R. G. Fitzjohn, M. E. Alfaro, and L. J. Harmon. 2014. “Geiger V2.0: An
-Expanded Suite of Methods for Fitting Macroevolutionary Models to
+Pennell, M. W., J. M. Eastman, G. J. Slater, et al. 2014. “Geiger V2.0:
+An Expanded Suite of Methods for Fitting Macroevolutionary Models to
 Phylogenetic Trees.” *Bioinformatics* 30: 2216–18.
 <https://doi.org/10.1093/bioinformatics/btu181>.
 
@@ -340,5 +358,5 @@ Wagih, Omar. 2024. *Ggseqlogo: A ’Ggplot2’ Extension for Drawing
 Publication-Ready Sequence Logos*.
 <https://CRAN.R-project.org/package=ggseqlogo>.
 
-Yang, Ziheng. 2006. *Computational Molecular Evolution*. Oxford: Oxford
+Yang, Ziheng. 2006. *Computational Molecular Evolution*. Oxford
 University Press.

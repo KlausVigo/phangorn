@@ -68,6 +68,7 @@ the function is evaluated for all nodes.
 ## Examples
 
 ``` r
+
 tree <- rtree(10)
 plot(tree, show.tip.label = FALSE)
 nodelabels()

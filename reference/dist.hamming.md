@@ -115,6 +115,7 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ## Examples
 
 ``` r
+
 data(Laurasiatherian)
 dm1 <- dist.hamming(Laurasiatherian)
 tree1 <- NJ(dm1)

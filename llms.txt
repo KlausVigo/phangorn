@@ -22,10 +22,10 @@ You can install the the latest release `phangorn` of the package from
 version from [github](https://github.com/KlausVigo/phangorn) or
 [r-universe](https://klausvigo.r-universe.dev/phangorn).
 
-| Type        | Source     | Command                                                                                                  |
-|-------------|------------|----------------------------------------------------------------------------------------------------------|
-| Release     | CRAN       | `install.packages("phangorn")`                                                                           |
-| Development | GitHub     | `remotes::install_github("KlausVigo/phangorn")`                                                          |
+| Type | Source | Command |
+|----|----|----|
+| Release | CRAN | `install.packages("phangorn")` |
+| Development | GitHub | `remotes::install_github("KlausVigo/phangorn")` |
 | Development | r-universe | `install.packages('phangorn', repos = c('https://klausvigo.r-universe.dev', 'https://repo.r-wasm.org'))` |
 
 To install the development version you may need to install the

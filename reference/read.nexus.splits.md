@@ -101,6 +101,7 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ## Examples
 
 ``` r
+
 (sp <- as.splits(rtree(5)))
 #>       t3 t4 t2 t5 t1
 #>  [1,]  |  .  .  .  .

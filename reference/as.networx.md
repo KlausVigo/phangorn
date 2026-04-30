@@ -81,6 +81,7 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ## Examples
 
 ``` r
+
 set.seed(1)
 tree1 <- rtree(20, rooted=FALSE)
 sp <- as.splits(rNNI(tree1, n=10))

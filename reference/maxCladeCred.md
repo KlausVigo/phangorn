@@ -71,6 +71,7 @@ Klaus Schliep <klaus.schliep@gmail.com>
 
 ``` r
 
+
 data(Laurasiatherian)
 set.seed(42)
 bs <- bootstrap.phyDat(Laurasiatherian,

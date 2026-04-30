@@ -98,6 +98,7 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ## Examples
 
 ``` r
+
 if (FALSE) { # \dontrun{
 # load woodmouse data from ape
 data(woodmouse)

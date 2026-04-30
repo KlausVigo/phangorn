@@ -69,6 +69,7 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ## Examples
 
 ``` r
+
 data(woodmouse)
 woodmouse <- phyDat(woodmouse)
 tmpfile <- normalizePath(system.file(

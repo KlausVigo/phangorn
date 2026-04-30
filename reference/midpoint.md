@@ -70,6 +70,7 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ## Examples
 
 ``` r
+
 tree <- rtree(10, rooted = FALSE)
 tree$node.label <- c("", round(runif(tree$Nnode-1), digits=3))
 

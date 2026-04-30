@@ -11,6 +11,7 @@ phylogenies. *Nature*, **425**(6960): 798–804
 ## Examples
 
 ``` r
+
 data(yeast)
 str(yeast)
 #> List of 8

@@ -84,6 +84,7 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ## Examples
 
 ``` r
+
 data(woodmouse)
 tmp <- pml_bb(woodmouse, model="HKY+I", rearrangement="NNI")
 

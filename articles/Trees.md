@@ -30,6 +30,7 @@ We start our analysis loading the *phangorn* package and then reading in
 an alignment.
 
 ``` r
+
 library(ape)
 library(phangorn)
 fdir <- system.file("extdata/trees", package = "phangorn")
@@ -54,6 +55,7 @@ and Nei 1987; Studier and Keppler 1988). More distance methods like
 `fastme` are available in the *ape* package.
 
 ``` r
+
 dm  <- dist.ml(primates)
 treeUPGMA  <- upgma(dm)
 treeNJ  <- NJ(dm)
@@ -62,6 +64,7 @@ treeNJ  <- NJ(dm)
 We can plot the trees `treeUPGMA` and `treeNJ` with the commands:
 
 ``` r
+
 plot(treeUPGMA, main="UPGMA")
 ```
 
@@ -70,6 +73,7 @@ plot(treeUPGMA, main="UPGMA")
 Rooted UPGMA tree.
 
 ``` r
+
 plot(treeNJ, "unrooted", main="NJ")
 ```
 
@@ -85,6 +89,7 @@ and afterwards compute the tree. We can then give this function to the
 `bootstrap.phyDat` function.
 
 ``` r
+
 fun <- function(x) upgma(dist.ml(x))
 bs_upgma <- bootstrap.phyDat(primates,  fun)
 ```
@@ -92,12 +97,14 @@ bs_upgma <- bootstrap.phyDat(primates,  fun)
 With the new syntax of R 4.1 this can be written a bit shorter:
 
 ``` r
+
 bs_upgma <- bootstrap.phyDat(primates,  \(x){dist.ml(x) |> upgma()})
 ```
 
 Finally, we can plot the tree with bootstrap values added:
 
 ``` r
+
 plotBS(treeUPGMA, bs_upgma, main="UPGMA")
 ```
 
@@ -116,12 +123,14 @@ number of changes necessary to describe the data for a given tree. We
 can compare the parsimony score for the two trees we computed so far:
 
 ``` r
+
 parsimony(treeUPGMA, primates)
 ```
 
     ## [1] 751
 
 ``` r
+
 parsimony(treeNJ, primates)
 ```
 
@@ -134,10 +143,10 @@ trees than only performing NNI / SPR rearrangements.
 
 The current implementation is
 
-1.  Create a bootstrap data set $D_{b}$ from the original data set.
+1.  Create a bootstrap data set $`D_b`$ from the original data set.
 2.  Take the current best tree and perform tree rearrangements on
-    $D_{b}$ and save bootstrap tree as $T_{b}$.
-3.  Use $T_{b}$ and perform tree rearrangements on the original data
+    $`D_b`$ and save bootstrap tree as $`T_b`$.
+3.  Use $`T_b`$ and perform tree rearrangements on the original data
     set. If this tree has a lower parsimony score than the currently
     best tree, replace it.
 4.  Iterate 1:3 until either a given number of iteration is reached
@@ -145,6 +154,7 @@ The current implementation is
     iterations (`k`).
 
 ``` r
+
 treeRatchet  <- pratchet(primates, trace = 0, minit=100)
 parsimony(treeRatchet, primates)
 ```
@@ -160,6 +170,7 @@ the console. The function may return several best trees, but these trees
 have no branch length assigned to them yet. Now let’s do this:
 
 ``` r
+
 treeRatchet  <- acctran(treeRatchet, primates)
 ```
 
@@ -167,12 +178,14 @@ After assigning edge weights, we prune away internal edges of length
 `tol` (default = 1e-08), so our trees may contain multifurcations.
 
 ``` r
+
 treeRatchet  <- di2multi(treeRatchet)
 ```
 
 Some trees might have differed only between edges of length 0.
 
 ``` r
+
 if(inherits(treeRatchet, "multiPhylo")){
   treeRatchet <- unique(treeRatchet)
 }
@@ -184,6 +197,7 @@ which where visited. This allows us to add bootstrap support values to
 the tree.
 
 ``` r
+
 plotBS(midpoint(treeRatchet), type="phylogram")
 add.scale.bar()
 ```
@@ -205,6 +219,7 @@ nearest-neighbor interchanges (NNI) and subtree pruning and regrafting
 (SPR). The latter so far only works with the fitch algorithm.
 
 ``` r
+
 treeRA <- random.addition(primates)
 treeSPR  <- optim.parsimony(treeRA, primates)
 parsimony(c(treeRA, treeSPR), primates)
@@ -221,6 +236,7 @@ and depends strongly on how “tree-like” the data is. And for more than
 20-30 taxa this will take almost forever.
 
 ``` r
+
 (trees <- bab(primates[1:10,], trace=0))
 ```
 
@@ -236,52 +252,54 @@ The last method we will describe in this vignette is Maximum Likelihood
 Usually, as a first step, we will try to find the best fitting model.
 For this we use the function `modelTest` to compare different nucleotide
 or protein models with the AIC, AICc or BIC, similar to popular programs
-ModelTest and ProtTest (D. Posada and Crandall 1998; David Posada 2008;
-Abascal, Zardoya, and Posada 2005). By default available nucleotide or
-amino acid models are compared.
+ModelTest and ProtTest (Posada and Crandall 1998; Posada 2008; Abascal
+et al. 2005). By default available nucleotide or amino acid models are
+compared.
 
 The Vignette *Markov models and transition rate matrices* gives further
 background on those models, how they are estimated and how you can work
 with them.
 
 ``` r
+
 mt <- modelTest(primates)
 ```
 
 It’s also possible to only select some common models:
 
 ``` r
+
 mt <- modelTest(primates, model=c("JC", "F81", "K80", "HKY", "SYM", "GTR"))
 ```
 
 The results of `modelTest` is illustrated in following table:
 
-| Model      | Substitution |  df |   logLik |     AIC | AICw |    AICc | AICcw |     BIC | rate_model |   k |  shape |  inv |    TL |    a |    c |    g |    t |   a-c |     a-g |   a-t | c-g |     c-t | g-t |
-|:-----------|:-------------|----:|---------:|--------:|-----:|--------:|------:|--------:|:-----------|----:|-------:|-----:|------:|-----:|-----:|-----:|-----:|------:|--------:|------:|----:|--------:|----:|
-| HKY+G(4)   | HKY          |  30 | -2616.16 | 5292.32 | 0.02 | 5301.58 |  0.09 | 5395.72 | gamma      |   4 |   2.38 | 0.00 | 40.17 | 0.37 | 0.40 | 0.04 | 0.18 |  1.00 |   49.00 |  1.00 |   1 |   49.00 |   1 |
-| HKY+G(4)+I | HKY          |  31 | -2616.08 | 5294.15 | 0.01 | 5304.07 |  0.03 | 5401.00 | gamma      |   4 |   2.45 | 0.00 | 40.37 | 0.37 | 0.40 | 0.04 | 0.18 |  1.00 |   49.32 |  1.00 |   1 |   49.32 |   1 |
-| GTR+G(4)   | GTR          |  34 | -2608.77 | 5285.54 | 0.66 | 5297.62 |  0.67 | 5402.73 | gamma      |   4 |   2.72 | 0.00 | 39.69 | 0.37 | 0.40 | 0.04 | 0.18 |  1.83 |  176.29 |  1.67 |   0 |   61.96 |   1 |
-| GTR+G(4)+I | GTR          |  35 | -2608.53 | 5287.07 | 0.31 | 5299.92 |  0.21 | 5407.70 | gamma      |   4 |   2.94 | 0.01 | 40.24 | 0.37 | 0.40 | 0.04 | 0.18 | 41.32 | 4074.77 | 39.93 |   0 | 1413.60 |   1 |
-| HKY+I      | HKY          |  30 | -2623.44 | 5306.88 | 0.00 | 5316.13 |  0.00 | 5410.28 | NA         |   1 |     NA | 0.02 | 29.34 | 0.37 | 0.40 | 0.04 | 0.18 |  1.00 |   40.38 |  1.00 |   1 |   40.38 |   1 |
-| HKY        | HKY          |  29 | -2627.08 | 5312.15 | 0.00 | 5320.77 |  0.00 | 5412.11 | NA         |   1 |     NA | 0.00 | 20.69 | 0.37 | 0.40 | 0.04 | 0.18 |  1.00 |   27.69 |  1.00 |   1 |   27.69 |   1 |
-| GTR+I      | GTR          |  34 | -2613.76 | 5295.53 | 0.00 | 5307.61 |  0.00 | 5412.72 | NA         |   1 |     NA | 0.02 | 32.11 | 0.37 | 0.40 | 0.04 | 0.18 |  0.58 |   48.45 |  0.51 |   0 |   18.59 |   1 |
-| GTR        | GTR          |  33 | -2618.81 | 5303.61 | 0.00 | 5314.94 |  0.00 | 5417.35 | NA         |   1 |     NA | 0.00 | 21.19 | 0.37 | 0.40 | 0.04 | 0.18 |  0.51 |   25.02 |  0.41 |   0 |   10.77 |   1 |
-| SYM+G(4)   | SYM          |  31 | -2804.68 | 5671.36 | 0.00 | 5681.28 |  0.00 | 5778.20 | gamma      |   4 |   3.65 | 0.00 |  5.39 | 0.25 | 0.25 | 0.25 | 0.25 | 28.03 |   19.59 |  9.54 |   0 |  110.09 |   1 |
-| SYM+G(4)+I | SYM          |  32 | -2804.67 | 5673.34 | 0.00 | 5683.95 |  0.00 | 5783.63 | gamma      |   4 |   3.71 | 0.00 |  5.38 | 0.25 | 0.25 | 0.25 | 0.25 | 28.00 |   19.58 |  9.54 |   0 |  109.90 |   1 |
-| SYM        | SYM          |  30 | -2813.90 | 5687.79 | 0.00 | 5697.05 |  0.00 | 5791.19 | NA         |   1 |     NA | 0.00 |  4.49 | 0.25 | 0.25 | 0.25 | 0.25 | 14.24 |   10.81 |  6.09 |   0 |   50.05 |   1 |
-| SYM+I      | SYM          |  31 | -2811.73 | 5685.46 | 0.00 | 5695.38 |  0.00 | 5792.31 | NA         |   1 |     NA | 0.02 |  4.53 | 0.25 | 0.25 | 0.25 | 0.25 | 17.11 |   13.28 |  7.52 |   0 |   59.41 |   1 |
-| K80+I      | K80          |  27 | -2944.51 | 5943.02 | 0.00 | 5950.43 |  0.00 | 6036.08 | NA         |   1 |     NA | 0.04 |  4.86 | 0.25 | 0.25 | 0.25 | 0.25 |  1.00 |    3.93 |  1.00 |   1 |    3.93 |   1 |
-| K80+G(4)   | K80          |  27 | -2944.76 | 5943.53 | 0.00 | 5950.94 |  0.00 | 6036.59 | gamma      |   4 |   3.79 | 0.00 |  5.47 | 0.25 | 0.25 | 0.25 | 0.25 |  1.00 |    4.40 |  1.00 |   1 |    4.40 |   1 |
-| K80+G(4)+I | K80          |  28 | -2942.34 | 5940.68 | 0.00 | 5948.68 |  0.00 | 6037.19 | gamma      |   4 |   6.79 | 0.03 |  5.32 | 0.25 | 0.25 | 0.25 | 0.25 |  1.00 |    4.29 |  1.00 |   1 |    4.29 |   1 |
-| K80        | K80          |  26 | -2952.94 | 5957.89 | 0.00 | 5964.73 |  0.00 | 6047.50 | NA         |   1 |     NA | 0.00 |  4.66 | 0.25 | 0.25 | 0.25 | 0.25 |  1.00 |    3.78 |  1.00 |   1 |    3.78 |   1 |
-| F81+I      | F81          |  29 | -2948.22 | 5954.43 | 0.00 | 5963.05 |  0.00 | 6054.39 | NA         |   1 |     NA | 0.04 |  4.96 | 0.37 | 0.40 | 0.04 | 0.18 |  1.00 |    1.00 |  1.00 |   1 |    1.00 |   1 |
-| F81+G(4)+I | F81          |  30 | -2948.20 | 5956.40 | 0.00 | 5965.65 |  0.00 | 6059.80 | gamma      |   4 |  89.93 | 0.04 |  4.99 | 0.37 | 0.40 | 0.04 | 0.18 |  1.00 |    1.00 |  1.00 |   1 |    1.00 |   1 |
-| F81        | F81          |  28 | -2954.83 | 5965.66 | 0.00 | 5973.66 |  0.00 | 6062.16 | NA         |   1 |     NA | 0.00 |  4.83 | 0.37 | 0.40 | 0.04 | 0.18 |  1.00 |    1.00 |  1.00 |   1 |    1.00 |   1 |
-| F81+G(4)   | F81          |  29 | -2952.16 | 5962.33 | 0.00 | 5970.94 |  0.00 | 6062.28 | gamma      |   4 |   7.62 | 0.00 |  5.10 | 0.37 | 0.40 | 0.04 | 0.18 |  1.00 |    1.00 |  1.00 |   1 |    1.00 |   1 |
-| JC+I       | JC           |  26 | -3062.63 | 6177.26 | 0.00 | 6184.10 |  0.00 | 6266.87 | NA         |   1 |     NA | 0.04 |  4.31 | 0.25 | 0.25 | 0.25 | 0.25 |  1.00 |    1.00 |  1.00 |   1 |    1.00 |   1 |
-| JC+G(4)+I  | JC           |  27 | -3062.71 | 6179.43 | 0.00 | 6186.84 |  0.00 | 6272.49 | gamma      |   4 | 100.00 | 0.04 |  4.32 | 0.25 | 0.25 | 0.25 | 0.25 |  1.00 |    1.00 |  1.00 |   1 |    1.00 |   1 |
-| JC         | JC           |  25 | -3068.42 | 6186.83 | 0.00 | 6193.15 |  0.00 | 6273.00 | NA         |   1 |     NA | 0.00 |  4.23 | 0.25 | 0.25 | 0.25 | 0.25 |  1.00 |    1.00 |  1.00 |   1 |    1.00 |   1 |
-| JC+G(4)    | JC           |  26 | -3066.92 | 6185.83 | 0.00 | 6192.68 |  0.00 | 6275.45 | gamma      |   4 |  12.21 | 0.00 |  4.34 | 0.25 | 0.25 | 0.25 | 0.25 |  1.00 |    1.00 |  1.00 |   1 |    1.00 |   1 |
+| Model | Substitution | df | logLik | AIC | AICw | AICc | AICcw | BIC | rate_model | k | shape | inv | TL | a | c | g | t | a-c | a-g | a-t | c-g | c-t | g-t |
+|:---|:---|---:|---:|---:|---:|---:|---:|---:|:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| HKY+G(4) | HKY | 30 | -2616.16 | 5292.32 | 0.02 | 5301.58 | 0.09 | 5395.72 | gamma | 4 | 2.38 | 0.00 | 40.17 | 0.37 | 0.40 | 0.04 | 0.18 | 1.00 | 49.00 | 1.00 | 1 | 49.00 | 1 |
+| HKY+G(4)+I | HKY | 31 | -2616.08 | 5294.15 | 0.01 | 5304.07 | 0.03 | 5401.00 | gamma | 4 | 2.45 | 0.00 | 40.37 | 0.37 | 0.40 | 0.04 | 0.18 | 1.00 | 49.32 | 1.00 | 1 | 49.32 | 1 |
+| GTR+G(4) | GTR | 34 | -2608.77 | 5285.54 | 0.66 | 5297.62 | 0.67 | 5402.73 | gamma | 4 | 2.72 | 0.00 | 39.69 | 0.37 | 0.40 | 0.04 | 0.18 | 1.83 | 176.29 | 1.67 | 0 | 61.96 | 1 |
+| GTR+G(4)+I | GTR | 35 | -2608.53 | 5287.07 | 0.31 | 5299.92 | 0.21 | 5407.70 | gamma | 4 | 2.94 | 0.01 | 40.24 | 0.37 | 0.40 | 0.04 | 0.18 | 41.32 | 4074.77 | 39.93 | 0 | 1413.60 | 1 |
+| HKY+I | HKY | 30 | -2623.44 | 5306.88 | 0.00 | 5316.13 | 0.00 | 5410.28 | NA | 1 | NA | 0.02 | 29.34 | 0.37 | 0.40 | 0.04 | 0.18 | 1.00 | 40.38 | 1.00 | 1 | 40.38 | 1 |
+| HKY | HKY | 29 | -2627.08 | 5312.15 | 0.00 | 5320.77 | 0.00 | 5412.11 | NA | 1 | NA | 0.00 | 20.69 | 0.37 | 0.40 | 0.04 | 0.18 | 1.00 | 27.69 | 1.00 | 1 | 27.69 | 1 |
+| GTR+I | GTR | 34 | -2613.76 | 5295.53 | 0.00 | 5307.61 | 0.00 | 5412.72 | NA | 1 | NA | 0.02 | 32.11 | 0.37 | 0.40 | 0.04 | 0.18 | 0.58 | 48.45 | 0.51 | 0 | 18.59 | 1 |
+| GTR | GTR | 33 | -2618.81 | 5303.61 | 0.00 | 5314.94 | 0.00 | 5417.35 | NA | 1 | NA | 0.00 | 21.19 | 0.37 | 0.40 | 0.04 | 0.18 | 0.51 | 25.02 | 0.41 | 0 | 10.77 | 1 |
+| SYM+G(4) | SYM | 31 | -2804.68 | 5671.36 | 0.00 | 5681.28 | 0.00 | 5778.20 | gamma | 4 | 3.65 | 0.00 | 5.39 | 0.25 | 0.25 | 0.25 | 0.25 | 28.03 | 19.59 | 9.54 | 0 | 110.09 | 1 |
+| SYM+G(4)+I | SYM | 32 | -2804.67 | 5673.34 | 0.00 | 5683.95 | 0.00 | 5783.63 | gamma | 4 | 3.71 | 0.00 | 5.38 | 0.25 | 0.25 | 0.25 | 0.25 | 28.00 | 19.58 | 9.54 | 0 | 109.90 | 1 |
+| SYM | SYM | 30 | -2813.90 | 5687.79 | 0.00 | 5697.05 | 0.00 | 5791.19 | NA | 1 | NA | 0.00 | 4.49 | 0.25 | 0.25 | 0.25 | 0.25 | 14.24 | 10.81 | 6.09 | 0 | 50.05 | 1 |
+| SYM+I | SYM | 31 | -2811.73 | 5685.46 | 0.00 | 5695.38 | 0.00 | 5792.31 | NA | 1 | NA | 0.02 | 4.53 | 0.25 | 0.25 | 0.25 | 0.25 | 17.11 | 13.28 | 7.52 | 0 | 59.41 | 1 |
+| K80+I | K80 | 27 | -2944.51 | 5943.02 | 0.00 | 5950.43 | 0.00 | 6036.08 | NA | 1 | NA | 0.04 | 4.86 | 0.25 | 0.25 | 0.25 | 0.25 | 1.00 | 3.93 | 1.00 | 1 | 3.93 | 1 |
+| K80+G(4) | K80 | 27 | -2944.76 | 5943.53 | 0.00 | 5950.94 | 0.00 | 6036.59 | gamma | 4 | 3.79 | 0.00 | 5.47 | 0.25 | 0.25 | 0.25 | 0.25 | 1.00 | 4.40 | 1.00 | 1 | 4.40 | 1 |
+| K80+G(4)+I | K80 | 28 | -2942.34 | 5940.68 | 0.00 | 5948.68 | 0.00 | 6037.19 | gamma | 4 | 6.79 | 0.03 | 5.32 | 0.25 | 0.25 | 0.25 | 0.25 | 1.00 | 4.29 | 1.00 | 1 | 4.29 | 1 |
+| K80 | K80 | 26 | -2952.94 | 5957.89 | 0.00 | 5964.73 | 0.00 | 6047.50 | NA | 1 | NA | 0.00 | 4.66 | 0.25 | 0.25 | 0.25 | 0.25 | 1.00 | 3.78 | 1.00 | 1 | 3.78 | 1 |
+| F81+I | F81 | 29 | -2948.22 | 5954.43 | 0.00 | 5963.05 | 0.00 | 6054.39 | NA | 1 | NA | 0.04 | 4.96 | 0.37 | 0.40 | 0.04 | 0.18 | 1.00 | 1.00 | 1.00 | 1 | 1.00 | 1 |
+| F81+G(4)+I | F81 | 30 | -2948.20 | 5956.40 | 0.00 | 5965.65 | 0.00 | 6059.80 | gamma | 4 | 89.93 | 0.04 | 4.99 | 0.37 | 0.40 | 0.04 | 0.18 | 1.00 | 1.00 | 1.00 | 1 | 1.00 | 1 |
+| F81 | F81 | 28 | -2954.83 | 5965.66 | 0.00 | 5973.66 | 0.00 | 6062.16 | NA | 1 | NA | 0.00 | 4.83 | 0.37 | 0.40 | 0.04 | 0.18 | 1.00 | 1.00 | 1.00 | 1 | 1.00 | 1 |
+| F81+G(4) | F81 | 29 | -2952.16 | 5962.33 | 0.00 | 5970.94 | 0.00 | 6062.28 | gamma | 4 | 7.62 | 0.00 | 5.10 | 0.37 | 0.40 | 0.04 | 0.18 | 1.00 | 1.00 | 1.00 | 1 | 1.00 | 1 |
+| JC+I | JC | 26 | -3062.63 | 6177.26 | 0.00 | 6184.10 | 0.00 | 6266.87 | NA | 1 | NA | 0.04 | 4.31 | 0.25 | 0.25 | 0.25 | 0.25 | 1.00 | 1.00 | 1.00 | 1 | 1.00 | 1 |
+| JC+G(4)+I | JC | 27 | -3062.71 | 6179.43 | 0.00 | 6186.84 | 0.00 | 6272.49 | gamma | 4 | 100.00 | 0.04 | 4.32 | 0.25 | 0.25 | 0.25 | 0.25 | 1.00 | 1.00 | 1.00 | 1 | 1.00 | 1 |
+| JC | JC | 25 | -3068.42 | 6186.83 | 0.00 | 6193.15 | 0.00 | 6273.00 | NA | 1 | NA | 0.00 | 4.23 | 0.25 | 0.25 | 0.25 | 0.25 | 1.00 | 1.00 | 1.00 | 1 | 1.00 | 1 |
+| JC+G(4) | JC | 26 | -3066.92 | 6185.83 | 0.00 | 6192.68 | 0.00 | 6275.45 | gamma | 4 | 12.21 | 0.00 | 4.34 | 0.25 | 0.25 | 0.25 | 0.25 | 1.00 | 1.00 | 1.00 | 1 | 1.00 | 1 |
 
 To speed computations up the thresholds for the optimizations in
 `modelTest` are not as strict as for `optim.pml` (shown in the coming
@@ -295,6 +313,7 @@ analysis. This can either be done for a specific model, or for a
 specific criterion.
 
 ``` r
+
 fit <- as.pml(mt, "HKY+G(4)+I")
 fit <- as.pml(mt, "BIC")
 ```
@@ -303,16 +322,17 @@ fit <- as.pml(mt, "BIC")
 
 To simplify the workflow, we can give the result of `modelTest` to the
 function `pml_bb` and optimize the parameters taking the best model
-according to BIC. Ultrafast bootstrapping (Minh, Nguyen, and Haeseler
-2013) is conducted automatically if the default
-`rearrangements="stochastic"` is used. If `rearrangements="NNI"` is
-used, no bootstrapping is conducted.
+according to BIC. Ultrafast bootstrapping (Minh et al. 2013) is
+conducted automatically if the default `rearrangements="stochastic"` is
+used. If `rearrangements="NNI"` is used, no bootstrapping is conducted.
 
 ``` r
+
 fit_mt <- pml_bb(mt)
 ```
 
 ``` r
+
 fit_mt
 ```
 
@@ -348,6 +368,7 @@ We can also use `pml_bb` with a defined model to infer a phylogenetic
 tree.
 
 ``` r
+
 fitGTR <- pml_bb(primates, model="GTR+G(4)+I")
 ```
 
@@ -357,6 +378,7 @@ If we instead want to conduct standard bootstrapping (Felsenstein 1985;
 Penny and Hendy 1985), we can do so with the function `bootstrap.pml`:
 
 ``` r
+
 bs <- bootstrap.pml(fit_mt, bs=100, optNni=TRUE)
 ```
 
@@ -367,6 +389,7 @@ two, but also the transfer bootstraps (Lemoine et al. 2018) which are
 especially useful for large data sets.
 
 ``` r
+
 plotBS(midpoint(fit_mt$tree), p = .5, type="p", digits=2, main="Ultrafast bootstrap")
 
 plotBS(midpoint(fit_mt$tree), bs, p = 50, type="p", main="Standard bootstrap")
@@ -391,6 +414,7 @@ node labels in our tree instead of plotting it (e.g. to export the tree
 somewhere else), `plotBS` gives that option with `type = "n"`:
 
 ``` r
+
 # assigning standard bootstrap values to our tree; this is the default method
 tree_stdbs <- plotBS(fit_mt$tree, bs, type = "n")
 
@@ -402,6 +426,7 @@ It is also possible to look at `consensusNet` to identify potential
 conflict.
 
 ``` r
+
 cnet <- consensusNet(bs, p=0.2)
 plot(cnet, show.edge.label=TRUE)
 ```
@@ -425,6 +450,7 @@ Now that we have our tree with bootstrap values, we can easily write it
 to a file in *Newick*-format:
 
 ``` r
+
 # tree with ultrafast bootstrap values
 write.tree(fit_mt$tree, "primates.tree")
 
@@ -447,11 +473,13 @@ supplied to the function has to fulfill the constraints. In this case
 for an ultrametric starting tree we can use an UPGMA or WPGMA tree.
 
 ``` r
+
 fit_strict <- pml_bb(primates, model="HKY+G(4)", method="ultrametric",
                      rearrangement="NNI")
 ```
 
 ``` r
+
 plot(fit_strict)
 ```
 
@@ -461,11 +489,12 @@ phylogeny.](Trees_files/figure-html/plot_strict_primates-1.png)
 Ultrametric ML phylogeny.
 
 With *phangorn* we also can estimate tipdated phylogenies. Here we use a
-H3N2 virus data set from *treetime* (Sagulenko, Puller, and Neher 2018)
-as an example. Additionally to the alignment we also need to read in
-data containing the dates of the tips.
+H3N2 virus data set from *treetime* (Sagulenko et al. 2018) as an
+example. Additionally to the alignment we also need to read in data
+containing the dates of the tips.
 
 ``` r
+
 fdir <- system.file("extdata/trees", package = "phangorn")
 tmp <- read.csv(file.path(fdir,"H3N2_NA_20.csv"))
 H3N2 <- read.phyDat(file.path(fdir,"H3N2_NA_20.fasta"), format="fasta")
@@ -476,6 +505,7 @@ We first process the sampling dates and create a named vector. The
 dates in case one has to recode dates, e.g. days and months.
 
 ``` r
+
 dates <- setNames(tmp$numdate_given, tmp$name)
 head(dates)
 ```
@@ -497,6 +527,7 @@ Again we use the `pml_bb` function, which optimizes the tree given the
 constraints of the `tip.dates` vector.
 
 ``` r
+
 fit_td <- pml_bb(H3N2, model="HKY+I", method="tipdated", tip.dates=dates, 
                rearrangement="NNI")
 fit_td
@@ -538,6 +569,7 @@ comparable to the slope fo the tip-to-root regression in programs like
 And at last we plot the tree with a timescale.
 
 ``` r
+
 plot(fit_td, align.tip.label=TRUE)
 ```
 
@@ -599,10 +631,10 @@ Felsenstein, Joseph. 1981. “Evolutionary Trees from DNA Sequences: A
 Maxumum Likelihood Approach.” *Journal of Molecular Evolution* 17:
 368–76.
 
-———. 1985. “Confidence Limits on Phylogenies. An Approach Using the
-Bootstrap.” *Evolution* 39: 783–91.
+Felsenstein, Joseph. 1985. “Confidence Limits on Phylogenies. An
+Approach Using the Bootstrap.” *Evolution* 39: 783–91.
 
-———. 2004. *Inferring Phylogenies*. Sunderland: Sinauer Associates.
+Felsenstein, Joseph. 2004. *Inferring Phylogenies*. Sinauer Associates.
 
 Grolemund, Garrett, and Hadley Wickham. 2011. “Dates and Times Made Easy
 with lubridate.” *Journal of Statistical Software* 40 (3): 1–25.
@@ -611,10 +643,9 @@ with lubridate.” *Journal of Statistical Software* 40 (3): 1–25.
 Hendy, M. D., and D. Penny. 1982. “Branch and Bound Algorithms to
 Determine Minimal Evolutionary Trees.” *Math. Biosc.* 59: 277–90.
 
-Lemoine, Fréderic, J-B Domelevo Entfellner, Eduan Wilkinson, Damien
-Correia, M Dávila Felipe, Tulio De Oliveira, and Olivier Gascuel. 2018.
-“Renewing Felsenstein’s Phylogenetic Bootstrap in the Era of Big Data.”
-*Nature* 556 (7702): 452–56.
+Lemoine, Fréderic, J-B Domelevo Entfellner, Eduan Wilkinson, et al.
+2018. “Renewing Felsenstein’s Phylogenetic Bootstrap in the Era of Big
+Data.” *Nature* 556 (7702): 452–56.
 
 Minh, Bui Quang, Minh Anh Thi Nguyen, and Arndt von Haeseler. 2013.
 “Ultrafast Approximation for Phylogenetic Bootstrap.” *Molecular Biology
@@ -624,7 +655,7 @@ Nixon, K. 1999. “The Parsimony Ratchet, a New Method for Rapid Rarsimony
 Analysis.” *Cladistics* 15: 407–14.
 
 Paradis, Emmanuel. 2012. *Analysis of Phylogenetics and Evolution with
-r*. Second. New York: Springer.
+r*. Second. Springer.
 
 Paradis, Emmanuel, and Klaus Schliep. 2019. “Ape 5.0: An Environment for
 Modern Phylogenetics and Evolutionary Analyses in r.” *Bioinformatics*
@@ -661,7 +692,7 @@ Studier, J. A., and K. J. Keppler. 1988. “A Note on the Neighbor-Joining
 Algorithm of Saitou and Nei.” *Molecular Biology and Evolution* 5 (6):
 729–31.
 
-Yang, Ziheng. 2006. *Computational Molecular Evolution*. Oxford: Oxford
+Yang, Ziheng. 2006. *Computational Molecular Evolution*. Oxford
 University Press.
 
 Zuckerkandl, Emile, and Linus Pauling. 1965. “Molecules as Documents of

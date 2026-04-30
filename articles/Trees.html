@@ -69,7 +69,7 @@ Iris Bardel-Kahr</h4>
 Graz<br><a class="author_email" href="mailto:#"></a><a href="mailto:klaus.schliep@gmail.com" class="email">klaus.schliep@gmail.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2026-04-29</h4>
+            <h4 data-toc-skip class="date">2026-04-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/main/vignettes/Trees.Rmd" class="external-link"><code>vignettes/Trees.Rmd</code></a></small>
       <div class="d-none name"><code>Trees.Rmd</code></div>
@@ -292,10 +292,9 @@ Likelihood (ML) as introduced by Felsenstein <span class="citation">(Felsenstein
 <p>Usually, as a first step, we will try to find the best fitting model.
 For this we use the function <code>modelTest</code> to compare different
 nucleotide or protein models with the AIC, AICc or BIC, similar to
-popular programs ModelTest and ProtTest <span class="citation">(D.
-Posada and Crandall 1998; David Posada 2008; Abascal, Zardoya, and
-Posada 2005)</span>. By default available nucleotide or amino acid
-models are compared.</p>
+popular programs ModelTest and ProtTest <span class="citation">(Posada
+and Crandall 1998; Posada 2008; Abascal et al. 2005)</span>. By default
+available nucleotide or amino acid models are compared.</p>
 <p>The Vignette <em>Markov models and transition rate matrices</em>
 gives further background on those models, how they are estimated and how
 you can work with them.</p>
@@ -1007,8 +1006,8 @@ specific criterion.</p>
 <p>To simplify the workflow, we can give the result of
 <code>modelTest</code> to the function <code>pml_bb</code> and optimize
 the parameters taking the best model according to BIC. Ultrafast
-bootstrapping <span class="citation">(Minh, Nguyen, and Haeseler
-2013)</span> is conducted automatically if the default
+bootstrapping <span class="citation">(Minh et al. 2013)</span> is
+conducted automatically if the default
 <code>rearrangements="stochastic"</code> is used. If
 <code>rearrangements="NNI"</code> is used, no bootstrapping is
 conducted.</p>
@@ -1139,9 +1138,9 @@ Ultrametric ML phylogeny.
 </p>
 </div>
 <p>With <em>phangorn</em> we also can estimate tipdated phylogenies.
-Here we use a H3N2 virus data set from <em>treetime</em> <span class="citation">(Sagulenko, Puller, and Neher 2018)</span> as an
-example. Additionally to the alignment we also need to read in data
-containing the dates of the tips.</p>
+Here we use a H3N2 virus data set from <em>treetime</em> <span class="citation">(Sagulenko et al. 2018)</span> as an example.
+Additionally to the alignment we also need to read in data containing
+the dates of the tips.</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fdir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/trees"</span>, package <span class="op">=</span> <span class="st">"phangorn"</span><span class="op">)</span></span>
 <span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">fdir</span>,<span class="st">"H3N2_NA_20.csv"</span><span class="op">)</span><span class="op">)</span></span>
@@ -1261,7 +1260,7 @@ Tip dated ML phylogeny with time scale in years.
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Abascal2005" class="csl-entry">
 Abascal, Federico, Rafael Zardoya, and David Posada. 2005.
 <span>“ProtTest: Selection of Best-Fit Models of Protein
@@ -1273,11 +1272,11 @@ A Maxumum Likelihood Approach.”</span> <em>Journal of Molecular
 Evolution</em> 17: 368–76.
 </div>
 <div id="ref-Felsenstein1985" class="csl-entry">
-———. 1985. <span>“Confidence Limits on Phylogenies. An Approach Using
-the Bootstrap.”</span> <em>Evolution</em> 39: 783–91.
+Felsenstein, Joseph. 1985. <span>“Confidence Limits on Phylogenies. An
+Approach Using the Bootstrap.”</span> <em>Evolution</em> 39: 783–91.
 </div>
 <div id="ref-Felsenstein2004" class="csl-entry">
-———. 2004. <em>Inferring Phylogenies</em>. Sunderland: Sinauer
+Felsenstein, Joseph. 2004. <em>Inferring Phylogenies</em>. Sinauer
 Associates.
 </div>
 <div id="ref-lubridate" class="csl-entry">
@@ -1291,10 +1290,9 @@ Determine Minimal Evolutionary Trees.”</span> <em>Math. Biosc.</em> 59:
 277–90.
 </div>
 <div id="ref-Lemoine2018" class="csl-entry">
-Lemoine, Fréderic, J-B Domelevo Entfellner, Eduan Wilkinson, Damien
-Correia, M Dávila Felipe, Tulio De Oliveira, and Olivier Gascuel. 2018.
-<span>“Renewing Felsenstein’s Phylogenetic Bootstrap in the Era of Big
-Data.”</span> <em>Nature</em> 556 (7702): 452–56.
+Lemoine, Fréderic, J-B Domelevo Entfellner, Eduan Wilkinson, et al.
+2018. <span>“Renewing Felsenstein’s Phylogenetic Bootstrap in the Era of
+Big Data.”</span> <em>Nature</em> 556 (7702): 452–56.
 </div>
 <div id="ref-minh2013" class="csl-entry">
 Minh, Bui Quang, Minh Anh Thi Nguyen, and Arndt von Haeseler. 2013.
@@ -1307,7 +1305,7 @@ Rarsimony Analysis.”</span> <em>Cladistics</em> 15: 407–14.
 </div>
 <div id="ref-Paradis2012" class="csl-entry">
 Paradis, Emmanuel. 2012. <em>Analysis of Phylogenetics and Evolution
-with r</em>. Second. New York: Springer.
+with r</em>. Second. Springer.
 </div>
 <div id="ref-Paradis2018" class="csl-entry">
 Paradis, Emmanuel, and Klaus Schliep. 2019. <span>“Ape 5.0: An
@@ -1354,8 +1352,8 @@ Neighbor-Joining Algorithm of Saitou and Nei.”</span> <em>Molecular
 Biology and Evolution</em> 5 (6): 729–31.
 </div>
 <div id="ref-Yang2006" class="csl-entry">
-Yang, Ziheng. 2006. <em>Computational Molecular Evolution</em>. Oxford:
-Oxford University Press.
+Yang, Ziheng. 2006. <em>Computational Molecular Evolution</em>. Oxford
+University Press.
 </div>
 <div id="ref-Zuckerkandl1965" class="csl-entry">
 Zuckerkandl, Emile, and Linus Pauling. 1965. <span>“Molecules as

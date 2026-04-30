@@ -134,6 +134,7 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ## Examples
 
 ``` r
+
 set.seed(3)
 data(Laurasiatherian)
 dm <- dist.hamming(Laurasiatherian)

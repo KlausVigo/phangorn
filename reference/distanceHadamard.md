@@ -43,6 +43,7 @@ Klaus Schliep <klaus.schliep@gmail.com>, Tim White
 ## Examples
 
 ``` r
+
 data(yeast)
 dm <- dist.hamming(yeast)
 dm <- as.matrix(dm)

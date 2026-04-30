@@ -54,6 +54,7 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ## Examples
 
 ``` r
+
 data(Laurasiatherian)
 dm <- dist.logDet(Laurasiatherian)
 tree1 <- NJ(dm)

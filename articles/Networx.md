@@ -2,11 +2,11 @@
 
 This tutorial gives a basic introduction for constructing phylogenetic
 networks and adding parameters to trees or networx objects using
-[phangorn](https://cran.r-project.org/package=phangorn) (K. P. Schliep
-2011) in R. Splits graphs or phylogenetic networks are a useful way to
-display conflicting data or to summarize different trees. Here, we
-present two popular networks, consensus networks (Holland et al. 2004)
-and Neighbor-Net (Bryant and Moulton 2004; Bryant and Huson 2023).  
+[phangorn](https://cran.r-project.org/package=phangorn) (Schliep 2011)
+in R. Splits graphs or phylogenetic networks are a useful way to display
+conflicting data or to summarize different trees. Here, we present two
+popular networks, consensus networks (Holland et al. 2004) and
+Neighbor-Net (Bryant and Moulton 2004; Bryant and Huson 2023).  
 Trees or networks are often missing either edge weights or edge support
 values. We show how to improve a tree/networx object by adding support
 values or estimating edge weights using non-negative Least-Squares
@@ -16,12 +16,14 @@ We first load the phangorn package and a few data sets we use in this
 vignette.
 
 ``` r
+
 library(phangorn)
 ```
 
     ## Loading required package: ape
 
 ``` r
+
 data(Laurasiatherian)
 data(yeast)
 ```
@@ -40,6 +42,7 @@ The input for `consensusNet` is a list of trees i.e. an object of class
 `multiPhylo`.
 
 ``` r
+
 set.seed(1)
 bs <- bootstrap.phyDat(yeast, FUN = function(x)nj(dist.hamming(x)), 
     bs=100)
@@ -65,6 +68,7 @@ graph to show all three alternatives. A nice way to get still a good
 impression of the network is to plot it in 3D.
 
 ``` r
+
 plot(cnet, "3D")
 # rotate 3d plot
 play3d(spin3d(axis=c(0,1,0), rpm=6), duration=10)
@@ -91,6 +95,7 @@ set; the second step involves the estimation of edge weights using
 non-negative Least-Squares (nnls).
 
 ``` r
+
 dm <- dist.hamming(yeast)
 nnet <- neighborNet(dm)
 ```
@@ -101,6 +106,7 @@ graphs we can also plot only the outline (Bagci et al. (2021)) as in
 figure @ref(fig:outline) c).
 
 ``` r
+
 par("mar" = rep(1, 4), "mfrow" = c(1, 3))
 plot(nnet, main="a)")
 plot(nnet, main="b)", use.edge.length = FALSE)
@@ -123,6 +129,7 @@ provides no support values. We can add the support values from the tree
 we computed to the splits (edges) shared by both objects.
 
 ``` r
+
 nnet <- addConfidences(nnet, tree)
 par("mar" = rep(1, 4))
 plot(nnet, show.edge.label=TRUE)
@@ -133,6 +140,7 @@ plot(nnet, show.edge.label=TRUE)
 Analogously, we can also add support values to a tree:
 
 ``` r
+
 tree2 <- rNNI(tree, 2)
 tree2 <- addConfidences(tree2, tree)
 # several support values are missing
@@ -154,6 +162,7 @@ non-negative Least-Squares, and plot them onto the consensusNet splits
 graph.
 
 ``` r
+
 cnet <- nnls.networx(cnet, dm)
 par("mar" = rep(1, 4))
 plot(cnet, show.edge.label=TRUE)
@@ -163,12 +172,13 @@ plot(cnet, show.edge.label=TRUE)
 
 The functions `read.nexus.networx` and `write.nexus.networx` can read
 and write nexus files for or from SplitsTree (Huson and Bryant 2006).
-Check-out the new vignette IntertwiningTreesAndNetworks (K. Schliep et
-al. 2017) for additional functions, examples, and advanced application.
+Check-out the new vignette IntertwiningTreesAndNetworks (Schliep et al.
+2017) for additional functions, examples, and advanced application.
 
 ## Session Information
 
 ``` r
+
 sessionInfo()
 ```
 

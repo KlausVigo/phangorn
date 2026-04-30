@@ -134,6 +134,7 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ## Examples
 
 ``` r
+
 if (FALSE) { # \dontrun{
 data(Laurasiatherian)
 mT <- modelTest(Laurasiatherian, model = c("JC", "K80", "HKY", "GTR"))

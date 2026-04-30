@@ -96,6 +96,7 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ## Examples
 
 ``` r
+
 if (FALSE) { # \dontrun{
 data(yeast)
 dm <- dist.logDet(yeast)

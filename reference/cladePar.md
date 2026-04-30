@@ -62,6 +62,7 @@ Klaus Schliep <klaus.schliep@gmail.com>
 ## Examples
 
 ``` r
+
 tree <- rtree(10)
 plot(tree)
 nodelabels()
