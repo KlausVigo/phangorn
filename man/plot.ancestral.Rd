@@ -91,7 +91,8 @@ add_mutations(anc_aa, adj = c(.5, -0.3), col=2)
 
 }
 \seealso{
-\code{\link{anc_pml}}, \code{\link[ape]{plot.phylo}},
+\code{\link{anc_pml}}, \code{\link{anc_heatmap}},
+\code{\link[ape]{plot.phylo}},
 \code{\link[ape]{image.DNAbin}}, \code{\link[ape]{image.AAbin}}
 \code{\link[ggseqlogo]{ggseqlogo}}, \code{\link[ape]{edgelabels}}
 }

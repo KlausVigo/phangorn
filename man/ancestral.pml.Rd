@@ -83,6 +83,8 @@ plotSeqLogo( anc.p, 48, 1, 20)
 plotAnc(anc.ml)
 # plot the third character
 plotAnc(anc.ml, 3)
+# plot joint reconstruction as heatmap
+anc_heatmap(anc.ml, select=1:50)
 
 }
 \references{
@@ -97,7 +99,8 @@ Press, Oxford.
 }
 \seealso{
 \code{\link{pml}}, \code{\link{parsimony}}, \code{\link[ape]{ace}},
-\code{\link{plotAnc}}, \code{\link{latag2n.phyDat}},
+\code{\link{plotAnc}}, \code{\link{anc_heatmap}},
+\code{\link{latag2n.phyDat}},
 \code{\link[ape]{latag2n}}, \code{\link{gap_as_state}},
 \code{\link[ape]{root}}, \code{\link[ape]{makeNodeLabel}}
 }

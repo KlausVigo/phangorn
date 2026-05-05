@@ -47,3 +47,4 @@ anc_heatmap(anc_mp)
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}
 }
+\keyword{hplot}

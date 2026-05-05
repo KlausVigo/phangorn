@@ -42,7 +42,8 @@
 ## returned.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{pml}}, \code{\link{parsimony}}, \code{\link[ape]{ace}},
-#' \code{\link{plotAnc}}, \code{\link{latag2n.phyDat}},
+#' \code{\link{plotAnc}}, \code{\link{anc_heatmap}},
+#' \code{\link{latag2n.phyDat}},
 #' \code{\link[ape]{latag2n}}, \code{\link{gap_as_state}},
 #' \code{\link[ape]{root}}, \code{\link[ape]{makeNodeLabel}}
 #' @references Felsenstein, J. (2004). \emph{Inferring Phylogenies}. Sinauer
@@ -69,6 +70,8 @@
 #' plotAnc(anc.ml)
 #' # plot the third character
 #' plotAnc(anc.ml, 3)
+#' # plot joint reconstruction as heatmap
+#' anc_heatmap(anc.ml, select=1:50)
 #'
 #' @rdname ancestral.pml
 #' @export

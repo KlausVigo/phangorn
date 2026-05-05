@@ -51,6 +51,7 @@ nh_anc <- function(x){
 #' tree <- makeNodeLabel(tree)
 #' anc_mp <- anc_pars(tree, wm)
 #' anc_heatmap(anc_mp)
+#' @keywords hplot
 #' @export
 anc_heatmap <- function(x, y=NULL, use.edge.length = FALSE,
                         align_label = TRUE, clade=NULL, select=NULL, ...){
