@@ -97,6 +97,7 @@ Press, Oxford.
 [`parsimony`](https://klausvigo.github.io/phangorn/reference/parsimony.md),
 [`ace`](https://rdrr.io/pkg/ape/man/ace.html),
 [`plotAnc`](https://klausvigo.github.io/phangorn/reference/plot.ancestral.md),
+[`anc_heatmap`](https://klausvigo.github.io/phangorn/reference/anc_heatmap.md),
 [`latag2n.phyDat`](https://klausvigo.github.io/phangorn/reference/latag2n.phyDat.md),
 [`latag2n`](https://rdrr.io/pkg/ape/man/latag2n.html),
 [`gap_as_state`](https://klausvigo.github.io/phangorn/reference/gap_as_state.md),
@@ -141,5 +142,8 @@ plotAnc(anc.ml)
 
 # plot the third character
 plotAnc(anc.ml, 3)
+
+# plot joint reconstruction as heatmap
+anc_heatmap(anc.ml, select=1:50)
 
 ```

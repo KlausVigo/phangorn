@@ -91,6 +91,7 @@ For further details see vignette("Ancestral").
 ## See also
 
 [`anc_pml`](https://klausvigo.github.io/phangorn/reference/ancestral.pml.md),
+[`anc_heatmap`](https://klausvigo.github.io/phangorn/reference/anc_heatmap.md),
 [`plot.phylo`](https://rdrr.io/pkg/ape/man/plot.phylo.html),
 [`image.DNAbin`](https://rdrr.io/pkg/ape/man/image.DNAbin.html),
 [`image.AAbin`](https://rdrr.io/pkg/ape/man/AAbin.html)

@@ -243,7 +243,7 @@ topology.
     ##  [7] jquerylib_0.1.4     globals_0.19.1      systemfonts_1.3.2  
     ## [10] textshaping_1.0.5   yaml_2.3.12         fastmap_1.2.0      
     ## [13] lattice_0.22-9      R6_2.6.1            generics_0.1.4     
-    ## [16] igraph_2.3.0        knitr_1.51          htmlwidgets_1.6.4  
+    ## [16] igraph_2.3.1        knitr_1.51          htmlwidgets_1.6.4  
     ## [19] backports_1.5.1     checkmate_2.3.4     future_1.70.0      
     ## [22] desc_1.4.3          bslib_0.10.0        rlang_1.2.0        
     ## [25] cachem_1.1.0        xfun_0.57           fs_2.1.0           
