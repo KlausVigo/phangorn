@@ -65,6 +65,7 @@ The advantages of ML over parsimony is that the reconstruction accounts for diff
 Currently marginal construction (see [@Yang2006; @Koshi1996])  and joint reconstruction [@Pupko2000] are implemented. Joint reconstructions is only available for models without rate variation (e.g. gamma models) or invariant sites.
 ```{r fit_ML}
 fit <- pml_bb(primates, model="K80", rearrangement="NNI")
+fit <- update(fit, tree=midpoint(fit$tree))
 ```
 We can assign the ancestral states according to the highest likelihood ("ml"):
 \[
