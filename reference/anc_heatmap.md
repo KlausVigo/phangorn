@@ -38,6 +38,10 @@ anc_heatmap(x, y = NULL, use.edge.length = FALSE, align_label = TRUE,
 
   a subset of characters, columns in the alignment.
 
+- cex.lab:
+
+  font size of the labels.
+
 - ...:
 
   Further arguments passed to or from other methods.
