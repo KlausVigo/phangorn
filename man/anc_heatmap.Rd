@@ -25,6 +25,8 @@ labels.}
 
 \item{select}{a subset of characters, columns in the alignment.}
 
+\item{cex.lab}{font size of the labels.}
+
 \item{...}{Further arguments passed to or from other methods.}
 }
 \description{

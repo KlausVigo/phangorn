@@ -40,6 +40,7 @@ nh_anc <- function(x){
 #' labels.
 #' @param clade a node number or label to extract the clade from the tree.
 #' @param select a subset of characters, columns in the alignment.
+#' @param cex.lab font size of the labels.
 #' @param ... Further arguments passed to or from other methods.
 #' @importFrom graphics layout
 #' @importFrom graphics mtext
