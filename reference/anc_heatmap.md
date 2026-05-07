@@ -6,7 +6,7 @@ Plots a heat map with ancestral states.
 
 ``` r
 anc_heatmap(x, y = NULL, use.edge.length = FALSE, align_label = TRUE,
-  clade = NULL, select = NULL, ...)
+  clade = NULL, select = NULL, cex.lab = 1, ...)
 ```
 
 ## Arguments
@@ -63,5 +63,8 @@ wm <- as.phyDat(woodmouse)
 tree <- pratchet(wm)
 tree <- makeNodeLabel(tree)
 anc_mp <- anc_pars(tree, wm)
+op <- par(mar=c(4,1,4,5))
 anc_heatmap(anc_mp)
+
+par(op)
 ```

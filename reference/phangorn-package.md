@@ -23,6 +23,9 @@ Useful links:
 
 Authors:
 
+- Klaus Schliep <klaus.schliep@gmail.com>
+  ([ORCID](https://orcid.org/0000-0003-2941-0161))
+
 - Emmanuel Paradis ([ORCID](https://orcid.org/0000-0003-3092-2199))
 
 - Leonardo de Oliveira Martins

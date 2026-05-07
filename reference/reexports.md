@@ -5,4 +5,4 @@ to see their documentation.
 
 - generics:
 
-  [`glance`](https://generics.r-lib.org/reference/glance.html)
+  [`glance()`](https://generics.r-lib.org/reference/glance.html)

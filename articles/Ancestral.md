@@ -99,8 +99,7 @@ invariant sites.
 
 ``` r
 
-fit <- pml(tree, primates)
-fit <- optim.pml(fit, model="F81")
+fit <- pml_bb(primates, model="K80", rearrangement="NNI")
 ```
 
 We can assign the ancestral states according to the highest likelihood
@@ -122,8 +121,8 @@ frequencies) have equal probabilities.
 anc.ml <- anc_pml(fit)
 ```
 
-The differences of the two approaches for a specific site (17) are
-represented in the following figures.
+The are two differences plots the marginal distribution, we can either
+plot a specific site (17)
 
 ``` r
 
@@ -136,10 +135,33 @@ likelihood.](Ancestral_files/figure-html/plotML-1.png)
 
 Fig 4. Ancestral reconstruction the using the maximum likelihood.
 
+or the sequence at a certain node:
+
 ``` r
 
-#plotAnc(anc.bayes, 17)
-#title("Bayes")
+plotSeqLogo(anc.ml, node="Node1", 1, 20)
+```
+
+![Fig 1. Ancestral reconstruction for a
+node.](Ancestral_files/figure-html/seqLogo_ML-1.png)
+
+Fig 1. Ancestral reconstruction for a node.
+
+We can also plot the joint distribution as a heatmap. The heatmap
+function in phangorn allows not only to display characters at the tips
+but also the estimates for all internal nodes.
+
+``` r
+
+op <- par(mar=c(4,1,4,5))
+anc_heatmap(anc.ml, select=1:50, cex=.8, use.edge.length = T)
+```
+
+![](Ancestral_files/figure-html/anc_heatmap-1.png)
+
+``` r
+
+par(op)
 ```
 
 ## Fitting for discrete comparative data
