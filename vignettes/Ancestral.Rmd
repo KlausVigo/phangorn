@@ -64,8 +64,7 @@ _phangorn_ also offers the possibility to estimate ancestral states using ML.
 The advantages of ML over parsimony is that the reconstruction accounts for different edge lengths.
 Currently marginal construction (see [@Yang2006; @Koshi1996])  and joint reconstruction [@Pupko2000] are implemented. Joint reconstructions is only available for models without rate variation (e.g. gamma models) or invariant sites.
 ```{r fit_ML}
-fit <- pml(tree, primates)
-fit <- optim.pml(fit, model="F81")
+fit <- pml_bb(primates, model="K80", rearrangement="NNI")
 ```
 We can assign the ancestral states according to the highest likelihood ("ml"):
 \[
@@ -79,14 +78,22 @@ where $L(x_r)$ is the joint probability of states at the tips and the state at t
 ```{r ML_reconstruction}
 anc.ml <- anc_pml(fit)
 ```
-The differences of the two approaches for a specific site (17) are represented in the following figures.
+
+The are two differences plots the marginal distribution, we can either plot a specific site (17) 
 ```{r plotML, fig.cap="Fig 4. Ancestral reconstruction the using the maximum likelihood."}
 plotAnc(anc.ml, 17)
 title("ML")
 ```
-```{r plotB, fig.cap="Fig 5. Ancestral reconstruction using (empirical) Bayes."}
-#plotAnc(anc.bayes, 17)
-#title("Bayes")
+or the sequence at a certain node:
+```{r seqLogo_ML, fig.cap="Fig 1. Ancestral reconstruction for a node.", eval=TRUE}
+plotSeqLogo(anc.ml, node="Node1", 1, 20)
+```
+
+We can also plot the joint distribution as a heatmap. The heatmap function in phangorn allows not only to display characters at the tips but also the estimates for all internal nodes.  
+```{r anc_heatmap}
+op <- par(mar=c(4,1,4,5))
+anc_heatmap(anc.ml, select=1:50, cex=.8, use.edge.length = T)
+par(op)
 ```
 
 # Fitting for discrete comparative data

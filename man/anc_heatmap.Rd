@@ -5,7 +5,7 @@
 \title{anc_heatmap}
 \usage{
 anc_heatmap(x, y = NULL, use.edge.length = FALSE, align_label = TRUE,
-  clade = NULL, select = NULL, ...)
+  clade = NULL, select = NULL, cex.lab = 1, ...)
 }
 \arguments{
 \item{x}{an object of class ancestral or phyDat.}
@@ -39,7 +39,9 @@ wm <- as.phyDat(woodmouse)
 tree <- pratchet(wm)
 tree <- makeNodeLabel(tree)
 anc_mp <- anc_pars(tree, wm)
+op <- par(mar=c(4,1,4,5))
 anc_heatmap(anc_mp)
+par(op)
 }
 \seealso{
 \code{\link{anc_pml}}, \code{\link{plotAnc}}

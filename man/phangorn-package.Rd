@@ -24,6 +24,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Klaus Schliep \email{klaus.schliep@gmail.com} (\href{https://orcid.org/0000-0003-2941-0161}{ORCID})
   \item Emmanuel Paradis (\href{https://orcid.org/0000-0003-3092-2199}{ORCID})
   \item Leonardo de Oliveira Martins (\href{https://orcid.org/0000-0001-5247-1320}{ORCID})
   \item Alastair Potts

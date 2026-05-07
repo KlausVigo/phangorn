@@ -50,11 +50,13 @@ nh_anc <- function(x){
 #' tree <- pratchet(wm)
 #' tree <- makeNodeLabel(tree)
 #' anc_mp <- anc_pars(tree, wm)
+#' op <- par(mar=c(4,1,4,5))
 #' anc_heatmap(anc_mp)
+#' par(op)
 #' @keywords hplot
 #' @export
-anc_heatmap <- function(x, y=NULL, use.edge.length = FALSE,
-                        align_label = TRUE, clade=NULL, select=NULL, ...){
+anc_heatmap <- function(x, y=NULL, use.edge.length = FALSE, align_label = TRUE,
+                        clade=NULL, select=NULL, cex.lab=1, ...){
   if(!is.null(y)){
     if(inherits(y, "AAbin") || inherits(y, "DNAbin")) y <- as.phyDat(y)
     }
@@ -78,7 +80,7 @@ anc_heatmap <- function(x, y=NULL, use.edge.length = FALSE,
     xx <- max(xx) - xx
   }
   op <- par()
-  nf <- layout(matrix(c(1,2),1,2,byrow = TRUE), c(1,2))
+  nf <- layout(matrix(c(1,2),1,2,byrow = TRUE), c(1,3))
   #layout.show(nf)
   #text(x=3, y=xx, labels=lab)
     lab <- c(x$tip.label, x$node.label)
@@ -89,17 +91,19 @@ anc_heatmap <- function(x, y=NULL, use.edge.length = FALSE,
     align_label <- TRUE
     } else { # assumes is.logical(align.tip.labels) == TRUE
       if (align_label) align_label_lty <- 3
-      }
+    }
+
+  mar_phylo <- mar_image <- mar <- par("mar")
+  mar_phylo[2] <- 1
+  mar_phylo[4] <- 0
+  par(mar=mar_phylo)
+  mar_image[2] <- 0
+
   plot.default(0, type = "n", xlim = range(xx), ylim = range(yy),
                              xlab = "", ylab = "", axes = FALSE)
   usr <- par("usr")
   z <- (usr[4] - usr[3]) / (nt + nn)
   yy_scaled <- usr[3] - (z / 2) + yy * z
-
-  mar_phylo <- mar <- par("mar")
-  mar_phylo[2] <- 1
-  mar_phylo[4] <- 0
-  par(mar=mar_phylo)
 
   phylogram.plot(x$edge, nt, nn, xx, yy_scaled, TRUE)
   if (align_label) {
@@ -107,10 +111,13 @@ anc_heatmap <- function(x, y=NULL, use.edge.length = FALSE,
     xx.tmp <- max(xx)
     segments(xx, yy_scaled, xx.tmp, yy_scaled, lty = align_label_lty)
   }
-  par(mar=mar)
-
+  par(mar=mar_image)
   y <- y[ind]
-  image(y, ...)
+  image(y, show.label=FALSE, yaxt="n", ...)
+  n <- length(lab)
+  mtext(ind, side = 4, line = 0.1, at = n:1, cex = cex.lab,
+        adj = 0, las = 1)
+  par(mar=mar)
   par("mfrow"=op$mfrow)
 #  par(op)
   invisible(x)
