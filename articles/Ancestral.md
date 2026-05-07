@@ -100,6 +100,7 @@ invariant sites.
 ``` r
 
 fit <- pml_bb(primates, model="K80", rearrangement="NNI")
+fit <- update(fit, tree=midpoint(fit$tree))
 ```
 
 We can assign the ancestral states according to the highest likelihood
