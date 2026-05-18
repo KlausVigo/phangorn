@@ -445,8 +445,10 @@ plot2D <- function(coords, net, show.tip.label = TRUE, show.edge.label = FALSE,
   }
   cladogram.plot(edge, xx, yy, edge.color, edge.width, edge.lty)
   if (show.tip.label) {
-    if (is.null(net$translate)) ind <- match(1:nTips, edge[, 2])
-    else ind <- match(net$translate$node, edge[, 2])
+#    if (is.null(net$translate))
+      ind <- match(1:nTips, edge[, 2])
+#    else
+#      ind <- match(net$translate$node, edge[, 2])
     if(direction=="horizontal"){
       pos <- rep(4, nTips)
       XX <- xx[edge[ind, 1]] - xx[edge[ind, 2]]
@@ -461,7 +463,8 @@ plot2D <- function(coords, net, show.tip.label = TRUE, show.edge.label = FALSE,
       if (is.null(net$translate)) text(xx[1:nTips], yy[1:nTips], labels = label,
                                        pos = pos, col = tip.color, cex = cex,
                                        font = font)
-      else text(xx[net$translate$node], yy[net$translate$node], labels = label,
+      else text(xx[net$translate$node], yy[net$translate$node],
+                labels = net$translate$label,
                 pos = pos, col = tip.color, cex = cex, font = font)
     }
     else {
