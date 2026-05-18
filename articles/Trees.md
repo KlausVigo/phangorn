@@ -611,7 +611,7 @@ Tip dated ML phylogeny with time scale in years.
     ## [13] lattice_0.22-9      R6_2.6.1            generics_0.1.4     
     ## [16] igraph_2.3.1        htmlwidgets_1.6.4   backports_1.5.1    
     ## [19] checkmate_2.3.4     desc_1.4.3          osqp_1.0.0         
-    ## [22] bslib_0.10.0        rlang_1.2.0         cachem_1.1.0       
+    ## [22] bslib_0.11.0        rlang_1.2.0         cachem_1.1.0       
     ## [25] xfun_0.57           S7_0.2.2            fs_2.1.0           
     ## [28] sass_0.4.10         otel_0.2.0          cli_3.6.6          
     ## [31] progressr_0.19.0    pkgdown_2.2.0       magrittr_2.0.5     

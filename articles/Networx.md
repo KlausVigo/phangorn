@@ -213,7 +213,7 @@ sessionInfo()
     ## [13] lattice_0.22-9      R6_2.6.1            generics_0.1.4     
     ## [16] igraph_2.3.1        knitr_1.51          htmlwidgets_1.6.4  
     ## [19] backports_1.5.1     checkmate_2.3.4     desc_1.4.3         
-    ## [22] osqp_1.0.0          bslib_0.10.0        rlang_1.2.0        
+    ## [22] osqp_1.0.0          bslib_0.11.0        rlang_1.2.0        
     ## [25] cachem_1.1.0        xfun_0.57           S7_0.2.2           
     ## [28] fs_2.1.0            sass_0.4.10         otel_0.2.0         
     ## [31] cli_3.6.6           progressr_0.19.0    pkgdown_2.2.0      
