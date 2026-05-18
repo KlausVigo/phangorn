@@ -16,10 +16,9 @@
 #' into a \code{DNAbin} or \code{AAbin} object in list form removing all gaps.
 #' These objects can be exported using \code{\link[ape]{write.FASTA}}.
 #'
-#' @aliases
-#' as.phyDat.character as.phyDat.data.frame as.phyDat.matrix
-#' as.MultipleAlignment as.MultipleAlignment.phyDat
-#' as.StringSet as.StringSet.phyDat acgt2ry phyDat2MultipleAlignment
+#' @aliases as.phyDat.character as.phyDat.data.frame as.phyDat.matrix
+#' @aliases as.MultipleAlignment as.MultipleAlignment.phyDat
+#' @aliases as.StringSet as.StringSet.phyDat acgt2ry phyDat2MultipleAlignment
 #' @param data An object containing sequences.
 #' @param x An object containing sequences.
 #' @param obj as object of class phyDat

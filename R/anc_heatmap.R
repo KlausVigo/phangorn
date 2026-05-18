@@ -42,8 +42,8 @@ nh_anc <- function(x){
 #' @param select a subset of characters, columns in the alignment.
 #' @param cex.lab font size of the labels.
 #' @param ... Further arguments passed to or from other methods.
-#' @importFrom graphics layout
-#' @importFrom graphics mtext
+#' @importFrom graphics layout mtext
+#' @importFrom grDevices dev.flush dev.hold
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{anc_pml}}, \code{\link{plotAnc}}
 #' @examples

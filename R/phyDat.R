@@ -306,6 +306,20 @@ subset.phyDat <- function (x, subset, select, site.pattern = TRUE, ...){
    subset(x, subset = i, select = j, site.pattern=FALSE, compress=FALSE)
 }
 
+#' @export
+dim.phyDat <- function(x){
+  n_row <- length(x)
+  index <- attr(x, "index")
+  weight <- attr(x, "weight")
+  if(!is.null(index)){
+    if(inherits(index, "data.frame")) n_col <- nrow(index)
+    else n_col <- length(index)
+  }
+  else if(!is.null(weight)) n_col <- sum(weight)
+  if(is.null(index) && is.null(weight)) n_col <- length(x[[1]])
+  c(n_row, n_col)
+}
+
 
 #' @rdname phangorn-internal
 #' @export
