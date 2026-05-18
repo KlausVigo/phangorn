@@ -42,7 +42,15 @@ for(i in 1:10){
   expect_equal(pvf_2, pvs_2)
 }
 
-
+# test multiPhylo
+trs1000 <- all_trees[1:1000]
+trs_a <- fitch(trs1000, yeast)
+trs_b <- fitch(.uncompressTipLabel(trs1000), yeast)
+trs_c <- sankoff(trs1000, yeast)
+trs_d <- sankoff(.uncompressTipLabel(trs1000), yeast)
+expect_equal(trs_a, trs_b)
+expect_equal(trs_a, trs_c)
+expect_equal(trs_a, trs_d)
 
 
 # test rearrangements
@@ -86,6 +94,9 @@ ratchet_tree <- pratchet(yeast, start=ra_tree, trace=0)
 expect_true(attr(ra_tree, "pscore") >= attr(ratchet_tree, "pscore"))
 trivial_tree <- pratchet(dat, trace=0, all=FALSE, minit = 10, maxit = 20)
 expect_true(inherits(trivial_tree, "phylo"))
+tr3 <- read.tree(text="(Scer, Spar, Smik);")
+ra_tree_3 <- random.addition(yeast, tree=tr3)
+expect_true(attr(ra_tree_3, "pscore") >= attr(ratchet_tree, "pscore"))
 
 
 # test CI / RI
