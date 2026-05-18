@@ -81,7 +81,10 @@ anc_heatmap <- function(x, y=NULL, use.edge.length = FALSE, align_label = TRUE,
     xx <- node.depth(x, 2L)
     xx <- max(xx) - xx
   }
-  op <- par()
+  dev.hold()
+  on.exit(dev.flush())
+  op <- par(no.readonly = TRUE)
+  on.exit(par(op), add = TRUE)
   nf <- layout(matrix(c(1,2),1,2,byrow = TRUE), c(1,3))
   #layout.show(nf)
   #text(x=3, y=xx, labels=lab)
@@ -119,8 +122,8 @@ anc_heatmap <- function(x, y=NULL, use.edge.length = FALSE, align_label = TRUE,
   n <- length(lab)
   mtext(ind, side = 4, line = 0.1, at = n:1, cex = cex.lab,
         adj = 0, las = 1)
-  par(mar=mar)
-  par("mfrow"=op$mfrow)
+#  par(mar=mar)
+#  par("mfrow"=op$mfrow)
 #  par(op)
   invisible(x)
 }
