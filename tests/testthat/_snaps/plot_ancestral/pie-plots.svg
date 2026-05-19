@@ -57,16 +57,19 @@
 <polygon points='366.79,137.62 366.58,137.61 366.37,137.60 366.16,137.61 365.96,137.61 365.75,137.63 365.54,137.65 365.34,137.68 365.13,137.72 364.93,137.76 364.73,137.81 364.53,137.86 364.33,137.92 364.13,137.99 363.94,138.07 363.75,138.15 363.56,138.24 363.37,138.33 363.19,138.43 363.01,138.54 362.83,138.65 362.66,138.77 366.31,143.91 ' style='stroke-width: 0.75; fill: #00FF00;' />
 <polygon points='362.66,138.77 362.50,138.89 362.34,139.01 362.19,139.14 362.04,139.27 361.90,139.41 361.76,139.55 361.62,139.70 361.49,139.85 361.36,140.00 361.24,140.16 361.12,140.33 361.01,140.49 360.91,140.66 360.81,140.84 360.71,141.01 360.62,141.19 360.54,141.37 360.46,141.56 360.39,141.75 360.32,141.93 360.26,142.13 360.21,142.32 360.16,142.51 360.12,142.71 360.09,142.91 360.06,143.10 360.03,143.30 360.02,143.50 360.01,143.70 360.01,143.90 360.01,144.10 360.02,144.30 360.03,144.50 360.06,144.70 360.08,144.90 360.12,145.10 360.16,145.29 360.21,145.49 360.26,145.68 360.32,145.87 360.38,146.06 360.45,146.25 360.53,146.43 360.61,146.62 360.70,146.79 360.80,146.97 360.90,147.15 361.00,147.32 361.11,147.48 361.23,147.65 361.35,147.80 361.48,147.96 361.61,148.11 361.74,148.26 361.88,148.40 362.03,148.54 362.18,148.67 362.33,148.80 362.49,148.93 362.65,149.05 362.81,149.16 362.98,149.27 363.15,149.37 363.33,149.47 363.51,149.56 363.69,149.65 363.87,149.73 364.06,149.80 364.25,149.87 364.44,149.93 364.63,149.99 364.82,150.04 365.02,150.08 365.21,150.12 365.41,150.15 365.61,150.18 365.81,150.20 366.01,150.21 366.21,150.22 366.41,150.22 366.61,150.21 366.81,150.20 367.01,150.18 367.21,150.15 367.40,150.12 367.60,150.09 367.80,150.04 367.99,149.99 368.18,149.93 368.37,149.87 368.56,149.80 368.75,149.73 368.93,149.65 369.11,149.56 369.29,149.47 369.46,149.37 369.64,149.27 369.80,149.16 369.97,149.05 370.13,148.93 370.29,148.81 370.44,148.68 370.59,148.55 370.74,148.41 370.88,148.27 371.01,148.12 371.14,147.97 371.27,147.81 371.39,147.65 371.51,147.49 371.62,147.32 371.72,147.15 371.82,146.98 371.92,146.80 372.01,146.62 372.09,146.44 372.17,146.26 372.24,146.07 372.30,145.88 372.36,145.69 372.42,145.50 372.46,145.30 372.51,145.11 372.54,144.91 372.57,144.71 372.59,144.51 372.61,144.31 372.62,144.11 372.62,143.91 366.31,143.91 ' style='stroke-width: 0.75; fill: #0000FF;' />
 <polygon points='372.62,143.91 372.62,143.91 366.31,143.91 ' style='stroke-width: 0.75; fill: #000000;' />
-<rect x='656.09' y='416.16' width='33.67' height='86.40' style='stroke-width: 0.75; fill: #FFFFFF;' />
-<circle cx='666.89' cy='430.56' r='2.70' style='stroke-width: 0.75; fill: #FF0000;' />
-<circle cx='666.89' cy='444.96' r='2.70' style='stroke-width: 0.75; fill: #FFFF00;' />
-<circle cx='666.89' cy='459.36' r='2.70' style='stroke-width: 0.75; fill: #00FF00;' />
-<circle cx='666.89' cy='473.76' r='2.70' style='stroke-width: 0.75; fill: #0000FF;' />
-<circle cx='666.89' cy='488.16' r='2.70' style='stroke-width: 0.75; fill: #000000;' />
-<text x='677.69' y='434.69' style='font-size: 12.00px; font-family: sans;' textLength='6.67px' lengthAdjust='spacingAndGlyphs'>a</text>
-<text x='677.69' y='449.09' style='font-size: 12.00px; font-family: sans;' textLength='6.67px' lengthAdjust='spacingAndGlyphs'>g</text>
-<text x='677.69' y='463.49' style='font-size: 12.00px; font-family: sans;' textLength='6.00px' lengthAdjust='spacingAndGlyphs'>c</text>
-<text x='677.69' y='477.89' style='font-size: 12.00px; font-family: sans;' textLength='3.33px' lengthAdjust='spacingAndGlyphs'>t</text>
-<text x='677.69' y='492.29' style='font-size: 12.00px; font-family: sans;' textLength='4.00px' lengthAdjust='spacingAndGlyphs'>-</text>
+<rect x='59.04' y='416.16' width='33.67' height='86.40' style='stroke-width: 0.75; fill: #FFFFFF;' />
+<circle cx='69.84' cy='430.56' r='2.70' style='stroke-width: 0.75; fill: #FF0000;' />
+<circle cx='69.84' cy='444.96' r='2.70' style='stroke-width: 0.75; fill: #FFFF00;' />
+<circle cx='69.84' cy='459.36' r='2.70' style='stroke-width: 0.75; fill: #00FF00;' />
+<circle cx='69.84' cy='473.76' r='2.70' style='stroke-width: 0.75; fill: #0000FF;' />
+<circle cx='69.84' cy='488.16' r='2.70' style='stroke-width: 0.75; fill: #000000;' />
+<text x='80.64' y='434.69' style='font-size: 12.00px; font-family: sans;' textLength='6.67px' lengthAdjust='spacingAndGlyphs'>a</text>
+<text x='80.64' y='449.09' style='font-size: 12.00px; font-family: sans;' textLength='6.67px' lengthAdjust='spacingAndGlyphs'>g</text>
+<text x='80.64' y='463.49' style='font-size: 12.00px; font-family: sans;' textLength='6.00px' lengthAdjust='spacingAndGlyphs'>c</text>
+<text x='80.64' y='477.89' style='font-size: 12.00px; font-family: sans;' textLength='3.33px' lengthAdjust='spacingAndGlyphs'>t</text>
+<text x='80.64' y='492.29' style='font-size: 12.00px; font-family: sans;' textLength='4.00px' lengthAdjust='spacingAndGlyphs'>-</text>
+<text x='508.27' y='346.77' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='16.68px' lengthAdjust='spacingAndGlyphs'>a2t</text>
+<text x='508.27' y='72.99' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='16.68px' lengthAdjust='spacingAndGlyphs'>a2t</text>
+<text x='224.36' y='141.43' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='16.68px' lengthAdjust='spacingAndGlyphs'>a1t</text>
 </g>
 </svg>

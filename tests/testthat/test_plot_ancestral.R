@@ -11,7 +11,10 @@ test_ml <- anc_pml(fit)
 
 
 test_that("Pie_plots works", {
-  pie_ancestral <- function() plotAnc(test_ml)
+  pie_ancestral <- function() {
+    plotAnc(test_ml, pos="bottomleft")
+    add_mutations(test_ml, adj = c(0.5, -0.3))
+  }
   vdiffr::expect_doppelganger("Pie plots", pie_ancestral)
 })
 
