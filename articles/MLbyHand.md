@@ -150,11 +150,11 @@ fitGTR
     ## 5 1.7983   0.248256
     ## 
     ## Rates:
-    ## a <-> c : 0.9535 
-    ## a <-> g : 64.02 
-    ## a <-> t : 0.813 
-    ## c <-> g : 0.005143 
-    ## c <-> t : 24.8 
+    ## a <-> c : 0.9533 
+    ## a <-> g : 64.01 
+    ## a <-> t : 0.8128 
+    ## c <-> g : 0.00508 
+    ## c <-> t : 24.79 
     ## g <-> t : 1 
     ## 
     ## Base frequencies:  
@@ -191,27 +191,27 @@ fitGTR
     ## model: GTR+G(4)+I 
     ## loglikelihood: -2608 
     ## unconstrained loglikelihood: -1230 
-    ## Total tree length: 41.73 
+    ## Total tree length: 41.74 
     ##  (expected number of substituions per site)
     ## Minimal tree length: 3.315 
     ##  (observed substitutions per site)
-    ## Proportion of invariant sites: 0.00741 
+    ## Proportion of invariant sites: 0.007369 
     ## Model of rate heterogeneity: Discrete gamma model
     ## Number of rate categories: 4 
     ## Shape parameter: 2.994 
     ##     Rate Proportion
-    ## 1 0.0000    0.00741
-    ## 2 0.3917    0.24815
-    ## 3 0.7367    0.24815
-    ## 4 1.0906    0.24815
-    ## 5 1.8109    0.24815
+    ## 1 0.0000   0.007369
+    ## 2 0.3917   0.248158
+    ## 3 0.7366   0.248158
+    ## 4 1.0905   0.248158
+    ## 5 1.8109   0.248158
     ## 
     ## Rates:
-    ## a <-> c : 0.7232 
-    ## a <-> g : 74.22 
-    ## a <-> t : 0.6018 
-    ## c <-> g : 0.004022 
-    ## c <-> t : 25.97 
+    ## a <-> c : 0.5937 
+    ## a <-> g : 61.01 
+    ## a <-> t : 0.4768 
+    ## c <-> g : 0.004348 
+    ## c <-> t : 21.35 
     ## g <-> t : 1 
     ## 
     ## Base frequencies:  
@@ -243,7 +243,7 @@ SH.test(fitGTR, fitJC)
 ```
 
     ##      Trees  ln L Diff ln L p-value
-    ## [1,]     1 -2608       0.0  0.5039
+    ## [1,]     1 -2608       0.0  0.5043
     ## [2,]     2 -3068     460.5  0.0000
 
 or with the AIC
