@@ -23,7 +23,8 @@ a numeric vector with the P-value associated with each tree given in
 \code{...}.
 }
 \description{
-This function computes the Shimodaira--Hasegawa test for a set of trees.
+This function computes the Shimodaira--Hasegawa test
+\bibcitet{Shimodaira1999} for a set of trees.
 }
 \examples{
 
@@ -48,9 +49,7 @@ SH.test(sp, B=1000)
 }
 }
 \references{
-Shimodaira, H. and Hasegawa, M. (1999) Multiple comparisons of
-log-likelihoods with applications to phylogenetic inference. \emph{Molecular
-Biology and Evolution}, \bold{16}, 1114--1116.
+\bibshow{*}
 }
 \seealso{
 \code{\link{pml}}, \code{\link{pmlPart}}, \code{\link{pmlCluster}},

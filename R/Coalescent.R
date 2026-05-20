@@ -53,9 +53,9 @@ comp2 <- function(x, y) {
 #' \code{coalSpeciesTree} estimates species trees and can handle multiple
 #' individuals per species.
 #'
-#' \code{coalSpeciesTree} estimates a single linkage tree as suggested by Liu
-#' et al. (2010) from the element wise minima of the cophenetic matrices of the
-#' gene trees. It extends \code{speciesTree} in ape as it allows that have
+#' \code{coalSpeciesTree} estimates a single linkage tree as suggested by
+#' \bibcitet{Liu2010} from the element wise minima of the cophenetic matrices of
+#' the gene trees. It extends \code{speciesTree} in ape as it allows that have
 #' several individuals per gene tree.
 #'
 #' @param tree an object of class \code{multiPhylo}
@@ -65,9 +65,8 @@ comp2 <- function(x, y) {
 #' @return The function returns an object of class \code{phylo}.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com} Emmanuel Paradies
 #' @seealso \code{\link[ape]{speciesTree}}
-#' @references Liu, L., Yu, L. and Pearl, D. K. (2010) Maximum tree: a
-#' consistent estimator of the species tree. \emph{Journal of Mathematical
-#' Biology}, \bold{60}, 95--106.
+#' @references
+#' \bibshow{*}
 #' @examples
 #' ## example in Liu et al. (2010)
 #' tr1 <- read.tree(text = "(((B:0.05,C:0.05):0.01,D:0.06):0.04,A:0.1);")

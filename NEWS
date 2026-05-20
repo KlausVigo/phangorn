@@ -10,7 +10,7 @@ NEW FEATURES
 
       for a set of trees (e.g. bootstrap).
 
-    o anc_heatmap to plot heatmaps with ancestral states
+    o anc_heatmap to plot heatmaps with together ancestral states
 
     o as.networx and plot.networx got a new option "outline", reducing the
 

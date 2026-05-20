@@ -139,16 +139,17 @@ cherries <- function(obj, LB, UB){
 
 #' Branch and bound for finding all most parsimonious trees
 #'
-#' \code{bab} finds all most parsimonious trees.
+#' \code{bab} finds all most parsimonious trees \bibcitet{Hendy1982}.
 #'
-#' This implementation is very slow and depending on the data may take very
+#' This implementation can be very slow and depending on the data may take very
 #' long time. In the worst case all \eqn{(2n-5)!! = 1 \times 3 \times 5
 #' \times \ldots \times (2n-5)}{(2n-5)!! = 1 * 3 * 5 * ... * (2n-5)} possible
 #' trees have to be examined, where n is the number of species / tips. For ten
 #' species there are already 2027025 tip-labelled unrooted trees. It only uses
 #' some basic strategies to find a lower and upper bounds similar to penny from
 #' phylip. \code{bab} uses a very basic heuristic approach of MinMax Squeeze
-#' (Holland et al. 2005) to improve the lower bound. \cr
+#' \bibcitet{Holland2005} to improve the lower bound and optimtsations from
+#' \bibcitet{White2011}. \cr
 #' \code{bab} might return multifurcating trees. These multifurcations could be
 #' resolved in all ways. \cr
 #' On the positive side \code{bab} is not like many other implementations
@@ -167,16 +168,8 @@ cherries <- function(obj, LB, UB){
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com} based on work on Liam
 #' Revell
 #' @seealso \code{\link{pratchet}}, \code{\link{dfactorial}}
-#' @references Hendy, M.D. and Penny D. (1982) Branch and bound algorithms to
-#' determine minimal evolutionary trees.  \emph{Math. Biosc.} \bold{59},
-#' 277-290
-#'
-#' Holland, B.R., Huber, K.T. Penny, D. and Moulton, V. (2005) The MinMax
-#' Squeeze: Guaranteeing a Minimal Tree for Population Data, \emph{Molecular
-#' Biology and Evolution}, \bold{22}, 235--242
-#'
-#' White, W.T. and Holland, B.R. (2011) Faster exact maximum parsimony search
-#' with XMP. \emph{Bioinformatics}, \bold{27(10)},1359--1367
+#' @references
+#' \bibshow{*}
 #' @keywords cluster
 #' @importFrom utils txtProgressBar setTxtProgressBar
 ## @importFrom cli cli_progress_bar cli_progress_update cli_progress_done

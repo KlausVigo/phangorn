@@ -22,7 +22,10 @@
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{pml}}, \code{\link{pmlPart}}, \code{\link{pmlCluster}},
 #' \code{\link{simSeq}}, \code{\link{SH.test}}
-#' @references Goldman, N., Anderson, J. P., and Rodrigo, A. G. (2000)
+#' @references
+#' \bibshow{*}
+#'
+#' Goldman, N., Anderson, J. P., and Rodrigo, A. G. (2000)
 #' Likelihood -based tests of topologies in phylogenetics. \emph{Systematic
 #' Biology} \bold{49} 652-670.
 #'

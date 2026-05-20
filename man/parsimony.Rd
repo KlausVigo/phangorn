@@ -63,14 +63,16 @@ found during the search.  \code{acctran} returns a tree with edge length
 according to the ACCTRAN criterion.
 }
 \description{
-\code{pratchet} implements the parsimony ratchet (Nixon, 1999) and is the
+\code{parsimony} returns the parsimony score of a tree using either the
+sankoff or the fitch algorithm, for more details see for example
+\bibcitet{Felsenstein2004}.
+\code{pratchet} implements the parsimony ratchet
+\bibcitet{Nixon1999} and is the
 preferred way to search for the best parsimony tree. For small number of taxa
 the function \code{\link{bab}} can be used to compute all most parsimonious
 trees.
 }
 \details{
-\code{parsimony} returns the parsimony score of a tree using either the
-sankoff or the fitch algorithm.
 \code{optim.parsimony} optimizes the topology using either Nearest Neighbor
 Interchange (NNI) rearrangements or sub tree pruning and regrafting (SPR) and
 is used inside \code{pratchet}. \code{random.addition} can be used to produce
@@ -108,11 +110,7 @@ parsimony(c(tree,treeSPR, treeRatchet), Laurasiatherian)
 
 }
 \references{
-Felsenstein, J. (2004). \emph{Inferring Phylogenies}. Sinauer
-Associates, Sunderland.
-
-Nixon, K. (1999) The Parsimony Ratchet, a New Method for Rapid Parsimony
-Analysis. \emph{Cladistics} \bold{15}, 407-414
+\bibshow{*}
 }
 \seealso{
 \code{\link{bab}}, \code{\link{CI}}, \code{\link{RI}},

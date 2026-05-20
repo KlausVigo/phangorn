@@ -22,9 +22,9 @@ The function returns an object of class \code{phylo}.
 individuals per species.
 }
 \details{
-\code{coalSpeciesTree} estimates a single linkage tree as suggested by Liu
-et al. (2010) from the element wise minima of the cophenetic matrices of the
-gene trees. It extends \code{speciesTree} in ape as it allows that have
+\code{coalSpeciesTree} estimates a single linkage tree as suggested by
+\bibcitet{Liu2010} from the element wise minima of the cophenetic matrices of
+the gene trees. It extends \code{speciesTree} in ape as it allows that have
 several individuals per gene tree.
 }
 \examples{
@@ -35,9 +35,7 @@ TR <- c(tr1, tr2)
 sp_tree <- coalSpeciesTree(TR)
 }
 \references{
-Liu, L., Yu, L. and Pearl, D. K. (2010) Maximum tree: a
-consistent estimator of the species tree. \emph{Journal of Mathematical
-Biology}, \bold{60}, 95--106.
+\bibshow{*}
 }
 \seealso{
 \code{\link[ape]{speciesTree}}

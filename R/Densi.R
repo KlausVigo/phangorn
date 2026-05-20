@@ -49,7 +49,8 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt = 0, cex = 1,
 
 #' Plots a densiTree.
 #'
-#' An R function to plot trees similar to those produced by DensiTree.
+#' An R function to plot trees similar to those produced by DensiTree
+#' \bibcitet{Bouckaert2010}.
 #'
 #' If no consensus tree is provided \code{densiTree} computes a consensus tree,
 #' and if the input trees have different labels a mrp.supertree as a backbone.
@@ -105,12 +106,8 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt = 0, cex = 1,
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link[ape]{plot.phylo}}, \code{\link{plot.networx}},
 #' \code{\link{jitter}}, \code{\link[ape]{rtt}}, \code{\link[ape]{axisPhylo}}
-#' @references densiTree is inspired from the great
-#' \href{https://www.cs.auckland.ac.nz/~remco/DensiTree/}{DensiTree} program of
-#' Remco Bouckaert.
-#'
-#' Remco R. Bouckaert (2010) DensiTree: making sense of sets of phylogenetic
-#' trees \emph{Bioinformatics}, \bold{26 (10)}, 1372-1373.
+#' @references
+#' \bibshow{*}
 #' @keywords hplot
 #' @examples
 #'

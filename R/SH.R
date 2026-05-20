@@ -1,6 +1,7 @@
 #' Shimodaira-Hasegawa Test
 #'
-#' This function computes the Shimodaira--Hasegawa test for a set of trees.
+#' This function computes the Shimodaira--Hasegawa test
+#' \bibcitet{Shimodaira1999} for a set of trees.
 #'
 #'
 #' @param ... either a series of objects of class \code{"pml"} separated by
@@ -15,9 +16,8 @@
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{pml}}, \code{\link{pmlPart}}, \code{\link{pmlCluster}},
 #' \code{\link{SOWH.test}}
-#' @references Shimodaira, H. and Hasegawa, M. (1999) Multiple comparisons of
-#' log-likelihoods with applications to phylogenetic inference. \emph{Molecular
-#' Biology and Evolution}, \bold{16}, 1114--1116.
+#' @references
+#' \bibshow{*}
 #' @keywords models
 #' @examples
 #'

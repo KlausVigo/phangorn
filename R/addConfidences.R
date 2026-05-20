@@ -1,7 +1,7 @@
 #' Compare splits and add support values to an object
 #'
 #' Add support values to a \code{splits}, \code{phylo} or \code{networx}
-#' object.
+#' object \bibcitet{Schliep2017}.
 #'
 #' @param x an object of class \code{splits}, \code{phylo} or \code{networx}
 #' @param y an object of class \code{splits}, \code{phylo}, \code{multiPhylo}
@@ -16,8 +16,8 @@
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{as.splits}}, \code{\link{as.networx}},
 #' \code{\link{RF.dist}}, \code{\link[ape]{plot.phylo}}
-#' @references Schliep, K., Potts, A. J., Morrison, D. A. and Grimm, G. W.
-#' (2017), Intertwining phylogenetic trees and networks.
+#' @references
+#' \bibshow{*}
 #' \emph{Methods Ecol Evol}.\bold{8}, 1212--1220. doi:10.1111/2041-210X.12760
 #' @keywords cluster
 #' @examples
