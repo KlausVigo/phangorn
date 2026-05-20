@@ -37,7 +37,7 @@ The object \code{x} with added bootstrap / MCMC support values.
 }
 \description{
 Add support values to a \code{splits}, \code{phylo} or \code{networx}
-object \bibcitet{Schliep2017}.
+object \bibcitep{Schliep2017}.
 }
 \examples{
 
@@ -60,9 +60,6 @@ plot(nnet, show.edge.label=TRUE)
 }
 \references{
 \bibshow{*}
-
-Schliep, K., Potts, A. J., Morrison, D. A. and Grimm, G. W.
-(2017), Intertwining phylogenetic trees and networks.
 \emph{Methods Ecol Evol}.\bold{8}, 1212--1220. doi:10.1111/2041-210X.12760
 }
 \seealso{

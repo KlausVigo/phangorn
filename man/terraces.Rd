@@ -45,7 +45,8 @@ a dist object.}
 }
 \description{
 \code{terraces} visualizes in likelihood surface for the tree space
-(Sanderson et al. 2011). Usually trees are from a bootstrap or MCMC sample.
+\bibcitep{Sanderson2011, Sanderson2015}. Here trees usually are from a
+bootstrap or MCMC sample.
 There the first two axis are the principle components of distances between
 trees and the third axis is the likelihood value. We also allow parsimony
 score, minimum evolution criteria or least squares as criterion.
@@ -65,9 +66,7 @@ terraces(fit, pkg="rgl")
 }
 }
 \references{
-Sanderson, M.J., McMahon, M.M. and Steel, M. (2011). Terraces in
-phylogenetic tree space. \emph{Science},
-\bold{333}, 448--450.
+\bibshow{*}
 }
 \seealso{
 \code{\link{pml_bb}, \link{optim.pml}, \link{pratchet},

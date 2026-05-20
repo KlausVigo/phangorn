@@ -1,7 +1,7 @@
 ## include in addConfidences, plotBS etc.
 #' Transfer Bootstrap
 #'
-#' \code{transferBootstrap} assigns transfer bootstrap (Lemoine et al. 2018)
+#' \code{transferBootstrap} assigns transfer bootstrap \bibcitep{Lemoine2018}
 #' values to the (internal) edges.
 #'
 #' @param tree The tree on which edges the bootstrap values are plotted.
@@ -14,10 +14,8 @@
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso  \code{\link{plotBS}}, \code{\link{maxCladeCred}},
 #' \code{\link[ape]{drawSupportOnEdges}}
-#' @references Lemoine, F., Entfellner, J. B. D., Wilkinson, E., Correia, D.,
-#' Felipe, M. D., De Oliveira, T., & Gascuel, O. (2018). Renewing Felsenstein’s
-#' phylogenetic bootstrap in the era of big data. \emph{Nature},
-#' \bold{556(7702)}, 452--456.
+#' @references
+#' \bibshow{*}
 #' @examples
 #' fdir <- system.file("extdata/trees", package = "phangorn")
 #' # RAxML best-known tree with bipartition support (from previous analysis)

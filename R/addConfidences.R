@@ -1,7 +1,7 @@
 #' Compare splits and add support values to an object
 #'
 #' Add support values to a \code{splits}, \code{phylo} or \code{networx}
-#' object \bibcitet{Schliep2017}.
+#' object \bibcitep{Schliep2017}.
 #'
 #' @param x an object of class \code{splits}, \code{phylo} or \code{networx}
 #' @param y an object of class \code{splits}, \code{phylo}, \code{multiPhylo}

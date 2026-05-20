@@ -31,11 +31,11 @@ unambiguous abbreviation of) one of "ward", "single", "complete", "average",
 A phylogenetic tree of class \code{phylo}.
 }
 \description{
-UPGMA and WPGMA clustering. UPGMA (Sokal and Michener 1958) and WPGMA
-(McQuitty 1966) are a wrapper function around \code{\link[stats]{hclust}}
-returning a \code{phylo} object.
-\code{supgma} perform serial sampled UPGMA similar to Drummond and Rodrigo
-(2000).
+UPGMA and WPGMA clustering. UPGMA \bibcitep{Sokal1958} and WPGMA
+\bibcitep{McQuitty1966} are a wrapper function around
+\code{\link[stats]{hclust}} returning a \code{phylo} object.
+\code{supgma} perform serial sampled UPGMA similar to
+\bibcitet{Drummond2000}.
 }
 \details{
 UPGMA and WPGMA return ultrametric trees, it is implicitly assumed that the
@@ -58,20 +58,10 @@ plot(tree)
 
 }
 \references{
+\bibshow{*}
+
 Sneath, P. H., & Sokal, R. R. (1973). \emph{Numerical taxonomy.
 The principles and practice of numerical classification.}
-
-Sokal, R. R., & Michener, C. D. (1958). A statistical method for evaluating
-systematic relationships. \emph{University of Kansas Scientific Bulletin},
-v. 38.
-
-Drummond, A., & Rodrigo, A. G. (2000). Reconstructing genealogies of serial
-samples under the assumption of a molecular clock using serial-sample UPGMA.
-\emph{Molecular Biology and Evolution}, \bold{17(12)}, 1807-1815.
-
-McQuitty, L.L. (1966). Similarity Analysis by Reciprocal Pairs for Discrete
-and Continuous Data. \emph{Educational and Psychological Measurement},
-\bold{26}, 825–831.
 }
 \seealso{
 \code{\link{hclust}}, \code{\link{dist.hamming}}, \code{\link{NJ}},

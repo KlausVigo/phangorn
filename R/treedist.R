@@ -79,14 +79,15 @@ fun2 <- function(x, rooted=FALSE) {
 #' Distances between trees
 #'
 #' \code{treedist} computes different tree distance methods and \code{RF.dist}
-#' the Robinson-Foulds or symmetric distance. The Robinson-Foulds distance only
-#' depends on the topology of the trees. If edge weights should be considered
-#' \code{wRF.dist} calculates the weighted RF distance (Robinson & Foulds
-#' 1981). and \code{KF.dist} calculates the branch score distance (Kuhner &
-#' Felsenstein 1994).  \code{path.dist} computes the path difference metric as
-#' described in Steel and Penny 1993).
-#' \code{sprdist} computes the approximate SPR distance (Oliveira Martins et
-#' al. 2008, de Oliveira Martins 2016).
+#' the Robinson-Foulds or symmetric distance. The Robinson-Foulds distance
+#' \bibcitep{Robinson1979, Robinson1981} only depends on the topology of the
+#' trees. If edge weights should be considered  \code{wRF.dist} calculates the
+#' weighted RF distance \bibcitep{Robinson1981} and \code{KF.dist} calculates
+#' the branch score distance \bibcitep{Kuhner1994}.
+#' \code{path.dist} computes the path difference metric as described in
+#' \bibcitet{Steel1993}.
+#' \code{sprdist} computes the approximate SPR distance
+#' \bibcitep{Leo2008, Leo2016}.
 #'
 #' @details The Robinson-Foulds distance between two trees \eqn{T_1} and
 #' \eqn{T_2} with \eqn{n} tips is defined as (following the notation Steel and
@@ -98,9 +99,9 @@ fun2 <- function(x, rooted=FALSE) {
 #' maximal possible distance \eqn{i(T_1) + i(T_2)}. If both trees are unrooted
 #' and binary this value is \eqn{2n-6}.
 #'
-#' Functions like \code{RF.dist} returns the Robinson-Foulds distance (Robinson
-#' and Foulds 1981) between either 2 trees or computes a matrix of all pairwise
-#' distances if a \code{multiPhylo} object is given.
+#' Functions like \code{RF.dist} returns the Robinson-Foulds distance between
+#' either 2 trees or computes a matrix of all pairwise distances if a
+#' \code{multiPhylo} object is given.
 #'
 #' For large number of trees the distance functions can use a lot of memory!
 #'
@@ -123,29 +124,8 @@ fun2 <- function(x, rooted=FALSE) {
 #' Leonardo de Oliveira Martins
 #' @seealso \code{\link[ape]{dist.topo}}, \code{\link{nni}},
 #' \code{\link{superTree}}, \code{\link{mast}}
-#' @references de Oliveira Martins L., Leal E., Kishino H. (2008)
-#' \emph{Phylogenetic Detection of Recombination with a Bayesian Prior on the
-#' Distance between Trees}. PLoS ONE \bold{3(7)}. e2651. doi:
-#' 10.1371/journal.pone.0002651
-#'
-#' de Oliveira Martins L., Mallo D., Posada D. (2016) \emph{A Bayesian
-#' Supertree Model for Genome-Wide Species Tree Reconstruction}. Syst. Biol.
-#' \bold{65(3)}: 397-416, doi:10.1093/sysbio/syu082
-#'
-#' Steel M. A. and Penny P. (1993) \emph{Distributions of tree comparison
-#' metrics - some new results}, Syst. Biol., \bold{42(2)}, 126--141
-#'
-#' Kuhner, M. K. and Felsenstein, J. (1994) \emph{A simulation comparison of
-#' phylogeny algorithms under equal and unequal evolutionary rates}, Molecular
-#' Biology and Evolution, \bold{11(3)}, 459--468
-#'
-#' D.F. Robinson and L.R. Foulds (1981) \emph{Comparison of phylogenetic
-#' trees}, Mathematical Biosciences, \bold{53(1)}, 131--147
-#'
-#' D.F. Robinson and L.R. Foulds (1979) Comparison of weighted labelled trees.
-#' In Horadam, A. F. and Wallis, W. D. (Eds.), \emph{Combinatorial Mathematics
-#' VI: Proceedings of the Sixth Australian Conference on Combinatorial
-#' Mathematics, Armidale, Australia}, 119--126
+#' @references
+#' \bibshow{*}
 #' @keywords classif
 ## @importFrom fastmatch fmatch
 #' @examples
