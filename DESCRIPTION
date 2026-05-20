@@ -58,6 +58,7 @@ Imports:
     utils
 Suggests:
     apex,
+    bibtex,
     Biostrings,
     codetools,
     ggseqlogo,
