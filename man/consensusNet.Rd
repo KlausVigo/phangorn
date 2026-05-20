@@ -2,7 +2,7 @@
 % Please edit documentation in R/consensusNet.R
 \name{consensusNet}
 \alias{consensusNet}
-\title{Computes a consensusNetwork from a list of trees Computes a \code{networx}
+\title{Computes a consensusNetwork  \bibcitep{Holland2004} from a list of trees Computes a \code{networx}
 object from a collection of splits.}
 \usage{
 consensusNet(obj, prob = 0.3, ...)
@@ -47,9 +47,7 @@ plot(cnet_woodmouse, type = "equal angle", show.edge.label=TRUE)
 
 }
 \references{
-Holland B.R., Huber K.T., Moulton V., Lockhart P.J. (2004) Using
-consensus networks to visualize contradictory evidence for species
-phylogeny. \emph{Molecular Biology and Evolution}, \bold{21}, 1459--61
+\bibshow{*}
 }
 \seealso{
 \code{\link{splitsNetwork}}, \code{\link{neighborNet}},

@@ -16,8 +16,8 @@ UNJ(x)
 an object of class \code{"phylo"}.
 }
 \description{
-This function performs the neighbor-joining tree estimation of Saitou and
-Nei (1987). UNJ is the unweighted version from Gascuel (1997).
+This function performs the neighbor-joining tree estimation of
+\bibcitet{Saitou1987, Studier1988}. UNJ is the unweighted version from Gascuel (1997).
 }
 \details{
 NJ is a wrapper around nj from ape.
@@ -31,13 +31,7 @@ plot(tree)
 
 }
 \references{
-Saitou, N. and Nei, M. (1987) The neighbor-joining method: a new
-method for reconstructing phylogenetic trees. \emph{Molecular Biology and
-Evolution}, \bold{4}, 406--425.
-
-Studier, J. A and Keppler, K. J. (1988) A Note on the Neighbor-Joining
-Algorithm of Saitou and Nei. \emph{Molecular Biology and Evolution},
-\bold{6}, 729--731.
+\bibshow{*, }
 
 Gascuel, O. (1997) Concerning the NJ algorithm and its unweighted version,
 UNJ. in Birkin et. al. \emph{Mathematical Hierarchies and Biology},

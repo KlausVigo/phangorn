@@ -139,7 +139,7 @@ cherries <- function(obj, LB, UB){
 
 #' Branch and bound for finding all most parsimonious trees
 #'
-#' \code{bab} finds all most parsimonious trees \bibcitet{Hendy1982}.
+#' \code{bab} finds all most parsimonious trees \bibcitep{Hendy1982}.
 #'
 #' This implementation can be very slow and depending on the data may take very
 #' long time. In the worst case all \eqn{(2n-5)!! = 1 \times 3 \times 5

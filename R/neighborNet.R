@@ -190,12 +190,8 @@ getOrderingNN <- function(x) {
 #' @seealso \code{\link{splitsNetwork}}, \code{\link{consensusNet}},
 #' \code{\link{plot.networx}}, \code{\link{lento}},
 #' \code{\link{cophenetic.networx}}, \code{\link{distanceHadamard}}
-#' @references Bryant, D. & Moulton, V. (2004) Neighbor-Net: An Agglomerative
-#' Method for the Construction of Phylogenetic Networks. \emph{Molecular
-#' Biology and Evolution}, \bold{21}, 255-265
-#'
-#' Bryant, D., & Huson, D. H. (2023). NeighborNet: improved algorithms and
-#' implementation.  \emph{Frontiers in bioinformatics}, \bold{3}, 1178600.
+#' @references
+#' \bibshow{*, Bryant2004, Bryant2023}
 #' @keywords hplot
 #' @examples
 #'
@@ -216,7 +212,6 @@ neighborNet <-  function(x, ord = NULL) {
   if (is.null(ord)) ord <- getOrderingNN(x)
   spl <- allCircularSplits(l, labels[ord])
   spl <- nnls.splits(spl, x)
-  # nnls.split mit nnls statt quadprog
   attr(spl, "cycle") <- 1:l
   as.networx(spl)
 }

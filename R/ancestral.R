@@ -46,14 +46,11 @@
 #' \code{\link{latag2n.phyDat}},
 #' \code{\link[ape]{latag2n}}, \code{\link{gap_as_state}},
 #' \code{\link[ape]{root}}, \code{\link[ape]{makeNodeLabel}}
-#' @references Felsenstein, J. (2004). \emph{Inferring Phylogenies}. Sinauer
-#' Associates, Sunderland.
+#' @references
+#' \bibshow{*, Felsenstein2004, Yang2006}
 #'
 #' Swofford, D.L., Maddison, W.P. (1987) Reconstructing ancestral character
 #' states under Wagner parsimony. \emph{Math. Biosci.} \bold{87}: 199--229
-#'
-#' Yang, Z. (2006). \emph{Computational Molecular evolution}. Oxford University
-#' Press, Oxford.
 #' @keywords cluster
 #' @examples
 #'

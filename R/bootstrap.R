@@ -2,13 +2,13 @@
 #'
 #' \code{bootstrap.pml} performs (non-parametric) bootstrap analysis and
 #' \code{bootstrap.phyDat} produces a list of bootstrapped data sets.
-#' \code{plotBS} plots a phylogenetic tree with the bootstrap values assigned
-#' to the (internal) edges.
 #'
-#' It is possible that the bootstrap is performed in parallel, with help of the
-#' multicore package. Unfortunately the multicore package does not work under
-#' windows or with GUI interfaces ("aqua" on a mac). However it will speed up
-#' nicely from the command line ("X11").
+#' It is possible that the bootstrap is performed in parallel using the future
+#' package, see example below.
+## , with help of the
+## multicore package. Unfortunately the multicore package does not work under
+## windows or with GUI interfaces ("aqua" on a mac). However it will speed up
+## nicely from the command line ("X11").
 #'
 #' @param x an object of class \code{pml} or \code{phyDat}.
 #' @param bs number of bootstrap samples.
@@ -30,21 +30,12 @@
 #' if not supplied the tree with labels supplied in the \code{node.label} slot.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{optim.pml}}, \code{\link{pml}},
+#' \code{\link[future]{plan}},
 #' \code{\link[ape]{plot.phylo}}, \code{\link{maxCladeCred}}
 #' \code{\link[ape]{nodelabels}},\code{\link{consensusNet}} and
 #' \code{\link{SOWH.test}} for parametric bootstrap
-#' @references Felsenstein J. (1985) Confidence limits on phylogenies. An
-#' approach using the bootstrap. \emph{Evolution} \bold{39}, 783--791
-#'
-#' Lemoine, F., Entfellner, J. B. D., Wilkinson, E., Correia, D., Felipe, M. D.,
-#' De Oliveira, T., & Gascuel, O. (2018). Renewing Felsenstein’s phylogenetic
-#' bootstrap in the era of big data. \emph{Nature}, \bold{556(7702)}, 452--456.
-#'
-#' Penny D. and Hendy M.D. (1985) Testing methods evolutionary tree
-#' construction. \emph{Cladistics} \bold{1}, 266--278
-#'
-#' Penny D. and Hendy M.D. (1986) Estimating the reliability of evolutionary
-#' trees. \emph{Molecular Biology and Evolution} \bold{3}, 403--417
+#' @references
+#' \bibshow{*, Felsenstein1985, Penny1985, Penny1986, Lemoine2018}
 #' @keywords cluster
 #' @examples
 #'
@@ -62,7 +53,11 @@
 #' fit <- pml(tree, Laurasiatherian)
 #' fit <- optim.pml(fit, rearrangement="NNI")
 #' set.seed(123)
+#' # compute in parallel
+#' future::plan(multisession, workers = 2)
 #' bs <- bootstrap.pml(fit, bs=100, optNni=TRUE)
+#' future::plan(sequential)
+#'
 #' treeBS <- plotBS(fit$tree,bs)
 #'
 #' # Maximum parsimony

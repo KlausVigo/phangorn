@@ -61,10 +61,11 @@ phylogenetic tree. \code{add_support} adds support values to a plot.
 }
 \details{
 The functions can either assign the classical Felsenstein’s bootstrap
-proportions (FBP) (Felsenstein (1985), Hendy & Penny (1985)), the transfer
-bootstrap expectation (TBE) of Lemoine et al. (2018) or "MCC" for assigning
-clade credibilities if trees are rooted. Using the option \code{type=="n"}
-just assigns the bootstrap values and return the tree without plotting it.
+proportions (FBP) \bibcitep{Felsenstein1985, Penny1985, Penny1986}, the
+transfer bootstrap expectation (TBE) of \bibcitep{Lemoine2018} or "MCC" for
+assigning clade credibilities if trees are rooted. Using the option
+\code{type=="n"} just assigns the bootstrap values and return the tree
+without plotting it.
 }
 \examples{
 fdir <- system.file("extdata/trees", package = "phangorn")
@@ -77,18 +78,7 @@ plotBS(raxml.tree,  raxml.bootstrap, "p")
 plotBS(raxml.tree,  raxml.bootstrap, "p", "TBE")
 }
 \references{
-Felsenstein J. (1985) Confidence limits on phylogenies. An
-approach using the bootstrap. \emph{Evolution} \bold{39}, 783--791
-
-Lemoine, F., Entfellner, J. B. D., Wilkinson, E., Correia, D., Felipe, M. D.,
-De Oliveira, T., & Gascuel, O. (2018). Renewing Felsenstein’s phylogenetic
-bootstrap in the era of big data. \emph{Nature}, \bold{556(7702)}, 452--456.
-
-Penny D. and Hendy M.D. (1985) Testing methods evolutionary tree
-construction. \emph{Cladistics} \bold{1}, 266--278
-
-Penny D. and Hendy M.D. (1986) Estimating the reliability of evolutionary
-trees. \emph{Molecular Biology and Evolution} \bold{3}, 403--417
+\bibshow{*}
 }
 \seealso{
 \code{\link[ape]{plot.phylo}}, \code{\link{add_ci}},

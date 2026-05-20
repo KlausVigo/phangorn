@@ -88,14 +88,10 @@ anc_heatmap(anc.ml, select=1:50)
 
 }
 \references{
-Felsenstein, J. (2004). \emph{Inferring Phylogenies}. Sinauer
-Associates, Sunderland.
+\bibshow{*, Felsenstein2004, Yang2006}
 
 Swofford, D.L., Maddison, W.P. (1987) Reconstructing ancestral character
 states under Wagner parsimony. \emph{Math. Biosci.} \bold{87}: 199--229
-
-Yang, Z. (2006). \emph{Computational Molecular evolution}. Oxford University
-Press, Oxford.
 }
 \seealso{
 \code{\link{pml}}, \code{\link{parsimony}}, \code{\link[ape]{ace}},

@@ -22,7 +22,7 @@ pratchet search is performed.}
 \code{multiPhylo}.
 }
 \description{
-\code{bab} finds all most parsimonious trees \bibcitet{Hendy1982}.
+\code{bab} finds all most parsimonious trees \bibcitep{Hendy1982}.
 }
 \details{
 This implementation can be very slow and depending on the data may take very

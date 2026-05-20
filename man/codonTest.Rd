@@ -69,8 +69,7 @@ plot(fit_codon, "M1a")
 
 }
 \references{
-Ziheng Yang (2014). \emph{Molecular Evolution: A Statistical
-Approach}. Oxford University Press, Oxford
+\bibshow{*, Yang2014}
 
 Sergei L. Kosakovsky Pond, Simon D. W. Frost, Spencer V. Muse (2005) HyPhy:
 hypothesis testing using phylogenies, \emph{Bioinformatics}, \bold{21(5)}:

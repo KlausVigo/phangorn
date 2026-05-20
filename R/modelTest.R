@@ -83,12 +83,14 @@ fitPar <- function(par, fit, trees=NULL, calls=NULL, ...) {
 #' Comparison of different nucleotide or amino acid substitution models
 #'
 #' \code{modelTest} estimates all the specified models for a given tree and
-#' data.  When the mclapply is available, the computations are done in
-#' parallel. \code{modelTest} runs each model in one thread.  This is may not
-#' work within a GUI interface and will not work under Windows.
+#' data similar to \bibcitep{Posada1998, Posada2008}.
+#'
+## When the mclapply is available, the computations are done in
+## parallel. \code{modelTest} runs each model in one thread.  This is may not
+## work within a GUI interface and will not work under Windows.
 #'
 #' model="3Di" tests the three models for structural alignments mention in
-#' Garg(2025).
+#' \bibcitet{Garg2025}.
 #'
 #' @aliases modelTest AICc
 #' @param object an object of class phyDat or pml.
@@ -116,15 +118,12 @@ fitPar <- function(par, fit, trees=NULL, calls=NULL, ...) {
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{pml}}, \code{\link{anova}}, \code{\link[stats]{AIC}},
 #' \code{\link{codonTest}}, \code{\link[future]{plan}}
-#' @references Burnham, K. P. and Anderson, D. R (2002) \emph{Model selection
+#' @references
+#' \bibshow{*}
+#'
+#' Burnham, K. P. and Anderson, D. R (2002) \emph{Model selection
 #' and multimodel inference: a practical information-theoretic approach}. 2nd
 #' ed. Springer, New York
-#'
-#' Posada, D. and Crandall, K.A. (1998) MODELTEST: testing the model of DNA
-#' substitution. \emph{Bioinformatics} \bold{14(9)}: 817-818
-#'
-#' Posada, D. (2008) jModelTest: Phylogenetic Model Averaging. \emph{Molecular
-#' Biology and Evolution} \bold{25}: 1253-1256
 #'
 #' Darriba D., Taboada G.L., Doallo R and Posada D. (2011) ProtTest 3: fast
 #' selection of best-fit models of protein evolution. . \emph{Bioinformatics}
@@ -134,9 +133,6 @@ fitPar <- function(par, fit, trees=NULL, calls=NULL, ...) {
 #' enable fast, model-based structural phylogenetics beyond the twilight zone."
 #' \emph{bioRxiv}: 2023-12
 #'
-#' Garg, S.G., Hochberg, G.K.A. (2025) A General Substitution Matrix for
-#' Structural Phylogenetics, \emph{Molecular Biology and Evolution},
-#' \bold{42(6)}, https://doi.org/10.1093/molbev/msaf124
 #' @keywords cluster
 #' @examples
 #'

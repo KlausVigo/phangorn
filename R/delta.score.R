@@ -37,10 +37,8 @@ delta.quartet <-
 #' @return A vector containing the \eqn{\delta} scores.
 #' @author Alastair Potts and Klaus Schliep
 #' @seealso \code{\link{dist.hamming}}
-#' @references BR Holland, KT Huber, A Dress, V Moulton (2002) \eqn{\delta}
-#' Plots: a tool for analyzing phylogenetic distance data Russell D. Gray,
-#' David Bryant, Simon J. Greenhill (2010) On the shape and fabric of human
-#' history \emph{Molecular Biology and Evolution}, \bold{19(12)} 2051--2059
+#' @references
+#' \bibshow{*, Holland2002}
 #'
 #' Russell D. Gray, David Bryant, Simon J. Greenhill (2010) On the shape and
 #' fabric of human history \emph{Phil. Trans. R. Soc. B}, \bold{365}

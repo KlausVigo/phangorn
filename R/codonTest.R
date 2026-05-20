@@ -34,8 +34,8 @@
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{pml}}, \code{\link{pmlMix}}, \code{\link{modelTest}},
 #' \code{\link[stats]{AIC}}
-#' @references Ziheng Yang (2014). \emph{Molecular Evolution: A Statistical
-#' Approach}. Oxford University Press, Oxford
+#' @references
+#' \bibshow{*, Yang2014}
 #'
 #' Sergei L. Kosakovsky Pond, Simon D. W. Frost, Spencer V. Muse (2005) HyPhy:
 #' hypothesis testing using phylogenies, \emph{Bioinformatics}, \bold{21(5)}:
