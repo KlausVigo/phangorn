@@ -11,7 +11,7 @@ Badge](https://www.r-pkg.org/badges/version/phangorn)](https://cran.r-project.or
 (total)](https://cranlogs.r-pkg.org/badges/grand-total/phangorn)](https://cran.r-project.org/package=phangorn)
 [![R-CMD-check](https://github.com/KlausVigo/phangorn/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/KlausVigo/phangorn/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
-coverage](https://codecov.io/gh/KlausVigo/phangorn/branch/main/graph/badge.svg)](https://app.codecov.io/github/KlausVigo/phangorn?branch=main)
+coverage](https://codecov.io/gh/KlausVigo/phangorn/graph/badge.svg)](https://app.codecov.io/gh/KlausVigo/phangorn)
 <!-- badges: end -->
 
 # phangorn <img src='man/figures/logo.png' align="right" width="120" />
