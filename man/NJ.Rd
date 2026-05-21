@@ -31,7 +31,7 @@ plot(tree)
 
 }
 \references{
-\bibshow{*, }
+\bibshow{*}
 
 Gascuel, O. (1997) Concerning the NJ algorithm and its unweighted version,
 UNJ. in Birkin et. al. \emph{Mathematical Hierarchies and Biology},
