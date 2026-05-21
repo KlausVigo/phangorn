@@ -29,6 +29,9 @@ labels.}
 
 \item{...}{Further arguments passed to or from other methods.}
 }
+\value{
+\code{anc_heatmap} returns silently a \code{x}
+}
 \description{
 Plots a heat map with ancestral states.
 }
