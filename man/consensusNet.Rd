@@ -2,8 +2,7 @@
 % Please edit documentation in R/consensusNet.R
 \name{consensusNet}
 \alias{consensusNet}
-\title{Computes a consensusNetwork  \bibcitep{Holland2004} from a list of trees Computes a \code{networx}
-object from a collection of splits.}
+\title{Computes a consensusNetwork from a list of trees}
 \usage{
 consensusNet(obj, prob = 0.3, ...)
 }
@@ -20,9 +19,9 @@ represented in the network.}
 just an intermediate to plot phylogenetic networks with igraph.
 }
 \description{
-Computes a consensusNetwork, i.e. an object of class \code{networx} from a
-list of trees, i.e. an class of class \code{multiPhylo}. Computes a
-\code{networx} object from a collection of splits.
+\code{consensusNet} computes a split network, i.e. an object of class
+\code{networx} from a list of trees, i.e. an class of class
+\code{multiPhylo} \bibcitep{Holland2004}.
 }
 \examples{
 

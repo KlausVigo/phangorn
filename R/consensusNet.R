@@ -1,9 +1,8 @@
-#' Computes a consensusNetwork  \bibcitep{Holland2004} from a list of trees Computes a \code{networx}
-#' object from a collection of splits.
+#' Computes a consensusNetwork from a list of trees
 #'
-#' Computes a consensusNetwork, i.e. an object of class \code{networx} from a
-#' list of trees, i.e. an class of class \code{multiPhylo}. Computes a
-#' \code{networx} object from a collection of splits.
+#' \code{consensusNet} computes a split network, i.e. an object of class
+#' \code{networx} from a list of trees, i.e. an class of class
+#' \code{multiPhylo} \bibcitep{Holland2004}.
 #'
 #'
 #' @param obj An object of class multiPhylo.
