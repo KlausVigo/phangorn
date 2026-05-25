@@ -2,7 +2,7 @@
 title: 'Intertwining phylogenetic trees and networks: R Example Script'
 author: "Klaus Schliep, Alastair Potts, David Morrison and Guido Grimm"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
-bibliography: phangorn.bib
+bibliography: ../inst/REFERENCES.bib
 output: rmarkdown::html_vignette
 vignette: >
    %\VignetteIndexEntry{Intertwining phylogenetic trees and networks: R Example Script}

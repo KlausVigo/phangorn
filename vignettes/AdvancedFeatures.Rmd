@@ -7,7 +7,7 @@ author:
 date: "`r Sys.Date()`" 
 header-includes:
    - \usepackage{amsmath}
-bibliography: phangorn.bib
+bibliography: ../inst/REFERENCES.bib
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Markov models and transition rate matrices}
