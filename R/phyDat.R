@@ -112,7 +112,9 @@ cbind.phyDat <- function(..., gaps="-", compress=TRUE){
   snames <- vector("list", n)
   vec <- numeric(n+1)
   wvec <- numeric(n+1)
-  objNames <- as.character(object)
+
+  if(inherits(object[[1]], "phyDat")) objNames <- paste0("x_", 1:n)
+  else objNames <- as.character(object)
   if(any(duplicated(objNames))) objNames <- paste0(objNames, 1:n)
 
   for(i in 1:n){
@@ -157,7 +159,14 @@ cbind.phyDat <- function(..., gaps="-", compress=TRUE){
       else add.index <- FALSE
     }
   }
-  if(add.index) ATTR$index <- data.frame(index = index, genes=rep(objNames, nr))
+  if(add.index) {
+    # ATTR$index <- data.frame(index = index, genes=rep(objNames, nr))
+    ATTR$index <- index
+    start <- cumsum(c(1,nr))
+    start <- start[-length(start)]
+    end <- cumsum(nr)
+    ATTR$partition <-  data.frame(part = objNames, start=start, end=end)
+  }
   ATTR$weight <- weight
   ATTR$nr <- length(weight)
   attributes(tmp) <- ATTR
