@@ -175,6 +175,7 @@ bootstrap.phyDat <- function(x, FUN, bs = 100, multicore = FALSE,
     ind <- which(weights > 0)
     data <- getRows(data, ind)
     attr(data, "weight") <- weights[ind]
+    p()
     FUN(data, ...)
   }
   fitParJumble <- function(J, data, ...) {
@@ -182,6 +183,7 @@ bootstrap.phyDat <- function(x, FUN, bs = 100, multicore = FALSE,
     data <- getRows(data, ind)
     attr(data, "weight") <- J[[1]][ind]
     data <- subset(data, J[[2]])
+    p()
     FUN(data, ...)
   }
 #  if (multicore) {
@@ -199,8 +201,14 @@ bootstrap.phyDat <- function(x, FUN, bs = 100, multicore = FALSE,
 #    }
 #  }
 # new future proof design
-  if (jumble) res <- future_lapply(J, fitParJumble, x, future.seed = TRUE, ...)
-  else res <- future_lapply(BS, fitPar, x, future.seed = TRUE, ...)
+  if (jumble) {
+    p <- progressor(along = J)
+    res <- future_lapply(J, fitParJumble, x, future.seed = TRUE, ...)
+  }
+  else {
+    p <- progressor(along = BS)
+    res <- future_lapply(BS, fitPar, x, future.seed = TRUE, ...)
+  }
   if (inherits(res[[1]], "phylo")) {
     class(res) <- "multiPhylo"
     res <- .compressTipLabel(res) # save memory

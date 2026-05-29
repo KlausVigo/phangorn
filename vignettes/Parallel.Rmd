@@ -26,15 +26,33 @@ Several function in phangorn make use of parallel computing. With the new versio
 Before we were using the `mclapply()` function in in `bootstrap.pml()`,  `bootstrap.phyDat()`, `modelTest()`. The disadvantage of `mclapply()` is that it works not for Windows and its usage is not recommended inside a GUI like RStudio.
 The future package allows the user to define its backend and can so be adjusted to the hardware and operating system of the user. Now also on Windows one can use parallel processing. It is very likely that several other function will allow the future framework in future. By default processes are running sequential.
 To run a function in parallel we just need to call the function plan specifying the backend and than the function which allows the parallel processing. 
-```{r future_example, eval = FALSE}
+
+```{r future_bootstrap, eval = TRUE}
 library(phangorn)
 library(future)
+
 data("Laurasiatherian")
+tree <- upgma(dist.ml(Laurasiatherian))
+plan(multisession, workers = 2)
+bs_trees <- bootstrap.phyDat(Laurasiatherian,
+     FUN=function(x)upgma(dist.ml(x)), bs=100)
+plan(sequential)
+tree <- plotBS(tree, bs_trees, "phylogram")
+```
+
+
+```{r future_example, eval = FALSE}
+
 plan(multisession, workers = 2)
 mt <- modelTest(Laurasiatherian, model = c("JC", "F81", "K80", "HKY", "SYM", "GTR"))
 plan(sequential) # run sequential again
 ```
-It is good practice to clean up and set the backend to sequential after using parallel processing.  
+
+<!-- 
+progressr::handlers(global=TRUE)
+-->
+
+It is good practice to clean up and set the back-end to sequential after using parallel processing.  
 
 A few things to consider. When running processes in parallel the memory footprint might be larger compared to the sequential computation.
 Furthermore some of the linear algebra routines build in R might implicitly use parallel computing. So check how many cores are in use. If too many cores are used parallel code might even slow down. 

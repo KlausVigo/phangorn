@@ -243,7 +243,7 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
 
   p <- progressor(along = spl_pars)
   RES <- future_lapply(spl_pars, function(x, fit, control=control, ...){
-    p()
+    p(sprintf(x$model_term))
     fitPar(x, fit=fit, control=control, ...)
   }, fit, control=control, future.seed = TRUE)
 
@@ -290,7 +290,7 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
     p <- progressor(along = spl_pars2)
     RES2 <- future_lapply(spl_pars2, function(x, fit, trees = trees,
                                   calls = calls, control=control, ...){
-      p()
+      p(sprintf(x$model_term))
       fitPar(x, fit=fit, trees = trees, calls = calls, control=control, ...)
     }, fit,  trees = trees, calls = calls, control=control, future.seed = TRUE)
     res2 <- fun(RES2)
@@ -316,7 +316,7 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
       p <- progressor(along = spl_pars3)
       RES3 <- future_lapply(spl_pars3, function(x, fit, trees = trees,
                         calls = calls, control=control, ...){
-          p()
+          p(sprintf(x$model_term))
           fitPar(x, fit=fit, trees = trees, calls = calls, control=control, ...)
         }, fit,  trees = trees, calls = calls, control=control,
         future.seed = TRUE)
