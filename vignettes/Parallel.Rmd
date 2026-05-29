@@ -5,7 +5,7 @@ author:
   affiliation: University of Graz, Graz University of Technology
   email: klaus.schliep@gmail.com
 date: "`r Sys.Date()`"
-bibliography: phangorn.bib
+bibliography: ../inst/REFERENCES.bib
 output: rmarkdown::html_vignette
 vignette: |
   %\VignetteIndexEntry{Parallel computing with phangorn}

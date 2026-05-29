@@ -1,6 +1,6 @@
 Package: phangorn
 Title: Phylogenetic Reconstruction and Analysis
-Version: 2.12.1.4
+Version: 3.0.0
 Authors@R: 
     c(person("Klaus", "Schliep", role = c("aut", "cre"),
              email = "klaus.schliep@gmail.com",
@@ -41,7 +41,6 @@ Depends:
     ape (>= 5.8),
     R (>= 4.1.0)
 Imports:
-    bibtex,
     checkmate,
     digest,
     future.apply,
@@ -59,6 +58,7 @@ Imports:
     utils
 Suggests:
     apex,
+    bibtex,
     Biostrings,
     codetools,
     ggseqlogo,
