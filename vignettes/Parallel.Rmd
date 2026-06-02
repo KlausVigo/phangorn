@@ -29,7 +29,7 @@ To run a function in parallel we just need to call the function plan specifying 
 
 ```{r future_bootstrap, eval = TRUE}
 library(phangorn)
-library(future)
+library(future.apply)
 
 data("Laurasiatherian")
 tree <- upgma(dist.ml(Laurasiatherian))
