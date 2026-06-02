@@ -1,6 +1,6 @@
 Package: phangorn
 Title: Phylogenetic Reconstruction and Analysis
-Version: 3.0.0
+Version: 3.0.0.1
 Authors@R: 
     c(person("Klaus", "Schliep", role = c("aut", "cre"),
              email = "klaus.schliep@gmail.com",
@@ -68,8 +68,9 @@ Suggests:
     plot3D,
     rgl,
     rmarkdown,
+    rsvg,
     seqinr,
-    testthat (>= 3.0.0),
+    tinysnapshot (>= 0.2.0),
     tinytest,
     vdiffr,
     xtable
@@ -83,5 +84,4 @@ Encoding: UTF-8
 Repository: CRAN
 Roxygen: list(old_usage = TRUE, markdown = TRUE, roclets = c ("namespace", "rd", "srr::srr_stats_roclet"))
 Language: en-US
-Config/testthat/edition: 3
 Config/roxygen2/version: 8.0.0

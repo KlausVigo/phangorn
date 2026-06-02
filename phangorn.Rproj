@@ -1,4 +1,5 @@
 Version: 1.0
+ProjectId: c4314e5e-eadb-46eb-ad91-3d87d9e9015c
 
 RestoreWorkspace: Default
 SaveWorkspace: Default
@@ -16,6 +17,8 @@ AutoAppendNewline: Yes
 StripTrailingWhitespace: Yes
 
 BuildType: Package
+PackageUseDevtools: Yes
+PackageCleanBeforeInstall: No
 PackageInstallArgs: --no-multiarch --with-keep.source
 PackageBuildArgs: --compact-vignettes=gs+qpdf
 PackageBuildBinaryArgs: --compact-vignettes=gs+qpdf

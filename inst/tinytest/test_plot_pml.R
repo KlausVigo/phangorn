@@ -1,3 +1,7 @@
+Sys.setenv(LANGUAGE = "en") # Force locale
+library(tinytest)
+using("tinysnapshot")
+
 set.seed(123)
 tree <- read.tree(text = "((t1:1,t2:1):1,(t3:1,t4:1):1);")
 tree2 <- read.tree(text = "((t1:1.1,t2:1.1):1,(t3:1,t4:1):1.1);")
@@ -9,37 +13,27 @@ dat <- matrix(c("a", "a",
 dna <- phyDat(dat)
 fit <- pml(tree, dna)
 
-test_that("plot.pml works", {
-  pml_plot <- function() plot(fit)
-  vdiffr::expect_doppelganger("plot.pml", pml_plot)
-})
-
+pml_plot <- function() plot(fit)
+expect_snapshot_plot(pml_plot, "pml_plot")
 
 trees <- c(tree, tree2) |> .compressTipLabel()
 
-test_that("densiTree works", {
-  densi_plot <- function() densiTree(trees, type="phylogram", width=2,
+densi_plot <- function() densiTree(trees, type="phylogram", width=2,
           jitter=list(amount=0.1, random=FALSE), alpha=1)
-  vdiffr::expect_doppelganger("densiTree", densi_plot)
-})
-
+expect_snapshot_plot(densi_plot, "densi_plot")
 
 data("Laurasiatherian")
 tmp <- subset(Laurasiatherian, 1:15, compress = TRUE)
 fit <- pml_bb(tmp, "JC+G(4)", rearrangement = "NNI",
               control=pml.control(trace=0))
 
-test_that("plotRates works", {
-  rates_plot <- function() plotRates(fit)
-  vdiffr::expect_doppelganger("plotRates", rates_plot)
-})
+rates_plot <- function() plotRates(fit)
+expect_snapshot_plot(rates_plot, "rates_plot")
 
 data(woodmouse)
 set.seed(123)
 fit20 <- pml_bb(woodmouse, "JC", control=pml.control(trace=0),
                  ratchet.par = ratchet.control(maxit=20, bs=10))
 
-#test_that("terraces works", {
-#  terraces_plot <- function() terraces(fit20, pkg="plot3D")
-#  vdiffr::expect_doppelganger("terraces", terraces_plot)
-#})
+terraces_plot <- function() terraces(fit20, pkg="plot3D")
+expect_snapshot_plot(terraces_plot, "terraces_plot")

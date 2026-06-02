@@ -21,3 +21,4 @@
 ^\.out.R
 ^CONTRIBUTING.md$
 ^README\.Rmd$
+^inst/tinytest/_tinysnapshot_review$
