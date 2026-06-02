@@ -115,7 +115,7 @@ cbind.phyDat <- function(..., gaps="-", compress=TRUE){
 
   if(inherits(object[[1]], "phyDat")) objNames <- paste0("x_", 1:n)
   else objNames <- as.character(object)
-  if(any(duplicated(objNames))) objNames <- paste0(objNames, 1:n)
+  if(anyDuplicated(objNames)) objNames <- paste0(objNames, 1:n)
 
   for(i in 1:n){
     snames[[i]] <- names(x[[i]])
@@ -160,8 +160,8 @@ cbind.phyDat <- function(..., gaps="-", compress=TRUE){
     }
   }
   if(add.index) {
-    # ATTR$index <- data.frame(index = index, genes=rep(objNames, nr))
-    ATTR$index <- index
+    ATTR$index <- data.frame(index = index, genes=rep(objNames, nr))
+    #ATTR$index <- index
     start <- cumsum(c(1,nr))
     start <- start[-length(start)]
     end <- cumsum(nr)
@@ -184,7 +184,7 @@ rbind.phyDat <- function(...){
   if(any(l!=l[1]))stop("Alignments have different # of characters!")
   if(any(types != types[1])) stop("Alignments must have same type!")
   nam <- lapply(x, names) |> unlist()
-  if(any(duplicated(nam)))stop("Duplicated names!")
+  if(anyDuplicated(nam))stop("Duplicated names!")
   m <- lengths(x)
   mcs <- c(0, cumsum(m))
   res <- matrix(NA_character_, sum(m), l[1], dimnames=list(nam, NULL))
@@ -221,7 +221,7 @@ compress.phyDat <- function(data){
   attrib$weight <- as.vector(weight)
   if(is.null(attrib$index)) attrib$index <-index
   else attrib$index <- index[attrib$index]
-  for(i in seq_len(length(data))) data[[i]] <- data[[i]][pos]
+  for(i in seq_along(data)) data[[i]] <- data[[i]][pos]
   attributes(data) <- attrib
   attr(data, "class") <- "phyDat"
   data
@@ -261,7 +261,7 @@ getRows <- function (data, rows, site.pattern = TRUE){
   index <- attr(data, "index")
   if(is.data.frame(index))index <- index[,1]
   if(!site.pattern){
-    if(is.null(index)) index <- seq_len(length(data[[1]]))
+    if(is.null(index)) index <- seq_along(data[[1]])
     weight <- tabulate(index[rows])
     ind <- which(weight>0)
 # update index

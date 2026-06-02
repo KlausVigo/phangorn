@@ -371,11 +371,7 @@ ptree <- function(tree, data, acctran=TRUE, return = "prob", tips=FALSE, ...) {
 #  }
   if(!tips) res <- res[tree$node.label]
 
-  if(return=="prob"){
-#    if(tips)
-    return(res)
-#    else return(res[tree$node.label])
-  }
+  if(return=="prob") return(res)
 
 #  if(type=="DNA"){
 #    indx <- c(1, 2, 6, 3, 7, 9, 12, 4, 8, 10, 13, 11, 14, 15, 16)

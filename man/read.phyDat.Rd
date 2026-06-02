@@ -5,9 +5,9 @@
 \alias{write.phyDat}
 \title{Import and export sequence alignments}
 \usage{
-read.phyDat(file, format = "phylip", type = "DNA", ...)
+read.phyDat(file, format = "fasta", type = "DNA", ...)
 
-write.phyDat(x, file, format = "phylip", colsep = "", nbcol = -1, ...)
+write.phyDat(x, file, format = "fasta", colsep = "", nbcol = -1, ...)
 }
 \arguments{
 \item{file}{a file name specified by either a variable of mode character, or

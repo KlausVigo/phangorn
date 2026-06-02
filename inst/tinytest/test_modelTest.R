@@ -1,7 +1,7 @@
 X <- allSitePattern(4)
 attr(X, "type") <- "DNA"
 tree <- read.tree(text = "((t1:0.2,t2:0.3):0.1,t3:0.2,t4:0.3);")
-fit <- pml(tree, X, k=4, bf = c(1:4)/10)  # F81 + Gamma
+fit <- pml(tree, X, k=4, bf = (1:4)/10)  # F81 + Gamma
 weights <- 1000*exp(fit$siteLik)
 attr(X, "weight") <- weights
 
@@ -18,7 +18,7 @@ fitMT <- as.pml(MT)
 expect_true(inherits(fitMT, "pml"))
 expect_equal(fitMT$model, "F81")
 
-library(future)
+library(future.apply)
 plan(multisession, workers = 2)
 
 MT2 <- modelTest(X, tree = tree, model = c("JC", "F81", "K80", "HKY", "SYM",

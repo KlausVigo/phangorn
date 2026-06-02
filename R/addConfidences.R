@@ -112,8 +112,8 @@ addConfidences.splits <- function(x, y, scaler = 1, rooted=FALSE, ...) {
   if(is.numeric(attr(spl, "confidences")))
     confidences[pos] <- attr(spl, "confidences")[ind[pos]] * scaler
   else confidences[pos] <- attr(spl, "confidences")[ind[pos]]
-  if (add == TRUE) confidences <- paste(prettyNum(attr(x, "confidences")),
-                                    prettyNum(confidences * scaler), sep = "/")
+  if (add) confidences <- paste(prettyNum(attr(x, "confidences")),
+                                prettyNum(confidences * scaler), sep = "/")
   attr(x, "confidences") <- confidences
   x
 }

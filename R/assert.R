@@ -22,7 +22,7 @@ assert_phylo <- function(x, has_edge_length=FALSE, is_rooted=FALSE,
   if(is_ultrametric && !is.ultrametric(x))
     stop(gettextf("%s must be ultrametric!", txt))
   if(is_binary && !is.binary(x)) stop(gettextf("%s must be binary!", txt))
-  if (unique_tiplabel && any(duplicated(x$tip.label)))
+  if (unique_tiplabel && anyDuplicated(x$tip.label))
     stop(gettextf("%s must have unique labels!", txt))
   invisible(x)
 }

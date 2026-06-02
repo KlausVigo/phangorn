@@ -60,7 +60,7 @@ fitch <- function(tree, data, site = "pscore"){
       data <- subset(data, TL)
       f <- init_fitch(data, FALSE, FALSE, m=2L)
       tree <- unclass(tree)
-      res <- sapply(tree, function(x)fun(x, site=site, nr=nr))
+      res <- sapply(tree, fun, site=site, nr=nr)
     }
     else{
       res <- sapply(tree, fun2, data, site, nr)

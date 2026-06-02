@@ -54,6 +54,6 @@ fitMixEdge <- pmlMix( ~ edge, fit1, m=2)
 logLik(fitMixEdge)
 AIC(fitMixEdge, k=log(3000))
 
-fit.p <- pmlPen(fitMixEdge, .01, control=pml.control(trace = 0))
+fit.p <- pmlPen(fitMixEdge, 0.01, control=pml.control(trace = 0))
 expect_equal(fit.p$logLik, ll0, tolerance = 0.4)
 

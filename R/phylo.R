@@ -2403,10 +2403,9 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
           w <- (1 - inv) * w
           g <- g / (1 - inv)
         }
-
-        ll <- res[[2]]
         if (trace > 0)
           cat("optimize shape parameter: ", ll, "-->", max(res[[2]], ll), "\n")
+        ll <- res[[2]]
       } else {
         res <- optimGamma(tree, data, shape = shape, k = k, inv = inv,
                           INV = INV, Q = Q, bf = bf, eig = eig, ll.0 = ll.0,

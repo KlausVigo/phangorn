@@ -101,7 +101,7 @@ plot(tree)
 nodelabels()
 
 # Example for simple DNA alignment
-data <- simSeq(tree, l = 10, type="DNA", bf=c(.1,.2,.3,.4), Q=1:6,
+data <- simSeq(tree, l = 10, type="DNA", bf=c(0.1, 0.2, 0.3, 0.4), Q=1:6,
                ancestral=TRUE)
 as.character(data)
 

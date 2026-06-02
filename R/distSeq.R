@@ -433,7 +433,7 @@ unique.dist <-  function(x, incomparables, ...) {
   l <- nrow(y)
   z <- character(l)
   for (i in seq_len(l)) z[i] <- paste(round(y[i, ], 8), collapse = "_")
-  if (any(duplicated(z))) {
+  if (anyDuplicated(z)) {
     ind <- !duplicated(z)
     y <- y[ind, ind]
     if (is.matrix(x)) return(y)

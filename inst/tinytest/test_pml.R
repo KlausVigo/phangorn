@@ -1,14 +1,18 @@
-treeU1 <- read.tree(text = "((t1:.1,t2:.1):.1,t3:.2,(t4:.1,t5:.1):.3);")
+treeU1 <- read.tree(text = "((t1:0.1,t2:0.1):0.1,t3:0.2,(t4:0.1,t5:0.1):0.3);")
 # edge length changed
-treeU2 <- read.tree(text = "((t1:.15,t2:.15):.05,t3:.2,(t4:.1,t5:.1):.3);")
+treeU2 <- read.tree(text =
+                      "((t1:0.15,t2:0.15):0.05,t3:0.2,(t4:0.1,t5:0.1):0.3);")
 # 1 NNI move
-treeU3 <- read.tree(text = "((t1:.1,t3:.1):.1,t2:.2,(t4:.1,t5:.1):.3);")
+treeU3 <- read.tree(text = "((t1:0.1,t3:0.1):0.1,t2:0.2,(t4:0.1,t5:0.1):0.3);")
 
-treeR1 <- read.tree(text = "(((t1:.1,t2:.1):.1,t3:.2):.1,(t4:.1,t5:.1):.2);")
+treeR1 <- read.tree(text =
+                      "(((t1:0.1,t2:0.1):0.1,t3:0.2):0.1,(t4:0.1,t5:0.1):0.2);")
 # edge length changed
-treeR2 <- read.tree(text = "(((t1:.15,t2:.15):.05,t3:.2):.1,(t4:.1,t5:.1):.2);")
+treeR2 <- read.tree(text =
+                  "(((t1:0.15,t2:0.15):0.05,t3:0.2):0.1,(t4:0.1,t5:0.1):0.2);")
 # 1 NNI move
-treeR3 <- read.tree(text = "(((t1:.1,t3:.1):.1,t2:.2):.1,(t4:.1,t5:.1):.2);")
+treeR3 <- read.tree(text =
+                      "(((t1:0.1,t3:0.1):0.1,t2:0.2):0.1,(t4:0.1,t5:0.1):0.2);")
 
 
 # dat <- phyDat(c(t1="a", t2="a",t3="t",t4="t"), type="USER",
@@ -22,7 +26,7 @@ attr(dat, "weight") <- weights
 dat_Mkv <- subset(dat, select = -c(1,342,683, 1024), site.pattern = TRUE)
 
 
-Q <- c(6:1)
+Q <- (6:1)
 
 
 pmlU1 <- pml(treeU1, dat)
@@ -157,7 +161,7 @@ expect_error(pml_bb(dat, model="GTR", method="tipdated"))
     expect_equal(fit.quadrature$shape, shape, tolerance=1e-4)
 
 # test gamma rw
-    w <- c(.4,.1,.1,.4)
+    w <- c(0.4, 0.1, 0.1, 0.4)
     g <- discrete.gamma(2,k=4,w=w)
     tree_U1 <- treeU1
     tree_U1$edge.length <- tree_U1$edge.length*3

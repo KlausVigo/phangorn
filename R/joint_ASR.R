@@ -26,7 +26,7 @@ joint_pml <- function(x){
   pa <- 0
   root <- edge[l, 1]
   lnr <- seq_len(nr)
-  for(i in seq_len(length(nn))){
+  for(i in seq_along(nn)){
     pa <- nn[i]
     ch <- desc[[pa]]
     P_i <- P[[pa]]
@@ -102,7 +102,7 @@ joint_sankoff <- function(tree, data, cost=NULL){
   root <- edge[l, 1]
   lnr <- seq_len(nr)
 
-  for(i in seq_len(length(nn))){
+  for(i in seq_along(nn)){
     pa <- nn[i]
     if(pa==root) break()
     for(j in 1:nc){

@@ -101,7 +101,7 @@
 #'
 #' set.seed(123)
 #' trees <- rmtree(10, 20)
-#' X <- matrix(sample(c("red", "blue", "violet"), 100, TRUE, c(.5,.4, .1)),
+#' X <- matrix(sample(c("red", "blue", "violet"), 100, TRUE, c(0.5, 0.4, 0.1)),
 #'    ncol=5, dimnames=list(paste('t',1:20, sep=""), paste('Var',1:5, sep="_")))
 #' x <- phyDat(X, type = "USER", levels = c("red", "blue"), ambiguity="violet")
 #' plot(trees[[1]], "u", tip.color = X[trees[[1]]$tip,1])  # intruders are blue
@@ -167,7 +167,7 @@ getSlices <- function(tree){
     k <- 1
     for(i in 1:l){
         tmp1 <- as.numeric((clans[index[i,1],] + clans[index[i,2],])==2)
-        tmp <- paste0(tmp1, collapse="")
+        tmp <- paste0(tmp1, collapse = "")
         if(is.na(match(tmp,strClan))){
             result[k,] <- tmp1
             k <- k+1
