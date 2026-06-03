@@ -99,7 +99,7 @@ extract_prob <- function(x, align, node_label){
   att <- attributes(align)
   res <- vector("list", length(node_label))
   for(i in seq_along(node_label)){
-    tmp <- x[x$"Node"==node_label[i], -c(1:3)] |> as.matrix()
+    tmp <- x[x$"Node"==node_label[i], -(1:3)] |> as.matrix()
     dimnames(tmp) <- NULL
     res[[i]] <- as.matrix(tmp)[idx,]
   }

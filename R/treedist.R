@@ -380,7 +380,7 @@ wRF2 <- function(tree, trees, normalize = FALSE, check.labels = TRUE,
     tree <- relabel(tree, attr(trees, "TipLabel"))
   }
 
-  if (rooted && any(!is.rooted(trees))) {
+  if (rooted && !all(is.rooted(trees))) {
     message("some trees were rooted, unrooted all")
     rooted <- FALSE
   }
@@ -434,7 +434,7 @@ wRF1 <- function(trees, normalize = FALSE, check.labels = TRUE,
 #  if (check.labels) trees <- .compressTipLabel(trees)
 #  trees <- .uncompressTipLabel(trees)
 
-  if (rooted && any(!is.rooted(trees))) {
+  if (rooted && !all(is.rooted(trees))) {
     message("some trees were rooted, unrooted all")
     rooted <- FALSE
   }
@@ -500,7 +500,7 @@ mRF2 <- function(tree, trees, normalize = FALSE, check.labels = TRUE,
 #  if (any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
 #  if (has.singles(tree)) tree <- collapse.singles(tree)
 #  if (!rooted && is.rooted(tree)) tree <- unroot(tree)
-  if (any(!is.binary(trees))) {
+  if (!all(is.binary(trees))) {
     message("Some trees are not binary. Result may not what you expect!")
   }
 #  tree <- reorder(tree, "postorder")
@@ -522,11 +522,11 @@ mRF2 <- function(tree, trees, normalize = FALSE, check.labels = TRUE,
     #   sum(match(yy, xx[[i]], nomatch=0L)==0L)
   }
   if (!is.null(names(trees))) names(RF) <- names(trees)
-  if (!normalize) return(RF)
-  else {
+  if (normalize) {
     sc <- Nnode(trees) + Nnode(tree) - 2
     return(RF / sc)
   }
+  return(RF)
 }
 
 
@@ -537,7 +537,7 @@ mRF <- function(trees, normalize = FALSE, rooted = FALSE) {
   l <- length(trees)
   RF <- numeric( (l * (l - 1)) / 2)
 
-  if (rooted && any(!is.rooted(trees))) {
+  if (rooted && !all(is.rooted(trees))) {
     message("some trees were rooted, unrooted all")
     rooted <- FALSE
   }
@@ -545,7 +545,7 @@ mRF <- function(trees, normalize = FALSE, rooted = FALSE) {
                             reorder=TRUE, compress=TRUE)
 #  if (!rooted && any(is.rooted(trees))) trees <- unroot(trees)
 #  if (any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
-  if (any(!is.binary(trees))) {
+  if (!all(is.binary(trees))) {
     message("Some trees are not binary. Result may not what you expect!")
   }
   Nnodes <- Nnode(trees)
@@ -707,7 +707,7 @@ kf1 <- function(tree, trees, check.labels = TRUE, rooted = FALSE) {
   if (any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
   if (has.singles(tree)) tree <- collapse.singles(tree)
 
-  if (rooted && any(!is.rooted(trees))) {
+  if (rooted && !all(is.rooted(trees))) {
     message("some trees were rooted, unrooted all")
     rooted <- FALSE
   }
@@ -751,7 +751,7 @@ kf2 <- function(trees, check.labels = TRUE, rooted = FALSE) {
   if (any(has.singles(trees))) trees <- lapply(trees, collapse.singles)
 
   nTips <- length(trees[[1]]$tip.label)
-  if (rooted && any(!is.rooted(trees))) {
+  if (rooted && !all(is.rooted(trees))) {
     message("some trees were rooted, unrooted all")
     rooted <- FALSE
   }

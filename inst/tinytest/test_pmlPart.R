@@ -46,7 +46,7 @@ if(suppressPackageStartupMessages(requireNamespace('apex'))){
 
 
 # test_that transition rate optimisation works properly
-Q <- c(6:1)
+Q <- 6:1
 
 fit0 <- pml(tree, X, k=4)
 fit1 <- pml(tree, X, k=4, Q=Q)

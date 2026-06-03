@@ -189,7 +189,7 @@ kSPR <- function(tree, k = NULL) {
   if (Ntip(tree) < (4L - is.rooted(tree))) return(tree)
   l <- length(tree$tip.label)
   root <- getRoot(tree)
-  distN <- dn(tree)[-c(1:l), -c(1:l)]
+  distN <- dn(tree)[-(1:l), -(1:l)]
   distN[upper.tri(distN)] <- Inf
   dN <- distN[lower.tri(distN)]
   tab <- tabulate(dN)

@@ -423,9 +423,9 @@ read.nexus.networx <- function(file, splits = TRUE) {
   splitIndex <- if (ncol(EDGE) == 4) EDGE[, 4]
   else NULL
   # quick and dirty
-  el <- sqrt(rowSums( (VERT[EDGE[, 2], c(2:3)] - VERT[EDGE[, 3], c(2:3)])^2))
-  edge <- EDGE[, c(2:3)]
-  vert <- VERT[, c(2:3)]
+  el <- sqrt(rowSums( (VERT[EDGE[, 2], (2:3)] - VERT[EDGE[, 3], (2:3)])^2))
+  edge <- EDGE[, (2:3)]
+  vert <- VERT[, (2:3)]
 
   if(length(TRANS$label) > sum(tabulate(edge)==1L)){
 #    ntip <- length(TRANS$label) - sum(tabulate(edge)==1L)

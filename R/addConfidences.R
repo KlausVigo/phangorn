@@ -144,7 +144,7 @@ addConfidences.phylo <- function(x, y, rooted=FALSE, ...) {
   conf[ind == TRUE] <- NA_real_
   nTips <- length(x$tip.label)
   if (!as.is) conf <- conf * 100
-  x$node.label <- conf[-c(1:nTips)]
+  x$node.label <- conf[-(1:nTips)]
   x
 }
 

@@ -5,7 +5,7 @@ getOrder <- function(x) {
   ind <- as.vector(which(dm == max(dm), arr.ind = TRUE)[1, ])
   nTips <- as.integer(length(label))
   added <- ind
-  remaining <- c(1:nTips)[-ind]
+  remaining <- (1:nTips)[-ind]
 
   tree <- structure(list(edge = structure(c(rep(nTips + 1L, 3), c(ind, 0L)),
         .Dim = c(3L, 2L)), tip.label = label, Nnode = 1L), .Names = c("edge",
