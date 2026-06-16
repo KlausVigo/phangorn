@@ -107,7 +107,7 @@ terraces.dist <- function(x, trees, dist_fun="RF.dist", di2multi=FALSE,
   assert_multiPhylo(trees)
   trees <- clean_phylo(trees, compress = TRUE) #, di2multi=di2multi, tol=tol)
   if (di2multi) trees <- multi2di(trees, tol)
-  if(length(trees) < 3) stop("less than 3 different trees found!")
+  if (length(trees) < 3) stop("less than 3 different trees found!")
   dm <- do.call(dist_fun, list(trees))
   xy <- cmdscale(dm)
 
