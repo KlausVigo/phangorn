@@ -152,7 +152,7 @@ c.splits <- function(..., recursive = FALSE) {
   if (length(x) == 1 && !inherits(x[[1]], "splits")) x <- x[[1]]
   n <- length(x)
   match.names <- function(a, b) {
-    if (any(!(a %in% b)))
+    if (!all(a %in% b))
       stop("names do not match previous names")
   }
   if (n == 1)

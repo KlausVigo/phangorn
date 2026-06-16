@@ -8,7 +8,7 @@ NEW FEATURES
 
     o the terraces function plots the likelihood / parsimony / LS surface
 
-      for a set of trees (e.g. bootstrap).
+      for a set of trees (e.g. bootstrap or MCMC sample).
 
     o anc_heatmap to plot heatmaps with together ancestral states
 
@@ -29,6 +29,10 @@ NEW FEATURES
     o write.pml() exports now additionally several plots
 
 OTHER CHANGES
+
+    o read.phyDat and write.phyDat by default read or write a fasta file instead
+
+      of a phylip file
 
     o improvements to write.ancestral and write.pml.
 
@@ -57,6 +61,8 @@ OTHER CHANGES
       speed up dist.ml as well.
 
     o baseFreq() now uses C++ code and is considerably faster
+
+    o replaced the vdiffr package with tinysnapshot
 
 BUG FIXES
 

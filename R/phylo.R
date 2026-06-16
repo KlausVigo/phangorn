@@ -2099,7 +2099,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       tree <- unroot(tree)
       attr(tree, "order") <- NULL
       tree <- reorder(tree, "postorder")
-      warning("I unrooted the tree", call. = FALSE)
+      message("I unrooted the tree")
     }
     else{
       is_ultrametric <- is.ultrametric(tree, option=2)

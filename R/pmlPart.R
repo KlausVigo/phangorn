@@ -200,8 +200,8 @@ makePart <- function(fit, rooted, weight = ~index + genes) {
   if (inherits(fit, "phyDat")) {
     x <- fit
     dm <- dist.ml(x)
-    if (!rooted) tree <- NJ(dm)
-    else tree <- upgma(dm)
+    if (rooted) tree <- upgma(dm)
+    else tree <- NJ(dm)
     fit <- pml(tree, x, k = 4)
   }
   dat <- fit$data
@@ -638,8 +638,8 @@ pmlCluster.fit <- function(formula, fit, weight, p = 4, part = NULL,
     # restrict the number of elements changing groups
     # If more than 25% would change, only the 25% with the highest increase per
     # site change
-    if (sum(tmp == 0) / length(tmp) < .75) {
-      medtmp <- quantile(tmp, .25)
+    if (sum(tmp == 0) / length(tmp) < 0.75) {
+      medtmp <- quantile(tmp, 0.25)
       medind <- which(tmp <= medtmp)
       part[medind] <- max.col(LL[medind, ])
     } else part <- max.col(LL)

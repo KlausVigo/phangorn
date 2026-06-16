@@ -30,7 +30,7 @@ set.seed(1)
 bs <- bootstrap.phyDat(yeast, FUN = function(x)nj(dist.hamming(x)), 
     bs=100)
 tree <- nj(dist.hamming(yeast))
-cnet <- consensusNet(bs, .3)
+cnet <- consensusNet(bs, 0.3)
 par("mar" = rep(1, 4), "mfrow"=c(1,2))
 tree <- plotBS(midpoint(tree), bs, "phylogram", main="a)")
 plot(cnet, show.edge.label=TRUE, main="b)")

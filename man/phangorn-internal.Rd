@@ -69,7 +69,7 @@ pml.free()
 
 pml.init(data, k = 1L)
 
-coords(obj, dim = "3D", ...)
+coords(obj, dim = "3D")
 
 pmlPen(object, lambda, ...)
 

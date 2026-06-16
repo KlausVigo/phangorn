@@ -185,7 +185,7 @@ bs <- bootstrap.pml(fit_mt, bs=100, optNni=TRUE)
 
 Now we can plot the tree with the bootstrap support values on the edges and compare the standard bootstrap values to the ultrafast bootstrap values. With the function `plotBS` it is not only possible to plot these two, but also the transfer bootstraps [@Lemoine2018] which are especially useful for large data sets.
 ```{r plotBS_ultrafast_bs, fig.cap="Unrooted tree (midpoint rooted) with ultrafast, standard and transfer bootstrap support values.", echo=TRUE, fig.show="hold", out.width="33%"}
-plotBS(midpoint(fit_mt$tree), p = .5, type="p", digits=2, main="Ultrafast bootstrap")
+plotBS(midpoint(fit_mt$tree), p = 0.5, type="p", digits=2, main="Ultrafast bootstrap")
 
 plotBS(midpoint(fit_mt$tree), bs, p = 50, type="p", main="Standard bootstrap")
 
