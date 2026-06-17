@@ -60,6 +60,7 @@ Suggests:
     apex,
     bibtex,
     Biostrings,
+    MultipleAlignment,
     codetools,
     ggseqlogo,
     ggplot2,
@@ -72,7 +73,6 @@ Suggests:
     seqinr,
     tinysnapshot (>= 0.2.0),
     tinytest,
-    vdiffr,
     xtable
 LinkingTo:
     Rcpp, RcppArmadillo
