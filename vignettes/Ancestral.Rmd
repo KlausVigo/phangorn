@@ -93,7 +93,7 @@ plotSeqLogo(anc.ml, node="Node1", 1, 20)
 We can also plot the joint distribution as a heatmap. The heatmap function in phangorn allows not only to display characters at the tips but also the estimates for all internal nodes.  
 ```{r anc_heatmap}
 op <- par(mar=c(4,1,4,5))
-anc_heatmap(anc.ml, select=1:50, cex=.8, use.edge.length = T)
+anc_heatmap(anc.ml, select=1:50, cex=0.8, use.edge.length = T)
 par(op)
 ```
 

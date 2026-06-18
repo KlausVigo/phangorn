@@ -116,7 +116,9 @@ rNNI <- function(tree, moves = 1, n = length(moves)) {
   parent  <- edge[, 1]
   child   <- edge[, 2]
   nb.tip  <- Ntip(tree)
-  if (nb.tip < (4L - is.rooted(tree))) stop("Not enough edges for NNI rearrangements")
+  if (nb.tip < (4L - is.rooted(tree))) {
+    stop("Not enough edges for NNI rearrangements")
+  }
   pvector <- integer(max(edge))
   pvector[child] <- parent
   ch <- Children(tree)

@@ -42,7 +42,8 @@ upgma_nni <- function(d, tree=NULL, opt = "ME", trace = 0, tipdated=FALSE,
     desc <- Descendants(best.tree)
     l_desc <- lengths(desc)
     # iterate only over active set
-    active <- sort(unique(which(!is.na(match(index, under_risk))) %% nrow(index)))
+    active <- sort(unique(which(!is.na(
+                   match(index, under_risk))) %% nrow(index)))
     if(active[1]==0) active[1] <- nrow(index)
     for(i in active){
       se0[i] <- me(nh[index[i,]])

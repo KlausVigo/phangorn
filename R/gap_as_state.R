@@ -85,7 +85,7 @@ add_gap_Q_AA <- function(Q, rate_gap=0.1){
 }
 
 
-add_gap_bf_AA <- function(bf, gap=.01){
+add_gap_bf_AA <- function(bf, gap=0.01){
   bf <- c(bf, gap)
   bf <- bf / sum(bf)
   bf

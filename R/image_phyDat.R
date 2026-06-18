@@ -21,7 +21,9 @@ image.phyDat <- function(x, ...){
   if(attr(x, "type") == "CODON") x <- codon2dna(x)
   if(attr(x, "type") == "AA") image(as.AAbin(x), ...)
   if(attr(x, "type") == "DNA") image(as.DNAbin(x), ...)
-  if(attr(x, "type") == "USER") message('No plot function available for type="USER"')
+  if(attr(x, "type") == "USER") {
+    message('No plot function available for type="USER"')
+  }
   invisible(x)
 }
 
@@ -32,6 +34,7 @@ image.phyDat <- function(x, ...){
 image.ancestral <- function(x, ...) image(as.phyDat(x), ...)
 
 
-#' @srrstats {EA4.0} is implicitly done e.g. distinguish between DNA, AA or user type data
+#' @srrstats {EA4.0} is implicitly done e.g. distinguish between DNA, AA or user
+#' type data
 NULL
 

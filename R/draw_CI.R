@@ -181,7 +181,7 @@ add_boxplot <- function(tree, trees=NULL, boxwex = 0.7, ...)
     if(is.null(trees)) trees <- old$bs
   }
   X <- edge_length_matrix(tree, trees, rooted=TRUE)
-  X <- X[, -c(1:Ntip(tree))]
+  X <- X[, -(1:Ntip(tree))]
   tmp <- boxplot(X, plot=FALSE)
   lastPP <- get("last_plot.phylo", envir = ape::.PlotPhyloEnv)
   CI <- tmp$stats
@@ -213,7 +213,7 @@ add_boxplot <- function(tree, trees=NULL, boxwex = 0.7, ...)
   }
   tmp$stats <- CI
   tmp$out <- out
-  Y <- Y[-c(1:Ntip(tree))]
+  Y <- Y[-(1:Ntip(tree))]
   bxp(tmp, at = Y, horizontal = horizontal, add = TRUE, axes = FALSE,
       boxwex = boxwex, ...)
   invisible(tree)

@@ -4,8 +4,8 @@
 #' \bibcitep{McQuitty1966} are a wrapper function around
 #' \code{\link[stats]{hclust}} returning a \code{phylo} object.
 ## By default UPGMA additionally performs nearest neighbor interchange (NNI)
-## tree rearrangements to improve the phylogeny in respect to the munimum
-## evolution criterium.
+## tree rearrangements to improve the phylogeny in respect to the minimum
+## evolution criterion.
 #' \code{supgma} perform serial sampled UPGMA similar to
 #' \bibcitet{Drummond2000}.
 #'
@@ -22,10 +22,10 @@
 #'
 #' @param D A distance matrix, i.e. an object of class \code{dist}. If an matrix
 #' is supplied it is tried to covert it do a \code{dist} object.
-#' @param method The agglomeration method to be used. This should be (an
-#' unambiguous abbreviation of) one of "ward", "single", "complete", "average",
-#' "mcquitty", "median" or "centroid". The default is "average" for UPGMA and
-#' "mcquitty" for WPGMA.
+## @param method The agglomeration method to be used. This should be (an
+## unambiguous abbreviation of) one of "ward", "single", "complete", "average",
+## "mcquitty", "median" or "centroid". The default is "average" for UPGMA and
+## "mcquitty" for WPGMA.
 ## @param NNI logical whether make nearest neighbor rearrangements to improve
 ## the tree. Currently only available for UPGMA, i.e. \code{method="average"}.
 #' @param trace	 Show output during optimization (see details).
@@ -73,15 +73,16 @@ upgma <- function(D, method = "average", ...) {
 
 #' @rdname upgma
 #' @export
-wpgma <- function(D, method = "mcquitty", ...) {
+wpgma <- function(D, ...) {
   assert_numeric(D, lower=0, any.missing=FALSE, finite=TRUE)
+
 #  if(anyNA(D)) stop("missing values are not allowed in the distance matrix")
 #  if(any(is.infinite(D)))
 #    stop("infinite values are not allowed in the distance matrix")
   method <- match.arg(method, c("average", "ward.D", "ward.D2", "single",
                       "complete", "mcquitty", "median", "centroid"))
   DD <- as.dist(D)
-  hc <- hclust(DD, method = method, ...)
+  hc <- hclust(DD, method = "mcquitty", ...)
   result <- as.phylo(hc)
   result <- reorder(result, "postorder")
   result

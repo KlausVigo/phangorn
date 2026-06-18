@@ -308,7 +308,7 @@ E_Intruder <- function (clans, x)
         Z <- tcrossprod(HG)>0
         Z <- Z * rsh
         zmax <- apply(Z,2,max)
-        lhg <- !(zmax > rsh)
+        lhg <- (zmax <= rsh)
         LHG <- HG[lhg, , drop = FALSE]
         return(LHG)
     }
@@ -333,7 +333,7 @@ E_Intruder_2 <- function (clans, x, native=NULL)
         Z <- tcrossprod(HG)>0
         Z <- Z * rsh
         zmax <- apply(Z,2,max)
-        lhg <- !(zmax > rsh)
+        lhg <- (zmax <= rsh)
         LHG <- HG[lhg, , drop = FALSE]
         return(LHG)
     }

@@ -382,7 +382,7 @@ plotRGL <- function(coords, net, show.tip.label = TRUE, show.edge.label = FALSE,
                       (max(z) - min(z))^2) / 200
     spheres3d(x[1:nTips], y[1:nTips], z[1:nTips], radius = 2 * radius,
               color = "cyan")
-    spheres3d(x[-c(1:nTips)], y[-c(1:nTips)], z[-c(1:nTips)], radius = radius,
+    spheres3d(x[-(1:nTips)], y[-(1:nTips)], z[-(1:nTips)], radius = radius,
               color = "magenta")
   }
   if (show.tip.label) {

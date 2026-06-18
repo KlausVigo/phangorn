@@ -48,7 +48,7 @@ write.ancestral <- function(x, file="ancestral"){
       file = prop_name, append=TRUE)
   cat("# library(phangorn)\n", file = prop_name, append=TRUE)
   cat("# tree <- read.tree(\"",tname,"\")\n", sep="", file = prop_name, append=TRUE)
-  cat("# df <- read.table(\"",tname,"\", header=TRUE) \n", sep="", file = prop_name,
+  cat("# df <- read.table(\"",prop_name,"\", header=TRUE) \n", sep="", file = prop_name,
       append=TRUE)
   cat("# anc <- as.ancestral(tree, df) \n", file = prop_name, append=TRUE)
   cat("# plotAnc(anc) \n#\n", file = prop_name, append=TRUE)
