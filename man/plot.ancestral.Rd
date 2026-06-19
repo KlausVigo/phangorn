@@ -36,7 +36,7 @@ mutations are written out.}
 "Zappo_AA", "Clustal", "Polarity" and "Transmembrane_tendency", for
 nucleotides "Ape_NT" and"RY_NT". Names can be abbreviated.}
 
-\item{node}{to plot for which the probabilities should be plotted.}
+\item{node}{the node for which the probabilities should be plotted.}
 
 \item{start}{start position to plot.}
 

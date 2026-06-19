@@ -34,7 +34,7 @@ OTHER CHANGES
 
       of a phylip file
 
-    o improvements to write.ancestral and write.pml.
+    o improvements to write.ancestral and write.pml, large files get compressed.
 
     o Decreased the overhead for NNI rearrangements in optim.pml / pml_bb,
 

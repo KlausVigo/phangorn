@@ -26,7 +26,7 @@ getTransition <- function(scheme, levels){
 #' @param i plots the i-th site.
 ## ,site
 ## @param which either "pie" or "seqlogo"
-#' @param node to plot for which the probabilities should be plotted.
+#' @param node the node for which the probabilities should be plotted.
 #' @param type a character string specifying the type of phylogeny to be drawn;
 #' it must be one of "phylogram" (the default), "cladogram", "fan", "unrooted",
 #' "radial", "tidy", or any unambiguous abbreviation of these.
@@ -83,7 +83,7 @@ plotAnc <- function(x, i = 1, type="phylogram", ..., col = NULL,
   type <- match.arg(type, c("phylogram", "cladogram", "fan", "unrooted",
                             "radial", "tidy"))
   phylo_clado <- type %in% c("phylogram", "cladogram")
-  df <- as.data.frame(x)
+  df <- as.data.frame(x, terminal=TRUE)
   data <- x$data
   tree <- x$tree
   subset <- df[,"Site"] == i
@@ -182,7 +182,7 @@ plotSeqLogo <- function(x, node=getRoot(x$tree), start=1, end=10,
   if (!chk) stop("package ggseqlogo needs to be installed!\n")
   type <- attr(x$data, "type")
   tree <- x$tree
-  df <- as.data.frame(x)
+  df <- as.data.frame(x, terminal=TRUE)
   nodes <- c(tree$tip.label, tree$node.label)
   if(is.numeric(node)) node <- nodes[node]
   subset <- df[,"Node"] == node
