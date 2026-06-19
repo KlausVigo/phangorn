@@ -6,7 +6,7 @@
 \alias{supgma}
 \title{UPGMA, WPGMA and sUPGMA}
 \usage{
-upgma(D, method = "average", ...)
+upgma(D, ...)
 
 wpgma(D, ...)
 

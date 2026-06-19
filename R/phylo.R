@@ -631,8 +631,11 @@ pml.move <- function(EDGE, el, data, g=1, w=1, eig=edQt(), k=1, nTips=NULL,
 
 
 readAArate <- function(file) {
-  tmp <- read.table(system.file(file.path("extdata/aa_models", file),
-                                package="phangorn"),
+#  tmp <- read.table(system.file(file.path("extdata/aa_models", file),
+#                                package="phangorn"),
+#                    col.names = 1:20, fill = TRUE)
+  tmp <- read.table(system.file('extdata/aa_models', file,
+                                package = 'phangorn'),
                     col.names = 1:20, fill = TRUE)
   Q <- tmp[1:19, 1:19]
   names <- c("A", "R", "N", "D", "C", "Q", "E", "G", "H", "I", "L", "K", "M",

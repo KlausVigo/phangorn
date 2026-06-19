@@ -53,19 +53,20 @@
 #' @importFrom checkmate assert_numeric
 #' @rdname upgma
 #' @export
-upgma <- function(D, method = "average", ...) {
+upgma <- function(D, ...) {
   assert_numeric(D, lower=0, any.missing=FALSE, finite=TRUE)
+  #method = "average",
 #  if(anyNA(D)) stop("missing values are not allowed in the distance matrix")
 #  if(any(is.infinite(D)))
 #    stop("infinite values are not allowed in the distance matrix")
   if (hasArg(NNI)) NNI <- list(...)$NNI
   else NNI <- FALSE
-  method <- match.arg(method, c("average", "ward.D", "ward.D2", "single",
-                      "complete", "mcquitty", "median", "centroid"))
+#  method <- match.arg(method, c("average", "ward.D", "ward.D2", "single",
+#                      "complete", "mcquitty", "median", "centroid"))
   DD <- as.dist(D)
-  hc <- hclust(DD, method = method)
+  hc <- hclust(DD, method = "average")
   result <- as.phylo(hc)
-  if(NNI && method == "average") result <- upgma_nni(DD, tree = result)
+  if(NNI) result <- upgma_nni(DD, tree = result) # && method == "average"
   result <- reorder(result, "postorder")
   result
 }
@@ -79,8 +80,8 @@ wpgma <- function(D, ...) {
 #  if(anyNA(D)) stop("missing values are not allowed in the distance matrix")
 #  if(any(is.infinite(D)))
 #    stop("infinite values are not allowed in the distance matrix")
-  method <- match.arg(method, c("average", "ward.D", "ward.D2", "single",
-                      "complete", "mcquitty", "median", "centroid"))
+#  method <- match.arg(method, c("average", "ward.D", "ward.D2", "single",
+#                      "complete", "mcquitty", "median", "centroid"))
   DD <- as.dist(D)
   hc <- hclust(DD, method = "mcquitty", ...)
   result <- as.phylo(hc)
