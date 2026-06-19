@@ -74,5 +74,5 @@ expect_true(all(treeBS$node.label <= 100) )
 
 
 # test pruneTree
-tree_pruned <- pruneTree(treeBS, .8)
+tree_pruned <- pruneTree(treeBS, 0.8)
 expect_true(Nnode(tree_pruned) <= Nnode(treeBS))

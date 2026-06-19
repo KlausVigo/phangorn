@@ -89,7 +89,7 @@ plotAnc <- function(x, i = 1, type="phylogram", ..., col = NULL,
   subset <- df[,"Site"] == i
   Y <- df[subset & !is.na(subset),]
 #  Y <- subset(df, Site==i)
-  y <- as.matrix(Y[, -c(1:3)])
+  y <- as.matrix(Y[, -(1:3)])
   #  y <- y[, -c(1:3)]
   colnames(y) <- gsub("p_", "", colnames(y))
   row.names(y) <- Y$Node
@@ -190,7 +190,7 @@ plotSeqLogo <- function(x, node=getRoot(x$tree), start=1, end=10,
 #  X2 <- subset(df, subset=Node==node)
   end <- min(end, nrow(X))
   X <- X[seq_len(end), , drop=FALSE]  # creating the whole plot is slow
-  X <- t(as.matrix(X[, -c(1:3)]))
+  X <- t(as.matrix(X[, -(1:3)]))
   tmp <- gsub("p_", "", rownames(X))
   lev <- rownames(X) <- toupper(tmp)
   if(is.null(scheme) & type=="AA") scheme <- "Ape_AA"

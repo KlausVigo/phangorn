@@ -37,7 +37,7 @@ init_fitch <- function(obj, parsinfo=FALSE, order=FALSE, m=4L, ...){
 #' @export
 fitch <- function(tree, data, site = "pscore"){
   assert_treeish(tree)
-  if(any(!is.binary(tree))) tree <- multi2di(tree)
+  if(!all(is.binary(tree))) tree <- multi2di(tree)
   assert_phyDat(data)
   site <- match.arg(tolower(site), c("pscore", "site"))
   tree <- reorder(tree, "postorder")

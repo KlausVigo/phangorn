@@ -164,7 +164,7 @@ edge_length_hclust <- function(x, dm, method = "average") {
   nh <- numeric(max(x$edge))
   Y <- X * dm
   if(i.meth=="mcquitty"){
-    w <- .5 ^ wpgma_weights(x)
+    w <- 0.5 ^ wpgma_weights(x)
     Y <- X * (dm * w)
     Y[,1] <- Y[,1]/2
   }

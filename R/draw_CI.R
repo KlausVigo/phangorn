@@ -7,7 +7,7 @@ edge_length_matrix <- function(tree, trees, rooted = TRUE){
     tree <- unroot(tree)
   }
   else{
-    if(any(!is.rooted(trees))) stop("All trees need to be rooted!")
+    if(!all(is.rooted(trees))) stop("All trees need to be rooted!")
   }
   fun <- function(x){
     el <- numeric(max(x$edge))

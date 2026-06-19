@@ -745,7 +745,7 @@ update.pml <- function(object, ...) {
   if (length(extras)) {
     existing <- !is.na(match(names(extras), names(call)))
     for (a in names(extras)[existing]) call[[a]] <- extras[[a]]
-    if (any(!existing)) {
+    if (!all(existing)) {
       call <- c(as.list(call), extras[!existing])
       call <- as.call(call)
     }
@@ -2277,7 +2277,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     if (length(extras)) {
       existing <- !is.na(match(names(extras), names(call)))
       for (a in names(extras)[existing]) call[[a]] <- extras[[a]]
-      if (any(!existing)) {
+      if (!all(existing)) {
         call <- c(as.list(call), extras[!existing])
         call <- as.call(call)
       }

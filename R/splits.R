@@ -287,7 +287,7 @@ as.prop.part.splits <- function(x, ...) {
   attr(x, "number") <- attr(x, "weights")
   attr(x, "weights") <- NULL
   attr(x, "confidences") <- NULL
-  class(x) <- c("prop.part")
+  class(x) <- "prop.part"
   x
 }
 

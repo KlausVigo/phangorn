@@ -73,8 +73,7 @@ joint_pml <- function(x){
 
 # Joint reconstruction for parsimony
 joint_sankoff <- function(tree, data, cost=NULL){
-  stopifnot(inherits(data, "phyDat"))
-  stopifnot(inherits(tree, "phylo"))
+  stopifnot(inherits(data, "phyDat"), inherits(tree, "phylo"))
   tree <- reorder(tree, "postorder")
   edge <- tree$edge
   ntip <- Ntip(tree)

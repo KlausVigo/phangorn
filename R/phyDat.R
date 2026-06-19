@@ -102,7 +102,7 @@ cbind.phyDat <- function(..., gaps="-", compress=TRUE){
   n <- length(x)
   if (n == 1) return(x[[1]])
 
-  types <- sapply(x, function(x)attr(x, "type"))
+  types <- sapply(x, attr, which="type")
   if(any(types!=types[1]))stop("Alignments must have same type!")
   nr <- numeric(n)
   ATTR <- attributes(x[[1]])
@@ -178,7 +178,7 @@ cbind.phyDat <- function(..., gaps="-", compress=TRUE){
 #' @export
 rbind.phyDat <- function(...){
   x <- list(...)
-  types <- sapply(x, function(x)attr(x, "type"))
+  types <- sapply(x, attr, which="type")
   l <- sapply(x, function(x)sum(attr(x, "weight")))
   has_gaps <- all(sapply(x, has_gap_state))
   if(any(l!=l[1]))stop("Alignments have different # of characters!")
@@ -442,7 +442,7 @@ removeParsUninfoSites <- function(data, exact=TRUE){
   pis <- parsinfo(data, exact)
   if (length(pis) > 0){
     p0 <- sum(attr(data, "weight")[pis[, 1]] * pis[, 2])
-    data <- getRows(data, c(1:nr)[-pis[, 1]], TRUE)
+    data <- getRows(data, (1:nr)[-pis[, 1]], TRUE)
     if(is.null(attr(data, "informative")))
       attr(data, "informative") <- seq_len(nr)[-pis[, 1]]
     else attr(data, "informative") <- attr(data, "informative")[-pis[, 1]]

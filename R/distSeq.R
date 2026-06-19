@@ -163,7 +163,7 @@ dist.ml <- function(x, model = "JC69", exclude = "pairwise", bf = NULL, Q = NULL
   eig <- edQt(Q = Q, bf = bf)
   pos <- 1
   k <- as.integer(k)
-  w <- as.double(w <- rep(1 / k, k))
+  w <- as.double(rep(1 / k, k))
   g <- as.double(discrete.gamma(shape, k))
   fun <- function(s) -(nc - 1) / nc * log(1 - nc / (nc - 1) * s)
   eps <- (nc - 1) / nc

@@ -185,7 +185,7 @@ circNetwork <- function(x, ord = NULL) {
 
     for (i in 2:length(fromTo)) {
       sptmp <- shortest_paths(g, fromTo[i - 1], fromTo[i],
-        output = c("epath"))$epath[[1]]
+        output = "epath")$epath[[1]]
       sp2 <- c(sp2, sptmp[-c(1, length(sptmp))])
       sp0 <- c(sp0, sptmp)
     }
