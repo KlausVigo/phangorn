@@ -30,12 +30,12 @@ tree <- NJ(dist.ml(dat_codon))
 # test M0, M1a optimisation works properly
 fit_codon <- codonTest(tree, dat_codon, model = c("M0", "M1a"),
                        control = pml.control(maxit = 20))
-expect_true(inherits(fit_codon, "codonTest"))
+expect_inherits(fit_codon, "codonTest")
 
 # M2a takes to long for rhub
 #fit_codon_2 <- codonTest(tree, dat_codon_2, model = c("M0", "M1a"),
 #                         opt_freq = TRUE, control = pml.control(maxit = 20))
-#expect_true(inherits(fit_codon_2, "codonTest"))
+#expect_inherits(fit_codon_2, "codonTest")
 
 fdir <- system.file("extdata/trees", package = "phangorn")
 hiv_2_nef <- read.phyDat(file.path(fdir, "seqfile.txt"), format="sequential")
@@ -43,6 +43,6 @@ hiv_2_nef <- read.phyDat(file.path(fdir, "seqfile.txt"), format="sequential")
 tree_hiv <- read.tree(file.path(fdir, "tree.txt"))
 
 fit_codon_2 <- codonTest(tree_hiv, dna2codon(hiv_2_nef), frequencies="F1x4")
-expect_true(inherits(fit_codon_2, "codonTest"))
+expect_inherits(fit_codon_2, "codonTest")
 expect_true(fit_codon_2$summary$logLik[1] < fit_codon_2$summary$logLik[2])
 expect_true(fit_codon_2$summary$logLik[2] < fit_codon_2$summary$logLik[3])

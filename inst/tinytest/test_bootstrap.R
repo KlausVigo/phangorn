@@ -10,7 +10,7 @@ tree2 <- plotBS(tree, bs_trees, type="none", method="TBE")
 
 nnet <- neighborNet(dist.hamming(Laurasiatherian))
 
-expect_true(inherits(tree1, "phylo"))
+expect_inherits(tree1, "phylo")
 # transfer bootstrap should never be smaller than the standard one
 expect_true(all(tree1$node.label[-1] <= tree2$node.label[-1]))
 

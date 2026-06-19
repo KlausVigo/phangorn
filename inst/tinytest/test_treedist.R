@@ -14,7 +14,7 @@ expect_equivalent(RF.dist(tree1, tree2), 2)
 expect_equivalent(RF.dist(tree1, tree3), 1)
 
 expect_true( all(RF.dist(tree, trees)==2) )
-expect_true(inherits(RF.dist(trees),"dist"))
+expect_inherits(RF.dist(trees),"dist")
 
 expect_equivalent(treedist(tree1, tree1)[1], 0)
 expect_equivalent(treedist(tree1, tree2)[1], 2)
@@ -27,7 +27,7 @@ expect_equivalent(KF.dist(tree1, tree1), 0)
 expect_equivalent(KF.dist(tree1, tree2), sqrt(2))
 expect_equivalent(KF.dist(tree1, tree3), 1)
 
-expect_true(inherits(KF.dist(trees),"dist"))
+expect_inherits(KF.dist(trees),"dist")
 
 expect_equivalent(treedist(tree1, tree1)[2], 0)
 expect_equivalent(treedist(tree1, tree2)[2], sqrt(2))
@@ -40,7 +40,7 @@ expect_equal(KF.dist(tree1, c(tree1, tree2, tree3)), c(0, sqrt(2), 1))
 ## check path dist
 expect_equivalent(path.dist(tree1, tree1), 0)
 expect_equal(path.dist(trees)[1:13] , path.dist(trees[[1]], trees[2:14]))
-expect_true(inherits(path.dist(trees),"dist"))
+expect_inherits(path.dist(trees),"dist")
 
 
 
@@ -108,7 +108,7 @@ trees <- rSPR(tree1, 1:5)
 expect_equal(sprdist(tree1, tree2)[[1]], 1)
 expect_equal(sprdist(tree1, tree2)[[3]], RF.dist(tree1, tree2))
 expect_equal(SPR.dist(tree1, trees), 1:5)
-expect_true(inherits(SPR.dist(trees), "dist"))
+expect_inherits(SPR.dist(trees), "dist")
 
 # Fix to issue #97 on github
 tr1 <- structure(list(edge = structure(c(11L, 11L, 10L, 10L, 9L, 9L, 8L, 8L, 7L,

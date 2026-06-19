@@ -157,7 +157,8 @@ my_ggseqlogo <-function (data, facet = "wrap", scales = "free_x", ncol = NULL,
   x[[2]] <- ggplot2::scale_x_continuous(limits = c(start-0.5, end+0.5) ,
                                breaks=pretty(seq(start, end)))
   p <- ggplot2::ggplot() + x + ggseqlogo::theme_logo()
-  if (!"list" %in% class(data)) return(p)
+  #if (!"list" %in% class(data)) return(p)
+  if (!inherits(data, "list")) return(p)
   facet <- match.arg(facet, c("grid", "wrap"))
   if (facet == "grid") {
     p <- p + ggplot2::facet_grid(~seq_group, scales = scales)

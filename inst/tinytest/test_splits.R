@@ -11,12 +11,12 @@ trees <- nni(tree)
 
 # test splits
 ## check classes
-expect_true(inherits(as.splits(trees), "splits"))
-expect_true(inherits(tree2spl, "splits"))
-expect_true(inherits(spl2tree,"phylo"))
-expect_true(inherits(dm,"dist"))
-expect_true(inherits(mat, "matrix"))
-expect_true(inherits(Mat, "Matrix"))
+expect_inherits(as.splits(trees), "splits")
+expect_inherits(tree2spl, "splits")
+expect_inherits(spl2tree,"phylo")
+expect_inherits(dm,"dist")
+expect_inherits(mat, "matrix")
+expect_inherits(Mat, "Matrix")
 expect_equal(spl2tree , tree)
 # test generics
 c_spl <- c(tree2spl, tree2spl, tree2spl)
@@ -32,7 +32,7 @@ attr(spl2, "weights") <- NULL
 class(spl2) <- "splits"
 expect_equal(spl2 , spl)
 # test conversion with prop.part
-expect_true(inherits(as.splits(pp),"splits"))
+expect_inherits(as.splits(pp),"splits")
 expect_equal(pp, as.prop.part(as.splits(pp)))
 expect_equivalent(as.splits(as.bitsplits(tree2spl)), tree2spl)
 unlink("tmp.nex")
@@ -46,16 +46,16 @@ net3 <- as.networx(tree)
 # delete some additional attributes
 net2$.plot <- net2$translate <- NULL
 attr(net1, "order") <- NULL
-expect_true(inherits(net1, "networx"))
-expect_true(inherits(net2, "networx"))
-expect_true(inherits(net3, "networx"))
+expect_inherits(net1, "networx")
+expect_inherits(net2, "networx")
+expect_inherits(net3, "networx")
 expect_equal(net1, net2, use.edge.length = FALSE)
 expect_equal(net3, net2, use.edge.length = FALSE)
 expect_equal(net1, net3)
 unlink("tmp.nex")
 
 cnet <- consensusNet(trees)
-expect_true(inherits(cnet, "networx"))
+expect_inherits(cnet, "networx")
 net1$edge.length <- cnet$edge.length <- cnet$edge.labels <- NULL
 attr(cnet, "order") <- NULL
 expect_equal(cnet, net1)
@@ -70,7 +70,7 @@ data("Laurasiatherian")
 bs <- bootstrap.phyDat(Laurasiatherian,
                        FUN = function(x)nj(dist.hamming(x)), bs=50)
 cnet <- consensusNet(bs, 0.2)
-expect_true(inherits(cnet, "networx"))
+expect_inherits(cnet, "networx")
 
 
 spl <- allSplits(4)

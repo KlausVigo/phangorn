@@ -22,7 +22,7 @@ expect_equal( sp$fits[[1]]$rate / sp$fits[[3]]$rate , 0.5, tolerance = 1e-5)
 
 # extract trees
 trees <- pmlPart2multiPhylo(sp)
-expect_true(inherits(trees, "multiPhylo"))
+expect_inherits(trees, "multiPhylo")
 
 # test multiphyDat objects
 XX <- as.character(X)
@@ -36,7 +36,7 @@ X2 <- phyDat(XX[,p2])
 if(suppressPackageStartupMessages(requireNamespace('apex'))){
   mp <- new("multiphyDat", list(X0, X1, X2))
   sp_mp <- pmlPart(~ rate, mp, control = pml.control(trace = 0))
-  expect_true(inherits(sp_mp, "pmlPart"))
+  expect_inherits(sp_mp, "pmlPart")
   expect_true(sp_mp$fits[[1]]$rate > sp_mp$fits[[2]]$rate)
   expect_true(sp_mp$fits[[1]]$rate < sp_mp$fits[[3]]$rate)
 }

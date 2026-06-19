@@ -23,7 +23,7 @@ expect_equal(Siblings(tree, kids_108[1], include.self=TRUE), kids_108)
 
 # test allTrees
 ## allTrees
-expect_true(inherits(allTrees(6), "multiPhylo"))
+expect_inherits(allTrees(6), "multiPhylo")
 expect_true(all(RF.dist(allTrees(6))>0))
 
 
