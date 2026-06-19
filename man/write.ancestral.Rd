@@ -10,13 +10,13 @@
 \usage{
 write.ancestral(x, file = "ancestral")
 
-as.ancestral(tree, prob, align = NULL)
+as.ancestral(tree, prob, align, ...)
 
 \method{print}{ancestral}(x, ...)
 
 \method{as.phyDat}{ancestral}(x, ...)
 
-\method{as.data.frame}{ancestral}(x, ...)
+\method{as.data.frame}{ancestral}(x, terminal = FALSE, ...)
 }
 \arguments{
 \item{x}{an object of class ancestral}
@@ -31,6 +31,8 @@ each state and site.}
 \item{align}{an object of class phyDat.}
 
 \item{...}{Further arguments passed to or from other methods.}
+
+\item{terminal}{logical, should terminal nodes included.}
 }
 \value{
 \code{write.ancestral}  returns the input x invisibly.
