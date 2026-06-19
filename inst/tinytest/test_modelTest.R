@@ -15,7 +15,7 @@ MT <- modelTest(X, tree = tree, I=FALSE,
 expect_equal(MT$Model[which.min(MT$BIC)], "F81+G(4)")
 
 fitMT <- as.pml(MT)
-expect_true(inherits(fitMT, "pml"))
+expect_inherits(fitMT, "pml")
 expect_equal(fitMT$model, "F81")
 
 library(future.apply)

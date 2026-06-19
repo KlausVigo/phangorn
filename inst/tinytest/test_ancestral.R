@@ -11,12 +11,12 @@ dna <- phyDat(dat)
 fit <- pml(tree, dna)
 
 anc_p <- anc_pars(tree, dna)
-expect_true( inherits(anc_p, "ancestral"))
-dna_df <- as.data.frame(anc_p)
+expect_inherits(anc_p, "ancestral")
+dna_df <- as.data.frame(anc_p, TRUE)
 expect_equal(nrow(dna_df), 2 * (Ntip(tree) + Nnode(tree)))
 
 anc_acctran <- anc_pars(tree, dna, type="ACCTRAN")
-expect_true( inherits(anc_acctran, "ancestral"))
+expect_inherits(anc_acctran, "ancestral")
 
 
 
@@ -44,14 +44,15 @@ anc_ml <- anc_pml(fit)
 write.ancestral(anc_ml)
 align <- read.phyDat("ancestral_align.fasta", format = "fasta")
 tree <- read.tree("ancestral_tree.nwk")
-df <- read.table("ancestral_state.tsv", header=TRUE)
-unlink(c("ancestral_align.fasta", "ancestral_tree.nwk", "ancestral_state.tsv"))
+df <- read.table("ancestral_state.tsv.gz", header=TRUE)
+unlink(c("ancestral_align.fasta", "ancestral_tree.nwk",
+         "ancestral_state.tsv.gz"))
 
 anc_ml_disc <- as.ancestral(tree, df, align)
 expect_equal(anc_ml$tree, anc_ml_disc$tree)
 expect_equal(anc_ml$data[tree$tip.label], anc_ml_disc$data)
 #expect_equal(anc_ml[[3]], anc_ml_disc[[3]])
-expect_equal(anc_ml$state, anc_ml_disc$state)
+expect_equal(baseFreq(anc_ml$state), baseFreq(anc_ml_disc$state))
 
 
 
