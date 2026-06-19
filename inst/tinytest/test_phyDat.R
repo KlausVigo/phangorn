@@ -45,14 +45,14 @@ expect_equal(dna2codon(c2d), codon_align)
 expect_inherits(unalign(Laurasiatherian), "DNAbin")
 
 # test conversion with Biostrings
+# some functions getting moved to MultipleAlignment
 if(suppressPackageStartupMessages(requireNamespace('Biostrings'))){
-  expect_inherits(MA_AA <- as.MultipleAlignment(chloroplast),
-                  "AAMultipleAlignment")
-  expect_equal(as.phyDat(MA_AA), chloroplast)
-  expect_inherits(MA_DNA <- as.MultipleAlignment(Laurasiatherian),
-                  "DNAMultipleAlignment")
-  expect_equal(as.phyDat(MA_DNA), Laurasiatherian)
-
+#  expect_inherits(MA_AA <- as.MultipleAlignment(chloroplast),
+#                  "AAMultipleAlignment")
+#  expect_equal(as.phyDat(MA_AA), chloroplast)
+#  expect_inherits(MA_DNA <- as.MultipleAlignment(Laurasiatherian),
+#                  "DNAMultipleAlignment")
+#  expect_equal(as.phyDat(MA_DNA), Laurasiatherian)
   expect_inherits(laura_StringSet, "DNAStringSet")
   expect_inherits(chloroplast_StringSet, "AAStringSet")
   expect_equal(Laurasiatherian, as.phyDat(laura_StringSet))
