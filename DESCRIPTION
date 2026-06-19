@@ -60,7 +60,6 @@ Suggests:
     apex,
     bibtex,
     Biostrings,
-    MultipleAlignment,
     codetools,
     ggseqlogo,
     ggplot2,
