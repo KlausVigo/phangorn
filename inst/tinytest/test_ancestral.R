@@ -12,7 +12,7 @@ fit <- pml(tree, dna)
 
 anc_p <- anc_pars(tree, dna)
 expect_inherits(anc_p, "ancestral")
-dna_df <- as.data.frame(anc_p, TRUE)
+dna_df <- as.data.frame(anc_p, terminal = TRUE)
 expect_equal(nrow(dna_df), 2 * (Ntip(tree) + Nnode(tree)))
 
 anc_acctran <- anc_pars(tree, dna, type="ACCTRAN")
