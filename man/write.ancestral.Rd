@@ -16,7 +16,7 @@ as.ancestral(tree, prob, align, ...)
 
 \method{as.phyDat}{ancestral}(x, ...)
 
-\method{as.data.frame}{ancestral}(x, terminal = FALSE, ...)
+\method{as.data.frame}{ancestral}(x, ..., terminal = FALSE)
 }
 \arguments{
 \item{x}{an object of class ancestral}
@@ -55,11 +55,11 @@ write.ancestral(anc_ml)
 # Can be also results from iqtree
 align <- read.phyDat("ancestral_align.fasta", format="fasta")
 tree <- read.tree("ancestral_tree.nwk")
-df <- read.table("ancestral_state.tsv", header=TRUE)
+df <- read.table("ancestral_state.tsv.gz", header=TRUE)
 anc_ml_disc <- as.ancestral(tree, df, align)
 plotAnc(anc_ml_disc, 20)
 unlink(c("ancestral_align.fasta", "ancestral_tree.nwk",
-         "ancestral_state.tsv", "ancestral_state.fasta"))
+         "ancestral_state.tsv.gz", "ancestral_state.fasta"))
 }
 \seealso{
 \code{\link{anc_pml}}, \code{\link{plotAnc}}

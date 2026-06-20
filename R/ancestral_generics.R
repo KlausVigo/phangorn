@@ -21,11 +21,11 @@
 #' # Can be also results from iqtree
 #' align <- read.phyDat("ancestral_align.fasta", format="fasta")
 #' tree <- read.tree("ancestral_tree.nwk")
-#' df <- read.table("ancestral_state.tsv", header=TRUE)
+#' df <- read.table("ancestral_state.tsv.gz", header=TRUE)
 #' anc_ml_disc <- as.ancestral(tree, df, align)
 #' plotAnc(anc_ml_disc, 20)
 #' unlink(c("ancestral_align.fasta", "ancestral_tree.nwk",
-#'          "ancestral_state.tsv", "ancestral_state.fasta"))
+#'          "ancestral_state.tsv.gz", "ancestral_state.fasta"))
 #' @rdname write.ancestral
 #' @export
 write.ancestral <- function(x, file="ancestral"){
@@ -159,7 +159,7 @@ highest_state <- function(x, ...) {
 #' @rdname write.ancestral
 #' @param terminal logical, should terminal nodes included.
 #' @export
-as.data.frame.ancestral <- function(x, terminal=FALSE, ...) {
+as.data.frame.ancestral <- function(x, ..., terminal=FALSE) {
   stopifnot(inherits(x, "ancestral"))
   if(terminal) y <- rbind(x$data, x$state)
   else y <- x$state
