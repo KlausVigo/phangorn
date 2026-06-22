@@ -1,13 +1,11 @@
 #' Discrete Gamma and Beta distribution
 #'
 #' \code{discrete.gamma} internally used for the likelihood computations in
-#' \code{pml} or \code{optim.pml}. It is useful to understand how it works
-#' for simulation studies or in cases where .
-#'
-#' These functions are exported to be used in different packages so far only in
-#' the package coalescentMCMC, but are not intended for end user. Most of the
-#' functions call C code and are far less forgiving if the import is not what
-#' they expect than \code{pml}.
+#' \code{pml} or \code{optim.pml}. The functions \code{plot_gamma_plus_inv}
+#' and \code{plotRates} are useful in EDA and understand how discrete rate
+#' models work and where it limitations are \bibcitep{Ferreti2026}.
+#' \code{plotRates} plots the cumulative distribution function based on the
+#' parsimony score for the data and the discrete rate model.
 #'
 #' @param shape Shape parameter of the gamma distribution.
 #' @param alpha Shape parameter of the gamma distribution.
@@ -33,7 +31,9 @@
 #' @param \dots Further arguments passed to or from other methods.
 #' @return \code{discrete.gamma} returns a matrix.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{pml.fit}, \link{stepfun}, \link{pgamma}, \link{pbeta}},
+#' @seealso \code{\link{pml.fit}, \link{stepfun}, \link{pgamma}, \link{pbeta}}
+#' @references
+#' \bibshow{*}
 #' @examples
 #' discrete.gamma(1, 4)
 #'

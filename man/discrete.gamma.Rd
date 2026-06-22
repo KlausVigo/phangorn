@@ -72,14 +72,11 @@ plot.}
 }
 \description{
 \code{discrete.gamma} internally used for the likelihood computations in
-\code{pml} or \code{optim.pml}. It is useful to understand how it works
-for simulation studies or in cases where .
-}
-\details{
-These functions are exported to be used in different packages so far only in
-the package coalescentMCMC, but are not intended for end user. Most of the
-functions call C code and are far less forgiving if the import is not what
-they expect than \code{pml}.
+\code{pml} or \code{optim.pml}. The functions \code{plot_gamma_plus_inv}
+and \code{plotRates} are useful in EDA and understand how discrete rate
+models work and where it limitations are \bibcitep{Ferreti2026}.
+\code{plotRates} plots the cumulative distribution function based on the
+parsimony score for the data and the discrete rate model.
 }
 \examples{
 discrete.gamma(1, 4)
@@ -97,8 +94,11 @@ data(Laurasiatherian)
 fit <- pml_bb(Laurasiatherian, "JC+G(4)", rearrangement = "none")
 plotRates(fit)
 }
+\references{
+\bibshow{*}
+}
 \seealso{
-\code{\link{pml.fit}, \link{stepfun}, \link{pgamma}, \link{pbeta}},
+\code{\link{pml.fit}, \link{stepfun}, \link{pgamma}, \link{pbeta}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}
