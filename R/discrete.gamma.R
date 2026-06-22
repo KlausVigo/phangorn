@@ -3,7 +3,7 @@
 #' \code{discrete.gamma} internally used for the likelihood computations in
 #' \code{pml} or \code{optim.pml}. The functions \code{plot_gamma_plus_inv}
 #' and \code{plotRates} are useful in EDA and understand how discrete rate
-#' models work and where it limitations are \bibcitep{Ferreti2026}.
+#' models work and where it limitations are \bibcitep{Ferretti2026}.
 #' \code{plotRates} plots the cumulative distribution function based on the
 #' parsimony score for the data and the discrete rate model.
 #'
