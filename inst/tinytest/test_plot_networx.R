@@ -1,5 +1,5 @@
-Sys.setenv(LANGUAGE = "en") # Force locale
-library(tinytest)
+source("helpers.R")
+if (ON_WINDOWS || ON_OSX) exit_file("plot on Linux only")
 using("tinysnapshot")
 
 net <- as.networx(allCircularSplits(5))

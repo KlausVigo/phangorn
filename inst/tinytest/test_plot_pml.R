@@ -1,5 +1,7 @@
-Sys.setenv(LANGUAGE = "en") # Force locale
-library(tinytest)
+source("helpers.R")
+# if (ON_CI) exit_file("plot local only")
+if (ON_WINDOWS || ON_OSX) exit_file("plot on Linux only")
+
 using("tinysnapshot")
 
 set.seed(123)
