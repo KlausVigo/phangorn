@@ -22,3 +22,4 @@
 ^CONTRIBUTING.md$
 ^README\.Rmd$
 ^inst/tinytest/_tinysnapshot_review$
+^inst/REFERENCES_unsorted.bib

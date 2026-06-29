@@ -10,3 +10,4 @@ docs
 vignettes/revdep/
 to_do.txt
 .out.R
+inst/REFERENCES_unsorted.bib
