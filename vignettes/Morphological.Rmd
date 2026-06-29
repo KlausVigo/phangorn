@@ -95,7 +95,7 @@ mm_bab
 
 ## Root trees
 
-If we want our unrooted trees to be rooted, we have the possibility to use `midpoint` to perform midpoint rooting. Rooting the trees with a specific species (we chose _C. cymba_ here) can be done with the function `root` from the _ape_ package [@Paradis2018]. To save the correct node labels (edge support), it's important to set `edgelabel=TRUE`.
+If we want our unrooted trees to be rooted, we have the possibility to use `midpoint` to perform midpoint rooting. Rooting the trees with a specific species (we chose _C. cymba_ here) can be done with the function `root` from the _ape_ package [@Paradis2019]. To save the correct node labels (edge support), it's important to set `edgelabel=TRUE`.
 
 ``` {r root trees, message=FALSE}
 mm_tree_rooted <- root(mm_tree, outgroup = "C._cymba", resolve.root = TRUE,

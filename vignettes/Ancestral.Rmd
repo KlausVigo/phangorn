@@ -100,7 +100,7 @@ par(op)
 # Fitting for discrete comparative data
 
 Often have already a phylogeny and only want estimate the ancestral reconstruction for this tree. 
-This is a common problem in phylogentic comparative methods and we can use the function *ace* in the ape [@Paradis2018], *fitDiscrete* in the geiger [@Pennell2014] or *fitMK* in the phytools [@Revell2012] package. Here we want to show how to fit these models using *optim.pml*.
+This is a common problem in phylogentic comparative methods and we can use the function *ace* in the ape [@Paradis2019], *fitDiscrete* in the geiger [@Pennell2014] or *fitMK* in the phytools [@Revell2012] package. Here we want to show how to fit these models using *optim.pml*.
 
 First we load a tree and create some data. 
 ```{r read_geospiza_data}

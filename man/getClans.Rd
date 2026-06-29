@@ -68,14 +68,14 @@ tips is \eqn{2n^2 - 10n + 12}.
 A clip is a different type of partition, defining groups of leaves that are
 related in terms of evolutionary distances and not only topology.  Namely,
 clips are groups of leaves for which all pairwise path-length distances are
-smaller than a given threshold value (Lapointe et al. 2010). There exists
+smaller than a given threshold value \bibcitep{Lapointe2010}. There exists
 different numbers of clips for different thresholds, the largest (and
 trivial) one being the whole tree.  There is always a clip containing only
 the two leaves with the smallest pairwise distance.
 
 Clans, slices and clips can be used to characterize how well a vector of
 categorial characters (natives/intruders) fit on a tree. We will follow the
-definitions of Lapointe et al.(2010).  A complete clan is a clan that
+definitions of \bibcitet{Lapointe2010}. A complete clan is a clan that
 contains all leaves of a given state/color, but can also contain leaves of
 another state/color. A clan is homogeneous if it only contains leaves of one
 state/color.
@@ -100,7 +100,7 @@ Furthermore unknown character states are coded as ambiguous character, which
 can act either as native or intruder minimizing the number of clans or
 changes (in parsimony analysis) needed to describe a tree for given data.
 
-Set attribute labels to "old" for analysis as in Schliep et al. (2010) or to
+Set attribute labels to "old" for analysis as in \bibcitet{Schliep2011b} or to
 "new" for names which are more intuitive.
 
 \code{diversity} returns a data.frame with the parsimony score for each tree
@@ -128,17 +128,7 @@ summary(divTab)
 
 }
 \references{
-Lapointe, F.-J., Lopez, P., Boucher, Y., Koenig, J., Bapteste,
-E. (2010) Clanistics: a multi-level perspective for harvesting unrooted gene
-trees. \emph{Trends in Microbiology} 18: 341-347
-
-Wilkinson, M., McInerney, J.O., Hirt, R.P., Foster, P.G., Embley, T.M.
-(2007) Of clades and clans: terms for phylogenetic relationships in unrooted
-trees. \emph{Trends in Ecology and Evolution} 22: 114-115
-
-Schliep, K., Lopez, P., Lapointe F.-J., Bapteste E. (2011) Harvesting
-Evolutionary Signals in a Forest of Prokaryotic Gene Trees, \emph{Molecular
-Biology and Evolution} 28(4): 1393-1405
+\bibshow{*, Wilkinson2007}
 }
 \seealso{
 \code{\link{parsimony}}, Consistency index \code{\link{CI}},
