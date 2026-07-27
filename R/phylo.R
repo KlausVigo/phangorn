@@ -10,7 +10,7 @@ optimQ <- function(tree, data, Q = rep(1, 6), subs = rep(1, length(Q)),
     Q <- numeric(m)
     for (i in 1:n) Q[subs == i] <- ab[i]
     if (o < 0) Q[subs < 0] <- -Inf
-    pml.fit(tree, data, Q = exp(Q), ...) # Q^2, ...)
+    pml.fit(tree, data, Q = exp(Q), ...)
   }
   res <- optim(par = ab, fn = fn, gr = NULL, method = "L-BFGS-B", lower = -Inf,
                upper = 10, control = list(fnscale = -1, maxit = 25,
@@ -46,7 +46,7 @@ optimCodon <- function(tree, data, Q, subs, syn, trace = 0L, ab = c(0, 0),
     else Q[subs == 2] <- 0
     if (optW) Q[syn == 1] <- Q[syn == 1] + ab[2] # ab[n+1] dnds
     Q[syn < 0] <- -Inf
-    pml.fit(tree, data, Q = exp(Q), ...) # Q^2, ...)
+    pml.fit(tree, data, Q = exp(Q), ...)
   }
   res <- optim(par = ab, fn = fn, gr = NULL, method = "L-BFGS-B",
     lower = -Inf, upper = Inf, control = list(fnscale = -1,
@@ -149,7 +149,6 @@ optimGamma <- function(tree, data, shape = 1, k = 4, ...) {
   res
 }
 
-
 # optimize shape parameter and weights
 optimGammaPhangorn <- function(tree, data, w = c(0.25, 0.25, 0.25, 0.25),
                                shape=1, inv=0, ...) {
@@ -199,9 +198,7 @@ optimFreeRate <- function(tree, data, g = c(0.25, 0.75, 1, 2), k=4, w=w,
   g0[g0 < 1e-8] <- 1e-8 # required by constrOptim
   R <- matrix(0, k, k)
   R[lower.tri(R, TRUE)] <- 1
-
   if(optInv) w <- c(inv, w)
-
   nenner <- 1 / w[1]
   eta <- log(w * nenner)
   eta <- eta[-1]
@@ -242,12 +239,12 @@ optimFreeRate <- function(tree, data, g = c(0.25, 0.75, 1, 2), k=4, w=w,
     w <- w[-1]
   }
   sc <- sum(r * w)
-  # !timetree && optEdge
   if(!timetree) tree$edge.length <- tree$edge.length * sc
   r <- r / sc
   result <- list(r = r, w = w, tree = tree, inv = inv, value = res[[2]])
   result
 }
+
 
 
 # changed to c(-10,10) from c(-5,5)
@@ -876,15 +873,10 @@ update.pml <- function(object, ...) {
   w <- object$w
   if(updateRates){
     rw <- rates_n_weights(shape, k, site.rate, w, inv = inv)
-    g <- rw[, 1]
-    w <- rw[, 2]
-
-#    if (inv > 0){
-#      w <- (1 - inv) * w
-#      g <- g / (1 - inv)
-#    }
+    g <- rw$g * rate
+    w <- rw$w
 #  if (wMix > 0) w <- (1 - wMix) * w
-    g <- g * rate
+#    g <- g * rate
   }
 
   ll.0 <- as.matrix(INV %*% (bf * inv))
@@ -1058,19 +1050,12 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
   nTips <- as.integer(length(tree$tip.label))
   k <- as.integer(k)
   m <- 1
-  if (is.null(eig))
-    eig <- edQt(bf = bf, Q = Q)
+  if (is.null(eig)) eig <- edQt(bf = bf, Q = Q)
   if(is.null(g) | is.null(w)){
     rw <- rates_n_weights(shape, k, site.rate, w, inv = inv)
-    g <- rw[, 1]
-    w <- rw[, 2]
-
-#    if (inv > 0){
-#      w <- (1 - inv) * w
-#      g <- g / (1 - inv)
-#    }
-#    if (wMix > 0) w <- (1 - wMix) * w
-    g <- g * rate
+    g <- rw$g * rate
+    w <- rw$w
+    #g <- g * rate
   }
   if (any(g < .gEps)) {
     for (i in seq_along(g)) {
@@ -1089,7 +1074,6 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
     ll.0 <- numeric(attr(data, "nr"))
   }
   if (inv > 0) ll.0 <- as.matrix(INV %*% (bf * inv))
-# Notwendig??
   if (ASC) ll.0 <- as.matrix(INV %*% bf)
 #  if (wMix > 0) ll.0 <- ll.0 + llMix
 
@@ -1127,7 +1111,7 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
     loglik <- loglik - sum(weight) * log(1 - p0)
   }
   if (!site) return(loglik)
-  resll <- exp(resll)
+#  resll <- exp(resll)  # see if this is used anywhere
   return(list(loglik=loglik, siteLik=siteLik, resll=resll2, resll2=resll))
 }
 
@@ -1385,15 +1369,10 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   eig <- edQt(bf = bf, Q = Q)
   if(is.null(g) | is.null(w)){
       rw <- rates_n_weights(shape, k, site.rate, w, inv = inv)
-      g <- rw[, 1]
-      w <- rw[, 2]
-#    }
-#    if (inv > 0){
-#      w <- (1 - inv) * w
-#      g <- g / (1 - inv)
-#    }
+      g <- rw$g * rate
+      w <- rw$w
 #  if (wMix > 0) w <- (1 - wMix) * w
-    g <- g * rate
+      # g <- g * rate
   }
   inv0 <- inv
   kmax <- k
@@ -1966,16 +1945,11 @@ updateRates <- function(res, ll, rate, shape, k, inv, wMix, update="rate",
   if(update=="inv") inv <- res[[1]]
 
   rw <- rates_n_weights(shape, k, site.rate, w, inv = inv)
-  g <- rw[, 1]
-  w <- rw[, 2]
+  g <- rw$g * rate
+  w <- rw$w
 
-#  if (inv > 0){
-#    w <- (1 - inv) * w
-#    g <- g / (1 - inv)
-#  }
   # if (wMix > 0) w <- (1 - wMix) * w
-  g <- g * rate
-
+  #g <- g * rate
   assign("g", g, envir = parent.frame(n = 1))
   assign("w", w, envir = parent.frame(n = 1))
   assign("inv", inv, envir = parent.frame(n = 1))
@@ -2002,8 +1976,8 @@ updateRates <- function(res, ll, rate, shape, k, inv, wMix, update="rate",
   #  tree2 <- di2multi(tree, tol = 10 * tau, tip2root = TRUE) # raus
   if (!is.binary(tree2)) {
     tree2 <- multi2di(tree2)
-    if(method=="unrooted" & is.rooted(tree2)) tree2 <- unroot(tree2)
-    tree2 <- minEdge(tree2, 3*tau, method=="ultrametric")
+    if (method == "unrooted" & is.rooted(tree2)) tree2 <- unroot(tree2)
+    tree2 <- minEdge(tree2, 3*tau, method == "ultrametric")
   }
   attr(tree2, "order") <- NULL
   tree2 <- reorder(tree2, "postorder")
@@ -2064,7 +2038,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   optNni <- !(rearrangement ==  "none")
   perturbation <- rearrangement %in%
                         c("ratchet", "stochastic", "multi2di")
-  if(rearrangement=="ratchet") fbs <- vector("list", ratchet.par$minit)
+  if(rearrangement == "ratchet") fbs <- vector("list", ratchet.par$minit)
   extras <- match.call(expand.dots = FALSE)$...
   pmla <- c("wMix", "llMix")
   wMix <- object$wMix
@@ -2394,10 +2368,10 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     }
     if (optGamma) {
       if(site.rate=="gamma_weighted") {
-        res <- optimGammaPhangorn(tree, data, w=w, shape = shape,
-                                  inv = inv, INV = INV,
+        res <- optimGammaPhangorn(tree, data, w=w, shape = shape,                                  inv = inv, INV = INV,
                           Q = Q, bf = bf, eig = eig, ll.0 = ll.0, rate = rate,
                           llMix = llMix, wMix=wMix, ASC=ASC)
+
         shape <- res[[1]][k+1]
         w <- res[[1]][1:k]
         g <- discrete.gamma(shape, length(w), w = w)
@@ -2592,8 +2566,8 @@ index2tree <- function(x, tree, root = length(tree$tip.label) + 1L) {
   elind <- c(1L, 2L, 5L, 4L, 6L)                # raus
   if (x[6L] == root) el <- EL[x[ch]]
   else   el <- EL[x[elind]]
-  structure(list(edge = structure(c(x[pa], x[ch]), .Dim = c(5L, 2L)),
-    edge.length = el, Nnode = 2L), .Names = c("edge", "edge.length",
+  structure(list(edge = structure(c(x[pa], x[ch]), dim = c(5L, 2L)),
+    edge.length = el, Nnode = 2L), names = c("edge", "edge.length",
     "Nnode"), class = "phylo", order = "postorder")
 }
 
@@ -2607,10 +2581,10 @@ index2tree2 <- function(x, tree, root = length(tree$tip.label) + 1L) {
   eln <- c(6L, 4L, 5L, 1L, 2L)
   if (x[6L] == root) el <- EL[x[elr]]
   else   el <- EL[x[eln]]
-  structure(list(edge = structure(c(x[pa], x[ch]), .Dim = c(5L, 2L)),
+  structure(list(edge = structure(c(x[pa], x[ch]), dim = c(5L, 2L)),
     edge.length = el, Nnode = 2L),
-  .Names = c("edge", "edge.length", "Nnode"), class = "phylo",
-  order = "postorder")
+    names = c("edge", "edge.length", "Nnode"), class = "phylo",
+    order = "postorder")
 }
 
 
@@ -3024,7 +2998,8 @@ update_rell <- function(obj, siteLik, tree, ll=-Inf){
 #' equality. All numeric equality comparisons should either ensure that they are
 #' made between integers, or use appropriate tolerances for approximate
 #' equality.
-#' @srrstats {G1.0} in the lines folloing: 977
-#' @srrstats {G1.0} in the lines folloing: 1173
-#' @srrstats {G2.3, G2.3a} in lines: 72, 119, 603, 703, 731, 765, 772, 1309, 1320, 1330, 1929, 2028, 2137
+#' @srrstats {G1.0} in the lines following: 977
+#' @srrstats {G1.0} in the lines following: 1173
+#' @srrstats {G2.3, G2.3a} in lines: 72, 119, 603, 703, 731, 765, 772, 1309,
+#' 1320, 1330, 1929, 2028, 2137
 NULL

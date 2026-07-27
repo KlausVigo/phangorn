@@ -102,8 +102,8 @@ random.addition <- function (data, tree=NULL, method = "fitch")
   else{
     remaining <- as.integer(sample(nTips))
     tree <- structure(list(edge = structure(c(rep(nTips + 1L, 3),
-                        remaining[1:3]), .Dim = c(3L, 2L)), tip.label = label,
-                        Nnode = 1L), .Names = c("edge", "tip.label", "Nnode"),
+                        remaining[1:3]), dim = c(3L, 2L)), tip.label = label,
+                        Nnode = 1L), names = c("edge", "tip.label", "Nnode"),
                         class = "phylo", order = "postorder")
     remaining <- remaining[-(1:3)]
   }

@@ -80,8 +80,7 @@ Distance based methods are very fast and we will use the UPGMA and NJ tree as st
 
 The function parsimony returns the parsimony score, that is the minimum number of changes necessary to describe the data for a given tree. We can compare the parsimony score for the two trees we computed so far:
 ```{r pars_calc}
-parsimony(treeUPGMA, primates)
-parsimony(treeNJ, primates)
+parsimony(c(treeUPGMA, treeNJ), primates)
 ```
 The function most users want to use to infer phylogenies with MP (maximum parsimony) is `pratchet`, an implementation of the parsimony ratchet [@Nixon1999]. This allows to escape local optima and find better trees than only performing NNI / SPR rearrangements.
 
@@ -151,7 +150,8 @@ It's also possible to only select some common models:
 load("Trees.RData")
 ```
 ```{r mt_selected, echo=TRUE, eval=TRUE, cache=TRUE}
-mt <- modelTest(primates, model=c("JC", "F81", "K80", "HKY", "SYM", "GTR"))
+mt <- modelTest(primates, model=c("JC", "F81", "K80", "HKY", "SYM", "GTR"), 
+                RHAS = "gamma")
 ```
 The results of `modelTest` is illustrated in following table:
 ```{r, echo=FALSE}

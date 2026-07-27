@@ -8,7 +8,7 @@ getOrder <- function(x) {
   remaining <- (1:nTips)[-ind]
 
   tree <- structure(list(edge = structure(c(rep(nTips + 1L, 3), c(ind, 0L)),
-        .Dim = c(3L, 2L)), tip.label = label, Nnode = 1L), .Names = c("edge",
+        dim = c(3L, 2L)), tip.label = label, Nnode = 1L), names = c("edge",
         "tip.label", "Nnode"), class = "phylo", order = "postorder")
 
   l <- length(remaining)
@@ -263,8 +263,8 @@ bab <- function(data, tree = NULL, trace = !getOption("quiet"), ...) {
     cat("upper bound:", bound, "\n")
   }
   startTree <- structure(list(edge = structure(c(rep(nTips + 1L, 3),
-                                                 as.integer(1:3)), .Dim = c(3L, 2L)), tip.label = names(data),
-                              Nnode = 1L), .Names = c("edge", "tip.label", "Nnode"), class = "phylo",
+                                                 as.integer(1:3)), dim = c(3L, 2L)), tip.label = names(data),
+                              Nnode = 1L), names = c("edge", "tip.label", "Nnode"), class = "phylo",
                          order = "postorder")
 
   trees <- vector("list", nTips)
@@ -336,7 +336,7 @@ bab <- function(data, tree = NULL, trace = !getOption("quiet"), ...) {
   }
   for (i in seq_along(result)) {
     result[[i]] <- structure(list(edge = result[[i]], Nnode = nTips - 2L),
-                             .Names = c("edge", "Nnode"), class = "phylo",
+                             names = c("edge", "Nnode"), class = "phylo",
                              order = "postorder")
   }
   if(trace > 0  && nTips > 6) {

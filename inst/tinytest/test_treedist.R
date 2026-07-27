@@ -113,13 +113,13 @@ expect_inherits(SPR.dist(trees), "dist")
 # Fix to issue #97 on github
 tr1 <- structure(list(edge = structure(c(11L, 11L, 10L, 10L, 9L, 9L, 8L, 8L, 7L,
                                         7L, 2L, 6L, 5L, 11L, 4L, 10L, 3L, 9L,
-                                        1L, 8L), .Dim = c(10L, 2L)),
+                                        1L, 8L), dim = c(10L, 2L)),
                      tip.label = c("t1", "t2", "t3", "t4", "t5", "t6"),
                      Nnode = 5), class = "phylo")
 
 tr3 <- structure(list(edge = structure(c(9L, 9L, 11L, 11L, 10L, 10L, 8L, 8L, 7L,
                                          7L, 1L, 2L, 4L, 5L, 6L, 11L, 3L, 9L,
-                                         8L, 10L), .Dim = c(10L, 2L)),
+                                         8L, 10L), dim = c(10L, 2L)),
                       tip.label = c("t1", "t2", "t3", "t4", "t5", "t6"),
                       Nnode = 5L), class = "phylo")
 expect_equal(SPR.dist(tr1, tr3), SPR.dist(tr3, tr1))
