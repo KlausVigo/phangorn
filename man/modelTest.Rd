@@ -7,8 +7,9 @@
 \title{ModelTest}
 \usage{
 modelTest(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
-  FREQ = FALSE, k = 4, control = pml.control(), RHAS = "gamma", ...,
-  mt_control = mt.control(crit = "BIC", n_model = 100, n_rhas = 100))
+  FREQ = FALSE, k = 4, control = pml.control(), RHAS = c("gamma",
+  "gamma_weighted", "free_rate"), ..., mt_control = mt.control(crit = "BIC",
+  n_model = 5, n_rhas = 100))
 
 write.modelTest(x, file = "modelTest", digits = 10)
 }
@@ -72,7 +73,8 @@ data(Laurasiatherian)
 mT <- modelTest(Laurasiatherian, model = c("JC", "K80", "HKY", "GTR"))
 
 # Some exploratory data analysis
-plot(mT$TL, mT$logLik, xlim=c(3,6.5))
+plot(mT$TL, mT$logLik, xlim=c(3,6.5),
+   xlab="total tree length", ylab="log likelihood")
 text(mT$TL, mT$logLik, labels=mT$Model, pos=4)
 
 fit_GTR_G <- as.pml(mt, "GTR+G(4)")

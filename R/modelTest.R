@@ -141,7 +141,8 @@ fitPar <- function(par, fit, trees=NULL, calls=NULL, ...) {
 #' mT <- modelTest(Laurasiatherian, model = c("JC", "K80", "HKY", "GTR"))
 #'
 #' # Some exploratory data analysis
-#' plot(mT$TL, mT$logLik, xlim=c(3,6.5))
+#' plot(mT$TL, mT$logLik, xlim=c(3,6.5),
+#'    xlab="total tree length", ylab="log likelihood")
 #' text(mT$TL, mT$logLik, labels=mT$Model, pos=4)
 #'
 #' fit_GTR_G <- as.pml(mt, "GTR+G(4)")
@@ -166,8 +167,9 @@ fitPar <- function(par, fit, trees=NULL, calls=NULL, ...) {
 #'
 #' @export
 modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
-              FREQ = FALSE, k = 4, control = pml.control(), RHAS = "gamma", ...,
-              mt_control=mt.control(crit="BIC", n_model=100, n_rhas=100)) {
+            FREQ = FALSE, k = 4, control = pml.control(),
+            RHAS = c("gamma", "gamma_weighted", "free_rate"), ...,
+            mt_control = mt.control(crit = "BIC", n_model = 5, n_rhas = 100)) {
   crit <- mt_control$crit
 
   if(inherits(object, "DNAbin") || inherits(object, "AAbin"))
@@ -178,7 +180,7 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
     if (is.null(tree)) tree <- object$tree
   }
   RHAS <- match.arg(RHAS, choices = c("gamma", "gamma_weighted",
-                    "gamma_quadtrature", "free_rate"), several.ok = TRUE)
+                    "gamma_quadrature", "free_rate"), several.ok = TRUE)
   gld <- glance(data)
   inv0 <- max(0, 0.9 * (gld$const_sites / gld$nchar))
   #inv0 <- 0
