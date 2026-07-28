@@ -91,12 +91,12 @@ plot_gamma_plus_inv <- function(w=NULL, g=NULL, shape=1, inv=0, k=4, discrete=TR
   }
 
   gw <-  function(shape, k, inv, site.rate){
-    gw <- rates_n_weights(shape, k, site.rate)
-    g <- gw[, 1]
-    w <- gw[, 2]
+    gw <- rates_n_weights(shape, k, site.rate, inv=inv)
+    g <- gw$g
+    w <- gw$w
     if (inv > 0){
-      w <- c(inv, (1 - inv) * w)
-      g <- c(0, g/(1 - inv))
+      w <- c(inv, w) #(1 - inv) * w)
+      g <- c(0, g) # /(1 - inv))
     }
     cbind(w=w, g=g)
   }
@@ -284,8 +284,9 @@ LaguerreQuad <- function(shape=1, ncats=4) {
                                     Laguerre(roots[i], shape - 1, ncats + 1)^2)
   }
   roots <- roots/shape
-  return(matrix(c(roots, weights), ncol=2L,
-                dimnames = list(NULL, c("rate", "weight"))))
+  list(g=roots, w=weights)
+#  return(matrix(c(roots, weights), ncol=2L,
+#                dimnames = list(NULL, c("rate", "weight"))))
 }
 
 
@@ -310,7 +311,6 @@ Laguerre <- function(x, shape, degree) {
   return(y)
 }
 
-# w currently not used! Out?
 rates_n_weights <- function(shape, k, site.rate = "gamma", w=NULL, inv=0){
   site.rate <- match.arg(site.rate, c("gamma", "gamma_weighted",
                                       "gamma_quadrature", "free_rate"))
@@ -321,28 +321,28 @@ rates_n_weights <- function(shape, k, site.rate = "gamma", w=NULL, inv=0){
     w <- 1
   }
   else{
-
-    if(site.rate == "gamma"){
-      w <- rep(1 / k, k)
-      g <- discrete.gamma(shape, k=k)
-    }
-    if(site.rate == "gamma_weighted"){
+#    if(site.rate == "gamma_weighted"){
       if(is.null(w) || length(w)!=k)  w <- rep(1 / k, k)
+      else w <- w / sum(w) # scale to 1
       g <- discrete.gamma(alpha=shape, k=k, w=w)
-
-    }
-    if(site.rate == "free_rate"){
-      w <- rep(1 / k, k)
-      g <- discrete.gamma(1, k=k)
-    }
+#    }
+#    if(site.rate == "gamma"){
+#      w <- rep(1 / k, k)
+#      g <- discrete.gamma(shape, k=k)
+#    }
+#    if(site.rate == "free_rate"){
+#      w <- rep(1 / k, k)
+#      g <- discrete.gamma(1, k=k)
+#    }
   }
   if (inv > 0){
     w <- (1 - inv) * w
     g <- g / (1 - inv)
   }
-  rates.and.weights <- matrix(c(g, w), ncol=2L,
-                               dimnames = list(NULL, c("rate", "weight")))
-  rates.and.weights
+#  rates.and.weights <- matrix(c(g, w), ncol=2L,
+#                               dimnames = list(NULL, c("rate", "weight")))
+#  rates.and.weights
+  list(g=g, w=w)
 }
 
 
