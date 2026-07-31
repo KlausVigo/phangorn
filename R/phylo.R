@@ -1110,6 +1110,7 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
     p0 <- sum(exp(log(lll[ind]) + sca[ind]))
     loglik <- loglik - sum(weight) * log(1 - p0)
   }
+  if(!is.finite(loglik)) loglik <- -1.0e-308
   if (!site) return(loglik)
 #  resll <- exp(resll)  # see if this is used anywhere
   return(list(loglik=loglik, siteLik=siteLik, resll=resll2, resll2=resll))
