@@ -42,7 +42,7 @@ tree$edge.length[tree$edge[,2]<11] <- tree$edge.length[tree$edge[,2]<11] + 0.1
 
 Z <- simSeq(tree, Q = c(1,0,0,1,0,1), type = "USER",
             levels=c("A", "B", "C", "D"))
-MT_USER <- modelTest(Z, tree=tree, I=TRUE, G=TRUE,
+MT_USER <- modelTest(Z, tree=tree, I=TRUE, G=TRUE, RHAS = "gamma",
                   control = pml.control(epsilon = 1e-08, maxit = 5, trace = 0))
 expect_equal(MT_USER$Model[which.min(MT_USER$BIC)], "ORDERED")
 
