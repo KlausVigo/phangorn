@@ -335,7 +335,7 @@ splits2phylo <- function(x, rooted=FALSE){
   edge[m + 1:k ,1] <- node_i
   edge[m + 1:k ,2] <- kids
   phy <- structure(list(edge, labels, nNodes),
-                   .Names = c("edge", "tip.label", "Nnode"),
+                   names = c("edge", "tip.label", "Nnode"),
                    class = "phylo", order = "postorder")
   phy
 }
