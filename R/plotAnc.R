@@ -71,7 +71,7 @@ getTransition <- function(scheme, levels){
 #' woodmouse_aa <- trans(woodmouse, 2) |> as.phyDat()
 #' anc_aa <- anc_pars(tree, woodmouse_aa)
 #' plot(tree)
-#' add_mutations(anc_aa, adj = c(.5, -0.3), col=2)
+#' add_mutations(anc_aa, adj = c(0.5, -0.3), col=2)
 #'
 #' @importFrom grDevices hcl.colors
 ## @importFrom ggseqlogo make_col_scheme ggseqlogo
@@ -104,8 +104,8 @@ plotAnc <- function(x, i = 1, type="phylogram", ..., col = NULL,
   xrad <- CEX * diff(par("usr")[1:2]) / 50
   levels <- attr(data, "levels")
   nc <- attr(data, "nc")
-  if(is.null(scheme) & attr(data, "type")=="AA") scheme <- "Ape_AA"
-  if(is.null(scheme) & attr(data, "type")=="DNA") scheme <- "Ape_NT"
+  if(is.null(scheme) && attr(data, "type")=="AA") scheme <- "Clustal"
+  if(is.null(scheme) && attr(data, "type")=="DNA") scheme <- "Ape_NT"
   if(!is.null(scheme)){
     scheme <- match.arg(scheme, c("Ape_AA", "Zappo_AA", "Clustal", "Polarity",
                                   "Transmembrane_tendency", "Ape_NT", "RY_NT"))
@@ -194,8 +194,8 @@ plotSeqLogo <- function(x, node=getRoot(x$tree), start=1, end=10,
   X <- t(as.matrix(X[, -(1:3)]))
   tmp <- gsub("p_", "", rownames(X))
   lev <- rownames(X) <- toupper(tmp)
-  if(is.null(scheme) & type=="AA") scheme <- "Ape_AA"
-  if(is.null(scheme) & type=="DNA") scheme <- "Ape_NT"
+  if(is.null(scheme) && type=="AA") scheme <- "Clustal"
+  if(is.null(scheme) && type=="DNA") scheme <- "Ape_NT"
   if(!is.null(scheme)){
     scheme <- match.arg(scheme, c("Ape_AA", "Zappo_AA", "Clustal", "Polarity",
                                   "Transmembrane_tendency", "Ape_NT", "RY_NT"))

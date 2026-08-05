@@ -231,7 +231,7 @@ optimMixEdge <- function(object, omega, trace = 1, ...) {
   iter <- 0
   scalep <- 1
   if (trace > 0) cat(ll0)
-  while (abs(eps) > 0.0001 & iter < 10) {
+  while (abs(eps) > 0.0001 && iter < 10) {
     dl <- matrix(0, p, q)
     for (i in 1:n) dl <- dl + dl(object[[i]], TRUE) * omega[i]
     dl <- dl / lv1
@@ -239,7 +239,7 @@ optimMixEdge <- function(object, omega, trace = 1, ...) {
     F <- crossprod(dl * weight, dl) + diag(q) * 1e-6
     blub <- TRUE
     iter2 <- 0
-    while (blub & iter2 < 10) {
+    while (blub && iter2 < 10) {
       thetaNew <- log(theta) + scalep * solve(F, sc)
       tree$edge.length <- as.numeric(exp(thetaNew))
       for (i in 1:n) object[[i]] <- update(object[[i]], tree = tree)
@@ -351,7 +351,7 @@ optimMixEdge <- function(object, omega, trace = 1, ...) {
 #' logLik(fitMixEdge)
 #' AIC(fitMixEdge, k=log(3000))
 #'
-#' fit.p <- pmlPen(fitMixEdge, .25)
+#' fit.p <- pmlPen(fitMixEdge, 0.25)
 #' logLik(fit.p)
 #' AIC(fit.p, k=log(3000))
 #' }
@@ -464,7 +464,7 @@ pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
   })
 
 
-  while (eps0 > control$eps & iter0 < control$maxit) {
+  while (eps0 > control$eps && iter0 < control$maxit) {
     eps1 <- 100
     iter1 <- 0
 
@@ -527,7 +527,7 @@ pmlMix <- function(formula, fit, m = 2, omega = rep(1 / m, m),
       }
     }
     if (any(c(MixNni, MixBf, MixQ, MixInv, MixGamma, MixEdge))) {
-      while (abs(eps1) > 0.001 & iter1 < 3) {
+      while (abs(eps1) > 0.001 && iter1 < 3) {
         for (i in 1:r) {
           pl0 <- ll[, -i, drop = FALSE] %*% omega[-i]
           fits[[i]] <- update(fits[[i]], llMix = pl0, wMix = omega[i])

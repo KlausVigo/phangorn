@@ -97,7 +97,7 @@ changeEdgeLength <- function(tree, edge, edge.length) {
 #' tree$node.label <- c("", round(runif(tree$Nnode-1), digits=3))
 #'
 #' tree2 <- midpoint(tree)
-#' tree3 <- pruneTree(tree, .5)
+#' tree3 <- pruneTree(tree, 0.5)
 #'
 #' old.par <- par(no.readonly = TRUE)
 #' par(mfrow = c(3,1))
@@ -856,7 +856,7 @@ relabel <- function(x, ref) {
   label <- x$tip.label
   if (identical(label, ref)) return(x)
   ilab <- match(label, ref)
-  if (anyNA(ilab) | length(label) != length(ref))
+  if (anyNA(ilab) || length(label) != length(ref))
     stop("tree has different labels")
   ie <- match(seq_along(ref), x$edge[, 2])
   x$edge[ie, 2] <- ilab
@@ -867,7 +867,7 @@ relabel <- function(x, ref) {
 
 checkLabels <- function(tree, tip) {
   ind <- match(tree$tip.label, tip)
-  if (anyNA(ind) | length(tree$tip.label) != length(tip)) {
+  if (anyNA(ind) || length(tree$tip.label) != length(tip)) {
     stop("tree has different labels")
   }
   tree$tip.label <- tip

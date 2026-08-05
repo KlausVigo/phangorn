@@ -35,7 +35,7 @@ bs <- bootstrap.phyDat(Laurasiatherian,
 tree_compat <- allCompat(bs, rooted=TRUE) |>
               add_edge_length(bs)
 plot(tree_compat)
-add_boxplot(tree_compat, bs, boxwex=.7)
+add_boxplot(tree_compat, bs, boxwex=0.7)
 }
 \seealso{
 \code{\link[ape]{node.depth}},

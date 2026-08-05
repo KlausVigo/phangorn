@@ -116,7 +116,7 @@ plotBS <- function(tree, trees, type = "phylogram", method="FBP",
 
   label <- c(rep(0, length(tree$tip.label)), x)
   ind <- get("last_plot.phylo", envir = .PlotPhyloEnv)$edge[ ,2 ]
-  if (type == "phylogram" | type == "cladogram") {
+  if (type == "phylogram" || type == "cladogram") {
     root <- getRoot(tree)
     label <- c(rep(0, length(tree$tip.label)), x)
     label[root] <- 0
@@ -137,7 +137,7 @@ plotBS <- function(tree, trees, type = "phylogram", method="FBP",
       bs.adj <- c(0.5, 0.5)
     }
     ind2 <- which(label[ind] > p)
-    if (length(ind2 > 0)) {
+    if (length(ind2) > 0) {
       if(is.numeric(label)) label <- round(label, digits = digits)
       edgelabels(label[ind][ind2], ind2,
                  frame = frame,

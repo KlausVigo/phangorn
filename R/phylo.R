@@ -1051,7 +1051,7 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
   k <- as.integer(k)
   m <- 1
   if (is.null(eig)) eig <- edQt(bf = bf, Q = Q)
-  if(is.null(g) | is.null(w)){
+  if(is.null(g) || is.null(w)){
     rw <- rates_n_weights(shape, k, site.rate, w, inv = inv)
     g <- rw$g * rate
     w <- rw$w
@@ -1284,7 +1284,7 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
 #'   plot(fitJC$tree)
 #'
 #' # JC + Gamma + I - model
-#'   fitJC_GI <- update(fitJC, k=4, inv=.2)
+#'   fitJC_GI <- update(fitJC, k=4, inv=0.2)
 #' # optimize shape parameter + proportion of invariant sites
 #'   fitJC_GI <- optim.pml(fitJC_GI, optGamma=TRUE, optInv=TRUE)
 #' # GTR + Gamma + I - model
@@ -1368,7 +1368,7 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     Q <- rep(1, length(levels) * (length(levels) - 1) / 2)
   m <- 1
   eig <- edQt(bf = bf, Q = Q)
-  if(is.null(g) | is.null(w)){
+  if(is.null(g) || is.null(w)){
       rw <- rates_n_weights(shape, k, site.rate, w, inv = inv)
       g <- rw$g * rate
       w <- rw$w
@@ -1577,7 +1577,7 @@ optimRooted <- function(tree, data, bf, g, w, eig, ll.0,
         ll.0 = ll.0, maximum = TRUE, ...)
       }
       # if(control$trace>2) cat("edge", t[[2]], "\n")
-      if (!is.nan(t[[2]]) & t[[2]] > ll2) {
+      if (!is.nan(t[[2]]) && t[[2]] > ll2) {
         optRoot0(t[[1]], tmptree, data = data, g = g, w = w, eig = eig, bf = bf,
           ll.0 = ll.0, k = k, ...)
         EL[children] <- kidsEl + t[[1]]
@@ -1977,7 +1977,7 @@ updateRates <- function(res, ll, rate, shape, k, inv, wMix, update="rate",
   #  tree2 <- di2multi(tree, tol = 10 * tau, tip2root = TRUE) # raus
   if (!is.binary(tree2)) {
     tree2 <- multi2di(tree2)
-    if (method == "unrooted" & is.rooted(tree2)) tree2 <- unroot(tree2)
+    if (method == "unrooted" && is.rooted(tree2)) tree2 <- unroot(tree2)
     tree2 <- minEdge(tree2, 3*tau, method == "ultrametric")
   }
   attr(tree2, "order") <- NULL
@@ -2036,7 +2036,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   aLRT <- FALSE
   rearrangement <- match.arg(rearrangement,
                         c("none", "NNI", "ratchet", "stochastic", "multi2di"))
-  optNni <- !(rearrangement ==  "none")
+  optNni <- rearrangement !=  "none"
   perturbation <- rearrangement %in%
                         c("ratchet", "stochastic", "multi2di")
   if(rearrangement == "ratchet") fbs <- vector("list", ratchet.par$minit)
@@ -2073,7 +2073,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   is_ultrametric <- FALSE
   timetree <- FALSE
   if (is.rooted(tree)) {
-    if (optRooted == FALSE && optEdge == TRUE) {
+    if (!optRooted && optEdge) {
       tree <- unroot(tree)
       attr(tree, "order") <- NULL
       tree <- reorder(tree, "postorder")
@@ -2118,7 +2118,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     tree <- minEdge(tree, tau, is_ultrametric)
     object <- update.pml(object, tree = tree)
   }
-  if (optEdge & optRate & !timetree) {
+  if (optEdge && optRate && !timetree) {
     warning("You can't optimize edges and rates at the same time, only edges are optimized!", call. = FALSE)
     optRate <- FALSE
   }
@@ -2155,7 +2155,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   }
   nr <- as.integer(attr(data, "nr"))
   nc <- as.integer(attr(data, "nc"))
-  if (type == "DNA" & optModel) {
+  if (type == "DNA" && optModel) {
     object <- update(object, model = model)
     model <- object$model
     tmp <- subsChoice(model, has_gap_state(data))
@@ -2163,7 +2163,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     optQ <- tmp$optQ
     subs <- tmp$subs
   }
-  if (type == "USER" & optModel) {
+  if (type == "USER" && optModel) {
     tmp <- subsChoice_USER(model, nc)
     subs <- tmp$subs
     object <- update(object, model = model)
@@ -2176,16 +2176,16 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     object <- update.pml(object, bf = bf)
   }
   Q <- object$Q
-  if (is.null(subs) & optQ) subs <- c(seq_len(length(Q) - 1), 0)
+  if (is.null(subs) && optQ) subs <- c(seq_len(length(Q) - 1), 0)
   bf <- object$bf
   eig <- object$eig
   inv <- object$inv
   k <- object$k
-  if (k == 1 & optGamma) {
+  if (k == 1 && optGamma) {
     optGamma <- FALSE
     message("only one rate class, ignored optGamma")
   }
-  if(ASC==TRUE & optInv==TRUE){
+  if(ASC && optInv){
     optInv <- FALSE
     message('cannot estimate invariant sites and Mkv model, ignored optInv')
   }
@@ -2224,8 +2224,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       }
     }
     df <- ifelse(optRooted, tree$Nnode, length(tree$edge.length))
-    if(site.rate == "free_rate" & k > 1) df <- df + 2 * k - 3L
-    if(site.rate == "gamma_weighted" & k > 1) df <- df + k - 1L
+    if(site.rate == "free_rate" && k > 1) df <- df + 2 * k - 3L
+    if(site.rate == "gamma_weighted" && k > 1) df <- df + k - 1L
     dfQ <- ifelse(is.null(subs), length(unique(Q)) - 1, max(subs))
     df <- switch(type,
       DNA = df + (k > 1) + (optInv | (inv > 0)) + length(unique(bf)) - 1 + dfQ,
@@ -2434,7 +2434,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       rounds <- 1
       if (swap == 0) optNni <- FALSE
     }
-    if ( (perturbation == TRUE) && (optNni == FALSE)) {
+    if ( perturbation && optNni ) {
       maxR <- ratchet.par$iter
       maxit <- ratchet.par$maxit
       minit <- ratchet.par$minit
@@ -2904,8 +2904,8 @@ opt_nni <- function(tree, data, rooted, iter_max, trace, ll, RELL=NULL,
     ll <- ll2
     iter <- iter + 1
     if (tmp$swap == 0) {
-      break()
       iter <- iter_max
+      break()
     }
   }
 #

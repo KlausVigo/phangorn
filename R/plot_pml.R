@@ -38,7 +38,7 @@
 #'
 #' fit_unrooted <- pml_bb(H3N2, model="JC", rearrangement="none",
 #'                        control = pml.control(trace = 0))
-#' plot(fit_unrooted, cex=.5)
+#' plot(fit_unrooted, cex=0.5)
 #'
 #' @export
 plot.pml <- function(x, type="phylogram", direction = "rightwards",

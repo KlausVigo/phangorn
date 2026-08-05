@@ -490,7 +490,7 @@ compatible3 <- function(x, y = NULL) {
     for (j in 1:ny) {
       if (tmp1[i, j] == rs1[i]) res[i, j] <- 1
       if (tmp1[i, j] == rs2[j]) res[i, j] <- 2
-      if (tmp1[i, j] == rs1[i] & tmp1[i, j] == rs2[j]) res[i, j] <- 3
+      if (tmp1[i, j] == rs1[i] && tmp1[i, j] == rs2[j]) res[i, j] <- 3
     }
   }
   if (is.null(y)) {

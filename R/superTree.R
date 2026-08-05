@@ -191,7 +191,7 @@ superTree <- function(tree, method = "MRP", rooted = FALSE, trace = 0,
 
   if (method != "MRP") rooted <- FALSE
   if (!rooted) tree <- unroot(tree)
-  if (method == "MRP" | is.null(start)) {
+  if (method == "MRP" || is.null(start)) {
     if (rooted) {
       if (!is.null(attr(tree, "TipLabel"))) tree <- .uncompressTipLabel(tree)
       tree <- unclass(tree)

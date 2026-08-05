@@ -31,7 +31,7 @@ pmlPartPen <- function(object, lambda, ... ,
   H <- matrix(0, m * l, m * l)
   iter <- 0
   trace <- control$trace
-  while (abs(eps) > control$eps & iter < control$maxit) {
+  while (abs(eps) > control$eps && iter < control$maxit) {
     theta <- NULL
     sc <- NULL
     for (i in 1:m) {
@@ -99,10 +99,10 @@ pmlMixPen <- function(object, lambda, ..., optOmega = TRUE,
   eps0 <- 1
   dl <- matrix(0, nr, m * l)
   iter0 <- 0
-  while (abs(eps0) > control$eps & iter0 < control$maxit) {
+  while (abs(eps0) > control$eps && iter0 < control$maxit) {
     eps <- 1
     iter <- 0
-    while (abs(eps) > 0.01 & iter < 5) {
+    while (abs(eps) > 0.01 && iter < 5) {
       for (i in 1:m) {
         dl[, (1:l) + l * (i - 1)] <- dl(fits[[i]], TRUE) * omega[i]
       }

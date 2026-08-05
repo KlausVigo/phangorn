@@ -3,12 +3,16 @@
 \name{dist.hamming}
 \alias{dist.hamming}
 \alias{dist.ml}
+\alias{dist.ml_arma}
 \alias{dist.logDet}
 \title{Pairwise Distances from Sequences}
 \usage{
 dist.hamming(x, ratio = TRUE, exclude = "pairwise")
 
 dist.ml(x, model = "JC69", exclude = "pairwise", bf = NULL, Q = NULL,
+  k = 1L, shape = 1, ...)
+
+dist.ml_arma(x, model = "JC69", exclude = "none", bf = NULL, Q = NULL,
   k = 1L, shape = 1, ...)
 
 dist.logDet(x)
@@ -79,7 +83,7 @@ dm3 <- dist.ml(Laurasiatherian)
 tree3 <- NJ(dm3)
 treedist(tree1,tree3)
 # F81 + Gamma
-dm4 <- dist.ml(Laurasiatherian, model="F81", k=4, shape=.4)
+dm4 <- dist.ml(Laurasiatherian, model="F81", k=4, shape=0.4)
 tree4 <- NJ(dm4)
 treedist(tree1,tree4)
 treedist(tree3,tree4)

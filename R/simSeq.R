@@ -126,7 +126,7 @@ simSeq.phylo <- function(x, l = 1000, Q = NULL, bf = NULL, rootseq = NULL,
   if (pt == "DNA"){
     levels <- c("a", "c", "g", "t")
     if (!is.null(extras) ) {
-      if (!is.na(existing[2]) & is.null(Q))
+      if (!is.na(existing[2]) && is.null(Q))
         tstv <- eval(extras[[existing[2]]], parent.frame())
         Q <- c(1, tstv, 1, 1, tstv, 1)
     }

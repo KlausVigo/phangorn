@@ -19,9 +19,6 @@ phyDat.DNA <- function (data, return.index = TRUE, compress = TRUE){
   if(inherits(data, "character")){
     data <- as.matrix(data)
   }
-#  if (inherits(data,"DNAbin")){
-#    if(is.list(data)) data <- as.matrix(data)
-#  }
   if (inherits(data,"DNAbin") && is.list(data)) data <- as.matrix(data)
   if(mode(data)=="character") data <- tolower(data)
   ac <- c("a", "c", "g", "t", "u", "m", "r", "w", "s", "y",

@@ -57,7 +57,7 @@ tree <- rtree(10, rooted = FALSE)
 tree$node.label <- c("", round(runif(tree$Nnode-1), digits=3))
 
 tree2 <- midpoint(tree)
-tree3 <- pruneTree(tree, .5)
+tree3 <- pruneTree(tree, 0.5)
 
 old.par <- par(no.readonly = TRUE)
 par(mfrow = c(3,1))

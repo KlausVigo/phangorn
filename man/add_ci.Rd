@@ -56,7 +56,7 @@ trees <- bootstrap.phyDat(Laurasiatherian,
 tree <- plotBS(tree, trees, "phylogram")
 add_ci(tree, trees, bty="n")
 plot(tree, direction="downwards")
-add_boxplot(tree, trees, boxwex=.7)
+add_boxplot(tree, trees, boxwex=0.7)
 }
 \seealso{
 \code{\link[ape]{plot.phylo}}, \code{\link{plotBS}},

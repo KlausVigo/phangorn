@@ -152,7 +152,7 @@ treedist <- function(tree1, tree2, check.labels = TRUE) {
   branch.score.difference <- NULL
   path.difference <- NULL
   quadratic.path.difference <- NULL
-  if (!is.binary(tree1) | !is.binary(tree2))
+  if (!is.binary(tree1) || !is.binary(tree2))
     message("Some trees are not binary. Result may not what you expect!")
 
   bp1 <- bip(tree1)
@@ -218,7 +218,7 @@ sprdist <- function(tree1, tree2) {
   tree1 <- clean_phylo(tree1, unroot=TRUE, collapse.singles=TRUE, reorder=TRUE)
   tree2 <- clean_phylo(tree2, unroot=TRUE, collapse.singles=TRUE, reorder=TRUE)
   lt1 <- length(tree1$tip.label)
-  if (!is.binary(tree1) | !is.binary(tree2))
+  if (!is.binary(tree1) || !is.binary(tree2))
     message("Some trees are not binary. Result may not what you expect!")
   # possibly replace bip with bipart
   bp1 <- bip(tree1)
@@ -348,7 +348,7 @@ wRF0 <- function(tree1, tree2, normalize = FALSE, check.labels = TRUE,
 #  }
 #  if (has.singles(tree1)) tree1 <- collapse.singles(tree1)
 #  if (has.singles(tree2)) tree2 <- collapse.singles(tree2)
-  if (!is.binary(tree1) | !is.binary(tree2))
+  if (!is.binary(tree1) || !is.binary(tree2))
     message("Some trees are not binary. Result may not what you expect!")
 
   bp1 <- fun2(tree1, rooted)
@@ -601,7 +601,7 @@ RF0 <- function(tree1, tree2 = NULL, normalize = FALSE, check.labels = TRUE,
     }
   }
   if (check.labels) tree2 <- relabel(tree2, tree1$tip.label)
-  if (!is.binary(tree1) | !is.binary(tree2))
+  if (!is.binary(tree1) || !is.binary(tree2))
     message("Some trees are not binary. Result may not what you expect!")
   bp1 <- bipart(tree1)
   bp2 <- bipart(tree2)

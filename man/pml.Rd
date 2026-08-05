@@ -164,7 +164,7 @@ tree topologies, especially for larger trees.
   plot(fitJC$tree)
 
 # JC + Gamma + I - model
-  fitJC_GI <- update(fitJC, k=4, inv=.2)
+  fitJC_GI <- update(fitJC, k=4, inv=0.2)
 # optimize shape parameter + proportion of invariant sites
   fitJC_GI <- optim.pml(fitJC_GI, optGamma=TRUE, optInv=TRUE)
 # GTR + Gamma + I - model

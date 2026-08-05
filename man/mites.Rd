@@ -17,7 +17,7 @@ trees <- bab(mites)
 # For larger data sets you might use pratchet instead bab
 # trees <- pratchet(mites, minit=200, trace=0, all=TRUE)
 # build consensus tree
-ctree <- root(consensus(trees, p=.5), outgroup = "C._cymba",
+ctree <- root(consensus(trees, p=0.5), outgroup = "C._cymba",
               resolve.root=TRUE, edgelabel=TRUE)
 plotBS(ctree, trees)
 cnet <- consensusNet(trees)

@@ -129,7 +129,7 @@ print.pml <- function(x, ...) {
     cat("ts/tv:", x$tstv, "\n")
     cat("Freq:", x$frequencies, "\n")
   }
-  if (type == "USER" & length(x$bf) < 11) {
+  if (type == "USER" && length(x$bf) < 11) {
     cat("\nRate matrix:\n")
     QM <- matrix(0, nc, nc, dimnames = list(levels, levels))
     QM[lower.tri(QM)] <- x$Q
