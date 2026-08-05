@@ -147,7 +147,7 @@ cbind.phyDat <- function(..., gaps="-", compress=TRUE){
     tmp <- tmp[pos,]
   }
   if(any(sapply(x, function(x)is.null(attr(x, "index"))))) add.index <- FALSE
-  if(add.index  & compress){
+  if(add.index && compress){
     for(i in 1:n){
       tmp2 <- attr(x[[i]], "index")
       if(!is.null(tmp2)){
@@ -288,7 +288,7 @@ getRows <- function (data, rows, site.pattern = TRUE){
 #' @export
 subset.phyDat <- function (x, subset, select, site.pattern = TRUE, ...){
   if (!missing(subset)){
-    if(is.numeric(subset) & any(subset>length(x)))
+    if(is.numeric(subset) && any(subset>length(x)))
         stop("subscript out of bounds")
     x <- getCols(x, subset, ...)
   }
@@ -464,8 +464,8 @@ removeParsimonyUninfomativeSites <- function(data, recursive=FALSE, exact=TRUE){
     if(!recursive) return(data)
     if (attr(data, "nr") == 0) {
       star_tree <- TRUE
-      break()
       tmp <- FALSE
+      break()
     }
     # unique sequences
     dup <- map_duplicates(data)

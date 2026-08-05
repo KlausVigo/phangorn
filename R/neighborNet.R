@@ -81,7 +81,7 @@ getOrderingNN <- function(x) {
     }
     n1 <- length(CL[[e1]])
     n2 <- length(CL[[e2]])
-    if (n1 == 1 & n2 == 1) {
+    if (n1 == 1 && n2 == 1) {
       # add edge
       newCL <- c(CL[[e1]], CL[[e2]])
       newOrd <- newCL
@@ -108,7 +108,7 @@ getOrderingNN <- function(x) {
       TMP2 <- DM3[1:n1, (n1 + 1):(n1 + n2)]
       blub <- which.min(TMP2)
 
-      if (n1 == 2 & n2 == 1) {
+      if (n1 == 2 && n2 == 1) {
         if (blub == 2) {
           newCL <- c(CL[[e1]][1], CL[[e2]])
           newOrd <-  c(ord[[e1]], ord[[e2]])
@@ -120,7 +120,7 @@ getOrderingNN <- function(x) {
           d <- reduc(d, CL[[e2]], CL[[e1]][1], CL[[e1]][2])
         }
       }
-      if (n1 == 1 & n2 == 2) {
+      if (n1 == 1 && n2 == 2) {
         if (blub == 1) {
           newCL <- c(CL[[e1]], CL[[e2]][2])
           newOrd <-  c(ord[[e1]], ord[[e2]])
@@ -132,7 +132,7 @@ getOrderingNN <- function(x) {
           d <- reduc(d, CL[[e2]][1], CL[[e2]][2], CL[[e1]])
         }
       }
-      if (n1 == 2 & n2 == 2) {
+      if (n1 == 2 && n2 == 2) {
         if (blub == 1) {
           newCL <- c(CL[[e1]][2], CL[[e2]][2])
           newOrd <-  c(rev(ord[[e1]]), ord[[e2]])

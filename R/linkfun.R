@@ -77,11 +77,11 @@ make_link_mk <- function (n=4L){
 #' @seealso \code{\link{family}}, \code{\link{binomial}}, \code{\link{glm}}
 #' @param k number of states.
 #' @examples
-#' plot(function(x) binomial_mk()$linkinv(x), 0, 1.5, , ylim=c(0, 1), asp=1,
+#' plot(function(x) binomial_mk()$linkinv(x), 0, 1.5, ylim=c(0, 1), asp=1,
 #'      main = "inverse link function (JC69)", ylab="f(x)")
 #' abline(0, 1)
-#' abline(h=.75)
-#' plot(function(x) binomial_mk()$linkfun(x), 0, .75,
+#' abline(h=0.75)
+#' plot(function(x) binomial_mk()$linkfun(x), 0, 0.75,
 #'      main = "link function (JC69)", ylab="f(x)")
 #'
 #' data(yeast)

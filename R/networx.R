@@ -78,7 +78,7 @@ addEdge <- function(network, desc, spl) {
 
   index <- network$splitIndex
   ind <- which(compatible(split, desc2[index]) == 1)
-  if (is.null(ind) | (length(ind) == 0)) return(network)
+  if (is.null(ind) || (length(ind) == 0)) return(network)
   add <- TRUE
 
   v <- sort(match(split[[1]], edge[,2]))
@@ -199,7 +199,7 @@ circNetwork <- function(x, ord = NULL) {
     }
     if (length(sp2) == 0) {
       isChild <- (rsY == (Y %*% X[k, ]))[index]
-      sp0 <- which(isChild == TRUE)
+      sp0 <- which(isChild) #  == TRUE
       edge1 <- unique(as.vector(res$edge[sp0, ]))
       edge2 <- as.vector(res$edge[-sp0, ])
       asdf <- edge1 %in% edge2

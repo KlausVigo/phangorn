@@ -38,7 +38,7 @@
 #'   FUN = function(x)upgma(dist.hamming(x)), bs=100)
 #'
 #' strict_consensus <- consensus(bs)
-#' majority_consensus <- consensus(bs, p=.5)
+#' majority_consensus <- consensus(bs, p=0.5)
 #' all_compat <- allCompat(bs)
 #' max_clade_cred <- maxCladeCred(bs)
 #'

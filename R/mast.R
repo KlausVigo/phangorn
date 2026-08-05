@@ -30,7 +30,7 @@
 #' @export
 mast <- function(x, y, tree = TRUE, rooted = TRUE) {
 
-  if (!is.rooted(x) | !is.rooted(y)) {
+  if (!is.rooted(x) || !is.rooted(y)) {
     rooted <- FALSE
   }
 

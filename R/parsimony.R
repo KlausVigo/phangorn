@@ -79,7 +79,7 @@
 #' @export
 ## parsimony <- function(tree, data, cost=NULL, method = NULL)
 parsimony <- function(tree, data, method = "fitch", cost=NULL, site = "pscore"){
-  if(inherits(data, "DNAbin") | inherits(data, "AAbin")) data <- as.phyDat(data)
+  if(inherits(data, "DNAbin") || inherits(data, "AAbin")) data <- as.phyDat(data)
 #  assert_phyDat(data) inside fitch sankoff
   method <- match.arg(tolower(method), c("fitch", "sankoff"))
   if(!any(is.binary(tree)) || !is.null(cost)) method <- "sankoff"
@@ -155,7 +155,7 @@ lowerBound <- function(x, cost = NULL) {
   fun <- function(states, contrast, singles, noinfo, ambiguous) {
     if (length(states) == 1) return(0)
     states <- setdiff(states, noinfo) # get rid of "-", "?" in DNA
-    if ( (length(states) == 0) | (length(states) == 1)) return(0)
+    if ( (length(states) == 0) || (length(states) == 1)) return(0)
     if (any(states %in% ambiguous)) {
       n <- 0L
       contrast <- contrast[states, , drop = FALSE]

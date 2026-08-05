@@ -99,11 +99,11 @@ phyDat.default <- function (data, levels = NULL, return.index = TRUE,
   }
   if(inherits(data, "list")) data <- as.data.frame(data)
   if(inherits(data, "data.frame")) data <- t(as.matrix(data))
-  if(inherits(data, "character") | inherits(data, "numeric"))
+  if(inherits(data, "character") || inherits(data, "numeric"))
     data <- as.matrix(data)
-  if (inherits(data, "DNAbin") | inherits(data, "AAbin"))
+  if (inherits(data, "DNAbin") || inherits(data, "AAbin"))
     if(is.list(data)) data <- as.matrix(data)
-  if (inherits(data, "DNAbin") | inherits(data, "AAbin") |
+  if (inherits(data, "DNAbin") || inherits(data, "AAbin") ||
       inherits(data, "phyDat")) data <- as.character(data)
   if(ncol(data)==1) compress <- FALSE
   if(compress){
