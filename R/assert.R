@@ -73,17 +73,6 @@ assert_treeish <- function(x, null.ok=FALSE){
 
 #' @rdname phangorn-internal
 #' @export
-assert_phyDat <- function(x, contains_label=!is.null(label), label=NULL){
-  txt <-  deparse(substitute(x))
-  if (!inherits(x, "phyDat")) stop(gettextf("%s must be of class 'phyDat'", txt))
-  if (contains_label && anyNA(match(label, attr(x, "names"))))
-    stop(gettextf("tip labels are not in %s", txt))
-  invisible(x)
-}
-
-
-#' @rdname phangorn-internal
-#' @export
 assert_pml <- function(x){
   txt <-  deparse(substitute(x))
   if (!inherits(x, "pml")) stop(gettextf("%s must be of class 'pml'", txt))

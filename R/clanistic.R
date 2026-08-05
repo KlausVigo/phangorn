@@ -466,14 +466,14 @@ compareSplits <- function(res, nam1, nam2){
             E1 <- wide[m, i]
             for(j in nam2){
                 E2 <- wide[m, j]
-                if(!is.na(E1) & !is.na(E2)){
+                if(!is.na(E1) && !is.na(E2)){
                     if(E1 == E2){ # if(E1 == 0 & E2 == 0){
 	                if( (wideI[m, i] >0) & (wideI[m, j]) >0){
                             ind1 <- which(dat[,1]==trnam & dat[,2]==i)
                             sp1 <- splits[[ind1]]
                             ind2 <- which(dat[,1]==trnam & dat[,2]==j)
                             sp2 <- splits[[ind2]]
-                            if(length(ind1)>0 & length(ind2)>0 )
+                            if(length(ind1)>0 && length(ind2)>0 )
                                     res[m, k] <- drop(compatible3(sp1, sp2))
                         }
                     }

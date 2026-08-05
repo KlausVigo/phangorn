@@ -61,16 +61,16 @@ check_tip_dates <- function(tree, tip.dates){
 }
 
 
-proper_tree <- function(x, tree, method=c("ultrametric", "tipdated"),
-                        tip.dates=NULL, eps = 1e-8, ...){
-  method <- match.arg(method, c("ultrametric", "tipdated"))
-  if(!is.null(tree$edge.length)){
-    if(method=="ultrametric" && is.ultrametric(tree)) return(tree)
-    if(method=="tipdated" && check_tip_dates(tree, tip.dates)) return(tree)
-  }
-  dm <- dist.ml(x, ...)
-  nnls.tree(dm, tree, method)
-}
+#proper_tree <- function(x, tree, method=c("ultrametric", "tipdated"),
+#                        tip.dates=NULL, eps = 1e-8, ...){
+#  method <- match.arg(method, c("ultrametric", "tipdated"))
+#  if(!is.null(tree$edge.length)){
+#    if(method=="ultrametric" && is.ultrametric(tree)) return(tree)
+#    if(method=="tipdated" && check_tip_dates(tree, tip.dates)) return(tree)
+#  }
+#  dm <- dist.ml(x, ...)
+#  nnls.tree(dm, tree, method)
+#}
 
 #' @srrstats {G2.3, G2.3a} in lines: 31, 66
 NULL
