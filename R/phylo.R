@@ -2434,7 +2434,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       rounds <- 1
       if (swap == 0) optNni <- FALSE
     }
-    if ( perturbation && optNni ) {
+    if ( perturbation && !optNni ) {
       maxR <- ratchet.par$iter
       maxit <- ratchet.par$maxit
       minit <- ratchet.par$minit
@@ -2908,9 +2908,6 @@ opt_nni <- function(tree, data, rooted, iter_max, trace, ll, RELL=NULL,
       break()
     }
   }
-#
-#  if (!rooted) res <- optimEdge(tmp$tree, data, ...)
-#  else res <- optimRooted(tmp$tree, data, ...)
   res <- opt_Edge(tmp$tree, data, rooted, ...)
   ll2 <- res$logLik
   if (trace > 0) cat("optimize topology: ", llstart, "-->", ll2,
