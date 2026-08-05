@@ -87,7 +87,7 @@ tree <- pml_bb(woodmouse, "JC", rearrangement="NNI")$tree |> midpoint()
 woodmouse_aa <- trans(woodmouse, 2) |> as.phyDat()
 anc_aa <- anc_pars(tree, woodmouse_aa)
 plot(tree)
-add_mutations(anc_aa, adj = c(.5, -0.3), col=2)
+add_mutations(anc_aa, adj = c(0.5, -0.3), col=2)
 
 }
 \seealso{

@@ -93,7 +93,7 @@ fitMixEdge <- pmlMix( ~ edge, fit1, m=2)
 logLik(fitMixEdge)
 AIC(fitMixEdge, k=log(3000))
 
-fit.p <- pmlPen(fitMixEdge, .25)
+fit.p <- pmlPen(fitMixEdge, 0.25)
 logLik(fit.p)
 AIC(fit.p, k=log(3000))
 }
