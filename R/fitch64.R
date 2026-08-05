@@ -214,7 +214,6 @@ nni2 <- function(x){
   INDEX <- rbind(INDEX[, c(1, 3, 2, 4)], INDEX[, c(2, 3, 1, 4)])
   l <- nrow(INDEX)
   res <- vector("list", l)
-  #  for(i in seq_len(l)) res[[i]] <- changeEdge(x, INDEX[c(2, 3), i])
   for(i in seq_len(l)) res[[i]] <- changeEdge(x, INDEX[i, c(2, 3)])
   class(res) <- "multiPhylo"
   res

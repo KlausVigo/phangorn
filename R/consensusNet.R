@@ -24,7 +24,7 @@
 #' set.seed(1)
 #' bs <- bootstrap.phyDat(Laurasiatherian, FUN = function(x)nj(dist.hamming(x)),
 #'     bs=50)
-#' cnet <- consensusNet(bs, .3)
+#' cnet <- consensusNet(bs, 0.3)
 #' plot(cnet, angle=-60)
 #' \dontrun{
 #' library(rgl)
@@ -35,7 +35,7 @@
 #' tmpfile <- normalizePath(system.file(
 #'               "extdata/trees/RAxML_bootstrap.woodmouse", package="phangorn"))
 #' trees <- read.tree(tmpfile)
-#' cnet_woodmouse <- consensusNet(trees, .3)
+#' cnet_woodmouse <- consensusNet(trees, 0.3)
 #' plot(cnet_woodmouse, type = "equal angle", show.edge.label=TRUE)
 #' }
 #'

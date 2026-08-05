@@ -19,7 +19,7 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt = 0, cex = 1,
   nTips <- length(tip.label)
   xx <- rep(maxBT, nrow(xy))
   yy <- xy[, 2 ]
-  if (direction == "leftwards" | direction == "downwards") xx <- xx * 0
+  if (direction == "leftwards" || direction == "downwards") xx <- xx * 0
   if (!horizontal) {
 #    tmp <- yy
     yy <- xx
@@ -125,7 +125,7 @@ add_tiplabels <- function(xy, tip.label, direction, adj, font, srt = 0, cex = 1,
 #'
 #' # plot five trees slightly shifted, no transparent color
 #' densiTree(bs[1:5], type="phylogram", col=1:5, width=2, jitter=
-#'     list(amount=.3, random=FALSE), alpha=1)
+#'     list(amount=0.3, random=FALSE), alpha=1)
 #' \dontrun{
 #' # phylograms are nice to show different age estimates
 #' require(PhyloOrchard)

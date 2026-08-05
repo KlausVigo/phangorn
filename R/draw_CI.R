@@ -35,34 +35,34 @@ edge_length_matrix <- function(tree, trees, rooted = TRUE){
 }
 
 
-##' @title Assign and compute edge lengths from a sample of trees
-##' @description This command can infer some average edge lengths and assign
-##' them from a (bootstrap/MCMC) sample.
-##' @param tree a phylogenetic tree or splitnetwork where edge lengths are
-##' assigned to.
-##' @param trees an object of class multiPhylo, where the average for the edges
-##' is computed from.
-##' @param fun a function to compute the average (default is median).
-##' @param rooted rooted logical, if FALSE edge lengths is a function of the
-##' observed splits, if TRUE edge lengths are estimated from height for the
-##' observed clades.
-##' @return The tree with newly assigned edge length.
-##' @author Klaus Schliep
-##' @importFrom graphics legend rect
-##' @examples
-##' data("Laurasiatherian")
-##' set.seed(123)
-##' bs <- bootstrap.phyDat(Laurasiatherian,
-##'                 FUN=function(x)upgma(dist.ml(x)), bs=100)
-##' tree_compat <- allCompat(bs, rooted=TRUE) |>
-##'               add_edge_length(bs)
-##' plot(tree_compat)
-##' add_boxplot(tree_compat, bs, boxwex=.7)
-##' @seealso \code{\link[ape]{node.depth}},
-##' \code{\link[ape]{consensus}}, \code{\link{maxCladeCred}},
-##' \code{\link{add_boxplot}}
-##' @keywords aplot
-##' @export
+#' @title Assign and compute edge lengths from a sample of trees
+#' @description This command can infer some average edge lengths and assign
+#' them from a (bootstrap/MCMC) sample.
+#' @param tree a phylogenetic tree or splitnetwork where edge lengths are
+#' assigned to.
+#' @param trees an object of class multiPhylo, where the average for the edges
+#' is computed from.
+#' @param fun a function to compute the average (default is median).
+#' @param rooted rooted logical, if FALSE edge lengths is a function of the
+#' observed splits, if TRUE edge lengths are estimated from height for the
+#' observed clades.
+#' @return The tree with newly assigned edge length.
+#' @author Klaus Schliep
+#' @importFrom graphics legend rect
+#' @examples
+#' data("Laurasiatherian")
+#' set.seed(123)
+#' bs <- bootstrap.phyDat(Laurasiatherian,
+#'                 FUN=function(x)upgma(dist.ml(x)), bs=100)
+#' tree_compat <- allCompat(bs, rooted=TRUE) |>
+#'               add_edge_length(bs)
+#' plot(tree_compat)
+#' add_boxplot(tree_compat, bs, boxwex=0.7)
+#' @seealso \code{\link[ape]{node.depth}},
+#' \code{\link[ape]{consensus}}, \code{\link{maxCladeCred}},
+#' \code{\link{add_boxplot}}
+#' @keywords aplot
+#' @export
 add_edge_length <- function(tree, trees, fun=\(x)median(na.omit(x)),
                             rooted=all(is.rooted(trees))){
   if(!rooted) tree <- unroot(tree)
@@ -80,45 +80,45 @@ add_edge_length <- function(tree, trees, fun=\(x)median(na.omit(x)),
 }
 
 
-##' @title Draw Confidences Intervals on Phylogenies
-##' @description These are low-level plotting commands to draw the confidence
-##' intervals on the node of a tree as rectangles with coloured backgrounds or
-##' add boxplots to ultrametric or tipdated trees.
-##' @param tree either an object of class phylo to which the confidences should
-##' be added or an object of class `pml`. In case of the later the tree is
-##' extracted from the object.
-##' @param trees phylogenetic trees, i.e. an object of class `multiPhylo`. Can
-##' be empty if tree is an object of class `pml`.
-##' @param col95 colour used for the 95% intervals; by default: transparent
-##' red.
-##' @param col50 colour used for the 50% intervals; by default: transparent
-##' blue.
-##' @param height the height of the boxes.
-##' @param legend a logical value.
-##' @param \dots arguments passed to other functions, \code{\link{legend}} or
-##' \code{\link{bxp}}.
-##' @details All trees should to be rooted, either ultrametric or tip dated.
-##' @returns \code{add_ci} and \code{add_boxplot} return silently the tree
-##' object.
-##' @author Emmanuel Paradis, Santiago Claramunt, Joseph Brown, Klaus Schliep
-##' @importFrom graphics legend rect bxp boxplot
-##' @importFrom stats median
-##' @examples
-##' data("Laurasiatherian")
-##' dm <- dist.hamming(Laurasiatherian)
-##' tree <- upgma(dm)
-##' set.seed(123)
-##' trees <- bootstrap.phyDat(Laurasiatherian,
-##'                           FUN=function(x)upgma(dist.hamming(x)), bs=100)
-##' tree <- plotBS(tree, trees, "phylogram")
-##' add_ci(tree, trees, bty="n")
-##' plot(tree, direction="downwards")
-##' add_boxplot(tree, trees, boxwex=.7)
-##' @seealso \code{\link[ape]{plot.phylo}}, \code{\link{plotBS}},
-##' \code{\link{add_edge_length}}, \code{\link{maxCladeCred}}
-##' @keywords aplot
-##' @rdname add_ci
-##' @export
+#' @title Draw Confidences Intervals on Phylogenies
+#' @description These are low-level plotting commands to draw the confidence
+#' intervals on the node of a tree as rectangles with coloured backgrounds or
+#' add boxplots to ultrametric or tipdated trees.
+#' @param tree either an object of class phylo to which the confidences should
+#' be added or an object of class `pml`. In case of the later the tree is
+#' extracted from the object.
+#' @param trees phylogenetic trees, i.e. an object of class `multiPhylo`. Can
+#' be empty if tree is an object of class `pml`.
+#' @param col95 colour used for the 95% intervals; by default: transparent
+#' red.
+#' @param col50 colour used for the 50% intervals; by default: transparent
+#' blue.
+#' @param height the height of the boxes.
+#' @param legend a logical value.
+#' @param \dots arguments passed to other functions, \code{\link{legend}} or
+#' \code{\link{bxp}}.
+#' @details All trees should to be rooted, either ultrametric or tip dated.
+#' @returns \code{add_ci} and \code{add_boxplot} return silently the tree
+#' object.
+#' @author Emmanuel Paradis, Santiago Claramunt, Joseph Brown, Klaus Schliep
+#' @importFrom graphics legend rect bxp boxplot
+#' @importFrom stats median
+#' @examples
+#' data("Laurasiatherian")
+#' dm <- dist.hamming(Laurasiatherian)
+#' tree <- upgma(dm)
+#' set.seed(123)
+#' trees <- bootstrap.phyDat(Laurasiatherian,
+#'                           FUN=function(x)upgma(dist.hamming(x)), bs=100)
+#' tree <- plotBS(tree, trees, "phylogram")
+#' add_ci(tree, trees, bty="n")
+#' plot(tree, direction="downwards")
+#' add_boxplot(tree, trees, boxwex=0.7)
+#' @seealso \code{\link[ape]{plot.phylo}}, \code{\link{plotBS}},
+#' \code{\link{add_edge_length}}, \code{\link{maxCladeCred}}
+#' @keywords aplot
+#' @rdname add_ci
+#' @export
 add_ci <- function(tree, trees=NULL, col95 = "#FF00004D", col50 = "#0000FF4D",
                     height = 0.7, legend = TRUE, ...)
 {
@@ -168,10 +168,10 @@ add_ci <- function(tree, trees=NULL, col95 = "#FF00004D", col50 = "#0000FF4D",
   invisible(old)
 }
 
-##' @param boxwex a scale factor to be applied to all boxes, see
-##' \code{\link{bxp}}.
-##' @rdname add_ci
-##' @export
+#' @param boxwex a scale factor to be applied to all boxes, see
+#' \code{\link{bxp}}.
+#' @rdname add_ci
+#' @export
 add_boxplot <- function(tree, trees=NULL, boxwex = 0.7, ...)
 {
   old <- tree

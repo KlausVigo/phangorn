@@ -164,7 +164,7 @@ map_mutations <- function(tree, data, pos=NULL){
     tmp  <- fun(edge_i, site, nr)
     tmp <- which(tmp[index] == 1)
     tmp <- intersect(tmp, pos)
-    if(length(tmp > 0)){
+    if(length(tmp) > 0){
       tmp2 <- paste0(M[pa_i, tmp], tmp, M[ch_i, tmp])
       mttns[[ch_i]] <- tmp2
     }

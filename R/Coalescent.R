@@ -32,7 +32,7 @@ comp <- function(x, y) {
   tmp3 <- tcrossprod(x, 1 - y)
   tmp0 <- tcrossprod(x, y)
   tmp0[tmp3 > 0] <- 0L
-  res[!(tmp0 > (tmp1 - 1e-8))] <- 10000000L
+  res[tmp0 <= (tmp1 - 1e-8)] <- 10000000L
   apply(res, 1, which.min)
 }
 
