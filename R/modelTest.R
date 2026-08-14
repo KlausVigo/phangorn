@@ -306,6 +306,7 @@ modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
 
     trees3 <- NULL
     calls3 <- NULL
+    res3 <- NULL
     ind3 <- match(rest, pars3$model_term)
     if(length(ind3)>0) {
       pars3 <- pars3[ind3, ]
