@@ -151,20 +151,20 @@ optimGamma <- function(tree, data, shape = 1, k = 4, ...) {
 
 # optimize shape parameter and weights
 optimGammaPhangorn <- function(tree, data, w = c(0.25, 0.25, 0.25, 0.25),
-                               shape=1, inv=0, ...) {
+                               shape=1, inv=0, ...) { #, optInv=optInv
   k <- length(w)
   nenner <- 1 / w[1]
   eta <- log(w * nenner)
   par <- c(eta[-1], shape)
 
-  fn <- function(par, tree, data, k, shape, inv, ...) {
+  fn <- function(par, tree, data, k, inv, ...) {
     eta <- c(0, par[-k])
     shape <- par[k]
     w_new <- exp(eta) / sum(exp(eta))
     g <- discrete.gamma(alpha=shape, k=length(w_new), w=w_new)
 
     if (inv > 0){
-      w <- (1 - inv) * w
+      w_new <- (1 - inv) * w_new
       g <- g / (1 - inv)
     }
 
@@ -183,14 +183,13 @@ optimGammaPhangorn <- function(tree, data, w = c(0.25, 0.25, 0.25, 0.25),
   res <- optim(par, fn = fn, method = "L-BFGS-B", lower = c(rep(-5, k-1), 0.1),
                upper = c(rep(5, k-1), 100),
                control = list(fnscale = -1, maxit = 25), gr = NULL,
-               tree = tree, data = data, k = k, shape=shape, inv=inv, ...)
+               tree = tree, data = data, k = k, inv=inv, ...)
   w <- exp(c(0, res[[1]][-k]))
   w <- w / sum(w)
   shape <- res[[1]][k]
   result <- list(par = c(w, shape), value = res[[2]])
   result
 }
-
 
 optimFreeRate <- function(tree, data, g = c(0.25, 0.75, 1, 2), k=4, w=w,
                           inv=inv, optInv=FALSE, timetree,  ...) {
@@ -244,8 +243,6 @@ optimFreeRate <- function(tree, data, g = c(0.25, 0.75, 1, 2), k=4, w=w,
   result <- list(r = r, w = w, tree = tree, inv = inv, value = res[[2]])
   result
 }
-
-
 
 # changed to c(-10,10) from c(-5,5)
 optimRate <- function(tree, data, rate = 1, ...) {
@@ -2358,7 +2355,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     ### start sitewise
     if (optInv && !optFreeRate) {
       res <- optimInv(tree, data, inv = inv, INV = INV, Q = Q,
-        bf = bf, eig = eig, k = k, shape = shape, rate = rate,
+        bf = bf, eig = eig, k = k, shape = shape, w=w, rate = rate,
         llMix = llMix, wMix=wMix)
       if (trace > 0)
         cat("optimize invariant sites: ", ll, "-->", max(res[[2]], ll), "\n")
@@ -2370,7 +2367,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     if (optGamma) {
       if(site.rate=="gamma_weighted") {
         res <- optimGammaPhangorn(tree, data, w=w, shape = shape,                                  inv = inv, INV = INV,
-                          Q = Q, bf = bf, eig = eig, ll.0 = ll.0, rate = rate,
+                          bf = bf, eig = eig, ll.0 = ll.0, rate = rate,
                           llMix = llMix, wMix=wMix, ASC=ASC)
 
         shape <- res[[1]][k+1]
