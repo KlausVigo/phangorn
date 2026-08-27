@@ -6,17 +6,14 @@ getOrder <- function(x) {
   nTips <- as.integer(length(label))
   added <- ind
   remaining <- (1:nTips)[-ind]
-
   tree <- structure(list(edge = structure(c(rep(nTips + 1L, 3), c(ind, 0L)),
         dim = c(3L, 2L)), tip.label = label, Nnode = 1L), names = c("edge",
         "tip.label", "Nnode"), class = "phylo", order = "postorder")
 
   l <- length(remaining)
   res <- numeric(l)
-
   nr <- attr(x, "nr")
   storage.mode(nr) <- "integer"
-
   weight <- attr(x, "weight")
   storage.mode(weight) <- "double"
 
@@ -33,7 +30,6 @@ getOrder <- function(x) {
   tree$edge[, 2] <- added
 
   while (length(remaining) > 0) {
-#    edge <- tree$edge[, 2] + 2 * nTips
     f$prep_spr(tree$edge)
     l <- length(remaining)
     res <- numeric(l)
@@ -59,7 +55,7 @@ seq_stats <- function(x) {
   lev <- attr(x, "allLevels")
   a <- seq_len(nr)
   STATE <- POS <- matrix(0L, nrow(contrast), nr, dimnames = list(lev, NULL))
-  for(i in seq_along(x)){
+  for (i in seq_along(x)) {
     IND <- cbind(x[[i]], a)
     STATE[IND] <- STATE[IND] + 1L
     POS[IND] <- i
@@ -113,27 +109,27 @@ cherries <- function(obj, LB, UB){
   UB <- subset(UB, select=obj$pos)
 
   while(any(tt >= (2-eps))){
-    max_pos <- which(tt > (max(tt)-eps))
+    max_pos <- which(tt > (max(tt) - eps))
     max_pos <- max_pos[length(max_pos)]
 
     lb_tt <- as.integer(2L * max(tt) - 1L)
-    ind_max <- which(edge==max_pos, arr.ind = TRUE)[,1] |> sort()
-    ind_max <- intersect(ind_max, which(weight>1e-6))
+    ind_max <- which(edge == max_pos, arr.ind = TRUE)[,1] |> sort()
+    ind_max <- intersect(ind_max, which(weight > 1e-6))
 
     w0 <- min(weight[ind_max])
 
-    old_lb <- rowSums(LB[, ind_max, drop=FALSE])
+    old_lb <- rowSums(LB[, ind_max, drop = FALSE])
     old_lb <- old_lb[obj$nTip] - old_lb
 
-    old_ub <- rowSums(UB[, ind_max, drop=FALSE])
+    old_ub <- rowSums(UB[, ind_max, drop = FALSE])
     old_ub <- pmax(lb_tt - old_ub, 0)
 
     weight[ind_max] <- weight[ind_max] - w0
-    edge_2 <- edge[weight>1e-6, ]
+    edge_2 <- edge[weight > 1e-6, ]
     tt <- tabulate(edge_2)
     res <- res + w0 * (old_ub - old_lb)
   }
-  list(res=res, weight=weight)
+  list(res = res, weight = weight)
 }
 
 

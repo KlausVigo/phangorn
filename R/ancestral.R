@@ -340,7 +340,6 @@ ptree <- function(tree, data, acctran=TRUE, return = "prob", tips=FALSE, ...) {
   edge <- tree$edge
   att <- attributes(data)
   att$names <- c(tree$tip.label, tree$node.label)
-  #else att$names <- tree$node.label
   nr <- att$nr
   type <- att$type
   m <- max(edge)
@@ -354,40 +353,24 @@ ptree <- function(tree, data, acctran=TRUE, return = "prob", tips=FALSE, ...) {
   res <- res_state <- vector("list", nNode)
   res <- vector("list", m)
   att$names <- c(tree$tip.label, tree$node.label) #makeAncNodeLabel(tree, ...)
-#  else {
-    fun <- function(X) {
-      rs <- rowSums(X)
-      X / rs
-    }
-    contrast <- att$contrast
-    for(i in seq_len(nTip)) res[[i]] <- contrast[data[[i]], , drop=FALSE]
-#    for(i in (nTip+1):m) res[[i]] <- f$getAnc(i)[1:nr, , drop=FALSE]
-    for(i in seq_len(nNode)) {
-      res[[i+nTip]] <- f$getAnc(i+nTip)[seq_len(nr), , drop=FALSE]
-    }
-    res <- lapply(res, fun)
-    attributes(res) <- att
-#    class(res) <- c("ancestral", "phyDat")
-#  }
+  fun <- function(X) {
+    rs <- rowSums(X)
+    X / rs
+  }
+  contrast <- att$contrast
+  for(i in seq_len(nTip)) res[[i]] <- contrast[data[[i]], , drop=FALSE]
+  for(i in seq_len(nNode)) {
+    res[[i+nTip]] <- f$getAnc(i+nTip)[seq_len(nr), , drop=FALSE]
+  }
+  res <- lapply(res, fun)
+  attributes(res) <- att
   if(!tips) res <- res[tree$node.label]
 
   if(return=="prob") return(res)
 
-#  if(type=="DNA"){
-#    indx <- c(1, 2, 6, 3, 7, 9, 12, 4, 8, 10, 13, 11, 14, 15, 16)
-#    res_state[seq_len(nTip)] <- data
-#    for(i in (nTip+1):m)
-#      res_state[[i]] <- indx[f$getAncAmb(i+nTip)[1:nr]]
-#    attributes(res_state) <- att
-#    #    return(res)
- # } else{
-    res_state <- highest_state(res)
-    attributes(res_state) <-  attributes(res)
-#    class(res_state) <- "phyDat"
-#  }
-#  if(tips) return(res_state)
-#  res_state[tree$node.label]
-    res_state
+  res_state <- highest_state(res)
+  attributes(res_state) <-  attributes(res)
+  res_state
 }
 
 

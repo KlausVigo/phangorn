@@ -17,7 +17,7 @@ nh_anc <- function(x){
     res[e2[i+1]] <- m
     m <- m + 1L
     last_anc <- anc_i
-    }
+  }
   res
 }
 
@@ -58,12 +58,10 @@ nh_anc <- function(x){
 #' par(op)
 #' @keywords hplot
 #' @export
-anc_heatmap <- function(x, y=NULL, use.edge.length = FALSE, align_label = TRUE,
+anc_heatmap <- function(x, y=NULL, use.edge.length = TRUE, align_label = TRUE,
                         clade=NULL, select=NULL, cex.lab=1, ...){
   phy <- NULL
-  if(!is.null(y)){
-    if(inherits(y, "AAbin") || inherits(y, "DNAbin")) y <- as.phyDat(y)
-    }
+  if(inherits(y, "AAbin") || inherits(y, "DNAbin")) y <- as.phyDat(y)
   if(inherits(x, "ancestral")){
     if(is.null(y)) y <- as.phyDat(x)
     phy <- x$tree
@@ -71,11 +69,9 @@ anc_heatmap <- function(x, y=NULL, use.edge.length = FALSE, align_label = TRUE,
   if(inherits(x, "phylo")) phy <- x
   if(is.null(phy$edge.length)) use.edge.length <- FALSE
   if(anyNA(match(c(phy$tip.label, phy$node.label), names(y))))
-    stop("labels between treee and alignment mismatch")
-
+    stop("labels between tree and alignment mismatch")
   if(!is.null(clade)) phy <- extract.clade(phy, clade)
   if(!is.null(select)) y <- subset(y, select = select, site.pattern = FALSE)
-
   nt <- Ntip(phy)
   nn <- Nnode(phy)
   yy <- nh_anc(phy)
@@ -88,33 +84,27 @@ anc_heatmap <- function(x, y=NULL, use.edge.length = FALSE, align_label = TRUE,
   on.exit(dev.flush())
   op <- par(no.readonly = TRUE)
   on.exit(par(op), add = TRUE)
-  nf <- layout(matrix(c(1,2),1,2,byrow = TRUE), c(1,3))
-  #layout.show(nf)
+  nf <- layout(matrix(c(1,2),1,2,byrow = TRUE), c(1,3)) #layout.show(nf)
   lab <- c(phy$tip.label, phy$node.label)
   ind <- rev(lab[order(yy)])
-
+  align_label_lty <- 3
   if (is.numeric(align_label)) {
     align_label_lty <- align_label
     align_label <- TRUE
-    } else { # assumes is.logical(align.tip.labels) == TRUE
-      if (align_label) align_label_lty <- 3
-    }
-
+  }
   mar_phylo <- mar_image <- mar <- par("mar")
   mar_phylo[2] <- 1
   mar_phylo[4] <- 0
   par(mar = mar_phylo)
   mar_image[2] <- 0
-
   plot.default(0, type = "n", xlim = range(xx), ylim = range(yy),
                              xlab = "", ylab = "", axes = FALSE)
   usr <- par("usr")
   z <- (usr[4] - usr[3]) / (nt + nn)
   yy_scaled <- usr[3] - (z / 2) + yy * z
-
   phylogram.plot(phy$edge, nt, nn, xx, yy_scaled, TRUE)
+  if (!use.edge.length || is.ultrametric(phy)) align_label <- FALSE
   if (align_label) {
-    if (!use.edge.length || is.ultrametric(phy)) align_tip_label <- FALSE
     xx.tmp <- max(xx)
     segments(xx, yy_scaled, xx.tmp, yy_scaled, lty = align_label_lty)
   }
@@ -122,8 +112,7 @@ anc_heatmap <- function(x, y=NULL, use.edge.length = FALSE, align_label = TRUE,
   y <- y[ind]
   image(y, show.label = FALSE, yaxt = "n", ...)
   n <- length(lab)
-  mtext(ind, side = 4, line = 0.1, at = n:1, cex = cex.lab,
-        adj = 0, las = 1)
+  mtext(ind, side = 4, line = 0.1, at = n:1, cex = cex.lab, adj = 0, las = 1)
   invisible(x)
 }
 
@@ -139,5 +128,3 @@ reference_position <- function(x, pos, ref=1, gap="-"){
   match(pos, y)
 }
 
-
-#example(anc_pml)
