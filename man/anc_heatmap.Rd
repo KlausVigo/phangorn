@@ -4,7 +4,7 @@
 \alias{anc_heatmap}
 \title{anc_heatmap}
 \usage{
-anc_heatmap(x, y = NULL, use.edge.length = FALSE, align_label = TRUE,
+anc_heatmap(x, y = NULL, use.edge.length = TRUE, align_label = TRUE,
   clade = NULL, select = NULL, cex.lab = 1, ...)
 }
 \arguments{

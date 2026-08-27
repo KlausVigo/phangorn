@@ -54,11 +54,11 @@ candidate_tree <- function(x, method=c("unrooted", "ultrametric", "tipdated"),
 
 
 # like is.ultrametric
-check_tip_dates <- function(tree, tip.dates){
-  tip.dates <- tip.dates[tree$tip.label]
-  nh <- node.depth.edgelength(tree)[seq_along(tree$tip.label)]
-  isTRUE(all.equal(cor(tip.dates,nh), 1))
-}
+#check_tip_dates <- function(tree, tip.dates){
+#  tip.dates <- tip.dates[tree$tip.label]
+#  nh <- node.depth.edgelength(tree)[seq_along(tree$tip.label)]
+#  isTRUE(all.equal(cor(tip.dates,nh), 1))
+#}
 
 
 #proper_tree <- function(x, tree, method=c("ultrametric", "tipdated"),

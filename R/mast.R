@@ -63,7 +63,7 @@ mast <- function(x, y, tree = TRUE, rooted = TRUE) {
       if (length(tmp) > length(res)) res <- tmp
     }
   }
-  if (tree) res <- keep.tip(x, res) # drop.tip(x, setdiff(x$tip.label, res))
+  if (tree) res <- keep.tip(x, res)
   res
 }
 

@@ -507,7 +507,7 @@ mRF2 <- function(tree, trees, normalize = FALSE, check.labels = TRUE,
 #  trees <- reorder(trees, "postorder")
   xx <- lapply(trees, bipart)
   if (!rooted) xx <- lapply(xx, SHORTwise)
-  xx <- lapply(xx, function(x) sapply(x, paste, collapse = "_"))
+  xx <- lapply(xx, sapply, paste, collapse = "_")
   yy <- bipart(tree)
   if (!rooted) yy <- SHORTwise(yy)
   yy <- sapply(yy, paste, collapse = "_")
@@ -554,7 +554,7 @@ mRF <- function(trees, normalize = FALSE, rooted = FALSE) {
 
   xx <- lapply(trees, bipart)
   if (!rooted) xx <- lapply(xx, SHORTwise)
-  xx <- lapply(xx, function(x) sapply(x, paste, collapse = "_"))
+  xx <- lapply(xx, sapply, paste, collapse = "_")
   # returns list of character vectors
 
   k <- 1

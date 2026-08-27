@@ -229,10 +229,8 @@ shannon2 <- function (x, norm=TRUE)
 
 getE <- function (tree, x, clans = NULL, norm = TRUE)
 {
-    if (is.rooted(tree))
-        tree <- unroot(tree)
-    if (is.null(clans))
-        clans <- getClans(tree)
+    if (is.rooted(tree)) tree <- unroot(tree)
+    if (is.null(clans)) clans <- getClans(tree)
     labels <- tree$tip.label
     x <- x[labels]
     result <- rep(NA, 12)
@@ -243,8 +241,7 @@ getE <- function (tree, x, clans = NULL, norm = TRUE)
     result[3] <- sum(x == 2)
     result[4] <- sum(x == 3)
     if (result[2] == 0 || result[3] == 0) {
-        if (result[2] > 1)
-            return(list(result, labels))
+        if (result[2] > 1) return(list(result, labels))
         else return(list(result, integer(0)))
     }
     LHG <- E_Intruder(clans, x)
@@ -263,16 +260,12 @@ getE <- function (tree, x, clans = NULL, norm = TRUE)
     ind <- which(LHG[o[1], ] == 1)
     result[6] <- sum(x[-ind] == 2)
     result[7] <- sum(x[-ind] == 3)
-
-
     if (length(x[-ind]) < 4)
         return(list(result, NULL))
     result[5] <- shannon2(intr[-o[1]], norm = norm)
     ind2 <- c(which(LHG[o[1], ] == 1), which(LHG[o[2], ] == 1))
-
     spl <- structure(list(which(colSums(LHG)==0)), labels=labels, weights=1)
     class(spl) <- "splits"
-
     if (d == 2) {
          return(list(result, spl))
     }
@@ -360,33 +353,26 @@ getDiv <- function(tree, x, native=NULL){
 getDiversity <- function (tree, x, norm = TRUE, var.names = NULL, labels="new")
 {
     k <- 1
-    if(inherits(tree,"multiPhylo"))
-        k <- length(tree)
+    if(inherits(tree,"multiPhylo")) k <- length(tree)
     l <- attr(x, "nr")
     tmp <- matrix(0, k * l, 12)
-
     tnam <- 1
     if (inherits(tree,"multiPhylo")) {
         tnam <- names(tree)
-        if (is.null(tnam))
-            tnam <- seq_along(tree)
+        if (is.null(tnam)) tnam <- seq_along(tree)
     }
     if(is.null(var.names)) var.names <- 1:l
     PM <- data.frame("t1", "a", stringsAsFactors = FALSE)
     colnames(PM) <- c("Tree", "Var")
     PM <- PM[FALSE,]
     PM[1 :(k*l), ] <- NA
-#    perfect <- names(x)
     L <- vector("list",k*l)
     m <- 1
-#    o <- 1
-#    ok <- 0
     for (i in 1:k) {
         if (inherits(tree,"multiPhylo"))
             tmptree <- tree[[i]]
         else tmptree <- tree
-        if (is.rooted(tmptree))
-            tmptree <- unroot(tmptree)
+        if (is.rooted(tmptree)) tmptree <- unroot(tmptree)
         clans <- getClans(tmptree)
         for (j in 1:l) {
             TMP <- getE(tmptree, getRows(x, j), clans, norm = norm)
@@ -397,7 +383,6 @@ getDiversity <- function (tree, x, norm = TRUE, var.names = NULL, labels="new")
             m <- m + 1
         }
     }
-
     tnam <- rep(tnam, each = l)
     dnam <- var.names
     dnam <- rep(dnam, k)
@@ -410,7 +395,6 @@ getDiversity <- function (tree, x, norm = TRUE, var.names = NULL, labels="new")
         names(res) <- c("tree", "variable", "E clan", "# natives",
             "# intruder", "# unknown", "E slice", "# intruder", "# unknown",
             "E melange", "# intruder", "# unknown", "bs 1", "bs 2", "p-score")
-        #warning("The variable names have changed")
     }
     attr(res, "Perfect") <- L
     class(res) <- c("clanistics", "data.frame")
@@ -433,7 +417,6 @@ summary.clanistics <- function(object, ...){
     tmp <- data.frame(factor(object[,"variable"]), res)
     colnames(tmp) <- c("Variable", "Natives_only", "Intruder_only", "Clan",
                        "Slice", "Melange")
-#        colnames(res) = c("Natives only", "Intruder only", "Clan", "Melange")
     class(tmp) <- c("summary.clanistics", "data.frame")
     tmp
     }

@@ -197,9 +197,6 @@ indexNNI_fitch <- function(tree, offset=2L*Ntip(tree), rooted=is.rooted(tree)) {
       # think about this more
       cd[2] <- tmp
     }
-    #    else if(rooted) cd <- c(cd, NA_integer_)
-    #    else if(!rooted) ef <- c(i, cd[2])
-    #    else cd[2] <- f
     if (length(cd)==1) cd <- c(cd, NA_integer_) # if trees are rooted
     edgeMatrix[k, ] <- c(ab, cd, ef)
     k <- k + 1

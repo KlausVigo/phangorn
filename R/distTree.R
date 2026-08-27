@@ -34,9 +34,6 @@ NJ <- function(x) reorder(nj(x), "postorder")
 #' @export
 UNJ <- function(x){
   assert_numeric(x, lower=0, any.missing=FALSE, finite=TRUE)
-#  if(anyNA(x)) stop("missing values are not allowed in the distance matrix")
-#  if(any(is.infinite(x)))
-#    stop("infinite values are not allowed in the distance matrix")
   x <- as.matrix(x)
   labels <- attr(x, "Labels")[[1]]
   edge.length <- NULL
@@ -367,9 +364,6 @@ nnls.tree <- function(dm, tree, method=c("unrooted", "ultrametric", "tipdated"),
           calibration=NULL) {
   method <- match.arg(method, c("unrooted", "ultrametric", "tipdated"))
   assert_numeric(dm, lower=0, any.missing=FALSE, finite=TRUE)
-#  if (anyNA(dm)) stop("missing values are not allowed in the distance matrix")
-#  if (any(is.infinite(dm)))
-#    stop("infinite values are not allowed in the distance matrix")
   assert_phylo(tree)
   if (has.singles(tree)) tree <- collapse.singles(tree)
   if (is.rooted(tree) && method == "unrooted") tree <- unroot(tree)
@@ -513,9 +507,6 @@ nnls.phylo <- function(x, dm, method = "unrooted", trace = 0, ...) {
 #' @export
 nnls.splits <- function(x, dm, trace = 0, eps = 1e-8) {
   assert_numeric(dm, lower=0, any.missing=FALSE, finite=TRUE)
-#  if(anyNA(dm)) stop("missing values are not allowed in the distance matrix")
-#  if(any(is.infinite(dm)))
-#    stop("infinite values are not allowed in the distance matrix")
   labels <- attr(x, "labels")
   dm <- as.matrix(dm)
   k <- dim(dm)[1]
