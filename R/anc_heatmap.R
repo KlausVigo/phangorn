@@ -103,7 +103,7 @@ anc_heatmap <- function(x, y=NULL, use.edge.length = TRUE, align_label = TRUE,
   z <- (usr[4] - usr[3]) / (nt + nn)
   yy_scaled <- usr[3] - (z / 2) + yy * z
   phylogram.plot(phy$edge, nt, nn, xx, yy_scaled, TRUE)
-  if (!use.edge.length || is.ultrametric(phy)) align_label <- FALSE
+#  if (!use.edge.length || is.ultrametric(phy)) align_label <- FALSE
   if (align_label) {
     xx.tmp <- max(xx)
     segments(xx, yy_scaled, xx.tmp, yy_scaled, lty = align_label_lty)
