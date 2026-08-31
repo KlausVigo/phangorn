@@ -63,7 +63,7 @@ terraces.pml <- function(x, trees=x$bs, dist_fun="RF.dist", di2multi=FALSE,
   tmp <- hash(trees)
   trees <- trees[!duplicated(tmp)]
 
-#  if(length(trees) < 3) stop("less than 3 different trees found!")
+  if(length(trees) < 3) stop("less than 3 different trees found!")
   dm <- do.call(dist_fun, list(trees))
 
   xy <- cmdscale(dm)
