@@ -150,7 +150,7 @@ ancestral.pml <- function(object, type = "marginal", return = "ancestral", ...) 
     if (inv > 0) tmp <- as.matrix(INV) * inv
 
     for (i in 1:l) {
-      tmp2 <- dat[[i, j]] * (SCALE_EPS ** SCM[,i, drop=FALSE])
+      tmp2 <- dat[[i, j]] * (SCALE_EPS ** SCM[,i])
       tmp <- tmp + w[i] * tmp2
     }
     if ((pt == "bayes") || (pt == "marginal")) tmp <- tmp * rep(bf, each = nr)
