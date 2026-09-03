@@ -69,7 +69,7 @@
 #' tree3 <- NJ(dm3)
 #' treedist(tree1,tree3)
 #' # F81 + Gamma
-#' dm4 <- dist.ml(Laurasiatherian, model="F81", k=4, shape=.4)
+#' dm4 <- dist.ml(Laurasiatherian, model="F81", k=4, shape=0.4)
 #' tree4 <- NJ(dm4)
 #' treedist(tree1,tree4)
 #' treedist(tree3,tree4)
@@ -77,7 +77,7 @@
 #' @rdname dist.hamming
 #' @export
 dist.hamming <- function(x, ratio = TRUE, exclude = "pairwise"){
-  if(inherits(x, "DNAbin") | inherits(x, "AAbin")) x <- as.phyDat(x)
+  if(inherits(x, "DNAbin") || inherits(x, "AAbin")) x <- as.phyDat(x)
   assert_phyDat(x)
   l <- length(x)
   contrast <- attr(x, "contrast")
@@ -113,8 +113,8 @@ dist.hamming <- function(x, ratio = TRUE, exclude = "pairwise"){
 #' @rdname dist.hamming
 #' @export
 dist.ml <- function(x, model = "JC69", exclude = "pairwise", bf = NULL, Q = NULL,
-                    k = 1L, shape = 1, ...){
-  if(inherits(x, "DNAbin") | inherits(x, "AAbin")) x <- as.phyDat(x)
+                        k = 1L, shape = 1, ...){
+  if(inherits(x, "DNAbin") || inherits(x, "AAbin")) x <- as.phyDat(x)
   assert_phyDat(x)
   l <- length(x)
   d <- numeric((l * (l - 1)) / 2)
@@ -125,7 +125,7 @@ dist.ml <- function(x, model = "JC69", exclude = "pairwise", bf = NULL, Q = NULL
   if (exclude == "all" ) x <- removeAmbiguousSites(x)
   ambig_sites <- hasAmbiguousSites(x)
   if(exclude == "pairwise") ambig_sites <- FALSE
-  model <- match.arg(model, c("JC69", "F81", .aa_3Di_models))
+  model <- match.arg(model, c("JC69", "F81", "GTR", "SYM", .aa_3Di_models))
 
   unique_contrast <- grp_duplicated(contrast)
   if(exclude != "none"){
@@ -140,22 +140,29 @@ dist.ml <- function(x, model = "JC69", exclude = "pairwise", bf = NULL, Q = NULL
 
   if (!is.na(match(model, .aa_3Di_models)))
     getModelAA(model, bf = is.null(bf), Q = is.null(Q))
-  if (is.null(bf) && model == "F81") bf <- baseFreq(x)
-  if (is.null(bf))
-    bf <- rep(1 / nc, nc)
+
   if (is.null(Q))
     Q <- rep(1, (nc - 1) * nc / 2L)
+  else {
+    model <- "SYM"
+    if(!is.null(bf)) model <- "GTR"
+  }
+
+  if (is.null(bf) && (model == "F81" || model == "GTR")  ) bf <- baseFreq(x)
+  if (is.null(bf))
+    bf <- rep(1 / nc, nc)
   bf <- as.double(bf)
 
+  d <- dist.hamming(x, exclude=exclude)
+  E <- 1 - 1 / nc
+  if(model == "F81") E <- 1 - sum(bf^2)
+  dist_jc <- function(d) -E * log(1- d/E )
+  d <- dist_jc(d)
   if( (model == "JC69"  || model == "F81") && !ambig_sites && k==1){
-    d <- dist.hamming(x, exclude=exclude)
-    E <- 1 - 1 / nc #0.75
-    if(model == "F81") E <- 1 - sum(bf^2)
-    dist_jc <- function(d) -E * log(1- d/E )
     var_jc <- function(d, n) d * (1-d) / (n * (1 - d / E)^2)
     n <- sum(attr(x, "weight"))
     attr(d, "variance") <- var_jc(d, n)
-    d <- dist_jc(d)
+
     attr(d, "call") <- match.call()
     attr(d, "method") <- model
     return(d)
@@ -175,6 +182,7 @@ dist.ml <- function(x, model = "JC69", exclude = "pairwise", bf = NULL, Q = NULL
   ll.0 <- as.double(weight * 0)
   if (exclude == "pairwise") {
     index <- con[ind1] & con[ind2]
+    index2 <- as.numeric(index)
     index <- which(!index)
   }
   tmp <- (contrast %*% eig[[2]])[ind1, ] *
@@ -186,31 +194,20 @@ dist.ml <- function(x, model = "JC69", exclude = "pairwise", bf = NULL, Q = NULL
   tmp2 <- vector("list", k)
   for (i in 1:(l - 1)) {
     for (j in (i + 1):l) {
+
       w0 <- .Call('PWI', as.integer(x[[i]]), as.integer(x[[j]]),
                   nr, n, weight, li)
+
+#      w01 <- pwIndexCpp(as.integer(x[[i]]), as.integer(x[[j]]),
+#                         nr, n, li, weight, index2)
       if (exclude == "pairwise") w0[index] <- 0.0
       ind <- w0 > 0
-# more error checking
-      sum_shared <- sum(w0[wshared])
-      sum_w <- sum(w0)
-      if(sum_w == 0){
-        d[pos] <- NA_real_
-        v[pos] <- NA_real_
-      } else if(sum_shared == sum_w){
-        d[pos] <- 0
-        v[pos] <- NA_real_
-      } else {
-      #1 - (sum(w0[wshared]) / sum(w0))
-      old.el <- 1 - sum_shared / sum_w
-      if (old.el > eps)
-        old.el <- 10
-      else old.el <- fun(old.el)
+      old.el <- d[pos]
       for (lk in 1:k) tmp2[[lk]] <- tmp[ind, , drop = FALSE]
       res <- .Call('FS5', eig, nc, as.double(old.el), w, g, unlist(tmp2),
-        as.integer(k), as.integer(sum(ind)), w0[ind], ll.0, 1.0e-8)
+                   as.integer(k), as.integer(sum(ind)), w0[ind], ll.0, 1.0e-8)
       d[pos] <- res[1] # res[[1]]
       v[pos] <- res[2] # res[[2]]
-      }
       pos <- pos + 1
     }
   }
@@ -232,7 +229,7 @@ dist.ml <- function(x, model = "JC69", exclude = "pairwise", bf = NULL, Q = NULL
 #' @export
 dist.logDet <- function(x)
 {
-  if(inherits(x, "DNAbin") | inherits(x, "AAbin")) x <- as.phyDat(x)
+  if(inherits(x, "DNAbin") || inherits(x, "AAbin")) x <- as.phyDat(x)
   assert_phyDat(x)
   weight <- attr(x, "weight")
   contrast <- attr(x, "contrast")
