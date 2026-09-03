@@ -140,15 +140,17 @@ ancestral.pml <- function(object, type = "marginal", return = "ancestral", ...) 
     }
   }
   SCALE_EPS <- 1.0/4294967296.0
-  SCM <- scm[,1, , drop = FALSE]
+  SCM <- scm[,1, ]
+  SCM <- matrix(SCM, nrow=dim(scm)[1])
   sc_min <- apply(SCM,1,min)
   SCM <- SCM - sc_min
+
   for (j in unique(parent)) {
     tmp <- matrix(0, nr, nc)
     if (inv > 0) tmp <- as.matrix(INV) * inv
 
     for (i in 1:l) {
-      tmp2 <- dat[[i, j]] * (SCALE_EPS ** SCM[,i])
+      tmp2 <- dat[[i, j]] * (SCALE_EPS ** SCM[,i, drop=FALSE])
       tmp <- tmp + w[i] * tmp2
     }
     if ((pt == "bayes") || (pt == "marginal")) tmp <- tmp * rep(bf, each = nr)
