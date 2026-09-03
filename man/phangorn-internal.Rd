@@ -44,8 +44,6 @@ assert_multiPhylo(x, has_edge_length = FALSE, is_rooted = FALSE,
 
 assert_treeish(x, null.ok = FALSE)
 
-assert_phyDat(x, contains_label = !is.null(label), label = NULL)
-
 assert_pml(x)
 
 clean_phylo(x, ..., unroot = FALSE, collapse.singles = FALSE,
@@ -71,7 +69,7 @@ pml.init(data, k = 1L)
 
 coords(obj, dim = "3D")
 
-pmlPen(object, lambda, ...)
+pmlPen(object, lambda, ..., control = pml.control())
 
 relabel(x, ref)
 

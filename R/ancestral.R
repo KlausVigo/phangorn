@@ -72,81 +72,88 @@
 #'
 #' @rdname ancestral.pml
 #' @export
-ancestral.pml <- function(object, type = "marginal", return = "prob", ...) {
+ancestral.pml <- function(object, type = "marginal", return = "ancestral", ...) {
   assert_pml(object)
-  call <- match.call()
   pt <- match.arg(type, c("marginal", "ml", "bayes", "lhood")) # "joint",
   rt <- match.arg(return, c("prob", "phyDat", "ancestral"))
   tree <- object$tree
   INV <- object$INV
   inv <- object$inv
-  data <- getCols(object$data, tree$tip.label)
+  data <- object$data
+  data <- data[tree$tip.label]
   data_type <- attr(data, "type")
+  attrib <- attributes(data)
+  pos <- match(attrib$levels, attrib$allLevels)
   if (is.null(attr(tree, "order")) || attr(tree, "order") != "postorder") {
     tree <- reorder(tree, "postorder")
   }
-  nTips <- length(tree$tip.label)
-  node <- tree$edge[, 1]
-  edge <- tree$edge[, 2]
-  nNode <- Nnode(tree)
-  m <- length(edge) + 1 # max(edge)
   w <- object$w
   g <- object$g
+  k <- length(w)
+  rate <- object$rate
+  eig <- object$eig
+  bf <- object$bf
+  assert_phylo(tree, has_edge_length=TRUE)
+  nTips <- as.integer(length(tree$tip.label))
+  tree <- reorder(tree, "postorder")
+  if (any(tree$edge.length < 0)) tree <- minEdge(tree)
+  ll.0 <- as.matrix(INV %*% (bf * inv))
+  nr <- as.integer(attr(data, "nr"))
+  nc <- as.integer(attr(data, "nc"))
+  node_label <- makeAncNodeLabel(tree, ...)
+  tree$node.label <- node_label
+  joint <- TRUE
+  if(length(w) > 1 || object$inv > 0) joint <- FALSE
+  on.exit(.Call("ll_free2"))
+  .Call("ll_init2", nr, nTips, nc, as.integer(k))
+  tmp <- pml.fit4(tree, data, bf, k = k, levels = attr(data, "levels"),
+                  inv = inv, rate = rate, g = g, w = w,
+                 eig = eig, INV = INV, ll.0 = ll.0, ...)
+  ll <- .Call("get_ll", nr, nTips, nc, as.integer(k))
+  scm <- .Call("get_scm", nr, nTips, as.integer(k))
+  dim(ll) <- c(nr, nc, nTips, k)
+  dim(scm) <- c(nr, nTips, k)
+
   l <- length(w)
-  nr <- attr(data, "nr")
-  nc <- attr(data, "nc")
+  m <- length(tree$edge[,1]) + 1 # max(edge)
   dat <- vector(mode = "list", length = m * l)
+  nNode <- Nnode(tree)
   result <- vector(mode = "list", length = nNode)
   result2 <- vector(mode = "list", length = nNode)
   dim(dat) <- c(l, m)
-  node_label <- makeAncNodeLabel(tree, ...)
-  tree$node.label <- node_label
-  object$tree <- tree
-  tmp <- length(data)
 
-  joint <- TRUE
-  if(length(w) > 1 || object$inv > 0) joint <- FALSE
-
-  eig <- object$eig
-
-  bf <- object$bf
-  el <- tree$edge.length
-  P <- getP(el, eig, g)
-  nr <- as.integer(attr(data, "nr"))
-  nc <- as.integer(attr(data, "nc"))
-  node <- as.integer(node - min(node))
-  edge <- as.integer(edge - 1)
-  nTips <- as.integer(length(tree$tip.label))
-  mNodes <- as.integer(max(node) + 1)
-  contrast <- attr(data, "contrast")
-  # proper format
-  eps <- 1.0e-5
-  attrib <- attributes(data)
-  pos <- match(attrib$levels, attrib$allLevels)
-  nco <- as.integer(dim(contrast)[1])
-  for (i in 1:l) dat[i, (nTips + 1):m] <- .Call('LogLik2', data, P[i, ], nr, nc,
-                                      node, edge, nTips, mNodes, contrast, nco)
   parent <- tree$edge[, 1]
   child <- tree$edge[, 2]
   nTips <- min(parent) - 1
   # in C with scaling
+  r <- getRoot(tree)
+  el <- tree$edge.length
+  P <- getP(el, eig, g)
+
+  for(i in 1:l) dat[[i, r]] <- ll[,,r-nTips,i]
   for (i in 1:l) {
     for (j in (m - 1):1) {
       if (child[j] > nTips) {
-        tmp2 <- (dat[[i, parent[j]]] / (dat[[i, child[j]]] %*% P[[i, j]]))
-        dat[[i, child[j]]] <- (tmp2 %*% P[[i, j]]) * dat[[i, child[j]]]
+        tmp2 <- (dat[[i, parent[j]]] / (ll[ , , child[j]-nTips, i] %*% P[[i, j]]))
+        dat[[i, child[j]]] <- (tmp2 %*% P[[i, j]]) * ll[ , , child[j]-nTips, i]
       }
     }
   }
+  SCALE_EPS <- 1.0/4294967296.0
+  SCM <- scm[,1,]
+  sc_min <- apply(SCM,1,min)
+  SCM <- SCM - sc_min
   for (j in unique(parent)) {
     tmp <- matrix(0, nr, nc)
     if (inv > 0) tmp <- as.matrix(INV) * inv
+
     for (i in 1:l) {
-      # scaling!!!
-      tmp <- tmp + w[i] * dat[[i, j]]
+      tmp2 <- dat[[i, j]] * (SCALE_EPS ** SCM[,i])
+      tmp <- tmp + w[i] * tmp2
     }
     if ((pt == "bayes") || (pt == "marginal")) tmp <- tmp * rep(bf, each = nr)
     #KBH: don't normalize if partial lhoods desired
+    # TODO scale lhood
     if (pt != "lhood") tmp <- tmp / rowSums(tmp)
     if (data_type == "DNA") {
       tmp_max <- p2dna(tmp)
@@ -158,14 +165,6 @@ ancestral.pml <- function(object, type = "marginal", return = "prob", ...) {
     result[[j - nTips]] <- tmp
     result2[[j - nTips]] <- tmp_max
   }
-#  ind <- identical_sites(data)
-#  if(length(ind)>0){
-#    for(k in seq_len(nNode)){
-#      result[[k]][ind,] <- contrast[data[[1]][ind],]
-#      result2[[k]][ind] <- data[[1]][ind]
-#    }
-#  }
-#  browser()
   attrib$names <- node_label
   attributes(result2) <- attrib
   if(rt == "phyDat") return(rbind(data, result2))
@@ -223,7 +222,6 @@ ancestral.pars <- function(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"),
   }
   res
 }
-
 
 
 #' @rdname ancestral.pml
@@ -311,25 +309,10 @@ mpr <- function(tree, data, cost = NULL, return="prob", tips=FALSE, ...) {
   res_prob <- lapply(res, fun)
   attributes(res_prob) <- att
   if(return=="prob") return(res_prob)
-#    class(res_prob) <- c("ancestral", "phyDat")
-  #    else res[1:ntips] <- data[1:ntips]
-  #fun2 <- function(x) {
-  #  x <- p2dna(x)
-  #  fitchCoding2ambiguous(x)
-  #}
-#  if (return != "prob") {
-#  if (type == "DNA") {
-#    res_state <- lapply(res, fun2)
-#    attributes(res_state) <- att
-#  }
-#  else {
   attributes(res) <- att
   res_state <- highest_state(res)
   attributes(res_state) <- att
   if(tips) res_state[seq_len(ntips)] <- data
-#  }
-#    res[1:ntips] <- data
-#  }
   res_state # list(res_prob, res_state)
 }
 
@@ -390,6 +373,7 @@ identical_sites <- function(x){
   for(i in seq_along(x)) res <- res & (x[[i]] == x[[1]])
   which(res)
 }
+
 
 #' @srrstats {G1.0} in the lines folloing: 48
 #' @srrstats {G2.3, G2.3a} in lines: 78, 79, 211, 235

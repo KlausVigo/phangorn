@@ -83,4 +83,4 @@ Encoding: UTF-8
 Repository: CRAN
 Roxygen: list(old_usage = TRUE, markdown = TRUE, roclets = c ("namespace", "rd", "srr::srr_stats_roclet"))
 Language: en-US
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.0

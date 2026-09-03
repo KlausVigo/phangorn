@@ -281,109 +281,125 @@ import(Rcpp)
 import(ape)
 import(methods)
 import(parallel)
-importFrom(Matrix,Matrix)
-importFrom(Matrix,crossprod)
-importFrom(Matrix,solve)
-importFrom(Matrix,spMatrix)
-importFrom(Matrix,sparseMatrix)
-importFrom(checkmate,assert_count)
-importFrom(checkmate,assert_flag)
-importFrom(checkmate,assert_int)
-importFrom(checkmate,assert_number)
-importFrom(checkmate,assert_numeric)
-importFrom(future.apply,future_lapply)
-importFrom(future.apply,future_sapply)
+importFrom(Matrix,
+  Matrix,
+  crossprod,
+  solve,
+  spMatrix,
+  sparseMatrix
+)
+importFrom(checkmate,
+  assert_count,
+  assert_flag,
+  assert_int,
+  assert_number,
+  assert_numeric
+)
+importFrom(future.apply,
+  future_lapply,
+  future_sapply
+)
 importFrom(generics,glance)
-importFrom(grDevices,adjustcolor)
-importFrom(grDevices,col2rgb)
-importFrom(grDevices,dev.flush)
-importFrom(grDevices,dev.hold)
-importFrom(grDevices,dev.off)
-importFrom(grDevices,hcl.colors)
-importFrom(grDevices,pdf)
-importFrom(grDevices,rgb)
-importFrom(graphics,abline)
-importFrom(graphics,axis)
-importFrom(graphics,barplot)
-importFrom(graphics,boxplot)
-importFrom(graphics,bxp)
-importFrom(graphics,curve)
-importFrom(graphics,hist)
-importFrom(graphics,identify)
-importFrom(graphics,image)
-importFrom(graphics,layout)
-importFrom(graphics,legend)
-importFrom(graphics,locator)
-importFrom(graphics,matplot)
-importFrom(graphics,mtext)
-importFrom(graphics,par)
-importFrom(graphics,plot)
-importFrom(graphics,plot.default)
-importFrom(graphics,plot.new)
-importFrom(graphics,plot.window)
-importFrom(graphics,points)
-importFrom(graphics,rect)
-importFrom(graphics,rug)
-importFrom(graphics,segments)
-importFrom(graphics,strwidth)
-importFrom(graphics,text)
-importFrom(graphics,title)
-importFrom(igraph,E)
-importFrom(igraph,all_shortest_paths)
-importFrom(igraph,decompose)
-importFrom(igraph,graph_from_adjacency_matrix)
-importFrom(igraph,layout_nicely)
-importFrom(igraph,make_graph)
-importFrom(igraph,shortest_paths)
-importFrom(igraph,topo_sort)
-importFrom(igraph,vcount)
+importFrom(grDevices,
+  adjustcolor,
+  col2rgb,
+  dev.flush,
+  dev.hold,
+  dev.off,
+  hcl.colors,
+  pdf,
+  rgb
+)
+importFrom(graphics,
+  abline,
+  axis,
+  barplot,
+  boxplot,
+  bxp,
+  curve,
+  hist,
+  identify,
+  image,
+  layout,
+  legend,
+  locator,
+  matplot,
+  mtext,
+  par,
+  plot,
+  plot.default,
+  plot.new,
+  plot.window,
+  points,
+  rect,
+  rug,
+  segments,
+  strwidth,
+  text,
+  title
+)
+importFrom(igraph,
+  E,
+  all_shortest_paths,
+  decompose,
+  graph_from_adjacency_matrix,
+  layout_nicely,
+  make_graph,
+  shortest_paths,
+  topo_sort,
+  vcount
+)
 importFrom(progressr,progressor)
-importFrom(stats,AIC)
-importFrom(stats,BIC)
-importFrom(stats,aggregate)
-importFrom(stats,as.dist)
-importFrom(stats,binomial)
-importFrom(stats,chisq.test)
-importFrom(stats,cmdscale)
-importFrom(stats,complete.cases)
-importFrom(stats,constrOptim)
-importFrom(stats,cophenetic)
-importFrom(stats,cor)
-importFrom(stats,dbinom)
-importFrom(stats,dgamma)
-importFrom(stats,ecdf)
-importFrom(stats,hclust)
-importFrom(stats,lm.fit)
-importFrom(stats,logLik)
-importFrom(stats,median)
-importFrom(stats,model.matrix)
-importFrom(stats,na.omit)
-importFrom(stats,optim)
-importFrom(stats,optimize)
-importFrom(stats,pbeta)
-importFrom(stats,pchisq)
-importFrom(stats,pgamma)
-importFrom(stats,plot.ecdf)
-importFrom(stats,qbeta)
-importFrom(stats,qgamma)
-importFrom(stats,quantile)
-importFrom(stats,reorder)
-importFrom(stats,reshape)
-importFrom(stats,runif)
-importFrom(stats,sd)
-importFrom(stats,setNames)
-importFrom(stats,stepfun)
-importFrom(stats,update)
-importFrom(stats,xtabs)
-importFrom(utils,citation)
-importFrom(utils,combn)
-importFrom(utils,download.file)
-importFrom(utils,head)
-importFrom(utils,installed.packages)
-importFrom(utils,packageDescription)
-importFrom(utils,read.table)
-importFrom(utils,setTxtProgressBar)
-importFrom(utils,stack)
-importFrom(utils,txtProgressBar)
-importFrom(utils,write.table)
+importFrom(stats,
+  AIC,
+  BIC,
+  aggregate,
+  as.dist,
+  binomial,
+  chisq.test,
+  cmdscale,
+  complete.cases,
+  constrOptim,
+  cophenetic,
+  cor,
+  dbinom,
+  dgamma,
+  ecdf,
+  hclust,
+  lm.fit,
+  logLik,
+  median,
+  model.matrix,
+  na.omit,
+  optim,
+  optimize,
+  pbeta,
+  pchisq,
+  pgamma,
+  plot.ecdf,
+  qbeta,
+  qgamma,
+  quantile,
+  reorder,
+  reshape,
+  runif,
+  sd,
+  setNames,
+  stepfun,
+  update,
+  xtabs
+)
+importFrom(utils,
+  citation,
+  combn,
+  download.file,
+  head,
+  installed.packages,
+  packageDescription,
+  read.table,
+  setTxtProgressBar,
+  stack,
+  txtProgressBar,
+  write.table
+)
 useDynLib(phangorn, .registration = TRUE)

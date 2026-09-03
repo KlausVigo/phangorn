@@ -53,6 +53,29 @@ SEXP ll_init2(SEXP nr, SEXP nTips, SEXP nc, SEXP k)
     return R_NilValue;
 }
 
+SEXP get_ll(SEXP nr, SEXP nTips, SEXP nc, SEXP k)
+{
+  int nrx = INTEGER(nr)[0], nTipsx = INTEGER(nTips)[0], ncx = INTEGER(nc)[0], kx = INTEGER(k)[0];
+  int i;
+  SEXP result;
+  PROTECT(result = allocVector(REALSXP, nrx * ncx * kx * nTipsx));
+  for(i =0; i < (nrx * ncx* kx * nTipsx); i++) REAL(result)[i]=LL[i];
+  UNPROTECT(1);
+  return(result);
+}
+
+
+SEXP get_scm(SEXP nr, SEXP nTips, SEXP k)
+{
+  int nrx = INTEGER(nr)[0], nTipsx = INTEGER(nTips)[0], kx = INTEGER(k)[0];
+  int i;
+  SEXP result;
+  PROTECT(result = allocVector(REALSXP, nrx * kx * nTipsx));
+  for(i =0; i < (nrx * kx * nTipsx); i++) REAL(result)[i]=SCM[i];
+  UNPROTECT(1);
+  return(result);
+}
+
 /*
 LL likelihood for internal edges
 SCM scaling coefficients
@@ -299,6 +322,7 @@ SEXP PML4(SEXP dlist, SEXP EL, SEXP W, SEXP G, SEXP NR, SEXP NC, SEXP K, SEXP ei
     UNPROTECT(1);
     return TMP;
 }
+
 
 //  LL /= (child P)
 //  child *= (LL *P)
@@ -724,7 +748,7 @@ SEXP optE(SEXP PARENT, SEXP CHILD, SEXP ANC, SEXP eig, SEXP EVI, SEXP EL,
     double *g=REAL(G), *evi=REAL(EVI), *contrast=REAL(CONTRAST), *contrast2=REAL(CONTRAST2);
     double *el; //=REAL(EL);
     double *eva, *eve, *evei, *tmp, *P;
-    double  *X; // define it *blub=REAL(BLUB),
+    double  *X;
     double *blub = (double *) R_alloc(nr * k, sizeof(double));
     double oldel; //=el[ch-1L]
     int ancloli, pa, ch; //=anc[loli]

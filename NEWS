@@ -22,9 +22,9 @@ NEW FEATURES
 
       more of the estimated parameters.
 
-      Added some plot functions to explore the different model space.
+      Added some plot functions to explore the model space.
 
-      A write method to export the tree, data and models was added.
+      Added a write.modelTest method to export the tree, data and parameters.
 
     o write.pml() exports now additionally several plots
 
@@ -56,9 +56,9 @@ OTHER CHANGES
 
     o default for dist.hamming and dist.ml is now delete="pairwise"
 
-    o dist.hamming is faster with argument delete="pairwise", and can be
+    o dist.hamming is faster with argument delete="pairwise", and may speed up
 
-      speed up dist.ml as well.
+      dist.ml as well.
 
     o baseFreq() now uses C++ code and is considerably faster
 
@@ -69,6 +69,10 @@ BUG FIXES
     o update.pml can now properly updates site.rate
 
     o fix degree of freedom for free rate models
+
+    o ancestral.pml / anc_pml now use scale internally and are numerical
+
+      more stable (no underflow problems)
 
 
     CHANGES in PHANGORN VERSION 2.12.0

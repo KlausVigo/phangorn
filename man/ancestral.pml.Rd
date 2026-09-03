@@ -8,7 +8,7 @@
 \alias{pace}
 \title{Ancestral character reconstruction.}
 \usage{
-ancestral.pml(object, type = "marginal", return = "prob", ...)
+ancestral.pml(object, type = "marginal", return = "ancestral", ...)
 
 anc_pml(object, type = "marginal", ...)
 

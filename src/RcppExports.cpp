@@ -11,6 +11,23 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// pwIndexCpp
+std::vector<double> pwIndexCpp(const IntegerVector left, const IntegerVector right, int l, int n, int li, const NumericVector w, const NumericVector index);
+RcppExport SEXP _phangorn_pwIndexCpp(SEXP leftSEXP, SEXP rightSEXP, SEXP lSEXP, SEXP nSEXP, SEXP liSEXP, SEXP wSEXP, SEXP indexSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const IntegerVector >::type left(leftSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector >::type right(rightSEXP);
+    Rcpp::traits::input_parameter< int >::type l(lSEXP);
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< int >::type li(liSEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type w(wSEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(pwIndexCpp(left, right, l, n, li, w, index));
+    return rcpp_result_gen;
+END_RCPP
+}
 // fhm_new
 NumericVector fhm_new(NumericVector v, int n);
 RcppExport SEXP _phangorn_fhm_new(SEXP vSEXP, SEXP nSEXP) {
@@ -264,6 +281,8 @@ RcppExport SEXP C_sprdist(SEXP, SEXP, SEXP);
 RcppExport SEXP dist2spectra(SEXP, SEXP, SEXP);
 RcppExport SEXP FS4(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 RcppExport SEXP FS5(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+RcppExport SEXP get_ll(SEXP, SEXP, SEXP, SEXP);
+RcppExport SEXP get_scm(SEXP, SEXP, SEXP);
 RcppExport SEXP getDAD(SEXP, SEXP, SEXP, SEXP, SEXP);
 RcppExport SEXP getdPM(SEXP, SEXP, SEXP, SEXP);
 RcppExport SEXP getdPM2(SEXP, SEXP, SEXP, SEXP);
@@ -286,6 +305,7 @@ RcppExport SEXP sankoffMPR(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 RcppExport SEXP _rcpp_module_boot_Fitch_mod();
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_phangorn_pwIndexCpp", (DL_FUNC) &_phangorn_pwIndexCpp, 7},
     {"_phangorn_fhm_new", (DL_FUNC) &_phangorn_fhm_new, 2},
     {"_phangorn_node_heights_upgma", (DL_FUNC) &_phangorn_node_heights_upgma, 4},
     {"_phangorn_rss_upgma", (DL_FUNC) &_phangorn_rss_upgma, 5},
@@ -313,6 +333,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"dist2spectra",               (DL_FUNC) &dist2spectra,                3},
     {"FS4",                        (DL_FUNC) &FS4,                        15},
     {"FS5",                        (DL_FUNC) &FS5,                        11},
+    {"get_ll",                     (DL_FUNC) &get_ll,                      4},
+    {"get_scm",                    (DL_FUNC) &get_scm,                     3},
     {"getDAD",                     (DL_FUNC) &getDAD,                      5},
     {"getdPM",                     (DL_FUNC) &getdPM,                      4},
     {"getdPM2",                    (DL_FUNC) &getdPM2,                     4},

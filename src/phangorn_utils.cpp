@@ -5,11 +5,79 @@ using namespace Rcpp;
 
 #define DINDEX(i, j) n*(i - 1) - i * (i - 1)/2 + j - i - 1
 
+#define DINDEX2(i, j) n*(i - 1) - i * (i - 1)/2 + j - 1
+
+
 int give_index3(int i, int j, int n)
 {
   if (i > j) return(DINDEX(j, i));
   else return(DINDEX(i, j));
 }
+
+
+int give_index2(int i, int j, int n)
+{
+  if (i > j) return(DINDEX2(j, i));
+  else return(DINDEX2(i, j));
+}
+
+
+// [[Rcpp::export]]
+std::vector<double> pwIndexCpp(const IntegerVector left,
+                               const IntegerVector right, int l, int n, int li,
+                               const NumericVector w, const NumericVector index){
+  int i, k;
+  std::vector<double> res(li);
+  for (i = 0; i < l; i++){
+    k = give_index2(left[i], right[i], n);
+    res[k] += w[i] * index[k];
+  }
+  return(res);
+}
+
+
+/*
+#define DINDEX2(i, j) n*(i - 1) - i * (i - 1)/2 + j - 1
+
+ // #define threshold parameters
+
+
+
+ int give_index2(int i, int j, int n)
+ {
+ if (i > j) return(DINDEX2(j, i));
+ else return(DINDEX2(i, j));
+ }
+
+ void PD(int *x, int *y, int *n, int *weight){
+   int i, k; //n =length(x)
+   for(i=0; i< *n; i++){
+   k=give_index(x[i], y[i], *n);
+   weight[k]++;
+   }
+ }
+
+
+ void pwIndex(const int *left, const int* right, int *l, int *n, double *w, double *res){
+   int i, k;
+   k=0;
+   for (i = 0; i < *l; i++){
+     k = give_index2(left[i], right[i], *n);
+     res[k] += w[i];
+   }
+ }
+
+
+ SEXP PWI(SEXP LEFT, SEXP RIGHT, SEXP L, SEXP N, SEXP W, SEXP LI){
+   int i, li=INTEGER(LI)[0];
+   SEXP res;
+   PROTECT(res = allocVector(REALSXP, li));
+   for(i = 0; i < li; i++)REAL(res)[i] = 0.0;
+   pwIndex(INTEGER(LEFT), INTEGER(RIGHT), INTEGER(L), INTEGER(N), REAL(W), REAL(res));
+   UNPROTECT(1);
+   return(res);
+ }
+ */
 
 
 // [[Rcpp::export]]
