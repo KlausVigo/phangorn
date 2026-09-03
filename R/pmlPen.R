@@ -1,8 +1,10 @@
 #' @rdname phangorn-internal
 #' @export
-pmlPen <- function(object, lambda, ...) {
-  if (inherits(object, "pmlPart")) return(pmlPartPen(object, lambda, ...))
-  if (inherits(object, "pmlMix")) return(pmlMixPen(object, lambda, ...))
+pmlPen <- function(object, lambda, ..., control=pml.control()) {
+  if (inherits(object, "pmlPart")) return(pmlPartPen(object, lambda,
+                                                     control=control, ...))
+  if (inherits(object, "pmlMix")) return(pmlMixPen(object, lambda,
+                                                   control=control, ...))
   else stop("object has to be of class pmlPart or pmlMix")
 }
 
@@ -95,7 +97,7 @@ pmlMixPen <- function(object, lambda, ..., optOmega = TRUE,
   pen <- -0.5 * lambda * t(theta) %*% KM %*% theta
   loglik <- loglik + pen
   trace <- control$trace
-  if(trace) print(loglik)
+  if(trace > 0) print(loglik)
   eps0 <- 1
   dl <- matrix(0, nr, m * l)
   iter0 <- 0

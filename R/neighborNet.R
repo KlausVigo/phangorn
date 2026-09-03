@@ -28,7 +28,8 @@ Rx <- function(d, x, CL) {
   res
 }
 
-# Formula 1
+# Formula 1: remove y, x -> u, z -> v
+# x y z -> u v
 reduc <- function(d, x, y, z) {
   u <- 2 / 3 * d[x, ] + d[y, ] / 3
   v <- 2 / 3 * d[z, ] + d[y, ] / 3
@@ -49,7 +50,6 @@ reduc <- function(d, x, y, z) {
 
 
 
-# computes ordering O(n^2) statt O(n^3) !!!
 # needs debugging
 getOrderingNN <- function(x) {
   x <- as.matrix(x)
@@ -62,8 +62,7 @@ getOrderingNN <- function(x) {
   CL[] <- seq_len(l)
   lCL <- length(CL)
   ord <- CL
-  # DM_C connected components, DM_V vertices
-  DM_C <- DM_V <- DM <- d
+  DM <- d
   z <- 0
   while (lCL > 1) {
     z <- z + 1
@@ -86,7 +85,6 @@ getOrderingNN <- function(x) {
       newCL <- c(CL[[e1]], CL[[e2]])
       newOrd <- newCL
       CL[[e1]] <- newCL
-      # update DM_C
       DM <- updateDM(DM, d, CL, e1)
       DM <- DM[-e2, -e2, drop = FALSE]
       CL <- CL[-e2]
@@ -174,6 +172,10 @@ getOrderingNN <- function(x) {
 }
 
 
+
+
+
+
 #' Computes a neighborNet from a distance matrix
 #'
 #' Computes a neighborNet, i.e. an object of class \code{networx} from a
@@ -215,4 +217,4 @@ neighborNet <-  function(x, ord = NULL) {
   attr(spl, "cycle") <- 1:l
   as.networx(spl)
 }
-#' @srrstats {G1.0} in the lines folloing: 193
+#' @srrstats {G1.0} in the lines following: 193
