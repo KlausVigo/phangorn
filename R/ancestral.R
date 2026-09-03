@@ -140,7 +140,7 @@ ancestral.pml <- function(object, type = "marginal", return = "ancestral", ...) 
     }
   }
   SCALE_EPS <- 1.0/4294967296.0
-  SCM <- scm[,1,]
+  SCM <- scm[,1, , drop = FALSE]
   sc_min <- apply(SCM,1,min)
   SCM <- SCM - sc_min
   for (j in unique(parent)) {
