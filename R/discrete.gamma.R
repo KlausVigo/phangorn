@@ -246,25 +246,24 @@ plotRates <- function(obj, cdf.color="blue", main="", rug=FALSE, xlim=NULL,
     y <- y / max(y)
     ecdf_pscores <- stepfun(x, y)
   }
-
-  if(is.null(xlim)) xlim <- c(-0.25, 1.1 * max(pscores))
-  if(!append){
-    plot.ecdf(ecdf_pscores, verticals = TRUE, do.points=FALSE, main=main, xlim=xlim,
-         ...)
-    if(rug) rug(jitter(pscores))
-  }
   el <- obj$tree$edge.length * obj$rate
+  el <- sum(el)
   w <- obj$w
   g <- obj$g
   inv <- obj$inv
+  if(is.null(xlim)) xlim <- c(-0.25, 1.1 * max(c(pscores, g*el)))
+  if(!append){
+    plot.ecdf(ecdf_pscores, verticals = TRUE, do.points=FALSE, main=main,
+              xlim=xlim, ...)
+    if(rug) rug(jitter(pscores))
+  }
   if (inv > 1e-8) {
     g <- c(0, g)
     w <- c(inv, w)
   }
-  plot_gamma_plus_inv(w=w, g=g, append=TRUE, xlim=xlim,
-                       edge.length=sum(el), verticals=TRUE, col=cdf.color,
-                       site.rate=obj$site.rate, ...)
-#  }
+  plot_gamma_plus_inv(w = w, g = g, append = TRUE, xlim = xlim,
+                      edge.length = el, verticals = TRUE, col = cdf.color,
+                      site.rate = obj$site.rate, ...)
   invisible(obj)
 }
 
