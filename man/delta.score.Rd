@@ -26,11 +26,7 @@ hist(delta.score(yeast, "all"))
 
 }
 \references{
-\bibshow{*, Holland2002}
-
-Russell D. Gray, David Bryant, Simon J. Greenhill (2010) On the shape and
-fabric of human history \emph{Phil. Trans. R. Soc. B}, \bold{365}
-3923--3933; DOI: 10.1098/rstb.2010.0162
+\bibshow{*, Holland2002, Gray2010}
 }
 \seealso{
 \code{\link{dist.hamming}}

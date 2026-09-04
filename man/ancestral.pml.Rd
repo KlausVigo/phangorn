@@ -40,7 +40,7 @@ pace(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"), cost = NULL,
 An object of class ancestral. This is a list containing the tree with
 node labels, the original alignment as an \code{phyDat} object, a
 \code{data.frame} containing the probabilities belonging to a state for all
-(internal nodes) and the most likely state.
+(internal nodes) and the most likely state, again a  \code{phyDat} object.
 }
 \description{
 Marginal reconstruction of the ancestral character states.
@@ -88,10 +88,7 @@ anc_heatmap(anc.ml, select=1:50)
 
 }
 \references{
-\bibshow{*, Felsenstein2004, Yang2006}
-
-Swofford, D.L., Maddison, W.P. (1987) Reconstructing ancestral character
-states under Wagner parsimony. \emph{Math. Biosci.} \bold{87}: 199--229
+\bibshow{*, Felsenstein2004, Yang2006, Swofford1987}
 }
 \seealso{
 \code{\link{pml}}, \code{\link{parsimony}}, \code{\link[ape]{ace}},

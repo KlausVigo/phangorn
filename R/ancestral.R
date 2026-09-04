@@ -35,7 +35,7 @@
 #' @return An object of class ancestral. This is a list containing the tree with
 #' node labels, the original alignment as an \code{phyDat} object, a
 #' \code{data.frame} containing the probabilities belonging to a state for all
-#' (internal nodes) and the most likely state.
+#' (internal nodes) and the most likely state, again a  \code{phyDat} object.
 ## For \code{return="phyDat"} an object  of class "phyDat", containing
 ## the ancestral states of all nodes. For nucleotide data this can contain
 ## ambiguous states. Apart from fitch parsimony the most likely states are
@@ -47,10 +47,7 @@
 #' \code{\link[ape]{latag2n}}, \code{\link{gap_as_state}},
 #' \code{\link[ape]{root}}, \code{\link[ape]{makeNodeLabel}}
 #' @references
-#' \bibshow{*, Felsenstein2004, Yang2006}
-#'
-#' Swofford, D.L., Maddison, W.P. (1987) Reconstructing ancestral character
-#' states under Wagner parsimony. \emph{Math. Biosci.} \bold{87}: 199--229
+#' \bibshow{*, Felsenstein2004, Yang2006, Swofford1987}
 #' @keywords cluster
 #' @examples
 #'

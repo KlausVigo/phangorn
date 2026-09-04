@@ -40,7 +40,7 @@ Models for detecting positive selection
 }
 \details{
 \code{codonTest} allows to test for positive selection similar to programs
-like PAML (Yang ) or HyPhy (Kosakovsky Pond et al. 2005).
+like PAML \bibcitet{Yang2007} or HyPhy \bibcitet{Pond2005b}.
 
 There are several options for deriving the codon frequencies.
 Frequencies can be "equal" (1/61), derived from nucleotide frequencies "F1x4"
@@ -69,14 +69,7 @@ plot(fit_codon, "M1a")
 
 }
 \references{
-\bibshow{*, Yang2014}
-
-Sergei L. Kosakovsky Pond, Simon D. W. Frost, Spencer V. Muse (2005) HyPhy:
-hypothesis testing using phylogenies, \emph{Bioinformatics}, \bold{21(5)}:
-676--679, doi:10.1093/bioinformatics/bti079
-
-Nielsen, R., and Z. Yang. (1998) Likelihood models for detecting positively
-selected amino acid sites and applications to the HIV-1 envelope gene.
+\bibshow{*, Yang2014, Nielsen1998}
 \emph{Genetics}, \bold{148}: 929--936
 }
 \seealso{

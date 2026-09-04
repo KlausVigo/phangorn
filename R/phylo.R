@@ -149,6 +149,32 @@ optimGamma <- function(tree, data, shape = 1, k = 4, ...) {
   res
 }
 
+
+optimGammaInv <- function(tree, data, shape = 1, k = 4, inv = 0, optInv = FALSE,
+                          ...) {
+  g <- glance(data)
+  up <- g$const_sites / g$nchar
+  par <- c(shape, inv)
+  fn1 <- function(shape, tree, data, k, ...) pml.fit(tree, data, shape = shape,
+                                                    k = k, ...)
+  fn2 <- function(par, tree, data, k, ...){
+    shape <- par[1]
+    inv <- par[2]
+    pml.fit(tree, data, shape = shape, k = k, inv = inv, ...)
+  }
+  if (optInv) res <- optim(par, fn = fn2, method = "L-BFGS-B",
+                          lower = c(0.1, 0), upper = c(100, up),
+                          control = list(fnscale = -1, maxit = 25), gr = NULL,
+                          tree = tree, data = data, k = k, ...)
+  else{ res <- optimize(f = fn1, interval = c(0.1, 100), lower = 0.1,
+                       upper = 100, maximum = TRUE,  tol = 0.001, tree = tree,
+                       data = data, k = k, ...)
+        res[[1]][2] <- 0
+  }
+  res
+}
+
+
 # optimize shape parameter and weights
 optimGammaPhangorn <- function(tree, data, w = c(0.25, 0.25, 0.25, 0.25),
                                shape=1, inv=0, ...) { #, optInv=optInv
@@ -190,6 +216,58 @@ optimGammaPhangorn <- function(tree, data, w = c(0.25, 0.25, 0.25, 0.25),
   result <- list(par = c(w, shape), value = res[[2]])
   result
 }
+
+
+# optimize shape parameter and weights
+optimGammaPhangorn2 <- function(tree, data, w = c(0.25, 0.25, 0.25, 0.25),
+                               shape=1, inv=0, optInv=FALSE, ...) {
+  k <- length(w)
+  nenner <- 1 / w[1]
+  eta <- log(w * nenner)
+  par <- c(eta[-1], shape)
+
+  fn <- function(par, tree, data, k, inv, optInv = FALSE, ...) {
+    eta <- c(0, par[-k])
+    shape <- par[k]
+    w_new <- exp(eta) / sum(exp(eta))
+    if(optInv) inv <- par[k+1L]
+    g <- discrete.gamma(alpha=shape, k=length(w_new), w=w_new)
+
+    if (inv > 0){
+      w_new <- (1 - inv) * w_new
+      g <- g / (1 - inv)
+    }
+
+    if (any(g < .gEps)) {
+      for (i in seq_along(g)) {
+        if (g[i] < .gEps) {
+          inv <- inv + w[i]
+          w_new[i] <- 0
+          g[i] <- 1
+        }
+      }
+    }
+    ll <- pml.fit(tree, data, g=g, w=w_new, k=k, inv=inv, ...)
+    ll
+  }
+  lower <- c(rep(-5, k-1), 0.1)
+  upper <- c(rep(5, k-1), 100)
+  if(optInv){
+    par <- c(par, inv)
+    lower <- c(lower, 0)
+    upper <- c(upper, 1)
+  }
+  res <- optim(par, fn = fn, method = "L-BFGS-B", lower = lower, upper = upper,
+               control = list(fnscale = -1, maxit = 25), gr = NULL,
+               tree = tree, data = data, k = k, inv=inv, optInv=optInv, ...)
+  w <- exp(c(0, res[[1]][seq_len(k-1L)]))
+  w <- w / sum(w)
+  shape <- res[[1]][k]
+  inv <-  res[[1]][k+1L]
+  result <- list(par = c(w, shape, inv), value = res[[2]])
+  result
+}
+
 
 optimFreeRate <- function(tree, data, g = c(0.25, 0.75, 1, 2), k=4, w=w,
                           inv=inv, optInv=FALSE, timetree,  ...) {
@@ -530,6 +608,7 @@ phangornParseFormula <- function(model) {
 }
 
 
+# only used in pmlPart (no scaling)
 fs <- function(old.el, eig, parent.dat, child.dat, weight, g = g, w = w,
                bf = bf, ll.0 = ll.0, evi, tau=1e-8, getA = TRUE, getB = TRUE) {
   if (old.el < 1e-8) old.el <- 1e-8
@@ -1107,7 +1186,7 @@ pml.fit <- function(tree, data, bf = rep(1 / length(levels), length(levels)),
     p0 <- sum(exp(log(lll[ind]) + sca[ind]))
     loglik <- loglik - sum(weight) * log(1 - p0)
   }
-  if(!is.finite(loglik)) loglik <- -1.0e-308
+  if(!is.finite(loglik)) loglik <- -1.0e50
   if (!site) return(loglik)
 #  resll <- exp(resll)  # see if this is used anywhere
   return(list(loglik=loglik, siteLik=siteLik, resll=resll2, resll2=resll))
@@ -1939,7 +2018,7 @@ updateRates <- function(res, ll, rate, shape, k, inv, wMix, update="rate",
   if(res[[2]] < ll) return(NULL)
   update <- match.arg(update, c("rate", "shape", "inv"))
   if(update=="rate") rate <- res[[1]]
-  if(update=="shape") shape <- res[[1]]
+  if(update=="shape") shape <- res[[1]][1]
   if(update=="inv") inv <- res[[1]]
 
   rw <- rates_n_weights(shape, k, site.rate, w, inv = inv)
@@ -2382,14 +2461,20 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
           cat("optimize shape parameter: ", ll, "-->", max(res[[2]], ll), "\n")
         ll <- res[[2]]
       } else {
-        res <- optimGamma(tree, data, shape = shape, k = k, inv = inv,
+        res <- optimGammaInv(tree, data, shape = shape, k = k, inv = inv,
+                             optInv = optInv,
                           INV = INV, Q = Q, bf = bf, eig = eig, ll.0 = ll.0,
                           rate = rate, llMix = llMix, wMix=wMix, ASC=ASC,
                           site.rate=site.rate)
         if (trace > 0)
         cat("optimize shape parameter: ", ll, "-->", max(res[[2]], ll), "\n")
+        inv <- res[[1]][2]
         updateRates(res, ll, rate, shape, k, inv, wMix, update="shape",
                   site.rate=site.rate)
+        if(optInv){
+          ll.0 <- as.matrix(INV %*% (bf * inv))
+          if (wMix > 0) ll.0 <- ll.0 + llMix
+        }
       }
     }
     if (optFreeRate) {
@@ -2397,16 +2482,17 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       res_test <- optimFreeRate(tree, data, g = g, k = k, w = w, inv = inv,
                            INV = INV, bf = bf, eig = eig, optInv=optInv,
                            ll.0 = ll.0, rate = rate, timetree=timetree)
-      w <- res_test$w
-      g <- res_test$r
-      tree <- res_test$tree
-      ll <- res_test$value
-      inv <- res_test$inv
-      ll.0 <- as.matrix(INV %*% (bf * inv))
-      if (wMix > 0) ll.0 <- ll.0 + llMix
-
-      if (trace > 0) cat("optimize free rate parameters: ", tmp_ll, "-->",
-                         ll, "\n")
+      if(res_test$value > ll) {
+        w <- res_test$w
+        g <- res_test$r
+        tree <- res_test$tree
+        ll <- res_test$value
+        inv <- res_test$inv
+        ll.0 <- as.matrix(INV %*% (bf * inv))
+        if (wMix > 0) ll.0 <- ll.0 + llMix
+        if (trace > 0) cat("optimize free rate parameters: ", tmp_ll, "-->",
+                           ll, "\n")
+      }
     }
     ### end sitewise
     if (optEdge) {

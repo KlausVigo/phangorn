@@ -28,9 +28,9 @@ the restricted and unrestricted estimate and two pml objects of the
 restricted and unrestricted model.
 }
 \description{
-This function computes the Swofford--Olsen--Waddell--Hillis (SOWH) test, a
-parametric bootstrap test. The function is computational very demanding and
-likely to be very slow.
+This function computes the Swofford--Olsen--Waddell--Hillis (SOWH) test
+\bibcitet{Swofford1996, Goldman2000}, a parametric bootstrap test.
+The function is computational very demanding and likely to be very slow.
 }
 \details{
 \code{SOWH.test} performs a parametric bootstrap test to compare two trees.
@@ -56,14 +56,6 @@ summary(res)
 }
 \references{
 \bibshow{*}
-
-Goldman, N., Anderson, J. P., and Rodrigo, A. G. (2000)
-Likelihood -based tests of topologies in phylogenetics. \emph{Systematic
-Biology} \bold{49} 652-670.
-
-Swofford, D.L., Olsen, G.J., Waddell, P.J. and Hillis, D.M. (1996)
-Phylogenetic Inference in Hillis, D.M., Moritz, C. and Mable, B.K. (Eds.)
-\emph{Molecular Systematics} (2nd ed.) 407-514, Sunderland, MA: Sinauer
 }
 \seealso{
 \code{\link{pml}}, \code{\link{pmlPart}}, \code{\link{pmlCluster}},
