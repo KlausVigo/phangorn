@@ -171,7 +171,7 @@ expect_error(pml_bb(dat, model="GTR", method="tipdated"))
     dat_tmp <- dat
     attr(dat_tmp, "weight") <- weights
     fit_T <- update(fit_T, data=dat_tmp)
-    fit0 <- pml(tree_U1, dat_tmp, k=4, site.rate = "weighted_weighted")
+    fit0 <- pml(tree_U1, dat_tmp, k=4, site.rate = "variable_weight_gamma")
     fit.rw <- optim.pml(fit0, optEdge=FALSE, optGamma = TRUE,
                                 control = pml.control(epsilon=1e-10, trace=0))
     expect_equal(logLik(fit.rw),  logLik(fit_T), tolerance=1e-4)
