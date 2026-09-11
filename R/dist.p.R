@@ -24,7 +24,8 @@
 #' @return an object of class \code{dist}.
 #' @author Klaus Schliep and Alastair Potts
 #' @seealso \code{\link[ape]{dist.dna}}, \code{\link[phangorn]{dist.hamming}}
-#' @references Alvarez, I., and J. F. Wendel. (2003) Ribosomal ITS sequences
+#' @references
+#' Alvarez, I., and J. F. Wendel. (2003) Ribosomal ITS sequences
 #' and plant phylogenetic inference. \emph{ Molecular Phylogenetics and
 #' Evolution}, \bold{29}, 417--434.
 #'

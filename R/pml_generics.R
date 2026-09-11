@@ -74,17 +74,20 @@ print.pml <- function(x, ...) {
   nc <- attr(x$data, "nc")
   ll0 <- sum(w * log(w / sum(w)))
   cat("unconstrained loglikelihood:", ll0, "\n")
-  cat("Total tree length:",
-      sum(x$tree$edge.length) * x$rate, "\n\t(expected number of substituions per site)\n")
+  cat("Total tree length:", sum(x$tree$edge.length) * x$rate,
+      "\n\t(expected number of substituions per site)\n")
   cat("Minimal tree length:",
-      parsimony(x$tree, x$data) / sum(attr(x$data, "weight")), "\n\t(observed substitutions per site)\n")
+      parsimony(x$tree, x$data) / sum(attr(x$data, "weight")),
+      "\n\t(observed substitutions per site)\n")
   if (x$inv > 0) cat("Proportion of invariant sites:", x$inv, "\n")
   if (x$k > 1) {
     cat("Model of rate heterogeneity: ")
     if(x$site.rate=="gamma") cat("Discrete gamma model\n")
     if(x$site.rate=="free_rate") cat("Free rate model\n")
-    if(x$site.rate=="gamma_quadrature") cat("Discrete gamma model (quadrature) \n")
-    if(x$site.rate=="gamma_weighted") cat("Discrete gamma model with variable weights \n")
+    if(x$site.rate=="gamma_quadrature")
+      cat("Discrete gamma model (quadrature) \n")
+    if(x$site.rate=="variable_weight_gamma")
+      cat("Discrete gamma model with variable weights \n")
     cat("Number of rate categories:", x$k, "\n")
     if(x$site.rate!="free_rate") cat("Shape parameter:", x$shape, "\n")
     rate <- x$g

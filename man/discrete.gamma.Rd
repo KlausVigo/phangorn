@@ -53,8 +53,8 @@ or density / probability function.}
 \item{edge.length}{Total edge length (sum of all edges in a tree).}
 
 \item{site.rate}{Indicates what type of gamma distribution to use. Options
-are "gamma" (Yang 1994) and "gamma_quadrature" using Laguerre quadrature
-approach of Felsenstein (2001)}
+are "gamma" (Yang 1994), "gamma_quadrature" using Laguerre quadrature
+approach of Felsenstein (2001) or  "variable_weight_gamma".}
 
 \item{\dots}{Further arguments passed to or from other methods.}
 

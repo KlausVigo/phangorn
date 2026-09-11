@@ -8,8 +8,8 @@
 \usage{
 modelTest(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
   FREQ = FALSE, k = 4, control = pml.control(), RHAS = c("gamma",
-  "gamma_weighted", "free_rate"), ..., mt_control = mt.control(crit = "BIC",
-  n_model = 5, n_rhas = 100))
+  "variable_weight_gamma", "free_rate"), ..., mt_control = mt.control(crit =
+  "BIC", n_model = 5, n_rhas = 100))
 
 write.modelTest(x, file = "modelTest", digits = 10)
 }
@@ -35,7 +35,7 @@ term.}
 
 \item{RHAS}{a character vector specifying the rate heterogeneity among sites
 models. Option are "gamma" for discrete gamma model with equal weights,
-"gamma_weighted" for discrete gamma model with estimated weights,
+"variable_weight_gamma" for discrete gamma model with estimated weights,
 "free_rate" and "gamma_quadrature".}
 
 \item{...}{Further arguments passed to or from other methods.}
@@ -78,10 +78,10 @@ plot(mT$TL, mT$logLik, xlim=c(3,6.5),
 text(mT$TL, mT$logLik, labels=mT$Model, pos=4)
 
 fit_GTR_G <- as.pml(mt, "GTR+G(4)")
-fit_GTR_GW <- as.pml(mt, "GTR+GW(4)")
+fit_GTR_VWG <- as.pml(mt, "GTR+VWG(4)")
 fit_GTR_R <- as.pml(mt, "GTR+R(4)")
 plotRates(fit_GTR_G)
-plotRates(fit_GTR_GW, append=TRUE, col="red")
+plotRates(fit_GTR_VWG, append=TRUE, col="red")
 plotRates(fit_GTR_R, append=TRUE, col="green")
 
 # extract best model

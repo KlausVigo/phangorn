@@ -15,9 +15,9 @@
 #' @param g rates of discrete distribution.
 #' @param w proportion of rate g.
 #' @param site.rate Indicates what type of gamma distribution to use. Options
-#' are "gamma" (Yang 1994) and "gamma_quadrature" using Laguerre quadrature
-#' approach of Felsenstein (2001)
-## or "free_rate" "gamma_weighted".
+#' are "gamma" (Yang 1994), "gamma_quadrature" using Laguerre quadrature
+#' approach of Felsenstein (2001) or  "variable_weight_gamma".
+## or "free_rate"
 #' @param edge.length Total edge length (sum of all edges in a tree).
 #' @param discrete logical whether to plot discrete (default) or continuous pdf
 #' or cdf.
@@ -311,7 +311,7 @@ Laguerre <- function(x, shape, degree) {
 }
 
 rates_n_weights <- function(shape, k, site.rate = "gamma", w=NULL, inv=0){
-  site.rate <- match.arg(site.rate, c("gamma", "gamma_weighted",
+  site.rate <- match.arg(site.rate, c("gamma", "variable_weight_gamma",
                                       "gamma_quadrature", "free_rate"))
   if(site.rate == "gamma_quadrature")
     return(LaguerreQuad(shape=shape, k))
@@ -320,7 +320,7 @@ rates_n_weights <- function(shape, k, site.rate = "gamma", w=NULL, inv=0){
     w <- 1
   }
   else{
-#    if(site.rate == "gamma_weighted"){
+#    if(site.rate == "variable_weight_gamma"){
       if(is.null(w) || length(w)!=k)  w <- rep(1 / k, k)
       else w <- w / sum(w) # scale to 1
       g <- discrete.gamma(alpha=shape, k=k, w=w)

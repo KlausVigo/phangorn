@@ -1,7 +1,7 @@
 #' Neighbor-Joining
 #'
 #' This function performs the neighbor-joining tree estimation of
-#' \bibcitet{Saitou1987, Studier1988}. UNJ is the unweighted version from Gascuel (1997).
+#' \bibcitet{Saitou1987, Studier1988}. UNJ is the unweighted version from \bibcitet{Gascuel1997}.
 #'
 #' NJ is a wrapper around nj from ape.
 #'
@@ -13,10 +13,6 @@
 #' \code{\link[ape]{fastme}}
 #' @references
 #' \bibshow{*}
-#'
-#' Gascuel, O. (1997) Concerning the NJ algorithm and its unweighted version,
-#' UNJ. in Birkin et. al. \emph{Mathematical Hierarchies and Biology},
-#' 149--170.
 #' @keywords cluster
 #' @examples
 #'
