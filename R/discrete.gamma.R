@@ -116,7 +116,7 @@ plot_gamma_plus_inv <- function(w=NULL, g=NULL, shape=1, inv=0, k=4, discrete=TR
   g <- mapply(function(shape, k, inv) max(gw(shape, k, inv, site.rate)[,"g"]),
               shape, k, inv) |> max()
 
-  if(is.null(xlim)) xlim <- c(-0.25, 1.25 * g)
+  if(is.null(xlim)) xlim <- c(0, 1.25 * g)
 
   # pgamma_invariant
   cdf_fun <- function(x, shape=1, inv=0){
