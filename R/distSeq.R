@@ -77,8 +77,7 @@
 #' @rdname dist.hamming
 #' @export
 dist.hamming <- function(x, ratio = TRUE, exclude = "pairwise"){
-  if(inherits(x, "DNAbin") || inherits(x, "AAbin")) x <- as.phyDat(x)
-  assert_phyDat(x)
+  x <- assert_phyDat(x, transform=TRUE)
   l <- length(x)
   contrast <- attr(x, "contrast")
   nc <- as.integer(attr(x, "nc"))
@@ -114,8 +113,7 @@ dist.hamming <- function(x, ratio = TRUE, exclude = "pairwise"){
 #' @export
 dist.ml <- function(x, model = "JC69", exclude = "pairwise", bf = NULL, Q = NULL,
                         k = 1L, shape = 1, ...){
-  if(inherits(x, "DNAbin") || inherits(x, "AAbin")) x <- as.phyDat(x)
-  assert_phyDat(x)
+  x <- assert_phyDat(x, transform = TRUE)
   l <- length(x)
   d <- numeric((l * (l - 1)) / 2)
   v <- numeric((l * (l - 1)) / 2)
@@ -125,6 +123,7 @@ dist.ml <- function(x, model = "JC69", exclude = "pairwise", bf = NULL, Q = NULL
   if (exclude == "all" ) x <- removeAmbiguousSites(x)
   ambig_sites <- hasAmbiguousSites(x)
   if(exclude == "pairwise") ambig_sites <- FALSE
+  gap_state <- has_gap_state(x)
   model <- match.arg(model, c("JC69", "F81", "GTR", "SYM", .aa_3Di_models))
 
   unique_contrast <- grp_duplicated(contrast)
@@ -139,7 +138,8 @@ dist.ml <- function(x, model = "JC69", exclude = "pairwise", bf = NULL, Q = NULL
   nr <- as.integer(attr(x, "nr"))
 
   if (!is.na(match(model, .aa_3Di_models)))
-    getModelAA(model, bf = is.null(bf), Q = is.null(Q))
+    getModelAA(model, bf = is.null(bf), Q = is.null(Q),
+               has_gap_state = gap_state)
 
   if (is.null(Q))
     Q <- rep(1, (nc - 1) * nc / 2L)
@@ -229,8 +229,7 @@ dist.ml <- function(x, model = "JC69", exclude = "pairwise", bf = NULL, Q = NULL
 #' @export
 dist.logDet <- function(x)
 {
-  if(inherits(x, "DNAbin") || inherits(x, "AAbin")) x <- as.phyDat(x)
-  assert_phyDat(x)
+  x <- assert_phyDat(x, transform = TRUE)
   weight <- attr(x, "weight")
   contrast <- attr(x, "contrast")
   r <- attr(x, "nc")
