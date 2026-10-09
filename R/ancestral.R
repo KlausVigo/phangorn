@@ -42,7 +42,7 @@
 ## returned.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{pml}}, \code{\link{parsimony}}, \code{\link[ape]{ace}},
-#' \code{\link{plotAnc}}, \code{\link{heat_map}},
+#' \code{\link{plotAnc}}, \code{\link{heatmapp}},
 #' \code{\link{latag2n.phyDat}},
 #' \code{\link[ape]{latag2n}}, \code{\link{gap_as_state}},
 #' \code{\link[ape]{root}}, \code{\link[ape]{makeNodeLabel}}
@@ -65,7 +65,7 @@
 #' # plot the third character
 #' plotAnc(anc.ml, 3)
 #' # plot joint reconstruction as heatmap
-#' heat_map(anc.ml, select=1:50)
+#' heatmapp(anc.ml, select=1:50)
 #'
 #' @rdname ancestral.pml
 #' @export

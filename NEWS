@@ -10,7 +10,9 @@ NEW FEATURES
 
       for a set of trees (e.g. bootstrap or MCMC sample).
 
-    o anc_heatmap to plot heatmaps with together ancestral states
+    o heatmapp to plot heatmaps, phylogenetic trees with alignments, possibly
+
+      together with ancestral states.
 
     o as.networx and plot.networx got a new option "outline", reducing the
 
@@ -18,9 +20,11 @@ NEW FEATURES
 
     o modelTest allows now easier to estimate different models for rate
 
-      heterogeneity among sites (RHAS), e.g. free rate model and returns now
+      heterogeneity among sites (RHAS), e.g. free rate model, variable weight
 
-      more of the estimated parameters.
+      disctrete gamma model.
+
+      modelTest returns now more of the estimated parameters.
 
       Added some plot functions to explore the model space.
 

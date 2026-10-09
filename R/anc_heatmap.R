@@ -24,17 +24,18 @@ nh_anc <- function(x){
 
 
 
-#' heat_map
+#' heatmapp
 #'
 #' Plots a heat map with ancestral states.
 #'
-#' \code{heat_map} plots a heatmap, a phylogeny together with the
+#' \code{heatmapp} plots a heatmap, a phylogeny together with the
 #' alignment. For ancestral reconstructions it additionally plots the
 #' joint distribution or the most likely state of the internal nodes.
+#' This eases comparison of ancestors with related Descendant sequences.
 #'
-#' \code{heat_map} is based on the ape function s\code{plot.phylo} and
+#' \code{heatmapp} is based on the ape function s\code{plot.phylo} and
 #' \code{image.AAbin} or \code{image.AAbin}.
-#' @aliases heat_map
+#' @aliases heatmapp
 #' @param x an object of class ancestral or phyDat.
 #' @param y an object  of class phyDat.
 #' @param use.edge.length a logical indicating whether to use the edge lengths
@@ -49,7 +50,7 @@ nh_anc <- function(x){
 #' @param cex.lab font size of the labels.
 #' @param nodes Show ancestral sequences at internal nodes.
 #' @param ... Further arguments passed to or from other methods.
-#' @return \code{heat_map} returns silently a \code{x}
+#' @return \code{heatmapp} returns silently a \code{x}
 #' @importFrom graphics layout mtext
 #' @importFrom grDevices dev.flush dev.hold
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
@@ -63,18 +64,18 @@ nh_anc <- function(x){
 #' tree <- makeNodeLabel(tree)
 #' anc_mp <- anc_pars(tree, wm)
 #' op <- par(mar=c(4,1,4,5))
-#' heat_map(anc_mp)
-#' heat_map(tree, woodmouse)
+#' heatmapp(anc_mp)
+#' heatmapp(tree, woodmouse)
 #' par(op)
 #' @keywords hplot
-#' @rdname heat_map
+#' @rdname heatmapp
 #' @export
-heat_map <- function(x, ...) UseMethod("heat_map")
+heatmapp <- function(x, ...) UseMethod("heatmapp")
 
 
-#' @rdname heat_map
+#' @rdname heatmapp
 #' @export
-heat_map.phylo <- function(x, y, use.edge.length = TRUE, align_label = TRUE,
+heatmapp.phylo <- function(x, y, use.edge.length = TRUE, align_label = TRUE,
                           clade=NULL, select=NULL, cex.lab=1, nodes = FALSE, ...){
   assert_phylo(x)
   y <- assert_phyDat(y, transform = TRUE)
@@ -139,35 +140,35 @@ heat_map.phylo <- function(x, y, use.edge.length = TRUE, align_label = TRUE,
 }
 
 
-#' @rdname heat_map
+#' @rdname heatmapp
 #' @export
-heat_map.pml <- function(x, ...){
+heatmapp.pml <- function(x, ...){
   assert_pml(x)
   phy <- x$tree
   y <- x$data
-  heat_map(phy, y, nodes=FALSE, ...)
+  heatmapp(phy, y, nodes=FALSE, ...)
   invisible(x)
 }
 
 
-#' @rdname heat_map
+#' @rdname heatmapp
 #' @export
-heat_map.ancestral <- function(x, nodes=TRUE, ...){
+heatmapp.ancestral <- function(x, nodes=TRUE, ...){
   assert_ancestral(x)
   y <- as.phyDat(x)
   phy <- x$tree
-  heat_map(phy, y, nodes=nodes, ...)
+  heatmapp(phy, y, nodes=nodes, ...)
   invisible(x)
 }
 
 
-#' @rdname heat_map
+#' @rdname heatmapp
 #' @export
-heat_map.ancestral <- function(x, nodes=TRUE, ...){
+heatmapp.ancestral <- function(x, nodes=TRUE, ...){
   assert_ancestral(x)
   y <- as.phyDat(x)
   phy <- x$tree
-  heat_map(phy, y, nodes=nodes, ...)
+  heatmapp(phy, y, nodes=nodes, ...)
   invisible(x)
 }
 
