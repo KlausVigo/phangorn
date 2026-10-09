@@ -1,8 +1,12 @@
 #' @rdname phangorn-internal
 #' @export
-assert_phyDat <- function(x, contains_label=!is.null(label), label=NULL){
+assert_phyDat <- function(x, contains_label=!is.null(label), label=NULL,
+                          transform = FALSE){
   txt <-  deparse(substitute(x))
-  if (!inherits(x, "phyDat")) stop(gettextf("%s must be of class 'phyDat'", txt))
+  if(transform && (inherits(x, "AAbin") || inherits(x, "DNAbin")))
+    x <- as.phyDat(x)
+  if (!inherits(x, "phyDat"))
+    stop(gettextf("%s must be of class 'phyDat'", txt))
   if (contains_label && anyNA(match(label, attr(x, "names"))))
     stop(gettextf("tip labels are not in %s", txt))
   invisible(x)
@@ -48,8 +52,6 @@ assert_multiPhylo <- function(x, has_edge_length=FALSE, is_rooted=FALSE,
 }
 
 
-
-
 has_edge_length <- function(x){
   assert_treeish(x)
   if(inherits(x, "phylo")) return(!is.null(x$edge.length))
@@ -66,7 +68,8 @@ assert_treeish <- function(x, null.ok=FALSE){
     stop(gettextf("argument \"%s\" is missing, with no default", txt))
   treeish <- inherits(x, "phylo") || inherits(x, "multiPhylo")
   if(null.ok) treeish <- treeish || is.null(x)
-  if(!treeish) stop(gettextf("%s must be of class 'phylo' or 'multiPhylo'", txt))
+  if(!treeish)
+    stop(gettextf("%s must be of class 'phylo' or 'multiPhylo'", txt))
   invisible(x)
 }
 
@@ -76,6 +79,16 @@ assert_treeish <- function(x, null.ok=FALSE){
 assert_pml <- function(x){
   txt <-  deparse(substitute(x))
   if (!inherits(x, "pml")) stop(gettextf("%s must be of class 'pml'", txt))
+  invisible(x)
+}
+
+
+#' @rdname phangorn-internal
+#' @export
+assert_ancestral <- function(x){
+  txt <-  deparse(substitute(x))
+  if (!inherits(x, "ancestral"))
+    stop(gettextf("%s must be of class 'ancestral'", txt))
   invisible(x)
 }
 

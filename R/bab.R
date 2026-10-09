@@ -183,8 +183,7 @@ bab <- function(data, tree = NULL, trace = !getOption("quiet"), ...) {
   #    ILBound <- list(...)$ILBound
   #  else
   ILBound <- FALSE
-  if(inherits(data, "DNAbin") || inherits(data, "AAbin")) data <- as.phyDat(data)
-  assert_phyDat(data)
+  data <- assert_phyDat(data, transform = TRUE)
   nTips <- length(data)
   if (nTips < 4) return(stree(nTips, tip.label = names(data)))
   data <- removeParsimonyUninfomativeSites(data, recursive = TRUE)

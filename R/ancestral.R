@@ -42,7 +42,7 @@
 ## returned.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{pml}}, \code{\link{parsimony}}, \code{\link[ape]{ace}},
-#' \code{\link{plotAnc}}, \code{\link{anc_heatmap}},
+#' \code{\link{plotAnc}}, \code{\link{heat_map}},
 #' \code{\link{latag2n.phyDat}},
 #' \code{\link[ape]{latag2n}}, \code{\link{gap_as_state}},
 #' \code{\link[ape]{root}}, \code{\link[ape]{makeNodeLabel}}
@@ -65,7 +65,7 @@
 #' # plot the third character
 #' plotAnc(anc.ml, 3)
 #' # plot joint reconstruction as heatmap
-#' anc_heatmap(anc.ml, select=1:50)
+#' heat_map(anc.ml, select=1:50)
 #'
 #' @rdname ancestral.pml
 #' @export
@@ -208,7 +208,7 @@ ancestral.pars <- function(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"),
   else tips <- TRUE
   type <- match.arg(type)
   assert_phylo(tree)
-  assert_phyDat(data)
+  data <- assert_phyDat(data, transform=TRUE)
   tree$nodel.label <- makeAncNodeLabel(tree)
   if (type == "ACCTRAN" || type=="POSTORDER") {
     res <- ptree(tree, data, return = return, acctran=(type == "ACCTRAN"),
@@ -227,11 +227,11 @@ ancestral.pars <- function(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"),
 #' @export
 anc_pars <- function(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"),
                            cost = NULL, ...) {
-  #
+
   call <- match.call()
   type <- match.arg(type)
   assert_phylo(tree)
-  assert_phyDat(data)
+  data <- assert_phyDat(data, transform = TRUE)
   tree$node.label <- makeAncNodeLabel(tree, ...)
   contrast <- attr(data, "contrast")
   data <- data[tree$tip.label,]
