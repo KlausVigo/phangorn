@@ -6,7 +6,7 @@
 \alias{has_gap_state}
 \title{Treat gaps as a state}
 \usage{
-gap_as_state(obj, gap = "-", ambiguous = "?")
+gap_as_state(obj, gap = "-", ambiguous = "?", latag2n = TRUE)
 
 gap_as_ambiguous(obj, gap = "-")
 
@@ -18,6 +18,8 @@ has_gap_state(obj)
 \item{gap}{a character which codes for the gaps (default is "-").}
 
 \item{ambiguous}{a character which codes for the ambiguous state}
+
+\item{latag2n}{transform leading and trailing gaps as ambiguous states.}
 }
 \value{
 The functions return an object of class \code{phyDat}.

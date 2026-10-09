@@ -17,7 +17,8 @@ an object of class \code{"phylo"}.
 }
 \description{
 This function performs the neighbor-joining tree estimation of
-\bibcitet{Saitou1987, Studier1988}. UNJ is the unweighted version from \bibcitet{Gascuel1997}.
+\bibcitet{Saitou1987, Studier1988}. UNJ is the unweighted version from
+\bibcitet{Gascuel1997}.
 }
 \details{
 NJ is a wrapper around nj from ape.

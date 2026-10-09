@@ -730,11 +730,11 @@ readAArate <- function(file) {
 # save(.LG,.WAG,.Dayhoff,.JTT,.cpREV,.mtmam,.mtArt, file = "sysdata2.rda")
 
 
+# in simSeq and distSeq
+# replace with updateModel ??
 getModelAA <- function(model, bf = TRUE, Q = TRUE, has_gap_state=FALSE) {
   model <- match.arg(eval(model), .aa_3Di_models)
-#  if(model=="Q_3Di") tmp <- get(".threeDi", environment(pml))
-#  else
-    tmp <- get(paste0(".", model), environment(pml))
+  tmp <- get(paste0(".", model), environment(pml))
   if(has_gap_state){
     tmp$Q <- add_gap_Q_AA(tmp$Q)
     tmp$bf <- add_gap_bf_AA(tmp$bf)
@@ -772,18 +772,6 @@ guess_model <- function(x){
     else if(bf==FALSE && Q==FALSE){ model <- "Mk"}
     else {model <- "UNKNOWN"}
   }
-#  if(x$k > 1) {
-#    if(x$site.rate=="free_rate") model <- paste0(model, "+R(", x$k, ")")
-#    else model <- paste0(model, "+G(", x$k, ")")
-#  }
-#  if(x$k > 1) {
-#    model <-  switch(site.rate,
-#             "gamma" = paste0(model, "+G(", k, ")"),
-#             "gamma_quadrature" = paste0(model, "+GQ(", k, ")"),
-#             "variable_weight_gamma" = paste0(model, "+VWG(", k, ")"),
-#             "free_rate" = paste0(model, "+R(", k, ")"))
-#  }
-#  if(x$inv>0) model <- paste0(model, "+I")
   model <- model_term(model, x$k, x$site.rate, x$inv)
   model
 }
@@ -850,9 +838,13 @@ update.pml <- function(object, ...) {
     INV <- object$INV
   }
   else {
+    old_gaps <- has_gap_state(object$data)
     data <- eval(extras[[existing[2]]], parent.frame())
+    new_gaps <- has_gap_state(data)
     ll.0 <- numeric(attr(data, "nr"))
     INV <- Matrix(lli(data, tree), sparse = TRUE)
+    updateEig <- um <- old_gaps != new_gaps
+#    if(change_gap_state) updateEig <- TRUE
   }
   nr <- as.integer(attr(data, "nr"))
   nc <- as.integer(attr(data, "nc"))
@@ -870,16 +862,21 @@ update.pml <- function(object, ...) {
   type <- attr(object$data, "type")
   model <- NULL
 
-  if (!is.na(existing[9]) && type != "CODON") {
+  if(type != "CODON"){
+    if (!is.na(existing[9])) {
       model <- eval(extras[[existing[9]]], parent.frame())
 #      print(model)
 #      getModelAA(model, bf = is.na(existing[3]), Q = is.na(existing[4]),
 #                 has_gap_state = has_gap_state(data))
-      updateModel(model, type, nc, bf = is.na(existing[3]),
-                  Q = is.na(existing[4]), has_gap_state = has_gap_state(data))
+      um <- TRUE
       updateEig <- TRUE
     }
-  else model <- object$model
+    else model <- object$model
+
+    if(um) updateModel(model, type, nc, bf = is.na(existing[3]),
+                 Q = is.na(existing[4]), has_gap_state = has_gap_state(data))
+
+  }
 
   scaleQ <- FALSE
   if (type == "CODON") {
@@ -1414,7 +1411,7 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   tree <- reorder(tree, "postorder")
   if (any(tree$edge.length < 0)) tree <- minEdge(tree)
   assert_phyDat(data, label=tree$tip.label)
-  data <- subset(data, tree$tip.label) # needed
+  data <- subset(data, tree$tip.label)
   levels <- attr(data, "levels")
   type <- attr(data, "type")
   if (ASC) {
@@ -2974,7 +2971,6 @@ opt_nni <- function(tree, data, rooted, iter_max, trace, ll, RELL=NULL,
     res <- opt_Edge(tmp$tree, data, rooted, ...)
     if(!is.null(RELL)) RELL <- tmp$RELL
     ll2 <- res$logLik
-#    if(length(ll2)==0) browser()
     if(ll2 > (ll + 1e-8))  # epsR
       tree <- res$tree
     else {

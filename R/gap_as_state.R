@@ -8,6 +8,7 @@
 #' @param obj An object of class phyDat.
 #' @param gap a character which codes for the gaps (default is "-").
 #' @param ambiguous a character which codes for the ambiguous state
+#' @param latag2n transform leading and trailing gaps as ambiguous states.
 #' @return The functions return an object of class \code{phyDat}.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
 #' @seealso \code{\link{phyDat}}, \code{\link{latag2n.phyDat}},
@@ -23,10 +24,10 @@
 #' @keywords manip
 #' @rdname gap_as_state
 #' @export
-gap_as_state <- function(obj, gap="-", ambiguous="?"){
+gap_as_state <- function(obj, gap="-", ambiguous="?", latag2n=TRUE){
+  stopifnot(inherits(obj, "phyDat"))
   if(has_gap_state(obj)) return(obj)
-#  if(!is.null(attr(obj, "gap_is_state")) & isTRUE(attr(obj, "gap_is_state")))
-#    return(obj)
+  if(latag2n) obj <- latag2n.phyDat(obj)
   contrast <- cbind(attr(obj, "contrast"), gap = 0)
   levels <- c(attr(obj, "levels"), gap)
   colnames(contrast) <- levels
@@ -91,6 +92,40 @@ add_gap_bf_AA <- function(bf, gap=0.01){
   bf
 }
 
+# replace getModelAA
+updateModel <- function(model, type, nc, bf = TRUE, Q = TRUE,
+                        has_gap_state = FALSE, initiate = FALSE){
+  if (type == "AA") {
+    model <- match.arg(eval(model), .aa_3Di_models)
+    tmp <- get(paste0(".", model), environment(pml))
+    if (has_gap_state) {
+      tmp$Q <- add_gap_Q_AA(tmp$Q)
+      tmp$bf <- add_gap_bf_AA(tmp$bf)
+    }
+    if (Q) assign("Q", tmp$Q, envir = parent.frame())
+    if (bf) assign("bf", tmp$bf, envir = parent.frame())
+    return(NULL)
+  } else if (type %in% c("DNA", "USER")) {
+    if (type == "USER") {
+      model <- match.arg(model, .usermodels)
+      sc <- subsChoice_USER(model, nc)
+    } else{
+      model <- match.arg(model, .dnamodels)
+      sc <- subsChoice(model, has_gap_state)
+    }
+    tmpbf <- ifelse(sc$optBf, "empirical", "equal")
+    tmpQ <- rep(1, (nc * (nc - 1L)/2))
+    if (model == "ORDERED") tmpQ <- sc$Q
+    if (Q && !sc$optQ) assign("Q", tmpQ, envir = parent.frame())
+    if(initiate){
+      if (bf && sc$optBf) assign("bf", tmpbf, envir = parent.frame())
+    } else {
+      if (bf && !sc$optBf) assign("bf", tmpbf, envir = parent.frame())
+    }
+
+  }
+}
+
 
 remove_similar <- function(x, k=3, index=FALSE){
   dm <- dist.hamming(x, FALSE)
@@ -101,3 +136,4 @@ remove_similar <- function(x, k=3, index=FALSE){
   if(index) return(dist_i)
   x[-dist_i, ]
 }
+

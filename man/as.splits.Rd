@@ -3,6 +3,7 @@
 \name{allSplits}
 \alias{allSplits}
 \alias{allCircularSplits}
+\alias{allCircularSplitsST}
 \alias{as.splits}
 \alias{splits}
 \alias{as.Matrix}
@@ -28,6 +29,8 @@
 allSplits(k, labels = NULL)
 
 allCircularSplits(k, labels = NULL)
+
+allCircularSplitsST(k, labels = NULL, pos = NULL)
 
 as.splits(x, ...)
 

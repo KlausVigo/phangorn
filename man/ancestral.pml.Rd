@@ -84,7 +84,7 @@ plotAnc(anc.ml)
 # plot the third character
 plotAnc(anc.ml, 3)
 # plot joint reconstruction as heatmap
-anc_heatmap(anc.ml, select=1:50)
+heat_map(anc.ml, select=1:50)
 
 }
 \references{
@@ -92,7 +92,7 @@ anc_heatmap(anc.ml, select=1:50)
 }
 \seealso{
 \code{\link{pml}}, \code{\link{parsimony}}, \code{\link[ape]{ace}},
-\code{\link{plotAnc}}, \code{\link{anc_heatmap}},
+\code{\link{plotAnc}}, \code{\link{heat_map}},
 \code{\link{latag2n.phyDat}},
 \code{\link[ape]{latag2n}}, \code{\link{gap_as_state}},
 \code{\link[ape]{root}}, \code{\link[ape]{makeNodeLabel}}

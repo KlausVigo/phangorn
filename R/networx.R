@@ -43,6 +43,51 @@ allCircularSplits <- function(k, labels = NULL) {
 }
 
 
+
+#' @rdname as.splits
+#' @export
+# ordering as in splitstree??
+allCircularSplitsST <- function(k, labels = NULL, pos=NULL) {
+  k <- as.integer(k)
+  if(is.null(pos)){
+     res <- vector("list", k * (k - 1L) / 2)
+     pos <- rep(TRUE, length(res))
+  } else {
+    res <-  vector("list", sum(pos))
+  }
+#  res[1:k] <- 1L:k
+  ind1 <- 1L
+  ind2 <- 1L
+  for(i in 1:(k-1)){
+    for(j in i:(k-1)){
+      if(pos[ind2]){
+        res[[ind1]] <- (i:j)
+        ind1 <- ind1 + 1
+      }
+      ind2 <- ind2 + 1
+    }
+  }
+#  res <- lapply(res, sort)
+  if (is.null(labels)) labels <- as.character(1:k)
+  attr(res, "labels") <- labels
+  attr(res, "cycle") <- 1:k
+  class(res) <- "splits"
+  res
+}
+
+
+external_nodes <- function(n){
+  res <- integer(n)
+  res[1] <- 1
+  res[2] <- n-1
+  k <- 1L
+  for(i in 3 : n){
+    k <- k  + n - (i - 2)
+    res[i] <- k
+  }
+  res
+}
+
 #degree <- function(x){
 #  tabulate(x$edge)
 #}

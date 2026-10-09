@@ -25,7 +25,7 @@ expect_snapshot_plot(pie_ancestral, "pie_ancestral")
 
 
 old_par <- par(mar=c(5,4,4,8))
-heat <- function() anc_heatmap(test_ml)
+heat <- function() heat_map(test_ml)
 expect_snapshot_plot(heat, "heat")
 par(old_par)
 
