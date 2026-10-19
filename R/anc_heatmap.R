@@ -23,7 +23,6 @@ nh_anc <- function(x){
 
 
 
-
 #' heatmapp
 #'
 #' Plots a heat map with ancestral states.
@@ -160,18 +159,6 @@ heatmapp.ancestral <- function(x, nodes=TRUE, ...){
   heatmapp(phy, y, nodes=nodes, ...)
   invisible(x)
 }
-
-
-#' @rdname heatmapp
-#' @export
-heatmapp.ancestral <- function(x, nodes=TRUE, ...){
-  assert_ancestral(x)
-  y <- as.phyDat(x)
-  phy <- x$tree
-  heatmapp(phy, y, nodes=nodes, ...)
-  invisible(x)
-}
-
 
 
 #' @rdname phangorn-internal
