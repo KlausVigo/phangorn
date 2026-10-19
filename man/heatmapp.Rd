@@ -15,8 +15,6 @@ heatmapp(x, ...)
 \method{heatmapp}{pml}(x, ...)
 
 \method{heatmapp}{ancestral}(x, nodes = TRUE, ...)
-
-\method{heatmapp}{ancestral}(x, nodes = TRUE, ...)
 }
 \arguments{
 \item{x}{an object of class ancestral or phyDat.}
