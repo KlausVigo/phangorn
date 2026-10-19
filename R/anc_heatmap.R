@@ -76,14 +76,15 @@ heatmapp <- function(x, ...) UseMethod("heatmapp")
 #' @export
 heatmapp.phylo <- function(x, y, use.edge.length = TRUE, align_label = TRUE,
                           clade=NULL, select=NULL, cex.lab=1, nodes = FALSE, ...){
+  old_x <- x
   assert_phylo(x)
   y <- assert_phyDat(y, transform = TRUE)
   if(is.null(x$edge.length)) use.edge.length <- FALSE
+  if(!is.null(clade)) x <- extract.clade(x, clade)
   if(nodes) lab <- c(x$tip.label, x$node.label)
   else lab <- x$tip.label
   if(anyNA(match(lab, names(y))))
     stop("labels between tree and alignment mismatch")
-  if(!is.null(clade)) x <- extract.clade(x, clade)
   if(!is.null(select)) y <- subset(y, select = select, site.pattern = FALSE)
   nt <- Ntip(x)
   nn <- Nnode(x)
@@ -135,7 +136,7 @@ heatmapp.phylo <- function(x, y, use.edge.length = TRUE, align_label = TRUE,
   image(y, show.label = FALSE, yaxt = "n", ...)
   n <- length(lab)
   mtext(ind, side = 4, line = 0.1, at = n:1, cex = cex.lab, adj = 0, las = 1)
-  invisible(x)
+  invisible(old_x)
 }
 
 

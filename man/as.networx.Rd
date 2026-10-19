@@ -22,6 +22,8 @@ as.networx(x, ...)
 splits (may excludes splits).}
 
 \item{coord}{add coordinates of the nodes, allows to reproduce the plot.}
+
+\item{pos}{logical vector indicating which splits to return.}
 }
 \value{
 an object of class \code{networx}.
