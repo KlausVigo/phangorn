@@ -559,7 +559,7 @@ void NR_f(double *eva, int nc, double el, double *w, double *g, double *X, int l
 }
 
 
-// in ancestral.pml and rnodes
+// in rnodes no scaling
 SEXP LogLik2(SEXP dlist, SEXP P, SEXP nr, SEXP nc, SEXP node, SEXP edge, SEXP nTips, SEXP mNodes, SEXP contrast, SEXP nco){
     R_len_t i, n = length(node);
     int nrx=INTEGER(nr)[0], ncx=INTEGER(nc)[0], nt=INTEGER(nTips)[0], mn=INTEGER(mNodes)[0];
