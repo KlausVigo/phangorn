@@ -818,6 +818,7 @@ update.pml <- function(object, ...) {
   updateEig <- FALSE
   updateRates <- FALSE
   ASC <- object$ASC
+  um <- FALSE
   site.rate <- object$site.rate
   type <- attr(object$data, "type")
   if(type=="CODON"){
@@ -861,7 +862,6 @@ update.pml <- function(object, ...) {
   }
   type <- attr(object$data, "type")
   model <- NULL
-
   if(type != "CODON"){
     if (!is.na(existing[9])) {
       model <- eval(extras[[existing[9]]], parent.frame())
@@ -2106,7 +2106,7 @@ updateRates <- function(res, ll, rate, shape, k, inv, wMix, update="rate",
 #' @export
 optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                       optInv = FALSE, optGamma = FALSE, optEdge = TRUE,
-                      optRate = FALSE, optRooted = FALSE, #optF3x4 = FALSE,
+                      optRate = FALSE, optRooted = FALSE,
                       control = pml.control(), model = NULL,
                       rearrangement = ifelse(optNni, "NNI", "none"),
                       subs = NULL, ratchet.par = ratchet.control(), ...) {
@@ -2128,9 +2128,14 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       optFreeRate <- TRUE
       optGamma <- FALSE
   }
+  data <- object$data
+  type <- attr(data, "type")
   optModel <- FALSE
   if (is.null(model)) model <- object$model
-  else optModel <- TRUE
+  else{
+    if (type == "AA") object <- update(object, model = model)
+    optModel <- TRUE
+  }
   if (is.null(llMix)) llMix <- 0
   if (!is.null(extras)) {
     names(extras) <- pmla[pmatch(names(extras), pmla)]
@@ -2142,7 +2147,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   }
   tree <- object$tree
   call <- object$call
-  data <- object$data
+
   addTaxa <- FALSE
   trace <- control$trace
   tau <- control$tau
@@ -2205,11 +2210,11 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     optEdge <- TRUE
   }
   data <- subset(data, tree$tip.label)
-  type <- attr(data, "type")
-  if (type == "AA") {
-    if(!is.null(model)) object <- update(object, model = model)
-    model <- object$model
-  }
+#  type <- attr(data, "type")
+#  if (type == "AA") {
+#    if(!is.null(model)) object <- update(object, model = model)
+#    model <- object$model
+#  }
   if (type == "CODON") {
     .syn <- synonymous_subs(code=attr(data, "code"))
     .sub <- tstv_subs(code=attr(data, "code"))
