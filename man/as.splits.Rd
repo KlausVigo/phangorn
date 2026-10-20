@@ -64,6 +64,8 @@ compatible(obj1, obj2 = NULL)
 
 \item{labels}{names of taxa.}
 
+\item{pos}{logical vector indicating which splits to return.}
+
 \item{x}{An object of class phylo or multiPhylo.}
 
 \item{\dots}{Further arguments passed to or from other methods.}

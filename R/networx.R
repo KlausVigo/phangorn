@@ -45,6 +45,7 @@ allCircularSplits <- function(k, labels = NULL) {
 
 
 #' @rdname as.splits
+#' @param pos logical vector indicating which splits to return.
 #' @export
 # ordering as in splitstree??
 allCircularSplitsST <- function(k, labels = NULL, pos=NULL) {
@@ -312,7 +313,6 @@ circNetwork <- function(x, ord = NULL) {
 #' @param planar logical whether to produce a planar graph from only cyclic
 #' splits (may excludes splits).
 #' @param coord add coordinates of the nodes, allows to reproduce the plot.
-#' @param pos logical vector indicating which splits to return.
 #' @param \dots Further arguments passed to or from other methods.
 #' @returns an object of class \code{networx}.
 #' @note The internal representation is likely to change.

@@ -42,10 +42,10 @@ fit <- pml_bb(Laurasiatherian[,1:100], "JC", rearrangement = "none",
               control=pml.control(trace=0))
 anc_ml <- anc_pml(fit)
 write.ancestral(anc_ml)
-align <- read.phyDat("ancestral_align.fasta", format = "fasta")
+align <- read.phyDat("ancestral_all.fasta", format = "fasta")
 tree <- read.tree("ancestral_tree.nwk")
 df <- read.table("ancestral_state.tsv.gz", header=TRUE)
-unlink(c("ancestral_align.fasta", "ancestral_tree.nwk",
+unlink(c("ancestral_all.fasta", "ancestral_tree.nwk", "ancestral_state.fasta",
          "ancestral_state.tsv.gz"))
 
 anc_ml_disc <- as.ancestral(tree, df, align)
