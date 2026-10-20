@@ -24,7 +24,7 @@
 #' @keywords manip
 #' @rdname gap_as_state
 #' @export
-gap_as_state <- function(obj, gap="-", ambiguous="?", latag2n=TRUE){
+gap_as_state <- function(obj, gap="-", ambiguous="?", latag2n=FALSE){
   stopifnot(inherits(obj, "phyDat"))
   if(has_gap_state(obj)) return(obj)
   if(latag2n) obj <- latag2n.phyDat(obj)

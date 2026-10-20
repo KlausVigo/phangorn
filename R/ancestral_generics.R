@@ -30,8 +30,9 @@
 #' @export
 write.ancestral <- function(x, file = "ancestral"){
   stopifnot(inherits(x, "ancestral"))
-  write.phyDat(x$data, file = paste0(file, "_align.fasta"), format = "fasta")
-  write.phyDat(x$state, file = paste0(file, "_state.fasta"), format = "fasta")
+  write.phyDat(rbind(x$data, x$state), file = paste0(file, "_all.fasta"),
+               format = "fasta")
+  write.FASTA(unalign(x$state), file = paste0(file, "_state.fasta"))
   tab <- as.data.frame(x)
 
   tsv_file <- paste0(file, "_state.tsv.gz")

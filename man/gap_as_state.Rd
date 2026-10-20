@@ -6,7 +6,7 @@
 \alias{has_gap_state}
 \title{Treat gaps as a state}
 \usage{
-gap_as_state(obj, gap = "-", ambiguous = "?", latag2n = TRUE)
+gap_as_state(obj, gap = "-", ambiguous = "?", latag2n = FALSE)
 
 gap_as_ambiguous(obj, gap = "-")
 
