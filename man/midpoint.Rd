@@ -19,7 +19,7 @@ midpoint(tree, node.labels = "support", ...)
 
 pruneTree(tree, ..., FUN = ">=")
 
-keep_as_tip(tree, labels)
+keep_as_tip(tree, labels, collapse.singles = TRUE)
 }
 \arguments{
 \item{tree}{an object of class \code{phylo}.}
@@ -32,6 +32,9 @@ should labels get 'deleted'?}
 \item{FUN}{a function evaluated on the nodelabels, result must be logical.}
 
 \item{labels}{tip and node labels to keep as tip labels in the tree}
+
+\item{collapse.singles}{a logical specifying whether to delete the internal
+nodes of degree 2. Nodes which are part of the labels are not collapsed.}
 }
 \value{
 \code{pruneTree} and \code{midpoint} a tree. \code{getRoot} returns

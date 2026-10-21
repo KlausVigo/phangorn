@@ -102,11 +102,11 @@ addConfidences.splits <- function(x, y, scaler = 1, rooted=FALSE, ...) {
   }
   spl <- as.splits(y)
   spl <- changeOrder(spl, tiplabel)
-  if(!rooted){
+  if(rooted) ind <- match(x, spl)
+  else {
     spl <- SHORTwise(spl)
     ind <- match(SHORTwise(x), spl)
   }
-  else ind <- match(x, spl)
   pos <-  which(!is.na(ind))
   confidences <- rep(NA_real_, length(x)) # numeric(length(x))
   if(is.numeric(attr(spl, "confidences")))

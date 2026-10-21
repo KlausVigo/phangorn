@@ -881,6 +881,8 @@ checkLabels <- function(tree, tip) {
 
 #' @rdname midpoint
 #' @param labels tip and node labels to keep as tip labels in the tree
+#' @param collapse.singles a logical specifying whether to delete the internal
+#' nodes of degree 2. Nodes which are part of the labels are not collapsed.
 #' @examples
 #' # prune to node labels
 #' tree <- read.tree(text="((t1:.1,t2:.1)A:.2,(t3:.2,t4:.2)B:.1);")
@@ -888,12 +890,71 @@ checkLabels <- function(tree, tip) {
 #' tree_tip <- keep_as_tip(tree, c("A", "t3", "t4"))
 #' plot(tree_tip, show.node.label = TRUE)
 #' @export
-keep_as_tip<- function(tree, labels){
-  nodes_to_keep <- labels[!is.na(match(labels, tree$node.label))]
-  tips_to_remove <-  Descendants(tree, nodes_to_keep) |> unlist() |> unique()
-  tree_1 <- drop.tip(tree, tips_to_remove, subtree = TRUE)
-  tree_2 <- keep.tip(tree_1, labels, collapse.singles=FALSE)
-  tree_2
+keep_as_tip <- function(tree, labels, collapse.singles=TRUE){
+  tree <- reorder(tree)
+  ind <- match(c(labels), c(tree$tip.label, tree$node.label))
+  ind <- ind[!is.na(ind)]
+  nodes_to_keep <- unique(c(ind, unlist(Ancestors(tree, ind))))
+  edge <- tree$edge
+  pos <- edge[, 2] %in% nodes_to_keep
+  edge <- edge[pos, ]
+
+  tab <- tabulate(edge)
+  nTip <- sum(tab == 1L)
+  nNode <- sum(tab > 1L)
+
+  nodes <- (unique(edge[, 1]))
+  tips <- setdiff(edge[,2], edge[,1])
+
+  index <- integer(max(edge))
+  index[nodes] <- nTip + seq_len(nNode)
+  index[tips] <- seq_len(nTip)
+
+  node.label <- c(tree$tip.label, tree$node.label)[nodes]
+  tip.label <- c(tree$tip.label, tree$node.label)[tips]
+  tree$node.label <- node.label
+  tree$tip.label <- tip.label
+
+  tree$Nnode <- nNode
+  edge[] <-  index[edge]
+  tree$edge <- edge
+  if(!is.null(tree$edge.length)){
+    edge.length <- tree$edge.length[pos]
+    tree$edge.length <- edge.length
+  }
+  if(collapse.singles  && has.singles(tree) ){
+    e1 <- edge[, 1]
+    e2 <- edge[, 2]
+
+    singles <- which(tabulate(e1)==1L)
+    singles <- singles[!(c(tip.label, node.label)[singles] %in% labels)]
+    el <- tree$edge.length
+    pos <- which(e2 %in% singles)
+    for(i in pos){
+      edge[i+1, 1] <- edge[i, 1]
+      if(!is.null(tree$edge.length)) el[i+1] <- el[i+1] + el[i]
+    }
+    edge <- edge[-pos, , drop=FALSE]
+    if(!is.null(tree$edge.length)) tree$edge.length <- el[-pos]
+    tree$node.label <- c(tree$tip.label, tree$node.label)[unique(edge[,1])]
+    nNode <- nNode - length(singles)
+    index <- integer(max(edge))
+    index[seq_len(nTip)] <- seq_len(nTip)
+    index[unique(edge[,1])] <- as.integer(nTip + seq_len(nNode))
+    edge[] <- index[edge]
+    tree$edge <- edge
+    tree$Nnode <- nNode
+  }
+  tree
 }
+
+
+#keep_as_tip_old <- function(tree, labels){
+#  nodes_to_keep <- labels[!is.na(match(labels, tree$node.label))]
+#  tips_to_remove <-  Descendants(tree, nodes_to_keep) |> unlist() |> unique()
+#  tree_1 <- drop.tip(tree, tips_to_remove, subtree = TRUE)
+#  tree_2 <- keep.tip(tree_1, labels, collapse.singles=FALSE)
+#  tree_2
+#}
 
 #' @srrstats {G2.3, G2.3a, G2.3b} in lines: 201, 701, 760
