@@ -139,6 +139,17 @@ split_model <- function(x="GTR + G(4) + I", type="DNA"){
   optFreq <- FALSE
   ASC <- FALSE
   if(length(m)>0){
+    pos <- grep("VWG\\(", m)
+    if(length(pos)==1){
+      optGamma <- TRUE
+      k_tmp <- sub("VWG\\(", "", m[pos])
+      k_tmp <- sub("\\)", "", k_tmp)
+      k <- as.integer(k_tmp)
+      m <- m[-pos]
+      site_model <- "variable_weight_gamma"
+    }
+  }
+  if(length(m)>0){
     pos <- grep("G\\(", m)
     if(length(pos)==1){
       optGamma <- TRUE
@@ -157,17 +168,6 @@ split_model <- function(x="GTR + G(4) + I", type="DNA"){
       k <- as.integer(k_tmp)
       m <- m[-pos]
       site_model <- "gamma_quadrature"
-    }
-  }
-  if(length(m)>0){
-    pos <- grep("VWG\\(", m)
-    if(length(pos)==1){
-      optGamma <- TRUE
-      k_tmp <- sub("VWG\\(", "", m[pos])
-      k_tmp <- sub("\\)", "", k_tmp)
-      k <- as.integer(k_tmp)
-      m <- m[-pos]
-      site_model <- "variable_weight_gamma"
     }
   }
   if(length(m)>0){
