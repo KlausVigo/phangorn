@@ -146,7 +146,7 @@ split_model <- function(x="GTR + G(4) + I", type="DNA"){
       k_tmp <- sub("\\)", "", k_tmp)
       k <- as.integer(k_tmp)
       m <- m[-pos]
-      site_model <- "variable_weight_gamma"
+      site_model <- "variable_gamma"
     }
   }
   if(length(m)>0){

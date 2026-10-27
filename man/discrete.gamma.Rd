@@ -54,7 +54,7 @@ or density / probability function.}
 
 \item{site.rate}{Indicates what type of gamma distribution to use. Options
 are "gamma" (Yang 1994), "gamma_quadrature" using Laguerre quadrature
-approach of Felsenstein (2001) or  "variable_weight_gamma".}
+approach of Felsenstein (2001) or  "variable_gamma".}
 
 \item{\dots}{Further arguments passed to or from other methods.}
 

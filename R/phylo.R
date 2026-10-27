@@ -591,7 +591,7 @@ phangornParseFormula <- function(model) {
     unlist(rev(c(model.vars, model)))
   }
 
-  stopifnot("model must be a formula object", inherits(model, "formula"))
+  stopifnot("model must be a formula object" = inherits(model, "formula"))
 #  if (!inherits(model, "formula"))
 #    stop("model must be a formula object")
   l <- length(model)
@@ -754,7 +754,7 @@ model_term <- function(model, k, site.rate, inv){
     model <-  switch(site.rate,
                      "gamma" = paste0(model, "+G(", k, ")"),
                      "gamma_quadrature" = paste0(model, "+GQ(", k, ")"),
-                     "variable_weight_gamma" = paste0(model, "+VWG(", k, ")"),
+                     "variable_gamma" = paste0(model, "+VG(", k, ")"),
                      "free_rate" = paste0(model, "+R(", k, ")"))
   }
   if(inv>0) model <- paste0(model, "+I")
@@ -835,7 +835,7 @@ update.pml <- function(object, ...) {
   if (is.na(existing[15])) site.rate <- object$site.rate
   else {
     site.rate <- eval(extras[[existing[15]]], parent.frame())
-    site.rate <- match.arg(site.rate, c("gamma", "variable_weight_gamma",
+    site.rate <- match.arg(site.rate, c("gamma", "variable_gamma",
                                         "gamma_quadrature", "free_rate"))
     updateRates <- TRUE
   }
@@ -990,7 +990,7 @@ update.pml <- function(object, ...) {
 
   df <- ifelse(is.ultrametric(tree), tree$Nnode, length(tree$edge.length))
   if(site.rate == "free_rate") df <- df + 2 * kmax - 3L
-  if(site.rate == "variable_weight_gamma") df <- df + kmax - 1L
+  if(site.rate == "variable_gamma") df <- df + kmax - 1L
   df <- switch(type,
     DNA = df + (k > 1) + (inv > 0) + length(unique(bf)) - 1 +
       length(unique(Q)) - 1,
@@ -1388,7 +1388,7 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
   call <- match.call()
   extras <- match.call(expand.dots = FALSE)$...
   pmla <- c("wMix", "llMix", "dnds", "tstv", "w", "g")
-  site.rate <- match.arg(site.rate, c("gamma", "variable_weight_gamma",
+  site.rate <- match.arg(site.rate, c("gamma", "variable_gamma",
                                       "gamma_quadrature", "free_rate"))
   existing <- match(pmla, names(extras))
   wMix <- ifelse(is.na(existing[1]), 0,
@@ -1485,7 +1485,7 @@ pml <- function(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
     ASC=ASC, site.rate = site.rate)
   df <- ifelse(is.ultrametric(tree), tree$Nnode, length(tree$edge.length))
   if(site.rate=="free_rate") df <- df + 2L * kmax - 3L
-  if(site.rate=="variable_weight_gamma") df <- df + kmax - 1L
+  if(site.rate=="variable_gamma") df <- df + kmax - 1L
   df <- switch(type,
     DNA =  df + (kmax > 1) + (inv0 > 0) + length(unique(bf)) - 1 +
       length(unique(Q)) - 1,
@@ -2314,7 +2314,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     }
     df <- ifelse(optRooted, tree$Nnode, length(tree$edge.length))
     if(site.rate == "free_rate" && k > 1) df <- df + 2 * k - 3L
-    if(site.rate == "variable_weight_gamma" && k > 1) df <- df + k - 1L
+    if(site.rate == "variable_gamma" && k > 1) df <- df + k - 1L
     dfQ <- ifelse(is.null(subs), length(unique(Q)) - 1, max(subs))
     df <- switch(type,
       DNA = df + (k > 1) + (optInv | (inv > 0)) + length(unique(bf)) - 1 + dfQ,
@@ -2339,7 +2339,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     extras <- pairlist(bf = bf, Q = Q, inv = inv, shape = shape, k=k,
               rate = rate, model=model, g=g, w=w)[c(optBf, optQ, optInv,
               optGamma, optGamma, optRate, optModel,
-              optFreeRate, optFreeRate || site.rate=="variable_weight_gamma")]
+              optFreeRate, optFreeRate || site.rate=="variable_gamma")]
 
     if (length(extras)) {
       existing <- !is.na(match(names(extras), names(call)))
@@ -2457,7 +2457,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
       if (wMix > 0) ll.0 <- ll.0 + llMix
     }
     if (optGamma) {
-      if(site.rate=="variable_weight_gamma") {
+      if(site.rate=="variable_gamma") {
         res <- optimGammaPhangorn(tree, data, w=w, shape = shape,                                  inv = inv, INV = INV,
                           bf = bf, eig = eig, ll.0 = ll.0, rate = rate,
                           llMix = llMix, wMix=wMix, ASC=ASC)

@@ -86,7 +86,7 @@ print.pml <- function(x, ...) {
     if(x$site.rate=="free_rate") cat("Free rate model\n")
     if(x$site.rate=="gamma_quadrature")
       cat("Discrete gamma model (quadrature) \n")
-    if(x$site.rate=="variable_weight_gamma")
+    if(x$site.rate=="variable_gamma")
       cat("Discrete gamma model with variable weights \n")
     cat("Number of rate categories:", x$k, "\n")
     if(x$site.rate!="free_rate") cat("Shape parameter:", x$shape, "\n")
