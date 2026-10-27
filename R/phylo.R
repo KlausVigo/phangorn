@@ -226,8 +226,8 @@ optimGammaPhangorn2 <- function(tree, data, w = c(0.25, 0.25, 0.25, 0.25),
   eta <- log(w * nenner)
   par <- c(eta[-1], shape)
 
-  fn <- function(par, tree, data, k, inv, optInv = FALSE, ...) {
-    eta <- c(0, par[-k])
+  fn <- function(par, tree, data, k, inv=0, optInv = FALSE, ...) {
+    eta <- c(0, par[-c(k, k+1)])
     shape <- par[k]
     w_new <- exp(eta) / sum(exp(eta))
     if(optInv) inv <- par[k+1L]
@@ -250,6 +250,9 @@ optimGammaPhangorn2 <- function(tree, data, w = c(0.25, 0.25, 0.25, 0.25),
     ll <- pml.fit(tree, data, g=g, w=w_new, k=k, inv=inv, ...)
     ll
   }
+#browser()
+  ll_0 <- fn(par, tree = tree, data = data, k = k, inv=inv, optInv=FALSE, ...)
+
   lower <- c(rep(-5, k-1), 0.1)
   upper <- c(rep(5, k-1), 100)
   if(optInv){
@@ -260,10 +263,11 @@ optimGammaPhangorn2 <- function(tree, data, w = c(0.25, 0.25, 0.25, 0.25),
   res <- optim(par, fn = fn, method = "L-BFGS-B", lower = lower, upper = upper,
                control = list(fnscale = -1, maxit = 25), gr = NULL,
                tree = tree, data = data, k = k, inv=inv, optInv=optInv, ...)
+#  browser()
   w <- exp(c(0, res[[1]][seq_len(k-1L)]))
   w <- w / sum(w)
   shape <- res[[1]][k]
-  inv <-  res[[1]][k+1L]
+  if(optInv) inv <-  res[[1]][k+1L]
   result <- list(par = c(w, shape, inv), value = res[[2]])
   result
 }
@@ -587,8 +591,9 @@ phangornParseFormula <- function(model) {
     unlist(rev(c(model.vars, model)))
   }
 
-  if (!inherits(model, "formula"))
-    stop("model must be a formula object")
+  stopifnot("model must be a formula object", inherits(model, "formula"))
+#  if (!inherits(model, "formula"))
+#    stop("model must be a formula object")
   l <- length(model)
   varsLHS <- NULL
   if (l == 3) {
@@ -2154,6 +2159,8 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   method <- "unrooted"
   is_ultrametric <- FALSE
   timetree <- FALSE
+  stopifnot("rooted / unrooted tree needs at least 2 / 3 tips" =
+              length(tree$tip.label) >= (2 + !optRooted))
   if (is.rooted(tree)) {
     if (!optRooted && optEdge) {
       tree <- unroot(tree)
@@ -2192,9 +2199,9 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     optNni <- FALSE
     perturbation <- FALSE
   }
-  if (length(tree$tip.label) < (2 + !optRooted)) {
-    stop("rooted / unrooted tree needs at least 2 / 3 tips")
-  }
+  stopifnot("rooted / unrooted tree needs at least 2 / 3 tips" =
+              length(tree$tip.label) >= (2 + !optRooted))
+
   tree <- reorder(tree, "postorder")
   if (any(tree$edge.length < tau)) {
     tree <- minEdge(tree, tau, is_ultrametric)
@@ -2474,6 +2481,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
                           site.rate=site.rate)
         if (trace > 0)
         cat("optimize shape parameter: ", ll, "-->", max(res[[2]], ll), "\n")
+
         inv <- res[[1]][2]
         updateRates(res, ll, rate, shape, k, inv, wMix, update="shape",
                   site.rate=site.rate)
@@ -2546,7 +2554,7 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
           fbs[[i]] <- tree2
         } else if(rearrangement == "multi2di"){
           tree2 <- di2multi(tree, tol=10*tau, tip2root=TRUE)
-          if(any(tabulate(tree2$edge)>3)){
+          if(any(tabulate(tree2$edge[,1])>2)){
             tree2 <- multi2di(tree2)
             if(!optRooted) tree2 <- unroot(tree2)
             tree2 <- minEdge(tree2, tau)
