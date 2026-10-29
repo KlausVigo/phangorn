@@ -7,9 +7,8 @@
 \title{ModelTest}
 \usage{
 modelTest(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
-  FREQ = FALSE, k = 4, control = pml.control(), RHAS = c("gamma",
-  "variable_gamma", "free_rate"), ..., mt_control = mt.control(crit = "BIC",
-  n_model = 5, n_rhas = 100))
+  FREQ = FALSE, k = 4, control = pml.control(), RHAS = "gamma", ...,
+  mt_control = mt.control(crit = "BIC", n_model = 5, n_rhas = 100))
 
 write.modelTest(x, file = "modelTest", digits = 10)
 }

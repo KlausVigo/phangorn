@@ -47,7 +47,7 @@ allCircularSplits <- function(k, labels = NULL) {
 #' @rdname as.splits
 #' @param pos logical vector indicating which splits to return.
 #' @export
-# ordering as in splitstree??
+# ordering as in splitstree
 allCircularSplitsST <- function(k, labels = NULL, pos=NULL) {
   k <- as.integer(k)
   if(is.null(pos)){
@@ -56,7 +56,6 @@ allCircularSplitsST <- function(k, labels = NULL, pos=NULL) {
   } else {
     res <-  vector("list", sum(pos))
   }
-#  res[1:k] <- 1L:k
   ind1 <- 1L
   ind2 <- 1L
   for(i in 1:(k-1)){
@@ -68,7 +67,6 @@ allCircularSplitsST <- function(k, labels = NULL, pos=NULL) {
       ind2 <- ind2 + 1
     }
   }
-#  res <- lapply(res, sort)
   if (is.null(labels)) labels <- as.character(1:k)
   attr(res, "labels") <- labels
   attr(res, "cycle") <- 1:k

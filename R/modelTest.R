@@ -168,7 +168,7 @@ fitPar <- function(par, fit, trees=NULL, calls=NULL, ...) {
 #' @export
 modelTest <- function(object, tree = NULL, model = NULL, G = TRUE, I = TRUE,
             FREQ = FALSE, k = 4, control = pml.control(),
-            RHAS = c("gamma", "variable_gamma", "free_rate"), ...,
+            RHAS = "gamma", ...,
             mt_control = mt.control(crit = "BIC", n_model = 5, n_rhas = 100)) {
   crit <- mt_control$crit
 

@@ -78,6 +78,8 @@ BUG FIXES
 
       more stable (no underflow problems)
 
+    o keep_as_tip now works properly when nodes are nested.
+
 
     CHANGES in PHANGORN VERSION 2.12.0
 
@@ -149,11 +151,11 @@ OTHER CHANGES
 
     o some improvements to pmlPart.
 
-    o the sankoff algorithm has been rewritten.
+    o the Sankoff algorithm has been rewritten.
 
 BUG FIXES
 
-    o pml_bb roots the tree, if method is either ultrametric or tipdated. Fixes
+    o pml_bb roots the tree, if method is either ultrametric or tip-dated. Fixes
 
       problem when modelTest object was supplied.
 
@@ -164,7 +166,7 @@ BUG FIXES
 
 OTHER CHANGES
 
-    o Vignettes have been reorganised, rewritten and vastly improved thanks to
+    o Vignettes have been reorganized, rewritten and vastly improved thanks to
 
       Iris.
 
