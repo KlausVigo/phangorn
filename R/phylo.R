@@ -2260,7 +2260,11 @@ optim.pml <- function(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
     optBf <- tmp$optBf
     optQ <- tmp$optQ
   }
-  if(optBf && control$statefreq=="empirical" && type != "CODON"){
+  if (optInv && object$inv == 0) {
+    inv <- 2/3 * const_site(data) / sum(attr(data, "weight"))
+    object <- update.pml(object, inv = inv)
+  }
+  if (optBf && control$statefreq == "empirical" && type != "CODON") {
     bf <- baseFreq(data)
     object <- update.pml(object, bf = bf)
   }
