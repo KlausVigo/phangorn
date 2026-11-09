@@ -40,7 +40,7 @@ version from [github](https://github.com/KlausVigo/phangorn) or
 |----|----|----|
 | Release | CRAN | `install.packages("phangorn")` |
 | Development | GitHub | `remotes::install_github("KlausVigo/phangorn")` |
-| Development | r-universe | `install.packages('phangorn', repos = c('https://klausvigo.r-universe.dev', 'https://repo.r-wasm.org'))` |
+| Development | r-universe | `install.packages('phangorn', repos = c('https://klausvigo.r-universe.dev', 'https://cloud.r-project.org'))` |
 
 To install the development version you may need to install the
 Biostrings package from bioconductor first:
