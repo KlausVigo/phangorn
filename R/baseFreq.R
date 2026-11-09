@@ -57,11 +57,10 @@ baseFreq <- function(obj, freq=FALSE, all=FALSE, drop.unused.levels = FALSE){
 const_site <- function(x){
   tmp <- lli(x)
   ind <- which(rowSums(tmp)>1e-6)
-# sw <- sum(attr(x, "weight"))
   weight <- attr(x, "weight")[ind]
-  # list(index=ind, weight=attr(x, "weight")[ind], M=tmp[ind,])
   sum(weight)
 }
+
 
 #' @importFrom generics glance
 #' @export
@@ -77,7 +76,6 @@ glance.phyDat <- function (x, ...){
   unique_sites <- attr(x, "nr")
   pis <- parsinfo(x)
   type <- attr(x, "type")
-
   gap <- "-" # needs check
   contr <- attr(x, "contrast")
   levels <- attr(x, "levels")
