@@ -5,7 +5,7 @@ Marginal reconstruction of the ancestral character states.
 ## Usage
 
 ``` r
-ancestral.pml(object, type = "marginal", return = "prob", ...)
+ancestral.pml(object, type = "marginal", return = "ancestral", ...)
 
 anc_pml(object, type = "marginal", ...)
 
@@ -54,7 +54,7 @@ pace(tree, data, type = c("MPR", "ACCTRAN", "POSTORDER"), cost = NULL,
 An object of class ancestral. This is a list containing the tree with
 node labels, the original alignment as an `phyDat` object, a
 `data.frame` containing the probabilities belonging to a state for all
-(internal nodes) and the most likely state.
+(internal nodes) and the most likely state, again a `phyDat` object.
 
 ## Details
 
@@ -82,13 +82,13 @@ For further details see vignette("Ancestral").
 
 ## References
 
-Felsenstein, J. (2004). *Inferring Phylogenies*. Sinauer Associates,
+Felsenstein J (2004). *Inferring Phylogenies*. Sinauer Associates,
 Sunderland.
 
-Swofford, D.L., Maddison, W.P. (1987) Reconstructing ancestral character
-states under Wagner parsimony. *Math. Biosci.* **87**: 199–229
+Swofford D, Maddison W (1987). “Reconstructing ancestral character
+states under Wagner parsimony.” *Math. Biosci.*, **87**, 199–229.
 
-Yang, Z. (2006). *Computational Molecular evolution*. Oxford University
+Yang Z (2006). *Computational Molecular evolution*. Oxford University
 Press, Oxford.
 
 ## See also
@@ -97,7 +97,7 @@ Press, Oxford.
 [`parsimony`](https://klausvigo.github.io/phangorn/reference/parsimony.md),
 [`ace`](https://rdrr.io/pkg/ape/man/ace.html),
 [`plotAnc`](https://klausvigo.github.io/phangorn/reference/plot.ancestral.md),
-[`anc_heatmap`](https://klausvigo.github.io/phangorn/reference/anc_heatmap.md),
+[`heatmapp`](https://klausvigo.github.io/phangorn/reference/heatmapp.md),
 [`latag2n.phyDat`](https://klausvigo.github.io/phangorn/reference/latag2n.phyDat.md),
 [`latag2n`](https://rdrr.io/pkg/ape/man/latag2n.html),
 [`gap_as_state`](https://klausvigo.github.io/phangorn/reference/gap_as_state.md),
@@ -144,6 +144,6 @@ plotAnc(anc.ml)
 plotAnc(anc.ml, 3)
 
 # plot joint reconstruction as heatmap
-anc_heatmap(anc.ml, select=1:50)
+heatmapp(anc.ml, select=1:50)
 
 ```

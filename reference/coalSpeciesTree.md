@@ -29,16 +29,18 @@ The function returns an object of class `phylo`.
 
 ## Details
 
-`coalSpeciesTree` estimates a single linkage tree as suggested by Liu et
-al. (2010) from the element wise minima of the cophenetic matrices of
-the gene trees. It extends `speciesTree` in ape as it allows that have
-several individuals per gene tree.
+`coalSpeciesTree` estimates a single linkage tree as suggested by [Liu,
+Yu, and Pearl (2010)](#reference++Liu2010) from the element wise minima
+of the cophenetic matrices of the gene trees. It extends `speciesTree`
+in ape as it allows that have several individuals per gene tree.
 
 ## References
 
-Liu, L., Yu, L. and Pearl, D. K. (2010) Maximum tree: a consistent
-estimator of the species tree. *Journal of Mathematical Biology*,
-**60**, 95–106.
+Liu L, Yu L, Pearl DK (2010). “Maximum tree: A consistent estimator of
+the species tree.” *Journal of Mathematical Biology*, **60**(1), 95–106.
+ISSN 0303-6812.
+[doi:10.1007/s00285-009-0260-0](https://doi.org/10.1007/s00285-009-0260-0)
+.
 
 ## See also
 

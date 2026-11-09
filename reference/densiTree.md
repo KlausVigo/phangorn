@@ -1,6 +1,7 @@
 # Plots a densiTree.
 
-An R function to plot trees similar to those produced by DensiTree.
+An R function to plot trees similar to those produced by DensiTree
+[Bouckaert (2010)](#reference++Bouckaert2010) .
 
 ## Usage
 
@@ -149,12 +150,10 @@ result of the permutation is `runif(n, -amount, amount)`, otherwise
 
 ## References
 
-densiTree is inspired from the great
-[DensiTree](https://www.cs.auckland.ac.nz/~remco/DensiTree/) program of
-Remco Bouckaert.
-
-Remco R. Bouckaert (2010) DensiTree: making sense of sets of
-phylogenetic trees *Bioinformatics*, **26 (10)**, 1372-1373.
+Bouckaert RR (2010). “DensiTree: making sense of sets of phylogenetic
+trees.” *Bioinformatics*, **26**(10), 1372-1373.
+[doi:10.1093/bioinformatics/btq110](https://doi.org/10.1093/bioinformatics/btq110)
+.
 
 ## See also
 
@@ -189,7 +188,7 @@ densiTree(bs, type="phylogram", col="green", consensus = tree_compat,
 
 # plot five trees slightly shifted, no transparent color
 densiTree(bs[1:5], type="phylogram", col=1:5, width=2, jitter=
-    list(amount=.3, random=FALSE), alpha=1)
+    list(amount=0.3, random=FALSE), alpha=1)
 
 if (FALSE) { # \dontrun{
 # phylograms are nice to show different age estimates

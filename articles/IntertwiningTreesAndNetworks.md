@@ -157,8 +157,8 @@ edge.lab <- createLabel(Nnet, raxml.tree, raxml.tree$edge[,2], "edge")
 
 # Show the correspondingly labelled tree and network in R
 par(mfrow=c(1,2))  
-plot(raxml.tree, "u", rotate.tree = 180, cex=.7) 
-edgelabels(raxml.tree$edge[,2],col="blue", frame="none", cex=.7)
+plot(raxml.tree, "u", rotate.tree = 180, cex=0.7) 
+edgelabels(raxml.tree$edge[,2],col="blue", frame="none", cex=0.7)
 
 # find edges that are in the network but not in the tree
 edge.col <- rep("black", nrow(Nnet$edge))
@@ -167,7 +167,7 @@ edge.col[ is.na(edge.lab) ] <- "red"
 edge.col <- createLabel(Nnet, raxml.tree, "black", nomatch="red")
 
 x <- plot(Nnet, edge.label = edge.lab, show.edge.label = T, "2D", 
-          edge.color = edge.col, col.edge.label = "blue", cex=.7)
+          edge.color = edge.col, col.edge.label = "blue", cex=0.7)
 ```
 
 ![](IntertwiningTreesAndNetworks_files/figure-html/unnamed-chunk-5-1.png)
@@ -188,7 +188,7 @@ network which are not found as ML tree branches are highlighted in red.
 
 # the scaler argument multiplies the confidence values. This is useful to switch
 # confidences values between total, percentage or ratios.   
-x <- addConfidences(Nnet,raxml.tree, scaler = .01)
+x <- addConfidences(Nnet,raxml.tree, scaler = 0.01)
 # find splits that are in the network but not in the tree
 split.col <- rep("black", length(x$splits))
 split.col[ !matchSplits(as.splits(x), as.splits(raxml.tree)) ] <- "red"
@@ -208,7 +208,8 @@ Again we can write to SplitsTree for viewing…
 ``` r
 
 # write.nexus.networx(out.x,"woodmouse.tree.support.nxs")
-## or we can also export the splits alone (for usage in software other than SplitsTree)
+## or we can also export the splits alone (for usage in software other than 
+## SplitsTree)
 # write.nexus.splits(as.splits(out.x),"woodmouse.splits.support.nxs")
 ```
 
@@ -319,7 +320,7 @@ tab$Tree[matchSplits(tree_splits, all_splits, FALSE)] <- TRUE
 
 tab[is.na(tab[,"Bootstrap"]),"Bootstrap"] <- 0
 tab[,"Bootstrap"] <- round(tab[,"Bootstrap"])
-rownames(tab) <- apply(as.matrix(all_splits, zero.print = ".", one.print = "|"), 
+rownames(tab) <- apply(as.matrix(all_splits, zero.print = ".", one.print = "|"),
                        1, paste0, collapse="")
 tab[1:10,]
 ```

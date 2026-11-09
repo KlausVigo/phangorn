@@ -1,8 +1,9 @@
-# Computes a consensusNetwork from a list of trees Computes a `networx` object from a collection of splits.
+# Computes a consensusNetwork from a list of trees
 
-Computes a consensusNetwork, i.e. an object of class `networx` from a
-list of trees, i.e. an class of class `multiPhylo`. Computes a `networx`
-object from a collection of splits.
+`consensusNet` computes a split network, i.e. an object of class
+`networx` from a list of trees, i.e. an class of class `multiPhylo`
+([Holland, Huber, Moulton, and Lockhart 2004](#reference++Holland2004))
+.
 
 ## Usage
 
@@ -32,9 +33,10 @@ intermediate to plot phylogenetic networks with igraph.
 
 ## References
 
-Holland B.R., Huber K.T., Moulton V., Lockhart P.J. (2004) Using
-consensus networks to visualize contradictory evidence for species
-phylogeny. *Molecular Biology and Evolution*, **21**, 1459–61
+Holland BR, Huber KT, Moulton V, Lockhart PJ (2004). “Using Consensus
+Networks to Visualize Contradictory Evidence for Species Phylogeny.”
+*Molecular Biology and Evolution*, **21**(7), 1459-1461.
+[doi:10.1093/molbev/msh145](https://doi.org/10.1093/molbev/msh145) .
 
 ## See also
 
@@ -57,7 +59,7 @@ data(Laurasiatherian)
 set.seed(1)
 bs <- bootstrap.phyDat(Laurasiatherian, FUN = function(x)nj(dist.hamming(x)),
     bs=50)
-cnet <- consensusNet(bs, .3)
+cnet <- consensusNet(bs, 0.3)
 plot(cnet, angle=-60)
 
 if (FALSE) { # \dontrun{
@@ -69,7 +71,7 @@ plot(cnet, type = "equal angle", show.edge.label=TRUE)
 tmpfile <- normalizePath(system.file(
               "extdata/trees/RAxML_bootstrap.woodmouse", package="phangorn"))
 trees <- read.tree(tmpfile)
-cnet_woodmouse <- consensusNet(trees, .3)
+cnet_woodmouse <- consensusNet(trees, 0.3)
 plot(cnet_woodmouse, type = "equal angle", show.edge.label=TRUE)
 } # }
 ```

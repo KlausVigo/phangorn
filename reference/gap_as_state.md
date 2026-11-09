@@ -8,7 +8,7 @@ change.
 ## Usage
 
 ``` r
-gap_as_state(obj, gap = "-", ambiguous = "?")
+gap_as_state(obj, gap = "-", ambiguous = "?", latag2n = FALSE)
 
 gap_as_ambiguous(obj, gap = "-")
 
@@ -28,6 +28,10 @@ has_gap_state(obj)
 - ambiguous:
 
   a character which codes for the ambiguous state
+
+- latag2n:
+
+  transform leading and trailing gaps as ambiguous states.
 
 ## Value
 

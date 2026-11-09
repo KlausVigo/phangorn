@@ -1,11 +1,13 @@
 # Explore the likelihood / parsimony / distance surface
 
 `terraces` visualizes in likelihood surface for the tree space
-(Sanderson et al. 2011). Usually trees are from a bootstrap or MCMC
-sample. There the first two axis are the principle components of
-distances between trees and the third axis is the likelihood value. We
-also allow parsimony score, minimum evolution criteria or least squares
-as criterion.
+([Sanderson, McMahon, and Steel 2011](#reference++Sanderson2011);
+[Sanderson, McMahon, Stamatakis, Zwickl, and Steel
+2015](#reference++Sanderson2015)) . Here trees usually are from a
+bootstrap or MCMC sample. There the first two axis are the principle
+components of distances between trees and the third axis is the
+likelihood value. We also allow parsimony score, minimum evolution
+criteria or least squares as criterion.
 
 ## Usage
 
@@ -70,8 +72,14 @@ terraces(x, trees, dist_fun = "RF.dist", di2multi = FALSE,
 
 ## References
 
-Sanderson, M.J., McMahon, M.M. and Steel, M. (2011). Terraces in
-phylogenetic tree space. *Science*, **333**, 448–450.
+Sanderson MJ, McMahon MM, Stamatakis A, Zwickl DJ, Steel M (2015).
+“Impacts of Terraces on Phylogenetic Inference.” *Systematic Biology*,
+**64**(5), 709-726. ISSN 1063-5157.
+[doi:10.1093/sysbio/syv024](https://doi.org/10.1093/sysbio/syv024) .
+
+Sanderson MJ, McMahon MM, Steel M (2011). “Terraces in Phylogenetic Tree
+Space.” *Science*, **333**(6041), 448-450.
+[doi:10.1126/science.1206357](https://doi.org/10.1126/science.1206357) .
 
 ## See also
 

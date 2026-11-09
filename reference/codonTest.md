@@ -59,7 +59,8 @@ defined models.
 ## Details
 
 `codonTest` allows to test for positive selection similar to programs
-like PAML (Yang ) or HyPhy (Kosakovsky Pond et al. 2005).
+like PAML [Yang (2007)](#reference++Yang2007) or HyPhy [Pond, Frost, and
+Muse (2005)](#reference++Pond2005b) .
 
 There are several options for deriving the codon frequencies.
 Frequencies can be "equal" (1/61), derived from nucleotide frequencies
@@ -73,16 +74,19 @@ convergence may be very slow and sometimes fails.
 
 ## References
 
-Ziheng Yang (2014). *Molecular Evolution: A Statistical Approach*.
-Oxford University Press, Oxford
+Nielsen R, Yang Z (1998). “Likelihood models for detecting positively
+selected amino acid sites and applications to the HIV-1 envelope gene.”
+*Genetics*, **148**(3), 929–936.
 
-Sergei L. Kosakovsky Pond, Simon D. W. Frost, Spencer V. Muse (2005)
-HyPhy: hypothesis testing using phylogenies, *Bioinformatics*,
-**21(5)**: 676–679, doi:10.1093/bioinformatics/bti079
+Pond SLK, Frost SD, Muse SV (2005). “HyPhy: hypothesis testing using
+phylogenies.” *Bioinformatics*, **21**(5), 676–679.
 
-Nielsen, R., and Z. Yang. (1998) Likelihood models for detecting
-positively selected amino acid sites and applications to the HIV-1
-envelope gene. *Genetics*, **148**: 929–936
+Yang Z (2014). *Molecular Evolution: A Statistical Approach*. Oxford
+University Press, Oxford.
+
+Yang Z (2007). “PAML 4: phylogenetic analysis by maximum likelihood.”
+*Molecular biology and evolution*, **24**(8), 1586–1591. *Genetics*,
+**148**: 929–936
 
 ## See also
 

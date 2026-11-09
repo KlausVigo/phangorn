@@ -31,12 +31,15 @@ used to enforce a certain circular ordering.
 
 ## References
 
-Bryant, D. & Moulton, V. (2004) Neighbor-Net: An Agglomerative Method
-for the Construction of Phylogenetic Networks. *Molecular Biology and
-Evolution*, **21**, 255-265
+Bryant D, Huson DH (2023). “NeighborNet: improved algorithms and
+implementation.” *Frontiers in bioinformatics*, **3**, 1178600.
+[doi:10.3389/fbinf.2023.1178600](https://doi.org/10.3389/fbinf.2023.1178600)
+.
 
-Bryant, D., & Huson, D. H. (2023). NeighborNet: improved algorithms and
-implementation. *Frontiers in bioinformatics*, **3**, 1178600.
+Bryant D, Moulton V (2004). “Neighbor-Net: An Agglomerative Method for
+the Construction of Phylogenetic Networks.” *Molecular Biology and
+Evolution*, **21**(2), 255-265.
+[doi:10.1093/molbev/msh018](https://doi.org/10.1093/molbev/msh018) .
 
 ## See also
 

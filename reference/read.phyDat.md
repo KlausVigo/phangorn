@@ -5,9 +5,9 @@ These functions read and write sequence alignments.
 ## Usage
 
 ``` r
-read.phyDat(file, format = "phylip", type = "DNA", ...)
+read.phyDat(file, format = "fasta", type = "DNA", ...)
 
-write.phyDat(x, file, format = "phylip", colsep = "", nbcol = -1, ...)
+write.phyDat(x, file, format = "fasta", colsep = "", nbcol = -1, ...)
 ```
 
 ## Arguments

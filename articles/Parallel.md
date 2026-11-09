@@ -23,14 +23,38 @@ which allows the parallel processing.
 ``` r
 
 library(phangorn)
-library(future)
+```
+
+    ## Loading required package: ape
+
+``` r
+
+library(future.apply)
+```
+
+    ## Loading required package: future
+
+``` r
+
 data("Laurasiatherian")
+tree <- upgma(dist.ml(Laurasiatherian))
+plan(multisession, workers = 2)
+bs_trees <- bootstrap.phyDat(Laurasiatherian,
+     FUN=function(x)upgma(dist.ml(x)), bs=100)
+plan(sequential)
+tree <- plotBS(tree, bs_trees, "phylogram")
+```
+
+![](Parallel_files/figure-html/future_bootstrap-1.png)
+
+``` r
+
 plan(multisession, workers = 2)
 mt <- modelTest(Laurasiatherian, model = c("JC", "F81", "K80", "HKY", "SYM", "GTR"))
 plan(sequential) # run sequential again
 ```
 
-It is good practice to clean up and set the backend to sequential after
+It is good practice to clean up and set the back-end to sequential after
 using parallel processing.
 
 A few things to consider. When running processes in parallel the memory
@@ -46,13 +70,13 @@ future package.
 
 ## Session info
 
-    ## R version 4.6.0 (2026-04-24)
+    ## R version 4.6.2 (2026-10-29)
     ## Platform: x86_64-pc-linux-gnu
-    ## Running under: Ubuntu 24.04.4 LTS
+    ## Running under: Ubuntu 26.04.1 LTS
     ## 
     ## Matrix products: default
     ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
-    ## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
+    ## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.32.so;  LAPACK version 3.12.0
     ## 
     ## locale:
     ##  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
@@ -66,14 +90,22 @@ future package.
     ## attached base packages:
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
+    ## other attached packages:
+    ## [1] future.apply_1.21.0 future_1.82.0       phangorn_3.0.0.1   
+    ## [4] ape_5.8-1          
+    ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] digest_0.6.39     desc_1.4.3        R6_2.6.1          fastmap_1.2.0    
-    ##  [5] xfun_0.57         cachem_1.1.0      knitr_1.51        htmltools_0.5.9  
-    ##  [9] rmarkdown_2.31    lifecycle_1.0.5   cli_3.6.6         sass_0.4.10      
-    ## [13] pkgdown_2.2.0     textshaping_1.0.5 jquerylib_0.1.4   systemfonts_1.3.2
-    ## [17] compiler_4.6.0    tools_4.6.0       ragg_1.5.2        bslib_0.11.0     
-    ## [21] evaluate_1.0.5    yaml_2.3.12       otel_0.2.0        jsonlite_2.0.0   
-    ## [25] rlang_1.2.0       fs_2.1.0          htmlwidgets_1.6.4
+    ##  [1] Matrix_1.7-6      jsonlite_2.0.0    compiler_4.6.2    Rcpp_1.1.2       
+    ##  [5] parallel_4.6.2    jquerylib_0.1.4   globals_0.20.0    systemfonts_1.3.2
+    ##  [9] textshaping_1.0.5 yaml_2.3.12       fastmap_1.2.0     lattice_0.23-1   
+    ## [13] R6_2.6.1          generics_0.1.4    igraph_2.3.4      knitr_1.52       
+    ## [17] htmlwidgets_1.6.4 backports_1.5.1   checkmate_2.3.4   desc_1.4.3       
+    ## [21] bslib_0.12.0      rlang_1.3.0       cachem_1.1.0      xfun_0.62        
+    ## [25] fs_2.1.0          sass_0.4.10       otel_0.3.0        cli_3.6.6        
+    ## [29] progressr_1.1.0   pkgdown_2.2.1     magrittr_2.0.5    digest_0.6.39    
+    ## [33] grid_4.6.2        lifecycle_1.0.5   nlme_3.1-171      evaluate_1.0.5   
+    ## [37] listenv_1.1.0     codetools_0.2-20  ragg_1.5.2        parallelly_1.50.0
+    ## [41] rmarkdown_2.32    pkgconfig_2.0.3   tools_4.6.2       htmltools_0.5.9
 
 ## References
 

@@ -28,14 +28,15 @@ A vector containing the \\\delta\\ scores.
 
 ## References
 
-BR Holland, KT Huber, A Dress, V Moulton (2002) \\\delta\\ Plots: a tool
-for analyzing phylogenetic distance data Russell D. Gray, David Bryant,
-Simon J. Greenhill (2010) On the shape and fabric of human history
-*Molecular Biology and Evolution*, **19(12)** 2051–2059
+Gray RD, Bryant D, Greenhill SJ (2010). “On the shape and fabric of
+human history.” *Philosophical Transactions of the Royal Society B:
+Biological Sciences*, **365**(1559), 3923.
 
-Russell D. Gray, David Bryant, Simon J. Greenhill (2010) On the shape
-and fabric of human history *Phil. Trans. R. Soc. B*, **365** 3923–3933;
-DOI: 10.1098/rstb.2010.0162
+Holland BR, Huber KT, Dress A, Moulton V (2002). “\\\delta\\ Plots: A
+Tool for Analyzing Phylogenetic Distance Data.” *Molecular Biology and
+Evolution*, **19**(12), 2051-2059. ISSN 0737-4038.
+[doi:10.1093/oxfordjournals.molbev.a004030](https://doi.org/10.1093/oxfordjournals.molbev.a004030)
+.
 
 ## See also
 

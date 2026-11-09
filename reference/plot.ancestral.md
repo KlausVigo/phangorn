@@ -59,7 +59,7 @@ add_mutations(x, pos = NULL, frame = "none", ...)
 
 - node:
 
-  to plot for which the probabilities should be plotted.
+  the node for which the probabilities should be plotted.
 
 - start:
 
@@ -91,7 +91,7 @@ For further details see vignette("Ancestral").
 ## See also
 
 [`anc_pml`](https://klausvigo.github.io/phangorn/reference/ancestral.pml.md),
-[`anc_heatmap`](https://klausvigo.github.io/phangorn/reference/anc_heatmap.md),
+[`heatmapp`](https://klausvigo.github.io/phangorn/reference/heatmapp.md),
 [`plot.phylo`](https://rdrr.io/pkg/ape/man/plot.phylo.html),
 [`image.DNAbin`](https://rdrr.io/pkg/ape/man/image.DNAbin.html),
 [`image.AAbin`](https://rdrr.io/pkg/ape/man/AAbin.html)
@@ -145,6 +145,6 @@ woodmouse_aa <- trans(woodmouse, 2) |> as.phyDat()
 #> Warning: sequence length not a multiple of 3: 2 nucleotides dropped
 anc_aa <- anc_pars(tree, woodmouse_aa)
 plot(tree)
-add_mutations(anc_aa, adj = c(.5, -0.3), col=2)
+add_mutations(anc_aa, adj = c(0.5, -0.3), col=2)
 
 ```

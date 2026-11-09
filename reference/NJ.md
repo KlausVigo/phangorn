@@ -1,7 +1,9 @@
 # Neighbor-Joining
 
-This function performs the neighbor-joining tree estimation of Saitou
-and Nei (1987). UNJ is the unweighted version from Gascuel (1997).
+This function performs the neighbor-joining tree estimation of [Saitou
+and Nei (1987)](#reference++Saitou1987); [Studier and Keppler
+(1988)](#reference++Studier1988) . UNJ is the unweighted version from
+[Gascuel (1997)](#reference++Gascuel1997) .
 
 ## Usage
 
@@ -27,17 +29,18 @@ NJ is a wrapper around nj from ape.
 
 ## References
 
-Saitou, N. and Nei, M. (1987) The neighbor-joining method: a new method
-for reconstructing phylogenetic trees. *Molecular Biology and
-Evolution*, **4**, 406–425.
+Gascuel O (1997). “Concerning the NJ algorithm and its unweighted
+version UNJ. 21 Pages 149-171 in: Mathematical hierarchies and biology.
+B. Mirkin, FR McMorris, 22 F. Roberts and A. Rzhetsky, eds.” *American
+Mathematical Society, Providence, RI*, **23**.
 
-Studier, J. A and Keppler, K. J. (1988) A Note on the Neighbor-Joining
-Algorithm of Saitou and Nei. *Molecular Biology and Evolution*, **6**,
+Saitou N, Nei M (1987). “The Neighbor-Joining Method - a New Method for
+Reconstructing Phylogenetic Trees.” *Molecular Biology and Evolution*,
+**4**(4), 406–425.
+
+Studier JA, Keppler KJ (1988). “A Note on the Neighbor-Joining Algorithm
+of Saitou and Nei.” *Molecular Biology and Evolution*, **5**(6),
 729–731.
-
-Gascuel, O. (1997) Concerning the NJ algorithm and its unweighted
-version, UNJ. in Birkin et. al. *Mathematical Hierarchies and Biology*,
-149–170.
 
 ## See also
 

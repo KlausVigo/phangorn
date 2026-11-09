@@ -1,6 +1,8 @@
 # Swofford-Olsen-Waddell-Hillis Test
 
-This function computes the Swofford–Olsen–Waddell–Hillis (SOWH) test, a
+This function computes the Swofford–Olsen–Waddell–Hillis (SOWH) test
+[Swofford, Olsen, Waddell, and Hillis (1996)](#reference++Swofford1996);
+[Goldman, Anderson, and Rodrigo (2000)](#reference++Goldman2000) , a
 parametric bootstrap test. The function is computational very demanding
 and likely to be very slow.
 
@@ -51,14 +53,12 @@ It makes extensive use `simSeq` and `optim.pml` and can take quite long.
 
 ## References
 
-Goldman, N., Anderson, J. P., and Rodrigo, A. G. (2000) Likelihood
--based tests of topologies in phylogenetics. *Systematic Biology* **49**
-652-670.
+Goldman N, Anderson JP, Rodrigo AG (2000). “Likelihood-based tests of
+topologies in phylogenetics.” *Systematic biology*, **49**(4), 652–670.
 
-Swofford, D.L., Olsen, G.J., Waddell, P.J. and Hillis, D.M. (1996)
-Phylogenetic Inference in Hillis, D.M., Moritz, C. and Mable, B.K.
-(Eds.) *Molecular Systematics* (2nd ed.) 407-514, Sunderland, MA:
-Sinauer
+Swofford D, Olsen G, Waddell P, Hillis D (1996). “Phylogenetic
+Inference.” In Hillis D, Moritz C, Mable B (eds.), *Molecular
+Systematics*, Second edition. Sinauer, Sunderland, MA.
 
 ## See also
 

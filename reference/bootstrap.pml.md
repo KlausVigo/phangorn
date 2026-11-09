@@ -1,9 +1,7 @@
 # Bootstrap
 
 `bootstrap.pml` performs (non-parametric) bootstrap analysis and
-`bootstrap.phyDat` produces a list of bootstrapped data sets. `plotBS`
-plots a phylogenetic tree with the bootstrap values assigned to the
-(internal) edges.
+`bootstrap.phyDat` produces a list of bootstrapped data sets.
 
 ## Usage
 
@@ -65,31 +63,29 @@ with labels supplied in the `node.label` slot.
 
 ## Details
 
-It is possible that the bootstrap is performed in parallel, with help of
-the multicore package. Unfortunately the multicore package does not work
-under windows or with GUI interfaces ("aqua" on a mac). However it will
-speed up nicely from the command line ("X11").
+It is possible that the bootstrap is performed in parallel using the
+future package, see example below.
 
 ## References
 
-Felsenstein J. (1985) Confidence limits on phylogenies. An approach
-using the bootstrap. *Evolution* **39**, 783–791
+Felsenstein J (1985). “Confidence limits on phylogenies. An approach
+using the bootstrap.” *Evolution*, **39**, 783–791.
 
-Lemoine, F., Entfellner, J. B. D., Wilkinson, E., Correia, D., Felipe,
-M. D., De Oliveira, T., & Gascuel, O. (2018). Renewing Felsenstein’s
-phylogenetic bootstrap in the era of big data. *Nature*, **556(7702)**,
-452–456.
+Lemoine F, Entfellner JD, Wilkinson E, Correia D, Felipe MD, De Oliveira
+T, Gascuel O (2018). “Renewing Felsenstein’s phylogenetic bootstrap in
+the era of big data.” *Nature*, **556**(7702), 452–456.
 
-Penny D. and Hendy M.D. (1985) Testing methods evolutionary tree
-construction. *Cladistics* **1**, 266–278
+Penny D, Hendy M (1985). “Testing methods evolutionary tree
+construction.” *Cladistics*, **1**, 266–278.
 
-Penny D. and Hendy M.D. (1986) Estimating the reliability of
-evolutionary trees. *Molecular Biology and Evolution* **3**, 403–417
+Penny D, Hendy M (1986). “Estimating the reliability of evolutionary
+trees.” *Molecular Biology and Evolution*, **3**, 403–417.
 
 ## See also
 
 [`optim.pml`](https://klausvigo.github.io/phangorn/reference/pml.md),
 [`pml`](https://klausvigo.github.io/phangorn/reference/pml.md),
+[`plan`](https://future.futureverse.org/reference/plan.html),
 [`plot.phylo`](https://rdrr.io/pkg/ape/man/plot.phylo.html),
 [`maxCladeCred`](https://klausvigo.github.io/phangorn/reference/maxCladeCred.md)
 [`nodelabels`](https://rdrr.io/pkg/ape/man/nodelabels.html),[`consensusNet`](https://klausvigo.github.io/phangorn/reference/consensusNet.md)
@@ -119,7 +115,11 @@ treeNJ <- plotBS(tree, NJtrees, "phylogram")
 fit <- pml(tree, Laurasiatherian)
 fit <- optim.pml(fit, rearrangement="NNI")
 set.seed(123)
+# compute in parallel
+future::plan(multisession, workers = 2)
 bs <- bootstrap.pml(fit, bs=100, optNni=TRUE)
+future::plan(sequential)
+
 treeBS <- plotBS(fit$tree,bs)
 
 # Maximum parsimony

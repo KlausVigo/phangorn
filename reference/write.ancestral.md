@@ -1,16 +1,17 @@
 # Export and convenience functions for ancestral reconstructions
 
 `write.ancestral` allows to export ancestral reconstructions. It writes
-out the tree, a tab delimited text file with the probabilities and the
-original alignment and an alignment of the most likely ancestral states.
-`ancestral` generates an object of class ancestral.
+out the tree, a tab delimited text file with the probabilities, an
+alignment of the the extant sequences and the most likely ancestral
+states. And a unaligned fasta file containg the most likely ancestral
+states. `ancestral` generates an object of class ancestral.
 
 ## Usage
 
 ``` r
 write.ancestral(x, file = "ancestral")
 
-as.ancestral(tree, prob, align = NULL)
+as.ancestral(tree, prob, align, ...)
 
 # S3 method for class 'ancestral'
 print(x, ...)
@@ -19,7 +20,7 @@ print(x, ...)
 as.phyDat(x, ...)
 
 # S3 method for class 'ancestral'
-as.data.frame(x, ...)
+as.data.frame(x, ..., terminal = FALSE)
 ```
 
 ## Arguments
@@ -49,6 +50,10 @@ as.data.frame(x, ...)
 
   Further arguments passed to or from other methods.
 
+- terminal:
+
+  logical, should terminal nodes included.
+
 ## Value
 
 `write.ancestral` returns the input x invisibly.
@@ -71,12 +76,17 @@ fit <- pml_bb(Laurasiatherian[,1:100], "JC", rearrangement = "none")
 anc_ml <- anc_pml(fit)
 write.ancestral(anc_ml)
 # Can be also results from iqtree
-align <- read.phyDat("ancestral_align.fasta", format="fasta")
+align <- read.phyDat("ancestral_all.fasta", format="fasta")
 tree <- read.tree("ancestral_tree.nwk")
-df <- read.table("ancestral_state.tsv", header=TRUE)
+df <- read.table("ancestral_state.tsv.gz", header=TRUE)
 anc_ml_disc <- as.ancestral(tree, df, align)
+
 plotAnc(anc_ml_disc, 20)
 
-unlink(c("ancestral_align.fasta", "ancestral_tree.nwk",
-         "ancestral_state.tsv", "ancestral_state.fasta"))
+
+heatmapp(tree, align, nodes=TRUE)
+
+
+unlink(c("ancestral_all.fasta", "ancestral_tree.nwk",
+         "ancestral_state.tsv.gz", "ancestral_state.fasta"))
 ```

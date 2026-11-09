@@ -61,8 +61,8 @@ like the likelihood. There are many generic functions for the class
 methods(class="pml")
 ```
 
-    ##  [1] AICc     anova    BIC      glance   logLik   plot     print    simSeq  
-    ##  [9] terraces update   vcov    
+    ##  [1] AICc     anova    BIC      glance   heatmapp logLik   plot     print   
+    ##  [9] simSeq   terraces update   vcov    
     ## see '?methods' for accessing help and source code
 
 The object fit just estimated the likelihood for the tree it got
@@ -134,27 +134,27 @@ fitGTR
     ## model: GTR+G(4)+I 
     ## loglikelihood: -2611 
     ## unconstrained loglikelihood: -1230 
-    ## Total tree length: 30.6 
+    ## Total tree length: 30.48 
     ##  (expected number of substituions per site)
     ## Minimal tree length: 3.237 
     ##  (observed substitutions per site)
-    ## Proportion of invariant sites: 0.006978 
+    ## Proportion of invariant sites: 0.007063 
     ## Model of rate heterogeneity: Discrete gamma model
     ## Number of rate categories: 4 
-    ## Shape parameter: 3.081 
+    ## Shape parameter: 3.175 
     ##     Rate Proportion
-    ## 1 0.0000   0.006978
-    ## 2 0.3982   0.248256
-    ## 3 0.7411   0.248256
-    ## 4 1.0905   0.248256
-    ## 5 1.7983   0.248256
+    ## 1 0.0000   0.007063
+    ## 2 0.4052   0.248234
+    ## 3 0.7461   0.248234
+    ## 4 1.0910   0.248234
+    ## 5 1.7862   0.248234
     ## 
     ## Rates:
-    ## a <-> c : 0.9533 
-    ## a <-> g : 64.01 
-    ## a <-> t : 0.8128 
-    ## c <-> g : 0.00508 
-    ## c <-> t : 24.79 
+    ## a <-> c : 0.9385 
+    ## a <-> g : 62.95 
+    ## a <-> t : 0.7988 
+    ## c <-> g : 0.006297 
+    ## c <-> t : 24.4 
     ## g <-> t : 1 
     ## 
     ## Base frequencies:  
@@ -191,27 +191,27 @@ fitGTR
     ## model: GTR+G(4)+I 
     ## loglikelihood: -2608 
     ## unconstrained loglikelihood: -1230 
-    ## Total tree length: 41.74 
+    ## Total tree length: 41.34 
     ##  (expected number of substituions per site)
     ## Minimal tree length: 3.315 
     ##  (observed substitutions per site)
-    ## Proportion of invariant sites: 0.007369 
+    ## Proportion of invariant sites: 0.008019 
     ## Model of rate heterogeneity: Discrete gamma model
     ## Number of rate categories: 4 
-    ## Shape parameter: 2.994 
+    ## Shape parameter: 3.174 
     ##     Rate Proportion
-    ## 1 0.0000   0.007369
-    ## 2 0.3917   0.248158
-    ## 3 0.7366   0.248158
-    ## 4 1.0905   0.248158
-    ## 5 1.8109   0.248158
+    ## 1 0.0000   0.008019
+    ## 2 0.4055   0.247995
+    ## 3 0.7467   0.247995
+    ## 4 1.0920   0.247995
+    ## 5 1.7881   0.247995
     ## 
     ## Rates:
-    ## a <-> c : 0.5937 
-    ## a <-> g : 61.01 
-    ## a <-> t : 0.4768 
-    ## c <-> g : 0.004348 
-    ## c <-> t : 21.35 
+    ## a <-> c : 0.6982 
+    ## a <-> g : 71.61 
+    ## a <-> t : 0.5849 
+    ## c <-> g : 0.00466 
+    ## c <-> t : 25.09 
     ## g <-> t : 1 
     ## 
     ## Base frequencies:  
@@ -243,8 +243,8 @@ SH.test(fitGTR, fitJC)
 ```
 
     ##      Trees  ln L Diff ln L p-value
-    ## [1,]     1 -2608       0.0  0.5043
-    ## [2,]     2 -3068     460.5  0.0000
+    ## [1,]     1 -2608       0.0   0.504
+    ## [2,]     2 -3068     460.5   0.000
 
 or with the AIC
 
@@ -348,13 +348,13 @@ away.
 
 ## Session info
 
-    ## R version 4.6.0 (2026-04-24)
+    ## R version 4.6.2 (2026-10-29)
     ## Platform: x86_64-pc-linux-gnu
-    ## Running under: Ubuntu 24.04.4 LTS
+    ## Running under: Ubuntu 26.04.1 LTS
     ## 
     ## Matrix products: default
     ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
-    ## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
+    ## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.32.so;  LAPACK version 3.12.0
     ## 
     ## locale:
     ##  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
@@ -369,24 +369,24 @@ away.
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] future_1.70.0     phangorn_2.12.1.4 ape_5.8-1        
+    ## [1] future_1.82.0    phangorn_3.0.0.1 ape_5.8-1       
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] Matrix_1.7-5        future.apply_1.20.2 jsonlite_2.0.0     
-    ##  [4] compiler_4.6.0      Rcpp_1.1.1-1.1      parallel_4.6.0     
-    ##  [7] jquerylib_0.1.4     globals_0.19.1      systemfonts_1.3.2  
+    ##  [1] Matrix_1.7-6        future.apply_1.21.0 jsonlite_2.0.0     
+    ##  [4] compiler_4.6.2      Rcpp_1.1.2          parallel_4.6.2     
+    ##  [7] jquerylib_0.1.4     globals_0.20.0      systemfonts_1.3.2  
     ## [10] textshaping_1.0.5   yaml_2.3.12         fastmap_1.2.0      
-    ## [13] lattice_0.22-9      R6_2.6.1            generics_0.1.4     
-    ## [16] igraph_2.3.1        knitr_1.51          htmlwidgets_1.6.4  
+    ## [13] lattice_0.23-1      R6_2.6.1            generics_0.1.4     
+    ## [16] igraph_2.3.4        knitr_1.52          htmlwidgets_1.6.4  
     ## [19] backports_1.5.1     checkmate_2.3.4     desc_1.4.3         
-    ## [22] bslib_0.11.0        rlang_1.2.0         cachem_1.1.0       
-    ## [25] xfun_0.57           fs_2.1.0            sass_0.4.10        
-    ## [28] otel_0.2.0          cli_3.6.6           progressr_0.19.0   
-    ## [31] pkgdown_2.2.0       magrittr_2.0.5      digest_0.6.39      
-    ## [34] grid_4.6.0          lifecycle_1.0.5     nlme_3.1-169       
-    ## [37] evaluate_1.0.5      listenv_0.10.1      codetools_0.2-20   
-    ## [40] ragg_1.5.2          stats4_4.6.0        parallelly_1.47.0  
-    ## [43] rmarkdown_2.31      pkgconfig_2.0.3     tools_4.6.0        
+    ## [22] bslib_0.12.0        rlang_1.3.0         cachem_1.1.0       
+    ## [25] xfun_0.62           fs_2.1.0            sass_0.4.10        
+    ## [28] otel_0.3.0          cli_3.6.6           progressr_1.1.0    
+    ## [31] pkgdown_2.2.1       magrittr_2.0.5      digest_0.6.39      
+    ## [34] grid_4.6.2          lifecycle_1.0.5     nlme_3.1-171       
+    ## [37] evaluate_1.0.5      listenv_1.1.0       codetools_0.2-20   
+    ## [40] ragg_1.5.2          stats4_4.6.2        parallelly_1.50.0  
+    ## [43] rmarkdown_2.32      pkgconfig_2.0.3     tools_4.6.2        
     ## [46] htmltools_0.5.9
 
 ## References

@@ -473,13 +473,13 @@ M0_opt
 
 ## Session info
 
-    ## R version 4.6.0 (2026-04-24)
+    ## R version 4.6.2 (2026-10-29)
     ## Platform: x86_64-pc-linux-gnu
-    ## Running under: Ubuntu 24.04.4 LTS
+    ## Running under: Ubuntu 26.04.1 LTS
     ## 
     ## Matrix products: default
     ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
-    ## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
+    ## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.32.so;  LAPACK version 3.12.0
     ## 
     ## locale:
     ##  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
@@ -494,24 +494,24 @@ M0_opt
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] phangorn_2.12.1.4 ape_5.8-1        
+    ## [1] phangorn_3.0.0.1 ape_5.8-1       
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] Matrix_1.7-5        future.apply_1.20.2 jsonlite_2.0.0     
-    ##  [4] compiler_4.6.0      Rcpp_1.1.1-1.1      parallel_4.6.0     
-    ##  [7] jquerylib_0.1.4     globals_0.19.1      systemfonts_1.3.2  
+    ##  [1] Matrix_1.7-6        future.apply_1.21.0 jsonlite_2.0.0     
+    ##  [4] compiler_4.6.2      Rcpp_1.1.2          parallel_4.6.2     
+    ##  [7] jquerylib_0.1.4     globals_0.20.0      systemfonts_1.3.2  
     ## [10] textshaping_1.0.5   yaml_2.3.12         fastmap_1.2.0      
-    ## [13] lattice_0.22-9      R6_2.6.1            generics_0.1.4     
-    ## [16] igraph_2.3.1        knitr_1.51          htmlwidgets_1.6.4  
-    ## [19] backports_1.5.1     checkmate_2.3.4     future_1.70.0      
-    ## [22] desc_1.4.3          bslib_0.11.0        rlang_1.2.0        
-    ## [25] cachem_1.1.0        xfun_0.57           fs_2.1.0           
-    ## [28] sass_0.4.10         otel_0.2.0          cli_3.6.6          
-    ## [31] progressr_0.19.0    pkgdown_2.2.0       magrittr_2.0.5     
-    ## [34] digest_0.6.39       grid_4.6.0          lifecycle_1.0.5    
-    ## [37] nlme_3.1-169        evaluate_1.0.5      listenv_0.10.1     
-    ## [40] codetools_0.2-20    ragg_1.5.2          parallelly_1.47.0  
-    ## [43] rmarkdown_2.31      pkgconfig_2.0.3     tools_4.6.0        
+    ## [13] lattice_0.23-1      R6_2.6.1            generics_0.1.4     
+    ## [16] igraph_2.3.4        knitr_1.52          htmlwidgets_1.6.4  
+    ## [19] backports_1.5.1     checkmate_2.3.4     future_1.82.0      
+    ## [22] desc_1.4.3          bslib_0.12.0        rlang_1.3.0        
+    ## [25] cachem_1.1.0        xfun_0.62           fs_2.1.0           
+    ## [28] sass_0.4.10         otel_0.3.0          cli_3.6.6          
+    ## [31] progressr_1.1.0     pkgdown_2.2.1       magrittr_2.0.5     
+    ## [34] digest_0.6.39       grid_4.6.2          lifecycle_1.0.5    
+    ## [37] nlme_3.1-171        evaluate_1.0.5      listenv_1.1.0      
+    ## [40] codetools_0.2-20    ragg_1.5.2          parallelly_1.50.0  
+    ## [43] rmarkdown_2.32      pkgconfig_2.0.3     tools_4.6.2        
     ## [46] htmltools_0.5.9
 
 ## References

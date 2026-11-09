@@ -27,7 +27,7 @@ midpoint(tree, node.labels = "support", ...)
 
 pruneTree(tree, ..., FUN = ">=")
 
-keep_as_tip(tree, labels)
+keep_as_tip(tree, labels, collapse.singles = TRUE)
 ```
 
 ## Arguments
@@ -53,6 +53,11 @@ keep_as_tip(tree, labels)
 
   tip and node labels to keep as tip labels in the tree
 
+- collapse.singles:
+
+  a logical specifying whether to delete the internal nodes of degree 2.
+  Nodes which are part of the labels are not collapsed.
+
 ## Value
 
 `pruneTree` and `midpoint` a tree. `getRoot` returns the root node.
@@ -75,7 +80,7 @@ tree <- rtree(10, rooted = FALSE)
 tree$node.label <- c("", round(runif(tree$Nnode-1), digits=3))
 
 tree2 <- midpoint(tree)
-tree3 <- pruneTree(tree, .5)
+tree3 <- pruneTree(tree, 0.5)
 
 old.par <- par(no.readonly = TRUE)
 par(mfrow = c(3,1))

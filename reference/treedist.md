@@ -1,13 +1,18 @@
 # Distances between trees
 
 `treedist` computes different tree distance methods and `RF.dist` the
-Robinson-Foulds or symmetric distance. The Robinson-Foulds distance only
-depends on the topology of the trees. If edge weights should be
-considered `wRF.dist` calculates the weighted RF distance (Robinson &
-Foulds 1981). and `KF.dist` calculates the branch score distance (Kuhner
-& Felsenstein 1994). `path.dist` computes the path difference metric as
-described in Steel and Penny 1993). `sprdist` computes the approximate
-SPR distance (Oliveira Martins et al. 2008, de Oliveira Martins 2016).
+Robinson-Foulds or symmetric distance. The Robinson-Foulds distance
+([Robinson and Foulds 1979](#reference++Robinson1979); [Robinson and
+Foulds 1981](#reference++Robinson1981)) only depends on the topology of
+the trees. If edge weights should be considered `wRF.dist` calculates
+the weighted RF distance ([Robinson and Foulds
+1981](#reference++Robinson1981)) and `KF.dist` calculates the branch
+score distance ([Kuhner and Felsenstein 1994](#reference++Kuhner1994)) .
+`path.dist` computes the path difference metric as described in [Steel
+and Penny (1993)](#reference++Steel1993) . `sprdist` computes the
+approximate SPR distance ([de Oliveira Martins, Leal, and Kishino
+2008](#reference++Leo2008); [De Oliveira Martins, Mallo, and Posada
+2016](#reference++Leo2016)) .
 
 ## Usage
 
@@ -90,37 +95,47 @@ Robinson-Foulds distance is derived by dividing \\d(T_1, T_2)\\ by the
 maximal possible distance \\i(T_1) + i(T_2)\\. If both trees are
 unrooted and binary this value is \\2n-6\\.
 
-Functions like `RF.dist` returns the Robinson-Foulds distance (Robinson
-and Foulds 1981) between either 2 trees or computes a matrix of all
-pairwise distances if a `multiPhylo` object is given.
+Functions like `RF.dist` returns the Robinson-Foulds distance between
+either 2 trees or computes a matrix of all pairwise distances if a
+`multiPhylo` object is given.
 
 For large number of trees the distance functions can use a lot of
 memory!
 
 ## References
 
-de Oliveira Martins L., Leal E., Kishino H. (2008) *Phylogenetic
-Detection of Recombination with a Bayesian Prior on the Distance between
-Trees*. PLoS ONE **3(7)**. e2651. doi: 10.1371/journal.pone.0002651
+de Oliveira Martins L, Leal É, Kishino H (2008). “Phylogenetic Detection
+of Recombination with a Bayesian Prior on the Distance between Trees.”
+*PLoS ONE*, **3**(7), 1-13.
+[doi:10.1371/journal.pone.0002651](https://doi.org/10.1371/journal.pone.0002651)
+.
 
-de Oliveira Martins L., Mallo D., Posada D. (2016) *A Bayesian Supertree
-Model for Genome-Wide Species Tree Reconstruction*. Syst. Biol.
-**65(3)**: 397-416, doi:10.1093/sysbio/syu082
+De Oliveira Martins L, Mallo D, Posada D (2016). “A Bayesian Supertree
+Model for Genome-Wide Species Tree Reconstruction.” *Systematic
+Biology*, **65**(3), 397-416.
+[doi:10.1093/sysbio/syu082](https://doi.org/10.1093/sysbio/syu082) .
 
-Steel M. A. and Penny P. (1993) *Distributions of tree comparison
-metrics - some new results*, Syst. Biol., **42(2)**, 126–141
+Kuhner MK, Felsenstein J (1994). “A simulation comparison of phylogeny
+algorithms under equal and unequal evolutionary rates.” *Molecular
+Biology and Evolution*, **11**(3), 459-468.
+[doi:10.1093/oxfordjournals.molbev.a040126](https://doi.org/10.1093/oxfordjournals.molbev.a040126)
+.
 
-Kuhner, M. K. and Felsenstein, J. (1994) *A simulation comparison of
-phylogeny algorithms under equal and unequal evolutionary rates*,
-Molecular Biology and Evolution, **11(3)**, 459–468
+Robinson D, Foulds L (1981). “Comparison of phylogenetic trees.”
+*Mathematical Biosciences*, **53**(1), 131 - 147. ISSN 0025-5564.
+[doi:10.1016/0025-5564(81)90043-2](https://doi.org/10.1016/0025-5564%2881%2990043-2)
+.
 
-D.F. Robinson and L.R. Foulds (1981) *Comparison of phylogenetic trees*,
-Mathematical Biosciences, **53(1)**, 131–147
+Robinson DF, Foulds LR (1979). “Comparison of weighted labelled trees.”
+In Horadam AF, Wallis WD (eds.), *Combinatorial Mathematics VI:
+Proceedings of the Sixth Australian Conference on Combinatorial
+Mathematics, Armidale, Australia, August 1978*, 119–126. Springer Berlin
+Heidelberg, Berlin, Heidelberg. ISBN 978-3-540-34857-3.
+[doi:10.1007/BFb0102690](https://doi.org/10.1007/BFb0102690) .
 
-D.F. Robinson and L.R. Foulds (1979) Comparison of weighted labelled
-trees. In Horadam, A. F. and Wallis, W. D. (Eds.), *Combinatorial
-Mathematics VI: Proceedings of the Sixth Australian Conference on
-Combinatorial Mathematics, Armidale, Australia*, 119–126
+Steel MA, Penny D (1993). “Distributions of Tree Comparison Metrics—Some
+New Results.” *Systematic Biology*, **42**(2), 126-141. ISSN 1063-5157.
+[doi:10.1093/sysbio/42.2.126](https://doi.org/10.1093/sysbio/42.2.126) .
 
 ## See also
 

@@ -1,7 +1,8 @@
 # Transfer Bootstrap
 
-`transferBootstrap` assigns transfer bootstrap (Lemoine et al. 2018)
-values to the (internal) edges.
+`transferBootstrap` assigns transfer bootstrap ([Lemoine, Entfellner,
+Wilkinson, Correia, Felipe, De Oliveira, and Gascuel
+2018](#reference++Lemoine2018)) values to the (internal) edges.
 
 ## Usage
 
@@ -35,10 +36,9 @@ the node labels.
 
 ## References
 
-Lemoine, F., Entfellner, J. B. D., Wilkinson, E., Correia, D., Felipe,
-M. D., De Oliveira, T., & Gascuel, O. (2018). Renewing Felsenstein’s
-phylogenetic bootstrap in the era of big data. *Nature*, **556(7702)**,
-452–456.
+Lemoine F, Entfellner JD, Wilkinson E, Correia D, Felipe MD, De Oliveira
+T, Gascuel O (2018). “Renewing Felsenstein’s phylogenetic bootstrap in
+the era of big data.” *Nature*, **556**(7702), 452–456.
 
 ## See also
 

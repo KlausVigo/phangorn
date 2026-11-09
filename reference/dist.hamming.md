@@ -135,7 +135,7 @@ treedist(tree1,tree3)
 #> quadratic.path.difference 
 #>                 0.6106899 
 # F81 + Gamma
-dm4 <- dist.ml(Laurasiatherian, model="F81", k=4, shape=.4)
+dm4 <- dist.ml(Laurasiatherian, model="F81", k=4, shape=0.4)
 tree4 <- NJ(dm4)
 treedist(tree1,tree4)
 #>      symmetric.difference   branch.score.difference           path.difference 

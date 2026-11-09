@@ -1,8 +1,11 @@
 # Parsimony tree.
 
-`pratchet` implements the parsimony ratchet (Nixon, 1999) and is the
-preferred way to search for the best parsimony tree. For small number of
-taxa the function
+`parsimony` returns the parsimony score of a tree using either the
+sankoff or the fitch algorithm, for more details see for example
+[Felsenstein (2004)](#reference++Felsenstein2004) . `pratchet`
+implements the parsimony ratchet [Nixon (1999)](#reference++Nixon1999)
+and is the preferred way to search for the best parsimony tree. For
+small number of taxa the function
 [`bab`](https://klausvigo.github.io/phangorn/reference/bab.md) can be
 used to compute all most parsimonious trees.
 
@@ -95,12 +98,11 @@ ACCTRAN criterion.
 
 ## Details
 
-`parsimony` returns the parsimony score of a tree using either the
-sankoff or the fitch algorithm. `optim.parsimony` optimizes the topology
-using either Nearest Neighbor Interchange (NNI) rearrangements or sub
-tree pruning and regrafting (SPR) and is used inside `pratchet`.
-`random.addition` can be used to produce starting trees and is an option
-for the argument perturbation in `pratchet`.
+`optim.parsimony` optimizes the topology using either Nearest Neighbor
+Interchange (NNI) rearrangements or sub tree pruning and regrafting
+(SPR) and is used inside `pratchet`. `random.addition` can be used to
+produce starting trees and is an option for the argument perturbation in
+`pratchet`.
 
 The "SPR" rearrangements are so far only available for the "fitch"
 method, "sankoff" only uses "NNI". The "fitch" algorithm only works
@@ -108,11 +110,11 @@ correct for binary trees.
 
 ## References
 
-Felsenstein, J. (2004). *Inferring Phylogenies*. Sinauer Associates,
+Felsenstein J (2004). *Inferring Phylogenies*. Sinauer Associates,
 Sunderland.
 
-Nixon, K. (1999) The Parsimony Ratchet, a New Method for Rapid Parsimony
-Analysis. *Cladistics* **15**, 407-414
+Nixon K (1999). “The Parsimony Ratchet, a New Method for Rapid Rarsimony
+Analysis.” *Cladistics*, **15**, 407–414.
 
 ## See also
 

@@ -1,8 +1,13 @@
 # Discrete Gamma and Beta distribution
 
 `discrete.gamma` internally used for the likelihood computations in
-`pml` or `optim.pml`. It is useful to understand how it works for
-simulation studies or in cases where .
+`pml` or `optim.pml`. The functions `plot_gamma_plus_inv` and
+`plotRates` are useful in EDA and understand how discrete rate models
+work and where it limitations are ([Ferretti, Golubchik, Di Lauro,
+Ghafari, Villabona-Arenas, Atkins, Fraser, and Hall
+2026](#reference++Ferretti2026)) . `plotRates` plots the cumulative
+distribution function based on the parsimony score for the data and the
+discrete rate model.
 
 ## Usage
 
@@ -86,8 +91,8 @@ plotRates(obj, cdf.color = "blue", main = "", rug = FALSE, xlim = NULL,
 - site.rate:
 
   Indicates what type of gamma distribution to use. Options are "gamma"
-  (Yang 1994) and "gamma_quadrature" using Laguerre quadrature approach
-  of Felsenstein (2001)
+  (Yang 1994), "gamma_quadrature" using Laguerre quadrature approach of
+  Felsenstein (2001) or "variable_gamma".
 
 - ...:
 
@@ -114,16 +119,17 @@ plotRates(obj, cdf.color = "blue", main = "", rug = FALSE, xlim = NULL,
 
 `discrete.gamma` returns a matrix.
 
-## Details
+## References
 
-These functions are exported to be used in different packages so far
-only in the package coalescentMCMC, but are not intended for end user.
-Most of the functions call C code and are far less forgiving if the
-import is not what they expect than `pml`.
+Ferretti L, Golubchik T, Di Lauro F, Ghafari M, Villabona-Arenas J,
+Atkins KE, Fraser C, Hall M (2026). “Biased Estimates of Phylogenetic
+Branch Lengths Resulting from the Discretised Gamma Model of Site Rate
+Heterogeneity.” *Systematic Biology*, syag037. ISSN 1063-5157.
+[doi:10.1093/sysbio/syag037](https://doi.org/10.1093/sysbio/syag037) .
 
 ## See also
 
-[`pml.fit`](https://klausvigo.github.io/phangorn/reference/pml.fit.md)`, `[`stepfun`](https://rdrr.io/r/stats/stepfun.html)`, `[`pgamma`](https://rdrr.io/r/stats/GammaDist.html)`, `[`pbeta`](https://rdrr.io/r/stats/Beta.html),
+[`pml.fit`](https://klausvigo.github.io/phangorn/reference/pml.fit.md)`, `[`stepfun`](https://rdrr.io/r/stats/stepfun.html)`, `[`pgamma`](https://rdrr.io/r/stats/GammaDist.html)`, `[`pbeta`](https://rdrr.io/r/stats/Beta.html)
 
 ## Author
 

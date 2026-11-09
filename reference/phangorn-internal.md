@@ -11,7 +11,8 @@ base_freq(obj)
 
 reference_position(x, pos, ref = 1, gap = "-")
 
-assert_phyDat(x, contains_label = !is.null(label), label = NULL)
+assert_phyDat(x, contains_label = !is.null(label), label = NULL,
+  transform = FALSE)
 
 assert_phylo(x, has_edge_length = FALSE, is_rooted = FALSE,
   is_ultrametric = FALSE, is_binary = FALSE, unique_tiplabel = TRUE)
@@ -21,9 +22,9 @@ assert_multiPhylo(x, has_edge_length = FALSE, is_rooted = FALSE,
 
 assert_treeish(x, null.ok = FALSE)
 
-assert_phyDat(x, contains_label = !is.null(label), label = NULL)
-
 assert_pml(x)
+
+assert_ancestral(x)
 
 clean_phylo(x, ..., unroot = FALSE, collapse.singles = FALSE,
   reorder = FALSE, order = "postorder", multi2di = FALSE,
@@ -48,7 +49,7 @@ pml.init(data, k = 1L)
 
 coords(obj, dim = "3D")
 
-pmlPen(object, lambda, ...)
+pmlPen(object, lambda, ..., control = pml.control())
 
 relabel(x, ref)
 

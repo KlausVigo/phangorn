@@ -1,6 +1,7 @@
 # Compare splits and add support values to an object
 
-Add support values to a `splits`, `phylo` or `networx` object.
+Add support values to a `splits`, `phylo` or `networx` object ([Schliep,
+Potts, Morrison, and Grimm 2017](#reference++Schliep2017)) .
 
 ## Usage
 
@@ -51,9 +52,10 @@ The object `x` with added bootstrap / MCMC support values.
 
 ## References
 
-Schliep, K., Potts, A. J., Morrison, D. A. and Grimm, G. W. (2017),
-Intertwining phylogenetic trees and networks. *Methods Ecol Evol*.**8**,
-1212–1220. doi:10.1111/2041-210X.12760
+Schliep K, Potts AJ, Morrison DA, Grimm GW (2017). “Intertwining
+phylogenetic trees and networks.” *Methods in Ecology and Evolution*,
+**8**(10), 1212-1220. *Methods Ecol Evol*.**8**, 1212–1220.
+doi:10.1111/2041-210X.12760
 
 ## See also
 

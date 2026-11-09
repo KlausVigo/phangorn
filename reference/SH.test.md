@@ -1,6 +1,7 @@
 # Shimodaira-Hasegawa Test
 
-This function computes the Shimodaira–Hasegawa test for a set of trees.
+This function computes the Shimodaira–Hasegawa test [Shimodaira and
+Hasegawa (1999)](#reference++Shimodaira1999) for a set of trees.
 
 ## Usage
 
@@ -36,8 +37,8 @@ a numeric vector with the P-value associated with each tree given in
 
 ## References
 
-Shimodaira, H. and Hasegawa, M. (1999) Multiple comparisons of
-log-likelihoods with applications to phylogenetic inference. *Molecular
+Shimodaira H, Hasegawa M (1999). “Multiple comparisons of
+log-likelihoods with applications to phylogenetic inference.” *Molecular
 Biology and Evolution*, **16**, 1114–1116.
 
 ## See also

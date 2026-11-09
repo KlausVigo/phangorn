@@ -1,17 +1,18 @@
 # UPGMA, WPGMA and sUPGMA
 
-UPGMA and WPGMA clustering. UPGMA (Sokal and Michener 1958) and WPGMA
-(McQuitty 1966) are a wrapper function around
+UPGMA and WPGMA clustering. UPGMA ([Sokal and Michener
+1958](#reference++Sokal1958)) and WPGMA ([McQuitty
+1966](#reference++McQuitty1966)) are a wrapper function around
 [`hclust`](https://rdrr.io/r/stats/hclust.html) returning a `phylo`
-object. `supgma` perform serial sampled UPGMA similar to Drummond and
-Rodrigo (2000).
+object. `supgma` perform serial sampled UPGMA similar to [Drummond and
+Rodrigo (2000)](#reference++Drummond2000) .
 
 ## Usage
 
 ``` r
-upgma(D, method = "average", ...)
+upgma(D, ...)
 
-wpgma(D, method = "mcquitty", ...)
+wpgma(D, ...)
 
 supgma(D, tip.dates, trace = 0, ...)
 ```
@@ -22,13 +23,6 @@ supgma(D, tip.dates, trace = 0, ...)
 
   A distance matrix, i.e. an object of class `dist`. If an matrix is
   supplied it is tried to covert it do a `dist` object.
-
-- method:
-
-  The agglomeration method to be used. This should be (an unambiguous
-  abbreviation of) one of "ward", "single", "complete", "average",
-  "mcquitty", "median" or "centroid". The default is "average" for UPGMA
-  and "mcquitty" for WPGMA.
 
 - ...:
 
@@ -62,21 +56,23 @@ of years ago".
 
 ## References
 
+Drummond A, Rodrigo AG (2000). “Reconstructing Genealogies of Serial
+Samples Under the Assumption of a Molecular Clock Using Serial-Sample
+UPGMA.” *Molecular Biology and Evolution*, **17**(12), 1807-1815. ISSN
+0737-4038.
+[doi:10.1093/oxfordjournals.molbev.a026281](https://doi.org/10.1093/oxfordjournals.molbev.a026281)
+.
+
+McQuitty LL (1966). “Similarity analysis by reciprocal pairs for
+discrete and continuous data.” *Educational and Psychological
+measurement*, **26**(4), 825–831.
+
+Sokal R, Michener C (1958). “A statistical method for evaluating
+systematic relationships.” *University of Kansas Science Bulletin*,
+**38**, 1409–1438.
+
 Sneath, P. H., & Sokal, R. R. (1973). *Numerical taxonomy. The
 principles and practice of numerical classification.*
-
-Sokal, R. R., & Michener, C. D. (1958). A statistical method for
-evaluating systematic relationships. *University of Kansas Scientific
-Bulletin*, v. 38.
-
-Drummond, A., & Rodrigo, A. G. (2000). Reconstructing genealogies of
-serial samples under the assumption of a molecular clock using
-serial-sample UPGMA. *Molecular Biology and Evolution*, **17(12)**,
-1807-1815.
-
-McQuitty, L.L. (1966). Similarity Analysis by Reciprocal Pairs for
-Discrete and Continuous Data. *Educational and Psychological
-Measurement*, **26**, 825–831.
 
 ## See also
 

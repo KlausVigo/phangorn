@@ -155,7 +155,7 @@ but also the estimates for all internal nodes.
 ``` r
 
 op <- par(mar=c(4,1,4,5))
-anc_heatmap(anc.ml, select=1:50, cex=.8, use.edge.length = T)
+heatmapp(anc.ml, select=1:50, cex=0.8, use.edge.length = T)
 ```
 
 ![](Ancestral_files/figure-html/anc_heatmap-1.png)
@@ -298,13 +298,13 @@ reversible models.
 
 ## Session info
 
-    ## R version 4.6.0 (2026-04-24)
+    ## R version 4.6.2 (2026-10-29)
     ## Platform: x86_64-pc-linux-gnu
-    ## Running under: Ubuntu 24.04.4 LTS
+    ## Running under: Ubuntu 26.04.1 LTS
     ## 
     ## Matrix products: default
     ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
-    ## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
+    ## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.32.so;  LAPACK version 3.12.0
     ## 
     ## locale:
     ##  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
@@ -319,29 +319,29 @@ reversible models.
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] phangorn_2.12.1.4 ape_5.8-1        
+    ## [1] phangorn_3.0.0.1 ape_5.8-1       
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] sass_0.4.10         future_1.70.0       generics_0.1.4     
-    ##  [4] lattice_0.22-9      listenv_0.10.1      digest_0.6.39      
-    ##  [7] magrittr_2.0.5      evaluate_1.0.5      grid_4.6.0         
+    ##  [1] sass_0.4.10         future_1.82.0       generics_0.1.4     
+    ##  [4] lattice_0.23-1      listenv_1.1.0       digest_0.6.39      
+    ##  [7] magrittr_2.0.5      evaluate_1.0.5      grid_4.6.2         
     ## [10] RColorBrewer_1.1-3  fastmap_1.2.0       jsonlite_2.0.0     
-    ## [13] Matrix_1.7-5        backports_1.5.1     scales_1.4.0       
+    ## [13] Matrix_1.7-6        backports_1.5.1     scales_1.4.0       
     ## [16] codetools_0.2-20    textshaping_1.0.5   jquerylib_0.1.4    
-    ## [19] cli_3.6.6           rlang_1.2.0         parallelly_1.47.0  
-    ## [22] future.apply_1.20.2 withr_3.0.2         cachem_1.1.0       
-    ## [25] yaml_2.3.12         otel_0.2.0          tools_4.6.0        
-    ## [28] ggseqlogo_0.2.2     parallel_4.6.0      checkmate_2.3.4    
-    ## [31] dplyr_1.2.1         ggplot2_4.0.3       globals_0.19.1     
+    ## [19] cli_3.6.6           rlang_1.3.0         parallelly_1.50.0  
+    ## [22] future.apply_1.21.0 withr_3.0.3         cachem_1.1.0       
+    ## [25] yaml_2.3.12         otel_0.3.0          tools_4.6.2        
+    ## [28] ggseqlogo_0.2.2     parallel_4.6.2      checkmate_2.3.4    
+    ## [31] dplyr_1.2.1         ggplot2_4.0.3       globals_0.20.0     
     ## [34] vctrs_0.7.3         R6_2.6.1            lifecycle_1.0.5    
     ## [37] fs_2.1.0            htmlwidgets_1.6.4   ragg_1.5.2         
     ## [40] pkgconfig_2.0.3     desc_1.4.3          pillar_1.11.1      
-    ## [43] pkgdown_2.2.0       progressr_0.19.0    bslib_0.11.0       
-    ## [46] gtable_0.3.6        glue_1.8.1          Rcpp_1.1.1-1.1     
+    ## [43] pkgdown_2.2.1       progressr_1.1.0     bslib_0.12.0       
+    ## [46] gtable_0.3.6        glue_1.8.1          Rcpp_1.1.2         
     ## [49] systemfonts_1.3.2   tidyselect_1.2.1    tibble_3.3.1       
-    ## [52] xfun_0.57           knitr_1.51          farver_2.1.2       
-    ## [55] htmltools_0.5.9     nlme_3.1-169        igraph_2.3.1       
-    ## [58] labeling_0.4.3      rmarkdown_2.31      compiler_4.6.0     
+    ## [52] xfun_0.62           knitr_1.52          farver_2.1.2       
+    ## [55] htmltools_0.5.9     nlme_3.1-171        igraph_2.3.4       
+    ## [58] labeling_0.4.3      rmarkdown_2.32      compiler_4.6.2     
     ## [61] S7_0.2.2
 
 ## References

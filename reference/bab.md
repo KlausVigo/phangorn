@@ -1,6 +1,7 @@
 # Branch and bound for finding all most parsimonious trees
 
-`bab` finds all most parsimonious trees.
+`bab` finds all most parsimonious trees ([Hendy and Penny
+1982](#reference++Hendy1982)) .
 
 ## Usage
 
@@ -34,14 +35,16 @@ bab(data, tree = NULL, trace = !getOption("quiet"), ...)
 
 ## Details
 
-This implementation is very slow and depending on the data may take very
-long time. In the worst case all \\(2n-5)!! = 1 \times 3 \times 5 \times
-\ldots \times (2n-5)\\ possible trees have to be examined, where n is
-the number of species / tips. For ten species there are already 2027025
-tip-labelled unrooted trees. It only uses some basic strategies to find
-a lower and upper bounds similar to penny from phylip. `bab` uses a very
-basic heuristic approach of MinMax Squeeze (Holland et al. 2005) to
-improve the lower bound.  
+This implementation can be very slow and depending on the data may take
+very long time. In the worst case all \\(2n-5)!! = 1 \times 3 \times 5
+\times \ldots \times (2n-5)\\ possible trees have to be examined, where
+n is the number of species / tips. For ten species there are already
+2027025 tip-labelled unrooted trees. It only uses some basic strategies
+to find a lower and upper bounds similar to penny from phylip. `bab`
+uses a very basic heuristic approach of MinMax Squeeze [Holland, Huber,
+Penny, and Moulton (2005)](#reference++Holland2005) to improve the lower
+bound and optimtsations from [White and Holland
+(2011)](#reference++White2011) .  
 `bab` might return multifurcating trees. These multifurcations could be
 resolved in all ways.  
 On the positive side `bab` is not like many other implementations
@@ -49,15 +52,18 @@ restricted to binary or nucleotide data.
 
 ## References
 
-Hendy, M.D. and Penny D. (1982) Branch and bound algorithms to determine
-minimal evolutionary trees. *Math. Biosc.* **59**, 277-290
+Hendy M, Penny D (1982). “Branch and bound algorithms to determine
+minimal evolutionary trees.” *Math. Biosc.*, **59**, 277–290.
 
-Holland, B.R., Huber, K.T. Penny, D. and Moulton, V. (2005) The MinMax
-Squeeze: Guaranteeing a Minimal Tree for Population Data, *Molecular
-Biology and Evolution*, **22**, 235–242
+Holland BR, Huber KT, Penny D, Moulton V (2005). “The MinMax Squeeze:
+Guaranteeing a Minimal Tree for Population Data.” *Molecular Biology and
+Evolution*, **22**(2), 235-242.
+[doi:10.1093/molbev/msi010](https://doi.org/10.1093/molbev/msi010) .
 
-White, W.T. and Holland, B.R. (2011) Faster exact maximum parsimony
-search with XMP. *Bioinformatics*, **27(10)**,1359–1367
+White WTJ, Holland BR (2011). “Faster exact maximum parsimony search
+with XMP.” *Bioinformatics*, **27**(10), 1359-1367. ISSN 1367-4803.
+[doi:10.1093/bioinformatics/btr147](https://doi.org/10.1093/bioinformatics/btr147)
+.
 
 ## See also
 

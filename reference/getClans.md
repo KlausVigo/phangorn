@@ -85,17 +85,18 @@ tips is \\2n^2 - 10n + 12\\.
 A clip is a different type of partition, defining groups of leaves that
 are related in terms of evolutionary distances and not only topology.
 Namely, clips are groups of leaves for which all pairwise path-length
-distances are smaller than a given threshold value (Lapointe et al.
-2010). There exists different numbers of clips for different thresholds,
-the largest (and trivial) one being the whole tree. There is always a
-clip containing only the two leaves with the smallest pairwise distance.
+distances are smaller than a given threshold value ([Lapointe, Lopez,
+Boucher, Koenig, and Bapteste 2010](#reference++Lapointe2010)) . There
+exists different numbers of clips for different thresholds, the largest
+(and trivial) one being the whole tree. There is always a clip
+containing only the two leaves with the smallest pairwise distance.
 
 Clans, slices and clips can be used to characterize how well a vector of
 categorial characters (natives/intruders) fit on a tree. We will follow
-the definitions of Lapointe et al.(2010). A complete clan is a clan that
-contains all leaves of a given state/color, but can also contain leaves
-of another state/color. A clan is homogeneous if it only contains leaves
-of one state/color.
+the definitions of [Lapointe et al. (2010)](#reference++Lapointe2010) .
+A complete clan is a clan that contains all leaves of a given
+state/color, but can also contain leaves of another state/color. A clan
+is homogeneous if it only contains leaves of one state/color.
 
 `getDiversity` computes either the  
 Shannon Diversity: \\H = -\sum\_{i=1}^{k}(N_i/N) log(N_i/N),
@@ -120,8 +121,9 @@ coded as ambiguous character, which can act either as native or intruder
 minimizing the number of clans or changes (in parsimony analysis) needed
 to describe a tree for given data.
 
-Set attribute labels to "old" for analysis as in Schliep et al. (2010)
-or to "new" for names which are more intuitive.
+Set attribute labels to "old" for analysis as in [Schliep, Lopez,
+Lapointe, and Bapteste (2011)](#reference++Schliep2011b) or to "new" for
+names which are more intuitive.
 
 `diversity` returns a data.frame with the parsimony score for each tree
 and each levels of the variables in `X`. `X` has to be a `data.frame`
@@ -130,17 +132,21 @@ tips of the trees.
 
 ## References
 
-Lapointe, F.-J., Lopez, P., Boucher, Y., Koenig, J., Bapteste, E. (2010)
-Clanistics: a multi-level perspective for harvesting unrooted gene
-trees. *Trends in Microbiology* 18: 341-347
+Lapointe F, Lopez P, Boucher Y, Koenig J, Bapteste E (2010).
+“Clanistics: a multi-level perspective for harvesting unrooted gene
+trees.” *Trends in Microbiology*, **18**(8), 341–347.
+[doi:10.1016/j.tim.2010.03.009](https://doi.org/10.1016/j.tim.2010.03.009)
+.
 
-Wilkinson, M., McInerney, J.O., Hirt, R.P., Foster, P.G., Embley, T.M.
-(2007) Of clades and clans: terms for phylogenetic relationships in
-unrooted trees. *Trends in Ecology and Evolution* 22: 114-115
+Schliep K, Lopez P, Lapointe F, Bapteste E (2011). “Harvesting
+Evolutionary Signals in a Forest of Prokaryotic Gene Trees.” *Molecular
+Biology and Evolution*, **28**(4), 1393–1405.
 
-Schliep, K., Lopez, P., Lapointe F.-J., Bapteste E. (2011) Harvesting
-Evolutionary Signals in a Forest of Prokaryotic Gene Trees, *Molecular
-Biology and Evolution* 28(4): 1393-1405
+Wilkinson M, McInerney JO, Hirt RP, Foster PG, Embley TM (2007). “Of
+clades and clans: terms for phylogenetic relationships in unrooted
+trees.” *Trends in Ecology and Evolution*, **22**(3), 114–115.
+[doi:10.1016/j.tree.2007.01.002](https://doi.org/10.1016/j.tree.2007.01.002)
+.
 
 ## See also
 
@@ -320,7 +326,7 @@ getSlices(tree)
 
 set.seed(123)
 trees <- rmtree(10, 20)
-X <- matrix(sample(c("red", "blue", "violet"), 100, TRUE, c(.5,.4, .1)),
+X <- matrix(sample(c("red", "blue", "violet"), 100, TRUE, c(0.5, 0.4, 0.1)),
    ncol=5, dimnames=list(paste('t',1:20, sep=""), paste('Var',1:5, sep="_")))
 x <- phyDat(X, type = "USER", levels = c("red", "blue"), ambiguity="violet")
 plot(trees[[1]], "u", tip.color = X[trees[[1]]$tip,1])  # intruders are blue
