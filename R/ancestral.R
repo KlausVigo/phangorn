@@ -93,7 +93,10 @@ ancestral.pml <- function(object, type = "marginal", return = "ancestral", ...) 
   assert_phylo(tree, has_edge_length=TRUE)
   nTips <- as.integer(length(tree$tip.label))
   tree <- reorder(tree, "postorder")
-  if (any(tree$edge.length < 0)) tree <- minEdge(tree)
+  if (any(tree$edge.length < 0)){
+    tree <- minEdge(tree)
+    object <- update(object, tree=tree)
+  }
   ll.0 <- as.matrix(INV %*% (bf * inv))
   nr <- as.integer(attr(data, "nr"))
   nc <- as.integer(attr(data, "nc"))
