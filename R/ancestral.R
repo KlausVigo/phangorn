@@ -153,6 +153,7 @@ ancestral.pml <- function(object, type = "marginal", return = "ancestral", ...) 
       tmp2 <- dat[[i, j]] * (SCALE_EPS ** SCM[,i])
       tmp <- tmp + w[i] * tmp2
     }
+    tmp <- pmax(tmp, 0) # fix numerical problems
     if ((pt == "bayes") || (pt == "marginal")) tmp <- tmp * rep(bf, each = nr)
     #KBH: don't normalize if partial lhoods desired
     # TODO scale lhood
