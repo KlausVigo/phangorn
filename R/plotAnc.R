@@ -144,7 +144,6 @@ plotAnc <- function(x, i = 1, type="phylogram", ..., col = NULL,
     sel = seq_along(XX), thermo = NULL, piecol = col, col = "black",
     bg = "lightblue", horiz = FALSE, width = NULL, height = NULL, cex = cex.pie
   )
-#  if(legend) legend(pos, legend=levels, pch=21, pt.bg = col)
   if (!is.null(pos)) legend(pos, legend=levels, pch=21, pt.bg = col)
   invisible(x)
 }

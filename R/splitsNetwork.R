@@ -85,7 +85,6 @@ splitsNetwork <- function(splits, dm, gamma = 0.1, lambda = 1e-6,
   bvec       <- c(gamma, rep(0, n))
   uvec       <- c(gamma, rep(Inf, n))
 
-#  browser()
 #  solution <- quadprog::solve.QP(Dmat, dvec, Amat, bvec = bvec, meq = 1)$sol
   settings <- osqp::osqpSettings(verbose = FALSE, eps_abs = 1e-16,
                                  eps_rel = 1e-16)
@@ -108,7 +107,6 @@ splitsNetwork <- function(splits, dm, gamma = 0.1, lambda = 1e-6,
   Amat2 <- diag(n2)
   bvec2 <- rep(0, n2)
 # bvec2 not used
-#  browser()
 #  solution2  <- quadprog::solve.QP(Dmat, dvec, Amat2)$sol
   settings <- osqp::osqpSettings(verbose = FALSE, eps_abs = 1e-16,
                                  eps_rel = 1e-16)

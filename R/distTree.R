@@ -459,7 +459,6 @@ nnls.tree <- function(dm, tree, method=c("unrooted", "ultrametric", "tipdated"),
   ind4 <- cbind(seq_len(l), as.integer(ind2))
   Amat2[na.omit(ind4)] <- -1
 
-#  browser()
 #  betahat <- quadprog::solve.QP.compact(as.matrix(Dmat), as.vector(dvec), Amat,
 #                                        Aind)$sol
   settings <- osqp::osqpSettings(verbose = FALSE, eps_abs=1e-16,
@@ -541,7 +540,6 @@ nnls.splits <- function(x, dm, trace = 0, eps = 1e-8) {
     Aind <- matrix(0L, 2L, n)
     Aind[1, ] <- 1L
     Aind[2, ] <- as.integer(1L:n)
-#    browser()
 #    betahat <- quadprog::solve.QP.compact(as.matrix(Dmat), as.vector(dvec),
 #                                          Amat, Aind)$sol
     Amat2 <- Matrix::Diagonal(n)

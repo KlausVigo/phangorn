@@ -179,7 +179,7 @@ SEXP getPM(SEXP eig, SEXP nc, SEXP el, SEXP w){
     for(j=0; j<nel; j++){
         for(i=0; i<nw; i++){
             PROTECT(P = allocMatrix(REALSXP, m, m));
-            if(edgelen[j]==0.0 || ws[i]==0.0){
+            if(edgelen[j] * ws[i] < 1e-12){
                 for(k=0; k<(m*m);k++)REAL(P)[k]=0.0;
                 for(k=0; k<m; k++)REAL(P)[k+k*m]=1.0;
             }

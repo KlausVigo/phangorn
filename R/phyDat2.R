@@ -66,7 +66,7 @@ phyDat.DNA <- function (data, return.index = TRUE, compress = TRUE){
   if(any(ind_na)){
     res <- lapply(res, function(x, ind_na)x[!ind_na], ind_na)
     weight <- weight[!ind_na]
-    index <- index[which(ind_na == FALSE)]
+    index <- index[which(!ind_na)]
     index <- match(index, unique(index))
   }
   names(res) <- nam
@@ -144,7 +144,7 @@ phyDat.default <- function (data, levels = NULL, return.index = TRUE,
     warning("Found unknown characters (not supplied in levels). Deleted sites with unknown states.")
     res <- lapply(res, function(x, ind_na)x[!ind_na], ind_na)
     weight <- weight[!ind_na]
-    index <- index[which(ind_na == FALSE)]
+    index <- index[which(!ind_na)]
     index <- match(index, unique(index))
   }
   p <- length(weight)

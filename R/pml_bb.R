@@ -139,10 +139,10 @@ split_model <- function(x="GTR + G(4) + I", type="DNA"){
   optFreq <- FALSE
   ASC <- FALSE
   if(length(m)>0){
-    pos <- grep("VWG\\(", m)
+    pos <- grep("VG\\(", m)
     if(length(pos)==1){
       optGamma <- TRUE
-      k_tmp <- sub("VWG\\(", "", m[pos])
+      k_tmp <- sub("VG\\(", "", m[pos])
       k_tmp <- sub("\\)", "", k_tmp)
       k <- as.integer(k_tmp)
       m <- m[-pos]
