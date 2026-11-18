@@ -38,6 +38,9 @@ getTransition <- function(scheme, levels){
 #' @param scheme a predefined color scheme. For amino acid options are "Ape_AA",
 #' "Zappo_AA", "Clustal", "Polarity" and "Transmembrane_tendency", for
 #' nucleotides "Ape_NT" and"RY_NT". Names can be abbreviated.
+#' @param node.depth an integer value (1 or 2) used if branch lengths are not
+#' used to plot the tree; 1: the node depths are proportional to the number of
+#' tips descending from each node 2: they are evenly spaced.
 #' @param \dots Further arguments passed to or from other methods.
 #' @returns \code{plotAnc} returns silently x.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
@@ -78,7 +81,8 @@ getTransition <- function(scheme, levels){
 #' @rdname plot.ancestral
 #' @export
 plotAnc <- function(x, i = 1, type="phylogram", ..., col = NULL,
-                    cex.pie = 0.5, pos = "bottomright", scheme=NULL) {
+                    cex.pie = 0.5, pos = "bottomright", scheme=NULL,
+                    node.depth = 2) {
   stopifnot(inherits(x, "ancestral"))
   type <- match.arg(type, c("phylogram", "cladogram", "fan", "unrooted",
                             "radial", "tidy"))
@@ -127,13 +131,15 @@ plotAnc <- function(x, i = 1, type="phylogram", ..., col = NULL,
     col <- sc$col
     nc <- ncol(y)
   }
-  plot(tree, label.offset = 1.1 * xrad, plot = FALSE, type=type, ...)
+  plot(tree, label.offset = 1.1 * xrad, plot = FALSE, type=type,
+       node.depth = node.depth, ...)
   lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
   XX <- lastPP$xx
   YY <- lastPP$yy
   xrad <- CEX * diff(lastPP$x.lim * 1.1) / 50
   par(new = TRUE)
-  plot(tree, label.offset = 1.1 * xrad, plot = TRUE, type=type, ...)
+  plot(tree, label.offset = 1.1 * xrad, plot = TRUE, type=type,
+       node.depth = node.depth, ...)
   if (is.null(col)) col <- hcl.colors(nc) #rainbow(nc)
   if(!is.null(names(col))) col <- col[attr(data, "levels")]
   if (length(col) != nc) {

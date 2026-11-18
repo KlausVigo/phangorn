@@ -7,7 +7,7 @@
 \title{Plot ancestral character on a tree}
 \usage{
 plotAnc(x, i = 1, type = "phylogram", ..., col = NULL, cex.pie = 0.5,
-  pos = "bottomright", scheme = NULL)
+  pos = "bottomright", scheme = NULL, node.depth = 2)
 
 plotSeqLogo(x, node = getRoot(x$tree), start = 1, end = 10,
   scheme = "Ape_NT", ...)
@@ -35,6 +35,10 @@ mutations are written out.}
 \item{scheme}{a predefined color scheme. For amino acid options are "Ape_AA",
 "Zappo_AA", "Clustal", "Polarity" and "Transmembrane_tendency", for
 nucleotides "Ape_NT" and"RY_NT". Names can be abbreviated.}
+
+\item{node.depth}{an integer value (1 or 2) used if branch lengths are not
+used to plot the tree; 1: the node depths are proportional to the number of
+tips descending from each node 2: they are evenly spaced.}
 
 \item{node}{the node for which the probabilities should be plotted.}
 

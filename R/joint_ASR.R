@@ -14,7 +14,7 @@ joint_pml <- function(x){
   el <- numeric(max(tree$edge))
   el[tree$edge[,2]] <- tree$edge.length
   P <- getP(el * x$rate, eig = eig)
-#  for(i in seq_along(P)) P[[i]] <- pmax(P[[i]], 0.0)
+  for(i in seq_along(P)) P[[i]] <- pmax(P[[i]], 0.0)
   nr <- attr(data, "nr")
   nc <- attr(data, "nc")
   levels <- attr(data, "levels")
@@ -23,7 +23,6 @@ joint_pml <- function(x){
   L <- C <- array(NA, c(nr, nc, max(tree$edge)))
   for(i in seq_len(Ntip(tree))){
     tmp0 <- contrast[data[[i]], , drop=FALSE] %*% P[[i]]
-##    if(any(tmp0 < 0)) tmp0[tmp0 < 0] <- 1.0e-16
     tmp0 <- pmax(tmp0, 1e-308)
     L[,,i] <- log(tmp0)
   }
