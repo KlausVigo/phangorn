@@ -96,7 +96,7 @@ future package.
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] Matrix_1.7-6      jsonlite_2.0.0    compiler_4.6.2    Rcpp_1.1.2       
-    ##  [5] parallel_4.6.2    jquerylib_0.1.4   globals_0.20.0    systemfonts_1.3.2
+    ##  [5] parallel_4.6.2    jquerylib_0.1.4   globals_0.20.0    systemfonts_1.3.3
     ##  [9] textshaping_1.0.5 yaml_2.3.12       fastmap_1.2.0     lattice_0.23-1   
     ## [13] R6_2.6.1          generics_0.1.4    igraph_2.3.4      knitr_1.52       
     ## [17] htmlwidgets_1.6.4 backports_1.5.1   checkmate_2.3.4   desc_1.4.3       

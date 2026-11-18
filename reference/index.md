@@ -104,7 +104,6 @@
 - [`discrete.gamma()`](https://klausvigo.github.io/phangorn/reference/discrete.gamma.md)
   [`discrete.beta()`](https://klausvigo.github.io/phangorn/reference/discrete.gamma.md)
   [`plot_gamma_plus_inv()`](https://klausvigo.github.io/phangorn/reference/discrete.gamma.md)
-  [`plotRates()`](https://klausvigo.github.io/phangorn/reference/discrete.gamma.md)
   : Discrete Gamma and Beta distribution
 - [`dist.hamming()`](https://klausvigo.github.io/phangorn/reference/dist.hamming.md)
   [`dist.ml()`](https://klausvigo.github.io/phangorn/reference/dist.hamming.md)
@@ -196,10 +195,12 @@
 - [`plotBS()`](https://klausvigo.github.io/phangorn/reference/plotBS.md)
   [`add_support()`](https://klausvigo.github.io/phangorn/reference/plotBS.md)
   : Plotting trees with bootstrap values
+- [`plotRates()`](https://klausvigo.github.io/phangorn/reference/plotRates.md)
+  : Plot rate heterogeneity across sites
 - [`as.pml()`](https://klausvigo.github.io/phangorn/reference/pml.md)
+  [`optim.pml()`](https://klausvigo.github.io/phangorn/reference/pml.md)
   [`update(`*`<pml>`*`)`](https://klausvigo.github.io/phangorn/reference/pml.md)
   [`pml()`](https://klausvigo.github.io/phangorn/reference/pml.md)
-  [`optim.pml()`](https://klausvigo.github.io/phangorn/reference/pml.md)
   [`logLik(`*`<pml>`*`)`](https://klausvigo.github.io/phangorn/reference/pml.md)
   [`anova(`*`<pml>`*`)`](https://klausvigo.github.io/phangorn/reference/pml.md)
   [`vcov(`*`<pml>`*`)`](https://klausvigo.github.io/phangorn/reference/pml.md)

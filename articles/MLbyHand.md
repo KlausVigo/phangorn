@@ -61,8 +61,8 @@ like the likelihood. There are many generic functions for the class
 methods(class="pml")
 ```
 
-    ##  [1] AICc     anova    BIC      glance   heatmapp logLik   plot     print   
-    ##  [9] simSeq   terraces update   vcov    
+    ##  [1] AICc      anova     BIC       glance    heatmapp  logLik    plot     
+    ##  [8] plotRates print     simSeq    terraces  update    vcov     
     ## see '?methods' for accessing help and source code
 
 The object fit just estimated the likelihood for the tree it got
@@ -374,7 +374,7 @@ away.
     ## loaded via a namespace (and not attached):
     ##  [1] Matrix_1.7-6        future.apply_1.21.0 jsonlite_2.0.0     
     ##  [4] compiler_4.6.2      Rcpp_1.1.2          parallel_4.6.2     
-    ##  [7] jquerylib_0.1.4     globals_0.20.0      systemfonts_1.3.2  
+    ##  [7] jquerylib_0.1.4     globals_0.20.0      systemfonts_1.3.3  
     ## [10] textshaping_1.0.5   yaml_2.3.12         fastmap_1.2.0      
     ## [13] lattice_0.23-1      R6_2.6.1            generics_0.1.4     
     ## [16] igraph_2.3.4        knitr_1.52          htmlwidgets_1.6.4  

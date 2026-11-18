@@ -332,13 +332,13 @@ reversible models.
     ## [22] future.apply_1.21.0 withr_3.0.3         cachem_1.1.0       
     ## [25] yaml_2.3.12         otel_0.3.0          tools_4.6.2        
     ## [28] ggseqlogo_0.2.2     parallel_4.6.2      checkmate_2.3.4    
-    ## [31] dplyr_1.2.1         ggplot2_4.0.3       globals_0.20.0     
+    ## [31] dplyr_1.2.1         ggplot2_4.0.4       globals_0.20.0     
     ## [34] vctrs_0.7.3         R6_2.6.1            lifecycle_1.0.5    
     ## [37] fs_2.1.0            htmlwidgets_1.6.4   ragg_1.5.2         
     ## [40] pkgconfig_2.0.3     desc_1.4.3          pillar_1.11.1      
     ## [43] pkgdown_2.2.1       progressr_1.1.0     bslib_0.12.0       
     ## [46] gtable_0.3.6        glue_1.8.1          Rcpp_1.1.2         
-    ## [49] systemfonts_1.3.2   tidyselect_1.2.1    tibble_3.3.1       
+    ## [49] systemfonts_1.3.3   tidyselect_1.2.1    tibble_3.3.1       
     ## [52] xfun_0.62           knitr_1.52          farver_2.1.2       
     ## [55] htmltools_0.5.9     nlme_3.1-171        igraph_2.3.4       
     ## [58] labeling_0.4.3      rmarkdown_2.32      compiler_4.6.2     

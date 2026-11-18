@@ -149,15 +149,15 @@ data <- simSeq(tree, l = 10, type="DNA", bf=c(0.1, 0.2, 0.3, 0.4), Q=1:6,
                ancestral=TRUE)
 as.character(data)
 #>    [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-#> t5 "t"  "t"  "a"  "a"  "a"  "c"  "g"  "g"  "c"  "g"  
-#> t4 "t"  "a"  "a"  "a"  "a"  "c"  "t"  "g"  "c"  "g"  
-#> t1 "c"  "t"  "a"  "g"  "c"  "a"  "t"  "g"  "g"  "t"  
-#> t3 "c"  "c"  "a"  "g"  "g"  "t"  "t"  "t"  "t"  "t"  
-#> t2 "c"  "t"  "c"  "t"  "t"  "t"  "t"  "t"  "t"  "g"  
-#> 6  "c"  "t"  "t"  "t"  "t"  "g"  "t"  "t"  "t"  "g"  
-#> 7  "c"  "t"  "a"  "g"  "t"  "t"  "t"  "t"  "t"  "g"  
-#> 8  "t"  "a"  "a"  "a"  "a"  "c"  "t"  "g"  "c"  "g"  
-#> 9  "c"  "c"  "a"  "g"  "g"  "t"  "t"  "t"  "t"  "t"  
+#> t5 "t"  "t"  "t"  "g"  "t"  "t"  "t"  "a"  "a"  "c"  
+#> t1 "g"  "c"  "t"  "t"  "t"  "t"  "a"  "a"  "a"  "g"  
+#> t3 "g"  "c"  "t"  "g"  "t"  "t"  "a"  "a"  "a"  "c"  
+#> t2 "a"  "c"  "t"  "a"  "t"  "t"  "a"  "a"  "a"  "t"  
+#> t4 "t"  "c"  "t"  "a"  "t"  "t"  "a"  "a"  "t"  "c"  
+#> 6  "g"  "c"  "t"  "g"  "t"  "t"  "a"  "a"  "a"  "c"  
+#> 7  "t"  "c"  "t"  "g"  "t"  "t"  "a"  "a"  "a"  "t"  
+#> 8  "g"  "c"  "t"  "g"  "t"  "t"  "a"  "a"  "a"  "c"  
+#> 9  "a"  "c"  "g"  "a"  "t"  "t"  "a"  "a"  "a"  "c"  
 
 
 # Example to simulate discrete Gamma rate variation

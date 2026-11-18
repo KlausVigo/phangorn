@@ -10,17 +10,17 @@ parameters. For a more user-friendly interface see
 ``` r
 as.pml(x, ...)
 
-# S3 method for class 'pml'
-update(object, ...)
-
-pml(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
-  rate = 1, model = NULL, site.rate = "gamma", ASC = FALSE, ...)
-
 optim.pml(object, optNni = FALSE, optBf = FALSE, optQ = FALSE,
   optInv = FALSE, optGamma = FALSE, optEdge = TRUE, optRate = FALSE,
   optRooted = FALSE, control = pml.control(), model = NULL,
   rearrangement = ifelse(optNni, "NNI", "none"), subs = NULL,
   ratchet.par = ratchet.control(), ...)
+
+# S3 method for class 'pml'
+update(object, ...)
+
+pml(tree, data, bf = NULL, Q = NULL, inv = 0, k = 1, shape = 1,
+  rate = 1, model = NULL, site.rate = "gamma", ASC = FALSE, ...)
 
 # S3 method for class 'pml'
 logLik(object, ...)
@@ -51,54 +51,6 @@ glance(x, ...)
 - object:
 
   An object of class `pml`.
-
-- tree:
-
-  A phylogenetic `tree`, object of class `phylo`.
-
-- data:
-
-  An alignment, object of class `phyDat`.
-
-- bf:
-
-  Base frequencies (see details).
-
-- Q:
-
-  A vector containing the lower triangular part of the rate matrix.
-
-- inv:
-
-  Proportion of invariable sites.
-
-- k:
-
-  Number of intervals of the discrete gamma distribution.
-
-- shape:
-
-  Shape parameter of the gamma distribution.
-
-- rate:
-
-  Rate.
-
-- model:
-
-  allows to choose an amino acid models or nucleotide model, see
-  details.
-
-- site.rate:
-
-  Indicates what type of gamma distribution to use. Options are "gamma"
-  approach of Yang 1994 (default), "gamma_quadrature" after the Laguerre
-  quadrature approach of Felsenstein 2001 or "free_rate".
-
-- ASC:
-
-  ascertainment bias correction (ASC), allows to estimate models like
-  Lewis' Mkv.
 
 - optNni:
 
@@ -138,6 +90,11 @@ glance(x, ...)
 
   A list of parameters for controlling the fitting process.
 
+- model:
+
+  allows to choose an amino acid models or nucleotide model, see
+  details.
+
 - rearrangement:
 
   type of tree tree rearrangements to perform, one of "none", "NNI",
@@ -150,6 +107,49 @@ glance(x, ...)
 - ratchet.par:
 
   search parameter for stochastic search
+
+- tree:
+
+  A phylogenetic `tree`, object of class `phylo`.
+
+- data:
+
+  An alignment, object of class `phyDat`.
+
+- bf:
+
+  Base frequencies (see details).
+
+- Q:
+
+  A vector containing the lower triangular part of the rate matrix.
+
+- inv:
+
+  Proportion of invariable sites.
+
+- k:
+
+  Number of intervals of the discrete gamma distribution.
+
+- shape:
+
+  Shape parameter of the gamma distribution.
+
+- rate:
+
+  Rate.
+
+- site.rate:
+
+  Indicates what type of gamma distribution to use. Options are "gamma"
+  approach of Yang 1994 (default), "gamma_quadrature" after the Laguerre
+  quadrature approach of Felsenstein 2001 or "free_rate".
+
+- ASC:
+
+  ascertainment bias correction (ASC), allows to estimate models like
+  Lewis' Mkv.
 
 ## Value
 
@@ -377,7 +377,7 @@ if (FALSE) { # \dontrun{
 #> 0.5 0.5 
 # show some of the methods available for class pml
   methods(class="pml")
-#>  [1] AICc     BIC      anova    glance   heatmapp logLik   plot     print   
-#>  [9] simSeq   terraces update   vcov    
+#>  [1] AICc      BIC       anova     glance    heatmapp  logLik    plot     
+#>  [8] plotRates print     simSeq    terraces  update    vcov     
 #> see '?methods' for accessing help and source code
 ```

@@ -122,11 +122,7 @@ twilight zone." *bioRxiv*: 2023-12
 
 ## See also
 
-[`pml`](https://klausvigo.github.io/phangorn/reference/pml.md),
-[`anova`](https://rdrr.io/r/stats/anova.html),
-[`AIC`](https://rdrr.io/r/stats/AIC.html),
-[`codonTest`](https://klausvigo.github.io/phangorn/reference/codonTest.md),
-[`plan`](https://future.futureverse.org/reference/plan.html)
+[`pml`](https://klausvigo.github.io/phangorn/reference/pml.md)`, `[`anova`](https://rdrr.io/r/stats/anova.html)`, `[`AIC`](https://rdrr.io/r/stats/AIC.html)`, `[`codonTest`](https://klausvigo.github.io/phangorn/reference/codonTest.md)`, `[`plan`](https://future.futureverse.org/reference/plan.html)`, `[`plotRates`](https://klausvigo.github.io/phangorn/reference/plotRates.md)
 
 ## Author
 
@@ -146,10 +142,10 @@ plot(mT$TL, mT$logLik, xlim=c(3,6.5),
 text(mT$TL, mT$logLik, labels=mT$Model, pos=4)
 
 fit_GTR_G <- as.pml(mt, "GTR+G(4)")
-fit_GTR_VG <- as.pml(mt, "GTR+VG(4)")
+fit_GTR_V <- as.pml(mt, "GTR+VG(4)")
 fit_GTR_R <- as.pml(mt, "GTR+R(4)")
 plotRates(fit_GTR_G)
-plotRates(fit_GTR_VWG, append=TRUE, col="red")
+plotRates(fit_GTR_VG, append=TRUE, col="red")
 plotRates(fit_GTR_R, append=TRUE, col="green")
 
 # extract best model

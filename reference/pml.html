@@ -42,7 +42,7 @@ parameters. For a more user-friendly interface see pml_bb."><meta property="og:i
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Likelihood of a tree.</h1>
-      <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/main/R/modelTest.R" class="external-link"><code>R/modelTest.R</code></a>, <a href="https://github.com/KlausVigo/phangorn/blob/main/R/phylo.R" class="external-link"><code>R/phylo.R</code></a>, <a href="https://github.com/KlausVigo/phangorn/blob/main/R/pml_generics.R" class="external-link"><code>R/pml_generics.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/KlausVigo/phangorn/blob/main/R/modelTest.R" class="external-link"><code>R/modelTest.R</code></a>, <a href="https://github.com/KlausVigo/phangorn/blob/main/R/optim_pml.R" class="external-link"><code>R/optim_pml.R</code></a>, <a href="https://github.com/KlausVigo/phangorn/blob/main/R/phylo.R" class="external-link"><code>R/phylo.R</code></a>, and 1 more</small>
       <div class="d-none name"><code>pml.Rd</code></div>
     </div>
 
@@ -56,17 +56,17 @@ parameters. For a more user-friendly interface see <code><a href="pml_bb.html">p
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">as.pml</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># S3 method for class 'pml'</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/update.html" class="external-link">update</a></span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">pml</span><span class="op">(</span><span class="va">tree</span>, <span class="va">data</span>, bf <span class="op">=</span> <span class="cn">NULL</span>, Q <span class="op">=</span> <span class="cn">NULL</span>, inv <span class="op">=</span> <span class="fl">0</span>, k <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  rate <span class="op">=</span> <span class="fl">1</span>, model <span class="op">=</span> <span class="cn">NULL</span>, site.rate <span class="op">=</span> <span class="st">"gamma"</span>, ASC <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
-<span></span>
 <span><span class="fu">optim.pml</span><span class="op">(</span><span class="va">object</span>, optNni <span class="op">=</span> <span class="cn">FALSE</span>, optBf <span class="op">=</span> <span class="cn">FALSE</span>, optQ <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  optInv <span class="op">=</span> <span class="cn">FALSE</span>, optGamma <span class="op">=</span> <span class="cn">FALSE</span>, optEdge <span class="op">=</span> <span class="cn">TRUE</span>, optRate <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  optRooted <span class="op">=</span> <span class="cn">FALSE</span>, control <span class="op">=</span> <span class="fu"><a href="pml.control.html">pml.control</a></span><span class="op">(</span><span class="op">)</span>, model <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  rearrangement <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">optNni</span>, <span class="st">"NNI"</span>, <span class="st">"none"</span><span class="op">)</span>, subs <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  ratchet.par <span class="op">=</span> <span class="fu"><a href="pml.control.html">ratchet.control</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'pml'</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/update.html" class="external-link">update</a></span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">pml</span><span class="op">(</span><span class="va">tree</span>, <span class="va">data</span>, bf <span class="op">=</span> <span class="cn">NULL</span>, Q <span class="op">=</span> <span class="cn">NULL</span>, inv <span class="op">=</span> <span class="fl">0</span>, k <span class="op">=</span> <span class="fl">1</span>, shape <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  rate <span class="op">=</span> <span class="fl">1</span>, model <span class="op">=</span> <span class="cn">NULL</span>, site.rate <span class="op">=</span> <span class="st">"gamma"</span>, ASC <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'pml'</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik</a></span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span>
@@ -98,54 +98,6 @@ parameters. For a more user-friendly interface see <code><a href="pml_bb.html">p
 
 <dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
 <dd><p>An object of class <code>pml</code>.</p></dd>
-
-
-<dt id="arg-tree">tree<a class="anchor" aria-label="anchor" href="#arg-tree"></a></dt>
-<dd><p>A phylogenetic <code>tree</code>, object of class <code>phylo</code>.</p></dd>
-
-
-<dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>An alignment, object of class <code>phyDat</code>.</p></dd>
-
-
-<dt id="arg-bf">bf<a class="anchor" aria-label="anchor" href="#arg-bf"></a></dt>
-<dd><p>Base frequencies (see details).</p></dd>
-
-
-<dt id="arg-q">Q<a class="anchor" aria-label="anchor" href="#arg-q"></a></dt>
-<dd><p>A vector containing the lower triangular part of the rate matrix.</p></dd>
-
-
-<dt id="arg-inv">inv<a class="anchor" aria-label="anchor" href="#arg-inv"></a></dt>
-<dd><p>Proportion of invariable sites.</p></dd>
-
-
-<dt id="arg-k">k<a class="anchor" aria-label="anchor" href="#arg-k"></a></dt>
-<dd><p>Number of intervals of the discrete gamma distribution.</p></dd>
-
-
-<dt id="arg-shape">shape<a class="anchor" aria-label="anchor" href="#arg-shape"></a></dt>
-<dd><p>Shape parameter of the gamma distribution.</p></dd>
-
-
-<dt id="arg-rate">rate<a class="anchor" aria-label="anchor" href="#arg-rate"></a></dt>
-<dd><p>Rate.</p></dd>
-
-
-<dt id="arg-model">model<a class="anchor" aria-label="anchor" href="#arg-model"></a></dt>
-<dd><p>allows to choose an amino acid models or nucleotide model, see
-details.</p></dd>
-
-
-<dt id="arg-site-rate">site.rate<a class="anchor" aria-label="anchor" href="#arg-site-rate"></a></dt>
-<dd><p>Indicates what type of gamma distribution to use. Options
-are "gamma" approach of Yang 1994 (default), "gamma_quadrature" after the
-Laguerre quadrature approach of Felsenstein 2001 or "free_rate".</p></dd>
-
-
-<dt id="arg-asc">ASC<a class="anchor" aria-label="anchor" href="#arg-asc"></a></dt>
-<dd><p>ascertainment bias correction (ASC), allows to estimate models
-like Lewis' Mkv.</p></dd>
 
 
 <dt id="arg-optnni">optNni<a class="anchor" aria-label="anchor" href="#arg-optnni"></a></dt>
@@ -188,6 +140,11 @@ tree get optimized.</p></dd>
 <dd><p>A list of parameters for controlling the fitting process.</p></dd>
 
 
+<dt id="arg-model">model<a class="anchor" aria-label="anchor" href="#arg-model"></a></dt>
+<dd><p>allows to choose an amino acid models or nucleotide model, see
+details.</p></dd>
+
+
 <dt id="arg-rearrangement">rearrangement<a class="anchor" aria-label="anchor" href="#arg-rearrangement"></a></dt>
 <dd><p>type of tree tree rearrangements to perform, one of
 "none", "NNI", "stochastic" or "ratchet"</p></dd>
@@ -200,6 +157,49 @@ of Q</p></dd>
 
 <dt id="arg-ratchet-par">ratchet.par<a class="anchor" aria-label="anchor" href="#arg-ratchet-par"></a></dt>
 <dd><p>search parameter for stochastic search</p></dd>
+
+
+<dt id="arg-tree">tree<a class="anchor" aria-label="anchor" href="#arg-tree"></a></dt>
+<dd><p>A phylogenetic <code>tree</code>, object of class <code>phylo</code>.</p></dd>
+
+
+<dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
+<dd><p>An alignment, object of class <code>phyDat</code>.</p></dd>
+
+
+<dt id="arg-bf">bf<a class="anchor" aria-label="anchor" href="#arg-bf"></a></dt>
+<dd><p>Base frequencies (see details).</p></dd>
+
+
+<dt id="arg-q">Q<a class="anchor" aria-label="anchor" href="#arg-q"></a></dt>
+<dd><p>A vector containing the lower triangular part of the rate matrix.</p></dd>
+
+
+<dt id="arg-inv">inv<a class="anchor" aria-label="anchor" href="#arg-inv"></a></dt>
+<dd><p>Proportion of invariable sites.</p></dd>
+
+
+<dt id="arg-k">k<a class="anchor" aria-label="anchor" href="#arg-k"></a></dt>
+<dd><p>Number of intervals of the discrete gamma distribution.</p></dd>
+
+
+<dt id="arg-shape">shape<a class="anchor" aria-label="anchor" href="#arg-shape"></a></dt>
+<dd><p>Shape parameter of the gamma distribution.</p></dd>
+
+
+<dt id="arg-rate">rate<a class="anchor" aria-label="anchor" href="#arg-rate"></a></dt>
+<dd><p>Rate.</p></dd>
+
+
+<dt id="arg-site-rate">site.rate<a class="anchor" aria-label="anchor" href="#arg-site-rate"></a></dt>
+<dd><p>Indicates what type of gamma distribution to use. Options
+are "gamma" approach of Yang 1994 (default), "gamma_quadrature" after the
+Laguerre quadrature approach of Felsenstein 2001 or "free_rate".</p></dd>
+
+
+<dt id="arg-asc">ASC<a class="anchor" aria-label="anchor" href="#arg-asc"></a></dt>
+<dd><p>ascertainment bias correction (ASC), allows to estimate models
+like Lewis' Mkv.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -386,8 +386,8 @@ discrete morphological character data. <em>Systematic Biology</em> <b>50</b>,
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.5 0.5 </span>
 <span class="r-in"><span><span class="co"># show some of the methods available for class pml</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/methods.html" class="external-link">methods</a></span><span class="op">(</span>class<span class="op">=</span><span class="st">"pml"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] AICc     BIC      anova    glance   heatmapp logLik   plot     print   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] simSeq   terraces update   vcov    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] AICc      BIC       anova     glance    heatmapp  logLik    plot     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] plotRates print     simSeq    terraces  update    vcov     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> see '?methods' for accessing help and source code</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
