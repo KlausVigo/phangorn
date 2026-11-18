@@ -7,12 +7,14 @@ joint_pml <- function(x){
   contrast <- attr(data, "contrast")
   tree <- x$tree
   tree <- reorder(tree, "postorder")
+  data <- data[tree$tip.label]
   edge <- tree$edge
   ntip <- Ntip(tree)
   desc <- Descendants(tree, type="children")
   el <- numeric(max(tree$edge))
   el[tree$edge[,2]] <- tree$edge.length
   P <- getP(el * x$rate, eig = eig)
+#  for(i in seq_along(P)) P[[i]] <- pmax(P[[i]], 0.0)
   nr <- attr(data, "nr")
   nc <- attr(data, "nc")
   levels <- attr(data, "levels")
@@ -20,7 +22,10 @@ joint_pml <- function(x){
   l <- length(tree$edge.length)
   L <- C <- array(NA, c(nr, nc, max(tree$edge)))
   for(i in seq_len(Ntip(tree))){
-    L[,,i]<- log(contrast[data[[i]],,drop=FALSE]%*%P[[i]])
+    tmp0 <- contrast[data[[i]], , drop=FALSE] %*% P[[i]]
+##    if(any(tmp0 < 0)) tmp0[tmp0 < 0] <- 1.0e-16
+    tmp0 <- pmax(tmp0, 1e-308)
+    L[,,i] <- log(tmp0)
   }
   nn <- unique(edge[,1])
   pa <- 0
