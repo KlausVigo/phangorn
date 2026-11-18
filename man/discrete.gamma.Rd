@@ -4,7 +4,6 @@
 \alias{discrete.gamma}
 \alias{discrete.beta}
 \alias{plot_gamma_plus_inv}
-\alias{plotRates}
 \title{Discrete Gamma and Beta distribution}
 \usage{
 discrete.gamma(alpha, k, w = NULL)
@@ -15,9 +14,6 @@ plot_gamma_plus_inv(w = NULL, g = NULL, shape = 1, inv = 0, k = 4,
   discrete = TRUE, cdf = TRUE, append = FALSE, xlab = "x",
   ylab = ifelse(cdf, "F(x)", "f(x)"), xlim = NULL, verticals = FALSE,
   edge.length = NULL, site.rate = "gamma", ...)
-
-plotRates(obj, cdf.color = "blue", main = "", rug = FALSE, xlim = NULL,
-  append = FALSE, ...)
 }
 \arguments{
 \item{alpha}{Shape parameter of the gamma distribution.}
@@ -57,26 +53,15 @@ are "gamma" (Yang 1994), "gamma_quadrature" using Laguerre quadrature
 approach of Felsenstein (2001) or  "variable_gamma".}
 
 \item{\dots}{Further arguments passed to or from other methods.}
-
-\item{obj}{an object of class pml}
-
-\item{cdf.color}{color of the cdf.}
-
-\item{main}{a main title for the plot.}
-
-\item{rug}{logical; if TRUE a \code{\link[graphics]{rug}} is added to the
-plot.}
 }
 \value{
 \code{discrete.gamma} returns a matrix.
 }
 \description{
 \code{discrete.gamma} internally used for the likelihood computations in
-\code{pml} or \code{optim.pml}. The functions \code{plot_gamma_plus_inv}
-and \code{plotRates} are useful in EDA and understand how discrete rate
-models work and where it limitations are \bibcitep{Ferretti2026}.
-\code{plotRates} plots the cumulative distribution function based on the
-parsimony score for the data and the discrete rate model.
+\code{pml} or \code{optim.pml}. The function \code{plot_gamma_plus_inv}
+and \code{plotRates} are useful to understand how discrete rate
+models work and is used in \code{plotRates}.
 }
 \examples{
 discrete.gamma(1, 4)
@@ -94,11 +79,9 @@ data(Laurasiatherian)
 fit <- pml_bb(Laurasiatherian, "JC+G(4)", rearrangement = "none")
 plotRates(fit)
 }
-\references{
-\bibshow{*}
-}
 \seealso{
-\code{\link{pml.fit}, \link{stepfun}, \link{pgamma}, \link{pbeta}}
+\code{\link{pml.fit}, \link{stepfun}, \link{pgamma}, \link{pbeta},
+\link{plotRates}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

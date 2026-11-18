@@ -77,10 +77,10 @@ plot(mT$TL, mT$logLik, xlim=c(3,6.5),
 text(mT$TL, mT$logLik, labels=mT$Model, pos=4)
 
 fit_GTR_G <- as.pml(mt, "GTR+G(4)")
-fit_GTR_VG <- as.pml(mt, "GTR+VG(4)")
+fit_GTR_V <- as.pml(mt, "GTR+VG(4)")
 fit_GTR_R <- as.pml(mt, "GTR+R(4)")
 plotRates(fit_GTR_G)
-plotRates(fit_GTR_VWG, append=TRUE, col="red")
+plotRates(fit_GTR_VG, append=TRUE, col="red")
 plotRates(fit_GTR_R, append=TRUE, col="green")
 
 # extract best model
@@ -113,8 +113,8 @@ enable fast, model-based structural phylogenetics beyond the twilight zone."
 \emph{bioRxiv}: 2023-12
 }
 \seealso{
-\code{\link{pml}}, \code{\link{anova}}, \code{\link[stats]{AIC}},
-\code{\link{codonTest}}, \code{\link[future]{plan}}
+\code{\link{pml}, \link{anova}, \link[stats]{AIC},
+\link{codonTest}, \link[future]{plan}, \link{plotRates}}
 }
 \author{
 Klaus Schliep \email{klaus.schliep@gmail.com}

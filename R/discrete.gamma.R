@@ -1,12 +1,9 @@
 #' Discrete Gamma and Beta distribution
 #'
 #' \code{discrete.gamma} internally used for the likelihood computations in
-#' \code{pml} or \code{optim.pml}. The functions \code{plot_gamma_plus_inv}
-#' and \code{plotRates} are useful in EDA and understand how discrete rate
-#' models work and where it limitations are \bibcitep{Ferretti2026}.
-#' \code{plotRates} plots the cumulative distribution function based on the
-#' parsimony score for the data and the discrete rate model.
-#'
+#' \code{pml} or \code{optim.pml}. The function \code{plot_gamma_plus_inv}
+#' and \code{plotRates} are useful to understand how discrete rate
+#' models work and is used in \code{plotRates}.
 #' @param shape Shape parameter of the gamma distribution.
 #' @param alpha Shape parameter of the gamma distribution.
 #' @param shape1,shape2 non-negative parameters of the Beta distribution.
@@ -31,9 +28,8 @@
 #' @param \dots Further arguments passed to or from other methods.
 #' @return \code{discrete.gamma} returns a matrix.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{pml.fit}, \link{stepfun}, \link{pgamma}, \link{pbeta}}
-#' @references
-#' \bibshow{*}
+#' @seealso \code{\link{pml.fit}, \link{stepfun}, \link{pgamma}, \link{pbeta},
+#' \link{plotRates}}
 #' @examples
 #' discrete.gamma(1, 4)
 #'
@@ -76,12 +72,11 @@ discrete.beta <- function(shape1, shape2, k) {
 #' @importFrom graphics curve
 #' @keywords hplot
 #' @export
-plot_gamma_plus_inv <- function(w=NULL, g=NULL, shape=1, inv=0, k=4, discrete=TRUE, cdf=TRUE,
-                                append=FALSE, xlab = "x",
-                                ylab=ifelse(cdf, "F(x)", "f(x)"), xlim=NULL,
-                                verticals=FALSE, edge.length=NULL,
+plot_gamma_plus_inv <- function(w=NULL, g=NULL, shape=1, inv=0, k=4,
+                                discrete=TRUE, cdf=TRUE, append=FALSE,
+                                xlab = "x", ylab=ifelse(cdf, "F(x)", "f(x)"),
+                                xlim=NULL, verticals=FALSE, edge.length=NULL,
                                 site.rate="gamma", ...){
-
   l <- max(lengths(list(shape, k, inv)))
   if(l>1){
     shape <- rep_len(shape, l)
@@ -222,50 +217,6 @@ plot_gamma_plus_inv <- function(w=NULL, g=NULL, shape=1, inv=0, k=4, discrete=TR
   }
 }
 
-
-#' @rdname discrete.gamma
-#' @importFrom stats ecdf
-#' @importFrom stats plot.ecdf
-#' @importFrom graphics rug
-## @importFrom statmod gauss.quad.prob
-#' @param obj an object of class pml
-#' @param main a main title for the plot.
-#' @param cdf.color color of the cdf.
-#' @param rug logical; if TRUE a \code{\link[graphics]{rug}} is added to the
-#' plot.
-#' @export
-plotRates <- function(obj, cdf.color="blue", main="", rug=FALSE, xlim=NULL,
-                      append=FALSE, ...){
-  pscores <- parsimony(obj$tree, obj$data, site="site")
-  if(!is.null(attr(obj$data, "index"))){
-    ecdf_pscores <- ecdf( pscores[attr(obj$data, "index")])
-  } else{
-    tmp <- aggregate(attr(obj$data, "weight"), by=list(pscores), FUN=sum)
-    x <- tmp[, 1]
-    y <- cumsum(c(0, tmp[,2]))
-    y <- y / max(y)
-    ecdf_pscores <- stepfun(x, y)
-  }
-  el <- obj$tree$edge.length * obj$rate
-  el <- sum(el)
-  w <- obj$w
-  g <- obj$g
-  inv <- obj$inv
-  if(is.null(xlim)) xlim <- c(-0.25, 1.1 * max(c(pscores, g*el)))
-  if(!append){
-    plot.ecdf(ecdf_pscores, verticals = TRUE, do.points=FALSE, main=main,
-              xlim=xlim, ...)
-    if(rug) rug(jitter(pscores))
-  }
-  if (inv > 1e-8) {
-    g <- c(0, g)
-    w <- c(inv, w)
-  }
-  plot_gamma_plus_inv(w = w, g = g, append = TRUE, xlim = xlim,
-                      edge.length = el, verticals = TRUE, col = cdf.color,
-                      site.rate = obj$site.rate, ...)
-  invisible(obj)
-}
 
 
 # from selac

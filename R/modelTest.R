@@ -116,8 +116,8 @@ fitPar <- function(par, fit, trees=NULL, calls=NULL, ...) {
 #' data and the calls to allow get the estimated models, e.g. as a starting
 #' point for further analysis (see example).
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @seealso \code{\link{pml}}, \code{\link{anova}}, \code{\link[stats]{AIC}},
-#' \code{\link{codonTest}}, \code{\link[future]{plan}}
+#' @seealso \code{\link{pml}, \link{anova}, \link[stats]{AIC},
+#' \link{codonTest}, \link[future]{plan}, \link{plotRates}}
 #' @references
 #' \bibshow{*}
 #'
@@ -146,10 +146,10 @@ fitPar <- function(par, fit, trees=NULL, calls=NULL, ...) {
 #' text(mT$TL, mT$logLik, labels=mT$Model, pos=4)
 #'
 #' fit_GTR_G <- as.pml(mt, "GTR+G(4)")
-#' fit_GTR_VG <- as.pml(mt, "GTR+VG(4)")
+#' fit_GTR_V <- as.pml(mt, "GTR+VG(4)")
 #' fit_GTR_R <- as.pml(mt, "GTR+R(4)")
 #' plotRates(fit_GTR_G)
-#' plotRates(fit_GTR_VWG, append=TRUE, col="red")
+#' plotRates(fit_GTR_VG, append=TRUE, col="red")
 #' plotRates(fit_GTR_R, append=TRUE, col="green")
 #'
 #' # extract best model
