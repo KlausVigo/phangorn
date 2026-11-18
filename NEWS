@@ -80,6 +80,11 @@ BUG FIXES
 
     o keep_as_tip now works properly when nodes are nested.
 
+    o optim.pml roots the tree, if the tree has only two tips
+
+    o fixing some bugs in edge cases for ancestral reconstruction
+
+
 
     CHANGES in PHANGORN VERSION 2.12.0
 
