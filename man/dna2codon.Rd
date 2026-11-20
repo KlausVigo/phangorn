@@ -72,7 +72,7 @@ dna2codon(Laurasiatherian)
 
 }
 \references{
-\url{https://www.ncbi.nlm.nih.gov/Taxonomy/taxonomyhome.html/index.cgi?chapter=cgencodes}
+\url{https://www.ncbi.nlm.nih.gov/datasets/docs/v2/data-processing/taxonomy-processing/genetic-codes/}
 }
 \seealso{
 \code{\link[ape]{trans}}, \code{\link{phyDat}} and the chapter 4 in

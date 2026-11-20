@@ -44,7 +44,7 @@
 #' @param ... further arguments passed to or from other methods.
 #' @return The functions return an object of class \code{phyDat}.
 #' @author Klaus Schliep \email{klaus.schliep@@gmail.com}
-#' @references \url{https://www.ncbi.nlm.nih.gov/Taxonomy/taxonomyhome.html/index.cgi?chapter=cgencodes}
+#' @references \url{https://www.ncbi.nlm.nih.gov/datasets/docs/v2/data-processing/taxonomy-processing/genetic-codes/}
 #' @seealso \code{\link[ape]{trans}}, \code{\link{phyDat}} and the chapter 4 in
 #' the \code{vignette("phangorn-specials", package="phangorn")}
 #' @keywords cluster
