@@ -342,7 +342,7 @@ reversible models.
     ## [52] xfun_0.62           knitr_1.52          farver_2.1.2       
     ## [55] htmltools_0.5.9     nlme_3.1-171        igraph_2.3.4       
     ## [58] labeling_0.4.3      rmarkdown_2.32      compiler_4.6.2     
-    ## [61] S7_0.2.2
+    ## [61] S7_1.0.0
 
 ## References
 

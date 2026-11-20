@@ -214,7 +214,7 @@ sessionInfo()
     ## [16] igraph_2.3.4        knitr_1.52          htmlwidgets_1.6.4  
     ## [19] backports_1.5.1     checkmate_2.3.4     desc_1.4.3         
     ## [22] osqp_1.0.0          bslib_0.12.0        rlang_1.3.0        
-    ## [25] cachem_1.1.0        xfun_0.62           S7_0.2.2           
+    ## [25] cachem_1.1.0        xfun_0.62           S7_1.0.0           
     ## [28] fs_2.1.0            sass_0.4.10         otel_0.3.0         
     ## [31] cli_3.6.6           progressr_1.1.0     pkgdown_2.2.1      
     ## [34] magrittr_2.0.5      digest_0.6.39       grid_4.6.2         

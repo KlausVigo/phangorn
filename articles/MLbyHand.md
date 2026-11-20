@@ -195,23 +195,23 @@ fitGTR
     ##  (expected number of substituions per site)
     ## Minimal tree length: 3.315 
     ##  (observed substitutions per site)
-    ## Proportion of invariant sites: 0.008019 
+    ## Proportion of invariant sites: 0.008018 
     ## Model of rate heterogeneity: Discrete gamma model
     ## Number of rate categories: 4 
     ## Shape parameter: 3.174 
     ##     Rate Proportion
-    ## 1 0.0000   0.008019
+    ## 1 0.0000   0.008018
     ## 2 0.4055   0.247995
     ## 3 0.7467   0.247995
     ## 4 1.0920   0.247995
     ## 5 1.7881   0.247995
     ## 
     ## Rates:
-    ## a <-> c : 0.6982 
-    ## a <-> g : 71.61 
-    ## a <-> t : 0.5849 
-    ## c <-> g : 0.00466 
-    ## c <-> t : 25.09 
+    ## a <-> c : 0.6987 
+    ## a <-> g : 71.63 
+    ## a <-> t : 0.5847 
+    ## c <-> g : 0.004662 
+    ## c <-> t : 25.1 
     ## g <-> t : 1 
     ## 
     ## Base frequencies:  

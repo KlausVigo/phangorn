@@ -77,7 +77,7 @@ containing these are deleted.
 
 ## References
 
-<https://www.ncbi.nlm.nih.gov/Taxonomy/taxonomyhome.html/index.cgi?chapter=cgencodes>
+<https://www.ncbi.nlm.nih.gov/datasets/docs/v2/data-processing/taxonomy-processing/genetic-codes/>
 
 ## See also
 
